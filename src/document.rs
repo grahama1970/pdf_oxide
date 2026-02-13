@@ -2757,8 +2757,7 @@ impl PdfDocument {
         let mut extractor = PathExtractor::new();
         let mut state_stack = GraphicsStateStack::new();
 
-        // Set resources for XObject processing (Issue #40)
-        // Handle indirect references to Resources (Issue #40 enhancement)
+        // Resolve and set page resources for XObject processing
         if let Some(resources) = page_dict.get("Resources") {
             let resolved_resources = if let Some(ref_obj) = resources.as_reference() {
                 self.load_object(ref_obj)?
@@ -2958,11 +2957,11 @@ impl PdfDocument {
             None => return Ok(()), // No resources, can't process XObjects
         };
 
-        // Resolve resources if it's an indirect reference (Issue #40 - Indirect Resources)
+        // Resolve indirect reference to resources if needed
         let resolved_resources = if let Some(ref_obj) = resources.as_reference() {
             match self.load_object(ref_obj) {
                 Ok(obj) => obj,
-                Err(_) => return Ok(()), // Can't resolve, skip
+                Err(_) => return Ok(()),
             }
         } else {
             resources.clone()
@@ -2979,11 +2978,11 @@ impl PdfDocument {
             None => return Ok(()),
         };
 
-        // Resolve XObject dictionary if it's an indirect reference (Issue #40 - Indirect XObject)
+        // Resolve indirect reference to XObject dictionary if needed
         let resolved_xobject_obj = if let Some(ref_obj) = xobject_obj.as_reference() {
             match self.load_object(ref_obj) {
                 Ok(obj) => obj,
-                Err(_) => return Ok(()), // Can't resolve, skip
+                Err(_) => return Ok(()),
             }
         } else {
             xobject_obj.clone()
@@ -3003,7 +3002,7 @@ impl PdfDocument {
             None => return Ok(()),
         };
 
-        // Check if we can process this XObject (prevent infinite recursion) - Issue #40 cycle detection
+        // Cycle detection: skip if already processing this XObject
         if !extractor.can_process_xobject(xobject_ref) {
             return Ok(());
         }
@@ -3109,9 +3108,7 @@ impl PdfDocument {
         // Save graphics state
         state_stack.save();
 
-        // Ensure no pending path operations before processing XObject (Issue #40 - path state isolation)
-        // Paths should be finalized before crossing into nested content,
-        // but we defensively end any pending path to isolate XObject processing
+        // Finalize any pending path before processing XObject to isolate state
         if extractor.has_current_path() {
             extractor.end_path();
         }
@@ -3238,8 +3235,7 @@ impl PdfDocument {
             }
         }
 
-        // Ensure any pending path operations from the XObject are finalized (Issue #40 - path state isolation)
-        // This prevents path state from leaking into the parent content stream
+        // Finalize any pending path to prevent state leakage
         if extractor.has_current_path() {
             extractor.end_path();
         }
@@ -4679,12 +4675,10 @@ mod tests {
     }
 
     // ========================================================================
-    // Lenient Header Parsing Tests (Issue #41)
-    // ========================================================================
-
+    // Header parsing tests with various prefixes
     #[test]
     fn test_parse_header_with_bom_prefix() {
-        // UTF-8 BOM + PDF header
+        // UTF-8 BOM prefix before header
         let data = b"\xEF\xBB\xBF%PDF-1.7\n";
         let mut cursor = Cursor::new(data);
         let (major, minor, offset) = parse_header(&mut cursor, true).unwrap();
@@ -4693,7 +4687,7 @@ mod tests {
 
     #[test]
     fn test_parse_header_with_binary_prefix() {
-        // Binary prefix + PDF header (Issue #41 scenario)
+        // Binary data prefix before header
         let mut data = vec![0x1b, 0x96, 0x5f];
         data.extend_from_slice(b"%PDF-1.4\n");
         let mut cursor = Cursor::new(data);
