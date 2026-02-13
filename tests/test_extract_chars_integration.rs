@@ -36,7 +36,7 @@ fn test_extract_chars_basic() {
     // Basic assertions for extract_chars API
     if !chars.is_empty() {
         // Characters should be non-empty for a valid PDF
-        assert!(chars.len() > 0, "extract_chars should return characters from page");
+        assert!(!chars.is_empty(), "extract_chars should return characters from page");
 
         // First character should have valid properties
         let first_char = &chars[0];
