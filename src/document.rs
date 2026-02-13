@@ -4435,7 +4435,14 @@ pub fn parse_header<R: Read + Seek>(reader: &mut R, lenient: bool) -> Result<(u8
             header_arr.copy_from_slice(header_bytes);
 
             let (major, minor) = parse_version_from_header(&header_arr)?;
-            Ok((major, minor, start_pos + offset as u64))
+
+            // Standardize reader position to just after the header
+            // (consistent with strict mode behavior at line 4378)
+            let header_start = start_pos + offset as u64;
+            let after_header = header_start + 8;
+            reader.seek(SeekFrom::Start(after_header))?;
+
+            Ok((major, minor, header_start))
         },
         None => Err(Error::InvalidHeader(
             "No PDF header found in first 1024 bytes of file".to_string(),
