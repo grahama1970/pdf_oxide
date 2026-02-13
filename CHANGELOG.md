@@ -32,6 +32,11 @@ All notable changes to PDFOxide are documented here.
   - Nested XObjects (XObject containing XObject) supported
 
 ### Changed
+- **Dependencies**: Upgraded nom parser library from 7.1 to 8.0
+  - Updated all parser combinators to use `.parse()` method
+  - No user-facing API changes
+  - All parser functionality maintained
+  - Performance stable (no regressions detected)
 - `parse_header()` signature updated: now returns `(major, minor, offset)` tuple
 - All parse_header test cases updated to use new signature
 
