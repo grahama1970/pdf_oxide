@@ -231,8 +231,7 @@ mod statistics_calculation_tests {
         let spans = create_spans_with_gaps(&[1.0, 2.0, 3.0, 4.0, 5.0]);
         let result = analyze_document_gaps(&spans, None);
 
-        if result.stats.is_some() {
-            let stats = &result.stats.as_ref().unwrap();
+        if let Some(stats) = &result.stats {
             // Verify median is correct
             assert!((stats.median - 3.0).abs() < 0.01);
             // Verify mean is correct
@@ -251,8 +250,7 @@ mod statistics_calculation_tests {
         let spans = create_spans_with_gaps(&[0.1, 0.2, 0.3, 0.4, 50.0]);
         let result = analyze_document_gaps(&spans, None);
 
-        if result.stats.is_some() {
-            let stats = &result.stats.as_ref().unwrap();
+        if let Some(stats) = &result.stats {
             // Median should be 0.3, not affected by 50.0 outlier
             assert!((stats.median - 0.3).abs() < 0.01);
             // Mean will be higher due to outlier
@@ -293,8 +291,7 @@ mod statistics_calculation_tests {
         let spans = create_spans_with_gaps(&[2.0, 2.0, 2.0, 2.0, 2.0]);
         let result = analyze_document_gaps(&spans, None);
 
-        if result.stats.is_some() {
-            let stats = &result.stats.as_ref().unwrap();
+        if let Some(stats) = &result.stats {
             assert!((stats.median - 2.0).abs() < 0.01);
             assert!((stats.std_dev).abs() < 0.01); // Should be ~0
         }
@@ -310,8 +307,7 @@ mod statistics_calculation_tests {
         let spans = create_spans_with_gaps(&gaps);
         let result = analyze_document_gaps(&spans, None);
 
-        if result.stats.is_some() {
-            let stats = &result.stats.as_ref().unwrap();
+        if let Some(stats) = &result.stats {
             // p10 should be close to 1.0
             assert!(stats.p10 >= 1.0 && stats.p10 <= 2.0);
             // p25 should be around 2.5-3.0
@@ -557,15 +553,15 @@ mod tight_spacing_tests {
         let config = AdaptiveThresholdConfig::with_multiplier(1.3);
         let result = analyze_document_gaps(&spans, Some(config));
 
-        if result.stats.is_some() {
+        if let Some(stats) = &result.stats {
             // Median should be around 0.15
             let median_expected = 0.15;
             let tolerance = 0.03;
             assert!(
-                (result.stats.as_ref().unwrap().median - median_expected).abs() < tolerance,
+                (stats.median - median_expected).abs() < tolerance,
                 "Expected median ~{}, got {}",
                 median_expected,
-                result.stats.as_ref().unwrap().median
+                stats.median
             );
 
             // Threshold should be in expected range
@@ -614,15 +610,15 @@ mod standard_spacing_tests {
         let config = AdaptiveThresholdConfig::with_multiplier(1.6);
         let result = analyze_document_gaps(&spans, Some(config));
 
-        if result.stats.is_some() {
+        if let Some(stats) = &result.stats {
             // Median should be around 0.35
             let median_expected = 0.35;
             let tolerance = 0.03;
             assert!(
-                (result.stats.as_ref().unwrap().median - median_expected).abs() < tolerance,
+                (stats.median - median_expected).abs() < tolerance,
                 "Expected median ~{}, got {}",
                 median_expected,
-                result.stats.as_ref().unwrap().median
+                stats.median
             );
 
             // Threshold should be in expected range
@@ -676,8 +672,7 @@ mod mixed_document_tests {
         let config = AdaptiveThresholdConfig::default();
         let result = analyze_document_gaps(&spans, Some(config));
 
-        if result.stats.is_some() {
-            let stats = &result.stats.as_ref().unwrap();
+        if let Some(stats) = &result.stats {
             // Median should be robust to outliers, focusing on text spacing
             assert!(stats.median < 1.0); // Should be closer to text gaps
                                          // Max should reflect outliers

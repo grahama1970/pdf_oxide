@@ -12,9 +12,10 @@
 //! - Boundary detection: <20µs
 //! - LAM-ALEF handling: <15µs
 
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use pdf_oxide::text::rtl_detector::*;
 use pdf_oxide::text::{BoundaryContext, CharacterInfo};
+use std::hint::black_box;
 
 // ============================================================================
 // ARABIC DIACRITIC BENCHMARKS

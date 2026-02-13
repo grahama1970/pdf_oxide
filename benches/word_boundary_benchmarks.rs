@@ -15,8 +15,9 @@
 //! - 100 chars: ~1µs
 //! - 1000 chars: ~10µs
 
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use pdf_oxide::text::{BoundaryContext, CharacterInfo, WordBoundaryDetector};
+use std::hint::black_box;
 
 // ============================================================================
 // HELPER FUNCTIONS - Test Data Generation

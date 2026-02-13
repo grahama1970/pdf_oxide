@@ -10,12 +10,13 @@
 //! - Script transition analysis: <20µs
 //! - Fullwidth detection: O(1) range check
 
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use pdf_oxide::text::cjk_punctuation::*;
 use pdf_oxide::text::script_detector::{
     detect_cjk_script, should_split_on_script_transition, DocumentLanguage,
 };
 use pdf_oxide::text::CharacterInfo;
+use std::hint::black_box;
 
 // ============================================================================
 // CJK PUNCTUATION BENCHMARKS

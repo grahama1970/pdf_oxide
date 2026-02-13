@@ -17,8 +17,9 @@
 //! - Academic PDFs: Complex layouts, multi-column
 //! - Mixed PDFs: Multiple languages and scripts
 
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use pdf_oxide::PdfDocument;
+use std::hint::black_box;
 use std::path::PathBuf;
 use std::time::Duration;
 

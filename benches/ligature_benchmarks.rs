@@ -9,9 +9,10 @@
 //! - Detection overhead: minimal (range check)
 //! - Decision logic: fast path optimization
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{criterion_group, criterion_main, Criterion};
 use pdf_oxide::text::ligature_processor::{LigatureDecision, LigatureDecisionMaker};
 use pdf_oxide::text::{BoundaryContext, CharacterInfo};
+use std::hint::black_box;
 
 // ============================================================================
 // HELPER FUNCTIONS

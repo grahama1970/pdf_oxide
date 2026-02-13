@@ -33,7 +33,7 @@ fn test_ceur_pdf_parsing() {
     match doc.extract_spans(0) {
         Ok(spans) => {
             println!("Text extraction successful: {} spans", spans.len());
-            assert!(spans.len() > 0, "Should extract some text");
+            assert!(!spans.is_empty(), "Should extract some text");
         },
         Err(e) => {
             eprintln!("Warning: Could not extract text: {}", e);
@@ -84,7 +84,7 @@ fn test_issue_41_comprehensive() {
     println!("✓ Test 4: Extract text from page 0 (with fallback scanning)");
     let spans = doc.extract_spans(0).expect("Failed to extract text");
     println!("  - Text spans: {}", spans.len());
-    assert!(spans.len() > 0);
+    assert!(!spans.is_empty());
 
     // Test 5: Extract from other pages
     println!("✓ Test 5: Extract from multiple pages");
