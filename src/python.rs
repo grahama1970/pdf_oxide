@@ -2479,14 +2479,15 @@ impl PyPdfElement {
 /// Low-level character extraction result containing position, font, and style data
 /// for each character in a PDF page. Use `extract_chars()` to get a list of these.
 ///
-/// # Attributes:
-///     char (str): The character itself
-///     bbox (dict): Bounding box with keys: x, y, width, height
-///     font_name (str): Font family name
-///     font_size (float): Font size in points
-///     font_weight (str): "normal" or "bold"
-///     is_italic (bool): Whether the character is italic
-///     color (tuple): RGB color as (r, g, b) with values 0.0-1.0
+/// # Attributes
+///
+/// - `char` (str): The character itself
+/// - `bbox` (dict): Bounding box with keys: x, y, width, height
+/// - `font_name` (str): Font family name
+/// - `font_size` (float): Font size in points
+/// - `font_weight` (str): "normal", "bold", "light", etc.
+/// - `is_italic` (bool): Whether the character is italic
+/// - `color` (tuple): RGB color as (r, g, b) with values 0.0-1.0
 #[pyclass(name = "TextChar")]
 #[derive(Clone)]
 pub struct PyTextChar {
