@@ -6,12 +6,12 @@ All notable changes to PDFOxide are documented here.
 
 ### Added - Encryption
 
-- **Owner password authentication** (Algorithm 7 for R≤4, Algorithm 12 for R≥5) (Issue #49)
+- **Owner password authentication** (Algorithm 7 for R≤4, Algorithm 12 for R≥5)
   - R≤4: Derives RC4 key from owner password via MD5 hash chain, decrypts `/O` value to recover user password, then validates via user password authentication
   - R≥5: SHA-256 verification with SASLprep normalization and owner validation/key salts per PDF spec §7.6.3.4
   - Both algorithms now fully wired into `EncryptionHandler::authenticate()`
-- **R≥5 user password verification with SASLprep** — Full AES-256 password verification using SHA-256 with validation and key salts per PDF spec §7.6.4.3.3 (Issue #49)
-- **Public password authentication API** — `Pdf::authenticate(password)` and `PdfDocument::authenticate(password)` exposed for user-facing password entry (Issue #59)
+- **R≥5 user password verification with SASLprep** — Full AES-256 password verification using SHA-256 with validation and key salts per PDF spec §7.6.4.3.3
+- **Public password authentication API** — `Pdf::authenticate(password)` and `PdfDocument::authenticate(password)` exposed for user-facing password entry
 
 ### Added - PDF/A Compliance Validation
 
@@ -33,39 +33,38 @@ All notable changes to PDFOxide are documented here.
 - **Glyph advance width calculation** — Text position advances per PDF spec §9.4.4: `tx = (w0/1000 × Tfs + Tc + Tw) × Th` with 600-unit default glyph width
 - **Form XObject rendering** — Parses `/Matrix` transform, uses form's `/Resources` (or inherits from parent), and recursively executes form content stream operators
 
-### Fixed - Image Extraction (Issue #44)
-
+### Fixed - Image Extraction
 - **Content stream image extraction** — `extract_images()` now processes page content streams to find `Do` operator calls, extracting images referenced via XObjects that were previously missed
 - **Nested Form XObject images** — Recursive extraction with cycle detection handles images inside Form XObjects
 - **Inline images** — `BI`...`ID`...`EI` sequences parsed with abbreviation expansion per PDF spec
 - **CTM transformations** — Image bounding boxes correctly transformed using the current transformation matrix
 - **ColorSpace indirect references** — Resolved indirect references (e.g., `7 0 R`) in image color space entries before extraction
 
-### Fixed - Parser Robustness (Issues #45, #55, #56)
+### Fixed - Parser Robustness
 
-- **Multi-line object headers** — Parser now handles `1 0\nobj` format used by Google-generated PDFs instead of requiring `1 0 obj` on a single line (Issue #45)
-- **Extended header search** — Header search window extended from 1024 to 8192 bytes to handle PDFs with large binary prefixes (Issue #55)
-- **Lenient version parsing** — Malformed version strings like `%PDF-1.a` or truncated headers no longer cause parse failures in lenient mode (Issue #56)
+- **Multi-line object headers** — Parser now handles `1 0\nobj` format used by Google-generated PDFs instead of requiring `1 0 obj` on a single line
+- **Extended header search** — Header search window extended from 1024 to 8192 bytes to handle PDFs with large binary prefixes
+- **Lenient version parsing** — Malformed version strings like `%PDF-1.a` or truncated headers no longer cause parse failures in lenient mode
 
-### Fixed - Page Access Robustness (Issues #48, #51, #53, #54, #57)
+### Fixed - Page Access Robustness
 
-- **Missing Contents entry** — Pages without a `/Contents` key now return empty content data instead of erroring (Issue #48)
-- **Cyclic page tree detection** — Page tree traversal tracks visited nodes to prevent stack overflow on malformed circular references (Issue #51)
-- **Null stream references** — Null or invalid stream references handled gracefully instead of panicking (Issue #53)
-- **Wider page scanning fallback** — Page scanning fallback triggers on more error conditions, improving compatibility with damaged PDFs (Issue #54)
-- **Pages without /Type entry** — Page scanning now finds pages missing the `/Type /Page` entry by checking for `/MediaBox` or `/Contents` keys (Issue #57)
+- **Missing Contents entry** — Pages without a `/Contents` key now return empty content data instead of erroring
+- **Cyclic page tree detection** — Page tree traversal tracks visited nodes to prevent stack overflow on malformed circular references
+- **Null stream references** — Null or invalid stream references handled gracefully instead of panicking
+- **Wider page scanning fallback** — Page scanning fallback triggers on more error conditions, improving compatibility with damaged PDFs
+- **Pages without /Type entry** — Page scanning now finds pages missing the `/Type /Page` entry by checking for `/MediaBox` or `/Contents` keys
 
-### Fixed - Encryption Robustness (Issues #49, #50, #58, #59, #60)
+### Fixed - Encryption Robustness
 
-- **Short encryption key panic** — AES decryption with undersized keys now returns an error instead of panicking (Issue #50)
-- **Xref stream parsing hardened** — Malformed xref streams with invalid entry sizes or out-of-bounds data no longer cause panics (Issue #58)
-- **Indirect /Encrypt references** — `/Encrypt` dictionary values that are indirect references are now resolved before parsing (Issue #60)
+- **Short encryption key panic** — AES decryption with undersized keys now returns an error instead of panicking
+- **Xref stream parsing hardened** — Malformed xref streams with invalid entry sizes or out-of-bounds data no longer cause panics
+- **Indirect /Encrypt references** — `/Encrypt` dictionary values that are indirect references are now resolved before parsing
 
-### Fixed - Content Stream Processing (Issues #47, #52, #62)
+### Fixed - Content Stream Processing
 
-- **Dictionary-as-Stream fallback** — When a stream object is a bare dictionary (no stream data), it is now treated as an empty stream instead of causing a decode error (Issue #47)
-- **Filter abbreviations** — Abbreviated filter names (`AHx`, `A85`, `LZW`, `Fl`, `RL`, `CCF`, `DCT`) and case-insensitive matching now supported (Issue #52)
-- **Operator limit** — Content stream parsing enforces a configurable operator limit (default 1,000,000) to prevent pathological slowdowns on malformed streams (Issue #62)
+- **Dictionary-as-Stream fallback** — When a stream object is a bare dictionary (no stream data), it is now treated as an empty stream instead of causing a decode error
+- **Filter abbreviations** — Abbreviated filter names (`AHx`, `A85`, `LZW`, `Fl`, `RL`, `CCF`, `DCT`) and case-insensitive matching now supported
+- **Operator limit** — Content stream parsing enforces a configurable operator limit (default 1,000,000) to prevent pathological slowdowns on malformed streams
 
 ### Fixed - Code Quality
 
