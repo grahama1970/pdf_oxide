@@ -779,9 +779,30 @@ impl PdfDocument {
         // Try to parse as UTF-8, but handle binary data gracefully
         let line = String::from_utf8_lossy(&header_bytes);
 
+        // Issue #45: Handle multi-line object headers
+        // Some PDFs split the header across multiple lines (e.g., "1\n0\nobj")
+        // Read additional lines until we have a complete header
+        let mut full_header = line.to_string();
+        let max_header_lines = 5; // Reasonable limit to avoid infinite loops
+        let mut lines_read = 1;
+
+        while !full_header.contains("obj") && lines_read < max_header_lines {
+            let mut next_bytes = Vec::new();
+            let next_read = self.reader.read_until(b'\n', &mut next_bytes)?;
+
+            if next_read == 0 {
+                break; // EOF reached
+            }
+
+            let next_line = String::from_utf8_lossy(&next_bytes);
+            full_header.push(' ');
+            full_header.push_str(&next_line);
+            lines_read += 1;
+        }
+
         // Verify object header format
-        // Some PDFs have "obj" without newline after it, so be flexible
-        let parts: Vec<&str> = line.split_whitespace().collect();
+        // Split by whitespace to handle various formats (single-line or multi-line)
+        let parts: Vec<&str> = full_header.split_whitespace().collect();
 
         // Find "obj" keyword position
         let obj_pos = parts.iter().position(|&p| p == "obj" || p.contains("obj"));
