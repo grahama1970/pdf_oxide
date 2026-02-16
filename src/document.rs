@@ -2388,6 +2388,28 @@ impl PdfDocument {
         gap > space_threshold && gap < font_size * 5.0
     }
 
+    /// Check if decoded content stream data contains a BT (Begin Text) operator.
+    ///
+    /// Per §9.4.3, text-showing operators shall only appear within BT...ET text
+    /// objects. If there is no BT operator, the page contains no text at all.
+    /// We verify BT appears as a standalone operator (bounded by whitespace or
+    /// stream boundaries) to avoid false matches inside strings or names.
+    fn has_bt_operator(data: &[u8]) -> bool {
+        let len = data.len();
+        let mut i = 0;
+        while i + 1 < len {
+            if data[i] == b'B' && data[i + 1] == b'T' {
+                let before_ok = i == 0 || data[i - 1].is_ascii_whitespace();
+                let after_ok = i + 2 >= len || data[i + 2].is_ascii_whitespace();
+                if before_ok && after_ok {
+                    return true;
+                }
+            }
+            i += 1;
+        }
+        false
+    }
+
     /// Extract text using structure tree for Tagged PDFs.
     ///
     /// This method implements PDF spec-compliant text extraction for Tagged PDFs
@@ -2590,6 +2612,18 @@ impl PdfDocument {
             },
         };
 
+        // Early-out for pages with no text content (§9.4.3: text-showing operators
+        // shall only appear within BT...ET text objects). If there's no BT operator,
+        // there can be no text — skip the entire two-pass extraction pipeline.
+        // This is a major speedup for scanned-image PDFs.
+        if !Self::has_bt_operator(&content_data) {
+            log::debug!(
+                "Page {} has no BT operator, skipping text extraction (image-only page)",
+                page_index
+            );
+            return Ok(Vec::new());
+        }
+
         // First pass: Extract with conservative thresholds to analyze document
         let mut initial_extractor = TextExtractor::new();
         if let Some(resources) = page_dict.get("Resources") {
@@ -2712,6 +2746,11 @@ impl PdfDocument {
             },
         };
 
+        // Early-out for pages with no text content (§9.4.3)
+        if !Self::has_bt_operator(&content_data) {
+            return Ok(Vec::new());
+        }
+
         // Create text extractor with merged configuration
         let mut extractor = TextExtractor::new().with_merging_config(config);
 
@@ -2795,6 +2834,11 @@ impl PdfDocument {
                 return Ok(Vec::new());
             },
         };
+
+        // Early-out for pages with no text content (§9.4.3)
+        if !Self::has_bt_operator(&content_data) {
+            return Ok(Vec::new());
+        }
 
         // Create text extractor for character-level extraction
         let mut extractor = TextExtractor::new();
