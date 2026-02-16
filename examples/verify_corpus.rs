@@ -105,7 +105,7 @@ fn try_open_with_passwords(
         Ok(mut doc) => {
             // Check if we can actually access pages (encryption might block this)
             match doc.page_count() {
-                Ok(_) => return (Ok(doc), String::new(), start.elapsed()),
+                Ok(_) => (Ok(doc), String::new(), start.elapsed()),
                 Err(e) => {
                     let err_str = e.to_string();
                     // If it's a password error, try passwords
@@ -124,13 +124,14 @@ fn try_open_with_passwords(
                                 }
                             }
                         }
-                        return (
+                        (
                             Err(format!("Password protected: {}", err_str)),
                             String::new(),
                             start.elapsed(),
-                        );
+                        )
+                    } else {
+                        (Err(err_str), String::new(), start.elapsed())
                     }
-                    return (Err(err_str), String::new(), start.elapsed());
                 },
             }
         },
@@ -150,13 +151,10 @@ fn try_open_with_passwords(
                         }
                     }
                 }
-                return (
-                    Err(format!("Password protected: {}", err_str)),
-                    String::new(),
-                    start.elapsed(),
-                );
+                (Err(format!("Password protected: {}", err_str)), String::new(), start.elapsed())
+            } else {
+                (Err(err_str), String::new(), start.elapsed())
             }
-            return (Err(err_str), String::new(), start.elapsed());
         },
     }
 }
@@ -674,10 +672,7 @@ fn main() {
         .collect();
     by_time.sort_by(|a, b| b.total_ms.partial_cmp(&a.total_ms).unwrap());
     println!("Top 20 slowest PDFs:");
-    println!(
-        "  {:>10}  {:>6}  {:>8}  {:>8}  {}",
-        "total_ms", "pages", "MB", "pg/s", "filename"
-    );
+    println!("  {:>10}  {:>6}  {:>8}  {:>8}  filename", "total_ms", "pages", "MB", "pg/s");
     for r in by_time.iter().take(20) {
         println!(
             "  {:>10.0}  {:>6}  {:>8.1}  {:>8.1}  {}",

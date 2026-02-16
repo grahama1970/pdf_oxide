@@ -126,7 +126,7 @@ impl PdfDocument {
         // scans), a 256 KB buffer significantly reduces seek+read overhead.
         let buf_capacity = match file.metadata() {
             Ok(m) if m.len() > 100 * 1024 * 1024 => 256 * 1024, // 256 KB
-            _ => 8 * 1024,                                       // 8 KB (default)
+            _ => 8 * 1024,                                      // 8 KB (default)
         };
         let mut reader = BufReader::with_capacity(buf_capacity, file);
 
@@ -4851,14 +4851,13 @@ impl PdfDocument {
                         let new_bbox = self.transform_bbox_with_ctm(rect, ctm);
                         image.set_bbox(new_bbox);
                     } else {
-                        let width = image.width() as f32;
-                        let height = image.height() as f32;
-                        let bbox = crate::geometry::Rect {
-                            x: ctm.e,
-                            y: ctm.f,
-                            width: ctm.a * width,
-                            height: ctm.d * height,
+                        let image_rect = crate::geometry::Rect {
+                            x: 0.0,
+                            y: 0.0,
+                            width: image.width() as f32,
+                            height: image.height() as f32,
                         };
+                        let bbox = self.transform_bbox_with_ctm(&image_rect, ctm);
                         image.set_bbox(bbox);
                     }
                     images.push(image);
@@ -5012,16 +5011,14 @@ impl PdfDocument {
         let mut image =
             crate::extractors::extract_image_from_xobject(Some(self), &stream_obj, None)?;
 
-        // Apply CTM to create bbox
-        let width = image.width() as f32;
-        let height = image.height() as f32;
-        let bbox = crate::geometry::Rect {
-            x: ctm.e,
-            y: ctm.f,
-            width: ctm.a * width,
-            height: ctm.d * height,
+        // Apply full CTM transform for bbox (handles rotation/shear correctly)
+        let image_rect = crate::geometry::Rect {
+            x: 0.0,
+            y: 0.0,
+            width: image.width() as f32,
+            height: image.height() as f32,
         };
-        image.set_bbox(bbox);
+        image.set_bbox(self.transform_bbox_with_ctm(&image_rect, ctm));
 
         Ok(image)
     }

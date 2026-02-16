@@ -98,5 +98,9 @@ startxref
     // Page object lacks /Type but has /MediaBox — heuristic should find it
     let result = doc.extract_spans(0);
     // The key test is that get_page doesn't error with "Page index not found"
-    let _ = result;
+    assert!(
+        result.is_ok(),
+        "Page without /Type entry should still be found: {:?}",
+        result.err()
+    );
 }

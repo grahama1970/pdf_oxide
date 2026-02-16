@@ -872,7 +872,7 @@ mod tests {
         // Compute expected hash: SHA-256("test" || validation_salt)
         let mut hasher = Sha256::new();
         hasher.update(password);
-        hasher.update(&validation_salt);
+        hasher.update(validation_salt);
         let hash = hasher.finalize();
 
         // Build U = hash[0..32] || validation_salt || key_salt
@@ -890,7 +890,7 @@ mod tests {
         // Verify the returned key is SHA-256("test" || key_salt)
         let mut hasher = Sha256::new();
         hasher.update(password);
-        hasher.update(&key_salt);
+        hasher.update(key_salt);
         let expected_key = hasher.finalize().to_vec();
         assert_eq!(result.unwrap(), expected_key);
     }
@@ -903,7 +903,7 @@ mod tests {
 
         let mut hasher = Sha256::new();
         hasher.update(password);
-        hasher.update(&validation_salt);
+        hasher.update(validation_salt);
         let hash = hasher.finalize();
 
         let mut user_key = hash.to_vec();
@@ -1043,7 +1043,7 @@ mod tests {
         // Compute expected O hash: SHA-256(password || owner_validation_salt || U[0..48])
         let mut hasher = Sha256::new();
         hasher.update(password.as_slice());
-        hasher.update(&owner_validation_salt);
+        hasher.update(owner_validation_salt);
         hasher.update(&user_key[..48]);
         let hash = hasher.finalize();
 
@@ -1059,7 +1059,7 @@ mod tests {
         // Verify the returned key is SHA-256(password || owner_key_salt || U[0..48])
         let mut hasher = Sha256::new();
         hasher.update(password.as_slice());
-        hasher.update(&owner_key_salt);
+        hasher.update(owner_key_salt);
         hasher.update(&user_key[..48]);
         let expected_key = hasher.finalize().to_vec();
         assert_eq!(result.unwrap(), expected_key);
@@ -1074,7 +1074,7 @@ mod tests {
 
         let mut hasher = Sha256::new();
         hasher.update(password.as_slice());
-        hasher.update(&owner_validation_salt);
+        hasher.update(owner_validation_salt);
         hasher.update(&user_key[..48]);
         let hash = hasher.finalize();
 

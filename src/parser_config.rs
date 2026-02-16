@@ -27,7 +27,6 @@
 ///     max_decompressed_size: 100 * 1024 * 1024,
 ///     max_recursion_depth: 100,
 ///     max_file_size: 500 * 1024 * 1024,
-///     max_content_stream_operators: 1_000_000,
 /// };
 /// ```
 #[derive(Debug, Clone, Copy)]
@@ -89,14 +88,6 @@ pub struct ParserOptions {
     ///
     /// Default: 500 MB. Set to 0 to disable check.
     pub max_file_size: usize,
-
-    /// Maximum number of operators per content stream
-    ///
-    /// Prevents pathological content streams from consuming unbounded
-    /// time and memory. Set to 0 to disable check.
-    ///
-    /// Default: 1,000,000 (lenient), 100,000 (strict).
-    pub max_content_stream_operators: usize,
 }
 
 impl Default for ParserOptions {
@@ -122,7 +113,6 @@ impl ParserOptions {
             max_decompressed_size: 100 * 1024 * 1024, // 100 MB
             max_recursion_depth: 100,
             max_file_size: 500 * 1024 * 1024, // 500 MB
-            max_content_stream_operators: 100_000,
         }
     }
 
@@ -142,7 +132,6 @@ impl ParserOptions {
             max_decompressed_size: 100 * 1024 * 1024, // 100 MB
             max_recursion_depth: 100,
             max_file_size: 500 * 1024 * 1024, // 500 MB
-            max_content_stream_operators: 1_000_000,
         }
     }
 
@@ -162,7 +151,6 @@ impl ParserOptions {
             max_decompressed_size: 200 * 1024 * 1024, // 200 MB
             max_recursion_depth: 200,
             max_file_size: 1024 * 1024 * 1024, // 1 GB
-            max_content_stream_operators: 1_000_000,
         }
     }
 
