@@ -81,6 +81,9 @@ pub struct PdfDocument {
     /// Page object cache keyed by page index to avoid re-traversing the page tree.
     /// The page tree structure is static (§7.7.3.2), so pages can be safely cached.
     page_cache: HashMap<usize, Object>,
+    /// Cached object offsets from full file scan (built on first xref miss).
+    /// Maps object number to byte offset in file.
+    scanned_object_offsets: Option<HashMap<u32, u64>>,
 }
 
 impl std::fmt::Debug for PdfDocument {
@@ -186,6 +189,7 @@ impl PdfDocument {
             font_cache: HashMap::new(),
             structure_tree_cache: None,
             page_cache: HashMap::new(),
+            scanned_object_offsets: None,
         };
 
         // Initialize encryption immediately
@@ -462,73 +466,93 @@ impl PdfDocument {
     /// Some PDFs have incomplete xref tables that are missing entries for
     /// objects that actually exist in the file.
     fn scan_for_object(&mut self, obj_ref: ObjectRef) -> Result<u64> {
+        // Check cached scan results first
+        if let Some(offsets) = &self.scanned_object_offsets {
+            if let Some(&offset) = offsets.get(&obj_ref.id) {
+                return Ok(offset);
+            }
+            return Err(Error::ObjectNotFound(obj_ref.id, obj_ref.gen));
+        }
+
+        // First xref miss: scan the entire file once and build a complete offset map
         log::info!(
-            "Scanning file for object {} {} obj (not in xref table)",
+            "Building object offset map from file scan (triggered by object {} {})",
             obj_ref.id,
             obj_ref.gen
         );
 
-        // Seek to start of file
         self.reader.seek(SeekFrom::Start(0))?;
-
-        // Read entire file into buffer for searching
         let mut content = Vec::new();
         self.reader.read_to_end(&mut content)?;
 
-        // Build search pattern: "\n{id} {gen} obj" or "\r{id} {gen} obj"
-        let pattern = format!("{} {} obj", obj_ref.id, obj_ref.gen);
-        let pattern_bytes = pattern.as_bytes();
+        let mut offsets = HashMap::new();
 
-        // Search for the pattern
+        // Scan for all "N G obj" patterns in the file
         let mut pos = 0;
         while pos < content.len() {
-            if let Some(relative_pos) = content[pos..]
-                .windows(pattern_bytes.len())
-                .position(|w| w == pattern_bytes)
-            {
-                let absolute_pos = pos + relative_pos;
-
-                // Check if preceded by newline or start of file
-                let valid_start = if absolute_pos == 0 {
-                    true
-                } else {
-                    let prev_char = content[absolute_pos - 1];
-                    prev_char == b'\n' || prev_char == b'\r'
-                };
-
-                // Check if followed by whitespace, newline, or '<' (start of dictionary)
-                // PDF allows "N G obj<<..." with no space
-                let end_pos = absolute_pos + pattern_bytes.len();
-                let valid_end = if end_pos >= content.len() {
-                    true
-                } else {
-                    let next_char = content[end_pos];
-                    next_char == b'\n'
-                        || next_char == b'\r'
-                        || next_char == b' '
-                        || next_char == b'\t'
-                        || next_char == b'<'
-                };
-
-                if valid_start && valid_end {
-                    // Found it! The object header starts at absolute_pos
-                    // (We already validated it's preceded by newline or is at start of file)
-                    log::info!(
-                        "Found object {} {} obj at byte offset {} (scanned file)",
-                        obj_ref.id,
-                        obj_ref.gen,
-                        absolute_pos
-                    );
-                    return Ok(absolute_pos as u64);
-                }
-
-                pos = absolute_pos + 1;
-            } else {
-                break;
+            // Look for digit at a line start (after newline or at file start)
+            let valid_start = pos == 0 || content[pos - 1] == b'\n' || content[pos - 1] == b'\r';
+            if !valid_start || !content[pos].is_ascii_digit() {
+                pos += 1;
+                continue;
             }
+
+            // Try to parse "N G obj" starting at pos
+            let start = pos;
+            // Parse object number (digits)
+            while pos < content.len() && content[pos].is_ascii_digit() {
+                pos += 1;
+            }
+            if pos >= content.len() || content[pos] != b' ' {
+                continue;
+            }
+            let obj_num_str = std::str::from_utf8(&content[start..pos]).unwrap_or("");
+            let obj_num: u32 = match obj_num_str.parse() {
+                Ok(n) => n,
+                Err(_) => continue,
+            };
+
+            pos += 1; // skip space
+
+            // Parse generation number (digits)
+            let gen_start = pos;
+            while pos < content.len() && content[pos].is_ascii_digit() {
+                pos += 1;
+            }
+            if pos >= content.len() || content[pos] != b' ' {
+                continue;
+            }
+            let _gen_str = std::str::from_utf8(&content[gen_start..pos]).unwrap_or("");
+
+            pos += 1; // skip space
+
+            // Check for "obj" keyword
+            if pos + 3 <= content.len() && &content[pos..pos + 3] == b"obj" {
+                let after_obj = pos + 3;
+                // Verify "obj" is followed by whitespace, newline, or '<'
+                let valid_end = after_obj >= content.len() || {
+                    let c = content[after_obj];
+                    c == b'\n' || c == b'\r' || c == b' ' || c == b'\t' || c == b'<'
+                };
+                if valid_end {
+                    offsets.entry(obj_num).or_insert(start as u64);
+                    pos = after_obj;
+                    continue;
+                }
+            }
+            // Reset pos to just after the start to avoid infinite loop
+            pos = start + 1;
         }
 
-        Err(Error::ObjectNotFound(obj_ref.id, obj_ref.gen))
+        log::info!("File scan found {} objects", offsets.len());
+
+        let result = offsets.get(&obj_ref.id).copied();
+        self.scanned_object_offsets = Some(offsets);
+
+        match result {
+            Some(offset) => Ok(offset),
+            None => Err(Error::ObjectNotFound(obj_ref.id, obj_ref.gen)),
+        }
     }
 
     /// Load an object by its reference.
@@ -590,7 +614,6 @@ impl PdfDocument {
 
         // Check cache first
         if let Some(cached) = self.object_cache.get(&obj_ref) {
-            log::debug!("  → Found in cache");
             return Ok(cached.clone());
         }
 
@@ -704,22 +727,25 @@ impl PdfDocument {
 
         // Handle different entry types
         use crate::xref::XRefEntryType;
-        let result = match entry.entry_type {
+        let entry_type = entry.entry_type;
+        let entry_offset = entry.offset;
+        let entry_gen = entry.generation;
+        let result = match entry_type {
             XRefEntryType::Compressed => {
                 // Type 2 entry: object is in an object stream
                 // entry.offset = stream object number
                 // entry.generation = index within stream
                 log::debug!(
                     "  → Compressed object in stream {}, index {}",
-                    entry.offset,
-                    entry.generation
+                    entry_offset,
+                    entry_gen
                 );
-                self.load_compressed_object(obj_ref, entry.offset as u32, entry.generation)
+                self.load_compressed_object(obj_ref, entry_offset as u32, entry_gen)
             },
             XRefEntryType::Uncompressed => {
                 // Type 1 entry: traditional uncompressed object
-                log::debug!("  → Uncompressed object at offset {}", entry.offset);
-                self.load_uncompressed_object(obj_ref, entry.offset)
+                log::debug!("  → Uncompressed object at offset {}", entry_offset);
+                self.load_uncompressed_object(obj_ref, entry_offset)
             },
             XRefEntryType::Free => {
                 // Free object - shouldn't happen since we check in_use above
@@ -2205,10 +2231,6 @@ impl PdfDocument {
         };
 
         if let Some(struct_tree) = cached_tree {
-            log::debug!(
-                "Using structure tree for Tagged PDF text extraction (page {})",
-                page_index
-            );
             return self.extract_text_structure_order(page_index, &struct_tree);
         }
 
@@ -2609,8 +2631,7 @@ impl PdfDocument {
     /// # }
     /// ```
     pub fn extract_spans(&mut self, page_index: usize) -> Result<Vec<crate::layout::TextSpan>> {
-        use crate::extractors::{TextExtractionConfig, TextExtractor};
-        use crate::text::document_classifier::DocumentClassifier;
+        use crate::extractors::TextExtractor;
 
         // Get page object
         let page = self.get_page(page_index)?;
@@ -2644,12 +2665,12 @@ impl PdfDocument {
             return Ok(Vec::new());
         }
 
-        // First pass: Extract with conservative thresholds to analyze document
-        let mut initial_extractor = TextExtractor::new();
+        // Single-pass extraction
+        let mut extractor = TextExtractor::new();
         if let Some(resources) = page_dict.get("Resources") {
-            initial_extractor.set_resources(resources.clone());
-            initial_extractor.set_document(self as *mut PdfDocument);
-            if let Err(e) = self.load_fonts(resources, &mut initial_extractor) {
+            extractor.set_resources(resources.clone());
+            extractor.set_document(self as *mut PdfDocument);
+            if let Err(e) = self.load_fonts(resources, &mut extractor) {
                 log::warn!(
                     "Failed to load fonts for page {}: {}, continuing with defaults",
                     page_index,
@@ -2657,58 +2678,8 @@ impl PdfDocument {
                 );
             }
         }
-        let initial_spans = match initial_extractor.extract_text_spans(&content_data) {
-            Ok(spans) => spans,
-            Err(e) => {
-                log::warn!(
-                    "Failed to extract text spans for page {}: {}, returning empty",
-                    page_index,
-                    e
-                );
-                return Ok(Vec::new());
-            },
-        };
 
-        // Classify document type based on extracted content
-        // Convert TextSpans to text lines for classification
-        let text_lines: Vec<&str> = initial_spans
-            .iter()
-            .filter_map(|span| {
-                // Skip empty spans
-                if span.text.trim().is_empty() {
-                    None
-                } else {
-                    Some(span.text.as_str())
-                }
-            })
-            .collect();
-
-        let (doc_type, _stats) = DocumentClassifier::classify_lines(text_lines.into_iter());
-
-        // Select appropriate profile for this document type
-        let profile = crate::config::ExtractionProfile::for_document_type(doc_type);
-
-        // Create configured text extractor with profile-specific thresholds
-        let config = TextExtractionConfig::default().with_profile(profile);
-        let mut final_extractor = TextExtractor::with_config(config);
-
-        // Load fonts from page resources and set resources for XObject access
-        if let Some(resources) = page_dict.get("Resources") {
-            final_extractor.set_resources(resources.clone());
-            final_extractor.set_document(self as *mut PdfDocument);
-
-            // Load fonts
-            if let Err(e) = self.load_fonts(resources, &mut final_extractor) {
-                log::warn!(
-                    "Failed to load fonts for final extraction on page {}: {}",
-                    page_index,
-                    e
-                );
-            }
-        }
-
-        // Extract text spans with profile-optimized thresholds
-        final_extractor.extract_text_spans(&content_data)
+        extractor.extract_text_spans(&content_data)
     }
 
     /// Extract text spans from a page with custom configuration.

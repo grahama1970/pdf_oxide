@@ -43,7 +43,8 @@ const MAX_CONSECUTIVE_ERRORS: usize = 1024;
 /// Includes safety limits: bails out after [`MAX_OPERATORS`] operators or
 /// [`MAX_CONSECUTIVE_ERRORS`] consecutive parse failures.
 pub fn parse_content_stream(data: &[u8]) -> Result<Vec<Operator>> {
-    let mut operators = Vec::new();
+    let estimated_capacity = data.len() / 20;
+    let mut operators = Vec::with_capacity(estimated_capacity.min(100_000));
     let mut input = data;
     let mut consecutive_errors: usize = 0;
 
