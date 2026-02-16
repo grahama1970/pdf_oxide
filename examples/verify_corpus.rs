@@ -17,16 +17,16 @@ use std::time::{Duration, Instant};
 
 /// Known passwords commonly used in PDF test suites (pdf.js, veraPDF, SafeDocs)
 const KNOWN_PASSWORDS: &[&str] = &[
-    "",             // empty password (most common for owner-only encryption)
-    "owner",        // pdf.js common
-    "user",         // pdf.js common
-    "asdfasdf",     // pdf.js common
-    "password",     // generic
-    "test",         // generic
-    "123456",       // generic
-    "ownerpass",    // pdf.js
-    "userpass",     // pdf.js
-    "Password",     // capitalized
+    "",          // empty password (most common for owner-only encryption)
+    "owner",     // pdf.js common
+    "user",      // pdf.js common
+    "asdfasdf",  // pdf.js common
+    "password",  // generic
+    "test",      // generic
+    "123456",    // generic
+    "ownerpass", // pdf.js
+    "userpass",  // pdf.js
+    "Password",  // capitalized
 ];
 
 #[derive(Debug, Clone)]
@@ -97,11 +97,7 @@ fn detect_corpus(path: &Path) -> String {
 fn try_open_with_passwords(
     path: &Path,
     passwords: &[String],
-) -> (
-    Result<PdfDocument, String>,
-    String,
-    Duration,
-) {
+) -> (Result<PdfDocument, String>, String, Duration) {
     let start = Instant::now();
 
     // First try opening normally (empty password auto-attempted by library)
@@ -123,21 +119,21 @@ fn try_open_with_passwords(
                             if let Ok(mut doc2) = PdfDocument::open(path) {
                                 if let Ok(true) = doc2.authenticate(pw.as_bytes()) {
                                     if doc2.page_count().is_ok() {
-                                        return (
-                                            Ok(doc2),
-                                            pw.clone(),
-                                            start.elapsed(),
-                                        );
+                                        return (Ok(doc2), pw.clone(), start.elapsed());
                                     }
                                 }
                             }
                         }
-                        return (Err(format!("Password protected: {}", err_str)), String::new(), start.elapsed());
+                        return (
+                            Err(format!("Password protected: {}", err_str)),
+                            String::new(),
+                            start.elapsed(),
+                        );
                     }
                     return (Err(err_str), String::new(), start.elapsed());
-                }
+                },
             }
-        }
+        },
         Err(e) => {
             let err_str = e.to_string();
             if err_str.contains("password")
@@ -154,15 +150,23 @@ fn try_open_with_passwords(
                         }
                     }
                 }
-                return (Err(format!("Password protected: {}", err_str)), String::new(), start.elapsed());
+                return (
+                    Err(format!("Password protected: {}", err_str)),
+                    String::new(),
+                    start.elapsed(),
+                );
             }
             return (Err(err_str), String::new(), start.elapsed());
-        }
+        },
     }
 }
 
 fn process_pdf(path: &Path, passwords: &[String], slow_threshold_ms: u64) -> PdfResult {
-    let filename = path.file_name().unwrap_or_default().to_string_lossy().to_string();
+    let filename = path
+        .file_name()
+        .unwrap_or_default()
+        .to_string_lossy()
+        .to_string();
     let corpus = detect_corpus(path);
     let file_size = std::fs::metadata(path).map(|m| m.len()).unwrap_or(0);
     let total_start = Instant::now();
@@ -194,7 +198,7 @@ fn process_pdf(path: &Path, passwords: &[String], slow_threshold_ms: u64) -> Pdf
                 mb_per_sec: 0.0,
                 password_used,
             };
-        }
+        },
     };
 
     // Get page count
@@ -217,7 +221,7 @@ fn process_pdf(path: &Path, passwords: &[String], slow_threshold_ms: u64) -> Pdf
                 mb_per_sec: 0.0,
                 password_used,
             };
-        }
+        },
     };
 
     // Extract text from all pages
@@ -227,13 +231,13 @@ fn process_pdf(path: &Path, passwords: &[String], slow_threshold_ms: u64) -> Pdf
 
     for page_idx in 0..page_count {
         match doc.extract_text(page_idx) {
-            Ok(_) => {}
+            Ok(_) => {},
             Err(e) => {
                 if error_msg.is_empty() {
                     error_msg = format!("page {}: {}", page_idx, e);
                 }
                 any_error = true;
-            }
+            },
         }
     }
 
@@ -335,7 +339,10 @@ fn print_histogram(label: &str, values: &[f64], unit: &str) {
         if count > 0 {
             let bar_len = (count as f64 / len as f64 * 40.0) as usize;
             let bar: String = "#".repeat(bar_len.max(1));
-            println!("    {label:>10}: {count:>5} ({:>5.1}%) {bar}", count as f64 / len as f64 * 100.0);
+            println!(
+                "    {label:>10}: {count:>5} ({:>5.1}%) {bar}",
+                count as f64 / len as f64 * 100.0
+            );
         }
         prev = upper;
     }
@@ -357,22 +364,22 @@ fn main() {
             "--timeout" => {
                 i += 1;
                 timeout_secs = args[i].parse().expect("Invalid timeout");
-            }
+            },
             "--csv" => {
                 i += 1;
                 csv_path = Some(args[i].clone());
-            }
+            },
             "--passwords" => {
                 i += 1;
                 password_file = Some(args[i].clone());
-            }
+            },
             "--slow" => {
                 i += 1;
                 slow_threshold_ms = args[i].parse().expect("Invalid slow threshold");
-            }
+            },
             _ => {
                 directories.push(args[i].clone());
-            }
+            },
         }
         i += 1;
     }
@@ -413,7 +420,10 @@ fn main() {
     }
 
     let total = all_pdfs.len();
-    eprintln!("Total: {} PDFs to verify (timeout={}s, slow={}ms)", total, timeout_secs, slow_threshold_ms);
+    eprintln!(
+        "Total: {} PDFs to verify (timeout={}s, slow={}ms)",
+        total, timeout_secs, slow_threshold_ms
+    );
     eprintln!();
 
     // Process each PDF
@@ -455,7 +465,11 @@ fn main() {
                 };
                 PdfResult {
                     path: pdf_path.to_string_lossy().to_string(),
-                    filename: pdf_path.file_name().unwrap_or_default().to_string_lossy().to_string(),
+                    filename: pdf_path
+                        .file_name()
+                        .unwrap_or_default()
+                        .to_string_lossy()
+                        .to_string(),
                     corpus: detect_corpus(pdf_path),
                     status: Status::Panic,
                     error_msg: msg,
@@ -468,12 +482,16 @@ fn main() {
                     mb_per_sec: 0.0,
                     password_used: String::new(),
                 }
-            }
+            },
             Err(_) => {
                 // Timeout — thread is still running but we move on
                 PdfResult {
                     path: pdf_path.to_string_lossy().to_string(),
-                    filename: pdf_path.file_name().unwrap_or_default().to_string_lossy().to_string(),
+                    filename: pdf_path
+                        .file_name()
+                        .unwrap_or_default()
+                        .to_string_lossy()
+                        .to_string(),
                     corpus: detect_corpus(pdf_path),
                     status: Status::Timeout,
                     error_msg: format!("Exceeded {}s timeout", timeout_secs),
@@ -486,7 +504,7 @@ fn main() {
                     mb_per_sec: 0.0,
                     password_used: String::new(),
                 }
-            }
+            },
         };
 
         match result.status {
@@ -500,7 +518,7 @@ fn main() {
 
         // Print non-pass results immediately
         match result.status {
-            Status::Pass | Status::Slow => {}
+            Status::Pass | Status::Slow => {},
             _ => {
                 let short_err = if result.error_msg.len() > 80 {
                     format!("{}...", &result.error_msg[..80])
@@ -511,7 +529,7 @@ fn main() {
                     "  {:>7} {:>8.0}ms  {} — {}",
                     result.status, result.total_ms, result.filename, short_err
                 );
-            }
+            },
         }
 
         // Print slow results
@@ -531,10 +549,22 @@ fn main() {
         // Progress every 200 files
         if (idx + 1) % 200 == 0 || idx + 1 == total {
             let elapsed = global_start.elapsed().as_secs();
-            let rate = if elapsed > 0 { (idx + 1) as f64 / elapsed as f64 } else { 0.0 };
+            let rate = if elapsed > 0 {
+                (idx + 1) as f64 / elapsed as f64
+            } else {
+                0.0
+            };
             eprintln!(
                 "  [{}/{}] pass={} fail={} pw={} slow={} timeout={} panic={}  ({:.1} PDFs/s)",
-                idx + 1, total, pass, fail, password_blocked, slow, timeout, panic_count, rate
+                idx + 1,
+                total,
+                pass,
+                fail,
+                password_blocked,
+                slow,
+                timeout,
+                panic_count,
+                rate
             );
         }
     }
@@ -550,10 +580,24 @@ fn main() {
     println!("═══════════════════════════════════════════════════════════════");
     println!("  Total:           {}", total);
     println!("  Pass:            {} ({:.1}%)", pass, pass as f64 / total as f64 * 100.0);
-    println!("  Slow (>{}ms):    {} ({:.1}%)", slow_threshold_ms, slow, slow as f64 / total as f64 * 100.0);
+    println!(
+        "  Slow (>{}ms):    {} ({:.1}%)",
+        slow_threshold_ms,
+        slow,
+        slow as f64 / total as f64 * 100.0
+    );
     println!("  Fail:            {} ({:.1}%)", fail, fail as f64 / total as f64 * 100.0);
-    println!("  Password:        {} ({:.1}%)", password_blocked, password_blocked as f64 / total as f64 * 100.0);
-    println!("  Timeout (>{}s):  {} ({:.1}%)", timeout_secs, timeout, timeout as f64 / total as f64 * 100.0);
+    println!(
+        "  Password:        {} ({:.1}%)",
+        password_blocked,
+        password_blocked as f64 / total as f64 * 100.0
+    );
+    println!(
+        "  Timeout (>{}s):  {} ({:.1}%)",
+        timeout_secs,
+        timeout,
+        timeout as f64 / total as f64 * 100.0
+    );
     println!("  Panic:           {}", panic_count);
     println!("═══════════════════════════════════════════════════════════════");
     let success_rate = (pass + slow) as f64 / total as f64 * 100.0;
@@ -562,9 +606,12 @@ fn main() {
 
     // Per-corpus breakdown
     println!("Per-corpus breakdown:");
-    let mut corpus_stats: HashMap<String, (usize, usize, usize, usize, usize, usize)> = HashMap::new();
+    let mut corpus_stats: HashMap<String, (usize, usize, usize, usize, usize, usize)> =
+        HashMap::new();
     for r in &results {
-        let entry = corpus_stats.entry(r.corpus.clone()).or_insert((0, 0, 0, 0, 0, 0));
+        let entry = corpus_stats
+            .entry(r.corpus.clone())
+            .or_insert((0, 0, 0, 0, 0, 0));
         entry.0 += 1; // total
         match r.status {
             Status::Pass => entry.1 += 1,
@@ -577,11 +624,21 @@ fn main() {
     }
     let mut corpus_names: Vec<_> = corpus_stats.keys().cloned().collect();
     corpus_names.sort();
-    println!("  {:>20}  {:>6}  {:>6}  {:>6}  {:>4}  {:>4}  {:>6}", "Corpus", "Total", "Pass", "Fail", "PW", "Slow", "T/O+P");
+    println!(
+        "  {:>20}  {:>6}  {:>6}  {:>6}  {:>4}  {:>4}  {:>6}",
+        "Corpus", "Total", "Pass", "Fail", "PW", "Slow", "T/O+P"
+    );
     for name in &corpus_names {
         let (t, p, f, pw, s, tp) = corpus_stats[name];
-        let rate = if t > 0 { (p + s) as f64 / t as f64 * 100.0 } else { 0.0 };
-        println!("  {:>20}  {:>6}  {:>6}  {:>6}  {:>4}  {:>4}  {:>5}  ({:.1}%)", name, t, p, f, pw, s, tp, rate);
+        let rate = if t > 0 {
+            (p + s) as f64 / t as f64 * 100.0
+        } else {
+            0.0
+        };
+        println!(
+            "  {:>20}  {:>6}  {:>6}  {:>6}  {:>4}  {:>4}  {:>5}  ({:.1}%)",
+            name, t, p, f, pw, s, tp, rate
+        );
     }
     println!();
 
@@ -617,7 +674,10 @@ fn main() {
         .collect();
     by_time.sort_by(|a, b| b.total_ms.partial_cmp(&a.total_ms).unwrap());
     println!("Top 20 slowest PDFs:");
-    println!("  {:>10}  {:>6}  {:>8}  {:>8}  {}", "total_ms", "pages", "MB", "pg/s", "filename");
+    println!(
+        "  {:>10}  {:>6}  {:>8}  {:>8}  {}",
+        "total_ms", "pages", "MB", "pg/s", "filename"
+    );
     for r in by_time.iter().take(20) {
         println!(
             "  {:>10.0}  {:>6}  {:>8.1}  {:>8.1}  {}",
@@ -631,7 +691,10 @@ fn main() {
     println!();
 
     // List all failures
-    let failures: Vec<&PdfResult> = results.iter().filter(|r| r.status == Status::Fail).collect();
+    let failures: Vec<&PdfResult> = results
+        .iter()
+        .filter(|r| r.status == Status::Fail)
+        .collect();
     if !failures.is_empty() {
         println!("All failures ({}):", failures.len());
         // Group by error type
@@ -664,7 +727,10 @@ fn main() {
     }
 
     // List panics
-    let panics: Vec<&PdfResult> = results.iter().filter(|r| r.status == Status::Panic).collect();
+    let panics: Vec<&PdfResult> = results
+        .iter()
+        .filter(|r| r.status == Status::Panic)
+        .collect();
     if !panics.is_empty() {
         println!("PANICS ({}) — THESE ARE BUGS:", panics.len());
         for r in &panics {

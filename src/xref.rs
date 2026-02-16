@@ -338,18 +338,27 @@ fn parse_traditional_xref<R: Read + Seek>(reader: &mut R, offset: u64) -> Result
     let mut xref = CrossRefTable::new();
     let mut line_idx = 0;
 
-    // Find "xref" keyword, skipping any leading whitespace lines
+    // Find "xref" keyword, skipping leading whitespace and stray data lines
+    // Some PDFs have garbage bytes or comments before the xref keyword
+    let mut skipped_lines = 0;
+    const MAX_SKIP_LINES: usize = 10;
     while line_idx < lines.len() {
         let trimmed = lines[line_idx].trim();
         if trimmed.is_empty() {
             line_idx += 1;
-            continue; // Skip empty lines
+            continue; // Skip empty lines (don't count toward limit)
         }
         if trimmed.starts_with("xref") {
             line_idx += 1;
             break; // Found xref keyword
         }
-        return Err(Error::InvalidXref); // Non-empty, non-xref line
+        // Tolerate a few unexpected lines before xref
+        skipped_lines += 1;
+        if skipped_lines > MAX_SKIP_LINES {
+            return Err(Error::InvalidXref);
+        }
+        log::debug!("Skipping unexpected line before xref: {:?}", trimmed);
+        line_idx += 1;
     }
 
     // Parse subsections

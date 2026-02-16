@@ -74,6 +74,10 @@ pub struct PdfDocument {
     /// Byte offset where PDF header was found (may not be 0 for malformed PDFs)
     #[allow(dead_code)]
     header_offset: u64,
+    /// Font cache keyed by indirect ObjectRef to avoid re-parsing fonts across pages
+    font_cache: HashMap<ObjectRef, crate::fonts::FontInfo>,
+    /// Cached structure tree (None = not yet checked, Some(None) = untagged, Some(Some) = tagged)
+    structure_tree_cache: Option<Option<crate::structure::StructTreeRoot>>,
 }
 
 impl std::fmt::Debug for PdfDocument {
@@ -131,27 +135,10 @@ impl PdfDocument {
                         "Regular xref parsing succeeded but table is empty, attempting reconstruction"
                     );
                     Self::try_reconstruct_xref(&mut reader)?
-                } else if xref.len() < 5 {
-                    log::warn!(
-                        "Regular xref parsing succeeded but only found {} entries (suspiciously small), attempting reconstruction",
-                        xref.len()
-                    );
-                    // Try reconstruction, but keep the original if reconstruction fails
-                    match Self::try_reconstruct_xref(&mut reader) {
-                        Ok((reconstructed_xref, reconstructed_trailer)) => {
-                            log::info!(
-                                "Reconstruction found {} entries (vs {} in damaged xref)",
-                                reconstructed_xref.len(),
-                                xref.len()
-                            );
-                            (reconstructed_xref, reconstructed_trailer)
-                        },
-                        Err(e) => {
-                            log::warn!("Reconstruction failed: {}, using original damaged xref", e);
-                            (xref, trailer)
-                        },
-                    }
                 } else {
+                    // A valid xref can have any number of entries (§7.5.4).
+                    // Small xrefs (e.g. portfolio PDFs with 3-4 objects) are perfectly
+                    // normal — don't trigger expensive full-file reconstruction for them.
                     (xref, trailer)
                 }
             },
@@ -186,6 +173,8 @@ impl PdfDocument {
             encryption_handler: None,
             options: ParserOptions::default(),
             header_offset,
+            font_cache: HashMap::new(),
+            structure_tree_cache: None,
         };
 
         // Initialize encryption immediately
@@ -1474,6 +1463,28 @@ impl PdfDocument {
             .as_integer()
             .ok_or_else(|| Error::InvalidPdf("/Count is not an integer".to_string()))?;
 
+        // Validate /Count against PDF spec limits (Annex C.2: max 8,388,607 indirect objects)
+        const MAX_PAGES: i64 = 8_388_607;
+        if !(0..=MAX_PAGES).contains(&count) {
+            log::warn!(
+                "/Count value {} is unreasonable (max {}), falling back to tree scan",
+                count,
+                MAX_PAGES
+            );
+            return self.get_page_count_by_scanning();
+        }
+
+        // Sanity check: /Count can't exceed total objects in the file
+        let max_objects = self.xref.len();
+        if (count as usize) > max_objects {
+            log::warn!(
+                "/Count {} exceeds total objects {}, falling back to tree scan",
+                count,
+                max_objects
+            );
+            return self.get_page_count_by_scanning();
+        }
+
         Ok(count as usize)
     }
 
@@ -2163,9 +2174,17 @@ impl PdfDocument {
         // For Tagged PDFs, use structure tree for reading order (spec-compliant)
         // For Untagged PDFs, use page content order (spec-compliant)
 
-        // Check if this is a Tagged PDF with structure tree
-        if let Ok(Some(struct_tree)) = self.structure_tree() {
-            // Tagged PDF: Use structure tree for correct reading order
+        // Check if this is a Tagged PDF with structure tree (cached after first check)
+        let cached_tree = match &self.structure_tree_cache {
+            Some(cached) => cached.clone(),
+            None => {
+                let tree = self.structure_tree().ok().flatten();
+                self.structure_tree_cache = Some(tree.clone());
+                tree
+            },
+        };
+
+        if let Some(struct_tree) = cached_tree {
             log::debug!(
                 "Using structure tree for Tagged PDF text extraction (page {})",
                 page_index
@@ -3781,27 +3800,43 @@ impl PdfDocument {
 
             if let Some(font_dict) = font_dict_obj.as_dict() {
                 for (name, font_obj) in font_dict {
-                    // Font can be a reference or direct object
-                    let font = if let Some(font_ref) = font_obj.as_reference() {
-                        self.load_object(font_ref)?
-                    } else {
-                        font_obj.clone()
-                    };
-
-                    // Parse font info
-                    match FontInfo::from_dict(&font, self) {
-                        Ok(font_info) => {
-                            extractor.add_font(name.clone(), font_info);
-                        },
-                        Err(e) => {
-                            // Log font parsing failures for diagnostics
-                            log::error!(
-                                "Failed to load font '{}': {}. Text using this font will use fallback encoding.",
-                                name,
-                                e
-                            );
+                    // If font is a reference, check cache first
+                    if let Some(font_ref) = font_obj.as_reference() {
+                        if let Some(cached) = self.font_cache.get(&font_ref) {
+                            extractor.add_font(name.clone(), cached.clone());
                             continue;
-                        },
+                        }
+                        let font = self.load_object(font_ref)?;
+                        match FontInfo::from_dict(&font, self) {
+                            Ok(font_info) => {
+                                self.font_cache.insert(font_ref, font_info.clone());
+                                extractor.add_font(name.clone(), font_info);
+                            },
+                            Err(e) => {
+                                log::error!(
+                                    "Failed to load font '{}': {}. Text using this font will use fallback encoding.",
+                                    name,
+                                    e
+                                );
+                                continue;
+                            },
+                        }
+                    } else {
+                        // Direct font object — parse without caching (no stable key)
+                        let font = font_obj.clone();
+                        match FontInfo::from_dict(&font, self) {
+                            Ok(font_info) => {
+                                extractor.add_font(name.clone(), font_info);
+                            },
+                            Err(e) => {
+                                log::error!(
+                                    "Failed to load font '{}': {}. Text using this font will use fallback encoding.",
+                                    name,
+                                    e
+                                );
+                                continue;
+                            },
+                        }
                     }
                 }
             }
