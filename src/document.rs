@@ -118,7 +118,14 @@ impl PdfDocument {
     /// ```
     pub fn open(path: impl AsRef<Path>) -> Result<Self> {
         let file = File::open(path.as_ref())?;
-        let mut reader = BufReader::new(file);
+        // Use larger read buffer for big files to reduce I/O syscalls.
+        // Default BufReader is 8 KB; for files >100 MB (e.g. 1.5 GB newspaper
+        // scans), a 256 KB buffer significantly reduces seek+read overhead.
+        let buf_capacity = match file.metadata() {
+            Ok(m) if m.len() > 100 * 1024 * 1024 => 256 * 1024, // 256 KB
+            _ => 8 * 1024,                                       // 8 KB (default)
+        };
+        let mut reader = BufReader::with_capacity(buf_capacity, file);
 
         // Parse header with lenient mode by default (handle PDFs with binary prefixes)
         let (major, minor, header_offset) = parse_header(&mut reader, true)?;
