@@ -22,37 +22,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let page_count = doc.page_count()?;
     eprintln!("Pages: {}", page_count);
 
-    // If specific page requested, do detailed breakdown
+    // If specific page requested, profile just that page
     if let Some(page_idx) = specific_page {
-        eprintln!("\n=== Detailed breakdown for page {} ===", page_idx);
+        eprintln!("\n=== Profile page {} ===", page_idx);
 
-        // Time get_page
-        let t1 = Instant::now();
-        let page = doc.get_page(page_idx)?;
-        eprintln!("  get_page: {:.1}ms", t1.elapsed().as_secs_f64() * 1000.0);
-
-        // Check content stream size
-        if let Some(contents) = page.as_dict().and_then(|d| d.get("Contents")) {
-            eprintln!("  /Contents type: {:?}", std::mem::discriminant(contents));
-        }
-
-        // Check resources
-        if let Some(resources) = page.as_dict().and_then(|d| d.get("Resources")) {
-            if let Some(res_dict) = resources.as_dict() {
-                if let Some(fonts) = res_dict.get("Font") {
-                    if let Some(font_dict) = fonts.as_dict() {
-                        eprintln!("  Fonts on page: {}", font_dict.len());
-                    }
-                }
-                if let Some(xobjects) = res_dict.get("XObject") {
-                    if let Some(xobj_dict) = xobjects.as_dict() {
-                        eprintln!("  XObjects on page: {}", xobj_dict.len());
-                    }
-                }
-            }
-        }
-
-        // Time extract_text
         let t2 = Instant::now();
         let text = doc.extract_text(page_idx)?;
         let extract_time = t2.elapsed();
@@ -62,7 +35,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             text.len()
         );
 
-        // Time extract_text again (cached fonts)
+        // Second call (cached fonts)
         let t3 = Instant::now();
         let text2 = doc.extract_text(page_idx)?;
         let extract_time2 = t3.elapsed();
