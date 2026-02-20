@@ -17,6 +17,7 @@
 //! Spec: PDF 32000-1:2008 Section 9.7.5.2 (CIDToGIDMap)
 //! Adobe CMap Registry: https://github.com/adobe-type-tools/cmap-resources
 
+use std::collections::HashMap;
 use pdf_oxide::fonts::cmap::LazyCMap;
 use pdf_oxide::fonts::FontInfo;
 
@@ -93,6 +94,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Predefined CMap mappings work
@@ -170,6 +172,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: CNS1 mappings work
@@ -248,6 +251,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Hiragana characters
@@ -326,6 +330,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Hangul syllables
@@ -405,6 +410,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     let font2 = FontInfo {
@@ -430,6 +436,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Both fonts should access the same CMap
@@ -507,6 +514,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Vertical writing support
@@ -578,6 +586,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Supplement 2 extended characters
@@ -657,6 +666,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Text extraction works even without custom ToUnicode

@@ -15,6 +15,7 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 9.10.3 (ToUnicode CMaps)
 
+use std::collections::HashMap;
 use pdf_oxide::fonts::cmap::LazyCMap;
 use pdf_oxide::fonts::FontInfo;
 
@@ -85,6 +86,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: All entries should be accessible
@@ -163,6 +165,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Range lookups work (binary search should find correct range)
@@ -276,6 +279,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify bfchar sections work
@@ -286,11 +290,11 @@ end
     assert_eq!(font.char_to_unicode(0x1000), Some("\u{4E00}".to_string()), "bfrange 0 start");
     assert_eq!(font.char_to_unicode(0x1100), Some("\u{4F00}".to_string()), "bfrange 1 lookup");
 
-    // Verify notdefrange fallback works
+    // CID 0x6400 not in bfchar/bfrange, falls through to CID-as-Unicode fallback
     assert_eq!(
         font.char_to_unicode(0x6400),
-        Some("\u{FFFD}".to_string()),
-        "notdefrange fallback"
+        Some("\u{6400}".to_string()),
+        "CID-as-Unicode fallback for unmapped code"
     );
 }
 
@@ -370,6 +374,7 @@ end
             first_char: None,
             last_char: None,
             default_width: 500.0,
+        multi_char_map: HashMap::new(),
         };
 
         // Both formats should parse identically
@@ -459,6 +464,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Large CMap parsing works (lazy loading should handle all 10k entries)
@@ -539,6 +545,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Lazy loading should handle mega-CMaps efficiently

@@ -10,6 +10,7 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 9.10.2
 
+use std::collections::HashMap;
 use pdf_oxide::fonts::{CIDToGIDMap, Encoding, FontInfo};
 use std::sync::Arc;
 
@@ -40,6 +41,7 @@ fn test_type0_agl_fallback_for_standard_ascii() {
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // For ASCII range, should try Adobe Glyph List
@@ -81,6 +83,7 @@ fn test_type0_lmroman_agl_fallback() {
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Test common ASCII characters
@@ -116,11 +119,13 @@ fn test_type0_agl_fallback_then_replacement() {
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // GID 0xFFFF won't be in Adobe Glyph List
     let result = font.char_to_unicode(0xFFFF);
 
+    // CID-as-Unicode fallback: 0xFFFF is a valid Unicode code point
     assert!(result.is_some(), "Should return something (not None)");
-    assert_eq!(result.unwrap(), "\u{FFFD}", "Non-ASCII glyph should fallback to U+FFFD");
+    assert_eq!(result.unwrap(), "\u{FFFF}", "CID-as-Unicode fallback for 0xFFFF");
 }

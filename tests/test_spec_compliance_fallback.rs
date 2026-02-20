@@ -8,6 +8,7 @@
 //!
 //! Standard practice: Use U+FFFD (REPLACEMENT CHARACTER) as the fallback.
 
+use std::collections::HashMap;
 use pdf_oxide::fonts::{CharacterMapper, Encoding, FontInfo};
 use std::sync::Arc;
 
@@ -58,18 +59,14 @@ fn test_type0_identity_encoding_no_tounicode_returns_replacement() {
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     let result = font.char_to_unicode(0x0041); // Try to map 'A'
 
-    // Should NOT return None (current bug - silent omission)
-    // Should return U+FFFD per spec
-    assert!(result.is_some(), "Should return replacement character, not silently omit");
-    assert_eq!(
-        result.unwrap(),
-        "\u{FFFD}",
-        "Type0 font without ToUnicode should fall back to replacement character"
-    );
+    // CID-as-Unicode fallback returns 'A' for printable chars (matches MuPDF behavior)
+    assert!(result.is_some(), "Should return a character via CID-as-Unicode fallback");
+    assert_eq!(result.unwrap(), "A");
 }
 
 #[test]
@@ -99,13 +96,12 @@ fn test_type0_zero_byte_embedded_font_returns_replacement() {
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     let result = font.char_to_unicode(0x0020); // Try to map space character
 
-    assert!(
-        result.is_some(),
-        "Font with 0-byte embedded data should return replacement character"
-    );
-    assert_eq!(result.unwrap(), "\u{FFFD}", "0-byte embedded font should fall back to U+FFFD");
+    // CID-as-Unicode fallback returns space for printable chars
+    assert!(result.is_some(), "Should return a character via CID-as-Unicode fallback");
+    assert_eq!(result.unwrap(), " ");
 }

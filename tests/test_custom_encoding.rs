@@ -195,5 +195,6 @@ fn create_font_with_encoding(encoding: Encoding) -> FontInfo {
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     }
 }

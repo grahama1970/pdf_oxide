@@ -13,6 +13,7 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 9.10.2 (Character to Unicode mapping)
 
+use std::collections::HashMap;
 use pdf_oxide::fonts::{Encoding, FontInfo};
 
 #[test]
@@ -41,6 +42,7 @@ fn test_ligature_extraction_fi() {
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Character 0xFB01 is the 'fi' ligature
@@ -79,6 +81,7 @@ fn test_ligature_extraction_fl() {
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     let result = font.char_to_unicode(0xFB02);
@@ -116,6 +119,7 @@ fn test_ligature_extraction_ffi() {
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     let result = font.char_to_unicode(0xFB03);
@@ -154,6 +158,7 @@ fn test_ligature_extraction_ffl() {
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     let result = font.char_to_unicode(0xFB04);

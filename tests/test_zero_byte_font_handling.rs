@@ -10,6 +10,7 @@
 //! Spec: PDF 32000-1:2008 Section 9.4.3 (Font Descriptors)
 
 use pdf_oxide::fonts::{CIDToGIDMap, Encoding, FontInfo};
+use std::collections::HashMap;
 use std::sync::Arc;
 
 #[test]
@@ -39,6 +40,7 @@ fn test_skip_truetype_cmap_when_embedded_font_zero_bytes() {
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Should use Adobe Glyph List fallback despite 0-byte embedded data
@@ -85,6 +87,7 @@ fn test_skip_truetype_cmap_for_common_office_fonts() {
             first_char: None,
             last_char: None,
             default_width: 1000.0,
+            multi_char_map: HashMap::new(),
         };
 
         let result = font.char_to_unicode(gid);
@@ -136,6 +139,7 @@ fn test_still_use_truetype_cmap_when_embedded_font_has_data() {
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Should attempt mapping - either via embedded data or AGL

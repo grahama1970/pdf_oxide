@@ -13,6 +13,7 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 9.7.6 (CID Fonts)
 
+use std::collections::HashMap;
 use pdf_oxide::fonts::cmap::LazyCMap;
 use pdf_oxide::fonts::FontInfo;
 
@@ -76,6 +77,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Single-byte codes still work
@@ -158,6 +160,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Range 1 (0x0001-0x000F → 0x4E00-0x4E0E)
@@ -242,6 +245,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Typical GB1 characters
@@ -306,6 +310,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Range 1 (Traditional Chinese characters)
@@ -375,6 +380,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Hiragana range
@@ -458,6 +464,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: ASCII range (0x0020-0x007E)
@@ -528,6 +535,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Large CID values

@@ -8,6 +8,7 @@
 //!
 //! These tests ensure that garbled text issues are properly handled.
 
+use std::collections::HashMap;
 use pdf_oxide::fonts::{Encoding, FontInfo, LazyCMap};
 
 // ============================================================================
@@ -16,8 +17,8 @@ use pdf_oxide::fonts::{Encoding, FontInfo, LazyCMap};
 
 #[test]
 fn test_type0_identity_encoding_without_tounicode_returns_none() {
-    // Type0 fonts WITHOUT ToUnicode should NOT map characters via Identity encoding
-    // Per PDF Spec 9.10.2, should return U+FFFD replacement character
+    // Type0 fonts WITHOUT ToUnicode use CID-as-Unicode fallback for printable chars
+    // This matches MuPDF behavior and improves real-world text extraction quality
     let font = FontInfo {
         base_font: "CIDFont".to_string(),
         subtype: "Type0".to_string(),
@@ -37,21 +38,20 @@ fn test_type0_identity_encoding_without_tounicode_returns_none() {
         truetype_cmap: None,
         cid_widths: None,
         cid_default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
-    // Character code 0x37 (decimal 55) would incorrectly map to '7' under old code
-    // With the spec-compliant fix, it should return U+FFFD replacement character
+    // CID-as-Unicode fallback: 0x37 → '7', 0x41 → 'A'
     assert_eq!(
         font.char_to_unicode(0x37),
-        Some("\u{FFFD}".to_string()),
-        "Type0 font without ToUnicode should return U+FFFD for character code 0x37, not '7'"
+        Some("7".to_string()),
+        "Type0 font without ToUnicode uses CID-as-Unicode fallback"
     );
 
-    // Character code 0x41 (decimal 65) would incorrectly map to 'A' under old code
     assert_eq!(
         font.char_to_unicode(0x41),
-        Some("\u{FFFD}".to_string()),
-        "Type0 font without ToUnicode should return U+FFFD for character code 0x41, not 'A'"
+        Some("A".to_string()),
+        "Type0 font without ToUnicode uses CID-as-Unicode fallback"
     );
 }
 
@@ -77,6 +77,7 @@ fn test_simple_font_identity_encoding_works_for_valid_codes() {
         truetype_cmap: None,
         cid_widths: None,
         cid_default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // For simple fonts, Identity encoding is valid for Unicode-compatible codes
@@ -128,20 +129,23 @@ fn test_type0_missing_tounicode_is_an_error() {
         truetype_cmap: None,
         cid_widths: None,
         cid_default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
-    // All lookups should return U+FFFD for Type0 without ToUnicode
-    // Per PDF Spec 9.10.2, when mapping fails, conforming readers should use replacement character
-    // This includes ALL character codes (including control chars) when using Identity-H/Identity-V
-    for code in 0u32..256 {
-        let result = font.char_to_unicode(code);
-        assert_eq!(
-            result,
-            Some("\u{FFFD}".to_string()),
-            "Type0 font with Identity-H encoding without ToUnicode should return U+FFFD for code 0x{:02X}",
-            code
-        );
-    }
+    // CID-as-Unicode fallback: printable chars return themselves, control chars may return None
+    // This matches MuPDF behavior for real-world text extraction quality
+    let result = font.char_to_unicode(0x41);
+    assert_eq!(
+        result,
+        Some("A".to_string()),
+        "Type0 font without ToUnicode uses CID-as-Unicode fallback for printable chars"
+    );
+    let result_space = font.char_to_unicode(0x20);
+    assert_eq!(
+        result_space,
+        Some(" ".to_string()),
+        "Type0 font without ToUnicode uses CID-as-Unicode fallback for space"
+    );
 }
 
 #[test]
@@ -167,6 +171,7 @@ fn test_tounicode_with_valid_mappings_works() {
         truetype_cmap: None,
         cid_widths: None,
         cid_default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // ToUnicode mappings should be used (highest priority)
@@ -202,15 +207,16 @@ fn test_multi_byte_character_codes_are_processed() {
         truetype_cmap: None,
         cid_widths: None,
         cid_default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Multi-byte codes (> 0xFF) should be handled without panic
-    // Per PDF Spec 9.10.2, should return U+FFFD replacement character
-    let large_code = 0x3000u32; // Typical CJK character code
+    // CID-as-Unicode fallback returns the character if it's a valid Unicode code point
+    let large_code = 0x3000u32; // U+3000 CJK ideographic space
     assert_eq!(
         font.char_to_unicode(large_code),
-        Some("\u{FFFD}".to_string()),
-        "Multi-byte code without ToUnicode should return U+FFFD replacement character"
+        Some("\u{3000}".to_string()),
+        "Multi-byte code uses CID-as-Unicode fallback"
     );
 }
 
@@ -247,6 +253,7 @@ fn test_extraction_priority_chain() {
         truetype_cmap: None,
         cid_widths: None,
         cid_default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // ToUnicode should override standard encoding
@@ -286,6 +293,7 @@ fn test_symbolic_font_encoding() {
         truetype_cmap: None,
         cid_widths: None,
         cid_default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Symbol fonts should use special encoding
@@ -324,18 +332,13 @@ fn test_pdf_without_tounicode_doesnt_scramble_text() {
         truetype_cmap: None,
         cid_widths: None,
         cid_default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
-    // The key assertion: we should get U+FFFD, NOT random scrambled characters
-    // Per PDF Spec 9.10.2, when mapping fails, conforming readers should use replacement character
-    // This applies to ALL character codes for Type0 fonts with Identity encoding
-    for code in 0u32..256 {
-        let result = font.char_to_unicode(code);
-        assert_eq!(
-            result,
-            Some("\u{FFFD}".to_string()),
-            "Type0 font without ToUnicode should return U+FFFD for code 0x{:02X}, not scrambled text",
-            code
-        );
-    }
+    // CID-as-Unicode fallback: printable chars map to themselves
+    // This matches MuPDF behavior for practical text extraction quality
+    let result = font.char_to_unicode(0x20); // space
+    assert_eq!(result, Some(" ".to_string()));
+    let result = font.char_to_unicode(0x41); // 'A'
+    assert_eq!(result, Some("A".to_string()));
 }

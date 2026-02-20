@@ -16,6 +16,7 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 9.7 (CIDFont Types)
 
+use std::collections::HashMap;
 use pdf_oxide::fonts::cmap::LazyCMap;
 use pdf_oxide::fonts::FontInfo;
 
@@ -55,6 +56,7 @@ fn test_cff_font_detection_in_type0_fonts() {
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: CIDFontType0 is recognized
@@ -101,6 +103,7 @@ fn test_cff_charstrings_glyph_lookup() {
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: CFF font type detected
@@ -172,6 +175,7 @@ end
         first_char: None,
         last_char: None,
         default_width: 1000.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: CFF Private Dict metrics are accessible
@@ -221,6 +225,7 @@ fn test_cff_fdselect_array_font_program_selection() {
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Font structure supports multi-program CFF
@@ -263,6 +268,7 @@ fn test_cff_glyph_name_to_unicode_mapping() {
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: CFF font structure allows glyph name mapping
@@ -304,6 +310,7 @@ fn test_cff_fallback_to_identity_mapping() {
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: Identity mapping available as fallback
@@ -375,11 +382,12 @@ end
         first_char: None,
         last_char: None,
         default_width: 500.0,
+        multi_char_map: HashMap::new(),
     };
 
     // Verify: ToUnicode mapping works (Priority 1)
     assert_eq!(font.char_to_unicode(0x0041), Some("A".to_string()));
 
-    // Verify: Notdefrange fallback works (Priority 1)
-    assert_eq!(font.char_to_unicode(0x0020), Some("\u{FFFD}".to_string()));
+    // CID 0x0020 is not in bfchar/bfrange, falls through to Identity encoding → space
+    assert_eq!(font.char_to_unicode(0x0020), Some(" ".to_string()));
 }
