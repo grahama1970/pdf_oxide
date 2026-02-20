@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Ok(text) => {
                 eprintln!("Page {:2}: {:6} chars", p, text.len());
                 total += text.len();
-            }
+            },
             Err(e) => eprintln!("Page {:2}: ERROR: {}", p, e),
         }
     }

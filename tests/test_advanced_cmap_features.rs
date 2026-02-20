@@ -18,9 +18,9 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 5.9.2 (CMap Syntax)
 
-use std::collections::HashMap;
 use pdf_oxide::fonts::cmap::LazyCMap;
 use pdf_oxide::fonts::FontInfo;
+use std::collections::HashMap;
 
 #[test]
 fn test_cmap_with_comments_and_metadata() {

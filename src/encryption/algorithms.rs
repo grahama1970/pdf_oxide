@@ -310,17 +310,17 @@ fn algorithm_2b(password: &[u8], salt: &[u8], user_key: &[u8]) -> Vec<u8> {
                 let mut h = Sha256::new();
                 h.update(&e);
                 h.finalize().to_vec()
-            }
+            },
             1 => {
                 let mut h = Sha384::new();
                 h.update(&e);
                 h.finalize().to_vec()
-            }
+            },
             _ => {
                 let mut h = Sha512::new();
                 h.update(&e);
                 h.finalize().to_vec()
-            }
+            },
         };
 
         // Step e: Check termination condition
@@ -595,7 +595,13 @@ pub fn authenticate_owner_password(
     owner_encryption: Option<&[u8]>,
 ) -> Option<Vec<u8>> {
     if revision >= 5 {
-        return authenticate_owner_password_r5_r6(owner_password, owner_key, user_key, revision, owner_encryption);
+        return authenticate_owner_password_r5_r6(
+            owner_password,
+            owner_key,
+            user_key,
+            revision,
+            owner_encryption,
+        );
     }
 
     // Algorithm 7: Authenticate owner password for R≤4
@@ -1178,8 +1184,9 @@ mod tests {
         owner_key.extend_from_slice(&owner_validation_salt);
         owner_key.extend_from_slice(&owner_key_salt);
 
-        let result =
-            authenticate_owner_password(password, &user_key, &owner_key, -1, b"", 5, 32, true, None);
+        let result = authenticate_owner_password(
+            password, &user_key, &owner_key, -1, b"", 5, 32, true, None,
+        );
         assert!(result.is_some());
 
         // Verify the returned key is SHA-256(password || owner_key_salt || U[0..48])
@@ -1208,8 +1215,9 @@ mod tests {
         owner_key.extend_from_slice(&owner_validation_salt);
         owner_key.extend_from_slice(&owner_key_salt);
 
-        let result =
-            authenticate_owner_password(b"wrong", &user_key, &owner_key, -1, b"", 5, 32, true, None);
+        let result = authenticate_owner_password(
+            b"wrong", &user_key, &owner_key, -1, b"", 5, 32, true, None,
+        );
         assert!(result.is_none());
     }
 }

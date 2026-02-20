@@ -166,7 +166,7 @@ impl EncryptionHandler {
                 let (iv, ciphertext) = data.split_at(16);
                 super::aes::aes128_decrypt(&obj_key[..16], iv, ciphertext)
                     .map_err(|e| Error::InvalidPdf(format!("AES-128 decryption failed: {}", e)))
-            }
+            },
             Algorithm::Aes256 => {
                 // AES-256 uses the file encryption key directly (no per-object key derivation)
                 // per ISO 32000-2:2020 Section 7.6.3.3
@@ -182,7 +182,7 @@ impl EncryptionHandler {
                 let (iv, ciphertext) = data.split_at(16);
                 super::aes::aes256_decrypt(&key[..32], iv, ciphertext)
                     .map_err(|e| Error::InvalidPdf(format!("AES-256 decryption failed: {}", e)))
-            }
+            },
         }
     }
 

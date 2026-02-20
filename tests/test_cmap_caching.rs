@@ -14,9 +14,9 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 9.10.2-9.10.3 (ToUnicode CMaps)
 
-use std::collections::HashMap;
 use pdf_oxide::fonts::cmap::LazyCMap;
 use pdf_oxide::fonts::FontInfo;
+use std::collections::HashMap;
 
 #[test]
 fn test_cmap_cache_hit_same_font_multiple_references() {
@@ -296,7 +296,7 @@ end
             first_char: None,
             last_char: None,
             default_width: 500.0,
-        multi_char_map: HashMap::new(),
+            multi_char_map: HashMap::new(),
         })
         .collect();
 
@@ -376,7 +376,7 @@ end
             first_char: None,
             last_char: None,
             default_width: 500.0,
-        multi_char_map: HashMap::new(),
+            multi_char_map: HashMap::new(),
         })
         .collect();
 

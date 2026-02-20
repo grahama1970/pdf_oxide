@@ -15,7 +15,15 @@ use std::path::{Path, PathBuf};
 use std::time::Instant;
 
 const PASSWORDS: &[&[u8]] = &[
-    b"", b"owner", b"user", b"asdfasdf", b"password", b"test", b"123456", b"ownerpass", b"userpass",
+    b"",
+    b"owner",
+    b"user",
+    b"asdfasdf",
+    b"password",
+    b"test",
+    b"123456",
+    b"ownerpass",
+    b"userpass",
 ];
 
 const SKIP_FILES: &[&str] = &["bomb_giant.pdf", "bomb.pdf"];
@@ -101,10 +109,10 @@ fn extract_pdf(path: &Path) -> (String, usize, String) {
                     all_text.push('\n');
                 }
                 all_text.push_str(&text);
-            }
+            },
             Err(e) => {
                 return (all_text, page_count, format!("page {i}: {e}"));
-            }
+            },
         }
     }
     (all_text, page_count, String::new())
@@ -130,8 +138,8 @@ fn main() {
                 if i < args.len() {
                     output_dir = PathBuf::from(&args[i]);
                 }
-            }
-            _ => {}
+            },
+            _ => {},
         }
         i += 1;
     }

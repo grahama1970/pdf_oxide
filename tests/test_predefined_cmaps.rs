@@ -10,8 +10,8 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 9.7.5.2 (Predefined CMaps)
 
-use std::collections::HashMap;
 use pdf_oxide::fonts::{CIDSystemInfo, Encoding, FontInfo};
+use std::collections::HashMap;
 
 #[test]
 fn test_identity_h_cmap_simple_cid_to_unicode() {
@@ -98,10 +98,7 @@ fn test_unigb_ucs2_h_cmap_simplified_chinese() {
 
     assert!(result.is_some(), "UniGB-UCS2-H should map CID 0x2EE5");
     let mapped = result.unwrap();
-    assert_eq!(
-        mapped, "\u{5BCF}",
-        "CID 0x2EE5 should map to Chinese character '寏' (U+5BCF)"
-    );
+    assert_eq!(mapped, "\u{5BCF}", "CID 0x2EE5 should map to Chinese character '寏' (U+5BCF)");
 }
 
 #[test]

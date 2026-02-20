@@ -17,9 +17,9 @@
 //! Spec: PDF 32000-1:2008 Section 9.7.5.2 (CIDToGIDMap)
 //! Adobe CMap Registry: https://github.com/adobe-type-tools/cmap-resources
 
-use std::collections::HashMap;
 use pdf_oxide::fonts::cmap::LazyCMap;
 use pdf_oxide::fonts::FontInfo;
+use std::collections::HashMap;
 
 #[test]
 fn test_predefined_cmap_adobe_gb1_loading() {

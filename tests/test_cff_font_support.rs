@@ -16,9 +16,9 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 9.7 (CIDFont Types)
 
-use std::collections::HashMap;
 use pdf_oxide::fonts::cmap::LazyCMap;
 use pdf_oxide::fonts::FontInfo;
+use std::collections::HashMap;
 
 #[test]
 fn test_cff_font_detection_in_type0_fonts() {

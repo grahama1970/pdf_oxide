@@ -159,13 +159,13 @@ fn has_content_on_page(elem: &StructElem, target_page: u32) -> bool {
                 if *page == target_page {
                     return true;
                 }
-            }
+            },
             StructChild::StructElem(child_elem) => {
                 if has_content_on_page(child_elem, target_page) {
                     return true;
                 }
-            }
-            _ => {}
+            },
+            _ => {},
         }
     }
     false

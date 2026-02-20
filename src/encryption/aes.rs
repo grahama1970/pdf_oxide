@@ -61,7 +61,11 @@ pub fn aes128_encrypt(key: &[u8], iv: &[u8], data: &[u8]) -> Result<Vec<u8>, &'s
 ///
 /// Used by Algorithm 2.B (R=6) which handles its own data alignment.
 /// Data length must be a multiple of 16.
-pub fn aes128_encrypt_no_padding(key: &[u8], iv: &[u8], data: &[u8]) -> Result<Vec<u8>, &'static str> {
+pub fn aes128_encrypt_no_padding(
+    key: &[u8],
+    iv: &[u8],
+    data: &[u8],
+) -> Result<Vec<u8>, &'static str> {
     if key.len() != 16 {
         return Err("AES-128 key must be 16 bytes");
     }
@@ -71,7 +75,7 @@ pub fn aes128_encrypt_no_padding(key: &[u8], iv: &[u8], data: &[u8]) -> Result<V
     if data.is_empty() {
         return Ok(Vec::new());
     }
-    if data.len() % 16 != 0 {
+    if !data.len().is_multiple_of(16) {
         return Err("Data length must be multiple of 16 for no-padding mode");
     }
 
@@ -89,7 +93,11 @@ pub fn aes128_encrypt_no_padding(key: &[u8], iv: &[u8], data: &[u8]) -> Result<V
 ///
 /// Used for R=6 file encryption key unwrapping (UE/OE decryption).
 /// Data length must be a multiple of 16.
-pub fn aes256_decrypt_no_padding(key: &[u8], iv: &[u8], data: &[u8]) -> Result<Vec<u8>, &'static str> {
+pub fn aes256_decrypt_no_padding(
+    key: &[u8],
+    iv: &[u8],
+    data: &[u8],
+) -> Result<Vec<u8>, &'static str> {
     if key.len() != 32 {
         return Err("AES-256 key must be 32 bytes");
     }
@@ -99,7 +107,7 @@ pub fn aes256_decrypt_no_padding(key: &[u8], iv: &[u8], data: &[u8]) -> Result<V
     if data.is_empty() {
         return Ok(Vec::new());
     }
-    if data.len() % 16 != 0 {
+    if !data.len().is_multiple_of(16) {
         return Err("Data length must be multiple of 16 for no-padding mode");
     }
 

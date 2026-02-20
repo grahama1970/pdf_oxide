@@ -8,8 +8,8 @@
 //!
 //! These tests ensure that garbled text issues are properly handled.
 
-use std::collections::HashMap;
 use pdf_oxide::fonts::{Encoding, FontInfo, LazyCMap};
+use std::collections::HashMap;
 
 // ============================================================================
 // Phase 1.1 Tests: Identity Encoding Fallback for Type0 Fonts

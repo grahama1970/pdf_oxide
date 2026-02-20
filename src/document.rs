@@ -1088,7 +1088,11 @@ impl PdfDocument {
     ) -> Result<Object> {
         use crate::objstm::parse_object_stream_with_decryption;
 
-        log::debug!("[load_compressed_debug] Loading obj {} from stream {}", obj_ref.id, stream_obj_num);
+        log::debug!(
+            "[load_compressed_debug] Loading obj {} from stream {}",
+            obj_ref.id,
+            stream_obj_num
+        );
 
         // Ensure encryption is initialized if needed (lazy initialization)
         self.ensure_encryption_initialized()?;
@@ -1163,7 +1167,11 @@ impl PdfDocument {
             if should_cache {
                 self.object_cache.insert(cache_ref, object);
             } else {
-                log::debug!("[cache_debug] NOT caching obj {} from stream {} (xref points elsewhere)", obj_num, stream_obj_num);
+                log::debug!(
+                    "[cache_debug] NOT caching obj {} from stream {} (xref points elsewhere)",
+                    obj_num,
+                    stream_obj_num
+                );
             }
         }
 
@@ -2680,7 +2688,10 @@ impl PdfDocument {
                         }
                     }
                     // Extract /Opt display values for choice fields (/FT /Ch)
-                    let ft = dict.get("FT").and_then(|o| o.as_name()).map(|s| s.to_string())
+                    let ft = dict
+                        .get("FT")
+                        .and_then(|o| o.as_name())
+                        .map(|s| s.to_string())
                         .or_else(|| self.resolve_inherited_ft(&dict));
                     if ft.as_deref() == Some("Ch") {
                         if let Some(opt_obj) = dict.get("Opt") {
@@ -2698,7 +2709,7 @@ impl PdfDocument {
                                             if !trimmed.is_empty() {
                                                 annot_texts.push(trimmed);
                                             }
-                                        }
+                                        },
                                         Object::Array(pair) if pair.len() == 2 => {
                                             // [export_value, display_value] — use display_value
                                             if let Some(Object::String(s)) = pair.get(1) {
@@ -2708,14 +2719,14 @@ impl PdfDocument {
                                                     annot_texts.push(trimmed);
                                                 }
                                             }
-                                        }
-                                        _ => {}
+                                        },
+                                        _ => {},
                                     }
                                 }
                             }
                         }
                     }
-                }
+                },
                 "freetext" | "stamp" | "text" => {
                     if let Some(Object::String(s)) = dict.get("Contents") {
                         let decoded = Self::decode_pdf_text_string(s);
@@ -2724,7 +2735,7 @@ impl PdfDocument {
                             annot_texts.push(trimmed);
                         }
                     }
-                }
+                },
                 _ => {
                     // For any other annotation type, also try /Contents
                     if let Some(Object::String(s)) = dict.get("Contents") {
@@ -2734,7 +2745,7 @@ impl PdfDocument {
                             annot_texts.push(trimmed);
                         }
                     }
-                }
+                },
             }
 
             // Fallback: if no text was extracted from /V or /Contents,
@@ -2805,7 +2816,9 @@ impl PdfDocument {
         // Load fonts from the AP/N stream's own /Resources
         if let Some(resources) = n_dict.get("Resources") {
             let res_obj = if let Some(r) = resources.as_reference() {
-                self.load_object(r).ok().unwrap_or_else(|| resources.clone())
+                self.load_object(r)
+                    .ok()
+                    .unwrap_or_else(|| resources.clone())
             } else {
                 resources.clone()
             };
@@ -2825,7 +2838,11 @@ impl PdfDocument {
         }
 
         // Collect span text
-        let text: String = spans.iter().map(|s| s.text.as_str()).collect::<Vec<_>>().join(" ");
+        let text: String = spans
+            .iter()
+            .map(|s| s.text.as_str())
+            .collect::<Vec<_>>()
+            .join(" ");
         if text.trim().is_empty() {
             return None;
         }
@@ -2921,7 +2938,8 @@ impl PdfDocument {
                 .chunks_exact(2)
                 .map(|chunk| u16::from_be_bytes([chunk[0], chunk[1]]))
                 .collect();
-            String::from_utf16(&utf16_pairs).unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
+            String::from_utf16(&utf16_pairs)
+                .unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
         } else if bytes.len() >= 2 && bytes[0] == 0xFF && bytes[1] == 0xFE {
             // UTF-16LE with BOM
             let utf16_bytes = &bytes[2..];
@@ -2929,7 +2947,8 @@ impl PdfDocument {
                 .chunks_exact(2)
                 .map(|chunk| u16::from_le_bytes([chunk[0], chunk[1]]))
                 .collect();
-            String::from_utf16(&utf16_pairs).unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
+            String::from_utf16(&utf16_pairs)
+                .unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
         } else {
             // PDFDocEncoding — superset of ISO Latin-1
             bytes

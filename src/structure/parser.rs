@@ -18,14 +18,16 @@ fn decode_pdf_text_string(bytes: &[u8]) -> String {
             .chunks_exact(2)
             .map(|c| u16::from_be_bytes([c[0], c[1]]))
             .collect();
-        String::from_utf16(&utf16_pairs).unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
+        String::from_utf16(&utf16_pairs)
+            .unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
     } else if bytes.len() >= 2 && bytes[0] == 0xFF && bytes[1] == 0xFE {
         // UTF-16LE with BOM
         let utf16_pairs: Vec<u16> = bytes[2..]
             .chunks_exact(2)
             .map(|c| u16::from_le_bytes([c[0], c[1]]))
             .collect();
-        String::from_utf16(&utf16_pairs).unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
+        String::from_utf16(&utf16_pairs)
+            .unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
     } else {
         // PDFDocEncoding
         bytes

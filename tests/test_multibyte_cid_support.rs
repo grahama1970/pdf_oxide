@@ -13,9 +13,9 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 9.7.6 (CID Fonts)
 
-use std::collections::HashMap;
 use pdf_oxide::fonts::cmap::LazyCMap;
 use pdf_oxide::fonts::FontInfo;
+use std::collections::HashMap;
 
 #[test]
 fn test_multibyte_cid_2byte_codes() {

@@ -1480,11 +1480,6 @@ fn fallback_char_to_unicode(char_code: u16) -> String {
     }
 }
 
-/// Helper function to decode text bytes to Unicode, handling multi-byte encodings.
-///
-/// For Type0/CIDFonts (like UTF-16), this processes bytes in pairs.
-/// For simple fonts (Type1, TrueType), this processes bytes individually.
-
 /// Byte grouping mode for CID font character code decoding.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum ByteMode {
@@ -1516,7 +1511,7 @@ fn decode_text_to_unicode(bytes: &[u8], font: Option<&FontInfo>) -> String {
                         // and let char_to_unicode handle the mapping
                         ByteMode::OneByte
                     }
-                }
+                },
                 _ => ByteMode::OneByte,
             }
         } else {
@@ -1550,7 +1545,7 @@ fn decode_text_to_unicode(bytes: &[u8], font: Option<&FontInfo>) -> String {
                     }
                 }
                 result
-            }
+            },
             ByteMode::ShiftJIS => {
                 // Shift-JIS variable-width: bytes 0x81-0x9F and 0xE0-0xFC start
                 // 2-byte sequences; all others are single-byte.
@@ -1579,7 +1574,7 @@ fn decode_text_to_unicode(bytes: &[u8], font: Option<&FontInfo>) -> String {
                     }
                 }
                 result
-            }
+            },
             _ => {
                 // Simple fonts use single-byte character codes
                 let mut result = String::new();
@@ -1593,7 +1588,7 @@ fn decode_text_to_unicode(bytes: &[u8], font: Option<&FontInfo>) -> String {
                     }
                 }
                 result
-            }
+            },
         }
     } else {
         // No font - fallback to Latin-1 (ISO 8859-1) encoding
@@ -2093,7 +2088,10 @@ impl TextExtractor {
     }
 
     /// Resolve BDC properties: can be an inline dictionary or a name referencing /Properties resource.
-    fn resolve_bdc_properties(&self, properties: &Object) -> Option<std::collections::HashMap<String, Object>> {
+    fn resolve_bdc_properties(
+        &self,
+        properties: &Object,
+    ) -> Option<std::collections::HashMap<String, Object>> {
         // Inline dictionary
         if let Some(dict) = properties.as_dict() {
             return Some(dict.clone());
@@ -2226,7 +2224,10 @@ impl TextExtractor {
     pub fn share_truetype_cmaps(&mut self) {
         // Strip subset prefix (e.g., "QQPMQK+Impact" → "Impact")
         fn strip_subset(name: &str) -> &str {
-            if name.len() > 7 && name.as_bytes()[6] == b'+' && name[..6].chars().all(|c| c.is_ascii_uppercase()) {
+            if name.len() > 7
+                && name.as_bytes()[6] == b'+'
+                && name[..6].chars().all(|c| c.is_ascii_uppercase())
+            {
                 &name[7..]
             } else {
                 name
@@ -2679,16 +2680,13 @@ impl TextExtractor {
             let x = span.bbox.x;
 
             // PHASE 1: Geometric deduplication — require BOTH position AND text match
-            let geometric_duplicate =
-                if let (Some(prev_y), Some(prev_x_val), Some(ref prev_txt)) =
-                    (prev_y_rounded, prev_x, &prev_text)
-                {
-                    y_rounded == prev_y
-                        && (x - prev_x_val).abs() < 2.0
-                        && &span.text == prev_txt
-                } else {
-                    false
-                };
+            let geometric_duplicate = if let (Some(prev_y), Some(prev_x_val), Some(ref prev_txt)) =
+                (prev_y_rounded, prev_x, &prev_text)
+            {
+                y_rounded == prev_y && (x - prev_x_val).abs() < 2.0 && &span.text == prev_txt
+            } else {
+                false
+            };
 
             // PHASE 2: Content-based deduplication — require positions to OVERLAP
             let content_duplicate = if span.text.len() >= 5 {
@@ -3327,7 +3325,9 @@ impl TextExtractor {
 
                                         // Calculate effective font size (accounting for CTM and text matrix scaling)
                                         let combined = ctm.multiply(&text_matrix);
-                                        let effective_font_size = font_size * (combined.d * combined.d + combined.b * combined.b).sqrt();
+                                        let effective_font_size = font_size
+                                            * (combined.d * combined.d + combined.b * combined.b)
+                                                .sqrt();
 
                                         // Get font for determining weight
                                         let font = font_name
@@ -4221,7 +4221,8 @@ impl TextExtractor {
                     if let Err(e) = doc.load_fonts(&xobj_res, self) {
                         log::debug!(
                             "Failed to load fonts for Form XObject '{}': {}, using page fonts",
-                            name, e
+                            name,
+                            e
                         );
                     }
 
@@ -4307,7 +4308,8 @@ impl TextExtractor {
 
         // Calculate effective font size (accounting for CTM and text matrix scaling)
         let combined = buffer.start_ctm.multiply(&buffer.start_matrix);
-        let effective_font_size = buffer.font_size * (combined.d * combined.d + combined.b * combined.b).sqrt();
+        let effective_font_size =
+            buffer.font_size * (combined.d * combined.d + combined.b * combined.b).sqrt();
 
         // Determine font weight
         let font_weight = if let Some(font_name) = &buffer.font_name {
@@ -4974,7 +4976,8 @@ impl TextExtractor {
         let text_matrix = state.text_matrix;
         let ctm = state.ctm;
         let combined = ctm.multiply(&text_matrix);
-        let effective_font_size = font_size * (combined.d * combined.d + combined.b * combined.b).sqrt();
+        let effective_font_size =
+            font_size * (combined.d * combined.d + combined.b * combined.b).sqrt();
         let word_space = state.word_space;
         let horizontal_scaling = state.horizontal_scaling;
 
@@ -5072,7 +5075,9 @@ impl TextExtractor {
 
                 // Calculate effective font size (accounting for CTM and text matrix scaling)
                 let combined_flush = buffer.start_ctm.multiply(&buffer.start_matrix);
-                let effective_font_size = buffer.font_size * (combined_flush.d * combined_flush.d + combined_flush.b * combined_flush.b).sqrt();
+                let effective_font_size = buffer.font_size
+                    * (combined_flush.d * combined_flush.d + combined_flush.b * combined_flush.b)
+                        .sqrt();
 
                 // Determine font weight
                 let font_weight = if let Some(font_name) = &buffer.font_name {
@@ -5206,7 +5211,8 @@ impl TextExtractor {
 
             // Calculate effective font size (accounting for CTM and text matrix scaling)
             let combined_char = ctm.multiply(&text_matrix);
-            let effective_font_size = font_size * (combined_char.d * combined_char.d + combined_char.b * combined_char.b).sqrt();
+            let effective_font_size = font_size
+                * (combined_char.d * combined_char.d + combined_char.b * combined_char.b).sqrt();
 
             // Calculate character dimensions
             // Use effective font size and better width estimate based on horizontal scaling

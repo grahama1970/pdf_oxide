@@ -319,10 +319,7 @@ fn parse_stream_data<'a>(
             }
 
             // /Length was wrong — fall back to scanning for 'endstream'
-            log::warn!(
-                "Stream /Length {} is incorrect, falling back to endstream scan",
-                length
-            );
+            log::warn!("Stream /Length {} is incorrect, falling back to endstream scan", length);
             if let Some(pos) = find_endstream(input) {
                 let stream_data = input[..pos].to_vec();
                 let remaining = &input[pos..];

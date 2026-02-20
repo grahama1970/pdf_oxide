@@ -285,10 +285,7 @@ impl FontInfo {
                                     });
                                 (font_data, false) // CFF - no TrueType cmap
                             } else if let Some(ff_obj) = descriptor_dict.get("FontFile") {
-                                log::info!(
-                                    "Font '{}' has FontFile entry (Type 1)",
-                                    base_font
-                                );
+                                log::info!("Font '{}' has FontFile entry (Type 1)", base_font);
                                 let font_data = ff_obj
                                     .as_reference()
                                     .and_then(|ff_ref| {
@@ -589,11 +586,17 @@ impl FontInfo {
         };
 
         // Phase 3: Parse DescendantFonts for Type0 fonts
-        let (cid_to_gid_map, cid_system_info, cid_font_type, cid_widths, cid_default_width, descendant_tt_cmap) =
-            if subtype == "Type0" {
-                match Self::parse_descendant_fonts(font_dict, &base_font, doc) {
-                    Ok((map, info, ftype, widths, dw, tt_cmap)) => {
-                        log::info!(
+        let (
+            cid_to_gid_map,
+            cid_system_info,
+            cid_font_type,
+            cid_widths,
+            cid_default_width,
+            descendant_tt_cmap,
+        ) = if subtype == "Type0" {
+            match Self::parse_descendant_fonts(font_dict, &base_font, doc) {
+                Ok((map, info, ftype, widths, dw, tt_cmap)) => {
+                    log::info!(
                             "Font '{}': Parsed DescendantFonts - CIDFontType={}, CIDSystemInfo={}-{}, widths={}",
                             base_font,
                             ftype.as_ref().unwrap_or(&"Unknown".to_string()),
@@ -605,20 +608,20 @@ impl FontInfo {
                                 .unwrap_or("Unknown"),
                             widths.as_ref().map(|m| m.len()).unwrap_or(0)
                         );
-                        (map, info, ftype, widths, dw, tt_cmap)
-                    },
-                    Err(e) => {
-                        log::warn!(
-                            "Font '{}': Failed to parse DescendantFonts: {}. Using Identity fallback.",
-                            base_font,
-                            e
-                        );
-                        (Some(CIDToGIDMap::Identity), None, None, None, 1000.0, None)
-                    },
-                }
-            } else {
-                (None, None, None, None, 1000.0, None)
-            };
+                    (map, info, ftype, widths, dw, tt_cmap)
+                },
+                Err(e) => {
+                    log::warn!(
+                        "Font '{}': Failed to parse DescendantFonts: {}. Using Identity fallback.",
+                        base_font,
+                        e
+                    );
+                    (Some(CIDToGIDMap::Identity), None, None, None, 1000.0, None)
+                },
+            }
+        } else {
+            (None, None, None, None, 1000.0, None)
+        };
 
         // Use descendant's TrueType cmap when the parent has none
         let truetype_cmap = truetype_cmap.or(descendant_tt_cmap);
@@ -964,18 +967,21 @@ impl FontInfo {
         let ff2_obj = desc_dict.get("FontFile2")?;
         let ff2_ref = ff2_obj.as_reference()?;
         let ff2_stream = doc.load_object(ff2_ref).ok()?;
-        let font_data = doc.decode_stream_with_encryption(&ff2_stream, ff2_ref).ok()?;
+        let font_data = doc
+            .decode_stream_with_encryption(&ff2_stream, ff2_ref)
+            .ok()?;
         if font_data.is_empty() {
             return None;
         }
         match TrueTypeCMap::from_font_data(&font_data) {
-            Ok(cmap) if cmap.len() > 0 => {
+            Ok(cmap) if !cmap.is_empty() => {
                 log::info!(
                     "Font '{}': Extracted TrueType cmap from descendant CIDFont ({} mappings)",
-                    base_font, cmap.len()
+                    base_font,
+                    cmap.len()
                 );
                 Some(cmap)
-            }
+            },
             _ => None,
         }
     }
@@ -1116,15 +1122,24 @@ impl FontInfo {
     /// ```
     ///
     /// Where integers specify starting codes, and names specify glyphs for consecutive codes.
-    fn parse_encoding(enc_obj: &Object, _doc: &mut PdfDocument) -> Result<(Encoding, HashMap<u8, String>)> {
+    fn parse_encoding(
+        enc_obj: &Object,
+        _doc: &mut PdfDocument,
+    ) -> Result<(Encoding, HashMap<u8, String>)> {
         let empty_map = HashMap::new();
         // Encoding can be either a name or a dictionary
         if let Some(name) = enc_obj.as_name() {
             // Standard encoding names
             match name {
-                "WinAnsiEncoding" => Ok((Encoding::Standard("WinAnsiEncoding".to_string()), empty_map)),
-                "MacRomanEncoding" => Ok((Encoding::Standard("MacRomanEncoding".to_string()), empty_map)),
-                "MacExpertEncoding" => Ok((Encoding::Standard("MacExpertEncoding".to_string()), empty_map)),
+                "WinAnsiEncoding" => {
+                    Ok((Encoding::Standard("WinAnsiEncoding".to_string()), empty_map))
+                },
+                "MacRomanEncoding" => {
+                    Ok((Encoding::Standard("MacRomanEncoding".to_string()), empty_map))
+                },
+                "MacExpertEncoding" => {
+                    Ok((Encoding::Standard("MacExpertEncoding".to_string()), empty_map))
+                },
                 "Identity-H" | "Identity-V" => Ok((Encoding::Identity, empty_map)),
                 _ => Ok((Encoding::Standard(name.to_string()), empty_map)),
             }
@@ -1236,10 +1251,13 @@ impl FontInfo {
                                             );
                                         }
                                     }
-                                } else if let Some(unicode_string) = glyph_name_to_unicode_string(glyph_name) {
+                                } else if let Some(unicode_string) =
+                                    glyph_name_to_unicode_string(glyph_name)
+                                {
                                     // Compound glyph name (e.g. f_f → "ff", f_f_i → "ffi")
                                     if current_code <= 255 {
-                                        multi_char_map.insert(current_code as u8, unicode_string.clone());
+                                        multi_char_map
+                                            .insert(current_code as u8, unicode_string.clone());
                                         log::info!(
                                             "/Differences: code {} → /{} → {:?} (compound)",
                                             current_code,
@@ -1714,7 +1732,11 @@ impl FontInfo {
                             self.base_font
                         );
                         // Fall through to Priority 2 (predefined encodings)
-                    } else if unicode.chars().all(|c| c.is_control() && c != '\t' && c != '\n' && c != '\r') && !unicode.is_empty() {
+                    } else if unicode
+                        .chars()
+                        .all(|c| c.is_control() && c != '\t' && c != '\n' && c != '\r')
+                        && !unicode.is_empty()
+                    {
                         // ToUnicode mapped to control characters (U+0000-U+001F excluding
                         // whitespace). This is a broken CMap — fall through to glyph name
                         // resolution or other fallbacks.
@@ -1782,8 +1804,11 @@ impl FontInfo {
         // It is checked here for Type0 fonts to ensure it happens before other fallbacks.
         if self.subtype == "Type0" {
             if let Encoding::Standard(ref encoding_name) = self.encoding {
-                if encoding_name == "Identity-H" || encoding_name == "Identity-V"
-                    || encoding_name.contains("UCS2") || encoding_name.contains("UTF16") {
+                if encoding_name == "Identity-H"
+                    || encoding_name == "Identity-V"
+                    || encoding_name.contains("UCS2")
+                    || encoding_name.contains("UTF16")
+                {
                     // For Identity-H/V: CID value IS the Unicode code point (2-byte)
                     // Valid Unicode range for 2-byte CID: 0x0000 to 0xFFFF
                     // (Standard Unicode BMP - Basic Multilingual Plane)
@@ -1798,7 +1823,9 @@ impl FontInfo {
                     if self.cid_system_info.is_some() {
                         // For Adobe-Identity ordering, CIDs are glyph indices (GIDs),
                         // NOT Unicode code points. Try the embedded TrueType cmap first.
-                        let is_identity_ordering = self.cid_system_info.as_ref()
+                        let is_identity_ordering = self
+                            .cid_system_info
+                            .as_ref()
                             .map(|info| info.ordering == "Identity")
                             .unwrap_or(false);
 
@@ -2489,7 +2516,7 @@ impl FontInfo {
 /// assert_eq!(glyph_name_to_unicode("A"), Some('A'));
 /// assert_eq!(glyph_name_to_unicode("unknown"), None);
 /// ```ignore
-
+///
 /// Extended glyph names from TeX/math fonts (MSAM, MSBM, Computer Modern, etc.)
 /// not present in the standard Adobe Glyph List.
 static TEX_MATH_GLYPH_NAMES: phf::Map<&'static str, char> = phf::phf_map! {

@@ -8,8 +8,8 @@
 //!
 //! Standard practice: Use U+FFFD (REPLACEMENT CHARACTER) as the fallback.
 
-use std::collections::HashMap;
 use pdf_oxide::fonts::{CharacterMapper, Encoding, FontInfo};
+use std::collections::HashMap;
 use std::sync::Arc;
 
 #[test]

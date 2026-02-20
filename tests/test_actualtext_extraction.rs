@@ -13,8 +13,8 @@
 //!
 //! Spec: PDF 32000-1:2008 Section 9.10.2 (Character to Unicode mapping)
 
-use std::collections::HashMap;
 use pdf_oxide::fonts::{Encoding, FontInfo};
+use std::collections::HashMap;
 
 #[test]
 fn test_ligature_extraction_fi() {

@@ -424,18 +424,28 @@ impl PdfDocument {
         let mut default_value = Self::parse_string_value(dict.get("DV"));
 
         // Walk up /Parent chain to inherit missing fields (PDF spec 12.7.3.1)
-        if ft.is_none() || field_flags.is_none() || field_value.is_none() || default_value.is_none() {
+        if ft.is_none() || field_flags.is_none() || field_value.is_none() || default_value.is_none()
+        {
             let mut parent_ref = dict.get("Parent").and_then(|p| {
-                if let Object::Reference(r) = p { Some(*r) } else { None }
+                if let Object::Reference(r) = p {
+                    Some(*r)
+                } else {
+                    None
+                }
             });
             let mut depth = 0;
             while let Some(pref) = parent_ref {
-                if depth >= 10 { break; }
+                if depth >= 10 {
+                    break;
+                }
                 depth += 1;
                 if let Ok(parent_obj) = self.load_object(pref) {
                     if let Some(parent_dict) = parent_obj.as_dict() {
                         if ft.is_none() {
-                            ft = parent_dict.get("FT").and_then(|f| f.as_name()).map(|s| s.to_string());
+                            ft = parent_dict
+                                .get("FT")
+                                .and_then(|f| f.as_name())
+                                .map(|s| s.to_string());
                         }
                         if field_flags.is_none() {
                             field_flags = parent_dict.get("Ff").and_then(|f| match f {
@@ -450,7 +460,11 @@ impl PdfDocument {
                             default_value = Self::parse_string_value(parent_dict.get("DV"));
                         }
                         parent_ref = parent_dict.get("Parent").and_then(|p| {
-                            if let Object::Reference(r) = p { Some(*r) } else { None }
+                            if let Object::Reference(r) = p {
+                                Some(*r)
+                            } else {
+                                None
+                            }
                         });
                     } else {
                         break;

@@ -258,6 +258,7 @@ impl LazyCMap {
         &self.raw_stream
     }
 
+    /// Returns the parsed CMap, loading and caching it on first access.
     pub fn get(&self) -> Option<Arc<CMap>> {
         // Step 1: Check local cache
         let mut parsed_guard = self.parsed.lock().unwrap();

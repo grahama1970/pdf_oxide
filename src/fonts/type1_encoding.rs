@@ -82,10 +82,7 @@ pub fn parse_type1_encoding(font_data: &[u8]) -> Option<HashMap<u8, char>> {
     if encoding_map.is_empty() {
         None
     } else {
-        log::debug!(
-            "Type 1 built-in encoding parsed: {} character mappings",
-            encoding_map.len()
-        );
+        log::debug!("Type 1 built-in encoding parsed: {} character mappings", encoding_map.len());
         Some(encoding_map)
     }
 }

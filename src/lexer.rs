@@ -294,15 +294,8 @@ fn parse_hex_string(input: &[u8]) -> IResult<&[u8], Token<'_>> {
         return Err(nom::Err::Error(nom::error::Error::new(input, nom::error::ErrorKind::Tag)));
     }
 
-    delimited(
-        char('<'),
-        map(
-            take_while(|c: u8| c != b'>'),
-            Token::HexString,
-        ),
-        char('>'),
-    )
-    .parse(input)
+    delimited(char('<'), map(take_while(|c: u8| c != b'>'), Token::HexString), char('>'))
+        .parse(input)
 }
 
 /// Decode #XX escape sequences in PDF names.
