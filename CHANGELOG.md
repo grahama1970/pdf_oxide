@@ -17,7 +17,7 @@ Systematic benchmark testing across 3,829 real-world PDFs identified and fixed 1
 ### Added — Parser & Decoders
 
 - **BrotliDecode stream filter** (PDF 2.0, ISO 32000-2:2020) — New `BrotliDecoder` for PDFs using Brotli-compressed streams (#95)
-- **Xref trailer selection** — Prefer trailer with `/Root` key when multiple trailers exist, fixing files where the wrong trailer was selected
+- **Xref trailer selection** — Improve selection of the correct trailer when multiple trailers exist, fixing files where the wrong trailer was selected
 - **Headerless PDF recovery** — Search for first object marker when `%PDF-` header is missing
 - **Multi-line object headers** — Handle `1 0\nobj` format used by Google-generated PDFs
 - **Cross-reference stream reconstruction** — Rebuild xref from object markers for damaged PDFs
