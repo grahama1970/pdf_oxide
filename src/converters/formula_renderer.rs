@@ -278,6 +278,7 @@ mod tests {
             attributes: HashMap::new(),
             alt_text: None,
             expansion: None,
+            actual_text: None,
         };
 
         let mut mcids = Vec::new();

@@ -990,28 +990,28 @@ impl PdfDocument {
         }
 
         // Read the rest of the object data until "endobj"
-        let mut lines_read = 0;
-        const MAX_LINES: usize = 10000; // Prevent infinite loops
+        // Use byte limit instead of line count — large uncompressed streams can have
+        // hundreds of thousands of short lines (e.g., vector path drawing commands).
+        const MAX_BYTES: usize = 100 * 1024 * 1024; // 100 MB safety limit
 
         loop {
             let mut chunk = Vec::new();
             let bytes_read = self.reader.read_until(b'\n', &mut chunk)?;
 
-            lines_read += 1;
-            if lines_read > MAX_LINES {
+            if data.len() > MAX_BYTES {
                 log::warn!(
-                    "Object {} exceeded maximum line count ({}), truncating",
+                    "Object {} exceeded maximum byte limit ({} bytes), truncating",
                     obj_ref.id,
-                    MAX_LINES
+                    MAX_BYTES
                 );
                 break;
             }
 
             if bytes_read == 0 {
                 log::warn!(
-                    "Unexpected EOF while reading object {} (no endobj found after {} lines)",
+                    "Unexpected EOF while reading object {} (no endobj found after {} bytes)",
                     obj_ref.id,
-                    lines_read
+                    data.len()
                 );
                 // Don't fail - try to parse what we have
                 break;
@@ -1088,6 +1088,8 @@ impl PdfDocument {
     ) -> Result<Object> {
         use crate::objstm::parse_object_stream_with_decryption;
 
+        log::debug!("[load_compressed_debug] Loading obj {} from stream {}", obj_ref.id, stream_obj_num);
+
         // Ensure encryption is initialized if needed (lazy initialization)
         self.ensure_encryption_initialized()?;
 
@@ -1145,9 +1147,24 @@ impl PdfDocument {
         };
 
         // Cache all objects from the stream for future access
+        // IMPORTANT: Only cache objects whose xref entry points to THIS stream.
+        // In incremental updates, the same object number may exist in multiple streams,
+        // and we must not cache a stale version from an older stream.
         for (obj_num, object) in objects_map {
             let cache_ref = ObjectRef::new(obj_num, 0);
-            self.object_cache.insert(cache_ref, object);
+            let should_cache = if let Some(entry) = self.xref.get(obj_num) {
+                // Only cache if the xref says this object belongs to this stream
+                entry.entry_type == crate::xref::XRefEntryType::Compressed
+                    && entry.offset == stream_obj_num as u64
+            } else {
+                // Object not in xref at all -- safe to cache as it's only in this stream
+                true
+            };
+            if should_cache {
+                self.object_cache.insert(cache_ref, object);
+            } else {
+                log::debug!("[cache_debug] NOT caching obj {} from stream {} (xref points elsewhere)", obj_num, stream_obj_num);
+            }
         }
 
         Ok(obj)
@@ -2375,6 +2392,12 @@ impl PdfDocument {
         }
 
         if spans.is_empty() {
+            // Even with no text content, check for annotation text (form fields, etc.)
+            let mut text = String::new();
+            self.append_annotation_text(page_index, &mut text);
+            if !text.is_empty() {
+                return Ok(crate::converters::whitespace::cleanup_plain_text(&text));
+            }
             return Ok(String::new());
         }
 
@@ -2405,9 +2428,22 @@ impl PdfDocument {
                 }
             }
 
-            text.push_str(&span.text);
+            // Expand ligature characters (ﬀ→ff, ﬁ→fi, ﬂ→fl, ﬃ→ffi, ﬄ→ffl)
+            for ch in span.text.chars() {
+                if let Some(components) =
+                    crate::text::ligature_processor::get_ligature_components(ch)
+                {
+                    text.push_str(components);
+                } else {
+                    text.push(ch);
+                }
+            }
             prev_span = Some(span);
         }
+
+        // Append text from form fields and annotations on this page
+        // (Widget /V values, FreeText /Contents, Stamp appearance streams)
+        self.append_annotation_text(page_index, &mut text);
 
         // Apply whitespace cleanup for better readability
         // This normalizes excessive double spaces and blank lines
@@ -2543,19 +2579,398 @@ impl PdfDocument {
         gap > space_threshold && gap < font_size * 5.0
     }
 
-    /// Check if decoded content stream data contains a BT (Begin Text) operator.
+    /// Append text from form fields and annotations on a page.
+    ///
+    /// Extracts text from Widget annotations (form field values), FreeText annotations
+    /// (text box contents), and Stamp annotations (appearance stream text).
+    /// Skips hidden and invisible annotations per PDF spec flags.
+    fn append_annotation_text(&mut self, page_index: usize, text: &mut String) {
+        // Lightweight annotation text extraction — avoids full get_annotations() overhead.
+        // Only reads /Subtype, /V, /Contents, /F, and /Parent (for field value inheritance).
+        // Uses get_page() which is cached after first access.
+        let page_obj = match self.get_page(page_index) {
+            Ok(o) => o,
+            Err(_) => return,
+        };
+        let page_dict = match page_obj.as_dict() {
+            Some(d) => d,
+            None => return,
+        };
+
+        // Get /Annots array (may be direct or indirect)
+        let annots_arr = match page_dict.get("Annots") {
+            Some(Object::Array(arr)) => arr.clone(),
+            Some(Object::Reference(r)) => match self.load_object(*r) {
+                Ok(Object::Array(arr)) => arr,
+                _ => return,
+            },
+            _ => return, // No annotations on this page
+        };
+
+        let mut annot_texts: Vec<String> = Vec::new();
+
+        for annot_obj in &annots_arr {
+            let len_before_annot = annot_texts.len();
+            let annot_ref = match annot_obj {
+                Object::Reference(r) => *r,
+                _ => continue,
+            };
+            let dict = match self.load_object(annot_ref) {
+                Ok(obj) => match obj.as_dict() {
+                    Some(d) => d.clone(),
+                    None => continue,
+                },
+                Err(_) => continue,
+            };
+
+            // Check /F flags — skip hidden annotations (bit 2 = Hidden)
+            if let Some(Object::Integer(f)) = dict.get("F") {
+                if *f & 0x2 != 0 {
+                    continue;
+                }
+            }
+
+            let subtype = match dict.get("Subtype").and_then(|s| s.as_name()) {
+                Some(s) => s.to_string(),
+                None => continue,
+            };
+            let subtype_lower = subtype.to_ascii_lowercase();
+
+            match subtype_lower.as_str() {
+                "widget" => {
+                    // Try /AP/N (appearance stream) first — it shows what the user sees.
+                    // Fall back to /V (raw field value) if no AP stream text.
+                    let mut got_ap_text = false;
+                    if dict.contains_key("AP") {
+                        if let Some(ap_text) = self.extract_text_from_ap_stream(&dict) {
+                            let trimmed = ap_text.trim().to_string();
+                            if !trimmed.is_empty() {
+                                annot_texts.push(trimmed);
+                                got_ap_text = true;
+                            }
+                        }
+                    }
+                    if !got_ap_text {
+                        let value = Self::parse_string_value_static(dict.get("V"))
+                            .or_else(|| self.resolve_inherited_field_value(&dict));
+                        if let Some(v) = value {
+                            let trimmed = v.trim().to_string();
+                            if !trimmed.is_empty() {
+                                annot_texts.push(trimmed);
+                            }
+                        }
+                    }
+                    // Extract button caption from /MK/CA
+                    if let Some(mk_obj) = dict.get("MK") {
+                        let mk = if let Some(r) = mk_obj.as_reference() {
+                            self.load_object(r).ok()
+                        } else {
+                            Some(mk_obj.clone())
+                        };
+                        if let Some(mk) = mk {
+                            if let Some(mk_dict) = mk.as_dict() {
+                                if let Some(Object::String(ca)) = mk_dict.get("CA") {
+                                    let decoded = Self::decode_pdf_text_string(ca);
+                                    let trimmed = decoded.trim().to_string();
+                                    if !trimmed.is_empty() {
+                                        annot_texts.push(trimmed);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // Extract /Opt display values for choice fields (/FT /Ch)
+                    let ft = dict.get("FT").and_then(|o| o.as_name()).map(|s| s.to_string())
+                        .or_else(|| self.resolve_inherited_ft(&dict));
+                    if ft.as_deref() == Some("Ch") {
+                        if let Some(opt_obj) = dict.get("Opt") {
+                            let opt = if let Some(r) = opt_obj.as_reference() {
+                                self.load_object(r).ok()
+                            } else {
+                                Some(opt_obj.clone())
+                            };
+                            if let Some(Object::Array(items)) = opt {
+                                for item in &items {
+                                    match item {
+                                        Object::String(s) => {
+                                            let decoded = Self::decode_pdf_text_string(s);
+                                            let trimmed = decoded.trim().to_string();
+                                            if !trimmed.is_empty() {
+                                                annot_texts.push(trimmed);
+                                            }
+                                        }
+                                        Object::Array(pair) if pair.len() == 2 => {
+                                            // [export_value, display_value] — use display_value
+                                            if let Some(Object::String(s)) = pair.get(1) {
+                                                let decoded = Self::decode_pdf_text_string(s);
+                                                let trimmed = decoded.trim().to_string();
+                                                if !trimmed.is_empty() {
+                                                    annot_texts.push(trimmed);
+                                                }
+                                            }
+                                        }
+                                        _ => {}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                "freetext" | "stamp" | "text" => {
+                    if let Some(Object::String(s)) = dict.get("Contents") {
+                        let decoded = Self::decode_pdf_text_string(s);
+                        let trimmed = decoded.trim().to_string();
+                        if !trimmed.is_empty() {
+                            annot_texts.push(trimmed);
+                        }
+                    }
+                }
+                _ => {
+                    // For any other annotation type, also try /Contents
+                    if let Some(Object::String(s)) = dict.get("Contents") {
+                        let decoded = Self::decode_pdf_text_string(s);
+                        let trimmed = decoded.trim().to_string();
+                        if !trimmed.is_empty() {
+                            annot_texts.push(trimmed);
+                        }
+                    }
+                }
+            }
+
+            // Fallback: if no text was extracted from /V or /Contents,
+            // try extracting from the /AP/N (Normal Appearance) stream.
+            let text_before = annot_texts.len();
+            if text_before == len_before_annot {
+                if let Some(ap_text) = self.extract_text_from_ap_stream(&dict) {
+                    let trimmed = ap_text.trim().to_string();
+                    if !trimmed.is_empty() {
+                        annot_texts.push(trimmed);
+                    }
+                }
+            }
+        }
+
+        if !annot_texts.is_empty() {
+            if !text.is_empty() && !text.ends_with('\n') {
+                text.push('\n');
+            }
+            text.push_str(&annot_texts.join("\n"));
+        }
+    }
+
+    /// Extract text from an annotation's Normal Appearance stream (/AP/N).
+    ///
+    /// AP streams are content streams with their own /Resources. This creates
+    /// a temporary TextExtractor, loads fonts from the AP stream resources,
+    /// and extracts text spans from the decoded stream data.
+    fn extract_text_from_ap_stream(
+        &mut self,
+        annot_dict: &std::collections::HashMap<String, Object>,
+    ) -> Option<String> {
+        use crate::extractors::TextExtractor;
+
+        // Get /AP dictionary
+        let ap_obj = annot_dict.get("AP")?;
+        let ap = if let Some(r) = ap_obj.as_reference() {
+            self.load_object(r).ok()?
+        } else {
+            ap_obj.clone()
+        };
+        let ap_dict = ap.as_dict()?;
+
+        // Get /N (Normal appearance) — can be a stream ref or a dictionary of states
+        let n_obj = ap_dict.get("N")?;
+        let (n_stream, n_ref) = match n_obj {
+            Object::Reference(r) => (self.load_object(*r).ok()?, *r),
+            _ => return None, // N must be a reference to a stream
+        };
+
+        // Verify it's a stream (has a dict with stream data)
+        let n_dict = n_stream.as_dict()?;
+
+        // Decode the AP/N stream
+        let stream_data = match self.decode_stream_with_encryption(&n_stream, n_ref) {
+            Ok(data) => data,
+            Err(_) => return None,
+        };
+
+        // Quick check: does the stream contain text operators?
+        if !Self::may_contain_text(&stream_data) {
+            return None;
+        }
+
+        // Create a temporary text extractor for this AP stream
+        let mut extractor = TextExtractor::new();
+
+        // Load fonts from the AP/N stream's own /Resources
+        if let Some(resources) = n_dict.get("Resources") {
+            let res_obj = if let Some(r) = resources.as_reference() {
+                self.load_object(r).ok().unwrap_or_else(|| resources.clone())
+            } else {
+                resources.clone()
+            };
+            extractor.set_resources(res_obj.clone());
+            extractor.set_document(self as *mut PdfDocument);
+            let _ = self.load_fonts(&res_obj, &mut extractor);
+        } else {
+            // No resources on the AP stream — try the annotation's /DR or parent page resources
+            // For now, skip if no resources (can't decode fonts)
+            return None;
+        }
+
+        // Extract text spans from the AP stream
+        let spans = extractor.extract_text_spans(&stream_data).ok()?;
+        if spans.is_empty() {
+            return None;
+        }
+
+        // Collect span text
+        let text: String = spans.iter().map(|s| s.text.as_str()).collect::<Vec<_>>().join(" ");
+        if text.trim().is_empty() {
+            return None;
+        }
+        Some(text)
+    }
+
+    /// Walk /Parent chain to find inherited /FT (field type) value.
+    fn resolve_inherited_ft(
+        &mut self,
+        dict: &std::collections::HashMap<String, Object>,
+    ) -> Option<String> {
+        let mut parent_ref = match dict.get("Parent") {
+            Some(Object::Reference(r)) => Some(*r),
+            _ => return None,
+        };
+        let mut depth = 0;
+        while let Some(pref) = parent_ref {
+            if depth >= 10 {
+                break;
+            }
+            depth += 1;
+            if let Ok(parent_obj) = self.load_object(pref) {
+                if let Some(parent_dict) = parent_obj.as_dict() {
+                    if let Some(ft) = parent_dict.get("FT").and_then(|o| o.as_name()) {
+                        return Some(ft.to_string());
+                    }
+                    parent_ref = match parent_dict.get("Parent") {
+                        Some(Object::Reference(r)) => Some(*r),
+                        _ => None,
+                    };
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+        None
+    }
+
+    /// Walk /Parent chain to find inherited /V value (PDF spec 12.7.3.1).
+    fn resolve_inherited_field_value(
+        &mut self,
+        dict: &std::collections::HashMap<String, Object>,
+    ) -> Option<String> {
+        let mut parent_ref = match dict.get("Parent") {
+            Some(Object::Reference(r)) => Some(*r),
+            _ => return None,
+        };
+        let mut depth = 0;
+        while let Some(pref) = parent_ref {
+            if depth >= 10 {
+                break;
+            }
+            depth += 1;
+            if let Ok(parent_obj) = self.load_object(pref) {
+                if let Some(parent_dict) = parent_obj.as_dict() {
+                    if let Some(v) = Self::parse_string_value_static(parent_dict.get("V")) {
+                        return Some(v);
+                    }
+                    parent_ref = match parent_dict.get("Parent") {
+                        Some(Object::Reference(r)) => Some(*r),
+                        _ => None,
+                    };
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+        None
+    }
+
+    /// Parse a string value from a PDF object with proper PDF string decoding.
+    /// Handles UTF-16BE (BOM \xFE\xFF) and PDFDocEncoding per ISO 32000-1 §7.9.2.2.
+    fn parse_string_value_static(obj: Option<&Object>) -> Option<String> {
+        match obj {
+            Some(Object::String(s)) => Some(Self::decode_pdf_text_string(s)),
+            Some(Object::Name(n)) => Some(n.clone()),
+            Some(Object::Integer(i)) => Some(i.to_string()),
+            Some(Object::Real(f)) => Some(f.to_string()),
+            _ => None,
+        }
+    }
+
+    /// Decode a PDF text string that may be UTF-16BE/LE (with BOM) or PDFDocEncoding.
+    fn decode_pdf_text_string(bytes: &[u8]) -> String {
+        if bytes.len() >= 2 && bytes[0] == 0xFE && bytes[1] == 0xFF {
+            // UTF-16BE with BOM
+            let utf16_bytes = &bytes[2..];
+            let utf16_pairs: Vec<u16> = utf16_bytes
+                .chunks_exact(2)
+                .map(|chunk| u16::from_be_bytes([chunk[0], chunk[1]]))
+                .collect();
+            String::from_utf16(&utf16_pairs).unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
+        } else if bytes.len() >= 2 && bytes[0] == 0xFF && bytes[1] == 0xFE {
+            // UTF-16LE with BOM
+            let utf16_bytes = &bytes[2..];
+            let utf16_pairs: Vec<u16> = utf16_bytes
+                .chunks_exact(2)
+                .map(|chunk| u16::from_le_bytes([chunk[0], chunk[1]]))
+                .collect();
+            String::from_utf16(&utf16_pairs).unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
+        } else {
+            // PDFDocEncoding — superset of ISO Latin-1
+            bytes
+                .iter()
+                .filter_map(|&b| crate::fonts::font_dict::pdfdoc_encoding_lookup(b))
+                .collect()
+        }
+    }
+
+    /// Check if decoded content stream data may contain text.
+    ///
+    /// Returns true if the stream contains either:
+    /// - A BT (Begin Text) operator (text is directly in the page stream)
+    /// - A Do operator (Form XObject invocation that may contain text)
     ///
     /// Per §9.4.3, text-showing operators shall only appear within BT...ET text
-    /// objects. If there is no BT operator, the page contains no text at all.
-    /// We verify BT appears as a standalone operator (bounded by whitespace or
-    /// stream boundaries) to avoid false matches inside strings or names.
-    fn has_bt_operator(data: &[u8]) -> bool {
+    /// objects. However, a page may contain text only inside Form XObjects
+    /// referenced via `Do` operators, so we must also check for those.
+    fn may_contain_text(data: &[u8]) -> bool {
+        // PDF delimiter characters per ISO 32000-1:2008 Table 2
+        fn is_delimiter(b: u8) -> bool {
+            matches!(b, b'(' | b')' | b'<' | b'>' | b'[' | b']' | b'{' | b'}' | b'/' | b'%')
+        }
+        fn is_boundary(b: u8) -> bool {
+            b.is_ascii_whitespace() || is_delimiter(b)
+        }
         let len = data.len();
         let mut i = 0;
         while i + 1 < len {
+            // Check for BT (Begin Text)
             if data[i] == b'B' && data[i + 1] == b'T' {
-                let before_ok = i == 0 || data[i - 1].is_ascii_whitespace();
-                let after_ok = i + 2 >= len || data[i + 2].is_ascii_whitespace();
+                let before_ok = i == 0 || is_boundary(data[i - 1]);
+                let after_ok = i + 2 >= len || is_boundary(data[i + 2]);
+                if before_ok && after_ok {
+                    return true;
+                }
+            }
+            // Check for Do (XObject invocation)
+            if data[i] == b'D' && data[i + 1] == b'o' {
+                let before_ok = i == 0 || is_boundary(data[i - 1]);
+                let after_ok = i + 2 >= len || is_boundary(data[i + 2]);
                 if before_ok && after_ok {
                     return true;
                 }
@@ -2607,7 +3022,9 @@ impl PdfDocument {
         let all_spans = self.extract_spans(page_index)?;
 
         if all_spans.is_empty() {
-            return Ok(String::new());
+            let mut text = String::new();
+            self.append_annotation_text(page_index, &mut text);
+            return Ok(text);
         }
 
         // Step 2: Build MCID → Vec<TextSpan> map
@@ -2641,6 +3058,7 @@ impl PdfDocument {
         // Step 4: Assemble text in structure order
         let mut text = String::with_capacity(mcid_map.len() * 50); // estimate
         let mut prev_span: Option<&TextSpan> = None;
+        let mut consumed_mcids: std::collections::HashSet<u32> = std::collections::HashSet::new();
 
         for content in &ordered_content {
             // Handle word break markers by inserting a space
@@ -2651,20 +3069,29 @@ impl PdfDocument {
                 continue;
             }
 
+            // If the structure element has ActualText, use it instead of the extracted spans
+            if let Some(ref actual_text_val) = content.actual_text {
+                if !actual_text_val.is_empty() {
+                    if !text.is_empty() && !text.ends_with(' ') && !text.ends_with('\n') {
+                        text.push('\n');
+                    }
+                    text.push_str(actual_text_val);
+                    continue;
+                }
+            }
+
             // For regular content with MCID
             let Some(mcid) = content.mcid else {
-                continue; // Skip entries without MCID (shouldn't happen except for WB)
+                continue;
             };
 
             if let Some(spans) = mcid_map.get(&mcid) {
-                // Process all spans for this MCID
+                consumed_mcids.insert(mcid);
                 for span in spans {
-                    // Check if we need space or line break
                     if let Some(prev) = prev_span {
                         let y_diff = (prev.bbox.y - span.bbox.y).abs();
 
                         if y_diff > 2.0 {
-                            // New line
                             let font_size = span.font_size.max(10.0);
                             let line_height = font_size * 1.2;
                             let num_breaks = (y_diff / line_height).round() as usize;
@@ -2676,7 +3103,15 @@ impl PdfDocument {
                         }
                     }
 
-                    text.push_str(&span.text);
+                    for ch in span.text.chars() {
+                        if let Some(components) =
+                            crate::text::ligature_processor::get_ligature_components(ch)
+                        {
+                            text.push_str(components);
+                        } else {
+                            text.push(ch);
+                        }
+                    }
                     prev_span = Some(span);
                 }
             } else {
@@ -2684,6 +3119,43 @@ impl PdfDocument {
                     "Structure tree references MCID {} but no spans found with that MCID",
                     mcid
                 );
+            }
+        }
+
+        // Append spans with MCIDs not referenced by the structure tree.
+        // This happens with Form XObjects that lack /StructParents, where
+        // their BDC/MCID markers exist in the content stream but are not
+        // registered in the page's ParentTree.
+        let unconsumed: Vec<(&u32, &Vec<TextSpan>)> = mcid_map
+            .iter()
+            .filter(|(mcid, _)| !consumed_mcids.contains(mcid))
+            .collect();
+        if !unconsumed.is_empty() {
+            log::debug!(
+                "Appending {} unreferenced MCIDs (e.g., from Form XObjects without StructParents)",
+                unconsumed.len()
+            );
+            for (_mcid, spans) in &unconsumed {
+                for span in *spans {
+                    if let Some(prev) = prev_span {
+                        let y_diff = (prev.bbox.y - span.bbox.y).abs();
+                        if y_diff > 2.0 {
+                            text.push('\n');
+                        } else if Self::should_insert_space(prev, span) {
+                            text.push(' ');
+                        }
+                    }
+                    for ch in span.text.chars() {
+                        if let Some(components) =
+                            crate::text::ligature_processor::get_ligature_components(ch)
+                        {
+                            text.push_str(components);
+                        } else {
+                            text.push(ch);
+                        }
+                    }
+                    prev_span = Some(span);
+                }
             }
         }
 
@@ -2702,10 +3174,22 @@ impl PdfDocument {
                         text.push(' ');
                     }
                 }
-                text.push_str(&span.text);
+                // Expand ligature characters
+                for ch in span.text.chars() {
+                    if let Some(components) =
+                        crate::text::ligature_processor::get_ligature_components(ch)
+                    {
+                        text.push_str(components);
+                    } else {
+                        text.push(ch);
+                    }
+                }
                 prev_span = Some(span);
             }
         }
+
+        // Append text from form fields and annotations
+        self.append_annotation_text(page_index, &mut text);
 
         Ok(text)
     }
@@ -2766,15 +3250,7 @@ impl PdfDocument {
             },
         };
 
-        // Early-out for pages with no text content (§9.4.3: text-showing operators
-        // shall only appear within BT...ET text objects). If there's no BT operator,
-        // there can be no text — skip the entire two-pass extraction pipeline.
-        // This is a major speedup for scanned-image PDFs.
-        if !Self::has_bt_operator(&content_data) {
-            log::debug!(
-                "Page {} has no BT operator, skipping text extraction (image-only page)",
-                page_index
-            );
+        if !Self::may_contain_text(&content_data) {
             return Ok(Vec::new());
         }
 
@@ -2851,7 +3327,7 @@ impl PdfDocument {
         };
 
         // Early-out for pages with no text content (§9.4.3)
-        if !Self::has_bt_operator(&content_data) {
+        if !Self::may_contain_text(&content_data) {
             return Ok(Vec::new());
         }
 
@@ -2940,7 +3416,7 @@ impl PdfDocument {
         };
 
         // Early-out for pages with no text content (§9.4.3)
-        if !Self::has_bt_operator(&content_data) {
+        if !Self::may_contain_text(&content_data) {
             return Ok(Vec::new());
         }
 
@@ -3912,7 +4388,7 @@ impl PdfDocument {
     }
 
     /// Load fonts from a Resources dictionary into the extractor.
-    fn load_fonts(
+    pub(crate) fn load_fonts(
         &mut self,
         resources: &Object,
         extractor: &mut crate::extractors::TextExtractor,
@@ -3989,6 +4465,13 @@ impl PdfDocument {
                 }
             }
         }
+
+        // Cross-font TrueType cmap sharing: when a CIDFontType2 Identity-H font
+        // has no embedded font data (no TrueType cmap), try to borrow the cmap
+        // from another font on the same page with the same base font name.
+        // This handles PDFs that create paired font resources (e.g., a simple TrueType
+        // font with embedded data + a CID font referencing the same base font without).
+        extractor.share_truetype_cmaps();
 
         Ok(())
     }
@@ -5363,9 +5846,19 @@ pub fn parse_header<R: Read + Seek>(reader: &mut R, lenient: bool) -> Result<(u8
 
             Ok((major, minor, header_start))
         },
-        None => Err(Error::InvalidHeader(
-            "No PDF header found in first 8192 bytes of file".to_string(),
-        )),
+        None => {
+            if lenient {
+                // Some PDFs lack a %PDF- header entirely (e.g., start with a binary
+                // comment like %\xe2\xe3\xcf\xd3). Default to version 1.4.
+                log::warn!("No %PDF- header found; assuming version 1.4 in lenient mode");
+                reader.seek(SeekFrom::Start(0))?;
+                Ok((1, 4, 0))
+            } else {
+                Err(Error::InvalidHeader(
+                    "No PDF header found in first 8192 bytes of file".to_string(),
+                ))
+            }
+        },
     }
 }
 
@@ -5620,11 +6113,12 @@ mod tests {
 
     #[test]
     fn test_parse_header_not_found_lenient() {
-        // No header in first 1024 bytes, lenient mode should fail
+        // No header in first 1024 bytes, lenient mode defaults to 1.4
         let data = vec![0u8; 1024];
         let mut cursor = Cursor::new(data);
-        let result = parse_header(&mut cursor, true);
-        assert!(result.is_err());
+        let (major, minor, offset) = parse_header(&mut cursor, true).unwrap();
+        assert_eq!((major, minor), (1, 4));
+        assert_eq!(offset, 0);
     }
 
     #[test]

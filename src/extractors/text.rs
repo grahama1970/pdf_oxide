@@ -1484,88 +1484,116 @@ fn fallback_char_to_unicode(char_code: u16) -> String {
 ///
 /// For Type0/CIDFonts (like UTF-16), this processes bytes in pairs.
 /// For simple fonts (Type1, TrueType), this processes bytes individually.
-fn decode_text_to_unicode(bytes: &[u8], font: Option<&FontInfo>) -> String {
-    // DIAGNOSTIC: Log Font 'F1' text decoding to trace replacement characters
-    if let Some(font) = font {
-        if font.base_font == "F1" {
-            let hex_bytes: String = bytes
-                .iter()
-                .map(|b| format!("{:02X}", b))
-                .collect::<Vec<_>>()
-                .join(" ");
-            log::warn!(
-                "🔍 decode_text_to_unicode: Font 'F1' processing {} bytes: [{}]",
-                bytes.len(),
-                hex_bytes
-            );
 
-            // Check if bytes contain literal UTF-8 replacement character (0xEF 0xBF 0xBD)
-            if bytes.len() >= 3 {
-                for i in 0..=bytes.len() - 3 {
-                    if bytes[i] == 0xEF && bytes[i + 1] == 0xBF && bytes[i + 2] == 0xBD {
-                        log::warn!(
-                            "⚠️  FOUND LITERAL UTF-8 REPLACEMENT CHAR at byte offset {}! \
-                             This proves Hypothesis 1 - PDF contains literal UTF-8 in content stream",
-                            i
-                        );
+/// Byte grouping mode for CID font character code decoding.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum ByteMode {
+    /// Single-byte codes (simple fonts, some predefined CMaps)
+    OneByte,
+    /// Always 2-byte codes (Identity-H/V, UCS2)
+    TwoByte,
+    /// Shift-JIS variable-width (1 or 2 bytes depending on lead byte)
+    ShiftJIS,
+}
+
+fn decode_text_to_unicode(bytes: &[u8], font: Option<&FontInfo>) -> String {
+    let raw_result = if let Some(font) = font {
+        // Determine byte grouping for Type0 CID fonts based on encoding.
+        let byte_mode = if font.subtype == "Type0" {
+            match &font.encoding {
+                crate::fonts::Encoding::Identity => ByteMode::TwoByte,
+                crate::fonts::Encoding::Standard(name) => {
+                    if name.contains("Identity") && !name.contains("OneByteIdentity") {
+                        ByteMode::TwoByte
+                    } else if name.contains("UCS2") || name.contains("UTF16") {
+                        // UniJIS-UCS2-H, UniCNS-UCS2-H, etc. — always 2-byte
+                        ByteMode::TwoByte
+                    } else if name.contains("RKSJ") {
+                        // 90ms-RKSJ-H, 90ms-RKSJ-V — Shift-JIS variable-width
+                        ByteMode::ShiftJIS
+                    } else {
+                        // Other predefined CMaps (EUC, etc.) — treat as 1-byte
+                        // and let char_to_unicode handle the mapping
+                        ByteMode::OneByte
                     }
                 }
+                _ => ByteMode::OneByte,
             }
-        }
-    }
-
-    if let Some(font) = font {
-        // Check if font uses multi-byte character codes
-        let is_type0 = font.subtype == "Type0";
-
-        if is_type0 && bytes.len() >= 2 {
-            // Type0 fonts use 2-byte character codes (big-endian)
-            // ===== NEW VALIDATION CODE START =====
-            if !bytes.len().is_multiple_of(2) {
-                log::warn!(
-                    "Type0 font '{}' has ODD byte count ({})! Expected even count. \
-                     Last byte will be processed as single-byte fallback. \
-                     This may indicate a malformed content stream.",
-                    font.base_font,
-                    bytes.len()
-                );
-            }
-            // ===== NEW VALIDATION CODE END =====
-
-            // Type0 fonts use 2-byte character codes (usually UTF-16 BE)
-            let mut result = String::new();
-            let mut i = 0;
-            while i < bytes.len() {
-                if i + 1 < bytes.len() {
-                    // Combine two bytes into a 16-bit character code (big-endian)
-                    let char_code = ((bytes[i] as u16) << 8) | (bytes[i + 1] as u16);
-                    let char_str = font
-                        .char_to_unicode(char_code as u32)
-                        .unwrap_or_else(|| fallback_char_to_unicode(char_code));
-                    result.push_str(&char_str);
-                    i += 2;
-                } else {
-                    // Odd byte at end - process as single byte
-                    let char_code = bytes[i] as u16;
-                    let char_str = font
-                        .char_to_unicode(char_code as u32)
-                        .unwrap_or_else(|| fallback_char_to_unicode(char_code));
-                    result.push_str(&char_str);
-                    i += 1;
-                }
-            }
-            result
         } else {
-            // Simple fonts use single-byte character codes
-            let mut result = String::new();
-            for &byte in bytes {
-                let char_code = byte as u16;
-                let char_str = font
-                    .char_to_unicode(char_code as u32)
-                    .unwrap_or_else(|| fallback_char_to_unicode(char_code));
-                result.push_str(&char_str);
+            ByteMode::OneByte
+        };
+
+        match byte_mode {
+            ByteMode::TwoByte if bytes.len() >= 2 => {
+                // Type0 2-byte encoding (Identity-H/V, UCS2, etc.)
+                let mut result = String::new();
+                let mut i = 0;
+                while i < bytes.len() {
+                    if i + 1 < bytes.len() {
+                        let char_code = ((bytes[i] as u16) << 8) | (bytes[i + 1] as u16);
+                        let char_str = font
+                            .char_to_unicode(char_code as u32)
+                            .unwrap_or_else(|| fallback_char_to_unicode(char_code));
+                        if char_str != "\u{FFFD}" {
+                            result.push_str(&char_str);
+                        }
+                        i += 2;
+                    } else {
+                        let char_code = bytes[i] as u16;
+                        let char_str = font
+                            .char_to_unicode(char_code as u32)
+                            .unwrap_or_else(|| fallback_char_to_unicode(char_code));
+                        if char_str != "\u{FFFD}" {
+                            result.push_str(&char_str);
+                        }
+                        i += 1;
+                    }
+                }
+                result
             }
-            result
+            ByteMode::ShiftJIS => {
+                // Shift-JIS variable-width: bytes 0x81-0x9F and 0xE0-0xFC start
+                // 2-byte sequences; all others are single-byte.
+                let mut result = String::new();
+                let mut i = 0;
+                while i < bytes.len() {
+                    let b = bytes[i];
+                    let is_lead = (0x81..=0x9F).contains(&b) || (0xE0..=0xFC).contains(&b);
+                    if is_lead && i + 1 < bytes.len() {
+                        let char_code = ((b as u16) << 8) | (bytes[i + 1] as u16);
+                        let char_str = font
+                            .char_to_unicode(char_code as u32)
+                            .unwrap_or_else(|| fallback_char_to_unicode(char_code));
+                        if char_str != "\u{FFFD}" {
+                            result.push_str(&char_str);
+                        }
+                        i += 2;
+                    } else {
+                        let char_str = font
+                            .char_to_unicode(b as u32)
+                            .unwrap_or_else(|| fallback_char_to_unicode(b as u16));
+                        if char_str != "\u{FFFD}" {
+                            result.push_str(&char_str);
+                        }
+                        i += 1;
+                    }
+                }
+                result
+            }
+            _ => {
+                // Simple fonts use single-byte character codes
+                let mut result = String::new();
+                for &byte in bytes {
+                    let char_code = byte as u16;
+                    let char_str = font
+                        .char_to_unicode(char_code as u32)
+                        .unwrap_or_else(|| fallback_char_to_unicode(char_code));
+                    if char_str != "\u{FFFD}" {
+                        result.push_str(&char_str);
+                    }
+                }
+                result
+            }
         }
     } else {
         // No font - fallback to Latin-1 (ISO 8859-1) encoding
@@ -1576,7 +1604,17 @@ fn decode_text_to_unicode(bytes: &[u8], font: Option<&FontInfo>) -> String {
             bytes.len()
         );
         bytes.iter().map(|&b| char::from(b)).collect()
+    };
+
+    // Fix 3: Filter control characters from failed encoding resolution
+    // Keep: \t (0x09), \n (0x0A), \r (0x0D), and all printable chars (>= 0x20)
+    let mut filtered = String::with_capacity(raw_result.len());
+    for c in raw_result.chars() {
+        if c >= '\x20' || c == '\t' || c == '\n' || c == '\r' {
+            filtered.push(c);
+        }
     }
+    filtered
 }
 
 /// Artifact type classification per PDF Spec Section 14.8.2.2
@@ -2029,6 +2067,66 @@ impl TextExtractor {
         }
     }
 
+    /// Decode a PDF text string (handles UTF-16BE/LE with BOM and PDFDocEncoding).
+    fn decode_pdf_text_string(bytes: &[u8]) -> String {
+        if bytes.len() >= 2 && bytes[0] == 0xFE && bytes[1] == 0xFF {
+            // UTF-16BE with BOM
+            let utf16_pairs: Vec<u16> = bytes[2..]
+                .chunks_exact(2)
+                .map(|chunk| u16::from_be_bytes([chunk[0], chunk[1]]))
+                .collect();
+            String::from_utf16(&utf16_pairs)
+                .unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
+        } else if bytes.len() >= 2 && bytes[0] == 0xFF && bytes[1] == 0xFE {
+            // UTF-16LE with BOM
+            let utf16_pairs: Vec<u16> = bytes[2..]
+                .chunks_exact(2)
+                .map(|chunk| u16::from_le_bytes([chunk[0], chunk[1]]))
+                .collect();
+            String::from_utf16(&utf16_pairs)
+                .unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
+        } else {
+            // PDFDocEncoding — try as UTF-8 first, fall back to lossy
+            String::from_utf8(bytes.to_vec())
+                .unwrap_or_else(|_| String::from_utf8_lossy(bytes).to_string())
+        }
+    }
+
+    /// Resolve BDC properties: can be an inline dictionary or a name referencing /Properties resource.
+    fn resolve_bdc_properties(&self, properties: &Object) -> Option<std::collections::HashMap<String, Object>> {
+        // Inline dictionary
+        if let Some(dict) = properties.as_dict() {
+            return Some(dict.clone());
+        }
+
+        // Name reference — look up in /Properties sub-dictionary of resources
+        let prop_name = properties.as_name()?;
+        let resources = self.resources.as_ref()?;
+        let res_dict = if let Some(res_ref) = resources.as_reference() {
+            let doc = unsafe { &mut *self.document? };
+            doc.load_object(res_ref).ok()?
+        } else {
+            resources.clone()
+        };
+        let res_dict = res_dict.as_dict()?;
+        let properties_dict_obj = res_dict.get("Properties")?;
+        let properties_dict = if let Some(r) = properties_dict_obj.as_reference() {
+            let doc = unsafe { &mut *self.document? };
+            doc.load_object(r).ok()?
+        } else {
+            properties_dict_obj.clone()
+        };
+        let properties_dict = properties_dict.as_dict()?;
+        let prop_obj = properties_dict.get(prop_name)?;
+        let resolved = if let Some(r) = prop_obj.as_reference() {
+            let doc = unsafe { &mut *self.document? };
+            doc.load_object(r).ok()?
+        } else {
+            prop_obj.clone()
+        };
+        resolved.as_dict().cloned()
+    }
+
     /// Get current ActualText from marked content stack (PDF Spec Section 14.9.4).
     ///
     /// Searches from the innermost marked content context outward, returning
@@ -2120,6 +2218,61 @@ impl TextExtractor {
     /// ```
     pub fn add_font(&mut self, name: String, font: FontInfo) {
         self.fonts.insert(name, font);
+    }
+
+    /// Share TrueType cmap tables between fonts with matching base font names.
+    /// When a CIDFontType2 Identity-H font has no truetype_cmap, borrow from
+    /// another font on the same page with the same base font name (ignoring subset prefix).
+    pub fn share_truetype_cmaps(&mut self) {
+        // Strip subset prefix (e.g., "QQPMQK+Impact" → "Impact")
+        fn strip_subset(name: &str) -> &str {
+            if name.len() > 7 && name.as_bytes()[6] == b'+' && name[..6].chars().all(|c| c.is_ascii_uppercase()) {
+                &name[7..]
+            } else {
+                name
+            }
+        }
+
+        // First pass: collect available TrueType cmaps keyed by stripped base font name
+        let mut cmap_donors: Vec<(String, crate::fonts::truetype_cmap::TrueTypeCMap)> = Vec::new();
+        for font in self.fonts.values() {
+            if let Some(ref cmap) = font.truetype_cmap {
+                let stripped = strip_subset(&font.base_font).to_string();
+                cmap_donors.push((stripped, cmap.clone()));
+            }
+        }
+
+        if cmap_donors.is_empty() {
+            return;
+        }
+
+        // Second pass: find CIDFontType2 Identity-H fonts without truetype_cmap
+        for font in self.fonts.values_mut() {
+            if font.truetype_cmap.is_some() {
+                continue;
+            }
+            // Only target Type0 CIDFontType2 with Identity-H encoding
+            if font.subtype != "Type0" {
+                continue;
+            }
+            let is_identity = matches!(&font.encoding, crate::fonts::Encoding::Identity)
+                || matches!(&font.encoding, crate::fonts::Encoding::Standard(ref n) if n.contains("Identity"));
+            if !is_identity {
+                continue;
+            }
+
+            let stripped = strip_subset(&font.base_font);
+            for (donor_name, donor_cmap) in &cmap_donors {
+                if donor_name == stripped {
+                    log::info!(
+                        "Sharing TrueType cmap from donor font to '{}' (Identity-H, no embedded font)",
+                        font.base_font
+                    );
+                    font.truetype_cmap = Some(donor_cmap.clone());
+                    break;
+                }
+            }
+        }
     }
 
     /// Extract text from a content stream.
@@ -2514,6 +2667,7 @@ impl TextExtractor {
         let mut deduplicated = Vec::with_capacity(self.spans.len());
         let mut prev_y_rounded: Option<i32> = None;
         let mut prev_x: Option<f32> = None;
+        let mut prev_text: Option<String> = None;
         let mut seen_content: std::collections::HashMap<String, (f32, f32)> =
             std::collections::HashMap::new();
 
@@ -2524,37 +2678,30 @@ impl TextExtractor {
             let y_rounded = span.bbox.y.round() as i32;
             let x = span.bbox.x;
 
-            // PHASE 1: Geometric deduplication (identical positions)
+            // PHASE 1: Geometric deduplication — require BOTH position AND text match
             let geometric_duplicate =
-                if let (Some(prev_y), Some(prev_x_val)) = (prev_y_rounded, prev_x) {
-                    // Same line and within 2pt horizontally
-                    y_rounded == prev_y && (x - prev_x_val).abs() < 2.0
+                if let (Some(prev_y), Some(prev_x_val), Some(ref prev_txt)) =
+                    (prev_y_rounded, prev_x, &prev_text)
+                {
+                    y_rounded == prev_y
+                        && (x - prev_x_val).abs() < 2.0
+                        && &span.text == prev_txt
                 } else {
                     false
                 };
 
-            // PHASE 2: Content-based deduplication (different positions, same text)
+            // PHASE 2: Content-based deduplication — require positions to OVERLAP
             let content_duplicate = if span.text.len() >= 5 {
-                // Only check non-trivial text (5+ chars to avoid false positives like "the")
-                if let Some((prev_x, prev_y)) = seen_content.get(&span.text) {
-                    let y_diff = (span.bbox.y - prev_y).abs();
-                    let x_diff = (span.bbox.x - prev_x).abs();
+                if let Some((prev_x_val, prev_y_val)) = seen_content.get(&span.text) {
+                    let y_diff = (span.bbox.y - prev_y_val).abs();
+                    let x_diff = (span.bbox.x - prev_x_val).abs();
 
-                    // Same line (Y within 2.0pt tolerance) AND different position (X differs by > 10pt)
+                    // Only dedup when spans overlap geometrically (X within 5pt)
+                    // NOT when they're at different positions on the same line
                     let same_line = y_diff < 2.0;
-                    let different_position = x_diff > 10.0;
+                    let overlapping_position = x_diff < 5.0;
 
-                    if same_line && different_position {
-                        log::debug!(
-                            "Content duplicate: '{}' at X={:.1} (original at X={:.1})",
-                            span.text.chars().take(30).collect::<String>(),
-                            span.bbox.x,
-                            prev_x
-                        );
-                        true
-                    } else {
-                        false
-                    }
+                    same_line && overlapping_position
                 } else {
                     false
                 }
@@ -2570,6 +2717,7 @@ impl TextExtractor {
                 deduplicated.push(span.clone());
                 prev_y_rounded = Some(y_rounded);
                 prev_x = Some(x);
+                prev_text = Some(span.text.clone());
 
                 // Track content for duplicate detection
                 if span.text.len() >= 5 {
@@ -2985,6 +3133,11 @@ impl TextExtractor {
         match op {
             // Text state operators
             Operator::Tf { font, size } => {
+                // Flush Tj buffer before changing font — the buffer decodes bytes
+                // using the font set at creation time, so a font change requires a
+                // new buffer to avoid decoding with the wrong ToUnicode CMap.
+                self.flush_tj_span_buffer()?;
+
                 let state = self.state_stack.current_mut();
                 state.font_name = Some(font);
                 state.font_size = size;
@@ -3032,12 +3185,10 @@ impl TextExtractor {
 
             // Text showing operators
             Operator::Tj { text } => {
-                // Per PDF Spec Section 14.6: Skip text extraction if inside /Artifact
-                // Artifacts include headers, footers, watermarks, resource paths, etc.
-                if self.inside_artifact {
-                    log::debug!("Skipping text in /Artifact: {:?}", text);
-                    return Ok(());
-                }
+                // Note: We do NOT skip /Artifact content here.
+                // Many PDFs incorrectly mark page content as artifacts.
+                // For tagged PDFs, the structure tree already excludes artifacts
+                // via MCID mapping, so no filtering is needed at extractor level.
 
                 // ActualText override
                 // Per PDF Spec ISO 32000-1:2008, Section 14.9.4:
@@ -3090,15 +3241,10 @@ impl TextExtractor {
                 }
             },
             Operator::TJ { array } => {
-                // Per PDF Spec Section 14.6: Skip text extraction if inside /Artifact
-                // Artifacts include headers, footers, watermarks, resource paths, etc.
-                if self.inside_artifact {
-                    log::debug!(
-                        "Skipping text in /Artifact: TJ array with {} elements",
-                        array.len()
-                    );
-                    return Ok(());
-                }
+                // Note: We do NOT skip /Artifact content here.
+                // Many PDFs incorrectly mark page content as artifacts.
+                // For tagged PDFs, the structure tree already excludes artifacts
+                // via MCID mapping, so no filtering is needed at extractor level.
 
                 // ActualText override
                 // Per PDF Spec ISO 32000-1:2008, Section 14.9.4:
@@ -3179,8 +3325,9 @@ impl TextExtractor {
                                         let font_size = state.font_size;
                                         let fill_color_rgb = state.fill_color_rgb;
 
-                                        // Calculate effective font size (accounting for text matrix scaling)
-                                        let effective_font_size = font_size * text_matrix.d.abs();
+                                        // Calculate effective font size (accounting for CTM and text matrix scaling)
+                                        let combined = ctm.multiply(&text_matrix);
+                                        let effective_font_size = font_size * (combined.d * combined.d + combined.b * combined.b).sqrt();
 
                                         // Get font for determining weight
                                         let font = font_name
@@ -3253,7 +3400,10 @@ impl TextExtractor {
                 }
             },
             Operator::Quote { text } => {
-                // Move to next line and show text
+                // ' operator: Move to next line (T*) and show text (Tj)
+                // Flush any pending span buffer before line break
+                self.flush_tj_span_buffer()?;
+
                 let leading = self.state_stack.current().leading;
                 {
                     let state = self.state_stack.current_mut();
@@ -3261,14 +3411,29 @@ impl TextExtractor {
                     state.text_line_matrix = state.text_line_matrix.multiply(&tm);
                     state.text_matrix = state.text_line_matrix;
                 }
-                self.show_text(&text)?;
+
+                if self.extract_spans {
+                    if self.tj_span_buffer.is_none() {
+                        self.tj_span_buffer =
+                            Some(TjBuffer::new(self.state_stack.current(), self.current_mcid));
+                    }
+                    if let Some(ref mut buffer) = self.tj_span_buffer {
+                        buffer.append(&text, &self.fonts)?;
+                    }
+                    self.advance_position_for_string(&text)?;
+                } else {
+                    self.show_text(&text)?;
+                }
             },
             Operator::DoubleQuote {
                 word_space,
                 char_space,
                 text,
             } => {
-                // Set spacing, move to next line, and show text
+                // " operator: Set spacing, move to next line (T*), and show text (Tj)
+                // Flush any pending span buffer before line break
+                self.flush_tj_span_buffer()?;
+
                 {
                     let state = self.state_stack.current_mut();
                     state.word_space = word_space;
@@ -3278,7 +3443,19 @@ impl TextExtractor {
                     state.text_line_matrix = state.text_line_matrix.multiply(&tm);
                     state.text_matrix = state.text_line_matrix;
                 }
-                self.show_text(&text)?;
+
+                if self.extract_spans {
+                    if self.tj_span_buffer.is_none() {
+                        self.tj_span_buffer =
+                            Some(TjBuffer::new(self.state_stack.current(), self.current_mcid));
+                    }
+                    if let Some(ref mut buffer) = self.tj_span_buffer {
+                        buffer.append(&text, &self.fonts)?;
+                    }
+                    self.advance_position_for_string(&text)?;
+                } else {
+                    self.show_text(&text)?;
+                }
             },
 
             // Text state parameters
@@ -3822,14 +3999,12 @@ impl TextExtractor {
 
             Operator::BeginMarkedContentDict { tag, properties } => {
                 // BDC can have properties including MCID, artifact indicators, ActualText, and expansion
-                // PDF Spec Section 14.9.4: ActualText provides replacement text for content
-                // PDF Spec Section 14.9.5: /E provides expansion for abbreviations
+                // Properties can be an inline dictionary or a name referencing /Properties resource
                 let mut actual_text = None;
                 let mut artifact_type = None;
                 let mut expansion = None;
 
-                if let Some(props_dict) = properties.as_dict() {
-                    // Extract MCID if present
+                if let Some(props_dict) = self.resolve_bdc_properties(&properties) {
                     if let Some(mcid_obj) = props_dict.get("MCID") {
                         if let Some(mcid) = mcid_obj.as_integer() {
                             self.current_mcid = Some(mcid as u32);
@@ -3837,28 +4012,22 @@ impl TextExtractor {
                         }
                     }
 
-                    // Extract ActualText if present (PDF Spec Section 14.9.4)
-                    // ActualText provides exact text representation (e.g., ligatures, decorated glyphs)
                     if let Some(actual_text_obj) = props_dict.get("ActualText") {
                         if let Some(text_bytes) = actual_text_obj.as_string() {
-                            // Convert UTF-8 bytes to String, fall back to lossy conversion if invalid
-                            actual_text = Some(String::from_utf8_lossy(text_bytes).to_string());
+                            actual_text = Some(Self::decode_pdf_text_string(text_bytes));
                             log::debug!("Marked content has ActualText: {:?}", actual_text);
                         }
                     }
 
-                    // Extract /E expansion for abbreviations (PDF Spec Section 14.9.5)
-                    // Used to provide full form of abbreviations/acronyms for accessibility
                     if let Some(expansion_obj) = props_dict.get("E") {
                         if let Some(text_bytes) = expansion_obj.as_string() {
-                            expansion = Some(String::from_utf8_lossy(text_bytes).to_string());
+                            expansion = Some(Self::decode_pdf_text_string(text_bytes));
                             log::debug!("Marked content has expansion /E: {:?}", expansion);
                         }
                     }
 
-                    // Parse artifact type and subtype (PDF Spec Section 14.8.2.2)
                     if tag == "Artifact" {
-                        artifact_type = Self::parse_artifact_type(props_dict);
+                        artifact_type = Self::parse_artifact_type(&props_dict);
                     }
                 }
 
@@ -4003,13 +4172,14 @@ impl TextExtractor {
             },
         };
 
-        // Check if we've already processed this XObject
+        // Cycle detection: prevent recursive XObject references (A → B → A)
+        // but allow the same XObject to be invoked multiple times at different positions.
         if self.processed_xobjects.contains(&xobject_ref) {
-            log::debug!("Skipping duplicate XObject: {} (ref {:?})", name, xobject_ref);
+            log::debug!("Skipping recursive XObject cycle: {} (ref {:?})", name, xobject_ref);
             return Ok(());
         }
 
-        // Mark as processed
+        // Push onto cycle-detection stack (removed after processing)
         self.processed_xobjects.insert(xobject_ref);
 
         // Load the XObject
@@ -4031,6 +4201,34 @@ impl TextExtractor {
                 // Form XObject - extract text from it
                 log::debug!("Processing Form XObject: {}", name);
 
+                // Load fonts from the Form XObject's own /Resources if present
+                // Per PDF spec §8.10.1, Form XObjects can have their own resources
+                let saved_fonts = self.fonts.clone();
+                let saved_resources = self.resources.clone();
+
+                if let Some(xobj_resources) = xobject_dict.get("Resources") {
+                    // Resolve indirect reference if needed
+                    let xobj_res = if let Some(res_ref) = xobj_resources.as_reference() {
+                        match doc.load_object(res_ref) {
+                            Ok(obj) => obj,
+                            Err(_) => xobj_resources.clone(),
+                        }
+                    } else {
+                        xobj_resources.clone()
+                    };
+
+                    // Load fonts from XObject resources
+                    if let Err(e) = doc.load_fonts(&xobj_res, self) {
+                        log::debug!(
+                            "Failed to load fonts for Form XObject '{}': {}, using page fonts",
+                            name, e
+                        );
+                    }
+
+                    // Set XObject resources for nested XObject resolution
+                    self.resources = Some(xobj_res);
+                }
+
                 // Decode the stream data with error recovery, respecting encryption
                 let stream_data = match doc.decode_stream_with_encryption(&xobject, xobject_ref) {
                     Ok(data) => data,
@@ -4040,6 +4238,10 @@ impl TextExtractor {
                             name,
                             e
                         );
+                        // Restore fonts/resources and pop cycle detection before returning
+                        self.fonts = saved_fonts;
+                        self.resources = saved_resources;
+                        self.processed_xobjects.remove(&xobject_ref);
                         return Ok(());
                     },
                 };
@@ -4053,6 +4255,10 @@ impl TextExtractor {
                             name,
                             e
                         );
+                        // Restore fonts/resources and pop cycle detection before returning
+                        self.fonts = saved_fonts;
+                        self.resources = saved_resources;
+                        self.processed_xobjects.remove(&xobject_ref);
                         return Ok(());
                     },
                 };
@@ -4064,15 +4270,24 @@ impl TextExtractor {
                     }
                 }
 
+                // Restore page-level fonts and resources
+                self.fonts = saved_fonts;
+                self.resources = saved_resources;
+
+                // Pop from cycle-detection stack to allow re-invocation
+                self.processed_xobjects.remove(&xobject_ref);
+
                 Ok(())
             },
             Some("Image") => {
                 // Image XObject - no text to extract
                 log::debug!("Skipping Image XObject: {}", name);
+                self.processed_xobjects.remove(&xobject_ref);
                 Ok(())
             },
             _ => {
                 log::debug!("Unknown XObject subtype for '{}': {:?}", name, subtype);
+                self.processed_xobjects.remove(&xobject_ref);
                 Ok(())
             },
         }
@@ -4090,8 +4305,9 @@ impl TextExtractor {
         // Calculate total width using PDF spec formula (including Tc/Tw)
         let total_width = self.calculate_tj_buffer_width(buffer)?;
 
-        // Calculate effective font size from text matrix
-        let effective_font_size = buffer.font_size * buffer.start_matrix.d.abs();
+        // Calculate effective font size (accounting for CTM and text matrix scaling)
+        let combined = buffer.start_ctm.multiply(&buffer.start_matrix);
+        let effective_font_size = buffer.font_size * (combined.d * combined.d + combined.b * combined.b).sqrt();
 
         // Determine font weight
         let font_weight = if let Some(font_name) = &buffer.font_name {
@@ -4295,53 +4511,7 @@ impl TextExtractor {
                         }
                     }
 
-                    // Now process buffer as before for span generation
-                    // FIX: Detect and skip space strings that split words
-                    // Per PDF Spec ISO 32000-1:2008, Section 14.8.2.5 NOTE 3:
-                    // "The identification of what constitutes a word is unrelated to how
-                    // the text happens to be grouped into show strings. The division into
-                    // show strings has no semantic significance."
-                    //
-                    // Some malformed PDFs incorrectly put space strings mid-word:
-                    // [(var) ( ) (ious)] TJ  <- WRONG, should be [(various)] TJ
-                    //
-                    // We detect this by checking if a space string appears after a lowercase
-                    // letter (indicating we're mid-word).
-
-                    // First, check if this is a space/whitespace-only string
-                    let unicode_text = if let Some(ref name) = font_name {
-                        if let Some(font) = self.fonts.get(name) {
-                            let mut text = String::new();
-                            for &byte in s.iter() {
-                                if let Some(chars) = font.char_to_unicode(byte as u32) {
-                                    text.push_str(&chars);
-                                }
-                            }
-                            text
-                        } else {
-                            String::new()
-                        }
-                    } else {
-                        String::new()
-                    };
-
-                    // Check if this is a whitespace-only string
-                    if !unicode_text.is_empty() && unicode_text.trim().is_empty() {
-                        // This is a space/whitespace string
-                        // Check if it's splitting a word (buffer ends with lowercase letter)
-                        if !buffer.unicode.is_empty() {
-                            if let Some(last_char) = buffer.unicode.chars().last() {
-                                if last_char.is_lowercase() {
-                                    // This space is splitting a word - skip it!
-                                    // Just advance position but don't add to buffer
-                                    self.advance_position_for_string(s)?;
-                                    continue; // Skip to next element
-                                }
-                            }
-                        }
-                    }
-
-                    // Normal case: append string to buffer
+                    // Append string to buffer
                     buffer.append(s, &self.fonts)?;
 
                     // Advance position for this string
@@ -4803,7 +4973,8 @@ impl TextExtractor {
         let font_size = state.font_size;
         let text_matrix = state.text_matrix;
         let ctm = state.ctm;
-        let effective_font_size = font_size * text_matrix.d.abs();
+        let combined = ctm.multiply(&text_matrix);
+        let effective_font_size = font_size * (combined.d * combined.d + combined.b * combined.b).sqrt();
         let word_space = state.word_space;
         let horizontal_scaling = state.horizontal_scaling;
 
@@ -4899,8 +5070,9 @@ impl TextExtractor {
                 // Calculate total width using PDF spec formula
                 let total_width = self.calculate_tj_buffer_width(&buffer)?;
 
-                // Calculate effective font size
-                let effective_font_size = buffer.font_size * buffer.start_matrix.d.abs();
+                // Calculate effective font size (accounting for CTM and text matrix scaling)
+                let combined_flush = buffer.start_ctm.multiply(&buffer.start_matrix);
+                let effective_font_size = buffer.font_size * (combined_flush.d * combined_flush.d + combined_flush.b * combined_flush.b).sqrt();
 
                 // Determine font weight
                 let font_weight = if let Some(font_name) = &buffer.font_name {
@@ -5032,11 +5204,9 @@ impl TextExtractor {
             let text_pos = text_matrix.transform_point(0.0, 0.0);
             let pos = ctm.transform_point(text_pos.x, text_pos.y);
 
-            // BUG FIX #1: Calculate effective font size from text matrix
-            // The text matrix scales the font size - the vertical scaling component (d)
-            // determines the actual rendered font size in user space.
-            // This is critical for proper header detection and text structure analysis.
-            let effective_font_size = font_size * text_matrix.d.abs();
+            // Calculate effective font size (accounting for CTM and text matrix scaling)
+            let combined_char = ctm.multiply(&text_matrix);
+            let effective_font_size = font_size * (combined_char.d * combined_char.d + combined_char.b * combined_char.b).sqrt();
 
             // Calculate character dimensions
             // Use effective font size and better width estimate based on horizontal scaling
@@ -5238,6 +5408,7 @@ mod tests {
             cid_font_type: None,
             cid_widths: None,
             cid_default_width: 1000.0,
+            multi_char_map: HashMap::new(),
         }
     }
 

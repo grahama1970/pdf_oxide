@@ -394,7 +394,7 @@ impl PdfDocument {
     ///
     /// PDF Spec: ISO 32000-1:2008, Section 12.7 (Interactive Forms)
     fn parse_widget_fields(
-        &self,
+        &mut self,
         dict: &std::collections::HashMap<String, Object>,
     ) -> (
         Option<WidgetFieldType>,
@@ -406,22 +406,60 @@ impl PdfDocument {
         Option<String>,
     ) {
         // Get field type (FT entry)
-        let ft = dict
+        let mut ft = dict
             .get("FT")
             .and_then(|f| f.as_name())
             .map(|s| s.to_string());
 
         // Get field flags (Ff entry)
-        let field_flags = dict.get("Ff").and_then(|f| match f {
+        let mut field_flags = dict.get("Ff").and_then(|f| match f {
             Object::Integer(n) => Some(*n as u32),
             _ => None,
         });
 
         // Get field value (V entry)
-        let field_value = Self::parse_string_value(dict.get("V"));
+        let mut field_value = Self::parse_string_value(dict.get("V"));
 
         // Get default value (DV entry)
-        let default_value = Self::parse_string_value(dict.get("DV"));
+        let mut default_value = Self::parse_string_value(dict.get("DV"));
+
+        // Walk up /Parent chain to inherit missing fields (PDF spec 12.7.3.1)
+        if ft.is_none() || field_flags.is_none() || field_value.is_none() || default_value.is_none() {
+            let mut parent_ref = dict.get("Parent").and_then(|p| {
+                if let Object::Reference(r) = p { Some(*r) } else { None }
+            });
+            let mut depth = 0;
+            while let Some(pref) = parent_ref {
+                if depth >= 10 { break; }
+                depth += 1;
+                if let Ok(parent_obj) = self.load_object(pref) {
+                    if let Some(parent_dict) = parent_obj.as_dict() {
+                        if ft.is_none() {
+                            ft = parent_dict.get("FT").and_then(|f| f.as_name()).map(|s| s.to_string());
+                        }
+                        if field_flags.is_none() {
+                            field_flags = parent_dict.get("Ff").and_then(|f| match f {
+                                Object::Integer(n) => Some(*n as u32),
+                                _ => None,
+                            });
+                        }
+                        if field_value.is_none() {
+                            field_value = Self::parse_string_value(parent_dict.get("V"));
+                        }
+                        if default_value.is_none() {
+                            default_value = Self::parse_string_value(parent_dict.get("DV"));
+                        }
+                        parent_ref = parent_dict.get("Parent").and_then(|p| {
+                            if let Object::Reference(r) = p { Some(*r) } else { None }
+                        });
+                    } else {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
 
         // Get field name (T entry)
         let field_name = dict.get("T").and_then(|t| match t {
