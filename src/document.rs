@@ -3238,10 +3238,7 @@ impl PdfDocument {
     /// This is the optimized version of `extract_text_structure_order` that uses
     /// the pre-built `structure_content_cache` for O(1) page content lookup instead
     /// of re-traversing the entire structure tree for each page.
-    fn extract_text_structure_order_cached(
-        &mut self,
-        page_index: usize,
-    ) -> Result<String> {
+    fn extract_text_structure_order_cached(&mut self, page_index: usize) -> Result<String> {
         log::debug!("Extracting text using cached structure order for page {}", page_index);
 
         // Step 1: Extract all spans with MCIDs
@@ -5957,10 +5954,7 @@ impl PdfDocument {
 
     /// Public wrapper for `get_page` (normally private).
     /// Exposed for profiling examples that need to time page tree lookup separately.
-    pub fn get_page_for_debug(
-        &mut self,
-        page_index: usize,
-    ) -> Result<Object> {
+    pub fn get_page_for_debug(&mut self, page_index: usize) -> Result<Object> {
         self.get_page(page_index)
     }
 

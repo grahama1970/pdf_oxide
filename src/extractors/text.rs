@@ -1872,10 +1872,7 @@ impl TextExtractor {
     }
 
     /// Public wrapper for execute_operator (normally private).
-    pub fn execute_operator_public(
-        &mut self,
-        op: crate::content::Operator,
-    ) -> Result<()> {
+    pub fn execute_operator_public(&mut self, op: crate::content::Operator) -> Result<()> {
         self.execute_operator(op)
     }
 

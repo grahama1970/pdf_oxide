@@ -100,7 +100,7 @@ fn build_page_map_recursive(
         "Page" => {
             page_map.insert(node_ref.id, *index);
             *index += 1;
-        }
+        },
         "Pages" => {
             if let Some(kids) = dict.get("Kids").and_then(|k| k.as_array()) {
                 let kid_refs: Vec<_> = kids.iter().filter_map(|k| k.as_reference()).collect();
@@ -108,8 +108,8 @@ fn build_page_map_recursive(
                     build_page_map_recursive(document, kid_ref, page_map, index);
                 }
             }
-        }
-        _ => {}
+        },
+        _ => {},
     }
 }
 
@@ -201,18 +201,28 @@ pub fn parse_structure_tree(document: &mut PdfDocument) -> Result<Option<StructT
                         );
                         return Ok(None);
                     }
-                    if let Some(elem) =
-                        parse_struct_elem(document, &elem_obj, &struct_tree.role_map, &page_map, deadline, &mut element_count)?
-                    {
+                    if let Some(elem) = parse_struct_elem(
+                        document,
+                        &elem_obj,
+                        &struct_tree.role_map,
+                        &page_map,
+                        deadline,
+                        &mut element_count,
+                    )? {
                         struct_tree.add_root_element(elem);
                     }
                 }
             },
             _ => {
                 // Single root element
-                if let Some(elem) =
-                    parse_struct_elem(document, &k_obj, &struct_tree.role_map, &page_map, deadline, &mut element_count)?
-                {
+                if let Some(elem) = parse_struct_elem(
+                    document,
+                    &k_obj,
+                    &struct_tree.role_map,
+                    &page_map,
+                    deadline,
+                    &mut element_count,
+                )? {
                     struct_tree.add_root_element(elem);
                 }
             },
@@ -221,13 +231,16 @@ pub fn parse_structure_tree(document: &mut PdfDocument) -> Result<Option<StructT
 
     log::debug!(
         "Structure tree parsed: {} elements, {} root elements in {:?}",
-        element_count, struct_tree.root_elements.len(), parse_start.elapsed()
+        element_count,
+        struct_tree.root_elements.len(),
+        parse_start.elapsed()
     );
 
     if element_count > MAX_STRUCT_ELEMENTS {
         log::debug!(
             "Structure tree too large ({} elements > {}), falling back to content order",
-            element_count, MAX_STRUCT_ELEMENTS
+            element_count,
+            MAX_STRUCT_ELEMENTS
         );
         return Ok(None);
     }
@@ -310,7 +323,15 @@ fn parse_struct_elem(
     // Parse /K (children)
     if let Some(k_obj) = dict.get("K") {
         let k_obj = resolve_object(document, k_obj)?;
-        parse_k_children(document, &k_obj, &mut struct_elem, role_map, page_map, deadline, element_count)?;
+        parse_k_children(
+            document,
+            &k_obj,
+            &mut struct_elem,
+            role_map,
+            page_map,
+            deadline,
+            element_count,
+        )?;
     }
 
     Ok(Some(struct_elem))
@@ -356,9 +377,14 @@ fn parse_k_children(
 
                     Object::Dictionary(_) => {
                         // Could be a StructElem or marked content reference
-                        if let Some(child_elem) =
-                            parse_struct_elem(document, &child_obj, role_map, page_map, deadline, element_count)?
-                        {
+                        if let Some(child_elem) = parse_struct_elem(
+                            document,
+                            &child_obj,
+                            role_map,
+                            page_map,
+                            deadline,
+                            element_count,
+                        )? {
                             parent.add_child(StructChild::StructElem(Box::new(child_elem)));
                         } else {
                             // Try parsing as marked content reference
@@ -372,9 +398,14 @@ fn parse_k_children(
                         // Resolve indirect reference and try to parse as StructElem
                         match document.load_object(*obj_ref) {
                             Ok(resolved) => {
-                                if let Some(child_elem) =
-                                    parse_struct_elem(document, &resolved, role_map, page_map, deadline, element_count)?
-                                {
+                                if let Some(child_elem) = parse_struct_elem(
+                                    document,
+                                    &resolved,
+                                    role_map,
+                                    page_map,
+                                    deadline,
+                                    element_count,
+                                )? {
                                     parent.add_child(StructChild::StructElem(Box::new(child_elem)));
                                 } else if let Some(mcr) =
                                     parse_marked_content_ref(&resolved, page_map)?
@@ -402,7 +433,9 @@ fn parse_k_children(
 
         Object::Dictionary(_) => {
             // Single dictionary child
-            if let Some(child_elem) = parse_struct_elem(document, k_obj, role_map, page_map, deadline, element_count)? {
+            if let Some(child_elem) =
+                parse_struct_elem(document, k_obj, role_map, page_map, deadline, element_count)?
+            {
                 parent.add_child(StructChild::StructElem(Box::new(child_elem)));
             } else {
                 // Try parsing as marked content reference
@@ -416,9 +449,14 @@ fn parse_k_children(
             // Resolve indirect reference and try to parse as StructElem
             match document.load_object(*obj_ref) {
                 Ok(resolved) => {
-                    if let Some(child_elem) =
-                        parse_struct_elem(document, &resolved, role_map, page_map, deadline, element_count)?
-                    {
+                    if let Some(child_elem) = parse_struct_elem(
+                        document,
+                        &resolved,
+                        role_map,
+                        page_map,
+                        deadline,
+                        element_count,
+                    )? {
                         parent.add_child(StructChild::StructElem(Box::new(child_elem)));
                     } else if let Some(mcr) = parse_marked_content_ref(&resolved, page_map)? {
                         parent.add_child(mcr);

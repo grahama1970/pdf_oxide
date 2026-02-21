@@ -44,7 +44,7 @@ fn main() {
             Err(e) => {
                 println!("{},0,0,0,0,0,0,{}", filename, e);
                 continue;
-            }
+            },
         };
 
         // Try common passwords
@@ -57,7 +57,7 @@ fn main() {
             Err(e) => {
                 println!("{},0,0,0,0,0,0,{}", filename, e);
                 continue;
-            }
+            },
         };
 
         let mut total_chars = 0usize;
@@ -78,7 +78,7 @@ fn main() {
                     if page_ms > 1000.0 {
                         slow_pages.push((i, page_ms, text.len()));
                     }
-                }
+                },
                 Err(e) => {
                     let total_ms = start.elapsed().as_secs_f64() * 1000.0;
                     println!(
@@ -86,7 +86,7 @@ fn main() {
                         filename, page_count, total_ms, 0, 0, 0, total_chars, i, e
                     );
                     continue;
-                }
+                },
             }
         }
 

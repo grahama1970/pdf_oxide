@@ -1079,7 +1079,7 @@ fn is_skippable_graphics_op_bytes(op: &[u8]) -> bool {
         | b"W" | b"W*"                                           // clipping
         | b"w" | b"J" | b"j" | b"M" | b"d" | b"i" | b"ri" | b"sh" // non-text graphics state
         | b"rg" | b"RG" | b"g" | b"G" | b"k" | b"K"            // color (rgb/gray/cmyk)
-        | b"cs" | b"CS" | b"sc" | b"SC" | b"scn" | b"SCN"      // color space/components
+        | b"cs" | b"CS" | b"sc" | b"SC" | b"scn" | b"SCN" // color space/components
     )
 }
 
