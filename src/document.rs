@@ -81,6 +81,10 @@ pub struct PdfDocument {
     /// Cached font sets keyed by /Font dictionary ObjectRef.
     /// Pages sharing the same /Font dict skip the entire load_fonts() loop.
     font_set_cache: HashMap<ObjectRef, Vec<(String, Arc<crate::fonts::FontInfo>)>>,
+    /// Fingerprint-based font set cache for direct /Font dictionaries.
+    /// Keyed by sorted font ObjectRefs hash, catches pages with different
+    /// /Resources but same font references.
+    font_fingerprint_cache: HashMap<u64, Vec<(String, Arc<crate::fonts::FontInfo>)>>,
     /// Cached structure tree (None = not yet checked, Some(None) = untagged, Some(Some) = tagged).
     /// Uses Arc to avoid expensive deep clones on every page extraction.
     structure_tree_cache: Option<Option<Arc<crate::structure::StructTreeRoot>>>,
@@ -200,6 +204,7 @@ impl PdfDocument {
             header_offset,
             font_cache: HashMap::new(),
             font_set_cache: HashMap::new(),
+            font_fingerprint_cache: HashMap::new(),
             structure_tree_cache: None,
             structure_content_cache: None,
             page_cache: HashMap::new(),
@@ -4866,6 +4871,39 @@ impl PdfDocument {
             }
 
             if let Some(font_dict) = font_dict_obj.as_dict() {
+                // Compute font fingerprint for direct /Font dicts:
+                // hash of sorted font ObjectRefs enables cache hits even when
+                // different pages have different /Resources but same font refs.
+                let mut font_refs_for_fingerprint: Vec<ObjectRef> = Vec::new();
+                for (_, fo) in font_dict.iter() {
+                    if let Some(r) = fo.as_reference() {
+                        font_refs_for_fingerprint.push(r);
+                    }
+                }
+                font_refs_for_fingerprint.sort_by(|a, b| {
+                    a.id.cmp(&b.id).then(a.gen.cmp(&b.gen))
+                });
+
+                // Check fingerprint cache (works even for direct /Font dicts)
+                let fingerprint = {
+                    use std::hash::{Hash, Hasher};
+                    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+                    font_refs_for_fingerprint.hash(&mut hasher);
+                    // Include font dict keys for uniqueness
+                    for (name, _) in font_dict.iter() {
+                        name.hash(&mut hasher);
+                    }
+                    hasher.finish()
+                };
+
+                if let Some(cached_set) = self.font_fingerprint_cache.get(&fingerprint) {
+                    for (name, font_arc) in cached_set {
+                        extractor.add_font_shared(name.clone(), Arc::clone(font_arc));
+                    }
+                    return Ok(());
+                }
+
+                let mut all_from_cache = true;
                 for (name, font_obj) in font_dict {
                     // If font is a reference, check per-font cache first
                     if let Some(font_ref) = font_obj.as_reference() {
@@ -4873,6 +4911,7 @@ impl PdfDocument {
                             extractor.add_font_shared(name.clone(), Arc::clone(cached));
                             continue;
                         }
+                        all_from_cache = false;
                         let font = self.load_object(font_ref)?;
                         match FontInfo::from_dict(&font, self) {
                             Ok(font_info) => {
@@ -4891,6 +4930,7 @@ impl PdfDocument {
                         }
                     } else {
                         // Direct font object — parse without caching (no stable key)
+                        all_from_cache = false;
                         let font = font_obj.clone();
                         match FontInfo::from_dict(&font, self) {
                             Ok(font_info) => {
@@ -4907,21 +4947,21 @@ impl PdfDocument {
                         }
                     }
                 }
-            }
-        }
 
-        // Cross-font TrueType cmap sharing: when a CIDFontType2 Identity-H font
-        // has no embedded font data (no TrueType cmap), try to borrow the cmap
-        // from another font on the same page with the same base font name.
-        // This handles PDFs that create paired font resources (e.g., a simple TrueType
-        // font with embedded data + a CID font referencing the same base font without).
-        extractor.share_truetype_cmaps();
+                // Only call share_truetype_cmaps when new fonts were parsed
+                // (cached fonts already had sharing applied)
+                if !all_from_cache {
+                    extractor.share_truetype_cmaps();
+                }
 
-        // Layer 2: Cache the complete font set (post-sharing) for this /Font dict
-        if let Some(font_obj) = resources_dict.get("Font") {
-            if let Some(font_dict_ref) = font_obj.as_reference() {
-                self.font_set_cache
-                    .insert(font_dict_ref, extractor.get_font_set());
+                // Cache font set by both ObjectRef and fingerprint
+                let font_set = extractor.get_font_set();
+                if let Some(fdr) = font_dict_ref {
+                    self.font_set_cache.insert(fdr, font_set.clone());
+                }
+                self.font_fingerprint_cache.insert(fingerprint, font_set);
+
+                return Ok(());
             }
         }
 
