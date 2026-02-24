@@ -1172,7 +1172,7 @@ impl FontInfo {
     /// Where integers specify starting codes, and names specify glyphs for consecutive codes.
     fn parse_encoding(
         enc_obj: &Object,
-        _doc: &mut PdfDocument,
+        doc: &mut PdfDocument,
     ) -> Result<(Encoding, HashMap<u8, String>)> {
         let empty_map = HashMap::new();
         // Encoding can be either a name or a dictionary
@@ -1235,7 +1235,15 @@ impl FontInfo {
             let mut encoding_map: HashMap<u8, char> = if let Some(base_enc_obj) =
                 dict.get("BaseEncoding")
             {
-                if let Some(base_name) = base_enc_obj.as_name() {
+                // Resolve indirect reference for /BaseEncoding
+                let resolved_base = if let Some(obj_ref) = base_enc_obj.as_reference() {
+                    doc.load_object(obj_ref).ok()
+                } else {
+                    None
+                };
+                let base_obj = resolved_base.as_ref().unwrap_or(base_enc_obj);
+
+                if let Some(base_name) = base_obj.as_name() {
                     // Build initial encoding from base encoding
                     let mut map = HashMap::new();
                     for code in 0u8..=255 {
@@ -1266,30 +1274,39 @@ impl FontInfo {
             // Step 2: Apply /Differences array if present
             if let Some(differences_obj) = dict.get("Differences") {
                 log::info!("Found /Differences array in encoding dictionary");
-                if let Some(diff_array) = differences_obj.as_array() {
+
+                // Resolve indirect reference for /Differences itself
+                let resolved_diff = if let Some(obj_ref) = differences_obj.as_reference() {
+                    doc.load_object(obj_ref).ok()
+                } else {
+                    None
+                };
+                let diff_obj = resolved_diff.as_ref().unwrap_or(differences_obj);
+
+                if let Some(diff_array) = diff_obj.as_array() {
                     log::info!("/Differences array has {} items", diff_array.len());
                     let mut current_code: u32 = 0;
 
                     for item in diff_array {
-                        match item {
+                        // Resolve indirect references within the array
+                        let resolved_item = if let Some(obj_ref) = item.as_reference() {
+                            doc.load_object(obj_ref).ok()
+                        } else {
+                            None
+                        };
+                        let actual_item = resolved_item.as_ref().unwrap_or(item);
+
+                        match actual_item {
                             Object::Integer(code) => {
                                 // New starting code
                                 current_code = *code as u32;
                             },
                             Object::Name(glyph_name) => {
-                                // Log ALL glyphs for code 0x64 (even if lookup fails)
-                                if current_code == 0x64 {
-                                    log::info!(
-                                        "/Differences: code 0x64 has glyph name /{}",
-                                        glyph_name
-                                    );
-                                }
-
                                 // Map glyph name to Unicode character(s)
                                 if let Some(unicode_char) = glyph_name_to_unicode(glyph_name) {
                                     if current_code <= 255 {
                                         encoding_map.insert(current_code as u8, unicode_char);
-                                        if is_ligature_char(unicode_char) || current_code == 0x64 {
+                                        if is_ligature_char(unicode_char) {
                                             log::info!(
                                                 "/Differences: code {} → /{} → '{}' (U+{:04X})",
                                                 current_code,
@@ -1324,7 +1341,7 @@ impl FontInfo {
                             },
                             _ => {
                                 // Invalid item in /Differences array - skip
-                                log::warn!("Unexpected item in /Differences array: {:?}", item);
+                                log::warn!("Unexpected item in /Differences array: {:?}", actual_item);
                             },
                         }
                     }
@@ -1334,7 +1351,7 @@ impl FontInfo {
                         encoding_map.len()
                     );
                 } else {
-                    log::warn!("/Differences is not an array");
+                    log::warn!("/Differences is not an array: {:?}", diff_obj);
                 }
             }
 
