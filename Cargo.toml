@@ -36,7 +36,7 @@ byteorder = "1.5"  # For binary parsing (TrueType cmap tables)
 bitflags = "2"     # For form field flags
 
 # Compression/Decompression
-flate2 = "1.0"
+flate2 = { version = "1.1", default-features = false, features = ["zlib-rs"] }
 weezl = "0.1"  # LZW compression
 inflate = "0.4"  # Alternative inflate for better error recovery
 libflate = "2.1"  # Another inflate implementation for error recovery
