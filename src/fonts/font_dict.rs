@@ -1759,9 +1759,6 @@ impl FontInfo {
 
     /// Get the pre-computed byte→char lookup table for OneByte (simple) fonts.
     /// Built lazily on first call by running `char_to_unicode` for all 256 byte values.
-    /// Returns a 256-element array: non-'\0' = single-char result, '\0' = needs fallback.
-    /// Get the pre-computed byte→char lookup table for OneByte (simple) fonts.
-    /// Built lazily on first call by running `char_to_unicode` for all 256 byte values.
     /// Returns a 256-element array: non-'\0' = single printable char, '\0' = needs fallback.
     /// Control chars (except tab/newline/cr), multi-char, and \u{FFFD} are stored as '\0'.
     pub fn get_byte_to_char_table(&self) -> &[char; 256] {
