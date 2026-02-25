@@ -90,7 +90,8 @@ pub struct PdfDocument {
     /// mapping (common in PDFs that create new font objects per page).
     /// Stores the resolved font set (Arc-wrapped to avoid cloning) plus a spot-check
     /// (font_name, content_hash) pair for verification before reuse.
-    font_name_set_cache: HashMap<u64, (Arc<Vec<(String, Arc<crate::fonts::FontInfo>)>>, String, u64)>,
+    font_name_set_cache:
+        HashMap<u64, (Arc<Vec<(String, Arc<crate::fonts::FontInfo>)>>, String, u64)>,
     /// Per-font identity cache keyed by font_identity_hash (BaseFont + Subtype + Encoding
     /// + ToUnicode + FontDescriptor + DescendantFonts references). Skips expensive
     /// FontInfo::from_dict() when a structurally identical font was already parsed.
@@ -934,7 +935,9 @@ impl PdfDocument {
         if let Some(pos) = data.windows(8).position(|w| w == b"/Subtype") {
             let after = &data[pos + 8..];
             // Skip whitespace
-            let trimmed = after.iter().position(|&b| b != b' ' && b != b'\t' && b != b'\r' && b != b'\n');
+            let trimmed = after
+                .iter()
+                .position(|&b| b != b' ' && b != b'\t' && b != b'\r' && b != b'\n');
             if let Some(start) = trimmed {
                 let name_data = &after[start..];
                 if name_data.starts_with(b"/Form") {
@@ -2928,7 +2931,7 @@ impl PdfDocument {
                     0xFE7D => 0x0651, // Shadda medial
                     0xFE7E => 0x0652, // Sukun isolated
                     0xFE7F => 0x0652, // Sukun medial
-                    _ => cp, // Pass through unchanged
+                    _ => cp,          // Pass through unchanged
                 };
                 char::from_u32(base).unwrap_or(c)
             })
@@ -3380,7 +3383,7 @@ impl PdfDocument {
                         }
                     }
                     offset = i + 1;
-                }
+                },
             }
         }
         false
@@ -4992,7 +4995,7 @@ impl PdfDocument {
                     Object::Name(n) => n.hash(&mut hasher),
                     Object::Reference(_) => b"enc_ref".hash(&mut hasher),
                     Object::Dictionary(_) => b"enc_dict".hash(&mut hasher),
-                    _ => {}
+                    _ => {},
                 }
             }
             // ToUnicode: hash presence (BaseFont already differentiates content)
@@ -5070,9 +5073,7 @@ impl PdfDocument {
                         font_refs_for_fingerprint.push(r);
                     }
                 }
-                font_refs_for_fingerprint.sort_by(|a, b| {
-                    a.id.cmp(&b.id).then(a.gen.cmp(&b.gen))
-                });
+                font_refs_for_fingerprint.sort_by(|a, b| a.id.cmp(&b.id).then(a.gen.cmp(&b.gen)));
 
                 // Check fingerprint cache (works even for direct /Font dicts)
                 let fingerprint = {
@@ -5108,7 +5109,9 @@ impl PdfDocument {
                     hasher.finish()
                 };
 
-                if let Some((cached_set, _check_name, _check_hash)) = self.font_name_set_cache.get(&name_hash) {
+                if let Some((cached_set, _check_name, _check_hash)) =
+                    self.font_name_set_cache.get(&name_hash)
+                {
                     // Layer 4: Same font names within a document virtually always map
                     // to the same underlying fonts. Trust the name-based cache to avoid
                     // expensive load_object calls for spot-check verification.
@@ -5196,11 +5199,13 @@ impl PdfDocument {
                 if let Some(fdr) = font_dict_ref {
                     self.font_set_cache.insert(fdr, font_set.clone());
                 }
-                self.font_fingerprint_cache.insert(fingerprint, font_set.clone());
+                self.font_fingerprint_cache
+                    .insert(fingerprint, font_set.clone());
 
                 // Cache by font names with spot-check data for Layer 4
                 if let Some((check_name, check_hash)) = spot_check {
-                    self.font_name_set_cache.insert(name_hash, (Arc::new(font_set), check_name, check_hash));
+                    self.font_name_set_cache
+                        .insert(name_hash, (Arc::new(font_set), check_name, check_hash));
                 }
 
                 return Ok(());

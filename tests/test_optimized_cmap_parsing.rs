@@ -88,7 +88,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: All entries should be accessible
@@ -169,7 +169,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Range lookups work (binary search should find correct range)
@@ -285,7 +285,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify bfchar sections work
@@ -474,7 +474,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Large CMap parsing works (lazy loading should handle all 10k entries)
@@ -557,7 +557,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Lazy loading should handle mega-CMaps efficiently

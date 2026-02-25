@@ -197,6 +197,6 @@ fn create_font_with_encoding(encoding: Encoding) -> FontInfo {
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     }
 }

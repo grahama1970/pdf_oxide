@@ -274,8 +274,7 @@ fn find_actual_xref_offset<R: Read + Seek>(reader: &mut R, offset: u64) -> Resul
     // followed by " <gen> obj". This handles cross-reference streams.
     for i in 0..bytes_read {
         // Must be at a line boundary
-        let at_line_start =
-            i == 0 || buf[i - 1] == b'\r' || buf[i - 1] == b'\n';
+        let at_line_start = i == 0 || buf[i - 1] == b'\r' || buf[i - 1] == b'\n';
         if !at_line_start || !buf[i].is_ascii_digit() {
             continue;
         }
@@ -303,10 +302,7 @@ fn find_actual_xref_offset<R: Read + Seek>(reader: &mut R, offset: u64) -> Resul
     }
 
     // Could not find xref nearby — return original offset and let downstream handle the error
-    log::debug!(
-        "Could not find xref near offset {}, using original",
-        offset
-    );
+    log::debug!("Could not find xref near offset {}, using original", offset);
     Ok(offset)
 }
 

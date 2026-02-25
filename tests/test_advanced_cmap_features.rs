@@ -92,7 +92,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Comments don't break parsing
@@ -171,7 +171,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Escape sequences are parsed
@@ -242,7 +242,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Boundary cases work
@@ -314,7 +314,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Valid code works
@@ -390,7 +390,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Sparse mappings are found
@@ -469,7 +469,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: First range entry maps correctly (from range logic)
@@ -551,7 +551,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: bfchar mappings
@@ -625,7 +625,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Large range parses correctly
@@ -696,7 +696,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Explicit mapping takes priority

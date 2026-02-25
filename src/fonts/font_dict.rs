@@ -1334,7 +1334,10 @@ impl FontInfo {
                             },
                             _ => {
                                 // Invalid item in /Differences array - skip
-                                log::warn!("Unexpected item in /Differences array: {:?}", actual_item);
+                                log::warn!(
+                                    "Unexpected item in /Differences array: {:?}",
+                                    actual_item
+                                );
                             },
                         }
                     }
@@ -1953,8 +1956,8 @@ impl FontInfo {
                         // For UCS2/UTF16 encodings, char codes ARE Unicode values directly.
                         // For Identity-H/V with non-Identity ordering (e.g., Adobe-GB1),
                         // char codes are CIDs that need CID-to-Unicode lookup.
-                        let is_ucs2_or_utf16 = encoding_name.contains("UCS2")
-                            || encoding_name.contains("UTF16");
+                        let is_ucs2_or_utf16 =
+                            encoding_name.contains("UCS2") || encoding_name.contains("UTF16");
                         let is_non_identity_ordering = self
                             .cid_system_info
                             .as_ref()
@@ -2872,7 +2875,7 @@ fn is_ligature_char(c: char) -> bool {
         'ﬃ' |  // ffi - U+FB03
         'ﬄ' |  // ffl - U+FB04
         'ﬅ' |  // st (long s + t) - U+FB05
-        'ﬆ'    // st - U+FB06
+        'ﬆ' // st - U+FB06
     )
 }
 

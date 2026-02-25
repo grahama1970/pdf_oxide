@@ -58,7 +58,7 @@ fn test_cff_font_detection_in_type0_fonts() {
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: CIDFontType0 is recognized
@@ -107,7 +107,7 @@ fn test_cff_charstrings_glyph_lookup() {
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: CFF font type detected
@@ -181,7 +181,7 @@ end
         default_width: 1000.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: CFF Private Dict metrics are accessible
@@ -233,7 +233,7 @@ fn test_cff_fdselect_array_font_program_selection() {
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Font structure supports multi-program CFF
@@ -278,7 +278,7 @@ fn test_cff_glyph_name_to_unicode_mapping() {
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: CFF font structure allows glyph name mapping
@@ -322,7 +322,7 @@ fn test_cff_fallback_to_identity_mapping() {
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Identity mapping available as fallback
@@ -396,7 +396,7 @@ end
         default_width: 500.0,
         multi_char_map: HashMap::new(),
         byte_to_char_table: std::sync::OnceLock::new(),
-            byte_to_width_table: std::sync::OnceLock::new(),
+        byte_to_width_table: std::sync::OnceLock::new(),
     };
 
     // Verify: ToUnicode mapping works (Priority 1)

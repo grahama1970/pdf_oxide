@@ -7,8 +7,8 @@
 use crate::config::ExtractionProfile;
 use crate::content::graphics_state::{GraphicsStateStack, Matrix};
 use crate::content::operators::{Operator, TextElement};
-use crate::content::parse_content_stream_text_only;
 use crate::content::parse_and_execute_text_only;
+use crate::content::parse_content_stream_text_only;
 use crate::error::Result;
 use crate::extract_log_debug;
 use crate::fonts::FontInfo;
@@ -1287,8 +1287,8 @@ impl TjBuffer {
     ) -> Self {
         // Pre-compute effective font size: CTM × text_matrix scaling × font_size
         let combined = state.ctm.multiply(&state.text_matrix);
-        let effective_font_size = state.font_size
-            * (combined.d * combined.d + combined.b * combined.b).sqrt();
+        let effective_font_size =
+            state.font_size * (combined.d * combined.d + combined.b * combined.b).sqrt();
         let font_weight = match &cached_font {
             Some(f) if f.is_bold() => FontWeight::Bold,
             _ => FontWeight::Normal,
@@ -3245,8 +3245,7 @@ impl TextExtractor {
                 // Many PDFs redundantly set the same font (e.g., Tf after q/Q).
                 let same_font = {
                     let state = self.state_stack.current();
-                    state.font_size == size
-                        && state.font_name.as_deref() == Some(font.as_str())
+                    state.font_size == size && state.font_name.as_deref() == Some(font.as_str())
                 };
                 if !same_font {
                     // Flush Tj buffer before changing font — the buffer decodes bytes
@@ -3271,19 +3270,20 @@ impl TextExtractor {
                 // keep accumulating into the existing buffer instead of flushing
                 // (avoids creating thousands of 1-char TextSpans per page).
                 let is_continuation = match self.tj_span_buffer {
-                    Some(ref mut buffer) if !buffer.is_empty()
-                        && f.round() as i32 == buffer.start_matrix.f.round() as i32
-                        && a == buffer.start_matrix.a
-                        && b == buffer.start_matrix.b
-                        && c == buffer.start_matrix.c
-                        && d == buffer.start_matrix.d
-                        && e >= buffer.start_matrix.e =>
+                    Some(ref mut buffer)
+                        if !buffer.is_empty()
+                            && f.round() as i32 == buffer.start_matrix.f.round() as i32
+                            && a == buffer.start_matrix.a
+                            && b == buffer.start_matrix.b
+                            && c == buffer.start_matrix.c
+                            && d == buffer.start_matrix.d
+                            && e >= buffer.start_matrix.e =>
                     {
                         // Same line, same transform, LTR progression →
                         // update width to reflect actual visual extent
                         buffer.accumulated_width = e - buffer.start_matrix.e;
                         true
-                    }
+                    },
                     _ => false,
                 };
 
@@ -3343,8 +3343,11 @@ impl TextExtractor {
                     if self.extract_spans {
                         // Use ActualText in span mode - buffer it like normal text
                         if self.tj_span_buffer.is_none() {
-                            self.tj_span_buffer =
-                                Some(TjBuffer::new(self.state_stack.current(), self.current_mcid, self.cached_current_font.clone()));
+                            self.tj_span_buffer = Some(TjBuffer::new(
+                                self.state_stack.current(),
+                                self.current_mcid,
+                                self.cached_current_font.clone(),
+                            ));
                         }
 
                         // Append ActualText to buffer (convert to bytes for consistency)
@@ -3370,8 +3373,11 @@ impl TextExtractor {
 
                         // Create buffer if doesn't exist
                         if self.tj_span_buffer.is_none() {
-                            self.tj_span_buffer =
-                                Some(TjBuffer::new(self.state_stack.current(), self.current_mcid, self.cached_current_font.clone()));
+                            self.tj_span_buffer = Some(TjBuffer::new(
+                                self.state_stack.current(),
+                                self.current_mcid,
+                                self.cached_current_font.clone(),
+                            ));
                         }
 
                         // Merged single-pass: Unicode decode + width + position advance
@@ -3400,8 +3406,11 @@ impl TextExtractor {
 
                     if self.extract_spans {
                         // Use ActualText in span mode - create a single span
-                        let mut buffer =
-                            TjBuffer::new(self.state_stack.current(), self.current_mcid, self.cached_current_font.clone());
+                        let mut buffer = TjBuffer::new(
+                            self.state_stack.current(),
+                            self.current_mcid,
+                            self.cached_current_font.clone(),
+                        );
                         buffer.append(actual_text.as_bytes())?;
                         self.flush_tj_buffer(buffer)?;
                     } else {
@@ -3560,8 +3569,11 @@ impl TextExtractor {
 
                 if self.extract_spans {
                     if self.tj_span_buffer.is_none() {
-                        self.tj_span_buffer =
-                            Some(TjBuffer::new(self.state_stack.current(), self.current_mcid, self.cached_current_font.clone()));
+                        self.tj_span_buffer = Some(TjBuffer::new(
+                            self.state_stack.current(),
+                            self.current_mcid,
+                            self.cached_current_font.clone(),
+                        ));
                     }
                     self.append_and_advance(&text)?;
                 } else {
@@ -3589,8 +3601,11 @@ impl TextExtractor {
 
                 if self.extract_spans {
                     if self.tj_span_buffer.is_none() {
-                        self.tj_span_buffer =
-                            Some(TjBuffer::new(self.state_stack.current(), self.current_mcid, self.cached_current_font.clone()));
+                        self.tj_span_buffer = Some(TjBuffer::new(
+                            self.state_stack.current(),
+                            self.current_mcid,
+                            self.cached_current_font.clone(),
+                        ));
                     }
                     self.append_and_advance(&text)?;
                 } else {
@@ -3625,8 +3640,11 @@ impl TextExtractor {
             Operator::RestoreState => {
                 self.state_stack.restore();
                 // Sync cached font with restored state
-                self.cached_current_font = self.state_stack.current()
-                    .font_name.as_ref()
+                self.cached_current_font = self
+                    .state_stack
+                    .current()
+                    .font_name
+                    .as_ref()
                     .and_then(|name| self.fonts.get(name))
                     .cloned();
             },
@@ -4463,9 +4481,8 @@ impl TextExtractor {
 
                 // Streaming parse+execute: avoids allocating Vec<Operator>
                 self.xobject_depth += 1;
-                let parse_result = parse_and_execute_text_only(&stream_data, |op| {
-                    self.execute_operator(op)
-                });
+                let parse_result =
+                    parse_and_execute_text_only(&stream_data, |op| self.execute_operator(op));
                 self.xobject_depth -= 1;
                 if let Err(e) = parse_result {
                     log::debug!(
@@ -4607,7 +4624,11 @@ impl TextExtractor {
         let char_space = self.state_stack.current().char_space;
         let word_space = self.state_stack.current().word_space;
 
-        let mut buffer = TjBuffer::new(self.state_stack.current(), self.current_mcid, self.cached_current_font.clone());
+        let mut buffer = TjBuffer::new(
+            self.state_stack.current(),
+            self.current_mcid,
+            self.cached_current_font.clone(),
+        );
         let mut _element_count = 0;
 
         for (idx, element) in array.iter().enumerate() {
@@ -4719,7 +4740,11 @@ impl TextExtractor {
                         }
 
                         // Start new buffer with current state
-                        buffer = TjBuffer::new(self.state_stack.current(), self.current_mcid, self.cached_current_font.clone());
+                        buffer = TjBuffer::new(
+                            self.state_stack.current(),
+                            self.current_mcid,
+                            self.cached_current_font.clone(),
+                        );
                     }
 
                     // Advance position for offset (updates text matrix)
@@ -5152,7 +5177,11 @@ impl TextExtractor {
     /// Merges TjBuffer::append and advance_position_for_string for simple fonts,
     /// eliminating one full per-byte iteration per Tj operator.
     fn append_and_advance(&mut self, text: &[u8]) -> Result<()> {
-        let text = if text.len() > 32_767 { &text[..32_767] } else { text };
+        let text = if text.len() > 32_767 {
+            &text[..32_767]
+        } else {
+            text
+        };
 
         let state = self.state_stack.current();
         let font_size = state.font_size;
@@ -5204,7 +5233,9 @@ impl TextExtractor {
                     // Width calculation
                     let mut w = width_table[byte as usize] * fs_factor * hs_factor;
                     w += cs_hs;
-                    if byte == 0x20 { w += ws_hs; }
+                    if byte == 0x20 {
+                        w += ws_hs;
+                    }
                     w_sum += w;
                 }
                 w_sum
@@ -5216,7 +5247,9 @@ impl TextExtractor {
                 for &byte in text {
                     let mut w = font.get_glyph_width(byte as u16) * fs_factor * hs_factor;
                     w += cs_hs;
-                    if byte == 0x20 { w += ws_hs; }
+                    if byte == 0x20 {
+                        w += ws_hs;
+                    }
                     w_sum += w;
                 }
                 w_sum
@@ -5249,7 +5282,11 @@ impl TextExtractor {
     /// Same as append_and_advance but works on an explicit buffer parameter
     /// instead of self.tj_span_buffer. Used by TJ array processing.
     fn append_advance_buffer(&mut self, buffer: &mut TjBuffer, text: &[u8]) -> Result<()> {
-        let text = if text.len() > 32_767 { &text[..32_767] } else { text };
+        let text = if text.len() > 32_767 {
+            &text[..32_767]
+        } else {
+            text
+        };
 
         let state = self.state_stack.current();
         let font_size = state.font_size;
@@ -5295,7 +5332,9 @@ impl TextExtractor {
                     }
                     let mut w = width_table[byte as usize] * fs_factor * hs_factor;
                     w += cs_hs;
-                    if byte == 0x20 { w += ws_hs; }
+                    if byte == 0x20 {
+                        w += ws_hs;
+                    }
                     w_sum += w;
                 }
                 w_sum
@@ -5305,7 +5344,9 @@ impl TextExtractor {
                 for &byte in text {
                     let mut w = font.get_glyph_width(byte as u16) * fs_factor * hs_factor;
                     w += cs_hs;
-                    if byte == 0x20 { w += ws_hs; }
+                    if byte == 0x20 {
+                        w += ws_hs;
+                    }
                     w_sum += w;
                 }
                 w_sum

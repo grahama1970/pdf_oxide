@@ -471,10 +471,12 @@ fn scan_to_et(data: &[u8]) -> Option<&[u8]> {
     while i + 1 < data.len() {
         if data[i] == b'E' && data[i + 1] == b'T' {
             // Verify it's a real ET operator (not part of a string)
-            let before_ok = i == 0 || data[i - 1].is_ascii_whitespace()
-                || data[i - 1] == b')' || data[i - 1] == b'>';
-            let after_ok = i + 2 >= data.len() || data[i + 2].is_ascii_whitespace()
-                || data[i + 2] == b'%';
+            let before_ok = i == 0
+                || data[i - 1].is_ascii_whitespace()
+                || data[i - 1] == b')'
+                || data[i - 1] == b'>';
+            let after_ok =
+                i + 2 >= data.len() || data[i + 2].is_ascii_whitespace() || data[i + 2] == b'%';
             if before_ok && after_ok {
                 return Some(&data[i + 2..]);
             }
@@ -774,7 +776,10 @@ fn build_operator(name: &str, operands: Vec<Object>) -> Operator {
                     _ => None,
                 })
                 .collect();
-            Operator::SetFillColorN { components, name: name.map(Box::new) }
+            Operator::SetFillColorN {
+                components,
+                name: name.map(Box::new),
+            }
         },
         "SCN" => {
             // Set stroke color with pattern support: c1 c2 ... cn [name] SCN
@@ -792,7 +797,10 @@ fn build_operator(name: &str, operands: Vec<Object>) -> Operator {
                     _ => None,
                 })
                 .collect();
-            Operator::SetStrokeColorN { components, name: name.map(Box::new) }
+            Operator::SetStrokeColorN {
+                components,
+                name: name.map(Box::new),
+            }
         },
 
         // Text object
@@ -1072,7 +1080,13 @@ fn parse_inline_image(input: &[u8]) -> IResult<&[u8], Operator> {
     remaining = &remaining[ei_pos + 2..]; // Skip past whitespace and "EI"
 
     // Step 5: Return the InlineImage operator
-    Ok((remaining, Operator::InlineImage { dict: Box::new(dict), data }))
+    Ok((
+        remaining,
+        Operator::InlineImage {
+            dict: Box::new(dict),
+            data,
+        },
+    ))
 }
 
 /// Find the EI operator in the input, which must be preceded by whitespace.
@@ -1347,10 +1361,7 @@ enum ScanResult<'a> {
     /// A simple no-operand operator that can be emitted directly without
     /// nom parsing. Used for unmatched Q (RestoreGraphicsState) to avoid
     /// expensive full-parse fallback.
-    SimpleOp {
-        op: Operator,
-        rest: &'a [u8],
-    },
+    SimpleOp { op: Operator, rest: &'a [u8] },
     /// Too many consecutive errors; remaining data is likely junk.
     TooManyErrors { remaining: &'a [u8] },
 }
@@ -1639,14 +1650,38 @@ fn parse_literal_string_fast(data: &[u8], start: usize) -> Option<(Vec<u8>, usiz
         match data[i] {
             b'\\' if i + 1 < data.len() => {
                 match data[i + 1] {
-                    b'n' => { result.push(b'\n'); i += 2; },
-                    b'r' => { result.push(b'\r'); i += 2; },
-                    b't' => { result.push(b'\t'); i += 2; },
-                    b'b' => { result.push(0x08); i += 2; },
-                    b'f' => { result.push(0x0C); i += 2; },
-                    b'(' => { result.push(b'('); i += 2; },
-                    b')' => { result.push(b')'); i += 2; },
-                    b'\\' => { result.push(b'\\'); i += 2; },
+                    b'n' => {
+                        result.push(b'\n');
+                        i += 2;
+                    },
+                    b'r' => {
+                        result.push(b'\r');
+                        i += 2;
+                    },
+                    b't' => {
+                        result.push(b'\t');
+                        i += 2;
+                    },
+                    b'b' => {
+                        result.push(0x08);
+                        i += 2;
+                    },
+                    b'f' => {
+                        result.push(0x0C);
+                        i += 2;
+                    },
+                    b'(' => {
+                        result.push(b'(');
+                        i += 2;
+                    },
+                    b')' => {
+                        result.push(b')');
+                        i += 2;
+                    },
+                    b'\\' => {
+                        result.push(b'\\');
+                        i += 2;
+                    },
                     b'0'..=b'7' => {
                         // Octal escape
                         let mut octal: u32 = (data[i + 1] - b'0') as u32;
@@ -1655,25 +1690,51 @@ fn parse_literal_string_fast(data: &[u8], start: usize) -> Option<(Vec<u8>, usiz
                             if j < data.len() && (b'0'..=b'7').contains(&data[j]) {
                                 octal = octal * 8 + (data[j] - b'0') as u32;
                                 j += 1;
-                            } else { break; }
+                            } else {
+                                break;
+                            }
                         }
                         result.push((octal & 0xFF) as u8);
                         i = j;
                     },
                     b'\r' => {
                         i += 2;
-                        if i < data.len() && data[i] == b'\n' { i += 1; }
+                        if i < data.len() && data[i] == b'\n' {
+                            i += 1;
+                        }
                     },
-                    b'\n' => { i += 2; },
-                    _ => { result.push(data[i + 1]); i += 2; },
+                    b'\n' => {
+                        i += 2;
+                    },
+                    _ => {
+                        result.push(data[i + 1]);
+                        i += 2;
+                    },
                 }
             },
-            b'(' => { depth += 1; result.push(b'('); i += 1; },
-            b')' => { depth -= 1; if depth > 0 { result.push(b')'); } i += 1; },
-            _ => { result.push(data[i]); i += 1; },
+            b'(' => {
+                depth += 1;
+                result.push(b'(');
+                i += 1;
+            },
+            b')' => {
+                depth -= 1;
+                if depth > 0 {
+                    result.push(b')');
+                }
+                i += 1;
+            },
+            _ => {
+                result.push(data[i]);
+                i += 1;
+            },
         }
     }
-    if depth == 0 { Some((result, i)) } else { None }
+    if depth == 0 {
+        Some((result, i))
+    } else {
+        None
+    }
 }
 
 /// Parse a hex string `<...>` from bytes. Returns (decoded_bytes, position_after_close_angle).
@@ -1694,7 +1755,10 @@ fn parse_hex_string_fast(data: &[u8], start: usize) -> Option<(Vec<u8>, usize)> 
         if let Some(nibble) = hex_nibble(b) {
             match high_nibble {
                 None => high_nibble = Some(nibble),
-                Some(h) => { result.push((h << 4) | nibble); high_nibble = None; },
+                Some(h) => {
+                    result.push((h << 4) | nibble);
+                    high_nibble = None;
+                },
             }
         }
         // Skip whitespace and other non-hex chars
@@ -1719,8 +1783,12 @@ fn parse_tj_array_fast(data: &[u8], start: usize) -> Option<(Vec<TextElement>, u
     let mut elements = Vec::new();
     loop {
         // Skip whitespace
-        while i < data.len() && is_whitespace(data[i]) { i += 1; }
-        if i >= data.len() { return None; }
+        while i < data.len() && is_whitespace(data[i]) {
+            i += 1;
+        }
+        if i >= data.len() {
+            return None;
+        }
 
         match data[i] {
             b']' => return Some((elements, i + 1)),
@@ -1728,19 +1796,25 @@ fn parse_tj_array_fast(data: &[u8], start: usize) -> Option<(Vec<TextElement>, u
                 if let Some((bytes, end)) = parse_literal_string_fast(data, i) {
                     elements.push(TextElement::String(bytes));
                     i = end;
-                } else { return None; }
+                } else {
+                    return None;
+                }
             },
             b'<' => {
                 if let Some((bytes, end)) = parse_hex_string_fast(data, i) {
                     elements.push(TextElement::String(bytes));
                     i = end;
-                } else { return None; }
+                } else {
+                    return None;
+                }
             },
             b'0'..=b'9' | b'.' | b'+' | b'-' => {
                 if let Some((num, consumed)) = parse_float_fast(&data[i..]) {
                     elements.push(TextElement::Offset(num));
                     i += consumed;
-                } else { return None; }
+                } else {
+                    return None;
+                }
             },
             _ => {
                 // Skip unknown token
@@ -1774,15 +1848,22 @@ fn parse_text_operator_fast(input: &[u8]) -> Option<(&[u8], Operator)> {
 
     loop {
         // Skip whitespace
-        while pos < input.len() && is_whitespace(input[pos]) { pos += 1; }
-        if pos >= input.len() { return None; }
+        while pos < input.len() && is_whitespace(input[pos]) {
+            pos += 1;
+        }
+        if pos >= input.len() {
+            return None;
+        }
 
         let b = input[pos];
         match b {
             // Number operand
             b'0'..=b'9' | b'.' | b'+' | b'-' => {
                 // Quick check: a lone '-' or '+' followed by non-digit is not a number
-                if (b == b'-' || b == b'+') && (pos + 1 >= input.len() || (!input[pos + 1].is_ascii_digit() && input[pos + 1] != b'.')) {
+                if (b == b'-' || b == b'+')
+                    && (pos + 1 >= input.len()
+                        || (!input[pos + 1].is_ascii_digit() && input[pos + 1] != b'.'))
+                {
                     return None; // fallback
                 }
                 if let Some((num, consumed)) = parse_float_fast(&input[pos..]) {
@@ -1882,21 +1963,39 @@ fn parse_text_operator_fast(input: &[u8]) -> Option<(&[u8], Operator)> {
                         Operator::Tf { font, size }
                     },
                     b"Td" => {
-                        let tx = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
-                        let ty = match &operands[1] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
+                        let tx = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
+                        let ty = match &operands[1] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
                         Operator::Td { tx, ty }
                     },
                     b"TD" => {
-                        let tx = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
-                        let ty = match &operands[1] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
+                        let tx = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
+                        let ty = match &operands[1] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
                         Operator::TD { tx, ty }
                     },
                     b"Tm" => {
-                        let get_n = |i: usize, def: f32| match &operands[i] { Some(FastOperand::Number(n)) => *n, _ => def };
+                        let get_n = |i: usize, def: f32| match &operands[i] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => def,
+                        };
                         Operator::Tm {
-                            a: get_n(0, 1.0), b: get_n(1, 0.0),
-                            c: get_n(2, 0.0), d: get_n(3, 1.0),
-                            e: get_n(4, 0.0), f: get_n(5, 0.0),
+                            a: get_n(0, 1.0),
+                            b: get_n(1, 0.0),
+                            c: get_n(2, 0.0),
+                            d: get_n(3, 1.0),
+                            e: get_n(4, 0.0),
+                            f: get_n(5, 0.0),
                         }
                     },
                     b"T*" => Operator::TStar,
@@ -1922,89 +2021,173 @@ fn parse_text_operator_fast(input: &[u8]) -> Option<(&[u8], Operator)> {
                         Operator::Quote { text }
                     },
                     b"\"" => {
-                        let word_space = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
-                        let char_space = match &operands[1] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
+                        let word_space = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
+                        let char_space = match &operands[1] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
                         let text = match operands[2].take() {
                             Some(FastOperand::StringBytes(b)) => b,
                             _ => Vec::new(),
                         };
-                        Operator::DoubleQuote { word_space, char_space, text }
+                        Operator::DoubleQuote {
+                            word_space,
+                            char_space,
+                            text,
+                        }
                     },
                     b"Tc" => {
-                        let char_space = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
+                        let char_space = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
                         Operator::Tc { char_space }
                     },
                     b"Tw" => {
-                        let word_space = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
+                        let word_space = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
                         Operator::Tw { word_space }
                     },
                     b"Tz" => {
-                        let scale = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 100.0 };
+                        let scale = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 100.0,
+                        };
                         Operator::Tz { scale }
                     },
                     b"TL" => {
-                        let leading = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
+                        let leading = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
                         Operator::TL { leading }
                     },
                     b"Tr" => {
-                        let render = match &operands[0] { Some(FastOperand::Number(n)) => *n as u8, _ => 0 };
+                        let render = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n as u8,
+                            _ => 0,
+                        };
                         Operator::Tr { render }
                     },
                     b"Ts" => {
-                        let rise = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
+                        let rise = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
                         Operator::Ts { rise }
                     },
                     b"q" => Operator::SaveState,
                     b"Q" => Operator::RestoreState,
                     b"cm" => {
-                        let get_n = |i: usize, def: f32| match &operands[i] { Some(FastOperand::Number(n)) => *n, _ => def };
+                        let get_n = |i: usize, def: f32| match &operands[i] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => def,
+                        };
                         Operator::Cm {
-                            a: get_n(0, 1.0), b: get_n(1, 0.0),
-                            c: get_n(2, 0.0), d: get_n(3, 1.0),
-                            e: get_n(4, 0.0), f: get_n(5, 0.0),
+                            a: get_n(0, 1.0),
+                            b: get_n(1, 0.0),
+                            c: get_n(2, 0.0),
+                            d: get_n(3, 1.0),
+                            e: get_n(4, 0.0),
+                            f: get_n(5, 0.0),
                         }
                     },
                     b"rg" => {
-                        let get_n = |i: usize| match &operands[i] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
-                        Operator::SetFillRgb { r: get_n(0), g: get_n(1), b: get_n(2) }
+                        let get_n = |i: usize| match &operands[i] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
+                        Operator::SetFillRgb {
+                            r: get_n(0),
+                            g: get_n(1),
+                            b: get_n(2),
+                        }
                     },
                     b"RG" => {
-                        let get_n = |i: usize| match &operands[i] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
-                        Operator::SetStrokeRgb { r: get_n(0), g: get_n(1), b: get_n(2) }
+                        let get_n = |i: usize| match &operands[i] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
+                        Operator::SetStrokeRgb {
+                            r: get_n(0),
+                            g: get_n(1),
+                            b: get_n(2),
+                        }
                     },
                     b"g" => {
-                        let gray = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
+                        let gray = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
                         Operator::SetFillGray { gray }
                     },
                     b"G" => {
-                        let gray = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
+                        let gray = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
                         Operator::SetStrokeGray { gray }
                     },
                     b"k" => {
-                        let get_n = |i: usize| match &operands[i] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
-                        Operator::SetFillCmyk { c: get_n(0), m: get_n(1), y: get_n(2), k: get_n(3) }
+                        let get_n = |i: usize| match &operands[i] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
+                        Operator::SetFillCmyk {
+                            c: get_n(0),
+                            m: get_n(1),
+                            y: get_n(2),
+                            k: get_n(3),
+                        }
                     },
                     b"K" => {
-                        let get_n = |i: usize| match &operands[i] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
-                        Operator::SetStrokeCmyk { c: get_n(0), m: get_n(1), y: get_n(2), k: get_n(3) }
+                        let get_n = |i: usize| match &operands[i] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
+                        Operator::SetStrokeCmyk {
+                            c: get_n(0),
+                            m: get_n(1),
+                            y: get_n(2),
+                            k: get_n(3),
+                        }
                     },
                     b"cs" => {
-                        let name = match &operands[0] { Some(FastOperand::Name(n)) => n.clone(), _ => "DeviceGray".to_string() };
+                        let name = match &operands[0] {
+                            Some(FastOperand::Name(n)) => n.clone(),
+                            _ => "DeviceGray".to_string(),
+                        };
                         Operator::SetFillColorSpace { name }
                     },
                     b"CS" => {
-                        let name = match &operands[0] { Some(FastOperand::Name(n)) => n.clone(), _ => "DeviceGray".to_string() };
+                        let name = match &operands[0] {
+                            Some(FastOperand::Name(n)) => n.clone(),
+                            _ => "DeviceGray".to_string(),
+                        };
                         Operator::SetStrokeColorSpace { name }
                     },
                     b"sc" => {
-                        let components: Vec<f32> = operands[..op_count].iter()
-                            .filter_map(|o| match o { Some(FastOperand::Number(n)) => Some(*n), _ => None })
+                        let components: Vec<f32> = operands[..op_count]
+                            .iter()
+                            .filter_map(|o| match o {
+                                Some(FastOperand::Number(n)) => Some(*n),
+                                _ => None,
+                            })
                             .collect();
                         Operator::SetFillColor { components }
                     },
                     b"SC" => {
-                        let components: Vec<f32> = operands[..op_count].iter()
-                            .filter_map(|o| match o { Some(FastOperand::Number(n)) => Some(*n), _ => None })
+                        let components: Vec<f32> = operands[..op_count]
+                            .iter()
+                            .filter_map(|o| match o {
+                                Some(FastOperand::Number(n)) => Some(*n),
+                                _ => None,
+                            })
                             .collect();
                         Operator::SetStrokeColor { components }
                     },
@@ -2013,43 +2196,75 @@ fn parse_text_operator_fast(input: &[u8]) -> Option<(&[u8], Operator)> {
                             Some(FastOperand::Name(n)) => Some(n.clone()),
                             _ => None,
                         };
-                        let components: Vec<f32> = operands[..op_count].iter()
-                            .filter_map(|o| match o { Some(FastOperand::Number(n)) => Some(*n), _ => None })
+                        let components: Vec<f32> = operands[..op_count]
+                            .iter()
+                            .filter_map(|o| match o {
+                                Some(FastOperand::Number(n)) => Some(*n),
+                                _ => None,
+                            })
                             .collect();
-                        Operator::SetFillColorN { components, name: name.map(Box::new) }
+                        Operator::SetFillColorN {
+                            components,
+                            name: name.map(Box::new),
+                        }
                     },
                     b"SCN" => {
                         let name = match &operands[op_count.saturating_sub(1)] {
                             Some(FastOperand::Name(n)) => Some(n.clone()),
                             _ => None,
                         };
-                        let components: Vec<f32> = operands[..op_count].iter()
-                            .filter_map(|o| match o { Some(FastOperand::Number(n)) => Some(*n), _ => None })
+                        let components: Vec<f32> = operands[..op_count]
+                            .iter()
+                            .filter_map(|o| match o {
+                                Some(FastOperand::Number(n)) => Some(*n),
+                                _ => None,
+                            })
                             .collect();
-                        Operator::SetStrokeColorN { components, name: name.map(Box::new) }
+                        Operator::SetStrokeColorN {
+                            components,
+                            name: name.map(Box::new),
+                        }
                     },
                     b"gs" => {
-                        let dict_name = match &operands[0] { Some(FastOperand::Name(n)) => n.clone(), _ => String::new() };
+                        let dict_name = match &operands[0] {
+                            Some(FastOperand::Name(n)) => n.clone(),
+                            _ => String::new(),
+                        };
                         Operator::SetExtGState { dict_name }
                     },
                     b"Do" => {
-                        let name = match &operands[0] { Some(FastOperand::Name(n)) => n.clone(), _ => String::new() };
+                        let name = match &operands[0] {
+                            Some(FastOperand::Name(n)) => n.clone(),
+                            _ => String::new(),
+                        };
                         Operator::Do { name }
                     },
                     b"w" => {
-                        let width = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 1.0 };
+                        let width = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 1.0,
+                        };
                         Operator::SetLineWidth { width }
                     },
                     b"J" => {
-                        let cap_style = match &operands[0] { Some(FastOperand::Number(n)) => *n as u8, _ => 0 };
+                        let cap_style = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n as u8,
+                            _ => 0,
+                        };
                         Operator::SetLineCap { cap_style }
                     },
                     b"j" => {
-                        let join_style = match &operands[0] { Some(FastOperand::Number(n)) => *n as u8, _ => 0 };
+                        let join_style = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n as u8,
+                            _ => 0,
+                        };
                         Operator::SetLineJoin { join_style }
                     },
                     b"i" => {
-                        let tolerance = match &operands[0] { Some(FastOperand::Number(n)) => *n, _ => 0.0 };
+                        let tolerance = match &operands[0] {
+                            Some(FastOperand::Number(n)) => *n,
+                            _ => 0.0,
+                        };
                         Operator::SetFlatness { tolerance }
                     },
                     _ => {
@@ -2093,9 +2308,9 @@ static BYTE_CLASS: [u8; 256] = {
     t[b'\t' as usize] = SCAN_SKIP;
     t[b'\n' as usize] = SCAN_SKIP;
     t[b'\r' as usize] = SCAN_SKIP;
-    t[0x00] = SCAN_SKIP;  // null
-    t[0x0C] = SCAN_SKIP;  // form feed
-    // Digits
+    t[0x00] = SCAN_SKIP; // null
+    t[0x0C] = SCAN_SKIP; // form feed
+                         // Digits
     t[b'0' as usize] = SCAN_SKIP;
     t[b'1' as usize] = SCAN_SKIP;
     t[b'2' as usize] = SCAN_SKIP;
@@ -2154,8 +2369,8 @@ fn scan_graphics_region<'a>(data: &'a [u8], consecutive_errors: &mut usize) -> S
         match BYTE_CLASS[data[i] as usize] {
             SCAN_ALPHA => {
                 let first_byte = data[i];
-                let second_is_non_alpha = i + 1 >= len
-                    || BYTE_CLASS[data[i + 1] as usize] != SCAN_ALPHA;
+                let second_is_non_alpha =
+                    i + 1 >= len || BYTE_CLASS[data[i + 1] as usize] != SCAN_ALPHA;
 
                 // Fast path for common single-char skippable operators.
                 // Avoids reading the full operator name and is_skippable check.
@@ -2167,10 +2382,29 @@ fn scan_graphics_region<'a>(data: &'a [u8], consecutive_errors: &mut usize) -> S
                 if second_is_non_alpha
                     && matches!(
                         first_byte,
-                        b'm' | b'l' | b'c' | b'v' | b'y' | b'h'
-                            | b'f' | b'F' | b'B' | b'b' | b'S' | b's' | b'n' | b'W'
-                            | b'g' | b'G' | b'k' | b'K'
-                            | b'w' | b'd' | b'i' | b'J' | b'j' | b'M'
+                        b'm' | b'l'
+                            | b'c'
+                            | b'v'
+                            | b'y'
+                            | b'h'
+                            | b'f'
+                            | b'F'
+                            | b'B'
+                            | b'b'
+                            | b'S'
+                            | b's'
+                            | b'n'
+                            | b'W'
+                            | b'g'
+                            | b'G'
+                            | b'k'
+                            | b'K'
+                            | b'w'
+                            | b'd'
+                            | b'i'
+                            | b'J'
+                            | b'j'
+                            | b'M'
                     )
                 {
                     i += 1;
@@ -2220,9 +2454,7 @@ fn scan_graphics_region<'a>(data: &'a [u8], consecutive_errors: &mut usize) -> S
                     };
                 } else if deferred_depth > 0 {
                     // Inside a deferred q block — check if this op needs flushing
-                    if op == b"cm" || op == b"gs"
-                        || is_skippable_graphics_op_bytes(op)
-                    {
+                    if op == b"cm" || op == b"gs" || is_skippable_graphics_op_bytes(op) {
                         operand_start = i;
                         continue;
                     }
@@ -2238,7 +2470,9 @@ fn scan_graphics_region<'a>(data: &'a [u8], consecutive_errors: &mut usize) -> S
                     // ConcatMatrix: parse 6 floats inline to avoid nom overhead
                     // (171K triggers/PDF for Murphy). Falls back to NeedFullParse
                     // on malformed operands.
-                    if let Some((a, b, c, d, e, f)) = parse_six_floats(&data[operand_start..op_start]) {
+                    if let Some((a, b, c, d, e, f)) =
+                        parse_six_floats(&data[operand_start..op_start])
+                    {
                         return ScanResult::SimpleOp {
                             op: Operator::Cm { a, b, c, d, e, f },
                             rest: &data[i..],
