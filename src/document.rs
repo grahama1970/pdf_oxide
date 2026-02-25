@@ -85,6 +85,12 @@ pub struct PdfDocument {
     /// Keyed by sorted font ObjectRefs hash, catches pages with different
     /// /Resources but same font references.
     font_fingerprint_cache: HashMap<u64, Vec<(String, Arc<crate::fonts::FontInfo>)>>,
+    /// Name-based font set cache keyed by hash of sorted font names.
+    /// Catches pages with different font ObjectRefs but the same font name→base font
+    /// mapping (common in PDFs that create new font objects per page).
+    /// Stores the resolved font set (Arc-wrapped to avoid cloning) plus a spot-check
+    /// (font_name, content_hash) pair for verification before reuse.
+    font_name_set_cache: HashMap<u64, (Arc<Vec<(String, Arc<crate::fonts::FontInfo>)>>, String, u64)>,
     /// Cached structure tree (None = not yet checked, Some(None) = untagged, Some(Some) = tagged).
     /// Uses Arc to avoid expensive deep clones on every page extraction.
     structure_tree_cache: Option<Option<Arc<crate::structure::StructTreeRoot>>>,
@@ -205,6 +211,7 @@ impl PdfDocument {
             font_cache: HashMap::new(),
             font_set_cache: HashMap::new(),
             font_fingerprint_cache: HashMap::new(),
+            font_name_set_cache: HashMap::new(),
             structure_tree_cache: None,
             structure_content_cache: None,
             page_cache: HashMap::new(),
@@ -4861,6 +4868,60 @@ impl PdfDocument {
         }
     }
 
+    /// Compute a font identity hash from a loaded font object.
+    /// Only hashes fields that affect text extraction (BaseFont, Subtype, Encoding,
+    /// ToUnicode, FontDescriptor, DescendantFonts). Ignores per-page variations in
+    /// Widths/FirstChar/LastChar that don't affect character mapping.
+    fn font_identity_hash(font_obj: &Object) -> u64 {
+        use std::hash::{Hash, Hasher};
+        let mut hasher = std::collections::hash_map::DefaultHasher::new();
+
+        if let Some(d) = font_obj.as_dict() {
+            // BaseFont: primary identity
+            if let Some(Object::Name(n)) = d.get("BaseFont") {
+                1u8.hash(&mut hasher);
+                n.hash(&mut hasher);
+            }
+            // Subtype: Type1, TrueType, Type0, etc.
+            if let Some(Object::Name(n)) = d.get("Subtype") {
+                2u8.hash(&mut hasher);
+                n.hash(&mut hasher);
+            }
+            // Encoding: determines character mapping
+            if let Some(enc) = d.get("Encoding") {
+                3u8.hash(&mut hasher);
+                match enc {
+                    Object::Name(n) => n.hash(&mut hasher),
+                    Object::Reference(r) => { r.id.hash(&mut hasher); r.gen.hash(&mut hasher); }
+                    _ => {} // inline encoding dict — rare, treat as unknown
+                }
+            }
+            // ToUnicode: CMap reference for Unicode conversion
+            if let Some(Object::Reference(r)) = d.get("ToUnicode") {
+                4u8.hash(&mut hasher);
+                r.id.hash(&mut hasher);
+                r.gen.hash(&mut hasher);
+            }
+            // FontDescriptor: contains embedded font program (affects cmap extraction)
+            if let Some(Object::Reference(r)) = d.get("FontDescriptor") {
+                5u8.hash(&mut hasher);
+                r.id.hash(&mut hasher);
+                r.gen.hash(&mut hasher);
+            }
+            // DescendantFonts: for Type0 composite fonts
+            if let Some(Object::Array(arr)) = d.get("DescendantFonts") {
+                6u8.hash(&mut hasher);
+                for item in arr {
+                    if let Object::Reference(r) = item {
+                        r.id.hash(&mut hasher);
+                        r.gen.hash(&mut hasher);
+                    }
+                }
+            }
+        }
+        hasher.finish()
+    }
+
     /// Load fonts from a Resources dictionary into the extractor.
     pub(crate) fn load_fonts(
         &mut self,
@@ -4942,7 +5003,49 @@ impl PdfDocument {
                     return Ok(());
                 }
 
+                // Layer 4: Name-based font set cache with spot-check verification.
+                // Pages in the same document often use the same font names mapped to
+                // different ObjectRefs but identical base fonts (e.g., 764 pages each
+                // creating T1_0→Helvetica, T1_1→Times-Roman with unique object numbers).
+                // Cache the resolved font set by sorted font names, then on subsequent
+                // pages verify ONE font via load+hash to confirm the mapping is the same.
+                let name_hash = {
+                    use std::hash::{Hash, Hasher};
+                    let mut font_names: Vec<&str> = font_dict.keys().map(|k| k.as_str()).collect();
+                    font_names.sort();
+                    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+                    font_names.hash(&mut hasher);
+                    hasher.finish()
+                };
+
+                // Extract spot-check info and cached set before mutable borrow
+                let name_cache_entry = self.font_name_set_cache.get(&name_hash).map(|(set, cn, ch)| {
+                    (Arc::clone(set), cn.clone(), *ch)
+                });
+
+                if let Some((cached_set, check_name, check_hash)) = name_cache_entry {
+                    // Spot-check: load ONE font and compare its identity hash
+                    // (BaseFont + Encoding + ToUnicode) to verify the mapping.
+                    let mut verified = false;
+                    if let Some(check_obj) = font_dict.get(check_name.as_str()) {
+                        if let Some(check_ref) = check_obj.as_reference() {
+                            if let Ok(check_font) = self.load_object(check_ref) {
+                                verified = Self::font_identity_hash(&check_font) == check_hash;
+                            }
+                        }
+                    }
+                    if verified {
+                        for (name, font_arc) in cached_set.iter() {
+                            extractor.add_font_shared(name.clone(), Arc::clone(font_arc));
+                        }
+                        return Ok(());
+                    }
+                }
+
                 let mut all_from_cache = true;
+                // Track spot-check data: first font name and its content hash
+                let mut spot_check: Option<(String, u64)> = None;
+
                 for (name, font_obj) in font_dict {
                     // If font is a reference, check per-font cache first
                     if let Some(font_ref) = font_obj.as_reference() {
@@ -4952,6 +5055,12 @@ impl PdfDocument {
                         }
                         all_from_cache = false;
                         let font = self.load_object(font_ref)?;
+
+                        // Compute identity hash for spot-check data (first font only)
+                        if spot_check.is_none() {
+                            spot_check = Some((name.clone(), Self::font_identity_hash(&font)));
+                        }
+
                         match FontInfo::from_dict(&font, self) {
                             Ok(font_info) => {
                                 let arc = Arc::new(font_info);
@@ -4998,7 +5107,12 @@ impl PdfDocument {
                 if let Some(fdr) = font_dict_ref {
                     self.font_set_cache.insert(fdr, font_set.clone());
                 }
-                self.font_fingerprint_cache.insert(fingerprint, font_set);
+                self.font_fingerprint_cache.insert(fingerprint, font_set.clone());
+
+                // Cache by font names with spot-check data for Layer 4
+                if let Some((check_name, check_hash)) = spot_check {
+                    self.font_name_set_cache.insert(name_hash, (Arc::new(font_set), check_name, check_hash));
+                }
 
                 return Ok(());
             }
