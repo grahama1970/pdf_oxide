@@ -1,0 +1,3 @@
+# Binary files — prevent CRLF conversion on Windows
+*.pdf binary
+*.PDF binary
