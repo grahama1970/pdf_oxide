@@ -95,6 +95,7 @@ end
         last_char: None,
         default_width: 500.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Predefined CMap mappings work
@@ -173,6 +174,7 @@ end
         last_char: None,
         default_width: 500.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Verify: CNS1 mappings work
@@ -252,6 +254,7 @@ end
         last_char: None,
         default_width: 500.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Hiragana characters
@@ -331,6 +334,7 @@ end
         last_char: None,
         default_width: 500.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Hangul syllables
@@ -411,6 +415,7 @@ end
         last_char: None,
         default_width: 500.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     let font2 = FontInfo {
@@ -437,6 +442,7 @@ end
         last_char: None,
         default_width: 500.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Both fonts should access the same CMap
@@ -515,6 +521,7 @@ end
         last_char: None,
         default_width: 500.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Vertical writing support
@@ -587,6 +594,7 @@ end
         last_char: None,
         default_width: 500.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Supplement 2 extended characters
@@ -667,6 +675,7 @@ end
         last_char: None,
         default_width: 500.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Verify: Text extraction works even without custom ToUnicode

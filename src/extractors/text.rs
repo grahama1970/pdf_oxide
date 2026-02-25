@@ -1307,12 +1307,48 @@ impl TjBuffer {
         };
         self.text.extend_from_slice(bytes);
 
-        // Convert to Unicode using helper function
         let font = self
             .font_name
             .as_ref()
             .and_then(|name| fonts.get(name))
             .map(|f| f.as_ref());
+
+        // Fast path: OneByte fonts push chars directly into buffer via lookup table.
+        // Avoids String allocation in decode_text_to_unicode (2 allocations per call).
+        if let Some(font) = font {
+            if font.subtype != "Type0" {
+                let table = font.get_byte_to_char_table();
+                for &byte in bytes {
+                    let c = table[byte as usize];
+                    if c != '\0' {
+                        self.unicode.push(c);
+                    } else {
+                        // Rare: multi-char mapping or unmapped byte
+                        if let Some(s) = font.char_to_unicode(byte as u32) {
+                            if s != "\u{FFFD}" {
+                                for ch in s.chars() {
+                                    if ch >= '\x20' || ch == '\t' || ch == '\n' || ch == '\r' {
+                                        self.unicode.push(ch);
+                                    }
+                                }
+                            }
+                        } else {
+                            let fb = fallback_char_to_unicode(byte as u16);
+                            if fb != "\u{FFFD}" {
+                                for ch in fb.chars() {
+                                    if ch >= '\x20' || ch == '\t' || ch == '\n' || ch == '\r' {
+                                        self.unicode.push(ch);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return Ok(());
+            }
+        }
+
+        // Slow path: Type0 (CID) fonts or no font — use full decode function
         let unicode_text = decode_text_to_unicode(bytes, font);
         self.unicode.push_str(&unicode_text);
 
@@ -1612,15 +1648,23 @@ fn decode_text_to_unicode(bytes: &[u8], font: Option<&FontInfo>) -> String {
                 result
             },
             _ => {
-                // Simple fonts use single-byte character codes
-                let mut result = String::new();
+                // Simple fonts use single-byte character codes.
+                // Use pre-computed lookup table for single-char mappings (avoids
+                // per-byte HashMap lookups and String allocations).
+                let table = font.get_byte_to_char_table();
+                let mut result = String::with_capacity(bytes.len());
                 for &byte in bytes {
-                    let char_code = byte as u16;
-                    let char_str = font
-                        .char_to_unicode(char_code as u32)
-                        .unwrap_or_else(|| fallback_char_to_unicode(char_code));
-                    if char_str != "\u{FFFD}" {
-                        result.push_str(&char_str);
+                    let c = table[byte as usize];
+                    if c != '\0' {
+                        result.push(c);
+                    } else {
+                        // Fallback: multi-char mapping or unmapped byte
+                        let char_str = font
+                            .char_to_unicode(byte as u32)
+                            .unwrap_or_else(|| fallback_char_to_unicode(byte as u16));
+                        if char_str != "\u{FFFD}" {
+                            result.push_str(&char_str);
+                        }
                     }
                 }
                 result
@@ -5090,7 +5134,12 @@ impl TextExtractor {
 
         let font = state.font_name.as_ref().and_then(|name| self.fonts.get(name));
 
-        // Calculate total width per PDF spec
+        // Hoist loop-invariant computations
+        let fs_factor = font_size / 1000.0;
+        let hs_factor = horizontal_scaling / 100.0;
+        let cs_hs = char_space * hs_factor;
+        let ws_hs = word_space * hs_factor;
+
         let mut total_width = 0.0;
         for &byte in text {
             let glyph_width = if let Some(font) = font {
@@ -5099,13 +5148,12 @@ impl TextExtractor {
                 500.0
             };
 
-            let mut char_width = glyph_width * font_size / 1000.0;
-            char_width += char_space;
+            let mut w = glyph_width * fs_factor * hs_factor;
+            w += cs_hs;
             if byte == 0x20 {
-                char_width += word_space;
+                w += ws_hs;
             }
-            char_width *= horizontal_scaling / 100.0;
-            total_width += char_width;
+            total_width += w;
         }
 
         // Update text matrix position
@@ -5590,6 +5638,7 @@ mod tests {
             cid_widths: None,
             cid_default_width: 1000.0,
             multi_char_map: HashMap::new(),
+            byte_to_char_table: std::sync::OnceLock::new(),
         }
     }
 

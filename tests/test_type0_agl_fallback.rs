@@ -42,6 +42,7 @@ fn test_type0_agl_fallback_for_standard_ascii() {
         last_char: None,
         default_width: 1000.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // For ASCII range, should try Adobe Glyph List
@@ -84,6 +85,7 @@ fn test_type0_lmroman_agl_fallback() {
         last_char: None,
         default_width: 1000.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Test common ASCII characters
@@ -120,6 +122,7 @@ fn test_type0_agl_fallback_then_replacement() {
         last_char: None,
         default_width: 1000.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // GID 0xFFFF won't be in Adobe Glyph List

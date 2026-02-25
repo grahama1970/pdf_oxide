@@ -47,6 +47,7 @@ fn test_identity_h_cmap_simple_cid_to_unicode() {
         last_char: None,
         default_width: 1000.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // CID 0x4E00 should map to Unicode U+4E00 via Identity-H
@@ -91,6 +92,7 @@ fn test_unigb_ucs2_h_cmap_simplified_chinese() {
         last_char: None,
         default_width: 1000.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // For UCS2 encoding, char_to_unicode receives the raw character code from the
@@ -139,6 +141,7 @@ fn test_unijis_ucs2_h_cmap_japanese() {
         last_char: None,
         default_width: 1000.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Japanese Hiragana character "あ" (U+3042)
@@ -182,6 +185,7 @@ fn test_unicns_ucs2_h_cmap_traditional_chinese() {
         last_char: None,
         default_width: 1000.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Traditional Chinese character "一" (U+4E00)
@@ -225,6 +229,7 @@ fn test_uniks_ucs2_h_cmap_korean() {
         last_char: None,
         default_width: 1000.0,
         multi_char_map: HashMap::new(),
+        byte_to_char_table: std::sync::OnceLock::new(),
     };
 
     // Korean Hangul character "가" (U+AC00)
