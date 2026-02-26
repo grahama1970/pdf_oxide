@@ -42,7 +42,8 @@ fn test_cff_font_detection_in_type0_fonts() {
         flags: None,
         stem_v: None,
         embedded_font_data: None, // CFF data would be in CFF stream
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -91,7 +92,8 @@ fn test_cff_charstrings_glyph_lookup() {
         flags: Some(0x0010), // Symbolic font
         stem_v: Some(85.0),
         embedded_font_data: None, // Would contain CFF data
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -165,7 +167,8 @@ end
         flags: Some(0x0010),
         stem_v: Some(90.0), // Private Dict hint: stem vertical weight
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -217,7 +220,8 @@ fn test_cff_fdselect_array_font_program_selection() {
         flags: Some(0x0000),
         stem_v: Some(75.0),       // Regular weight
         embedded_font_data: None, // Would contain multi-program CFF
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -262,7 +266,8 @@ fn test_cff_glyph_name_to_unicode_mapping() {
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -306,7 +311,8 @@ fn test_cff_fallback_to_identity_mapping() {
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -380,7 +386,8 @@ end
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),

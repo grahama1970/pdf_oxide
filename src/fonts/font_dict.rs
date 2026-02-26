@@ -40,10 +40,14 @@ pub struct FontInfo {
     /// Embedded TrueType font data (from FontFile2 stream)
     /// Shared via Arc to avoid expensive cloning
     pub embedded_font_data: Option<Arc<Vec<u8>>>,
-    /// Extracted TrueType cmap table (GID to Unicode mappings)
-    /// Used as fallback when ToUnicode CMap is missing
-    /// Phase 2A: Provides 70-80% recovery for Type0 fonts without ToUnicode
-    pub truetype_cmap: Option<TrueTypeCMap>,
+    /// Lazily-extracted TrueType cmap table (GID to Unicode mappings).
+    /// Used as fallback when ToUnicode CMap is missing.
+    /// Initialized on first access via `truetype_cmap()` accessor to avoid
+    /// the 10-25ms per-font extraction cost when ToUnicode resolves all chars.
+    pub truetype_cmap: std::sync::OnceLock<Option<TrueTypeCMap>>,
+    /// Whether this font has an embedded TrueType font (FontFile2).
+    /// Controls whether lazy truetype_cmap extraction is attempted.
+    pub is_truetype_font: bool,
     /// CID to GID mapping (Type0 fonts only, Phase 3)
     /// Converts Character IDs in the PDF to Glyph IDs in the embedded font
     /// Used to look up Unicode values via the TrueType cmap table
@@ -164,6 +168,56 @@ pub struct CIDSystemInfo {
 }
 
 impl FontInfo {
+    /// Get the TrueType cmap, lazily extracting it on first access.
+    /// Returns `None` if the font is not TrueType or has no embedded data.
+    pub fn truetype_cmap(&self) -> Option<&TrueTypeCMap> {
+        self.truetype_cmap
+            .get_or_init(|| {
+                if !self.is_truetype_font {
+                    return None;
+                }
+                let font_data = self.embedded_font_data.as_ref()?;
+                if font_data.is_empty() {
+                    return None;
+                }
+                match TrueTypeCMap::from_font_data(font_data) {
+                    Ok(cmap) if !cmap.is_empty() => {
+                        log::info!(
+                            "Lazy-extracted TrueType cmap for font '{}': {} mappings",
+                            self.base_font,
+                            cmap.len()
+                        );
+                        Some(cmap)
+                    }
+                    Ok(_) => None,
+                    Err(e) => {
+                        log::warn!(
+                            "Font '{}': TrueType cmap extraction failed: {}",
+                            self.base_font,
+                            e
+                        );
+                        None
+                    }
+                }
+            })
+            .as_ref()
+    }
+
+    /// Set the TrueType cmap directly (used by share_truetype_cmaps and tests).
+    pub fn set_truetype_cmap(&mut self, cmap: Option<TrueTypeCMap>) {
+        self.truetype_cmap = std::sync::OnceLock::new();
+        if let Some(c) = cmap {
+            let _ = self.truetype_cmap.set(Some(c));
+        } else {
+            let _ = self.truetype_cmap.set(None);
+        }
+    }
+
+    /// Check if a TrueType cmap is available (either already extracted or extractable).
+    pub fn has_truetype_cmap(&self) -> bool {
+        self.truetype_cmap().is_some()
+    }
+
     /// Parse font information from a font dictionary object.
     ///
     /// # Arguments
@@ -327,65 +381,10 @@ impl FontInfo {
                 (None, None, None, None, false)
             };
 
-        // ===== NEW: Extract TrueType cmap if available (Phase 2A) =====
-        let truetype_cmap = if is_truetype_font {
-            // Only attempt TrueType cmap extraction for actual TrueType fonts (FontFile2)
-            // CFF/OpenType fonts (FontFile3) do NOT have TrueType cmaps - they have different structures
-            if let Some(font_data) = &embedded_font_data {
-                log::info!(
-                    "Font '{}': Attempting to extract TrueType cmap from {} byte embedded TrueType font data",
-                    base_font,
-                    font_data.len()
-                );
-                match TrueTypeCMap::from_font_data(font_data) {
-                    Ok(cmap) => {
-                        let glyph_count = cmap.len();
-                        if glyph_count > 0 {
-                            log::info!(
-                                "✓ Successfully extracted TrueType cmap for font '{}': {} glyph→Unicode mappings",
-                                base_font,
-                                glyph_count
-                            );
-                        } else {
-                            log::warn!(
-                                "Font '{}': TrueType cmap extracted but contains 0 mappings (empty cmap)",
-                                base_font
-                            );
-                        }
-                        Some(cmap)
-                    },
-                    Err(e) => {
-                        log::warn!("Font '{}': TrueType cmap extraction failed: {}", base_font, e);
-                        None
-                    },
-                }
-            } else {
-                log::debug!(
-                    "Font '{}': No embedded font data available for TrueType cmap extraction",
-                    base_font
-                );
-                None
-            }
-        } else if embedded_font_data.is_some() {
-            // Embedded font exists but it's NOT TrueType (e.g., CFF/OpenType)
-            log::debug!(
-                "Font '{}': Skipping TrueType cmap extraction - font is {} (not TrueType)",
-                base_font,
-                if subtype == "Type0" {
-                    "Type0 with CFF/OpenType"
-                } else {
-                    "other format"
-                }
-            );
-            None
-        } else {
-            log::debug!(
-                "Font '{}': No embedded font data available for TrueType cmap extraction",
-                base_font
-            );
-            None
-        };
-        // ===== END NEW CODE =====
+        // TrueType cmap extraction is now LAZY — deferred until first access via
+        // truetype_cmap() accessor. This saves 10-25ms per font when ToUnicode CMap
+        // (Priority 1) resolves all characters, making the cmap unnecessary.
+        // The is_truetype_font flag is recorded here for the lazy accessor to use.
 
         // Helper function to check if font is symbolic (bit 3 set)
         let is_symbolic_font = |flags_opt: Option<i32>| -> bool {
@@ -656,8 +655,12 @@ impl FontInfo {
             (None, None, None, None, 1000.0, None)
         };
 
-        // Use descendant's TrueType cmap when the parent has none
-        let truetype_cmap = truetype_cmap.or(descendant_tt_cmap);
+        // Pre-populate OnceLock with descendant's TrueType cmap if available.
+        // Otherwise leave it for lazy extraction from embedded_font_data.
+        let truetype_cmap_lock = std::sync::OnceLock::new();
+        if let Some(desc_cmap) = descendant_tt_cmap {
+            let _ = truetype_cmap_lock.set(Some(desc_cmap));
+        }
 
         Ok(FontInfo {
             base_font,
@@ -668,7 +671,8 @@ impl FontInfo {
             flags,
             stem_v,
             embedded_font_data,
-            truetype_cmap,
+            truetype_cmap: truetype_cmap_lock,
+            is_truetype_font,
             cid_to_gid_map,
             cid_system_info,
             cid_font_type,
@@ -1938,7 +1942,7 @@ impl FontInfo {
 
                         if is_identity_ordering {
                             // Try TrueType cmap: CID → GID → Unicode
-                            if let Some(ref tt_cmap) = self.truetype_cmap {
+                            if let Some(tt_cmap) = self.truetype_cmap() {
                                 let gid = if let Some(ref cid_to_gid) = self.cid_to_gid_map {
                                     cid_to_gid.get_gid(char_code as u16)
                                 } else {
@@ -2178,7 +2182,7 @@ impl FontInfo {
                 if (self.subtype == "TrueType" || self.subtype == "Type1")
                     && name == "StandardEncoding"
                 {
-                    if let Some(ref tt_cmap) = self.truetype_cmap {
+                    if let Some(tt_cmap) = self.truetype_cmap() {
                         if let Some(unicode_char) = tt_cmap.get_unicode(char_code as u16) {
                             return Some(unicode_char.to_string());
                         }
@@ -2234,7 +2238,7 @@ impl FontInfo {
                     // conforming readers SHALL use the TrueType font's internal "cmap" table as fallback.
                     // This requires translating CID → GID via the CIDToGIDMap, then looking up Unicode.
 
-                    if let Some(ref tt_cmap) = self.truetype_cmap {
+                    if let Some(tt_cmap) = self.truetype_cmap() {
                         // Translate CID → GID using the CIDToGIDMap
                         // Note: CIDToGIDMap only works with u16 CIDs (2-byte codes)
                         // For CIDs > 0xFFFF, we skip CIDToGIDMap and use char_code as GID if it fits in u16
@@ -2378,7 +2382,7 @@ impl FontInfo {
         // resort. For subset fonts, character codes may be GIDs that the encoding table
         // doesn't cover. The cmap provides GID → Unicode mapping.
         if self.subtype != "Type0" {
-            if let Some(ref tt_cmap) = self.truetype_cmap {
+            if let Some(tt_cmap) = self.truetype_cmap() {
                 if let Some(unicode_char) = tt_cmap.get_unicode(char_code as u16) {
                     return Some(unicode_char.to_string());
                 }
@@ -3714,7 +3718,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -3739,7 +3744,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -3767,7 +3773,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -3792,7 +3799,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -3823,7 +3831,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -3855,7 +3864,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -3886,7 +3896,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -3915,7 +3926,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4042,7 +4054,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4159,7 +4172,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4194,7 +4208,8 @@ mod tests {
             flags: Some(0x80000), // ForceBold flag set
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4222,7 +4237,8 @@ mod tests {
             flags: Some(0x40000), // Different flag, NOT ForceBold
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4254,7 +4270,8 @@ mod tests {
             flags: None,
             stem_v: Some(120.0), // Heavy stem
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4282,7 +4299,8 @@ mod tests {
             flags: None,
             stem_v: Some(95.0), // Medium stem
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4310,7 +4328,8 @@ mod tests {
             flags: None,
             stem_v: Some(70.0), // Light stem
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4342,7 +4361,8 @@ mod tests {
             flags: Some(0x80000),   // ForceBold flag set
             stem_v: Some(120.0),    // Heavy stem
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4370,7 +4390,8 @@ mod tests {
             flags: Some(0x80000), // ForceBold flag set
             stem_v: Some(70.0),   // Light stem
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4398,7 +4419,8 @@ mod tests {
             flags: None,
             stem_v: Some(70.0), // Light stem, but name says Bold
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4430,7 +4452,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4457,7 +4480,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4484,7 +4508,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4511,7 +4536,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4538,7 +4564,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4565,7 +4592,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4592,7 +4620,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4619,7 +4648,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4646,7 +4676,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4921,7 +4952,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4960,7 +4992,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -4995,7 +5028,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
@@ -5036,7 +5070,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,

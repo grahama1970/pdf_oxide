@@ -45,7 +45,8 @@ fn test_type0_identity_encoding_no_tounicode_returns_replacement() {
         subtype: "Type0".to_string(),
         encoding: Encoding::Identity,
         to_unicode: None,
-        truetype_cmap: None,      // No TrueType cmap
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         embedded_font_data: None, // No embedded data
         cid_to_gid_map: None,
         cid_system_info: None,
@@ -84,7 +85,8 @@ fn test_type0_zero_byte_embedded_font_returns_replacement() {
         subtype: "Type0".to_string(),
         encoding: Encoding::Identity,
         to_unicode: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         embedded_font_data: Some(Arc::new(vec![])), // 0 bytes!
         cid_to_gid_map: None,
         cid_system_info: None,

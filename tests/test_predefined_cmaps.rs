@@ -28,7 +28,8 @@ fn test_identity_h_cmap_simple_cid_to_unicode() {
         subtype: "Type0".to_string(),
         encoding: Encoding::Standard("Identity-H".to_string()),
         to_unicode: None, // No ToUnicode CMap - must use predefined
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         embedded_font_data: None,
         cid_to_gid_map: None,
         cid_system_info: Some(CIDSystemInfo {
@@ -74,7 +75,8 @@ fn test_unigb_ucs2_h_cmap_simplified_chinese() {
         subtype: "Type0".to_string(),
         encoding: Encoding::Standard("UniGB-UCS2-H".to_string()),
         to_unicode: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         embedded_font_data: None,
         cid_to_gid_map: None,
         cid_system_info: Some(CIDSystemInfo {
@@ -124,7 +126,8 @@ fn test_unijis_ucs2_h_cmap_japanese() {
         subtype: "Type0".to_string(),
         encoding: Encoding::Standard("UniJIS-UCS2-H".to_string()),
         to_unicode: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         embedded_font_data: None,
         cid_to_gid_map: None,
         cid_system_info: Some(CIDSystemInfo {
@@ -169,7 +172,8 @@ fn test_unicns_ucs2_h_cmap_traditional_chinese() {
         subtype: "Type0".to_string(),
         encoding: Encoding::Standard("UniCNS-UCS2-H".to_string()),
         to_unicode: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         embedded_font_data: None,
         cid_to_gid_map: None,
         cid_system_info: Some(CIDSystemInfo {
@@ -214,7 +218,8 @@ fn test_uniks_ucs2_h_cmap_korean() {
         subtype: "Type0".to_string(),
         encoding: Encoding::Standard("UniKS-UCS2-H".to_string()),
         to_unicode: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         embedded_font_data: None,
         cid_to_gid_map: None,
         cid_system_info: Some(CIDSystemInfo {

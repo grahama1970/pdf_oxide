@@ -26,7 +26,8 @@ fn test_skip_truetype_cmap_when_embedded_font_zero_bytes() {
         subtype: "Type0".to_string(),
         encoding: Encoding::Identity,
         to_unicode: None,
-        truetype_cmap: None,                        // No explicit TrueType cmap
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         embedded_font_data: Some(Arc::new(vec![])), // 0 bytes - marked embedded but empty
         cid_to_gid_map: Some(CIDToGIDMap::Identity),
         cid_system_info: None,
@@ -75,7 +76,8 @@ fn test_skip_truetype_cmap_for_common_office_fonts() {
             subtype: "Type0".to_string(),
             encoding: Encoding::Identity,
             to_unicode: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             embedded_font_data: Some(Arc::new(vec![])), // 0 bytes
             cid_to_gid_map: Some(CIDToGIDMap::Identity),
             cid_system_info: None,
@@ -129,7 +131,8 @@ fn test_still_use_truetype_cmap_when_embedded_font_has_data() {
         subtype: "Type0".to_string(),
         encoding: Encoding::Identity,
         to_unicode: None,
-        truetype_cmap: None, // Will need to be parsed from embedded_font_data
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         embedded_font_data: Some(Arc::new(font_data)), // Has data
         cid_to_gid_map: Some(CIDToGIDMap::Identity),
         cid_system_info: None,

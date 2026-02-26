@@ -76,7 +76,8 @@ end
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -155,7 +156,8 @@ end
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -226,7 +228,8 @@ end
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -298,7 +301,8 @@ end
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -374,7 +378,8 @@ end
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -453,7 +458,8 @@ end
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -535,7 +541,8 @@ end
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -609,7 +616,8 @@ end
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),
@@ -680,7 +688,8 @@ end
         flags: None,
         stem_v: None,
         embedded_font_data: None,
-        truetype_cmap: None,
+        truetype_cmap: std::sync::OnceLock::new(),
+        is_truetype_font: false,
         cid_to_gid_map: None,
         cid_system_info: Some(pdf_oxide::fonts::CIDSystemInfo {
             registry: "Adobe".to_string(),

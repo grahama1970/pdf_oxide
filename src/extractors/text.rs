@@ -2364,7 +2364,7 @@ impl TextExtractor {
         // First pass: collect available TrueType cmaps keyed by stripped base font name
         let mut cmap_donors: Vec<(String, crate::fonts::truetype_cmap::TrueTypeCMap)> = Vec::new();
         for font in self.fonts.values() {
-            if let Some(ref cmap) = font.truetype_cmap {
+            if let Some(cmap) = font.truetype_cmap() {
                 let stripped = strip_subset(&font.base_font).to_string();
                 cmap_donors.push((stripped, cmap.clone()));
             }
@@ -2376,7 +2376,7 @@ impl TextExtractor {
 
         // Second pass: find CIDFontType2 Identity-H fonts without truetype_cmap
         for font_arc in self.fonts.values_mut() {
-            if font_arc.truetype_cmap.is_some() {
+            if font_arc.truetype_cmap().is_some() {
                 continue;
             }
             // Only target Type0 CIDFontType2 with Identity-H encoding
@@ -2397,7 +2397,7 @@ impl TextExtractor {
                         font_arc.base_font
                     );
                     // Use Arc::make_mut for copy-on-write: only clones if other Arcs exist
-                    Arc::make_mut(font_arc).truetype_cmap = Some(donor_cmap.clone());
+                    Arc::make_mut(font_arc).set_truetype_cmap(Some(donor_cmap.clone()));
                     break;
                 }
             }
@@ -5822,7 +5822,8 @@ mod tests {
             flags: None,
             stem_v: None,
             embedded_font_data: None,
-            truetype_cmap: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
             widths: None,
             first_char: None,
             last_char: None,
