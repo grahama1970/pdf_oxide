@@ -278,6 +278,7 @@ tests/golden_files/
 rust_out
 scripts/workdir/
 docs/workdir/
+docs/planning/
 
 # Fossil static analysis cache
 .fossil/
