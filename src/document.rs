@@ -5,10 +5,12 @@ use crate::error::{Error, Result};
 use crate::layout::TextSpan;
 use crate::object::{Object, ObjectRef};
 use crate::parser::parse_object;
+use crate::parser_config::ParserOptions;
 use crate::pipeline::{
     converters::OutputConverter, HtmlOutputConverter, MarkdownOutputConverter, PlainTextConverter,
     ReadingOrderContext, TextPipeline, TextPipelineConfig,
 };
+use crate::structure::traverse_structure_tree;
 use crate::xref::{find_xref_offset, parse_xref, CrossRefTable};
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -120,6 +122,12 @@ pub struct PdfDocument {
     recursion_depth: RefCell<u32>,
     /// Encryption handler (if PDF is encrypted)
     encryption_handler: Option<EncryptionHandler>,
+    /// Parser configuration options for error handling and recovery
+    #[allow(dead_code)]
+    options: ParserOptions,
+    /// Byte offset where PDF header was found (may not be 0 for malformed PDFs)
+    #[allow(dead_code)]
+    header_offset: u64,
     /// Font cache keyed by indirect ObjectRef to avoid re-parsing fonts across pages.
     /// Arc-wrapped to eliminate deep cloning when populating per-page TextExtractor.
     font_cache: HashMap<ObjectRef, Arc<crate::fonts::FontInfo>>,
@@ -253,11 +261,11 @@ impl PdfDocument {
 
     fn open_from_reader(mut reader: PdfReader) -> Result<Self> {
         // Parse header with lenient mode by default (handle PDFs with binary prefixes)
-        let (major, minor, _header_offset) = parse_header(&mut reader, true)?;
+        let (major, minor, header_offset) = parse_header(&mut reader, true)?;
         let version = (major, minor);
 
         // Try to parse xref table normally
-        let (xref, trailer) = match Self::try_open_regular(&mut reader) {
+        let (mut xref, trailer) = match Self::try_open_regular(&mut reader) {
             Ok((xref, trailer)) => {
                 // Success with regular parsing
                 // However, if the xref is suspiciously small (< 5 entries), it's likely corrupted
@@ -291,6 +299,33 @@ impl PdfDocument {
             },
         };
 
+        // If PDF header is not at byte 0 (garbage-prepended), xref offsets may need adjustment.
+        // The xref offsets are relative to the original PDF start, but file positions are
+        // shifted by header_offset bytes.
+        if header_offset > 0 {
+            if let Some(root_ref) = get_root_ref_from_trailer(&trailer) {
+                if !validate_object_at_offset(&mut reader, &xref, root_ref) {
+                    log::info!(
+                        "Root object not loadable at xref offset, adjusting all offsets by header_offset={}",
+                        header_offset
+                    );
+                    xref.shift_offsets(header_offset);
+                }
+            }
+        }
+
+        // Validate the /Root catalog is actually loadable. If not, the xref data is
+        // corrupt despite parsing successfully — fall back to reconstruction.
+        let (xref, trailer) = if !validate_root_loadable(&mut reader, &xref, &trailer) {
+            log::warn!("Root object not loadable after xref parse, falling back to xref reconstruction");
+            match Self::try_reconstruct_xref(&mut reader) {
+                Ok(result) => result,
+                Err(_) => (xref, trailer), // Use original if reconstruction also fails
+            }
+        } else {
+            (xref, trailer)
+        };
+
         // Note: Encryption initialization was originally lazy, but decode_stream_with_encryption
         // only has &self access which prevents initialization.
         // We now initialize eagerly to ensure the handler is ready when needed.
@@ -303,6 +338,8 @@ impl PdfDocument {
             resolving_stack: RefCell::new(HashSet::new()),
             recursion_depth: RefCell::new(0),
             encryption_handler: None,
+            options: ParserOptions::default(),
+            header_offset,
             font_cache: HashMap::new(),
             font_set_cache: HashMap::new(),
             font_fingerprint_cache: HashMap::new(),
@@ -1073,7 +1110,7 @@ impl PdfDocument {
         let max_header_lines = 5; // Reasonable limit to avoid infinite loops
         let mut lines_read = 1;
 
-        while !full_header.contains("obj") && lines_read < max_header_lines {
+        while !has_standalone_obj_keyword(&full_header) && lines_read < max_header_lines {
             let mut next_bytes = Vec::new();
             let next_read = self.reader.read_until(b'\n', &mut next_bytes)?;
 
@@ -1091,8 +1128,10 @@ impl PdfDocument {
         // Split by whitespace to handle various formats (single-line or multi-line)
         let parts: Vec<&str> = full_header.split_whitespace().collect();
 
-        // Find "obj" keyword position
-        let obj_pos = parts.iter().position(|&p| p == "obj" || p.contains("obj"));
+        // Find standalone "obj" keyword (not "endobj")
+        let obj_pos = parts.iter().position(|&p| {
+            p == "obj" || (p.starts_with("obj") && !p.starts_with("endobj"))
+        });
 
         // Validate object header has proper format: <id> <gen> obj
         let obj_pos = match obj_pos {
@@ -2006,7 +2045,7 @@ impl PdfDocument {
                 None => continue,
             };
             if let Some(xobj_dict) = xobj_obj.as_dict() {
-                for val in xobj_dict.values() {
+                for (_name, val) in xobj_dict {
                     if let Some(obj_ref) = val.as_reference() {
                         if !self.image_xobject_cache.contains(&obj_ref) {
                             xobj_refs.push(obj_ref);
@@ -2466,6 +2505,153 @@ impl PdfDocument {
                 Err(Error::InvalidPdf(format!("Page {} not found", target_index)))
             },
             _ => Err(Error::InvalidPdf(format!("Unknown node type: {}", node_type))),
+        }
+    }
+
+    /// Extract text from a page as a plain string.
+    ///
+    /// # Arguments
+    ///
+    /// * `page_index` - Zero-based page index
+    ///
+    /// # Returns
+    ///
+    /// The extracted text as a string.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the page cannot be accessed or text extraction fails.
+    /// Decode PDF escape sequences in text (e.g., \274 -> §, \( -> (, etc.)
+    #[allow(dead_code)]
+    fn decode_pdf_escapes(text: &str) -> String {
+        let mut result = String::with_capacity(text.len());
+        let mut chars = text.chars().peekable();
+
+        while let Some(ch) = chars.next() {
+            if ch == '\\' {
+                // Check what follows the backslash
+                match chars.peek() {
+                    Some(&'(') => {
+                        result.push('(');
+                        chars.next();
+                    },
+                    Some(&')') => {
+                        result.push(')');
+                        chars.next();
+                    },
+                    Some(&'\\') => {
+                        result.push('\\');
+                        chars.next();
+                    },
+                    Some(&'n') => {
+                        result.push('\n');
+                        chars.next();
+                    },
+                    Some(&'r') => {
+                        result.push('\r');
+                        chars.next();
+                    },
+                    Some(&'t') => {
+                        result.push('\t');
+                        chars.next();
+                    },
+                    Some(&'?') => {
+                        // \? is a soft hyphen (optional line break point)
+                        // Just skip it
+                        chars.next();
+                    },
+                    Some(d) if d.is_ascii_digit() => {
+                        // Octal escape sequence: \ddd
+                        let mut octal = String::new();
+                        for _ in 0..3 {
+                            if let Some(&digit) = chars.peek() {
+                                if digit.is_ascii_digit() && digit < '8' {
+                                    octal.push(digit);
+                                    chars.next();
+                                } else {
+                                    break;
+                                }
+                            } else {
+                                break;
+                            }
+                        }
+
+                        if !octal.is_empty() {
+                            if let Ok(code) = u8::from_str_radix(&octal, 8) {
+                                // PDFDocEncoding: ISO 32000-1:2008, Annex D
+                                let decoded_char = Self::pdfdoc_decode(code);
+                                result.push(decoded_char);
+                            } else {
+                                // Failed to parse, keep the backslash and octal
+                                result.push('\\');
+                                result.push_str(&octal);
+                            }
+                        } else {
+                            // No valid octal digits, keep the backslash
+                            result.push('\\');
+                        }
+                    },
+                    _ => {
+                        // Unknown escape, keep the backslash
+                        result.push('\\');
+                    },
+                }
+            } else {
+                result.push(ch);
+            }
+        }
+
+        result
+    }
+
+    /// Decode a byte using PDFDocEncoding (ISO 32000-1:2008, Annex D).
+    ///
+    /// PDFDocEncoding is the default encoding for text strings in PDF:
+    /// - Codes 0-127: ASCII
+    /// - Codes 128-159: Special Unicode characters
+    /// - Codes 160-255: Latin-1 (ISO 8859-1)
+    #[allow(dead_code)]
+    fn pdfdoc_decode(code: u8) -> char {
+        match code {
+            // 0-127: Standard ASCII
+            0..=127 => code as char,
+
+            // 128-159: PDFDocEncoding special mappings
+            128 => '\u{2022}', // BULLET
+            129 => '\u{2020}', // DAGGER
+            130 => '\u{2021}', // DOUBLE DAGGER
+            131 => '\u{2026}', // HORIZONTAL ELLIPSIS
+            132 => '\u{2014}', // EM DASH
+            133 => '\u{2013}', // EN DASH
+            134 => '\u{0192}', // LATIN SMALL LETTER F WITH HOOK
+            135 => '\u{2044}', // FRACTION SLASH
+            136 => '\u{2039}', // SINGLE LEFT-POINTING ANGLE QUOTATION MARK
+            137 => '\u{203A}', // SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
+            138 => '\u{2212}', // MINUS SIGN
+            139 => '\u{2030}', // PER MILLE SIGN
+            140 => '\u{201E}', // DOUBLE LOW-9 QUOTATION MARK
+            141 => '\u{201C}', // LEFT DOUBLE QUOTATION MARK
+            142 => '\u{201D}', // RIGHT DOUBLE QUOTATION MARK
+            143 => '\u{2018}', // LEFT SINGLE QUOTATION MARK
+            144 => '\u{2019}', // RIGHT SINGLE QUOTATION MARK
+            145 => '\u{201A}', // SINGLE LOW-9 QUOTATION MARK
+            146 => '\u{2122}', // TRADE MARK SIGN
+            147 => '\u{FB01}', // LATIN SMALL LIGATURE FI
+            148 => '\u{FB02}', // LATIN SMALL LIGATURE FL
+            149 => '\u{0141}', // LATIN CAPITAL LETTER L WITH STROKE
+            150 => '\u{0152}', // LATIN CAPITAL LIGATURE OE
+            151 => '\u{0160}', // LATIN CAPITAL LETTER S WITH CARON
+            152 => '\u{0178}', // LATIN CAPITAL LETTER Y WITH DIAERESIS
+            153 => '\u{017D}', // LATIN CAPITAL LETTER Z WITH CARON
+            154 => '\u{0131}', // LATIN SMALL LETTER DOTLESS I
+            155 => '\u{0142}', // LATIN SMALL LETTER L WITH STROKE
+            156 => '\u{0153}', // LATIN SMALL LIGATURE OE
+            157 => '\u{0161}', // LATIN SMALL LETTER S WITH CARON
+            158 => '\u{017E}', // LATIN SMALL LETTER Z WITH CARON
+            159 => '\u{FFFD}', // REPLACEMENT CHARACTER (undefined in PDFDocEncoding)
+
+            // 160-255: Latin-1 (ISO 8859-1)
+            160..=255 => code as char,
         }
     }
 
@@ -3545,7 +3731,7 @@ impl PdfDocument {
             };
             if let Some(xobj_dict_resolved) = xobj_dict_obj {
                 if let Some(xobj_dict) = xobj_dict_resolved.as_dict() {
-                    for xobj_ref in xobj_dict.values() {
+                    for (_name, xobj_ref) in xobj_dict {
                         if let Some(ref_obj) = xobj_ref.as_reference() {
                             // Use lightweight 1KB peek instead of full object load
                             if self.is_form_xobject(ref_obj) {
@@ -3563,6 +3749,221 @@ impl PdfDocument {
 
         // No fonts and no Form XObjects → page is image-only
         true
+    }
+
+    /// Extract text using structure tree for Tagged PDFs.
+    ///
+    /// This method implements PDF spec-compliant text extraction for Tagged PDFs
+    /// using the logical structure tree to determine reading order.
+    ///
+    /// # PDF Spec Reference
+    ///
+    /// ISO 32000-1:2008 Section 14.8.2.3 - Determining the Text Extraction Sequence
+    /// "For a Tagged PDF document, conforming readers shall present the document's
+    /// content to the user in the order given by a pre-order traversal of the
+    /// structure hierarchy"
+    ///
+    /// # Algorithm
+    /// 1. Extract all text spans with MCIDs from the page
+    /// 2. Build a map from MCID → Vec<TextSpan>
+    /// 3. Traverse structure tree in pre-order to get MCIDs in reading order
+    /// 4. Assemble text by looking up spans for each MCID in order
+    ///
+    /// # Arguments
+    /// * `page_index` - Zero-based page index
+    /// * `struct_tree` - The structure tree root from the PDF catalog
+    ///
+    /// # Returns
+    /// Extracted text in logical structure order
+    ///
+    /// # Examples
+    ///
+    /// ```ignore
+    /// // This is called automatically by extract_text() for Tagged PDFs
+    /// let text = doc.extract_text(0)?;
+    /// ```
+    #[allow(dead_code)]
+    fn extract_text_structure_order(
+        &mut self,
+        page_index: usize,
+        struct_tree: &crate::structure::StructTreeRoot,
+    ) -> Result<String> {
+        log::debug!("Extracting text using structure tree for page {}", page_index);
+
+        // Step 1: Extract all spans with MCIDs
+        let all_spans = self.extract_spans(page_index)?;
+
+        if all_spans.is_empty() {
+            let mut text = String::new();
+            self.append_annotation_text(page_index, &mut text);
+            return Ok(text);
+        }
+
+        // Step 2: Build MCID → Vec<TextSpan> map
+        let mut mcid_map: HashMap<u32, Vec<TextSpan>> = HashMap::new();
+        let mut spans_without_mcid: Vec<TextSpan> = Vec::new();
+
+        for span in all_spans {
+            if let Some(mcid) = span.mcid {
+                mcid_map.entry(mcid).or_default().push(span);
+            } else {
+                // Collect spans without MCID (shouldn't happen in well-formed Tagged PDFs)
+                spans_without_mcid.push(span);
+            }
+        }
+
+        log::debug!(
+            "Found {} MCIDs with spans, {} spans without MCID",
+            mcid_map.len(),
+            spans_without_mcid.len()
+        );
+
+        // Step 3: Traverse structure tree to get MCIDs in reading order
+        let ordered_content = traverse_structure_tree(struct_tree, page_index as u32)
+            .map_err(|e| Error::InvalidPdf(format!("Failed to traverse structure tree: {}", e)))?;
+
+        log::debug!(
+            "Structure tree traversal found {} content items in reading order",
+            ordered_content.len()
+        );
+
+        // Step 4: Assemble text in structure order
+        let mut text = String::with_capacity(mcid_map.len() * 50); // estimate
+        let mut prev_span: Option<&TextSpan> = None;
+        let mut consumed_mcids: std::collections::HashSet<u32> = std::collections::HashSet::new();
+
+        for content in &ordered_content {
+            // Handle word break markers by inserting a space
+            if content.is_word_break {
+                if !text.is_empty() && !text.ends_with(' ') && !text.ends_with('\n') {
+                    text.push(' ');
+                }
+                continue;
+            }
+
+            // If the structure element has ActualText, use it instead of the extracted spans
+            if let Some(ref actual_text_val) = content.actual_text {
+                if !actual_text_val.is_empty() {
+                    if !text.is_empty() && !text.ends_with(' ') && !text.ends_with('\n') {
+                        text.push('\n');
+                    }
+                    text.push_str(actual_text_val);
+                    continue;
+                }
+            }
+
+            // For regular content with MCID
+            let Some(mcid) = content.mcid else {
+                continue;
+            };
+
+            if let Some(spans) = mcid_map.get(&mcid) {
+                consumed_mcids.insert(mcid);
+                for span in spans {
+                    if let Some(prev) = prev_span {
+                        let y_diff = (prev.bbox.y - span.bbox.y).abs();
+
+                        if y_diff > 2.0 {
+                            let font_size = span.font_size.max(10.0);
+                            let line_height = font_size * 1.2;
+                            let num_breaks = (y_diff / line_height).round() as usize;
+                            for _ in 0..num_breaks.clamp(1, 3) {
+                                text.push('\n');
+                            }
+                        } else if Self::should_insert_space(prev, span) {
+                            text.push(' ');
+                        }
+                    }
+
+                    for ch in span.text.chars() {
+                        if let Some(components) =
+                            crate::text::ligature_processor::get_ligature_components(ch)
+                        {
+                            text.push_str(components);
+                        } else {
+                            text.push(ch);
+                        }
+                    }
+                    prev_span = Some(span);
+                }
+            } else {
+                log::warn!(
+                    "Structure tree references MCID {} but no spans found with that MCID",
+                    mcid
+                );
+            }
+        }
+
+        // Append spans with MCIDs not referenced by the structure tree.
+        // This happens with Form XObjects that lack /StructParents, where
+        // their BDC/MCID markers exist in the content stream but are not
+        // registered in the page's ParentTree.
+        let unconsumed: Vec<(&u32, &Vec<TextSpan>)> = mcid_map
+            .iter()
+            .filter(|(mcid, _)| !consumed_mcids.contains(mcid))
+            .collect();
+        if !unconsumed.is_empty() {
+            log::debug!(
+                "Appending {} unreferenced MCIDs (e.g., from Form XObjects without StructParents)",
+                unconsumed.len()
+            );
+            for (_mcid, spans) in &unconsumed {
+                for span in *spans {
+                    if let Some(prev) = prev_span {
+                        let y_diff = (prev.bbox.y - span.bbox.y).abs();
+                        if y_diff > 2.0 {
+                            text.push('\n');
+                        } else if Self::should_insert_space(prev, span) {
+                            text.push(' ');
+                        }
+                    }
+                    for ch in span.text.chars() {
+                        if let Some(components) =
+                            crate::text::ligature_processor::get_ligature_components(ch)
+                        {
+                            text.push_str(components);
+                        } else {
+                            text.push(ch);
+                        }
+                    }
+                    prev_span = Some(span);
+                }
+            }
+        }
+
+        // Append any spans without MCID at the end (shouldn't happen in well-formed PDFs)
+        if !spans_without_mcid.is_empty() {
+            log::warn!(
+                "Found {} text spans without MCID - appending to end",
+                spans_without_mcid.len()
+            );
+            for span in &spans_without_mcid {
+                if let Some(prev) = prev_span {
+                    let y_diff = (prev.bbox.y - span.bbox.y).abs();
+                    if y_diff > 2.0 {
+                        text.push('\n');
+                    } else if Self::should_insert_space(prev, span) {
+                        text.push(' ');
+                    }
+                }
+                // Expand ligature characters
+                for ch in span.text.chars() {
+                    if let Some(components) =
+                        crate::text::ligature_processor::get_ligature_components(ch)
+                    {
+                        text.push_str(components);
+                    } else {
+                        text.push(ch);
+                    }
+                }
+                prev_span = Some(span);
+            }
+        }
+
+        // Append text from form fields and annotations
+        self.append_annotation_text(page_index, &mut text);
+
+        Ok(text)
     }
 
     /// Extract text from a Tagged PDF page using pre-computed structure traversal cache.
@@ -6503,6 +6904,77 @@ pub enum ImageFormat {
     Jpeg,
 }
 
+/// Extract the /Root reference from a trailer dictionary.
+fn get_root_ref_from_trailer(trailer: &Object) -> Option<ObjectRef> {
+    trailer
+        .as_dict()?
+        .get("Root")?
+        .as_reference()
+}
+
+/// Check whether the object at the xref offset for `obj_ref` looks like a valid header.
+fn validate_object_at_offset<R: Read + Seek>(
+    reader: &mut R,
+    xref: &crate::xref::CrossRefTable,
+    obj_ref: ObjectRef,
+) -> bool {
+    let entry = match xref.get(obj_ref.id) {
+        Some(e) => e,
+        None => return false,
+    };
+    if reader.seek(SeekFrom::Start(entry.offset)).is_err() {
+        return false;
+    }
+    let mut buf = [0u8; 32];
+    let n = reader.read(&mut buf).unwrap_or(0);
+    if n == 0 {
+        return false;
+    }
+    let s = String::from_utf8_lossy(&buf[..n]);
+    // A valid object header starts with "N G obj"
+    let mut parts = s.split_whitespace();
+    // first token should be a number (obj id)
+    let first_is_num = parts.next().is_some_and(|t| t.parse::<u32>().is_ok());
+    let second_is_num = parts.next().is_some_and(|t| t.parse::<u16>().is_ok());
+    let third_is_obj = parts.next().is_some_and(|t| t == "obj" || t.starts_with("obj"));
+    first_is_num && second_is_num && third_is_obj
+}
+
+/// Validate that the /Root catalog object is loadable from the xref.
+fn validate_root_loadable<R: Read + Seek>(
+    reader: &mut R,
+    xref: &crate::xref::CrossRefTable,
+    trailer: &Object,
+) -> bool {
+    let root_ref = match get_root_ref_from_trailer(trailer) {
+        Some(r) => r,
+        None => return false, // No /Root at all — can't validate
+    };
+    validate_object_at_offset(reader, xref, root_ref)
+}
+
+/// Check if a string contains the standalone "obj" keyword (not "endobj").
+///
+/// This is used during multi-line object header parsing to detect when we've
+/// accumulated enough lines to have a complete header. A naive `contains("obj")`
+/// would match "endobj" and cause the loop to exit prematurely.
+fn has_standalone_obj_keyword(s: &str) -> bool {
+    for (i, _) in s.match_indices("obj") {
+        // Skip "endobj" — check if preceded by "end"
+        if i >= 3 && &s[i - 3..i] == "end" {
+            continue;
+        }
+        // Must be at a word boundary: preceded by whitespace, digit, or start of string
+        if i == 0
+            || s.as_bytes()[i - 1].is_ascii_whitespace()
+            || s.as_bytes()[i - 1].is_ascii_digit()
+        {
+            return true;
+        }
+    }
+    false
+}
+
 /// Parse PDF header (%PDF-x.y) from a reader.
 ///
 /// # Arguments
@@ -7684,6 +8156,115 @@ mod tests {
         let result = PdfDocument::normalize_arabic_presentation_forms(text);
         // Should become Lam (U+0644)
         assert!(result.contains('\u{0644}'));
+    }
+
+    // ========================================================================
+    // decode_pdf_escapes tests
+    // ========================================================================
+
+    #[test]
+    fn test_decode_pdf_escapes_no_escapes() {
+        let text = "Hello World";
+        let result = PdfDocument::decode_pdf_escapes(text);
+        assert_eq!(result, "Hello World");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_backslash_n() {
+        let result = PdfDocument::decode_pdf_escapes("Hello\\nWorld");
+        assert_eq!(result, "Hello\nWorld");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_backslash_r() {
+        let result = PdfDocument::decode_pdf_escapes("Hello\\rWorld");
+        assert_eq!(result, "Hello\rWorld");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_backslash_t() {
+        let result = PdfDocument::decode_pdf_escapes("Hello\\tWorld");
+        assert_eq!(result, "Hello\tWorld");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_parentheses() {
+        let result = PdfDocument::decode_pdf_escapes("\\(Hello\\)");
+        assert_eq!(result, "(Hello)");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_double_backslash() {
+        let result = PdfDocument::decode_pdf_escapes("path\\\\file");
+        assert_eq!(result, "path\\file");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_octal() {
+        // \101 = 'A' in octal (65 decimal)
+        let result = PdfDocument::decode_pdf_escapes("\\101");
+        assert_eq!(result, "A");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_octal_274() {
+        // \274 = 188 decimal which is a PDFDocEncoding char
+        let result = PdfDocument::decode_pdf_escapes("\\274");
+        assert_eq!(result.chars().count(), 1); // Should decode to a single character
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_soft_hyphen() {
+        let result = PdfDocument::decode_pdf_escapes("Hello\\?World");
+        assert_eq!(result, "HelloWorld");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_unknown_escape() {
+        let result = PdfDocument::decode_pdf_escapes("Hello\\zWorld");
+        assert_eq!(result, "Hello\\zWorld");
+    }
+
+    // ========================================================================
+    // pdfdoc_decode tests
+    // ========================================================================
+
+    #[test]
+    fn test_pdfdoc_decode_ascii() {
+        assert_eq!(PdfDocument::pdfdoc_decode(65), 'A');
+        assert_eq!(PdfDocument::pdfdoc_decode(48), '0');
+        assert_eq!(PdfDocument::pdfdoc_decode(32), ' ');
+    }
+
+    #[test]
+    fn test_pdfdoc_decode_special_128_bullet() {
+        assert_eq!(PdfDocument::pdfdoc_decode(128), '\u{2022}'); // BULLET
+    }
+
+    #[test]
+    fn test_pdfdoc_decode_special_132_em_dash() {
+        assert_eq!(PdfDocument::pdfdoc_decode(132), '\u{2014}'); // EM DASH
+    }
+
+    #[test]
+    fn test_pdfdoc_decode_special_146_trademark() {
+        assert_eq!(PdfDocument::pdfdoc_decode(146), '\u{2122}'); // TRADE MARK SIGN
+    }
+
+    #[test]
+    fn test_pdfdoc_decode_special_147_fi_ligature() {
+        assert_eq!(PdfDocument::pdfdoc_decode(147), '\u{FB01}'); // fi ligature
+    }
+
+    #[test]
+    fn test_pdfdoc_decode_latin1_range() {
+        assert_eq!(PdfDocument::pdfdoc_decode(160), '\u{00A0}'); // Non-breaking space
+        assert_eq!(PdfDocument::pdfdoc_decode(255), '\u{00FF}'); // y with diaeresis
+    }
+
+    #[test]
+    fn test_pdfdoc_decode_replacement_159() {
+        assert_eq!(PdfDocument::pdfdoc_decode(159), '\u{FFFD}'); // Replacement character
     }
 
     // ========================================================================
@@ -8872,6 +9453,93 @@ mod tests {
         let mut doc = PdfDocument::open_from_bytes(pdf).unwrap();
         let result = doc.get_page_ref(99);
         assert!(result.is_err());
+    }
+
+    // ========================================================================
+    // NEW COVERAGE TESTS — Batch 1: decode_pdf_escapes edge cases
+    // ========================================================================
+
+    #[test]
+    fn test_decode_pdf_escapes_trailing_backslash() {
+        let result = PdfDocument::decode_pdf_escapes("Hello\\");
+        assert_eq!(result, "Hello\\");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_octal_short() {
+        let result = PdfDocument::decode_pdf_escapes("\\1x");
+        assert_eq!(result.len(), 2);
+        assert!(result.ends_with('x'));
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_octal_two_digits() {
+        let result = PdfDocument::decode_pdf_escapes("\\41x");
+        assert_eq!(result, "!x");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_octal_non_octal_digit() {
+        // \8 matches the digit branch, but 8 is not a valid octal digit (< '8'),
+        // so octal stays empty -> backslash is kept, then '8' is consumed normally.
+        let result = PdfDocument::decode_pdf_escapes("\\8");
+        assert_eq!(result, "\\8");
+    }
+
+    #[test]
+    fn test_decode_pdf_escapes_multiple_escapes() {
+        let result = PdfDocument::decode_pdf_escapes("\\(a\\)\\\\\\n");
+        assert_eq!(result, "(a)\\\n");
+    }
+
+    // ========================================================================
+    // NEW COVERAGE TESTS — Batch 2: pdfdoc_decode all ranges
+    // ========================================================================
+
+    #[test]
+    fn test_pdfdoc_decode_control_chars() {
+        assert_eq!(PdfDocument::pdfdoc_decode(0), '\0');
+        assert_eq!(PdfDocument::pdfdoc_decode(10), '\n');
+        assert_eq!(PdfDocument::pdfdoc_decode(13), '\r');
+    }
+
+    #[test]
+    fn test_pdfdoc_decode_all_special_range() {
+        assert_eq!(PdfDocument::pdfdoc_decode(128), '\u{2022}');
+        assert_eq!(PdfDocument::pdfdoc_decode(129), '\u{2020}');
+        assert_eq!(PdfDocument::pdfdoc_decode(130), '\u{2021}');
+        assert_eq!(PdfDocument::pdfdoc_decode(131), '\u{2026}');
+        assert_eq!(PdfDocument::pdfdoc_decode(133), '\u{2013}');
+        assert_eq!(PdfDocument::pdfdoc_decode(134), '\u{0192}');
+        assert_eq!(PdfDocument::pdfdoc_decode(135), '\u{2044}');
+        assert_eq!(PdfDocument::pdfdoc_decode(136), '\u{2039}');
+        assert_eq!(PdfDocument::pdfdoc_decode(137), '\u{203A}');
+        assert_eq!(PdfDocument::pdfdoc_decode(138), '\u{2212}');
+        assert_eq!(PdfDocument::pdfdoc_decode(139), '\u{2030}');
+        assert_eq!(PdfDocument::pdfdoc_decode(140), '\u{201E}');
+        assert_eq!(PdfDocument::pdfdoc_decode(141), '\u{201C}');
+        assert_eq!(PdfDocument::pdfdoc_decode(142), '\u{201D}');
+        assert_eq!(PdfDocument::pdfdoc_decode(143), '\u{2018}');
+        assert_eq!(PdfDocument::pdfdoc_decode(144), '\u{2019}');
+        assert_eq!(PdfDocument::pdfdoc_decode(145), '\u{201A}');
+        assert_eq!(PdfDocument::pdfdoc_decode(148), '\u{FB02}');
+        assert_eq!(PdfDocument::pdfdoc_decode(149), '\u{0141}');
+        assert_eq!(PdfDocument::pdfdoc_decode(150), '\u{0152}');
+        assert_eq!(PdfDocument::pdfdoc_decode(151), '\u{0160}');
+        assert_eq!(PdfDocument::pdfdoc_decode(152), '\u{0178}');
+        assert_eq!(PdfDocument::pdfdoc_decode(153), '\u{017D}');
+        assert_eq!(PdfDocument::pdfdoc_decode(154), '\u{0131}');
+        assert_eq!(PdfDocument::pdfdoc_decode(155), '\u{0142}');
+        assert_eq!(PdfDocument::pdfdoc_decode(156), '\u{0153}');
+        assert_eq!(PdfDocument::pdfdoc_decode(157), '\u{0161}');
+        assert_eq!(PdfDocument::pdfdoc_decode(158), '\u{017E}');
+    }
+
+    #[test]
+    fn test_pdfdoc_decode_latin1_boundary() {
+        assert_eq!(PdfDocument::pdfdoc_decode(160), '\u{00A0}');
+        assert_eq!(PdfDocument::pdfdoc_decode(255), '\u{00FF}');
+        assert_eq!(PdfDocument::pdfdoc_decode(200), '\u{00C8}');
     }
 
     // ========================================================================

@@ -158,6 +158,19 @@ impl CrossRefTable {
     pub fn is_empty(&self) -> bool {
         self.entries.is_empty()
     }
+
+    /// Shift all uncompressed entry offsets by a delta.
+    ///
+    /// Used when a PDF has garbage bytes prepended before `%PDF-`:
+    /// the xref offsets are relative to the real start of the PDF data,
+    /// but byte positions in the file are shifted by `header_offset`.
+    pub fn shift_offsets(&mut self, delta: u64) {
+        for entry in self.entries.values_mut() {
+            if entry.in_use && entry.entry_type == XRefEntryType::Uncompressed {
+                entry.offset += delta;
+            }
+        }
+    }
 }
 
 impl Default for CrossRefTable {
