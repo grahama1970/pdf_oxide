@@ -21,7 +21,7 @@
 //! PyMuPDF, 15× faster than pypdf, 29× faster than pdfplumber. 100% pass rate on 3,830
 //! real-world PDFs. MIT licensed. A drop-in PyMuPDF alternative with no AGPL restrictions.
 //!
-//! ## Performance (v0.3.9)
+//! ## Performance (v0.3.10)
 //!
 //! Benchmarked against 14 text extraction libraries on 3,830 PDFs from 3 public test suites
 //! (veraPDF, Mozilla pdf.js, DARPA SafeDocs). Single-thread, 60s timeout, no warm-up.
