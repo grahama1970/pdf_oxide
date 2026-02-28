@@ -57,6 +57,27 @@ pip install pdf_oxide
 npm install pdf-oxide-wasm
 ```
 
+**CLI (Homebrew)**
+```bash
+brew install pdf-oxide
+```
+
+**CLI (Scoop — Windows)**
+```powershell
+scoop bucket add pdf-oxide https://github.com/yfedoseev/scoop-pdf-oxide
+scoop install pdf-oxide
+```
+
+**CLI (Shell installer)**
+```bash
+curl -fsSL https://raw.githubusercontent.com/yfedoseev/pdf_oxide/main/install.sh | sh
+```
+
+**CLI (cargo-binstall)**
+```bash
+cargo binstall pdf_oxide_cli
+```
+
 **Pre-built Binaries**
 Download archives for Linux, macOS, and Windows from the assets below.
 

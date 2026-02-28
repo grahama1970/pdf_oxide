@@ -151,6 +151,21 @@ jobs:
           CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: ${{ matrix.target == 'aarch64-unknown-linux-gnu' && 'aarch64-linux-gnu-gcc' || '' }}
         run: |
           cargo build --release --target ${{ matrix.target }}
+          cargo build --release -p pdf_oxide_cli --target ${{ matrix.target }}
+
+      - name: Build .deb package (Linux x86_64 glibc)
+        if: matrix.target == 'x86_64-unknown-linux-gnu'
+        run: |
+          cargo install cargo-deb
+          cargo deb -p pdf_oxide_cli --no-build --target x86_64-unknown-linux-gnu
+
+      - name: Upload .deb artifact
+        if: matrix.target == 'x86_64-unknown-linux-gnu'
+        uses: actions/upload-artifact@v6
+        with:
+          name: debian-package
+          path: target/x86_64-unknown-linux-gnu/debian/*.deb
+          retention-days: 7
 
       - name: Create archive (Unix)
         if: runner.os != 'Windows'
@@ -162,6 +177,7 @@ jobs:
 
           # List all binaries
           BINARIES=(
+            "pdf-oxide"
             "analyze_pdf_features"
             "benchmark_all_pdfs"
             "export_to_html"
@@ -184,6 +200,7 @@ jobs:
           Set-Location target/${{ matrix.target }}/release
 
           $BINARIES = @(
+            "pdf-oxide.exe",
             "analyze_pdf_features.exe",
             "benchmark_all_pdfs.exe",
             "export_to_html.exe",
@@ -318,7 +335,7 @@ jobs:
       - name: Organize release files
         run: |
           mkdir -p release-files
-          find artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.whl" \) -exec cp {} release-files/ \;
+          find artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.whl" -o -name "*.deb" \) -exec cp {} release-files/ \;
           echo "=== Release files ==="
           ls -lh release-files/
 
@@ -354,10 +371,15 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Verify crates.io readiness
-        run: cargo publish --dry-run
+        run: cargo publish -p pdf_oxide --dry-run
 
       - name: Publish to crates.io
-        run: cargo publish
+        run: cargo publish -p pdf_oxide
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_TOKEN }}
+
+      - name: Publish CLI to crates.io
+        run: cargo publish -p pdf_oxide_cli
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_TOKEN }}
 
@@ -416,3 +438,79 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # Publish Homebrew formula and Scoop manifest
+  publish-packaging:
+    name: Publish Homebrew & Scoop
+    needs: [validate, create-release]
+    runs-on: ubuntu-latest
+    if: ${{ !contains(needs.validate.outputs.version, '-') }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download release archives
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          mkdir -p release-archives
+          cd release-archives
+          gh release download "v${VERSION}" \
+            --pattern "pdf_oxide-macos-aarch64-${VERSION}.tar.gz" \
+            --pattern "pdf_oxide-macos-x86_64-${VERSION}.tar.gz" \
+            --pattern "pdf_oxide-linux-x86_64-${VERSION}.tar.gz" \
+            --pattern "pdf_oxide-windows-x86_64-${VERSION}.zip"
+
+      - name: Compute SHA256 hashes
+        id: hashes
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          cd release-archives
+          echo "macos_arm=$(sha256sum pdf_oxide-macos-aarch64-${VERSION}.tar.gz | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+          echo "macos_x86=$(sha256sum pdf_oxide-macos-x86_64-${VERSION}.tar.gz | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+          echo "linux_x86=$(sha256sum pdf_oxide-linux-x86_64-${VERSION}.tar.gz | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+          echo "windows=$(sha256sum pdf_oxide-windows-x86_64-${VERSION}.zip | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+      - name: Generate Homebrew formula
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          sed \
+            -e "s/{{VERSION}}/${VERSION}/g" \
+            -e "s/{{SHA256_MACOS_ARM}}/${{ steps.hashes.outputs.macos_arm }}/g" \
+            -e "s/{{SHA256_MACOS_X86}}/${{ steps.hashes.outputs.macos_x86 }}/g" \
+            -e "s/{{SHA256_LINUX_X86}}/${{ steps.hashes.outputs.linux_x86 }}/g" \
+            .github/templates/pdf-oxide.rb > pdf-oxide.rb
+          echo "=== Generated Homebrew formula ==="
+          cat pdf-oxide.rb
+
+      - name: Generate Scoop manifest
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          sed \
+            -e "s/{{VERSION}}/${VERSION}/g" \
+            -e "s/{{SHA256_WINDOWS}}/${{ steps.hashes.outputs.windows }}/g" \
+            .github/templates/pdf-oxide.json > pdf-oxide.json
+          echo "=== Generated Scoop manifest ==="
+          cat pdf-oxide.json
+
+      - name: Upload packaging artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: packaging-manifests
+          path: |
+            pdf-oxide.rb
+            pdf-oxide.json
+          retention-days: 90
+
+      - name: Push Scoop manifest
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          git clone "https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/yfedoseev/scoop-pdf-oxide.git" scoop-repo
+          cp pdf-oxide.json scoop-repo/pdf-oxide.json
+          cd scoop-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pdf-oxide.json
+          git commit -m "Update pdf-oxide to ${{ needs.validate.outputs.version }}"
+          git push
