@@ -56,6 +56,7 @@ All notable changes to PDFOxide are documented here.
 
 Thanks to everyone who reported issues and contributed to v0.3.10:
 
+- **@SeanPedersen** — Reported corrupted ligature text in post-processing (#154)
 - **@dhdaines** — Reported circular XObject segfault (#163) and outdated dataset URLs in benchmark docs (#162)
 - **@bhaswata08** — Reported missing `extract_text_ocr` in Python bindings (#171)
 
