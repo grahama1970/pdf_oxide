@@ -179,6 +179,9 @@ pub struct PdfDocument {
     /// Cache of extracted TextSpan results from self-contained Form XObjects
     /// (those with own /Resources/Font). None = processed but no spans.
     pub(crate) xobject_spans_cache: HashMap<ObjectRef, Option<Vec<crate::layout::TextSpan>>>,
+    /// Cache of extracted images from Form XObjects (keyed by ObjectRef).
+    /// Images are stored without CTM applied — caller applies its own CTM.
+    pub(crate) form_xobject_images_cache: HashMap<ObjectRef, Vec<crate::extractors::PdfImage>>,
 }
 
 impl std::fmt::Debug for PdfDocument {
@@ -357,6 +360,7 @@ impl PdfDocument {
             xobject_stream_cache: HashMap::new(),
             xobject_stream_cache_bytes: 0,
             xobject_spans_cache: HashMap::new(),
+            form_xobject_images_cache: HashMap::new(),
         };
 
         // Initialize encryption immediately
@@ -6876,10 +6880,27 @@ impl PdfDocument {
         // (e.g., Form X0 references X1 which references X0).
         let mut xobject_stack = Vec::new();
 
+        // Pre-resolve XObject dictionary once (avoids re-resolving per Do operator)
+        let xobject_dict = if let Some(ref res) = resources {
+            if let Some(res_dict) = res.as_dict() {
+                if let Some(xobj_entry) = res_dict.get("XObject") {
+                    let resolved = if let Some(ref_obj) = xobj_entry.as_reference() {
+                        self.load_object(ref_obj)?
+                    } else {
+                        xobj_entry.clone()
+                    };
+                    resolved.as_dict().cloned()
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        } else {
+            None
+        };
+
         // Parse content stream operators to extract images from Do operators
-        // Instead of only checking the XObject dictionary, we parse the actual page content
-        // stream to find Do operators that reference images. This is how real PDFs work -
-        // images are embedded as XObjects and referenced via "Do" operators in the content stream.
         for op in operators {
             match op {
                 // Graphics state operators
@@ -6901,17 +6922,16 @@ impl PdfDocument {
                 },
 
                 // XObject reference operator - Extract images referenced via Do
-                // The "Do" operator tells the renderer: "Draw the named XObject now"
-                // We extract all images referenced this way
                 Operator::Do { name } => {
-                    if let Some(ref res) = resources {
+                    if let Some(ref xobj_dict) = xobject_dict {
                         let current_ctm = ctm_stack
                             .last()
                             .copied()
                             .unwrap_or_else(crate::content::Matrix::identity);
                         if let Ok(mut xobj_images) = self.extract_images_from_xobject_do(
                             &name,
-                            res,
+                            xobj_dict,
+                            resources.as_ref(),
                             current_ctm,
                             &mut xobject_stack,
                         ) {
@@ -6940,61 +6960,19 @@ impl PdfDocument {
 
     /// Extract images referenced by a Do operator in the content stream.
     ///
-    /// This method handles image extraction from XObjects. It processes both Image and Form
-    /// XObjects, with recursion for nested Forms.
-    ///
-    /// PDF files embed images as XObjects rather than inline images. These XObjects are
-    /// referenced in the page's content stream via the `Do` operator. For example: `/ImgName Do`
-    /// tells the renderer to draw the image named "ImgName".
-    ///
-    /// This method:
-    /// - Locates XObject references in the Resources dictionary
-    /// - Resolves both direct and indirect references (e.g., `7 0 R`)
-    /// - Extracts Image XObjects directly
-    /// - Recursively processes Form XObjects
-    /// - Applies CTM transformations for proper positioning
-    /// - Resolves ColorSpace indirect references
+    /// Accepts a pre-resolved XObject dictionary to avoid redundant lookups
+    /// when called repeatedly (e.g., 194 Do operators on a single page).
     fn extract_images_from_xobject_do(
         &mut self,
         name: &str,
-        resources: &Object,
+        xobject_dict: &std::collections::HashMap<String, Object>,
+        resources: Option<&Object>,
         ctm: crate::content::Matrix,
         xobject_stack: &mut Vec<ObjectRef>,
     ) -> Result<Vec<crate::extractors::PdfImage>> {
         use crate::extractors::extract_image_from_xobject;
 
         let mut images = Vec::new();
-
-        // Get XObject dictionary
-        let resources_dict = match resources.as_dict() {
-            Some(d) => d,
-            None => {
-                log::warn!(
-                    "Resources is not a dictionary (type: {}), treating as empty",
-                    resources.type_name()
-                );
-                return Ok(images);
-            },
-        };
-
-        let xobject_obj = match resources_dict.get("XObject") {
-            Some(obj) => obj,
-            None => return Ok(images), // No XObjects, return empty
-        };
-
-        // Resolve indirect reference if needed
-        let resolved_xobject_obj = if let Some(ref_obj) = xobject_obj.as_reference() {
-            self.load_object(ref_obj)?
-        } else {
-            xobject_obj.clone()
-        };
-
-        let xobject_dict = resolved_xobject_obj
-            .as_dict()
-            .ok_or_else(|| Error::ParseError {
-                offset: 0,
-                reason: "XObject dictionary is not a dictionary".to_string(),
-            })?;
 
         // Get the specific XObject by name
         let xobject_ref_obj = match xobject_dict.get(name) {
@@ -7022,31 +7000,36 @@ impl PdfDocument {
 
         match subtype {
             "Image" => {
-                // For Stream objects, resolve any indirect references in the dictionary
-                let mut resolved_xobject = xobject.clone();
+                // Only clone+modify when ColorSpace needs resolving from indirect ref
+                let needs_cs_resolve = matches!(
+                    &xobject,
+                    Object::Stream { dict, .. } if matches!(dict.get("ColorSpace"), Some(Object::Reference(_)))
+                );
 
-                if let Object::Stream { dict, data } = &xobject {
-                    let mut new_dict = dict.clone();
-
-                    // Resolve ColorSpace if it's an indirect reference
-                    // Many PDFs from tools like Google Slides reference ColorSpace via indirect
-                    // references (e.g., "7 0 R"). The extraction function needs the resolved object.
-                    // Without this, we get: "Invalid color space object: Reference(...)"
-                    if let Some(Object::Reference(cs_ref)) = dict.get("ColorSpace") {
-                        if let Ok(resolved_cs) = self.load_object(*cs_ref) {
-                            new_dict.insert("ColorSpace".to_string(), resolved_cs);
+                let resolved_xobject;
+                let xobject_for_extract = if needs_cs_resolve {
+                    if let Object::Stream { dict, data } = &xobject {
+                        let mut new_dict = dict.clone();
+                        if let Some(Object::Reference(cs_ref)) = dict.get("ColorSpace") {
+                            if let Ok(resolved_cs) = self.load_object(*cs_ref) {
+                                new_dict.insert("ColorSpace".to_string(), resolved_cs);
+                            }
                         }
+                        resolved_xobject = Object::Stream {
+                            dict: new_dict,
+                            data: data.clone(),
+                        };
+                        &resolved_xobject
+                    } else {
+                        &xobject
                     }
-
-                    resolved_xobject = Object::Stream {
-                        dict: new_dict,
-                        data: data.clone(),
-                    };
-                }
+                } else {
+                    &xobject
+                };
 
                 // Extract as Image XObject
                 if let Ok(mut image) =
-                    extract_image_from_xobject(Some(self), &resolved_xobject, xobject_ref_opt)
+                    extract_image_from_xobject(Some(self), xobject_for_extract, xobject_ref_opt)
                 {
                     if let Some(rect) = image.bbox() {
                         let new_bbox = self.transform_bbox_with_ctm(rect, ctm);
@@ -7066,12 +7049,12 @@ impl PdfDocument {
             },
             "Form" => {
                 // Recursively extract from Form XObject
-                // Only process if we have a valid reference
-                if let Some(ref_obj) = xobject_ref_opt {
+                // Only process if we have a valid reference and parent resources
+                if let (Some(ref_obj), Some(parent_res)) = (xobject_ref_opt, resources) {
                     if let Ok(mut form_images) = self.extract_images_from_form_xobject(
                         ref_obj,
                         &xobject,
-                        resources,
+                        parent_res,
                         ctm,
                         xobject_stack,
                     ) {
@@ -7086,6 +7069,10 @@ impl PdfDocument {
     }
 
     /// Recursively extract images from a Form XObject.
+    ///
+    /// Uses a document-level cache: images are extracted once using only the Form's
+    /// own Matrix, then cached. On subsequent references, cached images are cloned
+    /// and the caller's CTM is applied to transform bboxes.
     fn extract_images_from_form_xobject(
         &mut self,
         xobject_ref: ObjectRef,
@@ -7094,24 +7081,38 @@ impl PdfDocument {
         parent_ctm: crate::content::Matrix,
         xobject_stack: &mut Vec<ObjectRef>,
     ) -> Result<Vec<crate::extractors::PdfImage>> {
-        use crate::content::parse_content_stream;
+        use crate::content::parse_content_stream_images_only;
         use crate::content::Operator;
-
-        let mut images = Vec::new();
 
         // Cycle detection
         if xobject_stack.contains(&xobject_ref) || xobject_stack.len() >= 100 {
+            return Ok(Vec::new());
+        }
+
+        // Check image result cache — images stored with Form's own Matrix only
+        if let Some(cached_images) = self.form_xobject_images_cache.get(&xobject_ref) {
+            let images = cached_images
+                .iter()
+                .map(|img| {
+                    let mut cloned = img.clone();
+                    if let Some(rect) = cloned.bbox() {
+                        cloned.set_bbox(self.transform_bbox_with_ctm(rect, parent_ctm));
+                    }
+                    cloned
+                })
+                .collect();
             return Ok(images);
         }
+
         xobject_stack.push(xobject_ref);
 
-        let xobject_dict = xobject.as_dict().ok_or_else(|| Error::ParseError {
+        let xobj_dict = xobject.as_dict().ok_or_else(|| Error::ParseError {
             offset: 0,
             reason: "Form XObject is not a dictionary".to_string(),
         })?;
 
         // Get Form resources (with fallback to parent)
-        let form_resources = if let Some(form_res) = xobject_dict.get("Resources") {
+        let form_resources = if let Some(form_res) = xobj_dict.get("Resources") {
             if let Some(ref_obj) = form_res.as_reference() {
                 self.load_object(ref_obj)?
             } else {
@@ -7121,25 +7122,71 @@ impl PdfDocument {
             parent_resources.clone()
         };
 
+        // Pre-resolve XObject dictionary for this form's resources
+        let form_xobject_dict = if let Some(res_dict) = form_resources.as_dict() {
+            if let Some(xobj_entry) = res_dict.get("XObject") {
+                let resolved = if let Some(ref_obj) = xobj_entry.as_reference() {
+                    self.load_object(ref_obj)?
+                } else {
+                    xobj_entry.clone()
+                };
+                resolved.as_dict().cloned()
+            } else {
+                None
+            }
+        } else {
+            None
+        };
+
         // Get Form transformation matrix (default to identity)
-        let matrix = if let Some(matrix_obj) = xobject_dict.get("Matrix") {
+        let form_matrix = if let Some(matrix_obj) = xobj_dict.get("Matrix") {
             self.parse_matrix_from_object(matrix_obj)
                 .unwrap_or_else(crate::content::Matrix::identity)
         } else {
             crate::content::Matrix::identity()
         };
 
-        // Combine transformations
-        let new_ctm = parent_ctm.multiply(&matrix);
+        // Decode form stream — check cache first to avoid repeated decompression
+        let stream_data =
+            if let Some(cached) = self.xobject_stream_cache.get(&xobject_ref) {
+                cached.as_ref().clone()
+            } else {
+                match self.decode_stream_with_encryption(xobject, xobject_ref) {
+                    Ok(data) => {
+                        const MAX_STREAM_CACHE_BYTES: usize = 50 * 1024 * 1024;
+                        if self.xobject_stream_cache_bytes + data.len()
+                            <= MAX_STREAM_CACHE_BYTES
+                        {
+                            self.xobject_stream_cache_bytes += data.len();
+                            self.xobject_stream_cache
+                                .insert(xobject_ref, std::sync::Arc::new(data.clone()));
+                        }
+                        data
+                    },
+                    Err(e) => {
+                        log::warn!(
+                            "Failed to decode Form XObject stream: {}, skipping",
+                            e
+                        );
+                        xobject_stack.pop();
+                        return Ok(Vec::new());
+                    },
+                }
+            };
 
-        // Decode form stream
-        let stream_data = self.decode_stream_with_encryption(xobject, xobject_ref)?;
+        // Parse operators using fast image-only path (skips text operators)
+        let operators = match parse_content_stream_images_only(&stream_data) {
+            Ok(ops) => ops,
+            Err(_) => {
+                xobject_stack.pop();
+                return Ok(Vec::new());
+            },
+        };
 
-        // Parse operators from form stream
-        let operators = parse_content_stream(&stream_data)?;
-
-        // Process operators (similar to extract_images_from_content)
-        let mut ctm_stack = vec![new_ctm];
+        // Extract using only the Form's own Matrix (no parent_ctm yet).
+        // This allows caching the results and applying different parent CTMs later.
+        let mut raw_images = Vec::new();
+        let mut ctm_stack = vec![form_matrix];
 
         for op in operators {
             match op {
@@ -7161,17 +7208,22 @@ impl PdfDocument {
                 },
 
                 Operator::Do { name } => {
-                    let current_ctm = ctm_stack
-                        .last()
-                        .copied()
-                        .unwrap_or_else(crate::content::Matrix::identity);
-                    if let Ok(mut xobj_images) = self.extract_images_from_xobject_do(
-                        &name,
-                        &form_resources,
-                        current_ctm,
-                        xobject_stack,
-                    ) {
-                        images.append(&mut xobj_images);
+                    if let Some(ref xobj_d) = form_xobject_dict {
+                        let current_ctm = ctm_stack
+                            .last()
+                            .copied()
+                            .unwrap_or_else(crate::content::Matrix::identity);
+                        // For nested Do operators, pass identity as parent_ctm since
+                        // we're building raw (un-transformed) images for caching
+                        if let Ok(mut xobj_images) = self.extract_images_from_xobject_do(
+                            &name,
+                            xobj_d,
+                            Some(&form_resources),
+                            current_ctm,
+                            xobject_stack,
+                        ) {
+                            raw_images.append(&mut xobj_images);
+                        }
                     }
                 },
 
@@ -7181,15 +7233,31 @@ impl PdfDocument {
                         .copied()
                         .unwrap_or_else(crate::content::Matrix::identity);
                     if let Ok(image) = self.extract_image_from_inline(&dict, &data, current_ctm) {
-                        images.push(image);
+                        raw_images.push(image);
                     }
                 },
 
-                _ => {}, // Ignore other operators
+                _ => {},
             }
         }
 
         xobject_stack.pop();
+
+        // Cache the raw images (with Form's own Matrix applied, but no parent CTM)
+        self.form_xobject_images_cache
+            .insert(xobject_ref, raw_images.clone());
+
+        // Apply parent_ctm to produce final images for this call
+        let images = raw_images
+            .into_iter()
+            .map(|mut img| {
+                if let Some(rect) = img.bbox() {
+                    img.set_bbox(self.transform_bbox_with_ctm(rect, parent_ctm));
+                }
+                img
+            })
+            .collect();
+
         Ok(images)
     }
 

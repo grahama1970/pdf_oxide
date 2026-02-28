@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut doc = PdfDocument::open(pdf_path)?;
     let page_count = doc.page_count()?;
     let options = ConversionOptions {
-        include_images: false,
+        include_images: true,
         ..ConversionOptions::default()
     };
 
