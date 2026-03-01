@@ -5130,7 +5130,8 @@ impl PdfDocument {
                 Operator::Cm { a, b, c, d, e, f } => {
                     let state = state_stack.current_mut();
                     let new_matrix = crate::content::Matrix { a, b, c, d, e, f };
-                    state.ctm = state.ctm.multiply(&new_matrix);
+                    // PDF spec ISO 32000-1:2008 §8.3.4: cm concatenates as M_cm × CTM
+                    state.ctm = new_matrix.multiply(&state.ctm);
                     extractor.set_ctm(state.ctm);
                 },
 
@@ -5463,8 +5464,9 @@ impl PdfDocument {
         }
 
         // Apply XObject transformation to CTM
+        // PDF spec ISO 32000-1:2008 §8.10.1: Form XObject Matrix concatenates as M × CTM
         let state = state_stack.current_mut();
-        state.ctm = state.ctm.multiply(&matrix);
+        state.ctm = matrix.multiply(&state.ctm);
         extractor.set_ctm(state.ctm);
 
         // Process operators from the XObject
@@ -5481,7 +5483,8 @@ impl PdfDocument {
                 Operator::Cm { a, b, c, d, e, f } => {
                     let state = state_stack.current_mut();
                     let new_matrix = Matrix { a, b, c, d, e, f };
-                    state.ctm = state.ctm.multiply(&new_matrix);
+                    // PDF spec ISO 32000-1:2008 §8.3.4: cm concatenates as M_cm × CTM
+                    state.ctm = new_matrix.multiply(&state.ctm);
                     extractor.set_ctm(state.ctm);
                 },
 
@@ -7002,7 +7005,8 @@ impl PdfDocument {
                 Operator::Cm { a, b, c, d, e, f } => {
                     if let Some(current_ctm) = ctm_stack.last_mut() {
                         let matrix = crate::content::Matrix { a, b, c, d, e, f };
-                        *current_ctm = current_ctm.multiply(&matrix);
+                        // PDF spec ISO 32000-1:2008 §8.3.4: cm concatenates as M_cm × CTM
+                        *current_ctm = matrix.multiply(current_ctm);
                     }
                 },
 
@@ -7321,7 +7325,8 @@ impl PdfDocument {
                 Operator::Cm { a, b, c, d, e, f } => {
                     if let Some(current_ctm) = ctm_stack.last_mut() {
                         let matrix = crate::content::Matrix { a, b, c, d, e, f };
-                        *current_ctm = current_ctm.multiply(&matrix);
+                        // PDF spec ISO 32000-1:2008 §8.3.4: cm concatenates as M_cm × CTM
+                        *current_ctm = matrix.multiply(current_ctm);
                     }
                 },
 

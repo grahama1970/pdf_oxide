@@ -1009,6 +1009,19 @@ fn should_insert_space(
         return SpaceDecision::insert(SpaceSource::TjOffset, 1.0);
     }
 
+    // TJ offset with relaxed geometric confirmation
+    // In tight typesetting (e.g., LaTeX academic papers), word gaps are narrower than
+    // the standard 50% space-width threshold. When the PDF producer explicitly encoded
+    // a TJ offset, accept a lower geometric bar (25% of space width).
+    if tj_offset_triggered && gap_pt > geometric_threshold * 0.5 {
+        log::debug!(
+            "Space decision: TJ + relaxed geometric (gap={:.2}pt > {:.2}pt relaxed threshold) - inserting space",
+            gap_pt,
+            geometric_threshold * 0.5
+        );
+        return SpaceDecision::insert(SpaceSource::TjOffset, 0.9);
+    }
+
     // WordBoundaryDetector tiebreaker when TJ and geometric signals conflict
     // Per ISO 32000-1:2008 Section 9.4.4, use multiple signals to determine word boundaries
     if tj_offset_triggered != geometric_suggests_space {
@@ -3651,7 +3664,8 @@ impl TextExtractor {
             Operator::Cm { a, b, c, d, e, f } => {
                 let state = self.state_stack.current_mut();
                 let new_ctm = Matrix { a, b, c, d, e, f };
-                state.ctm = state.ctm.multiply(&new_ctm);
+                // PDF spec ISO 32000-1:2008 §8.3.4: cm concatenates as M_cm × CTM
+                state.ctm = new_ctm.multiply(&state.ctm);
             },
 
             // Color operators
@@ -4587,8 +4601,28 @@ impl TextExtractor {
             .font_name
             .take()
             .unwrap_or_else(|| "Unknown".to_string());
+
+        // RTL text correction: if text contains RTL characters and spans left-to-right
+        // on the page, the characters are in visual LTR order. Reverse to logical order.
+        let mut text = std::mem::take(&mut buffer.unicode);
+        if text.len() > 1 {
+            let has_rtl = text
+                .chars()
+                .any(|c| crate::text::rtl_detector::is_rtl_text(c as u32));
+            if has_rtl {
+                // In the tiebreaker path, characters are appended left-to-right in content
+                // stream order. For RTL scripts displayed right-to-left, this means the
+                // leftmost visual character (last logical character) is first in the buffer.
+                // Reverse to get logical reading order.
+                // Only reverse if user_pos_x indicates LTR placement (positive width).
+                if buffer.accumulated_width > 0.0 {
+                    text = text.chars().rev().collect();
+                }
+            }
+        }
+
         let span = TextSpan {
-            text: std::mem::take(&mut buffer.unicode),
+            text,
             bbox: Rect {
                 x: buffer.user_pos_x,
                 y: buffer.user_pos_y,
@@ -4970,13 +5004,31 @@ impl TextExtractor {
             String::new()
         };
 
-        // Step 3b: RTL text correction — reverse character order for RTL rendering
-        // When text_matrix.a is negative, text is rendered right-to-left (visual order).
-        // PDF stores characters in rendering order, but text extraction should produce
-        // logical order. Reverse the characters to correct RTL runs.
-        let combined_matrix = ctm.multiply(&text_matrix);
-        if combined_matrix.a < 0.0 && unicode_text.len() > 1 {
-            unicode_text = unicode_text.chars().rev().collect();
+        // Step 3b: RTL text correction — reverse visual-order characters to logical order.
+        // PDF stores characters in content stream order. For RTL scripts (Arabic/Hebrew),
+        // if characters are positioned left-to-right in user space (increasing x), they
+        // are in visual LTR order, which is reversed from logical RTL reading order.
+        // We reverse them to produce correct logical order.
+        // When combined_matrix.a < 0, characters go right-to-left in user space, meaning
+        // content stream order already matches logical RTL reading order — no reversal.
+        if unicode_text.len() > 1 && cluster.len() >= 2 {
+            let has_rtl = unicode_text
+                .chars()
+                .any(|c| crate::text::rtl_detector::is_rtl_text(c as u32));
+            if has_rtl {
+                let first_x = {
+                    let p = text_matrix.transform_point(cluster[0].x_position, 0.0);
+                    ctm.transform_point(p.x, p.y).x
+                };
+                let last_x = {
+                    let p = text_matrix.transform_point(last.x_position, 0.0);
+                    ctm.transform_point(p.x, p.y).x
+                };
+                // Characters go left-to-right in user space → visual LTR → reverse for RTL
+                if last_x > first_x {
+                    unicode_text = unicode_text.chars().rev().collect();
+                }
+            }
         }
 
         // Step 4: Determine font weight
@@ -5536,8 +5588,8 @@ impl TextExtractor {
                 let span = TextSpan {
                     text: std::mem::take(&mut buffer.unicode),
                     bbox: Rect {
-                        x: buffer.start_matrix.e,
-                        y: buffer.start_matrix.f,
+                        x: buffer.user_pos_x,
+                        y: buffer.user_pos_y,
                         width: total_width,
                         height: effective_font_size,
                     },

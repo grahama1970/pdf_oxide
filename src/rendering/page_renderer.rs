@@ -215,7 +215,8 @@ impl PageRenderer {
                         f: *f,
                     };
                     let current = gs_stack.current_mut();
-                    current.ctm = current.ctm.multiply(&matrix);
+                    // PDF spec ISO 32000-1:2008 §8.3.4: cm concatenates as M_cm × CTM
+                    current.ctm = matrix.multiply(&current.ctm);
                 },
 
                 // Color operators

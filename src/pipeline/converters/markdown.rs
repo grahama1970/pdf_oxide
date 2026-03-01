@@ -139,16 +139,22 @@ impl MarkdownOutputConverter {
     /// Uses absolute font sizes (only for clear heading cases):
     /// - H1: 24pt and above
     /// - H2: 18-23pt
-    /// - H3: 14-17pt
+    /// - H3: 16-17pt
     ///
     /// Note: Falls back to ratio-based detection for more nuanced cases.
+    /// Headings must also be short (< 200 chars) to avoid promoting body paragraphs.
     fn heading_level_absolute(&self, span: &OrderedTextSpan) -> Option<u8> {
         let size = span.span.font_size;
+        let text_len = span.span.text.trim().len();
+        // Headings must be short but non-trivial
+        if text_len < 2 || text_len > 200 {
+            return None;
+        }
         if size >= 24.0 {
             Some(1)
         } else if size >= 18.0 {
             Some(2)
-        } else if size >= 14.0 {
+        } else if size >= 16.0 {
             Some(3)
         } else {
             None
@@ -156,13 +162,27 @@ impl MarkdownOutputConverter {
     }
 
     /// Detect heading level based on font size ratio to base size.
+    /// Requires a meaningful size difference to avoid promoting slightly-larger text.
+    /// Bold text gets a lower threshold since bold+larger is a strong heading signal.
     fn heading_level_ratio(&self, span: &OrderedTextSpan, base_font_size: f32) -> Option<u8> {
+        let text_len = span.span.text.trim().len();
+        // Headings must be short but non-trivial
+        if text_len < 2 || text_len > 200 {
+            return None;
+        }
         let size_ratio = span.span.font_size / base_font_size;
+        let is_bold = matches!(
+            span.span.font_weight,
+            FontWeight::Bold | FontWeight::Black | FontWeight::ExtraBold | FontWeight::SemiBold
+        );
         if size_ratio >= 2.0 {
             Some(1)
         } else if size_ratio >= 1.5 {
             Some(2)
-        } else if size_ratio >= 1.25 {
+        } else if size_ratio >= 1.3 {
+            Some(3)
+        } else if is_bold && size_ratio >= 1.15 {
+            // Bold text with even slight size increase is a heading signal
             Some(3)
         } else {
             None
@@ -253,7 +273,9 @@ impl MarkdownOutputConverter {
         let mut sorted: Vec<_> = spans.iter().collect();
         sorted.sort_by_key(|s| s.reading_order);
 
-        // Calculate base font size for heading detection
+        // Calculate base font size for heading detection.
+        // Floor at 8pt to prevent ratio explosion on pages dominated by
+        // small text (tables, figures with tiny labels, etc.).
         let base_font_size = if config.output.detect_headings {
             let sizes: Vec<f32> = sorted.iter().map(|s| s.span.font_size).collect();
             let mut sizes_sorted = sizes.clone();
@@ -262,6 +284,7 @@ impl MarkdownOutputConverter {
                 .get(sizes_sorted.len() / 2)
                 .copied()
                 .unwrap_or(12.0)
+                .max(8.0)
         } else {
             12.0
         };
@@ -321,11 +344,15 @@ impl MarkdownOutputConverter {
                 }
             }
 
-            // Check for heading
+            // Check for heading (take best level from absolute and ratio methods)
             if config.output.detect_headings {
-                let level = self
-                    .heading_level_absolute(span)
-                    .or_else(|| self.heading_level_ratio(span, base_font_size));
+                let level = match (
+                    self.heading_level_absolute(span),
+                    self.heading_level_ratio(span, base_font_size),
+                ) {
+                    (Some(a), Some(b)) => Some(a.min(b)),
+                    (a, b) => a.or(b),
+                };
 
                 if let Some(level) = level {
                     if !current_line.is_empty() {
