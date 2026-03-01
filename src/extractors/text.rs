@@ -894,14 +894,14 @@ fn should_insert_space(
     // Font size is used as reference for vertical gap detection threshold.
 
     if let (Some(prev_box), Some(next_box)) = (prev_bbox, next_bbox) {
-        // Calculate vertical and horizontal positioning for line break detection
-        let prev_bottom = prev_box.y + prev_box.height;
-        let next_top = next_box.y;
-        let vertical_gap = (prev_bottom - next_top).abs();
+        // Calculate vertical positioning for line break detection.
+        // Use Y-coordinate difference (not bottom-to-top gap) to detect actual line breaks.
+        // Two spans on the same line have nearly identical Y positions regardless of height.
+        let y_diff = (prev_box.y - next_box.y).abs();
 
-        // Line break threshold: if vertical gap > 0.5× font size (typical line spacing margin)
+        // Line break threshold: if Y positions differ by more than 0.5× font size
         let line_break_threshold = font_size * 0.5;
-        let is_line_break = vertical_gap > line_break_threshold;
+        let is_line_break = y_diff > line_break_threshold;
 
         if is_line_break {
             // Verify same-column layout: X-positions within 2× font width
@@ -909,8 +909,8 @@ fn should_insert_space(
 
             if same_column {
                 log::debug!(
-                    "Detected line break: vertical_gap={:.2}pt > {:.2}pt threshold, same_column=true",
-                    vertical_gap,
+                    "Detected line break: y_diff={:.2}pt > {:.2}pt threshold, same_column=true",
+                    y_diff,
                     line_break_threshold
                 );
 
@@ -1289,6 +1289,9 @@ struct TjBuffer {
     /// Avoids two transform_point calls per flush.
     user_pos_x: f32,
     user_pos_y: f32,
+    /// Pre-computed horizontal scale factor (CTM × text_matrix).
+    /// Used to convert accumulated_width from text space to user space for bbox.
+    user_h_scale: f32,
 }
 
 impl TjBuffer {
@@ -1302,6 +1305,8 @@ impl TjBuffer {
         let combined = state.ctm.multiply(&state.text_matrix);
         let effective_font_size =
             state.font_size * (combined.d * combined.d + combined.b * combined.b).sqrt();
+        // Pre-compute horizontal scale for converting text-space widths to user space
+        let user_h_scale = (combined.a * combined.a + combined.c * combined.c).sqrt();
         let font_weight = match &cached_font {
             Some(f) if f.is_bold() => FontWeight::Bold,
             _ => FontWeight::Normal,
@@ -1326,6 +1331,7 @@ impl TjBuffer {
             is_italic,
             user_pos_x: user_pos.x,
             user_pos_y: user_pos.y,
+            user_h_scale,
         }
     }
 
@@ -4587,8 +4593,8 @@ impl TextExtractor {
         }
 
         // Use accumulated width from advance_position_for_string calls
-        // (equivalent to calculate_tj_buffer_width, avoids redundant per-byte iteration)
-        let total_width = buffer.accumulated_width;
+        // Convert from text space to user space using pre-computed horizontal scale
+        let total_width = buffer.accumulated_width * buffer.user_h_scale;
 
         // Use pre-computed values from buffer creation (avoids
         // matrix multiply + sqrt + HashMap lookup + transform_point per flush)
@@ -5235,12 +5241,19 @@ impl TextExtractor {
                 }
                 w_sum
             } else {
-                // Type0/CID font: use HashMap-based width lookup
+                // Type0/CID font: process 2-byte CID codes (Identity-H encoding)
+                // Per ISO 32000-1:2008 Section 9.7.6.2, composite fonts use multi-byte codes
                 let mut w_sum = 0.0f32;
-                for &byte in text {
-                    let mut w = font.get_glyph_width(byte as u16) * fs_factor * hs_factor;
+                for chunk in text.chunks(2) {
+                    let cid = if chunk.len() == 2 {
+                        ((chunk[0] as u16) << 8) | (chunk[1] as u16)
+                    } else {
+                        chunk[0] as u16
+                    };
+                    let mut w = font.get_glyph_width(cid) * fs_factor * hs_factor;
                     w += cs_hs;
-                    if byte == 0x20 {
+                    // Per ISO 32000-1:2008 Section 9.3.3: Tw applied when CID == 32
+                    if cid == 32 {
                         w += ws_hs;
                     }
                     w_sum += w;
@@ -5339,14 +5352,19 @@ impl TextExtractor {
                 }
                 w_sum
             } else {
-                // Type0/CID font: use existing separate paths
+                // Type0/CID font: use existing separate paths for Unicode decode
                 buffer.append(text)?;
-                // Width calculation (cannot merge due to multi-byte decode)
+                // Width calculation: process 2-byte CID codes (Identity-H encoding)
                 let mut w_sum = 0.0f32;
-                for &byte in text {
-                    let mut w = font.get_glyph_width(byte as u16) * fs_factor * hs_factor;
+                for chunk in text.chunks(2) {
+                    let cid = if chunk.len() == 2 {
+                        ((chunk[0] as u16) << 8) | (chunk[1] as u16)
+                    } else {
+                        chunk[0] as u16
+                    };
+                    let mut w = font.get_glyph_width(cid) * fs_factor * hs_factor;
                     w += cs_hs;
-                    if byte == 0x20 {
+                    if cid == 32 {
                         w += ws_hs;
                     }
                     w_sum += w;
@@ -5437,11 +5455,17 @@ impl TextExtractor {
                 w_sum
             } else {
                 buffer.append(text)?;
+                // Width calculation: process 2-byte CID codes (Identity-H encoding)
                 let mut w_sum = 0.0f32;
-                for &byte in text {
-                    let mut w = font.get_glyph_width(byte as u16) * fs_factor * hs_factor;
+                for chunk in text.chunks(2) {
+                    let cid = if chunk.len() == 2 {
+                        ((chunk[0] as u16) << 8) | (chunk[1] as u16)
+                    } else {
+                        chunk[0] as u16
+                    };
+                    let mut w = font.get_glyph_width(cid) * fs_factor * hs_factor;
                     w += cs_hs;
-                    if byte == 0x20 {
+                    if cid == 32 {
                         w += ws_hs;
                     }
                     w_sum += w;
@@ -5572,7 +5596,8 @@ impl TextExtractor {
         if let Some(mut buffer) = self.tj_span_buffer.take() {
             if !buffer.is_empty() {
                 // Use accumulated width from advance_position_for_string calls
-                let total_width = buffer.accumulated_width;
+                // Convert from text space to user space using pre-computed horizontal scale
+                let total_width = buffer.accumulated_width * buffer.user_h_scale;
 
                 // Use pre-computed values from buffer creation (avoids
                 // matrix multiply + sqrt + HashMap lookup per flush)
