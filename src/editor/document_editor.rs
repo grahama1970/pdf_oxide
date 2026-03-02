@@ -8421,13 +8421,11 @@ mod tests {
             .as_bytes(),
         );
 
-        let tmp = std::env::temp_dir().join(format!(
-            "pdf_oxide_multipage_test_{}.pdf",
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        ));
+        use std::sync::atomic::{AtomicU64, Ordering};
+        static COUNTER: AtomicU64 = AtomicU64::new(0);
+        let id = COUNTER.fetch_add(1, Ordering::Relaxed);
+        let tmp = std::env::temp_dir()
+            .join(format!("pdf_oxide_multipage_test_{}_{id}.pdf", std::process::id()));
         std::fs::write(&tmp, &pdf).unwrap();
         let editor = DocumentEditor::open(&tmp).unwrap();
         let _ = std::fs::remove_file(&tmp);
