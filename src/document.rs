@@ -5879,27 +5879,25 @@ impl PdfDocument {
             }
 
             if let Some(font_dict) = font_dict_obj.as_dict() {
-                // Compute font fingerprint for direct /Font dicts:
-                // hash of sorted font ObjectRefs enables cache hits even when
-                // different pages have different /Resources but same font refs.
-                let mut font_refs_for_fingerprint: Vec<ObjectRef> = Vec::new();
-                for (_, fo) in font_dict.iter() {
-                    if let Some(r) = fo.as_reference() {
-                        font_refs_for_fingerprint.push(r);
-                    }
-                }
-                font_refs_for_fingerprint.sort_by(|a, b| a.id.cmp(&b.id).then(a.gen.cmp(&b.gen)));
-
-                // Check fingerprint cache (works even for direct /Font dicts)
+                // Compute font fingerprint from (name → ObjectRef) pairs.
+                // Hash the MAPPING between font names and their object refs,
+                // not just the sets separately. This prevents false cache hits
+                // when two font dicts have the same set of refs and names but
+                // different name-to-ref assignments.
                 let fingerprint = {
                     use std::hash::{Hash, Hasher};
                     let mut hasher = std::collections::hash_map::DefaultHasher::new();
-                    font_refs_for_fingerprint.hash(&mut hasher);
-                    // Include font dict keys for uniqueness (sorted for determinism)
-                    let mut sorted_font_names: Vec<&String> = font_dict.keys().collect();
-                    sorted_font_names.sort();
-                    for name in &sorted_font_names {
+                    let mut name_ref_pairs: Vec<(&str, Option<ObjectRef>)> = font_dict
+                        .iter()
+                        .map(|(name, fo)| (name.as_str(), fo.as_reference()))
+                        .collect();
+                    name_ref_pairs.sort_by(|a, b| a.0.cmp(b.0));
+                    for (name, obj_ref) in &name_ref_pairs {
                         name.hash(&mut hasher);
+                        if let Some(r) = obj_ref {
+                            r.id.hash(&mut hasher);
+                            r.gen.hash(&mut hasher);
+                        }
                     }
                     hasher.finish()
                 };

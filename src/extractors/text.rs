@@ -2361,20 +2361,25 @@ impl TextExtractor {
             }
         }
 
-        // First pass: collect available TrueType cmaps keyed by stripped base font name.
-        // Sort by font name for deterministic donor selection (HashMap iteration is random).
-        let mut cmap_donors: Vec<(String, crate::fonts::truetype_cmap::TrueTypeCMap)> = Vec::new();
-        let mut sorted_font_keys: Vec<&String> = self.fonts.keys().collect();
-        sorted_font_keys.sort();
-        for key in &sorted_font_keys {
-            let font = &self.fonts[*key];
+        // First pass: collect the BEST available TrueType cmap for each stripped base font name.
+        // When multiple subset variants of the same font exist (e.g., ABCDEF+Arial, GHIJKL+Arial),
+        // pick the cmap with the most glyph mappings — it has the best Unicode coverage.
+        // This is deterministic regardless of HashMap iteration order.
+        let mut best_cmaps: std::collections::HashMap<String, crate::fonts::truetype_cmap::TrueTypeCMap> =
+            std::collections::HashMap::new();
+        for font in self.fonts.values() {
             if let Some(cmap) = font.truetype_cmap() {
                 let stripped = strip_subset(&font.base_font).to_string();
-                cmap_donors.push((stripped, cmap.clone()));
+                let dominated = best_cmaps
+                    .get(&stripped)
+                    .map_or(true, |existing| cmap.len() > existing.len());
+                if dominated {
+                    best_cmaps.insert(stripped, cmap.clone());
+                }
             }
         }
 
-        if cmap_donors.is_empty() {
+        if best_cmaps.is_empty() {
             return;
         }
 
@@ -2394,16 +2399,14 @@ impl TextExtractor {
             }
 
             let stripped = strip_subset(&font_arc.base_font);
-            for (donor_name, donor_cmap) in &cmap_donors {
-                if donor_name == stripped {
-                    log::info!(
-                        "Sharing TrueType cmap from donor font to '{}' (Identity-H, no embedded font)",
-                        font_arc.base_font
-                    );
-                    // Use Arc::make_mut + set_truetype_cmap for copy-on-write sharing
-                    Arc::make_mut(font_arc).set_truetype_cmap(Some(donor_cmap.clone()));
-                    break;
-                }
+            if let Some(donor_cmap) = best_cmaps.get(stripped) {
+                log::info!(
+                    "Sharing TrueType cmap ({} entries) to '{}' (Identity-H, no embedded font)",
+                    donor_cmap.len(),
+                    font_arc.base_font
+                );
+                // Use Arc::make_mut + set_truetype_cmap for copy-on-write sharing
+                Arc::make_mut(font_arc).set_truetype_cmap(Some(donor_cmap.clone()));
             }
         }
     }
