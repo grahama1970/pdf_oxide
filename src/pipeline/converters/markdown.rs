@@ -415,7 +415,7 @@ impl MarkdownOutputConverter {
             }
 
             // Handle inline bullets (text starts with bullet char)
-            if Self::starts_with_bullet(&span.span.text) && !same_line {
+            if Self::starts_with_bullet(&span.span.text) && (!same_line || prev_span.is_none()) {
                 let stripped = Self::strip_bullet(&span.span.text);
                 if !current_line.ends_with("- ") {
                     current_line.push_str("- ");
@@ -994,6 +994,34 @@ mod tests {
         assert!(
             result.contains("- Analog input"),
             "Should convert inline bullet to list item: {}",
+            result
+        );
+    }
+
+    #[test]
+    fn test_first_span_inline_bullet() {
+        // First span on page starts with bullet — no prev_span exists.
+        // Should still be converted to a markdown list item.
+        let converter = MarkdownOutputConverter::new();
+        let config = TextPipelineConfig::default();
+
+        let mut bullet_text = make_span("► First item", 50.0, 660.0, 11.0, FontWeight::Normal);
+        bullet_text.reading_order = 0;
+
+        let mut bullet_text2 = make_span("► Second item", 50.0, 646.0, 11.0, FontWeight::Normal);
+        bullet_text2.reading_order = 1;
+
+        let spans = vec![bullet_text, bullet_text2];
+        let result = converter.convert(&spans, &config).unwrap();
+
+        assert!(
+            result.contains("- First item"),
+            "First-span inline bullet should become list item: {}",
+            result
+        );
+        assert!(
+            result.contains("- Second item"),
+            "Second inline bullet should become list item: {}",
             result
         );
     }
