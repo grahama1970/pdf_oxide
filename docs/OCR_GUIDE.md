@@ -119,6 +119,11 @@ let engine = OcrEngine::new("det.onnx", "rec.onnx", "dict.txt", config)?;
 
 ### Python
 
+```bash
+# Recommended: Install with OCR support
+pip install pdf_oxide[ocr]
+```
+
 ```python
 from pdf_oxide import OcrConfig, OcrEngine
 

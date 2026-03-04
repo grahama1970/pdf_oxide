@@ -227,17 +227,19 @@ html = doc.to_html(0, options)
 
 > For a comprehensive guide covering model selection, configuration reference, resize strategies, and troubleshooting, see the [OCR Guide](OCR_GUIDE.md).
 
-PDFOxide can extract text from scanned PDFs using PaddleOCR models via ONNX Runtime. This requires building with the `ocr` feature.
-
 ### Setup
 
+The OCR feature requires heavy machine learning dependencies (ONNX Runtime) and is optional.
+
 ```bash
-# Install with OCR support
+# Recommended: Install with OCR support
 pip install pdf_oxide[ocr]
 
 # Or build from source with OCR
 maturin develop --features python,ocr
 ```
+
+> **Troubleshooting:** If you see `RuntimeError: OCR feature not enabled`, it means the library was installed without OCR support. Re-install using the `[ocr]` extra above.
 
 **Quick start** — download the recommended models:
 
