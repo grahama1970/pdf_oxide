@@ -16,6 +16,7 @@ import sys
 import time
 from pathlib import Path
 
+
 CORPORA = {
     "veraPDF": Path(os.path.expanduser("~/projects/veraPDF-corpus")),
     "pdfjs": Path(os.path.expanduser("~/projects/pdf_oxide_tests/pdfs_pdfjs")),
@@ -42,6 +43,7 @@ def find_all_pdfs():
 
 def extract_pymupdf(pdf_path):
     import pymupdf
+
     doc = pymupdf.open(pdf_path)
     if doc.needs_pass:
         for pw in PASSWORDS:
@@ -68,6 +70,7 @@ def main():
 
     try:
         import pymupdf
+
         print(f"pymupdf: {pymupdf.VersionBind}")
     except ImportError:
         print("ERROR: pymupdf not available", file=sys.stderr)

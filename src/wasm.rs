@@ -68,7 +68,11 @@ impl WasmPdfDocument {
                 .map_err(|e| JsValue::from_str(&format!("Failed to open editor: {}", e)))?;
             self.editor = Some(Arc::new(Mutex::new(editor)));
         }
-        Ok(self.editor.as_ref().expect("editor just initialized").clone())
+        Ok(self
+            .editor
+            .as_ref()
+            .expect("editor just initialized")
+            .clone())
     }
 }
 
@@ -836,8 +840,8 @@ impl WasmPdfDocument {
             inner.extract_paths(page_index)
         };
 
-        let paths =
-            paths_result.map_err(|e| JsValue::from_str(&format!("Failed to extract paths: {}", e)))?;
+        let paths = paths_result
+            .map_err(|e| JsValue::from_str(&format!("Failed to extract paths: {}", e)))?;
 
         let result: Vec<serde_json::Value> = paths
             .iter()

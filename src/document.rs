@@ -2748,10 +2748,7 @@ impl PdfDocument {
     /// println!("Page 1 text: {}", text);
     /// # Ok::<(), pdf_oxide::error::Error>(())
     /// ```
-    pub fn extract_text(
-        &mut self,
-        page_index: usize,
-    ) -> Result<String> {
+    pub fn extract_text(&mut self, page_index: usize) -> Result<String> {
         // PDF Spec ISO 32000-1:2008 Section 14.8.2.3:
         // For Tagged PDFs, use structure tree for reading order (spec-compliant)
         // For Untagged PDFs, use page content order (spec-compliant)
@@ -4762,10 +4759,7 @@ impl PdfDocument {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn extract_spans(
-        &mut self,
-        page_index: usize,
-    ) -> Result<Vec<crate::layout::TextSpan>> {
+    pub fn extract_spans(&mut self, page_index: usize) -> Result<Vec<crate::layout::TextSpan>> {
         use crate::extractors::TextExtractor;
 
         // Get page object

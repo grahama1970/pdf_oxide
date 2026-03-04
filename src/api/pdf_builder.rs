@@ -979,10 +979,7 @@ impl Pdf {
     /// img.save("page1.png")?;
     /// ```
     #[cfg(feature = "rendering")]
-    pub fn render_page(
-        &mut self,
-        page_index: usize,
-    ) -> Result<crate::rendering::RenderedImage> {
+    pub fn render_page(&mut self, page_index: usize) -> Result<crate::rendering::RenderedImage> {
         self.render_page_with_options(page_index, &crate::rendering::RenderOptions::default())
     }
 
@@ -1029,7 +1026,7 @@ impl Pdf {
             options.format = crate::rendering::ImageFormat::Jpeg;
         }
 
-        let image = self.render_page(page, &options)?;
+        let image = self.render_page_with_options(page, &options)?;
         image.save(path)
     }
 
@@ -1053,7 +1050,7 @@ impl Pdf {
             options.format = crate::rendering::ImageFormat::Jpeg;
         }
 
-        let image = self.render_page(page, &options)?;
+        let image = self.render_page_with_options(page, &options)?;
         image.save(path)
     }
 

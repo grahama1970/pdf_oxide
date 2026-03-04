@@ -14,7 +14,6 @@ Expects:
 """
 
 import csv
-import os
 import sys
 from pathlib import Path
 
@@ -147,7 +146,15 @@ def classify(oxide_row, mupdf_row, oxide_text=None, mupdf_text=None):
         return "clean"
 
 
-CLEAN_CATS = {"clean", "both_empty", "oxide_only", "oxide_more", "oxide_much_more", "both_garbage", "mupdf_error"}
+CLEAN_CATS = {
+    "clean",
+    "both_empty",
+    "oxide_only",
+    "oxide_more",
+    "oxide_much_more",
+    "both_garbage",
+    "mupdf_error",
+}
 
 CATEGORY_ORDER = [
     ("clean", "Equivalent text"),
@@ -221,12 +228,17 @@ def main():
             mupdf_text = read_text_file(mupdf_dir, corpus, filename)
             cat = classify(oxide_row, mupdf_row, oxide_text, mupdf_text)
             if cat not in CLEAN_CATS:
-                issues.append((
-                    corpus, filename, cat,
-                    oxide_row["chars"], mupdf_row["chars"],
-                    oxide_row.get("error", ""),
-                    pdf_path,
-                ))
+                issues.append(
+                    (
+                        corpus,
+                        filename,
+                        cat,
+                        oxide_row["chars"],
+                        mupdf_row["chars"],
+                        oxide_row.get("error", ""),
+                        pdf_path,
+                    )
+                )
 
         categories[cat] = categories.get(cat, 0) + 1
 
@@ -234,25 +246,27 @@ def main():
     total = len(all_keys)
     clean_count = sum(categories.get(c, 0) for c in CLEAN_CATS)
 
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print("COMPARISON SUMMARY")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
     print(f"  Total PDFs:    {total}")
-    print(f"  Clean:         {clean_count} ({100*clean_count/total:.1f}%)")
-    print(f"  Issues:        {total - clean_count} ({100*(total-clean_count)/total:.1f}%)")
+    print(f"  Clean:         {clean_count} ({100 * clean_count / total:.1f}%)")
+    print(f"  Issues:        {total - clean_count} ({100 * (total - clean_count) / total:.1f}%)")
     print()
 
     for cat, label in CATEGORY_ORDER:
         count = categories.get(cat, 0)
         if count > 0:
             marker = "  " if cat in CLEAN_CATS else ">>"
-            print(f"  {marker} {label:40s} {count:>5}  ({100*count/total:.1f}%)")
+            print(f"  {marker} {label:40s} {count:>5}  ({100 * count / total:.1f}%)")
 
     # Write issues CSV (with full pdf_path for easy investigation)
     issues_csv = output_dir / "issues.csv"
     with open(issues_csv, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["corpus", "filename", "category", "oxide_chars", "mupdf_chars", "error", "pdf_path"])
+        writer.writerow(
+            ["corpus", "filename", "category", "oxide_chars", "mupdf_chars", "error", "pdf_path"]
+        )
         for row in sorted(issues, key=lambda r: (r[2], r[0], r[1])):
             writer.writerow(row)
 
@@ -260,9 +274,9 @@ def main():
     print(f"  {len(issues)} PDFs with issues — review and group by category")
 
     # Per-category details
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print("ISSUE DETAILS (first 5 per category)")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
     by_cat = {}
     for corpus, filename, cat, oc, mc, err, pp in issues:
         by_cat.setdefault(cat, []).append((corpus, filename, oc, mc, err, pp))
@@ -278,7 +292,7 @@ def main():
             err_tag = f"  [{err[:40]}]" if err else ""
             print(f"    {corpus}/{filename}  oxide={oc} mupdf={mc}{err_tag}")
         if len(entries) > 5:
-            print(f"    ... and {len(entries)-5} more")
+            print(f"    ... and {len(entries) - 5} more")
 
 
 if __name__ == "__main__":

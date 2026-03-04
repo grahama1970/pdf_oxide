@@ -49,6 +49,7 @@ def find_all_pdfs():
 def _extract_pdf_oxide(pdf_path):
     """Extract text with pdf_oxide (runs in subprocess)."""
     from pdf_oxide import PdfDocument
+
     doc = PdfDocument(pdf_path)
     for pw in PASSWORDS:
         if pw:
@@ -66,6 +67,7 @@ def _extract_pdf_oxide(pdf_path):
 def _extract_pymupdf(pdf_path):
     """Extract text with pymupdf (runs in subprocess)."""
     import pymupdf
+
     doc = pymupdf.open(pdf_path)
     if doc.needs_pass:
         for pw in PASSWORDS:
@@ -128,12 +130,14 @@ def main():
     # Verify libraries
     try:
         import pdf_oxide  # noqa: F401
+
         print("pdf_oxide: ok")
     except ImportError:
         print("ERROR: pdf_oxide not available", file=sys.stderr)
         sys.exit(1)
     try:
         import pymupdf
+
         print(f"pymupdf: {pymupdf.VersionBind}")
     except ImportError:
         print("ERROR: pymupdf not available", file=sys.stderr)
@@ -141,7 +145,7 @@ def main():
 
     pdfs = find_all_pdfs()
     if args.limit > 0:
-        pdfs = pdfs[:args.limit]
+        pdfs = pdfs[: args.limit]
     total = len(pdfs)
     print(f"\nFound {total} PDFs across {len(CORPORA)} corpora\n")
 
@@ -162,16 +166,33 @@ def main():
     csv_file = open(csv_path, "a" if args.resume and done_paths else "w", newline="")
     writer = csv.writer(csv_file)
     if write_header:
-        writer.writerow([
-            "pdf_path", "pdf_filename", "corpus", "pages",
-            "oxide_chars", "oxide_ms", "oxide_error",
-            "mupdf_chars", "mupdf_ms", "mupdf_error",
-            "diff_chars", "ratio",
-        ])
+        writer.writerow(
+            [
+                "pdf_path",
+                "pdf_filename",
+                "corpus",
+                "pages",
+                "oxide_chars",
+                "oxide_ms",
+                "oxide_error",
+                "mupdf_chars",
+                "mupdf_ms",
+                "mupdf_error",
+                "diff_chars",
+                "ratio",
+            ]
+        )
         csv_file.flush()
 
-    stats = {"pass": 0, "oxide_better": 0, "mupdf_better": 0, "both_empty": 0,
-             "oxide_fail": 0, "mupdf_fail": 0, "skipped": 0}
+    stats = {
+        "pass": 0,
+        "oxide_better": 0,
+        "mupdf_better": 0,
+        "both_empty": 0,
+        "oxide_fail": 0,
+        "mupdf_fail": 0,
+        "skipped": 0,
+    }
 
     for idx, (pdf_path, corpus) in enumerate(pdfs, 1):
         if pdf_path in done_paths:
@@ -210,7 +231,11 @@ def main():
 
         # Classify
         diff = oxide_chars - mupdf_chars
-        ratio = oxide_chars / max(mupdf_chars, 1) if mupdf_chars > 0 else (999 if oxide_chars > 0 else 0)
+        ratio = (
+            oxide_chars / max(mupdf_chars, 1)
+            if mupdf_chars > 0
+            else (999 if oxide_chars > 0 else 0)
+        )
 
         if oxide_chars == 0 and mupdf_chars == 0:
             stats["both_empty"] += 1
@@ -221,12 +246,22 @@ def main():
             elif oxide_chars > mupdf_chars * 1.5:
                 stats["oxide_better"] += 1
 
-        writer.writerow([
-            pdf_path, filename, corpus, pages,
-            oxide_chars, f"{oxide_ms:.1f}", oxide_err,
-            mupdf_chars, f"{mupdf_ms:.1f}", mupdf_err,
-            diff, f"{ratio:.3f}",
-        ])
+        writer.writerow(
+            [
+                pdf_path,
+                filename,
+                corpus,
+                pages,
+                oxide_chars,
+                f"{oxide_ms:.1f}",
+                oxide_err,
+                mupdf_chars,
+                f"{mupdf_ms:.1f}",
+                mupdf_err,
+                diff,
+                f"{ratio:.3f}",
+            ]
+        )
         csv_file.flush()
 
         # Free large text strings to reduce memory for fork()
@@ -242,7 +277,9 @@ def main():
                 tag = f" [oxide err: {oxide_err[:40]}]"
             elif mupdf_err:
                 tag = f" [mupdf err: {mupdf_err[:40]}]"
-            print(f"  [{actual_idx}/{actual_total}] oxide={oxide_chars:>7} mupdf={mupdf_chars:>7} {filename[:50]}{tag}")
+            print(
+                f"  [{actual_idx}/{actual_total}] oxide={oxide_chars:>7} mupdf={mupdf_chars:>7} {filename[:50]}{tag}"
+            )
 
     csv_file.close()
 

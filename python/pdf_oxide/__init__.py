@@ -60,6 +60,7 @@ from .pdf_oxide import (
     TextSpan,
 )
 
+
 # OCR classes are only available when built with the 'ocr' feature
 try:
     from .pdf_oxide import OcrConfig, OcrEngine
