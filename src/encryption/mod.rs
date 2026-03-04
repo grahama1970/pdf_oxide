@@ -116,6 +116,9 @@ pub struct EncryptDict {
     pub user_encryption: Option<Vec<u8>>, // UE
     /// Encrypted permissions (Perms entry, for V=5/R=6)
     pub perms: Option<Vec<u8>>, // Perms (encrypted permissions)
+    /// Stream crypt filter method (CFM from /CF dictionary, for V=4).
+    /// "V2" = RC4-128, "AESV2" = AES-128. None means not specified (defaults to AES-128).
+    pub stream_crypt_method: Option<String>,
 }
 
 impl EncryptDict {
@@ -205,6 +208,25 @@ impl EncryptDict {
             .and_then(|o| o.as_string())
             .map(|s| s.to_vec());
 
+        // V=4: Parse /CF crypt filter dictionary to determine the actual algorithm.
+        // /StmF names the crypt filter for streams; look up its /CFM entry.
+        // CFM "V2" = RC4-128, "AESV2" = AES-128 (PDF Spec Table 25).
+        let stream_crypt_method = if version == 4 {
+            let stm_filter_name = dict
+                .get("StmF")
+                .and_then(|o| o.as_name())
+                .unwrap_or("Identity");
+            dict.get("CF")
+                .and_then(|cf| cf.as_dict())
+                .and_then(|cf_dict| cf_dict.get(stm_filter_name))
+                .and_then(|filter_obj| filter_obj.as_dict())
+                .and_then(|filter_dict| filter_dict.get("CFM"))
+                .and_then(|cfm| cfm.as_name())
+                .map(|s| s.to_string())
+        } else {
+            None
+        };
+
         Ok(EncryptDict {
             filter,
             sub_filter,
@@ -218,6 +240,7 @@ impl EncryptDict {
             owner_encryption,
             user_encryption,
             perms,
+            stream_crypt_method,
         })
     }
 
@@ -228,7 +251,30 @@ impl EncryptDict {
         match (self.version, self.revision) {
             (1, 2) => Ok(Algorithm::RC4_40),
             (2, 3) => Ok(Algorithm::Rc4_128),
-            (4, 4) => Ok(Algorithm::Aes128),
+            (4, _) => {
+                // V=4 means crypt-filter-based encryption. The actual algorithm
+                // is determined by /CFM in the /CF dictionary (PDF Spec Table 25):
+                //   "V2"    = RC4-128
+                //   "AESV2" = AES-128
+                match self.stream_crypt_method.as_deref() {
+                    Some("V2") => {
+                        log::info!("V=4 R={}: CFM=V2 → RC4-128", self.revision);
+                        Ok(Algorithm::Rc4_128)
+                    },
+                    Some("AESV2") | None => {
+                        // None: /CF missing or unparseable — default to AES-128
+                        // for backward compatibility.
+                        Ok(Algorithm::Aes128)
+                    },
+                    Some(other) => {
+                        log::warn!(
+                            "V=4 R={}: unknown CFM '{}', falling back to AES-128",
+                            self.revision, other
+                        );
+                        Ok(Algorithm::Aes128)
+                    },
+                }
+            },
             (5, 5) | (5, 6) => Ok(Algorithm::Aes256),
             // Lenient: V determines algorithm, R may be non-standard
             (1, r) => {
@@ -238,10 +284,6 @@ impl EncryptDict {
             (2, r) => {
                 log::warn!("Non-standard encryption V=2, R={}, using RC4-128", r);
                 Ok(Algorithm::Rc4_128)
-            },
-            (4, r) => {
-                log::warn!("Non-standard encryption V=4, R={}, using AES-128", r);
-                Ok(Algorithm::Aes128)
             },
             _ => Err(Error::Unsupported(format!(
                 "Unsupported encryption version V={}, R={}",
@@ -308,12 +350,16 @@ impl EncryptDict {
             dict.insert("Perms".to_string(), Object::String(perms.clone()));
         }
 
-        // For V=4 (AES-128), add crypt filter entries
+        // For V=4 (crypt-filter-based), add crypt filter entries
         if self.version == 4 {
-            // Standard crypt filter dictionary
+            let cfm = self
+                .stream_crypt_method
+                .as_deref()
+                .unwrap_or("AESV2")
+                .to_string();
             let mut cf_dict: HashMap<String, Object> = HashMap::new();
             let mut std_cf: HashMap<String, Object> = HashMap::new();
-            std_cf.insert("CFM".to_string(), Object::Name("AESV2".to_string()));
+            std_cf.insert("CFM".to_string(), Object::Name(cfm));
             std_cf.insert("AuthEvent".to_string(), Object::Name("DocOpen".to_string()));
             std_cf.insert("Length".to_string(), Object::Integer(16));
             cf_dict.insert("StdCF".to_string(), Object::Dictionary(std_cf));
@@ -446,6 +492,7 @@ impl EncryptDictBuilder {
             owner_encryption: None,
             user_encryption: None,
             perms: None,
+            stream_crypt_method: None,
         }
     }
 }
@@ -930,6 +977,7 @@ mod tests {
             owner_encryption: None,
             user_encryption: None,
             perms: None,
+            stream_crypt_method: None,
         };
         let obj = ed.to_object();
         let dict = obj.as_dict().unwrap();
@@ -958,6 +1006,7 @@ mod tests {
             owner_encryption: None,
             user_encryption: None,
             perms: None,
+            stream_crypt_method: None,
         };
         let obj = ed.to_object();
         let dict = obj.as_dict().unwrap();
@@ -981,6 +1030,7 @@ mod tests {
             owner_encryption: None,
             user_encryption: None,
             perms: None,
+            stream_crypt_method: None,
         };
         let obj = ed.to_object();
         let dict = obj.as_dict().unwrap();
@@ -1004,6 +1054,7 @@ mod tests {
             owner_encryption: Some(vec![0u8; 32]),
             user_encryption: Some(vec![0u8; 32]),
             perms: Some(vec![0u8; 16]),
+            stream_crypt_method: None,
         };
         let obj = ed.to_object();
         let dict = obj.as_dict().unwrap();
@@ -1232,6 +1283,7 @@ mod tests {
             owner_encryption: None,
             user_encryption: None,
             perms: None,
+            stream_crypt_method: None,
         };
         let obj = original.to_object();
         let parsed = EncryptDict::from_object(&obj).unwrap();
@@ -1258,11 +1310,60 @@ mod tests {
             owner_encryption: None,
             user_encryption: None,
             perms: None,
+            stream_crypt_method: None,
         };
         let obj = original.to_object();
         let parsed = EncryptDict::from_object(&obj).unwrap();
         assert_eq!(parsed.version, 4);
         assert_eq!(parsed.revision, 4);
         assert_eq!(parsed.algorithm().unwrap(), Algorithm::Aes128);
+        assert_eq!(parsed.stream_crypt_method.as_deref(), Some("AESV2"));
+    }
+
+    #[test]
+    fn test_v4_cfm_v2_selects_rc4_128() {
+        // V=4 with CFM=V2 means RC4-128, NOT AES-128.
+        // This is the exact case from issue #202 (OpenPDF 1.3.26).
+        let ed = EncryptDict {
+            filter: "Standard".to_string(),
+            sub_filter: None,
+            version: 4,
+            length: Some(128),
+            revision: 4,
+            owner_password: vec![0u8; 32],
+            user_password: vec![0u8; 32],
+            permissions: -1580,
+            encrypt_metadata: false,
+            owner_encryption: None,
+            user_encryption: None,
+            perms: None,
+            stream_crypt_method: Some("V2".to_string()),
+        };
+        assert_eq!(ed.algorithm().unwrap(), Algorithm::Rc4_128);
+    }
+
+    #[test]
+    fn test_v4_cfm_v2_roundtrip() {
+        // Build a V=4 dict with CFM=V2, serialize, and re-parse.
+        let original = EncryptDict {
+            filter: "Standard".to_string(),
+            sub_filter: None,
+            version: 4,
+            length: Some(128),
+            revision: 4,
+            owner_password: vec![5u8; 32],
+            user_password: vec![6u8; 32],
+            permissions: -1580,
+            encrypt_metadata: false,
+            owner_encryption: None,
+            user_encryption: None,
+            perms: None,
+            stream_crypt_method: Some("V2".to_string()),
+        };
+        let obj = original.to_object();
+        let parsed = EncryptDict::from_object(&obj).unwrap();
+        assert_eq!(parsed.version, 4);
+        assert_eq!(parsed.stream_crypt_method.as_deref(), Some("V2"));
+        assert_eq!(parsed.algorithm().unwrap(), Algorithm::Rc4_128);
     }
 }

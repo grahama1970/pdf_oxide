@@ -520,10 +520,25 @@ impl FontInfo {
             .get("ToUnicode")
             .and_then(|obj| obj.as_reference())
         {
-            let stream_opt = doc
-                .load_object(cmap_ref)
-                .ok()
-                .and_then(|cmap_obj| doc.decode_stream_with_encryption(&cmap_obj, cmap_ref).ok());
+            let stream_opt = match doc.load_object(cmap_ref) {
+                Ok(cmap_obj) => match doc.decode_stream_with_encryption(&cmap_obj, cmap_ref) {
+                    Ok(data) => Some(data),
+                    Err(e) => {
+                        log::warn!(
+                            "Font '{}': Failed to decrypt/decode ToUnicode CMap stream {:?}: {}",
+                            base_font, cmap_ref, e
+                        );
+                        None
+                    }
+                },
+                Err(e) => {
+                    log::warn!(
+                        "Font '{}': Failed to load ToUnicode CMap object {:?}: {}",
+                        base_font, cmap_ref, e
+                    );
+                    None
+                }
+            };
 
             if let Some(stream_bytes) = stream_opt {
                 // Store raw bytes for lazy parsing — LazyCMap handles errors on first access.
@@ -535,7 +550,7 @@ impl FontInfo {
                 );
                 Some(LazyCMap::new(stream_bytes))
             } else {
-                log::warn!("Failed to decode ToUnicode CMap stream for font '{}'", base_font);
+                // Specific error already logged above in the match arms
                 None
             }
         } else {
@@ -878,7 +893,7 @@ impl FontInfo {
                     } else if let Some(stream_ref) = cidtogid_obj.as_reference() {
                         // Handle Stream object (binary uint16 array)
                         match doc.load_object(stream_ref) {
-                            Ok(stream_obj) => match stream_obj.decode_stream_data() {
+                            Ok(stream_obj) => match doc.decode_stream_with_encryption(&stream_obj, stream_ref) {
                                 Ok(stream_data) => {
                                     // Validate stream length (must be even)
                                     if stream_data.len() % 2 != 0 {
@@ -1005,10 +1020,26 @@ impl FontInfo {
         let desc_dict = desc.as_dict()?;
         let ff2_obj = desc_dict.get("FontFile2")?;
         let ff2_ref = ff2_obj.as_reference()?;
-        let ff2_stream = doc.load_object(ff2_ref).ok()?;
-        let font_data = doc
-            .decode_stream_with_encryption(&ff2_stream, ff2_ref)
-            .ok()?;
+        let ff2_stream = match doc.load_object(ff2_ref) {
+            Ok(obj) => obj,
+            Err(e) => {
+                log::warn!(
+                    "Font '{}': Failed to load FontFile2 object {:?}: {}",
+                    base_font, ff2_ref, e
+                );
+                return None;
+            }
+        };
+        let font_data = match doc.decode_stream_with_encryption(&ff2_stream, ff2_ref) {
+            Ok(data) => data,
+            Err(e) => {
+                log::warn!(
+                    "Font '{}': Failed to decrypt/decode FontFile2 stream {:?}: {}",
+                    base_font, ff2_ref, e
+                );
+                return None;
+            }
+        };
         if font_data.is_empty() {
             return None;
         }

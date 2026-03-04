@@ -347,6 +347,7 @@ mod tests {
                 owner_encryption: None,
                 user_encryption: None,
                 perms: None,
+                stream_crypt_method: None,
             },
             encryption_key: Some(vec![0x01; 16]),
             file_id: b"test_id".to_vec(),
