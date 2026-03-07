@@ -4,6 +4,9 @@ Returns a structured dict with table pages, figure pages, equation pages,
 column layout, sections, and TOC info. Designed as a fast pre-pass that
 downstream tools (extractor, extract-tables, etc.) consume directly.
 
+This is the single source of truth for PDF profiling. The shared
+``common.pdf_profiler`` module delegates here.
+
 Usage:
     from pdf_oxide.survey import survey_document
     from pdf_oxide import PdfDocument
@@ -15,6 +18,11 @@ Usage:
     print(survey["columns"])          # 2
     print(survey["equation_pages"])   # [7, 8, 9]
     print(survey["has_toc"])          # True
+
+    # With Rust base profile enrichment:
+    survey = survey_document(doc, enrich_profile=True)
+    print(survey["domain"])           # "engineering"
+    print(survey["is_scanned"])       # False
 """
 from __future__ import annotations
 
@@ -72,35 +80,30 @@ COMMON_HEADERS = {
 
 # ── Main entry point ──
 
-def survey_document(doc, max_table_budget: int = 50) -> Dict[str, Any]:
+def survey_document(
+    doc,
+    max_table_budget: int = 50,
+    enrich_profile: bool = False,
+) -> Dict[str, Any]:
     """Scan every page of a PDF and produce a complete content survey.
 
     Args:
         doc: A pdf_oxide.PdfDocument instance (already opened).
         max_table_budget: Max pages to run table extraction on (expensive).
+        enrich_profile: If True, merge Rust-level ``profile_document()``
+            fields (domain, complexity_score, is_scanned, preset, layout,
+            primary_font, title) into the result.
 
     Returns:
         Dict with keys:
-            page_count: int
-            columns: int (1 or 2)
-            has_toc: bool
-            has_sections: bool
-            section_count: int
-            section_style: str | None
-            has_formulas: bool
-            formula_pages: list[int]
-            has_tables: bool
-            table_pages: list[int]
-            table_count_estimate: int
-            table_style: str ("bordered" | "borderless" | "mixed" | "none")
-            has_figures: bool
-            figure_pages: list[int]
-            figure_count_estimate: int
-            has_equations: bool
-            equation_pages: list[int]
-            equation_count_estimate: int
-            page_details: list[dict] — per-page breakdown
-            _engine: "pdf_oxide"
+            page_count, columns, has_toc, has_sections, section_count,
+            section_style, has_formulas, formula_pages, has_tables,
+            table_pages, table_count_estimate, table_style, has_figures,
+            figure_pages, figure_count_estimate, has_equations,
+            equation_pages, equation_count_estimate, page_details,
+            _engine.  When *enrich_profile* is True also: domain,
+            complexity_score, is_scanned, preset, layout, primary_font,
+            primary_font_size, title.
     """
     page_count = doc.page_count()
 
@@ -153,6 +156,10 @@ def survey_document(doc, max_table_budget: int = 50) -> Dict[str, Any]:
 
         # Table region estimation via line drawings
         _scan_page_drawings(doc, pg, table_pages_drawing, drawing_density)
+
+        # Filled-rectangle table detection (some PDFs use rects instead of paths)
+        if pg not in table_pages_drawing:
+            _scan_page_rects(doc, pg, table_pages_drawing, drawing_density)
 
         # Font data (sampled)
         if pg in font_sample_indices:
@@ -264,7 +271,7 @@ def survey_document(doc, max_table_budget: int = 50) -> Dict[str, Any]:
     # Equation detection via block classifier (if available)
     equation_pages = _find_equation_pages(doc, page_count)
 
-    return {
+    result = {
         "page_count": page_count,
         "columns": columns,
         "has_toc": has_toc,
@@ -292,6 +299,23 @@ def survey_document(doc, max_table_budget: int = 50) -> Dict[str, Any]:
         "drawing_density_top10": sorted(drawing_density, key=lambda x: x[1], reverse=True)[:10],
         "_engine": "pdf_oxide",
     }
+
+    # Enrich with Rust-level profile_document() if requested
+    if enrich_profile:
+        try:
+            base = doc.profile_document()
+            result["domain"] = base.get("domain", "general")
+            result["complexity_score"] = base.get("complexity_score", 1)
+            result["is_scanned"] = base.get("is_scanned", False)
+            result["preset"] = base.get("preset", "general_document")
+            result["layout"] = base.get("layout", {})
+            result["primary_font"] = base.get("primary_font", "")
+            result["primary_font_size"] = base.get("primary_font_size", 12.0)
+            result["title"] = base.get("title")
+        except Exception:
+            pass
+
+    return result
 
 
 # ── Drawing-based table detection ──
@@ -367,6 +391,40 @@ def _scan_page_drawings(
 
     candidate_pages.add(page_idx)
     density.append((page_idx, region_count))
+
+
+# ── Filled-rectangle table detection ──
+
+def _scan_page_rects(
+    doc, page_idx: int, candidate_pages: set, density: list,
+) -> None:
+    """Detect tables made of filled rectangles + lines (not stroked paths).
+
+    Some PDFs (e.g. diesel engine manuals) draw table borders as thin
+    filled rects rather than stroked line paths.
+    """
+    try:
+        rects = doc.extract_rects(page_idx)
+        lines = doc.extract_lines(page_idx)
+    except Exception:
+        return
+
+    h_count = 0
+    v_count = 0
+
+    for item in (rects or []) + (lines or []):
+        bbox = item.get("bbox") if isinstance(item, dict) else getattr(item, "bbox", None)
+        if not bbox:
+            continue
+        x, y, w, h = bbox
+        if h < LINE_TOLERANCE and w > 10:
+            h_count += 1
+        elif w < LINE_TOLERANCE and h > 10:
+            v_count += 1
+
+    if h_count >= 2 and v_count >= 2:
+        candidate_pages.add(page_idx)
+        density.append((page_idx, 1))
 
 
 # ── Column detection ──
