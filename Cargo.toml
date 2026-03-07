@@ -38,6 +38,7 @@ memchr = "2"     # SIMD-accelerated byte/substring search for content stream sca
 byteorder = "1.5"  # For binary parsing (TrueType cmap tables)
 bitflags = "2"     # For form field flags
 smallvec = "1.13"  # Stack-allocated small vectors for content stream operands (#165)
+strsim = "0.11"    # Fuzzy string matching for framework control mapping (S12)
 
 # Compression/Decompression
 flate2 = { version = "1.1", default-features = false, features = ["zlib-rs"] }
@@ -142,6 +143,9 @@ default = []
 
 # Enable logging for the extraction pipeline
 logging = []
+
+# Performance tracing (prints per-page timing breakdown to stderr)
+perf-trace = []
 
 # Python bindings (v0.1.0)
 python = ["pyo3"]

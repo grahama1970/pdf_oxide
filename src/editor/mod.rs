@@ -88,6 +88,7 @@
 mod document_editor;
 pub mod dom;
 pub mod form_fields;
+pub mod redaction;
 pub mod resource_manager;
 
 pub use document_editor::{

@@ -458,42 +458,71 @@ impl EncryptDictBuilder {
             &self.owner_password
         };
 
-        // Compute owner password hash (O value)
-        let owner_hash = algorithms::compute_owner_password_hash(
-            owner_pass,
-            &self.user_password,
-            revision,
-            key_length,
-        );
+        if revision >= 5 {
+            // R>=5 (AES-256): Random file encryption key, SHA-256 based password hashing
+            // PDF 2.0 Spec: Algorithms 8-9
+            let encryption_key = algorithms::generate_random_encryption_key(key_length);
 
-        // Compute encryption key from user password
-        let encryption_key = algorithms::compute_encryption_key(
-            &self.user_password,
-            &owner_hash,
-            self.permissions,
-            file_id,
-            revision,
-            key_length,
-            self.encrypt_metadata,
-        );
+            // Compute U (48 bytes) and UE (32 bytes)
+            let (user_hash, ue_value) =
+                algorithms::compute_user_hash_r5(&self.user_password, &encryption_key);
 
-        // Compute user password hash (U value)
-        let user_hash = algorithms::compute_user_password_hash(&encryption_key, file_id, revision);
+            // Compute O (48 bytes) and OE (32 bytes) — needs U value
+            let (owner_hash, oe_value) =
+                algorithms::compute_owner_hash_r5(owner_pass, &user_hash, &encryption_key);
 
-        EncryptDict {
-            filter: "Standard".to_string(),
-            sub_filter: None,
-            version,
-            length: Some((key_length * 8) as u32),
-            revision,
-            owner_password: owner_hash,
-            user_password: user_hash,
-            permissions: self.permissions,
-            encrypt_metadata: self.encrypt_metadata,
-            owner_encryption: None,
-            user_encryption: None,
-            perms: None,
-            stream_crypt_method: None,
+            EncryptDict {
+                filter: "Standard".to_string(),
+                sub_filter: None,
+                version,
+                length: Some((key_length * 8) as u32),
+                revision,
+                owner_password: owner_hash,
+                user_password: user_hash,
+                permissions: self.permissions,
+                encrypt_metadata: self.encrypt_metadata,
+                owner_encryption: Some(oe_value),
+                user_encryption: Some(ue_value),
+                perms: None,
+                stream_crypt_method: None,
+            }
+        } else {
+            // R<=4: MD5-based password hashing, deterministic key derivation
+            let owner_hash = algorithms::compute_owner_password_hash(
+                owner_pass,
+                &self.user_password,
+                revision,
+                key_length,
+            );
+
+            let encryption_key = algorithms::compute_encryption_key(
+                &self.user_password,
+                &owner_hash,
+                self.permissions,
+                file_id,
+                revision,
+                key_length,
+                self.encrypt_metadata,
+            );
+
+            let user_hash =
+                algorithms::compute_user_password_hash(&encryption_key, file_id, revision);
+
+            EncryptDict {
+                filter: "Standard".to_string(),
+                sub_filter: None,
+                version,
+                length: Some((key_length * 8) as u32),
+                revision,
+                owner_password: owner_hash,
+                user_password: user_hash,
+                permissions: self.permissions,
+                encrypt_metadata: self.encrypt_metadata,
+                owner_encryption: None,
+                user_encryption: None,
+                perms: None,
+                stream_crypt_method: None,
+            }
         }
     }
 }

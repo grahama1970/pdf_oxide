@@ -1747,6 +1747,114 @@ impl WasmPdfDocument {
             .map_err(|e| JsValue::from_str(&format!("Failed to set crop box: {}", e)))
     }
 
+    /// Get the ArtBox of a page as [llx, lly, urx, ury], or null if not set.
+    #[wasm_bindgen(js_name = "pageArtBox")]
+    pub fn page_art_box(&mut self, page_index: usize) -> Result<JsValue, JsValue> {
+        let editor_arc = self.ensure_editor()?;
+        let mut editor = editor_arc
+            .lock()
+            .map_err(|_| JsValue::from_str("Mutex lock failed"))?;
+        let b = editor
+            .get_page_art_box(page_index)
+            .map_err(|e| JsValue::from_str(&format!("Failed to get art box: {}", e)))?;
+        match b {
+            Some(b) => serde_wasm_bindgen::to_value(&b.to_vec())
+                .map_err(|e| JsValue::from_str(&format!("Serialization error: {}", e))),
+            None => Ok(JsValue::NULL),
+        }
+    }
+
+    /// Set the ArtBox of a page.
+    #[wasm_bindgen(js_name = "setPageArtBox")]
+    pub fn set_page_art_box(
+        &mut self,
+        page_index: usize,
+        llx: f32,
+        lly: f32,
+        urx: f32,
+        ury: f32,
+    ) -> Result<(), JsValue> {
+        let editor_arc = self.ensure_editor()?;
+        let mut editor = editor_arc
+            .lock()
+            .map_err(|_| JsValue::from_str("Mutex lock failed"))?;
+        editor
+            .set_page_art_box(page_index, [llx, lly, urx, ury])
+            .map_err(|e| JsValue::from_str(&format!("Failed to set art box: {}", e)))
+    }
+
+    /// Get the BleedBox of a page as [llx, lly, urx, ury], or null if not set.
+    #[wasm_bindgen(js_name = "pageBleedBox")]
+    pub fn page_bleed_box(&mut self, page_index: usize) -> Result<JsValue, JsValue> {
+        let editor_arc = self.ensure_editor()?;
+        let mut editor = editor_arc
+            .lock()
+            .map_err(|_| JsValue::from_str("Mutex lock failed"))?;
+        let b = editor
+            .get_page_bleed_box(page_index)
+            .map_err(|e| JsValue::from_str(&format!("Failed to get bleed box: {}", e)))?;
+        match b {
+            Some(b) => serde_wasm_bindgen::to_value(&b.to_vec())
+                .map_err(|e| JsValue::from_str(&format!("Serialization error: {}", e))),
+            None => Ok(JsValue::NULL),
+        }
+    }
+
+    /// Set the BleedBox of a page.
+    #[wasm_bindgen(js_name = "setPageBleedBox")]
+    pub fn set_page_bleed_box(
+        &mut self,
+        page_index: usize,
+        llx: f32,
+        lly: f32,
+        urx: f32,
+        ury: f32,
+    ) -> Result<(), JsValue> {
+        let editor_arc = self.ensure_editor()?;
+        let mut editor = editor_arc
+            .lock()
+            .map_err(|_| JsValue::from_str("Mutex lock failed"))?;
+        editor
+            .set_page_bleed_box(page_index, [llx, lly, urx, ury])
+            .map_err(|e| JsValue::from_str(&format!("Failed to set bleed box: {}", e)))
+    }
+
+    /// Get the TrimBox of a page as [llx, lly, urx, ury], or null if not set.
+    #[wasm_bindgen(js_name = "pageTrimBox")]
+    pub fn page_trim_box(&mut self, page_index: usize) -> Result<JsValue, JsValue> {
+        let editor_arc = self.ensure_editor()?;
+        let mut editor = editor_arc
+            .lock()
+            .map_err(|_| JsValue::from_str("Mutex lock failed"))?;
+        let b = editor
+            .get_page_trim_box(page_index)
+            .map_err(|e| JsValue::from_str(&format!("Failed to get trim box: {}", e)))?;
+        match b {
+            Some(b) => serde_wasm_bindgen::to_value(&b.to_vec())
+                .map_err(|e| JsValue::from_str(&format!("Serialization error: {}", e))),
+            None => Ok(JsValue::NULL),
+        }
+    }
+
+    /// Set the TrimBox of a page.
+    #[wasm_bindgen(js_name = "setPageTrimBox")]
+    pub fn set_page_trim_box(
+        &mut self,
+        page_index: usize,
+        llx: f32,
+        lly: f32,
+        urx: f32,
+        ury: f32,
+    ) -> Result<(), JsValue> {
+        let editor_arc = self.ensure_editor()?;
+        let mut editor = editor_arc
+            .lock()
+            .map_err(|_| JsValue::from_str("Mutex lock failed"))?;
+        editor
+            .set_page_trim_box(page_index, [llx, lly, urx, ury])
+            .map_err(|e| JsValue::from_str(&format!("Failed to set trim box: {}", e)))
+    }
+
     /// Crop margins from all pages.
     #[wasm_bindgen(js_name = "cropMargins")]
     pub fn crop_margins(

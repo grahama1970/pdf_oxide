@@ -44,6 +44,7 @@ mod error;
 mod postprocessor;
 mod preprocessor;
 mod recognizer;
+pub mod text_layer_writer;
 
 // Re-exports
 pub use config::{DetResizeStrategy, OcrConfig, OcrConfigBuilder};

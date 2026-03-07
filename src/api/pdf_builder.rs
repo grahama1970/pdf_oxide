@@ -1543,6 +1543,78 @@ impl Pdf {
         }
     }
 
+    /// Get the ArtBox of a page (artistic content boundary).
+    ///
+    /// Returns None if no ArtBox is set.
+    pub fn page_art_box(&mut self, page: usize) -> Result<Option<[f32; 4]>> {
+        if let Some(ref mut editor) = self.editor {
+            editor.get_page_art_box(page)
+        } else {
+            Err(Error::InvalidOperation(
+                "No document loaded. Use Pdf::open() to load a PDF.".to_string(),
+            ))
+        }
+    }
+
+    /// Set the ArtBox of a page (artistic content boundary).
+    pub fn set_page_art_box(&mut self, page: usize, rect: [f32; 4]) -> Result<()> {
+        if let Some(ref mut editor) = self.editor {
+            editor.set_page_art_box(page, rect)
+        } else {
+            Err(Error::InvalidOperation(
+                "No document loaded. Use Pdf::open() to load a PDF.".to_string(),
+            ))
+        }
+    }
+
+    /// Get the BleedBox of a page (bleed area for printing).
+    ///
+    /// Returns None if no BleedBox is set.
+    pub fn page_bleed_box(&mut self, page: usize) -> Result<Option<[f32; 4]>> {
+        if let Some(ref mut editor) = self.editor {
+            editor.get_page_bleed_box(page)
+        } else {
+            Err(Error::InvalidOperation(
+                "No document loaded. Use Pdf::open() to load a PDF.".to_string(),
+            ))
+        }
+    }
+
+    /// Set the BleedBox of a page (bleed area for printing).
+    pub fn set_page_bleed_box(&mut self, page: usize, rect: [f32; 4]) -> Result<()> {
+        if let Some(ref mut editor) = self.editor {
+            editor.set_page_bleed_box(page, rect)
+        } else {
+            Err(Error::InvalidOperation(
+                "No document loaded. Use Pdf::open() to load a PDF.".to_string(),
+            ))
+        }
+    }
+
+    /// Get the TrimBox of a page (final trim boundaries).
+    ///
+    /// Returns None if no TrimBox is set.
+    pub fn page_trim_box(&mut self, page: usize) -> Result<Option<[f32; 4]>> {
+        if let Some(ref mut editor) = self.editor {
+            editor.get_page_trim_box(page)
+        } else {
+            Err(Error::InvalidOperation(
+                "No document loaded. Use Pdf::open() to load a PDF.".to_string(),
+            ))
+        }
+    }
+
+    /// Set the TrimBox of a page (final trim boundaries).
+    pub fn set_page_trim_box(&mut self, page: usize, rect: [f32; 4]) -> Result<()> {
+        if let Some(ref mut editor) = self.editor {
+            editor.set_page_trim_box(page, rect)
+        } else {
+            Err(Error::InvalidOperation(
+                "No document loaded. Use Pdf::open() to load a PDF.".to_string(),
+            ))
+        }
+    }
+
     /// Crop margins from all pages.
     ///
     /// This sets the CropBox to be smaller than the MediaBox by the specified margins.

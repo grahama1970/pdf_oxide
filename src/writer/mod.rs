@@ -70,12 +70,14 @@ mod richmedia;
 mod screen;
 mod shading;
 mod shape_annotations;
+mod shape_builder;
 mod sound;
 mod special_annotations;
 mod stamp;
 mod table_renderer;
 mod text_annotations;
 mod text_markup;
+mod text_writer;
 mod threed;
 mod watermark;
 mod xmp_metadata;
@@ -147,6 +149,7 @@ pub use shading::{
 pub use shape_annotations::{
     CaptionPosition, LineAnnotation, PolygonAnnotation, PolygonType, ShapeAnnotation, ShapeType,
 };
+pub use shape_builder::Shape;
 pub use sound::{SoundAnnotation, SoundData, SoundEncoding, SoundIcon};
 pub use special_annotations::{
     CaretAnnotation, CaretSymbol, FileAttachmentAnnotation, FileAttachmentIcon, PopupAnnotation,
@@ -158,6 +161,7 @@ pub use table_renderer::{
     SimpleFontMetrics, Table, TableBorderStyle, TableCell, TableLayout, TableRow, TableStyle,
 };
 pub use text_annotations::TextAnnotation;
+pub use text_writer::{TextWriter, TextWriterAlign};
 pub use text_markup::TextMarkupAnnotation;
 pub use threed::{
     ThreeDActivation, ThreeDAnnotation, ThreeDBackground, ThreeDCamera, ThreeDDeactivation,

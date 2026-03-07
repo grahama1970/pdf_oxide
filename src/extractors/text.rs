@@ -68,6 +68,9 @@ pub struct SpaceDecision {
     /// Whether a space should be inserted
     pub insert_space: bool,
 
+    /// Whether the gap is wide enough for double space (justified text)
+    pub double_space: bool,
+
     /// Source/reason for this decision
     pub source: SpaceSource,
 
@@ -80,6 +83,17 @@ impl SpaceDecision {
     pub fn insert(source: SpaceSource, confidence: f32) -> Self {
         Self {
             insert_space: true,
+            double_space: false,
+            source,
+            confidence: confidence.clamp(0.0, 1.0),
+        }
+    }
+
+    /// Create a decision to insert a double space (justified text with wide gap).
+    pub fn insert_double(source: SpaceSource, confidence: f32) -> Self {
+        Self {
+            insert_space: true,
+            double_space: true,
             source,
             confidence: confidence.clamp(0.0, 1.0),
         }
@@ -89,6 +103,7 @@ impl SpaceDecision {
     pub fn no_space(source: SpaceSource, confidence: f32) -> Self {
         Self {
             insert_space: false,
+            double_space: false,
             source,
             confidence: confidence.clamp(0.0, 1.0),
         }
@@ -817,6 +832,35 @@ impl SpanMergingConfig {
 ///
 /// # PDF Spec Reference
 ///
+/// Check if a string ends with a common ligature pattern.
+/// Uses byte-level checks to avoid full UTF-8 iteration.
+#[inline(always)]
+fn ends_with_ligature(s: &str) -> bool {
+    let b = s.as_bytes();
+    let len = b.len();
+    if len >= 3 && b[len - 3] == b'f' && b[len - 2] == b'f' {
+        // "ffi" or "ffl" or "ff"
+        return len >= 3 && (b[len - 1] == b'i' || b[len - 1] == b'l')
+            || len >= 2;
+    }
+    if len >= 2 {
+        b[len - 2] == b'f' && (b[len - 1] == b'i' || b[len - 1] == b'l' || b[len - 1] == b'f')
+    } else {
+        false
+    }
+}
+
+/// Fast whitespace-only check. For short strings (common in PDF spans),
+/// checks bytes directly for ASCII whitespace which covers 99%+ of cases.
+#[inline(always)]
+fn is_whitespace_only(s: &str) -> bool {
+    if s.is_empty() {
+        return true;
+    }
+    // Fast path: all ASCII whitespace (covers 99%+ of PDF text)
+    s.as_bytes().iter().all(|&b| b == b' ' || b == b'\t' || b == b'\n' || b == b'\r')
+}
+
 /// ISO 32000-1:2008, Section 9.4.4 NOTE 6:
 /// "The identification of what constitutes a word is unrelated to how the text
 /// happens to be grouped into show strings... text strings should be as long as possible."
@@ -849,6 +893,29 @@ fn should_insert_space(
     // Spaces already present in text strings should not be duplicated
     if has_boundary_space(preceding_text, following_text) {
         return SpaceDecision::no_space(SpaceSource::AlreadyPresent, 1.0);
+    }
+
+    // Rule 0.1: Ligature context suppression.
+    // When a preceding span is a short ligature expansion (fi, fl, ff, ffi, ffl)
+    // and the following text starts with a lowercase letter, the gap between them
+    // is typically a ligature glyph width artifact — not a real word boundary.
+    // Use a higher threshold (full space width) to avoid splitting mid-word.
+    {
+        let prev = preceding_text.trim_end();
+        let is_ligature_ending = prev.ends_with("fi")
+            || prev.ends_with("fl")
+            || prev.ends_with("ff")
+            || prev.ends_with("ffi")
+            || prev.ends_with("ffl");
+        if is_ligature_ending {
+            let next_starts_lowercase = following_text
+                .chars()
+                .next()
+                .is_some_and(|c| c.is_ascii_lowercase());
+            if next_starts_lowercase && gap_pt < font_size * 0.5 {
+                return SpaceDecision::no_space(SpaceSource::NoSpace, 0.9);
+            }
+        }
     }
 
     // Rule 0.5: Email Pattern Detection
@@ -996,35 +1063,73 @@ fn should_insert_space(
 
     let geometric_suggests_space = gap_pt > geometric_threshold;
 
-    // Consensus checking
-    // Only insert space if BOTH signals agree OR geometric signal is very strong
-    // This reduces false positives in justified text where TJ offsets are arbitrary
+    // Compute full space width for double-space detection (justified text).
+    // When gap exceeds 1.3x a normal space width, insert double space to match
+    // pdfminer.six behavior for justified text with wider word gaps.
+    let full_space_width = geometric_threshold * 2.0; // threshold is 50% of space width
+    let is_wide_gap = gap_pt > full_space_width * 1.3;
+
+    // Space Detection Logic
+    // ==============================================================================
+    // Per ISO 32000-1:2008 Section 9.4.4 and 9.10:
+    // "Determining word boundaries is not specified by PDF."
+    //
+    // Strategy: Either signal alone is sufficient for space insertion.
+    // - TJ offset with any positive geometric gap → space (PDF producer intended a break)
+    // - Geometric gap exceeding threshold → space (visual word boundary)
+    // - Both signals together → highest confidence
+    //
+    // This matches pdfminer.six and PDFBox behavior. The previous consensus model
+    // was too conservative, causing word concatenation ("AdvertisementOctober").
+
+    // Rule 1: Both signals agree — highest confidence
     if tj_offset_triggered && geometric_suggests_space {
-        // HIGH CONFIDENCE: Both TJ and geometric signals agree
         log::debug!(
-            "Space decision: CONSENSUS - both TJ and geometric signals triggered (gap={:.2}pt > {:.2}pt) - inserting space",
+            "Space decision: BOTH signals (TJ + geometric gap={:.2}pt > {:.2}pt) - inserting space (wide={})",
             gap_pt,
-            geometric_threshold
+            geometric_threshold,
+            is_wide_gap
         );
+        if is_wide_gap {
+            return SpaceDecision::insert_double(SpaceSource::TjOffset, 1.0);
+        }
         return SpaceDecision::insert(SpaceSource::TjOffset, 1.0);
     }
 
-    // TJ offset with relaxed geometric confirmation
-    // In tight typesetting (e.g., LaTeX academic papers), word gaps are narrower than
-    // the standard 50% space-width threshold. When the PDF producer explicitly encoded
-    // a TJ offset, accept a lower geometric bar (25% of space width).
-    if tj_offset_triggered && gap_pt > geometric_threshold * 0.5 {
+    // Rule 2: TJ offset triggered with any positive geometric gap
+    // When the PDF producer explicitly encoded a TJ offset, trust it as long as
+    // there is some measurable gap (not negative/overlapping glyphs).
+    if tj_offset_triggered && gap_pt > 0.0 {
         log::debug!(
-            "Space decision: TJ + relaxed geometric (gap={:.2}pt > {:.2}pt relaxed threshold) - inserting space",
+            "Space decision: TJ offset with positive gap={:.2}pt - inserting space (wide={})",
             gap_pt,
-            geometric_threshold * 0.5
+            is_wide_gap
         );
+        if is_wide_gap {
+            return SpaceDecision::insert_double(SpaceSource::TjOffset, 0.9);
+        }
         return SpaceDecision::insert(SpaceSource::TjOffset, 0.9);
     }
 
-    // WordBoundaryDetector tiebreaker when TJ and geometric signals conflict
-    // Per ISO 32000-1:2008 Section 9.4.4, use multiple signals to determine word boundaries
-    if tj_offset_triggered != geometric_suggests_space {
+    // Rule 3: Geometric gap alone exceeds threshold
+    // A gap > 50% of space width is a visual word boundary regardless of TJ signal.
+    // Many PDFs use Td/Tm positioning without TJ arrays.
+    if geometric_suggests_space {
+        log::debug!(
+            "Space decision: GEOMETRIC gap={:.2}pt > {:.2}pt threshold - inserting space (wide={})",
+            gap_pt,
+            geometric_threshold,
+            is_wide_gap
+        );
+        if is_wide_gap {
+            return SpaceDecision::insert_double(SpaceSource::GeometricGap, 0.9);
+        }
+        return SpaceDecision::insert(SpaceSource::GeometricGap, 0.9);
+    }
+
+    // Rule 4: TJ offset alone with zero/negative gap — use WordBoundaryDetector
+    // This handles kerning vs. word boundary ambiguity in tightly-set text
+    if tj_offset_triggered {
         if let (Some(prev_box), Some(next_box)) = (prev_bbox, next_bbox) {
             let (characters, context) = build_boundary_characters(
                 preceding_text,
@@ -1035,8 +1140,6 @@ fn should_insert_space(
                 tj_offset_triggered,
             );
 
-            // Use WordBoundaryDetector with geometric gap ratio matching our threshold
-            // OPTIMIZATION: Detect document script profile to skip unnecessary detectors
             let script = DocumentScript::detect_from_characters(&characters);
             let detector = WordBoundaryDetector::new()
                 .with_document_script(script)
@@ -1045,36 +1148,20 @@ fn should_insert_space(
 
             if !boundaries.is_empty() {
                 log::debug!(
-                    "Space decision: WordBoundaryDetector resolved conflict (TJ={}, geo={}) - inserting space",
-                    tj_offset_triggered,
-                    geometric_suggests_space
+                    "Space decision: TJ + WordBoundaryDetector confirmed (gap={:.2}pt) - inserting space",
+                    gap_pt,
                 );
                 return SpaceDecision::insert(SpaceSource::WordBoundaryAnalysis, 0.85);
             }
         }
     }
 
-    // Strong geometric signal alone (gap > 2× threshold)
-    // This is high confidence even without TJ signal
-    let strong_geometric_threshold = geometric_threshold * 2.0;
-    if gap_pt > strong_geometric_threshold {
-        log::debug!(
-            "Space decision: STRONG GEOMETRIC - gap={:.2}pt > 2×{:.2}pt threshold - inserting space",
-            gap_pt,
-            geometric_threshold
-        );
-        return SpaceDecision::insert(SpaceSource::GeometricGap, 0.95);
-    }
-
-    // Default: No space
-    // Per ISO 32000-1:2008 Section 9.10, when PDF doesn't encode a clear word boundary,
-    // we cannot reliably recover it. Requiring consensus prevents false positives in justified text.
+    // Default: No space — neither signal fired
     log::trace!(
-        "Space decision: Insufficient consensus (TJ={}, gap={:.2}pt <= {:.2}pt, strong_threshold={:.2}pt) - no space",
+        "Space decision: No signal (TJ={}, gap={:.2}pt, threshold={:.2}pt) - no space",
         tj_offset_triggered,
         gap_pt,
         geometric_threshold,
-        strong_geometric_threshold
     );
     SpaceDecision::no_space(SpaceSource::NoSpace, 1.0)
 }
@@ -1177,9 +1264,11 @@ fn build_boundary_characters(
 fn is_email_context(preceding_text: &str, following_text: &str) -> bool {
     // Only check the last ~64 bytes for email patterns to avoid O(n) scan
     // of the entire accumulated text (which would cause O(n²) in merge loop)
-    let prev_start = preceding_text.len().saturating_sub(64);
-    // Find a valid UTF-8 char boundary
-    let prev_start = preceding_text.ceil_char_boundary(prev_start);
+    let mut prev_start = preceding_text.len().saturating_sub(64);
+    // Find a valid UTF-8 char boundary (manual impl for Rust < nightly)
+    while prev_start < preceding_text.len() && !preceding_text.is_char_boundary(prev_start) {
+        prev_start += 1;
+    }
     let prev = preceding_text[prev_start..].trim_end();
     let next = following_text.trim_start();
 
@@ -2508,7 +2597,7 @@ impl TextExtractor {
             let space_spans = self
                 .spans
                 .iter()
-                .filter(|s| s.text.chars().all(|c| c.is_whitespace()))
+                .filter(|s| is_whitespace_only(&s.text))
                 .count();
             let offset_semantic = self.spans.iter().filter(|s| s.offset_semantic).count();
             log::debug!(
@@ -2526,6 +2615,22 @@ impl TextExtractor {
 
         // Merge adjacent spans on the same line to reconstruct complete words
         self.merge_adjacent_spans();
+
+        Ok(std::mem::take(&mut self.spans))
+    }
+
+    /// Extract text spans in content stream order (unsorted).
+    /// Used internally for MuPDF-style incremental text assembly.
+    pub fn extract_text_spans_unsorted(&mut self, content_stream: &[u8]) -> Result<Vec<TextSpan>> {
+        self.extract_spans = true;
+        self.spans.clear();
+        self.span_sequence_counter = 0;
+
+        parse_and_execute_text_only(content_stream, |op| self.execute_operator(op))?;
+        self.flush_tj_span_buffer()?;
+
+        // Deduplicate but do NOT sort or merge — preserve content stream order
+        self.deduplicate_overlapping_spans();
 
         Ok(std::mem::take(&mut self.spans))
     }
@@ -2657,6 +2762,17 @@ impl TextExtractor {
     /// Simple Y-then-X sorting for single-column layouts.
     fn simple_sort_spans(&mut self) {
         self.spans.sort_by(|a, b| {
+            // Handle NaN/Inf values
+            if !a.bbox.y.is_finite() {
+                return if b.bbox.y.is_finite() {
+                    std::cmp::Ordering::Greater
+                } else {
+                    std::cmp::Ordering::Equal
+                };
+            }
+            if !b.bbox.y.is_finite() {
+                return std::cmp::Ordering::Less;
+            }
             // Round Y coordinates for stable comparison
             let a_y_rounded = a.bbox.y.round() as i32;
             let b_y_rounded = b.bbox.y.round() as i32;
@@ -2679,19 +2795,23 @@ impl TextExtractor {
             return vec![];
         }
 
-        // Find page bounds
-        let min_x = self
-            .spans
-            .iter()
-            .map(|s| s.bbox.x)
-            .fold(f32::INFINITY, f32::min);
-        let max_x = self
-            .spans
-            .iter()
-            .map(|s| s.bbox.x + s.bbox.width)
-            .fold(f32::NEG_INFINITY, f32::max);
+        // Find page bounds — single pass over spans
+        let mut min_x = f32::INFINITY;
+        let mut max_x = f32::NEG_INFINITY;
+        for s in &self.spans {
+            if s.bbox.x < min_x { min_x = s.bbox.x; }
+            let right = s.bbox.x + s.bbox.width;
+            if right > max_x { max_x = right; }
+        }
 
         let page_width = max_x - min_x;
+
+        // Fast path: if page content is narrow, it's single-column.
+        // Skip expensive histogram for pages where all content fits in < 400pt
+        // (typical single column is ~470pt on letter, but with margins ~350-400pt)
+        if page_width < 400.0 || self.spans.len() < 20 {
+            return vec![(min_x, max_x)];
+        }
 
         // Build X-coordinate histogram to find vertical gaps
         let bins = 100;
@@ -2775,6 +2895,16 @@ impl TextExtractor {
         // Sort within each column (top-to-bottom, then left-to-right)
         for col_spans in &mut column_spans {
             col_spans.sort_by(|a, b| {
+                if !a.bbox.y.is_finite() {
+                    return if b.bbox.y.is_finite() {
+                        std::cmp::Ordering::Greater
+                    } else {
+                        std::cmp::Ordering::Equal
+                    };
+                }
+                if !b.bbox.y.is_finite() {
+                    return std::cmp::Ordering::Less;
+                }
                 let a_y_rounded = a.bbox.y.round() as i32;
                 let b_y_rounded = b.bbox.y.round() as i32;
 
@@ -2804,11 +2934,14 @@ impl TextExtractor {
         // Take ownership of spans to avoid cloning during iteration
         let old_len = self.spans.len();
         let spans = std::mem::take(&mut self.spans);
-        let mut deduplicated = Vec::with_capacity(old_len);
+        let mut deduplicated: Vec<TextSpan> = Vec::with_capacity(old_len);
         let mut prev_y_rounded: Option<i32> = None;
         let mut prev_x: Option<f32> = None;
-        let mut prev_text: Option<String> = None;
-        let mut seen_content: std::collections::HashMap<String, (f32, f32)> =
+        let mut prev_text_idx: Option<usize> = None; // Index into deduplicated instead of String clone
+
+        // Content-based dedup: use index into deduplicated vec to avoid String clones.
+        // Key = hash of text, value = index into deduplicated vec.
+        let mut seen_content: std::collections::HashMap<u64, usize> =
             std::collections::HashMap::new();
 
         let mut geometric_skips = 0;
@@ -2819,26 +2952,33 @@ impl TextExtractor {
             let x = span.bbox.x;
 
             // PHASE 1: Geometric deduplication — require BOTH position AND text match
-            let geometric_duplicate = if let (Some(prev_y), Some(prev_x_val), Some(ref prev_txt)) =
-                (prev_y_rounded, prev_x, &prev_text)
+            let geometric_duplicate = if let (Some(prev_y), Some(prev_x_val), Some(prev_idx)) =
+                (prev_y_rounded, prev_x, prev_text_idx)
             {
-                y_rounded == prev_y && (x - prev_x_val).abs() < 2.0 && span.text == *prev_txt
+                y_rounded == prev_y && (x - prev_x_val).abs() < 2.0 && span.text == deduplicated[prev_idx].text
             } else {
                 false
             };
 
             // PHASE 2: Content-based deduplication — require positions to OVERLAP
             let content_duplicate = if span.text.len() >= 5 {
-                if let Some((prev_x_val, prev_y_val)) = seen_content.get(&span.text) {
-                    let y_diff = (span.bbox.y - prev_y_val).abs();
-                    let x_diff = (span.bbox.x - prev_x_val).abs();
+                use std::hash::{Hash, Hasher};
+                let mut hasher = std::collections::hash_map::DefaultHasher::new();
+                span.text.hash(&mut hasher);
+                let text_hash = hasher.finish();
 
-                    // Only dedup when spans overlap geometrically (X within 5pt)
-                    // NOT when they're at different positions on the same line
-                    let same_line = y_diff < 2.0;
-                    let overlapping_position = x_diff < 5.0;
-
-                    same_line && overlapping_position
+                if let Some(&prev_idx) = seen_content.get(&text_hash) {
+                    let prev = &deduplicated[prev_idx];
+                    // Verify text actually matches (hash collision guard)
+                    if prev.text == span.text {
+                        let y_diff = (span.bbox.y - prev.bbox.y).abs();
+                        let x_diff = (span.bbox.x - prev.bbox.x).abs();
+                        let same_line = y_diff < 2.0;
+                        let overlapping_position = x_diff < 5.0;
+                        same_line && overlapping_position
+                    } else {
+                        false
+                    }
                 } else {
                     false
                 }
@@ -2851,15 +2991,18 @@ impl TextExtractor {
             } else if content_duplicate {
                 content_skips += 1;
             } else {
+                let idx = deduplicated.len();
                 prev_y_rounded = Some(y_rounded);
                 prev_x = Some(x);
-                prev_text = Some(span.text.clone());
+                prev_text_idx = Some(idx);
 
-                // Track content for duplicate detection
+                // Track content for duplicate detection — no String clone needed
                 if span.text.len() >= 5 {
-                    seen_content.insert(span.text.clone(), (span.bbox.x, span.bbox.y));
+                    use std::hash::{Hash, Hasher};
+                    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+                    span.text.hash(&mut hasher);
+                    seen_content.insert(hasher.finish(), idx);
                 }
-                // Move span instead of cloning
                 deduplicated.push(span);
             }
         }
@@ -2939,11 +3082,33 @@ impl TextExtractor {
             // Allow small negative gaps (overlaps up to 2pt) since span width
             // computation may slightly overestimate, causing minor overlaps at
             // font transitions even when visually there is whitespace.
+            //
+            // Special case: ligature font switches. PDF generators often put
+            // ligature glyphs (fi, fl, ff, ffi, ffl) in separate font subsets
+            // (e.g., "f-1-1" vs "f-1-0"). The content stream renders all
+            // base-font text first, then goes back to render ligatures at their
+            // positions. This causes the pre-ligature span to have a very wide
+            // bbox (it includes ALL base-font text), and the ligature span sits
+            // INSIDE it (huge negative gap). We detect this pattern and force merge.
+            let is_ligature_subset_switch = {
+                let base_a = current.font_name.rsplitn(2, '-').last().unwrap_or(&current.font_name);
+                let base_b = span.font_name.rsplitn(2, '-').last().unwrap_or(&span.font_name);
+                let same_base = base_a == base_b && current.font_name != span.font_name;
+                if same_base {
+                    // Next span is short ligature text
+                    let next_is_ligature = matches!(span.text.as_str(), "fi" | "fl" | "ff" | "ffi" | "ffl");
+                    // Or current span just absorbed a ligature and next continues the word
+                    let current_ends_ligature = ends_with_ligature(&current.text);
+                    next_is_ligature || current_ends_ligature
+                } else {
+                    false
+                }
+            };
+
             let font_change_merge = same_line
-                && gap > -2.0
-                && gap < 3.0
                 && current.font_name != span.font_name
-                && !span.text.chars().all(|c| c.is_whitespace());
+                && !is_whitespace_only(&span.text)
+                && (is_ligature_subset_switch || (gap > -2.0 && gap < 3.0));
 
             // Merge threshold: Use configured values
             // Negative gaps: use severe_overlap_threshold_pt (default -0.5pt)
@@ -2955,21 +3120,28 @@ impl TextExtractor {
                 || (same_line && has_split_boundary);
 
             if font_change_merge {
-                // Font change: merge with space between font runs
-                log::debug!(
-                    "Font change word boundary: '{}' ({}) + '{}' ({}) gap={:.2}pt",
-                    &current.text[current.text.len().saturating_sub(10)..],
-                    current.font_name,
-                    &span.text[..span.text.len().min(10)],
-                    span.font_name,
-                    gap
-                );
                 // Insert space unless next span starts with punctuation
                 // (e.g., "Docling" + "," should NOT become "Docling ,")
                 let starts_with_punct = span.text.starts_with(|c: char| {
                     matches!(c, ',' | '.' | ';' | ':' | '!' | '?' | ')' | ']' | '}' | '\'' | '"')
                 });
-                if !current.text.ends_with(' ') && !span.text.starts_with(' ') && !starts_with_punct
+                // Suppress space when current span ends with a ligature pattern
+                // and fonts are related subsets (e.g., "f-0-1" and "f-0-0").
+                // PDF generators put ligature glyphs (fi, fl, ff, ffi, ffl) in
+                // separate font subsets, causing false word-boundary detection.
+                let is_ligature_font_switch = {
+                    let ends_ligature = ends_with_ligature(&current.text);
+                    if ends_ligature {
+                        // Check if fonts share a common base (strip last segment after '-')
+                        let base_a = current.font_name.rsplitn(2, '-').last().unwrap_or(&current.font_name);
+                        let base_b = span.font_name.rsplitn(2, '-').last().unwrap_or(&span.font_name);
+                        base_a == base_b
+                    } else {
+                        false
+                    }
+                };
+                if !current.text.ends_with(' ') && !span.text.starts_with(' ')
+                    && !starts_with_punct && !is_ligature_font_switch && !is_ligature_subset_switch
                 {
                     current.text.push(' ');
                 }
@@ -2982,7 +3154,7 @@ impl TextExtractor {
                 // PHASE 1 FIX: Check if next span is entirely whitespace-only OR marked as offset_semantic space
                 // If either is true, never insert an additional space - just concatenate directly
                 // This prevents double-space issue when TJ processor creates space spans
-                let next_is_whitespace_only = span.text.chars().all(|c| c.is_whitespace());
+                let next_is_whitespace_only = is_whitespace_only(&span.text);
                 let next_is_offset_semantic_space = span.offset_semantic && next_is_whitespace_only;
 
                 // Merge spans: append text in-place using push_str (O(n) total vs O(n²) with format!)
@@ -2996,7 +3168,7 @@ impl TextExtractor {
                     );
                     current.text.push_str(&span.text);
                 } else {
-                    let tj_offset_triggered_override = has_split_boundary;
+                    let tj_offset_triggered_override = has_split_boundary || span.offset_semantic;
                     let space_decision = should_insert_space(
                         &current.text,
                         &span.text,
@@ -3040,8 +3212,12 @@ impl TextExtractor {
                                 );
                                 current.text.push_str(&span.text);
                             } else {
-                                log::trace!("Space via {:?}", space_decision.source);
-                                current.text.push(' ');
+                                log::trace!("Space via {:?} (double={})", space_decision.source, space_decision.double_space);
+                                if space_decision.double_space {
+                                    current.text.push_str("  ");
+                                } else {
+                                    current.text.push(' ');
+                                }
                                 current.text.push_str(&span.text);
                             }
                         }
@@ -3350,8 +3526,11 @@ impl TextExtractor {
                 // Flush Tj buffer before changing text position
                 self.flush_tj_span_buffer()?;
                 let state = self.state_stack.current_mut();
+                // PDF Spec ISO 32000-1:2008 Table 108:
+                // Td sets text_line_matrix = [1 0 0 1 tx ty] × text_line_matrix
+                // This is LEFT multiplication: translation × existing matrix
                 let tm = Matrix::translation(tx, ty);
-                state.text_line_matrix = state.text_line_matrix.multiply(&tm);
+                state.text_line_matrix = tm.multiply(&state.text_line_matrix);
                 state.text_matrix = state.text_line_matrix;
             },
             Operator::TD { tx, ty } => {
@@ -3361,8 +3540,9 @@ impl TextExtractor {
                 // TD is like Td but also sets leading
                 let state = self.state_stack.current_mut();
                 state.leading = -ty;
+                // PDF Spec: LEFT multiplication
                 let tm = Matrix::translation(tx, ty);
-                state.text_line_matrix = state.text_line_matrix.multiply(&tm);
+                state.text_line_matrix = tm.multiply(&state.text_line_matrix);
                 state.text_matrix = state.text_line_matrix;
             },
             Operator::TStar => {
@@ -3372,8 +3552,9 @@ impl TextExtractor {
                 // Move to start of next line (using leading)
                 let leading = self.state_stack.current().leading;
                 let state = self.state_stack.current_mut();
+                // PDF Spec: LEFT multiplication
                 let tm = Matrix::translation(0.0, -leading);
-                state.text_line_matrix = state.text_line_matrix.multiply(&tm);
+                state.text_line_matrix = tm.multiply(&state.text_line_matrix);
                 state.text_matrix = state.text_line_matrix;
             },
 
@@ -3465,6 +3646,51 @@ impl TextExtractor {
                             self.cached_current_font.clone(),
                         );
                         buffer.unicode.push_str(&actual_text);
+
+                        // Calculate accumulated width from the TJ array elements
+                        // so the span gets a correct bounding box width.
+                        // We compute width WITHOUT advancing text_matrix here;
+                        // the position advance loop below handles that.
+                        let mut total_array_width = 0.0f32;
+                        {
+                            let state = self.state_stack.current();
+                            let fs = state.font_size / 1000.0;
+                            let hs = state.horizontal_scaling / 100.0;
+                            let cs = state.char_space * hs;
+                            let ws = state.word_space * hs;
+                            let font = self.cached_current_font.as_deref();
+                            for element in &array {
+                                match element {
+                                    TextElement::String(s) => {
+                                        if let Some(font) = font {
+                                            if font.subtype != "Type0" {
+                                                let wt = font.get_byte_to_width_table();
+                                                for &b in s.iter() {
+                                                    let mut w = wt[b as usize] * fs * hs + cs;
+                                                    if b == 0x20 { w += ws; }
+                                                    total_array_width += w;
+                                                }
+                                            } else {
+                                                for chunk in s.chunks(2) {
+                                                    let cid = if chunk.len() == 2 {
+                                                        ((chunk[0] as u16) << 8) | (chunk[1] as u16)
+                                                    } else {
+                                                        chunk[0] as u16
+                                                    };
+                                                    let mut w = font.get_glyph_width(cid) * fs * hs + cs;
+                                                    if cid == 32 { w += ws; }
+                                                    total_array_width += w;
+                                                }
+                                            }
+                                        }
+                                    },
+                                    TextElement::Offset(_) => {
+                                        // TJ offsets don't contribute to glyph width
+                                    },
+                                }
+                            }
+                        }
+                        buffer.accumulated_width = total_array_width;
                         self.flush_tj_buffer(buffer)?;
                     } else {
                         // Character mode: fall back to show_text for positioning
@@ -3599,8 +3825,12 @@ impl TextExtractor {
                                         self.chars.push(space_char);
                                     }
 
+                                    // Update text matrix per PDF Spec Section 9.4.4:
+                                    // [1 0 0 1 tx 0] × Tm
                                     let state_mut = self.state_stack.current_mut();
-                                    state_mut.text_matrix.e += tx;
+                                    let tm = state_mut.text_matrix;
+                                    state_mut.text_matrix.e += tx * tm.a;
+                                    state_mut.text_matrix.f += tx * tm.b;
                                 },
                             }
                         }
@@ -4821,9 +5051,7 @@ impl TextExtractor {
                     // Use geometry-based adaptive threshold
                     let threshold = self.calculate_adaptive_tj_threshold();
                     if *offset < threshold {
-                        // Check if buffer ends with space BEFORE flushing
-                        // This prevents double spaces when TJ processor inserts space
-                        // AND span merging would insert space at the same boundary.
+                        // Check buffer state BEFORE flushing (flush clears the buffer)
                         let buffer_ends_with_space = !buffer.unicode.is_empty()
                             && buffer
                                 .unicode
@@ -4832,12 +5060,20 @@ impl TextExtractor {
                                 .map(|c| c.is_whitespace())
                                 .unwrap_or(false);
 
+                        // Check if the buffer ends with a ligature-like sequence.
+                        // When a single glyph maps to "fi", "fl", "ff", "ffi", "ffl"
+                        // via ToUnicode, the following TJ offset is kerning, not a word space.
+                        // For Type0 fonts, the entire TJ string is one element so the buffer
+                        // may contain "Prefi" where the last glyph was a ligature.
+                        let buffer_ends_with_ligature = {
+                            let buf = &buffer.unicode;
+                            buf.ends_with("ffi") || buf.ends_with("ffl") || buf.ends_with("fi") || buf.ends_with("fl") || buf.ends_with("ff")
+                        };
+
                         // Flush buffer before space
                         self.flush_tj_buffer(buffer)?;
 
-                        // Check if the next element in the TJ array is a string
-                        // that starts with whitespace. If so, DON'T insert a space to avoid doubling.
-                        // This prevents patterns like "word " + " next" = "word  next" (double space)
+                        // Check if the next element starts with whitespace
                         let next_element_starts_with_space = if idx + 1 < array.len() {
                             if let TextElement::String(next_s) = &array[idx + 1] {
                                 next_s.first().is_some_and(|&byte| {
@@ -4851,21 +5087,33 @@ impl TextExtractor {
                         };
 
                         // Only insert space if neither side already has whitespace
-                        if !buffer_ends_with_space && !next_element_starts_with_space {
+                        // and this is not a ligature kerning offset
+                        if !buffer_ends_with_space && !next_element_starts_with_space && !buffer_ends_with_ligature {
                             // Insert space character as separate span
                             self.insert_space_as_span()?;
                         }
 
-                        // Start new buffer with current state
+                        // Advance position for offset BEFORE creating new buffer,
+                        // so the new buffer captures the correct post-offset position.
+                        self.advance_position_for_offset(*offset)?;
+
+                        // Start new buffer with current state (position now includes offset)
                         buffer = TjBuffer::new(
                             self.state_stack.current(),
                             self.current_mcid,
                             self.cached_current_font.clone(),
                         );
-                    }
+                    } else {
+                        // Offset did NOT trigger a flush (kerning, not word boundary):
+                        // advance position and add displacement to buffer width so the
+                        // span bbox covers the full visual extent including inter-glyph spacing.
+                        self.advance_position_for_offset(*offset)?;
 
-                    // Advance position for offset (updates text matrix)
-                    self.advance_position_for_offset(*offset)?;
+                        if !buffer.is_empty() {
+                            let tx = -(*offset) / 1000.0 * font_size * horizontal_scaling;
+                            buffer.accumulated_width += tx;
+                        }
+                    }
                 },
             }
         }
@@ -4903,26 +5151,27 @@ impl TextExtractor {
             &pattern_config,
         )?;
 
-        // Step 2: Create BoundaryContext from current graphics state
+        // Step 2: Expand ligatures BEFORE word boundary detection.
+        // Ligatures (U+FB00-FB06) must be expanded to component chars first so that
+        // boundary indices are computed on the final character array (no index shift bugs).
+        self.expand_all_ligatures();
+
+        // Step 3: Create BoundaryContext from current graphics state
         let context = self.create_boundary_context();
 
-        // Step 3: Create WordBoundaryDetector and detect boundaries
+        // Step 4: Create WordBoundaryDetector and detect boundaries
         // OPTIMIZATION: Detect document script profile to skip unnecessary detectors (Issue #1 fix)
         let script = DocumentScript::detect_from_characters(&self.tj_character_array);
         let detector = WordBoundaryDetector::new().with_document_script(script);
         let boundaries = detector.detect_word_boundaries(&self.tj_character_array, &context);
 
-        // Step 4: If no boundaries detected, process entire array as single span
+        // Step 5: If no boundaries detected, process entire array as single span
         if boundaries.is_empty() {
             // All characters form a single word
             return self.process_tj_array_tiebreaker(array);
         }
 
-        // Step 3.5: Apply ligature expansion decisions
-        // This intelligently splits ligatures at word boundaries
-        self.apply_ligature_decisions()?;
-
-        // Step 5: Partition characters into clusters at boundary positions
+        // Step 6: Partition characters into clusters at boundary positions
         let clusters =
             self.partition_characters_by_boundaries(&self.tj_character_array, boundaries);
 
@@ -5151,9 +5400,46 @@ impl TextExtractor {
     /// 2. For each ligature character:
     ///    - Get next character (if exists)
     ///    - Call LigatureDecisionMaker::decide()
+    /// Unconditionally expand all ligature characters to their component chars.
+    /// This must run BEFORE word boundary detection so boundary indices are correct.
+    fn expand_all_ligatures(&mut self) {
+        use crate::text::ligature_processor::expand_ligature_to_chars;
+
+        let mut result = Vec::with_capacity(self.tj_character_array.len());
+        for char_info in &self.tj_character_array {
+            if !char_info.is_ligature {
+                result.push(char_info.clone());
+                continue;
+            }
+            let ligature_char = char::from_u32(char_info.code).unwrap_or('?');
+            let components = expand_ligature_to_chars(ligature_char, char_info.width);
+            if components.is_empty() {
+                result.push(char_info.clone());
+                continue;
+            }
+            let mut x_offset = 0.0;
+            for (idx, (comp_char, comp_width)) in components.iter().enumerate() {
+                result.push(CharacterInfo {
+                    code: *comp_char as u32,
+                    glyph_id: if idx == 0 { char_info.glyph_id } else { None },
+                    width: *comp_width,
+                    x_position: char_info.x_position + x_offset,
+                    tj_offset: if idx == 0 { char_info.tj_offset } else { None },
+                    font_size: char_info.font_size,
+                    is_ligature: false,
+                    original_ligature: Some(ligature_char),
+                    protected_from_split: true, // Don't split within expanded ligature
+                });
+                x_offset += comp_width;
+            }
+        }
+        self.tj_character_array = result;
+    }
+
     ///    - If Split: expand to component characters with proportional widths
     ///    - If Keep: leave as-is
     /// 3. Recalculate x_positions for all following characters after splits
+    #[allow(dead_code)]
     fn apply_ligature_decisions(&mut self) -> Result<()> {
         use crate::text::ligature_processor::{
             expand_ligature_to_chars, LigatureDecision, LigatureDecisionMaker,
@@ -5307,12 +5593,16 @@ impl TextExtractor {
             w_sum
         };
 
-        // Update text matrix position
+        // Update text matrix position per PDF Spec ISO 32000-1:2008 Section 9.4.4:
+        // [1 0 0 1 tx 0] × Tm  =>  Tm.e += tx * Tm.a,  Tm.f += tx * Tm.b
+        // where tx = total_width (displacement in text space).
+        // Note: Do NOT divide by Tm.d — total_width is already in text space units.
+        // When font size is embedded in Tm (e.g., Tm=[9 0 0 9 x y] with Tf size=1),
+        // the Tm.a factor correctly scales the displacement to user space.
         let state = self.state_stack.current_mut();
         let text_matrix = state.text_matrix;
-        let advance = total_width / text_matrix.d.abs();
-        state.text_matrix.e += advance * text_matrix.a;
-        state.text_matrix.f += advance * text_matrix.b;
+        state.text_matrix.e += total_width * text_matrix.a;
+        state.text_matrix.f += total_width * text_matrix.b;
 
         Ok(total_width)
     }
@@ -5416,12 +5706,12 @@ impl TextExtractor {
 
         buffer.accumulated_width += total_width;
 
-        // Update text matrix position
+        // Update text matrix position per PDF Spec ISO 32000-1:2008 Section 9.4.4:
+        // [1 0 0 1 tx 0] × Tm  =>  Tm.e += tx * Tm.a,  Tm.f += tx * Tm.b
         let state = self.state_stack.current_mut();
         let text_matrix = state.text_matrix;
-        let advance = total_width / text_matrix.d.abs();
-        state.text_matrix.e += advance * text_matrix.a;
-        state.text_matrix.f += advance * text_matrix.b;
+        state.text_matrix.e += total_width * text_matrix.a;
+        state.text_matrix.f += total_width * text_matrix.b;
 
         Ok(())
     }
@@ -5448,6 +5738,7 @@ impl TextExtractor {
         let ws_hs = word_space * hs_factor;
 
         let font = self.cached_current_font.as_deref();
+
 
         let total_width = if let Some(font) = font {
             if font.subtype != "Type0" {
@@ -5516,11 +5807,12 @@ impl TextExtractor {
 
         buffer.accumulated_width += total_width;
 
+        // Update text matrix position per PDF Spec ISO 32000-1:2008 Section 9.4.4:
+        // [1 0 0 1 tx 0] × Tm  =>  Tm.e += tx * Tm.a,  Tm.f += tx * Tm.b
         let state = self.state_stack.current_mut();
         let text_matrix = state.text_matrix;
-        let advance = total_width / text_matrix.d.abs();
-        state.text_matrix.e += advance * text_matrix.a;
-        state.text_matrix.f += advance * text_matrix.b;
+        state.text_matrix.e += total_width * text_matrix.a;
+        state.text_matrix.f += total_width * text_matrix.b;
 
         Ok(())
     }
@@ -5593,11 +5885,11 @@ impl TextExtractor {
 
         self.spans.push(span);
 
-        // Advance position
+        // Advance position per PDF Spec ISO 32000-1:2008 Section 9.4.4:
+        // [1 0 0 1 tx 0] × Tm  =>  Tm.e += tx * Tm.a,  Tm.f += tx * Tm.b
         let state = self.state_stack.current_mut();
-        let advance = space_width / text_matrix.d.abs();
-        state.text_matrix.e += advance * text_matrix.a;
-        state.text_matrix.f += advance * text_matrix.b;
+        state.text_matrix.e += space_width * text_matrix.a;
+        state.text_matrix.f += space_width * text_matrix.b;
 
         Ok(())
     }
@@ -5612,9 +5904,12 @@ impl TextExtractor {
         // tx = -offset / 1000.0 * font_size * horizontal_scaling / 100.0
         let tx = -offset / 1000.0 * font_size * horizontal_scaling / 100.0;
 
-        // Update text matrix position
+        // Update text matrix position per PDF Spec ISO 32000-1:2008 Section 9.4.4:
+        // [1 0 0 1 tx 0] × Tm  =>  Tm.e += tx * Tm.a,  Tm.f += tx * Tm.b
         let state = self.state_stack.current_mut();
-        state.text_matrix.e += tx;
+        let text_matrix = state.text_matrix;
+        state.text_matrix.e += tx * text_matrix.a;
+        state.text_matrix.f += tx * text_matrix.b;
 
         Ok(())
     }
@@ -5641,6 +5936,7 @@ impl TextExtractor {
                     .font_name
                     .take()
                     .unwrap_or_else(|| "Unknown".to_string());
+
                 let span = TextSpan {
                     text: std::mem::take(&mut buffer.unicode),
                     bbox: Rect {
@@ -5843,9 +6139,12 @@ impl TextExtractor {
                 tx += word_space * hs_factor;
             }
 
-            // Update text matrix in current state
+            // Update text matrix per PDF Spec ISO 32000-1:2008 Section 9.4.4:
+            // [1 0 0 1 tx 0] × Tm  =>  Tm.e += tx * Tm.a,  Tm.f += tx * Tm.b
             let state_mut = self.state_stack.current_mut();
-            state_mut.text_matrix.e += tx;
+            let tm = state_mut.text_matrix;
+            state_mut.text_matrix.e += tx * tm.a;
+            state_mut.text_matrix.f += tx * tm.b;
         }
 
         Ok(())

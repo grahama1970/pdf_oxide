@@ -62,6 +62,184 @@ impl PyPdfDocument {
         }
         Ok(())
     }
+
+    /// Build a PyMuPDF-compatible block dict from grouped lines and spans.
+    fn build_block_dict<'py>(
+        &self,
+        py: Python<'py>,
+        block_lines: &[(&crate::layout::TextLine, Vec<&crate::layout::TextSpan>)],
+    ) -> PyResult<Bound<'py, PyDict>> {
+        let block_dict = PyDict::new(py);
+        block_dict.set_item("type", 0)?; // text block
+
+        // Compute block bbox from all lines
+        let mut bx0 = f32::MAX;
+        let mut by0 = f32::MAX;
+        let mut bx1 = f32::MIN;
+        let mut by1 = f32::MIN;
+
+        let mut lines_list: Vec<Bound<'py, PyDict>> = Vec::new();
+
+        for (line, line_spans) in block_lines {
+            bx0 = bx0.min(line.bbox.x);
+            by0 = by0.min(line.bbox.y);
+            bx1 = bx1.max(line.bbox.x + line.bbox.width);
+            by1 = by1.max(line.bbox.y + line.bbox.height);
+
+            let line_dict = PyDict::new(py);
+            let mut spans_list: Vec<Bound<'py, PyDict>> = Vec::new();
+
+            for span in line_spans {
+                let span_dict = PyDict::new(py);
+                span_dict.set_item("text", &span.text)?;
+                span_dict.set_item("bbox", (
+                    span.bbox.x,
+                    span.bbox.y,
+                    span.bbox.x + span.bbox.width,
+                    span.bbox.y + span.bbox.height,
+                ))?;
+                span_dict.set_item("font", &span.font_name)?;
+                span_dict.set_item("size", span.font_size)?;
+                // Flags: bit 0 = superscript, bit 1 = italic, bit 2 = serif,
+                // bit 3 = monospace, bit 4 = bold (PyMuPDF convention)
+                let mut flags = 0u32;
+                if span.font_weight >= crate::layout::FontWeight::Bold { flags |= 16; }
+                if span.is_italic { flags |= 2; }
+                span_dict.set_item("flags", flags)?;
+                span_dict.set_item("color", 0)?;
+                spans_list.push(span_dict);
+            }
+
+            // If no spans found for this line, create a synthetic one from line text
+            if spans_list.is_empty() {
+                let span_dict = PyDict::new(py);
+                span_dict.set_item("text", &line.text)?;
+                span_dict.set_item("bbox", (
+                    line.bbox.x, line.bbox.y,
+                    line.bbox.x + line.bbox.width,
+                    line.bbox.y + line.bbox.height,
+                ))?;
+                span_dict.set_item("font", "")?;
+                span_dict.set_item("size", 0.0f32)?;
+                span_dict.set_item("flags", 0)?;
+                span_dict.set_item("color", 0)?;
+                spans_list.push(span_dict);
+            }
+
+            let spans_py = pyo3::types::PyList::new(py, &spans_list)
+                .map_err(|e| PyRuntimeError::new_err(format!("list: {}", e)))?;
+            line_dict.set_item("spans", spans_py)?;
+            lines_list.push(line_dict);
+        }
+
+        block_dict.set_item("bbox", (bx0, by0, bx1, by1))?;
+        let lines_py = pyo3::types::PyList::new(py, &lines_list)
+            .map_err(|e| PyRuntimeError::new_err(format!("list: {}", e)))?;
+        block_dict.set_item("lines", lines_py)?;
+
+        Ok(block_dict)
+    }
+
+    /// Build a rawdict block with per-character data.
+    fn build_rawdict_block<'py>(
+        &self,
+        py: Python<'py>,
+        block_lines: &[(&crate::layout::TextLine, Vec<&crate::layout::TextSpan>)],
+        all_chars: &[crate::layout::TextChar],
+    ) -> PyResult<Bound<'py, PyDict>> {
+        let block_dict = PyDict::new(py);
+        block_dict.set_item("type", 0)?;
+
+        let mut bx0 = f32::MAX;
+        let mut by0 = f32::MAX;
+        let mut bx1 = f32::MIN;
+        let mut by1 = f32::MIN;
+        let mut lines_list: Vec<Bound<'py, PyDict>> = Vec::new();
+
+        for (line, line_spans) in block_lines {
+            bx0 = bx0.min(line.bbox.x);
+            by0 = by0.min(line.bbox.y);
+            bx1 = bx1.max(line.bbox.x + line.bbox.width);
+            by1 = by1.max(line.bbox.y + line.bbox.height);
+
+            let line_dict = PyDict::new(py);
+            let mut spans_list: Vec<Bound<'py, PyDict>> = Vec::new();
+
+            for span in line_spans {
+                let span_dict = PyDict::new(py);
+                span_dict.set_item("text", &span.text)?;
+                span_dict.set_item("bbox", (
+                    span.bbox.x, span.bbox.y,
+                    span.bbox.x + span.bbox.width,
+                    span.bbox.y + span.bbox.height,
+                ))?;
+                span_dict.set_item("font", &span.font_name)?;
+                span_dict.set_item("size", span.font_size)?;
+                let mut flags = 0u32;
+                if span.font_weight >= crate::layout::FontWeight::Bold { flags |= 16; }
+                if span.is_italic { flags |= 2; }
+                span_dict.set_item("flags", flags)?;
+                span_dict.set_item("color", 0)?;
+
+                // Find chars within this span's bbox
+                let span_chars: Vec<&crate::layout::TextChar> = all_chars.iter()
+                    .filter(|ch| {
+                        let ch_cx = ch.bbox.x + ch.bbox.width / 2.0;
+                        let ch_cy = ch.bbox.y + ch.bbox.height / 2.0;
+                        ch_cx >= span.bbox.x && ch_cx <= span.bbox.x + span.bbox.width
+                            && ch_cy >= span.bbox.y && ch_cy <= span.bbox.y + span.bbox.height
+                    })
+                    .collect();
+
+                let mut chars_list: Vec<Bound<'py, PyDict>> = Vec::new();
+                for ch in &span_chars {
+                    let char_dict = PyDict::new(py);
+                    char_dict.set_item("c", ch.char.to_string())?;
+                    char_dict.set_item("bbox", (
+                        ch.bbox.x, ch.bbox.y,
+                        ch.bbox.x + ch.bbox.width,
+                        ch.bbox.y + ch.bbox.height,
+                    ))?;
+                    char_dict.set_item("origin", (ch.origin_x, ch.origin_y))?;
+                    char_dict.set_item("rotation", ch.rotation_degrees)?;
+                    chars_list.push(char_dict);
+                }
+
+                let chars_py = pyo3::types::PyList::new(py, &chars_list)
+                    .map_err(|e| PyRuntimeError::new_err(format!("list: {}", e)))?;
+                span_dict.set_item("chars", chars_py)?;
+                spans_list.push(span_dict);
+            }
+
+            if spans_list.is_empty() {
+                let span_dict = PyDict::new(py);
+                span_dict.set_item("text", &line.text)?;
+                span_dict.set_item("bbox", (
+                    line.bbox.x, line.bbox.y,
+                    line.bbox.x + line.bbox.width,
+                    line.bbox.y + line.bbox.height,
+                ))?;
+                span_dict.set_item("font", "")?;
+                span_dict.set_item("size", 0.0f32)?;
+                span_dict.set_item("flags", 0)?;
+                span_dict.set_item("color", 0)?;
+                let empty_chars = pyo3::types::PyList::empty(py);
+                span_dict.set_item("chars", empty_chars)?;
+                spans_list.push(span_dict);
+            }
+
+            let spans_py = pyo3::types::PyList::new(py, &spans_list)
+                .map_err(|e| PyRuntimeError::new_err(format!("list: {}", e)))?;
+            line_dict.set_item("spans", spans_py)?;
+            lines_list.push(line_dict);
+        }
+
+        block_dict.set_item("bbox", (bx0, by0, bx1, by1))?;
+        let lines_py = pyo3::types::PyList::new(py, &lines_list)
+            .map_err(|e| PyRuntimeError::new_err(format!("list: {}", e)))?;
+        block_dict.set_item("lines", lines_py)?;
+        Ok(block_dict)
+    }
 }
 
 #[pymethods]
@@ -129,6 +307,116 @@ impl PyPdfDocument {
         self.inner
             .authenticate(password.as_bytes())
             .map_err(|e| PyRuntimeError::new_err(format!("Authentication failed: {}", e)))
+    }
+
+    // === Phase 1.2 — from_bytes / to_bytes ===
+
+    /// Open a PDF from bytes in memory.
+    ///
+    /// Args:
+    ///     data (bytes): Raw PDF file data
+    ///
+    /// Returns:
+    ///     PdfDocument: Opened PDF document
+    ///
+    /// Example:
+    ///     >>> with open("doc.pdf", "rb") as f:
+    ///     ...     doc = PdfDocument.from_bytes(f.read())
+    #[staticmethod]
+    fn from_bytes(data: &[u8]) -> PyResult<Self> {
+        let doc = RustPdfDocument::open_from_bytes(data.to_vec())
+            .map_err(|e| PyIOError::new_err(format!("Failed to open PDF from bytes: {}", e)))?;
+        Ok(PyPdfDocument {
+            inner: doc,
+            path: String::new(),  // no file path for in-memory docs
+            editor: None,
+        })
+    }
+
+    /// Serialize the document to bytes (after modifications).
+    ///
+    /// Returns:
+    ///     bytes: PDF file data
+    ///
+    /// Example:
+    ///     >>> doc = PdfDocument("input.pdf")
+    ///     >>> page = doc.page(0)
+    ///     >>> page.set_text(text_id, "new")
+    ///     >>> doc.save_page(page)
+    ///     >>> pdf_bytes = doc.to_bytes()
+    fn to_bytes(&mut self) -> PyResult<Vec<u8>> {
+        if let Some(ref mut editor) = self.editor {
+            editor
+                .save_to_bytes()
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to serialize PDF: {}", e)))
+        } else {
+            // No editor — read the original file
+            if !self.path.is_empty() {
+                std::fs::read(&self.path)
+                    .map_err(|e| PyIOError::new_err(format!("Failed to read file: {}", e)))
+            } else {
+                Err(PyRuntimeError::new_err(
+                    "Cannot serialize: no file path and no editor initialized.",
+                ))
+            }
+        }
+    }
+
+    // === Phase 1.3 — is_encrypted / needs_pass ===
+
+    /// Check if the PDF is encrypted.
+    ///
+    /// Returns:
+    ///     bool: True if the document has an encryption dictionary
+    ///
+    /// Example:
+    ///     >>> doc = PdfDocument("file.pdf")
+    ///     >>> if doc.is_encrypted:
+    ///     ...     doc.authenticate("password")
+    #[getter]
+    fn is_encrypted(&self) -> bool {
+        self.inner.has_encryption()
+    }
+
+    // === Phase 1.8 — Metadata reading (Info dict) ===
+
+    /// Get the document Info dictionary (title, author, etc.).
+    ///
+    /// Returns:
+    ///     dict: Metadata fields from the PDF Info dictionary.
+    ///           Keys: title, author, subject, keywords, creator, producer
+    ///
+    /// Example:
+    ///     >>> info = doc.get_info()
+    ///     >>> print(info.get("title", "Untitled"))
+    fn get_info<'py>(&mut self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        use crate::extractors::xmp::XmpExtractor;
+
+        let dict = PyDict::new(py);
+
+        // Use XMP metadata (the standard for modern PDFs)
+        if let Ok(Some(xmp)) = XmpExtractor::extract(&mut self.inner) {
+            if let Some(title) = xmp.dc_title.as_ref() {
+                dict.set_item("title", title)?;
+            }
+            if !xmp.dc_creator.is_empty() {
+                dict.set_item("author", xmp.dc_creator.join(", "))?;
+            }
+            if let Some(desc) = xmp.dc_description.as_ref() {
+                dict.set_item("subject", desc)?;
+            }
+            if !xmp.dc_subject.is_empty() {
+                dict.set_item("keywords", xmp.dc_subject.join(", "))?;
+            }
+            if let Some(tool) = xmp.xmp_creator_tool.as_ref() {
+                dict.set_item("creator", tool)?;
+            }
+            if let Some(producer) = xmp.pdf_producer.as_ref() {
+                dict.set_item("producer", producer)?;
+            }
+        }
+
+        Ok(dict)
     }
 
     /// Get number of pages in the document.
@@ -250,6 +538,255 @@ impl PyPdfDocument {
                 "Rendering feature not enabled. Please build with 'rendering' feature.",
             ))
         }
+    }
+
+    // === Phase 1.4 — Clipped rendering ===
+
+    /// Render a clipped region of a page to an image.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///     clip (tuple): Region to render as (x0, y0, x1, y1) in PDF points
+    ///     dpi (int): Dots per inch (default: 72)
+    ///     format (str): Output format ("png" or "jpeg", default: "png")
+    ///
+    /// Returns:
+    ///     bytes: Image data for the clipped region
+    ///
+    /// Example:
+    ///     >>> clip = (100, 200, 400, 500)
+    ///     >>> img = doc.render_page_clipped(0, clip, dpi=150)
+    #[pyo3(signature = (page, clip, dpi=None, format=None))]
+    fn render_page_clipped(
+        &mut self,
+        page: usize,
+        clip: (f32, f32, f32, f32),
+        dpi: Option<u32>,
+        format: Option<&str>,
+    ) -> PyResult<Vec<u8>> {
+        #[cfg(feature = "rendering")]
+        {
+            let actual_dpi = dpi.unwrap_or(72);
+            let mut options = crate::rendering::RenderOptions::with_dpi(actual_dpi);
+            let is_jpeg = if let Some(fmt) = format {
+                match fmt.to_lowercase().as_str() {
+                    "jpeg" | "jpg" => {
+                        options = options.as_jpeg(85);
+                        true
+                    },
+                    _ => false,
+                }
+            } else {
+                false
+            };
+
+            // Render the full page first
+            let full_image = crate::rendering::render_page(&mut self.inner, page, &options)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to render page: {}", e)))?;
+
+            // Get the page dimensions to compute scale
+            let (mb_x0, mb_y0, _mb_x1, _mb_y1) = self.inner
+                .get_page_media_box(page)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to get page rect: {}", e)))?;
+
+            let scale = actual_dpi as f32 / 72.0;
+            let (cx0, cy0, cx1, cy1) = clip;
+
+            // Convert PDF coordinates to pixel coordinates
+            let px0 = ((cx0 - mb_x0) * scale) as u32;
+            let py0 = ((cy0 - mb_y0) * scale) as u32;
+            let px1 = ((cx1 - mb_x0) * scale) as u32;
+            let py1 = ((cy1 - mb_y0) * scale) as u32;
+
+            // Decode the full image, crop, and re-encode
+            let img = image::load_from_memory(&full_image.data)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to decode rendered image: {}", e)))?;
+
+            let cropped = img.crop_imm(
+                px0.min(img.width().saturating_sub(1)),
+                py0.min(img.height().saturating_sub(1)),
+                (px1 - px0).min(img.width() - px0.min(img.width().saturating_sub(1))),
+                (py1 - py0).min(img.height() - py0.min(img.height().saturating_sub(1))),
+            );
+
+            let mut buf = Vec::new();
+            let mut cursor = std::io::Cursor::new(&mut buf);
+            if is_jpeg {
+                cropped.write_to(&mut cursor, image::ImageOutputFormat::Jpeg(85))
+                    .map_err(|e| PyRuntimeError::new_err(format!("Failed to encode cropped image: {}", e)))?;
+            } else {
+                cropped.write_to(&mut cursor, image::ImageOutputFormat::Png)
+                    .map_err(|e| PyRuntimeError::new_err(format!("Failed to encode cropped image: {}", e)))?;
+            }
+
+            Ok(buf)
+        }
+        #[cfg(not(feature = "rendering"))]
+        {
+            let _ = (page, clip, dpi, format);
+            Err(PyRuntimeError::new_err(
+                "Rendering feature not enabled. Please build with 'rendering' feature.",
+            ))
+        }
+    }
+
+    /// Render a page to SVG markup (no rendering dependencies required).
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///     embed_images (bool): Embed images as base64 data URIs (default True)
+    ///     text_as_text (bool): Emit text as <text> elements (default True)
+    ///
+    /// Returns:
+    ///     str: SVG markup string
+    ///
+    /// Example:
+    ///     >>> svg = doc.render_page_to_svg(0)
+    ///     >>> with open("page.svg", "w") as f:
+    ///     ...     f.write(svg)
+    #[pyo3(signature = (page, embed_images=true, text_as_text=true))]
+    fn render_page_to_svg(
+        &mut self,
+        page: usize,
+        embed_images: bool,
+        text_as_text: bool,
+    ) -> PyResult<String> {
+        let options = crate::svg_export::SvgOptions {
+            embed_images,
+            text_as_text,
+            class_prefix: String::new(),
+        };
+        let mut renderer = crate::svg_export::SvgRenderer::with_options(options);
+        renderer.render_page(&mut self.inner, page)
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to render SVG: {}", e)))
+    }
+
+    // === Phase 1.1 — extract_text_dict / extract_text_blocks ===
+
+    /// Extract text as a structured dict (PyMuPDF get_text("dict") compatible).
+    ///
+    /// Returns a nested structure of blocks → lines → spans with bounding boxes.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///
+    /// Returns:
+    ///     dict: {"blocks": [{"type": 0, "bbox": (x0,y0,x1,y1),
+    ///            "lines": [{"spans": [{"text": str, "bbox": ..., "font": str,
+    ///            "size": float, "flags": int}]}]}]}
+    ///
+    /// Example:
+    ///     >>> data = doc.extract_text_dict(0)
+    ///     >>> for block in data["blocks"]:
+    ///     ...     for line in block["lines"]:
+    ///     ...         for span in line["spans"]:
+    ///     ...             print(span["text"])
+    fn extract_text_dict<'py>(&mut self, py: Python<'py>, page: usize) -> PyResult<Bound<'py, PyDict>> {
+        // Use extract_text_lines + extract_spans to build the dict structure
+        let lines = self.inner.extract_text_lines(page)
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to extract lines: {}", e)))?;
+        let spans = self.inner.extract_spans(page)
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to extract spans: {}", e)))?;
+
+        // Group spans into lines, then lines into blocks by vertical gap
+        let mut blocks_list: Vec<Bound<'py, PyDict>> = Vec::new();
+
+        // Simple block detection: group consecutive lines with < 1.5x line height gap
+        let mut current_block_lines: Vec<(&crate::layout::TextLine, Vec<&crate::layout::TextSpan>)> = Vec::new();
+        let mut current_block_bottom = 0.0f32;
+
+        for line in &lines {
+            let line_height = line.bbox.height.max(1.0);
+            let gap = line.bbox.y - current_block_bottom;
+
+            // Start new block if gap > 1.5x line height
+            if !current_block_lines.is_empty() && gap > line_height * 1.5 {
+                // Flush current block
+                let block_dict = self.build_block_dict(py, &current_block_lines)?;
+                blocks_list.push(block_dict);
+                current_block_lines.clear();
+            }
+
+            // Find spans that belong to this line (by Y overlap)
+            let line_spans: Vec<&crate::layout::TextSpan> = spans.iter()
+                .filter(|s| {
+                    let s_center_y = s.bbox.y + s.bbox.height / 2.0;
+                    s_center_y >= line.bbox.y && s_center_y <= line.bbox.y + line.bbox.height
+                })
+                .collect();
+
+            current_block_lines.push((line, line_spans));
+            current_block_bottom = line.bbox.y + line.bbox.height;
+        }
+
+        // Flush last block
+        if !current_block_lines.is_empty() {
+            let block_dict = self.build_block_dict(py, &current_block_lines)?;
+            blocks_list.push(block_dict);
+        }
+
+        let result = PyDict::new(py);
+        let blocks_py = pyo3::types::PyList::new(py, &blocks_list)
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to create list: {}", e)))?;
+        result.set_item("blocks", blocks_py)?;
+
+        Ok(result)
+    }
+
+    /// Extract text as a structured dict with per-character bounding boxes.
+    ///
+    /// Like extract_text_dict() but each span includes a "chars" list with
+    /// per-character bbox and rotation data. Compatible with PyMuPDF get_text("rawdict").
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///
+    /// Returns:
+    ///     dict: Same structure as extract_text_dict, but spans include "chars" key
+    ///           with list of {"c": str, "bbox": tuple, "origin": tuple}
+    fn extract_text_rawdict<'py>(&mut self, py: Python<'py>, page: usize) -> PyResult<Bound<'py, PyDict>> {
+        let lines = self.inner.extract_text_lines(page)
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to extract lines: {}", e)))?;
+        let spans = self.inner.extract_spans(page)
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to extract spans: {}", e)))?;
+        let chars = self.inner.extract_chars(page)
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to extract chars: {}", e)))?;
+
+        let mut blocks_list: Vec<Bound<'py, PyDict>> = Vec::new();
+        let mut current_block_lines: Vec<(&crate::layout::TextLine, Vec<&crate::layout::TextSpan>)> = Vec::new();
+        let mut current_block_bottom = 0.0f32;
+
+        for line in &lines {
+            let line_height = line.bbox.height.max(1.0);
+            let gap = line.bbox.y - current_block_bottom;
+
+            if !current_block_lines.is_empty() && gap > line_height * 1.5 {
+                let block_dict = self.build_rawdict_block(py, &current_block_lines, &chars)?;
+                blocks_list.push(block_dict);
+                current_block_lines.clear();
+            }
+
+            let line_spans: Vec<&crate::layout::TextSpan> = spans.iter()
+                .filter(|s| {
+                    let s_center_y = s.bbox.y + s.bbox.height / 2.0;
+                    s_center_y >= line.bbox.y && s_center_y <= line.bbox.y + line.bbox.height
+                })
+                .collect();
+
+            current_block_lines.push((line, line_spans));
+            current_block_bottom = line.bbox.y + line.bbox.height;
+        }
+
+        if !current_block_lines.is_empty() {
+            let block_dict = self.build_rawdict_block(py, &current_block_lines, &chars)?;
+            blocks_list.push(block_dict);
+        }
+
+        let result = PyDict::new(py);
+        let blocks_py = pyo3::types::PyList::new(py, &blocks_list)
+            .map_err(|e| PyRuntimeError::new_err(format!("list: {}", e)))?;
+        result.set_item("blocks", blocks_py)?;
+        Ok(result)
     }
 
     /// Extract individual characters from a page.
@@ -750,6 +1287,30 @@ impl PyPdfDocument {
         }
     }
 
+    /// Save the document as an incremental update (append changes to original).
+    ///
+    /// This preserves the original file structure and encryption settings.
+    /// Faster and smaller than a full rewrite for minor changes.
+    ///
+    /// Args:
+    ///     path (str): Output file path
+    ///
+    /// Raises:
+    ///     IOError: If save fails
+    fn save_incremental(&mut self, path: &str) -> PyResult<()> {
+        use crate::editor::{EditableDocument, SaveOptions};
+
+        if let Some(ref mut editor) = self.editor {
+            editor
+                .save_with_options(path, SaveOptions::incremental())
+                .map_err(|e| PyIOError::new_err(format!("Failed to save incremental: {}", e)))
+        } else {
+            Err(PyRuntimeError::new_err(
+                "No modifications to save. Use page() and set_text() first.",
+            ))
+        }
+    }
+
     /// Save the document with password encryption.
     ///
     /// Creates a password-protected PDF using AES-256 encryption (the strongest available).
@@ -822,6 +1383,377 @@ impl PyPdfDocument {
             Err(PyRuntimeError::new_err(
                 "No modifications to save. Use page() and set_text() first.",
             ))
+        }
+    }
+
+    // === Drawing Operations ===
+
+    /// Draw a rectangle on a page.
+    ///
+    /// Args:
+    ///     page_num (int): Zero-based page index
+    ///     x (float): X coordinate (left)
+    ///     y (float): Y coordinate (bottom)
+    ///     width (float): Rectangle width
+    ///     height (float): Rectangle height
+    ///     color (tuple): Stroke color as (r, g, b) floats 0.0-1.0
+    ///     fill (tuple, optional): Fill color as (r, g, b), or None for no fill
+    ///     line_width (float): Stroke width in points (default: 1.0)
+    ///
+    /// Example:
+    ///     >>> doc.draw_rect(0, 100, 200, 50, 30, (1.0, 0.0, 0.0))
+    ///     >>> doc.draw_rect(0, 100, 200, 50, 30, (0, 0, 0), fill=(1, 1, 0))
+    #[pyo3(signature = (page_num, x, y, width, height, color=(0.0, 0.0, 0.0), fill=None, line_width=1.0))]
+    fn draw_rect(
+        &mut self,
+        page_num: usize,
+        x: f32,
+        y: f32,
+        width: f32,
+        height: f32,
+        color: (f32, f32, f32),
+        fill: Option<(f32, f32, f32)>,
+        line_width: f32,
+    ) -> PyResult<()> {
+        self.ensure_editor()?;
+        let mut content = Vec::new();
+        content.extend_from_slice(b"q\n");
+        content.extend_from_slice(format!("{:.4} w\n", line_width).as_bytes());
+        content.extend_from_slice(
+            format!("{:.4} {:.4} {:.4} RG\n", color.0, color.1, color.2).as_bytes(),
+        );
+        if let Some(f) = fill {
+            content.extend_from_slice(
+                format!("{:.4} {:.4} {:.4} rg\n", f.0, f.1, f.2).as_bytes(),
+            );
+        }
+        content.extend_from_slice(
+            format!("{:.4} {:.4} {:.4} {:.4} re ", x, y, width, height).as_bytes(),
+        );
+        if fill.is_some() {
+            content.extend_from_slice(b"B\n"); // fill and stroke
+        } else {
+            content.extend_from_slice(b"S\n"); // stroke only
+        }
+        content.extend_from_slice(b"Q\n");
+
+        let editor = self.editor.as_mut().unwrap();
+        editor
+            .add_draw_overlay(page_num, content)
+            .map_err(|e| PyRuntimeError::new_err(format!("draw_rect failed: {}", e)))
+    }
+
+    /// Draw a line on a page.
+    ///
+    /// Args:
+    ///     page_num (int): Zero-based page index
+    ///     x1 (float): Start X
+    ///     y1 (float): Start Y
+    ///     x2 (float): End X
+    ///     y2 (float): End Y
+    ///     color (tuple): Stroke color as (r, g, b) floats 0.0-1.0
+    ///     line_width (float): Line width in points (default: 1.0)
+    #[pyo3(signature = (page_num, x1, y1, x2, y2, color=(0.0, 0.0, 0.0), line_width=1.0))]
+    fn draw_line(
+        &mut self,
+        page_num: usize,
+        x1: f32,
+        y1: f32,
+        x2: f32,
+        y2: f32,
+        color: (f32, f32, f32),
+        line_width: f32,
+    ) -> PyResult<()> {
+        self.ensure_editor()?;
+        let mut content = Vec::new();
+        content.extend_from_slice(b"q\n");
+        content.extend_from_slice(format!("{:.4} w\n", line_width).as_bytes());
+        content.extend_from_slice(
+            format!("{:.4} {:.4} {:.4} RG\n", color.0, color.1, color.2).as_bytes(),
+        );
+        content.extend_from_slice(
+            format!("{:.4} {:.4} m {:.4} {:.4} l S\n", x1, y1, x2, y2).as_bytes(),
+        );
+        content.extend_from_slice(b"Q\n");
+
+        let editor = self.editor.as_mut().unwrap();
+        editor
+            .add_draw_overlay(page_num, content)
+            .map_err(|e| PyRuntimeError::new_err(format!("draw_line failed: {}", e)))
+    }
+
+    /// Draw a circle on a page.
+    ///
+    /// Args:
+    ///     page_num (int): Zero-based page index
+    ///     cx (float): Center X
+    ///     cy (float): Center Y
+    ///     radius (float): Radius
+    ///     color (tuple): Stroke color as (r, g, b)
+    ///     fill (tuple, optional): Fill color or None
+    ///     line_width (float): Stroke width (default: 1.0)
+    #[pyo3(signature = (page_num, cx, cy, radius, color=(0.0, 0.0, 0.0), fill=None, line_width=1.0))]
+    fn draw_circle(
+        &mut self,
+        page_num: usize,
+        cx: f32,
+        cy: f32,
+        radius: f32,
+        color: (f32, f32, f32),
+        fill: Option<(f32, f32, f32)>,
+        line_width: f32,
+    ) -> PyResult<()> {
+        self.ensure_editor()?;
+        // Approximate circle with 4 Bézier curves (kappa = 0.5522847498)
+        let k = 0.5522847498_f32 * radius;
+        let mut content = Vec::new();
+        content.extend_from_slice(b"q\n");
+        content.extend_from_slice(format!("{:.4} w\n", line_width).as_bytes());
+        content.extend_from_slice(
+            format!("{:.4} {:.4} {:.4} RG\n", color.0, color.1, color.2).as_bytes(),
+        );
+        if let Some(f) = fill {
+            content.extend_from_slice(
+                format!("{:.4} {:.4} {:.4} rg\n", f.0, f.1, f.2).as_bytes(),
+            );
+        }
+        // 4 Bézier curves forming a circle
+        content.extend_from_slice(format!("{:.4} {:.4} m\n", cx + radius, cy).as_bytes());
+        content.extend_from_slice(
+            format!(
+                "{:.4} {:.4} {:.4} {:.4} {:.4} {:.4} c\n",
+                cx + radius, cy + k, cx + k, cy + radius, cx, cy + radius
+            )
+            .as_bytes(),
+        );
+        content.extend_from_slice(
+            format!(
+                "{:.4} {:.4} {:.4} {:.4} {:.4} {:.4} c\n",
+                cx - k, cy + radius, cx - radius, cy + k, cx - radius, cy
+            )
+            .as_bytes(),
+        );
+        content.extend_from_slice(
+            format!(
+                "{:.4} {:.4} {:.4} {:.4} {:.4} {:.4} c\n",
+                cx - radius, cy - k, cx - k, cy - radius, cx, cy - radius
+            )
+            .as_bytes(),
+        );
+        content.extend_from_slice(
+            format!(
+                "{:.4} {:.4} {:.4} {:.4} {:.4} {:.4} c\n",
+                cx + k, cy - radius, cx + radius, cy - k, cx + radius, cy
+            )
+            .as_bytes(),
+        );
+        if fill.is_some() {
+            content.extend_from_slice(b"B\n");
+        } else {
+            content.extend_from_slice(b"S\n");
+        }
+        content.extend_from_slice(b"Q\n");
+
+        let editor = self.editor.as_mut().unwrap();
+        editor
+            .add_draw_overlay(page_num, content)
+            .map_err(|e| PyRuntimeError::new_err(format!("draw_circle failed: {}", e)))
+    }
+
+    /// Insert text at a position on a page.
+    ///
+    /// Args:
+    ///     page_num (int): Zero-based page index
+    ///     x (float): X coordinate
+    ///     y (float): Y coordinate
+    ///     text (str): Text to insert
+    ///     font_size (float): Font size in points (default: 12.0)
+    ///     color (tuple): Text color as (r, g, b) (default: black)
+    ///
+    /// Note:
+    ///     Uses Helvetica font (Base-14, always available). For other fonts,
+    ///     use add_text() via page() which supports the DOM API.
+    #[pyo3(signature = (page_num, x, y, text, font_size=12.0, color=(0.0, 0.0, 0.0)))]
+    fn insert_text(
+        &mut self,
+        page_num: usize,
+        x: f32,
+        y: f32,
+        text: &str,
+        font_size: f32,
+        color: (f32, f32, f32),
+    ) -> PyResult<()> {
+        self.ensure_editor()?;
+        // Escape special PDF string characters
+        let escaped = text
+            .replace('\\', "\\\\")
+            .replace('(', "\\(")
+            .replace(')', "\\)");
+        let mut content = Vec::new();
+        content.extend_from_slice(b"q\n");
+        content.extend_from_slice(
+            format!("{:.4} {:.4} {:.4} rg\n", color.0, color.1, color.2).as_bytes(),
+        );
+        content.extend_from_slice(b"BT\n");
+        content.extend_from_slice(format!("/Helvetica {:.1} Tf\n", font_size).as_bytes());
+        content.extend_from_slice(format!("{:.4} {:.4} Td\n", x, y).as_bytes());
+        content.extend_from_slice(format!("({}) Tj\n", escaped).as_bytes());
+        content.extend_from_slice(b"ET\n");
+        content.extend_from_slice(b"Q\n");
+
+        let editor = self.editor.as_mut().unwrap();
+        editor
+            .add_draw_overlay(page_num, content)
+            .map_err(|e| PyRuntimeError::new_err(format!("insert_text failed: {}", e)))
+    }
+
+    /// Insert text within a bounding box with word-wrapping.
+    ///
+    /// Args:
+    ///     page_num (int): Zero-based page index
+    ///     x (float): Left X coordinate
+    ///     y (float): Top Y coordinate (text flows downward)
+    ///     width (float): Box width
+    ///     height (float): Box height
+    ///     text (str): Text to insert
+    ///     font_size (float): Font size (default: 12.0)
+    ///     color (tuple): Text color (default: black)
+    #[pyo3(signature = (page_num, x, y, width, height, text, font_size=12.0, color=(0.0, 0.0, 0.0)))]
+    fn insert_textbox(
+        &mut self,
+        page_num: usize,
+        x: f32,
+        y: f32,
+        width: f32,
+        height: f32,
+        text: &str,
+        font_size: f32,
+        color: (f32, f32, f32),
+    ) -> PyResult<()> {
+        self.ensure_editor()?;
+        // Simple word-wrap: approximate char width as font_size * 0.5
+        let char_width = font_size * 0.5;
+        let chars_per_line = (width / char_width).floor() as usize;
+        let line_height = font_size * 1.2;
+
+        let mut lines: Vec<String> = Vec::new();
+        for paragraph in text.split('\n') {
+            let words: Vec<&str> = paragraph.split_whitespace().collect();
+            let mut current_line = String::new();
+            for word in words {
+                if current_line.is_empty() {
+                    current_line = word.to_string();
+                } else if current_line.len() + 1 + word.len() <= chars_per_line {
+                    current_line.push(' ');
+                    current_line.push_str(word);
+                } else {
+                    lines.push(current_line);
+                    current_line = word.to_string();
+                }
+            }
+            if !current_line.is_empty() {
+                lines.push(current_line);
+            }
+        }
+
+        // Clip to box height
+        let max_lines = (height / line_height).floor() as usize;
+        if lines.len() > max_lines {
+            lines.truncate(max_lines);
+        }
+
+        let mut content = Vec::new();
+        content.extend_from_slice(b"q\n");
+        content.extend_from_slice(
+            format!("{:.4} {:.4} {:.4} rg\n", color.0, color.1, color.2).as_bytes(),
+        );
+        content.extend_from_slice(b"BT\n");
+        content.extend_from_slice(format!("/Helvetica {:.1} Tf\n", font_size).as_bytes());
+
+        for (i, line) in lines.iter().enumerate() {
+            let line_y = y - (i as f32) * line_height;
+            let escaped = line
+                .replace('\\', "\\\\")
+                .replace('(', "\\(")
+                .replace(')', "\\)");
+            content.extend_from_slice(format!("{:.4} {:.4} Td\n", x, line_y).as_bytes());
+            content.extend_from_slice(format!("({}) Tj\n", escaped).as_bytes());
+        }
+
+        content.extend_from_slice(b"ET\n");
+        content.extend_from_slice(b"Q\n");
+
+        let editor = self.editor.as_mut().unwrap();
+        editor
+            .add_draw_overlay(page_num, content)
+            .map_err(|e| PyRuntimeError::new_err(format!("insert_textbox failed: {}", e)))
+    }
+
+    // === Page Manipulation ===
+
+    /// Delete a page from the document.
+    ///
+    /// Args:
+    ///     index (int): Zero-based page index to remove
+    fn delete_page(&mut self, index: usize) -> PyResult<()> {
+        use crate::editor::EditableDocument;
+        self.ensure_editor()?;
+        let editor = self.editor.as_mut().unwrap();
+        editor
+            .remove_page(index)
+            .map_err(|e| PyRuntimeError::new_err(format!("delete_page failed: {}", e)))
+    }
+
+    /// Move a page from one position to another.
+    ///
+    /// Args:
+    ///     from_index (int): Source page index
+    ///     to_index (int): Destination page index
+    fn move_page(&mut self, from_index: usize, to_index: usize) -> PyResult<()> {
+        use crate::editor::EditableDocument;
+        self.ensure_editor()?;
+        let editor = self.editor.as_mut().unwrap();
+        editor
+            .move_page(from_index, to_index)
+            .map_err(|e| PyRuntimeError::new_err(format!("move_page failed: {}", e)))
+    }
+
+    /// Duplicate a page, appending the copy at the end.
+    ///
+    /// Args:
+    ///     index (int): Page index to duplicate
+    ///
+    /// Returns:
+    ///     int: Index of the new duplicate page
+    fn duplicate_page(&mut self, index: usize) -> PyResult<usize> {
+        use crate::editor::EditableDocument;
+        self.ensure_editor()?;
+        let editor = self.editor.as_mut().unwrap();
+        editor
+            .duplicate_page(index)
+            .map_err(|e| PyRuntimeError::new_err(format!("duplicate_page failed: {}", e)))
+    }
+
+    /// Merge pages from another PDF into this document.
+    ///
+    /// Args:
+    ///     path (str): Path to the PDF to merge from
+    ///     pages (list[int], optional): Specific page indices to merge, or None for all
+    ///
+    /// Returns:
+    ///     int: Number of pages merged
+    #[pyo3(signature = (path, pages=None))]
+    fn merge_pages(&mut self, path: &str, pages: Option<Vec<usize>>) -> PyResult<usize> {
+        self.ensure_editor()?;
+        let editor = self.editor.as_mut().unwrap();
+        if let Some(page_list) = pages {
+            editor
+                .merge_pages_from(path, &page_list)
+                .map_err(|e| PyRuntimeError::new_err(format!("merge_pages failed: {}", e)))
+        } else {
+            editor
+                .merge_from(path)
+                .map_err(|e| PyRuntimeError::new_err(format!("merge_pages failed: {}", e)))
         }
     }
 
@@ -1023,6 +1955,31 @@ impl PyPdfDocument {
         }
     }
 
+    /// Get the dimensions of a page as (width, height) in points.
+    ///
+    /// Derived from the MediaBox. 72 points = 1 inch.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///
+    /// Returns:
+    ///     tuple[float, float]: (width, height) in points
+    fn page_dimensions(&mut self, page: usize) -> PyResult<(f32, f32)> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            let box_ = editor
+                .get_page_media_box(page)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to get page dimensions: {}", e)))?;
+            Ok((box_[2] - box_[0], box_[3] - box_[1]))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
     /// Set the MediaBox of a page (physical page size).
     ///
     /// Args:
@@ -1108,6 +2065,165 @@ impl PyPdfDocument {
             editor
                 .set_page_crop_box(page, [llx, lly, urx, ury])
                 .map_err(|e| PyRuntimeError::new_err(format!("Failed to set CropBox: {}", e)))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Get the ArtBox of a page (artistic content boundary).
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///
+    /// Returns:
+    ///     tuple[float, float, float, float] | None: (llx, lly, urx, ury) or None if not set
+    fn page_art_box(&mut self, page: usize) -> PyResult<Option<(f32, f32, f32, f32)>> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            let box_ = editor
+                .get_page_art_box(page)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to get ArtBox: {}", e)))?;
+            Ok(box_.map(|b| (b[0], b[1], b[2], b[3])))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Set the ArtBox of a page (artistic content boundary).
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///     llx (float): Lower-left X coordinate
+    ///     lly (float): Lower-left Y coordinate
+    ///     urx (float): Upper-right X coordinate
+    ///     ury (float): Upper-right Y coordinate
+    fn set_page_art_box(
+        &mut self,
+        page: usize,
+        llx: f32,
+        lly: f32,
+        urx: f32,
+        ury: f32,
+    ) -> PyResult<()> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            editor
+                .set_page_art_box(page, [llx, lly, urx, ury])
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to set ArtBox: {}", e)))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Get the BleedBox of a page (bleed area for printing).
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///
+    /// Returns:
+    ///     tuple[float, float, float, float] | None: (llx, lly, urx, ury) or None if not set
+    fn page_bleed_box(&mut self, page: usize) -> PyResult<Option<(f32, f32, f32, f32)>> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            let box_ = editor
+                .get_page_bleed_box(page)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to get BleedBox: {}", e)))?;
+            Ok(box_.map(|b| (b[0], b[1], b[2], b[3])))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Set the BleedBox of a page (bleed area for printing).
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///     llx (float): Lower-left X coordinate
+    ///     lly (float): Lower-left Y coordinate
+    ///     urx (float): Upper-right X coordinate
+    ///     ury (float): Upper-right Y coordinate
+    fn set_page_bleed_box(
+        &mut self,
+        page: usize,
+        llx: f32,
+        lly: f32,
+        urx: f32,
+        ury: f32,
+    ) -> PyResult<()> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            editor
+                .set_page_bleed_box(page, [llx, lly, urx, ury])
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to set BleedBox: {}", e)))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Get the TrimBox of a page (final trim boundaries).
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///
+    /// Returns:
+    ///     tuple[float, float, float, float] | None: (llx, lly, urx, ury) or None if not set
+    fn page_trim_box(&mut self, page: usize) -> PyResult<Option<(f32, f32, f32, f32)>> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            let box_ = editor
+                .get_page_trim_box(page)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to get TrimBox: {}", e)))?;
+            Ok(box_.map(|b| (b[0], b[1], b[2], b[3])))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Set the TrimBox of a page (final trim boundaries).
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///     llx (float): Lower-left X coordinate
+    ///     lly (float): Lower-left Y coordinate
+    ///     urx (float): Upper-right X coordinate
+    ///     ury (float): Upper-right Y coordinate
+    fn set_page_trim_box(
+        &mut self,
+        page: usize,
+        llx: f32,
+        lly: f32,
+        urx: f32,
+        ury: f32,
+    ) -> PyResult<()> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            editor
+                .set_page_trim_box(page, [llx, lly, urx, ury])
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to set TrimBox: {}", e)))
         } else {
             Err(PyRuntimeError::new_err("No document loaded"))
         }
@@ -1316,14 +2432,15 @@ impl PyPdfDocument {
 
     /// Apply redactions on a specific page.
     ///
-    /// Finds all redaction annotations on the page, draws colored overlays
-    /// to hide the content, and removes the redaction annotations.
+    /// Performs true content-stripping redaction: parses the page content stream,
+    /// removes text/images that fall within redaction rectangles, and draws
+    /// colored overlays. The redaction annotations are removed from the page.
     ///
     /// Args:
     ///     page (int): Page index (0-based)
     ///
     /// Note:
-    ///     This creates visual overlays but does not remove underlying content.
+    ///     This performs true content removal — redacted text cannot be recovered.
     ///
     /// Raises:
     ///     RuntimeError: If page index is out of range
@@ -1348,8 +2465,9 @@ impl PyPdfDocument {
 
     /// Apply redactions on all pages.
     ///
-    /// Finds all redaction annotations throughout the document, draws
-    /// colored overlays to hide content, and removes the redaction annotations.
+    /// Performs true content-stripping redaction on all pages: parses content
+    /// streams, removes text/images within redaction rectangles, draws overlays,
+    /// and removes the redaction annotations.
     ///
     /// Raises:
     ///     RuntimeError: If the operation fails
@@ -1827,6 +2945,90 @@ impl PyPdfDocument {
         Ok(py_list.into())
     }
 
+    /// Extract tables using Camelot-style algorithms (lattice + stream).
+    ///
+    /// This uses the Nurminen table detection algorithm for stream mode
+    /// and image-processing-based line detection for lattice mode.
+    /// When flavor="auto", tries lattice first and falls back to stream.
+    ///
+    /// Args:
+    ///     pages (str, optional): Page range like "1-5" or "all". Default "all".
+    ///     flavor (str, optional): "lattice", "stream", or "auto". Default "auto".
+    ///     line_scale (int, optional): Line detection scale. Default 15.
+    ///     edge_tol (float, optional): Text edge alignment tolerance. Default 50.
+    ///
+    /// Returns:
+    ///     list[dict]: Tables with keys: page, flavor, rows, cols, cells, accuracy, whitespace
+    #[pyo3(signature = (pages=None, flavor=None, line_scale=None, edge_tol=None))]
+    fn read_pdf(
+        &mut self,
+        py: Python<'_>,
+        pages: Option<&str>,
+        flavor: Option<&str>,
+        line_scale: Option<u32>,
+        edge_tol: Option<f64>,
+    ) -> PyResult<Py<PyAny>> {
+        use crate::tables::{self, ExtractConfig, Flavor};
+
+        // Parse pages string to Vec<usize>
+        let page_list = match pages {
+            None | Some("all") => None,
+            Some(s) => Some(parse_page_range(s, self.inner.page_count().unwrap_or(0))?),
+        };
+
+        let flavor_enum = match flavor {
+            Some("lattice") => Some(Flavor::Lattice),
+            Some("stream") => Some(Flavor::Stream),
+            Some("auto") | None => None, // Auto-detect
+            Some(other) => {
+                return Err(PyRuntimeError::new_err(format!(
+                    "Unknown flavor '{}'. Use 'lattice', 'stream', or 'auto'.",
+                    other
+                )));
+            }
+        };
+
+        let mut config = ExtractConfig::default();
+        if let Some(ls) = line_scale {
+            config.line_scale = ls;
+        }
+        if let Some(et) = edge_tol {
+            config.edge_tol = et;
+        }
+        if let Some(p) = page_list {
+            config.pages = Some(p);
+        }
+
+        // Auto-flavor: try lattice first, fall back to stream if no tables found
+        let all_tables = if let Some(f) = flavor_enum {
+            config.flavor = f;
+            tables::extract_tables(&mut self.inner, &config)
+                .map_err(|e| PyRuntimeError::new_err(format!("Table extraction failed: {}", e)))?
+        } else {
+            // Auto: try lattice
+            config.flavor = Flavor::Lattice;
+            let lattice_tables = tables::extract_tables(&mut self.inner, &config)
+                .map_err(|e| PyRuntimeError::new_err(format!("Lattice extraction failed: {}", e)))?;
+
+            if !lattice_tables.is_empty() {
+                lattice_tables
+            } else {
+                // Fall back to stream
+                config.flavor = Flavor::Stream;
+                tables::extract_tables(&mut self.inner, &config)
+                    .map_err(|e| PyRuntimeError::new_err(format!("Stream extraction failed: {}", e)))?
+            }
+        };
+
+        // Convert to Python dicts
+        let py_list = pyo3::types::PyList::empty(py);
+        for table in &all_tables {
+            let dict = table_to_pydict(py, table)?;
+            py_list.append(dict)?;
+        }
+        Ok(py_list.into())
+    }
+
     /// Extract text spans from a page.
     ///
     /// Spans are groups of characters that share the same font and style.
@@ -1865,6 +3067,13 @@ impl PyPdfDocument {
         spans_result
             .map(|spans| spans.into_iter().map(|s| PyTextSpan { inner: s }).collect())
             .map_err(|e| PyRuntimeError::new_err(format!("Failed to extract spans: {}", e)))
+    }
+
+    /// DEBUG: Extract spans in content stream order (unsorted, no merge).
+    fn extract_spans_unsorted(&mut self, page: usize) -> PyResult<Vec<PyTextSpan>> {
+        self.inner.extract_spans_unsorted(page)
+            .map(|spans| spans.into_iter().map(|s| PyTextSpan { inner: s }).collect())
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to extract unsorted spans: {}", e)))
     }
 
     /// Get the document outline (bookmarks / table of contents).
@@ -1987,6 +3196,810 @@ impl PyPdfDocument {
             py_list.append(dict)?;
         }
         Ok(py_list.into())
+    }
+
+    /// Remove annotations from a page by index.
+    ///
+    /// This removes annotations from the page's annotation list. Save the document
+    /// afterwards to persist the changes. Useful for creating "clean" PDFs without
+    /// markup annotations.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///     indices (list[int]): Annotation indices to remove (0-based, as returned by get_annotations)
+    ///
+    /// Raises:
+    ///     RuntimeError: If annotation removal fails
+    fn remove_annotations(&mut self, page: usize, indices: Vec<usize>) -> PyResult<()> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            editor
+                .remove_page_annotations(page, &indices)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to remove annotations: {}", e)))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Repair the document, fixing common PDF issues.
+    ///
+    /// Applies stream-length correction, page-tree validation, broken-reference
+    /// fixing, and orphan-object removal.
+    ///
+    /// Returns:
+    ///     dict: A dictionary with keys:
+    ///         - ``xref_rebuilt`` (bool)
+    ///         - ``stream_lengths_fixed`` (int)
+    ///         - ``page_tree_rebuilt`` (bool)
+    ///         - ``orphan_objects_removed`` (int)
+    ///         - ``broken_references_fixed`` (int)
+    ///         - ``total_fixes`` (int)
+    ///
+    /// Raises:
+    ///     RuntimeError: If repair fails
+    fn repair(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+        self.ensure_editor()?;
+        if let Some(ref mut editor) = self.editor {
+            let report = editor
+                .repair()
+                .map_err(|e| PyRuntimeError::new_err(format!("Repair failed: {}", e)))?;
+            let dict = pyo3::types::PyDict::new(py);
+            dict.set_item("xref_rebuilt", report.xref_rebuilt)?;
+            dict.set_item("stream_lengths_fixed", report.stream_lengths_fixed)?;
+            dict.set_item("page_tree_rebuilt", report.page_tree_rebuilt)?;
+            dict.set_item("orphan_objects_removed", report.orphan_objects_removed)?;
+            dict.set_item("broken_references_fixed", report.broken_references_fixed)?;
+            dict.set_item("total_fixes", report.total_fixes())?;
+            Ok(dict.into())
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Classify text blocks on a page.
+    ///
+    /// Returns a list of classified blocks with block type, text, bbox, and metadata.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///
+    /// Returns:
+    ///     list[dict]: List of block dicts with keys: block_type, text, bbox, font_size, font_name, is_bold, confidence, header_level
+    fn classify_blocks(&mut self, py: Python<'_>, page: usize) -> PyResult<PyObject> {
+        let doc = &mut self.inner;
+        let spans = doc.extract_spans_unsorted(page).map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+        if spans.is_empty() {
+            return Ok(pyo3::types::PyList::empty(py).into());
+        }
+        let info = doc.get_page_info(page).map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+        let classifier = crate::extractors::block_classifier::BlockClassifier::new(
+            info.media_box.width, info.media_box.height, &spans
+        );
+        let blocks = classifier.classify_spans(&spans);
+        let list = pyo3::types::PyList::empty(py);
+        for b in &blocks {
+            let dict = pyo3::types::PyDict::new(py);
+            dict.set_item("block_type", format!("{:?}", b.block_type))?;
+            dict.set_item("text", &b.text)?;
+            dict.set_item("bbox", (b.bbox.x, b.bbox.y, b.bbox.width, b.bbox.height))?;
+            dict.set_item("font_size", b.font_size)?;
+            dict.set_item("font_name", &b.font_name)?;
+            dict.set_item("is_bold", b.is_bold)?;
+            dict.set_item("confidence", b.confidence)?;
+            dict.set_item("header_level", b.header_level)?;
+            // Header validation details (when available)
+            if let Some(ref hv) = b.header_validation {
+                let hv_dict = header_validation_to_dict(py, hv)?;
+                dict.set_item("header_validation", hv_dict)?;
+            }
+            list.append(dict)?;
+        }
+        Ok(list.into())
+    }
+
+    /// Validate whether text is a section header using heuristic analysis.
+    ///
+    /// Returns a dict with disposition ("Accept", "Reject", or "Escalate"):
+    /// - Accept: Rust is confident this IS a header. Trust is_header directly.
+    /// - Reject: Rust is confident this is NOT a header. Trust is_header directly.
+    /// - Escalate: Ambiguous — send `features` dict to /assistant cascade for decision.
+    ///
+    /// The `features` dict contains numeric values suitable for sklearn/ONNX classifier input.
+    /// Shadow labels should be logged to training data for future classifier training.
+    ///
+    /// Args:
+    ///     text (str): The candidate header text
+    ///     is_bold (bool): Whether the text is bold
+    ///     font_size (float): Font size of the text
+    ///     median_font_size (float): Median font size on the page (default 11.0)
+    ///     max_font_size (float): Max font size on the page (default 18.0)
+    ///
+    /// Returns:
+    ///     dict: Validation result with keys: is_header, confidence, disposition, level,
+    ///           reasons, has_numbering, number_text, title_text, depth_level, features
+    #[pyo3(signature = (text, is_bold=false, font_size=11.0, median_font_size=11.0, max_font_size=18.0))]
+    fn validate_header_text(
+        &self, py: Python<'_>, text: &str, is_bold: bool, font_size: f32,
+        median_font_size: f32, max_font_size: f32,
+    ) -> PyResult<PyObject> {
+        let hv = crate::extractors::block_classifier::validate_header(
+            text, is_bold, font_size, median_font_size, max_font_size,
+        );
+        let dict = header_validation_to_dict(py, &hv)?;
+        Ok(dict.into())
+    }
+
+    /// Profile the document to detect domain, layout, and complexity.
+    ///
+    /// Returns:
+    ///     dict: Profile with keys: page_count, domain, layout, complexity_score, is_scanned, etc.
+    fn profile_document(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+        let doc = &mut self.inner;
+        let profile = crate::extractors::document_profiler::profile_document(doc)
+            .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+        let dict = pyo3::types::PyDict::new(py);
+        dict.set_item("page_count", profile.page_count)?;
+        dict.set_item("domain", &profile.domain)?;
+        dict.set_item("complexity_score", profile.complexity_score)?;
+        dict.set_item("is_scanned", profile.is_scanned)?;
+        dict.set_item("has_toc", profile.has_toc)?;
+        dict.set_item("has_outline", profile.has_outline)?;
+        dict.set_item("has_tables", profile.has_tables)?;
+        dict.set_item("has_images", profile.has_images)?;
+        dict.set_item("has_forms", profile.has_forms)?;
+        dict.set_item("has_annotations", profile.has_annotations)?;
+        dict.set_item("primary_font", &profile.primary_font)?;
+        dict.set_item("primary_font_size", profile.primary_font_size)?;
+        dict.set_item("title", &profile.title)?;
+        dict.set_item("preset", &profile.preset)?;
+        let layout = pyo3::types::PyDict::new(py);
+        layout.set_item("columns", profile.layout.columns)?;
+        layout.set_item("has_header", profile.layout.has_header)?;
+        layout.set_item("has_footer", profile.layout.has_footer)?;
+        layout.set_item("has_page_numbers", profile.layout.has_page_numbers)?;
+        layout.set_item("avg_chars_per_page", profile.layout.avg_chars_per_page)?;
+        layout.set_item("page_width", profile.layout.page_width)?;
+        layout.set_item("page_height", profile.layout.page_height)?;
+        layout.set_item("orientation", &profile.layout.orientation)?;
+        dict.set_item("layout", layout)?;
+        Ok(dict.into())
+    }
+
+    /// Build a section hierarchy from document headers.
+    ///
+    /// Returns:
+    ///     dict: Section tree with keys: sections (list), total_sections, max_depth
+    fn get_section_hierarchy(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+        let doc = &mut self.inner;
+        let tree = crate::extractors::section_hierarchy::build_section_hierarchy(doc)
+            .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+        let dict = pyo3::types::PyDict::new(py);
+        dict.set_item("total_sections", tree.total_sections)?;
+        dict.set_item("max_depth", tree.max_depth)?;
+        let flat = tree.to_flat_list();
+        let sections = pyo3::types::PyList::empty(py);
+        for (level, title, page) in &flat {
+            let s = pyo3::types::PyDict::new(py);
+            s.set_item("level", level)?;
+            s.set_item("title", title)?;
+            s.set_item("page", page)?;
+            sections.append(s)?;
+        }
+        dict.set_item("sections", sections)?;
+        Ok(dict.into())
+    }
+
+    /// Build flat sections from all pages (S04 section builder replacement).
+    ///
+    /// Classifies blocks on every page, then groups them into sections where
+    /// each header starts a new section and subsequent body blocks are aggregated.
+    /// Respects HeaderDisposition: Reject headers are treated as body text,
+    /// Escalate headers start sections but are flagged for cascade review.
+    ///
+    /// Returns:
+    ///     dict: {sections: list[dict], order_validation: list[dict]}
+    ///     Each section dict has: title, display_title, level, section_number,
+    ///     page_start, page_end, bbox, content, block_count, section_hash,
+    ///     parent_idx, header_disposition
+    fn build_flat_sections(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+        let doc = &mut self.inner;
+        let page_count = doc.page_count().map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+
+        // Classify blocks for all pages
+        let mut page_blocks: Vec<(usize, Vec<crate::extractors::block_classifier::ClassifiedBlock>)> = Vec::new();
+        for pg in 0..page_count {
+            let spans = doc.extract_spans_unsorted(pg).unwrap_or_default();
+            if spans.is_empty() {
+                continue;
+            }
+            let (width, height) = doc.get_page_info(pg)
+                .ok()
+                .map(|info| (info.media_box.width, info.media_box.height))
+                .unwrap_or((612.0, 792.0));
+            let classifier = crate::extractors::block_classifier::BlockClassifier::new(width, height, &spans);
+            let blocks = classifier.classify_spans(&spans);
+            page_blocks.push((pg, blocks));
+        }
+
+        let sections = crate::extractors::section_hierarchy::build_flat_sections(&page_blocks);
+        let order = crate::extractors::section_hierarchy::validate_section_order(&sections, &page_blocks);
+
+        let result = pyo3::types::PyDict::new(py);
+
+        // Serialize sections
+        let sec_list = pyo3::types::PyList::empty(py);
+        for sec in &sections {
+            let d = pyo3::types::PyDict::new(py);
+            d.set_item("title", &sec.title)?;
+            d.set_item("display_title", &sec.display_title)?;
+            d.set_item("level", sec.level)?;
+            d.set_item("section_number", &sec.section_number)?;
+            d.set_item("page_start", sec.page_start)?;
+            d.set_item("page_end", sec.page_end)?;
+            d.set_item("bbox", (sec.bbox.x, sec.bbox.y, sec.bbox.width, sec.bbox.height))?;
+            d.set_item("content", &sec.content)?;
+            d.set_item("block_count", sec.block_count)?;
+            d.set_item("section_hash", &sec.section_hash)?;
+            d.set_item("parent_idx", sec.parent_idx)?;
+            d.set_item("header_disposition", sec.header_disposition.as_ref().map(|hd| match hd {
+                crate::extractors::block_classifier::HeaderDisposition::Accept => "Accept",
+                crate::extractors::block_classifier::HeaderDisposition::Reject => "Reject",
+                crate::extractors::block_classifier::HeaderDisposition::Escalate => "Escalate",
+            }))?;
+            sec_list.append(d)?;
+        }
+        result.set_item("sections", sec_list)?;
+
+        // Serialize order validation
+        let order_list = pyo3::types::PyList::empty(py);
+        for (idx, ok) in &order {
+            let d = pyo3::types::PyDict::new(py);
+            d.set_item("section_index", idx)?;
+            d.set_item("order_ok", ok)?;
+            order_list.append(d)?;
+        }
+        result.set_item("order_validation", order_list)?;
+
+        Ok(result.into())
+    }
+
+    /// Assemble content from sections, tables, and figures (S07 replacement).
+    ///
+    /// Takes pre-built sections/blocks/tables/figures and performs:
+    /// - Spatial assignment of tables/figures to sections
+    /// - Overlap suppression (text blocks under tables/figures removed)
+    /// - Paragraph merging with asset interleaving in reading order
+    ///
+    /// Args:
+    ///     sections (list[dict]): Section dicts with keys: id, title, page_start, page_end, parent_id
+    ///     blocks (list[dict]): Block dicts with keys: id, page, bbox, text, block_type, section_id
+    ///     tables (list[dict]): Table dicts with keys: id, page, bbox, csv_data, section_id, sort_order, etc.
+    ///     figures (list[dict]): Figure dicts with keys: id, page, bbox, image_path, section_id, sort_order, etc.
+    ///     page_width (float): Page width for sort order calculation (default 612.0)
+    ///
+    /// Returns:
+    ///     dict: {sections, blocks, tables, figures, merged_content}
+    #[pyo3(signature = (sections, blocks, tables, figures, page_width=612.0))]
+    fn assemble_content(
+        &self, py: Python<'_>,
+        sections: Vec<pyo3::Bound<'_, pyo3::types::PyDict>>,
+        blocks: Vec<pyo3::Bound<'_, pyo3::types::PyDict>>,
+        tables: Vec<pyo3::Bound<'_, pyo3::types::PyDict>>,
+        figures: Vec<pyo3::Bound<'_, pyo3::types::PyDict>>,
+        page_width: f32,
+    ) -> PyResult<PyObject> {
+        use crate::extractors::content_assembler::*;
+
+        // Convert Python dicts to Rust structs
+        let rust_sections: Vec<ContentSection> = sections.iter().map(|d| {
+            ContentSection {
+                id: d.get_item("id").ok().flatten().map(|v| v.extract::<String>().unwrap_or_default()).unwrap_or_default(),
+                title: d.get_item("title").ok().flatten().map(|v| v.extract::<String>().unwrap_or_default()).unwrap_or_default(),
+                page_start: d.get_item("page_start").ok().flatten().map(|v| v.extract::<usize>().unwrap_or(0)).unwrap_or(0),
+                page_end: d.get_item("page_end").ok().flatten().map(|v| v.extract::<usize>().unwrap_or(0)).unwrap_or(0),
+                parent_id: d.get_item("parent_id").ok().flatten().and_then(|v| v.extract::<String>().ok()),
+            }
+        }).collect();
+
+        let rust_blocks: Vec<ContentBlock> = blocks.iter().map(|d| {
+            let bbox_tuple: (f32, f32, f32, f32) = d.get_item("bbox").ok().flatten()
+                .and_then(|v| v.extract().ok()).unwrap_or((0.0, 0.0, 0.0, 0.0));
+            ContentBlock {
+                id: d.get_item("id").ok().flatten().map(|v| v.extract::<String>().unwrap_or_default()).unwrap_or_default(),
+                page: d.get_item("page").ok().flatten().map(|v| v.extract::<usize>().unwrap_or(0)).unwrap_or(0),
+                bbox: crate::geometry::Rect::new(bbox_tuple.0, bbox_tuple.1, bbox_tuple.2, bbox_tuple.3),
+                text: d.get_item("text").ok().flatten().map(|v| v.extract::<String>().unwrap_or_default()).unwrap_or_default(),
+                block_type: d.get_item("block_type").ok().flatten().map(|v| v.extract::<String>().unwrap_or_default()).unwrap_or_else(|| "Text".to_string()),
+                section_id: d.get_item("section_id").ok().flatten().and_then(|v| v.extract::<String>().ok()),
+                is_equation: d.get_item("is_equation").ok().flatten().map(|v| v.extract::<bool>().unwrap_or(false)).unwrap_or(false),
+                latex_content: d.get_item("latex_content").ok().flatten().and_then(|v| v.extract::<String>().ok()),
+            }
+        }).collect();
+
+        let rust_tables: Vec<ContentTable> = tables.iter().map(|d| {
+            let bbox_tuple: (f32, f32, f32, f32) = d.get_item("bbox").ok().flatten()
+                .and_then(|v| v.extract().ok()).unwrap_or((0.0, 0.0, 0.0, 0.0));
+            ContentTable {
+                id: d.get_item("id").ok().flatten().map(|v| v.extract::<String>().unwrap_or_default()).unwrap_or_default(),
+                page: d.get_item("page").ok().flatten().map(|v| v.extract::<usize>().unwrap_or(0)).unwrap_or(0),
+                bbox: crate::geometry::Rect::new(bbox_tuple.0, bbox_tuple.1, bbox_tuple.2, bbox_tuple.3),
+                csv_data: d.get_item("csv_data").ok().flatten().map(|v| v.extract::<String>().unwrap_or_default()).unwrap_or_default(),
+                html_data: d.get_item("html_data").ok().flatten().map(|v| v.extract::<String>().unwrap_or_default()).unwrap_or_default(),
+                section_id: d.get_item("section_id").ok().flatten().and_then(|v| v.extract::<String>().ok()),
+                sort_order: d.get_item("sort_order").ok().flatten().map(|v| v.extract::<i64>().unwrap_or(0)).unwrap_or(0),
+                llm_title: d.get_item("llm_title").ok().flatten().and_then(|v| v.extract::<String>().ok()),
+                llm_description: d.get_item("llm_description").ok().flatten().and_then(|v| v.extract::<String>().ok()),
+                image_path: d.get_item("image_path").ok().flatten().and_then(|v| v.extract::<String>().ok()),
+            }
+        }).collect();
+
+        let rust_figures: Vec<ContentFigure> = figures.iter().map(|d| {
+            let bbox_tuple: (f32, f32, f32, f32) = d.get_item("bbox").ok().flatten()
+                .and_then(|v| v.extract().ok()).unwrap_or((0.0, 0.0, 0.0, 0.0));
+            ContentFigure {
+                id: d.get_item("id").ok().flatten().map(|v| v.extract::<String>().unwrap_or_default()).unwrap_or_default(),
+                page: d.get_item("page").ok().flatten().map(|v| v.extract::<usize>().unwrap_or(0)).unwrap_or(0),
+                bbox: crate::geometry::Rect::new(bbox_tuple.0, bbox_tuple.1, bbox_tuple.2, bbox_tuple.3),
+                image_path: d.get_item("image_path").ok().flatten().map(|v| v.extract::<String>().unwrap_or_default()).unwrap_or_default(),
+                section_id: d.get_item("section_id").ok().flatten().and_then(|v| v.extract::<String>().ok()),
+                sort_order: d.get_item("sort_order").ok().flatten().map(|v| v.extract::<i64>().unwrap_or(0)).unwrap_or(0),
+                llm_title: d.get_item("llm_title").ok().flatten().and_then(|v| v.extract::<String>().ok()),
+                llm_description: d.get_item("llm_description").ok().flatten().and_then(|v| v.extract::<String>().ok()),
+            }
+        }).collect();
+
+        let assembled = assemble_content(rust_sections, rust_blocks, rust_tables, rust_figures, page_width);
+
+        // Serialize to Python dict
+        let result = pyo3::types::PyDict::new(py);
+
+        // Sections
+        let sec_list = pyo3::types::PyList::empty(py);
+        for s in &assembled.sections {
+            let d = pyo3::types::PyDict::new(py);
+            d.set_item("id", &s.id)?;
+            d.set_item("title", &s.title)?;
+            d.set_item("page_start", s.page_start)?;
+            d.set_item("page_end", s.page_end)?;
+            d.set_item("parent_id", s.parent_id.as_deref())?;
+            sec_list.append(d)?;
+        }
+        result.set_item("sections", sec_list)?;
+
+        // Tables (with section_id now assigned)
+        let tbl_list = pyo3::types::PyList::empty(py);
+        for t in &assembled.tables {
+            let d = pyo3::types::PyDict::new(py);
+            d.set_item("id", &t.id)?;
+            d.set_item("page", t.page)?;
+            d.set_item("bbox", (t.bbox.x, t.bbox.y, t.bbox.width, t.bbox.height))?;
+            d.set_item("section_id", t.section_id.as_deref())?;
+            d.set_item("sort_order", t.sort_order)?;
+            d.set_item("csv_data", &t.csv_data)?;
+            d.set_item("html_data", &t.html_data)?;
+            d.set_item("llm_title", t.llm_title.as_deref())?;
+            d.set_item("llm_description", t.llm_description.as_deref())?;
+            d.set_item("image_path", t.image_path.as_deref())?;
+            tbl_list.append(d)?;
+        }
+        result.set_item("tables", tbl_list)?;
+
+        // Figures (with section_id now assigned)
+        let fig_list = pyo3::types::PyList::empty(py);
+        for f in &assembled.figures {
+            let d = pyo3::types::PyDict::new(py);
+            d.set_item("id", &f.id)?;
+            d.set_item("page", f.page)?;
+            d.set_item("bbox", (f.bbox.x, f.bbox.y, f.bbox.width, f.bbox.height))?;
+            d.set_item("section_id", f.section_id.as_deref())?;
+            d.set_item("sort_order", f.sort_order)?;
+            d.set_item("image_path", &f.image_path)?;
+            d.set_item("llm_title", f.llm_title.as_deref())?;
+            d.set_item("llm_description", f.llm_description.as_deref())?;
+            fig_list.append(d)?;
+        }
+        result.set_item("figures", fig_list)?;
+
+        // Merged content
+        let mc_list = pyo3::types::PyList::empty(py);
+        for m in &assembled.merged_content {
+            let d = pyo3::types::PyDict::new(py);
+            d.set_item("id", &m.id)?;
+            d.set_item("section_id", &m.section_id)?;
+            d.set_item("page", m.page)?;
+            d.set_item("type", &m.content_type)?;
+            d.set_item("content", &m.content)?;
+            d.set_item("asset_id", m.asset_id.as_deref())?;
+            d.set_item("sort_order", m.sort_order)?;
+            d.set_item("bbox", (m.bbox.x, m.bbox.y, m.bbox.width, m.bbox.height))?;
+            mc_list.append(d)?;
+        }
+        result.set_item("merged_content", mc_list)?;
+
+        Ok(result.into())
+    }
+
+    /// Run full extraction prediction — bundles profiling, block classification,
+    /// section hierarchy, and engineering detection. Returns a single dict with
+    /// all analysis results and a recommended extraction strategy.
+    /// This is the primary input for Shadow-LEGO cascade decision points.
+    fn predict_extraction(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+        let doc = &mut self.inner;
+        let prediction = crate::extractors::prediction::predict_extraction(doc)
+            .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+
+        let dict = pyo3::types::PyDict::new(py);
+        dict.set_item("recommended_strategy", &prediction.recommended_strategy)?;
+
+        // Profile
+        let profile = pyo3::types::PyDict::new(py);
+        profile.set_item("domain", &prediction.profile.domain)?;
+        profile.set_item("complexity_score", prediction.profile.complexity_score)?;
+        profile.set_item("is_scanned", prediction.profile.is_scanned)?;
+        profile.set_item("has_tables", prediction.profile.has_tables)?;
+        profile.set_item("has_images", prediction.profile.has_images)?;
+        profile.set_item("has_toc", prediction.profile.has_toc)?;
+        profile.set_item("has_outline", prediction.profile.has_outline)?;
+        profile.set_item("preset", &prediction.profile.preset)?;
+        profile.set_item("primary_font", &prediction.profile.primary_font)?;
+        profile.set_item("primary_font_size", prediction.profile.primary_font_size)?;
+        profile.set_item("columns", prediction.profile.layout.columns)?;
+        profile.set_item("page_count", prediction.profile.page_count)?;
+        dict.set_item("profile", profile)?;
+
+        // Engineering
+        let eng = pyo3::types::PyDict::new(py);
+        eng.set_item("is_engineering", prediction.engineering.is_engineering)?;
+        eng.set_item("doc_subtype", &prediction.engineering.doc_subtype)?;
+        eng.set_item("drawing_number", prediction.engineering.drawing_number.as_deref())?;
+        eng.set_item("revision", prediction.engineering.revision.as_deref())?;
+        eng.set_item("distribution_statement", prediction.engineering.distribution_statement.as_deref())?;
+        dict.set_item("engineering", eng)?;
+
+        // Sections summary
+        let sections = pyo3::types::PyDict::new(py);
+        sections.set_item("total_sections", prediction.sections.total_sections)?;
+        sections.set_item("max_depth", prediction.sections.max_depth)?;
+        dict.set_item("sections", sections)?;
+
+        // Page block summaries
+        let pages = pyo3::types::PyList::empty(py);
+        for pbs in &prediction.page_block_summary {
+            let p = pyo3::types::PyDict::new(py);
+            p.set_item("page", pbs.page)?;
+            p.set_item("total_blocks", pbs.total_blocks)?;
+            p.set_item("title_count", pbs.title_count)?;
+            p.set_item("body_count", pbs.body_count)?;
+            p.set_item("list_count", pbs.list_count)?;
+            p.set_item("table_count", pbs.table_count)?;
+            p.set_item("has_header", pbs.has_header)?;
+            p.set_item("has_footer", pbs.has_footer)?;
+            pages.append(p)?;
+        }
+        dict.set_item("page_summaries", pages)?;
+
+        Ok(dict.into())
+    }
+
+    /// Detect engineering/defense document features.
+    ///
+    /// Returns a dict with: is_engineering, doc_subtype, elements, drawing_number,
+    /// revision, cage_code, distribution_statement.
+    fn detect_engineering_features(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+        let doc = &mut self.inner;
+        let profile = crate::extractors::engineering::detect_engineering_features(doc)
+            .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+        let dict = pyo3::types::PyDict::new(py);
+        dict.set_item("is_engineering", profile.is_engineering)?;
+        dict.set_item("doc_subtype", &profile.doc_subtype)?;
+        dict.set_item("drawing_number", profile.drawing_number.as_deref())?;
+        dict.set_item("revision", profile.revision.as_deref())?;
+        dict.set_item("cage_code", profile.cage_code.as_deref())?;
+        dict.set_item("distribution_statement", profile.distribution_statement.as_deref())?;
+        let elements = pyo3::types::PyList::empty(py);
+        for elem in &profile.elements {
+            let e = pyo3::types::PyDict::new(py);
+            e.set_item("type", elem.element_type.as_str())?;
+            e.set_item("page", elem.page)?;
+            e.set_item("confidence", elem.confidence)?;
+            e.set_item("text", &elem.text)?;
+            e.set_item("bbox", (elem.bbox.x, elem.bbox.y, elem.bbox.width, elem.bbox.height))?;
+            elements.append(e)?;
+        }
+        dict.set_item("elements", elements)?;
+        Ok(dict.into())
+    }
+
+    /// Run the full document extraction pipeline.
+    ///
+    /// Returns a comprehensive dict with profile, pages (blocks + text),
+    /// figures, sections, engineering features, running headers/footers,
+    /// and recommended extraction strategy.
+    ///
+    /// Args:
+    ///     detect_figures: Whether to detect figures (default: True)
+    ///     detect_engineering: Whether to detect engineering features (default: True)
+    ///     normalize_text: Whether to normalize extracted text (default: True)
+    ///     build_sections: Whether to build section hierarchy (default: True)
+    ///     max_pages: Maximum pages to process, 0 = all (default: 0)
+    ///
+    /// Returns:
+    ///     dict with keys: profile, pages, figures, sections, engineering,
+    ///     running_headers, running_footers, recommended_strategy, page_count
+    #[pyo3(signature = (detect_figures=true, detect_engineering=true, normalize_text=true, build_sections=true, max_pages=0))]
+    fn extract_document(
+        &mut self,
+        py: Python<'_>,
+        detect_figures: bool,
+        detect_engineering: bool,
+        normalize_text: bool,
+        build_sections: bool,
+        max_pages: usize,
+    ) -> PyResult<PyObject> {
+        use crate::extractors::document_extractor::{extract_document_with_config, ExtractionConfig};
+
+        let config = ExtractionConfig {
+            detect_figures,
+            detect_engineering,
+            normalize_text,
+            build_sections,
+            max_pages,
+        };
+
+        let doc = &mut self.inner;
+        let result = extract_document_with_config(doc, &config)
+            .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+
+        let dict = pyo3::types::PyDict::new(py);
+
+        // Profile
+        let profile = pyo3::types::PyDict::new(py);
+        profile.set_item("domain", &result.profile.domain)?;
+        profile.set_item("complexity_score", result.profile.complexity_score)?;
+        profile.set_item("is_scanned", result.profile.is_scanned)?;
+        profile.set_item("has_tables", result.profile.has_tables)?;
+        profile.set_item("has_images", result.profile.has_images)?;
+        profile.set_item("has_toc", result.profile.has_toc)?;
+        profile.set_item("column_count", result.profile.column_count)?;
+        dict.set_item("profile", profile)?;
+
+        // Pages
+        let pages_list = pyo3::types::PyList::empty(py);
+        for page_result in &result.pages {
+            let page_dict = pyo3::types::PyDict::new(py);
+            page_dict.set_item("page", page_result.page)?;
+            page_dict.set_item("text", &page_result.text)?;
+
+            let blocks_list = pyo3::types::PyList::empty(py);
+            for block in &page_result.blocks {
+                let b = pyo3::types::PyDict::new(py);
+                b.set_item("block_type", &block.block_type)?;
+                b.set_item("text", &block.text)?;
+                b.set_item("bbox", (block.bbox[0], block.bbox[1], block.bbox[2], block.bbox[3]))?;
+                b.set_item("font_size", block.font_size)?;
+                b.set_item("font_name", &block.font_name)?;
+                b.set_item("is_bold", block.is_bold)?;
+                b.set_item("confidence", block.confidence)?;
+                b.set_item("header_level", block.header_level)?;
+                b.set_item("paragraph_id", block.paragraph_id)?;
+                blocks_list.append(b)?;
+            }
+            page_dict.set_item("blocks", blocks_list)?;
+            pages_list.append(page_dict)?;
+        }
+        dict.set_item("pages", pages_list)?;
+
+        // Figures
+        let figures_list = pyo3::types::PyList::empty(py);
+        for fig in &result.figures {
+            let f = pyo3::types::PyDict::new(py);
+            f.set_item("page", fig.page)?;
+            f.set_item("bbox", (fig.bbox[0], fig.bbox[1], fig.bbox[2], fig.bbox[3]))?;
+            f.set_item("caption", fig.caption.as_deref())?;
+            f.set_item("caption_number", fig.caption_number)?;
+            f.set_item("context_above", &fig.context_above)?;
+            f.set_item("context_below", &fig.context_below)?;
+            f.set_item("section_title", fig.section_title.as_deref())?;
+            figures_list.append(f)?;
+        }
+        dict.set_item("figures", figures_list)?;
+
+        // Sections
+        let sections_list = pyo3::types::PyList::empty(py);
+        for sec in &result.sections {
+            let s = pyo3::types::PyDict::new(py);
+            s.set_item("title", &sec.title)?;
+            s.set_item("level", sec.level)?;
+            s.set_item("page", sec.page)?;
+            s.set_item("numbering", sec.numbering.as_deref())?;
+            sections_list.append(s)?;
+        }
+        dict.set_item("sections", sections_list)?;
+
+        // Engineering
+        if let Some(eng) = &result.engineering {
+            let e = pyo3::types::PyDict::new(py);
+            e.set_item("has_title_block", eng.has_title_block)?;
+            e.set_item("has_revision_table", eng.has_revision_table)?;
+            e.set_item("has_drawing_border", eng.has_drawing_border)?;
+            e.set_item("security_markings", eng.security_markings.clone())?;
+            e.set_item("document_number", eng.document_number.as_deref())?;
+            dict.set_item("engineering", e)?;
+        } else {
+            dict.set_item("engineering", py.None())?;
+        }
+
+        // Running headers/footers
+        dict.set_item("running_headers", result.running_headers.clone())?;
+        dict.set_item("running_footers", result.running_footers.clone())?;
+
+        // Strategy and page count
+        dict.set_item("recommended_strategy", &result.recommended_strategy)?;
+        dict.set_item("page_count", result.page_count)?;
+
+        Ok(dict.into())
+    }
+
+    /// Get link annotations from a page.
+    ///
+    /// Returns a list of (index, dict) tuples for all Link annotations on the page.
+    /// The index can be used with update_link_uri(), update_link_destination(), etc.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///
+    /// Returns:
+    ///     list[tuple[int, dict]]: List of (annot_index, annotation_dict) tuples
+    fn get_links(&mut self, page: usize) -> PyResult<Vec<(usize, PyObject)>> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            let links = editor
+                .get_links(page)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to get links: {}", e)))?;
+            Python::with_gil(|py| {
+                let result: Vec<(usize, PyObject)> = links
+                    .into_iter()
+                    .map(|(idx, annot)| {
+                        let dict = PyDict::new(py);
+                        dict.set_item("subtype", &annot.subtype).ok();
+                        if let Some(rect) = annot.rect {
+                            dict.set_item("rect", (rect[0], rect[1], rect[2], rect[3])).ok();
+                        }
+                        // Extract URI from action if it's a URI action
+                        if let Some(ref action) = annot.action {
+                            match action {
+                                crate::annotations::LinkAction::Uri(uri) => {
+                                    dict.set_item("uri", uri).ok();
+                                }
+                                _ => {}
+                            }
+                        }
+                        if let Some(ref contents) = annot.contents {
+                            dict.set_item("contents", contents).ok();
+                        }
+                        (idx, dict.into())
+                    })
+                    .collect();
+                Ok(result)
+            })
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Update a link annotation's URI.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///     annot_index (int): Annotation index from get_links()
+    ///     new_uri (str): New target URI
+    fn update_link_uri(&mut self, page: usize, annot_index: usize, new_uri: &str) -> PyResult<()> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            editor
+                .update_link_uri(page, annot_index, new_uri)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to update link: {}", e)))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Update a link annotation to navigate to a specific page.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based) where the link is
+    ///     annot_index (int): Annotation index from get_links()
+    ///     target_page (int): Target page number (0-based)
+    fn update_link_destination(&mut self, page: usize, annot_index: usize, target_page: usize) -> PyResult<()> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            editor
+                .update_link_destination(page, annot_index, target_page)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to update link destination: {}", e)))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Update a link annotation to navigate to a named destination.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based) where the link is
+    ///     annot_index (int): Annotation index from get_links()
+    ///     dest_name (str): Named destination string
+    fn update_link_named_destination(&mut self, page: usize, annot_index: usize, dest_name: &str) -> PyResult<()> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            editor
+                .update_link_named_destination(page, annot_index, dest_name)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to update link destination: {}", e)))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Delete a link annotation from a page.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///     annot_index (int): Annotation index from get_links()
+    fn delete_link(&mut self, page: usize, annot_index: usize) -> PyResult<()> {
+        if self.editor.is_none() {
+            let editor = RustDocumentEditor::open(&self.path)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
+            self.editor = Some(editor);
+        }
+        if let Some(ref mut editor) = self.editor {
+            editor
+                .delete_link(page, annot_index)
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to delete link: {}", e)))
+        } else {
+            Err(PyRuntimeError::new_err("No document loaded"))
+        }
+    }
+
+    /// Detect the type of a page for OCR purposes.
+    ///
+    /// Returns "native" (has extractable text), "scanned" (full-page scan, needs OCR),
+    /// or "hybrid" (mix of text and scanned images).
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///
+    /// Returns:
+    ///     str: One of "native", "scanned", or "hybrid"
+    ///
+    /// Raises:
+    ///     RuntimeError: If OCR feature is not enabled or detection fails
+    #[cfg(feature = "ocr")]
+    fn detect_page_type(&mut self, page: usize) -> PyResult<String> {
+        let page_type = crate::ocr::detect_page_type(&mut self.inner, page)
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to detect page type: {}", e)))?;
+        Ok(match page_type {
+            crate::ocr::PageType::NativeText => "native".to_string(),
+            crate::ocr::PageType::ScannedPage => "scanned".to_string(),
+            crate::ocr::PageType::HybridPage => "hybrid".to_string(),
+        })
     }
 
     /// Extract vector paths (lines, curves, shapes) from a page.
@@ -2160,6 +4173,100 @@ impl PyPdfDocument {
             let _ = engine;
             let _ = page;
             Err(PyRuntimeError::new_err("OCR feature not enabled. Please install with 'pip install pdf_oxide[ocr]' or build with --features ocr"))
+        }
+    }
+
+    // ========================================================================
+    // OCR Searchable PDF
+    // ========================================================================
+
+    /// Make a single page searchable by adding an invisible OCR text layer.
+    ///
+    /// Runs OCR on the page, then overlays the recognized text as invisible
+    /// (rendering mode 3) so it can be searched and selected but not seen.
+    /// The document must be saved afterwards for changes to take effect.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///     engine (OcrEngine): OCR engine instance
+    ///     dpi (float): Rendering DPI for OCR (default 300.0)
+    ///
+    /// Returns:
+    ///     int: Number of text spans added to the page
+    ///
+    /// Raises:
+    ///     RuntimeError: If OCR or text layer generation fails
+    ///
+    /// Example:
+    ///     >>> engine = OcrEngine("det.onnx", "rec.onnx", "dict.txt")
+    ///     >>> doc = PdfDocument("scanned.pdf")
+    ///     >>> spans = doc.make_page_searchable(0, engine)
+    ///     >>> doc.save("searchable.pdf")
+    #[pyo3(signature = (page, engine, dpi=300.0))]
+    fn make_page_searchable(
+        &mut self,
+        page: usize,
+        engine: &PyOcrEngine,
+        dpi: f32,
+    ) -> PyResult<usize> {
+        #[cfg(feature = "ocr")]
+        {
+            self.ensure_editor()?;
+            let editor = self.editor.as_mut().unwrap();
+            editor
+                .make_page_searchable(page, &engine.inner, dpi)
+                .map_err(|e| {
+                    PyRuntimeError::new_err(format!("Failed to make page searchable: {}", e))
+                })
+        }
+        #[cfg(not(feature = "ocr"))]
+        {
+            let _ = (page, engine, dpi);
+            Err(PyRuntimeError::new_err("OCR feature not enabled"))
+        }
+    }
+
+    /// Make all pages in the document searchable.
+    ///
+    /// Iterates over every page, checks if it needs OCR (scanned or hybrid),
+    /// and adds an invisible text layer where needed. Pages with sufficient
+    /// native text are skipped automatically.
+    ///
+    /// Args:
+    ///     engine (OcrEngine): OCR engine instance
+    ///     dpi (float): Rendering DPI for OCR (default 300.0)
+    ///
+    /// Returns:
+    ///     int: Number of pages that were made searchable
+    ///
+    /// Raises:
+    ///     RuntimeError: If OCR or text layer generation fails
+    ///
+    /// Example:
+    ///     >>> engine = OcrEngine("det.onnx", "rec.onnx", "dict.txt")
+    ///     >>> doc = PdfDocument("scanned.pdf")
+    ///     >>> pages = doc.make_all_searchable(engine)
+    ///     >>> print(f"Made {pages} pages searchable")
+    ///     >>> doc.save("searchable.pdf")
+    #[pyo3(signature = (engine, dpi=300.0))]
+    fn make_all_searchable(&mut self, engine: &PyOcrEngine, dpi: f32) -> PyResult<usize> {
+        #[cfg(feature = "ocr")]
+        {
+            self.ensure_editor()?;
+            let editor = self.editor.as_mut().unwrap();
+            editor
+                .make_all_searchable(&engine.inner, dpi)
+                .map_err(|e| {
+                    PyRuntimeError::new_err(format!(
+                        "Failed to make document searchable: {}",
+                        e
+                    ))
+                })
+        }
+        #[cfg(not(feature = "ocr"))]
+        {
+            let _ = (engine, dpi);
+            Err(PyRuntimeError::new_err("OCR feature not enabled"))
         }
     }
 
@@ -3472,6 +5579,214 @@ impl PyPdfPage {
         format!("{:?}", id)
     }
 
+    // === Phase 1.6 — Additional annotation creation methods ===
+
+    /// Add a free text annotation (text rendered directly on the page).
+    ///
+    /// Args:
+    ///     x (float): X coordinate
+    ///     y (float): Y coordinate
+    ///     width (float): Width
+    ///     height (float): Height
+    ///     text (str): Text content
+    ///     font_size (float): Font size in points (default: 12.0)
+    ///     color (tuple): RGB text color (r, g, b), each 0.0-1.0 (default: black)
+    ///
+    /// Returns:
+    ///     str: Annotation ID
+    #[pyo3(signature = (x, y, width, height, text, font_size=12.0, color=None))]
+    fn add_freetext(
+        &mut self,
+        x: f32, y: f32, width: f32, height: f32,
+        text: &str,
+        font_size: f32,
+        color: Option<(f32, f32, f32)>,
+    ) -> String {
+        use crate::writer::FreeTextAnnotation;
+        let rect = crate::geometry::Rect::new(x, y, width, height);
+        let mut annot = FreeTextAnnotation::new(rect, text);
+        annot = annot.with_font("Helvetica", font_size);
+        if let Some((r, g, b)) = color {
+            annot = annot.with_text_color(r, g, b);
+        }
+        let id = self.inner.add_annotation(annot);
+        format!("{:?}", id)
+    }
+
+    /// Add a rubber stamp annotation.
+    ///
+    /// Args:
+    ///     x (float): X coordinate
+    ///     y (float): Y coordinate
+    ///     width (float): Width
+    ///     height (float): Height
+    ///     stamp_type (str): Stamp type — "approved", "experimental", "not_approved",
+    ///                       "as_is", "expired", "not_for_public", "confidential",
+    ///                       "final", "sold", "departmental", "for_comment",
+    ///                       "top_secret", "draft", "for_public"
+    ///
+    /// Returns:
+    ///     str: Annotation ID
+    fn add_stamp(&mut self, x: f32, y: f32, width: f32, height: f32, stamp_type: &str) -> String {
+        use crate::writer::{StampAnnotation, StampType};
+        let rect = crate::geometry::Rect::new(x, y, width, height);
+        let stype = match stamp_type.to_lowercase().as_str() {
+            "approved" => StampType::Approved,
+            "experimental" => StampType::Experimental,
+            "not_approved" | "notapproved" => StampType::NotApproved,
+            "as_is" | "asis" => StampType::AsIs,
+            "expired" => StampType::Expired,
+            "not_for_public" | "notforpublic" => StampType::NotForPublicRelease,
+            "confidential" => StampType::Confidential,
+            "final" => StampType::Final,
+            "sold" => StampType::Sold,
+            "departmental" => StampType::Departmental,
+            "for_comment" | "forcomment" => StampType::ForComment,
+            "top_secret" | "topsecret" => StampType::TopSecret,
+            "draft" => StampType::Draft,
+            "for_public" | "forpublic" => StampType::ForPublicRelease,
+            _ => StampType::Draft,
+        };
+        let stamp = StampAnnotation::new(rect, stype);
+        let id = self.inner.add_annotation(stamp);
+        format!("{:?}", id)
+    }
+
+    /// Add an underline text markup annotation.
+    ///
+    /// Args:
+    ///     x, y, width, height (float): Bounding box
+    ///     color (tuple): RGB color (r, g, b), each 0.0-1.0
+    fn add_underline(&mut self, x: f32, y: f32, width: f32, height: f32, color: (f32, f32, f32)) -> String {
+        use crate::writer::TextMarkupAnnotation;
+        use crate::TextMarkupType;
+        let rect = crate::geometry::Rect::new(x, y, width, height);
+        let annot = TextMarkupAnnotation::from_rect(TextMarkupType::Underline, rect)
+            .with_color(color.0, color.1, color.2);
+        let id = self.inner.add_annotation(annot);
+        format!("{:?}", id)
+    }
+
+    /// Add a strikeout text markup annotation.
+    fn add_strikeout(&mut self, x: f32, y: f32, width: f32, height: f32, color: (f32, f32, f32)) -> String {
+        use crate::writer::TextMarkupAnnotation;
+        use crate::TextMarkupType;
+        let rect = crate::geometry::Rect::new(x, y, width, height);
+        let annot = TextMarkupAnnotation::from_rect(TextMarkupType::StrikeOut, rect)
+            .with_color(color.0, color.1, color.2);
+        let id = self.inner.add_annotation(annot);
+        format!("{:?}", id)
+    }
+
+    /// Add a squiggly text markup annotation.
+    fn add_squiggly(&mut self, x: f32, y: f32, width: f32, height: f32, color: (f32, f32, f32)) -> String {
+        use crate::writer::TextMarkupAnnotation;
+        use crate::TextMarkupType;
+        let rect = crate::geometry::Rect::new(x, y, width, height);
+        let annot = TextMarkupAnnotation::from_rect(TextMarkupType::Squiggly, rect)
+            .with_color(color.0, color.1, color.2);
+        let id = self.inner.add_annotation(annot);
+        format!("{:?}", id)
+    }
+
+    /// Add a line annotation between two points.
+    ///
+    /// Args:
+    ///     x1, y1 (float): Start point
+    ///     x2, y2 (float): End point
+    ///     color (tuple): RGB color (r, g, b), each 0.0-1.0
+    fn add_line_annot(
+        &mut self,
+        x1: f32, y1: f32, x2: f32, y2: f32,
+        color: (f32, f32, f32),
+    ) -> String {
+        use crate::writer::LineAnnotation;
+        let annot = LineAnnotation::new((x1 as f64, y1 as f64), (x2 as f64, y2 as f64))
+            .with_stroke_color(color.0, color.1, color.2);
+        let id = self.inner.add_annotation(annot);
+        format!("{:?}", id)
+    }
+
+    /// Add a square/rectangle annotation.
+    ///
+    /// Args:
+    ///     x, y, width, height (float): Bounding box
+    ///     color (tuple): RGB border color
+    ///     fill (tuple, optional): RGB fill color
+    #[pyo3(signature = (x, y, width, height, color, fill=None))]
+    fn add_square(
+        &mut self,
+        x: f32, y: f32, width: f32, height: f32,
+        color: (f32, f32, f32),
+        fill: Option<(f32, f32, f32)>,
+    ) -> String {
+        use crate::writer::ShapeAnnotation;
+        let rect = crate::geometry::Rect::new(x, y, width, height);
+        let mut annot = ShapeAnnotation::square(rect)
+            .with_stroke_color(color.0, color.1, color.2);
+        if let Some((r, g, b)) = fill {
+            annot = annot.with_fill_color(r, g, b);
+        }
+        let id = self.inner.add_annotation(annot);
+        format!("{:?}", id)
+    }
+
+    /// Add a circle/ellipse annotation.
+    #[pyo3(signature = (x, y, width, height, color, fill=None))]
+    fn add_circle(
+        &mut self,
+        x: f32, y: f32, width: f32, height: f32,
+        color: (f32, f32, f32),
+        fill: Option<(f32, f32, f32)>,
+    ) -> String {
+        use crate::writer::ShapeAnnotation;
+        let rect = crate::geometry::Rect::new(x, y, width, height);
+        let mut annot = ShapeAnnotation::circle(rect)
+            .with_stroke_color(color.0, color.1, color.2);
+        if let Some((r, g, b)) = fill {
+            annot = annot.with_fill_color(r, g, b);
+        }
+        let id = self.inner.add_annotation(annot);
+        format!("{:?}", id)
+    }
+
+    /// Add a redaction annotation (marks area for redaction).
+    ///
+    /// Call apply_page_redactions() or apply_all_redactions() to apply.
+    ///
+    /// Args:
+    ///     x, y, width, height (float): Area to redact
+    ///     overlay_text (str, optional): Text shown after redaction
+    #[pyo3(signature = (x, y, width, height, overlay_text=None))]
+    fn add_redact(
+        &mut self,
+        x: f32, y: f32, width: f32, height: f32,
+        overlay_text: Option<&str>,
+    ) -> String {
+        use crate::writer::RedactAnnotation;
+        let rect = crate::geometry::Rect::new(x, y, width, height);
+        let mut annot = RedactAnnotation::new(rect);
+        if let Some(text) = overlay_text {
+            annot = annot.with_overlay_text(text);
+        }
+        let id = self.inner.add_annotation(annot);
+        format!("{:?}", id)
+    }
+
+    /// Add a watermark annotation.
+    ///
+    /// Args:
+    ///     text (str): Watermark text
+    ///     opacity (float): Opacity 0.0-1.0 (default: 0.3)
+    #[pyo3(signature = (text, opacity=0.3))]
+    fn add_watermark(&mut self, text: &str, opacity: f32) -> String {
+        use crate::writer::WatermarkAnnotation;
+        let annot = WatermarkAnnotation::new(text)
+            .with_opacity(opacity);
+        let id = self.inner.add_annotation(annot);
+        format!("{:?}", id)
+    }
+
     /// Remove an annotation by index.
     ///
     /// Args:
@@ -4070,6 +6385,30 @@ impl PyTextSpan {
         (self.inner.color.r, self.inner.color.g, self.inner.color.b)
     }
 
+    /// Text origin point (x, y) — the baseline start position.
+    #[getter]
+    fn origin(&self) -> (f32, f32) {
+        (self.inner.bbox.x, self.inner.bbox.y + self.inner.bbox.height)
+    }
+
+    /// Character spacing (Tc parameter). Default 0.
+    #[getter]
+    fn char_spacing(&self) -> f32 {
+        self.inner.char_spacing
+    }
+
+    /// Word spacing (Tw parameter). Default 0.
+    #[getter]
+    fn word_spacing(&self) -> f32 {
+        self.inner.word_spacing
+    }
+
+    /// Horizontal scaling (Tz parameter, percentage). Default 100.
+    #[getter]
+    fn horizontal_scaling(&self) -> f32 {
+        self.inner.horizontal_scaling
+    }
+
     fn __repr__(&self) -> String {
         let preview = if self.inner.text.len() > 30 {
             format!("{}...", &self.inner.text[..30])
@@ -4190,6 +6529,53 @@ impl PyTextLine {
     }
 }
 
+/// Convert HeaderValidation to a Python dictionary with disposition and features.
+fn header_validation_to_dict<'py>(
+    py: Python<'py>,
+    hv: &crate::extractors::block_classifier::HeaderValidation,
+) -> PyResult<pyo3::Bound<'py, pyo3::types::PyDict>> {
+    use crate::extractors::block_classifier::HeaderDisposition;
+    let dict = pyo3::types::PyDict::new(py);
+    dict.set_item("is_header", hv.is_header)?;
+    dict.set_item("confidence", hv.confidence)?;
+    dict.set_item("disposition", match hv.disposition {
+        HeaderDisposition::Accept => "Accept",
+        HeaderDisposition::Reject => "Reject",
+        HeaderDisposition::Escalate => "Escalate",
+    })?;
+    dict.set_item("level", hv.level)?;
+    let reasons: Vec<&str> = hv.reasons.iter().copied().collect();
+    dict.set_item("reasons", reasons)?;
+    dict.set_item("has_numbering", hv.numbering.has_numbering)?;
+    dict.set_item("number_text", &hv.numbering.number_text)?;
+    dict.set_item("title_text", &hv.numbering.title_text)?;
+    dict.set_item("depth_level", hv.numbering.depth_level)?;
+
+    // Features dict for classifier input
+    let feat = pyo3::types::PyDict::new(py);
+    feat.set_item("text_len", hv.features.text_len)?;
+    feat.set_item("has_number_prefix", hv.features.has_number_prefix)?;
+    feat.set_item("font_size", hv.features.font_size)?;
+    feat.set_item("size_ratio", hv.features.size_ratio)?;
+    feat.set_item("is_bold", hv.features.is_bold)?;
+    feat.set_item("ends_with_period", hv.features.ends_with_period)?;
+    feat.set_item("ends_with_colon", hv.features.ends_with_colon)?;
+    feat.set_item("ends_with_other_punct", hv.features.ends_with_other_punct)?;
+    feat.set_item("has_bullet_char", hv.features.has_bullet_char)?;
+    feat.set_item("is_caption_pattern", hv.features.is_caption_pattern)?;
+    feat.set_item("is_multi_sentence", hv.features.is_multi_sentence)?;
+    feat.set_item("word_count", hv.features.word_count)?;
+    feat.set_item("title_case_ratio", hv.features.title_case_ratio)?;
+    feat.set_item("is_all_caps", hv.features.is_all_caps)?;
+    feat.set_item("numbering_depth", hv.features.numbering_depth)?;
+    feat.set_item("has_formal_prefix", hv.features.has_formal_prefix)?;
+    feat.set_item("has_parentheses", hv.features.has_parentheses)?;
+    feat.set_item("is_too_long", hv.features.is_too_long)?;
+    dict.set_item("features", feat)?;
+
+    Ok(dict)
+}
+
 /// Convert PathContent to a Python dictionary.
 fn path_to_py_dict(py: Python<'_>, path: &crate::elements::PathContent) -> PyResult<Py<PyAny>> {
     let dict = pyo3::types::PyDict::new(py);
@@ -4278,6 +6664,87 @@ fn table_settings_to_config(
     }
 
     Ok(config)
+}
+
+// === Camelot-style Table Helpers ===
+
+/// Parse a page range string like "1-5", "1,3,5", "all" into 0-indexed page numbers.
+fn parse_page_range(s: &str, page_count: usize) -> PyResult<Vec<usize>> {
+    let s = s.trim();
+    if s == "all" || s.is_empty() {
+        return Ok((0..page_count).collect());
+    }
+
+    let mut pages = Vec::new();
+    for part in s.split(',') {
+        let part = part.trim();
+        if let Some((start, end)) = part.split_once('-') {
+            let start: usize = start.trim().parse::<usize>()
+                .map_err(|_| PyRuntimeError::new_err(format!("Invalid page number: '{}'", start)))?;
+            let end: usize = end.trim().parse::<usize>()
+                .map_err(|_| PyRuntimeError::new_err(format!("Invalid page number: '{}'", end)))?;
+            // Input is 1-indexed, convert to 0-indexed
+            if start == 0 || end == 0 {
+                return Err(PyRuntimeError::new_err("Page numbers are 1-indexed"));
+            }
+            for p in start..=end {
+                if p <= page_count {
+                    pages.push(p - 1);
+                }
+            }
+        } else {
+            let p: usize = part.parse::<usize>()
+                .map_err(|_| PyRuntimeError::new_err(format!("Invalid page number: '{}'", part)))?;
+            if p == 0 {
+                return Err(PyRuntimeError::new_err("Page numbers are 1-indexed"));
+            }
+            if p <= page_count {
+                pages.push(p - 1);
+            }
+        }
+    }
+    Ok(pages)
+}
+
+/// Convert a tables::Table to a Python dict.
+fn table_to_pydict<'py>(
+    py: Python<'py>,
+    table: &crate::tables::Table,
+) -> PyResult<Bound<'py, pyo3::types::PyDict>> {
+    let dict = pyo3::types::PyDict::new(py);
+    dict.set_item("page", table.page)?;
+    dict.set_item("order", table.order)?;
+    dict.set_item("flavor", format!("{:?}", table.flavor))?;
+    dict.set_item("rows", table.num_rows())?;
+    dict.set_item("cols", table.num_cols())?;
+    dict.set_item("accuracy", table.accuracy)?;
+    dict.set_item("whitespace", table.whitespace)?;
+
+    // Cell data as 2D list of strings
+    let data = table.data();
+    let py_rows = pyo3::types::PyList::empty(py);
+    for row in &data {
+        let py_row = pyo3::types::PyList::new(py, row)?;
+        py_rows.append(py_row)?;
+    }
+    dict.set_item("data", py_rows)?;
+
+    // DataFrame-compatible: list of dicts (one per row)
+    // Useful for: pd.DataFrame(table["df_data"])
+    if !data.is_empty() {
+        let headers: Vec<String> = (0..table.num_cols()).map(|i| format!("{}", i)).collect();
+        let df_rows = pyo3::types::PyList::empty(py);
+        for row in &data {
+            let row_dict = pyo3::types::PyDict::new(py);
+            for (i, cell) in row.iter().enumerate() {
+                row_dict.set_item(&headers[i], cell)?;
+            }
+            df_rows.append(row_dict)?;
+        }
+        dict.set_item("df_data", df_rows)?;
+    }
+
+    Ok(dict)
 }
 
 // === Outline Helper ===
@@ -5126,6 +7593,268 @@ impl PyPatternPresets {
     }
 }
 
+// ==========================================================================
+// Phase 1.7 — Geometry classes: Rect, Point
+// ==========================================================================
+
+/// A rectangle in PDF coordinate space.
+///
+/// Uses two-corner format (x0, y0, x1, y1) for PyMuPDF compatibility.
+/// Internally converts to pdf_oxide's (x, y, width, height) format.
+///
+/// Example:
+///     >>> r = Rect(100, 200, 300, 400)
+///     >>> print(r.width, r.height)
+///     200.0 200.0
+///     >>> r2 = Rect(150, 250, 350, 450)
+///     >>> r.intersects(r2)
+///     True
+#[pyclass(name = "Rect")]
+#[derive(Clone, Debug)]
+pub struct PyRect {
+    pub x0: f32,
+    pub y0: f32,
+    pub x1: f32,
+    pub y1: f32,
+}
+
+#[pymethods]
+impl PyRect {
+    /// Create a new Rect from two corners (x0, y0, x1, y1).
+    #[new]
+    fn new(x0: f32, y0: f32, x1: f32, y1: f32) -> Self {
+        PyRect { x0, y0, x1, y1 }
+    }
+
+    /// Create from (x, y, width, height) — pdf_oxide native format.
+    #[staticmethod]
+    fn from_xywh(x: f32, y: f32, width: f32, height: f32) -> Self {
+        PyRect {
+            x0: x,
+            y0: y,
+            x1: x + width,
+            y1: y + height,
+        }
+    }
+
+    #[getter]
+    fn x0(&self) -> f32 { self.x0 }
+    #[getter]
+    fn y0(&self) -> f32 { self.y0 }
+    #[getter]
+    fn x1(&self) -> f32 { self.x1 }
+    #[getter]
+    fn y1(&self) -> f32 { self.y1 }
+
+    #[getter]
+    fn width(&self) -> f32 { self.x1 - self.x0 }
+    #[getter]
+    fn height(&self) -> f32 { self.y1 - self.y0 }
+
+    /// Check if this rect intersects another.
+    fn intersects(&self, other: &PyRect) -> bool {
+        !(self.x1 < other.x0 || other.x1 < self.x0
+            || self.y1 < other.y0 || other.y1 < self.y0)
+    }
+
+    /// Return the union (bounding box) of two rects.
+    fn union_rect(&self, other: &PyRect) -> PyRect {
+        PyRect {
+            x0: self.x0.min(other.x0),
+            y0: self.y0.min(other.y0),
+            x1: self.x1.max(other.x1),
+            y1: self.y1.max(other.y1),
+        }
+    }
+
+    /// Check if a point is inside this rect.
+    fn contains_point(&self, x: f32, y: f32) -> bool {
+        x >= self.x0 && x <= self.x1 && y >= self.y0 && y <= self.y1
+    }
+
+    /// Return as a 4-tuple (x0, y0, x1, y1).
+    fn as_tuple(&self) -> (f32, f32, f32, f32) {
+        (self.x0, self.y0, self.x1, self.y1)
+    }
+
+    fn __repr__(&self) -> String {
+        format!("Rect({:.1}, {:.1}, {:.1}, {:.1})", self.x0, self.y0, self.x1, self.y1)
+    }
+}
+
+impl PyRect {
+    /// Convert to internal Rust Rect (x, y, width, height) — not exposed to Python.
+    pub fn to_internal(&self) -> crate::geometry::Rect {
+        crate::geometry::Rect::from_points(self.x0, self.y0, self.x1, self.y1)
+    }
+}
+
+/// A 2D point in PDF coordinate space.
+///
+/// Example:
+///     >>> p = Point(100.0, 200.0)
+///     >>> print(p.x, p.y)
+///     100.0 200.0
+#[pyclass(name = "Point")]
+#[derive(Clone, Debug)]
+pub struct PyPoint {
+    pub x: f32,
+    pub y: f32,
+}
+
+#[pymethods]
+impl PyPoint {
+    #[new]
+    fn new(x: f32, y: f32) -> Self {
+        PyPoint { x, y }
+    }
+
+    #[getter]
+    fn x(&self) -> f32 { self.x }
+    #[getter]
+    fn y(&self) -> f32 { self.y }
+
+    fn __repr__(&self) -> String {
+        format!("Point({:.1}, {:.1})", self.x, self.y)
+    }
+}
+
+
+/// Map control references (NIST, SPARTA, CWE, ATT&CK, etc.) in text chunks
+/// against a control catalog using regex + fuzzy matching.
+///
+/// Args:
+///     catalog_entries: list of (control_id, _key, source_framework) from ArangoDB
+///     chunks: list of (chunk_key, text, is_requirement) to scan
+///     fuzz_threshold: minimum similarity for fuzzy match (default: 0.75)
+///
+/// Returns:
+///     dict with {results: list[dict], stats: dict}
+#[pyfunction]
+#[pyo3(signature = (catalog_entries, chunks, fuzz_threshold=0.75))]
+fn map_framework_controls(
+    py: Python<'_>,
+    catalog_entries: Vec<(String, String, String)>,
+    chunks: Vec<(String, String, bool)>,
+    fuzz_threshold: f32,
+) -> PyResult<PyObject> {
+    use crate::extractors::framework_mapper::{ControlCatalog, map_controls};
+
+    // Build catalog from Python data
+    let mut catalog = ControlCatalog::new();
+    catalog.load(catalog_entries);
+
+    // Run matching
+    let (results, stats) = map_controls(&chunks, &catalog, fuzz_threshold);
+
+    // Serialize results
+    let dict = pyo3::types::PyDict::new(py);
+
+    let results_list = pyo3::types::PyList::empty(py);
+    for r in &results {
+        let rd = pyo3::types::PyDict::new(py);
+        rd.set_item("chunk_key", &r.chunk_key)?;
+        rd.set_item("is_requirement", r.is_requirement)?;
+        rd.set_item("candidates_found", r.candidates_found)?;
+
+        let matches_list = pyo3::types::PyList::empty(py);
+        for m in &r.matches {
+            let md = pyo3::types::PyDict::new(py);
+            md.set_item("candidate", &m.candidate)?;
+            md.set_item("control_id", &m.control_id)?;
+            md.set_item("control_key", &m.control_key)?;
+            md.set_item("framework", &m.framework)?;
+            md.set_item("confidence", m.confidence)?;
+            md.set_item("method", &m.method)?;
+            md.set_item("context_window", &m.context_window)?;
+            matches_list.append(md)?;
+        }
+        rd.set_item("matches", matches_list)?;
+        results_list.append(rd)?;
+    }
+    dict.set_item("results", results_list)?;
+
+    let stats_dict = pyo3::types::PyDict::new(py);
+    stats_dict.set_item("chunks_processed", stats.chunks_processed)?;
+    stats_dict.set_item("chunks_with_candidates", stats.chunks_with_candidates)?;
+    stats_dict.set_item("chunks_with_matches", stats.chunks_with_matches)?;
+    stats_dict.set_item("requirement_chunks", stats.requirement_chunks)?;
+    stats_dict.set_item("total_candidates", stats.total_candidates)?;
+    stats_dict.set_item("exact_matches", stats.exact_matches)?;
+    stats_dict.set_item("parent_exact_matches", stats.parent_exact_matches)?;
+    stats_dict.set_item("fuzzy_matches", stats.fuzzy_matches)?;
+    stats_dict.set_item("unmatched", stats.unmatched)?;
+    dict.set_item("stats", stats_dict)?;
+
+    Ok(dict.into())
+}
+
+/// Merge page-split tables using heuristic signals.
+///
+/// Args:
+///     tables: list of dicts with keys: index, page, bbox [x0,y0,x1,y1],
+///             column_count, row_count, title, headers, headers_are_numeric
+///
+/// Returns:
+///     dict with {merged_groups: list[list[int]], junk_indices: list[int],
+///                merge_details: list[dict]}
+#[pyfunction]
+fn merge_tables(py: Python<'_>, tables: Vec<pyo3::Bound<'_, pyo3::types::PyDict>>) -> PyResult<PyObject> {
+    use crate::extractors::table_merger;
+
+    let mut rust_tables = Vec::with_capacity(tables.len());
+    for t in &tables {
+        let index: usize = t.get_item("index")?.ok_or_else(|| PyRuntimeError::new_err("missing index"))?.extract()?;
+        let page: usize = t.get_item("page")?.ok_or_else(|| PyRuntimeError::new_err("missing page"))?.extract()?;
+        let bbox_raw = t.get_item("bbox")?.ok_or_else(|| PyRuntimeError::new_err("missing bbox"))?;
+        let bbox_vec: Vec<f32> = bbox_raw.extract().map_err(|_| {
+            PyRuntimeError::new_err("bbox must be a sequence of 4 floats [x0, y0, x1, y1]")
+        })?;
+        if bbox_vec.len() != 4 {
+            return Err(PyRuntimeError::new_err(format!("bbox must have 4 elements, got {}", bbox_vec.len())));
+        }
+        let column_count: usize = t.get_item("column_count")?.ok_or_else(|| PyRuntimeError::new_err("missing column_count"))?.extract()?;
+        let row_count: usize = t.get_item("row_count")?.ok_or_else(|| PyRuntimeError::new_err("missing row_count"))?.extract()?;
+        let title: String = t.get_item("title")?.map(|v| v.extract().unwrap_or_default()).unwrap_or_default();
+        let headers: Vec<String> = t.get_item("headers")?.map(|v| v.extract().unwrap_or_default()).unwrap_or_default();
+        let headers_are_numeric: bool = t.get_item("headers_are_numeric")?.map(|v| v.extract().unwrap_or(false)).unwrap_or(false);
+
+        rust_tables.push(table_merger::MergeableTable {
+            index, page,
+            bbox: [bbox_vec[0], bbox_vec[1], bbox_vec[2], bbox_vec[3]],
+            column_count, row_count, title, headers, headers_are_numeric,
+        });
+    }
+
+    let result = table_merger::merge_tables(&rust_tables);
+
+    let dict = pyo3::types::PyDict::new(py);
+
+    let groups = pyo3::types::PyList::empty(py);
+    for g in &result.merged_groups {
+        let inner = pyo3::types::PyList::new(py, g).map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+        groups.append(inner)?;
+    }
+    dict.set_item("merged_groups", groups)?;
+
+    let junk = pyo3::types::PyList::new(py, &result.junk_indices).map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+    dict.set_item("junk_indices", junk)?;
+
+    let details = pyo3::types::PyList::empty(py);
+    for d in &result.merge_details {
+        let dd = pyo3::types::PyDict::new(py);
+        dd.set_item("target_index", d.target_index)?;
+        dd.set_item("absorbed_index", d.absorbed_index)?;
+        dd.set_item("reason", &d.reason)?;
+        dd.set_item("horizontal_iou", d.horizontal_iou)?;
+        dd.set_item("width_ratio", d.width_ratio)?;
+        details.append(dd)?;
+    }
+    dict.set_item("merge_details", details)?;
+
+    Ok(dict.into())
+}
+
 /// Python module for PDF library.
 ///
 /// This is the internal module (pdf_oxide) that gets imported by the Python package.
@@ -5171,6 +7900,14 @@ fn pdf_oxide(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     // Office conversion (optional, requires office feature)
     m.add_class::<PyOfficeConverter>()?;
+
+    // Geometry types (Phase 1.7)
+    m.add_class::<PyRect>()?;
+    m.add_class::<PyPoint>()?;
+
+    // Standalone functions
+    m.add_function(wrap_pyfunction!(map_framework_controls, m)?)?;
+    m.add_function(wrap_pyfunction!(merge_tables, m)?)?;
 
     m.add("VERSION", env!("CARGO_PKG_VERSION"))?;
     Ok(())

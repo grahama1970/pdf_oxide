@@ -273,7 +273,7 @@ impl StructuredExtractor {
         page_num: u32,
     ) -> Result<StructuredDocument> {
         // Step 1: Extract text spans (already grouped by PDF text operators)
-        let spans = document.extract_spans(page_num as usize)?;
+        let spans = document.extract_spans_unsorted(page_num as usize)?;
 
         if spans.is_empty() {
             return Ok(StructuredDocument {

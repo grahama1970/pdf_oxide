@@ -94,7 +94,7 @@ impl HierarchicalExtractor {
 
         // Extract text spans from the page
         // Handle pages without content gracefully (return empty structure)
-        let text_spans = match document.extract_spans(page_index) {
+        let text_spans = match document.extract_spans_unsorted(page_index) {
             Ok(spans) => spans,
             Err(crate::error::Error::ParseError { reason, .. })
                 if reason.contains("no Contents") =>

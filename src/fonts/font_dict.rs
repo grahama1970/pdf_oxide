@@ -2223,6 +2223,11 @@ impl FontInfo {
                     && name == "StandardEncoding"
                 {
                     if let Some(tt_cmap) = self.truetype_cmap() {
+                        // Try charcode-based lookup first (correct for all cmap types)
+                        if let Some(unicode_char) = tt_cmap.get_unicode_by_charcode(char_code as u16) {
+                            return Some(unicode_char.to_string());
+                        }
+                        // Legacy fallback: treat char_code as GID
                         if let Some(unicode_char) = tt_cmap.get_unicode(char_code as u16) {
                             return Some(unicode_char.to_string());
                         }
@@ -2264,6 +2269,20 @@ impl FontInfo {
                 // Check multi_char_map for compound glyph names (e.g., f_f → "ff")
                 if let Some(multi_str) = self.multi_char_map.get(&(char_code as u8)) {
                     return Some(multi_str.clone());
+                }
+
+                // Fallback: try base encoding (StandardEncoding) for codes not in the custom map.
+                // Custom encodings built from font program encodings or sparse /Differences
+                // may not cover all character codes. The base encoding provides a reasonable
+                // fallback for unmapped codes (e.g., common ASCII/Latin characters).
+                if let Some(unicode) = standard_encoding_lookup("StandardEncoding", char_code as u8)
+                {
+                    log::debug!(
+                        "Custom encoding fallback to StandardEncoding: code 0x{:02X} → '{}'",
+                        char_code,
+                        unicode
+                    );
+                    return Some(unicode);
                 }
             },
             Encoding::Identity => {
@@ -2419,10 +2438,44 @@ impl FontInfo {
         // PRIORITY 4: TrueType cmap fallback for simple fonts
         // ==================================================================================
         // When all encoding-based lookups fail, try the embedded TrueType cmap as a last
-        // resort. For subset fonts, character codes may be GIDs that the encoding table
-        // doesn't cover. The cmap provides GID → Unicode mapping.
+        // resort. The cmap maps character codes → GID → Unicode.
+        //
+        // For symbolic TrueType fonts (e.g., re-encoded subsets like FXF4, FXF5), the
+        // font may use a Microsoft Symbol (3,0) cmap where character codes need 0xF000
+        // added for lookup. Per PDF Spec 9.6.6.4: "For a symbolic TrueType font, the
+        // cmap subtable (platform 3, encoding 0) maps character codes to glyph indices.
+        // Character codes 0x00-0xFF are prepended with 0xF000."
         if self.subtype != "Type0" {
             if let Some(tt_cmap) = self.truetype_cmap() {
+                // Strategy 1: Direct charcode → GID → Unicode lookup (works for all cmap types)
+                // For (3,1) Unicode BMP cmaps, charcode IS the Unicode code point
+                if let Some(unicode_char) = tt_cmap.get_unicode_by_charcode(char_code as u16) {
+                    return Some(unicode_char.to_string());
+                }
+
+                // Strategy 2: For symbolic fonts, try with 0xF000 offset (Microsoft Symbol cmap)
+                // Per PDF Spec 9.6.6.4, character codes 0x00-0xFF map to 0xF000-0xF0FF
+                if self.is_symbolic() && char_code < 256 {
+                    let symbol_code = (char_code as u16) + 0xF000;
+                    if let Some(unicode_char) = tt_cmap.get_unicode_by_charcode(symbol_code) {
+                        // The cmap resolved to a Unicode character via GID lookup.
+                        // For (3,0) Symbol cmaps, gid_to_unicode stores PUA chars (U+F0XX).
+                        // Strip the 0xF000 prefix to get the actual character.
+                        let ch_u32 = unicode_char as u32;
+                        if ch_u32 >= 0xF000 && ch_u32 <= 0xF0FF {
+                            if let Some(actual_char) = char::from_u32(ch_u32 - 0xF000) {
+                                if actual_char >= '\x20' {
+                                    return Some(actual_char.to_string());
+                                }
+                            }
+                        } else {
+                            return Some(unicode_char.to_string());
+                        }
+                    }
+                }
+
+                // Strategy 3: Legacy fallback — treat char_code as GID directly
+                // This works for fonts where GID == char_code (common in non-subset fonts)
                 if let Some(unicode_char) = tt_cmap.get_unicode(char_code as u16) {
                     return Some(unicode_char.to_string());
                 }
@@ -3641,6 +3694,14 @@ fn standard_encoding_lookup(encoding: &str, code: u8) -> Option<String> {
                 Some(unicode.to_string())
             }
         },
+        "SymbolicBuiltIn" => {
+            // Symbolic fonts with no /Encoding entry: return None so the fallback
+            // chain continues to TrueType cmap, CFF encoding, or other sources.
+            // These fonts define their own glyph mapping; identity-mapping ASCII
+            // codes would produce garbled text for re-encoded subset fonts (e.g.,
+            // FXF4, FXF5) where code 0x31 might map to 'N' instead of '1'.
+            None
+        },
         _ => {
             // Unknown encoding, try identity mapping for ASCII
             if code.is_ascii() && code >= 32 {
@@ -4231,8 +4292,8 @@ mod tests {
         // Should use custom encoding
         assert_eq!(font.char_to_unicode(0x41), Some("X".to_string()));
         assert_eq!(font.char_to_unicode(0x42), Some("•".to_string()));
-        // Unmapped character should return None
-        assert_eq!(font.char_to_unicode(0x43), None);
+        // Unmapped character falls back to StandardEncoding (0x43 = 'C')
+        assert_eq!(font.char_to_unicode(0x43), Some("C".to_string()));
     }
 
     /// Integration Test 1: ForceBold flag detection (PDF Spec Table 123, bit 19)

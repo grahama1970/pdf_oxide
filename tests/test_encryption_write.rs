@@ -204,9 +204,78 @@ mod aes256_encryption_tests {
         assert!(output_str.contains("/P ")); // Permissions
     }
 
-    // Note: Round-trip tests with password authentication require
-    // full password verification implementation on the read side.
-    // For now, we test that encrypted PDFs are created with correct structure.
+    #[test]
+    fn test_encrypt_aes256_roundtrip_user_password() {
+        let dir = tempdir().unwrap();
+        let input_path = dir.path().join("input.pdf");
+        let encrypted_path = dir.path().join("encrypted_rt.pdf");
+
+        create_test_pdf_with_content(
+            input_path.to_str().unwrap(),
+            "AES-256 round-trip test content",
+        )
+        .unwrap();
+
+        // Encrypt with AES-256
+        let mut editor = DocumentEditor::open(&input_path).unwrap();
+        let config = EncryptionConfig::new("userpass", "ownerpass")
+            .with_algorithm(EncryptionAlgorithm::Aes256)
+            .with_permissions(Permissions::all());
+        editor
+            .save_with_options(&encrypted_path, SaveOptions::with_encryption(config))
+            .unwrap();
+
+        // Reopen encrypted PDF and authenticate with user password
+        let mut doc = pdf_oxide::document::PdfDocument::open(&encrypted_path).unwrap();
+        assert!(doc.has_encryption(), "PDF should be encrypted");
+        let auth = doc.authenticate(b"userpass").unwrap();
+        assert!(auth, "User password should authenticate");
+    }
+
+    #[test]
+    fn test_encrypt_aes256_roundtrip_owner_password() {
+        let dir = tempdir().unwrap();
+        let input_path = dir.path().join("input.pdf");
+        let encrypted_path = dir.path().join("encrypted_owner_rt.pdf");
+
+        create_test_pdf_with_content(
+            input_path.to_str().unwrap(),
+            "AES-256 owner round-trip test",
+        )
+        .unwrap();
+
+        let mut editor = DocumentEditor::open(&input_path).unwrap();
+        let config = EncryptionConfig::new("userpass", "ownerpass")
+            .with_algorithm(EncryptionAlgorithm::Aes256);
+        editor
+            .save_with_options(&encrypted_path, SaveOptions::with_encryption(config))
+            .unwrap();
+
+        // Authenticate with owner password
+        let mut doc = pdf_oxide::document::PdfDocument::open(&encrypted_path).unwrap();
+        let auth = doc.authenticate(b"ownerpass").unwrap();
+        assert!(auth, "Owner password should authenticate");
+    }
+
+    #[test]
+    fn test_encrypt_aes256_wrong_password_fails() {
+        let dir = tempdir().unwrap();
+        let input_path = dir.path().join("input.pdf");
+        let encrypted_path = dir.path().join("encrypted_wrong.pdf");
+
+        create_test_pdf_with_content(input_path.to_str().unwrap(), "Wrong password test").unwrap();
+
+        let mut editor = DocumentEditor::open(&input_path).unwrap();
+        let config = EncryptionConfig::new("correct", "owner")
+            .with_algorithm(EncryptionAlgorithm::Aes256);
+        editor
+            .save_with_options(&encrypted_path, SaveOptions::with_encryption(config))
+            .unwrap();
+
+        let mut doc = pdf_oxide::document::PdfDocument::open(&encrypted_path).unwrap();
+        let auth = doc.authenticate(b"wrongpassword").unwrap();
+        assert!(!auth, "Wrong password should not authenticate");
+    }
 }
 
 mod aes128_encryption_tests {
@@ -235,8 +304,25 @@ mod aes128_encryption_tests {
         assert!(output_str.contains("/R 4")); // R=4 for AES-128
     }
 
-    // Note: Round-trip tests with password authentication require
-    // full password verification implementation on the read side.
+    #[test]
+    fn test_encrypt_aes128_roundtrip() {
+        let dir = tempdir().unwrap();
+        let input_path = dir.path().join("input.pdf");
+        let encrypted_path = dir.path().join("aes128_rt.pdf");
+
+        create_test_pdf_with_content(input_path.to_str().unwrap(), "AES-128 round-trip").unwrap();
+
+        let mut editor = DocumentEditor::open(&input_path).unwrap();
+        let config = EncryptionConfig::new("pass128", "owner128")
+            .with_algorithm(EncryptionAlgorithm::Aes128);
+        editor
+            .save_with_options(&encrypted_path, SaveOptions::with_encryption(config))
+            .unwrap();
+
+        let mut doc = pdf_oxide::document::PdfDocument::open(&encrypted_path).unwrap();
+        assert!(doc.has_encryption());
+        assert!(doc.authenticate(b"pass128").unwrap(), "User password should work");
+    }
 }
 
 mod rc4_encryption_tests {
@@ -288,8 +374,46 @@ mod rc4_encryption_tests {
         assert!(output_str.contains("/R 2")); // R=2 for RC4-40
     }
 
-    // Note: Round-trip tests with password authentication require
-    // full password verification implementation on the read side.
+    #[test]
+    fn test_encrypt_rc4_128_roundtrip() {
+        let dir = tempdir().unwrap();
+        let input_path = dir.path().join("input.pdf");
+        let encrypted_path = dir.path().join("rc4_128_rt.pdf");
+
+        create_test_pdf_with_content(input_path.to_str().unwrap(), "RC4-128 round-trip").unwrap();
+
+        let mut editor = DocumentEditor::open(&input_path).unwrap();
+        let config = EncryptionConfig::new("rc4user", "rc4owner")
+            .with_algorithm(EncryptionAlgorithm::Rc4_128);
+        editor
+            .save_with_options(&encrypted_path, SaveOptions::with_encryption(config))
+            .unwrap();
+
+        let mut doc = pdf_oxide::document::PdfDocument::open(&encrypted_path).unwrap();
+        assert!(doc.has_encryption());
+        assert!(doc.authenticate(b"rc4user").unwrap(), "RC4-128 user password should work");
+
+    }
+
+    #[test]
+    fn test_encrypt_rc4_40_roundtrip() {
+        let dir = tempdir().unwrap();
+        let input_path = dir.path().join("input.pdf");
+        let encrypted_path = dir.path().join("rc4_40_rt.pdf");
+
+        create_test_pdf_with_content(input_path.to_str().unwrap(), "RC4-40 round-trip").unwrap();
+
+        let mut editor = DocumentEditor::open(&input_path).unwrap();
+        let config = EncryptionConfig::new("rc4user40", "rc4owner40")
+            .with_algorithm(EncryptionAlgorithm::Rc4_40);
+        editor
+            .save_with_options(&encrypted_path, SaveOptions::with_encryption(config))
+            .unwrap();
+
+        let mut doc = pdf_oxide::document::PdfDocument::open(&encrypted_path).unwrap();
+        assert!(doc.has_encryption());
+        assert!(doc.authenticate(b"rc4user40").unwrap(), "RC4-40 user password should work");
+    }
 }
 
 mod permission_tests {
@@ -379,6 +503,29 @@ mod empty_password_tests {
         assert!(output_str.contains("/O ")); // Owner hash
         assert!(output_str.contains("/U ")); // User hash
         assert!(output_str.contains("/P ")); // Permissions (restricted)
+    }
+
+    #[test]
+    fn test_empty_user_password_roundtrip_auto_authenticates() {
+        let dir = tempdir().unwrap();
+        let input_path = dir.path().join("input.pdf");
+        let encrypted_path = dir.path().join("empty_user_rt.pdf");
+
+        create_test_pdf_with_content(input_path.to_str().unwrap(), "Empty user password test")
+            .unwrap();
+
+        let mut editor = DocumentEditor::open(&input_path).unwrap();
+        let config = EncryptionConfig::new("", "owneronly")
+            .with_permissions(Permissions::read_only());
+        editor
+            .save_with_options(&encrypted_path, SaveOptions::with_encryption(config))
+            .unwrap();
+
+        // Empty user password should auto-authenticate on open
+        let mut doc = pdf_oxide::document::PdfDocument::open(&encrypted_path).unwrap();
+        assert!(doc.has_encryption());
+        // Empty password should authenticate (auto-tried on open, or explicit)
+        assert!(doc.authenticate(b"").unwrap(), "Empty password should authenticate");
     }
 }
 

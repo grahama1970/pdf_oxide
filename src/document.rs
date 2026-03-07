@@ -27,7 +27,7 @@ use std::sync::Arc;
 /// On native builds, `open()` uses `BufReader<File>` to avoid reading the entire file
 /// into memory up front. On WASM (or when using `open_from_bytes()`), uses
 /// `BufReader<Cursor<Vec<u8>>>` for in-memory access.
-enum PdfReader {
+pub(crate) enum PdfReader {
     /// File-backed reader for native builds — avoids reading entire file into memory.
     #[cfg(not(target_arch = "wasm32"))]
     File(BufReader<File>),
@@ -76,8 +76,7 @@ impl BufRead for PdfReader {
 /// Maximum recursion depth for object resolution
 const MAX_RECURSION_DEPTH: u32 = 100;
 
-/// Page information for rendering.
-#[cfg(feature = "rendering")]
+/// Page information for rendering and SVG export.
 #[derive(Debug, Clone)]
 pub struct PageInfo {
     /// Media box defining the page boundaries
@@ -182,6 +181,11 @@ pub struct PdfDocument {
     /// Cache of extracted images from Form XObjects (keyed by ObjectRef).
     /// Images are stored without CTM applied — caller applies its own CTM.
     pub(crate) form_xobject_images_cache: HashMap<ObjectRef, Vec<crate::extractors::PdfImage>>,
+    /// Cache of decompressed page content streams. Avoids repeated FlateDecode
+    /// decompression when extract_text() checks may_contain_text and then calls
+    /// extract_spans_unsorted, both of which need the content stream.
+    /// Bounded at 32 entries (typical working set during sequential page extraction).
+    page_content_cache: HashMap<usize, std::sync::Arc<Vec<u8>>>,
 }
 
 impl std::fmt::Debug for PdfDocument {
@@ -409,6 +413,7 @@ impl PdfDocument {
             xobject_stream_cache_bytes: 0,
             xobject_spans_cache: HashMap::new(),
             form_xobject_images_cache: HashMap::new(),
+            page_content_cache: HashMap::new(),
         };
 
         // Initialize encryption immediately
@@ -635,6 +640,13 @@ impl PdfDocument {
         }
     }
 
+    /// Check if the document has an encryption dictionary.
+    ///
+    /// Returns true if the PDF is encrypted (may or may not require a password).
+    pub fn has_encryption(&self) -> bool {
+        self.encryption_handler.is_some()
+    }
+
     /// Get the PDF version.
     ///
     /// Returns a tuple (major, minor) representing the PDF version.
@@ -677,6 +689,36 @@ impl PdfDocument {
     /// ```
     pub fn trailer(&self) -> &Object {
         &self.trailer
+    }
+
+    /// Get a reference to the cross-reference table.
+    pub fn xref(&self) -> &crate::xref::CrossRefTable {
+        &self.xref
+    }
+
+    /// Get a mutable reference to the underlying reader (for xref reconstruction).
+    pub(crate) fn reader_mut(&mut self) -> &mut PdfReader {
+        &mut self.reader
+    }
+
+    /// Replace the cross-reference table and trailer (used by repair).
+    pub(crate) fn replace_xref(
+        &mut self,
+        new_xref: crate::xref::CrossRefTable,
+        new_trailer: Object,
+    ) {
+        self.xref = new_xref;
+        self.trailer = new_trailer;
+        self.object_cache.clear();
+    }
+
+    /// Update an object in the cache (used by repair to fix objects in-place).
+    ///
+    /// This modifies only the in-memory representation. The caller is responsible
+    /// for saving the document to persist changes.
+    pub(crate) fn update_object(&mut self, obj_num: u32, obj: Object) {
+        let obj_ref = ObjectRef::new(obj_num, 0);
+        self.object_cache.insert(obj_ref, obj);
     }
 
     /// Scan the file to find an object by its header.
@@ -2810,34 +2852,26 @@ impl PdfDocument {
             return self.extract_text_structure_order_cached(page_index);
         }
 
-        // Untagged PDF: Use page content order (current implementation)
+        // Untagged PDF: Use MuPDF-style incremental text assembly.
+        // Process spans in content stream order (NOT sorted), using spacing/baseline
+        // heuristics to determine line breaks, paragraph breaks, and space insertion.
+        // This preserves the natural reading order that most PDF generators encode.
         log::debug!(
-            "Using page content order for Untagged PDF text extraction (page {})",
+            "Using MuPDF-style content stream order for text extraction (page {})",
             page_index
         );
 
-        // Use PDF spec-compliant TextSpan extraction (RECOMMENDED approach)
-        // This preserves the PDF's text positioning intent and avoids overlapping character issues
-        let mut spans = self.extract_spans(page_index)?;
+        #[cfg(feature = "perf-trace")]
+        let _t0 = std::time::Instant::now();
 
-        // Merge widget annotation spans (form field values) with content spans
-        // Widget spans are positioned at their /Rect locations and will be sorted
-        // into the correct reading order alongside content stream spans.
+        let mut spans = self.extract_spans_unsorted(page_index)?;
+
+        #[cfg(feature = "perf-trace")]
+        let _t1 = std::time::Instant::now();
+
+        // Merge widget annotation spans
         let widget_spans = self.extract_widget_spans(page_index);
         spans.extend(widget_spans);
-
-        // Sort combined spans by position: Y descending (top→bottom), then X ascending (left→right)
-        spans.sort_by(|a, b| {
-            let y_cmp = crate::utils::safe_float_cmp(b.bbox.y, a.bbox.y);
-            if y_cmp != std::cmp::Ordering::Equal {
-                return y_cmp;
-            }
-            let x_cmp = crate::utils::safe_float_cmp(a.bbox.x, b.bbox.x);
-            if x_cmp != std::cmp::Ordering::Equal {
-                return x_cmp;
-            }
-            a.sequence.cmp(&b.sequence)
-        });
 
         // OCR fallback for scanned PDFs (when OCR feature is enabled)
         // If no text spans found, check if page needs OCR
@@ -2849,10 +2883,6 @@ impl PdfDocument {
                     "Page {} appears to be scanned, OCR available but not auto-enabled",
                     page_index
                 );
-                // Note: We don't automatically run OCR here because:
-                // 1. It requires model files that may not be available
-                // 2. Users should opt-in via extract_text_with_ocr or similar
-                // 3. This keeps extract_text fast and predictable
             }
         }
 
@@ -2867,9 +2897,6 @@ impl PdfDocument {
         }
 
         // RTL correction: reverse visual-order single-character Arabic/Hebrew span runs.
-        // Some PDFs position RTL characters individually left-to-right (visual order),
-        // but logical reading order is right-to-left. Detect runs of single-char RTL
-        // spans on the same line and reverse the text within each run.
         Self::reverse_rtl_visual_order_runs(&mut spans);
 
         // Filter out spans with NaN/Inf coordinates, dimensions, or font size
@@ -2881,104 +2908,36 @@ impl PdfDocument {
                 && s.font_size.is_finite()
         });
 
-        // Assemble text from spans, preserving reading order
-        let mut text = String::with_capacity(spans.len() * 20); // estimate
-        let mut prev_span: Option<&TextSpan> = None;
+        #[cfg(feature = "perf-trace")]
+        let _t2 = std::time::Instant::now();
 
-        for span in &spans {
-            // Skip spans that are fully contained within the previous span's bbox.
-            // This happens when font-change merging creates a combined span but
-            // individual sub-spans survive as separate entries (e.g., "the" inside
-            // a merged "install the docling" span in LaTeX PDFs).
-            if let Some(prev) = prev_span {
-                let prev_end_x = prev.bbox.x + prev.bbox.width;
-                let span_end_x = span.bbox.x + span.bbox.width;
-                let y_same = (prev.bbox.y - span.bbox.y).abs() < 2.0;
-                if y_same && span.bbox.x >= prev.bbox.x - 0.5 && span_end_x <= prev_end_x + 0.5 {
-                    // Span is contained within previous — skip to avoid duplicates
-                    continue;
-                }
-            }
+        let mut text = Self::assemble_text_pymupdf_style(&spans);
 
-            // Check if we need to insert space or line break
-            if let Some(prev) = prev_span {
-                let y_diff = (prev.bbox.y - span.bbox.y).abs();
-                let prev_end_x = prev.bbox.x + prev.bbox.width;
-                let gap = span.bbox.x - prev_end_x;
-
-                // New line if Y position changed significantly (more than 2pt)
-                if y_diff > 2.0 {
-                    // Calculate number of line breaks based on Y gap
-                    let font_size = span.font_size.max(10.0);
-                    let line_height = font_size * 1.2; // typical line height
-                    let num_breaks = (y_diff / line_height).round() as usize;
-
-                    // Add line breaks (at least 1, max 3 for large gaps)
-                    for _ in 0..num_breaks.clamp(1, 3) {
-                        text.push('\n');
-                    }
-                } else if gap < -1.0 {
-                    // Significant overlap: span starts inside previous span's bbox.
-                    let span_end_x = span.bbox.x + span.bbox.width;
-                    let font_changed = prev.font_name != span.font_name;
-                    let fs = span.font_size.max(prev.font_size).max(6.0);
-
-                    if gap < -(fs * 20.0) {
-                        // Very large negative gap (200pt+): separate text region on same y-line
-                        // Common in slides where footer/label and body text share y-line
-                        if !text.ends_with('\n') {
-                            text.push('\n');
-                        }
-                    } else if font_changed && span_end_x > prev_end_x + 0.5 {
-                        // Font change with new content — insert space as word boundary
-                        if !text.ends_with(' ') && !text.ends_with('\n') {
-                            text.push(' ');
-                        }
-                    }
-                    // Same font small overlap: Td positioning within a word → no space
-                } else if Self::should_insert_space(prev, span) {
-                    text.push(' ');
-                } else {
-                    // Check for column boundary: same line with very large gap
-                    let fs = span.font_size.max(prev.font_size).max(6.0);
-                    if gap > fs * 3.0 {
-                        text.push('\n');
-                    }
-                }
-            }
-
-            // Expand ligature characters (ﬀ→ff, ﬁ→fi, ﬂ→fl, ﬃ→ffi, ﬄ→ffl)
-            for ch in span.text.chars() {
-                if let Some(components) =
-                    crate::text::ligature_processor::get_ligature_components(ch)
-                {
-                    text.push_str(components);
-                } else {
-                    text.push(ch);
-                }
-            }
-            prev_span = Some(span);
-        }
+        #[cfg(feature = "perf-trace")]
+        let _t3 = std::time::Instant::now();
 
         // Append text from non-widget annotations on this page
-        // (FreeText /Contents, Stamp appearance streams, etc.)
         self.append_non_widget_annotation_text(page_index, &mut text);
 
-        // Filter leaked PDF metadata (e.g., CalRGB ColorSpace dictionaries)
-        // Some PDFs embed inline color space definitions that get parsed as text
+        // Post-processing: normalize text (metadata filter + single-pass unicode normalization + whitespace)
         let text = Self::filter_leaked_metadata(&text);
-
-        // Normalize Kangxi Radicals (U+2F00-U+2FD5) and CJK Radicals Supplement
-        // (U+2E80-U+2EFF) to CJK Unified Ideographs for proper search/matching
-        let text = Self::normalize_kangxi_radicals(&text);
-
-        // Normalize Arabic Presentation Forms (U+FB50-U+FDFF, U+FE70-U+FEFF) to
-        // base Unicode characters for proper text search and matching
-        let text = Self::normalize_arabic_presentation_forms(&text);
-
-        // Apply whitespace cleanup for better readability
-        // This normalizes excessive double spaces and blank lines
+        let text = Self::normalize_unicode_forms(&text);
         let cleaned_text = crate::converters::whitespace::cleanup_plain_text(&text);
+
+        #[cfg(feature = "perf-trace")]
+        {
+            let _t4 = std::time::Instant::now();
+            eprintln!(
+                "[perf] page={} spans={} | extract_spans={:.1}ms post_filter={:.1}ms assemble={:.1}ms normalize={:.1}ms | total={:.1}ms",
+                page_index,
+                spans.len(),
+                (_t1 - _t0).as_secs_f64() * 1000.0,
+                (_t2 - _t1).as_secs_f64() * 1000.0,
+                (_t3 - _t2).as_secs_f64() * 1000.0,
+                (_t4 - _t3).as_secs_f64() * 1000.0,
+                (_t4 - _t0).as_secs_f64() * 1000.0,
+            );
+        }
 
         Ok(cleaned_text)
     }
@@ -3174,24 +3133,100 @@ impl PdfDocument {
         result
     }
 
-    /// Normalize Kangxi Radical characters to CJK Unified Ideographs.
+    /// Normalize Kangxi Radicals + Arabic Presentation Forms in a single pass.
     ///
-    /// Some PDF fonts/CMaps emit Kangxi Radicals (U+2F00–U+2FD5) or CJK Radicals
-    /// Supplement (U+2E80–U+2EFF) instead of the standard CJK Unified Ideographs.
-    /// While visually similar, these are different Unicode codepoints and will break
-    /// text search, string matching, and NLP pipelines.
-    fn normalize_kangxi_radicals(text: &str) -> String {
-        // Quick check: if no characters in the Kangxi/Supplement range, return as-is
-        if !text.chars().any(|c| {
+    /// Combines two normalizations into one character scan instead of two separate
+    /// passes with two separate quick-checks (4 scans total → 1 scan).
+    fn normalize_unicode_forms(text: &str) -> String {
+        // Single quick check: if no characters need normalization, return as-is
+        let needs_normalization = text.chars().any(|c| {
             let cp = c as u32;
-            (0x2E80..=0x2EFF).contains(&cp) || (0x2F00..=0x2FD5).contains(&cp)
-        }) {
+            (0x2E80..=0x2EFF).contains(&cp)  // CJK Radicals Supplement
+                || (0x2F00..=0x2FD5).contains(&cp)  // Kangxi Radicals
+                || (0xFB50..=0xFDFF).contains(&cp)  // Arabic Presentation Forms-A
+                || (0xFE70..=0xFEFF).contains(&cp)  // Arabic Presentation Forms-B
+        });
+        if !needs_normalization {
             return text.to_string();
         }
 
         text.chars()
-            .map(|c| crate::text::kangxi::kangxi_to_unified(c).unwrap_or(c))
+            .map(|c| {
+                // Try Kangxi normalization first
+                if let Some(unified) = crate::text::kangxi::kangxi_to_unified(c) {
+                    return unified;
+                }
+                // Then Arabic presentation form normalization
+                let cp = c as u32;
+                if (0xFB50..=0xFDFF).contains(&cp) || (0xFE70..=0xFEFF).contains(&cp) {
+                    return Self::normalize_arabic_char(cp, c);
+                }
+                c
+            })
             .collect()
+    }
+
+    /// Map a single Arabic presentation form codepoint to its base character.
+    #[inline]
+    fn normalize_arabic_char(cp: u32, c: char) -> char {
+        let base = match cp {
+            0xFE80 => 0x0621,
+            0xFE81 | 0xFE82 => 0x0622,
+            0xFE83 | 0xFE84 => 0x0623,
+            0xFE85 | 0xFE86 => 0x0624,
+            0xFE87 | 0xFE88 => 0x0625,
+            0xFE89..=0xFE8C => 0x0626,
+            0xFE8D | 0xFE8E => 0x0627,
+            0xFE8F..=0xFE92 => 0x0628,
+            0xFE93 | 0xFE94 => 0x0629,
+            0xFE95..=0xFE98 => 0x062A,
+            0xFE99..=0xFE9C => 0x062B,
+            0xFE9D..=0xFEA0 => 0x062C,
+            0xFEA1..=0xFEA4 => 0x062D,
+            0xFEA5..=0xFEA8 => 0x062E,
+            0xFEA9 | 0xFEAA => 0x062F,
+            0xFEAB | 0xFEAC => 0x0630,
+            0xFEAD | 0xFEAE => 0x0631,
+            0xFEAF | 0xFEB0 => 0x0632,
+            0xFEB1..=0xFEB4 => 0x0633,
+            0xFEB5..=0xFEB8 => 0x0634,
+            0xFEB9..=0xFEBC => 0x0635,
+            0xFEBD..=0xFEC0 => 0x0636,
+            0xFEC1..=0xFEC4 => 0x0637,
+            0xFEC5..=0xFEC8 => 0x0638,
+            0xFEC9..=0xFECC => 0x0639,
+            0xFECD..=0xFED0 => 0x063A,
+            0xFED1..=0xFED4 => 0x0641,
+            0xFED5..=0xFED8 => 0x0642,
+            0xFED9..=0xFEDC => 0x0643,
+            0xFEDD..=0xFEE0 => 0x0644,
+            0xFEE1..=0xFEE4 => 0x0645,
+            0xFEE5..=0xFEE8 => 0x0646,
+            0xFEE9..=0xFEEC => 0x0647,
+            0xFEED | 0xFEEE => 0x0648,
+            0xFEEF | 0xFEF0 => 0x0649,
+            0xFEF1..=0xFEF4 => 0x064A,
+            // Lam-Alef ligatures
+            0xFEF5 | 0xFEF6 | 0xFEF7 | 0xFEF8 | 0xFEF9 | 0xFEFA | 0xFEFB | 0xFEFC => {
+                return '\u{0644}';
+            },
+            0xFE70 => 0x064B,
+            0xFE71 => 0x064B,
+            0xFE72 => 0x064C,
+            0xFE74 => 0x064D,
+            0xFE76 => 0x064E,
+            0xFE77 => 0x064E,
+            0xFE78 => 0x064F,
+            0xFE79 => 0x064F,
+            0xFE7A => 0x0650,
+            0xFE7B => 0x0650,
+            0xFE7C => 0x0651,
+            0xFE7D => 0x0651,
+            0xFE7E => 0x0652,
+            0xFE7F => 0x0652,
+            _ => cp,
+        };
+        char::from_u32(base).unwrap_or(c)
     }
 
     /// Reverse visual-order RTL character runs to logical reading order.
@@ -3269,127 +3304,1337 @@ impl PdfDocument {
     /// Arabic PDFs often use presentation forms (U+FE70-U+FEFF for Forms-B,
     /// U+FB50-U+FDFF for Forms-A) which represent contextual glyph shapes.
     /// For text extraction, these should be normalized to base characters.
-    fn normalize_arabic_presentation_forms(text: &str) -> String {
-        // Quick check: skip if no Arabic presentation form characters
-        if !text.chars().any(|c| {
-            let cp = c as u32;
-            (0xFB50..=0xFDFF).contains(&cp) || (0xFE70..=0xFEFF).contains(&cp)
-        }) {
-            return text.to_string();
+
+    /// Sort spans using geometric Y-ordering with sequence-aware grouping.
+    ///
+    /// Groups spans into lines (same Y within tolerance), then orders lines
+    /// by Y position (top-to-bottom). Within each line, spans are sorted
+    /// left-to-right by X position. When lines have identical Y positions,
+    /// uses content stream sequence as tie-breaker.
+    ///
+    /// This produces correct reading order for most documents while avoiding
+    /// the complexity and failure modes of full block/column detection.
+    /// Preserve content stream order with minimal line-level fixup.
+    ///
+    /// The content stream in most PDFs already follows reading order.
+    /// This function groups spans that share the same Y position (within
+    /// tolerance) into lines, sorts within each line by X, but preserves
+    /// the inter-line order from the content stream.
+    fn sort_spans_content_stream_lines(spans: &mut Vec<TextSpan>) {
+        if spans.len() <= 1 {
+            return;
         }
 
-        text.chars()
-            .map(|c| {
-                let cp = c as u32;
-                // Arabic Presentation Forms-B (U+FE70-U+FEFF): contextual forms
-                // Each base letter has isolated/final/initial/medial forms
-                let base = match cp {
-                    // Hamza forms
-                    0xFE80 => 0x0621,
-                    // Alef with Madda
-                    0xFE81 | 0xFE82 => 0x0622,
-                    // Alef with Hamza Above
-                    0xFE83 | 0xFE84 => 0x0623,
-                    // Waw with Hamza
-                    0xFE85 | 0xFE86 => 0x0624,
-                    // Alef with Hamza Below
-                    0xFE87 | 0xFE88 => 0x0625,
-                    // Yeh with Hamza
-                    0xFE89..=0xFE8C => 0x0626,
-                    // Alef
-                    0xFE8D | 0xFE8E => 0x0627,
-                    // Beh
-                    0xFE8F..=0xFE92 => 0x0628,
-                    // Teh Marbuta
-                    0xFE93 | 0xFE94 => 0x0629,
-                    // Teh
-                    0xFE95..=0xFE98 => 0x062A,
-                    // Theh
-                    0xFE99..=0xFE9C => 0x062B,
-                    // Jeem
-                    0xFE9D..=0xFEA0 => 0x062C,
-                    // Hah
-                    0xFEA1..=0xFEA4 => 0x062D,
-                    // Khah
-                    0xFEA5..=0xFEA8 => 0x062E,
-                    // Dal
-                    0xFEA9 | 0xFEAA => 0x062F,
-                    // Thal
-                    0xFEAB | 0xFEAC => 0x0630,
-                    // Reh
-                    0xFEAD | 0xFEAE => 0x0631,
-                    // Zain
-                    0xFEAF | 0xFEB0 => 0x0632,
-                    // Seen
-                    0xFEB1..=0xFEB4 => 0x0633,
-                    // Sheen
-                    0xFEB5..=0xFEB8 => 0x0634,
-                    // Sad
-                    0xFEB9..=0xFEBC => 0x0635,
-                    // Dad
-                    0xFEBD..=0xFEC0 => 0x0636,
-                    // Tah
-                    0xFEC1..=0xFEC4 => 0x0637,
-                    // Zah
-                    0xFEC5..=0xFEC8 => 0x0638,
-                    // Ain
-                    0xFEC9..=0xFECC => 0x0639,
-                    // Ghain
-                    0xFECD..=0xFED0 => 0x063A,
-                    // Feh
-                    0xFED1..=0xFED4 => 0x0641,
-                    // Qaf
-                    0xFED5..=0xFED8 => 0x0642,
-                    // Kaf
-                    0xFED9..=0xFEDC => 0x0643,
-                    // Lam
-                    0xFEDD..=0xFEE0 => 0x0644,
-                    // Meem
-                    0xFEE1..=0xFEE4 => 0x0645,
-                    // Noon
-                    0xFEE5..=0xFEE8 => 0x0646,
-                    // Heh
-                    0xFEE9..=0xFEEC => 0x0647,
-                    // Waw
-                    0xFEED | 0xFEEE => 0x0648,
-                    // Alef Maksura
-                    0xFEEF | 0xFEF0 => 0x0649,
-                    // Yeh
-                    0xFEF1..=0xFEF4 => 0x064A,
-                    // Lam-Alef ligatures → expand to two characters
-                    0xFEF5 | 0xFEF6 => {
-                        // Lam + Alef with Madda
-                        return '\u{0644}'; // Just return Lam; Alef is separate
+        // Group consecutive spans into lines based on Y proximity.
+        // A "line" is a maximal run of consecutive spans with similar Y.
+        struct Line {
+            start: usize,
+            end: usize, // exclusive
+            avg_y: f32,
+        }
+
+        let mut lines: Vec<Line> = Vec::new();
+        let mut line_start = 0;
+        let mut line_y = spans[0].bbox.y;
+        let mut line_fs = spans[0].font_size.max(6.0);
+
+        for i in 1..spans.len() {
+            let y_diff = (spans[i].bbox.y - line_y).abs();
+            let span_fs = spans[i].font_size.max(6.0);
+            let max_font = line_fs.max(span_fs);
+            let tolerance = max_font * 0.4;
+
+            if y_diff <= tolerance {
+                line_fs = max_font;
+            } else {
+                let sum_y: f32 = (line_start..i).map(|j| spans[j].bbox.y).sum();
+                lines.push(Line { start: line_start, end: i, avg_y: sum_y / (i - line_start) as f32 });
+                line_start = i;
+                line_y = spans[i].bbox.y;
+                line_fs = span_fs;
+            }
+        }
+        let sum_y: f32 = (line_start..spans.len()).map(|j| spans[j].bbox.y).sum();
+        lines.push(Line { start: line_start, end: spans.len(), avg_y: sum_y / (spans.len() - line_start) as f32 });
+
+        // Sort spans within each line by X position (left to right)
+        for line in &lines {
+            spans[line.start..line.end].sort_by(|a, b| {
+                a.bbox.x.partial_cmp(&b.bbox.x).unwrap_or(std::cmp::Ordering::Equal)
+            });
+        }
+
+        // Lines remain in content stream order — no global reordering
+    }
+
+    /// MuPDF-style text block detection and reading order sort.
+    ///
+    /// 1. Group spans into lines (same Y within font-size tolerance)
+    /// 2. Group adjacent lines into blocks (lines whose X ranges overlap significantly)
+    /// 3. Sort blocks by reading order (top-to-bottom, then left-to-right for same-height blocks)
+    /// 4. Within each block, sort lines top-to-bottom, spans left-to-right
+    fn sort_spans_block_grouped(spans: &mut Vec<TextSpan>) {
+        if spans.len() <= 1 {
+            return;
+        }
+
+        // Step 1: Sort all spans by Y descending, X ascending
+        spans.sort_by(|a, b| {
+            let ay = if a.bbox.y.is_finite() { a.bbox.y } else { 0.0 };
+            let by = if b.bbox.y.is_finite() { b.bbox.y } else { 0.0 };
+            let y_cmp = by.partial_cmp(&ay).unwrap_or(std::cmp::Ordering::Equal);
+            if y_cmp != std::cmp::Ordering::Equal { return y_cmp; }
+            let ax = if a.bbox.x.is_finite() { a.bbox.x } else { 0.0 };
+            let bx = if b.bbox.x.is_finite() { b.bbox.x } else { 0.0 };
+            ax.partial_cmp(&bx).unwrap_or(std::cmp::Ordering::Equal)
+        });
+
+        // Step 2: Group spans into lines
+        struct Line {
+            span_indices: Vec<usize>,
+            min_x: f32,
+            max_x: f32,
+            avg_y: f32,
+            max_font_size: f32,
+        }
+
+        let mut lines: Vec<Line> = Vec::new();
+        let mut current_indices: Vec<usize> = vec![0];
+        let mut line_y = spans[0].bbox.y;
+        let mut line_fs = spans[0].font_size.max(6.0);
+
+        for i in 1..spans.len() {
+            let y_diff = (spans[i].bbox.y - line_y).abs();
+            let span_fs = spans[i].font_size.max(6.0);
+            let max_font = line_fs.max(span_fs);
+            let min_font = line_fs.min(span_fs);
+            let fs_ratio = max_font / min_font;
+            let tolerance = if fs_ratio >= 1.2 { max_font * 0.5 } else { 1.5 };
+
+            if y_diff <= tolerance {
+                current_indices.push(i);
+                line_fs = max_font;
+            } else {
+                // Finalize current line
+                let (min_x, max_x, sum_y, max_fs) = Self::compute_line_metrics(spans, &current_indices);
+                lines.push(Line {
+                    span_indices: std::mem::take(&mut current_indices),
+                    min_x, max_x,
+                    avg_y: sum_y / lines.last().map_or(current_indices.len(), |_| {
+                        // recalculate from the indices we just took
+                        0
+                    }).max(1) as f32,
+                    max_font_size: max_fs,
+                });
+                // Recompute avg_y properly
+                let last = lines.last_mut().unwrap();
+                let sum: f32 = last.span_indices.iter().map(|&i| spans[i].bbox.y).sum();
+                last.avg_y = sum / last.span_indices.len() as f32;
+
+                current_indices.push(i);
+                line_y = spans[i].bbox.y;
+                line_fs = spans[i].font_size.max(6.0);
+            }
+        }
+        if !current_indices.is_empty() {
+            let n = current_indices.len();
+            let (min_x, max_x, sum_y, max_fs) = Self::compute_line_metrics(spans, &current_indices);
+            lines.push(Line {
+                span_indices: current_indices,
+                min_x, max_x,
+                avg_y: sum_y / n as f32,
+                max_font_size: max_fs,
+            });
+        }
+
+        // Step 3: Group lines into blocks based on X-range overlap
+        // Two adjacent lines belong to the same block if their X ranges overlap
+        // by at least 50% of the narrower line's width.
+        struct Block {
+            line_indices: Vec<usize>,
+            min_x: f32,
+            max_x: f32,
+            top_y: f32,  // highest Y (top of block)
+        }
+
+        let mut blocks: Vec<Block> = Vec::new();
+        if !lines.is_empty() {
+            blocks.push(Block {
+                line_indices: vec![0],
+                min_x: lines[0].min_x,
+                max_x: lines[0].max_x,
+                top_y: lines[0].avg_y,
+            });
+        }
+
+        for li in 1..lines.len() {
+            let line = &lines[li];
+            let prev_line = &lines[li - 1];
+
+            // Check vertical gap: if too large, start new block
+            let v_gap = (prev_line.avg_y - line.avg_y).abs();
+            let expected_line_height = prev_line.max_font_size.max(line.max_font_size) * 1.8;
+            let too_far_vertically = v_gap > expected_line_height;
+
+            // Check X-range overlap with the current block's running range
+            let current_block = blocks.last().unwrap();
+            let overlap_start = line.min_x.max(current_block.min_x);
+            let overlap_end = line.max_x.min(current_block.max_x);
+            let overlap = (overlap_end - overlap_start).max(0.0);
+            let line_width = (line.max_x - line.min_x).max(1.0);
+            let block_width = (current_block.max_x - current_block.min_x).max(1.0);
+            let min_width = line_width.min(block_width);
+            let overlap_ratio = overlap / min_width;
+
+            if too_far_vertically || overlap_ratio < 0.3 {
+                // Start new block
+                blocks.push(Block {
+                    line_indices: vec![li],
+                    min_x: line.min_x,
+                    max_x: line.max_x,
+                    top_y: line.avg_y,
+                });
+            } else {
+                // Add to current block, expand X range
+                let block = blocks.last_mut().unwrap();
+                block.line_indices.push(li);
+                block.min_x = block.min_x.min(line.min_x);
+                block.max_x = block.max_x.max(line.max_x);
+            }
+        }
+
+        // Step 4: Sort blocks by reading order
+        // Primary: top-to-bottom (higher Y = top)
+        // Secondary: left-to-right (for blocks at similar Y)
+        blocks.sort_by(|a, b| {
+            // If blocks overlap vertically significantly, sort by X
+            let a_bot = a.top_y - a.line_indices.len() as f32 * 12.0; // rough estimate
+            let b_bot = b.top_y - b.line_indices.len() as f32 * 12.0;
+
+            // Check if block tops are close (within a line height)
+            let y_close = (a.top_y - b.top_y).abs() < 15.0;
+            if y_close {
+                // Same vertical position -> sort left to right
+                a.min_x.partial_cmp(&b.min_x).unwrap_or(std::cmp::Ordering::Equal)
+            } else {
+                // Different vertical position -> sort top to bottom
+                b.top_y.partial_cmp(&a.top_y).unwrap_or(std::cmp::Ordering::Equal)
+            }
+        });
+
+        // Step 5: Rebuild spans in block order
+        let mut result: Vec<TextSpan> = Vec::with_capacity(spans.len());
+        for block in &blocks {
+            for &li in &block.line_indices {
+                let line = &lines[li];
+                // Sort spans within line by X
+                let mut line_spans: Vec<&TextSpan> = line.span_indices.iter()
+                    .map(|&i| &spans[i])
+                    .collect();
+                line_spans.sort_by(|a, b| {
+                    a.bbox.x.partial_cmp(&b.bbox.x).unwrap_or(std::cmp::Ordering::Equal)
+                });
+                for s in line_spans {
+                    result.push(s.clone());
+                }
+            }
+        }
+
+        *spans = result;
+    }
+
+    fn compute_line_metrics(spans: &[TextSpan], indices: &[usize]) -> (f32, f32, f32, f32) {
+        let mut min_x = f32::MAX;
+        let mut max_x = f32::MIN;
+        let mut sum_y = 0.0f32;
+        let mut max_fs = 0.0f32;
+        for &i in indices {
+            let s = &spans[i];
+            let sx = if s.bbox.x.is_finite() { s.bbox.x } else { 0.0 };
+            let sw = if s.bbox.width.is_finite() { s.bbox.width } else { 0.0 };
+            min_x = min_x.min(sx);
+            max_x = max_x.max(sx + sw);
+            sum_y += if s.bbox.y.is_finite() { s.bbox.y } else { 0.0 };
+            max_fs = max_fs.max(s.font_size);
+        }
+        (min_x, max_x, sum_y, max_fs)
+    }
+
+    fn sort_spans_sequence_lines(spans: &mut Vec<TextSpan>) {
+        if spans.len() <= 1 {
+            return;
+        }
+
+        // This function is a SINGLE-COLUMN sorter only.
+        // Column detection is handled by sort_spans_block_order via detect_columns_from_ranges.
+        // Do NOT add column detection here — it produces false positives on single-column pages.
+
+        // Helper: sort a slice of spans into lines and return ordered indices
+        let sort_column = |col_spans: &mut Vec<TextSpan>| {
+            if col_spans.is_empty() { return; }
+
+            // Sort by Y descending, X ascending
+            col_spans.sort_by(|a, b| {
+                let ay = if a.bbox.y.is_finite() { a.bbox.y } else { 0.0 };
+                let by = if b.bbox.y.is_finite() { b.bbox.y } else { 0.0 };
+                let ax = if a.bbox.x.is_finite() { a.bbox.x } else { 0.0 };
+                let bx = if b.bbox.x.is_finite() { b.bbox.x } else { 0.0 };
+                match by.partial_cmp(&ay).unwrap_or(std::cmp::Ordering::Equal) {
+                    std::cmp::Ordering::Equal => {
+                        ax.partial_cmp(&bx).unwrap_or(std::cmp::Ordering::Equal)
                     },
-                    0xFEF7 | 0xFEF8 => {
-                        return '\u{0644}'; // Lam + Alef with Hamza Above
-                    },
-                    0xFEF9 | 0xFEFA => {
-                        return '\u{0644}'; // Lam + Alef with Hamza Below
-                    },
-                    0xFEFB | 0xFEFC => {
-                        return '\u{0644}'; // Lam + Alef
-                    },
-                    // Tatweel (kashida)
-                    0xFE70 => 0x064B, // Fathatan isolated
-                    0xFE71 => 0x064B, // Tatweel + Fathatan
-                    0xFE72 => 0x064C, // Dammatan isolated
-                    0xFE74 => 0x064D, // Kasratan isolated
-                    0xFE76 => 0x064E, // Fatha isolated
-                    0xFE77 => 0x064E, // Fatha medial
-                    0xFE78 => 0x064F, // Damma isolated
-                    0xFE79 => 0x064F, // Damma medial
-                    0xFE7A => 0x0650, // Kasra isolated
-                    0xFE7B => 0x0650, // Kasra medial
-                    0xFE7C => 0x0651, // Shadda isolated
-                    0xFE7D => 0x0651, // Shadda medial
-                    0xFE7E => 0x0652, // Sukun isolated
-                    0xFE7F => 0x0652, // Sukun medial
-                    _ => cp,          // Pass through unchanged
-                };
-                char::from_u32(base).unwrap_or(c)
+                    other => other,
+                }
+            });
+
+            // Group into lines
+            let mut lines: Vec<Vec<usize>> = Vec::new();
+            let mut current_line: Vec<usize> = vec![0];
+            let mut line_y = col_spans[0].bbox.y;
+            let mut line_fs = col_spans[0].font_size.max(6.0);
+
+            for i in 1..col_spans.len() {
+                let y_diff = (col_spans[i].bbox.y - line_y).abs();
+                let span_fs = col_spans[i].font_size.max(6.0);
+                let max_font = line_fs.max(span_fs);
+                let min_font = line_fs.min(span_fs);
+                let fs_ratio = max_font / min_font;
+                let tolerance = if fs_ratio >= 1.2 { max_font * 0.5 } else { 1.5 };
+
+                if y_diff <= tolerance {
+                    current_line.push(i);
+                    line_fs = max_font;
+                } else {
+                    lines.push(std::mem::take(&mut current_line));
+                    current_line.push(i);
+                    line_y = col_spans[i].bbox.y;
+                    line_fs = col_spans[i].font_size.max(6.0);
+                }
+            }
+            if !current_line.is_empty() {
+                lines.push(current_line);
+            }
+
+            // Compute average Y per line for stable sorting
+            let line_ys: Vec<f32> = lines.iter().map(|line| {
+                let sum: f32 = line.iter().map(|&i| col_spans[i].bbox.y).sum();
+                sum / line.len() as f32
+            }).collect();
+
+            // Sort lines by Y descending (quantized for stability)
+            let mut line_order: Vec<usize> = (0..lines.len()).collect();
+            line_order.sort_by(|&a, &b| {
+                let ay = if line_ys[a].is_finite() { line_ys[a] } else { 0.0 };
+                let by = if line_ys[b].is_finite() { line_ys[b] } else { 0.0 };
+                let ay_bin = (ay * 2.0).round() as i64;
+                let by_bin = (by * 2.0).round() as i64;
+                by_bin.cmp(&ay_bin)
+            });
+
+            // Build ordered span list: lines top-to-bottom, spans left-to-right within line
+            let mut result: Vec<TextSpan> = Vec::with_capacity(col_spans.len());
+            for &li in &line_order {
+                let mut line_span_indices: Vec<usize> = lines[li].clone();
+                line_span_indices.sort_by(|&a, &b| {
+                    let ax = if col_spans[a].bbox.x.is_finite() { col_spans[a].bbox.x } else { 0.0 };
+                    let bx = if col_spans[b].bbox.x.is_finite() { col_spans[b].bbox.x } else { 0.0 };
+                    ax.partial_cmp(&bx).unwrap_or(std::cmp::Ordering::Equal)
+                });
+                for idx in line_span_indices {
+                    result.push(col_spans[idx].clone());
+                }
+            }
+            *col_spans = result;
+        };
+
+        // Single column: sort into lines, then order top-to-bottom
+        sort_column(spans);
+    }
+
+    /// Sort spans using block-grouping reading order algorithm.
+    ///
+    /// Column-aware reading order using margin peak detection on span X-start positions.
+    ///
+    /// Key insight: classify spans by where they START (X-start), not by their full extent.
+    /// Two-column layouts have bimodal X-start distributions with peaks at each column's
+    /// left margin. This works even when spans from adjacent columns overlap in X extent.
+    ///
+    /// Algorithm:
+    /// 1. Sort spans by Y desc, X asc
+    /// 2. Build histogram of span X-start positions
+    /// 3. Find dominant left-half and right-half margin peaks
+    /// 4. If both peaks are significant and well-separated → two-column detected
+    /// 5. Use Otsu's method to find optimal boundary between the two peaks
+    /// 6. Classify each span as left/right by X-start position
+    /// 7. Group spans into lines, then for each contiguous columnar region:
+    ///    output left-column spans (by Y), then right-column spans (by Y)
+    fn sort_spans_block_order(spans: &mut Vec<TextSpan>) {
+        if spans.len() <= 1 {
+            return;
+        }
+
+        fn fin(v: f32) -> f32 {
+            if v.is_finite() { v } else { 0.0 }
+        }
+
+        // Step 1: Sort all spans by Y descending (top of page first), X ascending
+        spans.sort_by(|a, b| {
+            let y_cmp = fin(b.bbox.y).total_cmp(&fin(a.bbox.y));
+            if y_cmp != std::cmp::Ordering::Equal { return y_cmp; }
+            fin(a.bbox.x).total_cmp(&fin(b.bbox.x))
+        });
+
+        let avg_fs: f32 = (spans.iter().map(|s| s.font_size).sum::<f32>() / spans.len() as f32).max(6.0);
+
+        if spans.len() < 8 {
+            return;
+        }
+
+        // Step 2: Detect columns via histogram of span X-start positions.
+        let page_min_x = spans.iter().map(|s| fin(s.bbox.x)).fold(f32::MAX, f32::min);
+        let page_max_x = spans.iter().map(|s| fin(s.bbox.x) + fin(s.bbox.width)).fold(0.0f32, f32::max);
+        let page_width = (page_max_x - page_min_x).max(1.0);
+
+        if page_width < avg_fs * 10.0 {
+            return;
+        }
+
+        let bin_width = avg_fs.max(4.0);
+        let num_bins = ((page_width / bin_width).ceil() as usize).max(1);
+        let mut histogram = vec![0u32; num_bins];
+
+        for span in spans.iter() {
+            let x = fin(span.bbox.x);
+            let bin = ((x - page_min_x) / bin_width).floor() as usize;
+            let bin = bin.min(num_bins - 1);
+            histogram[bin] += 1;
+        }
+
+        // Find the two tallest peaks separated by at least 30% of page width.
+        // Sort bins by count descending, then find first pair with sufficient separation.
+        let min_sep_bins = ((page_width * 0.3) / bin_width).ceil() as usize;
+        let mut sorted_bins: Vec<usize> = (0..num_bins).collect();
+        sorted_bins.sort_by(|&a, &b| histogram[b].cmp(&histogram[a]));
+
+        let mut left_peak_bin: Option<usize> = None;
+        let mut right_peak_bin: Option<usize> = None;
+
+        if sorted_bins.len() >= 2 {
+            let first = sorted_bins[0];
+            for &second in &sorted_bins[1..] {
+                let lo = first.min(second);
+                let hi = first.max(second);
+                if hi - lo >= min_sep_bins {
+                    left_peak_bin = Some(lo);
+                    right_peak_bin = Some(hi);
+                    break;
+                }
+            }
+        }
+
+        let (left_bin, right_bin) = match (left_peak_bin, right_peak_bin) {
+            (Some(l), Some(r)) => (l, r),
+            _ => return,
+        };
+
+        let left_count = histogram[left_bin];
+        let right_count = histogram[right_bin];
+        let total = spans.len() as u32;
+
+        // Both peaks must have at least 10% of spans
+        if left_count < total / 10 || right_count < total / 10 {
+            return;
+        }
+
+        // Peaks must be separated by at least 30% of page width
+        let left_x = page_min_x + (left_bin as f32 + 0.5) * bin_width;
+        let right_x = page_min_x + (right_bin as f32 + 0.5) * bin_width;
+        if (right_x - left_x) < page_width * 0.3 {
+            return;
+        }
+
+        // Step 3: Find column boundary.
+        // Place it at the left edge of the right peak bin minus a small margin.
+        // The right peak bin contains spans starting at the right column's left margin.
+        // We want the boundary just before that margin so all right-margin spans
+        // are correctly classified as right-column.
+        let right_bin_left_edge = page_min_x + right_bin as f32 * bin_width;
+        let boundary = right_bin_left_edge - bin_width * 0.25;
+
+        // Step 4: Classify each span.
+        // A span is "right-column" if X-start >= boundary, else "left-column".
+        // A span is "margin-aligned" if its X-start is within 1.5*bin_width of a peak.
+        let left_margin_lo = left_x - bin_width * 1.5;
+        let left_margin_hi = left_x + bin_width * 1.5;
+        let right_margin_lo = right_x - bin_width * 1.5;
+        let right_margin_hi = right_x + bin_width * 1.5;
+
+        let span_is_right: Vec<bool> = spans.iter().map(|s| fin(s.bbox.x) >= boundary).collect();
+        let span_is_left_margin: Vec<bool> = spans.iter()
+            .map(|s| { let x = fin(s.bbox.x); x >= left_margin_lo && x <= left_margin_hi })
+            .collect();
+        let span_is_right_margin: Vec<bool> = spans.iter()
+            .map(|s| { let x = fin(s.bbox.x); x >= right_margin_lo && x <= right_margin_hi })
+            .collect();
+
+        // Step 5: Group spans into lines.
+        // A line is "left-aligned" if it has at least one left-margin span and no right-margin spans.
+        // A line is "right-aligned" if it has at least one right-margin span and no left-margin spans.
+        struct Line {
+            span_indices: Vec<usize>,
+            y: f32,
+            is_left_aligned: bool,
+            is_right_aligned: bool,
+        }
+
+        let mut lines: Vec<Line> = Vec::new();
+        let mut cur_y = fin(spans[0].bbox.y);
+        let mut cur_fs = spans[0].font_size.max(6.0);
+        let mut cur_indices: Vec<usize> = vec![0];
+
+        for i in 1..spans.len() {
+            let y = fin(spans[i].bbox.y);
+            let fs = spans[i].font_size.max(6.0);
+            let tolerance = cur_fs.max(fs) * 0.4;
+
+            if (y - cur_y).abs() > tolerance {
+                let has_lm = cur_indices.iter().any(|&si| span_is_left_margin[si]);
+                let has_rm = cur_indices.iter().any(|&si| span_is_right_margin[si]);
+                lines.push(Line {
+                    span_indices: std::mem::take(&mut cur_indices),
+                    y: cur_y,
+                    is_left_aligned: has_lm && !has_rm,
+                    is_right_aligned: has_rm && !has_lm,
+                });
+                cur_y = y;
+                cur_fs = fs;
+                cur_indices = vec![i];
+            } else {
+                cur_indices.push(i);
+                cur_fs = cur_fs.max(fs);
+            }
+        }
+        let has_lm = cur_indices.iter().any(|&si| span_is_left_margin[si]);
+        let has_rm = cur_indices.iter().any(|&si| span_is_right_margin[si]);
+        lines.push(Line {
+            span_indices: cur_indices,
+            y: cur_y,
+            is_left_aligned: has_lm && !has_rm,
+            is_right_aligned: has_rm && !has_lm,
+        });
+
+        // Step 6: Find the columnar region.
+        // A columnar region is where we see L-only and R-only lines interleaved.
+        // Use a sliding window: if within any 6-line window we see both L-only
+        // and R-only lines, those lines are columnar. Expand to find the full region.
+        // This correctly excludes centered/full-width header text even if some
+        // spans in it happen to start past the boundary.
+
+        let n_lines = lines.len();
+        let mut is_columnar = vec![false; n_lines];
+
+        // Mark lines as columnar using a sliding window approach
+        let window = 6usize;
+        for start in 0..n_lines.saturating_sub(window - 1) {
+            let end = (start + window).min(n_lines);
+            let has_l_only = lines[start..end].iter().any(|l| l.is_left_aligned);
+            let has_r_only = lines[start..end].iter().any(|l| l.is_right_aligned);
+            if has_l_only && has_r_only {
+                for i in start..end {
+                    is_columnar[i] = true;
+                }
+            }
+        }
+
+        // Find the first and last columnar line
+        let col_start = match is_columnar.iter().position(|&c| c) {
+            Some(i) => i,
+            None => return, // No columnar region found
+        };
+        let col_end = is_columnar.iter().rposition(|&c| c).unwrap();
+
+        // Validate: both columns must have substantial content.
+        // At least 20% of lines in the region should be left-aligned,
+        // and at least 20% should be right-aligned.
+        let region_len = col_end - col_start + 1;
+        let la_count = lines[col_start..=col_end].iter().filter(|l| l.is_left_aligned).count();
+        let ra_count = lines[col_start..=col_end].iter().filter(|l| l.is_right_aligned).count();
+        let min_col_lines = (region_len / 5).max(3);
+        if la_count < min_col_lines || ra_count < min_col_lines {
+            return; // Not enough lines in each column — probably not truly two-column
+        }
+
+        // Step 7: Output spans in reading order.
+        let mut result: Vec<TextSpan> = Vec::with_capacity(spans.len());
+
+        // Pre-columnar lines: output as-is (Y desc, X asc)
+        for li in 0..col_start {
+            let mut sorted_si = lines[li].span_indices.clone();
+            sorted_si.sort_by(|&a, &b| fin(spans[a].bbox.x).total_cmp(&fin(spans[b].bbox.x)));
+            for si in sorted_si {
+                result.push(spans[si].clone());
+            }
+        }
+
+        // Columnar region: output all left-column spans first, then right-column spans
+        // Within each column, maintain Y desc (top-to-bottom) order.
+        for pass in 0..2u8 {
+            for li in col_start..=col_end {
+                let mut sorted_si = lines[li].span_indices.clone();
+                sorted_si.sort_by(|&a, &b| fin(spans[a].bbox.x).total_cmp(&fin(spans[b].bbox.x)));
+                for si in sorted_si {
+                    let is_right = span_is_right[si];
+                    if (pass == 0 && !is_right) || (pass == 1 && is_right) {
+                        result.push(spans[si].clone());
+                    }
+                }
+            }
+        }
+
+        // Post-columnar lines: output as-is
+        for li in (col_end + 1)..lines.len() {
+            let mut sorted_si = lines[li].span_indices.clone();
+            sorted_si.sort_by(|&a, &b| fin(spans[a].bbox.x).total_cmp(&fin(spans[b].bbox.x)));
+            for si in sorted_si {
+                result.push(spans[si].clone());
+            }
+        }
+
+        *spans = result;
+    }
+
+    /// Compute X extent and Y sum for a range of spans.
+    fn line_x_extent(spans: &[TextSpan], start: usize, end: usize) -> (f32, f32, f32) {
+        let mut min_x = f32::MAX;
+        let mut max_x = f32::MIN;
+        let mut sum_y = 0.0f32;
+        for i in start..end {
+            let x = if spans[i].bbox.x.is_finite() { spans[i].bbox.x } else { 0.0 };
+            let w = if spans[i].bbox.width.is_finite() { spans[i].bbox.width } else { 0.0 };
+            let y = if spans[i].bbox.y.is_finite() { spans[i].bbox.y } else { 0.0 };
+            min_x = min_x.min(x);
+            max_x = max_x.max(x + w);
+            sum_y += y;
+        }
+        (min_x, max_x, sum_y)
+    }
+
+    /// Recursive XY-cut: split span regions by the widest vertical or
+    /// horizontal gap, then sort each sub-region independently.
+    fn xy_cut_sort(spans: &mut Vec<TextSpan>, depth: usize) {
+        if spans.len() <= 1 || depth > 8 {
+            return;
+        }
+
+        // Compute bounding box of all spans
+        let mut min_x = f32::MAX;
+        let mut max_x = f32::MIN;
+        let mut min_y = f32::MAX;
+        let mut max_y = f32::MIN;
+        let mut avg_fs = 0.0f32;
+        for s in spans.iter() {
+            let x = if s.bbox.x.is_finite() { s.bbox.x } else { 0.0 };
+            let w = if s.bbox.width.is_finite() { s.bbox.width } else { 0.0 };
+            let y = if s.bbox.y.is_finite() { s.bbox.y } else { 0.0 };
+            let h = if s.bbox.height.is_finite() { s.bbox.height } else { s.font_size };
+            min_x = min_x.min(x);
+            max_x = max_x.max(x + w);
+            min_y = min_y.min(y - h); // y is baseline, top is y - height
+            max_y = max_y.max(y);
+            avg_fs += s.font_size;
+        }
+        avg_fs /= spans.len() as f32;
+        let avg_fs = avg_fs.max(6.0);
+        let region_width = max_x - min_x;
+        let region_height = max_y - min_y;
+
+        if region_width < 1.0 || region_height < 1.0 {
+            // Degenerate region, just sort by Y then X
+            Self::sort_yx(spans);
+            return;
+        }
+
+        // Try vertical cut (X-axis split) — detects columns
+        let v_cut = Self::find_best_vertical_cut(spans, min_x, max_x, avg_fs);
+
+        // Try horizontal cut (Y-axis split) — detects row breaks
+        let h_cut = Self::find_best_horizontal_cut(spans, min_y, max_y, avg_fs);
+
+        // Minimum gap thresholds
+        let min_v_gap = avg_fs * 0.8; // Column gap must be at least ~80% of font size
+        let min_h_gap = avg_fs * 1.2; // Row gap must be at least ~120% of font size
+
+        let do_v_cut = v_cut.map_or(false, |(_, gap)| gap >= min_v_gap);
+        let do_h_cut = h_cut.map_or(false, |(_, gap)| gap >= min_h_gap);
+
+        if do_v_cut && (!do_h_cut || v_cut.unwrap().1 >= h_cut.unwrap().1 * 0.7) {
+            // Vertical cut: split into left and right columns
+            let (cut_x, _gap) = v_cut.unwrap();
+
+            let mut left: Vec<TextSpan> = Vec::new();
+            let mut right: Vec<TextSpan> = Vec::new();
+            for s in spans.drain(..) {
+                let sx = if s.bbox.x.is_finite() { s.bbox.x } else { 0.0 };
+                let sw = if s.bbox.width.is_finite() { s.bbox.width } else { 0.0 };
+                let mid = sx + sw / 2.0;
+                if mid < cut_x {
+                    left.push(s);
+                } else {
+                    right.push(s);
+                }
+            }
+
+            // Require both sides to have meaningful content (>= 3 spans each)
+            if left.len() < 3 || right.len() < 3 {
+                // Not a real column split, recombine and fall through to Y-sort
+                spans.extend(left);
+                spans.extend(right);
+                Self::sort_yx(spans);
+                return;
+            }
+
+            // Recursively sort each column
+            Self::xy_cut_sort(&mut left, depth + 1);
+            Self::xy_cut_sort(&mut right, depth + 1);
+
+            spans.extend(left);
+            spans.extend(right);
+        } else if do_h_cut {
+            // Horizontal cut: split into top and bottom sections
+            let (cut_y, _gap) = h_cut.unwrap();
+
+            let mut top: Vec<TextSpan> = Vec::new();
+            let mut bottom: Vec<TextSpan> = Vec::new();
+            for s in spans.drain(..) {
+                let sy = if s.bbox.y.is_finite() { s.bbox.y } else { 0.0 };
+                if sy >= cut_y {
+                    top.push(s); // Higher Y = higher on page (PDF coords)
+                } else {
+                    bottom.push(s);
+                }
+            }
+
+            if top.is_empty() || bottom.is_empty() {
+                spans.extend(top);
+                spans.extend(bottom);
+                Self::sort_yx(spans);
+                return;
+            }
+
+            Self::xy_cut_sort(&mut top, depth + 1);
+            Self::xy_cut_sort(&mut bottom, depth + 1);
+
+            spans.extend(top);
+            spans.extend(bottom);
+        } else {
+            // Leaf region: no significant cuts found. Sort by Y then X.
+            Self::sort_yx(spans);
+        }
+    }
+
+    /// Find the best vertical cut position (X coordinate of widest gap).
+    /// Returns Some((cut_x, gap_width)) or None.
+    fn find_best_vertical_cut(
+        spans: &[TextSpan],
+        min_x: f32,
+        max_x: f32,
+        avg_fs: f32,
+    ) -> Option<(f32, f32)> {
+        let width = max_x - min_x;
+        if width < avg_fs * 3.0 {
+            return None; // Too narrow for columns
+        }
+
+        // Build X-coverage histogram with fine bins
+        let num_bins = 100;
+        let bin_width = width / num_bins as f32;
+        let mut coverage = vec![0u32; num_bins];
+
+        for s in spans {
+            let x = if s.bbox.x.is_finite() { s.bbox.x } else { 0.0 };
+            let w = if s.bbox.width.is_finite() { s.bbox.width } else { 0.0 };
+            let start_bin = ((x - min_x) / bin_width).floor().max(0.0) as usize;
+            let end_bin = (((x + w) - min_x) / bin_width).ceil().max(0.0) as usize;
+            for b in start_bin..end_bin.min(num_bins) {
+                coverage[b] += 1;
+            }
+        }
+
+        // Find the widest contiguous run of empty bins in the middle 80% of the page
+        // (avoid edges which are often empty margins)
+        let margin_bins = num_bins / 10; // 10% margin on each side
+        let mut best_gap_start = 0;
+        let mut best_gap_len = 0;
+        let mut gap_start = 0;
+        let mut in_gap = false;
+
+        for b in margin_bins..(num_bins - margin_bins) {
+            if coverage[b] == 0 {
+                if !in_gap {
+                    gap_start = b;
+                    in_gap = true;
+                }
+            } else {
+                if in_gap {
+                    let gap_len = b - gap_start;
+                    if gap_len > best_gap_len {
+                        best_gap_len = gap_len;
+                        best_gap_start = gap_start;
+                    }
+                    in_gap = false;
+                }
+            }
+        }
+        if in_gap {
+            let gap_len = (num_bins - margin_bins) - gap_start;
+            if gap_len > best_gap_len {
+                best_gap_len = gap_len;
+                best_gap_start = gap_start;
+            }
+        }
+
+        if best_gap_len == 0 {
+            return None;
+        }
+
+        let gap_width_pts = best_gap_len as f32 * bin_width;
+        let cut_x = min_x + (best_gap_start as f32 + best_gap_len as f32 / 2.0) * bin_width;
+
+        Some((cut_x, gap_width_pts))
+    }
+
+    /// Find the best horizontal cut position (Y coordinate of widest gap).
+    /// Returns Some((cut_y, gap_height)) or None.
+    fn find_best_horizontal_cut(
+        spans: &[TextSpan],
+        min_y: f32,
+        max_y: f32,
+        avg_fs: f32,
+    ) -> Option<(f32, f32)> {
+        let height = max_y - min_y;
+        if height < avg_fs * 3.0 {
+            return None;
+        }
+
+        let num_bins = 100;
+        let bin_height = height / num_bins as f32;
+        let mut coverage = vec![0u32; num_bins];
+
+        for s in spans {
+            let y = if s.bbox.y.is_finite() { s.bbox.y } else { 0.0 };
+            let h = if s.bbox.height.is_finite() { s.bbox.height } else { s.font_size };
+            let y_top = y;
+            let y_bot = y - h;
+            let start_bin = ((y_bot - min_y) / bin_height).floor().max(0.0) as usize;
+            let end_bin = ((y_top - min_y) / bin_height).ceil().max(0.0) as usize;
+            for b in start_bin..end_bin.min(num_bins) {
+                coverage[b] += 1;
+            }
+        }
+
+        let mut best_gap_start = 0;
+        let mut best_gap_len = 0;
+        let mut gap_start = 0;
+        let mut in_gap = false;
+
+        for b in 0..num_bins {
+            if coverage[b] == 0 {
+                if !in_gap {
+                    gap_start = b;
+                    in_gap = true;
+                }
+            } else {
+                if in_gap {
+                    let gap_len = b - gap_start;
+                    if gap_len > best_gap_len {
+                        best_gap_len = gap_len;
+                        best_gap_start = gap_start;
+                    }
+                    in_gap = false;
+                }
+            }
+        }
+        if in_gap {
+            let gap_len = num_bins - gap_start;
+            if gap_len > best_gap_len {
+                best_gap_len = gap_len;
+                best_gap_start = gap_start;
+            }
+        }
+
+        if best_gap_len == 0 {
+            return None;
+        }
+
+        let gap_height_pts = best_gap_len as f32 * bin_height;
+        let cut_y = min_y + (best_gap_start as f32 + best_gap_len as f32 / 2.0) * bin_height;
+
+        Some((cut_y, gap_height_pts))
+    }
+
+    /// Simple Y-then-X sort for leaf regions of the XY-cut.
+    /// Groups spans into lines by Y proximity, sorts lines top-to-bottom,
+    /// and spans within each line left-to-right.
+    fn sort_yx(spans: &mut Vec<TextSpan>) {
+        if spans.len() <= 1 {
+            return;
+        }
+
+        // Sort by Y descending (top first in PDF coords), then X ascending
+        spans.sort_by(|a, b| {
+            let ay = if a.bbox.y.is_finite() { a.bbox.y } else { 0.0 };
+            let by = if b.bbox.y.is_finite() { b.bbox.y } else { 0.0 };
+            let y_cmp = by.partial_cmp(&ay).unwrap_or(std::cmp::Ordering::Equal);
+            if y_cmp != std::cmp::Ordering::Equal {
+                return y_cmp;
+            }
+            let ax = if a.bbox.x.is_finite() { a.bbox.x } else { 0.0 };
+            let bx = if b.bbox.x.is_finite() { b.bbox.x } else { 0.0 };
+            ax.partial_cmp(&bx).unwrap_or(std::cmp::Ordering::Equal)
+        });
+    }
+
+    /// Detect column boundaries from span positions using line-start X clustering.
+    ///
+    /// Groups spans into rough lines by Y position, finds the leftmost X of each line,
+    /// then looks for bimodal clustering in line-start positions indicating columns.
+    /// Returns column X-ranges sorted left to right.
+    fn detect_columns_from_spans(spans: &[TextSpan]) -> Vec<(f32, f32)> {
+        if spans.len() < 8 {
+            return vec![];
+        }
+
+        let page_min_x = spans.iter()
+            .map(|s| if s.bbox.x.is_finite() { s.bbox.x } else { f32::MAX })
+            .fold(f32::MAX, f32::min);
+        let page_max_x = spans.iter()
+            .map(|s| {
+                let r = s.bbox.x + s.bbox.width;
+                if r.is_finite() { r } else { f32::MIN }
             })
-            .collect()
+            .fold(f32::MIN, f32::max);
+        let page_width = (page_max_x - page_min_x).max(1.0);
+
+        if page_width < 200.0 {
+            return vec![(page_min_x, page_max_x)];
+        }
+
+        // Step 1: Rough Y grouping to find line-start X positions.
+        // Sort spans by Y descending, group spans within 3pt of each other.
+        let mut sorted_spans: Vec<(f32, f32)> = spans.iter()
+            .filter(|s| s.bbox.x.is_finite() && s.bbox.y.is_finite())
+            .map(|s| (s.bbox.x, s.bbox.y))
+            .collect();
+        sorted_spans.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
+
+        let mut line_starts: Vec<f32> = Vec::new();
+        if sorted_spans.is_empty() {
+            return vec![];
+        }
+        let mut line_min_x = sorted_spans[0].0;
+        let mut line_y = sorted_spans[0].1;
+        for &(x, y) in &sorted_spans[1..] {
+            if (y - line_y).abs() <= 3.0 {
+                if x < line_min_x { line_min_x = x; }
+            } else {
+                line_starts.push(line_min_x);
+                line_min_x = x;
+                line_y = y;
+            }
+        }
+        line_starts.push(line_min_x);
+
+        if line_starts.len() < 4 {
+            return vec![(page_min_x, page_max_x)];
+        }
+
+        // Step 2: Build histogram of line-start X positions
+        let num_bins = 50;
+        let bin_width = page_width / num_bins as f32;
+        let mut hist = vec![0usize; num_bins];
+        for &x in &line_starts {
+            let b = ((x - page_min_x) / bin_width).min((num_bins - 1) as f32).max(0.0) as usize;
+            hist[b] += 1;
+        }
+
+        // Step 3: Find peaks (bins with >= 10% of total lines)
+        let total_lines = line_starts.len();
+        let peak_threshold = (total_lines as f32 * 0.10).max(2.0) as usize;
+
+        // Smooth with window of 3
+        let mut smoothed = vec![0usize; num_bins];
+        for b in 0..num_bins {
+            let lo = if b > 0 { b - 1 } else { 0 };
+            let hi = if b + 1 < num_bins { b + 1 } else { num_bins - 1 };
+            smoothed[b] = hist[lo] + hist[b] + hist[hi];
+        }
+
+        // Find peak clusters (merge adjacent bins above threshold)
+        let margin_bins = (num_bins as f32 * 0.05) as usize;
+        let mut peaks: Vec<(usize, usize)> = Vec::new(); // (center_bin, total_count)
+        let mut in_peak = false;
+        let mut peak_start = 0usize;
+        let mut peak_max_bin = 0usize;
+        let mut peak_max_val = 0usize;
+
+        for b in margin_bins..(num_bins - margin_bins) {
+            if smoothed[b] >= peak_threshold {
+                if !in_peak {
+                    in_peak = true;
+                    peak_start = b;
+                    peak_max_bin = b;
+                    peak_max_val = smoothed[b];
+                } else if smoothed[b] > peak_max_val {
+                    peak_max_bin = b;
+                    peak_max_val = smoothed[b];
+                }
+            } else if in_peak {
+                peaks.push((peak_max_bin, peak_max_val));
+                in_peak = false;
+            }
+        }
+        if in_peak {
+            peaks.push((peak_max_bin, peak_max_val));
+        }
+
+        // Merge peaks that are too close (within 15% of page)
+        let min_gap_bins = (num_bins as f32 * 0.15) as usize;
+        let mut merged_peaks: Vec<(usize, usize)> = Vec::new();
+        for peak in &peaks {
+            if let Some(last) = merged_peaks.last_mut() {
+                if peak.0 - last.0 < min_gap_bins {
+                    if peak.1 > last.1 { *last = *peak; }
+                    continue;
+                }
+            }
+            merged_peaks.push(*peak);
+        }
+
+        // Step 4: Convert peaks to column boundaries
+        if merged_peaks.len() < 2 {
+            return vec![(page_min_x, page_max_x)];
+        }
+
+        // Build gutters between adjacent peaks
+        let mut gutters: Vec<(usize, usize)> = Vec::new();
+        for i in 0..merged_peaks.len() - 1 {
+            let left_peak = merged_peaks[i].0;
+            let right_peak = merged_peaks[i + 1].0;
+            let gap = right_peak - left_peak;
+
+            if gap >= min_gap_bins {
+                // Find the minimum in the valley between peaks
+                let valley_min = (left_peak + 2..right_peak - 1)
+                    .map(|b| smoothed.get(b).copied().unwrap_or(0))
+                    .min()
+                    .unwrap_or(0);
+                let peak_avg = (merged_peaks[i].1 + merged_peaks[i + 1].1) / 2;
+
+                // Valley must be significantly lower than peaks
+                if valley_min < (peak_avg as f32 * 0.40) as usize {
+                    let gutter_center = (left_peak + right_peak) / 2;
+                    let gutter_half = gap / 6;
+                    gutters.push((gutter_center.saturating_sub(gutter_half), gutter_center + gutter_half));
+                }
+            }
+        }
+
+        // Convert gutters to column ranges
+        if gutters.is_empty() {
+            return vec![(page_min_x, page_max_x)];
+        }
+
+        // Limit to max 4 columns (most common: 1, 2, 3)
+        if gutters.len() > 3 {
+            // Keep only the widest gutters
+            gutters.sort_by(|a, b| (b.1 - b.0).cmp(&(a.1 - a.0)));
+            gutters.truncate(3);
+            gutters.sort_by_key(|g| g.0);
+        }
+
+        let mut columns: Vec<(f32, f32)> = Vec::new();
+        let mut col_start = page_min_x;
+
+        for (gutter_start_bin, gutter_end_bin) in &gutters {
+            let gutter_x = page_min_x + *gutter_start_bin as f32 * bin_width;
+            columns.push((col_start, gutter_x));
+            col_start = page_min_x + *gutter_end_bin as f32 * bin_width;
+        }
+        columns.push((col_start, page_max_x));
+
+        columns
+    }
+
+    /// Assign an X position to the nearest column index.
+    fn assign_to_column(x: f32, columns: &[(f32, f32)]) -> usize {
+        if columns.is_empty() {
+            return 0;
+        }
+        for (i, &(col_start, col_end)) in columns.iter().enumerate() {
+            if x >= col_start && x <= col_end {
+                return i;
+            }
+        }
+        // If outside all columns, assign to nearest
+        let mut best = 0;
+        let mut best_dist = f32::MAX;
+        for (i, &(col_start, col_end)) in columns.iter().enumerate() {
+            let mid = (col_start + col_end) / 2.0;
+            let dist = (x - mid).abs();
+            if dist < best_dist {
+                best_dist = dist;
+                best = i;
+            }
+        }
+        best
+    }
+
+    /// Check if a short text string looks like a ligature glyph.
+    /// PDFs use separate Type0 fonts for ligature glyphs like fi, fl, ff, ffi, ffl.
+    fn looks_like_ligature(text: &str) -> bool {
+        matches!(text, "fi" | "fl" | "ff" | "ffi" | "ffl" | "ft" | "st" |
+                 "\u{FB00}" | "\u{FB01}" | "\u{FB02}" | "\u{FB03}" | "\u{FB04}")
+    }
+
+    /// Text assembly with column detection for multi-column PDFs.
+    ///
+    /// Two-pass algorithm:
+    /// 1. Build words, group into lines by Y proximity
+    /// 2. Detect column boundaries from consistent large gaps across lines
+    /// 3. If columns found: split lines at boundary, output left then right
+    /// 4. If single column: output lines top-to-bottom
+    fn assemble_text_pymupdf_style(spans: &[TextSpan]) -> String {
+        if spans.is_empty() {
+            return String::new();
+        }
+
+        // MuPDF-style incremental block builder.
+        // Process spans in content stream order (NOT sorted by Y).
+        // Group into blocks/lines based on spatial proximity of consecutive spans.
+        // This naturally handles multi-column layouts because column changes
+        // produce large horizontal jumps that trigger new blocks.
+
+        // MuPDF thresholds (normalized by font size):
+        const BASE_MAX_DIST: f32 = 0.8;      // max baseline offset for same line
+        const PARAGRAPH_DIST: f32 = 1.5;      // baseline offset for new paragraph
+        const SPACE_DIST: f32 = 0.15;         // min spacing to ignore (kerning)
+        const SPACE_MAX_DIST: f32 = 0.8;      // max spacing before new line
+
+        struct Word {
+            x0: f32,
+            y0: f32,
+            x1: f32,
+            y1: f32,
+            text: String,
+            font_size: f32,
+        }
+
+        // Step 1: Build word list with expanded ligatures, dedup, in stream order
+        let mut words: Vec<Word> = Vec::with_capacity(spans.len());
+        let mut prev_bbox: Option<(f32, f32, f32, f32)> = None;
+
+        for span in spans {
+            let x0 = span.bbox.x;
+            let y0 = span.bbox.y;
+            let x1 = span.bbox.x + span.bbox.width;
+            let y1 = span.bbox.y + span.bbox.height;
+
+            // Skip spans contained within previous span (dedup)
+            if let Some((px0, py0, px1, _py1)) = prev_bbox {
+                let y_same = (y0 - py0).abs() < 2.0;
+                if y_same && x0 >= px0 - 0.5 && x1 <= px1 + 0.5 {
+                    if let Some(last) = words.last() {
+                        if last.text.contains(&span.text) {
+                            continue;
+                        }
+                    }
+                }
+            }
+
+            // Expand ligatures
+            let mut text = String::with_capacity(span.text.len());
+            for ch in span.text.chars() {
+                if let Some(components) =
+                    crate::text::ligature_processor::get_ligature_components(ch)
+                {
+                    text.push_str(components);
+                } else {
+                    text.push(ch);
+                }
+            }
+
+            if !text.trim().is_empty() {
+                let font_size = span.font_size.max((y1 - y0).abs()).max(1.0);
+                words.push(Word { x0, y0, x1, y1, text, font_size });
+                prev_bbox = Some((x0, y0, x1, y1));
+            }
+        }
+
+        if words.is_empty() {
+            return String::new();
+        }
+
+        // Step 2: Build blocks and lines incrementally (MuPDF algorithm).
+        // A "Block" is a paragraph — a group of lines that belong together.
+        // A "Line" is a sequence of words on the same baseline.
+        // We process words in content stream order and decide:
+        //   - same line (append)
+        //   - new line, same block
+        //   - new block (paragraph break)
+
+        struct Line {
+            words: Vec<usize>, // indices into words vec
+            y_min: f32,
+            y_max: f32,
+        }
+
+        struct Block {
+            lines: Vec<Line>,
+        }
+
+        let mut blocks: Vec<Block> = Vec::new();
+
+        for (i, word) in words.iter().enumerate() {
+            let size = word.font_size;
+
+            if blocks.is_empty() {
+                // First word: start first block and line
+                blocks.push(Block {
+                    lines: vec![Line {
+                        words: vec![i],
+                        y_min: word.y0,
+                        y_max: word.y1,
+                    }],
+                });
+                continue;
+            }
+
+            let prev_word = &words[i - 1];
+            let prev_size = prev_word.font_size;
+            let avg_size = (size + prev_size) / 2.0;
+
+            // Calculate baseline offset (perpendicular to text direction)
+            // For horizontal text: how far off the previous baseline
+            let base_offset = (word.y0 - prev_word.y0).abs() / avg_size;
+
+            // Calculate horizontal spacing (along text direction)
+            let spacing = (word.x0 - prev_word.x1) / avg_size;
+
+            if base_offset < BASE_MAX_DIST {
+                // Same baseline — decide if same line or new line
+                if spacing.abs() < SPACE_DIST {
+                    // Very close: same line, no space needed (kerning)
+                    let block = blocks.last_mut().unwrap();
+                    let line = block.lines.last_mut().unwrap();
+                    line.words.push(i);
+                    line.y_min = line.y_min.min(word.y0);
+                    line.y_max = line.y_max.max(word.y1);
+                } else if spacing >= SPACE_DIST && spacing < SPACE_MAX_DIST {
+                    // Forward motion within space range: same line, add space
+                    let block = blocks.last_mut().unwrap();
+                    let line = block.lines.last_mut().unwrap();
+                    line.words.push(i);
+                    line.y_min = line.y_min.min(word.y0);
+                    line.y_max = line.y_max.max(word.y1);
+                } else if spacing < 0.0 && spacing > -SPACE_MAX_DIST {
+                    // Backward motion (overlapping chars): same line
+                    let block = blocks.last_mut().unwrap();
+                    let line = block.lines.last_mut().unwrap();
+                    line.words.push(i);
+                    line.y_min = line.y_min.min(word.y0);
+                    line.y_max = line.y_max.max(word.y1);
+                } else {
+                    // Large horizontal jump (column change, table): new line in same block
+                    // MuPDF treats large horizontal jumps as new_line=1 but NOT new_para,
+                    // so the span stays in the current block.
+                    let block = blocks.last_mut().unwrap();
+                    block.lines.push(Line {
+                        words: vec![i],
+                        y_min: word.y0,
+                        y_max: word.y1,
+                    });
+                }
+            } else if base_offset <= PARAGRAPH_DIST {
+                // Moderate baseline shift: new line, same block
+                let block = blocks.last_mut().unwrap();
+                block.lines.push(Line {
+                    words: vec![i],
+                    y_min: word.y0,
+                    y_max: word.y1,
+                });
+            } else {
+                // Large baseline shift: new paragraph (new block)
+                blocks.push(Block {
+                    lines: vec![Line {
+                        words: vec![i],
+                        y_min: word.y0,
+                        y_max: word.y1,
+                    }],
+                });
+            }
+        }
+
+        // Step 3: Sort words within each line by x0 position.
+        // Content stream order is usually correct, but some PDFs emit
+        // characters out of order within a line.
+        for block in &mut blocks {
+            for line in &mut block.lines {
+                line.words.sort_by(|&a, &b| {
+                    words[a].x0.partial_cmp(&words[b].x0).unwrap_or(std::cmp::Ordering::Equal)
+                });
+            }
+        }
+
+        // Step 4: Build text output. Blocks in stream order, lines within
+        // blocks in stream order.
+        let mut result = String::with_capacity(words.iter().map(|w| w.text.len() + 1).sum());
+
+        for (bi, block) in blocks.iter().enumerate() {
+            if bi > 0 {
+                result.push('\n');
+            }
+            for (li, line) in block.lines.iter().enumerate() {
+                if li > 0 {
+                    result.push('\n');
+                }
+                let mut x_end = f32::NEG_INFINITY;
+                for (wi, &word_idx) in line.words.iter().enumerate() {
+                    let word = &words[word_idx];
+                    if wi > 0 {
+                        let gap = word.x0 - x_end;
+                        let fs = word.font_size.max(6.0);
+                        let space_threshold = fs * SPACE_DIST;
+
+                        if gap > space_threshold {
+                            let text_len = word.text.len().max(1);
+                            let char_width = (word.x1 - word.x0) / text_len as f32;
+                            let num_spaces = if char_width > 0.1 {
+                                ((gap / char_width).round() as usize).max(1)
+                            } else {
+                                1
+                            };
+                            for _ in 0..num_spaces.min(4) {
+                                result.push(' ');
+                            }
+                        } else if gap > -0.5 {
+                            // Touching or slight overlap — no space
+                        } else {
+                            // Significant overlap
+                            if word.text.len() <= 4 && Self::looks_like_ligature(&word.text) {
+                                // Ligature continuation — no space
+                            } else if !result.ends_with(' ') && !result.ends_with('\n') {
+                                result.push(' ');
+                            }
+                        }
+                    }
+                    result.push_str(&word.text);
+                    x_end = word.x1;
+                }
+            }
+            result.push('\n');
+        }
+
+        result
     }
 
     /// # Returns
@@ -4365,8 +5610,8 @@ impl PdfDocument {
     ) -> Result<String> {
         log::debug!("Extracting text using structure tree for page {}", page_index);
 
-        // Step 1: Extract all spans with MCIDs
-        let all_spans = self.extract_spans(page_index)?;
+        // Step 1: Extract all spans with MCIDs (unsorted — structure tree provides reading order)
+        let all_spans = self.extract_spans_unsorted(page_index)?;
 
         if all_spans.is_empty() {
             let mut text = String::new();
@@ -4550,8 +5795,16 @@ impl PdfDocument {
     fn extract_text_structure_order_cached(&mut self, page_index: usize) -> Result<String> {
         log::debug!("Extracting text using cached structure order for page {}", page_index);
 
-        // Step 1: Extract all spans with MCIDs
-        let mut all_spans = self.extract_spans(page_index)?;
+        #[cfg(feature = "perf-trace")]
+        let _t0 = std::time::Instant::now();
+
+        // Step 1: Extract all spans with MCIDs (unsorted — structure tree provides reading order)
+        let mut all_spans = self.extract_spans_unsorted(page_index)?;
+
+        #[cfg(feature = "perf-trace")]
+        let _t1 = std::time::Instant::now();
+        #[cfg(feature = "perf-trace")]
+        let _span_count = all_spans.len();
 
         // Merge widget annotation spans (form field values) into the span list.
         // Widget spans have no MCID and will be sorted spatially with other non-MCID spans.
@@ -4723,6 +5976,18 @@ impl PdfDocument {
         // Append text from form fields and annotations
         self.append_non_widget_annotation_text(page_index, &mut text);
 
+        #[cfg(feature = "perf-trace")]
+        {
+            let _t2 = std::time::Instant::now();
+            eprintln!(
+                "[perf] page={} tagged spans={} | extract_spans={:.1}ms assemble={:.1}ms | total={:.1}ms",
+                page_index, _span_count,
+                (_t1 - _t0).as_secs_f64() * 1000.0,
+                (_t2 - _t1).as_secs_f64() * 1000.0,
+                (_t2 - _t0).as_secs_f64() * 1000.0,
+            );
+        }
+
         Ok(text)
     }
 
@@ -4808,6 +6073,53 @@ impl PdfDocument {
         }
 
         extractor.extract_text_spans(&content_data)
+    }
+
+    /// Extract text spans in content stream order (unsorted).
+    /// Used internally for MuPDF-style text assembly.
+    pub fn extract_spans_unsorted(&mut self, page_index: usize) -> Result<Vec<crate::layout::TextSpan>> {
+        use crate::extractors::TextExtractor;
+
+        let page = self.get_page(page_index)?;
+        let page_dict = page.as_dict().ok_or_else(|| Error::ParseError {
+            offset: 0,
+            reason: "Page is not a dictionary".to_string(),
+        })?;
+
+        if self.page_cannot_have_text(page_dict) {
+            return Ok(Vec::new());
+        }
+
+        let content_data = match self.get_page_content_data(page_index) {
+            Ok(data) => data,
+            Err(e) => {
+                log::warn!(
+                    "Failed to decode content stream for page {}: {}, returning empty",
+                    page_index,
+                    e
+                );
+                return Ok(Vec::new());
+            },
+        };
+
+        if !Self::may_contain_text(&content_data) {
+            return Ok(Vec::new());
+        }
+
+        let mut extractor = TextExtractor::new();
+        if let Some(resources) = page_dict.get("Resources") {
+            extractor.set_resources(resources.clone());
+            extractor.set_document(self as *mut PdfDocument);
+            if let Err(e) = self.load_fonts(resources, &mut extractor) {
+                log::warn!(
+                    "Failed to load fonts for page {}: {}, continuing with defaults",
+                    page_index,
+                    e
+                );
+            }
+        }
+
+        extractor.extract_text_spans_unsorted(&content_data)
     }
 
     /// Extract text spans from a page with custom configuration.
@@ -5223,6 +6535,11 @@ impl PdfDocument {
     /// This returns the decoded content stream bytes for the specified page.
     /// The content stream contains PDF operators that define the page's appearance.
     pub fn get_page_content_data(&mut self, page_index: usize) -> Result<Vec<u8>> {
+        // Check cache first — avoids repeated FlateDecode decompression
+        if let Some(cached) = self.page_content_cache.get(&page_index) {
+            return Ok((**cached).clone());
+        }
+
         // Ensure encryption is initialized if needed
         self.ensure_encryption_initialized()?;
 
@@ -5320,6 +6637,16 @@ impl PdfDocument {
             // For direct objects, use regular decoding (no encryption key)
             contents_ref.decode_stream_data()?
         };
+
+        // Cache the decompressed content stream (bounded: evict oldest when > 32 pages)
+        if self.page_content_cache.len() >= 32 {
+            // Simple eviction: remove the page furthest from current
+            let to_remove = *self.page_content_cache.keys()
+                .min_by_key(|&&k| if k <= page_index { page_index - k } else { k })
+                .unwrap_or(&0);
+            self.page_content_cache.remove(&to_remove);
+        }
+        self.page_content_cache.insert(page_index, std::sync::Arc::new(content_data.clone()));
 
         Ok(content_data)
     }
@@ -6178,8 +7505,7 @@ impl PdfDocument {
 
     /// Get information about a page, including its dimensions.
     ///
-    /// This is useful for rendering and layout calculations.
-    #[cfg(feature = "rendering")]
+    /// This is useful for rendering, SVG export, and layout calculations.
     pub fn get_page_info(&mut self, page_index: usize) -> Result<PageInfo> {
         let page = self.get_page(page_index)?;
         let page_dict = page.as_dict().ok_or_else(|| Error::ParseError {
@@ -6243,7 +7569,6 @@ impl PdfDocument {
     ///
     /// Resources contain fonts, images, patterns, and other objects
     /// used when rendering the page.
-    #[cfg(feature = "rendering")]
     pub fn get_page_resources(&mut self, page_index: usize) -> Result<Object> {
         let page = self.get_page(page_index)?;
         let page_dict = page.as_dict().ok_or_else(|| Error::ParseError {
@@ -9409,13 +10734,13 @@ mod tests {
     }
 
     // ========================================================================
-    // normalize_kangxi_radicals tests
+    // normalize_unicode_forms tests (Kangxi)
     // ========================================================================
 
     #[test]
     fn test_normalize_kangxi_no_radicals() {
         let text = "Hello World";
-        let result = PdfDocument::normalize_kangxi_radicals(text);
+        let result = PdfDocument::normalize_unicode_forms(text);
         assert_eq!(result, text);
     }
 
@@ -9423,19 +10748,19 @@ mod tests {
     fn test_normalize_kangxi_with_radicals() {
         // U+2F00 is Kangxi Radical One
         let text = "\u{2F00}";
-        let result = PdfDocument::normalize_kangxi_radicals(text);
+        let result = PdfDocument::normalize_unicode_forms(text);
         // Should be normalized to a CJK unified ideograph
         assert_ne!(result, text);
     }
 
     // ========================================================================
-    // normalize_arabic_presentation_forms tests
+    // normalize_unicode_forms tests (Arabic)
     // ========================================================================
 
     #[test]
     fn test_normalize_arabic_no_presentation_forms() {
         let text = "Hello World";
-        let result = PdfDocument::normalize_arabic_presentation_forms(text);
+        let result = PdfDocument::normalize_unicode_forms(text);
         assert_eq!(result, text);
     }
 
@@ -9443,7 +10768,7 @@ mod tests {
     fn test_normalize_arabic_alef_presentation_form() {
         // U+FE8D is Arabic Alef isolated form
         let text = "\u{FE8D}";
-        let result = PdfDocument::normalize_arabic_presentation_forms(text);
+        let result = PdfDocument::normalize_unicode_forms(text);
         // Should be normalized to base Alef (U+0627)
         assert!(result.contains('\u{0627}'));
     }
@@ -9452,7 +10777,7 @@ mod tests {
     fn test_normalize_arabic_lam_alef_ligature() {
         // U+FEFB is Lam-Alef ligature
         let text = "\u{FEFB}";
-        let result = PdfDocument::normalize_arabic_presentation_forms(text);
+        let result = PdfDocument::normalize_unicode_forms(text);
         // Should become Lam (U+0644)
         assert!(result.contains('\u{0644}'));
     }
@@ -10899,86 +12224,86 @@ mod tests {
 
     #[test]
     fn test_normalize_arabic_hamza() {
-        let result = PdfDocument::normalize_arabic_presentation_forms("\u{FE80}");
+        let result = PdfDocument::normalize_unicode_forms("\u{FE80}");
         assert!(result.contains('\u{0621}'));
     }
 
     #[test]
     fn test_normalize_arabic_beh() {
-        let result = PdfDocument::normalize_arabic_presentation_forms("\u{FE8F}");
+        let result = PdfDocument::normalize_unicode_forms("\u{FE8F}");
         assert!(result.contains('\u{0628}'));
     }
 
     #[test]
     fn test_normalize_arabic_teh_marbuta() {
-        let result = PdfDocument::normalize_arabic_presentation_forms("\u{FE93}");
+        let result = PdfDocument::normalize_unicode_forms("\u{FE93}");
         assert!(result.contains('\u{0629}'));
     }
 
     #[test]
     fn test_normalize_arabic_dal_to_yeh_range() {
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEA9}").contains('\u{062F}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEAB}").contains('\u{0630}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEAD}").contains('\u{0631}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEAF}").contains('\u{0632}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEB1}").contains('\u{0633}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEB5}").contains('\u{0634}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEB9}").contains('\u{0635}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEBD}").contains('\u{0636}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEC1}").contains('\u{0637}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEC5}").contains('\u{0638}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEC9}").contains('\u{0639}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FECD}").contains('\u{063A}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FED1}").contains('\u{0641}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FED5}").contains('\u{0642}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FED9}").contains('\u{0643}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEDD}").contains('\u{0644}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEE1}").contains('\u{0645}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEE5}").contains('\u{0646}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEE9}").contains('\u{0647}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEED}").contains('\u{0648}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEEF}").contains('\u{0649}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEF1}").contains('\u{064A}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEA9}").contains('\u{062F}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEAB}").contains('\u{0630}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEAD}").contains('\u{0631}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEAF}").contains('\u{0632}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEB1}").contains('\u{0633}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEB5}").contains('\u{0634}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEB9}").contains('\u{0635}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEBD}").contains('\u{0636}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEC1}").contains('\u{0637}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEC5}").contains('\u{0638}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEC9}").contains('\u{0639}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FECD}").contains('\u{063A}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FED1}").contains('\u{0641}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FED5}").contains('\u{0642}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FED9}").contains('\u{0643}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEDD}").contains('\u{0644}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEE1}").contains('\u{0645}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEE5}").contains('\u{0646}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEE9}").contains('\u{0647}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEED}").contains('\u{0648}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEEF}").contains('\u{0649}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEF1}").contains('\u{064A}'));
     }
 
     #[test]
     fn test_normalize_arabic_diacritics() {
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE70}").contains('\u{064B}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE71}").contains('\u{064B}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE72}").contains('\u{064C}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE74}").contains('\u{064D}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE76}").contains('\u{064E}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE77}").contains('\u{064E}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE78}").contains('\u{064F}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE79}").contains('\u{064F}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE7A}").contains('\u{0650}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE7B}").contains('\u{0650}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE7C}").contains('\u{0651}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE7D}").contains('\u{0651}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE7E}").contains('\u{0652}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE7F}").contains('\u{0652}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE70}").contains('\u{064B}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE71}").contains('\u{064B}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE72}").contains('\u{064C}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE74}").contains('\u{064D}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE76}").contains('\u{064E}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE77}").contains('\u{064E}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE78}").contains('\u{064F}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE79}").contains('\u{064F}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE7A}").contains('\u{0650}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE7B}").contains('\u{0650}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE7C}").contains('\u{0651}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE7D}").contains('\u{0651}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE7E}").contains('\u{0652}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE7F}").contains('\u{0652}'));
     }
 
     #[test]
     fn test_normalize_arabic_lam_alef_ligatures() {
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEF5}").contains('\u{0644}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEF7}").contains('\u{0644}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEF9}").contains('\u{0644}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FEFB}").contains('\u{0644}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEF5}").contains('\u{0644}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEF7}").contains('\u{0644}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEF9}").contains('\u{0644}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FEFB}").contains('\u{0644}'));
     }
 
     #[test]
     fn test_normalize_arabic_alef_variants() {
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE81}").contains('\u{0622}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE83}").contains('\u{0623}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE85}").contains('\u{0624}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE87}").contains('\u{0625}'));
-        assert!(PdfDocument::normalize_arabic_presentation_forms("\u{FE89}").contains('\u{0626}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE81}").contains('\u{0622}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE83}").contains('\u{0623}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE85}").contains('\u{0624}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE87}").contains('\u{0625}'));
+        assert!(PdfDocument::normalize_unicode_forms("\u{FE89}").contains('\u{0626}'));
     }
 
     #[test]
     fn test_normalize_arabic_mixed_text() {
-        let result = PdfDocument::normalize_arabic_presentation_forms("Hello \u{FE8D} World");
+        let result = PdfDocument::normalize_unicode_forms("Hello \u{FE8D} World");
         assert!(result.contains("Hello"));
         assert!(result.contains("World"));
         assert!(result.contains('\u{0627}'));

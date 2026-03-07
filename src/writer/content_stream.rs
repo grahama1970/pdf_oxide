@@ -42,6 +42,10 @@ pub enum ContentStreamOp {
     SetWordSpacing(f32),
     /// Set text leading (TL)
     SetTextLeading(f32),
+    /// Set text rendering mode (Tr)
+    /// Mode 0 = Fill, 1 = Stroke, 2 = Fill+Stroke, 3 = Invisible,
+    /// 4 = Fill+Clip, 5 = Stroke+Clip, 6 = Fill+Stroke+Clip, 7 = Clip
+    SetTextRenderingMode(i32),
     /// Move to next line (T*)
     NextLine,
     /// Set fill color RGB (rg)
@@ -314,6 +318,14 @@ impl ContentStreamBuilder {
             self.current_font_size = size;
         }
         self
+    }
+
+    /// Set text rendering mode.
+    ///
+    /// Mode 3 is "invisible" — text is not painted but is still selectable/searchable.
+    /// This is the standard way to create searchable OCR text layers.
+    pub fn set_text_rendering_mode(&mut self, mode: i32) -> &mut Self {
+        self.op(ContentStreamOp::SetTextRenderingMode(mode))
     }
 
     /// Add text at a position (literal string for Base-14 fonts).
@@ -1171,6 +1183,7 @@ impl ContentStreamBuilder {
             ContentStreamOp::SetCharacterSpacing(spacing) => write!(w, "{} Tc", spacing),
             ContentStreamOp::SetWordSpacing(spacing) => write!(w, "{} Tw", spacing),
             ContentStreamOp::SetTextLeading(leading) => write!(w, "{} TL", leading),
+            ContentStreamOp::SetTextRenderingMode(mode) => write!(w, "{} Tr", mode),
             ContentStreamOp::NextLine => write!(w, "T*"),
             ContentStreamOp::SetFillColorRGB(r, g, b) => write!(w, "{} {} {} rg", r, g, b),
             ContentStreamOp::SetStrokeColorRGB(r, g, b) => write!(w, "{} {} {} RG", r, g, b),

@@ -89,6 +89,38 @@ pub fn aes128_encrypt_no_padding(
     Ok(buffer)
 }
 
+/// Encrypt data using AES-256 in CBC mode WITHOUT padding.
+///
+/// Used for R=5/6 file encryption key wrapping (UE/OE encryption).
+/// Data length must be a multiple of 16.
+pub fn aes256_encrypt_no_padding(
+    key: &[u8],
+    iv: &[u8],
+    data: &[u8],
+) -> Result<Vec<u8>, &'static str> {
+    if key.len() != 32 {
+        return Err("AES-256 key must be 32 bytes");
+    }
+    if iv.len() != 16 {
+        return Err("IV must be 16 bytes");
+    }
+    if data.is_empty() {
+        return Ok(Vec::new());
+    }
+    if !data.len().is_multiple_of(16) {
+        return Err("Data length must be multiple of 16 for no-padding mode");
+    }
+
+    let mut buffer = data.to_vec();
+    let len = buffer.len();
+    let cipher = Aes256CbcEnc::new(key.into(), iv.into());
+    cipher
+        .encrypt_padded_mut::<aes::cipher::block_padding::NoPadding>(&mut buffer, len)
+        .map_err(|_| "Encryption failed")?;
+
+    Ok(buffer)
+}
+
 /// Decrypt data using AES-256 in CBC mode WITHOUT padding.
 ///
 /// Used for R=6 file encryption key unwrapping (UE/OE decryption).

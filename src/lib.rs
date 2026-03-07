@@ -146,6 +146,9 @@ pub mod parser_config;
 pub mod xref;
 pub mod xref_reconstruction;
 
+// Document repair (v0.3.15)
+pub mod repair;
+
 // Stream decoders
 pub mod decoders;
 
@@ -193,6 +196,9 @@ pub mod editor;
 // Text search (v0.3.0)
 pub mod search;
 
+// SVG export (no rendering dependencies required)
+pub mod svg_export;
+
 // Page rendering to images (optional, v0.3.0)
 #[cfg(feature = "rendering")]
 #[cfg_attr(docsrs, doc(cfg(feature = "rendering")))]
@@ -202,6 +208,9 @@ pub mod rendering;
 #[cfg(feature = "rendering")]
 #[cfg_attr(docsrs, doc(cfg(feature = "rendering")))]
 pub mod debug;
+
+// Table extraction (v0.3.15)
+pub mod tables;
 
 // Digital signatures (optional, v0.3.0)
 #[cfg(feature = "signatures")]

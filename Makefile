@@ -15,9 +15,9 @@ install:
 	maturin develop --release
 
 # Run Python tests
-# Executes pytest on the tests/ directory
+# Executes pytest on the tests/ directory using the project venv
 test:
-	pytest tests/
+	.venv/bin/pytest tests/
 
 # Run Python tests with verbose output
 test-verbose:
@@ -89,6 +89,18 @@ check-py: fmt-py-check lint-py
 
 # Run all checks for both Rust and Python
 check-all: check check-py
+
+# Benchmark pdf_oxide vs PyMuPDF on real-world PDFs (bug hunting)
+benchmark:
+	.venv/bin/python scripts/benchmark_vs_pymupdf.py --sample 50 --output benchmark_results.json
+
+# Benchmark on specific category
+benchmark-category:
+	.venv/bin/python scripts/benchmark_vs_pymupdf.py --category $(CAT) --limit 30
+
+# Benchmark on all PDFs (slow)
+benchmark-all:
+	.venv/bin/python scripts/benchmark_vs_pymupdf.py --all --output benchmark_results_full.json
 
 # Display help
 help:

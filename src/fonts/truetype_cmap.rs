@@ -14,6 +14,10 @@ use std::io::Cursor;
 pub struct TrueTypeCMap {
     /// Mapping from Glyph ID to Unicode character
     gid_to_unicode: HashMap<u16, char>,
+    /// Mapping from cmap input character code to GID.
+    /// For (3,0) Symbol cmaps, keys are 0xF0XX; for (3,1) Unicode cmaps, keys are Unicode code points.
+    /// This enables looking up glyphs by PDF byte code (with appropriate offset for symbolic fonts).
+    charcode_to_gid: HashMap<u16, u16>,
 }
 
 impl TrueTypeCMap {
@@ -76,6 +80,8 @@ impl TrueTypeCMap {
                 (3, 10) => 30, // Windows, Unicode full repertoire
                 (3, 1) => 20,  // Windows, Unicode BMP
                 (0, 3) => 10,  // Unicode platform, Unicode 2.0
+                (3, 0) => 5,   // Microsoft Symbol - used by re-encoded subset fonts (FXF4, FXF5)
+                (1, 0) => 3,   // Mac Roman - fallback for older fonts
                 _ => 0,
             };
 
@@ -97,14 +103,37 @@ impl TrueTypeCMap {
 
         // Parse the selected cmap subtable
         cursor.set_position((cmap_offset + subtable_offset) as u64);
-        let gid_to_unicode = Self::parse_cmap_subtable(&mut cursor)?;
+        let (gid_to_unicode, charcode_to_gid) = Self::parse_cmap_subtable(&mut cursor)?;
 
-        Ok(TrueTypeCMap { gid_to_unicode })
+        Ok(TrueTypeCMap {
+            gid_to_unicode,
+            charcode_to_gid,
+        })
     }
 
     /// Get Unicode character for a glyph ID
     pub fn get_unicode(&self, gid: u16) -> Option<char> {
         self.gid_to_unicode.get(&gid).copied()
+    }
+
+    /// Look up a glyph by cmap character code and return its Unicode mapping.
+    ///
+    /// For (3,0) Symbol cmaps, the cmap_charcode should include the 0xF000 prefix
+    /// (e.g., PDF byte code 0x41 → cmap_charcode 0xF041).
+    /// For (3,1) Unicode cmaps, cmap_charcode is the Unicode code point.
+    ///
+    /// Returns the Unicode character by resolving: cmap_charcode → GID → Unicode.
+    pub fn get_unicode_by_charcode(&self, cmap_charcode: u16) -> Option<char> {
+        let gid = self.charcode_to_gid.get(&cmap_charcode)?;
+        self.gid_to_unicode.get(gid).copied()
+    }
+
+    /// Check if the cmap contains entries in the Microsoft Symbol range (0xF000-0xF0FF).
+    /// This indicates a (3,0) Symbol cmap used by re-encoded subset fonts.
+    pub fn has_symbol_range(&self) -> bool {
+        self.charcode_to_gid
+            .keys()
+            .any(|&k| k >= 0xF000 && k <= 0xF0FF)
     }
 
     /// Get the number of glyph mappings
@@ -181,7 +210,9 @@ impl TrueTypeCMap {
         Err("cmap table not found in font".to_string())
     }
 
-    fn parse_cmap_subtable(cursor: &mut Cursor<&[u8]>) -> Result<HashMap<u16, char>, String> {
+    fn parse_cmap_subtable(
+        cursor: &mut Cursor<&[u8]>,
+    ) -> Result<(HashMap<u16, char>, HashMap<u16, u16>), String> {
         let format = cursor
             .read_u16::<BigEndian>()
             .map_err(|e| format!("Failed to read cmap format: {}", e))?;
@@ -195,7 +226,9 @@ impl TrueTypeCMap {
     }
 
     /// Parse cmap format 4 (BMP - supports characters U+0000 to U+FFFF)
-    fn parse_cmap_format4(cursor: &mut Cursor<&[u8]>) -> Result<HashMap<u16, char>, String> {
+    fn parse_cmap_format4(
+        cursor: &mut Cursor<&[u8]>,
+    ) -> Result<(HashMap<u16, char>, HashMap<u16, u16>), String> {
         let _length = cursor
             .read_u16::<BigEndian>()
             .map_err(|e| format!("Failed to read format 4 length: {}", e))?
@@ -264,6 +297,7 @@ impl TrueTypeCMap {
 
         // Build character to GID mappings
         let mut gid_to_unicode = HashMap::new();
+        let mut charcode_to_gid = HashMap::new();
 
         for seg in 0..seg_count {
             let start = start_codes[seg] as u32;
@@ -301,15 +335,18 @@ impl TrueTypeCMap {
                     if let Some(ch) = char::from_u32(char_code) {
                         gid_to_unicode.insert(gid, ch);
                     }
+                    charcode_to_gid.insert(char_code as u16, gid);
                 }
             }
         }
 
-        Ok(gid_to_unicode)
+        Ok((gid_to_unicode, charcode_to_gid))
     }
 
     /// Parse cmap format 6 (trimmed table)
-    fn parse_cmap_format6(cursor: &mut Cursor<&[u8]>) -> Result<HashMap<u16, char>, String> {
+    fn parse_cmap_format6(
+        cursor: &mut Cursor<&[u8]>,
+    ) -> Result<(HashMap<u16, char>, HashMap<u16, u16>), String> {
         let _length = cursor
             .read_u16::<BigEndian>()
             .map_err(|e| format!("Failed to read format 6 length: {}", e))?;
@@ -325,6 +362,7 @@ impl TrueTypeCMap {
             .map_err(|e| format!("Failed to read entryCount: {}", e))? as usize;
 
         let mut gid_to_unicode = HashMap::new();
+        let mut charcode_to_gid = HashMap::new();
 
         for i in 0..count {
             let gid = cursor
@@ -335,13 +373,18 @@ impl TrueTypeCMap {
             if let Some(ch) = char::from_u32(char_code) {
                 gid_to_unicode.insert(gid, ch);
             }
+            if char_code <= 0xFFFF {
+                charcode_to_gid.insert(char_code as u16, gid);
+            }
         }
 
-        Ok(gid_to_unicode)
+        Ok((gid_to_unicode, charcode_to_gid))
     }
 
     /// Parse cmap format 12 (segmented coverage - supports full Unicode)
-    fn parse_cmap_format12(cursor: &mut Cursor<&[u8]>) -> Result<HashMap<u16, char>, String> {
+    fn parse_cmap_format12(
+        cursor: &mut Cursor<&[u8]>,
+    ) -> Result<(HashMap<u16, char>, HashMap<u16, u16>), String> {
         // Skip reserved bytes
         let _reserved = cursor
             .read_u16::<BigEndian>()
@@ -360,6 +403,7 @@ impl TrueTypeCMap {
             as usize;
 
         let mut gid_to_unicode = HashMap::new();
+        let mut charcode_to_gid = HashMap::new();
 
         for _ in 0..num_groups {
             let start_char_code = cursor
@@ -377,10 +421,13 @@ impl TrueTypeCMap {
                 if let Some(ch) = char::from_u32(char_code) {
                     gid_to_unicode.insert(gid, ch);
                 }
+                if char_code <= 0xFFFF {
+                    charcode_to_gid.insert(char_code as u16, gid);
+                }
             }
         }
 
-        Ok(gid_to_unicode)
+        Ok((gid_to_unicode, charcode_to_gid))
     }
 }
 

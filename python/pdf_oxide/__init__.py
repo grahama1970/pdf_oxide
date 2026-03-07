@@ -58,11 +58,17 @@ from .pdf_oxide import (
     RadialGradient,
     # Extraction
     TextSpan,
+    # Geometry (Phase 1.7)
+    Rect,
+    Point,
     # OCR (always available as stub if feature is off)
     OcrConfig,
     OcrEngine,
     # Office (always available as stub if feature is off)
     OfficeConverter,
+    # Standalone functions
+    map_framework_controls,
+    merge_tables,
 )
 
 
@@ -82,10 +88,16 @@ __all__ = [
     "PatternPresets",
     # Extraction
     "TextSpan",
+    # Geometry
+    "Rect",
+    "Point",
     # OCR
     "OcrEngine",
     "OcrConfig",
     # Office
     "OfficeConverter",
+    # Standalone functions
+    "map_framework_controls",
+    "merge_tables",
 ]
 __version__ = VERSION

@@ -95,7 +95,7 @@ pub fn compute_encryption_key(
 /// Generate a random encryption key for R>=5.
 ///
 /// PDF 2.0 Spec: For AES-256, the file encryption key is randomly generated.
-fn generate_random_encryption_key(key_length: usize) -> Vec<u8> {
+pub fn generate_random_encryption_key(key_length: usize) -> Vec<u8> {
     use sha2::{Digest, Sha256};
 
     // Generate random bytes using multiple UUID/timestamp combinations
@@ -394,10 +394,9 @@ pub fn compute_owner_password_hash(
     revision: u32,
     key_length: usize,
 ) -> Vec<u8> {
-    // For R>=5, use SHA-256 based algorithm (Algorithm 8)
-    if revision >= 5 {
-        return compute_owner_hash_r5(owner_password, user_password);
-    }
+    // For R>=5, use compute_owner_hash_r5() directly (returns tuple with OE).
+    // This wrapper is only used for R<=4.
+    assert!(revision < 5, "Use compute_owner_hash_r5() for R>=5");
 
     // Algorithm 3 for R<=4
     // Step a: Use owner password, or user password if owner is empty
@@ -448,36 +447,41 @@ pub fn compute_owner_password_hash(
     result
 }
 
-/// Compute owner password hash for R>=5 (Algorithm 8 part).
+/// Compute owner password hash for R>=5 (Algorithm 9 / Algorithm 8 part).
 ///
-/// PDF 2.0 Spec: Algorithm 8 - Computing O value for R=5/6
+/// PDF 2.0 Spec: Algorithm 9 - Computing O value for R=5/6
 ///
 /// For R>=5, the O value is 48 bytes:
 /// - Bytes 0-31: SHA-256(password || owner_validation_salt || U[0..48])
 /// - Bytes 32-39: owner_validation_salt (random 8 bytes)
 /// - Bytes 40-47: owner_key_salt (random 8 bytes)
-fn compute_owner_hash_r5(owner_password: &[u8], _user_password: &[u8]) -> Vec<u8> {
-    // Generate random salts
+///
+/// Also returns OE (32 bytes): the file encryption key encrypted with
+/// a key derived from SHA-256(password || owner_key_salt || U).
+pub fn compute_owner_hash_r5(owner_password: &[u8], u_value: &[u8], encryption_key: &[u8]) -> (Vec<u8>, Vec<u8>) {
     let validation_salt = generate_random_bytes(8);
     let key_salt = generate_random_bytes(8);
 
-    // For the initial O computation, we don't have U yet, so we compute a placeholder
-    // In practice, the EncryptDictBuilder computes U first, then O
-    // For now, compute without U (this is a simplified version)
-    let password = truncate_password_utf8(owner_password);
+    let password = saslprep_password(owner_password);
+    let password = truncate_password_utf8(&password);
 
-    let mut hasher = Sha256::new();
-    hasher.update(&password);
-    hasher.update(&validation_salt);
-    // Note: In full implementation, we'd include U[0..48] here
-    let hash = hasher.finalize();
+    // O[0..32] = Algorithm 2.B(password, validation_salt, U[0..48])
+    // R6 uses iterative hash; this matches the read-side authenticate_owner_password_r5_r6
+    let hash = algorithm_2b(&password, &validation_salt, u_value);
 
     // Build 48-byte O value
-    let mut result = hash.to_vec(); // 32 bytes
-    result.extend_from_slice(&validation_salt); // 8 bytes
-    result.extend_from_slice(&key_salt); // 8 bytes
+    let mut o_value = hash[..32].to_vec(); // 32 bytes
+    o_value.extend_from_slice(&validation_salt); // 8 bytes
+    o_value.extend_from_slice(&key_salt); // 8 bytes
 
-    result
+    // OE = AES-256-CBC(key=Algorithm2B(password, key_salt, U), iv=zeros, data=encryption_key)
+    let oe_key = algorithm_2b(&password, &key_salt, u_value);
+
+    let iv = [0u8; 16];
+    let oe_value = super::aes::aes256_encrypt_no_padding(&oe_key[..32], &iv, encryption_key)
+        .unwrap_or_else(|_| encryption_key.to_vec());
+
+    (o_value, oe_value)
 }
 
 /// Compute the user password hash for the encryption dictionary (Algorithm 4/5/8).
@@ -497,11 +501,11 @@ fn compute_owner_hash_r5(owner_password: &[u8], _user_password: &[u8]) -> Vec<u8
 ///
 /// 32-byte user password hash for /U entry (48 bytes for R>=5)
 pub fn compute_user_password_hash(encryption_key: &[u8], file_id: &[u8], revision: u32) -> Vec<u8> {
-    if revision >= 5 {
-        // For R>=5, use the encryption key directly as user password indicator
-        // This creates the U value with validation/key salts
-        compute_user_hash_r5(encryption_key)
-    } else if revision >= 3 {
+    // For R>=5, use compute_user_hash_r5() directly (returns tuple with UE).
+    // This wrapper is only used for R<=4.
+    assert!(revision < 5, "Use compute_user_hash_r5() for R>=5");
+
+    if revision >= 3 {
         compute_user_key_r3(encryption_key, file_id)
     } else {
         compute_user_key_r2(encryption_key)
@@ -516,23 +520,33 @@ pub fn compute_user_password_hash(encryption_key: &[u8], file_id: &[u8], revisio
 /// - Bytes 0-31: SHA-256(password || user_validation_salt)
 /// - Bytes 32-39: user_validation_salt (random 8 bytes)
 /// - Bytes 40-47: user_key_salt (random 8 bytes)
-fn compute_user_hash_r5(user_password: &[u8]) -> Vec<u8> {
+///
+/// Also returns UE (32 bytes): the file encryption key encrypted with
+/// a key derived from SHA-256(password || user_key_salt).
+pub fn compute_user_hash_r5(user_password: &[u8], encryption_key: &[u8]) -> (Vec<u8>, Vec<u8>) {
     let validation_salt = generate_random_bytes(8);
     let key_salt = generate_random_bytes(8);
 
-    let password = truncate_password_utf8(user_password);
+    let password = saslprep_password(user_password);
+    let password = truncate_password_utf8(&password);
 
-    let mut hasher = Sha256::new();
-    hasher.update(&password);
-    hasher.update(&validation_salt);
-    let hash = hasher.finalize();
+    // U[0..32] = Algorithm 2.B(password, validation_salt, "")
+    // R6 uses iterative hash; this matches the read-side authenticate_user_password_r5_r6
+    let hash = algorithm_2b(&password, &validation_salt, &[]);
 
     // Build 48-byte U value
-    let mut result = hash.to_vec(); // 32 bytes
-    result.extend_from_slice(&validation_salt); // 8 bytes
-    result.extend_from_slice(&key_salt); // 8 bytes
+    let mut u_value = hash[..32].to_vec(); // 32 bytes
+    u_value.extend_from_slice(&validation_salt); // 8 bytes
+    u_value.extend_from_slice(&key_salt); // 8 bytes
 
-    result
+    // UE = AES-256-CBC(key=Algorithm2B(password, key_salt, ""), iv=zeros, data=encryption_key)
+    let ue_key = algorithm_2b(&password, &key_salt, &[]);
+
+    let iv = [0u8; 16];
+    let ue_value = super::aes::aes256_encrypt_no_padding(&ue_key[..32], &iv, encryption_key)
+        .unwrap_or_else(|_| encryption_key.to_vec());
+
+    (u_value, ue_value)
 }
 
 /// Generate random bytes using UUID v4 and timestamp mixing.

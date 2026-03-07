@@ -99,7 +99,7 @@ analyze-pdf-spacing = [
 
 
 [tool.maturin]
-features = ["python"]
+features = ["python", "rendering"]
 python-source = "python"
 module-name = "pdf_oxide.pdf_oxide"
 
