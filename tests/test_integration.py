@@ -581,3 +581,106 @@ class TestEndToEndPipeline:
         print(f"  With candidates: {result['stats']['chunks_with_candidates']}")
         print(f"  With matches: {result['stats']['chunks_with_matches']}")
         print(f"  Control IDs found: {sorted(all_control_ids)}")
+
+
+# ═══════════════════════════════════════════════════════════════
+# survey_document tests
+# ═══════════════════════════════════════════════════════════════
+
+class TestSurveyDocument:
+    """Tests for the survey_document utility."""
+
+    FIXTURE_1 = "tests/fixtures/1.pdf"
+    FIXTURE_SIMPLE = "tests/fixtures/simple.pdf"
+    FIXTURE_OUTLINE = "tests/fixtures/outline.pdf"
+
+    def test_survey_returns_all_keys(self):
+        """survey_document returns all expected keys."""
+        from pdf_oxide import survey_document
+        doc = PdfDocument(self.FIXTURE_1)
+        survey = survey_document(doc)
+
+        required_keys = [
+            "page_count", "columns", "has_toc", "toc_entry_count",
+            "has_sections", "section_count", "section_style",
+            "has_formulas", "formula_pages",
+            "has_tables", "table_pages", "table_count_estimate", "table_style",
+            "has_figures", "figure_pages", "figure_count_estimate",
+            "has_equations", "equation_pages", "equation_count_estimate",
+            "page_details", "_engine",
+        ]
+        for key in required_keys:
+            assert key in survey, f"Missing key: {key}"
+
+    def test_survey_page_count(self):
+        """Page count matches doc.page_count()."""
+        from pdf_oxide import survey_document
+        doc = PdfDocument(self.FIXTURE_1)
+        survey = survey_document(doc)
+        assert survey["page_count"] == doc.page_count()
+
+    def test_survey_engine_tag(self):
+        """Survey is tagged with pdf_oxide engine."""
+        from pdf_oxide import survey_document
+        doc = PdfDocument(self.FIXTURE_1)
+        survey = survey_document(doc)
+        assert survey["_engine"] == "pdf_oxide"
+
+    def test_survey_columns_is_int(self):
+        """Columns should be 1 or 2."""
+        from pdf_oxide import survey_document
+        doc = PdfDocument(self.FIXTURE_1)
+        survey = survey_document(doc)
+        assert survey["columns"] in (1, 2)
+
+    def test_survey_table_pages_are_valid(self):
+        """Table pages should be valid page indices."""
+        from pdf_oxide import survey_document
+        doc = PdfDocument(self.FIXTURE_1)
+        survey = survey_document(doc)
+        for pg in survey["table_pages"]:
+            assert 0 <= pg < survey["page_count"]
+
+    def test_survey_figure_pages_are_valid(self):
+        """Figure pages should be valid page indices."""
+        from pdf_oxide import survey_document
+        doc = PdfDocument(self.FIXTURE_1)
+        survey = survey_document(doc)
+        for pg in survey["figure_pages"]:
+            assert 0 <= pg < survey["page_count"]
+
+    def test_survey_detects_toc_from_outline(self):
+        """Survey detects TOC when outline exists."""
+        from pdf_oxide import survey_document
+        doc = PdfDocument(self.FIXTURE_OUTLINE)
+        survey = survey_document(doc)
+        assert survey["has_toc"] is True
+        assert survey["toc_entry_count"] > 0
+
+    def test_survey_page_details_length(self):
+        """page_details has one entry per page."""
+        from pdf_oxide import survey_document
+        doc = PdfDocument(self.FIXTURE_1)
+        survey = survey_document(doc)
+        assert len(survey["page_details"]) == survey["page_count"]
+
+    def test_survey_simple_pdf_no_crash(self):
+        """Survey doesn't crash on minimal PDF."""
+        from pdf_oxide import survey_document
+        doc = PdfDocument(self.FIXTURE_SIMPLE)
+        survey = survey_document(doc)
+        assert survey["page_count"] >= 1
+        assert survey["_engine"] == "pdf_oxide"
+
+    def test_survey_consistency(self):
+        """Boolean flags are consistent with page lists."""
+        from pdf_oxide import survey_document
+        doc = PdfDocument(self.FIXTURE_1)
+        survey = survey_document(doc)
+
+        if survey["has_figures"]:
+            assert len(survey["figure_pages"]) > 0
+        if survey["has_formulas"]:
+            assert len(survey["formula_pages"]) > 0
+        if len(survey["table_pages"]) > 0:
+            assert survey["has_tables"]

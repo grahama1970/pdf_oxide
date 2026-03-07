@@ -71,6 +71,8 @@ from .pdf_oxide import (
     merge_tables,
 )
 
+from .survey import survey_document
+
 
 __all__ = [
     "PdfDocument",
@@ -99,5 +101,7 @@ __all__ = [
     # Standalone functions
     "map_framework_controls",
     "merge_tables",
+    # Survey
+    "survey_document",
 ]
 __version__ = VERSION
