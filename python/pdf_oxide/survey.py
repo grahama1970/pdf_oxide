@@ -26,56 +26,22 @@ Usage:
 """
 from __future__ import annotations
 
-import re
-from collections import Counter
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
+
+from .survey_text import (
+    detect_formulas as _detect_formulas,
+    find_formula_pages as _find_formula_pages,
+    find_equation_pages as _find_equation_pages,
+    detect_section_style as _detect_section_style,
+    estimate_section_count as _estimate_section_count,
+    estimate_sections_from_font_data as _estimate_sections_from_font_data,
+    detect_toc_from_text as _detect_toc_from_text,
+)
 
 # ── Constants ──
 
 LINE_TOLERANCE = 3.0
 MIN_TABLE_LINES = 3
-
-FORMULA_PATTERNS = [
-    r"\$\$.+?\$\$",
-    r"\$[^$]+\$",
-    r"\\begin\{equation\}",
-    r"\\frac\{",
-    r"\\sum|\\int|\\prod",
-    r"\\alpha|\\beta|\\gamma|\\theta|\\pi",
-    r"[∑∫∂√∞±×÷≤≥≠≈]",
-]
-
-SECTION_PATTERNS = {
-    "decimal": r"^\d+\.\d+",
-    "roman": r"^[IVXLCDM]+\.",
-    "chapter": r"^Chapter\s+\d+",
-}
-
-SECTION_COUNT_PATTERNS = [
-    r"^\s*\d+(?:\.\d+)*(?:\.[a-z])?[.:)\-–—\s]",
-    r"^\s*(?:Appendix|Annex|Section|Chapter|Part)\s+[A-Za-z0-9IVXLCDM.]+",
-    r"^\s*[IVXLCDM]+\.\s+[A-Z]",
-    r"^\s*[A-Z]\.\s+[A-Z]",
-]
-
-CAPTION_RE = re.compile(
-    r"^\s*(?:Table|Figure|Fig\.?|Listing|Algorithm|Exhibit)\s+\d",
-    re.IGNORECASE,
-)
-SECTION_NUMBER_RE = re.compile(
-    r"^\s*(?:"
-    r"\d{1,2}(?:\.\d{1,3}){0,3}"
-    r"|[A-Z](?:\.\d{1,3}){0,2}"
-    r"|[IVXLC]{1,5}"
-    r")\s+[A-Z]",
-)
-
-COMMON_HEADERS = {
-    "abstract", "introduction", "conclusion", "summary", "overview",
-    "background", "methods", "results", "discussion", "references",
-    "appendix", "glossary", "acronyms", "definitions", "requirements",
-    "scope", "purpose", "architecture", "design", "implementation",
-}
 
 
 # ── Main entry point ──
@@ -110,6 +76,7 @@ def survey_document(
     # Accumulators
     full_text = ""
     table_pages_drawing: set = set()
+    table_pages_text_align: set = set()
     drawing_density: list = []
     image_pages: list = []
     all_font_sizes: list = []
@@ -165,6 +132,10 @@ def survey_document(
         if pg in font_sample_indices:
             _collect_font_data(doc, pg, all_font_sizes, page_font_lines)
 
+        # Borderless table detection via text alignment
+        if pg not in table_pages_drawing:
+            _scan_page_text_alignment(doc, pg, table_pages_text_align, drawing_density)
+
         # Column detection (first 5 non-blank pages)
         if len(column_votes) < 5 and char_count > 50:
             cols = _detect_columns_from_spans(doc, pg)
@@ -178,9 +149,12 @@ def survey_document(
         })
 
     # ══ PASS 2: Targeted table extraction ══
+    # Merge drawing + text-alignment candidates for Pass 2 targeting
+    all_table_candidates = table_pages_drawing | table_pages_text_align
+
     baseline_pages = {p for p in (0, 1, 2) if p < page_count}
-    if table_pages_drawing:
-        table_target_pages = table_pages_drawing | baseline_pages
+    if all_table_candidates:
+        table_target_pages = all_table_candidates | baseline_pages
     else:
         spread_count = min(max_table_budget, max(10, int(page_count ** 0.5)))
         step = max(1, page_count / spread_count)
@@ -218,7 +192,8 @@ def survey_document(
 
     # Table style
     has_bordered = len(table_pages_drawing) > 0
-    has_borderless = len(table_pages_confirmed) > len(table_pages_drawing)
+    has_borderless = (len(table_pages_text_align) > 0
+                      or len(table_pages_confirmed) > len(table_pages_drawing))
     if has_bordered and has_borderless:
         table_style = "mixed"
     elif has_borderless:
@@ -237,19 +212,28 @@ def survey_document(
         twos = sum(1 for c in column_votes if c >= 2)
         columns = 2 if twos > len(column_votes) / 2 else 1
 
-    # TOC
+    # TOC — structural outline first, then text-based fallback
     has_toc = False
     toc_entries = []
+    toc_source = "none"
     try:
         outline = doc.get_outline()
         if outline:
             has_toc = True
+            toc_source = "outline"
             toc_entries = [
                 {"title": e.get("title", ""), "level": e.get("level", 1), "page": e.get("page", 0)}
                 for e in outline
             ]
     except Exception:
         pass
+
+    # Text-based TOC detection when no structural outline exists
+    if not has_toc:
+        toc_page, toc_score = _detect_toc_from_text(doc, page_count)
+        if toc_page is not None:
+            has_toc = True
+            toc_source = "text"
 
     # Text-based analysis
     has_formulas = _detect_formulas(full_text)
@@ -275,6 +259,7 @@ def survey_document(
         "page_count": page_count,
         "columns": columns,
         "has_toc": has_toc,
+        "toc_source": toc_source,
         "toc_entry_count": len(toc_entries),
         "has_sections": has_sections,
         "section_count": section_count,
@@ -283,12 +268,13 @@ def survey_document(
         "font_section_estimate": font_section_estimate,
         "has_formulas": has_formulas,
         "formula_pages": formula_pages,
-        "has_tables": len(table_pages_confirmed) > 0 or len(table_pages_drawing) > 0,
-        "table_pages": sorted(set(table_pages_confirmed) | table_pages_drawing),
+        "has_tables": len(table_pages_confirmed) > 0 or len(all_table_candidates) > 0,
+        "table_pages": sorted(set(table_pages_confirmed) | all_table_candidates),
         "table_count_estimate": est_table_count,
         "table_style": table_style,
         "table_pages_confirmed": table_pages_confirmed,
         "table_pages_drawing": sorted(table_pages_drawing),
+        "table_pages_text_align": sorted(table_pages_text_align),
         "has_figures": len(image_pages) > 0,
         "figure_pages": image_pages,
         "figure_count_estimate": len(image_pages),
@@ -427,6 +413,98 @@ def _scan_page_rects(
         density.append((page_idx, 1))
 
 
+# ── Borderless table detection via text alignment ──
+
+# Tolerance for grouping spans into the same text line (points)
+_Y_LINE_TOL = 3.0
+# Tolerance for matching x-start positions across lines (points)
+_X_ALIGN_TOL = 5.0
+# Minimum consecutive aligned lines to flag as borderless table candidate
+_MIN_ALIGNED_ROWS = 3
+# Minimum distinct column starts to qualify as tabular (not just a list)
+_MIN_COLUMNS = 3
+
+
+def _scan_page_text_alignment(
+    doc, page_idx: int, candidate_pages: set, density: list,
+) -> None:
+    """Detect borderless tables from columnar text alignment patterns.
+
+    Groups spans into lines by y-proximity, records the set of x-start
+    positions per line, then looks for runs of consecutive lines that
+    share the same column structure (same x-starts within tolerance).
+    If 3+ consecutive lines share 3+ aligned column starts, the page
+    is flagged as a borderless table candidate.
+    """
+    try:
+        spans = doc.extract_spans(page_idx)
+    except Exception:
+        return
+
+    if not spans or len(spans) < 10:
+        return
+
+    # Group spans into lines by y-coordinate proximity
+    lines: list[list] = []
+    current_line: list = []
+    last_y: float | None = None
+
+    for span in spans:
+        bbox = span.bbox
+        if not bbox:
+            continue
+        y = bbox[1]
+        if last_y is not None and abs(y - last_y) > _Y_LINE_TOL:
+            if current_line:
+                lines.append(current_line)
+            current_line = []
+        current_line.append(span)
+        last_y = y
+
+    if current_line:
+        lines.append(current_line)
+
+    if len(lines) < _MIN_ALIGNED_ROWS:
+        return
+
+    # For each line, collect sorted unique x-start positions (raw points)
+    def _x_starts(line_spans: list) -> list[float]:
+        seen: set[int] = set()
+        xs: list[float] = []
+        for s in line_spans:
+            if s.bbox:
+                bucket = round(s.bbox[0] / _X_ALIGN_TOL)
+                if bucket not in seen:
+                    seen.add(bucket)
+                    xs.append(s.bbox[0])
+        return sorted(xs)
+
+    x_per_line = [_x_starts(line) for line in lines]
+
+    def _sigs_match(a: list[float], b: list[float]) -> bool:
+        """Two lines match if same column count and each x within tolerance."""
+        if len(a) != len(b) or len(a) < _MIN_COLUMNS:
+            return False
+        return all(abs(xa - xb) <= _X_ALIGN_TOL * 2 for xa, xb in zip(a, b))
+
+    # Find runs of consecutive lines with matching column structure
+    best_run = 0
+    current_run = 1
+
+    for i in range(1, len(x_per_line)):
+        if _sigs_match(x_per_line[i - 1], x_per_line[i]):
+            current_run += 1
+        else:
+            best_run = max(best_run, current_run)
+            current_run = 1
+
+    best_run = max(best_run, current_run)
+
+    if best_run >= _MIN_ALIGNED_ROWS:
+        candidate_pages.add(page_idx)
+        density.append((page_idx, 1))
+
+
 # ── Column detection ──
 
 def _detect_columns_from_spans(doc, page_idx: int) -> int:
@@ -541,152 +619,4 @@ def _collect_font_data(
     page_lines.append(lines_on_page)
 
 
-# ── Text analysis ──
-
-def _detect_formulas(text: str) -> bool:
-    for pat in FORMULA_PATTERNS:
-        if re.search(pat, text, re.MULTILINE | re.DOTALL):
-            return True
-    return False
-
-
-def _find_formula_pages(doc, page_count: int) -> List[int]:
-    """Find pages containing formula/equation patterns."""
-    pages = []
-    for pg in range(page_count):
-        try:
-            text = doc.extract_text(pg)
-            if _detect_formulas(text):
-                pages.append(pg)
-        except Exception:
-            pass
-    return pages
-
-
-def _find_equation_pages(doc, page_count: int) -> List[int]:
-    """Find pages with equation blocks via block classifier."""
-    try:
-        # Try using the Rust block classifier
-        pages = []
-        for pg in range(page_count):
-            try:
-                blocks = doc.classify_blocks(pg)
-                if any(b.get("block_type") == "Equation" for b in blocks):
-                    pages.append(pg)
-            except Exception:
-                pass
-        return pages
-    except Exception:
-        # Fall back to formula detection
-        return _find_formula_pages(doc, page_count)
-
-
-def _detect_section_style(text: str) -> Optional[str]:
-    for style, pat in SECTION_PATTERNS.items():
-        if re.search(pat, text, re.MULTILINE | re.IGNORECASE):
-            return style
-    return None
-
-
-def _estimate_section_count(text: str) -> Dict[str, Any]:
-    lines = text.split("\n")
-    counts = {"decimal": 0, "labeled": 0, "roman": 0, "alpha": 0}
-    seen: set = set()
-
-    for line in lines:
-        s = line.strip()
-        if not s or len(s) < 3:
-            continue
-        for i, pat in enumerate(SECTION_COUNT_PATTERNS):
-            match = re.match(pat, s, re.IGNORECASE)
-            if match:
-                matched = match.group(0).strip()[:20]
-                if matched not in seen:
-                    seen.add(matched)
-                    names = ["decimal", "labeled", "roman", "alpha"]
-                    counts[names[i]] += 1
-                break
-
-    header_count = 0
-    lower = text.lower()
-    for h in COMMON_HEADERS:
-        if re.search(rf"(?:^|\d\.?\s+){h}\b", lower, re.MULTILINE):
-            header_count += 1
-
-    total = sum(counts.values())
-    return {
-        "estimated_count": total,
-        "by_pattern": counts,
-        "common_headers_found": header_count,
-        "primary_style": max(counts, key=counts.get) if total > 0 else None,
-    }
-
-
-def _estimate_sections_from_font_data(
-    all_sizes: list, page_lines: list,
-    pages_sampled: int, total_pages: int,
-) -> Dict[str, Any]:
-    if not all_sizes:
-        return {"estimated_count": 0, "sampled_count": 0,
-                "pages_sampled": pages_sampled, "body_font_size": 0}
-
-    import statistics as stats
-
-    rounded = [round(s, 1) for s in all_sizes]
-    paragraph_sizes = [s for s in rounded if s >= 8.0]
-    if paragraph_sizes:
-        body_size = Counter(paragraph_sizes).most_common(1)[0][0]
-    else:
-        body_size = stats.median(all_sizes)
-
-    heading_threshold = max(body_size * 1.18, 9.5)
-    heading_count = 0
-    seen_texts: set = set()
-
-    for lines in page_lines:
-        page_headings = 0
-        for line_info in lines:
-            text = line_info["text"]
-            size = line_info["size"]
-            flags = line_info.get("flags", 0)
-            is_bold = bool(flags & 16)
-
-            if len(text) < 2 or len(text) > 120:
-                continue
-            if CAPTION_RE.match(text):
-                continue
-            if text.isdigit():
-                continue
-
-            is_heading = False
-            if size >= heading_threshold:
-                is_heading = True
-            elif is_bold and size > body_size * 1.10 and size >= 9.0:
-                is_heading = True
-            elif is_bold and abs(size - body_size) < 1.0 and len(text) < 80:
-                if SECTION_NUMBER_RE.match(text):
-                    is_heading = True
-                elif len(text) < 50 and text[0].isupper() and not text[0].isdigit():
-                    if len(text.split()) <= 6:
-                        is_heading = True
-
-            if is_heading:
-                normalized = text.strip().lower()[:60]
-                if normalized not in seen_texts:
-                    seen_texts.add(normalized)
-                    heading_count += 1
-                    page_headings += 1
-                if page_headings >= 8:
-                    break
-
-    if pages_sampled < total_pages and pages_sampled > 0:
-        extrapolated = int((heading_count / pages_sampled) * total_pages)
-    else:
-        extrapolated = heading_count
-
-    return {
-        "estimated_count": extrapolated,
-        "sampled_count": heading_count,
-        "pages_sampled": pages_sampled,
-        "body_font_size": round(body_size, 1),
-    }
+    # Text analysis functions imported from survey_text module.
