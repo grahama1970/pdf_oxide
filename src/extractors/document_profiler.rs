@@ -1,6 +1,6 @@
 use crate::document::PdfDocument;
 use crate::error::Result;
-use crate::extractors::block_classifier::{BlockClassifier, BlockType};
+use crate::extractors::block_classifier::{BlockClassifier, BlockType, ClassifiedBlock};
 use crate::layout::text_block::TextSpan;
 use std::collections::HashMap;
 
@@ -65,9 +65,11 @@ pub fn profile_document(doc: &mut PdfDocument) -> Result<DocumentProfile> {
             }
         }
 
-        let images = doc.extract_images(pg).unwrap_or_default();
-        if !images.is_empty() {
-            has_images = true;
+        if !has_images {
+            let images = doc.extract_image_metadata(pg).unwrap_or_default();
+            if !images.is_empty() {
+                has_images = true;
+            }
         }
 
         all_spans.extend(spans);
@@ -121,6 +123,116 @@ pub fn profile_document(doc: &mut PdfDocument) -> Result<DocumentProfile> {
     let preset = domain_to_preset(&domain);
 
     // Complexity scoring
+    let complexity_score = compute_complexity(
+        page_count, columns, has_tables, has_images, has_forms,
+        is_scanned, has_annotations, avg_chars,
+    );
+
+    let orientation = if page_width > page_height { "landscape" } else { "portrait" }.to_string();
+
+    Ok(DocumentProfile {
+        page_count,
+        domain,
+        layout: LayoutProfile {
+            columns,
+            has_header,
+            has_footer,
+            has_page_numbers,
+            has_margin_notes: false,
+            avg_chars_per_page: avg_chars,
+            page_width,
+            page_height,
+            orientation,
+        },
+        complexity_score,
+        is_scanned,
+        has_toc,
+        has_outline,
+        has_tables,
+        has_images,
+        has_forms,
+        has_annotations,
+        languages: vec!["en".to_string()],
+        primary_font,
+        primary_font_size,
+        title,
+        preset,
+    })
+}
+
+/// Profile a document using pre-extracted spans and classified blocks (avoids re-extracting).
+pub fn profile_document_with_cache(
+    doc: &mut PdfDocument,
+    all_spans: &[Vec<TextSpan>],
+    first_page_blocks: &[ClassifiedBlock],
+) -> Result<DocumentProfile> {
+    let page_count = doc.page_count().unwrap_or(0);
+    let sample_pages = select_sample_pages(page_count);
+
+    let mut combined_spans: Vec<TextSpan> = Vec::new();
+    let mut total_chars: usize = 0;
+    let mut page_dims: Option<(f32, f32)> = None;
+    let mut has_images = false;
+    let mut scanned_pages = 0;
+
+    for &pg in &sample_pages {
+        let spans = if pg < all_spans.len() { &all_spans[pg] } else { &[] as &[TextSpan] };
+        let text = doc.extract_text(pg).unwrap_or_default();
+        total_chars += text.len();
+
+        if spans.is_empty() {
+            scanned_pages += 1;
+        }
+
+        if page_dims.is_none() {
+            if let Ok(info) = doc.get_page_info(pg) {
+                page_dims = Some((info.media_box.width, info.media_box.height));
+            }
+        }
+
+        if !has_images {
+            let images = doc.extract_image_metadata(pg).unwrap_or_default();
+            if !images.is_empty() {
+                has_images = true;
+            }
+        }
+
+        combined_spans.extend_from_slice(spans);
+    }
+
+    let (page_width, page_height) = page_dims.unwrap_or((612.0, 792.0));
+    let is_scanned = scanned_pages as f32 / sample_pages.len().max(1) as f32 > 0.5;
+    let avg_chars = if sample_pages.is_empty() { 0.0 } else { total_chars as f32 / sample_pages.len() as f32 };
+
+    let (primary_font, primary_font_size) = analyze_fonts(&combined_spans);
+    let columns = detect_columns(&combined_spans, page_width);
+
+    // Use pre-classified blocks for first page
+    let has_header = first_page_blocks.iter().any(|b| b.block_type == BlockType::Header);
+    let has_footer = first_page_blocks.iter().any(|b| b.block_type == BlockType::Footer);
+    let has_page_numbers = first_page_blocks.iter().any(|b| b.block_type == BlockType::PageNumber);
+    let has_toc = first_page_blocks.iter().any(|b| b.block_type == BlockType::TableOfContents);
+    let title = first_page_blocks.iter()
+        .find(|b| b.block_type == BlockType::Title && b.header_level == Some(0))
+        .map(|b| b.text.clone());
+
+    let has_outline = match doc.get_outline() {
+        Ok(Some(items)) => !items.is_empty(),
+        _ => false,
+    };
+
+    let has_forms = false;
+    let has_annotations = sample_pages.iter().any(|&pg| {
+        doc.get_annotations(pg).map(|a| !a.is_empty()).unwrap_or(false)
+    });
+    let has_tables = sample_pages.iter().take(3).any(|&pg| {
+        doc.extract_tables(pg).map(|t| !t.is_empty()).unwrap_or(false)
+    });
+
+    let first_page_text = doc.extract_text(0).unwrap_or_default();
+    let domain = detect_domain(&first_page_text, &title, page_count);
+    let preset = domain_to_preset(&domain);
+
     let complexity_score = compute_complexity(
         page_count, columns, has_tables, has_images, has_forms,
         is_scanned, has_annotations, avg_chars,

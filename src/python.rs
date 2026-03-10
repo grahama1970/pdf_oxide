@@ -6720,6 +6720,15 @@ fn table_to_pydict<'py>(
     dict.set_item("accuracy", table.accuracy)?;
     dict.set_item("whitespace", table.whitespace)?;
 
+    // Bounding box: (x0, y0, x1, y1) computed from row/column boundaries
+    if !table.cols.is_empty() && !table.rows.is_empty() {
+        let x0 = table.cols.first().map(|c| c.0).unwrap_or(0.0);
+        let y0 = table.rows.first().map(|r| r.0).unwrap_or(0.0);
+        let x1 = table.cols.last().map(|c| c.1).unwrap_or(0.0);
+        let y1 = table.rows.last().map(|r| r.1).unwrap_or(0.0);
+        dict.set_item("bbox", (x0, y0, x1, y1))?;
+    }
+
     // Cell data as 2D list of strings
     let data = table.data();
     let py_rows = pyo3::types::PyList::empty(py);

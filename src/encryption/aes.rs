@@ -22,6 +22,33 @@ type Aes256CbcEnc = Encryptor<Aes256>;
 #[allow(dead_code)]
 type Aes256CbcDec = Decryptor<Aes256>;
 
+/// Strip PKCS#7 padding leniently.
+///
+/// If the last byte indicates valid PKCS#7 padding (1-16) and all padding bytes
+/// match, strip them. Otherwise return data as-is. This is necessary because
+/// many real-world PDFs (especially permissions-only encrypted ones) have streams
+/// with invalid or missing padding.
+fn strip_pkcs7_padding(data: &[u8]) -> &[u8] {
+    if data.is_empty() {
+        return data;
+    }
+
+    let padding_len = data[data.len() - 1] as usize;
+    if padding_len == 0 || padding_len > 16 || padding_len > data.len() {
+        return data;
+    }
+
+    let data_len = data.len() - padding_len;
+    for &byte in &data[data_len..] {
+        if byte != padding_len as u8 {
+            // Invalid padding — return raw decrypted data
+            return data;
+        }
+    }
+
+    &data[..data_len]
+}
+
 /// Encrypt data using AES-128 in CBC mode with PKCS#7 padding.
 ///
 /// # Arguments
@@ -162,7 +189,9 @@ pub fn aes256_decrypt_no_padding(
 ///
 /// # Returns
 ///
-/// The decrypted data with padding removed, or an error if decryption fails
+/// The decrypted data with padding removed, or an error if decryption fails.
+/// If PKCS#7 padding is invalid (common in real-world PDFs), the raw decrypted
+/// data is returned without unpadding rather than failing.
 pub fn aes128_decrypt(key: &[u8], iv: &[u8], data: &[u8]) -> Result<Vec<u8>, &'static str> {
     if key.len() != 16 {
         return Err("AES-128 key must be 16 bytes");
@@ -184,25 +213,7 @@ pub fn aes128_decrypt(key: &[u8], iv: &[u8], data: &[u8]) -> Result<Vec<u8>, &'s
         .decrypt_padded_mut::<aes::cipher::block_padding::NoPadding>(&mut buffer)
         .map_err(|_| "Decryption failed")?;
 
-    // Remove PKCS#7 padding manually
-    if decrypted.is_empty() {
-        return Ok(Vec::new());
-    }
-
-    let padding_len = decrypted[decrypted.len() - 1] as usize;
-    if padding_len == 0 || padding_len > 16 {
-        return Err("Invalid PKCS#7 padding");
-    }
-
-    // Verify padding
-    let data_len = decrypted.len().saturating_sub(padding_len);
-    for &byte in &decrypted[data_len..] {
-        if byte != padding_len as u8 {
-            return Err("Invalid PKCS#7 padding");
-        }
-    }
-
-    Ok(decrypted[..data_len].to_vec())
+    Ok(strip_pkcs7_padding(decrypted).to_vec())
 }
 
 /// Encrypt data using AES-256 in CBC mode with PKCS#7 padding.
@@ -254,7 +265,9 @@ pub fn aes256_encrypt(key: &[u8], iv: &[u8], data: &[u8]) -> Result<Vec<u8>, &'s
 ///
 /// # Returns
 ///
-/// The decrypted data with padding removed, or an error if decryption fails
+/// The decrypted data with padding removed, or an error if decryption fails.
+/// If PKCS#7 padding is invalid (common in real-world PDFs), the raw decrypted
+/// data is returned without unpadding rather than failing.
 #[allow(dead_code)]
 pub fn aes256_decrypt(key: &[u8], iv: &[u8], data: &[u8]) -> Result<Vec<u8>, &'static str> {
     if key.len() != 32 {
@@ -277,25 +290,7 @@ pub fn aes256_decrypt(key: &[u8], iv: &[u8], data: &[u8]) -> Result<Vec<u8>, &'s
         .decrypt_padded_mut::<aes::cipher::block_padding::NoPadding>(&mut buffer)
         .map_err(|_| "Decryption failed")?;
 
-    // Remove PKCS#7 padding manually
-    if decrypted.is_empty() {
-        return Ok(Vec::new());
-    }
-
-    let padding_len = decrypted[decrypted.len() - 1] as usize;
-    if padding_len == 0 || padding_len > 16 {
-        return Err("Invalid PKCS#7 padding");
-    }
-
-    // Verify padding
-    let data_len = decrypted.len().saturating_sub(padding_len);
-    for &byte in &decrypted[data_len..] {
-        if byte != padding_len as u8 {
-            return Err("Invalid PKCS#7 padding");
-        }
-    }
-
-    Ok(decrypted[..data_len].to_vec())
+    Ok(strip_pkcs7_padding(decrypted).to_vec())
 }
 
 #[cfg(test)]

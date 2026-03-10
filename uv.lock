@@ -2274,8 +2274,14 @@ wheels = [
 
 [[package]]
 name = "pdf-oxide"
-version = "0.3.9"
+version = "0.3.14"
 source = { editable = "." }
+
+[package.optional-dependencies]
+ocr = [
+    { name = "onnxruntime", version = "1.20.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
+    { name = "onnxruntime", version = "1.23.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+]
 
 [package.dev-dependencies]
 analyze-pdf-spacing = [
@@ -2346,6 +2352,8 @@ test = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "onnxruntime", marker = "extra == 'ocr'", specifier = ">=1.20.1" }]
+provides-extras = ["ocr"]
 
 [package.metadata.requires-dev]
 analyze-pdf-spacing = [{ name = "pymupdf", specifier = ">=1.24.11" }]

@@ -22,8 +22,9 @@ pub struct DetectedFigure {
 
 /// Detect figures on a page by finding images and associating captions/context.
 pub fn detect_figures(doc: &mut PdfDocument, page: usize) -> Result<Vec<DetectedFigure>> {
-    let images = doc.extract_images(page).unwrap_or_default();
-    if images.is_empty() {
+    // Quick metadata check — no stream decompression
+    let image_meta = doc.extract_image_metadata(page).unwrap_or_default();
+    if image_meta.is_empty() {
         return Ok(vec![]);
     }
 
@@ -36,28 +37,41 @@ pub fn detect_figures(doc: &mut PdfDocument, page: usize) -> Result<Vec<Detected
     let classifier = BlockClassifier::new(width, height, &spans);
     let blocks = classifier.classify_spans(&spans);
 
+    detect_figures_from_blocks(doc, page, &blocks)
+}
+
+/// Detect figures using pre-classified blocks (avoids re-extracting spans).
+///
+/// Uses `extract_image_metadata()` which reads XObject dictionaries WITHOUT
+/// decompressing image streams — ~100x faster than full `extract_images()`.
+pub fn detect_figures_from_blocks(
+    doc: &mut PdfDocument,
+    page: usize,
+    blocks: &[ClassifiedBlock],
+) -> Result<Vec<DetectedFigure>> {
+    let image_meta = doc.extract_image_metadata(page).unwrap_or_default();
+    if image_meta.is_empty() {
+        return Ok(vec![]);
+    }
+
     let mut figures = Vec::new();
 
-    for img in &images {
-        // Skip images without bbox or tiny images (likely icons or decorations)
-        let img_bbox = match img.bbox() {
-            Some(b) => *b,
-            None => continue,
-        };
+    for meta in &image_meta {
+        let img_bbox = meta.bbox;
 
         if img_bbox.width < 50.0 || img_bbox.height < 50.0 {
             continue;
         }
 
         // Find closest caption (block with type Caption near this image)
-        let (caption, caption_number) = find_caption(&blocks, &img_bbox);
+        let (caption, caption_number) = find_caption(blocks, &img_bbox);
 
         // Find context text above and below
-        let context_above = find_context(&blocks, &img_bbox, true);
-        let context_below = find_context(&blocks, &img_bbox, false);
+        let context_above = find_context(blocks, &img_bbox, true);
+        let context_below = find_context(blocks, &img_bbox, false);
 
         // Find containing section (nearest preceding Title)
-        let section_title = find_section(&blocks, &img_bbox);
+        let section_title = find_section(blocks, &img_bbox);
 
         figures.push(DetectedFigure {
             bbox: img_bbox,

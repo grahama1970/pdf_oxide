@@ -72,6 +72,8 @@ from .pdf_oxide import (
 )
 
 from .survey import survey_document
+from .pipeline import extract_pdf
+from .pipeline_types import PipelineConfig, PipelineResult
 
 
 __all__ = [
@@ -103,5 +105,9 @@ __all__ = [
     "merge_tables",
     # Survey
     "survey_document",
+    # Pipeline
+    "extract_pdf",
+    "PipelineConfig",
+    "PipelineResult",
 ]
 __version__ = VERSION

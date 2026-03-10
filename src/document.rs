@@ -8821,6 +8821,145 @@ impl PdfDocument {
         self.extract_images_filtered(page_index, &ImageExtractFilter::default())
     }
 
+    /// Extract lightweight image metadata WITHOUT decompressing image streams.
+    ///
+    /// Reads Width/Height from XObject dictionaries and computes bounding boxes
+    /// from the CTM transform. This is ~100x faster than `extract_images()` for
+    /// pipeline stages that only need bounding boxes (figure detection, profiling).
+    ///
+    /// Skips images smaller than 8x8 pixels (same as default filter).
+    /// Does NOT handle inline images (BI/ID/EI) — those are rare in figures.
+    pub fn extract_image_metadata(
+        &mut self,
+        page_index: usize,
+    ) -> Result<Vec<crate::extractors::ImageMetadata>> {
+        use crate::content::parse_content_stream_images_only;
+        use crate::content::Operator;
+
+        let page = self.get_page(page_index)?;
+        let page_dict = page.as_dict().ok_or_else(|| Error::ParseError {
+            offset: 0,
+            reason: "Page is not a dictionary".to_string(),
+        })?;
+
+        let content_data = self.get_page_content_data(page_index)?;
+
+        let resources = match page_dict.get("Resources") {
+            Some(res) => {
+                if let Some(ref_obj) = res.as_reference() {
+                    Some(self.load_object(ref_obj)?)
+                } else {
+                    Some(res.clone())
+                }
+            },
+            None => None,
+        };
+
+        let operators = match parse_content_stream_images_only(&content_data) {
+            Ok(ops) => ops,
+            Err(_) => return Ok(Vec::new()),
+        };
+
+        // Pre-resolve XObject dictionary once
+        let xobj_dict_map = if let Some(ref res) = resources {
+            if let Some(res_dict) = res.as_dict() {
+                if let Some(xobj_entry) = res_dict.get("XObject") {
+                    let resolved = if let Some(ref_obj) = xobj_entry.as_reference() {
+                        self.load_object(ref_obj)?
+                    } else {
+                        xobj_entry.clone()
+                    };
+                    resolved.as_dict().cloned()
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        } else {
+            None
+        };
+
+        let mut metadata = Vec::new();
+        let mut ctm_stack = vec![crate::content::Matrix::identity()];
+
+        for op in operators {
+            match op {
+                Operator::SaveState => {
+                    if let Some(current_ctm) = ctm_stack.last() {
+                        ctm_stack.push(*current_ctm);
+                    }
+                },
+                Operator::RestoreState => {
+                    if ctm_stack.len() > 1 {
+                        ctm_stack.pop();
+                    }
+                },
+                Operator::Cm { a, b, c, d, e, f } => {
+                    if let Some(current_ctm) = ctm_stack.last_mut() {
+                        let matrix = crate::content::Matrix { a, b, c, d, e, f };
+                        *current_ctm = matrix.multiply(current_ctm);
+                    }
+                },
+                Operator::Do { name } => {
+                    if let Some(ref xobj_dict) = xobj_dict_map {
+                        if let Some(meta) = self.extract_metadata_from_xobject_do(
+                            &name,
+                            xobj_dict,
+                            &ctm_stack,
+                        ) {
+                            metadata.push(meta);
+                        }
+                    }
+                },
+                _ => {},
+            }
+        }
+
+        Ok(metadata)
+    }
+
+    /// Read image metadata from an XObject Do reference without decompressing.
+    fn extract_metadata_from_xobject_do(
+        &mut self,
+        name: &str,
+        xobj_dict: &std::collections::HashMap<String, Object>,
+        ctm_stack: &[crate::content::Matrix],
+    ) -> Option<crate::extractors::ImageMetadata> {
+        let xobject_ref_obj = xobj_dict.get(name)?;
+        let xobject = if let Some(ref_obj) = xobject_ref_obj.as_reference() {
+            self.load_object(ref_obj).ok()?
+        } else {
+            xobject_ref_obj.clone()
+        };
+
+        let dict = xobject.as_dict()?;
+
+        // Only Image XObjects
+        let subtype = dict.get("Subtype").and_then(|s| s.as_name()).unwrap_or("");
+        if subtype != "Image" {
+            return None;
+        }
+
+        let w = dict.get("Width").and_then(|o| o.as_integer()).unwrap_or(0);
+        let h = dict.get("Height").and_then(|o| o.as_integer()).unwrap_or(0);
+
+        // Skip tiny images (icons, decorations)
+        if w < 8 || h < 8 {
+            return None;
+        }
+
+        let ctm = ctm_stack.last().copied().unwrap_or_else(crate::content::Matrix::identity);
+        let unit_rect = crate::geometry::Rect::new(0.0, 0.0, 1.0, 1.0);
+        let bbox = self.transform_bbox_with_ctm(&unit_rect, ctm);
+
+        Some(crate::extractors::ImageMetadata {
+            width: w as u32,
+            height: h as u32,
+            bbox,
+        })
+    }
+
     /// Extract images with pre-decompression filtering.
     ///
     /// Applies dimension and pixel-count checks using XObject dictionary metadata

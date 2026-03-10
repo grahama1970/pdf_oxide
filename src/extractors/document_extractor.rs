@@ -10,11 +10,12 @@ use crate::document::PdfDocument;
 use crate::error::Result;
 use crate::extractors::block_classifier::{BlockClassifier, BlockType, ClassifiedBlock};
 use crate::extractors::block_merger::{merge_blocks, mark_running_headers_footers, MergedBlock};
-use crate::extractors::document_profiler::{profile_document, DocumentProfile};
-use crate::extractors::engineering::{detect_engineering_features, EngineeringProfile};
-use crate::extractors::figure_detector::{detect_figures, DetectedFigure};
-use crate::extractors::section_hierarchy::{build_section_hierarchy, SectionTree};
+use crate::extractors::document_profiler::{profile_document_with_cache, DocumentProfile};
+use crate::extractors::engineering::{detect_engineering_features_from_spans, EngineeringProfile};
+use crate::extractors::figure_detector::{detect_figures_from_blocks, DetectedFigure};
+use crate::extractors::section_hierarchy::{build_section_hierarchy_from_classified, SectionTree};
 use crate::extractors::text_normalizer::full_normalize;
+use crate::layout::text_block::TextSpan;
 
 /// Complete extraction result from a PDF document.
 #[derive(Debug, Clone, Serialize)]
@@ -133,6 +134,9 @@ pub fn extract_document(doc: &mut PdfDocument) -> Result<ExtractionResult> {
 }
 
 /// Run the full extraction pipeline with custom configuration.
+///
+/// Optimized to extract spans ONCE per page and share cached data across all
+/// pipeline stages (profiling, classification, figures, sections, engineering).
 pub fn extract_document_with_config(
     doc: &mut PdfDocument,
     config: &ExtractionConfig,
@@ -144,16 +148,19 @@ pub fn extract_document_with_config(
         page_count
     };
 
-    // Step 1: Profile the document
-    let profile = profile_document(doc)?;
-
-    // Step 2: Classify and merge blocks per page
+    // Step 1: Extract spans and classify blocks ONCE per page (shared by all stages)
+    let mut all_spans: Vec<Vec<TextSpan>> = Vec::with_capacity(max_pages);
+    let mut all_classified: Vec<Vec<ClassifiedBlock>> = Vec::with_capacity(max_pages);
+    let mut all_dims: Vec<(f32, f32)> = Vec::with_capacity(max_pages);
     let mut all_page_blocks: Vec<Vec<MergedBlock>> = Vec::new();
     let mut pages: Vec<PageResult> = Vec::new();
 
     for pg in 0..max_pages {
         let spans = doc.extract_spans_unsorted(pg).unwrap_or_default();
         if spans.is_empty() {
+            all_spans.push(vec![]);
+            all_classified.push(vec![]);
+            all_dims.push((612.0, 792.0));
             all_page_blocks.push(vec![]);
             pages.push(PageResult {
                 page: pg,
@@ -199,6 +206,9 @@ pub fn extract_document_with_config(
             })
             .collect();
 
+        all_spans.push(spans);
+        all_classified.push(classified);
+        all_dims.push((width, height));
         all_page_blocks.push(merged);
         pages.push(PageResult {
             page: pg,
@@ -206,6 +216,10 @@ pub fn extract_document_with_config(
             text: page_text,
         });
     }
+
+    // Step 2: Profile using cached spans and first-page classified blocks
+    let first_page_blocks = if !all_classified.is_empty() { &all_classified[0] } else { &[] as &[ClassifiedBlock] };
+    let profile = profile_document_with_cache(doc, &all_spans, first_page_blocks)?;
 
     // Step 3: Mark running headers/footers across pages
     mark_running_headers_footers(&mut all_page_blocks);
@@ -229,11 +243,11 @@ pub fn extract_document_with_config(
         }
     }
 
-    // Step 4: Detect figures
+    // Step 4: Detect figures using cached classified blocks (only extract_images is new)
     let mut figures: Vec<FigureSummary> = Vec::new();
     if config.detect_figures {
         for pg in 0..max_pages {
-            if let Ok(detected) = detect_figures(doc, pg) {
+            if let Ok(detected) = detect_figures_from_blocks(doc, pg, &all_classified[pg]) {
                 for fig in detected {
                     figures.push(FigureSummary {
                         page: fig.page,
@@ -249,19 +263,32 @@ pub fn extract_document_with_config(
         }
     }
 
-    // Step 5: Build section hierarchy
+    // Step 5: Build section hierarchy from cached classified blocks
     let mut sections: Vec<SectionSummary> = Vec::new();
     if config.build_sections {
-        if let Ok(tree) = build_section_hierarchy(doc) {
+        let page_blocks: Vec<(usize, Vec<ClassifiedBlock>)> = all_classified.iter()
+            .enumerate()
+            .map(|(pg, blocks)| (pg, blocks.clone()))
+            .collect();
+        let outline = doc.get_outline().ok().flatten();
+        if let Ok(tree) = build_section_hierarchy_from_classified(&page_blocks, outline) {
             for section in &tree.sections {
                 flatten_sections(section, &mut sections);
             }
         }
     }
 
-    // Step 6: Detect engineering features
+    // Step 6: Detect engineering features from cached spans (sample pages only)
     let engineering = if config.detect_engineering {
-        detect_engineering_features(doc).ok().and_then(|eng| {
+        let pages_to_check: Vec<usize> = if max_pages <= 3 {
+            (0..max_pages).collect()
+        } else {
+            vec![0, 1, max_pages - 1]
+        };
+        let eng_data: Vec<(&[TextSpan], f32, f32, usize)> = pages_to_check.iter()
+            .map(|&pg| (all_spans[pg].as_slice(), all_dims[pg].0, all_dims[pg].1, pg))
+            .collect();
+        detect_engineering_features_from_spans(&eng_data, page_count).ok().and_then(|eng| {
             if !eng.is_engineering {
                 return None;
             }

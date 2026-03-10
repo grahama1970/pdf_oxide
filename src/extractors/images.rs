@@ -11,6 +11,22 @@ use crate::extractors::ccitt_bilevel;
 use crate::geometry::Rect;
 use std::path::Path;
 
+/// Lightweight image metadata without pixel data.
+///
+/// Returned by `extract_image_metadata()` which reads XObject dictionaries
+/// and CTM transforms WITHOUT decompressing image streams. This is ~100x
+/// faster than full `extract_images()` for pipeline stages that only need
+/// bounding boxes (figure detection, profiling).
+#[derive(Debug, Clone, PartialEq, serde::Serialize)]
+pub struct ImageMetadata {
+    /// Image width in pixels (from XObject dictionary)
+    pub width: u32,
+    /// Image height in pixels (from XObject dictionary)
+    pub height: u32,
+    /// Bounding box in PDF user space (from CTM)
+    pub bbox: Rect,
+}
+
 /// A PDF image with metadata and pixel data.
 ///
 /// Represents an image extracted from a PDF, including dimensions,

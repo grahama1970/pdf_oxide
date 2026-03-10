@@ -463,6 +463,32 @@ pub fn build_section_hierarchy(doc: &mut PdfDocument) -> Result<SectionTree> {
         }
     }
 
+    let outline = doc.get_outline().ok().flatten();
+    build_section_hierarchy_inner(all_headers, outline)
+}
+
+/// Build section hierarchy from pre-classified blocks (avoids re-extracting spans).
+pub fn build_section_hierarchy_from_classified(
+    page_blocks: &[(usize, Vec<ClassifiedBlock>)],
+    outline: Option<Vec<crate::outline::OutlineItem>>,
+) -> Result<SectionTree> {
+    let mut all_headers: Vec<(usize, ClassifiedBlock)> = Vec::new();
+
+    for (pg, blocks) in page_blocks {
+        for block in blocks {
+            if block.block_type == BlockType::Title && block.header_level.is_some() {
+                all_headers.push((*pg, block.clone()));
+            }
+        }
+    }
+
+    build_section_hierarchy_inner(all_headers, outline)
+}
+
+fn build_section_hierarchy_inner(
+    all_headers: Vec<(usize, ClassifiedBlock)>,
+    outline: Option<Vec<crate::outline::OutlineItem>>,
+) -> Result<SectionTree> {
     // Filter false positives
     let filtered: Vec<(usize, ClassifiedBlock)> = all_headers
         .into_iter()
@@ -473,8 +499,8 @@ pub fn build_section_hierarchy(doc: &mut PdfDocument) -> Result<SectionTree> {
     let adjusted = adjust_levels_from_numbering(&filtered);
 
     // Try TOC-guided promotion from document outline
-    let final_headers = match doc.get_outline() {
-        Ok(Some(outline)) => promote_from_outline(&adjusted, &outline),
+    let final_headers = match outline {
+        Some(outline) => promote_from_outline(&adjusted, &outline),
         _ => adjusted,
     };
 

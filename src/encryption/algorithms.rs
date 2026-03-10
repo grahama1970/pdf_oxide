@@ -274,8 +274,12 @@ fn algorithm_2b(password: &[u8], salt: &[u8], user_key: &[u8]) -> Vec<u8> {
     hasher.update(user_key);
     let mut k = hasher.finalize().to_vec(); // 32 bytes
 
+    // Use 1-based round counter to match QPDF/pypdf reference implementations.
+    // The first 64 iterations always execute; termination check starts at round 64.
     let mut round: usize = 0;
     loop {
+        round += 1;
+
         // Step a: Build K1 = (password || K || user_key) repeated 64 times
         let k1_unit_len = password.len() + k.len() + user_key.len();
         let mut k1 = Vec::with_capacity(k1_unit_len * 64);
@@ -285,7 +289,8 @@ fn algorithm_2b(password: &[u8], salt: &[u8], user_key: &[u8]) -> Vec<u8> {
             k1.extend_from_slice(user_key);
         }
 
-        // Pad K1 to multiple of 16 for AES-CBC
+        // Pad K1 to multiple of 16 for AES-CBC (needed when k1_unit_len * 64
+        // is not aligned, e.g. non-empty password with SHA-384/512 hash)
         let remainder = k1.len() % 16;
         if remainder != 0 {
             k1.extend(std::iter::repeat_n(0u8, 16 - remainder));
@@ -302,10 +307,10 @@ fn algorithm_2b(password: &[u8], salt: &[u8], user_key: &[u8]) -> Vec<u8> {
         // Step c: Determine next hash algorithm.
         // Sum of first 16 bytes of E, mod 3
         let sum: u32 = e.iter().take(16).map(|&b| b as u32).sum();
-        let remainder = sum % 3;
+        let hash_select = sum % 3;
 
         // Step d: Hash E with selected algorithm
-        k = match remainder {
+        k = match hash_select {
             0 => {
                 let mut h = Sha256::new();
                 h.update(&e);
@@ -323,15 +328,15 @@ fn algorithm_2b(password: &[u8], salt: &[u8], user_key: &[u8]) -> Vec<u8> {
             },
         };
 
-        // Step e: Check termination condition
-        // Continue until round >= 63 AND last byte of E <= round - 32
-        if round >= 63 {
+        // Step e: Termination condition (ISO 32000-2:2020, Algorithm 2.B).
+        // First 64 rounds (1..=64) always execute. Starting from round 64,
+        // stop if the last byte of E <= round - 32.
+        if round >= 64 {
             let last_byte = *e.last().unwrap_or(&0) as usize;
             if last_byte <= round - 32 {
                 break;
             }
         }
-        round += 1;
     }
 
     // Return first 32 bytes

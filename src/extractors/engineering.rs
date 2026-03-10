@@ -59,8 +59,6 @@ pub fn detect_engineering_features(doc: &mut PdfDocument) -> Result<EngineeringP
         return Ok(empty_profile());
     }
 
-    let mut all_elements: Vec<DetectedElement> = Vec::new();
-
     // Sample first page (title page) and last few pages
     let pages_to_check: Vec<usize> = if page_count <= 3 {
         (0..page_count).collect()
@@ -68,21 +66,58 @@ pub fn detect_engineering_features(doc: &mut PdfDocument) -> Result<EngineeringP
         vec![0, 1, page_count - 1]
     };
 
+    let mut page_data: Vec<(&[TextSpan], f32, f32, usize)> = Vec::new();
+    let mut owned_spans: Vec<Vec<TextSpan>> = Vec::new();
+
     for &pg in &pages_to_check {
         let spans = doc.extract_spans_unsorted(pg).unwrap_or_default();
-        if spans.is_empty() {
-            continue;
-        }
-
         let (width, height) = doc.get_page_info(pg)
             .ok()
             .map(|info| (info.media_box.width, info.media_box.height))
             .unwrap_or((612.0, 792.0));
+        owned_spans.push(spans);
+        // Store width, height, pg for later — we'll index into owned_spans
+        page_data.push((&[], width, height, pg));
+    }
 
-        let mut page_elements = detect_page_elements(&spans, width, height, pg);
+    // Fix up references
+    let mut all_elements: Vec<DetectedElement> = Vec::new();
+    for (i, (_, width, height, pg)) in page_data.iter().enumerate() {
+        if owned_spans[i].is_empty() {
+            continue;
+        }
+        let mut page_elements = detect_page_elements(&owned_spans[i], *width, *height, *pg);
         all_elements.append(&mut page_elements);
     }
 
+    build_engineering_profile(all_elements, page_count)
+}
+
+/// Detect engineering features from pre-extracted spans (avoids re-extracting).
+pub fn detect_engineering_features_from_spans(
+    page_spans: &[(&[TextSpan], f32, f32, usize)],
+    page_count: usize,
+) -> Result<EngineeringProfile> {
+    if page_count == 0 {
+        return Ok(empty_profile());
+    }
+
+    let mut all_elements: Vec<DetectedElement> = Vec::new();
+    for &(spans, width, height, pg) in page_spans {
+        if spans.is_empty() {
+            continue;
+        }
+        let mut page_elements = detect_page_elements(spans, width, height, pg);
+        all_elements.append(&mut page_elements);
+    }
+
+    build_engineering_profile(all_elements, page_count)
+}
+
+fn build_engineering_profile(
+    all_elements: Vec<DetectedElement>,
+    page_count: usize,
+) -> Result<EngineeringProfile> {
     // Extract metadata from detected elements
     let drawing_number = extract_drawing_number(&all_elements);
     let revision = extract_revision(&all_elements);
