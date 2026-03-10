@@ -76,8 +76,14 @@ from .pipeline import extract_pdf
 from .pipeline_types import PipelineConfig, PipelineResult
 
 
+def open(path: str) -> PdfDocument:
+    """Open a PDF document. Convenience alias for PdfDocument(path)."""
+    return PdfDocument(str(path))
+
+
 __all__ = [
     "PdfDocument",
+    "open",
     "VERSION",
     # PDF Creation
     "Pdf",
