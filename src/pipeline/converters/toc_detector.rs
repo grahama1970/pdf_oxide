@@ -173,14 +173,14 @@ impl TocDetector {
         signals += indent_score * 1.0;
         total_weight += 1.0;
 
-        // Signal 4: Ascending page numbers (weight: 2)
+        // Signal 4: Ascending page numbers (weight: 2, only counted if data exists)
         let page_nums: Vec<u32> = lines.iter().filter_map(|l| l.page_number).collect();
         if page_nums.len() >= 3 {
             let ascending_pairs = page_nums.windows(2).filter(|w| w[1] >= w[0]).count();
             let ascending_ratio = ascending_pairs as f32 / (page_nums.len() - 1) as f32;
             signals += ascending_ratio * 2.0;
+            total_weight += 2.0;
         }
-        total_weight += 2.0;
 
         if total_weight > 0.0 { signals / total_weight } else { 0.0 }
     }
@@ -197,15 +197,19 @@ impl TocDetector {
 
         let mut lines: Vec<Vec<&TextSpan>> = Vec::new();
         let mut current: Vec<&TextSpan> = vec![sorted[0]];
+        let mut centroid_y = sorted[0].bbox.top();
 
         for span in sorted.iter().skip(1) {
-            let ref_y = current[0].bbox.top();
-            if (span.bbox.top() - ref_y).abs() <= self.line_tolerance {
+            // Use running centroid instead of first-span reference (handles mixed font sizes)
+            if (span.bbox.top() - centroid_y).abs() <= self.line_tolerance {
                 current.push(span);
+                // Update centroid as running average
+                centroid_y = current.iter().map(|s| s.bbox.top()).sum::<f32>() / current.len() as f32;
             } else {
                 current.sort_by(|a, b| safe_float_cmp(a.bbox.left(), b.bbox.left()));
                 lines.push(current);
                 current = vec![span];
+                centroid_y = span.bbox.top();
             }
         }
         if !current.is_empty() {
@@ -398,14 +402,32 @@ impl TocLine {
         }
 
         let full_text: String = spans.iter().map(|s| s.text.as_str()).collect::<Vec<_>>().join(" ");
-        let left_x = spans.first().map(|s| s.bbox.left()).unwrap_or(0.0);
+
+        // left_x: skip leader-only spans, use first span with actual text content
+        let left_x = spans.iter()
+            .find(|s| s.text.trim().chars().any(|c| !is_leader_char(c) && !c.is_whitespace()))
+            .map(|s| s.bbox.left())
+            .unwrap_or_else(|| spans.first().map(|s| s.bbox.left()).unwrap_or(0.0));
         let right_x = spans.last().map(|s| s.bbox.right()).unwrap_or(0.0);
         let y_top = spans.iter().map(|s| s.bbox.top()).min_by(|a, b| safe_float_cmp(*a, *b)).unwrap_or(0.0);
         let y_bottom = spans.iter().map(|s| s.bbox.bottom()).max_by(|a, b| safe_float_cmp(*a, *b)).unwrap_or(0.0);
 
-        // Find dominant font (most text by span count)
-        let font_size = spans.iter().map(|s| s.font_size).max_by(|a, b| safe_float_cmp(*a, *b)).unwrap_or(12.0);
-        let is_bold = spans.iter().any(|s| s.font_weight.is_bold());
+        // Dominant font: by total text length, not max size
+        let mut size_coverage: std::collections::HashMap<u32, usize> = std::collections::HashMap::new();
+        let mut bold_chars = 0usize;
+        let mut total_chars = 0usize;
+        for s in spans.iter() {
+            let len = s.text.len();
+            let key = (s.font_size * 10.0) as u32; // bucket to 0.1pt
+            *size_coverage.entry(key).or_insert(0) += len;
+            total_chars += len;
+            if s.font_weight.is_bold() { bold_chars += len; }
+        }
+        let font_size = size_coverage.into_iter()
+            .max_by_key(|(_, count)| *count)
+            .map(|(key, _)| key as f32 / 10.0)
+            .unwrap_or(12.0);
+        let is_bold = total_chars > 0 && bold_chars > total_chars / 2; // majority bold
 
         // Check if the rightmost span is a page number
         let last_span = spans.last().unwrap();
@@ -420,8 +442,14 @@ impl TocLine {
                 .collect();
             strip_leaders(&title_spans.join(" "))
         } else if page_number.is_some() {
-            // Single span with embedded page number — try to split
-            strip_leaders(&full_text.trim_end_matches(last_text).to_string())
+            // Single span — split by finding the last numeric token
+            let trimmed = full_text.trim();
+            let page_str = last_text;
+            if let Some(pos) = trimmed.rfind(page_str) {
+                strip_leaders(&trimmed[..pos].to_string())
+            } else {
+                strip_leaders(&full_text)
+            }
         } else {
             strip_leaders(&full_text)
         };
@@ -452,13 +480,32 @@ fn parse_page_number_typed(text: &str) -> (Option<u32>, bool) {
     if trimmed.is_empty() {
         return (None, false);
     }
+    // Strip trailing punctuation (common: "12.", "12)", "(12)")
+    let cleaned = trimmed
+        .trim_end_matches(|c: char| c == '.' || c == ')' || c == ']')
+        .trim_start_matches(|c: char| c == '(' || c == '[');
+
     // Arabic numerals first
-    if let Ok(n) = trimmed.parse::<u32>() {
+    if let Ok(n) = cleaned.parse::<u32>() {
         return (Some(n), false);
     }
-    // Roman numerals
-    if let Some(n) = parse_roman(trimmed) {
-        return (Some(n), true);
+
+    // Compound page numbers like "A-1", "ES-1", "2-14" — extract trailing number
+    if let Some(pos) = cleaned.rfind('-') {
+        if let Ok(n) = cleaned[pos+1..].parse::<u32>() {
+            // Only accept if the part before dash is short (prefix, not a title)
+            let prefix = &cleaned[..pos];
+            if prefix.len() <= 4 && prefix.chars().all(|c| c.is_alphanumeric()) {
+                return (Some(n), false);
+            }
+        }
+    }
+
+    // Roman numerals (only if short — avoid matching words like "civil")
+    if cleaned.len() <= 8 {
+        if let Some(n) = parse_roman(cleaned) {
+            return (Some(n), true);
+        }
     }
     (None, false)
 }
@@ -466,35 +513,45 @@ fn parse_page_number_typed(text: &str) -> (Option<u32>, bool) {
 /// Classify a TOC entry by its title text.
 pub fn classify_toc_entry(text: &str, is_roman_page: bool) -> TocEntryType {
     let lower = text.trim().to_lowercase();
+    // Strip leading numbering for comparison (e.g., "1.1 " or "A. ")
+    let content = lower.trim_start_matches(|c: char| c.is_ascii_digit() || c == '.' || c == ' ');
 
     // Figure entries
-    if lower.starts_with("figure ") || lower.starts_with("fig. ") || lower.starts_with("fig ") {
+    if content.starts_with("figure ") || content.starts_with("fig. ") || content.starts_with("fig ") {
         return TocEntryType::Figure;
     }
 
     // Table entries (but not "Table of Contents")
-    if (lower.starts_with("table ") && !lower.contains("contents"))
-        || lower.starts_with("tab. ")
+    if (content.starts_with("table ") && !content.contains("contents"))
+        || content.starts_with("tab. ")
     {
         return TocEntryType::Table;
     }
 
-    // Appendix / Annex
-    if lower.starts_with("appendix ") || lower.starts_with("annex ") {
+    // Appendix / Annex — with or without trailing content
+    if lower.starts_with("appendix") || lower.starts_with("annex") {
         return TocEntryType::Appendix;
     }
 
-    // Front matter keywords
+    // Front matter keywords — match at start, allow trailing punctuation/content
     const FRONT_MATTER: &[&str] = &[
         "abstract", "acknowledgment", "acknowledgement", "acknowledgments",
         "acknowledgements", "foreword", "preface", "executive summary",
         "list of figures", "list of tables", "list of acronyms",
         "list of abbreviations", "list of symbols", "glossary",
         "acronyms", "abbreviations", "revision history", "document history",
-        "table of contents", "contents",
+        "table of contents", "contents", "references", "bibliography",
+        "index",
     ];
-    if FRONT_MATTER.iter().any(|&fm| lower == fm || lower.starts_with(&format!("{} ", fm))) {
-        return TocEntryType::FrontMatter;
+    for &fm in FRONT_MATTER {
+        if lower == fm
+            || lower.starts_with(&format!("{} ", fm))
+            || lower.starts_with(&format!("{}.", fm))
+            || lower.starts_with(&format!("{}\u{2014}", fm))  // em-dash
+            || lower.starts_with(&format!("{}:", fm))
+        {
+            return TocEntryType::FrontMatter;
+        }
     }
 
     // Roman numeral page number is a strong front-matter signal
@@ -668,10 +725,13 @@ mod tests {
         assert_eq!(classify_toc_entry("Fig. 3 Architecture", false), TocEntryType::Figure);
         assert_eq!(classify_toc_entry("Table 2: Results", false), TocEntryType::Table);
         assert_eq!(classify_toc_entry("Appendix A: Glossary", false), TocEntryType::Appendix);
+        assert_eq!(classify_toc_entry("Appendix", false), TocEntryType::Appendix); // no trailing space
         assert_eq!(classify_toc_entry("Annex B: Test Data", false), TocEntryType::Appendix);
         assert_eq!(classify_toc_entry("Abstract", false), TocEntryType::FrontMatter);
+        assert_eq!(classify_toc_entry("Abstract\u{2014}Summary", false), TocEntryType::FrontMatter); // em-dash
         assert_eq!(classify_toc_entry("List of Figures", false), TocEntryType::FrontMatter);
         assert_eq!(classify_toc_entry("Glossary", false), TocEntryType::FrontMatter);
+        assert_eq!(classify_toc_entry("References", false), TocEntryType::FrontMatter);
         assert_eq!(classify_toc_entry("Executive Summary", false), TocEntryType::FrontMatter);
         // Roman page number signals front matter
         assert_eq!(classify_toc_entry("Some Section", true), TocEntryType::FrontMatter);
@@ -681,9 +741,14 @@ mod tests {
     #[test]
     fn test_parse_page_number_typed() {
         assert_eq!(parse_page_number_typed("42"), (Some(42), false));
+        assert_eq!(parse_page_number_typed("42."), (Some(42), false)); // trailing period
+        assert_eq!(parse_page_number_typed("(12)"), (Some(12), false)); // parens
+        assert_eq!(parse_page_number_typed("A-1"), (Some(1), false)); // compound
+        assert_eq!(parse_page_number_typed("ES-3"), (Some(3), false)); // prefix compound
         assert_eq!(parse_page_number_typed("iv"), (Some(4), true));
         assert_eq!(parse_page_number_typed("XII"), (Some(12), true));
         assert_eq!(parse_page_number_typed("abc"), (None, false));
+        assert_eq!(parse_page_number_typed("civilization"), (None, false)); // too long for roman
     }
 
     #[test]
