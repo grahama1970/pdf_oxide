@@ -111,6 +111,16 @@ pub struct ExtractionConfig {
     pub build_sections: bool,
     /// Maximum pages to process (0 = all)
     pub max_pages: usize,
+    /// Override the body font size used for header classification.
+    /// When set, the BlockClassifier uses this instead of auto-computing
+    /// the median from spans. This is the key tuning knob for convergence:
+    /// if the auto-detected median is wrong (e.g., code-heavy docs where
+    /// monospace font dominates), setting the true body size fixes header
+    /// classification.
+    pub body_font_size_override: Option<f32>,
+    /// Override the header-to-body font ratio threshold (default: 1.2).
+    /// Fonts >= body_size * this ratio are considered potential headers.
+    pub header_ratio_override: Option<f32>,
 }
 
 impl Default for ExtractionConfig {
@@ -121,6 +131,8 @@ impl Default for ExtractionConfig {
             normalize_text: true,
             build_sections: true,
             max_pages: 0,
+            body_font_size_override: None,
+            header_ratio_override: None,
         }
     }
 }
@@ -175,7 +187,11 @@ pub fn extract_document_with_config(
             .map(|info| (info.media_box.width, info.media_box.height))
             .unwrap_or((612.0, 792.0));
 
-        let classifier = BlockClassifier::new(width, height, &spans);
+        let classifier = BlockClassifier::new_with_overrides(
+            width, height, &spans,
+            config.body_font_size_override,
+            config.header_ratio_override,
+        );
         let classified = classifier.classify_spans(&spans);
         let merged = merge_blocks(&classified, height);
 

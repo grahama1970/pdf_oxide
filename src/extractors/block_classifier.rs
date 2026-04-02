@@ -181,18 +181,38 @@ pub struct BlockClassifier {
     page_height: f32,
     median_font_size: f32,
     max_font_size: f32,
+    header_ratio: f32,
 }
 
 impl BlockClassifier {
     /// Create a new block classifier with page dimensions and font statistics from spans.
     pub fn new(page_width: f32, page_height: f32, spans: &[TextSpan]) -> Self {
+        Self::new_with_overrides(page_width, page_height, spans, None, None)
+    }
+
+    /// Create a block classifier with optional overrides for convergence tuning.
+    ///
+    /// `body_font_size_override`: If set, use this as the median font size instead
+    /// of auto-computing from spans. Fixes misclassification when code/mono fonts
+    /// skew the median.
+    ///
+    /// `header_ratio_override`: If set, use this ratio instead of 1.2x for the
+    /// large_font_threshold in validate_header.
+    pub fn new_with_overrides(
+        page_width: f32,
+        page_height: f32,
+        spans: &[TextSpan],
+        body_font_size_override: Option<f32>,
+        header_ratio_override: Option<f32>,
+    ) -> Self {
         let mut sizes: Vec<f32> = spans.iter().map(|s| s.font_size).collect();
         sizes.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
-        let median_font_size = if sizes.is_empty() {
+        let auto_median = if sizes.is_empty() {
             12.0
         } else {
             sizes[sizes.len() / 2]
         };
+        let median_font_size = body_font_size_override.unwrap_or(auto_median);
         let max_font_size = sizes.last().copied().unwrap_or(12.0);
 
         Self {
@@ -200,6 +220,7 @@ impl BlockClassifier {
             page_height,
             median_font_size,
             max_font_size,
+            header_ratio: header_ratio_override.unwrap_or(1.2),
         }
     }
 
@@ -310,7 +331,7 @@ impl BlockClassifier {
         // Section header detection — the main S03-equivalent logic
         // Candidate: bold or larger-than-median font, short text
         if (is_bold || size_ratio > 1.15) && trimmed.len() < 200 {
-            let validation = validate_header(trimmed, is_bold, avg_font_size, self.median_font_size, self.max_font_size);
+            let validation = validate_header_with_ratio(trimmed, is_bold, avg_font_size, self.median_font_size, self.max_font_size, self.header_ratio);
 
             if validation.is_header {
                 let level = validation.level.unwrap_or_else(|| {
@@ -664,6 +685,18 @@ pub fn validate_header(
     median_font_size: f32,
     max_font_size: f32,
 ) -> HeaderValidation {
+    validate_header_with_ratio(text, is_bold, font_size, median_font_size, max_font_size, 1.2)
+}
+
+/// Validate header with a custom font ratio threshold (for convergence tuning).
+pub fn validate_header_with_ratio(
+    text: &str,
+    is_bold: bool,
+    font_size: f32,
+    median_font_size: f32,
+    max_font_size: f32,
+    header_ratio: f32,
+) -> HeaderValidation {
     let trimmed = text.trim();
     let numbering = analyze_section_numbering(trimmed);
 
@@ -737,7 +770,7 @@ pub fn validate_header(
         level = Some(numbering.depth_level);
     }
 
-    let large_font_threshold = median_font_size * 1.2;
+    let large_font_threshold = median_font_size * header_ratio;
     if features.is_bold && font_size >= large_font_threshold {
         confidence = confidence.max(0.75);
         reasons.push("bold_large_font");

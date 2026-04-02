@@ -3730,7 +3730,7 @@ impl PyPdfDocument {
     /// Returns:
     ///     dict with keys: profile, pages, figures, sections, engineering,
     ///     running_headers, running_footers, recommended_strategy, page_count
-    #[pyo3(signature = (detect_figures=true, detect_engineering=true, normalize_text=true, build_sections=true, max_pages=0))]
+    #[pyo3(signature = (detect_figures=true, detect_engineering=true, normalize_text=true, build_sections=true, max_pages=0, body_font_size_override=None, header_ratio_override=None))]
     fn extract_document(
         &mut self,
         py: Python<'_>,
@@ -3739,6 +3739,8 @@ impl PyPdfDocument {
         normalize_text: bool,
         build_sections: bool,
         max_pages: usize,
+        body_font_size_override: Option<f32>,
+        header_ratio_override: Option<f32>,
     ) -> PyResult<PyObject> {
         use crate::extractors::document_extractor::{extract_document_with_config, ExtractionConfig};
 
@@ -3748,6 +3750,8 @@ impl PyPdfDocument {
             normalize_text,
             build_sections,
             max_pages,
+            body_font_size_override,
+            header_ratio_override,
         };
 
         let doc = &mut self.inner;
