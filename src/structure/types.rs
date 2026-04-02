@@ -217,6 +217,12 @@ pub enum StructType {
     /// in languages that do not use spaces between words (e.g., CJK).
     WB,
 
+    // Table of contents structure types (PDF 1.5+, Section 14.8.4.3)
+    /// Table of contents container
+    TOC,
+    /// Table of contents item (individual entry)
+    TOCI,
+
     // Illustration structure types
     /// Figure
     Figure,
@@ -267,6 +273,8 @@ impl StructType {
             "Link" => Self::Link,
             "Annot" => Self::Annot,
             "WB" => Self::WB,
+            "TOC" => Self::TOC,
+            "TOCI" => Self::TOCI,
             "Figure" => Self::Figure,
             "Formula" => Self::Formula,
             "Form" => Self::Form,
@@ -297,6 +305,7 @@ impl StructType {
                 | Self::H5
                 | Self::H6
                 | Self::Table
+                | Self::TOC
                 | Self::Figure
                 | Self::Formula
         )
@@ -318,6 +327,11 @@ impl StructType {
     /// Check if this is a list type (L, LI, Lbl, LBody)
     pub fn is_list(&self) -> bool {
         matches!(self, Self::L | Self::LI | Self::Lbl | Self::LBody)
+    }
+
+    /// Check if this is a table of contents type (TOC, TOCI)
+    pub fn is_toc(&self) -> bool {
+        matches!(self, Self::TOC | Self::TOCI)
     }
 
     /// Check if this is a word break element (WB)
@@ -484,6 +498,17 @@ mod tests {
         assert!(!StructType::P.is_list());
         assert!(!StructType::H1.is_list());
         assert!(!StructType::Table.is_list());
+    }
+
+    #[test]
+    fn test_is_toc() {
+        assert!(StructType::TOC.is_toc());
+        assert!(StructType::TOCI.is_toc());
+        assert!(!StructType::P.is_toc());
+        assert!(!StructType::Table.is_toc());
+        assert!(StructType::TOC.is_block());
+        assert_eq!(StructType::from_str("TOC"), StructType::TOC);
+        assert_eq!(StructType::from_str("TOCI"), StructType::TOCI);
     }
 
     #[test]

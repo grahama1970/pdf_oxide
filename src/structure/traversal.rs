@@ -321,6 +321,136 @@ pub fn extract_reading_order(
         .collect())
 }
 
+/// A TOC entry extracted from the structure tree.
+#[derive(Debug, Clone)]
+pub struct StructuredTocEntry {
+    /// Text content of this TOC item (from /ActualText or child content)
+    pub text: String,
+    /// Pages this entry spans (from /Pg attributes and child MCIDs)
+    pub pages: Vec<u32>,
+    /// Nesting depth (0 = top-level entry)
+    pub depth: usize,
+    /// Child entries (nested TOC items)
+    pub children: Vec<StructuredTocEntry>,
+}
+
+/// Result of searching the structure tree for a TOC.
+#[derive(Debug, Clone)]
+pub struct StructuredToc {
+    /// The TOC entries in document order
+    pub entries: Vec<StructuredTocEntry>,
+    /// Pages the TOC element spans (for deterministic page-level extraction)
+    pub toc_pages: Vec<u32>,
+}
+
+/// Extract a table of contents from the structure tree, if one exists.
+///
+/// Walks the structure tree looking for `/TOC` elements (PDF 1.5+, Section 14.8.4.3).
+/// When found, extracts `/TOCI` children as structured entries with page references.
+///
+/// Returns `None` if no `/TOC` element exists in the structure tree.
+pub fn extract_toc_from_structure(struct_tree: &StructTreeRoot) -> Option<StructuredToc> {
+    let mut toc_elements = Vec::new();
+    for root_elem in &struct_tree.root_elements {
+        find_toc_elements(root_elem, &mut toc_elements);
+    }
+
+    if toc_elements.is_empty() {
+        return None;
+    }
+
+    // Collect all pages and entries from found TOC elements
+    let mut all_entries = Vec::new();
+    let mut all_pages = Vec::new();
+
+    for toc_elem in &toc_elements {
+        let mut pages = Vec::new();
+        collect_pages_recursive(toc_elem, &mut pages);
+        pages.sort_unstable();
+        pages.dedup();
+        all_pages.extend_from_slice(&pages);
+
+        extract_toci_entries(toc_elem, 0, &mut all_entries);
+    }
+
+    all_pages.sort_unstable();
+    all_pages.dedup();
+
+    Some(StructuredToc {
+        entries: all_entries,
+        toc_pages: all_pages,
+    })
+}
+
+/// Recursively find all /TOC elements in the structure tree.
+fn find_toc_elements<'a>(elem: &'a StructElem, found: &mut Vec<&'a StructElem>) {
+    if elem.struct_type == StructType::TOC {
+        found.push(elem);
+        return; // Don't recurse into TOC children looking for nested TOCs
+    }
+    for child in &elem.children {
+        if let StructChild::StructElem(child_elem) = child {
+            find_toc_elements(child_elem, found);
+        }
+    }
+}
+
+/// Extract TOCI entries from a TOC element.
+fn extract_toci_entries(elem: &StructElem, depth: usize, entries: &mut Vec<StructuredTocEntry>) {
+    for child in &elem.children {
+        if let StructChild::StructElem(child_elem) = child {
+            if child_elem.struct_type == StructType::TOCI {
+                let text = collect_text_from_element(child_elem);
+                let pages = collect_pages(child_elem);
+
+                // Check for nested TOC inside this TOCI (sub-sections)
+                let mut sub_entries = Vec::new();
+                for grandchild in &child_elem.children {
+                    if let StructChild::StructElem(gc_elem) = grandchild {
+                        if gc_elem.struct_type == StructType::TOC {
+                            extract_toci_entries(gc_elem, depth + 1, &mut sub_entries);
+                        }
+                    }
+                }
+
+                entries.push(StructuredTocEntry {
+                    text,
+                    pages,
+                    depth,
+                    children: sub_entries,
+                });
+            }
+        }
+    }
+}
+
+/// Collect all text content from a structure element (via /ActualText or alt_text).
+fn collect_text_from_element(elem: &StructElem) -> String {
+    // Prefer /ActualText (exact replacement per spec 14.9.4)
+    if let Some(ref text) = elem.actual_text {
+        return text.clone();
+    }
+    // Fall back to /Alt
+    if let Some(ref text) = elem.alt_text {
+        return text.clone();
+    }
+    // Recurse into children to collect text from sub-elements
+    let mut parts = Vec::new();
+    for child in &elem.children {
+        if let StructChild::StructElem(child_elem) = child {
+            // Skip nested TOC containers (those are sub-entries, not text)
+            if child_elem.struct_type == StructType::TOC {
+                continue;
+            }
+            let child_text = collect_text_from_element(child_elem);
+            if !child_text.is_empty() {
+                parts.push(child_text);
+            }
+        }
+    }
+    parts.join(" ")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -650,5 +780,83 @@ mod tests {
 
         assert!(has_content_on_page(&root, 3));
         assert!(!has_content_on_page(&root, 0));
+    }
+
+    #[test]
+    fn test_extract_toc_from_structure_none() {
+        // No TOC element -> returns None
+        let mut tree = StructTreeRoot::new();
+        let mut doc = StructElem::new(StructType::Document);
+        let mut p = StructElem::new(StructType::P);
+        p.add_child(StructChild::MarkedContentRef { mcid: 0, page: 0 });
+        doc.add_child(StructChild::StructElem(Box::new(p)));
+        tree.add_root_element(doc);
+
+        assert!(extract_toc_from_structure(&tree).is_none());
+    }
+
+    #[test]
+    fn test_extract_toc_from_structure_basic() {
+        // TOC with two TOCI entries on pages 1-2
+        let mut tree = StructTreeRoot::new();
+        let mut doc = StructElem::new(StructType::Document);
+
+        let mut toc = StructElem::new(StructType::TOC);
+
+        let mut toci1 = StructElem::new(StructType::TOCI);
+        toci1.actual_text = Some("Chapter 1: Introduction".to_string());
+        toci1.add_child(StructChild::MarkedContentRef { mcid: 0, page: 1 });
+
+        let mut toci2 = StructElem::new(StructType::TOCI);
+        toci2.actual_text = Some("Chapter 2: Methods".to_string());
+        toci2.add_child(StructChild::MarkedContentRef { mcid: 1, page: 1 });
+
+        toc.add_child(StructChild::StructElem(Box::new(toci1)));
+        toc.add_child(StructChild::StructElem(Box::new(toci2)));
+        doc.add_child(StructChild::StructElem(Box::new(toc)));
+        tree.add_root_element(doc);
+
+        let result = extract_toc_from_structure(&tree);
+        assert!(result.is_some());
+
+        let toc_result = result.unwrap();
+        assert_eq!(toc_result.entries.len(), 2);
+        assert_eq!(toc_result.entries[0].text, "Chapter 1: Introduction");
+        assert_eq!(toc_result.entries[1].text, "Chapter 2: Methods");
+        assert_eq!(toc_result.toc_pages, vec![1]);
+        assert_eq!(toc_result.entries[0].depth, 0);
+    }
+
+    #[test]
+    fn test_extract_toc_nested() {
+        // TOC with nested sub-TOC inside a TOCI
+        let mut tree = StructTreeRoot::new();
+        let mut doc = StructElem::new(StructType::Document);
+        let mut toc = StructElem::new(StructType::TOC);
+
+        let mut toci_parent = StructElem::new(StructType::TOCI);
+        toci_parent.actual_text = Some("Chapter 1".to_string());
+        toci_parent.add_child(StructChild::MarkedContentRef { mcid: 0, page: 2 });
+
+        // Nested TOC inside the TOCI
+        let mut sub_toc = StructElem::new(StructType::TOC);
+        let mut sub_toci = StructElem::new(StructType::TOCI);
+        sub_toci.actual_text = Some("1.1 Background".to_string());
+        sub_toci.add_child(StructChild::MarkedContentRef { mcid: 1, page: 2 });
+        sub_toc.add_child(StructChild::StructElem(Box::new(sub_toci)));
+        toci_parent.add_child(StructChild::StructElem(Box::new(sub_toc)));
+
+        toc.add_child(StructChild::StructElem(Box::new(toci_parent)));
+        doc.add_child(StructChild::StructElem(Box::new(toc)));
+        tree.add_root_element(doc);
+
+        let result = extract_toc_from_structure(&tree).unwrap();
+        assert_eq!(result.entries.len(), 1);
+        assert_eq!(result.entries[0].text, "Chapter 1");
+        assert_eq!(result.entries[0].depth, 0);
+        assert_eq!(result.entries[0].children.len(), 1);
+        assert_eq!(result.entries[0].children[0].text, "1.1 Background");
+        assert_eq!(result.entries[0].children[0].depth, 1);
+        assert_eq!(result.toc_pages, vec![2]);
     }
 }

@@ -56,7 +56,7 @@ pub use table_extractor::{
     TableRow,
 };
 pub use traversal::{
-    extract_reading_order, traverse_structure_tree, traverse_structure_tree_all_pages,
-    OrderedContent,
+    extract_reading_order, extract_toc_from_structure, traverse_structure_tree,
+    traverse_structure_tree_all_pages, OrderedContent, StructuredToc, StructuredTocEntry,
 };
 pub use types::{MarkInfo, ParentTree, StructChild, StructElem, StructTreeRoot, StructType};

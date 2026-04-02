@@ -191,6 +191,8 @@ impl StructureConverter {
             StructType::Formula => "Formula".to_string(),
             StructType::Form => "Form".to_string(),
             StructType::WB => "WordBreak".to_string(),
+            StructType::TOC => "TOC".to_string(),
+            StructType::TOCI => "TOCI".to_string(),
             StructType::Custom(name) => name.clone(),
         }
     }

@@ -3109,6 +3109,55 @@ impl PyPdfDocument {
         }
     }
 
+    /// Get the table of contents, trying structure tree first then outline.
+    ///
+    /// Checks for a formal /TOC element in the structure tree (PDF 1.5+).
+    /// If none exists, falls back to the outline/bookmark tree.
+    /// Returns None if neither source has a TOC.
+    ///
+    /// Returns:
+    ///     dict | None: TOC data with keys:
+    ///         - source (str): "structure_tree" or "outline"
+    ///         - toc_pages (list[int]): Pages the TOC spans (structure tree only)
+    ///         - entries (list[dict]): TOC entries, each with:
+    ///             - text (str): Entry title
+    ///             - page (int | None): Target page
+    ///             - depth (int): Nesting level (0 = top)
+    ///             - children (list[dict]): Sub-entries (same structure)
+    fn get_toc(&mut self, py: Python<'_>) -> PyResult<Option<PyObject>> {
+        // Try structure tree first
+        if let Ok(Some(struct_tree)) = self.inner.structure_tree() {
+            if let Some(toc) = crate::structure::extract_toc_from_structure(&struct_tree) {
+                let dict = PyDict::new(py);
+                dict.set_item("source", "structure_tree")?;
+                let pages: Vec<u32> = toc.toc_pages;
+                dict.set_item("toc_pages", pages.into_pyobject(py).map_err(|e| PyRuntimeError::new_err(e.to_string()))?)?;
+                let entries = toc_entries_to_py(py, &toc.entries)?;
+                dict.set_item("entries", entries)?;
+                return Ok(Some(dict.into()));
+            }
+        }
+
+        // Fall back to outline/bookmarks
+        let outline = self
+            .inner
+            .get_outline()
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to get outline: {}", e)))?;
+
+        match outline {
+            None => Ok(None),
+            Some(items) => {
+                let dict = PyDict::new(py);
+                dict.set_item("source", "outline")?;
+                let empty_pages: Vec<u32> = Vec::new();
+                dict.set_item("toc_pages", empty_pages.into_pyobject(py).map_err(|e| PyRuntimeError::new_err(e.to_string()))?)?;
+                let entries = outline_to_toc_entries(py, &items, 0)?;
+                dict.set_item("entries", entries)?;
+                Ok(Some(dict.into()))
+            },
+        }
+    }
+
     /// Get annotations from a page.
     ///
     /// Returns annotation metadata including type, position, content, and form field info.
@@ -3768,6 +3817,8 @@ impl PyPdfDocument {
         profile.set_item("has_tables", result.profile.has_tables)?;
         profile.set_item("has_images", result.profile.has_images)?;
         profile.set_item("has_toc", result.profile.has_toc)?;
+        profile.set_item("toc_source", &result.profile.toc_source)?;
+        profile.set_item("toc_pages", result.profile.toc_pages.clone().into_pyobject(py).map_err(|e| PyRuntimeError::new_err(e.to_string()))?)?;
         profile.set_item("column_count", result.profile.column_count)?;
         dict.set_item("profile", profile)?;
 
@@ -6788,6 +6839,55 @@ fn outline_items_to_py(
         let children = outline_items_to_py(py, &item.children)?;
         dict.set_item("children", children)?;
 
+        py_list.append(dict)?;
+    }
+    Ok(py_list.into())
+}
+
+/// Convert StructuredTocEntry list to Python nested dicts.
+fn toc_entries_to_py(
+    py: Python<'_>,
+    entries: &[crate::structure::StructuredTocEntry],
+) -> PyResult<Py<PyAny>> {
+    let py_list = pyo3::types::PyList::empty(py);
+    for entry in entries {
+        let dict = pyo3::types::PyDict::new(py);
+        dict.set_item("text", &entry.text)?;
+        dict.set_item("depth", entry.depth)?;
+        // Use first page as the target page, if any
+        let page = entry.pages.first().copied();
+        match page {
+            Some(p) => dict.set_item("page", p)?,
+            None => dict.set_item("page", py.None())?,
+        }
+        let children = toc_entries_to_py(py, &entry.children)?;
+        dict.set_item("children", children)?;
+        py_list.append(dict)?;
+    }
+    Ok(py_list.into())
+}
+
+/// Convert outline items to TOC-style entries (uniform format with depth).
+fn outline_to_toc_entries(
+    py: Python<'_>,
+    items: &[crate::outline::OutlineItem],
+    depth: usize,
+) -> PyResult<Py<PyAny>> {
+    let py_list = pyo3::types::PyList::empty(py);
+    for item in items {
+        let dict = pyo3::types::PyDict::new(py);
+        dict.set_item("text", &item.title)?;
+        dict.set_item("depth", depth)?;
+        match &item.dest {
+            Some(crate::outline::Destination::PageIndex(idx)) => {
+                dict.set_item("page", *idx)?;
+            },
+            _ => {
+                dict.set_item("page", py.None())?;
+            },
+        }
+        let children = outline_to_toc_entries(py, &item.children, depth + 1)?;
+        dict.set_item("children", children)?;
         py_list.append(dict)?;
     }
     Ok(py_list.into())

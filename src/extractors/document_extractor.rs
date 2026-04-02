@@ -47,6 +47,10 @@ pub struct ProfileSummary {
     pub has_tables: bool,
     pub has_images: bool,
     pub has_toc: bool,
+    /// Where the TOC was found: "structure_tree", "outline", or "none"
+    pub toc_source: String,
+    /// Pages the TOC spans (from structure tree; empty if from outline or none)
+    pub toc_pages: Vec<u32>,
     pub column_count: u8,
 }
 
@@ -328,7 +332,27 @@ pub fn extract_document_with_config(
         None
     };
 
-    // Step 7: Recommend strategy
+    // Step 7: Determine TOC source (structure tree > outline > none)
+    let (toc_source, toc_pages) = {
+        let mut source = "none".to_string();
+        let mut pages = Vec::new();
+        if let Ok(Some(struct_tree)) = doc.structure_tree() {
+            if let Some(toc) = crate::structure::extract_toc_from_structure(&struct_tree) {
+                source = "structure_tree".to_string();
+                pages = toc.toc_pages;
+            }
+        }
+        if source == "none" {
+            if let Ok(Some(outline)) = doc.get_outline() {
+                if !outline.is_empty() {
+                    source = "outline".to_string();
+                }
+            }
+        }
+        (source, pages)
+    };
+
+    // Step 8: Recommend strategy
     let recommended_strategy = recommend_strategy(&profile, &engineering);
 
     Ok(ExtractionResult {
@@ -338,7 +362,9 @@ pub fn extract_document_with_config(
             is_scanned: profile.is_scanned,
             has_tables: profile.has_tables,
             has_images: profile.has_images,
-            has_toc: profile.has_toc,
+            has_toc: profile.has_toc || toc_source != "none",
+            toc_source,
+            toc_pages,
             column_count: profile.layout.columns,
         },
         pages,
