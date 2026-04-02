@@ -3158,6 +3158,79 @@ impl PyPdfDocument {
         }
     }
 
+    /// Get a predicted section-to-page-span map from the TOC.
+    ///
+    /// Cascades through: structure tree /TOC → outline/bookmarks → geometric
+    /// extraction on first 10 pages (if toc_pages known or likelihood > 0.6).
+    ///
+    /// Returns:
+    ///     dict | None: Section map with keys:
+    ///         - source (str): "structure_tree", "outline", "geometric", or None
+    ///         - sections (list[dict]): Ordered sections, each with:
+    ///             - title (str): Section name
+    ///             - start_page (int): First page of section
+    ///             - end_page (int): Last page of section
+    ///             - level (int): Nesting depth (0 = top-level)
+    fn get_section_map(&mut self, py: Python<'_>) -> PyResult<Option<PyObject>> {
+        let total_pages = self.inner.page_count().unwrap_or(0) as u32;
+
+        // Tier 1: Structure tree TOC → geometric extraction on known pages
+        if let Ok(Some(struct_tree)) = self.inner.structure_tree() {
+            if let Some(toc) = crate::structure::extract_toc_from_structure(&struct_tree) {
+                if !toc.toc_pages.is_empty() {
+                    // Extract spans from TOC pages and run geometric detector
+                    let detector = crate::pipeline::converters::toc_detector::TocDetector::new();
+                    let mut all_entries = Vec::new();
+                    for &page_idx in &toc.toc_pages {
+                        if let Ok(spans) = self.inner.extract_spans(page_idx as usize) {
+                            if let Some(entries) = detector.extract_from_spans(&spans) {
+                                all_entries.extend(entries);
+                            }
+                        }
+                    }
+                    if !all_entries.is_empty() {
+                        let section_map = crate::pipeline::converters::toc_detector::build_section_map(&all_entries, total_pages);
+                        if !section_map.is_empty() {
+                            return Ok(Some(section_map_to_py(py, "structure_tree", &section_map)?));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Tier 2: Outline/bookmarks
+        if let Ok(Some(outline)) = self.inner.get_outline() {
+            if !outline.is_empty() {
+                let items: Vec<(String, Option<u32>, usize)> = flatten_outline(&outline, 0);
+                if !items.is_empty() {
+                    let section_map = crate::pipeline::converters::toc_detector::build_section_map_from_outline(&items, total_pages);
+                    if !section_map.is_empty() {
+                        return Ok(Some(section_map_to_py(py, "outline", &section_map)?));
+                    }
+                }
+            }
+        }
+
+        // Tier 3: Geometric detection on first 10 pages
+        let detector = crate::pipeline::converters::toc_detector::TocDetector::new();
+        let max_scan = std::cmp::min(10, total_pages as usize);
+        for page_idx in 0..max_scan {
+            if let Ok(spans) = self.inner.extract_spans(page_idx) {
+                let score = detector.score_toc_likelihood(&spans);
+                if score >= 0.6 {
+                    if let Some(entries) = detector.extract_from_spans(&spans) {
+                        let section_map = crate::pipeline::converters::toc_detector::build_section_map(&entries, total_pages);
+                        if !section_map.is_empty() {
+                            return Ok(Some(section_map_to_py(py, "geometric", &section_map)?));
+                        }
+                    }
+                }
+            }
+        }
+
+        Ok(None)
+    }
+
     /// Get annotations from a page.
     ///
     /// Returns annotation metadata including type, position, content, and form field info.
@@ -6842,6 +6915,41 @@ fn outline_items_to_py(
         py_list.append(dict)?;
     }
     Ok(py_list.into())
+}
+
+/// Convert SectionSpan list to Python dict.
+fn section_map_to_py(
+    py: Python<'_>,
+    source: &str,
+    sections: &[crate::pipeline::converters::toc_detector::SectionSpan],
+) -> PyResult<PyObject> {
+    let dict = PyDict::new(py);
+    dict.set_item("source", source)?;
+    let sections_list = pyo3::types::PyList::empty(py);
+    for s in sections {
+        let s_dict = PyDict::new(py);
+        s_dict.set_item("title", &s.title)?;
+        s_dict.set_item("start_page", s.start_page)?;
+        s_dict.set_item("end_page", s.end_page)?;
+        s_dict.set_item("level", s.level)?;
+        sections_list.append(s_dict)?;
+    }
+    dict.set_item("sections", sections_list)?;
+    Ok(dict.into())
+}
+
+/// Flatten outline items into (title, page, depth) tuples.
+fn flatten_outline(items: &[crate::outline::OutlineItem], depth: usize) -> Vec<(String, Option<u32>, usize)> {
+    let mut result = Vec::new();
+    for item in items {
+        let page = match &item.dest {
+            Some(crate::outline::Destination::PageIndex(idx)) => Some(*idx as u32),
+            _ => None,
+        };
+        result.push((item.title.clone(), page, depth));
+        result.extend(flatten_outline(&item.children, depth + 1));
+    }
+    result
 }
 
 /// Convert StructuredTocEntry list to Python nested dicts.

@@ -11,6 +11,7 @@
 
 use crate::layout::TextSpan;
 use crate::utils::safe_float_cmp;
+use serde::Serialize;
 use std::ops::Range;
 
 /// A TOC entry extracted geometrically from span data.
@@ -211,6 +212,83 @@ impl TocDetector {
         }
         Some(right_xs.iter().sum::<f32>() / right_xs.len() as f32)
     }
+}
+
+/// A predicted section with its page span, derived from consecutive TOC entries.
+#[derive(Debug, Clone, Serialize)]
+pub struct SectionSpan {
+    /// Section title from TOC
+    pub title: String,
+    /// Start page (from this entry's page number)
+    pub start_page: u32,
+    /// End page (from the next entry's page number - 1, or total_pages)
+    pub end_page: u32,
+    /// Indent level from TOC (0 = top-level)
+    pub level: usize,
+}
+
+/// Build an ordered section map from TOC entries.
+///
+/// Takes flat TOC entries (from geometric extraction or structure tree) and
+/// computes page spans by looking at consecutive page numbers. Each section
+/// runs from its stated page to the page before the next section starts.
+///
+/// `total_pages` is used to bound the last section's end page.
+///
+/// Returns entries in document order (ascending page number).
+/// Entries without page numbers are skipped.
+pub fn build_section_map(entries: &[TocEntry], total_pages: u32) -> Vec<SectionSpan> {
+    // Filter to entries with page numbers, sort by page
+    let mut with_pages: Vec<&TocEntry> = entries.iter()
+        .filter(|e| e.page_number.is_some() && !e.text.trim().is_empty())
+        .collect();
+    with_pages.sort_by_key(|e| e.page_number.unwrap());
+
+    if with_pages.is_empty() {
+        return Vec::new();
+    }
+
+    let mut result = Vec::with_capacity(with_pages.len());
+    for i in 0..with_pages.len() {
+        let entry = with_pages[i];
+        let start = entry.page_number.unwrap();
+        let end = if i + 1 < with_pages.len() {
+            let next_start = with_pages[i + 1].page_number.unwrap();
+            if next_start > start { next_start - 1 } else { start }
+        } else {
+            total_pages.saturating_sub(1) // 0-indexed last page
+        };
+
+        result.push(SectionSpan {
+            title: entry.text.trim().to_string(),
+            start_page: start,
+            end_page: end,
+            level: entry.indent_level,
+        });
+    }
+
+    result
+}
+
+/// Build a section map from outline items (bookmark tree).
+///
+/// Outline items already have titles and page destinations.
+/// This converts them to the same `SectionSpan` format.
+pub fn build_section_map_from_outline(
+    items: &[(String, Option<u32>, usize)], // (title, page, depth)
+    total_pages: u32,
+) -> Vec<SectionSpan> {
+    let entries: Vec<TocEntry> = items.iter().map(|(title, page, depth)| {
+        TocEntry {
+            text: title.clone(),
+            page_number: *page,
+            indent_level: *depth,
+            font_size: 0.0,
+            is_bold: false,
+            y_range: 0.0..0.0,
+        }
+    }).collect();
+    build_section_map(&entries, total_pages)
 }
 
 /// Internal representation of a single TOC line.
