@@ -96,26 +96,22 @@ impl TocDetector {
             return None;
         }
 
-        // Step 1: Find the right margin — the most common rightmost x-position
-        // across lines that end with a number. This is the page number column.
-        let right_edges = self.find_page_number_column(&lines);
+        // Step 1: Filter out non-entry lines FIRST, then cluster
+        let valid_lines: Vec<&TocLine> = lines.iter()
+            .filter(|l| !is_toc_title(&l.text) && l.title_text.trim().len() >= 2)
+            .collect();
 
-        // Step 2: Collect left-edge x-positions to cluster indent levels
-        let left_edges: Vec<f32> = lines.iter().map(|l| l.left_x).collect();
+        if valid_lines.len() < self.min_entries {
+            return None;
+        }
+
+        // Step 2: Cluster indent levels on filtered lines only (fixes misindex bug)
+        let left_edges: Vec<f32> = valid_lines.iter().map(|l| l.left_x).collect();
         let indent_levels = cluster_x_positions(&left_edges, self.indent_tolerance);
 
         // Step 3: Build entries
-        let mut entries = Vec::new();
-        for (i, line) in lines.iter().enumerate() {
-            // Skip lines that look like headers ("TABLE OF CONTENTS", "CONTENTS")
-            if is_toc_title(&line.text) {
-                continue;
-            }
-            // Skip very short lines (page numbers alone, etc.)
-            if line.title_text.trim().len() < 2 {
-                continue;
-            }
-
+        let mut entries = Vec::with_capacity(valid_lines.len());
+        for (i, line) in valid_lines.iter().enumerate() {
             let indent = indent_levels.get(i).copied().unwrap_or(0);
             let entry_type = classify_toc_entry(&line.title_text, line.is_roman);
             entries.push(TocEntry {
@@ -130,13 +126,6 @@ impl TocDetector {
                 y_range: line.y_top..line.y_bottom,
             });
         }
-
-        if entries.len() < self.min_entries {
-            return None;
-        }
-
-        // Use right_edges to validate — suppress entries to satisfy borrow checker
-        let _ = right_edges;
 
         Some(entries)
     }
@@ -227,16 +216,6 @@ impl TocDetector {
         lines.iter().map(|line_spans| TocLine::from_spans(line_spans)).collect()
     }
 
-    /// Find the page number column by looking at right-edge alignment of numeric spans.
-    fn find_page_number_column(&self, lines: &[TocLine]) -> Option<f32> {
-        let right_xs: Vec<f32> = lines.iter()
-            .filter_map(|l| if l.page_number.is_some() { Some(l.right_x) } else { None })
-            .collect();
-        if right_xs.len() < 2 {
-            return None;
-        }
-        Some(right_xs.iter().sum::<f32>() / right_xs.len() as f32)
-    }
 }
 
 /// A predicted section with its page span, derived from consecutive TOC entries.
@@ -265,12 +244,22 @@ pub struct SectionSpan {
 /// Returns entries in document order (ascending page number).
 /// Entries without page numbers are skipped.
 pub fn build_section_map(entries: &[TocEntry], total_pages: u32) -> Vec<SectionSpan> {
-    // Use physical_page if resolved, otherwise fall back to page_number
+    // Use physical_page if resolved. For non-roman entries without physical_page,
+    // treat page_number as physical (arabic pages usually are). For roman entries
+    // without resolution, skip — we can't map them reliably.
     let mut with_pages: Vec<(&TocEntry, u32)> = entries.iter()
         .filter_map(|e| {
             if e.text.trim().is_empty() { return None; }
-            let page = e.physical_page.map(|p| p as u32)
-                .or(e.page_number)?;
+            let page = if let Some(p) = e.physical_page {
+                p as u32
+            } else if !e.is_roman {
+                // Arabic page numbers are typically physical indices (1-based in TOC)
+                // Subtract 1 to convert to 0-based, but clamp to 0
+                e.page_number?.saturating_sub(1)
+            } else {
+                return None; // Roman numeral without PageLabels resolution — skip
+            };
+            if page >= total_pages { return None; } // bounds check
             Some((e, page))
         })
         .collect();
