@@ -3189,6 +3189,14 @@ impl PyPdfDocument {
                         }
                     }
                     if !all_entries.is_empty() {
+                        // Resolve logical page numbers via PageLabels
+                        if let Ok(page_labels) = crate::extractors::page_labels::PageLabelExtractor::extract(&mut self.inner) {
+                            if !page_labels.is_empty() {
+                                let all_labels = crate::extractors::page_labels::PageLabelExtractor::get_all_labels(&page_labels, total_pages as usize);
+                                let label_map: Vec<(String, usize)> = all_labels.into_iter().enumerate().map(|(i, l)| (l, i)).collect();
+                                crate::pipeline::converters::toc_detector::resolve_page_labels(&mut all_entries, &label_map);
+                            }
+                        }
                         let section_map = crate::pipeline::converters::toc_detector::build_section_map(&all_entries, total_pages);
                         if !section_map.is_empty() {
                             return Ok(Some(section_map_to_py(py, "structure_tree", &section_map)?));
@@ -6932,6 +6940,14 @@ fn section_map_to_py(
         s_dict.set_item("start_page", s.start_page)?;
         s_dict.set_item("end_page", s.end_page)?;
         s_dict.set_item("level", s.level)?;
+        let type_str = match &s.entry_type {
+            crate::pipeline::converters::toc_detector::TocEntryType::Section => "section",
+            crate::pipeline::converters::toc_detector::TocEntryType::Figure => "figure",
+            crate::pipeline::converters::toc_detector::TocEntryType::Table => "table",
+            crate::pipeline::converters::toc_detector::TocEntryType::Appendix => "appendix",
+            crate::pipeline::converters::toc_detector::TocEntryType::FrontMatter => "front_matter",
+        };
+        s_dict.set_item("entry_type", type_str)?;
         sections_list.append(s_dict)?;
     }
     dict.set_item("sections", sections_list)?;

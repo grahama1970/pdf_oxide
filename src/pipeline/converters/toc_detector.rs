@@ -14,13 +14,34 @@ use crate::utils::safe_float_cmp;
 use serde::Serialize;
 use std::ops::Range;
 
+/// Classification of a TOC entry.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+pub enum TocEntryType {
+    /// Numbered section, chapter, or part
+    Section,
+    /// "Figure N: ..." entry
+    Figure,
+    /// "Table N: ..." entry
+    Table,
+    /// "Appendix A/B" or "Annex ..." entry
+    Appendix,
+    /// Front matter: abstract, preface, foreword, acknowledgments, glossary, etc.
+    FrontMatter,
+}
+
 /// A TOC entry extracted geometrically from span data.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct TocEntry {
     /// The section title text (leader dots stripped)
     pub text: String,
-    /// Target page number if detected
+    /// Target page number as printed in the TOC (may be logical, not physical)
     pub page_number: Option<u32>,
+    /// Whether the page number was roman numeral (signals front matter)
+    pub is_roman: bool,
+    /// Resolved physical page index (0-based), after PageLabels resolution
+    pub physical_page: Option<usize>,
+    /// Classification of this entry
+    pub entry_type: TocEntryType,
     /// Indentation level (0 = top-level, derived from X-position clustering)
     pub indent_level: usize,
     /// Font size of the title text
@@ -96,9 +117,13 @@ impl TocDetector {
             }
 
             let indent = indent_levels.get(i).copied().unwrap_or(0);
+            let entry_type = classify_toc_entry(&line.title_text, line.is_roman);
             entries.push(TocEntry {
                 text: line.title_text.clone(),
                 page_number: line.page_number,
+                is_roman: line.is_roman,
+                physical_page: None, // resolved later via PageLabels
+                entry_type,
                 indent_level: indent,
                 font_size: line.font_size,
                 is_bold: line.is_bold,
@@ -219,12 +244,14 @@ impl TocDetector {
 pub struct SectionSpan {
     /// Section title from TOC
     pub title: String,
-    /// Start page (from this entry's page number)
+    /// Start page as physical page index (0-based)
     pub start_page: u32,
-    /// End page (from the next entry's page number - 1, or total_pages)
+    /// End page as physical page index (0-based)
     pub end_page: u32,
     /// Indent level from TOC (0 = top-level)
     pub level: usize,
+    /// Classification of this entry
+    pub entry_type: TocEntryType,
 }
 
 /// Build an ordered section map from TOC entries.
@@ -238,11 +265,16 @@ pub struct SectionSpan {
 /// Returns entries in document order (ascending page number).
 /// Entries without page numbers are skipped.
 pub fn build_section_map(entries: &[TocEntry], total_pages: u32) -> Vec<SectionSpan> {
-    // Filter to entries with page numbers, sort by page
-    let mut with_pages: Vec<&TocEntry> = entries.iter()
-        .filter(|e| e.page_number.is_some() && !e.text.trim().is_empty())
+    // Use physical_page if resolved, otherwise fall back to page_number
+    let mut with_pages: Vec<(&TocEntry, u32)> = entries.iter()
+        .filter_map(|e| {
+            if e.text.trim().is_empty() { return None; }
+            let page = e.physical_page.map(|p| p as u32)
+                .or(e.page_number)?;
+            Some((e, page))
+        })
         .collect();
-    with_pages.sort_by_key(|e| e.page_number.unwrap());
+    with_pages.sort_by_key(|(_, page)| *page);
 
     if with_pages.is_empty() {
         return Vec::new();
@@ -250,13 +282,12 @@ pub fn build_section_map(entries: &[TocEntry], total_pages: u32) -> Vec<SectionS
 
     let mut result = Vec::with_capacity(with_pages.len());
     for i in 0..with_pages.len() {
-        let entry = with_pages[i];
-        let start = entry.page_number.unwrap();
+        let (entry, start) = with_pages[i];
         let end = if i + 1 < with_pages.len() {
-            let next_start = with_pages[i + 1].page_number.unwrap();
+            let next_start = with_pages[i + 1].1;
             if next_start > start { next_start - 1 } else { start }
         } else {
-            total_pages.saturating_sub(1) // 0-indexed last page
+            total_pages.saturating_sub(1)
         };
 
         result.push(SectionSpan {
@@ -264,6 +295,7 @@ pub fn build_section_map(entries: &[TocEntry], total_pages: u32) -> Vec<SectionS
             start_page: start,
             end_page: end,
             level: entry.indent_level,
+            entry_type: entry.entry_type.clone(),
         });
     }
 
@@ -279,9 +311,13 @@ pub fn build_section_map_from_outline(
     total_pages: u32,
 ) -> Vec<SectionSpan> {
     let entries: Vec<TocEntry> = items.iter().map(|(title, page, depth)| {
+        let entry_type = classify_toc_entry(title, false);
         TocEntry {
             text: title.clone(),
             page_number: *page,
+            is_roman: false,
+            physical_page: page.map(|p| p as usize), // outline pages are already physical
+            entry_type,
             indent_level: *depth,
             font_size: 0.0,
             is_bold: false,
@@ -289,6 +325,54 @@ pub fn build_section_map_from_outline(
         }
     }).collect();
     build_section_map(&entries, total_pages)
+}
+
+/// Resolve logical page numbers to physical page indices using PageLabels.
+///
+/// Takes TOC entries with logical page numbers (e.g., roman "iv" = 4, arabic "1" = 1)
+/// and a pre-computed label-to-physical mapping, then sets `physical_page` on each entry.
+pub fn resolve_page_labels(entries: &mut [TocEntry], labels: &[(String, usize)]) {
+    // Build reverse lookup: label string -> physical page index
+    let label_map: std::collections::HashMap<String, usize> = labels.iter()
+        .map(|(label, idx)| (label.to_lowercase(), *idx))
+        .collect();
+
+    for entry in entries.iter_mut() {
+        if entry.physical_page.is_some() {
+            continue; // already resolved
+        }
+        if let Some(page_num) = entry.page_number {
+            // Try matching the page number as a label string
+            let candidates = if entry.is_roman {
+                // For roman numerals, try lowercase roman representation
+                vec![to_roman_lower(page_num)]
+            } else {
+                vec![page_num.to_string()]
+            };
+            for candidate in &candidates {
+                if let Some(&physical) = label_map.get(&candidate.to_lowercase()) {
+                    entry.physical_page = Some(physical);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+fn to_roman_lower(n: u32) -> String {
+    if n == 0 { return String::new(); }
+    let values = [(1000, "m"), (900, "cm"), (500, "d"), (400, "cd"),
+                  (100, "c"), (90, "xc"), (50, "l"), (40, "xl"),
+                  (10, "x"), (9, "ix"), (5, "v"), (4, "iv"), (1, "i")];
+    let mut result = String::new();
+    let mut remaining = n;
+    for &(val, sym) in &values {
+        while remaining >= val {
+            result.push_str(sym);
+            remaining -= val;
+        }
+    }
+    result
 }
 
 /// Internal representation of a single TOC line.
@@ -299,6 +383,8 @@ struct TocLine {
     title_text: String,
     /// Detected page number (rightmost numeric span)
     page_number: Option<u32>,
+    /// Whether the page number was roman numeral
+    is_roman: bool,
     /// Left edge of the leftmost non-leader span (for indent clustering)
     left_x: f32,
     /// Right edge of the rightmost span
@@ -317,8 +403,8 @@ impl TocLine {
         if spans.is_empty() {
             return Self {
                 text: String::new(), title_text: String::new(), page_number: None,
-                left_x: 0.0, right_x: 0.0, font_size: 0.0, is_bold: false,
-                y_top: 0.0, y_bottom: 0.0,
+                is_roman: false, left_x: 0.0, right_x: 0.0, font_size: 0.0,
+                is_bold: false, y_top: 0.0, y_bottom: 0.0,
             };
         }
 
@@ -335,7 +421,7 @@ impl TocLine {
         // Check if the rightmost span is a page number
         let last_span = spans.last().unwrap();
         let last_text = last_span.text.trim();
-        let page_number = parse_page_number(last_text);
+        let (page_number, is_roman) = parse_page_number_typed(last_text);
 
         // Build title text: everything except the page number and leader dots
         let title_text = if page_number.is_some() && spans.len() > 1 {
@@ -355,6 +441,7 @@ impl TocLine {
             text: full_text,
             title_text: title_text.trim().to_string(),
             page_number,
+            is_roman,
             left_x,
             right_x,
             font_size,
@@ -367,19 +454,66 @@ impl TocLine {
 
 /// Parse a string as a page number — arabic or roman numerals.
 fn parse_page_number(text: &str) -> Option<u32> {
+    parse_page_number_typed(text).0
+}
+
+/// Parse page number, also returning whether it was roman numeral.
+fn parse_page_number_typed(text: &str) -> (Option<u32>, bool) {
     let trimmed = text.trim();
     if trimmed.is_empty() {
-        return None;
+        return (None, false);
     }
-    // Arabic numerals
+    // Arabic numerals first
     if let Ok(n) = trimmed.parse::<u32>() {
-        return Some(n);
+        return (Some(n), false);
     }
-    // Roman numerals (lowercase)
+    // Roman numerals
     if let Some(n) = parse_roman(trimmed) {
-        return Some(n);
+        return (Some(n), true);
     }
-    None
+    (None, false)
+}
+
+/// Classify a TOC entry by its title text.
+pub fn classify_toc_entry(text: &str, is_roman_page: bool) -> TocEntryType {
+    let lower = text.trim().to_lowercase();
+
+    // Figure entries
+    if lower.starts_with("figure ") || lower.starts_with("fig. ") || lower.starts_with("fig ") {
+        return TocEntryType::Figure;
+    }
+
+    // Table entries (but not "Table of Contents")
+    if (lower.starts_with("table ") && !lower.contains("contents"))
+        || lower.starts_with("tab. ")
+    {
+        return TocEntryType::Table;
+    }
+
+    // Appendix / Annex
+    if lower.starts_with("appendix ") || lower.starts_with("annex ") {
+        return TocEntryType::Appendix;
+    }
+
+    // Front matter keywords
+    const FRONT_MATTER: &[&str] = &[
+        "abstract", "acknowledgment", "acknowledgement", "acknowledgments",
+        "acknowledgements", "foreword", "preface", "executive summary",
+        "list of figures", "list of tables", "list of acronyms",
+        "list of abbreviations", "list of symbols", "glossary",
+        "acronyms", "abbreviations", "revision history", "document history",
+        "table of contents", "contents",
+    ];
+    if FRONT_MATTER.iter().any(|&fm| lower == fm || lower.starts_with(&format!("{} ", fm))) {
+        return TocEntryType::FrontMatter;
+    }
+
+    // Roman numeral page number is a strong front-matter signal
+    if is_roman_page {
+        return TocEntryType::FrontMatter;
+    }
+
+    TocEntryType::Section
 }
 
 /// Parse a roman numeral string (i, ii, iii, iv, v, vi, vii, viii, ix, x, etc.)
@@ -539,6 +673,31 @@ mod tests {
     }
 
     #[test]
+    fn test_classify_toc_entry() {
+        assert_eq!(classify_toc_entry("1. Introduction", false), TocEntryType::Section);
+        assert_eq!(classify_toc_entry("Figure 1: System Overview", false), TocEntryType::Figure);
+        assert_eq!(classify_toc_entry("Fig. 3 Architecture", false), TocEntryType::Figure);
+        assert_eq!(classify_toc_entry("Table 2: Results", false), TocEntryType::Table);
+        assert_eq!(classify_toc_entry("Appendix A: Glossary", false), TocEntryType::Appendix);
+        assert_eq!(classify_toc_entry("Annex B: Test Data", false), TocEntryType::Appendix);
+        assert_eq!(classify_toc_entry("Abstract", false), TocEntryType::FrontMatter);
+        assert_eq!(classify_toc_entry("List of Figures", false), TocEntryType::FrontMatter);
+        assert_eq!(classify_toc_entry("Glossary", false), TocEntryType::FrontMatter);
+        assert_eq!(classify_toc_entry("Executive Summary", false), TocEntryType::FrontMatter);
+        // Roman page number signals front matter
+        assert_eq!(classify_toc_entry("Some Section", true), TocEntryType::FrontMatter);
+        assert_eq!(classify_toc_entry("Some Section", false), TocEntryType::Section);
+    }
+
+    #[test]
+    fn test_parse_page_number_typed() {
+        assert_eq!(parse_page_number_typed("42"), (Some(42), false));
+        assert_eq!(parse_page_number_typed("iv"), (Some(4), true));
+        assert_eq!(parse_page_number_typed("XII"), (Some(12), true));
+        assert_eq!(parse_page_number_typed("abc"), (None, false));
+    }
+
+    #[test]
     fn test_extract_simple_toc() {
         let detector = TocDetector::new();
         let spans = vec![
@@ -560,6 +719,8 @@ mod tests {
         assert_eq!(entries[0].text, "Chapter 1: Introduction");
         assert_eq!(entries[0].page_number, Some(1));
         assert_eq!(entries[0].indent_level, 0);
+        assert_eq!(entries[0].entry_type, TocEntryType::Section);
+        assert!(!entries[0].is_roman);
 
         assert_eq!(entries[1].page_number, Some(5));
         assert_eq!(entries[1].indent_level, 1); // indented
