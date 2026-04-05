@@ -8,6 +8,7 @@ import random
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from difflib import SequenceMatcher
 
 import typer
 from pydantic import BaseModel, Field, ValidationError
@@ -711,7 +712,205 @@ def render_ir_to_pdf(ir: dict, output_path: str) -> str:
     c.save()
     return output_path
 
+def _bbox_iou(a, b) -> float:
+    if not a or not b or len(a) < 4 or len(b) < 4:
+        return 0.0
+    ax0, ay0, ax1, ay1 = [float(x) for x in a[:4]]
+    bx0, by0, bx1, by1 = [float(x) for x in b[:4]]
+    ix0, iy0 = max(ax0, bx0), max(ay0, by0)
+    ix1, iy1 = min(ax1, bx1), min(ay1, by1)
+    iw, ih = max(0.0, ix1 - ix0), max(0.0, iy1 - iy0)
+    inter = iw * ih
+    if inter <= 0:
+        return 0.0
+    area_a = max(0.0, ax1 - ax0) * max(0.0, ay1 - ay0)
+    area_b = max(0.0, bx1 - bx0) * max(0.0, by1 - by0)
+    union = area_a + area_b - inter
+    return inter / union if union > 0 else 0.0
 
+
+def _text_similarity(a, b) -> float:
+    return SequenceMatcher(None, str(a or ""), str(b or "")).ratio()
+
+
+def _match_blocks(pred, truth) -> list[tuple]:
+    candidates = []
+    for pi, p in enumerate(pred or []):
+        ptxt = str(p.get("text", "") if isinstance(p, dict) else "")
+        for ti, t in enumerate(truth or []):
+            ttxt = str(t.get("text", "") if isinstance(t, dict) else "")
+            sim = _text_similarity(ptxt, ttxt)
+            if sim > 0.5:
+                candidates.append((sim, pi, ti))
+    candidates.sort(reverse=True)
+    used_p, used_t, matches = set(), set(), []
+    for _, pi, ti in candidates:
+        if pi in used_p or ti in used_t:
+            continue
+        used_p.add(pi)
+        used_t.add(ti)
+        matches.append((pi, ti))
+    return matches
+
+
+def _match_tables(pred, truth) -> list[tuple]:
+    candidates = []
+    for pi, p in enumerate(pred or []):
+        if not isinstance(p, dict):
+            continue
+        p_page = p.get("page") or p.get("page_start")
+        p_bbox = p.get("bbox")
+        if p_bbox is None:
+            bpp = p.get("bbox_per_page") or {}
+            if isinstance(bpp, dict) and bpp:
+                p_bbox = next(iter(bpp.values()))
+        for ti, t in enumerate(truth or []):
+            if not isinstance(t, dict):
+                continue
+            t_page = t.get("page") or t.get("page_start")
+            t_bbox = t.get("bbox")
+            if t_bbox is None:
+                bpp = t.get("bbox_per_page") or {}
+                if isinstance(bpp, dict) and bpp:
+                    t_bbox = next(iter(bpp.values()))
+            if p_page == t_page and _bbox_iou(p_bbox, t_bbox) > 0.5:
+                candidates.append((_bbox_iou(p_bbox, t_bbox), pi, ti))
+    candidates.sort(reverse=True)
+    used_p, used_t, matches = set(), set(), []
+    for _, pi, ti in candidates:
+        if pi in used_p or ti in used_t:
+            continue
+        used_p.add(pi)
+        used_t.add(ti)
+        matches.append((pi, ti))
+    return matches
+
+
+def score_extraction(extraction_result, truth_document, truth_tables) -> dict:
+    pred_pages = (extraction_result or {}).get("pages", []) or []
+    truth_pages = (truth_document or {}).get("pages", []) or []
+
+    pred_blocks = [b for p in pred_pages if isinstance(p, dict) for b in (p.get("blocks", []) or []) if isinstance(b, dict)]
+    truth_blocks = [b for p in truth_pages if isinstance(p, dict) for b in (p.get("blocks", []) or []) if isinstance(b, dict)]
+
+    block_matches = _match_blocks(pred_blocks, truth_blocks)
+    tp = len(block_matches)
+    p_n = len(pred_blocks)
+    t_n = len(truth_blocks)
+    precision = tp / p_n if p_n else 0.0
+    recall = tp / t_n if t_n else 0.0
+    block_presence_f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
+
+    type_ok = 0
+    for pi, ti in block_matches:
+        if str(pred_blocks[pi].get("block_type", "")).lower() == str(truth_blocks[ti].get("block_type", "")).lower():
+            type_ok += 1
+    block_type_accuracy = (type_ok / tp) if tp else 0.0
+
+    pred_sections = {str(s.get("title", "")).strip().lower() for s in (extraction_result or {}).get("sections", []) or [] if isinstance(s, dict)}
+    truth_sections = {str(s.get("title", "")).strip().lower() for s in (truth_document or {}).get("sections", []) or [] if isinstance(s, dict)}
+    section_recall = (len(pred_sections & truth_sections) / len(truth_sections)) if truth_sections else 0.0
+
+    truth_order = [x for x in (truth_document or {}).get("reading_order", []) or []]
+    pred_order = [x for x in (extraction_result or {}).get("reading_order", []) or []]
+    common = [x for x in truth_order if x in set(pred_order)]
+    if len(common) < 2:
+        reading_order_score = 0.0
+    else:
+        tpos = {k: i for i, k in enumerate(truth_order)}
+        ppos = {k: i for i, k in enumerate(pred_order)}
+        concordant = 0
+        total = 0
+        for i in range(len(common)):
+            for j in range(i + 1, len(common)):
+                total += 1
+                a, b = common[i], common[j]
+                if (tpos[a] - tpos[b]) * (ppos[a] - ppos[b]) > 0:
+                    concordant += 1
+        reading_order_score = (concordant / total) if total else 0.0
+
+    pred_tables = (extraction_result or {}).get("tables", []) or []
+    truth_table_list = (truth_tables or {}).get("tables", truth_tables if isinstance(truth_tables, list) else []) or []
+    table_matches = _match_tables(pred_tables, truth_table_list)
+    ttp = len(table_matches)
+    tp_n = len(pred_tables)
+    tt_n = len(truth_table_list)
+    tprec = ttp / tp_n if tp_n else 0.0
+    trec = ttp / tt_n if tt_n else 0.0
+    table_presence_f1 = (2 * tprec * trec / (tprec + trec)) if (tprec + trec) else 0.0
+
+    cell_f1s = []
+    for pi, ti in table_matches:
+        pcells = {(c.get("row"), c.get("col")): c for c in (pred_tables[pi].get("cells", []) or []) if isinstance(c, dict)}
+        tcells = {(c.get("row"), c.get("col")): c for c in (truth_table_list[ti].get("cells", []) or []) if isinstance(c, dict)}
+        keys = set(pcells) | set(tcells)
+        if not keys:
+            cell_f1s.append(1.0)
+            continue
+        hit = 0
+        for k in keys:
+            if k in pcells and k in tcells:
+                if _text_similarity(pcells[k].get("text", ""), tcells[k].get("text", "")) > 0.8:
+                    hit += 1
+        p = hit / len(pcells) if pcells else 0.0
+        r = hit / len(tcells) if tcells else 0.0
+        cell_f1s.append((2 * p * r / (p + r)) if (p + r) else 0.0)
+    table_cell_f1 = (sum(cell_f1s) / len(cell_f1s)) if cell_f1s else 0.0
+
+    continuity_scores = []
+    for t in truth_table_list:
+        if not isinstance(t, dict):
+            continue
+        if int(t.get("page_end", t.get("page_start", 0)) or 0) > int(t.get("page_start", 0) or 0):
+            tid = t.get("table_id")
+            matched_pred = None
+            for pi, ti in table_matches:
+                if ti < len(truth_table_list) and truth_table_list[ti].get("table_id") == tid:
+                    matched_pred = pred_tables[pi]
+                    break
+            if matched_pred is None:
+                continuity_scores.append(0.0)
+            else:
+                p_multi = int(matched_pred.get("page_end", matched_pred.get("page_start", 0)) or 0) > int(matched_pred.get("page_start", 0) or 0)
+                continuity_scores.append(1.0 if p_multi else 0.0)
+    cross_page_table_continuity = (sum(continuity_scores) / len(continuity_scores)) if continuity_scores else 1.0
+
+    overall_score = 0.4 * ((block_presence_f1 + block_type_accuracy + section_recall) / 3.0) + 0.4 * ((table_presence_f1 + table_cell_f1 + cross_page_table_continuity) / 3.0) + 0.2 * reading_order_score
+
+    pass_thresholds = {
+        "block_presence_f1": 0.85,
+        "block_type_accuracy": 0.80,
+        "section_recall": 0.80,
+        "reading_order_score": 0.80,
+        "table_presence_f1": 0.80,
+        "table_cell_f1": 0.80,
+        "cross_page_table_continuity": 0.80,
+    }
+
+    per_page = {}
+    truth_by_page = {p.get("page"): p for p in truth_pages if isinstance(p, dict)}
+    pred_by_page = {p.get("page"): p for p in pred_pages if isinstance(p, dict)}
+    for pg in sorted(set(truth_by_page) | set(pred_by_page)):
+        pb = len((pred_by_page.get(pg) or {}).get("blocks", []) or [])
+        tb = len((truth_by_page.get(pg) or {}).get("blocks", []) or [])
+        per_page[pg] = {"pred_blocks": pb, "truth_blocks": tb}
+
+    result = {
+        "block_presence_f1": float(block_presence_f1),
+        "block_type_accuracy": float(block_type_accuracy),
+        "section_recall": float(section_recall),
+        "reading_order_score": float(reading_order_score),
+        "table_presence_f1": float(table_presence_f1),
+        "table_cell_f1": float(table_cell_f1),
+        "cross_page_table_continuity": float(cross_page_table_continuity),
+        "overall_score": float(overall_score),
+        "pass": all(float(locals()[k]) >= v for k, v in pass_thresholds.items()),
+        "details": {"per_page": per_page, "matches": {"blocks": tp, "tables": ttp}},
+    }
+    return result
+
+
+@app.command("profile")
 @app.command("profile")
 def profile(
     pdf_path: str = typer.Argument(..., help="Path to PDF file"),
