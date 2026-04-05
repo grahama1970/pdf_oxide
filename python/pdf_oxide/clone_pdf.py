@@ -3,14 +3,128 @@ from __future__ import annotations
 
 import hashlib
 import json
+from enum import Enum
 from typing import Any, Dict, List, Optional
 
 import typer
+from pydantic import BaseModel, Field, ValidationError
 
 import pdf_oxide
 from pdf_oxide.survey import survey_document
 
 app = typer.Typer(name="clone_pdf", help="PDF Cloner — profile, sample, clone, score")
+
+
+class ElementType(str, Enum):
+    header = "header"
+    body = "body"
+    table = "table"
+    figure = "figure"
+    caption = "caption"
+    list_item = "list"
+    footnote = "footnote"
+    equation = "equation"
+    page_number = "page_number"
+    running_header = "running_header"
+    running_footer = "running_footer"
+
+
+class IRElement(BaseModel):
+    id: str
+    type: ElementType
+    bbox: list[float]
+    text: str
+    header_level: int = 0
+    page: int
+    reading_order: int
+    font_size: float = 12.0
+    is_bold: bool = False
+    numbering: Optional[str] = None
+
+
+class TableCell(BaseModel):
+    row: int
+    col: int
+    rowspan: int = 1
+    colspan: int = 1
+    text: str
+    role: str = "data"
+
+
+class TableContinuation(BaseModel):
+    is_continued: bool = False
+    continued_from: Optional[str] = None
+
+
+class IRTable(BaseModel):
+    table_id: str
+    page_start: int
+    page_end: int
+    bbox_per_page: dict[int, list[float]] = Field(default_factory=dict)
+    caption: Optional[str] = None
+    n_header_rows: int = 1
+    n_rows: int
+    n_cols: int
+    cells: list[TableCell]
+    continuation: TableContinuation = Field(default_factory=TableContinuation)
+    style: str = "ruled"
+
+
+class IRRelationship(BaseModel):
+    type: str
+    source: str
+    target: str
+
+
+class WindowIR(BaseModel):
+    window_id: str
+    source_pages: list[int]
+    source_pdf: str
+    family_id: str
+    elements: list[IRElement]
+    tables: list[IRTable]
+    relationships: list[IRRelationship] = Field(default_factory=list)
+    reading_order: list[str] = Field(default_factory=list)
+
+
+def validate_ir(ir_dict: dict) -> tuple[bool, list[str]]:
+    errors: list[str] = []
+
+    try:
+        ir = WindowIR(**ir_dict)
+    except ValidationError as exc:
+        return False, [str(err) for err in exc.errors()]
+
+    element_ids = [el.id for el in ir.elements]
+    table_ids = [tbl.table_id for tbl in ir.tables]
+
+    if len(set(element_ids)) != len(element_ids):
+        errors.append("duplicate element IDs found")
+
+    valid_ids = set(element_ids) | set(table_ids)
+
+    for ref_id in ir.reading_order:
+        if ref_id not in set(element_ids):
+            errors.append(f"reading_order references unknown element id: {ref_id}")
+
+    for rel in ir.relationships:
+        if rel.source not in valid_ids:
+            errors.append(f"relationship source references unknown id: {rel.source}")
+        if rel.target not in valid_ids:
+            errors.append(f"relationship target references unknown id: {rel.target}")
+
+    source_page_set = set(ir.source_pages)
+    for el in ir.elements:
+        if el.page not in source_page_set:
+            errors.append(f"element {el.id} has page {el.page} outside source_pages")
+
+    for tbl in ir.tables:
+        if tbl.page_start not in source_page_set:
+            errors.append(f"table {tbl.table_id} page_start {tbl.page_start} outside source_pages")
+        if tbl.page_end not in source_page_set:
+            errors.append(f"table {tbl.table_id} page_end {tbl.page_end} outside source_pages")
+
+    return len(errors) == 0, errors
 
 
 def _build_page_signatures(doc, survey: Dict[str, Any]) -> List[Dict[str, Any]]:
