@@ -265,6 +265,156 @@ def profile_and_assign(pdf_path: str) -> dict:
 
 
 
+def compile_document_truth(ir: dict) -> dict:
+    parsed = WindowIR(**ir)
+
+    type_map = {
+        ElementType.header: "Header",
+        ElementType.body: "Body",
+        ElementType.caption: "Caption",
+        ElementType.list_item: "List",
+        ElementType.footnote: "Footnote",
+        ElementType.equation: "Equation",
+        ElementType.page_number: "PageNumber",
+        ElementType.figure: "Body",
+        ElementType.table: "Body",
+        ElementType.running_header: "Header",
+        ElementType.running_footer: "Footer",
+    }
+
+    elements_by_id = {el.id: el for el in parsed.elements}
+
+    ordered_elements = sorted(
+        parsed.elements,
+        key=lambda el: (el.page, el.reading_order),
+    )
+
+    pages = []
+    for page_num in sorted(parsed.source_pages):
+        page_elements = [el for el in ordered_elements if el.page == page_num]
+        blocks = [
+            {
+                "block_type": type_map.get(el.type, "Body"),
+                "confidence": 1.0,
+                "bbox": el.bbox,
+                "text": el.text,
+                "header_level": el.header_level,
+                "font_size": el.font_size,
+            }
+            for el in page_elements
+        ]
+        page_text_parts = [el.text for el in page_elements if el.text]
+        pages.append(
+            {
+                "page_num": page_num,
+                "blocks": blocks,
+                "text": "\n".join(page_text_parts),
+            }
+        )
+
+    sections = []
+    for el in ordered_elements:
+        if el.type == ElementType.header and el.header_level > 0:
+            sections.append(
+                {
+                    "title": el.text,
+                    "header_level": el.header_level,
+                    "page": el.page,
+                    "bbox": el.bbox,
+                    "element_id": el.id,
+                }
+            )
+
+    caption_lookup: Dict[str, dict] = {}
+    for rel in parsed.relationships:
+        if rel.type == "caption_of":
+            src = elements_by_id.get(rel.source)
+            tgt = elements_by_id.get(rel.target)
+            if src and src.type == ElementType.caption and tgt:
+                caption_lookup[tgt.id] = {
+                    "caption_id": src.id,
+                    "caption_text": src.text,
+                    "caption_bbox": src.bbox,
+                    "caption_page": src.page,
+                }
+            elif tgt and tgt.type == ElementType.caption and src:
+                caption_lookup[src.id] = {
+                    "caption_id": tgt.id,
+                    "caption_text": tgt.text,
+                    "caption_bbox": tgt.bbox,
+                    "caption_page": tgt.page,
+                }
+
+    figures = []
+    for el in ordered_elements:
+        if el.type == ElementType.figure:
+            fig = {
+                "figure_id": el.id,
+                "page": el.page,
+                "bbox": el.bbox,
+                "text": el.text,
+            }
+            if el.id in caption_lookup:
+                fig["caption"] = caption_lookup[el.id]
+            figures.append(fig)
+
+    running_headers = [
+        {
+            "element_id": el.id,
+            "page": el.page,
+            "bbox": el.bbox,
+            "text": el.text,
+            "font_size": el.font_size,
+        }
+        for el in ordered_elements
+        if el.type == ElementType.running_header
+    ]
+
+    running_footers = [
+        {
+            "element_id": el.id,
+            "page": el.page,
+            "bbox": el.bbox,
+            "text": el.text,
+            "font_size": el.font_size,
+        }
+        for el in ordered_elements
+        if el.type == ElementType.running_footer
+    ]
+
+    return {
+        "pages": pages,
+        "sections": sections,
+        "figures": figures,
+        "running_headers": running_headers,
+        "running_footers": running_footers,
+    }
+
+
+def compile_table_truth(ir: dict) -> dict:
+    parsed = WindowIR(**ir)
+
+    tables = []
+    for table in parsed.tables:
+        tables.append(
+            {
+                "table_id": table.table_id,
+                "page": table.page_start,
+                "page_end": table.page_end,
+                "bbox": table.bbox_per_page.get(table.page_start, [0, 0, 0, 0]),
+                "caption": table.caption,
+                "n_rows": table.n_rows,
+                "n_cols": table.n_cols,
+                "n_header_rows": table.n_header_rows,
+                "cells": [cell.model_dump() for cell in table.cells],
+                "is_continuation": table.continuation.is_continued,
+                "style": table.style,
+            }
+        )
+
+    return {"tables": tables}
+
+
 def render_ir_to_pdf(ir: dict, output_path: str) -> str:
     if not REPORTLAB_AVAILABLE:
         raise ImportError("reportlab is required for PDF rendering but not installed")
