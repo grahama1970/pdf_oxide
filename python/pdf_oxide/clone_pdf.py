@@ -911,7 +911,6 @@ def score_extraction(extraction_result, truth_document, truth_tables) -> dict:
 
 
 @app.command("profile")
-@app.command("profile")
 def profile(
     pdf_path: str = typer.Argument(..., help="Path to PDF file"),
     output_json: bool = typer.Option(False, "--json", is_flag=True, help="Output as JSON"),
