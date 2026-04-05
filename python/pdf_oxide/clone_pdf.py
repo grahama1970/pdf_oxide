@@ -756,5 +756,46 @@ def render_ir(
     typer.echo(render_ir_to_pdf(ir, output_path))
 
 
+@app.command("sample")
+def sample(
+    pdf_path: str = typer.Argument(..., help="Path to PDF file"),
+    max_windows: int = typer.Option(20, "--max-windows", help="Maximum windows to sample"),
+    seed: int = typer.Option(42, "--seed", help="Random seed"),
+    output_json: bool = typer.Option(False, "--json", is_flag=True, help="Output as JSON"),
+) -> None:
+    """Generate a stratified window sampling plan for a PDF."""
+    result = build_sampling_plan(pdf_path, max_windows=max_windows, seed=seed)
+    if output_json:
+        print(json.dumps(result))
+    else:
+        typer.echo(f"Strategy: {result.get('strategy')}")
+        typer.echo(f"Windows: {len(result.get('windows', []))}")
+        for w in result.get("windows", []):
+            typer.echo(f"  {w['window_id']}: pages={w['source_pages']} cat={w['category']} reason={w['selection_reason']}")
+
+
+@app.command("manifest")
+def manifest_cmd(
+    fixture_dir: str = typer.Argument(..., help="Path to fixture directory"),
+    output_json: bool = typer.Option(False, "--json", is_flag=True, help="Output as JSON"),
+) -> None:
+    """Build a test manifest from fixtures in a directory."""
+    import os
+    profile_path = os.path.join(fixture_dir, "profile.json")
+    plan_path = os.path.join(fixture_dir, "sampling_plan.json")
+    if os.path.exists(profile_path) and os.path.exists(plan_path):
+        with open(profile_path) as f:
+            prof = json.load(f)
+        with open(plan_path) as f:
+            plan = json.load(f)
+        result = build_test_manifest(prof, plan, fixture_dir)
+        if output_json:
+            print(json.dumps(result))
+        else:
+            typer.echo(f"Manifest: {len(result.get('windows', []))} windows")
+    else:
+        typer.echo("Missing profile.json or sampling_plan.json in fixture dir")
+
+
 if __name__ == "__main__":
     app()
