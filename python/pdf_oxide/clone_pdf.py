@@ -1022,38 +1022,18 @@ SCILLM_URL = os.environ.get("SCILLM_URL", "http://localhost:4001")
 SCILLM_KEY = os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123")
 _SCILLM_HEADERS = {"Authorization": f"Bearer {SCILLM_KEY}", "Content-Type": "application/json"}
 
-_IR_PROMPT = """You are a document structure analyst. Given these page images and extracted text spans,
-produce a JSON object describing every structural element for extraction testing.
+_IR_PROMPT = """You are a ReportLab expert. This PDF has pages to recreate.
+Write a complete Python script using ReportLab that recreates the structural layout of this page.
 
-Output EXACTLY this JSON schema (no markdown, no explanation):
-{{
-  "window_id": "{window_id}",
-  "source_pages": {source_pages},
-  "source_pdf": "{source_pdf}",
-  "family_id": "{family_id}",
-  "elements": [
-    {{"id": "{window_id}.P{{page:03d}}.HDR_001", "type": "header", "bbox": [x0,y0,x1,y1],
-      "text": "...", "header_level": N, "page": N, "reading_order": N,
-      "font_size": N, "is_bold": true/false, "numbering": "3.2.1" or null}}
-  ],
-  "tables": [
-    {{"table_id": "{window_id}.TBL_001", "page_start": N, "page_end": N,
-      "caption": "..." or null, "n_header_rows": N, "n_rows": N, "n_cols": N,
-      "cells": [{{"row":0,"col":0,"rowspan":1,"colspan":1,"text":"...","role":"header"}}],
-      "continuation": {{"is_continued": false}}, "style": "ruled"}}
-  ],
-  "relationships": [
-    {{"type": "caption_of", "source": "element_id", "target": "table_or_figure_id"}}
-  ]
-}}
-
-Rules:
-- List ALL visible text blocks including headers, body text, captions, footnotes
-- For tables: include every cell with exact text, identify header rows
-- reading_order: sequential top-to-bottom, left-to-right within columns
-- bbox: approximate coordinates in points (72 points/inch)
-- If a table spans pages, set page_start != page_end and continuation.is_continued=true
-- Include running headers/footers with type 'running_header'/'running_footer'"""
+Requirements:
+- Use reportlab.pdfgen.canvas for text positioning with drawString()
+- Use reportlab.platypus.Table for any tables, with TableStyle for grid lines
+- Use reportlab.lib.pagesizes.letter for page size
+- Match font sizes approximately (headers larger, body ~10-12pt)
+- Place headers, body paragraphs, tables, captions, footnotes, and page numbers
+- For tables: include ALL cell text, mark header rows with bold/background
+- Include running headers and footers if present
+- Output ONLY the Python code, no explanation. The script should save to 'output.pdf'."""
 
 
 import re as _re
