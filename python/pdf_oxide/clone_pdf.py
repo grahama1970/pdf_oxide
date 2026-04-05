@@ -8,10 +8,14 @@ from typing import Any, Dict, List, Optional
 
 import typer
 from pydantic import BaseModel, Field, ValidationError
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from reportlab.platypus import Table, TableStyle
+try:
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import letter
+    from reportlab.pdfgen import canvas
+    from reportlab.platypus import Table, TableStyle
+    REPORTLAB_AVAILABLE = True
+except ImportError:
+    REPORTLAB_AVAILABLE = False
 
 import pdf_oxide
 from pdf_oxide.survey import survey_document
@@ -262,6 +266,10 @@ def profile_and_assign(pdf_path: str) -> dict:
 
 
 def render_ir_to_pdf(ir: dict, output_path: str) -> str:
+    if not REPORTLAB_AVAILABLE:
+        raise ImportError("reportlab is required for PDF rendering but not installed")
+    
+    valid, errors = validate_ir(ir)
     valid, errors = validate_ir(ir)
     if not valid:
         raise ValueError(f"Invalid IR: {errors}")
