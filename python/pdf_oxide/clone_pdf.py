@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import random
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -384,7 +386,84 @@ def build_sampling_plan(pdf_path: str, max_windows: int = 20, seed: int = 42) ->
 
 
 
+def build_test_manifest(profile: dict, sampling_plan: dict, fixture_dir: str, preset_candidates: Optional[list[dict]] = None) -> dict:
+    windows_manifest: list[dict] = []
+    for window in sampling_plan.get("windows", []) or []:
+        wid = str(window.get("window_id", ""))
+        window_dir = os.path.join(fixture_dir, wid)
+        ir_path = os.path.join(window_dir, "ir.json")
+        extraction_targets: list[str] = []
 
+        if os.path.exists(ir_path):
+            try:
+                with open(ir_path, "r", encoding="utf-8") as f:
+                    ir_data = json.load(f)
+                element_types = {
+                    str(el.get("type"))
+                    for el in (ir_data.get("elements", []) or [])
+                    if isinstance(el, dict) and el.get("type")
+                }
+                if ir_data.get("tables"):
+                    element_types.add("table")
+                extraction_targets = sorted(element_types)
+            except Exception:
+                extraction_targets = []
+
+        windows_manifest.append(
+            {
+                "window_id": wid,
+                "fixture": {
+                    "synthetic_pdf": os.path.join(window_dir, "synthetic.pdf"),
+                    "ir_path": ir_path,
+                    "truth_document": os.path.join(window_dir, "truth_document.json"),
+                    "truth_tables": os.path.join(window_dir, "truth_tables.json"),
+                    "renderer_backend": "reportlab",
+                },
+                "extraction_targets": extraction_targets,
+                "source_pages": window.get("source_pages", []),
+            }
+        )
+
+    manifest = {
+        "manifest_version": "1.0",
+        "created": datetime.now(timezone.utc).isoformat(),
+        "source_document": {
+            "doc_id": profile["doc_id"],
+            "path": profile["path"],
+            "page_count": profile["page_count"],
+            "family_id": profile["family_id"],
+            "subfamily_id": profile.get("subfamily_id"),
+        },
+        "sampling": sampling_plan,
+        "windows": windows_manifest,
+        "preset_candidates": preset_candidates or [{"name": "default", "overrides": {}}],
+        "scoring": {
+            "metrics": [
+                "block_presence_f1",
+                "block_type_accuracy",
+                "section_recall",
+                "table_presence_f1",
+                "table_cell_f1",
+                "reading_order_score",
+            ],
+            "pass_thresholds": {
+                "block_presence_f1": 0.85,
+                "table_cell_f1": 0.80,
+                "reading_order_score": 0.80,
+            },
+        },
+        "test_usage": {
+            "valid_for_preset_discovery": True,
+            "valid_for_synthetic_regression": True,
+            "valid_for_real_pdf_comparison": True,
+        },
+    }
+
+    os.makedirs(fixture_dir, exist_ok=True)
+    with open(os.path.join(fixture_dir, "manifest.json"), "w", encoding="utf-8") as f:
+        json.dump(manifest, f, indent=2)
+
+    return manifest
 def compile_document_truth(ir: dict) -> dict:
     parsed = WindowIR(**ir)
 
