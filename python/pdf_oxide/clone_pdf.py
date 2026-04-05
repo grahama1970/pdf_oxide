@@ -27,6 +27,8 @@ try:
 except ImportError:
     REPORTLAB_AVAILABLE = False
 
+from pypdf import PdfReader, PdfWriter
+
 import pdf_oxide
 from pdf_oxide.survey import survey_document
 
@@ -988,11 +990,21 @@ def render_windows(
                 json.dump(span_data, f, indent=2)
             span_paths.append(span_path)
 
-        # Source PDF path passed through — Gemini gets the full PDF via inlineData
-        # and the prompt tells it which pages to analyze
+        # Extract window pages into a mini-PDF via pypdf
+        window_pdf_path = os.path.join(win_dir, "window.pdf")
+        reader = PdfReader(pdf_path)
+        writer = PdfWriter()
+        for page_num in source_pages:
+            page_idx = page_num - 1
+            if 0 <= page_idx < len(reader.pages):
+                writer.add_page(reader.pages[page_idx])
+        with open(window_pdf_path, "wb") as f:
+            writer.write(f)
+
         rendered.append({
             "window_id": wid,
             "pdf_path": pdf_path,
+            "window_pdf_path": window_pdf_path,
             "png_paths": png_paths,
             "span_paths": span_paths,
             "source_pages": source_pages,
