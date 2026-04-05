@@ -1118,7 +1118,6 @@ async def _call_gemini_ir(
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": content_parts}],
-        "max_tokens": 8192,
         "response_format": {"type": "json_object"},
     }
 
