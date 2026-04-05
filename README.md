@@ -1,6 +1,6 @@
 # PDF Oxide - The Fastest PDF Toolkit for Python, Rust, CLI & AI
 
-The fastest PDF library for text extraction, image extraction, and markdown conversion. Rust core with Python bindings, WASM support, CLI tool, and MCP server for AI assistants. 0.8ms mean per document, 5× faster than PyMuPDF, 15× faster than pypdf. 100% pass rate on 3,830 real-world PDFs. MIT licensed.
+The fastest PDF library for text extraction, image extraction, and markdown conversion. Rust core with Python bindings, WASM support, CLI tool, and MCP server for AI assistants. 0.8ms mean per document, 5x faster than PyMuPDF, 15x faster than pypdf. 100% pass rate on 3,830 real-world PDFs. MIT licensed.
 
 [![Crates.io](https://img.shields.io/crates/v/pdf_oxide.svg)](https://crates.io/crates/pdf_oxide)
 [![PyPI](https://img.shields.io/pypi/v/pdf_oxide.svg)](https://pypi.org/project/pdf_oxide/)
@@ -20,6 +20,11 @@ doc = PdfDocument("paper.pdf")
 text = doc.extract_text(0)
 chars = doc.extract_chars(0)
 markdown = doc.to_markdown(0, detect_headings=True)
+
+# Single-call document extraction (full pipeline)
+result = doc.extract_document()
+for section in result["sections"]:
+    print(f"{section['title']} (level {section['level']})")
 ```
 
 ```bash
@@ -68,11 +73,13 @@ brew install yfedoseev/tap/pdf-oxide   # includes pdf-oxide-mcp
 
 ## Why pdf_oxide?
 
-- **Fast** — 0.8ms mean per document, 5× faster than PyMuPDF, 15× faster than pypdf, 29× faster than pdfplumber
-- **Reliable** — 100% pass rate on 3,830 test PDFs, zero panics, zero timeouts
-- **Complete** — Text extraction, image extraction, PDF creation, and editing in one library
-- **Multi-platform** — Rust, Python, JavaScript/WASM, CLI, and MCP server for AI assistants
-- **Permissive license** — MIT / Apache-2.0 — use freely in commercial and open-source projects
+- **Fast** -- 0.8ms mean per document, 5x faster than PyMuPDF, 15x faster than pypdf, 29x faster than pdfplumber
+- **Reliable** -- 100% pass rate on 3,830 test PDFs, zero panics, zero timeouts
+- **Complete** -- Text extraction, image extraction, PDF creation, and editing in one library
+- **Intelligent** -- Block classification, TOC detection, section hierarchy, engineering feature detection
+- **Multi-platform** -- Rust, Python, JavaScript/WASM, CLI, and MCP server for AI assistants
+- **Extensible** -- Python plugin system for post-extraction enrichment (ArangoDB sync, embeddings, taxonomy)
+- **Permissive license** -- MIT / Apache-2.0 -- use freely in commercial and open-source projects
 
 ## Performance
 
@@ -104,7 +111,7 @@ Benchmarked on 3,830 PDFs from three independent public test suites (veraPDF, Mo
 
 ### Text Quality
 
-99.5% text parity vs PyMuPDF and pypdfium2 across the full corpus. PDF Oxide extracts text from 7–10× more "hard" files than it misses vs any competitor.
+99.5% text parity vs PyMuPDF and pypdfium2 across the full corpus. PDF Oxide extracts text from 7-10x more "hard" files than it misses vs any competitor.
 
 ### Corpus
 
@@ -115,17 +122,28 @@ Benchmarked on 3,830 PDFs from three independent public test suites (veraPDF, Mo
 | [SafeDocs](https://github.com/pdf-association/safedocs) (targeted edge cases) | 26 | 100% |
 | **Total** | **3,830** | **100%** |
 
-100% pass rate on all valid PDFs — the 7 non-passing files across the corpus are intentionally broken test fixtures (missing PDF header, fuzz-corrupted catalogs, invalid xref streams).
+100% pass rate on all valid PDFs -- the 7 non-passing files across the corpus are intentionally broken test fixtures (missing PDF header, fuzz-corrupted catalogs, invalid xref streams).
 
 ## Features
 
-| Extract | Create | Edit |
-|---------|--------|------|
-| Text & Layout | Documents | Annotations |
-| Images | Tables | Form Fields |
-| Forms | Graphics | Bookmarks |
-| Annotations | Templates | Links |
-| Bookmarks | Images | Content |
+| Extract | Analyze | Create | Edit |
+|---------|---------|--------|------|
+| Text & Layout | Block Classification | Documents | Annotations |
+| Images | TOC Detection | Tables | Form Fields |
+| Tables | Section Hierarchy | Graphics | Bookmarks |
+| Forms | Document Profiling | Templates | Links |
+| Annotations | Engineering Features | Images | Content |
+| Bookmarks | Column Detection | | |
+
+### Document Intelligence
+
+Beyond raw extraction, pdf_oxide provides structural understanding of documents:
+
+- **Block Classification** -- Classifies content blocks into 13 types (Header, Body, Footer, PageNumber, List, Caption, Footnote, Title, Subtitle, TableOfContents, Reference, Equation, Boilerplate) with confidence scores and header level detection (0-6)
+- **TOC Detection** -- Geometric span analysis extracts table of contents without regex. Detects indent levels via x-position clustering, right-aligned page numbers, leader dots, and roman numeral front-matter
+- **Section Hierarchy** -- Builds ordered section-to-page-span mapping from TOC entries, PDF outlines, or classified blocks. Entry type classification: Section, Figure, Table, Appendix, FrontMatter
+- **Document Profiling** -- Classifies domain (academic, defense, engineering, legal), estimates complexity, detects layout type (single/multi-column), and recommends extraction strategy
+- **Engineering Feature Detection** -- Detects title blocks, revision tables, drawing borders, CAGE codes, distribution statements, and security markings in defense/engineering documents
 
 ## Python API
 
@@ -136,30 +154,63 @@ doc = PdfDocument("report.pdf")
 print(f"Pages: {doc.page_count()}")
 print(f"Version: {doc.version()}")
 
-# 1. Scoped extraction (v0.3.14)
-# Extract only from a specific area: (x, y, width, height)
+# 1. Single-call document extraction (full pipeline)
+result = doc.extract_document()
+print(f"Domain: {result['profile']['domain']}")
+print(f"Sections: {len(result['sections'])}")
+for page in result["pages"]:
+    for block in page["blocks"]:
+        print(f"  [{block['block_type']}] {block['text'][:80]}")
+
+# 2. Section map (TOC -> outline -> geometric fallback)
+section_map = doc.get_section_map()
+for entry in section_map:
+    print(f"  {'  ' * entry['level']}{entry['title']} (pp. {entry['start_page']}-{entry['end_page']})")
+
+# 3. Document survey (lightweight profiling)
+survey = doc.survey_document()
+print(f"Has TOC: {survey['has_toc']}, Tables: {survey['has_tables']}")
+
+# 4. Scoped extraction (extract from a specific region)
 header = doc.within(0, (0, 700, 612, 92)).extract_text()
 
-# 2. Word-level extraction (v0.3.14)
+# 5. Word-level extraction
 words = doc.extract_words(0)
 for w in words:
     print(f"{w.text} at {w.bbox}")
-    # Access individual characters in the word
-    # print(w.chars[0].font_name)
 
-# 3. Line-level extraction (v0.3.14)
+# 6. Line-level extraction
 lines = doc.extract_text_lines(0)
 for line in lines:
     print(f"Line: {line.text}")
 
-# 4. Table extraction (v0.3.14)
+# 7. Table extraction
 tables = doc.extract_tables(0)
 for table in tables:
     print(f"Table with {table.row_count} rows")
 
-# 5. Traditional extraction
-text = doc.extract_text(0)
+# 8. PyMuPDF-compatible dict format
+text_dict = doc.extract_text_dict(0)  # blocks/lines/spans with bboxes
+
+# 9. Character-level extraction
 chars = doc.extract_chars(0)
+
+# 10. Traditional text extraction
+text = doc.extract_text(0)
+```
+
+### Rendering
+
+```python
+# Render page to PNG/JPEG
+png_bytes = doc.render_page(0, dpi=150, format="png")
+
+# Render clipped region
+clip = (100, 200, 400, 500)  # x, y, w, h
+cropped = doc.render_page_clipped(0, clip, dpi=150)
+
+# SVG export
+svg = doc.render_page_to_svg(0)
 ```
 
 ### Form Fields
@@ -175,6 +226,49 @@ doc.set_form_field_value("employee_name", "Jane Doe")
 doc.set_form_field_value("wages", "85000.00")
 doc.save("filled.pdf")
 ```
+
+### In-Memory Processing
+
+```python
+# Load from bytes
+with open("report.pdf", "rb") as f:
+    doc = PdfDocument.from_bytes(f.read())
+
+# Serialize back to bytes
+modified_bytes = doc.to_bytes()
+```
+
+## Python Pipeline
+
+For production document processing at scale, pdf_oxide includes a pipeline system with plugin-based enrichment:
+
+```python
+from pdf_oxide.pipeline import extract_pdf
+from pdf_oxide.pipeline_types import PipelineConfig
+
+config = PipelineConfig(
+    sync_to_arango=True,
+    generate_embeddings=True,
+    extract_requirements=True,
+)
+
+result = extract_pdf("document.pdf", config)
+print(f"Extracted {len(result.chunks)} chunks from {result.page_count} pages")
+```
+
+### Plugins
+
+The pipeline supports post-extraction enrichment via plugins:
+
+| Plugin | Purpose |
+|--------|---------|
+| `arango` | Sync extracted chunks to ArangoDB for datalake storage |
+| `describe` | VLM-powered title/description enrichment for tables and figures |
+| `requirements` | Extract SHALL/MUST/MAY requirements with numbering and conditionals |
+| `controls` | Map document sections to NIST control frameworks |
+| `taxonomy` | Classify chunks by domain taxonomy |
+| `embeddings` | Generate vector embeddings for semantic search |
+| `lean4` | Export selected sections to Lean4 formal proofs |
 
 ## Rust API
 
@@ -219,7 +313,7 @@ editor.save_with_options("filled.pdf", SaveOptions::incremental())?;
 pip install pdf_oxide
 ```
 
-Wheels available for Linux, macOS, and Windows. Python 3.8–3.14.
+Wheels available for Linux, macOS, and Windows. Python 3.8-3.14.
 
 ### Rust
 
@@ -286,7 +380,7 @@ Add to your MCP client configuration:
 }
 ```
 
-The server exposes an `extract` tool that supports text, markdown, and HTML output formats with optional page ranges and image extraction. All processing runs locally — no files leave your machine.
+The server exposes an `extract` tool that supports text, markdown, and HTML output formats with optional page ranges and image extraction. All processing runs locally -- no files leave your machine.
 
 ## Building from Source
 
@@ -296,11 +390,50 @@ git clone https://github.com/yfedoseev/pdf_oxide
 cd pdf_oxide
 cargo build --release
 
-# Run tests
+# Run tests (4,491 lib tests)
 cargo test
 
 # Build Python bindings
 maturin develop
+```
+
+## Test Coverage
+
+4,491 library tests covering:
+
+- TOC extraction (geometric analysis, roman numerals, entry classification, leader stripping)
+- Block classification (numbering analysis, header signals, feature extraction)
+- Document extraction (profiling, section hierarchy, engineering detection)
+- Table extraction (lattice/stream flavors, intersection pipeline, text-edge detection)
+- Text extraction (character deduplication, form XObjects, rotated text, UTF-8 safety)
+- Rendering (SVG, PNG, JPEG, clipped regions, embedding)
+- Encryption, encoding, fonts, compliance, and edge cases
+
+## Architecture
+
+```
+pdf_oxide (Rust core)
+  src/
+    extractors/          # Block classifier, document extractor, figure detector,
+                         # engineering features, section hierarchy, profiler
+    pipeline/
+      converters/
+        toc_detector.rs  # Geometric TOC detection + section mapping
+    tables/              # Lattice + stream table extraction
+    text/                # Word boundary, ligatures, CJK, RTL, hyphenation
+    fonts/               # CMap, CID, TrueType, Type1, subsetting
+    encryption/          # AES, RC4, certificate-based
+    writer/              # PDF creation and modification
+    python.rs            # PyO3 bindings (5,500+ lines)
+
+  python/pdf_oxide/      # Python pipeline + plugins
+    pipeline.py          # Main extraction orchestrator
+    pipeline_extract.py  # Rust extraction wrapper
+    pipeline_flatten.py  # Datalake chunk flattening
+    plugins/             # Extensible enrichment (arango, describe, embeddings, ...)
+
+  pdf_oxide_cli/         # CLI tool (22 commands)
+  pdf_oxide_mcp/         # MCP server for AI assistants
 ```
 
 ## Documentation
@@ -316,17 +449,19 @@ maturin develop
 
 ## Use Cases
 
-- **RAG / LLM pipelines** — Convert PDFs to clean Markdown for retrieval-augmented generation with LangChain, LlamaIndex, or any framework
-- **AI assistants** — Give Claude, Cursor, or any MCP-compatible tool direct PDF access via the MCP server
-- **Document processing at scale** — Extract text, images, and metadata from thousands of PDFs in seconds
-- **Data extraction** — Pull structured data from forms, tables, and layouts
-- **Academic research** — Parse papers, extract citations, and process large corpora
-- **PDF generation** — Create invoices, reports, certificates, and templated documents programmatically
-- **PyMuPDF alternative** — MIT licensed, 5× faster, no AGPL restrictions
+- **RAG / LLM pipelines** -- Convert PDFs to clean Markdown for retrieval-augmented generation with LangChain, LlamaIndex, or any framework
+- **AI assistants** -- Give Claude, Cursor, or any MCP-compatible tool direct PDF access via the MCP server
+- **Document processing at scale** -- Extract text, images, and metadata from thousands of PDFs in seconds
+- **Data extraction** -- Pull structured data from forms, tables, and layouts
+- **Defense & engineering** -- Extract from MIL-STD documents with title block, revision table, and CAGE code detection
+- **Datalake ingestion** -- Pipeline system with ArangoDB sync, embeddings, and taxonomy classification
+- **Academic research** -- Parse papers, extract citations, and process large corpora
+- **PDF generation** -- Create invoices, reports, certificates, and templated documents programmatically
+- **PyMuPDF alternative** -- MIT licensed, 5x faster, no AGPL restrictions
 
 ## License
 
-Dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE) at your option. Unlike AGPL-licensed alternatives, pdf_oxide can be used freely in any project — commercial or open-source — with no copyleft restrictions.
+Dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE) at your option. Unlike AGPL-licensed alternatives, pdf_oxide can be used freely in any project -- commercial or open-source -- with no copyleft restrictions.
 
 ## Contributing
 
@@ -349,4 +484,4 @@ cargo build && cargo test && cargo fmt && cargo clippy -- -D warnings
 
 ---
 
-**Rust** + **Python** + **WASM** + **CLI** + **MCP** | MIT/Apache-2.0 | 100% pass rate on 3,830 PDFs | 0.8ms mean | 5× faster than PyMuPDF | v0.3.14
+**Rust** + **Python** + **WASM** + **CLI** + **MCP** | MIT/Apache-2.0 | 100% pass rate on 3,830 PDFs | 0.8ms mean | 5x faster than PyMuPDF | 4,491 tests

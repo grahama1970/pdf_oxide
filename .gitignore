@@ -306,6 +306,22 @@ tests/golden_files/
 # Claude Code AI assistant configuration (internal development tool)
 .claude/
 
+# Agent/IDE skill symlinks (local development)
+.agent/
+.codex/
+.kilocode/
+.pi/
+.github/skills
+
+# Local working directory (task plans, benchmarks, state files, design artifacts)
+local/
+
+# Design artifacts (archived to 12TB)
+design/
+
+# Sanity check scripts (local dev)
+sanity/
+
 
 # pdm-python
 .pdm-python
