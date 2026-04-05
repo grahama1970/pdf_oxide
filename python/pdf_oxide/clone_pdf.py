@@ -8,6 +8,10 @@ from typing import Any, Dict, List, Optional
 
 import typer
 from pydantic import BaseModel, Field, ValidationError
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.platypus import Table, TableStyle
 
 import pdf_oxide
 from pdf_oxide.survey import survey_document
@@ -256,6 +260,101 @@ def profile_and_assign(pdf_path: str) -> dict:
     return {**signature, **assigned}
 
 
+
+def render_ir_to_pdf(ir: dict, output_path: str) -> str:
+    valid, errors = validate_ir(ir)
+    if not valid:
+        raise ValueError(f"Invalid IR: {errors}")
+
+    parsed = WindowIR(**ir)
+    c = canvas.Canvas(output_path, pagesize=letter)
+    page_width, page_height = letter
+
+    for page_num in parsed.source_pages:
+        page_elements = sorted([el for el in parsed.elements if el.page == page_num], key=lambda el: el.reading_order)
+        page_tables = [tbl for tbl in parsed.tables if tbl.page_start <= page_num <= tbl.page_end]
+
+        for el in page_elements:
+            x0, y0, x1, y1 = el.bbox
+            x = float(x0)
+            y_top = float(y1)
+
+            if el.type == ElementType.header:
+                c.setFont("Helvetica-Bold", max(8, float(el.font_size)))
+                c.drawString(x, y_top, el.text)
+            elif el.type in (ElementType.body, ElementType.list_item, ElementType.footnote):
+                c.setFont("Helvetica", max(8, float(el.font_size)))
+                c.drawString(x, y_top, el.text)
+            elif el.type == ElementType.caption:
+                c.setFont("Helvetica-Oblique", max(6, float(el.font_size) - 1))
+                c.drawString(x, y_top, el.text)
+            elif el.type == ElementType.running_header:
+                c.setFont("Helvetica", max(8, float(el.font_size)))
+                c.drawString(x, page_height - 24, el.text)
+            elif el.type == ElementType.running_footer:
+                c.setFont("Helvetica", max(8, float(el.font_size)))
+                c.drawString(x, 18, el.text)
+            elif el.type == ElementType.equation:
+                c.setFont("Courier", max(8, float(el.font_size)))
+                c.drawString(x, y_top, el.text or "[equation]")
+            elif el.type == ElementType.page_number:
+                c.setFont("Helvetica", max(8, float(el.font_size)))
+                text = el.text if el.text else str(page_num)
+                text_w = c.stringWidth(text, "Helvetica", max(8, float(el.font_size)))
+                c.drawString((page_width - text_w) / 2.0, 18, text)
+            elif el.type == ElementType.figure:
+                width = max(1.0, float(x1 - x0))
+                height = max(1.0, float(y1 - y0))
+                c.rect(x0, y0, width, height)
+                c.setFont("Helvetica-Oblique", 9)
+                c.drawString(x0 + 4, y1 - 12, el.text or "Figure")
+
+        for tbl in page_tables:
+            bbox = tbl.bbox_per_page.get(page_num)
+            if not bbox:
+                continue
+
+            max_row = max((cell.row for cell in tbl.cells), default=-1)
+            max_col = max((cell.col for cell in tbl.cells), default=-1)
+            n_rows = max(tbl.n_rows, max_row + 1)
+            n_cols = max(tbl.n_cols, max_col + 1)
+            data = [["" for _ in range(n_cols)] for _ in range(n_rows)]
+
+            for cell in tbl.cells:
+                if 0 <= cell.row < n_rows and 0 <= cell.col < n_cols:
+                    data[cell.row][cell.col] = cell.text
+
+            table_obj = Table(data)
+            styles = []
+            if tbl.style == "ruled":
+                styles.append(("GRID", (0, 0), (-1, -1), 0.5, colors.black))
+            elif tbl.style == "light_ruled":
+                styles.append(("LINEBELOW", (0, 0), (-1, -1), 0.25, colors.grey))
+
+            if tbl.n_header_rows > 0:
+                header_end = min(tbl.n_header_rows - 1, n_rows - 1)
+                styles.extend(
+                    [
+                        ("FONTNAME", (0, 0), (-1, header_end), "Helvetica-Bold"),
+                        ("BACKGROUND", (0, 0), (-1, header_end), colors.lightgrey),
+                    ]
+                )
+
+            if styles:
+                table_obj.setStyle(TableStyle(styles))
+
+            x0, y0, x1, y1 = bbox
+            avail_w = max(1.0, float(x1 - x0))
+            avail_h = max(1.0, float(y1 - y0))
+            _, th = table_obj.wrapOn(c, avail_w, avail_h)
+            table_obj.drawOn(c, float(x0), float(y1) - th)
+
+        c.showPage()
+
+    c.save()
+    return output_path
+
+
 @app.command("profile")
 def profile(
     pdf_path: str = typer.Argument(..., help="Path to PDF file"),
@@ -288,6 +387,17 @@ def family(
         print(json.dumps(result))
     else:
         typer.echo(f"family: {result['family_id']} (confidence={result['confidence']})")
+
+
+@app.command("render-ir")
+def render_ir(
+    ir_json: str = typer.Argument(..., help="Path to IR JSON file"),
+    output_path: str = typer.Option("synthetic.pdf", "-o", help="Output PDF path"),
+) -> None:
+    with open(ir_json, "r", encoding="utf-8") as f:
+        ir = json.load(f)
+    typer.echo(render_ir_to_pdf(ir, output_path))
+
 
 if __name__ == "__main__":
     app()
