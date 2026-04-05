@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import random
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -257,11 +258,130 @@ def assign_family(signature: dict) -> dict:
         "rules_matched": rules_matched,
     }
 
-
 def profile_and_assign(pdf_path: str) -> dict:
     signature = profile_for_cloning(pdf_path)
     assigned = assign_family(signature)
     return {**signature, **assigned}
+
+
+def build_sampling_plan(pdf_path: str, max_windows: int = 20, seed: int = 42) -> dict:
+    random.seed(seed)
+    profile = profile_for_cloning(pdf_path)
+    section_map = pdf_oxide.PdfDocument(pdf_path).get_section_map() or []
+
+    total_pages = int(profile.get("page_count", 0) or 0)
+    if total_pages <= 0:
+        return {
+            "strategy": "toc_guided_structural_stratified",
+            "seed": seed,
+            "total_pages": 0,
+            "windows": [],
+            "category_counts": {"anchor": 0, "boundary": 0, "pathology": 0, "span": 0},
+        }
+
+    target_counts = {
+        "anchor": max(1, int(round(max_windows * 0.4))),
+        "boundary": max(1, int(round(max_windows * 0.2))),
+        "pathology": max(1, int(round(max_windows * 0.2))),
+        "span": max(1, int(round(max_windows * 0.2))),
+    }
+
+    total_target = sum(target_counts.values())
+    if total_target != max_windows:
+        target_counts["anchor"] += max_windows - total_target
+
+    windows: list[dict] = []
+    category_counts = {"anchor": 0, "boundary": 0, "pathology": 0, "span": 0}
+    seen_pages: set[tuple[int, ...]] = set()
+
+    def add_window(source_pages: list[int], category: str, reason: str) -> bool:
+        norm_pages = sorted(set(int(p) for p in source_pages if 1 <= int(p) <= total_pages))
+        if not norm_pages or len(windows) >= max_windows:
+            return False
+        key = tuple(norm_pages)
+        if key in seen_pages:
+            return False
+        if category_counts[category] >= target_counts[category]:
+            return False
+        seen_pages.add(key)
+        category_counts[category] += 1
+        windows.append(
+            {
+                "window_id": f"WIN_{len(windows) + 1:04d}",
+                "source_pages": norm_pages,
+                "category": category,
+                "selection_reason": [reason],
+            }
+        )
+        return True
+
+    add_window([1], "anchor", "first_content_page")
+    add_window([total_pages], "anchor", "last_page")
+
+    for entry in profile.get("lof_entries", []) or []:
+        p = entry.get("page") if isinstance(entry, dict) else None
+        if p is not None:
+            add_window([int(p)], "boundary", "lof_reference")
+
+    for entry in profile.get("lot_entries", []) or []:
+        p = entry.get("page") if isinstance(entry, dict) else None
+        if p is not None:
+            add_window([int(p)], "pathology", "lot_reference")
+
+    section_starts: list[int] = []
+    for sec in section_map:
+        if isinstance(sec, dict):
+            page = sec.get("page") or sec.get("start_page")
+            if page is not None:
+                section_starts.append(int(page))
+        elif isinstance(sec, (list, tuple)) and sec:
+            try:
+                section_starts.append(int(sec[0]))
+            except Exception:
+                pass
+    for p in sorted(set(section_starts)):
+        add_window([p], "boundary", "section_start")
+
+    signatures = profile.get("page_signatures", []) or []
+    pathology_ranked = sorted(
+        signatures,
+        key=lambda s: int(bool(s.get("table_candidate"))) + int(bool(s.get("equation_candidate"))),
+        reverse=True,
+    )
+    for sig in pathology_ranked:
+        page = int(sig.get("page_num", 0) or 0)
+        score = int(bool(sig.get("table_candidate"))) + int(bool(sig.get("equation_candidate")))
+        if score > 0:
+            add_window([page], "pathology", "high_table_equation_score")
+
+    table_pages = {int(s.get("page_num", 0) or 0) for s in signatures if s.get("table_candidate")}
+    for p in sorted(table_pages):
+        if p + 1 in table_pages:
+            add_window([p, p + 1], "span", "table_continuation")
+
+    anchor_candidates = list(range(1, total_pages + 1))
+    random.shuffle(anchor_candidates)
+    for p in anchor_candidates:
+        add_window([p], "anchor", "stratified_anchor_fill")
+
+    while len(windows) < max_windows:
+        p = random.randint(1, total_pages)
+        if add_window([p], "anchor", "anchor_backfill"):
+            continue
+        for cat in ("boundary", "pathology", "span"):
+            if category_counts[cat] < target_counts[cat]:
+                old = target_counts[cat]
+                target_counts[cat] = category_counts[cat]
+                target_counts["anchor"] += old - target_counts[cat]
+
+    return {
+        "strategy": "toc_guided_structural_stratified",
+        "seed": seed,
+        "total_pages": total_pages,
+        "windows": windows,
+        "category_counts": category_counts,
+    }
+
 
 
 
