@@ -183,6 +183,79 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
     }
 
 
+def assign_family(signature: dict) -> dict:
+    domain = signature.get("domain")
+    table_density = float(signature.get("table_density", 0.0) or 0.0)
+    section_style = signature.get("section_style")
+    has_engineering = bool(signature.get("has_engineering", False))
+    layout_mode = signature.get("layout_mode")
+    has_equations = bool(signature.get("has_equations", False))
+    has_toc = bool(signature.get("has_toc", False))
+    section_count = int(signature.get("section_count", 0) or 0)
+    is_scanned = bool(signature.get("is_scanned", False))
+    figure_density = float(signature.get("figure_density", 0.0) or 0.0)
+
+    rules_matched: list[str] = []
+
+    if domain == "defense" and table_density > 0.3 and section_style == "decimal":
+        family_id = "defense_spec_requirements_tables"
+        confidence = 0.9
+        rules_matched.append("rule_1_defense_table_decimal")
+    elif domain == "defense" and has_engineering:
+        family_id = "defense_engineering_drawings"
+        confidence = 0.9
+        rules_matched.append("rule_2_defense_engineering")
+    elif domain == "engineering" and table_density > 0.2:
+        family_id = "engineering_spec_tables"
+        confidence = 0.9
+        rules_matched.append("rule_3_engineering_tables")
+    elif domain == "academic" and layout_mode == "multi_column" and has_equations:
+        family_id = "academic_twocol_math"
+        confidence = 0.9
+        rules_matched.append("rule_4_academic_twocol_math")
+    elif domain == "academic" and layout_mode == "multi_column":
+        family_id = "academic_twocol_prose"
+        confidence = 0.9
+        rules_matched.append("rule_5_academic_twocol_prose")
+    elif domain == "academic":
+        family_id = "academic_singlecol"
+        confidence = 0.9
+        rules_matched.append("rule_6_academic_singlecol")
+    elif has_toc and section_count > 20 and table_density > 0.1:
+        family_id = "technical_manual_mixed"
+        confidence = 0.7
+        rules_matched.append("rule_7_toc_sections_tables")
+    elif is_scanned:
+        family_id = "scanned_mixed"
+        confidence = 0.7
+        rules_matched.append("rule_8_scanned")
+    else:
+        family_id = "general_prose"
+        confidence = 0.5
+        rules_matched.append("rule_9_default")
+
+    subfamily_id: Optional[str] = None
+    if table_density > 0.35 and has_toc:
+        subfamily_id = "appendix_matrix_tables"
+        rules_matched.append("subfamily_table_heavy_appendices")
+    elif figure_density > 0.3:
+        subfamily_id = "figure_heavy_sections"
+        rules_matched.append("subfamily_figure_heavy_sections")
+
+    return {
+        "family_id": family_id,
+        "subfamily_id": subfamily_id,
+        "confidence": confidence,
+        "rules_matched": rules_matched,
+    }
+
+
+def profile_and_assign(pdf_path: str) -> dict:
+    signature = profile_for_cloning(pdf_path)
+    assigned = assign_family(signature)
+    return {**signature, **assigned}
+
+
 @app.command("profile")
 def profile(
     pdf_path: str = typer.Argument(..., help="Path to PDF file"),
@@ -209,16 +282,12 @@ def family(
     pdf_path: str = typer.Argument(..., help="Path to PDF file"),
     output_json: bool = typer.Option(False, "--json", is_flag=True, help="Output as JSON"),
 ) -> None:
-    """Profile and assign family — placeholder for task 2."""
-    result = profile_for_cloning(pdf_path)
-    result["family_id"] = "general_prose"
-    result["confidence"] = 0.5
-    result["rules_matched"] = ["default"]
+    """Profile and assign family based on rule-based signature matching."""
+    result = profile_and_assign(pdf_path)
     if output_json:
         print(json.dumps(result))
     else:
         typer.echo(f"family: {result['family_id']} (confidence={result['confidence']})")
-
 
 if __name__ == "__main__":
     app()
