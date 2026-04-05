@@ -817,11 +817,18 @@ def score_extraction(extraction_result, truth_document, truth_tables) -> dict:
     truth_sections = {str(s.get("title", "")).strip().lower() for s in (truth_document or {}).get("sections", []) or [] if isinstance(s, dict)}
     section_recall = (len(pred_sections & truth_sections) / len(truth_sections)) if truth_sections else 0.0
 
-    truth_order = [x for x in (truth_document or {}).get("reading_order", []) or []]
-    pred_order = [x for x in (extraction_result or {}).get("reading_order", []) or []]
+    # Reading order: compare block text sequences across matched pages
+    # If no explicit reading_order field, derive from block array order
+    truth_order = (truth_document or {}).get("reading_order", []) or []
+    pred_order = (extraction_result or {}).get("reading_order", []) or []
+    if not truth_order:
+        # Derive from block text in page order
+        truth_order = [b.get("text", "")[:50] for p in truth_pages for b in (p.get("blocks") or []) if b.get("text")]
+    if not pred_order:
+        pred_order = [b.get("text", "")[:50] for p in pred_pages for b in (p.get("blocks") or []) if b.get("text")]
     common = [x for x in truth_order if x in set(pred_order)]
     if len(common) < 2:
-        reading_order_score = 0.0
+        reading_order_score = 1.0 if len(truth_order) <= 1 else 0.0
     else:
         tpos = {k: i for i, k in enumerate(truth_order)}
         ppos = {k: i for i, k in enumerate(pred_order)}
@@ -881,7 +888,14 @@ def score_extraction(extraction_result, truth_document, truth_tables) -> dict:
                 continuity_scores.append(1.0 if p_multi else 0.0)
     cross_page_table_continuity = (sum(continuity_scores) / len(continuity_scores)) if continuity_scores else 1.0
 
-    overall_score = 0.4 * ((block_presence_f1 + block_type_accuracy + section_recall) / 3.0) + 0.4 * ((table_presence_f1 + table_cell_f1 + cross_page_table_continuity) / 3.0) + 0.2 * reading_order_score
+    # Weighted average — skip table metrics if no tables in truth
+    doc_score = (block_presence_f1 + block_type_accuracy + section_recall) / 3.0
+    has_tables = len(truth_table_list) > 0
+    if has_tables:
+        table_score = (table_presence_f1 + table_cell_f1 + cross_page_table_continuity) / 3.0
+        overall_score = 0.4 * doc_score + 0.4 * table_score + 0.2 * reading_order_score
+    else:
+        overall_score = 0.6 * doc_score + 0.4 * reading_order_score
 
     pass_thresholds = {
         "block_presence_f1": 0.85,
@@ -911,7 +925,14 @@ def score_extraction(extraction_result, truth_document, truth_tables) -> dict:
         "table_cell_f1": float(table_cell_f1),
         "cross_page_table_continuity": float(cross_page_table_continuity),
         "overall_score": float(overall_score),
-        "pass": all(float({"block_presence_f1": block_presence_f1, "block_type_accuracy": block_type_accuracy, "section_recall": section_recall, "reading_order_score": reading_order_score, "table_presence_f1": table_presence_f1, "table_cell_f1": table_cell_f1, "cross_page_table_continuity": cross_page_table_continuity}.get(k, 0)) >= v for k, v in pass_thresholds.items()),
+        "pass": all(
+            float({"block_presence_f1": block_presence_f1, "block_type_accuracy": block_type_accuracy,
+                   "section_recall": section_recall, "reading_order_score": reading_order_score,
+                   "table_presence_f1": table_presence_f1, "table_cell_f1": table_cell_f1,
+                   "cross_page_table_continuity": cross_page_table_continuity}.get(k, 0)) >= v
+            for k, v in pass_thresholds.items()
+            if not (k.startswith("table") and not has_tables)  # skip table thresholds if no tables
+        ),
         "details": {"per_page": per_page, "matches": {"blocks": tp, "tables": ttp}},
     }
     return result
@@ -967,6 +988,8 @@ def render_windows(
                 json.dump(span_data, f, indent=2)
             span_paths.append(span_path)
 
+        # Source PDF path passed through — Gemini gets the full PDF via inlineData
+        # and the prompt tells it which pages to analyze
         rendered.append({
             "window_id": wid,
             "pdf_path": pdf_path,
@@ -1081,13 +1104,13 @@ async def _call_gemini_ir(
 
     content_parts: list[dict] = [{"type": "text", "text": prompt_text}]
 
-    # Add page images as inline base64
-    for png_path in window_info.get("png_paths", []):
-        with open(png_path, "rb") as f:
+    # Send source PDF binary via Gemini inlineData — Gemini processes PDFs natively
+    pdf_path = window_info.get("pdf_path", "")
+    if pdf_path and os.path.exists(pdf_path):
+        with open(pdf_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode("ascii")
         content_parts.append({
-            "type": "image_url",
-            "image_url": {"url": f"data:image/png;base64,{b64}"},
+            "inlineData": {"mimeType": "application/pdf", "data": b64},
         })
 
     # Add span context
