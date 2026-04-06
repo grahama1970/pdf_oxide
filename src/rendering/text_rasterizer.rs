@@ -1,13 +1,7 @@
-//! Text rasterizer - renders PDF text using tiny-skia.
+//! Text rasterizer - renders PDF text using tiny-skia + fontdb + ttf-parser.
 //!
-//! Text rendering in PDF is complex because:
-//! - Fonts may be embedded or use standard PDF fonts
-//! - Character encoding varies (identity-H, MacRoman, custom ToUnicode, etc.)
-//! - Glyph positioning is explicit via TJ arrays
-//!
-//! This module provides a basic text rendering implementation that:
-//! - Uses system fonts as fallback when embedded fonts aren't available
-//! - Renders text as simple glyphs at calculated positions
+//! Uses system fonts via fontdb as fallback when embedded fonts aren't available.
+//! Renders actual glyph outlines from TrueType/OpenType fonts.
 
 use super::create_fill_paint;
 use crate::content::operators::TextElement;
@@ -20,15 +14,42 @@ use tiny_skia::{Paint, PathBuilder, Pixmap, Transform};
 
 /// Rasterizer for PDF text operations.
 pub struct TextRasterizer {
-    // Font database for system font fallback
-    // fontdb: fontdb::Database,
+    font_db: fontdb::Database,
+    /// Cached fallback font ID
+    fallback_font_id: Option<fontdb::ID>,
 }
 
 impl TextRasterizer {
-    /// Create a new text rasterizer.
+    /// Create a new text rasterizer with system fonts loaded.
     pub fn new() -> Self {
+        let mut db = fontdb::Database::new();
+        db.load_system_fonts();
+
+        // Find a good fallback font (prefer common sans-serif)
+        let fallback = db
+            .faces()
+            .find(|f| {
+                f.families
+                    .iter()
+                    .any(|(name, _)| {
+                        let n = name.to_lowercase();
+                        n == "liberation sans" || n == "dejavu sans" || n == "arial" || n == "noto sans"
+                    })
+                    && f.style == fontdb::Style::Normal
+                    && f.weight == fontdb::Weight(400)
+            })
+            .map(|f| f.id);
+
+        // If no preferred font, just grab the first normal-weight sans font
+        let fallback = fallback.or_else(|| {
+            db.faces()
+                .find(|f| f.style == fontdb::Style::Normal && f.weight == fontdb::Weight(400))
+                .map(|f| f.id)
+        });
+
         Self {
-            // fontdb: fontdb::Database::new(),
+            font_db: db,
+            fallback_font_id: fallback,
         }
     }
 
@@ -43,31 +64,13 @@ impl TextRasterizer {
         _doc: &mut PdfDocument,
         clip_mask: Option<&tiny_skia::Mask>,
     ) -> Result<()> {
-        // Get text position from text matrix combined with CTM
         let text_matrix = &gs.text_matrix;
         let font_size = gs.font_size;
-
-        // Create paint from fill color (text uses fill color, not stroke)
         let paint = create_fill_paint(gs, "Normal");
-
-        // Calculate position in user space
         let x = text_matrix.e;
         let y = text_matrix.f;
 
-        // For now, we render text as simple shapes
-        // Real implementation would use font glyph outlines
-        self.render_text_simple(
-            pixmap,
-            text,
-            x,
-            y,
-            font_size,
-            &paint,
-            base_transform,
-            gs,
-            clip_mask,
-        )?;
-
+        self.render_text_glyphs(pixmap, text, x, y, font_size, &paint, base_transform, gs, clip_mask)?;
         Ok(())
     }
 
@@ -83,34 +86,22 @@ impl TextRasterizer {
         clip_mask: Option<&tiny_skia::Mask>,
     ) -> Result<()> {
         let paint = create_fill_paint(gs, "Normal");
-
         let font_size = gs.font_size;
         let text_matrix = &gs.text_matrix;
-
         let mut current_x = text_matrix.e;
         let y = text_matrix.f;
 
         for element in array {
             match element {
                 TextElement::String(text) => {
-                    self.render_text_simple(
-                        pixmap,
-                        text,
-                        current_x,
-                        y,
-                        font_size,
-                        &paint,
-                        base_transform,
-                        gs,
-                        clip_mask,
+                    self.render_text_glyphs(
+                        pixmap, text, current_x, y, font_size, &paint,
+                        base_transform, gs, clip_mask,
                     )?;
-                    // Advance position based on text width (simplified)
                     let char_count = text.len() as f32;
-                    current_x += char_count * font_size * 0.5; // Rough estimate
+                    current_x += char_count * font_size * 0.5;
                 },
                 TextElement::Offset(offset) => {
-                    // Offset is in thousandths of a unit of text space
-                    // Negative offset moves right
                     let adjustment = -(*offset) / 1000.0 * font_size;
                     current_x += adjustment;
                 },
@@ -120,11 +111,8 @@ impl TextRasterizer {
         Ok(())
     }
 
-    /// Simple text rendering using rectangles as placeholder.
-    ///
-    /// This is a basic implementation that draws rectangles where text would appear.
-    /// A full implementation would use the actual font glyph outlines.
-    fn render_text_simple(
+    /// Render text using actual glyph outlines from system fonts.
+    fn render_text_glyphs(
         &self,
         pixmap: &mut Pixmap,
         text: &[u8],
@@ -136,84 +124,141 @@ impl TextRasterizer {
         gs: &GraphicsState,
         clip_mask: Option<&tiny_skia::Mask>,
     ) -> Result<()> {
-        // Calculate transform including text matrix
         let text_transform = Transform::from_row(
-            gs.text_matrix.a,
-            gs.text_matrix.b,
-            gs.text_matrix.c,
-            gs.text_matrix.d,
-            0.0,
-            0.0,
+            gs.text_matrix.a, gs.text_matrix.b,
+            gs.text_matrix.c, gs.text_matrix.d,
+            0.0, 0.0,
         );
         let transform = base_transform.pre_concat(text_transform);
 
-        // Render each character as a simple glyph
-        let char_width = font_size * 0.6; // Approximate character width
-        let char_height = font_size;
+        let font_id = match self.fallback_font_id {
+            Some(id) => id,
+            None => return Ok(()), // No font available, skip rendering
+        };
 
-        let mut current_x = x;
+        // Try to decode text as UTF-8, fall back to latin-1
+        let text_str: String = match std::str::from_utf8(text) {
+            Ok(s) => s.to_string(),
+            Err(_) => text.iter().map(|&b| b as char).collect(),
+        };
 
-        for byte in text {
-            // Skip control characters
-            if *byte < 32 {
-                continue;
-            }
+        let text_for_debug = text_str.clone();
+        self.font_db.with_face_data(font_id, |font_data, face_index| {
+            let face = match ttf_parser::Face::parse(font_data, face_index) {
+                Ok(f) => f,
+                Err(_) => return,
+            };
 
-            // Draw a simple rectangle for each character
-            // Real implementation would render actual glyph paths
-            let mut path = PathBuilder::new();
+            let units_per_em = face.units_per_em() as f32;
+            let scale = font_size / units_per_em;
+            let mut current_x = x;
+            let mut glyphs_found = 0u32;
+            let mut glyphs_missing = 0u32;
 
-            // Create a simple character shape (rectangle with slight indent)
-            let char_left = current_x;
-            let char_bottom = y;
-            let char_right = current_x + char_width * 0.8;
-            let char_top = y + char_height * 0.8;
-
-            // Draw glyph shape based on character type
-            if byte.is_ascii_uppercase() || byte.is_ascii_digit() {
-                // Upper case and digits - full height
-                if let Some(rect) =
-                    tiny_skia::Rect::from_ltrb(char_left, char_bottom, char_right, char_top)
-                {
-                    path.push_rect(rect);
+            for ch in text_for_debug.chars() {
+                if ch == ' ' {
+                    current_x += font_size * 0.25 + gs.word_space;
+                    continue;
                 }
-            } else if byte.is_ascii_lowercase() {
-                // Lower case - x-height
-                let x_height = char_height * 0.6;
-                if let Some(rect) = tiny_skia::Rect::from_ltrb(
-                    char_left,
-                    char_bottom,
-                    char_right,
-                    char_bottom + x_height,
-                ) {
-                    path.push_rect(rect);
+
+                let glyph_id = match face.glyph_index(ch) {
+                    Some(id) => {
+                        glyphs_found += 1;
+                        id
+                    },
+                    None => {
+                        glyphs_missing += 1;
+                        current_x += font_size * 0.5;
+                        continue;
+                    }
+                };
+
+                // Get advance width
+                let advance = face
+                    .glyph_hor_advance(glyph_id)
+                    .unwrap_or((units_per_em * 0.5) as u16) as f32
+                    * scale;
+
+                // Build glyph path
+                let mut builder = GlyphPathBuilder::new(current_x, y, scale);
+                if face.outline_glyph(glyph_id, &mut builder).is_some() {
+                    if let Some(path) = builder.finish() {
+                        pixmap.fill_path(
+                            &path, paint, tiny_skia::FillRule::EvenOdd,
+                            transform, clip_mask,
+                        );
+                    }
                 }
-            } else if *byte == b' ' {
-                // Space - just advance
-            } else {
-                // Other characters - moderate height
-                if let Some(rect) = tiny_skia::Rect::from_ltrb(
-                    char_left,
-                    char_bottom,
-                    char_right,
-                    char_bottom + char_height * 0.7,
-                ) {
-                    path.push_rect(rect);
-                }
+
+                current_x += advance + gs.char_space;
             }
 
-            if let Some(path) = path.finish() {
-                pixmap.fill_path(&path, paint, tiny_skia::FillRule::Winding, transform, clip_mask);
+            if glyphs_found > 0 || glyphs_missing > 0 {
+                eprintln!("[text_raster] '{}' found={} missing={} font_size={} x={} y={}",
+                    &text_for_debug[..text_for_debug.len().min(30)], glyphs_found, glyphs_missing, font_size, x, y);
             }
-
-            // Advance position
-            current_x += char_width + gs.char_space;
-            if *byte == b' ' {
-                current_x += gs.word_space;
-            }
-        }
+        });
 
         Ok(())
+    }
+}
+
+/// Converts ttf-parser glyph outline callbacks into a tiny-skia path.
+struct GlyphPathBuilder {
+    builder: PathBuilder,
+    x_offset: f32,
+    y_offset: f32,
+    scale: f32,
+}
+
+impl GlyphPathBuilder {
+    fn new(x_offset: f32, y_offset: f32, scale: f32) -> Self {
+        Self {
+            builder: PathBuilder::new(),
+            x_offset,
+            y_offset,
+            scale,
+        }
+    }
+
+    fn finish(self) -> Option<tiny_skia::Path> {
+        self.builder.finish()
+    }
+
+    fn tx(&self, x: f32) -> f32 {
+        self.x_offset + x * self.scale
+    }
+
+    fn ty(&self, y: f32) -> f32 {
+        // Glyph y-axis goes up, PDF y-axis goes up — no flip needed here,
+        // the base_transform handles the PDF→pixel flip
+        self.y_offset + y * self.scale
+    }
+}
+
+impl ttf_parser::OutlineBuilder for GlyphPathBuilder {
+    fn move_to(&mut self, x: f32, y: f32) {
+        self.builder.move_to(self.tx(x), self.ty(y));
+    }
+
+    fn line_to(&mut self, x: f32, y: f32) {
+        self.builder.line_to(self.tx(x), self.ty(y));
+    }
+
+    fn quad_to(&mut self, x1: f32, y1: f32, x: f32, y: f32) {
+        self.builder.quad_to(self.tx(x1), self.ty(y1), self.tx(x), self.ty(y));
+    }
+
+    fn curve_to(&mut self, x1: f32, y1: f32, x2: f32, y2: f32, x: f32, y: f32) {
+        self.builder.cubic_to(
+            self.tx(x1), self.ty(y1),
+            self.tx(x2), self.ty(y2),
+            self.tx(x), self.ty(y),
+        );
+    }
+
+    fn close(&mut self) {
+        self.builder.close();
     }
 }
 
@@ -229,7 +274,7 @@ mod tests {
 
     #[test]
     fn test_text_rasterizer_new() {
-        let _rasterizer = TextRasterizer::new();
-        // Just verify it can be created
+        let rasterizer = TextRasterizer::new();
+        assert!(rasterizer.fallback_font_id.is_some(), "Should find at least one system font");
     }
 }
