@@ -124,8 +124,8 @@ def validate_ir(ir_dict: dict) -> tuple[bool, list[str]]:
     valid_ids = set(element_ids) | set(table_ids)
 
     for ref_id in ir.reading_order:
-        if ref_id not in set(element_ids):
-            errors.append(f"reading_order references unknown element id: {ref_id}")
+        if ref_id not in valid_ids:
+            errors.append(f"reading_order references unknown id: {ref_id}")
 
     for rel in ir.relationships:
         if rel.source not in valid_ids:
@@ -276,10 +276,75 @@ def profile_and_assign(pdf_path: str) -> dict:
     return {**signature, **assigned}
 
 
+def _flatten_outline(entries: list, out: list | None = None) -> list[dict]:
+    """Flatten nested outline into a flat list with page numbers."""
+    if out is None:
+        out = []
+    for e in entries or []:
+        if isinstance(e, dict):
+            out.append(e)
+            _flatten_outline(e.get("children", []), out)
+    return out
+
+
+def _outline_to_regions(outline: list[dict], total_pages: int) -> list[dict]:
+    """Convert flat outline entries into page regions with start/end and structural hints.
+
+    Each region spans from its outline page to the next outline entry's page - 1.
+    Titles are scanned for structural keywords (table, figure, requirement, etc.)
+    """
+    # Deduplicate and sort by page
+    seen: set[int] = set()
+    sorted_entries: list[dict] = []
+    for e in outline:
+        p = e.get("page")
+        if p is None:
+            continue
+        p = int(p) - 1  # outline pages are 1-based
+        if p < 0 or p >= total_pages or p in seen:
+            continue
+        seen.add(p)
+        sorted_entries.append({**e, "page_0": p})
+    sorted_entries.sort(key=lambda e: e["page_0"])
+
+    regions: list[dict] = []
+    for i, entry in enumerate(sorted_entries):
+        start = entry["page_0"]
+        end = sorted_entries[i + 1]["page_0"] - 1 if i + 1 < len(sorted_entries) else total_pages - 1
+        title = str(entry.get("title", "")).lower()
+
+        # Detect structural hints from title
+        hints: list[str] = []
+        if any(kw in title for kw in ("table", "mapping", "matrix")):
+            hints.append("tables")
+        if any(kw in title for kw in ("figure", "list of figure")):
+            hints.append("figures")
+        if any(kw in title for kw in ("requirement",)):
+            hints.append("requirements")
+        if any(kw in title for kw in ("appendix", "annex")):
+            hints.append("appendix")
+        if any(kw in title for kw in ("glossary", "acronym", "reference", "bibliography")):
+            hints.append("reference_material")
+        if any(kw in title for kw in ("introduction", "purpose", "scope", "overview")):
+            hints.append("intro")
+        if any(kw in title for kw in ("content", "toc")):
+            hints.append("toc")
+
+        regions.append({
+            "title": entry.get("title", ""),
+            "start": start,
+            "end": end,
+            "size": end - start + 1,
+            "hints": hints,
+        })
+    return regions
+
+
 def build_sampling_plan(pdf_path: str, max_windows: int = 20, seed: int = 42) -> dict:
     random.seed(seed)
     profile = profile_for_cloning(pdf_path)
-    section_map = pdf_oxide.PdfDocument(pdf_path).get_section_map() or []
+    doc = pdf_oxide.PdfDocument(pdf_path)
+    outline = _flatten_outline(doc.get_outline() or [])
 
     total_pages = int(profile.get("page_count", 0) or 0)
     if total_pages <= 0:
@@ -288,32 +353,20 @@ def build_sampling_plan(pdf_path: str, max_windows: int = 20, seed: int = 42) ->
             "seed": seed,
             "total_pages": 0,
             "windows": [],
+            "regions": [],
             "category_counts": {"anchor": 0, "boundary": 0, "pathology": 0, "span": 0},
         }
-
-    target_counts = {
-        "anchor": max(1, int(round(max_windows * 0.4))),
-        "boundary": max(1, int(round(max_windows * 0.2))),
-        "pathology": max(1, int(round(max_windows * 0.2))),
-        "span": max(1, int(round(max_windows * 0.2))),
-    }
-
-    total_target = sum(target_counts.values())
-    if total_target != max_windows:
-        target_counts["anchor"] += max_windows - total_target
 
     windows: list[dict] = []
     category_counts = {"anchor": 0, "boundary": 0, "pathology": 0, "span": 0}
     seen_pages: set[tuple[int, ...]] = set()
 
     def add_window(source_pages: list[int], category: str, reason: str) -> bool:
-        norm_pages = sorted(set(int(p) for p in source_pages if 1 <= int(p) <= total_pages))
+        norm_pages = sorted(set(int(p) for p in source_pages if 0 <= int(p) < total_pages))
         if not norm_pages or len(windows) >= max_windows:
             return False
         key = tuple(norm_pages)
         if key in seen_pages:
-            return False
-        if category_counts[category] >= target_counts[category]:
             return False
         seen_pages.add(key)
         category_counts[category] += 1
@@ -327,69 +380,79 @@ def build_sampling_plan(pdf_path: str, max_windows: int = 20, seed: int = 42) ->
         )
         return True
 
-    add_window([1], "anchor", "first_content_page")
-    add_window([total_pages], "anchor", "last_page")
-
-    for entry in profile.get("lof_entries", []) or []:
-        p = entry.get("page") if isinstance(entry, dict) else None
-        if p is not None:
-            add_window([int(p)], "boundary", "lof_reference")
-
-    for entry in profile.get("lot_entries", []) or []:
-        p = entry.get("page") if isinstance(entry, dict) else None
-        if p is not None:
-            add_window([int(p)], "pathology", "lot_reference")
-
-    section_starts: list[int] = []
-    for sec in section_map:
-        if isinstance(sec, dict):
-            page = sec.get("page") or sec.get("start_page")
-            if page is not None:
-                section_starts.append(int(page))
-        elif isinstance(sec, (list, tuple)) and sec:
-            try:
-                section_starts.append(int(sec[0]))
-            except (TypeError, ValueError, IndexError):
-                pass
-    for p in sorted(set(section_starts)):
-        add_window([p], "boundary", "section_start")
-
+    # Build page signature lookup
     signatures = profile.get("page_signatures", []) or []
-    pathology_ranked = sorted(
-        signatures,
-        key=lambda s: int(bool(s.get("table_candidate"))) + int(bool(s.get("equation_candidate"))),
-        reverse=True,
-    )
-    for sig in pathology_ranked:
-        page = int(sig.get("page_num", 0) or 0)
-        score = int(bool(sig.get("table_candidate"))) + int(bool(sig.get("equation_candidate")))
-        if score > 0:
-            add_window([page], "pathology", "high_table_equation_score")
+    sig_by_page: dict[int, dict] = {int(s.get("page_num", -1)): s for s in signatures}
 
-    table_pages = {int(s.get("page_num", 0) or 0) for s in signatures if s.get("table_candidate")}
+    def _page_complexity(p: int) -> int:
+        s = sig_by_page.get(p, {})
+        return (int(bool(s.get("table_candidate")))
+                + int(bool(s.get("equation_candidate")))
+                + int(bool(s.get("figure_candidate")))
+                + int(bool(s.get("has_images"))))
+
+    # Build structural regions from outline
+    regions = _outline_to_regions(outline, total_pages)
+
+    # Phase 1: One representative window per structural region
+    # Priority: tables > requirements > figures > appendix > other
+    # Larger regions get priority within each type (more structural variety)
+    def _region_priority(r: dict) -> tuple:
+        h = r["hints"]
+        type_rank = 0 if "tables" in h else 1 if "requirements" in h else 2 if "figures" in h else 3 if "appendix" in h else 4
+        return (type_rank, -r["size"])
+
+    for region in sorted(regions, key=_region_priority):
+        pages_in_region = list(range(region["start"], region["end"] + 1))
+        if not pages_in_region:
+            continue
+
+        # Pick the page with highest structural complexity
+        # For multi-page regions, skip the first page (often just a heading)
+        candidates = pages_in_region[1:] if len(pages_in_region) > 2 else pages_in_region
+        best_page = max(candidates, key=_page_complexity)
+        hints = region["hints"]
+        title_short = region["title"][:40]
+
+        if "tables" in hints:
+            add_window([best_page], "pathology", f"region_tables:{title_short}")
+        elif "requirements" in hints:
+            add_window([best_page], "pathology", f"region_requirements:{title_short}")
+        elif "figures" in hints:
+            add_window([best_page], "pathology", f"region_figures:{title_short}")
+        elif "appendix" in hints or "reference_material" in hints:
+            add_window([best_page], "boundary", f"region_ref:{title_short}")
+        elif "toc" in hints:
+            add_window([best_page], "boundary", f"region_toc:{title_short}")
+        else:
+            add_window([best_page], "anchor", f"region_content:{title_short}")
+
+    # Phase 2: Span windows — consecutive table pages for cross-page table testing
+    table_pages = {int(s.get("page_num", -1)) for s in signatures if s.get("table_candidate")}
     for p in sorted(table_pages):
         if p + 1 in table_pages:
             add_window([p, p + 1], "span", "table_continuation")
 
-    anchor_candidates = list(range(1, total_pages + 1))
-    random.shuffle(anchor_candidates)
-    for p in anchor_candidates:
-        add_window([p], "anchor", "stratified_anchor_fill")
+    # Phase 3: Fill remaining slots with anchors from underrepresented regions
+    # Prefer regions with more pages (they have more structural variety)
+    large_regions = sorted(regions, key=lambda r: r["size"], reverse=True)
+    for region in large_regions:
+        pages_in_region = list(range(region["start"], region["end"] + 1))
+        random.shuffle(pages_in_region)
+        for p in pages_in_region:
+            add_window([p], "anchor", f"region_fill:{region['title'][:30]}")
 
-    while len(windows) < max_windows:
-        p = random.randint(1, total_pages)
-        if add_window([p], "anchor", "anchor_backfill"):
-            continue
-        for cat in ("boundary", "pathology", "span"):
-            if category_counts[cat] < target_counts[cat]:
-                old = target_counts[cat]
-                target_counts[cat] = category_counts[cat]
-                target_counts["anchor"] += old - target_counts[cat]
+    # Phase 4: Backfill any remaining slots
+    all_pages = list(range(total_pages))
+    random.shuffle(all_pages)
+    for p in all_pages:
+        add_window([p], "anchor", "backfill")
 
     return {
         "strategy": "toc_guided_structural_stratified",
         "seed": seed,
         "total_pages": total_pages,
+        "regions": [{"title": r["title"], "pages": f"{r['start']}-{r['end']}", "hints": r["hints"]} for r in regions],
         "windows": windows,
         "category_counts": category_counts,
     }
@@ -499,27 +562,35 @@ def compile_document_truth(ir: dict) -> dict:
     )
 
     pages = []
-    for page_num in sorted(parsed.source_pages):
+    for idx, page_num in enumerate(sorted(parsed.source_pages)):
+        # pdf_oxide uses 0-based page numbering
+        page_idx = idx
         page_elements = [el for el in ordered_elements if el.page == page_num]
-        blocks = [
-            {
-                "block_type": type_map.get(el.type, "Body"),
+        blocks = []
+        for el in page_elements:
+            block_type = type_map.get(el.type, "Body")
+            # pdf_oxide emits "Title" for level-1 headers, "Header" for others
+            if el.type == ElementType.header:
+                block_type = "Title" if (el.header_level or 0) <= 1 else "Header"
+            blocks.append({
+                "block_type": block_type,
                 "confidence": 1.0,
                 "bbox": el.bbox,
                 "text": el.text,
                 "header_level": el.header_level,
                 "font_size": el.font_size,
-            }
-            for el in page_elements
-        ]
+            })
         page_text_parts = [el.text for el in page_elements if el.text]
         pages.append(
             {
-                "page_num": page_num,
+                "page_num": page_idx,
                 "blocks": blocks,
                 "text": "\n".join(page_text_parts),
             }
         )
+
+    # Build page_num -> 0-based index map
+    page_to_idx = {pn: i for i, pn in enumerate(sorted(parsed.source_pages))}
 
     sections = []
     for el in ordered_elements:
@@ -528,7 +599,7 @@ def compile_document_truth(ir: dict) -> dict:
                 {
                     "title": el.text,
                     "header_level": el.header_level,
-                    "page": el.page,
+                    "page": page_to_idx.get(el.page, 0),
                     "bbox": el.bbox,
                     "element_id": el.id,
                 }
@@ -559,7 +630,7 @@ def compile_document_truth(ir: dict) -> dict:
         if el.type == ElementType.figure:
             fig = {
                 "figure_id": el.id,
-                "page": el.page,
+                "page": page_to_idx.get(el.page, 0),
                 "bbox": el.bbox,
                 "text": el.text,
             }
@@ -602,14 +673,15 @@ def compile_document_truth(ir: dict) -> dict:
 
 def compile_table_truth(ir: dict) -> dict:
     parsed = WindowIR(**ir)
+    page_to_idx = {pn: i for i, pn in enumerate(sorted(parsed.source_pages))}
 
     tables = []
     for table in parsed.tables:
         tables.append(
             {
                 "table_id": table.table_id,
-                "page": table.page_start,
-                "page_end": table.page_end,
+                "page": page_to_idx.get(table.page_start, 0),
+                "page_end": page_to_idx.get(table.page_end, 0),
                 "bbox": table.bbox_per_page.get(table.page_start, [0, 0, 0, 0]),
                 "caption": table.caption,
                 "n_rows": table.n_rows,
@@ -948,10 +1020,17 @@ def render_windows(
     pdf_path: str,
     sampling_plan: dict,
     output_dir: str,
+    page_signatures: list[dict] | None = None,
 ) -> list[dict]:
     """Render each window in sampling_plan to PNGs and span JSON files."""
     doc = pdf_oxide.PdfDocument(pdf_path)
     rendered: list[dict] = []
+
+    # Build table candidate lookup from page signatures
+    table_pages: set[int] = set()
+    for sig in page_signatures or []:
+        if sig.get("table_candidate"):
+            table_pages.add(int(sig.get("page_num", -1)))
 
     for window in sampling_plan.get("windows", []):
         wid = str(window.get("window_id", ""))
@@ -963,19 +1042,29 @@ def render_windows(
         span_paths: list[str] = []
 
         for page_num in source_pages:
-            page_idx = page_num - 1  # pdf_oxide uses 0-based indexing
-            if page_idx < 0:
+            if page_num < 0:
                 continue
 
-            # Render PNG
+            # Render PNG via pdftoppm (poppler) — pdf_oxide render_page has text rendering issues
             png_path = os.path.join(win_dir, f"page_{page_num}.png")
-            img_bytes = doc.render_page(page_idx, dpi=150)
-            with open(png_path, "wb") as f:
-                f.write(img_bytes)
+            pdf_page_1based = page_num + 1  # pdftoppm uses 1-based pages
+            prefix = os.path.join(win_dir, f"_render_{page_num}")
+            import subprocess
+            subprocess.run(
+                ["pdftoppm", "-png", "-f", str(pdf_page_1based), "-l", str(pdf_page_1based),
+                 "-r", "150", pdf_path, prefix],
+                capture_output=True, timeout=30,
+            )
+            # pdftoppm outputs prefix-{pagenum}.png
+            rendered_file = f"{prefix}-{pdf_page_1based}.png"
+            if os.path.exists(rendered_file):
+                os.rename(rendered_file, png_path)
+            elif os.path.exists(f"{prefix}.png"):
+                os.rename(f"{prefix}.png", png_path)
             png_paths.append(png_path)
 
-            # Extract spans
-            spans = doc.extract_spans(page_idx)
+            # Extract spans (page_num is 0-based, same as pdf_oxide indexing)
+            spans = doc.extract_spans(page_num)
             span_data = [
                 {
                     "text": s.text,
@@ -995,12 +1084,12 @@ def render_windows(
         reader = PdfReader(pdf_path)
         writer = PdfWriter()
         for page_num in source_pages:
-            page_idx = page_num - 1
-            if 0 <= page_idx < len(reader.pages):
-                writer.add_page(reader.pages[page_idx])
+            if 0 <= page_num < len(reader.pages):
+                writer.add_page(reader.pages[page_num])
         with open(window_pdf_path, "wb") as f:
             writer.write(f)
 
+        has_table_hint = any(p in table_pages for p in source_pages)
         rendered.append({
             "window_id": wid,
             "pdf_path": pdf_path,
@@ -1008,6 +1097,7 @@ def render_windows(
             "png_paths": png_paths,
             "span_paths": span_paths,
             "source_pages": source_pages,
+            "has_table_hint": has_table_hint,
         })
         logger.debug(f"Rendered {wid}: {len(png_paths)} pages")
 
@@ -1022,18 +1112,59 @@ SCILLM_URL = os.environ.get("SCILLM_URL", "http://localhost:4001")
 SCILLM_KEY = os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123")
 _SCILLM_HEADERS = {"Authorization": f"Bearer {SCILLM_KEY}", "Content-Type": "application/json"}
 
-_IR_PROMPT = """You are a ReportLab expert. This PDF has pages to recreate.
-Write a complete Python script using ReportLab that recreates the structural layout of this page.
+_IR_PROMPT = """You are a PDF structure analyst. Analyze this PDF window and produce a structured IR (intermediate representation) as JSON.
 
-Requirements:
-- Use reportlab.pdfgen.canvas for text positioning with drawString()
-- Use reportlab.platypus.Table for any tables, with TableStyle for grid lines
-- Use reportlab.lib.pagesizes.letter for page size
-- Match font sizes approximately (headers larger, body ~10-12pt)
-- Place headers, body paragraphs, tables, captions, footnotes, and page numbers
-- For tables: include ALL cell text, mark header rows with bold/background
-- Include running headers and footers if present
-- Output ONLY the Python code, no explanation. The script should save to 'output.pdf'."""
+The IR describes extraction-relevant structure — not pixel-perfect layout. It must match this schema exactly:
+
+{{
+  "window_id": "{window_id}",
+  "source_pages": {source_pages},
+  "source_pdf": "{source_pdf}",
+  "family_id": "{family_id}",
+  "elements": [
+    {{
+      "id": "<window_id>.P<page>.{{type}}_{{seq:03d}}",
+      "type": "header"|"body"|"table"|"figure"|"caption"|"list"|"footnote"|"equation"|"page_number"|"running_header"|"running_footer",
+      "bbox": [x0, y0, x1, y1],
+      "text": "<exact text content>",
+      "header_level": 0-4,
+      "page": <1-based page number from source_pages>,
+      "reading_order": <sequential int>,
+      "font_size": <approximate pt size>,
+      "is_bold": true|false,
+      "numbering": "<section number if applicable, else null>"
+    }}
+  ],
+  "tables": [
+    {{
+      "table_id": "<window_id>.TBL_{{seq:03d}}",
+      "page_start": <page>,
+      "page_end": <page>,
+      "bbox_per_page": {{<page>: [x0, y0, x1, y1]}},
+      "caption": "<table caption or null>",
+      "n_header_rows": <int>,
+      "n_rows": <int>,
+      "n_cols": <int>,
+      "cells": [
+        {{"row": 0, "col": 0, "rowspan": 1, "colspan": 1, "text": "<cell text>", "role": "header"|"data"}}
+      ],
+      "continuation": {{"is_continued": false, "continued_from": null}},
+      "style": "ruled"|"light_ruled"|"unruled"
+    }}
+  ],
+  "relationships": [
+    {{"type": "caption_of", "source": "<caption_element_id>", "target": "<figure_or_table_id>"}}
+  ],
+  "reading_order": ["<element_id_1>", "<element_id_2>", "..."]
+}}
+
+Rules:
+- Use bbox coordinates from the extracted spans where available (letter page = 612x792 pts)
+- Include ALL text content from the page — headers, body, lists, footnotes, page numbers
+- For tables: include EVERY cell with exact text, mark header rows with role="header"
+- If a table spans pages, set page_start != page_end and is_continued=true
+- reading_order must list element IDs in logical reading sequence
+- Output ONLY valid JSON, no explanation or markdown fences."""
 
 
 import re as _re
@@ -1096,8 +1227,8 @@ async def _call_gemini_ir(
 
     content_parts: list[dict] = [{"type": "text", "text": prompt_text}]
 
-    # Send source PDF binary via Gemini inlineData — Gemini processes PDFs natively
-    pdf_path = window_info.get("pdf_path", "")
+    # Send window mini-PDF (not the full source) via Gemini inlineData
+    pdf_path = window_info.get("window_pdf_path") or window_info.get("pdf_path", "")
     if pdf_path and os.path.exists(pdf_path):
         with open(pdf_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode("ascii")
@@ -1153,6 +1284,78 @@ async def _call_gemini_ir(
         if not valid:
             raise ValueError(f"IR validation failed after retry: {errors}")
 
+    # Table fallback: if page signatures say tables exist but IR has none, retry with PDF
+    has_table_hint = window_info.get("has_table_hint", False)
+    ir_tables = ir_dict.get("tables", [])
+    if has_table_hint and not ir_tables:
+        logger.info(f"{wid}: table hint but 0 tables in IR — retrying with PDF for table extraction")
+        table_parts: list[dict] = []
+        # Send the window mini-PDF (not PNG — PNGs may have rendering issues)
+        fallback_pdf = window_info.get("window_pdf_path") or window_info.get("pdf_path", "")
+        if fallback_pdf and os.path.exists(fallback_pdf):
+            with open(fallback_pdf, "rb") as f:
+                pdf_b64 = base64.b64encode(f.read()).decode("ascii")
+            table_parts.append({
+                "inlineData": {"mimeType": "application/pdf", "data": pdf_b64},
+            })
+        if table_parts:
+            table_prompt = (
+                f"This page contains one or more tables. Extract ONLY the tables as JSON.\n"
+                f"Return a JSON object with a single key \"tables\" containing an array.\n"
+                f"Each table must have: table_id (use {wid}.TBL_001, TBL_002, etc), "
+                f"page_start, page_end (both = {source_pages[0]}), "
+                f"bbox_per_page ({{page: [x0,y0,x1,y1]}}), caption (or null), "
+                f"n_header_rows, n_rows, n_cols, "
+                f"cells (array of {{row, col, rowspan, colspan, text, role}}), "
+                f"continuation ({{is_continued: false}}), style (ruled/light_ruled/unruled).\n"
+                f"Include EVERY cell with exact text. Output ONLY valid JSON."
+            )
+            table_content = [{"type": "text", "text": table_prompt}] + table_parts
+            table_payload = {
+                "model": model,
+                "messages": [{"role": "user", "content": table_content}],
+                "response_format": {"type": "json_object"},
+            }
+            try:
+                tresp = await client.post(
+                    f"{SCILLM_URL}/v1/chat/completions",
+                    headers=_SCILLM_HEADERS,
+                    json=table_payload,
+                    timeout=120.0,
+                )
+                tresp.raise_for_status()
+                traw = tresp.json()["choices"][0]["message"]["content"]
+                tdata = _extract_json(traw)
+                extracted_tables = tdata.get("tables", [])
+                # Normalize: Gemini may return headers/rows instead of cells format
+                for ti, tbl in enumerate(extracted_tables):
+                    if "cells" not in tbl and ("headers" in tbl or "rows" in tbl):
+                        headers = tbl.get("headers", [])
+                        rows = tbl.get("rows", [])
+                        cells = []
+                        for ci, h in enumerate(headers):
+                            cells.append({"row": 0, "col": ci, "rowspan": 1, "colspan": 1, "text": str(h), "role": "header"})
+                        for ri, row in enumerate(rows):
+                            for ci, val in enumerate(row if isinstance(row, list) else [row]):
+                                cells.append({"row": ri + 1, "col": ci, "rowspan": 1, "colspan": 1, "text": str(val), "role": "data"})
+                        tbl["cells"] = cells
+                        tbl.setdefault("n_rows", len(rows) + 1)
+                        tbl.setdefault("n_cols", max(len(headers), max((len(r) for r in rows if isinstance(r, list)), default=0)))
+                        tbl.setdefault("n_header_rows", 1 if headers else 0)
+                        tbl.setdefault("table_id", f"{wid}.TBL_{ti + 1:03d}")
+                        tbl.setdefault("page_start", source_pages[0])
+                        tbl.setdefault("page_end", source_pages[-1])
+                        tbl.setdefault("style", "ruled")
+                        tbl.setdefault("continuation", {"is_continued": False})
+                        tbl.setdefault("bbox_per_page", {})
+                if extracted_tables:
+                    ir_dict["tables"] = extracted_tables
+                    logger.info(f"{wid}: table fallback extracted {len(extracted_tables)} tables ({sum(len(t.get('cells',[])) for t in extracted_tables)} cells)")
+                else:
+                    logger.warning(f"{wid}: table fallback returned 0 tables. Raw keys: {list(tdata.keys())}")
+            except (httpx.HTTPStatusError, httpx.RequestError, json.JSONDecodeError, ValueError) as exc:
+                logger.warning(f"{wid}: table fallback failed: {type(exc).__name__}: {exc}")
+
     # Save IR
     win_dir = os.path.join(output_dir, wid)
     os.makedirs(win_dir, exist_ok=True)
@@ -1206,8 +1409,8 @@ async def _generate_ir_batch_async(
                     ir = await _call_gemini_ir(client, window, output_dir, model, family_id)
                     ir_paths[wid] = os.path.join(output_dir, wid, "ir.json")
                     succeeded += 1
-                except (httpx.HTTPStatusError, httpx.RequestError, json.JSONDecodeError, ValueError, KeyError) as exc:
-                    logger.warning(f"IR generation failed for {wid}: {exc}")
+                except (httpx.HTTPStatusError, httpx.RequestError, json.JSONDecodeError, ValueError, KeyError, FileNotFoundError, OSError) as exc:
+                    logger.warning(f"IR generation failed for {wid}: {type(exc).__name__}: {exc}")
                     failed += 1
 
         await asyncio.gather(*[_process(w) for w in rendered_windows])
@@ -1447,12 +1650,12 @@ def clone_pdf(
     logger.info(f"Sampled {len(sampling_plan.get('windows', []))} windows")
 
     # 3. Render windows (PNGs + spans)
-    rendered = render_windows(pdf_path, sampling_plan, output_dir)
+    rendered = render_windows(pdf_path, sampling_plan, output_dir, page_signatures=profile.get("page_signatures"))
     logger.info(f"Rendered {len(rendered)} windows")
 
     # 4. Generate IR via Gemini
     ir_results = generate_ir_batch(
-        rendered, output_dir, model=model, family_id=family_id,
+        rendered, output_dir, model=model, family_id=family_id, concurrency=2,
     )
     logger.info(
         f"IR generation: {ir_results['succeeded']}/{ir_results['total']} succeeded, "
