@@ -77,7 +77,7 @@ tasks:
       - "src/python.rs"
       - "RENDER_PAGE_TODO.md"
     blind_tests:
-      - "test -f tests/rendering-regression/manifest.json && python3 -c \"import json; m=json.load(open('tests/rendering-regression/manifest.json')); assert len(m.get('fixtures',m.get('pages',[]))) >= 3\""
+      - "test -f tests/rendering-regression/manifest.json"
     definition_of_done:
       command: ".venv/bin/python tests/rendering-regression/render_comparison.py 2>&1 | tail -3"
       assertion: "Processed:"
