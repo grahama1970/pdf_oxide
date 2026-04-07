@@ -7083,7 +7083,7 @@ mod tests {
 
     #[test]
     fn test_decode_text_no_font_latin1() {
-        let result = decode_text_to_unicode(b"Hello", None);
+        let result = text_decode::decode_text_to_unicode(b"Hello", None);
         assert_eq!(result, "Hello");
     }
 
@@ -7091,7 +7091,7 @@ mod tests {
     fn test_decode_text_no_font_high_bytes() {
         // Latin-1 high bytes should map to Unicode code points
         let bytes = vec![0xC0, 0xE9]; // A-grave, e-acute in Latin-1
-        let result = decode_text_to_unicode(&bytes, None);
+        let result = text_decode::decode_text_to_unicode(&bytes, None);
         assert!(result.contains('\u{00C0}'), "Should contain A-grave");
         assert!(result.contains('\u{00E9}'), "Should contain e-acute");
     }
@@ -7100,7 +7100,7 @@ mod tests {
     fn test_decode_text_filters_control_chars() {
         // Control characters (except tab, newline, carriage return) should be filtered
         let bytes = vec![0x01, 0x02, 0x41, 0x09, 0x0A]; // ctrl chars, 'A', tab, newline
-        let result = decode_text_to_unicode(&bytes, None);
+        let result = text_decode::decode_text_to_unicode(&bytes, None);
         assert!(result.contains('A'), "Should contain 'A'");
         assert!(result.contains('\t'), "Should keep tab");
         assert!(result.contains('\n'), "Should keep newline");
@@ -7110,7 +7110,7 @@ mod tests {
     #[test]
     fn test_decode_text_with_simple_font() {
         let font = create_test_font();
-        let result = decode_text_to_unicode(b"ABC", Some(&font));
+        let result = text_decode::decode_text_to_unicode(b"ABC", Some(&font));
         // With WinAnsiEncoding, ASCII characters should map correctly
         assert!(result.contains('A') || !result.is_empty(), "Should decode something");
     }
@@ -10240,7 +10240,7 @@ mod tests {
     fn test_decode_text_simple_font_with_control_chars() {
         let font = create_test_font();
         let bytes = vec![0x01, 0x41, 0x09]; // ctrl char, 'A', tab
-        let result = decode_text_to_unicode(&bytes, Some(&font));
+        let result = text_decode::decode_text_to_unicode(&bytes, Some(&font));
         // Should filter control chars but keep tab
         assert!(result.contains('\t') || result.contains('A'));
     }
@@ -10252,7 +10252,7 @@ mod tests {
         font.subtype = "Type0".to_string();
         font.encoding = crate::fonts::Encoding::Identity;
         let bytes = vec![0x41]; // Single byte for Type0 identity
-        let result = decode_text_to_unicode(&bytes, Some(&font));
+        let result = text_decode::decode_text_to_unicode(&bytes, Some(&font));
         // Should hit trailing byte path
     }
 
