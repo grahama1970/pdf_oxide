@@ -573,7 +573,7 @@ impl PageRenderer {
     ) -> Result<()> {
         // Get XObject from resources
         if let Object::Dictionary(res_dict) = resources {
-            if let Some(Object::Dictionary(xobjects)) = res_dict.get("XObjects") {
+            if let Some(Object::Dictionary(xobjects)) = res_dict.get("XObject").or(res_dict.get("XObjects")) {
                 if let Some(xobj_ref) = xobjects.get(name) {
                     // Resolve reference if needed
                     let xobj = doc.resolve_object(xobj_ref)?;
