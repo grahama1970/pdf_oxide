@@ -206,7 +206,7 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
 
     page_count = int(survey.get("page_count", 0) or 0)
 
-    return {
+    result = {
         "doc_id": hashlib.md5(pdf_path.encode("utf-8")).hexdigest(),
         "path": pdf_path,
         "page_count": page_count,
@@ -228,7 +228,29 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
         "section_style": survey.get("section_style"),
         "is_scanned": bool(survey.get("is_scanned", False)),
         "page_signatures": _build_page_signatures(doc, survey),
+        "table_shapes": survey.get("table_shapes", []),
+        "page_spanning_tables": survey.get("page_spanning_tables", []),
+        "running_headers": survey.get("running_headers", []),
+        "running_footers": survey.get("running_footers", []),
     }
+
+    # Derive requirements_pages from TOC (preferred) or text regex (fallback)
+    outline = _flatten_outline(doc.get_outline() or [])
+    regions = _outline_to_regions(outline, page_count)
+    toc_req_pages = []
+    for r in regions:
+        if "requirements" in r.get("hints", []):
+            toc_req_pages.extend(range(r["start"], r["end"] + 1))
+    if toc_req_pages:
+        result["requirements_pages"] = sorted(set(toc_req_pages))
+        result["requirements_source"] = "toc"
+    else:
+        # Fallback: text-based detection from survey
+        result["requirements_pages"] = survey.get("requirements_pages", [])
+        result["requirements_source"] = "text_regex"
+    result["requirements_density"] = len(result["requirements_pages"]) / max(page_count, 1)
+
+    return result
 
 
 def assign_family(signature: dict) -> dict:
@@ -363,7 +385,35 @@ def _outline_to_regions(outline: list[dict], total_pages: int) -> list[dict]:
             "end": end,
             "size": end - start + 1,
             "hints": hints,
+            "level": entry.get("level", 1),
         })
+
+    # Propagate parent hints to children — e.g. "3 The Requirements" hints
+    # flow down to "3.1 Access Control", "3.5 Identification", etc.
+    # Infer hierarchy from title numbering: "3" is parent of "3.1", "3.1" parent of "3.1.1"
+    import re as _re
+    _num_re = _re.compile(r"^(\d+(?:\.\d+)*)")
+
+    def _title_depth(title: str) -> int:
+        m = _num_re.match(title.strip())
+        if m:
+            return m.group(1).count(".") + 1  # "3" → 1, "3.1" → 2, "3.1.1" → 3
+        return 0  # Appendix, TOC, etc — top level
+
+    for i, region in enumerate(regions):
+        if not region["hints"]:
+            my_depth = _title_depth(region["title"])
+            if my_depth > 0:
+                # Walk backwards to find a parent with hints (lower depth)
+                for j in range(i - 1, -1, -1):
+                    parent = regions[j]
+                    parent_depth = _title_depth(parent["title"])
+                    if parent_depth < my_depth and parent["hints"]:
+                        region["hints"] = list(parent["hints"])
+                        break
+                    if parent_depth <= 0 and j < i - 5:
+                        break  # too far back, give up
+
     return regions
 
 

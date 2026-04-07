@@ -26,6 +26,7 @@ Usage:
 """
 from __future__ import annotations
 
+import re
 from typing import Any, Dict, List
 
 from .survey_text import (
@@ -255,6 +256,35 @@ def survey_document(
     # Equation detection via block classifier (if available)
     equation_pages = _find_equation_pages(doc, page_count)
 
+    # ══ PASS 3: Structural detail (table shapes, spanning, requirements, headers) ══
+
+    # Table shapes from line drawings (works even when extract_tables returns 0)
+    table_shapes: list[dict] = []
+    for pg in sorted(all_table_candidates):
+        shape = _estimate_table_shape_from_lines(doc, pg)
+        if shape:
+            table_shapes.append(shape)
+
+    # Page-spanning table detection
+    page_spanning_tables = _detect_page_spanning_tables(table_shapes)
+
+    # Fix table_count_estimate: use line-based shapes when extract_tables fails
+    if est_table_count == 0 and table_shapes:
+        # Count distinct tables (group consecutive pages as one table)
+        distinct_tables = 0
+        prev_page = -10
+        for shape in table_shapes:
+            if shape["page"] != prev_page + 1:
+                distinct_tables += 1
+            prev_page = shape["page"]
+        est_table_count = distinct_tables
+
+    # Requirements pages
+    requirements_pages = _detect_requirements_pages(doc, page_count)
+
+    # Running headers/footers
+    running_headers, running_footers = _detect_running_headers_footers(doc, page_count)
+
     result = {
         "page_count": page_count,
         "columns": columns,
@@ -281,6 +311,12 @@ def survey_document(
         "has_equations": len(equation_pages) > 0,
         "equation_pages": equation_pages,
         "equation_count_estimate": len(equation_pages),
+        "table_shapes": [{k: v for k, v in s.items() if k != "col_positions"} for s in table_shapes],
+        "page_spanning_tables": page_spanning_tables,
+        "requirements_pages": requirements_pages,
+        "requirements_density": len(requirements_pages) / max(page_count, 1),
+        "running_headers": running_headers,
+        "running_footers": running_footers,
         "page_details": page_details,
         "drawing_density_top10": sorted(drawing_density, key=lambda x: x[1], reverse=True)[:10],
         "_engine": "pdf_oxide",
@@ -619,4 +655,190 @@ def _collect_font_data(
     page_lines.append(lines_on_page)
 
 
-    # Text analysis functions imported from survey_text module.
+
+
+# ── Table shape estimation from line drawings ──
+
+_CLUSTER_TOL = 3.0
+
+
+def _estimate_table_shape_from_lines(doc, page_idx: int) -> dict | None:
+    """Estimate table rows x cols from horizontal/vertical line drawings.
+
+    Returns dict with page, rows, cols, col_positions, bbox, ruled
+    or None if no table grid found.
+    """
+    try:
+        paths = doc.extract_paths(page_idx)
+    except Exception:
+        return None
+
+    h_lines: list[tuple[float, float, float]] = []
+    v_lines: list[tuple[float, float, float]] = []
+
+    for p in paths:
+        bbox = p.get("bbox")
+        if not bbox:
+            continue
+        x, y, w, h = bbox
+        if h < LINE_TOLERANCE and w > 10:
+            h_lines.append((round(y, 1), round(x, 1), round(x + w, 1)))
+        elif w < LINE_TOLERANCE and h > 10:
+            v_lines.append((round(x, 1), round(y, 1), round(y + h, 1)))
+
+    if len(h_lines) < MIN_TABLE_LINES or len(v_lines) < 2:
+        return None
+
+    # Cluster horizontal lines by y → row separators
+    h_lines.sort(key=lambda l: l[0])
+    row_ys: list[float] = []
+    for y, _, _ in h_lines:
+        if not row_ys or abs(y - row_ys[-1]) > _CLUSTER_TOL:
+            row_ys.append(y)
+
+    # Cluster vertical lines by x → column separators
+    v_lines.sort(key=lambda l: l[0])
+    col_xs: list[float] = []
+    for x, _, _ in v_lines:
+        if not col_xs or abs(x - col_xs[-1]) > _CLUSTER_TOL:
+            col_xs.append(x)
+
+    rows = max(0, len(row_ys) - 1)
+    cols = max(0, len(col_xs) - 1)
+
+    if rows < 1 or cols < 1:
+        return None
+
+    # Compute bounding box from extremes
+    all_x = [x1 for _, x1, _ in h_lines] + [x2 for _, _, x2 in h_lines]
+    all_y = [y for y, _, _ in h_lines]
+    table_bbox = [min(all_x), min(all_y), max(all_x), max(all_y)]
+
+    return {
+        "page": page_idx,
+        "rows": rows,
+        "cols": cols,
+        "col_positions": col_xs,
+        "bbox": table_bbox,
+        "ruled": True,
+    }
+
+
+def _detect_page_spanning_tables(table_shapes: list[dict]) -> list[dict]:
+    """Detect page-spanning tables by matching column structure across consecutive pages."""
+    if len(table_shapes) < 2:
+        return []
+
+    spanning: list[dict] = []
+    i = 0
+    while i < len(table_shapes) - 1:
+        curr = table_shapes[i]
+        # Find the run of consecutive pages with same column count + positions
+        run_start = curr["page"]
+        run_cols = curr["cols"]
+        run_positions = curr["col_positions"]
+        total_rows = curr["rows"]
+        j = i + 1
+
+        while j < len(table_shapes):
+            nxt = table_shapes[j]
+            if nxt["page"] != table_shapes[j - 1]["page"] + 1:
+                break
+            if nxt["cols"] != run_cols:
+                break
+            # Check column positions match within tolerance
+            if len(run_positions) == len(nxt["col_positions"]):
+                if not all(abs(a - b) < 10 for a, b in zip(run_positions, nxt["col_positions"])):
+                    break
+            total_rows += nxt["rows"]
+            j += 1
+
+        if j > i + 1:  # span of 2+ pages
+            spanning.append({
+                "start_page": run_start,
+                "end_page": table_shapes[j - 1]["page"],
+                "pages": j - i,
+                "cols": run_cols,
+                "total_rows": total_rows,
+            })
+            i = j
+        else:
+            i += 1
+
+    return spanning
+
+
+# ── Requirements page detection ──
+
+_REQ_SHALL_RE = re.compile(r"\b(shall|must)\b", re.IGNORECASE)
+_REQ_CLAUSE_RE = re.compile(r"\b\d+\.\d+\.\d+\b")
+
+
+def _detect_requirements_pages(doc, page_count: int) -> list[int]:
+    """Detect pages containing requirements language (shall/must, numbered clauses)."""
+    req_pages: list[int] = []
+    for pg in range(page_count):
+        try:
+            text = doc.extract_text(pg)
+        except Exception:
+            continue
+        shall_count = len(_REQ_SHALL_RE.findall(text))
+        clause_count = len(_REQ_CLAUSE_RE.findall(text))
+        if shall_count >= 2 or clause_count >= 3:
+            req_pages.append(pg)
+    return req_pages
+
+
+# ── Running header/footer detection ──
+
+def _detect_running_headers_footers(
+    doc, page_count: int,
+) -> tuple[list[str], list[str]]:
+    """Detect repeating text at top/bottom of pages (headers/footers).
+
+    Samples middle pages and finds text spans that repeat 3+ times
+    at consistent y-coordinates.
+    """
+    if page_count < 5:
+        return [], []
+
+    # Sample 20 pages from the middle (skip first/last 2)
+    start = min(2, page_count - 1)
+    end = max(start + 1, page_count - 2)
+    sample_pages = list(range(start, min(end, start + 20)))
+
+    try:
+        _, page_h = doc.page_dimensions(0)
+    except Exception:
+        page_h = 792.0
+
+    header_texts: dict[str, int] = {}
+    footer_texts: dict[str, int] = {}
+
+    for pg in sample_pages:
+        try:
+            spans = doc.extract_spans(pg)
+        except Exception:
+            continue
+        if not spans:
+            continue
+        for s in spans:
+            y = s.bbox[1] if s.bbox else 0
+            text = s.text.strip()
+            if len(text) < 3 or len(text) > 80:
+                continue
+            if y > page_h - 60:  # top region (PDF y=0 at bottom)
+                header_texts[text] = header_texts.get(text, 0) + 1
+            elif y < 60:  # bottom region
+                footer_texts[text] = footer_texts.get(text, 0) + 1
+
+    min_count = 3
+    headers = sorted(
+        [t for t, c in header_texts.items() if c >= min_count],
+        key=lambda t: -header_texts[t],
+    )
+    footers = sorted(
+        [t for t, c in footer_texts.items() if c >= min_count],
+        key=lambda t: -footer_texts[t],
+    )
+    return headers, footers
