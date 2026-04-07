@@ -1,0 +1,52 @@
+{
+  "fixtures": [
+    {
+      "name": "simple_test",
+      "file": "simple_test.pdf",
+      "page": 1,
+      "description": "Simple handcrafted PDF with 'Hello World' at known coordinates",
+      "test_type": "basic_text",
+      "text_regions": [
+        {"x": 90, "y": 680, "width": 120, "height": 30, "description": "Hello World text"}
+      ],
+      "expected_behavior": "Text should be visible and rendered correctly"
+    },
+    {
+      "name": "test_pdf_page_1",
+      "file": "../fixtures/1.pdf",
+      "page": 1,
+      "description": "Test PDF page 1 - checking basic text rendering",
+      "test_type": "document_text",
+      "text_regions": [
+        {"x": 50, "y": 100, "width": 500, "height": 600, "description": "Main content area"}
+      ],
+      "expected_behavior": "Document text should be visible"
+    },
+    {
+      "name": "test_pdf_page_3", 
+      "file": "../fixtures/1.pdf",
+      "page": 3,
+      "description": "Test PDF page 3 - mid-document content",
+      "test_type": "document_text",
+      "text_regions": [
+        {"x": 50, "y": 100, "width": 500, "height": 600, "description": "Main content area"}
+      ],
+      "expected_behavior": "Document text should be visible"
+    },
+    {
+      "name": "encrypted_cid",
+      "file": "../fixtures/encrypted_cid_truetype.pdf",
+      "page": 1,
+      "description": "Encrypted PDF with CID TrueType fonts",
+      "test_type": "font_rendering",
+      "text_regions": [
+        {"x": 50, "y": 100, "width": 500, "height": 600, "description": "CID font text"}
+      ],
+      "expected_behavior": "CID TrueType fonts should render correctly"
+    }
+  ],
+  "scoring": {
+    "pass_threshold": 0.01,
+    "description": "Minimum non-white pixel density in text regions to consider test passing"
+  }
+}
