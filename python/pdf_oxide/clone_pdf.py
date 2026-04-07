@@ -107,8 +107,35 @@ class WindowIR(BaseModel):
     reading_order: list[str] = Field(default_factory=list)
 
 
+def _repair_ir(ir_dict: dict) -> dict:
+    """Fix common Gemini output quirks before Pydantic validation."""
+    for el in ir_dict.get("elements", []):
+        # Fix bbox: Gemini sometimes returns list-of-lists (one bbox per text line)
+        bbox = el.get("bbox", [])
+        if bbox and isinstance(bbox, list) and bbox and isinstance(bbox[0], list):
+            # Flatten: take bounding box of all sub-bboxes
+            all_x0 = [b[0] for b in bbox if len(b) >= 4]
+            all_y0 = [b[1] for b in bbox if len(b) >= 4]
+            all_x1 = [b[2] for b in bbox if len(b) >= 4]
+            all_y1 = [b[3] for b in bbox if len(b) >= 4]
+            if all_x0:
+                el["bbox"] = [min(all_x0), min(all_y0), max(all_x1), max(all_y1)]
+            else:
+                el["bbox"] = [0, 0, 0, 0]
+        # Coerce null font_size / is_bold
+        if el.get("font_size") is None:
+            el["font_size"] = 12.0
+        if el.get("is_bold") is None:
+            el["is_bold"] = False
+        if el.get("header_level") is None:
+            el["header_level"] = 0
+    return ir_dict
+
+
 def validate_ir(ir_dict: dict) -> tuple[bool, list[str]]:
     errors: list[str] = []
+
+    ir_dict = _repair_ir(ir_dict)
 
     try:
         ir = WindowIR(**ir_dict)
@@ -1405,13 +1432,27 @@ async def _generate_ir_batch_async(
             nonlocal succeeded, failed, retried
             wid = window["window_id"]
             async with sem:
-                try:
-                    ir = await _call_gemini_ir(client, window, output_dir, model, family_id)
-                    ir_paths[wid] = os.path.join(output_dir, wid, "ir.json")
-                    succeeded += 1
-                except (httpx.HTTPStatusError, httpx.RequestError, json.JSONDecodeError, ValueError, KeyError, FileNotFoundError, OSError) as exc:
-                    logger.warning(f"IR generation failed for {wid}: {type(exc).__name__}: {exc}")
-                    failed += 1
+                max_retries = 3
+                for attempt in range(max_retries):
+                    try:
+                        ir = await _call_gemini_ir(client, window, output_dir, model, family_id)
+                        ir_paths[wid] = os.path.join(output_dir, wid, "ir.json")
+                        succeeded += 1
+                        return
+                    except httpx.HTTPStatusError as exc:
+                        if exc.response.status_code >= 500 and attempt < max_retries - 1:
+                            wait = (attempt + 1) * 10  # 10s, 20s backoff
+                            logger.warning(f"{wid}: 500 error, retry {attempt+1}/{max_retries} after {wait}s")
+                            retried += 1
+                            await asyncio.sleep(wait)
+                            continue
+                        logger.warning(f"IR generation failed for {wid}: {type(exc).__name__}: {exc}")
+                        failed += 1
+                        return
+                    except (httpx.RequestError, json.JSONDecodeError, ValueError, KeyError, FileNotFoundError, OSError) as exc:
+                        logger.warning(f"IR generation failed for {wid}: {type(exc).__name__}: {exc}")
+                        failed += 1
+                        return
 
         await asyncio.gather(*[_process(w) for w in rendered_windows])
 
@@ -1655,7 +1696,7 @@ def clone_pdf(
 
     # 4. Generate IR via Gemini
     ir_results = generate_ir_batch(
-        rendered, output_dir, model=model, family_id=family_id, concurrency=2,
+        rendered, output_dir, model=model, family_id=family_id, concurrency=1,
     )
     logger.info(
         f"IR generation: {ir_results['succeeded']}/{ir_results['total']} succeeded, "
