@@ -126,6 +126,8 @@ tasks:
     read_context:
       - "python/pdf_oxide/clone_pdf.py"
       - "src/python.rs"
+    blind_tests:
+      - "grep -q table_shapes python/pdf_oxide/survey.py"
     definition_of_done:
       command: "cd /home/graham/workspace/experiments/pdf_oxide && make test 2>&1 | tail -1"
       assertion: "passed"
@@ -136,7 +138,7 @@ tasks:
     title: "Add figure count with captions to survey"
     lane: "2"
     runner: "code-runner"
-    backend: "sonnet"
+    backend: "text"
     mode: "iterative"
     depends_on: ["1"]
     prompt: |
@@ -174,6 +176,8 @@ tasks:
       - "python/pdf_oxide/survey.py"
     read_context:
       - "python/pdf_oxide/clone_pdf.py"
+    blind_tests:
+      - "grep -q requirements_pages python/pdf_oxide/survey.py"
     definition_of_done:
       command: "cd /home/graham/workspace/experiments/pdf_oxide && make test 2>&1 | tail -1"
       assertion: "passed"
@@ -184,7 +188,7 @@ tasks:
     title: "Wire new profiler fields into clone_pdf profiler and sampler"
     lane: "3"
     runner: "code-runner"
-    backend: "sonnet"
+    backend: "text"
     mode: "iterative"
     depends_on: ["2", "3"]
     prompt: |
@@ -214,6 +218,8 @@ tasks:
       - "python/pdf_oxide/clone_pdf.py"
     read_context:
       - "python/pdf_oxide/survey.py"
+    blind_tests:
+      - "grep -q table_shapes python/pdf_oxide/clone_pdf.py"
     definition_of_done:
       command: "cd /home/graham/workspace/experiments/pdf_oxide && make test 2>&1 | tail -1"
       assertion: "passed"
