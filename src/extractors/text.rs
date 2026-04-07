@@ -5729,7 +5729,7 @@ impl TextExtractor {
             // Get Unicode string using font mapping
             let unicode_string = if let Some(font) = font {
                 font.char_to_unicode(char_code as u32)
-                    .unwrap_or_else(|| fallback_char_to_unicode(char_code as u32))
+                    .unwrap_or_else(|| text_decode::fallback_char_to_unicode(char_code as u32))
             } else if char_code < 256 && (char_code as u8).is_ascii() {
                 (char_code as u8 as char).to_string()
             } else {
@@ -7018,62 +7018,62 @@ mod tests {
 
     #[test]
     fn test_fallback_common_punctuation() {
-        assert_eq!(fallback_char_to_unicode(0x2014), "\u{2014}"); // Em dash
-        assert_eq!(fallback_char_to_unicode(0x2013), "\u{2013}"); // En dash
-        assert_eq!(fallback_char_to_unicode(0x2022), "\u{2022}"); // Bullet
-        assert_eq!(fallback_char_to_unicode(0x2026), "\u{2026}"); // Ellipsis
-        assert_eq!(fallback_char_to_unicode(0x00B0), "\u{00B0}"); // Degree
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2014), "\u{2014}"); // Em dash
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2013), "\u{2013}"); // En dash
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2022), "\u{2022}"); // Bullet
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2026), "\u{2026}"); // Ellipsis
+        assert_eq!(text_decode::fallback_char_to_unicode(0x00B0), "\u{00B0}"); // Degree
     }
 
     #[test]
     fn test_fallback_math_operators() {
-        assert_eq!(fallback_char_to_unicode(0x00B1), "\u{00B1}"); // Plus-minus
-        assert_eq!(fallback_char_to_unicode(0x00D7), "\u{00D7}"); // Multiply
-        assert_eq!(fallback_char_to_unicode(0x221E), "\u{221E}"); // Infinity
-        assert_eq!(fallback_char_to_unicode(0x2264), "\u{2264}"); // Less or equal
-        assert_eq!(fallback_char_to_unicode(0x2265), "\u{2265}"); // Greater or equal
-        assert_eq!(fallback_char_to_unicode(0x2260), "\u{2260}"); // Not equal
-        assert_eq!(fallback_char_to_unicode(0x221A), "\u{221A}"); // Square root
-        assert_eq!(fallback_char_to_unicode(0x222B), "\u{222B}"); // Integral
-        assert_eq!(fallback_char_to_unicode(0x2211), "\u{2211}"); // Summation
+        assert_eq!(text_decode::fallback_char_to_unicode(0x00B1), "\u{00B1}"); // Plus-minus
+        assert_eq!(text_decode::fallback_char_to_unicode(0x00D7), "\u{00D7}"); // Multiply
+        assert_eq!(text_decode::fallback_char_to_unicode(0x221E), "\u{221E}"); // Infinity
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2264), "\u{2264}"); // Less or equal
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2265), "\u{2265}"); // Greater or equal
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2260), "\u{2260}"); // Not equal
+        assert_eq!(text_decode::fallback_char_to_unicode(0x221A), "\u{221A}"); // Square root
+        assert_eq!(text_decode::fallback_char_to_unicode(0x222B), "\u{222B}"); // Integral
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2211), "\u{2211}"); // Summation
     }
 
     #[test]
     fn test_fallback_greek_letters() {
-        assert_eq!(fallback_char_to_unicode(0x03B1), "\u{03B1}"); // alpha
-        assert_eq!(fallback_char_to_unicode(0x03B2), "\u{03B2}"); // beta
-        assert_eq!(fallback_char_to_unicode(0x03C0), "\u{03C0}"); // pi
-        assert_eq!(fallback_char_to_unicode(0x03C9), "\u{03C9}"); // omega
-        assert_eq!(fallback_char_to_unicode(0x0393), "\u{0393}"); // Gamma
-        assert_eq!(fallback_char_to_unicode(0x03A9), "\u{03A9}"); // Omega
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03B1), "\u{03B1}"); // alpha
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03B2), "\u{03B2}"); // beta
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03C0), "\u{03C0}"); // pi
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03C9), "\u{03C9}"); // omega
+        assert_eq!(text_decode::fallback_char_to_unicode(0x0393), "\u{0393}"); // Gamma
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03A9), "\u{03A9}"); // Omega
     }
 
     #[test]
     fn test_fallback_currency() {
-        assert_eq!(fallback_char_to_unicode(0x20AC), "\u{20AC}"); // Euro
-        assert_eq!(fallback_char_to_unicode(0x00A3), "\u{00A3}"); // Pound
-        assert_eq!(fallback_char_to_unicode(0x00A5), "\u{00A5}"); // Yen
-        assert_eq!(fallback_char_to_unicode(0x00A2), "\u{00A2}"); // Cent
+        assert_eq!(text_decode::fallback_char_to_unicode(0x20AC), "\u{20AC}"); // Euro
+        assert_eq!(text_decode::fallback_char_to_unicode(0x00A3), "\u{00A3}"); // Pound
+        assert_eq!(text_decode::fallback_char_to_unicode(0x00A5), "\u{00A5}"); // Yen
+        assert_eq!(text_decode::fallback_char_to_unicode(0x00A2), "\u{00A2}"); // Cent
     }
 
     #[test]
     fn test_fallback_direct_unicode() {
         // Valid ASCII character
-        assert_eq!(fallback_char_to_unicode(0x41), "A");
-        assert_eq!(fallback_char_to_unicode(0x20), " ");
+        assert_eq!(text_decode::fallback_char_to_unicode(0x41), "A");
+        assert_eq!(text_decode::fallback_char_to_unicode(0x20), " ");
     }
 
     #[test]
     fn test_fallback_invalid_code_point() {
         // Surrogate pair range is invalid Unicode
-        assert_eq!(fallback_char_to_unicode(0xD800), "?");
-        assert_eq!(fallback_char_to_unicode(0xDFFF), "?");
+        assert_eq!(text_decode::fallback_char_to_unicode(0xD800), "?");
+        assert_eq!(text_decode::fallback_char_to_unicode(0xDFFF), "?");
     }
 
     #[test]
     fn test_fallback_private_use_area() {
         // PUA characters should still be returned (not replaced with ?)
-        let result = fallback_char_to_unicode(0xE000);
+        let result = text_decode::fallback_char_to_unicode(0xE000);
         assert_ne!(result, "?");
     }
 
@@ -10129,107 +10129,107 @@ mod tests {
 
     #[test]
     fn test_fallback_quotation_marks() {
-        assert_eq!(fallback_char_to_unicode(0x2018), "\u{2018}"); // Left single quote
-        assert_eq!(fallback_char_to_unicode(0x2019), "\u{2019}"); // Right single quote
-        assert_eq!(fallback_char_to_unicode(0x201C), "\u{201C}"); // Left double quote
-        assert_eq!(fallback_char_to_unicode(0x201D), "\u{201D}"); // Right double quote
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2018), "\u{2018}"); // Left single quote
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2019), "\u{2019}"); // Right single quote
+        assert_eq!(text_decode::fallback_char_to_unicode(0x201C), "\u{201C}"); // Left double quote
+        assert_eq!(text_decode::fallback_char_to_unicode(0x201D), "\u{201D}"); // Right double quote
     }
 
     #[test]
     fn test_fallback_math_extended() {
-        assert_eq!(fallback_char_to_unicode(0x00F7), "\u{00F7}"); // Division
-        assert_eq!(fallback_char_to_unicode(0x2202), "\u{2202}"); // Partial diff
-        assert_eq!(fallback_char_to_unicode(0x2207), "\u{2207}"); // Nabla
-        assert_eq!(fallback_char_to_unicode(0x220F), "\u{220F}"); // Product
-        assert_eq!(fallback_char_to_unicode(0x2261), "\u{2261}"); // Identical
-        assert_eq!(fallback_char_to_unicode(0x2248), "\u{2248}"); // Almost equal
+        assert_eq!(text_decode::fallback_char_to_unicode(0x00F7), "\u{00F7}"); // Division
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2202), "\u{2202}"); // Partial diff
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2207), "\u{2207}"); // Nabla
+        assert_eq!(text_decode::fallback_char_to_unicode(0x220F), "\u{220F}"); // Product
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2261), "\u{2261}"); // Identical
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2248), "\u{2248}"); // Almost equal
     }
 
     #[test]
     fn test_fallback_set_theory() {
-        assert_eq!(fallback_char_to_unicode(0x2282), "\u{2282}"); // Subset
-        assert_eq!(fallback_char_to_unicode(0x2283), "\u{2283}"); // Superset
-        assert_eq!(fallback_char_to_unicode(0x2286), "\u{2286}"); // Subset or equal
-        assert_eq!(fallback_char_to_unicode(0x2287), "\u{2287}"); // Superset or equal
-        assert_eq!(fallback_char_to_unicode(0x2208), "\u{2208}"); // Element of
-        assert_eq!(fallback_char_to_unicode(0x2209), "\u{2209}"); // Not element
-        assert_eq!(fallback_char_to_unicode(0x2200), "\u{2200}"); // For all
-        assert_eq!(fallback_char_to_unicode(0x2203), "\u{2203}"); // There exists
-        assert_eq!(fallback_char_to_unicode(0x2205), "\u{2205}"); // Empty set
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2282), "\u{2282}"); // Subset
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2283), "\u{2283}"); // Superset
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2286), "\u{2286}"); // Subset or equal
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2287), "\u{2287}"); // Superset or equal
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2208), "\u{2208}"); // Element of
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2209), "\u{2209}"); // Not element
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2200), "\u{2200}"); // For all
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2203), "\u{2203}"); // There exists
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2205), "\u{2205}"); // Empty set
     }
 
     #[test]
     fn test_fallback_logic() {
-        assert_eq!(fallback_char_to_unicode(0x2227), "\u{2227}"); // Logical and
-        assert_eq!(fallback_char_to_unicode(0x2228), "\u{2228}"); // Logical or
-        assert_eq!(fallback_char_to_unicode(0x00AC), "\u{00AC}"); // Not
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2227), "\u{2227}"); // Logical and
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2228), "\u{2228}"); // Logical or
+        assert_eq!(text_decode::fallback_char_to_unicode(0x00AC), "\u{00AC}"); // Not
     }
 
     #[test]
     fn test_fallback_arrows() {
-        assert_eq!(fallback_char_to_unicode(0x2192), "\u{2192}"); // Right arrow
-        assert_eq!(fallback_char_to_unicode(0x2190), "\u{2190}"); // Left arrow
-        assert_eq!(fallback_char_to_unicode(0x2194), "\u{2194}"); // Left right arrow
-        assert_eq!(fallback_char_to_unicode(0x21D2), "\u{21D2}"); // Double right
-        assert_eq!(fallback_char_to_unicode(0x21D4), "\u{21D4}"); // Double left-right
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2192), "\u{2192}"); // Right arrow
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2190), "\u{2190}"); // Left arrow
+        assert_eq!(text_decode::fallback_char_to_unicode(0x2194), "\u{2194}"); // Left right arrow
+        assert_eq!(text_decode::fallback_char_to_unicode(0x21D2), "\u{21D2}"); // Double right
+        assert_eq!(text_decode::fallback_char_to_unicode(0x21D4), "\u{21D4}"); // Double left-right
     }
 
     #[test]
     fn test_fallback_greek_lowercase_extended() {
-        assert_eq!(fallback_char_to_unicode(0x03B5), "\u{03B5}"); // epsilon
-        assert_eq!(fallback_char_to_unicode(0x03B6), "\u{03B6}"); // zeta
-        assert_eq!(fallback_char_to_unicode(0x03B7), "\u{03B7}"); // eta
-        assert_eq!(fallback_char_to_unicode(0x03B9), "\u{03B9}"); // iota
-        assert_eq!(fallback_char_to_unicode(0x03BA), "\u{03BA}"); // kappa
-        assert_eq!(fallback_char_to_unicode(0x03BB), "\u{03BB}"); // lambda
-        assert_eq!(fallback_char_to_unicode(0x03BC), "\u{03BC}"); // mu
-        assert_eq!(fallback_char_to_unicode(0x03BD), "\u{03BD}"); // nu
-        assert_eq!(fallback_char_to_unicode(0x03BE), "\u{03BE}"); // xi
-        assert_eq!(fallback_char_to_unicode(0x03BF), "\u{03BF}"); // omicron
-        assert_eq!(fallback_char_to_unicode(0x03C1), "\u{03C1}"); // rho
-        assert_eq!(fallback_char_to_unicode(0x03C2), "\u{03C2}"); // final sigma
-        assert_eq!(fallback_char_to_unicode(0x03C3), "\u{03C3}"); // sigma
-        assert_eq!(fallback_char_to_unicode(0x03C4), "\u{03C4}"); // tau
-        assert_eq!(fallback_char_to_unicode(0x03C5), "\u{03C5}"); // upsilon
-        assert_eq!(fallback_char_to_unicode(0x03C6), "\u{03C6}"); // phi
-        assert_eq!(fallback_char_to_unicode(0x03C7), "\u{03C7}"); // chi
-        assert_eq!(fallback_char_to_unicode(0x03C8), "\u{03C8}"); // psi
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03B5), "\u{03B5}"); // epsilon
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03B6), "\u{03B6}"); // zeta
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03B7), "\u{03B7}"); // eta
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03B9), "\u{03B9}"); // iota
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03BA), "\u{03BA}"); // kappa
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03BB), "\u{03BB}"); // lambda
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03BC), "\u{03BC}"); // mu
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03BD), "\u{03BD}"); // nu
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03BE), "\u{03BE}"); // xi
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03BF), "\u{03BF}"); // omicron
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03C1), "\u{03C1}"); // rho
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03C2), "\u{03C2}"); // final sigma
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03C3), "\u{03C3}"); // sigma
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03C4), "\u{03C4}"); // tau
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03C5), "\u{03C5}"); // upsilon
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03C6), "\u{03C6}"); // phi
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03C7), "\u{03C7}"); // chi
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03C8), "\u{03C8}"); // psi
     }
 
     #[test]
     fn test_fallback_greek_uppercase_extended() {
-        assert_eq!(fallback_char_to_unicode(0x0391), "\u{0391}"); // Alpha
-        assert_eq!(fallback_char_to_unicode(0x0392), "\u{0392}"); // Beta
-        assert_eq!(fallback_char_to_unicode(0x0394), "\u{0394}"); // Delta
-        assert_eq!(fallback_char_to_unicode(0x0395), "\u{0395}"); // Epsilon
-        assert_eq!(fallback_char_to_unicode(0x0396), "\u{0396}"); // Zeta
-        assert_eq!(fallback_char_to_unicode(0x0397), "\u{0397}"); // Eta
-        assert_eq!(fallback_char_to_unicode(0x0398), "\u{0398}"); // Theta
-        assert_eq!(fallback_char_to_unicode(0x0399), "\u{0399}"); // Iota
-        assert_eq!(fallback_char_to_unicode(0x039A), "\u{039A}"); // Kappa
-        assert_eq!(fallback_char_to_unicode(0x039B), "\u{039B}"); // Lambda
-        assert_eq!(fallback_char_to_unicode(0x039C), "\u{039C}"); // Mu
-        assert_eq!(fallback_char_to_unicode(0x039D), "\u{039D}"); // Nu
-        assert_eq!(fallback_char_to_unicode(0x039E), "\u{039E}"); // Xi
-        assert_eq!(fallback_char_to_unicode(0x039F), "\u{039F}"); // Omicron
-        assert_eq!(fallback_char_to_unicode(0x03A0), "\u{03A0}"); // Pi
-        assert_eq!(fallback_char_to_unicode(0x03A1), "\u{03A1}"); // Rho
-        assert_eq!(fallback_char_to_unicode(0x03A3), "\u{03A3}"); // Sigma
-        assert_eq!(fallback_char_to_unicode(0x03A4), "\u{03A4}"); // Tau
-        assert_eq!(fallback_char_to_unicode(0x03A5), "\u{03A5}"); // Upsilon
-        assert_eq!(fallback_char_to_unicode(0x03A6), "\u{03A6}"); // Phi
-        assert_eq!(fallback_char_to_unicode(0x03A7), "\u{03A7}"); // Chi
-        assert_eq!(fallback_char_to_unicode(0x03A8), "\u{03A8}"); // Psi
+        assert_eq!(text_decode::fallback_char_to_unicode(0x0391), "\u{0391}"); // Alpha
+        assert_eq!(text_decode::fallback_char_to_unicode(0x0392), "\u{0392}"); // Beta
+        assert_eq!(text_decode::fallback_char_to_unicode(0x0394), "\u{0394}"); // Delta
+        assert_eq!(text_decode::fallback_char_to_unicode(0x0395), "\u{0395}"); // Epsilon
+        assert_eq!(text_decode::fallback_char_to_unicode(0x0396), "\u{0396}"); // Zeta
+        assert_eq!(text_decode::fallback_char_to_unicode(0x0397), "\u{0397}"); // Eta
+        assert_eq!(text_decode::fallback_char_to_unicode(0x0398), "\u{0398}"); // Theta
+        assert_eq!(text_decode::fallback_char_to_unicode(0x0399), "\u{0399}"); // Iota
+        assert_eq!(text_decode::fallback_char_to_unicode(0x039A), "\u{039A}"); // Kappa
+        assert_eq!(text_decode::fallback_char_to_unicode(0x039B), "\u{039B}"); // Lambda
+        assert_eq!(text_decode::fallback_char_to_unicode(0x039C), "\u{039C}"); // Mu
+        assert_eq!(text_decode::fallback_char_to_unicode(0x039D), "\u{039D}"); // Nu
+        assert_eq!(text_decode::fallback_char_to_unicode(0x039E), "\u{039E}"); // Xi
+        assert_eq!(text_decode::fallback_char_to_unicode(0x039F), "\u{039F}"); // Omicron
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03A0), "\u{03A0}"); // Pi
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03A1), "\u{03A1}"); // Rho
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03A3), "\u{03A3}"); // Sigma
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03A4), "\u{03A4}"); // Tau
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03A5), "\u{03A5}"); // Upsilon
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03A6), "\u{03A6}"); // Phi
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03A7), "\u{03A7}"); // Chi
+        assert_eq!(text_decode::fallback_char_to_unicode(0x03A8), "\u{03A8}"); // Psi
     }
 
     #[test]
     fn test_fallback_currency_extended() {
-        assert_eq!(fallback_char_to_unicode(0x20A3), "\u{20A3}"); // Franc
-        assert_eq!(fallback_char_to_unicode(0x20A4), "\u{20A4}"); // Lira
-        assert_eq!(fallback_char_to_unicode(0x20A9), "\u{20A9}"); // Won
-        assert_eq!(fallback_char_to_unicode(0x20AA), "\u{20AA}"); // Shekel
-        assert_eq!(fallback_char_to_unicode(0x20AB), "\u{20AB}"); // Dong
-        assert_eq!(fallback_char_to_unicode(0x20B9), "\u{20B9}"); // Rupee
+        assert_eq!(text_decode::fallback_char_to_unicode(0x20A3), "\u{20A3}"); // Franc
+        assert_eq!(text_decode::fallback_char_to_unicode(0x20A4), "\u{20A4}"); // Lira
+        assert_eq!(text_decode::fallback_char_to_unicode(0x20A9), "\u{20A9}"); // Won
+        assert_eq!(text_decode::fallback_char_to_unicode(0x20AA), "\u{20AA}"); // Shekel
+        assert_eq!(text_decode::fallback_char_to_unicode(0x20AB), "\u{20AB}"); // Dong
+        assert_eq!(text_decode::fallback_char_to_unicode(0x20B9), "\u{20B9}"); // Rupee
     }
 
     // ========================================================================

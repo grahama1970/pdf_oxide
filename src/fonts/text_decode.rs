@@ -4,7 +4,7 @@
 //! text extraction and rendering components. It handles the complexity of PDF font
 //! encodings, including Type0/CID fonts with multi-byte character codes.
 
-use crate::fonts::FontInfo;
+use crate::fonts::{FontInfo, Encoding};
 
 /// A decoded glyph with its character code, Unicode representation, and byte consumption.
 #[derive(Debug, Clone, PartialEq)]
@@ -287,8 +287,8 @@ pub fn get_byte_mode(font: Option<&FontInfo>) -> ByteMode {
     if let Some(font) = font {
         if font.subtype == "Type0" {
             match &font.encoding {
-                crate::fonts::Encoding::Identity => ByteMode::TwoByte,
-                crate::fonts::Encoding::Standard(name) => {
+                Encoding::Identity => ByteMode::TwoByte,
+                Encoding::Standard(name) => {
                     if (name.contains("Identity") && !name.contains("OneByteIdentity"))
                         || name.contains("UCS2")
                         || name.contains("UTF16")
