@@ -1139,59 +1139,19 @@ SCILLM_URL = os.environ.get("SCILLM_URL", "http://localhost:4001")
 SCILLM_KEY = os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123")
 _SCILLM_HEADERS = {"Authorization": f"Bearer {SCILLM_KEY}", "Content-Type": "application/json"}
 
-_IR_PROMPT = """You are a PDF structure analyst. Analyze this PDF window and produce a structured IR (intermediate representation) as JSON.
+_IR_PROMPT = """Write a complete Python script using ReportLab that recreates the structural layout of this PDF page.
 
-The IR describes extraction-relevant structure — not pixel-perfect layout. It must match this schema exactly:
+The script must:
+1. Use reportlab.lib.pagesizes.letter (612x792 pts)
+2. Use reportlab.pdfgen.canvas for text positioning with drawString()
+3. Use reportlab.platypus.Table with TableStyle for any tables — include ALL cell text, do not skip rows or summarize
+4. Match font sizes approximately (headers larger, body ~10-12pt)
+5. Place all visible content: headers, body paragraphs, tables, captions, footnotes, page numbers, running headers/footers
+6. For tables: use bold/background for header rows, GRID lines for ruled tables
+7. Save to '{output_path}'
 
-{{
-  "window_id": "{window_id}",
-  "source_pages": {source_pages},
-  "source_pdf": "{source_pdf}",
-  "family_id": "{family_id}",
-  "elements": [
-    {{
-      "id": "<window_id>.P<page>.{{type}}_{{seq:03d}}",
-      "type": "header"|"body"|"table"|"figure"|"caption"|"list"|"footnote"|"equation"|"page_number"|"running_header"|"running_footer",
-      "bbox": [x0, y0, x1, y1],
-      "text": "<exact text content>",
-      "header_level": 0-4,
-      "page": <1-based page number from source_pages>,
-      "reading_order": <sequential int>,
-      "font_size": <approximate pt size>,
-      "is_bold": true|false,
-      "numbering": "<section number if applicable, else null>"
-    }}
-  ],
-  "tables": [
-    {{
-      "table_id": "<window_id>.TBL_{{seq:03d}}",
-      "page_start": <page>,
-      "page_end": <page>,
-      "bbox_per_page": {{<page>: [x0, y0, x1, y1]}},
-      "caption": "<table caption or null>",
-      "n_header_rows": <int>,
-      "n_rows": <int>,
-      "n_cols": <int>,
-      "cells": [
-        {{"row": 0, "col": 0, "rowspan": 1, "colspan": 1, "text": "<cell text>", "role": "header"|"data"}}
-      ],
-      "continuation": {{"is_continued": false, "continued_from": null}},
-      "style": "ruled"|"light_ruled"|"unruled"
-    }}
-  ],
-  "relationships": [
-    {{"type": "caption_of", "source": "<caption_element_id>", "target": "<figure_or_table_id>"}}
-  ],
-  "reading_order": ["<element_id_1>", "<element_id_2>", "..."]
-}}
-
-Rules:
-- Use bbox coordinates from the extracted spans where available (letter page = 612x792 pts)
-- Include ALL text content from the page — headers, body, lists, footnotes, page numbers
-- For tables: include EVERY cell with exact text, mark header rows with role="header"
-- If a table spans pages, set page_start != page_end and is_continued=true
-- reading_order must list element IDs in logical reading sequence
-- Output ONLY valid JSON, no explanation or markdown fences."""
+Do not skip any rows. Do not summarize table content. Include every cell.
+Output ONLY the Python code, no explanation."""
 
 
 import re as _re
@@ -1245,12 +1205,11 @@ async def _call_gemini_ir(
     source_pages = window_info["source_pages"]
     source_pdf = window_info.get("pdf_path", "")
 
-    prompt_text = _IR_PROMPT.format(
-        window_id=wid,
-        source_pages=json.dumps(source_pages),
-        source_pdf=source_pdf,
-        family_id=family_id,
-    )
+    win_dir = os.path.join(output_dir, wid)
+    os.makedirs(win_dir, exist_ok=True)
+    synthetic_path = os.path.join(win_dir, "synthetic.pdf")
+
+    prompt_text = _IR_PROMPT.format(output_path=synthetic_path)
 
     content_parts: list[dict] = [{"type": "text", "text": prompt_text}]
 
