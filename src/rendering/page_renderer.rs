@@ -3,11 +3,12 @@
 use crate::content::{parse_content_stream, GraphicsState, GraphicsStateStack, Matrix, Operator};
 use crate::document::PdfDocument;
 use crate::error::{Error, Result};
+use crate::fonts::FontInfo;
 use crate::object::Object;
 
+use std::collections::HashMap;
+use std::sync::Arc;
 use tiny_skia::{Color, FillRule, PathBuilder, Pixmap, PixmapPaint, Transform};
-
-use super::path_rasterizer::PathRasterizer;
 use super::text_rasterizer::TextRasterizer;
 
 /// Output image format.
@@ -81,20 +82,6 @@ pub struct RenderedImage {
     pub height: u32,
     /// Output format
     pub format: ImageFormat,
-}
-
-impl RenderedImage {
-    /// Save the image to a file.
-    pub fn save(&self, path: impl AsRef<std::path::Path>) -> Result<()> {
-        std::fs::write(path.as_ref(), &self.data).map_err(|e| Error::Io(std::io::Error::other(e)))
-    }
-
-    /// Get the image data as bytes.
-    pub fn as_bytes(&self) -> &[u8] {
-        &self.data
-    }
-}
-
 /// Page renderer that converts PDF pages to raster images.
 pub struct PageRenderer {
     options: RenderOptions,
@@ -102,16 +89,18 @@ pub struct PageRenderer {
     text_rasterizer: TextRasterizer,
 }
 
-impl PageRenderer {
-    /// Create a new page renderer with the given options.
-    pub fn new(options: RenderOptions) -> Self {
-        Self {
-            options,
-            path_rasterizer: PathRasterizer::new(),
-            text_rasterizer: TextRasterizer::new(),
-        }
+/// Render state that tracks current font and other rendering context.
+struct RenderState {
+    /// Currently active font (set by Tf operator)
+    current_font: Option<Arc<FontInfo>>,
+}
+    /// Get the image data as bytes.
+    pub fn as_bytes(&self) -> &[u8] {
+        &self.data
     }
+}
 
+/// Page renderer that converts PDF pages to raster images.
     /// Render a page to an image.
     pub fn render_page(&mut self, doc: &mut PdfDocument, page_num: usize) -> Result<RenderedImage> {
         // Get page dimensions
@@ -144,6 +133,74 @@ impl PageRenderer {
 
         // Parse content stream
         let operators = parse_content_stream(&content_data)?;
+
+        // Get page resources for fonts and images
+        let resources = doc.get_page_resources(page_num)?;
+
+        // CRITICAL: Pre-resolve ALL fonts BEFORE execute_operators to avoid borrow conflicts
+        let resolved_fonts = self.resolve_fonts_from_resources(&resources, doc)?;
+
+        // Execute operators and render
+        self.execute_operators(&mut pixmap, transform, &operators, doc, page_num, &resources, &resolved_fonts)?;
+        // Create transform: PDF coordinates to pixel coordinates
+        // PDF origin is bottom-left, we need to flip Y axis
+        let transform = Transform::from_scale(scale, -scale)
+            .post_translate(0.0, height as f32)
+            .post_translate(-media_box.x * scale, media_box.y * scale);
+
+        // Get page content stream
+        let content_data = doc.get_page_content_data(page_num)?;
+
+    /// Pre-resolve all fonts from the page's /Font resource dictionary.
+    /// This avoids &mut PdfDocument borrow conflicts during operator execution.
+    fn resolve_fonts_from_resources(
+        &self,
+        resources: &Object,
+        doc: &mut PdfDocument,
+    ) -> Result<HashMap<String, Arc<FontInfo>>> {
+        let mut resolved_fonts = HashMap::new();
+
+        if let Object::Dictionary(res_dict) = resources {
+            if let Some(Object::Dictionary(fonts_dict)) = res_dict.get("Font") {
+                for (font_name, font_ref) in fonts_dict {
+                    match self.resolve_single_font(font_ref, doc) {
+                        Ok(font_info) => {
+                            resolved_fonts.insert(font_name.clone(), Arc::new(font_info));
+                        }
+                        Err(e) => {
+                            log::warn!("Failed to resolve font '{}': {}", font_name, e);
+                            // Continue with other fonts - missing fonts are handled gracefully
+                        }
+                    }
+                }
+            }
+        }
+
+        Ok(resolved_fonts)
+    }
+
+    /// Resolve a single font reference to FontInfo.
+    fn resolve_single_font(&self, font_ref: &Object, doc: &mut PdfDocument) -> Result<FontInfo> {
+        // Handle both direct dictionary fonts and indirect reference fonts
+        let font_obj = if let Some(obj_ref) = font_ref.as_reference() {
+            // Indirect reference - resolve through document
+            doc.resolve_object(obj_ref)?
+        } else {
+    /// Execute content stream operators and render to pixmap.
+    fn execute_operators(
+        &mut self,
+        pixmap: &mut Pixmap,
+        base_transform: Transform,
+        operators: &[Operator],
+        doc: &mut PdfDocument,
+        page_num: usize,
+        resources: &Object,
+        resolved_fonts: &HashMap<String, Arc<FontInfo>>,
+    ) -> Result<()> {
+        let mut gs_stack = GraphicsStateStack::new();
+        let mut render_state = RenderState {
+            current_font: None,
+        };
 
         // Get page resources for fonts and images
         let resources = doc.get_page_resources(page_num)?;
@@ -459,6 +516,13 @@ impl PageRenderer {
                     let gs = gs_stack.current_mut();
                     gs.font_name = Some(font.clone());
                     gs.font_size = *size;
+                    
+                    // Look up the font in the pre-resolved map and store it as current_font
+                    render_state.current_font = resolved_fonts.get(font).cloned();
+                    
+                    if render_state.current_font.is_none() {
+                        log::warn!("Font '{}' not found in resolved fonts", font);
+                    }
                 },
                 Operator::Tc { char_space } => {
                     gs_stack.current_mut().char_space = *char_space;
@@ -485,10 +549,9 @@ impl PageRenderer {
                         let clip = clip_stack.last().and_then(|c| c.as_ref());
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
+                        let current_font = render_state.current_font.as_ref().map(|f| f.as_ref());
                         self.text_rasterizer
-                            .render_text(pixmap, text, transform, gs, resources, doc, clip)?;
-
-                        // Advance text position per PDF spec §9.4.4:
+                            .render_text(pixmap, text, transform, gs, resources, doc, clip, current_font)?;
                         // tx = ((w0 - Tj/1000) × Tfs + Tc + Tw) × Th
                         // Using w0=600 (default glyph width) for each character
                         let gs_mut = gs_stack.current_mut();
