@@ -1213,13 +1213,14 @@ async def _call_gemini_ir(
 
     content_parts: list[dict] = [{"type": "text", "text": prompt_text}]
 
-    # Send window mini-PDF (not the full source) via Gemini inlineData
+    # Send window mini-PDF via image_url data URI (works with both Claude and Gemini via scillm)
     pdf_path = window_info.get("window_pdf_path") or window_info.get("pdf_path", "")
     if pdf_path and os.path.exists(pdf_path):
         with open(pdf_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode("ascii")
         content_parts.append({
-            "inlineData": {"mimeType": "application/pdf", "data": b64},
+            "type": "image_url",
+            "image_url": {"url": f"data:application/pdf;base64,{b64}"},
         })
 
     # Add span context
@@ -1314,7 +1315,7 @@ async def _call_gemini_ir(
 def generate_window_ir(
     window_info: dict,
     output_dir: str,
-    model: str = "text-gemini-3",
+    model: str = "claude-sonnet-4-6",
     family_id: str = "unknown",
 ) -> dict:
     """Generate structured IR for a single window via Gemini."""
@@ -1334,7 +1335,7 @@ def generate_window_ir(
 async def _generate_ir_batch_async(
     rendered_windows: list[dict],
     output_dir: str,
-    model: str = "text-gemini-3",
+    model: str = "claude-sonnet-4-6",
     family_id: str = "unknown",
     concurrency: int = 4,
 ) -> dict:
@@ -1386,7 +1387,7 @@ async def _generate_ir_batch_async(
 def generate_ir_batch(
     rendered_windows: list[dict],
     output_dir: str,
-    model: str = "text-gemini-3",
+    model: str = "claude-sonnet-4-6",
     family_id: str = "unknown",
     concurrency: int = 4,
 ) -> dict:
@@ -1587,7 +1588,7 @@ def clone_pdf(
     max_windows: int = 20,
     seed: int = 42,
     search_presets_flag: bool = False,
-    model: str = "text-gemini-3",
+    model: str = "claude-sonnet-4-6",
 ) -> dict:
     """Full clone pipeline: profile → sample → render → IR → render_ir → truth → manifest → score."""
     os.makedirs(output_dir, exist_ok=True)
@@ -1850,7 +1851,7 @@ def render_cmd(
 def generate_ir_cmd(
     rendered_dir: str = typer.Argument(..., help="Path to a rendered window directory"),
     output_json: bool = typer.Option(False, "--json", is_flag=True),
-    model: str = typer.Option("text-gemini-3", "--model", help="scillm model name"),
+    model: str = typer.Option("claude-sonnet-4-6", "--model", help="scillm model name"),
 ) -> None:
     """Generate structured IR for a single rendered window via Gemini."""
     # Reconstruct window_info from directory contents
@@ -1915,7 +1916,7 @@ def clone_cmd(
     max_windows: int = typer.Option(20, "--max-windows", help="Maximum windows"),
     seed: int = typer.Option(42, "--seed", help="Random seed"),
     do_search_presets: bool = typer.Option(False, "--search-presets", is_flag=True),
-    model: str = typer.Option("text-gemini-3", "--model", help="scillm model name"),
+    model: str = typer.Option("claude-sonnet-4-6", "--model", help="scillm model name"),
 ) -> None:
     """Full clone pipeline: profile → sample → render → IR → synthetic → score."""
     result = clone_pdf(
