@@ -1248,103 +1248,62 @@ async def _call_gemini_ir(
     body = resp.json()
 
     raw_text = body["choices"][0]["message"]["content"]
-    ir_dict = _extract_json(raw_text)
 
-    valid, errors = validate_ir(ir_dict)
-    if not valid:
-        # Retry once with error feedback
-        retry_parts = content_parts + [
-            {"type": "text", "text": f"Your previous response had validation errors: {errors}. Fix them and return valid JSON only."}
-        ]
-        retry_payload = {**payload, "messages": [{"role": "user", "content": retry_parts}]}
-        resp2 = await client.post(
-            f"{SCILLM_URL}/v1/chat/completions",
-            headers=_SCILLM_HEADERS,
-            json=retry_payload,
-            timeout=120.0,
-        )
-        resp2.raise_for_status()
-        raw2 = resp2.json()["choices"][0]["message"]["content"]
-        ir_dict = _extract_json(raw2)
-        valid, errors = validate_ir(ir_dict)
-        if not valid:
-            raise ValueError(f"IR validation failed after retry: {errors}")
+    # Extract Python code from Gemini response (strip markdown fences)
+    code = raw_text.strip()
+    if code.startswith("```"):
+        code = code.split("\n", 1)[1] if "\n" in code else code[3:]
+    if code.endswith("```"):
+        code = code[: code.rfind("```")]
+    code = code.strip()
+    if code.startswith("python"):
+        code = code[6:].strip()
 
-    # Table fallback: if page signatures say tables exist but IR has none, retry with PDF
-    has_table_hint = window_info.get("has_table_hint", False)
-    ir_tables = ir_dict.get("tables", [])
-    if has_table_hint and not ir_tables:
-        logger.info(f"{wid}: table hint but 0 tables in IR — retrying with PDF for table extraction")
-        table_parts: list[dict] = []
-        # Send the window mini-PDF (not PNG — PNGs may have rendering issues)
-        fallback_pdf = window_info.get("window_pdf_path") or window_info.get("pdf_path", "")
-        if fallback_pdf and os.path.exists(fallback_pdf):
-            with open(fallback_pdf, "rb") as f:
-                pdf_b64 = base64.b64encode(f.read()).decode("ascii")
-            table_parts.append({
-                "inlineData": {"mimeType": "application/pdf", "data": pdf_b64},
-            })
-        if table_parts:
-            table_prompt = (
-                f"This page contains one or more tables. Extract ONLY the tables as JSON.\n"
-                f"Return a JSON object with a single key \"tables\" containing an array.\n"
-                f"Each table must have: table_id (use {wid}.TBL_001, TBL_002, etc), "
-                f"page_start, page_end (both = {source_pages[0]}), "
-                f"bbox_per_page ({{page: [x0,y0,x1,y1]}}), caption (or null), "
-                f"n_header_rows, n_rows, n_cols, "
-                f"cells (array of {{row, col, rowspan, colspan, text, role}}), "
-                f"continuation ({{is_continued: false}}), style (ruled/light_ruled/unruled).\n"
-                f"Include EVERY cell with exact text. Output ONLY valid JSON."
-            )
-            table_content = [{"type": "text", "text": table_prompt}] + table_parts
-            table_payload = {
-                "model": model,
-                "messages": [{"role": "user", "content": table_content}],
-                "response_format": {"type": "json_object"},
-            }
-            try:
-                tresp = await client.post(
-                    f"{SCILLM_URL}/v1/chat/completions",
-                    headers=_SCILLM_HEADERS,
-                    json=table_payload,
-                    timeout=120.0,
-                )
-                tresp.raise_for_status()
-                traw = tresp.json()["choices"][0]["message"]["content"]
-                tdata = _extract_json(traw)
-                extracted_tables = tdata.get("tables", [])
-                # Normalize: Gemini may return headers/rows instead of cells format
-                for ti, tbl in enumerate(extracted_tables):
-                    if "cells" not in tbl and ("headers" in tbl or "rows" in tbl):
-                        headers = tbl.get("headers", [])
-                        rows = tbl.get("rows", [])
-                        cells = []
-                        for ci, h in enumerate(headers):
-                            cells.append({"row": 0, "col": ci, "rowspan": 1, "colspan": 1, "text": str(h), "role": "header"})
-                        for ri, row in enumerate(rows):
-                            for ci, val in enumerate(row if isinstance(row, list) else [row]):
-                                cells.append({"row": ri + 1, "col": ci, "rowspan": 1, "colspan": 1, "text": str(val), "role": "data"})
-                        tbl["cells"] = cells
-                        tbl.setdefault("n_rows", len(rows) + 1)
-                        tbl.setdefault("n_cols", max(len(headers), max((len(r) for r in rows if isinstance(r, list)), default=0)))
-                        tbl.setdefault("n_header_rows", 1 if headers else 0)
-                        tbl.setdefault("table_id", f"{wid}.TBL_{ti + 1:03d}")
-                        tbl.setdefault("page_start", source_pages[0])
-                        tbl.setdefault("page_end", source_pages[-1])
-                        tbl.setdefault("style", "ruled")
-                        tbl.setdefault("continuation", {"is_continued": False})
-                        tbl.setdefault("bbox_per_page", {})
-                if extracted_tables:
-                    ir_dict["tables"] = extracted_tables
-                    logger.info(f"{wid}: table fallback extracted {len(extracted_tables)} tables ({sum(len(t.get('cells',[])) for t in extracted_tables)} cells)")
-                else:
-                    logger.warning(f"{wid}: table fallback returned 0 tables. Raw keys: {list(tdata.keys())}")
-            except (httpx.HTTPStatusError, httpx.RequestError, json.JSONDecodeError, ValueError) as exc:
-                logger.warning(f"{wid}: table fallback failed: {type(exc).__name__}: {exc}")
+    # Save the draft ReportLab code
+    code_path = os.path.join(win_dir, "reportlab_code.py")
+    with open(code_path, "w", encoding="utf-8") as f:
+        f.write(code)
 
-    # Save IR
-    win_dir = os.path.join(output_dir, wid)
-    os.makedirs(win_dir, exist_ok=True)
+    # Single-shot execution — just verify the draft runs
+    import subprocess as _sp
+    exec_result = _sp.run(
+        [".venv/bin/python", code_path],
+        capture_output=True, text=True, timeout=30, cwd=os.getcwd(),
+    )
+
+    status = {
+        "status": "success" if exec_result.returncode == 0 else "draft_failed",
+        "synthetic_exists": os.path.exists(synthetic_path),
+        "synthetic_size": os.path.getsize(synthetic_path) if os.path.exists(synthetic_path) else 0,
+    }
+    if exec_result.returncode != 0:
+        status["error"] = exec_result.stderr[:500]
+        logger.warning(f"{wid}: draft code failed — needs /pdf-lab iteration: {exec_result.stderr[:100]}")
+
+    with open(os.path.join(win_dir, "status.json"), "w") as f:
+        json.dump(status, f)
+
+    if os.path.exists(synthetic_path):
+        logger.info(f"{wid}: draft synthetic PDF {os.path.getsize(synthetic_path)} bytes")
+    else:
+        logger.warning(f"{wid}: no synthetic PDF — draft needs iteration via /pdf-lab")
+
+    # Return metadata for downstream (truth compilation skipped for code mode)
+    ir_dict = {
+        "window_id": wid,
+        "source_pages": source_pages,
+        "source_pdf": source_pdf,
+        "family_id": family_id,
+        "elements": [],
+        "tables": [],
+        "relationships": [],
+        "reading_order": [],
+        "_mode": "reportlab_code",
+        "_code_path": code_path,
+        "_synthetic_path": synthetic_path,
+        "_draft_status": status["status"],
+    }
+
     ir_path = os.path.join(win_dir, "ir.json")
     with open(ir_path, "w", encoding="utf-8") as f:
         json.dump(ir_dict, f, indent=2)
@@ -1669,24 +1628,33 @@ def clone_pdf(
         with open(ir_path, "r", encoding="utf-8") as f:
             ir = json.load(f)
 
-        # Render synthetic PDF
-        synthetic_path = os.path.join(win_dir, "synthetic.pdf")
-        try:
-            render_ir_to_pdf(ir, synthetic_path)
-        except (ValueError, ImportError, OSError) as exc:
-            logger.warning(f"Failed to render synthetic PDF for {wid}: {exc}")
-            continue
+        mode = ir.get("_mode", "ir_json")
 
-        # Compile truth
-        truth_doc = compile_document_truth(ir)
-        with open(os.path.join(win_dir, "truth_document.json"), "w") as f:
-            json.dump(truth_doc, f, indent=2)
+        if mode == "reportlab_code":
+            # ReportLab code mode — synthetic PDF already produced by Gemini code execution
+            synthetic_path = ir.get("_synthetic_path", os.path.join(win_dir, "synthetic.pdf"))
+            if os.path.exists(synthetic_path):
+                windows_succeeded += 1
+            else:
+                logger.warning(f"{wid}: reportlab_code mode but no synthetic PDF — needs /pdf-lab iteration")
+        else:
+            # IR JSON mode — render from IR and compile truth
+            synthetic_path = os.path.join(win_dir, "synthetic.pdf")
+            try:
+                render_ir_to_pdf(ir, synthetic_path)
+            except (ValueError, ImportError, OSError) as exc:
+                logger.warning(f"Failed to render synthetic PDF for {wid}: {exc}")
+                continue
 
-        truth_tbl = compile_table_truth(ir)
-        with open(os.path.join(win_dir, "truth_tables.json"), "w") as f:
-            json.dump(truth_tbl, f, indent=2)
+            truth_doc = compile_document_truth(ir)
+            with open(os.path.join(win_dir, "truth_document.json"), "w") as f:
+                json.dump(truth_doc, f, indent=2)
 
-        windows_succeeded += 1
+            truth_tbl = compile_table_truth(ir)
+            with open(os.path.join(win_dir, "truth_tables.json"), "w") as f:
+                json.dump(truth_tbl, f, indent=2)
+
+            windows_succeeded += 1
 
     # 6. Build manifest
     manifest = build_test_manifest(profile, sampling_plan, output_dir)
