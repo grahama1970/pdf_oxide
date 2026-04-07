@@ -272,8 +272,8 @@ pub fn fallback_char_to_unicode(char_code: u32) -> String {
 }
 
 /// Byte grouping mode for CID font character code decoding.
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum ByteMode {
-enum ByteMode {
     /// Single-byte codes (simple fonts, some predefined CMaps)
     OneByte,
     /// Always 2-byte codes (Identity-H/V, UCS2)
@@ -282,8 +282,8 @@ enum ByteMode {
     ShiftJIS,
 }
 
+/// Get byte grouping mode for a font.
 pub fn get_byte_mode(font: Option<&FontInfo>) -> ByteMode {
-fn get_byte_mode(font: Option<&FontInfo>) -> ByteMode {
     if let Some(font) = font {
         if font.subtype == "Type0" {
             match &font.encoding {
