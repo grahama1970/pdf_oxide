@@ -512,15 +512,13 @@ mod tests {
     #[test]
     #[test]
     fn test_fallback_char_to_unicode_private_use_area() {
+    #[test]
+    fn test_fallback_char_to_unicode_private_use_area() {
         let result = fallback_char_to_unicode(0xE000);
         // Should be a valid character in the Private Use Area
         assert_eq!(result.chars().count(), 1);
         assert_eq!(result.chars().next().unwrap() as u32, 0xE000);
     }
-    }
-
-    #[test]
-    fn test_decode_text_to_unicode_no_font_latin1() {
         let result = decode_text_to_unicode(b"Hello", None);
         assert_eq!(result, "Hello");
     }
