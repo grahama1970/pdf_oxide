@@ -12,6 +12,7 @@ use crate::content::parse_content_stream_text_only;
 use crate::error::Result;
 use crate::extract_log_debug;
 use crate::fonts::FontInfo;
+use crate::fonts::text_decode;
 use crate::geometry::Rect;
 use crate::layout::{Color, FontWeight, TextChar, TextSpan};
 use crate::object::{Object, ObjectRef};
@@ -1477,7 +1478,7 @@ impl TjBuffer {
         }
 
         // Slow path: Type0 (CID) fonts or no font — use full decode function
-        let unicode_text = decode_text_to_unicode(bytes, font);
+        let unicode_text = text_decode::decode_text_to_unicode(bytes, font);
         self.unicode.push_str(&unicode_text);
 
         Ok(())
