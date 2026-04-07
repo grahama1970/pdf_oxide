@@ -1,3 +1,4 @@
+# Smoke test comment for code-runner verification
 """Full document survey — scans every page to estimate content locations.
 
 Returns a structured dict with table pages, figure pages, equation pages,
