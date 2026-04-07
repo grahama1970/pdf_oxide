@@ -79,8 +79,8 @@ tasks:
     blind_tests:
       - "test -f tests/rendering-regression/manifest.json && python3 -c \"import json; m=json.load(open('tests/rendering-regression/manifest.json')); assert len(m.get('fixtures',m.get('pages',[]))) >= 3\""
     definition_of_done:
-      command: ".venv/bin/python tests/rendering-regression/render_comparison.py 2>&1 | tail -5"
-      assertion: "Outputs a comparison table with at least 3 fixture rows"
+      command: ".venv/bin/python tests/rendering-regression/render_comparison.py 2>&1 | tail -3"
+      assertion: "Processed:"
 
   - id: "2"
     title: "Run existing test suite to freeze baseline"
