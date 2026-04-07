@@ -14,7 +14,7 @@ metadata:
     source: "local"
 
 execution:
-  max_concurrency: 2  # table and figure tasks can run in parallel
+  max_concurrency: 1  # table and figure tasks can run in parallel
 
 capability_overlap:
   - "/extract-tables uses Camelot — pdf_oxide has its own Rust table detector, no overlap"
