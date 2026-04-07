@@ -48,7 +48,7 @@ tasks:
     title: "Create rendering-regression fixture directory with test PDFs"
     lane: "0"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: []
     prompt: |
@@ -98,7 +98,7 @@ tasks:
     title: "Extract shared pdf text decode module from extractors/text.rs"
     lane: "1"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: ["2"]
     prompt: |
@@ -178,7 +178,7 @@ tasks:
     title: "Store resolved FontInfo in renderer GraphicsState on Tf operator"
     lane: "2"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: ["4"]
     prompt: |
@@ -225,7 +225,7 @@ tasks:
     title: "Correct resource scoping for Form XObject font resolution"
     lane: "3"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: ["5"]
     prompt: |
@@ -268,7 +268,7 @@ tasks:
     title: "Text rasterizer decodes bytes through shared decoder before glyph lookup"
     lane: "4"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: ["6"]
     prompt: |
@@ -342,7 +342,7 @@ tasks:
     title: "Use PDF text positioning instead of fallback font advances"
     lane: "5"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: ["8"]
     prompt: |
