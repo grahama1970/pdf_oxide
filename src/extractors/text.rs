@@ -1462,7 +1462,7 @@ impl TjBuffer {
                                 }
                             }
                         } else {
-                            let fb = fallback_char_to_unicode(byte as u32);
+                            let fb = text_decode::fallback_char_to_unicode(byte as u32);
                             if fb != "\u{FFFD}" {
                                 for ch in fb.chars() {
                                     if ch >= '\x20' || ch == '\t' || ch == '\n' || ch == '\r' {

@@ -40,9 +40,7 @@ pub use encoding::UnicodeEncoder;
 pub use encoding_normalizer::EncodingNormalizer;
 pub use font_dict::{CIDSystemInfo, CIDToGIDMap, Encoding, FontInfo};
 pub use font_subsetter::FontSubsetter;
-pub use non_text_detection::{
-pub use truetype_parser::{FontMetrics, TrueTypeError, TrueTypeFont, TrueTypeResult};
-pub use text_decode::{decode_pdf_text, decode_text_to_unicode, DecodedGlyph};
-};
+pub use non_text_detection::{NonTextDetector, NonTextDetectorConfig};
+pub use text_decode::{decode_pdf_text, decode_text_to_unicode, DecodedGlyph, fallback_char_to_unicode, get_byte_mode, ByteMode, TextCharIter};
 pub use truetype_cmap::TrueTypeCMap;
 pub use truetype_parser::{FontMetrics, TrueTypeError, TrueTypeFont, TrueTypeResult};

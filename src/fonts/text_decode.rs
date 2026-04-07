@@ -131,7 +131,7 @@ fn decode_latin1_fallback(bytes: &[u8], glyphs: &mut Vec<DecodedGlyph>) {
 /// This function provides Unicode mappings for common characters that may not be
 /// properly mapped in font dictionaries, including punctuation, mathematical
 /// operators, Greek letters, and currency symbols.
-fn fallback_char_to_unicode(char_code: u32) -> String {
+pub fn fallback_char_to_unicode(char_code: u32) -> String {
     match char_code {
         // ==================================================================================
         // PRIORITY 1: Common Punctuation (most frequently failing)
@@ -272,7 +272,7 @@ fn fallback_char_to_unicode(char_code: u32) -> String {
 }
 
 /// Byte grouping mode for CID font character code decoding.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ByteMode {
 enum ByteMode {
     /// Single-byte codes (simple fonts, some predefined CMaps)
     OneByte,
@@ -282,7 +282,7 @@ enum ByteMode {
     ShiftJIS,
 }
 
-/// Get byte grouping mode for a font.
+pub fn get_byte_mode(font: Option<&FontInfo>) -> ByteMode {
 fn get_byte_mode(font: Option<&FontInfo>) -> ByteMode {
     if let Some(font) = font {
         if font.subtype == "Type0" {
@@ -322,14 +322,14 @@ fn get_byte_mode(font: Option<&FontInfo>) -> ByteMode {
 }
 
 /// Iterator over characters in a PDF string based on font encoding.
-struct TextCharIter<'a> {
+pub struct TextCharIter<'a> {
     bytes: &'a [u8],
     byte_mode: ByteMode,
     index: usize,
 }
 
 impl<'a> TextCharIter<'a> {
-    fn new(bytes: &'a [u8], _font: Option<&FontInfo>, byte_mode: ByteMode) -> Self {
+    pub fn new(bytes: &'a [u8], _font: Option<&FontInfo>, byte_mode: ByteMode) -> Self {
         Self {
             bytes,
             byte_mode,
