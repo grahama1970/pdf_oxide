@@ -1,0 +1,416 @@
+version: 1
+kind: orchestrate-plan
+repo_root: "/home/graham/workspace/experiments/pdf_oxide"
+
+metadata:
+  title: "render_page() Text Rendering — Shared Decoder + Font Resolution"
+  goal: "Make render_page() produce readable text by reusing extraction's font-decoding semantics"
+  plan_type: code
+  repo_root: "/home/graham/workspace/experiments/pdf_oxide"
+  created: "2026-04-07"
+  primary_persona:
+    name: "Graham"
+    role: "pdf_oxide maintainer"
+    source: "local"
+
+execution:
+  max_concurrency: 1  # strictly sequential — each phase depends on prior green tests
+
+capability_overlap:
+  - "/pdf-screenshot uses pdftoppm externally — does NOT use pdf_oxide render_page"
+  - "/create-pdf-fixture creates ReportLab PDFs for extraction testing — useful for Phase 0 fixtures"
+  - "/extract-pdf wraps pdf_oxide extraction — no rendering overlap"
+  - "No existing skill fixes pdf_oxide Rust rendering internals"
+
+questions_blockers:
+  - "None"
+
+lanes:
+  - id: "0"
+    label: "Phase 0: Baseline Fixtures"
+  - id: "1"
+    label: "Phase 1: Shared Text Decode Module"
+  - id: "2"
+    label: "Phase 2: FontInfo in Renderer"
+  - id: "3"
+    label: "Phase 3: Form XObject Resource Scoping"
+  - id: "4"
+    label: "Phase 4: Rasterizer Consumes Decoded Text"
+  - id: "5"
+    label: "Phase 5: PDF Positioning Metrics"
+  - id: "6"
+    label: "Stop Gate: Readable Text Milestone"
+
+tasks:
+  # ── Phase 0: Baseline Fixtures ──────────────────────────────────────
+
+  - id: "1"
+    title: "Create rendering-regression fixture directory with test PDFs"
+    lane: "0"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: []
+    prompt: |
+      Create tests/rendering-regression/ with:
+      1. A manifest.json listing fixture PDFs and what each tests
+      2. A script render_comparison.py that renders each fixture page with both
+         pdf_oxide render_page AND pdftoppm, saving outputs side-by-side
+      3. A script score_renders.py that computes non-white pixel density in
+         known text regions and reports pass/fail per fixture
+
+      Fixture set (copy or symlink):
+      - nist_sp_800_171.pdf page 11 (text-only prose — currently invisible)
+      - nist_sp_800_171.pdf page 38 (table page — black rectangles)
+      - A simple handcrafted PDF via ReportLab with known text at known positions
+        (create this inline — "Hello World" at specific coords)
+
+      The comparison script must work with: .venv/bin/python tests/rendering-regression/render_comparison.py
+      It should output a summary table showing pdf_oxide vs pdftoppm text density per fixture.
+    allowlist:
+      - "tests/rendering-regression/manifest.json"
+      - "tests/rendering-regression/render_comparison.py"
+      - "tests/rendering-regression/score_renders.py"
+      - "tests/rendering-regression/create_fixtures.py"
+    read_context:
+      - "src/rendering/page_renderer.rs"
+      - "src/python.rs"
+      - "RENDER_PAGE_TODO.md"
+    blind_tests:
+      - "test -f tests/rendering-regression/manifest.json && python3 -c \"import json; m=json.load(open('tests/rendering-regression/manifest.json')); assert len(m.get('fixtures',m.get('pages',[]))) >= 3\""
+    definition_of_done:
+      command: ".venv/bin/python tests/rendering-regression/render_comparison.py 2>&1 | tail -5"
+      assertion: "Outputs a comparison table with at least 3 fixture rows"
+
+  - id: "2"
+    title: "Run existing test suite to freeze baseline"
+    lane: "0"
+    runner: "local"
+    depends_on: ["1"]
+    command: "cd /home/graham/workspace/experiments/pdf_oxide && make test 2>&1 | tail -3"
+    definition_of_done:
+      command: "make test 2>&1 | tail -1"
+      assertion: "passed"
+
+  # ── Phase 1: Shared Text Decode Module ──────────────────────────────
+
+  - id: "3"
+    title: "Extract shared pdf text decode module from extractors/text.rs"
+    lane: "1"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["2"]
+    prompt: |
+      Create src/fonts/text_decode.rs — a shared text decoding module that both
+      extraction and rendering can use.
+
+      Move/wrap from src/extractors/text.rs:
+      - decode_text_to_unicode() (line 1743)
+      - Any helpers it needs for simple font byte iteration
+      - Any helpers for Type0/CID 2-byte iteration
+
+      Create these public types:
+      ```rust
+      pub struct DecodedGlyph {
+          pub char_code: u32,
+          pub unicode: String,
+          pub bytes_consumed: usize,
+      }
+
+      pub fn decode_pdf_text(bytes: &[u8], font: Option<&FontInfo>) -> Vec<DecodedGlyph>
+      ```
+
+      Rules:
+      - FontInfo::char_to_unicode() at src/fonts/font_dict.rs:1855 is the core primitive — call it
+      - For Type0 fonts (font.subtype == "Type0"), consume 2 bytes at a time
+      - For simple fonts, consume 1 byte at a time
+      - Fallback: if no font, treat bytes as latin-1
+      - The extraction code in text.rs must keep producing identical results — update it to call
+        the shared module instead of its own inline decode logic
+      - Add mod text_decode to src/fonts/mod.rs
+
+      CRITICAL: All 4491 lib tests must still pass after this refactor.
+    allowlist:
+      - "src/fonts/text_decode.rs"
+      - "src/fonts/mod.rs"
+      - "src/extractors/text.rs"
+    read_context:
+      - "src/fonts/font_dict.rs"
+      - "src/extractors/text.rs"
+      - "RENDER_PAGE_TODO.md"
+    blind_tests:
+      - "grep -q 'pub fn decode_pdf_text' src/fonts/text_decode.rs"
+      - "grep -q 'mod text_decode' src/fonts/mod.rs"
+    definition_of_done:
+      command: "cargo test --features rendering 2>&1 | tail -5"
+      assertion: "test result: ok"
+
+  - id: "4"
+    title: "Add unit tests for shared text decoder"
+    lane: "1"
+    runner: "code-runner"
+    backend: "text"
+    mode: "iterative"
+    depends_on: ["3"]
+    prompt: |
+      Add unit tests to src/fonts/text_decode.rs covering:
+      - Simple font bytes (ASCII range) → correct Unicode
+      - High bytes (0x80-0xFF) with no font → latin-1 fallback
+      - Control character filtering (bytes < 0x20 except tab/newline)
+      - Empty input → empty output
+      - Type0 font 2-byte iteration (mock FontInfo with subtype "Type0")
+
+      Use #[cfg(test)] mod tests at the bottom of text_decode.rs.
+    allowlist:
+      - "src/fonts/text_decode.rs"
+    read_context:
+      - "src/fonts/font_dict.rs"
+    blind_tests:
+      - "grep -c '#\\[test\\]' src/fonts/text_decode.rs | awk '{if ($1 >= 4) exit 0; else exit 1}'"
+    definition_of_done:
+      command: "cargo test text_decode --features rendering 2>&1 | tail -5"
+      assertion: "test result: ok"
+
+  # ── Phase 2: FontInfo in Renderer ───────────────────────────────────
+
+  - id: "5"
+    title: "Store resolved FontInfo in renderer GraphicsState on Tf operator"
+    lane: "2"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["4"]
+    prompt: |
+      In src/rendering/page_renderer.rs, make the renderer resolve real FontInfo
+      when the Tf operator is processed.
+
+      Changes needed:
+      1. Add `current_font: Option<Arc<FontInfo>>` to the renderer's graphics state
+         (or to a new RenderState struct alongside gs_stack)
+      2. BEFORE the execute_operators loop, eagerly resolve ALL fonts from
+         the page's /Font resource dictionary into a HashMap<String, Arc<FontInfo>>.
+         This avoids the &mut PdfDocument borrow conflict during operator execution.
+         Look at how src/extractors/text.rs resolves fonts for reference.
+      3. When Tf is processed, look up the font name in the pre-resolved map
+         and store it as current_font.
+      4. Pass current_font into text_rasterizer.render_text() and render_tj_array().
+         For now, the rasterizer can accept it as Option<&FontInfo> but not use it yet.
+
+      The font resolution must handle:
+      - Direct dictionary fonts
+      - Indirect reference fonts (resolve through doc)
+      - Missing fonts (log warning, continue with None)
+
+      CRITICAL: The pre-resolution happens BEFORE execute_operators borrows doc mutably.
+      All existing tests must still pass.
+    allowlist:
+      - "src/rendering/page_renderer.rs"
+      - "src/rendering/text_rasterizer.rs"
+    read_context:
+      - "src/extractors/text.rs"
+      - "src/fonts/font_dict.rs"
+      - "src/content/operators.rs"
+      - "RENDER_PAGE_TODO.md"
+    blind_tests:
+      - "grep -q 'current_font' src/rendering/page_renderer.rs"
+      - "grep -q 'FontInfo' src/rendering/page_renderer.rs"
+    definition_of_done:
+      command: "cargo test --features rendering 2>&1 | tail -5"
+      assertion: "test result: ok"
+
+  # ── Phase 3: Form XObject Resource Scoping ──────────────────────────
+
+  - id: "6"
+    title: "Correct resource scoping for Form XObject font resolution"
+    lane: "3"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["5"]
+    prompt: |
+      In src/rendering/page_renderer.rs, fix font resolution inside Form XObjects.
+
+      Currently when Do invokes a Form XObject, the renderer uses page-level resources.
+      Form XObjects can have their own /Resources dictionary with different fonts.
+
+      Changes needed:
+      1. Maintain an active resource stack in the renderer
+      2. When entering a Form XObject via Do:
+         - Read the form's /Resources dictionary
+         - Pre-resolve its /Font entries into a new font map
+         - Push the new font map onto the stack
+      3. When leaving the form: pop and restore the prior font map
+      4. Tf lookups must use the TOP of the resource stack, not the page-level map
+      5. Add recursion limit (max depth 10) and processed-XObject guard to prevent loops
+      6. If a form has no /Resources, inherit from parent (do not push empty)
+
+      Test: The NIST SP 800-171 page 11 text is inside Form XObjects.
+      After this fix, Tf inside those forms should resolve to real FontInfo objects.
+      Add an eprintln that logs "Resolved font {name} -> {subtype}" during Tf to verify.
+
+      All existing tests must still pass.
+    allowlist:
+      - "src/rendering/page_renderer.rs"
+    read_context:
+      - "src/extractors/text.rs"
+      - "src/fonts/font_dict.rs"
+      - "RENDER_PAGE_TODO.md"
+    blind_tests:
+      - "grep -q 'resource.*stack\\|font_map.*push\\|resource_stack' src/rendering/page_renderer.rs"
+    definition_of_done:
+      command: "cargo test --features rendering 2>&1 | tail -5"
+      assertion: "test result: ok"
+
+  # ── Phase 4: Rasterizer Consumes Decoded Text ───────────────────────
+
+  - id: "7"
+    title: "Text rasterizer decodes bytes through shared decoder before glyph lookup"
+    lane: "4"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["6"]
+    prompt: |
+      In src/rendering/text_rasterizer.rs, replace the raw-byte Unicode guessing
+      with the shared decoder from src/fonts/text_decode.rs.
+
+      Current broken code in render_text_glyphs():
+      ```rust
+      let text_str: String = match std::str::from_utf8(text) {
+          Ok(s) => s.to_string(),
+          Err(_) => text.iter().map(|&b| b as char).collect(),
+      };
+      ```
+
+      Replace with:
+      ```rust
+      use crate::fonts::text_decode::decode_pdf_text;
+      let decoded = decode_pdf_text(text, font_info);
+      for glyph in &decoded {
+          for ch in glyph.unicode.chars() {
+              // existing glyph_index + outline rendering
+          }
+      }
+      ```
+
+      The render_text() and render_tj_array() signatures must accept
+      font_info: Option<&FontInfo> (already added in Phase 2 task).
+
+      After this change, body text on NIST SP 800-171 page 11 should become visible
+      because the PDF font encoding is decoded through FontInfo::char_to_unicode()
+      before looking up glyphs in the system fallback font.
+
+      Build and test with: .venv/bin/maturin develop --features rendering
+      Then verify: .venv/bin/python -c "
+      import pdf_oxide
+      doc = pdf_oxide.PdfDocument('/mnt/storage12tb/extractor_corpus/nist/nist_sp_800_171.pdf')
+      img = doc.render_page(11, dpi=150)
+      print(f'Size: {len(img)} bytes')
+      "
+      The output size should increase significantly (from ~12KB to 30KB+) as text glyphs appear.
+    allowlist:
+      - "src/rendering/text_rasterizer.rs"
+    read_context:
+      - "src/fonts/text_decode.rs"
+      - "src/fonts/font_dict.rs"
+      - "src/rendering/page_renderer.rs"
+      - "RENDER_PAGE_TODO.md"
+    blind_tests:
+      - "grep -q 'decode_pdf_text' src/rendering/text_rasterizer.rs"
+      - "! grep -q 'from_utf8' src/rendering/text_rasterizer.rs"
+    definition_of_done:
+      command: "cargo test --features rendering 2>&1 | tail -5"
+      assertion: "test result: ok"
+
+  - id: "8"
+    title: "Visual regression check after decode integration"
+    lane: "4"
+    runner: "local"
+    depends_on: ["7"]
+    command: |
+      cd /home/graham/workspace/experiments/pdf_oxide && \
+      .venv/bin/maturin develop --features rendering 2>&1 | tail -1 && \
+      .venv/bin/python tests/rendering-regression/render_comparison.py 2>&1 | tail -10
+    definition_of_done:
+      command: ".venv/bin/python tests/rendering-regression/score_renders.py 2>&1"
+      assertion: "pdf_oxide text density increased"
+
+  # ── Phase 5: PDF Positioning Metrics ────────────────────────────────
+
+  - id: "9"
+    title: "Use PDF text positioning instead of fallback font advances"
+    lane: "5"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["8"]
+    prompt: |
+      In src/rendering/page_renderer.rs and text_rasterizer.rs, fix text placement
+      to use PDF metrics instead of fallback font advance widths.
+
+      Currently the renderer uses hardcoded estimates:
+      - char_width = font_size * 0.6
+      - char_count * font_size * 0.5 for TJ advance
+
+      Instead, use the PDF font's width table and text state operators:
+      1. For Tj: advance by the PDF font's glyph widths (from FontInfo if available,
+         or use the default width w0=600/1000 * font_size as current fallback)
+      2. For TJ: use the explicit offset values already parsed (they're in thousandths
+         of text space units — this part already works, just verify)
+      3. Respect Tc (char spacing), Tw (word spacing), Tz (horizontal scaling)
+      4. Respect Tm (text matrix), Td/TD (text position), T* (newline)
+
+      The goal: words should not bunch up or spread wildly. The PDF determines WHERE
+      glyphs go, the fallback font determines WHAT SHAPE gets drawn.
+
+      Test by rendering NIST page 11 and visually comparing with pdftoppm output.
+      Text should be approximately aligned — not pixel-perfect, but readable.
+    allowlist:
+      - "src/rendering/page_renderer.rs"
+      - "src/rendering/text_rasterizer.rs"
+    read_context:
+      - "src/fonts/font_dict.rs"
+      - "src/content/operators.rs"
+      - "RENDER_PAGE_TODO.md"
+    blind_tests:
+      - "grep -q 'char_space\\|word_space\\|horizontal_scaling' src/rendering/text_rasterizer.rs"
+    definition_of_done:
+      command: "cargo test --features rendering 2>&1 | tail -5"
+      assertion: "test result: ok"
+
+  - id: "10"
+    title: "Final visual regression and Python test suite"
+    lane: "5"
+    runner: "local"
+    depends_on: ["9"]
+    command: |
+      cd /home/graham/workspace/experiments/pdf_oxide && \
+      .venv/bin/maturin develop --features rendering 2>&1 | tail -1 && \
+      make test 2>&1 | tail -3 && \
+      .venv/bin/python tests/rendering-regression/render_comparison.py 2>&1
+    definition_of_done:
+      command: "make test 2>&1 | tail -1"
+      assertion: "passed"
+
+  # ── Stop Gate ───────────────────────────────────────────────────────
+
+  - id: "11"
+    title: "Stop gate: evaluate readable-text milestone"
+    lane: "6"
+    runner: "local"
+    depends_on: ["10"]
+    command: |
+      echo "=== STOP GATE: Readable Text Milestone ===" && \
+      echo "Review rendered PNGs in tests/rendering-regression/output/" && \
+      echo "Compare pdf_oxide vs pdftoppm side by side" && \
+      echo "Criteria:" && \
+      echo "  1. Body text on NIST page 11 is visible and readable" && \
+      echo "  2. Text on table pages is not obscured by black rectangles" && \
+      echo "  3. All 4491+ lib tests still pass" && \
+      echo "  4. All 99+ Python tests still pass" && \
+      echo "  5. No renderer-only encoding hacks exist" && \
+      echo "If all pass: milestone complete. Phase 6 (embedded fonts) is optional."
+    definition_of_done:
+      command: "echo 'Manual review required'"
+      assertion: "Manual review"
