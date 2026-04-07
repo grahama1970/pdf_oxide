@@ -1235,7 +1235,7 @@ async def _call_gemini_ir(
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": content_parts}],
-        "response_format": {"type": "json_object"},
+        # No response_format constraint — we want code, not JSON
     }
 
     resp = await client.post(
@@ -1314,7 +1314,7 @@ async def _call_gemini_ir(
 def generate_window_ir(
     window_info: dict,
     output_dir: str,
-    model: str = "text-gemini",
+    model: str = "text-gemini-3",
     family_id: str = "unknown",
 ) -> dict:
     """Generate structured IR for a single window via Gemini."""
@@ -1334,7 +1334,7 @@ def generate_window_ir(
 async def _generate_ir_batch_async(
     rendered_windows: list[dict],
     output_dir: str,
-    model: str = "text-gemini",
+    model: str = "text-gemini-3",
     family_id: str = "unknown",
     concurrency: int = 4,
 ) -> dict:
@@ -1386,7 +1386,7 @@ async def _generate_ir_batch_async(
 def generate_ir_batch(
     rendered_windows: list[dict],
     output_dir: str,
-    model: str = "text-gemini",
+    model: str = "text-gemini-3",
     family_id: str = "unknown",
     concurrency: int = 4,
 ) -> dict:
@@ -1587,7 +1587,7 @@ def clone_pdf(
     max_windows: int = 20,
     seed: int = 42,
     search_presets_flag: bool = False,
-    model: str = "text-gemini",
+    model: str = "text-gemini-3",
 ) -> dict:
     """Full clone pipeline: profile → sample → render → IR → render_ir → truth → manifest → score."""
     os.makedirs(output_dir, exist_ok=True)
@@ -1850,7 +1850,7 @@ def render_cmd(
 def generate_ir_cmd(
     rendered_dir: str = typer.Argument(..., help="Path to a rendered window directory"),
     output_json: bool = typer.Option(False, "--json", is_flag=True),
-    model: str = typer.Option("text-gemini", "--model", help="scillm model name"),
+    model: str = typer.Option("text-gemini-3", "--model", help="scillm model name"),
 ) -> None:
     """Generate structured IR for a single rendered window via Gemini."""
     # Reconstruct window_info from directory contents
@@ -1915,7 +1915,7 @@ def clone_cmd(
     max_windows: int = typer.Option(20, "--max-windows", help="Maximum windows"),
     seed: int = typer.Option(42, "--seed", help="Random seed"),
     do_search_presets: bool = typer.Option(False, "--search-presets", is_flag=True),
-    model: str = typer.Option("text-gemini", "--model", help="scillm model name"),
+    model: str = typer.Option("text-gemini-3", "--model", help="scillm model name"),
 ) -> None:
     """Full clone pipeline: profile → sample → render → IR → synthetic → score."""
     result = clone_pdf(
