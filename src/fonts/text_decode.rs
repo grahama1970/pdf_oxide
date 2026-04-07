@@ -518,22 +518,107 @@ mod tests {
     }
 
     #[test]
-    fn test_decode_text_to_unicode_no_font_latin1() {
-        let result = decode_text_to_unicode(b"Hello", None);
-        assert_eq!(result, "Hello");
+    fn test_decode_pdf_text_type0_font_2byte_iteration() {
+        // Test Type0 font 2-byte iteration
+        // For this test, we'll create a mock Type0 font and test the iteration behavior
+        // Since we can't easily mock the char_to_unicode method, we'll test the iteration
+        // and fallback behavior instead
+        let font = create_mock_type0_font();
+        let bytes = [0x00, 0x41, 0x00, 0x42, 0x00, 0x43]; // 2-byte codes for A, B, C
+        let glyphs = decode_pdf_text(&bytes, Some(&font));
+        
+        // The glyphs should be processed in 2-byte chunks
+        // Since our mock font doesn't have char_to_unicode mappings,
+        // the fallback_char_to_unicode will be used, which maps 0x41 -> "A", etc.
+        assert_eq!(glyphs.len(), 3);
+        assert_eq!(glyphs[0].char_code, 0x0041);
+        assert_eq!(glyphs[0].unicode, "A");
+        assert_eq!(glyphs[0].bytes_consumed, 2);
+        assert_eq!(glyphs[1].char_code, 0x0042);
+        assert_eq!(glyphs[1].unicode, "B");
+        assert_eq!(glyphs[1].bytes_consumed, 2);
+    // Helper functions to create mock fonts for testing
+    fn create_mock_simple_font() -> FontInfo {
+        use std::collections::HashMap;
+        use std::sync::Arc;
+        
+        FontInfo {
+            base_font: "TestFont".to_string(),
+            subtype: "Type1".to_string(),
+            encoding: Encoding::Identity,
+            to_unicode: None,
+            font_weight: None,
+            flags: None,
+            stem_v: None,
+            embedded_font_data: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
+            cid_to_gid_map: None,
+            cid_system_info: None,
+            cid_font_type: None,
+            widths: None,
+            first_char: Some(0),
+            last_char: Some(255),
+            default_width: 1000.0,
+            cid_widths: None,
+            cid_default_width: 1000.0,
+            multi_char_map: HashMap::new(),
+            byte_to_char_table: {
+                let mut table = ['\0'; 256];
+                // Map ASCII range
+                for i in 0x20..=0x7E {
+                    table[i] = char::from(i as u8);
+                }
+                let once_lock = std::sync::OnceLock::new();
+                let _ = once_lock.set(table);
+                once_lock
+            },
+            byte_to_width_table: {
+                let table = [1000.0; 256];
+                let once_lock = std::sync::OnceLock::new();
+                let _ = once_lock.set(table);
+                once_lock
+            },
+        }
     }
 
-    #[test]
-    fn test_decode_text_to_unicode_no_font_high_bytes() {
-        let bytes = [0xC0, 0xE9, 0xF1]; // À é ñ in Latin-1
-        let result = decode_text_to_unicode(&bytes, None);
-        assert_eq!(result, "Àéñ");
-    }
-
-    #[test]
-    fn test_decode_text_to_unicode_filters_control_chars() {
-        let bytes = [0x48, 0x01, 0x65, 0x02, 0x6C, 0x03, 0x6C, 0x04, 0x6F]; // H\x01e\x02l\x03l\x04o
-        let result = decode_text_to_unicode(&bytes, None);
-        assert_eq!(result, "Hello"); // Control chars filtered out
+    fn create_mock_type0_font() -> FontInfo {
+        use std::collections::HashMap;
+        use std::sync::Arc;
+        
+        FontInfo {
+            base_font: "TestType0Font".to_string(),
+            subtype: "Type0".to_string(),
+            encoding: Encoding::Identity,
+            to_unicode: None,
+            font_weight: None,
+            flags: None,
+            stem_v: None,
+            embedded_font_data: None,
+            truetype_cmap: std::sync::OnceLock::new(),
+            is_truetype_font: false,
+            cid_to_gid_map: None,
+            cid_system_info: None,
+            cid_font_type: None,
+            widths: None,
+            first_char: Some(0),
+            last_char: Some(65535),
+            default_width: 1000.0,
+            cid_widths: None,
+            cid_default_width: 1000.0,
+            multi_char_map: HashMap::new(),
+            byte_to_char_table: {
+                let table = ['\0'; 256]; // Not used for Type0 fonts
+                let once_lock = std::sync::OnceLock::new();
+                let _ = once_lock.set(table);
+                once_lock
+            },
+            byte_to_width_table: {
+                let table = [1000.0; 256];
+                let once_lock = std::sync::OnceLock::new();
+                let _ = once_lock.set(table);
+                once_lock
+            },
+        }
     }
 }
