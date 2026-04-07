@@ -8,6 +8,7 @@ import itertools
 import json
 import os
 import random
+import re
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
@@ -249,6 +250,166 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
         result["requirements_pages"] = survey.get("requirements_pages", [])
         result["requirements_source"] = "text_regex"
     result["requirements_density"] = len(result["requirements_pages"]) / max(page_count, 1)
+
+    # ── Build nested TOC with parent_id + verify each entry exists on its page ──
+    _num_pat = re.compile(r"^(\d+(?:\.\d+)*)")
+    toc_sections: list[dict] = []
+    parent_stack: list[tuple[int, int]] = []
+    for i, entry in enumerate(outline):
+        title = entry.get("title", "").strip()
+        m = _num_pat.match(title)
+        depth = m.group(1).count(".") + 1 if m else 0
+        while parent_stack and parent_stack[-1][0] >= depth:
+            parent_stack.pop()
+        parent_id = parent_stack[-1][1] if parent_stack else None
+        if depth > 0:
+            parent_stack.append((depth, i))
+        else:
+            parent_stack = []
+        pg = entry.get("page")
+        pg_idx = int(pg) - 1 if pg else None
+        # Verify: check that key words from the title appear on the page
+        verified = False
+        if pg_idx is not None and 0 <= pg_idx < page_count:
+            try:
+                page_text = doc.extract_text(pg_idx).upper()
+                title_words = [w for w in title.upper().split() if len(w) > 3]
+                if title_words:
+                    found = sum(1 for w in title_words if w in page_text)
+                    verified = found >= max(1, len(title_words) // 2)
+            except Exception:
+                pass
+        toc_sections.append({
+            "id": i, "title": title, "depth": depth,
+            "parent_id": parent_id, "page": pg_idx,
+            "verified": verified,
+        })
+    result["toc_sections"] = toc_sections
+
+    # Count requirement clauses in body text (3.x.y patterns)
+    _clause_pat = re.compile(r"^(\d+\.\d+\.\d+)\s")
+    body_clauses: set[str] = set()
+    for pg in range(page_count):
+        try:
+            text = doc.extract_text(pg)
+        except Exception:
+            continue
+        for line in text.split("\n"):
+            cm = _clause_pat.match(line.strip())
+            if cm:
+                body_clauses.add(cm.group(1))
+    result["toc_section_count"] = len(toc_sections)
+    result["toc_verified_count"] = sum(1 for s in toc_sections if s["verified"])
+    result["body_clause_count"] = len(body_clauses)
+    result["section_count"] = len(toc_sections) + len(body_clauses)
+
+    # List, footnote, callout detection
+    _bullet_re = re.compile(r"^[\u2022\u2023\u25E6\u2043\u2219\u2013\u2014\-]\s")
+    list_pages: list[int] = []
+    footnote_pages: list[int] = []
+    callout_pages: list[int] = []
+    for pg in range(min(page_count, 30)):
+        try:
+            spans = doc.extract_spans(pg)
+        except Exception:
+            continue
+        if not spans:
+            continue
+        sizes = [s.font_size for s in spans if s.font_size > 0]
+        if not sizes:
+            continue
+        sizes.sort()
+        median_sz = sizes[len(sizes) // 2]
+        bullets = 0
+        footnotes = 0
+        for s in spans:
+            t = s.text.strip()
+            if not t:
+                continue
+            y = s.bbox[1] if s.bbox else 0
+            if _bullet_re.match(t):
+                bullets += 1
+            if s.font_size > 0 and s.font_size < median_sz * 0.8 and y < 80 and len(t) > 10:
+                footnotes += 1
+        if bullets >= 2:
+            list_pages.append(pg)
+        if footnotes >= 1:
+            footnote_pages.append(pg)
+        try:
+            paths = doc.extract_paths(pg)
+            for p in paths:
+                bbox = p.get("bbox")
+                if bbox and bbox[2] > 100 and bbox[3] > 30 and bbox[2] < 500 and bbox[3] < 300:
+                    callout_pages.append(pg)
+                    break
+        except Exception:
+            pass
+    result["list_pages"] = list_pages
+    result["footnote_pages"] = footnote_pages
+    result["callout_pages"] = callout_pages
+
+    # ── Deterministic structural metrics ──
+    table_shapes = result.get("table_shapes", [])
+    spanning = result.get("page_spanning_tables", [])
+    req_pages = result.get("requirements_pages", [])
+    distinct_table_count = 0
+    prev_pg = -10
+    for s in table_shapes:
+        if s["page"] != prev_pg + 1:
+            distinct_table_count += 1
+        prev_pg = s["page"]
+    largest_table = max(table_shapes, key=lambda s: s["rows"]) if table_shapes else None
+    sigs = result.get("page_signatures", [])
+    table_shape_by_pg = {s["page"]: s for s in table_shapes}
+    avg_chars = sum(s.get("char_count", 0) for s in sigs) / max(len(sigs), 1)
+
+    def _complexity(sig: dict) -> float:
+        pg = sig.get("page_num", -1)
+        score = 0.0
+        ts = table_shape_by_pg.get(pg)
+        if ts:
+            score += ts["rows"] * ts["cols"] * 0.3
+        chars = sig.get("char_count", 0)
+        if avg_chars > 0:
+            score += min(chars / avg_chars, 3.0) * 0.2
+        if sig.get("has_images"):
+            score += 0.2
+        if sig.get("equation_candidate"):
+            score += 0.3
+        return score
+
+    most_complex = max(range(len(sigs)), key=lambda i: _complexity(sigs[i])) if sigs else 0
+    all_hints = set()
+    for r in regions:
+        all_hints.update(r.get("hints", []))
+    result["metrics"] = {
+        "page_count": page_count,
+        "distinct_table_count": distinct_table_count,
+        "table_pages_count": len(table_shapes),
+        "spanning_table_count": len(spanning),
+        "spanning_tables_total_rows": sum(s["total_rows"] for s in spanning),
+        "largest_table": {"page": largest_table["page"], "rows": largest_table["rows"], "cols": largest_table["cols"]} if largest_table else None,
+        "requirements_page_count": len(req_pages),
+        "requirements_source": result.get("requirements_source", "none"),
+        "figure_page_count": len(survey.get("figure_pages", [])),
+        "equation_page_count": len(survey.get("equation_pages", [])),
+        "list_page_count": len(list_pages),
+        "footnote_page_count": len(footnote_pages),
+        "callout_page_count": len(callout_pages),
+        "toc_region_count": len(regions),
+        "toc_section_count": result["toc_section_count"],
+        "toc_verified_count": result["toc_verified_count"],
+        "body_clause_count": result["body_clause_count"],
+        "section_count": result["section_count"],
+        "structural_hint_types": sorted(all_hints),
+        "running_header_count": len(result.get("running_headers", [])),
+        "running_footer_count": len(result.get("running_footers", [])),
+        "most_complex_page": most_complex,
+        "most_complex_page_score": round(_complexity(sigs[most_complex]), 2) if sigs else 0,
+        "section_style": result.get("section_style"),
+        "domain": result.get("domain", "general"),
+        "is_scanned": result.get("is_scanned", False),
+    }
 
     return result
 

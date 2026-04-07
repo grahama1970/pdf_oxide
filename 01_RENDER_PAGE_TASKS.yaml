@@ -48,7 +48,7 @@ tasks:
     title: "Create rendering-regression fixture directory with test PDFs"
     lane: "0"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: []
     prompt: |
@@ -98,7 +98,7 @@ tasks:
     title: "Extract shared pdf text decode module from extractors/text.rs"
     lane: "1"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: ["2"]
     prompt: |
@@ -143,14 +143,14 @@ tasks:
       - "grep -q 'pub fn decode_pdf_text' src/fonts/text_decode.rs"
       - "grep -q 'mod text_decode' src/fonts/mod.rs"
     definition_of_done:
-      command: "cargo test --features rendering 2>&1 | tail -5"
+      command: "cargo test --lib --features rendering 2>&1 | tail -5"
       assertion: "test result: ok"
 
   - id: "4"
     title: "Add unit tests for shared text decoder"
     lane: "1"
     runner: "code-runner"
-    backend: "text"
+    backend: "claude"
     mode: "iterative"
     depends_on: ["3"]
     prompt: |
@@ -169,7 +169,7 @@ tasks:
     blind_tests:
       - "grep -c '#\\[test\\]' src/fonts/text_decode.rs | awk '{if ($1 >= 4) exit 0; else exit 1}'"
     definition_of_done:
-      command: "cargo test text_decode --features rendering 2>&1 | tail -5"
+      command: "cargo test --lib --features rendering text_decode 2>&1 | tail -5"
       assertion: "test result: ok"
 
   # ── Phase 2: FontInfo in Renderer ───────────────────────────────────
@@ -178,9 +178,9 @@ tasks:
     title: "Store resolved FontInfo in renderer GraphicsState on Tf operator"
     lane: "2"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
-    depends_on: ["4"]
+    depends_on: ["3"]
     prompt: |
       In src/rendering/page_renderer.rs, make the renderer resolve real FontInfo
       when the Tf operator is processed.
@@ -216,7 +216,7 @@ tasks:
       - "grep -q 'current_font' src/rendering/page_renderer.rs"
       - "grep -q 'FontInfo' src/rendering/page_renderer.rs"
     definition_of_done:
-      command: "cargo test --features rendering 2>&1 | tail -5"
+      command: "cargo test --lib --features rendering 2>&1 | tail -5"
       assertion: "test result: ok"
 
   # ── Phase 3: Form XObject Resource Scoping ──────────────────────────
@@ -225,7 +225,7 @@ tasks:
     title: "Correct resource scoping for Form XObject font resolution"
     lane: "3"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: ["5"]
     prompt: |
@@ -259,7 +259,7 @@ tasks:
     blind_tests:
       - "grep -q 'resource.*stack\\|font_map.*push\\|resource_stack' src/rendering/page_renderer.rs"
     definition_of_done:
-      command: "cargo test --features rendering 2>&1 | tail -5"
+      command: "cargo test --lib --features rendering 2>&1 | tail -5"
       assertion: "test result: ok"
 
   # ── Phase 4: Rasterizer Consumes Decoded Text ───────────────────────
@@ -268,7 +268,7 @@ tasks:
     title: "Text rasterizer decodes bytes through shared decoder before glyph lookup"
     lane: "4"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: ["6"]
     prompt: |
@@ -320,7 +320,7 @@ tasks:
       - "grep -q 'decode_pdf_text' src/rendering/text_rasterizer.rs"
       - "! grep -q 'from_utf8' src/rendering/text_rasterizer.rs"
     definition_of_done:
-      command: "cargo test --features rendering 2>&1 | tail -5"
+      command: "cargo test --lib --features rendering 2>&1 | tail -5"
       assertion: "test result: ok"
 
   - id: "8"
@@ -342,7 +342,7 @@ tasks:
     title: "Use PDF text positioning instead of fallback font advances"
     lane: "5"
     runner: "code-runner"
-    backend: "codex"
+    backend: "claude"
     mode: "iterative"
     depends_on: ["8"]
     prompt: |
@@ -376,7 +376,7 @@ tasks:
     blind_tests:
       - "grep -q 'char_space\\|word_space\\|horizontal_scaling' src/rendering/text_rasterizer.rs"
     definition_of_done:
-      command: "cargo test --features rendering 2>&1 | tail -5"
+      command: "cargo test --lib --features rendering 2>&1 | tail -5"
       assertion: "test result: ok"
 
   - id: "10"

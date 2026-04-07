@@ -4,7 +4,7 @@
 //! text extraction and rendering components. It handles the complexity of PDF font
 //! encodings, including Type0/CID fonts with multi-byte character codes.
 
-use crate::fonts::{FontInfo, Encoding};
+use crate::fonts::FontInfo;
 
 /// A decoded glyph with its character code, Unicode representation, and byte consumption.
 #[derive(Debug, Clone, PartialEq)]
@@ -287,8 +287,8 @@ pub fn get_byte_mode(font: Option<&FontInfo>) -> ByteMode {
     if let Some(font) = font {
         if font.subtype == "Type0" {
             match &font.encoding {
-                Encoding::Identity => ByteMode::TwoByte,
-                Encoding::Standard(name) => {
+                crate::fonts::Encoding::Identity => ByteMode::TwoByte,
+                crate::fonts::Encoding::Standard(name) => {
                     if (name.contains("Identity") && !name.contains("OneByteIdentity"))
                         || name.contains("UCS2")
                         || name.contains("UTF16")
@@ -518,19 +518,96 @@ mod tests {
     }
 
     #[test]
+    fn test_decode_text_to_unicode_no_font() {
+        let result = decode_text_to_unicode(b"Hello", None);
+        assert_eq!(result, "Hello");
+    }
+
+    #[test]
+    fn test_decode_text_to_unicode_no_font_high_bytes() {
+        let bytes = [0xC0, 0xE9, 0xF1]; // À é ñ in Latin-1
+        let result = decode_text_to_unicode(&bytes, None);
+        assert_eq!(result, "Àéñ");
+    }
+
+    #[test]
+    fn test_decode_text_to_unicode_filters_control_chars() {
+        let bytes = [0x48, 0x01, 0x65, 0x02, 0x6C, 0x03, 0x6C, 0x04, 0x6F]; // H\x01e\x02l\x03l\x04o
+        let result = decode_text_to_unicode(&bytes, None);
+        assert_eq!(result, "Hello"); // Control chars filtered out
+    }
+
+    // Additional tests for the requested functionality
+
+    #[test]
+    fn test_decode_pdf_text_simple_font_ascii() {
+        let font = create_mock_simple_font();
+        let glyphs = decode_pdf_text(b"ABC", Some(&font));
+        assert_eq!(glyphs.len(), 3);
+        assert_eq!(glyphs[0].unicode, "A");
+        assert_eq!(glyphs[0].char_code, 0x41);
+        assert_eq!(glyphs[0].bytes_consumed, 1);
+        assert_eq!(glyphs[1].unicode, "B");
+        assert_eq!(glyphs[1].char_code, 0x42);
+        assert_eq!(glyphs[1].bytes_consumed, 1);
+        assert_eq!(glyphs[2].unicode, "C");
+        assert_eq!(glyphs[2].char_code, 0x43);
+        assert_eq!(glyphs[2].bytes_consumed, 1);
+    }
+
+    #[test]
+    fn test_decode_pdf_text_high_bytes_no_font_latin1_fallback() {
+        let bytes = [0x80, 0x90, 0xFF]; // High bytes
+        let glyphs = decode_pdf_text(&bytes, None);
+        assert_eq!(glyphs.len(), 3);
+        assert_eq!(glyphs[0].unicode, "\u{0080}");
+        assert_eq!(glyphs[0].char_code, 0x80);
+        assert_eq!(glyphs[1].unicode, "\u{0090}");
+        assert_eq!(glyphs[1].char_code, 0x90);
+        assert_eq!(glyphs[2].unicode, "\u{00FF}");
+        assert_eq!(glyphs[2].char_code, 0xFF);
+    }
+
+    #[test]
+    fn test_decode_text_to_unicode_control_character_filtering() {
+        // Test that control characters (< 0x20) are filtered except tab/newline
+        let bytes = [
+            0x48, // 'H'
+            0x01, // Control char (should be filtered)
+            0x65, // 'e'
+            0x09, // Tab (should be kept)
+            0x6C, // 'l'
+            0x0A, // Newline (should be kept)
+            0x6C, // 'l'
+            0x0D, // Carriage return (should be kept)
+            0x6F, // 'o'
+            0x1F, // Control char (should be filtered)
+        ];
+        let result = decode_text_to_unicode(&bytes, None);
+        assert_eq!(result, "He\tl\nl\ro");
+    }
+
+    #[test]
+    fn test_decode_pdf_text_empty_input() {
+        let glyphs = decode_pdf_text(&[], None);
+        assert_eq!(glyphs.len(), 0);
+        
+        let font = create_mock_simple_font();
+        let glyphs = decode_pdf_text(&[], Some(&font));
+        assert_eq!(glyphs.len(), 0);
+        
+        let type0_font = create_mock_type0_font();
+        let glyphs = decode_pdf_text(&[], Some(&type0_font));
+        assert_eq!(glyphs.len(), 0);
+    }
+
     #[test]
     fn test_decode_pdf_text_type0_font_2byte_iteration() {
-        // Test Type0 font 2-byte iteration
-        // For this test, we'll create a mock Type0 font and test the iteration behavior
-        // Since we can't easily mock the char_to_unicode method, we'll test the iteration
-        // and fallback behavior instead
         let font = create_mock_type0_font();
         let bytes = [0x00, 0x41, 0x00, 0x42, 0x00, 0x43]; // 2-byte codes for A, B, C
         let glyphs = decode_pdf_text(&bytes, Some(&font));
         
         // The glyphs should be processed in 2-byte chunks
-        // Since our mock font doesn't have char_to_unicode mappings,
-        // the fallback_char_to_unicode will be used, which maps 0x41 -> "A", etc.
         assert_eq!(glyphs.len(), 3);
         assert_eq!(glyphs[0].char_code, 0x0041);
         assert_eq!(glyphs[0].unicode, "A");
@@ -538,10 +615,14 @@ mod tests {
         assert_eq!(glyphs[1].char_code, 0x0042);
         assert_eq!(glyphs[1].unicode, "B");
         assert_eq!(glyphs[1].bytes_consumed, 2);
+        assert_eq!(glyphs[2].char_code, 0x0043);
+        assert_eq!(glyphs[2].unicode, "C");
+        assert_eq!(glyphs[2].bytes_consumed, 2);
     }
 
     // Helper functions to create mock fonts for testing
     fn create_mock_simple_font() -> FontInfo {
+        use crate::fonts::Encoding;
         use std::collections::HashMap;
         
         FontInfo {
@@ -585,6 +666,7 @@ mod tests {
     }
 
     fn create_mock_type0_font() -> FontInfo {
+        use crate::fonts::Encoding;
         use std::collections::HashMap;
         
         FontInfo {

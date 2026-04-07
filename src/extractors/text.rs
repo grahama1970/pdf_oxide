@@ -1505,10 +1505,295 @@ impl TjBuffer {
 ///
 /// # Returns
 /// Best-effort Unicode string representation, or "?" if no mapping possible
-/// Artifact type classification per PDF Spec Section 14.8.2.2
-///
-/// Artifacts are content that is not part of the document's logical structure,
-/// such as headers, footers, page numbers, and decorative elements.
+fn fallback_char_to_unicode(char_code: u32) -> String {
+    match char_code {
+        // ==================================================================================
+        // PRIORITY 1: Common Punctuation (most frequently failing)
+        // ==================================================================================
+        0x2014 => "—".to_string(),        // Em dash
+        0x2013 => "–".to_string(),        // En dash
+        0x2018 => "\u{2018}".to_string(), // Left single quotation mark (')
+        0x2019 => "\u{2019}".to_string(), // Right single quotation mark (')
+        0x201C => "\u{201C}".to_string(), // Left double quotation mark (")
+        0x201D => "\u{201D}".to_string(), // Right double quotation mark (")
+        0x2022 => "•".to_string(),        // Bullet
+        0x2026 => "…".to_string(),        // Horizontal ellipsis
+        0x00B0 => "°".to_string(),        // Degree sign
+
+        // ==================================================================================
+        // PRIORITY 2: Mathematical Operators (common in academic papers)
+        // ==================================================================================
+        0x00B1 => "±".to_string(), // Plus-minus sign
+        0x00D7 => "×".to_string(), // Multiplication sign
+        0x00F7 => "÷".to_string(), // Division sign
+        0x2202 => "∂".to_string(), // Partial differential
+        0x2207 => "∇".to_string(), // Nabla (del operator)
+        0x220F => "∏".to_string(), // N-ary product
+        0x2211 => "∑".to_string(), // N-ary summation
+        0x221A => "√".to_string(), // Square root
+        0x221E => "∞".to_string(), // Infinity
+        0x2260 => "≠".to_string(), // Not equal to
+        0x2261 => "≡".to_string(), // Identical to
+        0x2264 => "≤".to_string(), // Less-than or equal to
+        0x2265 => "≥".to_string(), // Greater-than or equal to
+        0x222B => "∫".to_string(), // Integral
+        0x2248 => "≈".to_string(), // Almost equal to
+        0x2282 => "⊂".to_string(), // Subset of
+        0x2283 => "⊃".to_string(), // Superset of
+        0x2286 => "⊆".to_string(), // Subset of or equal to
+        0x2287 => "⊇".to_string(), // Superset of or equal to
+        0x2208 => "∈".to_string(), // Element of
+        0x2209 => "∉".to_string(), // Not an element of
+        0x2200 => "∀".to_string(), // For all
+        0x2203 => "∃".to_string(), // There exists
+        0x2205 => "∅".to_string(), // Empty set
+        0x2227 => "∧".to_string(), // Logical and
+        0x2228 => "∨".to_string(), // Logical or
+        0x00AC => "¬".to_string(), // Not sign
+        0x2192 => "→".to_string(), // Rightwards arrow
+        0x2190 => "←".to_string(), // Leftwards arrow
+        0x2194 => "↔".to_string(), // Left right arrow
+        0x21D2 => "⇒".to_string(), // Rightwards double arrow
+        0x21D4 => "⇔".to_string(), // Left right double arrow
+
+        // ==================================================================================
+        // PRIORITY 3: Greek Letters (common in scientific/mathematical texts)
+        // ==================================================================================
+        // Lowercase Greek
+        0x03B1 => "α".to_string(), // Alpha
+        0x03B2 => "β".to_string(), // Beta
+        0x03B3 => "γ".to_string(), // Gamma
+        0x03B4 => "δ".to_string(), // Delta
+        0x03B5 => "ε".to_string(), // Epsilon
+        0x03B6 => "ζ".to_string(), // Zeta
+        0x03B7 => "η".to_string(), // Eta
+        0x03B8 => "θ".to_string(), // Theta
+        0x03B9 => "ι".to_string(), // Iota
+        0x03BA => "κ".to_string(), // Kappa
+        0x03BB => "λ".to_string(), // Lambda
+        0x03BC => "μ".to_string(), // Mu
+        0x03BD => "ν".to_string(), // Nu
+        0x03BE => "ξ".to_string(), // Xi
+        0x03BF => "ο".to_string(), // Omicron
+        0x03C0 => "π".to_string(), // Pi
+        0x03C1 => "ρ".to_string(), // Rho
+        0x03C2 => "ς".to_string(), // Final sigma
+        0x03C3 => "σ".to_string(), // Sigma
+        0x03C4 => "τ".to_string(), // Tau
+        0x03C5 => "υ".to_string(), // Upsilon
+        0x03C6 => "φ".to_string(), // Phi
+        0x03C7 => "χ".to_string(), // Chi
+        0x03C8 => "ψ".to_string(), // Psi
+        0x03C9 => "ω".to_string(), // Omega
+
+        // Uppercase Greek
+        0x0391 => "Α".to_string(), // Alpha
+        0x0392 => "Β".to_string(), // Beta
+        0x0393 => "Γ".to_string(), // Gamma
+        0x0394 => "Δ".to_string(), // Delta
+        0x0395 => "Ε".to_string(), // Epsilon
+        0x0396 => "Ζ".to_string(), // Zeta
+        0x0397 => "Η".to_string(), // Eta
+        0x0398 => "Θ".to_string(), // Theta
+        0x0399 => "Ι".to_string(), // Iota
+        0x039A => "Κ".to_string(), // Kappa
+        0x039B => "Λ".to_string(), // Lambda
+        0x039C => "Μ".to_string(), // Mu
+        0x039D => "Ν".to_string(), // Nu
+        0x039E => "Ξ".to_string(), // Xi
+        0x039F => "Ο".to_string(), // Omicron
+        0x03A0 => "Π".to_string(), // Pi
+        0x03A1 => "Ρ".to_string(), // Rho
+        0x03A3 => "Σ".to_string(), // Sigma
+        0x03A4 => "Τ".to_string(), // Tau
+        0x03A5 => "Υ".to_string(), // Upsilon
+        0x03A6 => "Φ".to_string(), // Phi
+        0x03A7 => "Χ".to_string(), // Chi
+        0x03A8 => "Ψ".to_string(), // Psi
+        0x03A9 => "Ω".to_string(), // Omega
+
+        // ==================================================================================
+        // PRIORITY 4: Currency Symbols
+        // ==================================================================================
+        0x20AC => "€".to_string(), // Euro
+        0x00A3 => "£".to_string(), // Pound sterling
+        0x00A5 => "¥".to_string(), // Yen
+        0x00A2 => "¢".to_string(), // Cent
+        0x20A3 => "₣".to_string(), // French franc
+        0x20A4 => "₤".to_string(), // Lira
+        0x20A9 => "₩".to_string(), // Won
+        0x20AA => "₪".to_string(), // New shekel
+        0x20AB => "₫".to_string(), // Dong
+        0x20B9 => "₹".to_string(), // Indian rupee
+
+        // ==================================================================================
+        // PRIORITY 5: Direct Unicode (for valid ranges)
+        // ==================================================================================
+        // Valid Unicode: BMP (0x0000-0xD7FF, 0xE000-0xFFFF) and supplementary planes
+        // Excludes surrogate pairs (0xD800-0xDFFF)
+        code => {
+            if let Some(ch) = char::from_u32(code) {
+                if (0xE000..=0xF8FF).contains(&code) {
+                    log::debug!("Private Use Area character: U+{:04X}", code);
+                }
+                ch.to_string()
+            } else {
+                log::warn!("Character code 0x{:04X} is not a valid Unicode code point", code);
+                "?".to_string()
+            }
+        },
+    }
+}
+
+/// Byte grouping mode for CID font character code decoding.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum ByteMode {
+    /// Single-byte codes (simple fonts, some predefined CMaps)
+    OneByte,
+    /// Always 2-byte codes (Identity-H/V, UCS2)
+    TwoByte,
+    /// Shift-JIS variable-width (1 or 2 bytes depending on lead byte)
+    ShiftJIS,
+}
+
+/// Get byte grouping mode for a font (v0.3.14).
+fn get_byte_mode(font: Option<&FontInfo>) -> ByteMode {
+    if let Some(font) = font {
+        if font.subtype == "Type0" {
+            match &font.encoding {
+                crate::fonts::Encoding::Identity => ByteMode::TwoByte,
+                crate::fonts::Encoding::Standard(name) => {
+                    if (name.contains("Identity") && !name.contains("OneByteIdentity"))
+                        || name.contains("UCS2")
+                        || name.contains("UTF16")
+                    {
+                        ByteMode::TwoByte
+                    } else if name.contains("RKSJ") {
+                        ByteMode::ShiftJIS
+                    } else if name.contains("EUC")
+                        || name.contains("GBK")
+                        || name.contains("GBpc")
+                        || name.contains("GB-")
+                        || name.contains("CNS")
+                        || name.contains("B5")
+                        || name.contains("KSC")
+                        || name.contains("KSCms")
+                    {
+                        // CIDs are typically 2-byte values in these CMaps
+                        ByteMode::TwoByte
+                    } else {
+                        ByteMode::OneByte
+                    }
+                },
+                _ => ByteMode::OneByte,
+            }
+        } else {
+            ByteMode::OneByte
+        }
+    } else {
+        ByteMode::OneByte
+    }
+}
+
+/// Iterator over characters in a PDF string based on font encoding (v0.3.14).
+struct TextCharIter<'a> {
+    bytes: &'a [u8],
+    byte_mode: ByteMode,
+    index: usize,
+}
+
+impl<'a> TextCharIter<'a> {
+    fn new(bytes: &'a [u8], font: Option<&FontInfo>) -> Self {
+        Self {
+            bytes,
+            byte_mode: get_byte_mode(font),
+            index: 0,
+        }
+    }
+}
+
+impl<'a> Iterator for TextCharIter<'a> {
+    type Item = (u16, usize); // (char_code, bytes_consumed)
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.index >= self.bytes.len() {
+            return None;
+        }
+
+        let (char_code, bytes_consumed) = match self.byte_mode {
+            ByteMode::TwoByte if self.index + 1 < self.bytes.len() => {
+                (((self.bytes[self.index] as u16) << 8) | (self.bytes[self.index + 1] as u16), 2)
+            },
+            ByteMode::ShiftJIS => {
+                let b = self.bytes[self.index];
+                let is_lead = (0x81..=0x9F).contains(&b) || (0xE0..=0xFC).contains(&b);
+                if is_lead && self.index + 1 < self.bytes.len() {
+                    (((b as u16) << 8) | (self.bytes[self.index + 1] as u16), 2)
+                } else {
+                    (b as u16, 1)
+                }
+            },
+            _ => (self.bytes[self.index] as u16, 1),
+        };
+
+        self.index += bytes_consumed;
+        Some((char_code, bytes_consumed))
+    }
+}
+
+fn decode_text_to_unicode(bytes: &[u8], font: Option<&FontInfo>) -> String {
+    let raw_result = if let Some(font) = font {
+        let mut result = String::new();
+        // Use pre-computed lookup table for performance if it's a simple font
+        if font.subtype != "Type0" {
+            let table = font.get_byte_to_char_table();
+            for &byte in bytes {
+                let c = table[byte as usize];
+                if c != '\0' {
+                    result.push(c);
+                } else {
+                    // Fallback: multi-char mapping or unmapped byte
+                    let char_str = font
+                        .char_to_unicode(byte as u32)
+                        .unwrap_or_else(|| fallback_char_to_unicode(byte as u32));
+                    if char_str != "\u{FFFD}" {
+                        result.push_str(&char_str);
+                    }
+                }
+            }
+        } else {
+            // Complex font: use unified iterator for robust multi-byte decoding
+            for (char_code, _) in TextCharIter::new(bytes, Some(font)) {
+                let char_str = font
+                    .char_to_unicode(char_code as u32)
+                    .unwrap_or_else(|| fallback_char_to_unicode(char_code as u32));
+                if char_str != "\u{FFFD}" {
+                    result.push_str(&char_str);
+                }
+            }
+        }
+        result
+    } else {
+        // No font - fallback to Latin-1 (ISO 8859-1) encoding
+        // Per PDF Spec ISO 32000-1:2008, Section 9.6.6, Latin-1 maps bytes 0x00-0xFF
+        // directly to Unicode code points U+0000-U+00FF
+        log::warn!(
+            "⚠️  No font provided for {} bytes, using Latin-1 fallback (PDF spec compliant)",
+            bytes.len()
+        );
+        bytes.iter().map(|&b| char::from(b)).collect()
+    };
+
+    // Filter control characters from failed encoding resolution
+    // Keep: \t (0x09), \n (0x0A), \r (0x0D), and all printable chars (>= 0x20)
+    let mut filtered = String::with_capacity(raw_result.len());
+    for c in raw_result.chars() {
+        if c >= '\x20' || c == '\t' || c == '\n' || c == '\r' {
+            filtered.push(c);
+        }
+    }
+    filtered
+}
 
 /// Artifact type classification per PDF Spec Section 14.8.2.2
 ///
@@ -5374,7 +5659,7 @@ impl TextExtractor {
                                 }
                             }
                         } else {
-                            let fb = text_decode::fallback_char_to_unicode(byte as u32);
+                            let fb = fallback_char_to_unicode(byte as u32);
                             if fb != "\u{FFFD}" {
                                 for ch in fb.chars() {
                                     if ch >= '\x20' || ch == '\t' || ch == '\n' || ch == '\r' {
@@ -5397,7 +5682,7 @@ impl TextExtractor {
                 // Type0/CID font: use unified iterator for robust multi-byte decoding and widths
                 buffer.append(text)?;
                 let mut w_sum = 0.0f32;
-                for (char_code, _) in text_decode::TextCharIter::new(text, Some(font), text_decode::get_byte_mode(Some(font))) {
+                for (char_code, _) in TextCharIter::new(text, Some(font)) {
                     let mut w = font.get_glyph_width(char_code) * fs_factor * hs_factor;
                     w += cs_hs;
                     // Standard PDF space character (code 32) triggers word spacing
@@ -5474,7 +5759,7 @@ impl TextExtractor {
                             }
                         }
                     } else {
-                        let fb = text_decode::fallback_char_to_unicode(byte as u32);
+                        let fb = fallback_char_to_unicode(byte as u32);
                         if fb != "\u{FFFD}" {
                             for ch in fb.chars() {
                                 if ch >= '\x20' || ch == '\t' || ch == '\n' || ch == '\r' {
@@ -5721,7 +6006,7 @@ impl TextExtractor {
         // Get current font from cached reference
         let font = self.cached_current_font.as_deref();
 
-        for (char_code, _) in text_decode::TextCharIter::new(text, font, text_decode::get_byte_mode(font)) {
+        for (char_code, _) in TextCharIter::new(text, font) {
             // Get current text matrix (may be updated by previous characters in this string)
             let state = self.state_stack.current();
             let text_matrix = state.text_matrix;
@@ -5729,7 +6014,7 @@ impl TextExtractor {
             // Get Unicode string using font mapping
             let unicode_string = if let Some(font) = font {
                 font.char_to_unicode(char_code as u32)
-                    .unwrap_or_else(|| text_decode::fallback_char_to_unicode(char_code as u32))
+                    .unwrap_or_else(|| fallback_char_to_unicode(char_code as u32))
             } else if char_code < 256 && (char_code as u8).is_ascii() {
                 (char_code as u8 as char).to_string()
             } else {
@@ -7018,62 +7303,62 @@ mod tests {
 
     #[test]
     fn test_fallback_common_punctuation() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2014), "\u{2014}"); // Em dash
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2013), "\u{2013}"); // En dash
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2022), "\u{2022}"); // Bullet
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2026), "\u{2026}"); // Ellipsis
-        assert_eq!(text_decode::fallback_char_to_unicode(0x00B0), "\u{00B0}"); // Degree
+        assert_eq!(fallback_char_to_unicode(0x2014), "\u{2014}"); // Em dash
+        assert_eq!(fallback_char_to_unicode(0x2013), "\u{2013}"); // En dash
+        assert_eq!(fallback_char_to_unicode(0x2022), "\u{2022}"); // Bullet
+        assert_eq!(fallback_char_to_unicode(0x2026), "\u{2026}"); // Ellipsis
+        assert_eq!(fallback_char_to_unicode(0x00B0), "\u{00B0}"); // Degree
     }
 
     #[test]
     fn test_fallback_math_operators() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x00B1), "\u{00B1}"); // Plus-minus
-        assert_eq!(text_decode::fallback_char_to_unicode(0x00D7), "\u{00D7}"); // Multiply
-        assert_eq!(text_decode::fallback_char_to_unicode(0x221E), "\u{221E}"); // Infinity
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2264), "\u{2264}"); // Less or equal
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2265), "\u{2265}"); // Greater or equal
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2260), "\u{2260}"); // Not equal
-        assert_eq!(text_decode::fallback_char_to_unicode(0x221A), "\u{221A}"); // Square root
-        assert_eq!(text_decode::fallback_char_to_unicode(0x222B), "\u{222B}"); // Integral
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2211), "\u{2211}"); // Summation
+        assert_eq!(fallback_char_to_unicode(0x00B1), "\u{00B1}"); // Plus-minus
+        assert_eq!(fallback_char_to_unicode(0x00D7), "\u{00D7}"); // Multiply
+        assert_eq!(fallback_char_to_unicode(0x221E), "\u{221E}"); // Infinity
+        assert_eq!(fallback_char_to_unicode(0x2264), "\u{2264}"); // Less or equal
+        assert_eq!(fallback_char_to_unicode(0x2265), "\u{2265}"); // Greater or equal
+        assert_eq!(fallback_char_to_unicode(0x2260), "\u{2260}"); // Not equal
+        assert_eq!(fallback_char_to_unicode(0x221A), "\u{221A}"); // Square root
+        assert_eq!(fallback_char_to_unicode(0x222B), "\u{222B}"); // Integral
+        assert_eq!(fallback_char_to_unicode(0x2211), "\u{2211}"); // Summation
     }
 
     #[test]
     fn test_fallback_greek_letters() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03B1), "\u{03B1}"); // alpha
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03B2), "\u{03B2}"); // beta
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03C0), "\u{03C0}"); // pi
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03C9), "\u{03C9}"); // omega
-        assert_eq!(text_decode::fallback_char_to_unicode(0x0393), "\u{0393}"); // Gamma
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03A9), "\u{03A9}"); // Omega
+        assert_eq!(fallback_char_to_unicode(0x03B1), "\u{03B1}"); // alpha
+        assert_eq!(fallback_char_to_unicode(0x03B2), "\u{03B2}"); // beta
+        assert_eq!(fallback_char_to_unicode(0x03C0), "\u{03C0}"); // pi
+        assert_eq!(fallback_char_to_unicode(0x03C9), "\u{03C9}"); // omega
+        assert_eq!(fallback_char_to_unicode(0x0393), "\u{0393}"); // Gamma
+        assert_eq!(fallback_char_to_unicode(0x03A9), "\u{03A9}"); // Omega
     }
 
     #[test]
     fn test_fallback_currency() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x20AC), "\u{20AC}"); // Euro
-        assert_eq!(text_decode::fallback_char_to_unicode(0x00A3), "\u{00A3}"); // Pound
-        assert_eq!(text_decode::fallback_char_to_unicode(0x00A5), "\u{00A5}"); // Yen
-        assert_eq!(text_decode::fallback_char_to_unicode(0x00A2), "\u{00A2}"); // Cent
+        assert_eq!(fallback_char_to_unicode(0x20AC), "\u{20AC}"); // Euro
+        assert_eq!(fallback_char_to_unicode(0x00A3), "\u{00A3}"); // Pound
+        assert_eq!(fallback_char_to_unicode(0x00A5), "\u{00A5}"); // Yen
+        assert_eq!(fallback_char_to_unicode(0x00A2), "\u{00A2}"); // Cent
     }
 
     #[test]
     fn test_fallback_direct_unicode() {
         // Valid ASCII character
-        assert_eq!(text_decode::fallback_char_to_unicode(0x41), "A");
-        assert_eq!(text_decode::fallback_char_to_unicode(0x20), " ");
+        assert_eq!(fallback_char_to_unicode(0x41), "A");
+        assert_eq!(fallback_char_to_unicode(0x20), " ");
     }
 
     #[test]
     fn test_fallback_invalid_code_point() {
         // Surrogate pair range is invalid Unicode
-        assert_eq!(text_decode::fallback_char_to_unicode(0xD800), "?");
-        assert_eq!(text_decode::fallback_char_to_unicode(0xDFFF), "?");
+        assert_eq!(fallback_char_to_unicode(0xD800), "?");
+        assert_eq!(fallback_char_to_unicode(0xDFFF), "?");
     }
 
     #[test]
     fn test_fallback_private_use_area() {
         // PUA characters should still be returned (not replaced with ?)
-        let result = text_decode::fallback_char_to_unicode(0xE000);
+        let result = fallback_char_to_unicode(0xE000);
         assert_ne!(result, "?");
     }
 
@@ -7083,7 +7368,7 @@ mod tests {
 
     #[test]
     fn test_decode_text_no_font_latin1() {
-        let result = text_decode::decode_text_to_unicode(b"Hello", None);
+        let result = decode_text_to_unicode(b"Hello", None);
         assert_eq!(result, "Hello");
     }
 
@@ -7091,7 +7376,7 @@ mod tests {
     fn test_decode_text_no_font_high_bytes() {
         // Latin-1 high bytes should map to Unicode code points
         let bytes = vec![0xC0, 0xE9]; // A-grave, e-acute in Latin-1
-        let result = text_decode::decode_text_to_unicode(&bytes, None);
+        let result = decode_text_to_unicode(&bytes, None);
         assert!(result.contains('\u{00C0}'), "Should contain A-grave");
         assert!(result.contains('\u{00E9}'), "Should contain e-acute");
     }
@@ -7100,7 +7385,7 @@ mod tests {
     fn test_decode_text_filters_control_chars() {
         // Control characters (except tab, newline, carriage return) should be filtered
         let bytes = vec![0x01, 0x02, 0x41, 0x09, 0x0A]; // ctrl chars, 'A', tab, newline
-        let result = text_decode::decode_text_to_unicode(&bytes, None);
+        let result = decode_text_to_unicode(&bytes, None);
         assert!(result.contains('A'), "Should contain 'A'");
         assert!(result.contains('\t'), "Should keep tab");
         assert!(result.contains('\n'), "Should keep newline");
@@ -7110,7 +7395,7 @@ mod tests {
     #[test]
     fn test_decode_text_with_simple_font() {
         let font = create_test_font();
-        let result = text_decode::decode_text_to_unicode(b"ABC", Some(&font));
+        let result = decode_text_to_unicode(b"ABC", Some(&font));
         // With WinAnsiEncoding, ASCII characters should map correctly
         assert!(result.contains('A') || !result.is_empty(), "Should decode something");
     }
@@ -10129,107 +10414,107 @@ mod tests {
 
     #[test]
     fn test_fallback_quotation_marks() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2018), "\u{2018}"); // Left single quote
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2019), "\u{2019}"); // Right single quote
-        assert_eq!(text_decode::fallback_char_to_unicode(0x201C), "\u{201C}"); // Left double quote
-        assert_eq!(text_decode::fallback_char_to_unicode(0x201D), "\u{201D}"); // Right double quote
+        assert_eq!(fallback_char_to_unicode(0x2018), "\u{2018}"); // Left single quote
+        assert_eq!(fallback_char_to_unicode(0x2019), "\u{2019}"); // Right single quote
+        assert_eq!(fallback_char_to_unicode(0x201C), "\u{201C}"); // Left double quote
+        assert_eq!(fallback_char_to_unicode(0x201D), "\u{201D}"); // Right double quote
     }
 
     #[test]
     fn test_fallback_math_extended() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x00F7), "\u{00F7}"); // Division
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2202), "\u{2202}"); // Partial diff
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2207), "\u{2207}"); // Nabla
-        assert_eq!(text_decode::fallback_char_to_unicode(0x220F), "\u{220F}"); // Product
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2261), "\u{2261}"); // Identical
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2248), "\u{2248}"); // Almost equal
+        assert_eq!(fallback_char_to_unicode(0x00F7), "\u{00F7}"); // Division
+        assert_eq!(fallback_char_to_unicode(0x2202), "\u{2202}"); // Partial diff
+        assert_eq!(fallback_char_to_unicode(0x2207), "\u{2207}"); // Nabla
+        assert_eq!(fallback_char_to_unicode(0x220F), "\u{220F}"); // Product
+        assert_eq!(fallback_char_to_unicode(0x2261), "\u{2261}"); // Identical
+        assert_eq!(fallback_char_to_unicode(0x2248), "\u{2248}"); // Almost equal
     }
 
     #[test]
     fn test_fallback_set_theory() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2282), "\u{2282}"); // Subset
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2283), "\u{2283}"); // Superset
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2286), "\u{2286}"); // Subset or equal
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2287), "\u{2287}"); // Superset or equal
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2208), "\u{2208}"); // Element of
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2209), "\u{2209}"); // Not element
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2200), "\u{2200}"); // For all
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2203), "\u{2203}"); // There exists
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2205), "\u{2205}"); // Empty set
+        assert_eq!(fallback_char_to_unicode(0x2282), "\u{2282}"); // Subset
+        assert_eq!(fallback_char_to_unicode(0x2283), "\u{2283}"); // Superset
+        assert_eq!(fallback_char_to_unicode(0x2286), "\u{2286}"); // Subset or equal
+        assert_eq!(fallback_char_to_unicode(0x2287), "\u{2287}"); // Superset or equal
+        assert_eq!(fallback_char_to_unicode(0x2208), "\u{2208}"); // Element of
+        assert_eq!(fallback_char_to_unicode(0x2209), "\u{2209}"); // Not element
+        assert_eq!(fallback_char_to_unicode(0x2200), "\u{2200}"); // For all
+        assert_eq!(fallback_char_to_unicode(0x2203), "\u{2203}"); // There exists
+        assert_eq!(fallback_char_to_unicode(0x2205), "\u{2205}"); // Empty set
     }
 
     #[test]
     fn test_fallback_logic() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2227), "\u{2227}"); // Logical and
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2228), "\u{2228}"); // Logical or
-        assert_eq!(text_decode::fallback_char_to_unicode(0x00AC), "\u{00AC}"); // Not
+        assert_eq!(fallback_char_to_unicode(0x2227), "\u{2227}"); // Logical and
+        assert_eq!(fallback_char_to_unicode(0x2228), "\u{2228}"); // Logical or
+        assert_eq!(fallback_char_to_unicode(0x00AC), "\u{00AC}"); // Not
     }
 
     #[test]
     fn test_fallback_arrows() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2192), "\u{2192}"); // Right arrow
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2190), "\u{2190}"); // Left arrow
-        assert_eq!(text_decode::fallback_char_to_unicode(0x2194), "\u{2194}"); // Left right arrow
-        assert_eq!(text_decode::fallback_char_to_unicode(0x21D2), "\u{21D2}"); // Double right
-        assert_eq!(text_decode::fallback_char_to_unicode(0x21D4), "\u{21D4}"); // Double left-right
+        assert_eq!(fallback_char_to_unicode(0x2192), "\u{2192}"); // Right arrow
+        assert_eq!(fallback_char_to_unicode(0x2190), "\u{2190}"); // Left arrow
+        assert_eq!(fallback_char_to_unicode(0x2194), "\u{2194}"); // Left right arrow
+        assert_eq!(fallback_char_to_unicode(0x21D2), "\u{21D2}"); // Double right
+        assert_eq!(fallback_char_to_unicode(0x21D4), "\u{21D4}"); // Double left-right
     }
 
     #[test]
     fn test_fallback_greek_lowercase_extended() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03B5), "\u{03B5}"); // epsilon
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03B6), "\u{03B6}"); // zeta
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03B7), "\u{03B7}"); // eta
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03B9), "\u{03B9}"); // iota
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03BA), "\u{03BA}"); // kappa
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03BB), "\u{03BB}"); // lambda
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03BC), "\u{03BC}"); // mu
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03BD), "\u{03BD}"); // nu
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03BE), "\u{03BE}"); // xi
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03BF), "\u{03BF}"); // omicron
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03C1), "\u{03C1}"); // rho
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03C2), "\u{03C2}"); // final sigma
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03C3), "\u{03C3}"); // sigma
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03C4), "\u{03C4}"); // tau
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03C5), "\u{03C5}"); // upsilon
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03C6), "\u{03C6}"); // phi
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03C7), "\u{03C7}"); // chi
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03C8), "\u{03C8}"); // psi
+        assert_eq!(fallback_char_to_unicode(0x03B5), "\u{03B5}"); // epsilon
+        assert_eq!(fallback_char_to_unicode(0x03B6), "\u{03B6}"); // zeta
+        assert_eq!(fallback_char_to_unicode(0x03B7), "\u{03B7}"); // eta
+        assert_eq!(fallback_char_to_unicode(0x03B9), "\u{03B9}"); // iota
+        assert_eq!(fallback_char_to_unicode(0x03BA), "\u{03BA}"); // kappa
+        assert_eq!(fallback_char_to_unicode(0x03BB), "\u{03BB}"); // lambda
+        assert_eq!(fallback_char_to_unicode(0x03BC), "\u{03BC}"); // mu
+        assert_eq!(fallback_char_to_unicode(0x03BD), "\u{03BD}"); // nu
+        assert_eq!(fallback_char_to_unicode(0x03BE), "\u{03BE}"); // xi
+        assert_eq!(fallback_char_to_unicode(0x03BF), "\u{03BF}"); // omicron
+        assert_eq!(fallback_char_to_unicode(0x03C1), "\u{03C1}"); // rho
+        assert_eq!(fallback_char_to_unicode(0x03C2), "\u{03C2}"); // final sigma
+        assert_eq!(fallback_char_to_unicode(0x03C3), "\u{03C3}"); // sigma
+        assert_eq!(fallback_char_to_unicode(0x03C4), "\u{03C4}"); // tau
+        assert_eq!(fallback_char_to_unicode(0x03C5), "\u{03C5}"); // upsilon
+        assert_eq!(fallback_char_to_unicode(0x03C6), "\u{03C6}"); // phi
+        assert_eq!(fallback_char_to_unicode(0x03C7), "\u{03C7}"); // chi
+        assert_eq!(fallback_char_to_unicode(0x03C8), "\u{03C8}"); // psi
     }
 
     #[test]
     fn test_fallback_greek_uppercase_extended() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x0391), "\u{0391}"); // Alpha
-        assert_eq!(text_decode::fallback_char_to_unicode(0x0392), "\u{0392}"); // Beta
-        assert_eq!(text_decode::fallback_char_to_unicode(0x0394), "\u{0394}"); // Delta
-        assert_eq!(text_decode::fallback_char_to_unicode(0x0395), "\u{0395}"); // Epsilon
-        assert_eq!(text_decode::fallback_char_to_unicode(0x0396), "\u{0396}"); // Zeta
-        assert_eq!(text_decode::fallback_char_to_unicode(0x0397), "\u{0397}"); // Eta
-        assert_eq!(text_decode::fallback_char_to_unicode(0x0398), "\u{0398}"); // Theta
-        assert_eq!(text_decode::fallback_char_to_unicode(0x0399), "\u{0399}"); // Iota
-        assert_eq!(text_decode::fallback_char_to_unicode(0x039A), "\u{039A}"); // Kappa
-        assert_eq!(text_decode::fallback_char_to_unicode(0x039B), "\u{039B}"); // Lambda
-        assert_eq!(text_decode::fallback_char_to_unicode(0x039C), "\u{039C}"); // Mu
-        assert_eq!(text_decode::fallback_char_to_unicode(0x039D), "\u{039D}"); // Nu
-        assert_eq!(text_decode::fallback_char_to_unicode(0x039E), "\u{039E}"); // Xi
-        assert_eq!(text_decode::fallback_char_to_unicode(0x039F), "\u{039F}"); // Omicron
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03A0), "\u{03A0}"); // Pi
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03A1), "\u{03A1}"); // Rho
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03A3), "\u{03A3}"); // Sigma
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03A4), "\u{03A4}"); // Tau
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03A5), "\u{03A5}"); // Upsilon
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03A6), "\u{03A6}"); // Phi
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03A7), "\u{03A7}"); // Chi
-        assert_eq!(text_decode::fallback_char_to_unicode(0x03A8), "\u{03A8}"); // Psi
+        assert_eq!(fallback_char_to_unicode(0x0391), "\u{0391}"); // Alpha
+        assert_eq!(fallback_char_to_unicode(0x0392), "\u{0392}"); // Beta
+        assert_eq!(fallback_char_to_unicode(0x0394), "\u{0394}"); // Delta
+        assert_eq!(fallback_char_to_unicode(0x0395), "\u{0395}"); // Epsilon
+        assert_eq!(fallback_char_to_unicode(0x0396), "\u{0396}"); // Zeta
+        assert_eq!(fallback_char_to_unicode(0x0397), "\u{0397}"); // Eta
+        assert_eq!(fallback_char_to_unicode(0x0398), "\u{0398}"); // Theta
+        assert_eq!(fallback_char_to_unicode(0x0399), "\u{0399}"); // Iota
+        assert_eq!(fallback_char_to_unicode(0x039A), "\u{039A}"); // Kappa
+        assert_eq!(fallback_char_to_unicode(0x039B), "\u{039B}"); // Lambda
+        assert_eq!(fallback_char_to_unicode(0x039C), "\u{039C}"); // Mu
+        assert_eq!(fallback_char_to_unicode(0x039D), "\u{039D}"); // Nu
+        assert_eq!(fallback_char_to_unicode(0x039E), "\u{039E}"); // Xi
+        assert_eq!(fallback_char_to_unicode(0x039F), "\u{039F}"); // Omicron
+        assert_eq!(fallback_char_to_unicode(0x03A0), "\u{03A0}"); // Pi
+        assert_eq!(fallback_char_to_unicode(0x03A1), "\u{03A1}"); // Rho
+        assert_eq!(fallback_char_to_unicode(0x03A3), "\u{03A3}"); // Sigma
+        assert_eq!(fallback_char_to_unicode(0x03A4), "\u{03A4}"); // Tau
+        assert_eq!(fallback_char_to_unicode(0x03A5), "\u{03A5}"); // Upsilon
+        assert_eq!(fallback_char_to_unicode(0x03A6), "\u{03A6}"); // Phi
+        assert_eq!(fallback_char_to_unicode(0x03A7), "\u{03A7}"); // Chi
+        assert_eq!(fallback_char_to_unicode(0x03A8), "\u{03A8}"); // Psi
     }
 
     #[test]
     fn test_fallback_currency_extended() {
-        assert_eq!(text_decode::fallback_char_to_unicode(0x20A3), "\u{20A3}"); // Franc
-        assert_eq!(text_decode::fallback_char_to_unicode(0x20A4), "\u{20A4}"); // Lira
-        assert_eq!(text_decode::fallback_char_to_unicode(0x20A9), "\u{20A9}"); // Won
-        assert_eq!(text_decode::fallback_char_to_unicode(0x20AA), "\u{20AA}"); // Shekel
-        assert_eq!(text_decode::fallback_char_to_unicode(0x20AB), "\u{20AB}"); // Dong
-        assert_eq!(text_decode::fallback_char_to_unicode(0x20B9), "\u{20B9}"); // Rupee
+        assert_eq!(fallback_char_to_unicode(0x20A3), "\u{20A3}"); // Franc
+        assert_eq!(fallback_char_to_unicode(0x20A4), "\u{20A4}"); // Lira
+        assert_eq!(fallback_char_to_unicode(0x20A9), "\u{20A9}"); // Won
+        assert_eq!(fallback_char_to_unicode(0x20AA), "\u{20AA}"); // Shekel
+        assert_eq!(fallback_char_to_unicode(0x20AB), "\u{20AB}"); // Dong
+        assert_eq!(fallback_char_to_unicode(0x20B9), "\u{20B9}"); // Rupee
     }
 
     // ========================================================================
@@ -10240,7 +10525,7 @@ mod tests {
     fn test_decode_text_simple_font_with_control_chars() {
         let font = create_test_font();
         let bytes = vec![0x01, 0x41, 0x09]; // ctrl char, 'A', tab
-        let result = text_decode::decode_text_to_unicode(&bytes, Some(&font));
+        let result = decode_text_to_unicode(&bytes, Some(&font));
         // Should filter control chars but keep tab
         assert!(result.contains('\t') || result.contains('A'));
     }
@@ -10252,7 +10537,7 @@ mod tests {
         font.subtype = "Type0".to_string();
         font.encoding = crate::fonts::Encoding::Identity;
         let bytes = vec![0x41]; // Single byte for Type0 identity
-        let result = text_decode::decode_text_to_unicode(&bytes, Some(&font));
+        let result = decode_text_to_unicode(&bytes, Some(&font));
         // Should hit trailing byte path
     }
 
