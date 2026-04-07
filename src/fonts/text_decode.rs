@@ -518,6 +518,7 @@ mod tests {
     }
 
     #[test]
+    #[test]
     fn test_decode_pdf_text_type0_font_2byte_iteration() {
         // Test Type0 font 2-byte iteration
         // For this test, we'll create a mock Type0 font and test the iteration behavior
@@ -537,10 +538,11 @@ mod tests {
         assert_eq!(glyphs[1].char_code, 0x0042);
         assert_eq!(glyphs[1].unicode, "B");
         assert_eq!(glyphs[1].bytes_consumed, 2);
+    }
+
     // Helper functions to create mock fonts for testing
     fn create_mock_simple_font() -> FontInfo {
         use std::collections::HashMap;
-        use std::sync::Arc;
         
         FontInfo {
             base_font: "TestFont".to_string(),
@@ -584,7 +586,6 @@ mod tests {
 
     fn create_mock_type0_font() -> FontInfo {
         use std::collections::HashMap;
-        use std::sync::Arc;
         
         FontInfo {
             base_font: "TestType0Font".to_string(),
