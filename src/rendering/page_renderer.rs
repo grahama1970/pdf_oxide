@@ -8,6 +8,7 @@ use crate::object::Object;
 
 use std::collections::HashMap;
 use std::sync::Arc;
+use super::path_rasterizer::PathRasterizer;
 use super::text_rasterizer::TextRasterizer;
 use tiny_skia::{Color, FillRule, PathBuilder, Pixmap, PixmapPaint, Transform};
 
@@ -174,17 +175,15 @@ impl PageRenderer {
 
         Ok(resolved_fonts)
     }
-
-    /// Resolve a single font reference to FontInfo.
     fn resolve_single_font(&self, font_ref: &Object, doc: &mut PdfDocument) -> Result<FontInfo> {
-        let font_obj = if let Some(obj_ref) = font_ref.as_reference() {
-            doc.resolve_object(obj_ref)?
+        let font_obj = if let Some(_obj_ref) = font_ref.as_reference() {
+            doc.resolve_object(font_ref)?
         } else {
             font_ref.clone()
         };
 
-        if let Object::Dictionary(font_dict) = font_obj {
-            FontInfo::from_dict(&font_dict)
+        if matches!(font_obj, Object::Dictionary(_)) {
+            FontInfo::from_dict(&font_obj, doc)
         } else {
             Err(Error::InvalidPdf("Font object is not a dictionary".to_string()))
         }
@@ -385,10 +384,9 @@ impl PageRenderer {
                         let clip = clip_stack.last().and_then(|c| c.as_ref());
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
-                        let current_font = render_state.current_font.as_ref().map(|f| f.as_ref());
+                        self.text_rasterizer.render_text(pixmap, text, transform, gs, resources, doc, clip)?;
                         self.text_rasterizer.render_text(pixmap, text, transform, gs, resources, doc, clip, current_font)?;
-
-                        let gs_mut = gs_stack.current_mut();
+                        self.text_rasterizer.render_text(pixmap, text, transform, gs, resources, doc, clip)?;
                         let font_size = gs_mut.font_size;
                         let h_scale = gs_mut.horizontal_scaling / 100.0;
                         let char_space = gs_mut.char_space;
@@ -411,11 +409,12 @@ impl PageRenderer {
                     if in_text_object {
                         let clip = clip_stack.last().and_then(|c| c.as_ref());
                         let gs = gs_stack.current();
+                    if in_text_object {
+                        let clip = clip_stack.last().and_then(|c| c.as_ref());
+                        let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
                         self.text_rasterizer.render_tj_array(pixmap, array, transform, gs, resources, doc, clip)?;
                     }
-                },
-                Operator::DoubleQuote { word_space, char_space, text } => {
                     if in_text_object {
                         let clip = clip_stack.last().and_then(|c| c.as_ref());
                         gs_stack.current_mut().word_space = *word_space;
@@ -424,8 +423,7 @@ impl PageRenderer {
                         let transform = combine_transforms(base_transform, &gs.ctm);
                         let current_font = render_state.current_font.as_ref().map(|f| f.as_ref());
                         self.text_rasterizer.render_text(pixmap, text, transform, gs, resources, doc, clip, current_font)?;
-                    }
-                },
+                        self.text_rasterizer.render_text(pixmap, text, transform, gs, resources, doc, clip)?;
                 Operator::Do { name } => {
                     let clip = clip_stack.last().and_then(|c| c.as_ref());
                     let gs = gs_stack.current();
