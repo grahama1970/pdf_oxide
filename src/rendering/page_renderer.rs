@@ -3,14 +3,12 @@
 use crate::content::{parse_content_stream, GraphicsState, GraphicsStateStack, Matrix, Operator};
 use crate::document::PdfDocument;
 use crate::error::{Error, Result};
-use crate::fonts::FontInfo;
 use crate::object::Object;
 
-use std::collections::HashMap;
-use std::sync::Arc;
+use tiny_skia::{Color, FillRule, PathBuilder, Pixmap, PixmapPaint, Transform};
+
 use super::path_rasterizer::PathRasterizer;
 use super::text_rasterizer::TextRasterizer;
-use tiny_skia::{Color, FillRule, PathBuilder, Pixmap, PixmapPaint, Transform};
 
 /// Output image format.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
@@ -42,7 +40,7 @@ impl Default for RenderOptions {
         Self {
             dpi: 150,
             format: ImageFormat::Png,
-            background: Some([1.0, 1.0, 1.0, 1.0]),
+            background: Some([1.0, 1.0, 1.0, 1.0]), // White background
             render_annotations: true,
             jpeg_quality: 85,
         }
@@ -52,7 +50,10 @@ impl Default for RenderOptions {
 impl RenderOptions {
     /// Create options with custom DPI.
     pub fn with_dpi(dpi: u32) -> Self {
-        Self { dpi, ..Default::default() }
+        Self {
+            dpi,
+            ..Default::default()
+        }
     }
 
     /// Set transparent background.
@@ -83,6 +84,11 @@ pub struct RenderedImage {
 }
 
 impl RenderedImage {
+    /// Save the image to a file.
+    pub fn save(&self, path: impl AsRef<std::path::Path>) -> Result<()> {
+        std::fs::write(path.as_ref(), &self.data).map_err(|e| Error::Io(std::io::Error::other(e)))
+    }
+
     /// Get the image data as bytes.
     pub fn as_bytes(&self) -> &[u8] {
         &self.data
@@ -96,97 +102,72 @@ pub struct PageRenderer {
     text_rasterizer: TextRasterizer,
 }
 
-/// Render state that tracks current font and other rendering context.
-struct RenderState {
-    /// Currently active font (set by Tf operator)
-    current_font: Option<Arc<FontInfo>>,
-    /// Currently active font name (set by Tf operator)
-    current_font_name: Option<String>,
-}
-
 impl PageRenderer {
+    /// Create a new page renderer with the given options.
+    pub fn new(options: RenderOptions) -> Self {
+        Self {
+            options,
+            path_rasterizer: PathRasterizer::new(),
+            text_rasterizer: TextRasterizer::new(),
+        }
+    }
+
     /// Render a page to an image.
     pub fn render_page(&mut self, doc: &mut PdfDocument, page_num: usize) -> Result<RenderedImage> {
+        // Get page dimensions
         let page_info = doc.get_page_info(page_num)?;
         let media_box = page_info.media_box;
 
-        let scale = self.options.dpi as f32 / 72.0;
+        // Calculate pixel dimensions based on DPI
+        let scale = self.options.dpi as f32 / 72.0; // PDF uses 72 points per inch
         let width = (media_box.width * scale).ceil() as u32;
         let height = (media_box.height * scale).ceil() as u32;
 
-        let mut pixmap = Pixmap::new(width, height)
-            .ok_or_else(|| Error::InvalidPdf(format!("Failed to create pixmap {}x{}", width, height)))?;
+        // Create pixmap with background
+        let mut pixmap = Pixmap::new(width, height).ok_or_else(|| {
+            Error::InvalidPdf(format!("Failed to create pixmap {}x{}", width, height))
+        })?;
 
+        // Fill background
         if let Some([r, g, b, a]) = self.options.background {
             pixmap.fill(Color::from_rgba(r, g, b, a).unwrap_or(Color::WHITE));
         }
 
+        // Create transform: PDF coordinates to pixel coordinates
+        // PDF origin is bottom-left, we need to flip Y axis
         let transform = Transform::from_scale(scale, -scale)
             .post_translate(0.0, height as f32)
             .post_translate(-media_box.x * scale, media_box.y * scale);
 
+        // Get page content stream
         let content_data = doc.get_page_content_data(page_num)?;
+
+        // Parse content stream
         let operators = parse_content_stream(&content_data)?;
+
+        // Get page resources for fonts and images
         let resources = doc.get_page_resources(page_num)?;
-        let resolved_fonts = self.resolve_fonts_from_resources(&resources, doc)?;
 
-        self.execute_operators(
-            &mut pixmap,
-            transform,
-            &operators,
-            doc,
-            page_num,
-            &resources,
-            &resolved_fonts,
-        )?;
+        // Execute operators and render
+        self.execute_operators(&mut pixmap, transform, &operators, doc, page_num, &resources)?;
 
+        // Encode to output format
         let data = match self.options.format {
             ImageFormat::Png => pixmap
                 .encode_png()
                 .map_err(|e| Error::InvalidPdf(format!("PNG encoding failed: {}", e)))?,
-            ImageFormat::Jpeg => self.encode_jpeg(&pixmap)?,
+            ImageFormat::Jpeg => {
+                // Convert RGBA to RGB for JPEG
+                self.encode_jpeg(&pixmap)?
+            },
         };
 
-        Ok(RenderedImage { data, width, height, format: self.options.format })
-    }
-
-    /// Pre-resolve all fonts from the page's /Font resource dictionary.
-    fn resolve_fonts_from_resources(
-        &self,
-        resources: &Object,
-        doc: &mut PdfDocument,
-    ) -> Result<HashMap<String, Arc<FontInfo>>> {
-        let mut resolved_fonts = HashMap::new();
-
-        if let Object::Dictionary(res_dict) = resources {
-            if let Some(Object::Dictionary(fonts_dict)) = res_dict.get("Font") {
-                for (font_name, font_ref) in fonts_dict {
-                    match self.resolve_single_font(font_ref, doc) {
-                        Ok(font_info) => {
-                            resolved_fonts.insert(font_name.clone(), Arc::new(font_info));
-                        },
-                        Err(e) => {
-                            log::warn!("Failed to resolve font '{}': {}", font_name, e);
-                        },
-                    }
-                }
-            }
-        }
-
-        Ok(resolved_fonts)
-    }
-    fn resolve_single_font(&self, font_ref: &Object, doc: &mut PdfDocument) -> Result<FontInfo> {
-        let font_obj = if let Some(_obj_ref) = font_ref.as_reference() {
-            doc.resolve_object(font_ref)?
-        } else {
-            font_ref.clone()
-        };
-
-        if matches!(font_obj, Object::Dictionary(_)) {
-            FontInfo::from_dict(&font_obj, doc)
-        } else {
-            Err(Error::InvalidPdf("Font object is not a dictionary".to_string()))
-        }
+        Ok(RenderedImage {
+            data,
+            width,
+            height,
+            format: self.options.format,
+        })
     }
 
     /// Execute content stream operators and render to pixmap.
@@ -198,33 +179,47 @@ impl PageRenderer {
         doc: &mut PdfDocument,
         page_num: usize,
         resources: &Object,
-        resolved_fonts: &HashMap<String, Arc<FontInfo>>,
     ) -> Result<()> {
         let mut gs_stack = GraphicsStateStack::new();
-        let mut render_state = RenderState { current_font: None, current_font_name: None };
         let mut current_path = PathBuilder::new();
         let mut in_text_object = false;
+        // Clip mask stack: mirrors q/Q save/restore so clipping is scoped correctly.
+        // Per PDF spec §8.5.4, clipping persists until the enclosing q/Q pair restores.
         let mut clip_stack: Vec<Option<tiny_skia::Mask>> = vec![None];
+        // Pending clip from W/W* — applied by the next path-painting operator (or n).
         let mut pending_clip: Option<(tiny_skia::Path, FillRule)> = None;
 
         for op in operators {
             match op {
+                // Graphics state operators
                 Operator::SaveState => {
                     gs_stack.save();
+                    // Clone current clip for the new graphics state level
                     let current_clip = clip_stack.last().cloned().flatten();
                     clip_stack.push(current_clip);
                 },
                 Operator::RestoreState => {
                     gs_stack.restore();
+                    // Restore previous clipping region
                     if clip_stack.len() > 1 {
                         clip_stack.pop();
                     }
                 },
                 Operator::Cm { a, b, c, d, e, f } => {
-                    let matrix = Matrix { a: *a, b: *b, c: *c, d: *d, e: *e, f: *f };
+                    let matrix = Matrix {
+                        a: *a,
+                        b: *b,
+                        c: *c,
+                        d: *d,
+                        e: *e,
+                        f: *f,
+                    };
                     let current = gs_stack.current_mut();
+                    // PDF spec ISO 32000-1:2008 §8.3.4: cm concatenates as M_cm × CTM
                     current.ctm = matrix.multiply(&current.ctm);
                 },
+
+                // Color operators
                 Operator::SetFillRgb { r, g, b } => {
                     gs_stack.current_mut().fill_color_rgb = (*r, *g, *b);
                     gs_stack.current_mut().fill_color_space = "DeviceRGB".to_string();
@@ -244,6 +239,7 @@ impl PageRenderer {
                     gs_stack.current_mut().stroke_color_space = "DeviceGray".to_string();
                 },
                 Operator::SetFillCmyk { c, m, y, k } => {
+                    // Convert CMYK to RGB
                     let (r, g, b) = cmyk_to_rgb(*c, *m, *y, *k);
                     gs_stack.current_mut().fill_color_rgb = (r, g, b);
                     gs_stack.current_mut().fill_color_cmyk = Some((*c, *m, *y, *k));
@@ -255,81 +251,170 @@ impl PageRenderer {
                     gs_stack.current_mut().stroke_color_cmyk = Some((*c, *m, *y, *k));
                     gs_stack.current_mut().stroke_color_space = "DeviceCMYK".to_string();
                 },
-                Operator::SetLineWidth { width } => gs_stack.current_mut().line_width = *width,
-                Operator::SetLineCap { cap_style } => gs_stack.current_mut().line_cap = *cap_style,
-                Operator::SetLineJoin { join_style } => gs_stack.current_mut().line_join = *join_style,
-                Operator::SetMiterLimit { limit } => gs_stack.current_mut().miter_limit = *limit,
-                Operator::SetDash { array, phase } => gs_stack.current_mut().dash_pattern = (array.clone(), *phase),
-                Operator::MoveTo { x, y } => current_path.move_to(*x, *y),
-                Operator::LineTo { x, y } => current_path.line_to(*x, *y),
-                Operator::CurveTo { x1, y1, x2, y2, x3, y3 } => current_path.cubic_to(*x1, *y1, *x2, *y2, *x3, *y3),
+
+                // Line style operators
+                Operator::SetLineWidth { width } => {
+                    gs_stack.current_mut().line_width = *width;
+                },
+                Operator::SetLineCap { cap_style } => {
+                    gs_stack.current_mut().line_cap = *cap_style;
+                },
+                Operator::SetLineJoin { join_style } => {
+                    gs_stack.current_mut().line_join = *join_style;
+                },
+                Operator::SetMiterLimit { limit } => {
+                    gs_stack.current_mut().miter_limit = *limit;
+                },
+                Operator::SetDash { array, phase } => {
+                    gs_stack.current_mut().dash_pattern = (array.clone(), *phase);
+                },
+
+                // Path construction
+                Operator::MoveTo { x, y } => {
+                    current_path.move_to(*x, *y);
+                },
+                Operator::LineTo { x, y } => {
+                    current_path.line_to(*x, *y);
+                },
+                Operator::CurveTo {
+                    x1,
+                    y1,
+                    x2,
+                    y2,
+                    x3,
+                    y3,
+                } => {
+                    current_path.cubic_to(*x1, *y1, *x2, *y2, *x3, *y3);
+                },
                 Operator::CurveToV { x2, y2, x3, y3 } => {
+                    // First control point is current point
                     if let Some(last) = current_path.last_point() {
                         current_path.cubic_to(last.x, last.y, *x2, *y2, *x3, *y3);
                     }
                 },
-                Operator::CurveToY { x1, y1, x3, y3 } => current_path.cubic_to(*x1, *y1, *x3, *y3, *x3, *y3),
-                Operator::Rectangle { x, y, width, height } => {
+                Operator::CurveToY { x1, y1, x3, y3 } => {
+                    // Second control point is end point
+                    current_path.cubic_to(*x1, *y1, *x3, *y3, *x3, *y3);
+                },
+                Operator::Rectangle {
+                    x,
+                    y,
+                    width,
+                    height,
+                } => {
                     current_path.push_rect(
                         tiny_skia::Rect::from_xywh(*x, *y, *width, *height)
                             .unwrap_or(tiny_skia::Rect::from_xywh(0.0, 0.0, 1.0, 1.0).unwrap()),
                     );
                 },
-                Operator::ClosePath => current_path.close(),
+                Operator::ClosePath => {
+                    current_path.close();
+                },
+
+                // Path painting
                 Operator::Stroke => {
-                    apply_pending_clip(&mut pending_clip, &mut clip_stack, pixmap, base_transform, &gs_stack);
+                    apply_pending_clip(
+                        &mut pending_clip,
+                        &mut clip_stack,
+                        pixmap,
+                        base_transform,
+                        &gs_stack,
+                    );
                     let clip = clip_stack.last().and_then(|c| c.as_ref());
                     if let Some(path) = current_path.finish() {
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
-                        self.path_rasterizer.stroke_path_clipped(pixmap, &path, transform, gs, clip);
+                        self.path_rasterizer
+                            .stroke_path_clipped(pixmap, &path, transform, gs, clip);
                     }
                     current_path = PathBuilder::new();
                 },
                 Operator::Fill | Operator::CloseFillStroke => {
-                    apply_pending_clip(&mut pending_clip, &mut clip_stack, pixmap, base_transform, &gs_stack);
+                    apply_pending_clip(
+                        &mut pending_clip,
+                        &mut clip_stack,
+                        pixmap,
+                        base_transform,
+                        &gs_stack,
+                    );
                     let clip = clip_stack.last().and_then(|c| c.as_ref());
                     if let Some(path) = current_path.finish() {
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
-                        self.path_rasterizer.fill_path_clipped(pixmap, &path, transform, gs, FillRule::Winding, clip);
+                        self.path_rasterizer.fill_path_clipped(
+                            pixmap,
+                            &path,
+                            transform,
+                            gs,
+                            FillRule::Winding,
+                            clip,
+                        );
                         if matches!(op, Operator::CloseFillStroke) {
-                            self.path_rasterizer.stroke_path_clipped(pixmap, &path, transform, gs, clip);
+                            self.path_rasterizer
+                                .stroke_path_clipped(pixmap, &path, transform, gs, clip);
                         }
                     }
                     current_path = PathBuilder::new();
                 },
                 Operator::FillEvenOdd => {
-                    apply_pending_clip(&mut pending_clip, &mut clip_stack, pixmap, base_transform, &gs_stack);
+                    apply_pending_clip(
+                        &mut pending_clip,
+                        &mut clip_stack,
+                        pixmap,
+                        base_transform,
+                        &gs_stack,
+                    );
                     let clip = clip_stack.last().and_then(|c| c.as_ref());
                     if let Some(path) = current_path.finish() {
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
-                        self.path_rasterizer.fill_path_clipped(pixmap, &path, transform, gs, FillRule::EvenOdd, clip);
+                        self.path_rasterizer.fill_path_clipped(
+                            pixmap,
+                            &path,
+                            transform,
+                            gs,
+                            FillRule::EvenOdd,
+                            clip,
+                        );
                     }
                     current_path = PathBuilder::new();
                 },
                 Operator::EndPath => {
-                    apply_pending_clip(&mut pending_clip, &mut clip_stack, pixmap, base_transform, &gs_stack);
+                    // n operator: no-op painting — but still consumes a pending clip
+                    apply_pending_clip(
+                        &mut pending_clip,
+                        &mut clip_stack,
+                        pixmap,
+                        base_transform,
+                        &gs_stack,
+                    );
                     current_path = PathBuilder::new();
                 },
                 Operator::ClipNonZero => {
+                    // W operator: set clipping path using nonzero winding rule.
+                    // Per PDF spec §8.5.4, W does NOT consume the path — it records
+                    // a pending clip that takes effect with the next painting operator.
                     if let Some(path) = current_path.clone().finish() {
                         pending_clip = Some((path, FillRule::Winding));
                     }
                 },
                 Operator::ClipEvenOdd => {
+                    // W* operator: set clipping path using even-odd rule.
                     if let Some(path) = current_path.clone().finish() {
                         pending_clip = Some((path, FillRule::EvenOdd));
                     }
                 },
+
+                // Text operators
                 Operator::BeginText => {
                     in_text_object = true;
                     let gs = gs_stack.current_mut();
                     gs.text_matrix = Matrix::identity();
                     gs.text_line_matrix = Matrix::identity();
                 },
-                Operator::EndText => in_text_object = false,
+                Operator::EndText => {
+                    in_text_object = false;
+                },
                 Operator::Td { tx, ty } => {
                     if in_text_object {
                         let gs = gs_stack.current_mut();
@@ -350,7 +435,14 @@ impl PageRenderer {
                 Operator::Tm { a, b, c, d, e, f } => {
                     if in_text_object {
                         let gs = gs_stack.current_mut();
-                        gs.text_matrix = Matrix { a: *a, b: *b, c: *c, d: *d, e: *e, f: *f };
+                        gs.text_matrix = Matrix {
+                            a: *a,
+                            b: *b,
+                            c: *c,
+                            d: *d,
+                            e: *e,
+                            f: *f,
+                        };
                         gs.text_line_matrix = gs.text_matrix;
                     }
                 },
@@ -367,36 +459,50 @@ impl PageRenderer {
                     let gs = gs_stack.current_mut();
                     gs.font_name = Some(font.clone());
                     gs.font_size = *size;
-                    render_state.current_font_name = Some(font.clone());
-                    render_state.current_font = resolved_fonts.get(font).cloned();
-                    if render_state.current_font.is_none() {
-                        log::warn!("Font '{}' not found in resolved fonts", font);
-                    }
                 },
-                Operator::Tc { char_space } => gs_stack.current_mut().char_space = *char_space,
-                Operator::Tw { word_space } => gs_stack.current_mut().word_space = *word_space,
-                Operator::Tz { scale } => gs_stack.current_mut().horizontal_scaling = *scale,
-                Operator::TL { leading } => gs_stack.current_mut().leading = *leading,
-                Operator::Ts { rise } => gs_stack.current_mut().text_rise = *rise,
-                Operator::Tr { render } => gs_stack.current_mut().render_mode = *render,
+                Operator::Tc { char_space } => {
+                    gs_stack.current_mut().char_space = *char_space;
+                },
+                Operator::Tw { word_space } => {
+                    gs_stack.current_mut().word_space = *word_space;
+                },
+                Operator::Tz { scale } => {
+                    gs_stack.current_mut().horizontal_scaling = *scale;
+                },
+                Operator::TL { leading } => {
+                    gs_stack.current_mut().leading = *leading;
+                },
+                Operator::Ts { rise } => {
+                    gs_stack.current_mut().text_rise = *rise;
+                },
+                Operator::Tr { render } => {
+                    gs_stack.current_mut().render_mode = *render;
+                },
+
+                // Text showing
                 Operator::Tj { text } | Operator::Quote { text } => {
                     if in_text_object {
                         let clip = clip_stack.last().and_then(|c| c.as_ref());
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
-                        self.text_rasterizer.render_text(pixmap, text, transform, gs, resources, doc, clip)?;
-                        self.text_rasterizer.render_text(pixmap, text, transform, gs, resources, doc, clip, current_font)?;
-                        self.text_rasterizer.render_text(pixmap, text, transform, gs, resources, doc, clip)?;
+                        self.text_rasterizer
+                            .render_text(pixmap, text, transform, gs, resources, doc, clip)?;
+
+                        // Advance text position per PDF spec §9.4.4:
+                        // tx = ((w0 - Tj/1000) × Tfs + Tc + Tw) × Th
+                        // Using w0=600 (default glyph width) for each character
+                        let gs_mut = gs_stack.current_mut();
                         let font_size = gs_mut.font_size;
                         let h_scale = gs_mut.horizontal_scaling / 100.0;
                         let char_space = gs_mut.char_space;
                         let word_space = gs_mut.word_space;
-                        let w0: f32 = 600.0;
+                        let w0: f32 = 600.0; // Default glyph width in 1/1000 units
 
                         let mut total_tx: f32 = 0.0;
                         for &byte in text.iter() {
                             let tx = (w0 / 1000.0 * font_size + char_space) * h_scale;
                             total_tx += tx;
+                            // Add word spacing for space characters (byte 32)
                             if byte == 32 {
                                 total_tx += word_space * h_scale;
                             }
@@ -409,30 +515,43 @@ impl PageRenderer {
                     if in_text_object {
                         let clip = clip_stack.last().and_then(|c| c.as_ref());
                         let gs = gs_stack.current();
-                    if in_text_object {
-                        let clip = clip_stack.last().and_then(|c| c.as_ref());
-                        let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
-                        self.text_rasterizer.render_tj_array(pixmap, array, transform, gs, resources, doc, clip)?;
+                        self.text_rasterizer
+                            .render_tj_array(pixmap, array, transform, gs, resources, doc, clip)?;
                     }
+                },
+                Operator::DoubleQuote {
+                    word_space,
+                    char_space,
+                    text,
+                } => {
                     if in_text_object {
                         let clip = clip_stack.last().and_then(|c| c.as_ref());
                         gs_stack.current_mut().word_space = *word_space;
                         gs_stack.current_mut().char_space = *char_space;
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
-                        let current_font = render_state.current_font.as_ref().map(|f| f.as_ref());
-                        self.text_rasterizer.render_text(pixmap, text, transform, gs, resources, doc, clip, current_font)?;
-                        self.text_rasterizer.render_text(pixmap, text, transform, gs, resources, doc, clip)?;
+                        self.text_rasterizer
+                            .render_text(pixmap, text, transform, gs, resources, doc, clip)?;
+                    }
+                },
+
+                // XObject (images)
                 Operator::Do { name } => {
                     let clip = clip_stack.last().and_then(|c| c.as_ref());
                     let gs = gs_stack.current();
                     let transform = combine_transforms(base_transform, &gs.ctm);
-                    self.render_xobject(pixmap, name, transform, gs, resources, doc, page_num, clip)?;
+                    self.render_xobject(
+                        pixmap, name, transform, gs, resources, doc, page_num, clip,
+                    )?;
                 },
+
+                // Extended graphics state
                 Operator::SetExtGState { dict_name } => {
                     self.apply_ext_g_state(gs_stack.current_mut(), dict_name, resources)?;
                 },
+
+                // Ignore other operators for now
                 _ => {},
             }
         }
@@ -440,6 +559,7 @@ impl PageRenderer {
         Ok(())
     }
 
+    /// Render an XObject (image or form).
     fn render_xobject(
         &mut self,
         pixmap: &mut Pixmap,
@@ -451,17 +571,24 @@ impl PageRenderer {
         page_num: usize,
         clip_mask: Option<&tiny_skia::Mask>,
     ) -> Result<()> {
+        // Get XObject from resources
         if let Object::Dictionary(res_dict) = resources {
             if let Some(Object::Dictionary(xobjects)) = res_dict.get("XObject").or(res_dict.get("XObjects")) {
                 if let Some(xobj_ref) = xobjects.get(name) {
+                    // Resolve reference if needed
                     let xobj = doc.resolve_object(xobj_ref)?;
 
                     if let Object::Stream { dict, data } = xobj {
+                        // Check subtype
                         if let Some(Object::Name(subtype)) = dict.get("Subtype") {
                             match subtype.as_str() {
-                                "Image" => self.render_image(pixmap, &dict, &data, transform, clip_mask)?,
+                                "Image" => {
+                                    self.render_image(pixmap, &dict, &data, transform, clip_mask)?;
+                                },
                                 "Form" => {
-                                    self.render_form_xobject(pixmap, &dict, &data, transform, doc, page_num, resources)?;
+                                    self.render_form_xobject(
+                                        pixmap, &dict, &data, transform, doc, page_num, resources,
+                                    )?;
                                 },
                                 _ => {},
                             }
@@ -473,6 +600,7 @@ impl PageRenderer {
         Ok(())
     }
 
+    /// Render an image XObject.
     fn render_image(
         &mut self,
         pixmap: &mut Pixmap,
@@ -481,12 +609,32 @@ impl PageRenderer {
         transform: Transform,
         clip_mask: Option<&tiny_skia::Mask>,
     ) -> Result<()> {
-        let width = dict.get("Width").and_then(|o| match o { Object::Integer(i) => Some(*i as u32), _ => None }).unwrap_or(1);
-        let height = dict.get("Height").and_then(|o| match o { Object::Integer(i) => Some(*i as u32), _ => None }).unwrap_or(1);
+        // Get image dimensions
+        let width = dict
+            .get("Width")
+            .and_then(|o| match o {
+                Object::Integer(i) => Some(*i as u32),
+                _ => None,
+            })
+            .unwrap_or(1);
+        let height = dict
+            .get("Height")
+            .and_then(|o| match o {
+                Object::Integer(i) => Some(*i as u32),
+                _ => None,
+            })
+            .unwrap_or(1);
 
+        // Decode image data to RGBA
+        // This is a simplified implementation - real PDF images need proper
+        // color space handling, filters, etc.
         let rgba_data = self.decode_image_data(dict, data, width, height)?;
 
-        if let Some(img_pixmap) = Pixmap::from_vec(rgba_data, tiny_skia::IntSize::from_wh(width, height).unwrap()) {
+        // Create tiny-skia pixmap from RGBA data
+        if let Some(img_pixmap) =
+            Pixmap::from_vec(rgba_data, tiny_skia::IntSize::from_wh(width, height).unwrap())
+        {
+            // Draw image with transform and clip mask
             let paint = PixmapPaint::default();
             pixmap.draw_pixmap(0, 0, img_pixmap.as_ref(), &paint, transform, clip_mask);
         }
@@ -494,6 +642,10 @@ impl PageRenderer {
         Ok(())
     }
 
+    /// Render a Form XObject by parsing its content stream recursively.
+    ///
+    /// Per PDF spec §8.10, a Form XObject contains its own content stream,
+    /// optional /Matrix transform, and optional /Resources dictionary.
     fn render_form_xobject(
         &mut self,
         pixmap: &mut Pixmap,
@@ -504,32 +656,60 @@ impl PageRenderer {
         page_num: usize,
         parent_resources: &Object,
     ) -> Result<()> {
+        // Parse /Matrix from form dict (default: identity)
         let form_matrix = if let Some(Object::Array(arr)) = dict.get("Matrix") {
             let get_f32 = |i: usize| -> f32 {
                 match arr.get(i) {
                     Some(Object::Real(v)) => *v as f32,
                     Some(Object::Integer(v)) => *v as f32,
                     _ => {
-                        if i == 0 || i == 3 { 1.0 } else { 0.0 }
+                        if i == 0 || i == 3 {
+                            1.0
+                        } else {
+                            0.0
+                        }
                     },
                 }
             };
-            Transform::from_row(get_f32(0), get_f32(1), get_f32(2), get_f32(3), get_f32(4), get_f32(5))
+            Transform::from_row(
+                get_f32(0),
+                get_f32(1),
+                get_f32(2),
+                get_f32(3),
+                get_f32(4),
+                get_f32(5),
+            )
         } else {
             Transform::identity()
         };
 
+        // Combine parent transform with form matrix
         let combined_transform = parent_transform.pre_concat(form_matrix);
 
-        let form_resources = if let Some(res) = dict.get("Resources") { res.clone() } else { parent_resources.clone() };
+        // Get form's /Resources (or fall back to parent resources)
+        let form_resources = if let Some(res) = dict.get("Resources") {
+            res.clone()
+        } else {
+            parent_resources.clone()
+        };
 
+        // Parse form content stream
         let operators = parse_content_stream(data)?;
-        let resolved_fonts = self.resolve_fonts_from_resources(&form_resources, doc)?;
-        self.execute_operators(pixmap, combined_transform, &operators, doc, page_num, &form_resources, &resolved_fonts)?;
+
+        // Execute operators with the combined transform and form resources
+        self.execute_operators(
+            pixmap,
+            combined_transform,
+            &operators,
+            doc,
+            page_num,
+            &form_resources,
+        )?;
 
         Ok(())
     }
 
+    /// Decode image data to RGBA.
     fn decode_image_data(
         &self,
         dict: &std::collections::HashMap<String, Object>,
@@ -537,18 +717,32 @@ impl PageRenderer {
         width: u32,
         height: u32,
     ) -> Result<Vec<u8>> {
-        let _bits_per_component = dict.get("BitsPerComponent").and_then(|o| match o { Object::Integer(i) => Some(*i as u8), _ => None }).unwrap_or(8);
+        let _bits_per_component = dict
+            .get("BitsPerComponent")
+            .and_then(|o| match o {
+                Object::Integer(i) => Some(*i as u8),
+                _ => None,
+            })
+            .unwrap_or(8);
 
-        let color_space = dict.get("ColorSpace").and_then(|o| match o { Object::Name(n) => Some(n.as_str()), _ => None }).unwrap_or("DeviceRGB");
+        let color_space = dict
+            .get("ColorSpace")
+            .and_then(|o| match o {
+                Object::Name(n) => Some(n.as_str()),
+                _ => None,
+            })
+            .unwrap_or("DeviceRGB");
 
         let components = match color_space {
             "DeviceGray" => 1,
             "DeviceRGB" => 3,
             "DeviceCMYK" => 4,
-            _ => 3,
+            _ => 3, // Default to RGB
         };
 
         let _expected_size = (width * height * components as u32) as usize;
+
+        // Convert to RGBA based on color space
         let mut rgba = Vec::with_capacity((width * height * 4) as usize);
 
         match color_space {
@@ -575,10 +769,16 @@ impl PageRenderer {
                     let y = data.get(base + 2).copied().unwrap_or(0) as f32 / 255.0;
                     let k = data.get(base + 3).copied().unwrap_or(0) as f32 / 255.0;
                     let (r, g, b) = cmyk_to_rgb(c, m, y, k);
-                    rgba.extend_from_slice(&[(r * 255.0) as u8, (g * 255.0) as u8, (b * 255.0) as u8, 255]);
+                    rgba.extend_from_slice(&[
+                        (r * 255.0) as u8,
+                        (g * 255.0) as u8,
+                        (b * 255.0) as u8,
+                        255,
+                    ]);
                 }
             },
             _ => {
+                // Unknown color space - fill with gray
                 for _ in 0..(width * height) {
                     rgba.extend_from_slice(&[128, 128, 128, 255]);
                 }
@@ -588,19 +788,28 @@ impl PageRenderer {
         Ok(rgba)
     }
 
-    fn apply_ext_g_state(&self, gs: &mut GraphicsState, dict_name: &str, resources: &Object) -> Result<()> {
+    /// Apply extended graphics state parameters.
+    fn apply_ext_g_state(
+        &self,
+        gs: &mut GraphicsState,
+        dict_name: &str,
+        resources: &Object,
+    ) -> Result<()> {
         if let Object::Dictionary(res_dict) = resources {
             if let Some(Object::Dictionary(ext_gstates)) = res_dict.get("ExtGState") {
                 if let Some(Object::Dictionary(state_dict)) = ext_gstates.get(dict_name) {
+                    // Apply transparency
                     if let Some(Object::Real(ca)) = state_dict.get("ca") {
                         gs.fill_alpha = *ca as f32;
                     }
                     if let Some(Object::Real(ca)) = state_dict.get("CA") {
                         gs.stroke_alpha = *ca as f32;
                     }
+                    // Apply blend mode
                     if let Some(Object::Name(bm)) = state_dict.get("BM") {
                         gs.blend_mode = bm.clone();
                     }
+                    // Apply line width
                     if let Some(Object::Real(lw)) = state_dict.get("LW") {
                         gs.line_width = *lw as f32;
                     }
@@ -610,23 +819,28 @@ impl PageRenderer {
         Ok(())
     }
 
+    /// Encode pixmap to JPEG format.
     fn encode_jpeg(&self, pixmap: &Pixmap) -> Result<Vec<u8>> {
         use image::ImageBuffer;
 
+        // Convert to image crate format
         let width = pixmap.width();
         let height = pixmap.height();
         let data = pixmap.data();
 
+        // Create RGB image (JPEG doesn't support alpha)
         let mut rgb_data = Vec::with_capacity((width * height * 3) as usize);
         for chunk in data.chunks(4) {
-            rgb_data.push(chunk[0]);
-            rgb_data.push(chunk[1]);
-            rgb_data.push(chunk[2]);
+            rgb_data.push(chunk[0]); // R
+            rgb_data.push(chunk[1]); // G
+            rgb_data.push(chunk[2]); // B
         }
 
-        let img: ImageBuffer<image::Rgb<u8>, Vec<u8>> = ImageBuffer::from_raw(width, height, rgb_data)
-            .ok_or_else(|| Error::InvalidPdf("Failed to create image buffer".to_string()))?;
+        let img: ImageBuffer<image::Rgb<u8>, Vec<u8>> =
+            ImageBuffer::from_raw(width, height, rgb_data)
+                .ok_or_else(|| Error::InvalidPdf("Failed to create image buffer".to_string()))?;
 
+        // Encode to JPEG
         let mut output = std::io::Cursor::new(Vec::new());
         img.write_to(&mut output, image::ImageFormat::Jpeg)
             .map_err(|e| Error::InvalidPdf(format!("JPEG encoding failed: {}", e)))?;
@@ -635,6 +849,7 @@ impl PageRenderer {
     }
 }
 
+/// Convert CMYK to RGB.
 fn cmyk_to_rgb(c: f32, m: f32, y: f32, k: f32) -> (f32, f32, f32) {
     let r = (1.0 - c) * (1.0 - k);
     let g = (1.0 - m) * (1.0 - k);
@@ -642,6 +857,11 @@ fn cmyk_to_rgb(c: f32, m: f32, y: f32, k: f32) -> (f32, f32, f32) {
     (r, g, b)
 }
 
+/// Apply a pending clip path (from W/W*) to the clip stack.
+///
+/// Per PDF spec §8.5.4, the clipping path is set by W/W* but takes effect
+/// when the next path-painting operator (or n) executes. The new clip is
+/// intersected with the current clip region.
 fn apply_pending_clip(
     pending_clip: &mut Option<(tiny_skia::Path, FillRule)>,
     clip_stack: &mut [Option<tiny_skia::Mask>],
@@ -655,10 +875,12 @@ fn apply_pending_clip(
         let mut new_mask = tiny_skia::Mask::new(pixmap.width(), pixmap.height()).unwrap();
         new_mask.fill_path(&clip_path, fill_rule, false, transform);
 
+        // Intersect with existing clip: AND the masks together
         if let Some(Some(existing)) = clip_stack.last() {
             let existing_data = existing.data();
             let new_data = new_mask.data_mut();
             for (n, e) in new_data.iter_mut().zip(existing_data.iter()) {
+                // Both masks are alpha [0..255]; multiply to intersect
                 *n = ((*n as u16 * *e as u16) / 255) as u8;
             }
         }
@@ -669,8 +891,10 @@ fn apply_pending_clip(
     }
 }
 
+/// Combine base transform with PDF matrix.
 fn combine_transforms(base: Transform, matrix: &Matrix) -> Transform {
-    let pdf_transform = Transform::from_row(matrix.a, matrix.b, matrix.c, matrix.d, matrix.e, matrix.f);
+    let pdf_transform =
+        Transform::from_row(matrix.a, matrix.b, matrix.c, matrix.d, matrix.e, matrix.f);
     base.pre_concat(pdf_transform)
 }
 

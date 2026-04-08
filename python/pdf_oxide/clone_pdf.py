@@ -1507,6 +1507,211 @@ SCILLM_URL = os.environ.get("SCILLM_URL", "http://localhost:4001")
 SCILLM_KEY = os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123")
 _SCILLM_HEADERS = {"Authorization": f"Bearer {SCILLM_KEY}", "Content-Type": "application/json"}
 
+_CLONE_SYSTEM = """You write Python scripts using ReportLab that recreate PDF page layouts.
+You receive a PDF page. Write a self-contained Python script that produces a synthetic PDF matching its structure.
+The synthetic is scored by comparing text extraction on both PDFs: same text, same blocks, same tables, same headings.
+Output ONLY Python code."""
+
+
+async def clone_pdf(
+    pdf_path: str,
+    output_dir: str,
+    max_windows: int = 5,
+    seed: int = 42,
+    model: str = "claude-opus-4-6",
+    max_rounds: int = 5,
+) -> dict:
+    """Clone PDF structure by generating ReportLab code for sampled windows.
+
+    Pipeline: profile → sample → render → manifest → LLM → execute → score → iterate.
+    Returns summary dict with per-window scores and round counts.
+    """
+    import httpx
+    from pdf_oxide.clone_scorer import score_clone
+
+    os.makedirs(output_dir, exist_ok=True)
+    doc = pdf_oxide.PdfDocument(pdf_path)
+    logger.info(f"Profiling {pdf_path}...")
+    profile = profile_for_cloning(pdf_path)
+
+    logger.info(f"Building sampling plan (max_windows={max_windows}, seed={seed})...")
+    plan = build_sampling_plan(pdf_path, max_windows=max_windows, seed=seed)
+
+    logger.info(f"Rendering {len(plan['windows'])} windows...")
+    windows = render_windows(pdf_path, plan, output_dir, profile.get("page_signatures"))
+
+    logger.info("Building clone manifest...")
+    manifest = build_clone_manifest(profile, plan, doc, output_dir)
+
+    results: list[dict] = []
+
+    for win in manifest:
+        wid = win["window_id"]
+        brief = win["clone_brief"]
+        win_dir = os.path.join(output_dir, wid)
+        window_pdf = os.path.join(win_dir, "window.pdf")
+        synthetic_pdf = os.path.join(win_dir, "synthetic.pdf")
+        code_path = os.path.join(win_dir, "reportlab_code.py")
+
+        if not os.path.exists(window_pdf):
+            logger.warning(f"{wid}: window.pdf missing, skipping")
+            results.append({"window_id": wid, "status": "skip", "reason": "no window.pdf"})
+            continue
+
+        # Read mini-PDF
+        with open(window_pdf, "rb") as f:
+            pdf_b64 = base64.b64encode(f.read()).decode()
+        num_pages = len(win["source_pages"])
+
+        # Build prompt — minimal, Claude reads the PDF directly
+        context = ""
+        if brief.get("spanning_table"):
+            sp = brief["spanning_table"]
+            context = (
+                f"\nContext: This page is part of a table spanning pages "
+                f"{sp['start_page']}-{sp['end_page']} "
+                f"({sp['total_rows']} rows, {sp['cols']} cols). "
+                f"The table continues from the previous page.\n"
+            )
+
+        user_text = (
+            f"Recreate the attached {num_pages}-page PDF using ReportLab.\n"
+            f"{context}\n"
+            f"Output: {num_pages} page(s), letter size (612x792 pts).\n"
+            f"Save to: {synthetic_pdf}\n"
+            f"Run with: .venv/bin/python {code_path}\n"
+            f"Code only."
+        )
+
+        conversation: list[dict] = [
+            {"role": "system", "content": _CLONE_SYSTEM},
+            {"role": "user", "content": [
+                {"type": "text", "text": user_text},
+                {"type": "image_url", "image_url": {
+                    "url": f"data:application/pdf;base64,{pdf_b64}",
+                }},
+            ]},
+        ]
+
+        best_score: dict | None = None
+        win_result = {
+            "window_id": wid,
+            "source_pages": win["source_pages"],
+            "content_type": brief.get("content_type", "unknown"),
+            "rounds": 0,
+            "status": "fail",
+        }
+
+        for round_num in range(1, max_rounds + 1):
+            win_result["rounds"] = round_num
+            logger.info(f"{wid} round {round_num}/{max_rounds}: calling {model}...")
+
+            # Call scillm
+            try:
+                resp = httpx.post(
+                    f"{SCILLM_URL}/v1/chat/completions",
+                    json={"model": model, "max_tokens": 16384, "messages": conversation},
+                    headers=_SCILLM_HEADERS,
+                    timeout=120,
+                )
+                if resp.status_code != 200:
+                    logger.error(f"{wid} round {round_num}: scillm {resp.status_code}")
+                    win_result["error"] = f"scillm {resp.status_code}"
+                    break
+                content = resp.json()["choices"][0]["message"]["content"]
+            except Exception as e:
+                logger.error(f"{wid} round {round_num}: {e}")
+                win_result["error"] = str(e)
+                break
+
+            # Extract Python code
+            if "```python" in content:
+                code = content.split("```python")[1].split("```")[0].strip()
+            elif "```" in content:
+                code = content.split("```")[1].split("```")[0].strip()
+            else:
+                code = content.strip()
+
+            with open(code_path, "w", encoding="utf-8") as f:
+                f.write(code)
+
+            # Execute
+            import subprocess
+            exec_result = subprocess.run(
+                [".venv/bin/python", code_path],
+                capture_output=True, text=True, timeout=30,
+                cwd=os.path.dirname(os.path.dirname(os.path.dirname(
+                    os.path.abspath(__file__)
+                ))),
+            )
+            exec_ok = exec_result.returncode == 0
+            exec_output = exec_result.stderr[:500] if not exec_ok else "OK"
+
+            if not exec_ok:
+                logger.warning(f"{wid} round {round_num}: execution failed")
+                # Append error to conversation for retry
+                conversation.append({"role": "assistant", "content": content})
+                conversation.append({"role": "user", "content": (
+                    f"Execution failed:\n```\n{exec_output}\n```\n"
+                    f"Fix the error. Write the complete corrected script. Code only."
+                )})
+                continue
+
+            if not os.path.exists(synthetic_pdf):
+                logger.warning(f"{wid} round {round_num}: no synthetic.pdf produced")
+                conversation.append({"role": "assistant", "content": content})
+                conversation.append({"role": "user", "content": (
+                    f"The script ran but no PDF was created at {synthetic_pdf}. "
+                    f"Fix the output path. Code only."
+                )})
+                continue
+
+            # Score
+            score = score_clone(window_pdf, synthetic_pdf)
+            logger.info(
+                f"{wid} round {round_num}: score={score['overall']:.3f} "
+                f"pass={score['pass']}"
+            )
+
+            best_score = score
+            win_result["score"] = score
+
+            if score["pass"]:
+                win_result["status"] = "pass"
+                win_result["synthetic_pdf"] = synthetic_pdf
+                break
+
+            # Append code + delta for retry
+            conversation.append({"role": "assistant", "content": content})
+            conversation.append({"role": "user", "content": (
+                f"Score: {score['overall']:.3f} (need >= 0.7)\n"
+                f"Delta: {score['delta_report']}\n\n"
+                f"Fix the issues. Write the complete corrected script. Code only."
+            )})
+
+        if win_result["status"] != "pass" and best_score:
+            win_result["synthetic_exists"] = os.path.exists(synthetic_pdf)
+
+        results.append(win_result)
+        logger.info(
+            f"{wid}: {win_result['status']} in {win_result['rounds']} rounds"
+            + (f" (score={best_score['overall']:.3f})" if best_score else "")
+        )
+
+    summary = {
+        "pdf_path": pdf_path,
+        "output_dir": output_dir,
+        "windows": results,
+        "passed": sum(1 for r in results if r.get("status") == "pass"),
+        "total": len(results),
+        "model": model,
+    }
+    # Write summary
+    with open(os.path.join(output_dir, "clone_summary.json"), "w") as f:
+        json.dump(summary, f, indent=2, default=str)
+
+    return summary
+
 _IR_PROMPT = """Write a complete Python script using ReportLab that recreates the structural layout of this PDF page.
 
 The script must:
@@ -1947,10 +2152,11 @@ def promote_family_preset(
 
 
 # ---------------------------------------------------------------------------
-# Task 14 — clone_pdf: full end-to-end orchestrator
+# Task 14 — clone_pdf: old Gemini-based pipeline (REMOVED)
+# Replaced by async clone_pdf() above (line ~1516) using Claude + self-improvement loop.
 # ---------------------------------------------------------------------------
 
-def clone_pdf(
+def _clone_pdf_legacy(
     pdf_path: str,
     output_dir: str,
     max_windows: int = 20,
