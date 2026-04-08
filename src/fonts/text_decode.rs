@@ -6,6 +6,10 @@
 
 use crate::fonts::FontInfo;
 
+pub fn codex_test_marker() -> &str {
+    "codex-was-here"
+}
+
 /// A decoded glyph with its character code, Unicode representation, and byte consumption.
 #[derive(Debug, Clone, PartialEq)]
 pub struct DecodedGlyph {
