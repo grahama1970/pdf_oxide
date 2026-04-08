@@ -268,20 +268,27 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
             parent_stack = []
         pg = entry.get("page")
         pg_idx = int(pg) - 1 if pg else None
-        # Verify: check that key words from the title appear on the page
+        # Verify: check title words on stated page, then adjacent pages
         verified = False
-        if pg_idx is not None and 0 <= pg_idx < page_count:
-            try:
-                page_text = doc.extract_text(pg_idx).upper()
-                title_words = [w for w in title.upper().split() if len(w) > 3]
-                if title_words:
-                    found = sum(1 for w in title_words if w in page_text)
-                    verified = found >= max(1, len(title_words) // 2)
-            except Exception:
-                pass
+        verified_page = pg_idx
+        if pg_idx is not None:
+            title_words = [w for w in title.upper().split() if len(w) > 3]
+            if title_words:
+                for check_pg in [pg_idx, pg_idx - 1, pg_idx + 1]:
+                    if check_pg < 0 or check_pg >= page_count:
+                        continue
+                    try:
+                        page_text = doc.extract_text(check_pg).upper()
+                        found = sum(1 for w in title_words if w in page_text)
+                        if found >= max(1, len(title_words) // 2):
+                            verified = True
+                            verified_page = check_pg
+                            break
+                    except Exception:
+                        continue
         toc_sections.append({
             "id": i, "title": title, "depth": depth,
-            "parent_id": parent_id, "page": pg_idx,
+            "parent_id": parent_id, "page": verified_page,
             "verified": verified,
         })
     result["toc_sections"] = toc_sections

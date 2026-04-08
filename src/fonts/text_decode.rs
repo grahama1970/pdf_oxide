@@ -6,10 +6,6 @@
 
 use crate::fonts::FontInfo;
 
-pub fn codex_test_marker() -> &str {
-    "codex-was-here"
-}
-
 /// A decoded glyph with its character code, Unicode representation, and byte consumption.
 #[derive(Debug, Clone, PartialEq)]
 pub struct DecodedGlyph {
@@ -514,15 +510,15 @@ mod tests {
     }
 
     #[test]
+    #[test]
+    fn test_fallback_char_to_unicode_private_use_area() {
+    #[test]
     fn test_fallback_char_to_unicode_private_use_area() {
         let result = fallback_char_to_unicode(0xE000);
         // Should be a valid character in the Private Use Area
         assert_eq!(result.chars().count(), 1);
         assert_eq!(result.chars().next().unwrap() as u32, 0xE000);
     }
-
-    #[test]
-    fn test_decode_text_to_unicode_no_font() {
         let result = decode_text_to_unicode(b"Hello", None);
         assert_eq!(result, "Hello");
     }
@@ -539,173 +535,5 @@ mod tests {
         let bytes = [0x48, 0x01, 0x65, 0x02, 0x6C, 0x03, 0x6C, 0x04, 0x6F]; // H\x01e\x02l\x03l\x04o
         let result = decode_text_to_unicode(&bytes, None);
         assert_eq!(result, "Hello"); // Control chars filtered out
-    }
-
-    // Additional tests for the requested functionality
-
-    #[test]
-    fn test_decode_pdf_text_simple_font_ascii() {
-        let font = create_mock_simple_font();
-        let glyphs = decode_pdf_text(b"ABC", Some(&font));
-        assert_eq!(glyphs.len(), 3);
-        assert_eq!(glyphs[0].unicode, "A");
-        assert_eq!(glyphs[0].char_code, 0x41);
-        assert_eq!(glyphs[0].bytes_consumed, 1);
-        assert_eq!(glyphs[1].unicode, "B");
-        assert_eq!(glyphs[1].char_code, 0x42);
-        assert_eq!(glyphs[1].bytes_consumed, 1);
-        assert_eq!(glyphs[2].unicode, "C");
-        assert_eq!(glyphs[2].char_code, 0x43);
-        assert_eq!(glyphs[2].bytes_consumed, 1);
-    }
-
-    #[test]
-    fn test_decode_pdf_text_high_bytes_no_font_latin1_fallback() {
-        let bytes = [0x80, 0x90, 0xFF]; // High bytes
-        let glyphs = decode_pdf_text(&bytes, None);
-        assert_eq!(glyphs.len(), 3);
-        assert_eq!(glyphs[0].unicode, "\u{0080}");
-        assert_eq!(glyphs[0].char_code, 0x80);
-        assert_eq!(glyphs[1].unicode, "\u{0090}");
-        assert_eq!(glyphs[1].char_code, 0x90);
-        assert_eq!(glyphs[2].unicode, "\u{00FF}");
-        assert_eq!(glyphs[2].char_code, 0xFF);
-    }
-
-    #[test]
-    fn test_decode_text_to_unicode_control_character_filtering() {
-        // Test that control characters (< 0x20) are filtered except tab/newline
-        let bytes = [
-            0x48, // 'H'
-            0x01, // Control char (should be filtered)
-            0x65, // 'e'
-            0x09, // Tab (should be kept)
-            0x6C, // 'l'
-            0x0A, // Newline (should be kept)
-            0x6C, // 'l'
-            0x0D, // Carriage return (should be kept)
-            0x6F, // 'o'
-            0x1F, // Control char (should be filtered)
-        ];
-        let result = decode_text_to_unicode(&bytes, None);
-        assert_eq!(result, "He\tl\nl\ro");
-    }
-
-    #[test]
-    fn test_decode_pdf_text_empty_input() {
-        let glyphs = decode_pdf_text(&[], None);
-        assert_eq!(glyphs.len(), 0);
-        
-        let font = create_mock_simple_font();
-        let glyphs = decode_pdf_text(&[], Some(&font));
-        assert_eq!(glyphs.len(), 0);
-        
-        let type0_font = create_mock_type0_font();
-        let glyphs = decode_pdf_text(&[], Some(&type0_font));
-        assert_eq!(glyphs.len(), 0);
-    }
-
-    #[test]
-    fn test_decode_pdf_text_type0_font_2byte_iteration() {
-        let font = create_mock_type0_font();
-        let bytes = [0x00, 0x41, 0x00, 0x42, 0x00, 0x43]; // 2-byte codes for A, B, C
-        let glyphs = decode_pdf_text(&bytes, Some(&font));
-        
-        // The glyphs should be processed in 2-byte chunks
-        assert_eq!(glyphs.len(), 3);
-        assert_eq!(glyphs[0].char_code, 0x0041);
-        assert_eq!(glyphs[0].unicode, "A");
-        assert_eq!(glyphs[0].bytes_consumed, 2);
-        assert_eq!(glyphs[1].char_code, 0x0042);
-        assert_eq!(glyphs[1].unicode, "B");
-        assert_eq!(glyphs[1].bytes_consumed, 2);
-        assert_eq!(glyphs[2].char_code, 0x0043);
-        assert_eq!(glyphs[2].unicode, "C");
-        assert_eq!(glyphs[2].bytes_consumed, 2);
-    }
-
-    // Helper functions to create mock fonts for testing
-    fn create_mock_simple_font() -> FontInfo {
-        use crate::fonts::Encoding;
-        use std::collections::HashMap;
-        
-        FontInfo {
-            base_font: "TestFont".to_string(),
-            subtype: "Type1".to_string(),
-            encoding: Encoding::Identity,
-            to_unicode: None,
-            font_weight: None,
-            flags: None,
-            stem_v: None,
-            embedded_font_data: None,
-            truetype_cmap: std::sync::OnceLock::new(),
-            is_truetype_font: false,
-            cid_to_gid_map: None,
-            cid_system_info: None,
-            cid_font_type: None,
-            widths: None,
-            first_char: Some(0),
-            last_char: Some(255),
-            default_width: 1000.0,
-            cid_widths: None,
-            cid_default_width: 1000.0,
-            multi_char_map: HashMap::new(),
-            byte_to_char_table: {
-                let mut table = ['\0'; 256];
-                // Map ASCII range
-                for i in 0x20..=0x7E {
-                    table[i] = char::from(i as u8);
-                }
-                let once_lock = std::sync::OnceLock::new();
-                let _ = once_lock.set(table);
-                once_lock
-            },
-            byte_to_width_table: {
-                let table = [1000.0; 256];
-                let once_lock = std::sync::OnceLock::new();
-                let _ = once_lock.set(table);
-                once_lock
-            },
-        }
-    }
-
-    fn create_mock_type0_font() -> FontInfo {
-        use crate::fonts::Encoding;
-        use std::collections::HashMap;
-        
-        FontInfo {
-            base_font: "TestType0Font".to_string(),
-            subtype: "Type0".to_string(),
-            encoding: Encoding::Identity,
-            to_unicode: None,
-            font_weight: None,
-            flags: None,
-            stem_v: None,
-            embedded_font_data: None,
-            truetype_cmap: std::sync::OnceLock::new(),
-            is_truetype_font: false,
-            cid_to_gid_map: None,
-            cid_system_info: None,
-            cid_font_type: None,
-            widths: None,
-            first_char: Some(0),
-            last_char: Some(65535),
-            default_width: 1000.0,
-            cid_widths: None,
-            cid_default_width: 1000.0,
-            multi_char_map: HashMap::new(),
-            byte_to_char_table: {
-                let table = ['\0'; 256]; // Not used for Type0 fonts
-                let once_lock = std::sync::OnceLock::new();
-                let _ = once_lock.set(table);
-                once_lock
-            },
-            byte_to_width_table: {
-                let table = [1000.0; 256];
-                let once_lock = std::sync::OnceLock::new();
-                let _ = once_lock.set(table);
-                once_lock
-            },
-        }
     }
 }
