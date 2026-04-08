@@ -1350,6 +1350,156 @@ def render_windows(
 
 
 # ---------------------------------------------------------------------------
+# Task 5b — build_clone_manifest: enrich sampling plan with structural metadata
+# ---------------------------------------------------------------------------
+
+def build_clone_manifest(
+    profile: dict,
+    sampling_plan: dict,
+    doc,
+    output_dir: str | None = None,
+) -> list[dict]:
+    """Enrich each window in sampling_plan with structural metadata from profile."""
+    # Build fast lookup tables
+    toc_sections = profile.get("toc_sections", []) or []
+    table_shapes = profile.get("table_shapes", []) or []
+    spanning_tables = profile.get("page_spanning_tables", []) or []
+    requirements_pages = set(profile.get("requirements_pages", []) or [])
+    running_headers = profile.get("running_headers", []) or []
+    running_footers = profile.get("running_footers", []) or []
+    page_signatures = profile.get("page_signatures", []) or []
+
+    # Index: page -> list of table shapes
+    tables_by_page: dict[int, list[dict]] = {}
+    for ts in table_shapes:
+        pg = int(ts.get("page", -1))
+        tables_by_page.setdefault(pg, []).append(ts)
+
+    # Index: page -> page signature
+    sig_by_page: dict[int, dict] = {int(s.get("page_num", -1)): s for s in page_signatures}
+
+    # Clause pattern for requirement detection
+    _clause_pat = re.compile(r"\d+\.\d+\.\d+")
+
+    enriched: list[dict] = []
+
+    for window in sampling_plan.get("windows", []):
+        source_pages: list[int] = [int(p) for p in window.get("source_pages", [])]
+        page_set = set(source_pages)
+
+        # 1. TOC sections covering these pages
+        matched_sections = [
+            s for s in toc_sections
+            if s.get("page") is not None and int(s["page"]) in page_set
+        ]
+        primary_section = matched_sections[0] if matched_sections else None
+        toc_section_title = primary_section["title"] if primary_section else None
+        parent_section = next(
+            (s for s in toc_sections if primary_section and s["id"] == primary_section.get("parent_id")),
+            None,
+        )
+        toc_parent_title = parent_section["title"] if parent_section else toc_section_title
+
+        # 2. Table shapes for these pages
+        window_tables = []
+        for pg in source_pages:
+            for ts in tables_by_page.get(pg, []):
+                window_tables.append({
+                    "page": pg,
+                    "rows": ts.get("rows", 0),
+                    "cols": ts.get("cols", 0),
+                    "ruled": bool(ts.get("ruled", False)),
+                    "bbox": ts.get("bbox"),
+                })
+
+        # 3. Page-spanning tables that overlap these pages
+        matched_spanning = None
+        for span in spanning_tables:
+            sp_start = int(span.get("start_page", -1))
+            sp_end = int(span.get("end_page", -1))
+            if any(sp_start <= pg <= sp_end for pg in source_pages):
+                matched_spanning = span
+                break
+
+        # 4. Requirements pages
+        is_requirements = bool(page_set & requirements_pages)
+
+        # 5. Running headers / footers (use first non-empty values)
+        running_header = running_headers[0] if running_headers else None
+        running_footer = running_footers[0] if running_footers else None
+
+        # 6. Page-level signature data
+        page_char_counts = [sig_by_page.get(pg, {}).get("char_count", 0) for pg in source_pages]
+        has_images = any(sig_by_page.get(pg, {}).get("has_images", False) for pg in source_pages)
+        has_equations = any(sig_by_page.get(pg, {}).get("equation_candidate", False) for pg in source_pages)
+
+        # 7. Clause count — scan text for \d+\.\d+\.\d+ patterns
+        clause_ids: set[str] = set()
+        for pg in source_pages:
+            try:
+                text = doc.extract_text(pg)
+                for m in _clause_pat.findall(text):
+                    clause_ids.add(m)
+            except Exception:
+                pass
+        clause_count = len(clause_ids)
+
+        # 8. Determine primary content type
+        category = window.get("category", "")
+        if matched_spanning:
+            content_type = "spanning_table"
+        elif window_tables and is_requirements:
+            content_type = "mixed"
+        elif window_tables:
+            content_type = "table"
+        elif is_requirements:
+            content_type = "requirements"
+        elif category == "anchor" and toc_section_title:
+            content_type = "toc"
+        else:
+            content_type = "prose"
+
+        clone_brief = {
+            "content_type": content_type,
+            "toc_section": toc_section_title,
+            "toc_parent": toc_parent_title,
+            "tables": window_tables,
+            "spanning_table": matched_spanning,
+            "is_requirements": is_requirements,
+            "clause_count": clause_count,
+            "running_header": running_header,
+            "running_footer": running_footer,
+            "page_char_counts": page_char_counts,
+            "has_images": has_images,
+            "has_equations": has_equations,
+        }
+
+        enriched_window = {**window, "clone_brief": clone_brief}
+        enriched.append(enriched_window)
+
+        # Human-readable summary line
+        pages_str = ",".join(str(p) for p in source_pages)
+        section_str = f" [{toc_section_title[:40]}]" if toc_section_title else ""
+        table_str = f" {len(window_tables)}tbl" if window_tables else ""
+        req_str = " REQ" if is_requirements else ""
+        span_str = " SPAN" if matched_spanning else ""
+        print(
+            f"  {window['window_id']} p{pages_str} ({content_type})"
+            f"{section_str}{table_str}{req_str}{span_str}"
+            f" clauses={clause_count}"
+        )
+
+    # Write manifest to output_dir if provided
+    if output_dir:
+        manifest_path = os.path.join(output_dir, "clone_manifest.json")
+        with open(manifest_path, "w", encoding="utf-8") as f:
+            json.dump(enriched, f, indent=2)
+        print(f"Clone manifest written to {manifest_path}")
+
+    return enriched
+
+
+# ---------------------------------------------------------------------------
 # Task 6 — generate_window_ir: Gemini via scillm produces structured IR
 # ---------------------------------------------------------------------------
 
