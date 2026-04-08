@@ -5,13 +5,68 @@ pdf_oxide extraction on both, then computes structural similarity metrics.
 """
 from __future__ import annotations
 
+import hashlib
+import os
+import subprocess
+import tempfile
 from difflib import SequenceMatcher
 from typing import Any
+
+import numpy as np
+from PIL import Image
 
 import pdf_oxide
 
 
-def score_clone(original_pdf: str, synthetic_pdf: str) -> dict[str, Any]:
+def visual_similarity(original_pdf: str, synthetic_pdf: str, dpi: int = 150) -> float:
+    """Compare two PDFs visually by rendering to PNG and computing SSIM.
+
+    Uses pdftoppm for rendering and a pure numpy SSIM implementation.
+    Returns float 0.0-1.0.
+    """
+    tmp = tempfile.mkdtemp(prefix="clone_visual_")
+    try:
+        imgs = []
+        for label, pdf_path in [("orig", original_pdf), ("synth", synthetic_pdf)]:
+            if not os.path.exists(pdf_path):
+                return 0.0
+            prefix = os.path.join(tmp, label)
+            subprocess.run(
+                ["pdftoppm", "-png", "-f", "1", "-l", "1", "-r", str(dpi),
+                 "-gray", pdf_path, prefix],
+                capture_output=True, timeout=15,
+            )
+            # pdftoppm names output as prefix-1.png or prefix-01.png
+            candidates = [f for f in os.listdir(tmp) if f.startswith(label) and f.endswith(".png")]
+            if not candidates:
+                return 0.0
+            img = Image.open(os.path.join(tmp, sorted(candidates)[-1])).convert("L")
+            imgs.append(img)
+
+        # Resize to same dimensions
+        w = min(imgs[0].width, imgs[1].width)
+        h = min(imgs[0].height, imgs[1].height)
+        a = np.array(imgs[0].resize((w, h)), dtype=np.float64)
+        b = np.array(imgs[1].resize((w, h)), dtype=np.float64)
+
+        # SSIM computation (simplified, full-image)
+        c1 = (0.01 * 255) ** 2
+        c2 = (0.03 * 255) ** 2
+        mu_a, mu_b = a.mean(), b.mean()
+        var_a, var_b = a.var(), b.var()
+        cov_ab = ((a - mu_a) * (b - mu_b)).mean()
+        ssim = ((2 * mu_a * mu_b + c1) * (2 * cov_ab + c2)) / (
+            (mu_a**2 + mu_b**2 + c1) * (var_a + var_b + c2)
+        )
+        return float(max(0.0, min(1.0, ssim)))
+    except Exception:
+        return 0.0
+    finally:
+        import shutil
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def score_clone(original_pdf: str, synthetic_pdf: str, visual: bool = False) -> dict[str, Any]:
     """Compare original PDF page against synthetic ReportLab clone.
 
     Uses pdf_oxide to extract blocks/tables/sections from both PDFs,
@@ -76,17 +131,33 @@ def score_clone(original_pdf: str, synthetic_pdf: str) -> dict[str, Any]:
     else:
         section_recall = 1.0
 
+    # Visual similarity (optional)
+    vis_score = None
+    if visual:
+        vis_score = visual_similarity(original_pdf, synthetic_pdf)
+        if vis_score < 0.5:
+            deltas.append(f"Visual similarity is low ({vis_score:.2f}) — layout may differ significantly.")
+
     # Weighted overall score
-    overall = (
-        text_similarity * 0.35
-        + block_count_ratio * 0.20
-        + table_match * 0.30
-        + section_recall * 0.15
-    )
+    if visual and vis_score is not None:
+        overall = (
+            text_similarity * 0.30
+            + block_count_ratio * 0.15
+            + table_match * 0.25
+            + section_recall * 0.10
+            + vis_score * 0.20
+        )
+    else:
+        overall = (
+            text_similarity * 0.35
+            + block_count_ratio * 0.20
+            + table_match * 0.30
+            + section_recall * 0.15
+        )
 
     delta_report = " | ".join(deltas) if deltas else "No structural differences detected."
 
-    return {
+    result = {
         "text_similarity": round(text_similarity, 3),
         "block_count_ratio": round(block_count_ratio, 3),
         "table_match": round(table_match, 3),
@@ -95,6 +166,9 @@ def score_clone(original_pdf: str, synthetic_pdf: str) -> dict[str, Any]:
         "delta_report": delta_report,
         "pass": overall >= 0.7,
     }
+    if vis_score is not None:
+        result["visual_similarity"] = round(vis_score, 3)
+    return result
 
 
 def _extract_page_data(pdf_path: str) -> dict[str, Any]:
