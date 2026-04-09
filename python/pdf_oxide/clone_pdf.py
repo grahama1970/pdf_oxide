@@ -122,12 +122,27 @@ def _build_page_structure(span_paths: list[str], brief: dict) -> str:
         y = round(s["bbox"][1])
         zones.setdefault(y, []).append(s)
 
+    # Compress: if more than 25 zones, keep only header/footer zones + first/last
+    # content zones + a summary count (avoids context dilution on table pages)
+    max_zones = 25
+
     lines = ["Page structure (extracted from the original PDF):\n"]
     page_height = 792  # letter
 
     # Sort top to bottom
     sorted_ys = sorted(zones.keys(), reverse=True)
 
+    # If too many zones, keep header (top 5), footer (bottom 3), first/last content
+    if len(sorted_ys) > max_zones:
+        header_ys = [y for y in sorted_ys if y > 712][:5]
+        footer_ys = [y for y in sorted_ys if y < 60][:3]
+        content_ys = [y for y in sorted_ys if 60 <= y <= 712]
+        # Keep first 8 and last 4 content zones + a gap marker
+        kept_content = content_ys[:8] + content_ys[-4:]
+        sorted_ys = sorted(set(header_ys + kept_content + footer_ys), reverse=True)
+        lines.append(f"  (page has {len(zones)} text zones total — showing {len(sorted_ys)} key zones)\n")
+
+    zone_count = 0
     for y in sorted_ys:
         spans = zones[y]
         text = " ".join(s["text"].strip() for s in spans if s["text"].strip())
@@ -259,6 +274,45 @@ def _build_qid_instructions(
     return "\n".join(lines)
 
 
+def _get_expected_qids(brief: dict, source_pages: list[int]) -> set[int]:
+    """Return the set of QID integers that should be in the generated code."""
+    from pdf_oxide.clone_additive import _QID_PAGE_MULTIPLIER, _STRUCTURAL_QID_OFFSET
+    page_num = source_pages[0] if source_pages else 0
+    qid_base = page_num * _QID_PAGE_MULTIPLIER + _STRUCTURAL_QID_OFFSET
+    qids = set()
+    idx = 0
+    # Mirror the order in _build_qid_instructions
+    if any(s["bbox"][1] > 720 and s["text"].strip() for s in [] ):  # header — always assigned
+        pass
+    # Simpler: just count from 1 to however many QIDs were assigned
+    # The QID instructions function assigns idx 1..N sequentially
+    # We can parse from the instructions string, but easier: recompute
+    idx = 0
+    # header
+    idx += 1; qids.add(qid_base + idx)
+    # heading (if present — we always try)
+    idx += 1; qids.add(qid_base + idx)
+    # table cell (if tables)
+    if brief.get("tables"):
+        idx += 1; qids.add(qid_base + idx)
+    # figure (if has_images)
+    if brief.get("has_images"):
+        idx += 1; qids.add(qid_base + idx)
+    # footer
+    idx += 1; qids.add(qid_base + idx)
+    return qids
+
+
+def _validate_code_qids(code: str, expected_qids: set[int]) -> list[int]:
+    """Check which expected _qid(N) calls are missing from the generated code.
+    Returns list of missing QID integers."""
+    import re
+    found = set()
+    for m in re.finditer(r'_qid\(\s*(\d+)\s*\)', code):
+        found.add(int(m.group(1)))
+    return sorted(expected_qids - found)
+
+
 async def clone_pdf(
     pdf_path: str,
     output_dir: str,
@@ -374,6 +428,12 @@ async def clone_pdf(
                 code = content.split("```")[1].split("```")[0].strip()
             else:
                 code = content.strip()
+
+            # Pre-exec validation: check all required _qid() calls are present
+            expected_qids = _get_expected_qids(brief, win["source_pages"])
+            missing_qids = _validate_code_qids(code, expected_qids)
+            if missing_qids:
+                logger.warning(f"{wid} round {round_num}: missing QIDs in code: {missing_qids}")
 
             with open(code_path, "w", encoding="utf-8") as f:
                 f.write(code)
@@ -517,11 +577,30 @@ async def clone_pdf(
                 break
 
             conversation.append({"role": "assistant", "content": content})
-            conversation.append({"role": "user", "content": (
-                f"Score: {score['overall']:.3f} (need >= 0.7)\n"
-                f"Delta: {score['delta_report']}\n\n"
-                f"Fix the issues. Write the complete corrected script. Code only."
-            )})
+            # Build richer feedback for round 2+: extracted text diff + missing QIDs
+            feedback_parts = [
+                f"Score: {score['overall']:.3f} (need >= 0.7)",
+                f"Delta: {score['delta_report']}",
+            ]
+            # Extract text from synthetic PDF for diff feedback
+            try:
+                synth_doc = pdf_oxide.PdfDocument(synthetic_pdf)
+                synth_text = "".join(
+                    synth_doc.extract_text(p) for p in range(synth_doc.page_count())
+                )
+                # Check which QIDs are present
+                from pdf_oxide.clone_additive import find_all_qids as _find_qids
+                found = {q for q, _ in _find_qids(synth_text)}
+                expected = _get_expected_qids(brief, win["source_pages"])
+                missing = expected - found
+                if missing:
+                    feedback_parts.append(f"Missing QIDs in your PDF: {sorted(missing)}")
+                # Show first 300 chars of extracted text so LLM can see what went wrong
+                feedback_parts.append(f"Extracted text (first 300 chars): {synth_text[:300]}")
+            except Exception:
+                pass
+            feedback_parts.append("Fix the issues. Write the complete corrected script. Code only.")
+            conversation.append({"role": "user", "content": "\n".join(feedback_parts)})
 
         if win_result["status"] != "pass" and best_score:
             win_result["synthetic_exists"] = os.path.exists(synthetic_pdf)

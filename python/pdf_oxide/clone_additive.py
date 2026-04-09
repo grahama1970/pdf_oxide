@@ -31,7 +31,7 @@ _QID_START = "\u200B"  # zero-width space
 _QID_END = "\u2060"    # word joiner (distinct from start to prevent ambiguity)
 _BIT_0 = "\u200C"      # zero-width non-joiner
 _BIT_1 = "\u200D"      # zero-width joiner
-_MAX_QID_BITS = 20     # max 1,048,575 — rejects runaway bit sequences
+_MAX_QID_BITS = 24     # max 16,777,215 — supports page*10000 up to page 1677
 
 
 def encode_qid(qid: int) -> str:
