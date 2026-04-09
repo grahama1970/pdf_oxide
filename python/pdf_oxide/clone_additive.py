@@ -587,6 +587,7 @@ def stitch_pages(
 
     writer = PdfWriter()
     synth_reader_cache: dict[str, PdfReader] = {}
+    original_reader = PdfReader(pdf_path)
 
     for pg in range(total_pages):
         if pg in page_to_pdf:
@@ -605,14 +606,9 @@ def stitch_pages(
             if reader.pages:
                 writer.add_page(reader.pages[0])
         else:
-            filler_path = os.path.join(filler_dir, f"page_{pg:04d}.pdf")
-            generate_filler_page(pg, profile, filler_path, seed=seed, corrupt=corrupt)
-            if os.path.exists(filler_path):
-                filler_reader = PdfReader(filler_path)
-                if filler_reader.pages:
-                    writer.add_page(filler_reader.pages[0])
-                else:
-                    writer.add_blank_page(width=612, height=792)
+            # Use the original page — filler pages are the real document
+            if pg < len(original_reader.pages):
+                writer.add_page(original_reader.pages[pg])
             else:
                 writer.add_blank_page(width=612, height=792)
 
@@ -622,6 +618,6 @@ def stitch_pages(
     logger.info(
         f"Stitched {total_pages} pages: "
         f"{len(page_to_pdf)} synthetic, "
-        f"{total_pages - len(page_to_pdf)} filler → {stitched_path}"
+        f"{total_pages - len(page_to_pdf)} original → {stitched_path}"
     )
     return stitched_path

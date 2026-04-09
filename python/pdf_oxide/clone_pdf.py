@@ -54,52 +54,85 @@ SCILLM_URL = os.environ.get("SCILLM_URL", "http://localhost:4001")
 SCILLM_KEY = os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123")
 _SCILLM_HEADERS = {"Authorization": f"Bearer {SCILLM_KEY}", "Content-Type": "application/json"}
 
-_CLONE_SYSTEM = """You are a ReportLab PDF recreation expert. You receive a PDF page as an
-attachment plus a structural description extracted from the original. Write a
-self-contained Python script that produces a synthetic PDF matching the layout.
+_CLONE_SYSTEM_PASS1 = """You are a ReportLab layout expert. You receive a PDF page as an
+attachment plus a structural description. Write a self-contained Python script
+that reproduces the page layout: positions, fonts, sizes, structure, spacing.
 
-Your output is scored by extracting these elements from both PDFs and comparing:
-- Running headers and footers (exact text match)
-- Section headings and subheadings (text + hierarchy level)
-- Tables (row count, column count, cell text content)
-- Body paragraphs (text blocks in reading order)
-- Requirement clauses (numbered items like "3.1.1 Limit information system...")
-- Figure captions (text below figures)
-- Footnotes (small text at page bottom)
-- Equations (if present — use text representation)
-Matching the text content exactly is most important. Layout positions matter less.
+Focus on getting the LAYOUT right:
+- Running headers/footers: use drawString at correct y-positions (these are short, single-line)
+- Section headings: use drawString at correct sizes and positions (also short, single-line)
+- Tables: use reportlab.platypus.Table with explicit column widths and TableStyle grid lines.
+  NEVER use drawString for table cell text — Table() handles cell wrapping and alignment.
+- Body paragraphs: use reportlab.platypus.Paragraph with a defined width so text wraps
+  within margins. Draw with para.wrapOn(c, width, height) then para.drawOn(c, x, y).
+  Page width is 612pt with 72pt margins on each side = 468pt text width.
+  NEVER use drawString for text longer than ~60 characters — it will overflow the margin.
+- Bullet lists: use Paragraph with bullet markup or ListFlowable
+- Figure placeholders at correct positions and sizes
+
+Use the text you see in the PDF. Do not worry about exact verbatim accuracy —
+a second pass will fix the text. Get the structure and positions right.
 
 RULES:
-1. Use DejaVu font for ALL text — never Helvetica or Times-Roman.
-2. Include the _qid() helper and font registration below at the top of your script.
-3. For each QID in the assignment table, prepend _qid(N) to the FIRST occurrence
-   of that exact text string. If the same text appears multiple times, only the
-   first gets the QID. The _qid() output is invisible zero-width characters.
-4. If the page has figures/charts/images, do NOT attempt to draw them. Instead:
+1. Use the document's actual fonts as specified in the user message. Include the
+   font registration code provided. Use DejaVu ONLY for _qid() prefix strings.
+   Never use Helvetica or Times-Roman — use the registered TTF fonts.
+2. Include the font registration code from the user message at the top of your script.
+3. If the page has figures/charts/images, do NOT attempt to draw them. Instead:
    - Draw a placeholder: c.setFillColorRGB(0.9, 0.9, 0.9); c.rect(x, y, w, h, fill=1)
    - Add a comment: # FIGURE: bbox=(x,y,w,h) description="<what you see>"
-   - Add a visible caption below with its QID: _qid(N) + "Figure X: <caption>"
+   - Add a visible caption below: "Figure X: <caption>"
 
 REJECTION CRITERIA — your code is WRONG if:
-- Any _qid(N) from the assignment table is missing from the code
 - You use Helvetica, Times-Roman, or any font other than DejaVu/DejaVu-Bold
-- You paraphrase or reword the QID target text instead of using it verbatim
+- You add decorative elements not in the original (drop caps, circles, borders, shadows, clip art)
+- You embellish text formatting beyond what the PDF shows (no artistic fonts, no ornamental styling)
 - The script does not save a PDF to the exact path given in the user message
 - You output anything besides Python code (no markdown, no explanation)
 
-EXAMPLE — given this page structure:
-  HEADER (y=749): "NIST SP 800-171"
-  FOOTER (y=38): "PAGE 5"
-  QID: _qid(50002) → "NIST SP 800-171" (header)
-  QID: _qid(50003) → "PAGE 5" (footer)
-
-Correct output:
 ```python
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 pdfmetrics.registerFont(TTFont('DejaVu', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'))
 pdfmetrics.registerFont(TTFont('DejaVu-Bold', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'))
+```
 
+Output ONLY Python code."""
+
+
+_CLONE_SYSTEM_PASS2 = """You are a compliance editor for ReportLab scripts. You receive
+a working ReportLab script (from pass 1) plus exact text strings from the original PDF
+and optional visual feedback. Your jobs:
+1. Replace approximate text with the EXACT extracted text.
+2. Prepend invisible _qid(N) markers to specified strings.
+3. Fix any structural issues noted in the feedback (e.g. use Table() instead of drawString).
+
+RULES:
+1. Include the _qid() helper below at the top of the script.
+2. For each QID in the assignment table, prepend _qid(N) to the FIRST occurrence
+   of that exact text string. The _qid() output is invisible zero-width characters.
+3. Replace any paraphrased or approximate text with the EXACT extracted text
+   provided in the "Verbatim text replacements" section.
+4. If structural feedback says to use Table() for tables, refactor drawString calls
+   into a reportlab.platypus.Table with proper column widths and TableStyle.
+5. Do not add decorative elements (drop caps, circles, borders, ornaments).
+
+REJECTION CRITERIA — your code is WRONG if:
+- Any _qid(N) from the assignment table is missing from the code
+- You paraphrase or reword the QID target text instead of using it verbatim
+- Table cell text uses drawString instead of Table() when feedback says to fix it
+- The script does not save a PDF to the exact path given
+- You output anything besides Python code
+
+IMPORTANT: The _qid() invisible characters ONLY work with the DejaVu font.
+When prepending a QID to text, use this pattern:
+  current_font = 'TimesNewRoman'  # whatever font you're using
+  c.setFont('DejaVu', 8)
+  c.drawString(x, y, _qid(N))  # zero-width, takes no horizontal space
+  c.setFont(current_font, 8)
+  c.drawString(x, y, "visible text")  # draws at same x position
+
+```python
 def _qid(n):
     S, E, B0, B1 = '\\u200b', '\\u2060', '\\u200c', '\\u200d'
     if n == 0: return S + B0 + E
@@ -109,18 +142,133 @@ def _qid(n):
         bits.append(B1 if (v & 1) else B0)
         v >>= 1
     return S + ''.join(reversed(bits)) + E
-
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-c = canvas.Canvas("/tmp/output.pdf", pagesize=letter)
-c.setFont('DejaVu', 8)
-c.drawString(72, 749, _qid(50002) + "NIST SP 800-171")
-c.drawCentredString(306, 38, _qid(50003) + "PAGE 5")
-c.save()
 ```
 
-Include the _qid() helper and font registration at the top of every script.
-Output ONLY Python code."""
+Output ONLY the complete corrected Python script."""
+
+
+_FONT_MAP = {
+    "ArialMT": ("/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", "Arial"),
+    "Arial-BoldMT": ("/usr/share/fonts/truetype/msttcorefonts/Arial_Bold.ttf", "Arial-Bold"),
+    "Arial-ItalicMT": ("/usr/share/fonts/truetype/msttcorefonts/Arial_Italic.ttf", "Arial-Italic"),
+    "Arial-BoldItalicMT": ("/usr/share/fonts/truetype/msttcorefonts/Arial_Bold_Italic.ttf", "Arial-BoldItalic"),
+    "ArialNarrow": ("/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", "ArialNarrow"),  # fallback
+    "TimesNewRomanPSMT": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman.ttf", "TimesNewRoman"),
+    "TimesNewRomanPS-BoldMT": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold.ttf", "TimesNewRoman-Bold"),
+    "TimesNewRomanPS-ItalicMT": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Italic.ttf", "TimesNewRoman-Italic"),
+    "TimesNewRomanPS-BoldItalicMT": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold_Italic.ttf", "TimesNewRoman-BoldItalic"),
+    "CourierNewPSMT": ("/usr/share/fonts/truetype/msttcorefonts/Courier_New.ttf", "CourierNew"),
+}
+
+
+def _detect_pdf_fonts(pdf_path: str, pages: list[int]) -> dict[str, tuple[str, str]]:
+    """Detect fonts used in specific PDF pages.
+
+    Returns dict mapping internal font name → (ttf_path, reportlab_name).
+    Falls back to DejaVu for unknown fonts.
+    """
+    from pypdf import PdfReader
+    reader = PdfReader(pdf_path)
+    found: dict[str, tuple[str, str]] = {}
+    dejavu = ("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", "DejaVu")
+    dejavu_bold = ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "DejaVu-Bold")
+
+    for pg in pages:
+        if pg >= len(reader.pages):
+            continue
+        page = reader.pages[pg]
+        resources = page.get("/Resources")
+        if not resources:
+            continue
+        fonts = resources.get("/Font", {})
+        for name, font_ref in fonts.items():
+            try:
+                font = font_ref.get_object()
+                base = str(font.get("/BaseFont", "")).lstrip("/")
+                # Strip subset prefix (e.g., AUIVAS+SymbolMT → SymbolMT)
+                if "+" in base:
+                    base = base.split("+", 1)[1]
+                if base in _FONT_MAP:
+                    path, rname = _FONT_MAP[base]
+                    if os.path.exists(path):
+                        found[base] = (path, rname)
+            except Exception:
+                continue
+
+    # Always include DejaVu as fallback (needed for QID zero-width chars)
+    found["DejaVu"] = dejavu
+    found["DejaVu-Bold"] = dejavu_bold
+    return found
+
+
+def _build_font_registration(fonts: dict[str, tuple[str, str]]) -> str:
+    """Build ReportLab font registration code from detected fonts."""
+    lines = [
+        "from reportlab.pdfbase import pdfmetrics",
+        "from reportlab.pdfbase.ttfonts import TTFont",
+    ]
+    for base, (path, rname) in sorted(fonts.items()):
+        lines.append(f"pdfmetrics.registerFont(TTFont('{rname}', '{path}'))")
+    return "\n".join(lines)
+
+
+def _build_font_instructions(fonts: dict[str, tuple[str, str]]) -> str:
+    """Build prompt instructions telling the LLM which fonts to use."""
+    if not fonts:
+        return ""
+    lines = ["Fonts available (use these instead of Helvetica/Times-Roman):\n"]
+    for base, (_, rname) in sorted(fonts.items()):
+        if base.startswith("DejaVu"):
+            continue
+        lines.append(f"  '{rname}' — mapped from PDF font {base}")
+    lines.append(f"  'DejaVu' / 'DejaVu-Bold' — fallback, required for _qid() strings")
+    lines.append("\nUse the document's actual fonts for all text. Use DejaVu ONLY for")
+    lines.append("the _qid() prefix (which is invisible zero-width characters).")
+    return "\n".join(lines)
+
+
+def _extract_code(content: str) -> str:
+    """Extract Python code from LLM response, stripping markdown fences."""
+    if "```python" in content:
+        code = content.split("```python")[1].split("```")[0].strip()
+    elif "```" in content:
+        code = content.split("```")[1].split("```")[0].strip()
+    else:
+        code = content.strip()
+    return _strip_dropcaps(code)
+
+
+def _strip_dropcaps(code: str) -> str:
+    """Remove drop cap / decorative text embellishments from ReportLab code.
+
+    LLMs like to add large initial letters (drop caps), circles, ellipses,
+    and other decorative elements that don't exist in the original PDF.
+    This strips them deterministically.
+    """
+    import re
+    lines = code.split("\n")
+    cleaned = []
+    for line in lines:
+        stripped = line.strip()
+        # Remove circle/ellipse drawing (decorative, not in originals)
+        if re.match(r'c\.(circle|ellipse)\(', stripped):
+            continue
+        # Remove oversized single-character drawString (drop caps)
+        # Pattern: drawString with a 1-char string at font size >= 24
+        if re.match(r"c\.drawString\(.+,\s*['\"].\s*['\"]", stripped):
+            # Check if preceded by a setFont with large size
+            if cleaned and re.search(r"setFont\(.+,\s*(\d+)", cleaned[-1]):
+                size = int(re.search(r"setFont\(.+,\s*(\d+)", cleaned[-1]).group(1))
+                if size >= 24:
+                    cleaned.pop()  # remove the setFont too
+                    continue
+        # Remove setFontSize calls for drop caps (>= 36pt single use)
+        if re.match(r'c\.setFontSize\(\s*(\d+)', stripped):
+            size = int(re.match(r'c\.setFontSize\(\s*(\d+)', stripped).group(1))
+            if size >= 36:
+                continue
+        cleaned.append(line)
+    return "\n".join(cleaned)
 
 
 def _build_page_structure(span_paths: list[str], brief: dict) -> str:
@@ -213,27 +361,24 @@ def _build_page_structure(span_paths: list[str], brief: dict) -> str:
     return "\n".join(lines)
 
 
-def _build_qid_instructions(
-    brief: dict,
-    source_pages: list[int],
-    span_paths: list[str] | None = None,
-) -> str:
-    """Build QID assignments tied to real extracted text from spans."""
+def _load_spans(span_paths: list[str] | None) -> list[dict]:
+    """Load span JSON files into a flat list."""
     import json as _json
-    from pdf_oxide.clone_additive import _QID_PAGE_MULTIPLIER, _STRUCTURAL_QID_OFFSET
-
-    page_num = source_pages[0] if source_pages else 0
-    qid_base = page_num * _QID_PAGE_MULTIPLIER + _STRUCTURAL_QID_OFFSET
-    idx = 0
-
-    # Load spans to find real text for QID targets
     all_spans: list[dict] = []
     if span_paths:
         for path in span_paths:
             if os.path.exists(path):
                 with open(path) as f:
                     all_spans.extend(_json.load(f))
+    return all_spans
 
+
+def _extract_key_text(brief: dict, all_spans: list[dict]) -> dict:
+    """Extract key text strings from spans for QID targeting.
+
+    Returns dict with keys: header_text, footer_text, heading_text, table_cell_text.
+    Values are None if not found.
+    """
     # Find header text (top of page, small font)
     header_spans = [s for s in all_spans if s["bbox"][1] > 720 and s["text"].strip()]
     header_text = " ".join(s["text"].strip() for s in header_spans[:2]) if header_spans else None
@@ -260,27 +405,49 @@ def _build_qid_instructions(
                        and s["text"].strip()
                        and len(s["text"].strip()) > 2]
         if table_spans:
-            # First span in the table area (top-down)
             table_spans.sort(key=lambda s: -s["bbox"][1])
             table_cell_text = table_spans[0]["text"].strip()[:60]
+
+    return {
+        "header_text": header_text,
+        "footer_text": footer_text,
+        "heading_text": heading_text,
+        "table_cell_text": table_cell_text,
+    }
+
+
+def _build_qid_instructions(
+    brief: dict,
+    source_pages: list[int],
+    span_paths: list[str] | None = None,
+) -> str:
+    """Build QID assignments tied to real extracted text from spans."""
+    from pdf_oxide.clone_additive import _QID_PAGE_MULTIPLIER, _STRUCTURAL_QID_OFFSET
+
+    page_num = source_pages[0] if source_pages else 0
+    qid_base = page_num * _QID_PAGE_MULTIPLIER + _STRUCTURAL_QID_OFFSET
+    idx = 0
+
+    all_spans = _load_spans(span_paths)
+    kt = _extract_key_text(brief, all_spans)
 
     lines = [
         "QID assignments — prepend _qid(N) to these EXACT text strings:\n"
     ]
 
-    if header_text:
+    if kt["header_text"]:
         idx += 1
-        lines.append(f'  _qid({qid_base + idx}) → "{header_text[:60]}"')
+        lines.append(f'  _qid({qid_base + idx}) → "{kt["header_text"][:60]}"')
         lines.append(f'                 (running header)')
 
-    if heading_text:
+    if kt["heading_text"]:
         idx += 1
-        lines.append(f'  _qid({qid_base + idx}) → "{heading_text}"')
+        lines.append(f'  _qid({qid_base + idx}) → "{kt["heading_text"]}"')
         lines.append(f'                 (heading / title)')
 
-    if table_cell_text:
+    if kt["table_cell_text"]:
         idx += 1
-        lines.append(f'  _qid({qid_base + idx}) → "{table_cell_text}"')
+        lines.append(f'  _qid({qid_base + idx}) → "{kt["table_cell_text"]}"')
         lines.append(f'                 (first text in table)')
 
     if brief.get("has_images"):
@@ -288,13 +455,96 @@ def _build_qid_instructions(
         lines.append(f'  _qid({qid_base + idx}) → figure caption text')
         lines.append(f'                 (caption you write below the figure placeholder)')
 
-    if footer_text:
+    if kt["footer_text"]:
         idx += 1
-        lines.append(f'  _qid({qid_base + idx}) → "{footer_text[:60]}"')
+        lines.append(f'  _qid({qid_base + idx}) → "{kt["footer_text"][:60]}"')
         lines.append(f'                 (running footer)')
 
     if idx == 0:
         return ""
+    return "\n".join(lines)
+
+
+def _get_synthetic_text(content_type: str, domain: str, count: int, seed: int) -> list[dict]:
+    """Get synthetic text chunks from /create-text corpus.
+
+    Returns real extracted text from the datalake that matches the content type
+    and domain of the page being cloned. This replaces the original text so
+    the synthetic PDF has different content but the same structure.
+    """
+    import sys
+    sys.path.insert(0, "/home/graham/.claude/skills/create-text")
+    try:
+        from create_text import create_text
+        # Map clone content types to /create-text content types
+        type_map = {
+            "prose": "heading",  # fallback — prose not in all banks
+            "requirements": "heading",
+            "spanning_table": "table_cell",
+            "table": "table_cell",
+        }
+        ct = type_map.get(content_type, "heading")
+        # Try requested domain, fall back to government
+        for d in [domain, "government", "nist", "engineering"]:
+            try:
+                chunks = create_text(content_type=ct, domain=d, count=count, seed=seed)
+                if chunks:
+                    return chunks
+            except Exception:
+                continue
+        return []
+    except ImportError:
+        logger.warning("create-text skill not available, using original text")
+        return []
+
+
+def _build_synthetic_text_section(chunks: list[dict], brief: dict) -> str:
+    """Build a text section for the LLM prompt using /create-text chunks.
+
+    Tells the LLM to use these text chunks instead of copying from the PDF.
+    """
+    if not chunks:
+        return ""
+    lines = [
+        "SYNTHETIC TEXT — use these text chunks instead of copying from the original PDF.",
+        "Place each chunk in the appropriate location matching the page structure.\n",
+    ]
+    for i, chunk in enumerate(chunks):
+        text = chunk.get("text", "").strip()[:200]
+        ct = chunk.get("content_type", "text")
+        lines.append(f"  Chunk {i+1} ({ct}): \"{text}\"")
+    return "\n".join(lines)
+
+
+def _build_verbatim_text_list(all_spans: list[dict]) -> str:
+    """Build a list of verbatim text strings from spans for pass 2.
+
+    Groups spans by y-zone and returns exact extracted text that the LLM
+    should use to replace any paraphrased text in its pass-1 code.
+    """
+    if not all_spans:
+        return ""
+
+    zones: dict[int, list[dict]] = {}
+    for s in all_spans:
+        y = round(s["bbox"][1])
+        zones.setdefault(y, []).append(s)
+
+    lines = ["Verbatim text from the original PDF — replace approximate text with these EXACT strings:\n"]
+    sorted_ys = sorted(zones.keys(), reverse=True)
+
+    # Limit to 40 zones to keep prompt reasonable
+    if len(sorted_ys) > 40:
+        sorted_ys = sorted_ys[:20] + sorted_ys[-10:]
+
+    for y in sorted_ys:
+        spans = zones[y]
+        text = " ".join(s["text"].strip() for s in spans if s["text"].strip())
+        if not text or len(text) < 3:
+            continue
+        # Show exact text with y-position so LLM can match to its drawString calls
+        lines.append(f'  y≈{y}: "{text[:150]}"')
+
     return "\n".join(lines)
 
 
@@ -395,21 +645,59 @@ async def clone_pdf(
 
         page_structure = _build_page_structure(span_paths, brief)
         qid_instructions = _build_qid_instructions(brief, win["source_pages"], span_paths)
+        all_spans = _load_spans(span_paths)
+        verbatim_text = _build_verbatim_text_list(all_spans)
 
-        user_text = (
+        # Get synthetic text from /create-text corpus
+        content_type = brief.get("content_type", "prose")
+        domain = profile.get("domain", "government")
+        # Estimate chunk count from span zones
+        zone_count = len(set(round(s["bbox"][1]) for s in all_spans)) if all_spans else 10
+        synthetic_chunks = _get_synthetic_text(
+            content_type, domain, count=min(zone_count, 20),
+            seed=seed + hash(wid) % 10000,
+        )
+        synthetic_text_section = _build_synthetic_text_section(synthetic_chunks, brief)
+
+        # Detect fonts from original PDF
+        detected_fonts = _detect_pdf_fonts(pdf_path, win["source_pages"])
+        font_registration = _build_font_registration(detected_fonts)
+        font_instructions = _build_font_instructions(detected_fonts)
+
+        # Pass 1 user message: layout + structure + fonts, no QIDs
+        pass1_user_text = (
             f"Recreate the attached {num_pages}-page PDF using ReportLab.\n\n"
             + (f"{page_structure}\n\n" if page_structure else "")
+            + (f"{font_instructions}\n\n" if font_instructions else "")
+            + f"Font registration code to include at the top of your script:\n```python\n{font_registration}\n```\n\n"
             + f"Output: {num_pages} page(s), letter size (612x792 pts).\n"
             f"Save to: {synthetic_pdf}\n"
             f"Run with: .venv/bin/python {code_path}\n"
-            + (f"\n{qid_instructions}\n" if qid_instructions else "")
-            + f"\nCode only."
+            f"\nCode only."
         )
 
-        conversation: list[dict] = [
-            {"role": "system", "content": _CLONE_SYSTEM},
+        # Pass 2 user message template: synthetic text + QIDs (code inserted at runtime)
+        # Use /create-text corpus chunks instead of original text when available
+        text_section = synthetic_text_section if synthetic_chunks else verbatim_text
+        text_intro = (
+            "Replace the text content with the synthetic text chunks below."
+            if synthetic_chunks else
+            "Fix the text to match the original PDF exactly."
+        )
+        pass2_user_template = (
+            f"Here is the ReportLab script from pass 1. {text_intro}\n"
+            "Add _qid() markers to the specified strings.\n\n"
+            "```python\n{pass1_code}\n```\n\n"
+            + (f"{text_section}\n\n" if text_section else "")
+            + (f"{qid_instructions}\n\n" if qid_instructions else "")
+            + f"Save to: {synthetic_pdf}\n"
+            f"Output the complete corrected Python script. Code only."
+        )
+
+        pass1_conversation: list[dict] = [
+            {"role": "system", "content": _CLONE_SYSTEM_PASS1},
             {"role": "user", "content": [
-                {"type": "text", "text": user_text},
+                {"type": "text", "text": pass1_user_text},
                 {"type": "image_url", "image_url": {
                     "url": f"data:application/pdf;base64,{pdf_b64}",
                 }},
@@ -427,31 +715,107 @@ async def clone_pdf(
 
         for round_num in range(1, max_rounds + 1):
             win_result["rounds"] = round_num
-            logger.info(f"{wid} round {round_num}/{max_rounds}: calling {model}...")
+
+            # ── Pass 1: Layout ──
+            logger.info(f"{wid} round {round_num}/{max_rounds} pass 1 (layout): calling {model}...")
 
             try:
                 resp = httpx.post(
                     f"{SCILLM_URL}/v1/chat/completions",
-                    json={"model": model, "max_tokens": 16384, "messages": conversation},
+                    json={"model": model, "max_tokens": 16384, "messages": pass1_conversation},
                     headers=_SCILLM_HEADERS,
                     timeout=120,
                 )
                 if resp.status_code != 200:
-                    logger.error(f"{wid} round {round_num}: scillm {resp.status_code}")
-                    win_result["error"] = f"scillm {resp.status_code}"
+                    logger.error(f"{wid} round {round_num} pass 1: scillm {resp.status_code}")
+                    win_result["error"] = f"scillm pass1 {resp.status_code}"
                     break
-                content = resp.json()["choices"][0]["message"]["content"]
+                pass1_content = resp.json()["choices"][0]["message"]["content"]
             except Exception as e:
-                logger.error(f"{wid} round {round_num}: {e}")
+                logger.error(f"{wid} round {round_num} pass 1: {e}")
                 win_result["error"] = str(e)
                 break
 
-            if "```python" in content:
-                code = content.split("```python")[1].split("```")[0].strip()
-            elif "```" in content:
-                code = content.split("```")[1].split("```")[0].strip()
-            else:
-                code = content.strip()
+            pass1_code = _extract_code(pass1_content)
+
+            # Quick syntax check on pass 1 before sending to pass 2
+            with open(code_path, "w", encoding="utf-8") as f:
+                f.write(pass1_code)
+            exec_result = subprocess.run(
+                [".venv/bin/python", "-c", f"compile(open('{code_path}').read(), '{code_path}', 'exec')"],
+                capture_output=True, text=True, timeout=10,
+                cwd=os.path.dirname(os.path.dirname(os.path.dirname(
+                    os.path.abspath(__file__)))),
+            )
+            if exec_result.returncode != 0:
+                logger.warning(f"{wid} round {round_num} pass 1: syntax error, retrying")
+                pass1_conversation.append({"role": "assistant", "content": pass1_content})
+                pass1_conversation.append({"role": "user", "content": (
+                    f"Syntax error:\n```\n{exec_result.stderr[:500]}\n```\n"
+                    f"Fix the error. Write the complete corrected script. Code only."
+                )})
+                continue
+
+            # ── Structural feedback for pass 2 ──
+            structural_feedback = []
+            has_tables = bool(brief.get("tables") or brief.get("spanning_table"))
+            if has_tables and "Table(" not in pass1_code and pass1_code.count("drawString") > 20:
+                structural_feedback.append(
+                    "STRUCTURAL FIX REQUIRED: This page has a table but you used drawString "
+                    "for cell text. Refactor into a reportlab.platypus.Table with proper "
+                    "column widths and TableStyle grid. Use Paragraph() for cell content "
+                    "that needs wrapping."
+                )
+            if "c.circle(" in pass1_code or "c.ellipse(" in pass1_code:
+                structural_feedback.append(
+                    "STRUCTURAL FIX REQUIRED: Remove decorative circles/ellipses — "
+                    "the original PDF has no such elements."
+                )
+            # Detect long drawString lines that will overflow the right margin
+            import re as _re
+            long_draws = 0
+            for m in _re.finditer(r"drawString\(.+?,\s*['\"](.{80,})['\"]", pass1_code):
+                long_draws += 1
+            if long_draws > 3 and "Paragraph(" not in pass1_code:
+                structural_feedback.append(
+                    "STRUCTURAL FIX REQUIRED: Body text uses drawString with long strings "
+                    "that overflow the right margin. Use reportlab.platypus Paragraph() "
+                    "with a defined width (e.g. 468pt = 612 - 72*2 margins) so text wraps. "
+                    "Build paragraphs with SimpleDocTemplate or flowables drawn on canvas "
+                    "via Paragraph.wrapOn()/drawOn()."
+                )
+
+            # ── Pass 2: Text + QIDs + structural fixes ──
+            logger.info(f"{wid} round {round_num}/{max_rounds} pass 2 (text+QID): calling {model}...")
+
+            structural_section = ""
+            if structural_feedback:
+                structural_section = "\n\nStructural issues to fix:\n" + "\n".join(structural_feedback) + "\n"
+
+            pass2_user_text = pass2_user_template.format(pass1_code=pass1_code) + structural_section
+            pass2_conversation: list[dict] = [
+                {"role": "system", "content": _CLONE_SYSTEM_PASS2},
+                {"role": "user", "content": pass2_user_text},
+            ]
+
+            try:
+                resp = httpx.post(
+                    f"{SCILLM_URL}/v1/chat/completions",
+                    json={"model": model, "max_tokens": 16384, "messages": pass2_conversation},
+                    headers=_SCILLM_HEADERS,
+                    timeout=120,
+                )
+                if resp.status_code != 200:
+                    logger.error(f"{wid} round {round_num} pass 2: scillm {resp.status_code}")
+                    win_result["error"] = f"scillm pass2 {resp.status_code}"
+                    break
+                pass2_content = resp.json()["choices"][0]["message"]["content"]
+            except Exception as e:
+                logger.error(f"{wid} round {round_num} pass 2: {e}")
+                win_result["error"] = str(e)
+                break
+
+            code = _extract_code(pass2_content)
 
             # Pre-exec validation: check all required _qid() calls are present
             expected_qids = _get_expected_qids(brief, win["source_pages"])
@@ -474,17 +838,18 @@ async def clone_pdf(
 
             if not exec_ok:
                 logger.warning(f"{wid} round {round_num}: execution failed")
-                conversation.append({"role": "assistant", "content": content})
-                conversation.append({"role": "user", "content": (
-                    f"Execution failed:\n```\n{exec_output}\n```\n"
-                    f"Fix the error. Write the complete corrected script. Code only."
+                # Feed error back to pass 1 conversation for next round
+                pass1_conversation.append({"role": "assistant", "content": pass1_content})
+                pass1_conversation.append({"role": "user", "content": (
+                    f"The script from pass 2 failed execution:\n```\n{exec_output}\n```\n"
+                    f"Rewrite the layout script to avoid this issue. Code only."
                 )})
                 continue
 
             if not os.path.exists(synthetic_pdf):
                 logger.warning(f"{wid} round {round_num}: no synthetic.pdf produced")
-                conversation.append({"role": "assistant", "content": content})
-                conversation.append({"role": "user", "content": (
+                pass1_conversation.append({"role": "assistant", "content": pass1_content})
+                pass1_conversation.append({"role": "user", "content": (
                     f"The script ran but no PDF was created at {synthetic_pdf}. "
                     f"Fix the output path. Code only."
                 )})
@@ -600,31 +965,29 @@ async def clone_pdf(
                         logger.warning(f"{wid}: error injection failed: {e}")
                 break
 
-            conversation.append({"role": "assistant", "content": content})
-            # Build richer feedback for round 2+: extracted text diff + missing QIDs
+            # Feed score back to pass 1 conversation for next round
+            pass1_conversation.append({"role": "assistant", "content": pass1_content})
             feedback_parts = [
                 f"Score: {score['overall']:.3f} (need >= 0.7)",
                 f"Delta: {score['delta_report']}",
             ]
-            # Extract text from synthetic PDF for diff feedback
             try:
                 synth_doc = pdf_oxide.PdfDocument(synthetic_pdf)
                 synth_text = "".join(
                     synth_doc.extract_text(p) for p in range(synth_doc.page_count())
                 )
-                # Check which QIDs are present
-                from pdf_oxide.clone_additive import find_all_qids as _find_qids
-                found = {q for q, _ in _find_qids(synth_text)}
+                found = {q for q, _ in find_all_qids(synth_text)}
                 expected = _get_expected_qids(brief, win["source_pages"])
                 missing = expected - found
                 if missing:
-                    feedback_parts.append(f"Missing QIDs in your PDF: {sorted(missing)}")
-                # Show first 300 chars of extracted text so LLM can see what went wrong
+                    feedback_parts.append(f"Missing QIDs in final PDF: {sorted(missing)}")
                 feedback_parts.append(f"Extracted text (first 300 chars): {synth_text[:300]}")
             except Exception:
                 pass
-            feedback_parts.append("Fix the issues. Write the complete corrected script. Code only.")
-            conversation.append({"role": "user", "content": "\n".join(feedback_parts)})
+            feedback_parts.append(
+                "The layout needs improvement. Rewrite the layout script. Code only."
+            )
+            pass1_conversation.append({"role": "user", "content": "\n".join(feedback_parts)})
 
         if win_result["status"] != "pass" and best_score:
             win_result["synthetic_exists"] = os.path.exists(synthetic_pdf)

@@ -160,7 +160,14 @@ def build_sampling_plan(pdf_path: str, max_windows: int = 20, seed: int = 42) ->
         type_rank = 0 if "tables" in h else 1 if "requirements" in h else 2 if "figures" in h else 3 if "appendix" in h else 4
         return (type_rank, -r["size"])
 
-    # Phase 1: One representative window per structural region
+    def _make_span(center: int, span_size: int = 3) -> list[int]:
+        """Build a page span around a center page, clamped to document bounds."""
+        half = span_size // 2
+        start = max(0, center - half)
+        end = min(total_pages - 1, center + half)
+        return list(range(start, end + 1))
+
+    # Phase 1: One representative window per structural region (3-page spans)
     for region in sorted(regions, key=_region_priority):
         pages_in_region = list(range(region["start"], region["end"] + 1))
         if not pages_in_region:
@@ -169,19 +176,20 @@ def build_sampling_plan(pdf_path: str, max_windows: int = 20, seed: int = 42) ->
         best_page = max(candidates, key=_page_complexity)
         hints = region["hints"]
         title_short = region["title"][:40]
+        span = _make_span(best_page, 3)
 
         if "tables" in hints:
-            add_window([best_page], "pathology", f"region_tables:{title_short}")
+            add_window(span, "pathology", f"region_tables:{title_short}")
         elif "requirements" in hints:
-            add_window([best_page], "pathology", f"region_requirements:{title_short}")
+            add_window(span, "pathology", f"region_requirements:{title_short}")
         elif "figures" in hints:
-            add_window([best_page], "pathology", f"region_figures:{title_short}")
+            add_window(span, "pathology", f"region_figures:{title_short}")
         elif "appendix" in hints or "reference_material" in hints:
-            add_window([best_page], "boundary", f"region_ref:{title_short}")
+            add_window(span, "boundary", f"region_ref:{title_short}")
         elif "toc" in hints:
-            add_window([best_page], "boundary", f"region_toc:{title_short}")
+            add_window(span, "boundary", f"region_toc:{title_short}")
         else:
-            add_window([best_page], "anchor", f"region_content:{title_short}")
+            add_window(span, "anchor", f"region_content:{title_short}")
 
     # Phase 2: Span windows
     table_pages = {int(s.get("page_num", -1)) for s in signatures if s.get("table_candidate")}
