@@ -548,6 +548,42 @@ def _build_verbatim_text_list(all_spans: list[dict]) -> str:
     return "\n".join(lines)
 
 
+def _validate_synthetic_pdf(synthetic_pdf: str, window_pdf: str, num_pages: int) -> list[str]:
+    """Deterministic checks on the synthetic PDF before scoring.
+
+    Returns list of issues found. Empty list = OK.
+    """
+    issues = []
+    try:
+        synth_doc = pdf_oxide.PdfDocument(synthetic_pdf)
+        orig_doc = pdf_oxide.PdfDocument(window_pdf)
+
+        synth_pages = synth_doc.page_count()
+        if synth_pages != num_pages:
+            issues.append(f"Page count mismatch: expected {num_pages}, got {synth_pages}")
+
+        for pg in range(min(synth_pages, num_pages)):
+            synth_text = synth_doc.extract_text(pg)
+            orig_text = orig_doc.extract_text(pg) if pg < orig_doc.page_count() else ""
+
+            # Check for nearly empty pages (less than 20% of original text density)
+            if orig_text and len(synth_text.strip()) < len(orig_text.strip()) * 0.2:
+                issues.append(
+                    f"Page {pg}: very low text density ({len(synth_text)} chars vs "
+                    f"{len(orig_text)} in original)"
+                )
+
+            # Check for single very long lines (text overflow indicator)
+            for line in synth_text.split("\n"):
+                if len(line.strip()) > 120:
+                    issues.append(f"Page {pg}: line exceeds 120 chars (likely right-margin overflow)")
+                    break
+
+    except Exception as e:
+        issues.append(f"Validation error: {e}")
+    return issues
+
+
 def _get_expected_qids(brief: dict, source_pages: list[int]) -> set[int]:
     """Return the set of QID integers that should be in the generated code."""
     from pdf_oxide.clone_additive import _QID_PAGE_MULTIPLIER, _STRUCTURAL_QID_OFFSET
@@ -776,7 +812,7 @@ async def clone_pdf(
             long_draws = 0
             for m in _re.finditer(r"drawString\(.+?,\s*['\"](.{80,})['\"]", pass1_code):
                 long_draws += 1
-            if long_draws > 3 and "Paragraph(" not in pass1_code:
+            if long_draws > 3:
                 structural_feedback.append(
                     "STRUCTURAL FIX REQUIRED: Body text uses drawString with long strings "
                     "that overflow the right margin. Use reportlab.platypus Paragraph() "
