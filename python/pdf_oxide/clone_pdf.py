@@ -79,6 +79,20 @@ RULES:
    - Add a comment: # FIGURE: bbox=(x,y,w,h) description="<what you see>"
    - Add a visible caption below with its QID: _qid(N) + "Figure X: <caption>"
 
+REJECTION CRITERIA — your code is WRONG if:
+- Any _qid(N) from the assignment table is missing from the code
+- You use Helvetica, Times-Roman, or any font other than DejaVu/DejaVu-Bold
+- You paraphrase or reword the QID target text instead of using it verbatim
+- The script does not save a PDF to the exact path given in the user message
+- You output anything besides Python code (no markdown, no explanation)
+
+EXAMPLE — given this page structure:
+  HEADER (y=749): "NIST SP 800-171"
+  FOOTER (y=38): "PAGE 5"
+  QID: _qid(50002) → "NIST SP 800-171" (header)
+  QID: _qid(50003) → "PAGE 5" (footer)
+
+Correct output:
 ```python
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -94,8 +108,17 @@ def _qid(n):
         bits.append(B1 if (v & 1) else B0)
         v >>= 1
     return S + ''.join(reversed(bits)) + E
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+c = canvas.Canvas("/tmp/output.pdf", pagesize=letter)
+c.setFont('DejaVu', 8)
+c.drawString(72, 749, _qid(50002) + "NIST SP 800-171")
+c.drawCentredString(306, 38, _qid(50003) + "PAGE 5")
+c.save()
 ```
 
+Include the _qid() helper and font registration at the top of every script.
 Output ONLY Python code."""
 
 
