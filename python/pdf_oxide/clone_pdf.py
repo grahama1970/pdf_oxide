@@ -78,8 +78,14 @@ def _qid(n):
     return S + ''.join(reversed(bits)) + E
 ```
 
-When you create text content, prepend `_qid(N)` to the FIRST string of each structural element.
-The QID assignments will be provided in the user message. Use DejaVu (not Helvetica) for all fonts.
+For each QID assignment in the user message, prepend `_qid(N)` to the text string.
+Examples:
+  - Heading: `Paragraph(_qid(140002) + "3.1 Access Control", heading_style)`
+  - Header:  `c.drawString(72, 750, _qid(80002) + "NIST SP 800-171")`
+  - Table cell: `[_qid(370002) + "Control ID", "Family", "Description"]`
+  - Footer: `c.drawCentredString(306, 40, _qid(80003) + "PAGE 37")`
+
+Use DejaVu (not Helvetica) for ALL fontName values including ParagraphStyle definitions.
 
 Output ONLY Python code."""
 
