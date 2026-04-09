@@ -57,7 +57,72 @@ _SCILLM_HEADERS = {"Authorization": f"Bearer {SCILLM_KEY}", "Content-Type": "app
 _CLONE_SYSTEM = """You write Python scripts using ReportLab that recreate PDF page layouts.
 You receive a PDF page. Write a self-contained Python script that produces a synthetic PDF matching its structure.
 The synthetic is scored by comparing text extraction on both PDFs: same text, same blocks, same tables, same headings.
+
+IMPORTANT — Invisible QID markers:
+Include this helper at the top of your script and use DejaVu font for ALL text:
+
+```python
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+pdfmetrics.registerFont(TTFont('DejaVu', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'))
+pdfmetrics.registerFont(TTFont('DejaVu-Bold', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'))
+
+def _qid(n):
+    S, E, B0, B1 = '\\u200b', '\\u2060', '\\u200c', '\\u200d'
+    if n == 0: return S + B0 + E
+    bits = []
+    v = n
+    while v > 0:
+        bits.append(B1 if (v & 1) else B0)
+        v >>= 1
+    return S + ''.join(reversed(bits)) + E
+```
+
+When you create text content, prepend `_qid(N)` to the FIRST string of each structural element.
+The QID assignments will be provided in the user message. Use DejaVu (not Helvetica) for all fonts.
+
 Output ONLY Python code."""
+
+
+def _build_qid_instructions(brief: dict, source_pages: list[int]) -> str:
+    """Build QID assignment instructions for the LLM prompt."""
+    from pdf_oxide.clone_additive import _QID_PAGE_MULTIPLIER, _STRUCTURAL_QID_OFFSET
+    page_num = source_pages[0] if source_pages else 0
+    qid_base = page_num * _QID_PAGE_MULTIPLIER + _STRUCTURAL_QID_OFFSET
+    idx = 0
+    lines = ["QID assignments — prepend _qid(N) to the first text of each element:"]
+
+    for table in brief.get("tables", []):
+        idx += 1
+        lines.append(f"  _qid({qid_base + idx}) → first cell text of table ({table.get('rows')}r x {table.get('cols')}c)")
+
+    toc_section = brief.get("toc_section")
+    if toc_section:
+        idx += 1
+        lines.append(f"  _qid({qid_base + idx}) → section heading text")
+
+    rh = brief.get("running_header")
+    if rh:
+        idx += 1
+        header_text = rh["text"] if isinstance(rh, dict) else str(rh)
+        if header_text.strip():
+            lines.append(f"  _qid({qid_base + idx}) → running header text")
+
+    rf = brief.get("running_footer")
+    if rf:
+        idx += 1
+        footer_text = rf["text"] if isinstance(rf, dict) else str(rf)
+        if footer_text.strip():
+            lines.append(f"  _qid({qid_base + idx}) → running footer text")
+
+    spanning = brief.get("spanning_table")
+    if spanning:
+        idx += 1
+        lines.append(f"  _qid({qid_base + idx}) → first cell of spanning table")
+
+    if idx == 0:
+        return ""
+    return "\n".join(lines)
 
 
 async def clone_pdf(
@@ -120,13 +185,15 @@ async def clone_pdf(
                 f"The table continues from the previous page.\n"
             )
 
+        qid_instructions = _build_qid_instructions(brief, win["source_pages"])
         user_text = (
             f"Recreate the attached {num_pages}-page PDF using ReportLab.\n"
             f"{context}\n"
             f"Output: {num_pages} page(s), letter size (612x792 pts).\n"
             f"Save to: {synthetic_pdf}\n"
             f"Run with: .venv/bin/python {code_path}\n"
-            f"Code only."
+            + (f"\n{qid_instructions}\n" if qid_instructions else "")
+            + f"Code only."
         )
 
         conversation: list[dict] = [
@@ -220,28 +287,10 @@ async def clone_pdf(
                 win_result["status"] = "pass"
                 win_result["synthetic_pdf"] = synthetic_pdf
 
-                with open(code_path, "r", encoding="utf-8") as f:
-                    clean_code = f.read()
                 win_idx = manifest.index(win)
 
-                # ── Step 1: Inject structural QIDs into clean code ──
+                # ── Step 1: Verify structural QIDs the LLM embedded ──
                 structural_entries = build_structural_qid_map(brief, win["source_pages"])
-                if structural_entries:
-                    clean_code, structural_entries = inject_structural_qids(
-                        clean_code, structural_entries,
-                    )
-                    # Re-save clean code with structural QIDs
-                    with open(code_path, "w", encoding="utf-8") as f:
-                        f.write(clean_code)
-                    # Re-run to produce synthetic PDF with structural QIDs
-                    subprocess.run(
-                        [".venv/bin/python", code_path],
-                        capture_output=True, text=True, timeout=30,
-                        cwd=os.path.dirname(os.path.dirname(os.path.dirname(
-                            os.path.abspath(__file__)))),
-                    )
-
-                # Verify structural QIDs survived into the PDF
                 try:
                     synth_doc = pdf_oxide.PdfDocument(synthetic_pdf)
                     synth_text = "".join(
@@ -251,9 +300,11 @@ async def clone_pdf(
                     synth_text = ""
                 found_struct_qids = {q for q, _ in find_all_qids(synth_text)}
                 for entry in structural_entries:
-                    entry["verified"] = entry.get("injected", False) and entry["qid"] in found_struct_qids
+                    entry["verified"] = entry["qid"] in found_struct_qids
+                    if not entry["verified"]:
+                        entry["failure_reason"] = "qid_not_in_pdf"
                 verified_structural = [e for e in structural_entries if e["verified"]]
-                win_result["structural_qids"] = verified_structural
+                win_result["structural_qids"] = structural_entries  # keep all for debugging
                 logger.info(
                     f"{wid}: {len(verified_structural)}/{len(structural_entries)} "
                     f"structural QIDs verified"
@@ -261,6 +312,8 @@ async def clone_pdf(
 
                 # ── Step 2: Inject corruptions + corruption QIDs ──
                 if inject_errors_enabled:
+                    with open(code_path, "r", encoding="utf-8") as f:
+                        clean_code = f.read()
                     errored_code, error_manifest = inject_errors(
                         clean_code, seed=seed + win_idx, track=True,
                     )
