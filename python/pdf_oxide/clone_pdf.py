@@ -855,9 +855,10 @@ async def clone_pdf(
                 )})
                 continue
 
-            score = score_clone(window_pdf, synthetic_pdf)
+            score = score_clone(window_pdf, synthetic_pdf, visual=True)
             logger.info(
                 f"{wid} round {round_num}: score={score['overall']:.3f} "
+                f"visual={score.get('visual_similarity', 'n/a')} "
                 f"pass={score['pass']}"
             )
 
@@ -967,10 +968,18 @@ async def clone_pdf(
 
             # Feed score back to pass 1 conversation for next round
             pass1_conversation.append({"role": "assistant", "content": pass1_content})
+            vis = score.get('visual_similarity')
             feedback_parts = [
                 f"Score: {score['overall']:.3f} (need >= 0.7)",
+                f"Visual similarity: {vis:.3f}" if vis is not None else "",
                 f"Delta: {score['delta_report']}",
             ]
+            if vis is not None and vis < 0.5:
+                feedback_parts.append(
+                    "Visual similarity is very low — the page looks significantly "
+                    "different from the original. Check text positions, margins, "
+                    "font sizes, and remove any decorative elements."
+                )
             try:
                 synth_doc = pdf_oxide.PdfDocument(synthetic_pdf)
                 synth_text = "".join(
