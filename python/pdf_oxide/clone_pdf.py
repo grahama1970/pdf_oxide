@@ -54,12 +54,30 @@ SCILLM_URL = os.environ.get("SCILLM_URL", "http://localhost:4001")
 SCILLM_KEY = os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123")
 _SCILLM_HEADERS = {"Authorization": f"Bearer {SCILLM_KEY}", "Content-Type": "application/json"}
 
-_CLONE_SYSTEM = """You write Python scripts using ReportLab that recreate PDF page layouts.
-You receive a PDF page. Write a self-contained Python script that produces a synthetic PDF matching its structure.
-The synthetic is scored by comparing text extraction on both PDFs: same text, same blocks, same tables, same headings.
+_CLONE_SYSTEM = """You are a ReportLab PDF recreation expert. You receive a PDF page as an
+attachment plus a structural description extracted from the original. Write a
+self-contained Python script that produces a synthetic PDF matching the layout.
 
-IMPORTANT — Invisible QID markers:
-Include this helper at the top of your script and use DejaVu font for ALL text:
+Your output is scored by extracting these elements from both PDFs and comparing:
+- Running headers and footers (exact text match)
+- Section headings and subheadings (text + hierarchy level)
+- Tables (row count, column count, cell text content)
+- Body paragraphs (text blocks in reading order)
+- Requirement clauses (numbered items like "3.1.1 Limit information system...")
+- Figure captions (text below figures)
+- Footnotes (small text at page bottom)
+- Equations (if present — use text representation)
+Matching the text content exactly is most important. Layout positions matter less.
+
+RULES:
+1. Use DejaVu font for ALL text — never Helvetica or Times-Roman.
+2. Include the _qid() helper and font registration below at the top of your script.
+3. For each QID in the assignment table, prepend _qid(N) to that EXACT text string.
+   The _qid() output is invisible zero-width characters — it won't affect layout.
+4. If the page has figures/charts/images, do NOT attempt to draw them. Instead:
+   - Draw a placeholder: c.rect(x, y, w, h, fill=1) with light gray fill
+   - Add a comment: # FIGURE: bbox=(x,y,w,h) description="<what you see>"
+   - Add a visible caption below with its QID: _qid(N) + "Figure X: <caption>"
 
 ```python
 from reportlab.pdfbase import pdfmetrics
@@ -78,53 +96,163 @@ def _qid(n):
     return S + ''.join(reversed(bits)) + E
 ```
 
-For each QID assignment in the user message, prepend `_qid(N)` to the text string.
-Examples:
-  - Heading: `Paragraph(_qid(140002) + "3.1 Access Control", heading_style)`
-  - Header:  `c.drawString(72, 750, _qid(80002) + "NIST SP 800-171")`
-  - Table cell: `[_qid(370002) + "Control ID", "Family", "Description"]`
-  - Footer: `c.drawCentredString(306, 40, _qid(80003) + "PAGE 37")`
-
-Use DejaVu (not Helvetica) for ALL fontName values including ParagraphStyle definitions.
-
 Output ONLY Python code."""
 
 
-def _build_qid_instructions(brief: dict, source_pages: list[int]) -> str:
-    """Build QID assignment instructions for the LLM prompt."""
-    from pdf_oxide.clone_additive import _QID_PAGE_MULTIPLIER, _STRUCTURAL_QID_OFFSET
-    page_num = source_pages[0] if source_pages else 0
-    qid_base = page_num * _QID_PAGE_MULTIPLIER + _STRUCTURAL_QID_OFFSET
-    idx = 0
-    lines = ["QID assignments — prepend _qid(N) to the first text of each element:"]
+def _build_page_structure(span_paths: list[str], brief: dict) -> str:
+    """Build a page structure description from extracted span JSON files.
 
-    for table in brief.get("tables", []):
-        idx += 1
-        lines.append(f"  _qid({qid_base + idx}) → first cell text of table ({table.get('rows')}r x {table.get('cols')}c)")
+    Groups spans into structural zones (header, headings, body, table, footer)
+    so the LLM knows what's on the page before it looks at the PDF image.
+    """
+    import json as _json
 
-    toc_section = brief.get("toc_section")
-    if toc_section:
-        idx += 1
-        lines.append(f"  _qid({qid_base + idx}) → section heading text")
+    all_spans: list[dict] = []
+    for path in span_paths:
+        if os.path.exists(path):
+            with open(path) as f:
+                all_spans.extend(_json.load(f))
 
-    rh = brief.get("running_header")
-    if rh:
-        idx += 1
-        header_text = rh["text"] if isinstance(rh, dict) else str(rh)
-        if header_text.strip():
-            lines.append(f"  _qid({qid_base + idx}) → running header text")
+    if not all_spans:
+        return ""
 
-    rf = brief.get("running_footer")
-    if rf:
-        idx += 1
-        footer_text = rf["text"] if isinstance(rf, dict) else str(rf)
-        if footer_text.strip():
-            lines.append(f"  _qid({qid_base + idx}) → running footer text")
+    # Group by y-position bands (round to nearest int)
+    zones: dict[int, list[dict]] = {}
+    for s in all_spans:
+        y = round(s["bbox"][1])
+        zones.setdefault(y, []).append(s)
+
+    lines = ["Page structure (extracted from the original PDF):\n"]
+    page_height = 792  # letter
+
+    # Sort top to bottom
+    sorted_ys = sorted(zones.keys(), reverse=True)
+
+    for y in sorted_ys:
+        spans = zones[y]
+        text = " ".join(s["text"].strip() for s in spans if s["text"].strip())
+        if not text:
+            continue
+
+        fonts = set(s["font_name"] for s in spans)
+        sizes = sorted(set(round(s["font_size"], 1) for s in spans))
+        size_str = f"{sizes[0]}pt" if len(sizes) == 1 else f"{sizes[0]}-{sizes[-1]}pt"
+
+        # Classify by position
+        if y > page_height - 80:  # top 80pt = header zone
+            label = "HEADER"
+        elif y < 60:  # bottom 60pt = footer zone
+            label = "FOOTER"
+        elif any("Bold" in f or "bold" in f or f.endswith("3") or f.endswith("4") for f in fonts):
+            if sizes and sizes[-1] >= 11:
+                label = "HEADING"
+            else:
+                label = "BOLD"
+        else:
+            label = "TEXT"
+
+        # Truncate long text for prompt efficiency
+        display_text = text[:120] + "..." if len(text) > 120 else text
+        lines.append(f'  {label} (y={y}, {size_str}): "{display_text}"')
+
+    # Add table summary if present
+    tables = brief.get("tables", [])
+    if tables:
+        for t in tables:
+            lines.append(f"\n  TABLE: {t.get('rows')}r x {t.get('cols')}c, "
+                         f"bbox=({t.get('bbox', [0,0,0,0])[0]:.0f}, {t.get('bbox', [0,0,0,0])[1]:.0f}, "
+                         f"{t.get('bbox', [0,0,0,0])[2]:.0f}, {t.get('bbox', [0,0,0,0])[3]:.0f})")
 
     spanning = brief.get("spanning_table")
     if spanning:
+        lines.append(f"\n  SPANNING TABLE: pages {spanning.get('start_page')}-{spanning.get('end_page')}, "
+                     f"{spanning.get('total_rows')} total rows, {spanning.get('cols')} cols")
+
+    if brief.get("has_images"):
+        lines.append("\n  PAGE CONTAINS FIGURES/IMAGES — describe what you see and use placeholder rectangles")
+
+    return "\n".join(lines)
+
+
+def _build_qid_instructions(
+    brief: dict,
+    source_pages: list[int],
+    span_paths: list[str] | None = None,
+) -> str:
+    """Build QID assignments tied to real extracted text from spans."""
+    import json as _json
+    from pdf_oxide.clone_additive import _QID_PAGE_MULTIPLIER, _STRUCTURAL_QID_OFFSET
+
+    page_num = source_pages[0] if source_pages else 0
+    qid_base = page_num * _QID_PAGE_MULTIPLIER + _STRUCTURAL_QID_OFFSET
+    idx = 0
+
+    # Load spans to find real text for QID targets
+    all_spans: list[dict] = []
+    if span_paths:
+        for path in span_paths:
+            if os.path.exists(path):
+                with open(path) as f:
+                    all_spans.extend(_json.load(f))
+
+    # Find header text (top of page, small font)
+    header_spans = [s for s in all_spans if s["bbox"][1] > 720 and s["text"].strip()]
+    header_text = " ".join(s["text"].strip() for s in header_spans[:2]) if header_spans else None
+
+    # Find footer text (bottom of page)
+    footer_spans = [s for s in all_spans if s["bbox"][1] < 60 and s["text"].strip()]
+    footer_text = " ".join(s["text"].strip() for s in footer_spans[:2]) if footer_spans else None
+
+    # Find first bold/large text (heading or table title)
+    heading_spans = sorted(
+        [s for s in all_spans if s["text"].strip() and s["font_size"] >= 10
+         and s["bbox"][1] < 720 and s["bbox"][1] > 60],
+        key=lambda s: -s["bbox"][1],  # top first
+    )
+    heading_text = heading_spans[0]["text"].strip()[:80] if heading_spans else None
+
+    # Find first table cell text (smaller font, in table bbox area)
+    tables = brief.get("tables", [])
+    table_cell_text = None
+    if tables and all_spans:
+        tbox = tables[0].get("bbox", [0, 0, 612, 792])
+        table_spans = [s for s in all_spans
+                       if tbox[1] <= s["bbox"][1] <= tbox[3]
+                       and s["text"].strip()
+                       and len(s["text"].strip()) > 2]
+        if table_spans:
+            # First span in the table area (top-down)
+            table_spans.sort(key=lambda s: -s["bbox"][1])
+            table_cell_text = table_spans[0]["text"].strip()[:60]
+
+    lines = [
+        "QID assignments — prepend _qid(N) to these EXACT text strings:\n"
+    ]
+
+    if header_text:
         idx += 1
-        lines.append(f"  _qid({qid_base + idx}) → first cell of spanning table")
+        lines.append(f'  _qid({qid_base + idx}) → "{header_text[:60]}"')
+        lines.append(f'                 (running header)')
+
+    if heading_text:
+        idx += 1
+        lines.append(f'  _qid({qid_base + idx}) → "{heading_text}"')
+        lines.append(f'                 (heading / title)')
+
+    if table_cell_text:
+        idx += 1
+        lines.append(f'  _qid({qid_base + idx}) → "{table_cell_text}"')
+        lines.append(f'                 (first text in table)')
+
+    if brief.get("has_images"):
+        idx += 1
+        lines.append(f'  _qid({qid_base + idx}) → figure caption text')
+        lines.append(f'                 (caption you write below the figure placeholder)')
+
+    if footer_text:
+        idx += 1
+        lines.append(f'  _qid({qid_base + idx}) → "{footer_text[:60]}"')
+        lines.append(f'                 (running footer)')
 
     if idx == 0:
         return ""
@@ -181,25 +309,23 @@ async def clone_pdf(
             pdf_b64 = base64.b64encode(f.read()).decode()
         num_pages = len(win["source_pages"])
 
-        context = ""
-        if brief.get("spanning_table"):
-            sp = brief["spanning_table"]
-            context = (
-                f"\nContext: This page is part of a table spanning pages "
-                f"{sp['start_page']}-{sp['end_page']} "
-                f"({sp['total_rows']} rows, {sp['cols']} cols). "
-                f"The table continues from the previous page.\n"
-            )
+        # Find span files for this window
+        span_paths = [
+            os.path.join(win_dir, f"spans_{pg}.json")
+            for pg in win["source_pages"]
+        ]
 
-        qid_instructions = _build_qid_instructions(brief, win["source_pages"])
+        page_structure = _build_page_structure(span_paths, brief)
+        qid_instructions = _build_qid_instructions(brief, win["source_pages"], span_paths)
+
         user_text = (
-            f"Recreate the attached {num_pages}-page PDF using ReportLab.\n"
-            f"{context}\n"
-            f"Output: {num_pages} page(s), letter size (612x792 pts).\n"
+            f"Recreate the attached {num_pages}-page PDF using ReportLab.\n\n"
+            + (f"{page_structure}\n\n" if page_structure else "")
+            + f"Output: {num_pages} page(s), letter size (612x792 pts).\n"
             f"Save to: {synthetic_pdf}\n"
             f"Run with: .venv/bin/python {code_path}\n"
             + (f"\n{qid_instructions}\n" if qid_instructions else "")
-            + f"Code only."
+            + f"\nCode only."
         )
 
         conversation: list[dict] = [
