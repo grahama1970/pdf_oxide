@@ -72,10 +72,11 @@ Matching the text content exactly is most important. Layout positions matter les
 RULES:
 1. Use DejaVu font for ALL text — never Helvetica or Times-Roman.
 2. Include the _qid() helper and font registration below at the top of your script.
-3. For each QID in the assignment table, prepend _qid(N) to that EXACT text string.
-   The _qid() output is invisible zero-width characters — it won't affect layout.
+3. For each QID in the assignment table, prepend _qid(N) to the FIRST occurrence
+   of that exact text string. If the same text appears multiple times, only the
+   first gets the QID. The _qid() output is invisible zero-width characters.
 4. If the page has figures/charts/images, do NOT attempt to draw them. Instead:
-   - Draw a placeholder: c.rect(x, y, w, h, fill=1) with light gray fill
+   - Draw a placeholder: c.setFillColorRGB(0.9, 0.9, 0.9); c.rect(x, y, w, h, fill=1)
    - Add a comment: # FIGURE: bbox=(x,y,w,h) description="<what you see>"
    - Add a visible caption below with its QID: _qid(N) + "Figure X: <caption>"
 
