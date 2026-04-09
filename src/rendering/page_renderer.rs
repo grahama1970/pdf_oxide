@@ -1,8 +1,12 @@
 //! Page renderer - converts PDF pages to raster images.
 
+use std::collections::HashMap;
+use std::sync::Arc;
+
 use crate::content::{parse_content_stream, GraphicsState, GraphicsStateStack, Matrix, Operator};
 use crate::document::PdfDocument;
 use crate::error::{Error, Result};
+use crate::fonts::FontInfo;
 use crate::object::Object;
 
 use tiny_skia::{Color, FillRule, PathBuilder, Pixmap, PixmapPaint, Transform};
@@ -148,8 +152,13 @@ impl PageRenderer {
         // Get page resources for fonts and images
         let resources = doc.get_page_resources(page_num)?;
 
+        // Eagerly resolve all fonts from page resources BEFORE execute_operators
+        // borrows &mut doc. This avoids the E0502 conflict where Tf needs &mut doc
+        // to resolve fonts while execute_operators already holds the borrow.
+        let font_map = Self::resolve_fonts_from_resources(&resources, doc);
+
         // Execute operators and render
-        self.execute_operators(&mut pixmap, transform, &operators, doc, page_num, &resources)?;
+        self.execute_operators(&mut pixmap, transform, &operators, doc, page_num, &resources, &font_map)?;
 
         // Encode to output format
         let data = match self.options.format {
@@ -179,10 +188,13 @@ impl PageRenderer {
         doc: &mut PdfDocument,
         page_num: usize,
         resources: &Object,
+        font_map: &HashMap<String, Arc<FontInfo>>,
     ) -> Result<()> {
         let mut gs_stack = GraphicsStateStack::new();
         let mut current_path = PathBuilder::new();
         let mut in_text_object = false;
+        // Current resolved font — set by Tf, used by Tj/TJ/Quote/DoubleQuote
+        let mut current_font: Option<Arc<FontInfo>> = None;
         // Clip mask stack: mirrors q/Q save/restore so clipping is scoped correctly.
         // Per PDF spec §8.5.4, clipping persists until the enclosing q/Q pair restores.
         let mut clip_stack: Vec<Option<tiny_skia::Mask>> = vec![None];
@@ -459,6 +471,11 @@ impl PageRenderer {
                     let gs = gs_stack.current_mut();
                     gs.font_name = Some(font.clone());
                     gs.font_size = *size;
+                    // Look up pre-resolved FontInfo from the eagerly-built font map
+                    current_font = font_map.get(font.as_str()).cloned();
+                    if current_font.is_none() {
+                        eprintln!("[renderer] Tf: font '{}' not found in pre-resolved map", font);
+                    }
                 },
                 Operator::Tc { char_space } => {
                     gs_stack.current_mut().char_space = *char_space;
@@ -485,8 +502,9 @@ impl PageRenderer {
                         let clip = clip_stack.last().and_then(|c| c.as_ref());
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
+                        let font_ref = current_font.as_deref();
                         self.text_rasterizer
-                            .render_text(pixmap, text, transform, gs, resources, doc, clip)?;
+                            .render_text(pixmap, text, transform, gs, font_ref, resources, doc, clip)?;
 
                         // Advance text position per PDF spec §9.4.4:
                         // tx = ((w0 - Tj/1000) × Tfs + Tc + Tw) × Th
@@ -516,8 +534,9 @@ impl PageRenderer {
                         let clip = clip_stack.last().and_then(|c| c.as_ref());
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
+                        let font_ref = current_font.as_deref();
                         self.text_rasterizer
-                            .render_tj_array(pixmap, array, transform, gs, resources, doc, clip)?;
+                            .render_tj_array(pixmap, array, transform, gs, font_ref, resources, doc, clip)?;
                     }
                 },
                 Operator::DoubleQuote {
@@ -531,8 +550,9 @@ impl PageRenderer {
                         gs_stack.current_mut().char_space = *char_space;
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
+                        let font_ref = current_font.as_deref();
                         self.text_rasterizer
-                            .render_text(pixmap, text, transform, gs, resources, doc, clip)?;
+                            .render_text(pixmap, text, transform, gs, font_ref, resources, doc, clip)?;
                     }
                 },
 
@@ -542,7 +562,7 @@ impl PageRenderer {
                     let gs = gs_stack.current();
                     let transform = combine_transforms(base_transform, &gs.ctm);
                     self.render_xobject(
-                        pixmap, name, transform, gs, resources, doc, page_num, clip,
+                        pixmap, name, transform, gs, resources, doc, page_num, clip, font_map,
                     )?;
                 },
 
@@ -570,6 +590,7 @@ impl PageRenderer {
         doc: &mut PdfDocument,
         page_num: usize,
         clip_mask: Option<&tiny_skia::Mask>,
+        font_map: &HashMap<String, Arc<FontInfo>>,
     ) -> Result<()> {
         // Get XObject from resources
         if let Object::Dictionary(res_dict) = resources {
@@ -587,7 +608,7 @@ impl PageRenderer {
                                 },
                                 "Form" => {
                                     self.render_form_xobject(
-                                        pixmap, &dict, &data, transform, doc, page_num, resources,
+                                        pixmap, &dict, &data, transform, doc, page_num, resources, font_map,
                                     )?;
                                 },
                                 _ => {},
@@ -655,6 +676,7 @@ impl PageRenderer {
         doc: &mut PdfDocument,
         page_num: usize,
         parent_resources: &Object,
+        parent_font_map: &HashMap<String, Arc<FontInfo>>,
     ) -> Result<()> {
         // Parse /Matrix from form dict (default: identity)
         let form_matrix = if let Some(Object::Array(arr)) = dict.get("Matrix") {
@@ -693,6 +715,18 @@ impl PageRenderer {
             parent_resources.clone()
         };
 
+        // Resolve fonts from form's resources, falling back to parent font map.
+        // Form XObjects can define their own /Font entries that override page-level fonts.
+        let form_font_map = if dict.contains_key("Resources") {
+            let mut merged = parent_font_map.clone();
+            let form_fonts = Self::resolve_fonts_from_resources(&form_resources, doc);
+            // Form-local fonts override parent fonts with same name
+            merged.extend(form_fonts);
+            merged
+        } else {
+            parent_font_map.clone()
+        };
+
         // Parse form content stream
         let operators = parse_content_stream(data)?;
 
@@ -704,9 +738,102 @@ impl PageRenderer {
             doc,
             page_num,
             &form_resources,
+            &form_font_map,
         )?;
 
         Ok(())
+    }
+
+    /// Eagerly resolve all fonts from a resources dictionary.
+    ///
+    /// Called BEFORE execute_operators to avoid E0502 borrow conflicts:
+    /// FontInfo::from_dict needs &mut PdfDocument, but execute_operators
+    /// also borrows &mut PdfDocument during the operator loop.
+    ///
+    /// Returns a map from font name (e.g. "F1", "TT0") to resolved FontInfo.
+    fn resolve_fonts_from_resources(
+        resources: &Object,
+        doc: &mut PdfDocument,
+    ) -> HashMap<String, Arc<FontInfo>> {
+        let resources_dict = match resources.as_dict() {
+            Some(d) => d,
+            None => {
+                // Resources might be a reference — try to resolve
+                if let Some(res_ref) = resources.as_reference() {
+                    match doc.load_object(res_ref) {
+                        Ok(obj) => {
+                            if let Some(d) = obj.as_dict() {
+                                return Self::resolve_fonts_from_dict(d, doc);
+                            }
+                        },
+                        Err(e) => {
+                            eprintln!("[renderer] Failed to resolve resources ref: {}", e);
+                        },
+                    }
+                }
+                return HashMap::new();
+            },
+        };
+
+        Self::resolve_fonts_from_dict(resources_dict, doc)
+    }
+
+    /// Resolve fonts from a resources dictionary (already dereferenced).
+    fn resolve_fonts_from_dict(
+        resources_dict: &std::collections::HashMap<String, Object>,
+        doc: &mut PdfDocument,
+    ) -> HashMap<String, Arc<FontInfo>> {
+        let mut font_map = HashMap::new();
+
+        let font_obj = match resources_dict.get("Font") {
+            Some(obj) => obj,
+            None => return font_map,
+        };
+
+        // /Font can be a reference or direct dictionary
+        let font_dict_obj = if let Some(font_ref) = font_obj.as_reference() {
+            match doc.load_object(font_ref) {
+                Ok(obj) => obj,
+                Err(e) => {
+                    eprintln!("[renderer] Failed to load /Font ref: {}", e);
+                    return font_map;
+                },
+            }
+        } else {
+            font_obj.clone()
+        };
+
+        let font_dict = match font_dict_obj.as_dict() {
+            Some(d) => d,
+            None => return font_map,
+        };
+
+        for (name, font_entry) in font_dict {
+            // Each font entry can be a reference or direct dict
+            let font_obj = if let Some(font_ref) = font_entry.as_reference() {
+                match doc.load_object(font_ref) {
+                    Ok(obj) => obj,
+                    Err(e) => {
+                        eprintln!("[renderer] Failed to load font '{}': {}", name, e);
+                        continue;
+                    },
+                }
+            } else {
+                font_entry.clone()
+            };
+
+            match FontInfo::from_dict(&font_obj, doc) {
+                Ok(info) => {
+                    font_map.insert(name.clone(), Arc::new(info));
+                },
+                Err(e) => {
+                    eprintln!("[renderer] Failed to parse font '{}': {}", name, e);
+                },
+            }
+        }
+
+        log::info!("[renderer] Pre-resolved {} fonts from resources", font_map.len());
+        font_map
     }
 
     /// Decode image data to RGBA.

@@ -8,6 +8,8 @@ use crate::content::operators::TextElement;
 use crate::content::GraphicsState;
 use crate::document::PdfDocument;
 use crate::error::Result;
+use crate::fonts::FontInfo;
+use crate::fonts::text_decode::decode_pdf_text;
 use crate::object::Object;
 
 use tiny_skia::{Paint, PathBuilder, Pixmap, Transform};
@@ -60,6 +62,7 @@ impl TextRasterizer {
         text: &[u8],
         base_transform: Transform,
         gs: &GraphicsState,
+        font_info: Option<&FontInfo>,
         _resources: &Object,
         _doc: &mut PdfDocument,
         clip_mask: Option<&tiny_skia::Mask>,
@@ -70,7 +73,7 @@ impl TextRasterizer {
         let x = text_matrix.e;
         let y = text_matrix.f;
 
-        self.render_text_glyphs(pixmap, text, x, y, font_size, &paint, base_transform, gs, clip_mask)?;
+        self.render_text_glyphs(pixmap, text, x, y, font_size, &paint, base_transform, gs, font_info, clip_mask)?;
         Ok(())
     }
 
@@ -81,6 +84,7 @@ impl TextRasterizer {
         array: &[TextElement],
         base_transform: Transform,
         gs: &GraphicsState,
+        font_info: Option<&FontInfo>,
         _resources: &Object,
         _doc: &mut PdfDocument,
         clip_mask: Option<&tiny_skia::Mask>,
@@ -96,10 +100,11 @@ impl TextRasterizer {
                 TextElement::String(text) => {
                     self.render_text_glyphs(
                         pixmap, text, current_x, y, font_size, &paint,
-                        base_transform, gs, clip_mask,
+                        base_transform, gs, font_info, clip_mask,
                     )?;
-                    let char_count = text.len() as f32;
-                    current_x += char_count * font_size * 0.5;
+                    // Advance using font widths if available, else fallback
+                    let advance = self.compute_text_advance(text, font_info, font_size, gs);
+                    current_x += advance;
                 },
                 TextElement::Offset(offset) => {
                     let adjustment = -(*offset) / 1000.0 * font_size;
@@ -111,7 +116,43 @@ impl TextRasterizer {
         Ok(())
     }
 
+    /// Compute text advance width using PDF font widths when available.
+    fn compute_text_advance(
+        &self,
+        text: &[u8],
+        font_info: Option<&FontInfo>,
+        font_size: f32,
+        gs: &GraphicsState,
+    ) -> f32 {
+        let h_scale = gs.horizontal_scaling / 100.0;
+        let char_space = gs.char_space;
+        let word_space = gs.word_space;
+
+        if let Some(font) = font_info {
+            // Use PDF font widths for accurate positioning
+            let decoded = decode_pdf_text(text, Some(font));
+            let mut total: f32 = 0.0;
+            for glyph in &decoded {
+                let w = font.get_glyph_width(glyph.char_code as u16);
+                total += (w / 1000.0 * font_size + char_space) * h_scale;
+                // Word spacing for space character
+                if glyph.unicode == " " {
+                    total += word_space * h_scale;
+                }
+            }
+            total
+        } else {
+            // Fallback: fixed-width estimate
+            let char_count = text.len() as f32;
+            char_count * font_size * 0.5
+        }
+    }
+
     /// Render text using actual glyph outlines from system fonts.
+    ///
+    /// Decodes PDF bytes through the shared text decoder (using FontInfo when
+    /// available) to get proper Unicode, then renders glyph outlines from the
+    /// system fallback font.
     fn render_text_glyphs(
         &self,
         pixmap: &mut Pixmap,
@@ -122,6 +163,7 @@ impl TextRasterizer {
         paint: &Paint,
         base_transform: Transform,
         gs: &GraphicsState,
+        font_info: Option<&FontInfo>,
         clip_mask: Option<&tiny_skia::Mask>,
     ) -> Result<()> {
         let text_transform = Transform::from_row(
@@ -136,13 +178,11 @@ impl TextRasterizer {
             None => return Ok(()), // No font available, skip rendering
         };
 
-        // Try to decode text as UTF-8, fall back to latin-1
-        let text_str: String = match std::str::from_utf8(text) {
-            Ok(s) => s.to_string(),
-            Err(_) => text.iter().map(|&b| b as char).collect(),
-        };
+        // Decode PDF bytes through the shared text decoder.
+        // With FontInfo: uses ToUnicode CMap, encoding tables, etc.
+        // Without FontInfo: falls back to Latin-1 (same as before).
+        let decoded = decode_pdf_text(text, font_info);
 
-        let text_for_debug = text_str.clone();
         self.font_db.with_face_data(font_id, |font_data, face_index| {
             let face = match ttf_parser::Face::parse(font_data, face_index) {
                 Ok(f) => f,
@@ -155,47 +195,53 @@ impl TextRasterizer {
             let mut glyphs_found = 0u32;
             let mut glyphs_missing = 0u32;
 
-            for ch in text_for_debug.chars() {
-                if ch == ' ' {
-                    current_x += font_size * 0.25 + gs.word_space;
-                    continue;
-                }
-
-                let glyph_id = match face.glyph_index(ch) {
-                    Some(id) => {
-                        glyphs_found += 1;
-                        id
-                    },
-                    None => {
-                        glyphs_missing += 1;
-                        current_x += font_size * 0.5;
+            for glyph in &decoded {
+                for ch in glyph.unicode.chars() {
+                    if ch == ' ' {
+                        current_x += font_size * 0.25 + gs.word_space;
                         continue;
                     }
-                };
 
-                // Get advance width
-                let advance = face
-                    .glyph_hor_advance(glyph_id)
-                    .unwrap_or((units_per_em * 0.5) as u16) as f32
-                    * scale;
+                    let glyph_id = match face.glyph_index(ch) {
+                        Some(id) => {
+                            glyphs_found += 1;
+                            id
+                        },
+                        None => {
+                            glyphs_missing += 1;
+                            current_x += font_size * 0.5;
+                            continue;
+                        }
+                    };
 
-                // Build glyph path
-                let mut builder = GlyphPathBuilder::new(current_x, y, scale);
-                if face.outline_glyph(glyph_id, &mut builder).is_some() {
-                    if let Some(path) = builder.finish() {
-                        pixmap.fill_path(
-                            &path, paint, tiny_skia::FillRule::EvenOdd,
-                            transform, clip_mask,
-                        );
+                    // Get advance width from system font
+                    let advance = face
+                        .glyph_hor_advance(glyph_id)
+                        .unwrap_or((units_per_em * 0.5) as u16) as f32
+                        * scale;
+
+                    // Build glyph path
+                    let mut builder = GlyphPathBuilder::new(current_x, y, scale);
+                    if face.outline_glyph(glyph_id, &mut builder).is_some() {
+                        if let Some(path) = builder.finish() {
+                            pixmap.fill_path(
+                                &path, paint, tiny_skia::FillRule::EvenOdd,
+                                transform, clip_mask,
+                            );
+                        }
                     }
-                }
 
-                current_x += advance + gs.char_space;
+                    current_x += advance + gs.char_space;
+                }
             }
 
             if glyphs_found > 0 || glyphs_missing > 0 {
-                eprintln!("[text_raster] '{}' found={} missing={} font_size={} x={} y={}",
-                    &text_for_debug[..text_for_debug.len().min(30)], glyphs_found, glyphs_missing, font_size, x, y);
+                let preview: String = decoded.iter()
+                    .flat_map(|g| g.unicode.chars())
+                    .take(30)
+                    .collect();
+                eprintln!("[text_raster] '{}' found={} missing={} font_size={:.1} x={:.0} y={:.0}",
+                    preview, glyphs_found, glyphs_missing, font_size, x, y);
             }
         });
 
