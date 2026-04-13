@@ -57,6 +57,9 @@ from .clone_builder import (
     build_clone_from_generated,
     clone_pdf,
     clone_pdf_sync,
+    # Unified builder (TruthManifest output)
+    CloneBuilder,
+    build_clone,
 )
 
 from .clone_validate import (
@@ -97,6 +100,9 @@ __all__ = [
     "build_clone_from_generated",
     "clone_pdf",
     "clone_pdf_sync",
+    # Unified builder (TruthManifest output)
+    "CloneBuilder",
+    "build_clone",
     # Validation
     "QidRecovery",
     "OrderingResult",

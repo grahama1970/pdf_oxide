@@ -563,15 +563,21 @@ class TruthManifest:
 # Render Plan Builder
 # =============================================================================
 
-def derive_render_plan(profile_ref: SourceProfileRef, seed: int = 42) -> RenderPlan:
+def derive_render_plan(
+    profile_ref: SourceProfileRef,
+    seed: int = 42,
+    regions: Optional[List[Dict[str, Any]]] = None,
+) -> RenderPlan:
     """Derive a render plan from clone_profiler output.
 
-    This is the main entry point for converting profiler analysis into
-    an actionable render plan.
+    This integrates with clone_sampler's region analysis for proper
+    section boundary detection instead of thin TOC-only logic.
 
     Args:
         profile_ref: Wrapped clone_profiler output
         seed: Random seed for deterministic generation
+        regions: Optional pre-computed regions from clone_sampler._outline_to_regions()
+                 If None, will compute from toc_sections with fallback logic.
 
     Returns:
         RenderPlan ready for clone_builder
@@ -589,66 +595,135 @@ def derive_render_plan(profile_ref: SourceProfileRef, seed: int = 42) -> RenderP
         layout_mode=profile_ref.layout_mode,
     )
 
-    # Build section budgets from TOC
-    toc_sections = profile_ref.toc_sections
+    # Build page signature lookup for complexity analysis
+    sig_by_page: Dict[int, Dict[str, Any]] = {}
+    for sig in profile_ref.page_signatures:
+        page_num = sig.get("page_num", -1)
+        if page_num >= 0:
+            sig_by_page[page_num] = sig
+
+    # Build table lookup by page
+    tables_by_page: Dict[int, List[Dict[str, Any]]] = {}
+    for table in profile_ref.table_shapes:
+        page = table.get("page", -1)
+        if page >= 0:
+            tables_by_page.setdefault(page, []).append(table)
+
+    # Collect page-level signals
     requirements_pages = set(profile_ref.requirements_pages)
     list_pages = set(profile_ref.list_pages)
     callout_pages = set(profile_ref.callout_pages)
+    footnote_pages = set(profile_ref.footnote_pages)
 
-    for i, section in enumerate(toc_sections):
-        start_page = section.get("page", 0) or 0
+    # Use regions if provided, otherwise build from TOC with proper boundaries
+    if regions is None:
+        regions = _build_regions_from_toc(
+            profile_ref.toc_sections,
+            profile_ref.page_count,
+        )
 
-        # Find end page (next section's start or document end)
-        if i + 1 < len(toc_sections):
-            next_section = toc_sections[i + 1]
-            end_page = next_section.get("page", start_page + 1) or start_page + 1
+    # Build section budgets from regions (not thin TOC boundaries)
+    for i, region in enumerate(regions):
+        start_page = region.get("start", 0)
+        end_page = region.get("end", start_page) + 1  # Convert inclusive to exclusive
+        hints = region.get("hints", [])
+        title = region.get("title", f"Section {i}")
+        level = region.get("level", 1)
+
+        # Count tables in this region
+        tables_in_region = []
+        for page in range(start_page, end_page):
+            tables_in_region.extend(tables_by_page.get(page, []))
+
+        # Estimate paragraph count from page complexity
+        paragraph_count = 0
+        for page in range(start_page, end_page):
+            sig = sig_by_page.get(page, {})
+            char_count = sig.get("char_count", 0)
+            # Estimate ~500 chars per paragraph
+            paragraph_count += max(1, char_count // 500)
+        paragraph_count = max(1, paragraph_count)
+
+        # Determine content type from region hints
+        if "requirements" in hints:
+            content_type = "requirement"
+        elif "tables" in hints:
+            content_type = "prose"  # Tables have their own content
+        elif "figures" in hints:
+            content_type = "prose"
+        elif "reference_material" in hints or "appendix" in hints:
+            content_type = "glossary"
         else:
-            end_page = profile_ref.page_count
+            content_type = "prose"
 
-        # Count tables in this section's page range
-        tables_in_section = [
-            t for t in profile_ref.table_shapes
-            if start_page <= t.get("page", -1) < end_page
-        ]
-
-        # Determine content type from hints
+        # Check page signals for this region
         has_reqs = any(p in requirements_pages for p in range(start_page, end_page))
-        content_type = "requirement" if has_reqs else "prose"
+        has_callouts = any(p in callout_pages for p in range(start_page, end_page))
+        has_footnotes = any(p in footnote_pages for p in range(start_page, end_page))
+        has_lists = any(p in list_pages for p in range(start_page, end_page))
 
         budget = SectionBudget(
-            section_id=section.get("id", i),
-            title=section.get("title", ""),
-            depth=section.get("depth", 0),
+            section_id=i,
+            title=title,
+            depth=level - 1,  # Convert 1-based level to 0-based depth
             start_page=start_page,
             end_page=end_page,
-            paragraph_count=max(1, (end_page - start_page) * 2),  # Estimate
-            table_count=len(tables_in_section),
-            has_requirements=has_reqs,
-            has_callouts=any(p in callout_pages for p in range(start_page, end_page)),
-            has_footnotes=any(p in profile_ref.footnote_pages for p in range(start_page, end_page)),
+            paragraph_count=paragraph_count,
+            list_count=1 if has_lists else 0,
+            table_count=len(tables_in_region),
+            figure_count=sum(
+                1 for p in range(start_page, end_page)
+                if sig_by_page.get(p, {}).get("figure_candidate")
+            ),
+            has_requirements=has_reqs or "requirements" in hints,
+            has_callouts=has_callouts,
+            has_footnotes=has_footnotes,
             content_type=content_type,
             domain=profile_ref.domain,
         )
         plan.section_budgets.append(budget)
 
-    # Build page regimes by analyzing page types
+    # Build page regimes using region hints for better type classification
+    region_by_page: Dict[int, Dict[str, Any]] = {}
+    for region in regions:
+        for page in range(region.get("start", 0), region.get("end", 0) + 1):
+            region_by_page[page] = region
+
     current_regime_start = 0
-    current_page_type = profile_ref.classify_page(0) if profile_ref.page_count > 0 else PageType.BLANK
+    current_page_type = _classify_page_with_hints(
+        0, profile_ref, sig_by_page, tables_by_page, region_by_page
+    ) if profile_ref.page_count > 0 else PageType.BLANK
 
     for page_num in range(1, profile_ref.page_count + 1):
         if page_num < profile_ref.page_count:
-            page_type = profile_ref.classify_page(page_num)
+            page_type = _classify_page_with_hints(
+                page_num, profile_ref, sig_by_page, tables_by_page, region_by_page
+            )
         else:
             page_type = None  # End of document
 
         # Start new regime when page type changes
         if page_type != current_page_type or page_num == profile_ref.page_count:
+            # Determine table preset based on content
+            if current_page_type == PageType.TABLE_HEAVY:
+                table_preset = "data_grid"
+            else:
+                table_preset = "professional"
+
+            # Determine header preset based on page type
+            if current_page_type == PageType.FRONT_MATTER:
+                header_preset = None
+            elif current_page_type == PageType.APPENDIX:
+                header_preset = "section_header"
+            else:
+                header_preset = "doc_title_header"
+
             regime = PageRegime(
                 page_type=current_page_type,
                 start_page=current_regime_start,
                 end_page=page_num,
-                table_preset="data_grid" if current_page_type == PageType.TABLE_HEAVY else "professional",
-                header_preset="doc_title_header" if current_page_type != PageType.FRONT_MATTER else None,
+                table_preset=table_preset,
+                header_preset=header_preset,
                 footer_preset="page_number_footer",
             )
             plan.page_regimes.append(regime)
@@ -658,11 +733,7 @@ def derive_render_plan(profile_ref: SourceProfileRef, seed: int = 42) -> RenderP
                 current_page_type = page_type
 
     # Build table targets
-    for table in profile_ref.table_shapes:
-        page = table.get("page", 0)
-        if page not in plan.table_targets:
-            plan.table_targets[page] = []
-        plan.table_targets[page].append(table)
+    plan.table_targets = tables_by_page
 
     # Map fonts
     for font_name, font_info in profile_ref.font_map.items():
@@ -671,7 +742,6 @@ def derive_render_plan(profile_ref: SourceProfileRef, seed: int = 42) -> RenderP
 
     # Detect running header/footer patterns
     if profile_ref.running_headers:
-        # Use most common header pattern (may be string or dict)
         header = profile_ref.running_headers[0]
         plan.header_pattern = header.get("text", header) if isinstance(header, dict) else str(header)
     if profile_ref.running_footers:
@@ -679,3 +749,122 @@ def derive_render_plan(profile_ref: SourceProfileRef, seed: int = 42) -> RenderP
         plan.footer_pattern = footer.get("text", footer) if isinstance(footer, dict) else str(footer)
 
     return plan
+
+
+def _build_regions_from_toc(
+    toc_sections: List[Dict[str, Any]],
+    total_pages: int,
+) -> List[Dict[str, Any]]:
+    """Build regions from TOC sections with proper boundaries.
+
+    This is a fallback when clone_sampler regions aren't available.
+    Uses the same logic as clone_sampler._outline_to_regions for consistency.
+    """
+    import re
+
+    if not toc_sections:
+        # No TOC - treat entire document as one region
+        return [{
+            "title": "Document",
+            "start": 0,
+            "end": total_pages - 1,
+            "size": total_pages,
+            "hints": [],
+            "level": 1,
+        }]
+
+    # Sort sections by page
+    sorted_sections = sorted(
+        [s for s in toc_sections if s.get("page") is not None],
+        key=lambda s: s.get("page", 0)
+    )
+
+    if not sorted_sections:
+        return [{
+            "title": "Document",
+            "start": 0,
+            "end": total_pages - 1,
+            "size": total_pages,
+            "hints": [],
+            "level": 1,
+        }]
+
+    regions = []
+    for i, section in enumerate(sorted_sections):
+        start = section.get("page", 0)
+        if i + 1 < len(sorted_sections):
+            end = sorted_sections[i + 1].get("page", start + 1) - 1
+        else:
+            end = total_pages - 1
+
+        title = section.get("title", "").lower()
+        hints = []
+
+        # Detect hints from title
+        if any(kw in title for kw in ("table", "mapping", "matrix")):
+            hints.append("tables")
+        if any(kw in title for kw in ("figure", "list of figure")):
+            hints.append("figures")
+        if any(kw in title for kw in ("requirement",)):
+            hints.append("requirements")
+        if any(kw in title for kw in ("appendix", "annex")):
+            hints.append("appendix")
+        if any(kw in title for kw in ("glossary", "acronym", "reference", "bibliography")):
+            hints.append("reference_material")
+        if any(kw in title for kw in ("introduction", "purpose", "scope", "overview")):
+            hints.append("intro")
+        if any(kw in title for kw in ("content", "toc")):
+            hints.append("toc")
+
+        regions.append({
+            "title": section.get("title", ""),
+            "start": start,
+            "end": max(start, end),
+            "size": max(1, end - start + 1),
+            "hints": hints,
+            "level": section.get("depth", 0) + 1,
+        })
+
+    return regions
+
+
+def _classify_page_with_hints(
+    page_num: int,
+    profile_ref: SourceProfileRef,
+    sig_by_page: Dict[int, Dict[str, Any]],
+    tables_by_page: Dict[int, List[Dict[str, Any]]],
+    region_by_page: Dict[int, Dict[str, Any]],
+) -> PageType:
+    """Classify a page using both signature data and region hints."""
+    sig = sig_by_page.get(page_num, {})
+    region = region_by_page.get(page_num, {})
+    hints = region.get("hints", [])
+
+    # Check for blank
+    if sig.get("is_blank"):
+        return PageType.BLANK
+
+    # Check region hints first (more reliable than page-level heuristics)
+    if "toc" in hints:
+        return PageType.FRONT_MATTER
+    if "appendix" in hints or "reference_material" in hints:
+        return PageType.APPENDIX
+
+    # Check TOC pages
+    toc_pages = profile_ref.profile.get("toc_pages", [])
+    if page_num in toc_pages or page_num + 1 in toc_pages:
+        return PageType.FRONT_MATTER
+
+    # Check table density
+    tables_on_page = tables_by_page.get(page_num, [])
+    if tables_on_page:
+        total_rows = sum(t.get("rows", 0) for t in tables_on_page)
+        if total_rows >= 10 or "tables" in hints:
+            return PageType.TABLE_HEAVY
+        return PageType.MIXED
+
+    # Check for figures
+    if sig.get("figure_candidate") or sig.get("has_images") or "figures" in hints:
+        return PageType.FIGURE_HEAVY
+
+    return PageType.BODY_TEXT
