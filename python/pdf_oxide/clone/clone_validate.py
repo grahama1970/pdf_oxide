@@ -505,3 +505,170 @@ def validate_from_text(
         grid_recoveries=[],
         contamination=ContaminationResult(total_qids=len(manifest.objects), contaminated=0),
     )
+
+
+# =============================================================================
+# Pipeline Integration
+# =============================================================================
+
+def _normalize_table_cells(table: Dict[str, Any]) -> List[List[str]]:
+    """Normalize pipeline table payloads into row-major string cells.
+
+    Supports:
+    - data: already row-major
+    - df_data: dataframe-ish nested dict
+    - cells: alternate key for row-major
+    """
+    if "data" in table:
+        return [[str(c) for c in row] for row in table["data"]]
+    if "cells" in table:
+        return [[str(c) for c in row] for row in table["cells"]]
+    if "df_data" in table:
+        # pandas-style dict of columns
+        df = table["df_data"]
+        if not df:
+            return []
+        cols = list(df.keys())
+        n_rows = len(df[cols[0]]) if cols else 0
+        return [[str(df[col][i]) for col in cols] for i in range(n_rows)]
+    return []
+
+
+def pipeline_result_to_extraction_result(pipeline_result: Any) -> Dict[str, Any]:
+    """Convert a pdf_oxide PipelineResult to the validation extraction_result format.
+
+    Args:
+        pipeline_result: Object with .blocks and .tables attributes (or dict with those keys)
+
+    Returns:
+        Dict with 'text', 'blocks', 'tables' keys matching validate_extraction schema
+    """
+    # Handle dict or object
+    if isinstance(pipeline_result, dict):
+        blocks = pipeline_result.get("blocks", [])
+        tables = pipeline_result.get("tables", [])
+    else:
+        blocks = getattr(pipeline_result, "blocks", [])
+        tables = getattr(pipeline_result, "tables", [])
+
+    # Build full text from blocks
+    text_parts = []
+    adapted_blocks = []
+    for block in blocks:
+        if isinstance(block, dict):
+            block_text = block.get("text", "")
+            block_type = block.get("type", "unknown")
+            block_id = block.get("id", "")
+        else:
+            block_text = getattr(block, "text", "")
+            block_type = getattr(block, "type", "unknown")
+            block_id = getattr(block, "id", "")
+
+        text_parts.append(block_text)
+        adapted_blocks.append({
+            "text": block_text,
+            "type": block_type,
+            "id": block_id,
+        })
+
+    # Adapt tables
+    adapted_tables = []
+    for table in tables:
+        if isinstance(table, dict):
+            table_id = table.get("id", table.get("table_id", "unknown"))
+            rows = table.get("rows", 0)
+            cols = table.get("cols", 0)
+        else:
+            table_id = getattr(table, "id", getattr(table, "table_id", "unknown"))
+            rows = getattr(table, "rows", 0)
+            cols = getattr(table, "cols", 0)
+
+        cells = _normalize_table_cells(table if isinstance(table, dict) else vars(table))
+
+        # Update rows/cols from actual cells if not set
+        if cells and not rows:
+            rows = len(cells)
+        if cells and cells[0] and not cols:
+            cols = len(cells[0])
+
+        adapted_tables.append({
+            "table_id": table_id,
+            "rows": rows,
+            "cols": cols,
+            "cells": cells,
+        })
+
+        # Also add table cell text to full text
+        for row in cells:
+            text_parts.extend(row)
+
+    return {
+        "text": "\n".join(text_parts),
+        "blocks": adapted_blocks,
+        "tables": adapted_tables,
+    }
+
+
+def validate_pipeline_result(
+    manifest: TruthManifest,
+    pipeline_result: Any,
+    manifest_path: str = "",
+    extraction_source: str = "",
+) -> ValidationResult:
+    """Validate directly from a pdf_oxide PipelineResult object.
+
+    Args:
+        manifest: TruthManifest from clone builder
+        pipeline_result: PipelineResult from pdf_oxide extraction
+        manifest_path: Path to manifest file (for reporting)
+        extraction_source: Path to extracted PDF (for reporting)
+
+    Returns:
+        ValidationResult with all component scores
+    """
+    extraction_result = pipeline_result_to_extraction_result(pipeline_result)
+    return validate_extraction(
+        manifest=manifest,
+        extraction_result=extraction_result,
+        manifest_path=manifest_path,
+        extraction_source=extraction_source,
+    )
+
+
+def validate_pdf(
+    pdf_path: str,
+    manifest: Optional[TruthManifest] = None,
+    manifest_path: Optional[str] = None,
+    config: Optional[Any] = None,
+) -> ValidationResult:
+    """End-to-end validation against a real PDF using pdf_oxide.extract_pdf().
+
+    Provide either:
+    - manifest (TruthManifest object), or
+    - manifest_path (path to saved truth manifest)
+
+    Args:
+        pdf_path: Path to the PDF to validate
+        manifest: TruthManifest object (optional if manifest_path provided)
+        manifest_path: Path to saved truth manifest (optional if manifest provided)
+        config: Optional extraction config for pdf_oxide
+
+    Returns:
+        ValidationResult with all component scores
+    """
+    if manifest is None:
+        if not manifest_path:
+            raise ValueError("Either manifest or manifest_path must be provided")
+        manifest = TruthManifest.load(manifest_path)
+
+    from pdf_oxide.pipeline import extract_pdf
+
+    result = extract_pdf(pdf_path, config=config)
+    extraction_result = pipeline_result_to_extraction_result(result)
+
+    return validate_extraction(
+        manifest=manifest,
+        extraction_result=extraction_result,
+        manifest_path=manifest_path or "",
+        extraction_source=pdf_path,
+    )

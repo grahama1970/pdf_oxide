@@ -484,6 +484,21 @@ class TruthManifest:
         if parent_id is not None and parent_id in self.section_hierarchy:
             self.section_hierarchy[parent_id]["children"].append(section_id)
 
+    def update_object_page(self, qid: str, page_num: int) -> None:
+        """Update a truth object's page after ReportLab pagination."""
+        obj = self.qid_to_object.get(qid)
+        if obj is None:
+            return
+        obj.page_num = page_num
+
+    def rebuild_page_qid_order(self) -> None:
+        """Rebuild page-level QID ordering from the current object list."""
+        self.page_qid_order = {}
+        for obj in sorted(self.objects, key=lambda o: (o.page_num, o.sequence_num)):
+            if obj.page_num < 0:
+                continue
+            self.page_qid_order.setdefault(obj.page_num, []).append(obj.qid)
+
     @property
     def total_qids(self) -> int:
         return len(self.objects)

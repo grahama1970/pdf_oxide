@@ -1,10 +1,9 @@
 """Clone builder — preset-driven PDF assembly with TruthManifest output.
 
 This is the unified clone builder that provides:
-- BaseDocTemplate + PageTemplate from presets
-- Header/footer callbacks from presets
-- Integration with clone_sampler regions for section budgeting
-- TruthManifest output for structural validation
+- document-wide PageTemplate selection from presets
+- header/footer callbacks from presets
+- render-time TruthManifest output with pagination-aware page assignment
 
 Also maintains backward-compatible exports for the table-centric workflow.
 
@@ -22,30 +21,30 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
-from io import BytesIO
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import (
+    BaseDocTemplate,
     PageBreak,
+    PageTemplate,
     Paragraph,
     SimpleDocTemplate,
     Spacer,
     Table,
     TableStyle,
+    Frame,
 )
-from reportlab.pdfgen.canvas import Canvas
 
 from pdf_oxide.clone.clone_types import (
     BlockType,
-    PageRegime,
     PageType,
     RenderPlan,
     SectionBudget,
@@ -56,8 +55,10 @@ from pdf_oxide.clone.content_generator import GeneratedTable
 from pdf_oxide.clone.table_extractor import ExtractedTable
 from pdf_oxide.presets import (
     TABLE_PRESETS,
-    build_table,
     TableSpec,
+    build_combined_callback,
+    build_page_template,
+    build_table,
 )
 
 
@@ -71,11 +72,7 @@ class QidCollisionError(ValueError):
 
 
 class QidAllocator:
-    """Deterministic QID generator for clone elements.
-
-    Uses SHA-256 with 16 hex chars (64-bit) for visible QID suffix.
-    Detects collisions during build and fails fast.
-    """
+    """Deterministic QID generator for clone elements."""
 
     VERSION = "clone"
 
@@ -83,22 +80,10 @@ class QidAllocator:
         self.doc_id = doc_id
         self.seed = seed
         self._counter = 0
-        self._manifest: Dict[str, str] = {}  # qid -> rendered_text (for legacy compat)
+        self._manifest: Dict[str, str] = {}
         self._allocated_qids: set[str] = set()
 
     def allocate(self, element_type: str, *parts) -> Tuple[str, int]:
-        """Generate QID and token with collision detection.
-
-        Args:
-            element_type: Type of element (heading, table, cell, etc.)
-            *parts: Additional identifying parts for semantic key
-
-        Returns:
-            (qid_string, qid_token) tuple
-
-        Raises:
-            QidCollisionError: If generated QID collides with existing one
-        """
         canonical_parts = "|".join(str(p) for p in parts)
         semantic_key = f"{self.VERSION}|{self.doc_id}|{self.seed}|{element_type}|{canonical_parts}"
         h = hashlib.sha256(semantic_key.encode()).hexdigest()[:16]
@@ -116,11 +101,9 @@ class QidAllocator:
         return qid, token
 
     def register(self, qid: str, text: str) -> None:
-        """Register QID with its rendered text for manifest (legacy compat)."""
         self._manifest[qid] = text
 
     def get_manifest(self) -> Dict[str, str]:
-        """Return QID manifest (qid -> text) for legacy compat."""
         return dict(self._manifest)
 
     @property
@@ -144,22 +127,86 @@ PAGE_TYPE_TO_TEMPLATE: Dict[PageType, str] = {
 
 
 # =============================================================================
+# Pagination-aware doc template
+# =============================================================================
+
+def _noop_page_callback(canvas, doc):
+    """No-op callback for page events."""
+    pass
+
+
+class TrackingDocTemplate(BaseDocTemplate):
+    """BaseDocTemplate that reports actual flowable placement via afterFlowable()."""
+
+    def __init__(
+        self,
+        filename: str,
+        *,
+        template_preset: str = "standard_page",
+        on_page: Optional[Callable] = None,
+        flowable_page_callback: Optional[Callable[[Any, int], None]] = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(filename, **kwargs)
+        self._flowable_page_callback = flowable_page_callback
+        self._on_page = on_page or _noop_page_callback
+
+        # Build page template - use presets if available, fallback to simple frame
+        try:
+            page_template = build_page_template(
+                "main",
+                preset=template_preset,
+                on_page=self._on_page,
+                on_page_end=_noop_page_callback,  # Prevent None from being called
+            )
+            self.addPageTemplates([page_template])
+        except Exception:
+            # Fallback: simple frame-based template
+            pagesize = kwargs.get("pagesize", letter)
+            left = kwargs.get("leftMargin", 0.7 * inch)
+            right = kwargs.get("rightMargin", 0.7 * inch)
+            top = kwargs.get("topMargin", 0.8 * inch)
+            bottom = kwargs.get("bottomMargin", 0.7 * inch)
+            frame = Frame(
+                left,
+                bottom,
+                pagesize[0] - left - right,
+                pagesize[1] - top - bottom,
+                id="main_frame",
+            )
+            self.addPageTemplates([PageTemplate(
+                id="main",
+                frames=[frame],
+                onPage=self._on_page,
+                onPageEnd=_noop_page_callback,  # Prevent None from being called
+            )])
+
+    def afterFlowable(self, flowable: Any) -> None:
+        if self._flowable_page_callback is None:
+            return
+        # ReportLab page numbers are 1-based; clone truth uses 0-based.
+        self._flowable_page_callback(flowable, self.page - 1)
+
+
+def extract_qid_from_rendered(rendered: str) -> str:
+    """Extract QID from rendered text like '[QID_ABC123]Hello'."""
+    end = rendered.find("]")
+    if rendered.startswith("[QID_") and end > 1:
+        return rendered[1:end]
+    return ""
+
+
+# =============================================================================
 # Clone Builder (TruthManifest output)
 # =============================================================================
 
 class CloneBuilder:
-    """Preset-driven PDF builder with TruthManifest output.
+    """Preset-aware PDF builder with TruthManifest output.
 
-    Uses the presets infrastructure for:
-    - Page templates (margins, columns)
-    - Header/footer callbacks
-    - Table styling
-
-    Produces TruthManifest with:
-    - Every QID allocated and its rendered position
-    - Table structure (rows × cols × cell QIDs)
-    - Section hierarchy
-    - Page-level QID ordering
+    Notes:
+    - Uses actual ReportLab pagination via afterFlowable() to assign page numbers.
+    - Applies a document-wide page-template preset selected from the render plan.
+    - Per-regime template switching can be added later without changing the truth model.
     """
 
     def __init__(
@@ -169,27 +216,23 @@ class CloneBuilder:
         footer_preset: str = "page_number_footer",
         table_preset: str = "data_grid",
     ):
-        """Initialize builder with render plan.
-
-        Args:
-            plan: RenderPlan from derive_render_plan()
-            header_preset: Preset name for running headers
-            footer_preset: Preset name for running footers
-            table_preset: Preset name for tables
-        """
         self.plan = plan
         self.header_preset = header_preset
         self.footer_preset = footer_preset
-        self.table_preset = table_preset
+        self.table_preset = table_preset if table_preset in TABLE_PRESETS else "data_grid"
 
         self._qid_alloc = QidAllocator(plan.doc_id, plan.seed)
         self._manifest: Optional[TruthManifest] = None
-        self._current_page = 0
         self._sequence_num = 0
         self._styles = self._build_styles()
 
+    def _select_template_preset(self) -> str:
+        if not self.plan.page_regimes:
+            return "standard_page"
+        first_regime = self.plan.page_regimes[0]
+        return PAGE_TYPE_TO_TEMPLATE.get(first_regime.page_type, "standard_page")
+
     def _build_styles(self) -> Dict[str, ParagraphStyle]:
-        """Build paragraph styles."""
         base = getSampleStyleSheet()
         return {
             "title": ParagraphStyle(
@@ -227,6 +270,7 @@ class CloneBuilder:
                 "body",
                 parent=base["Normal"],
                 fontSize=10,
+                alignment=TA_JUSTIFY,
                 spaceAfter=6,
             ),
             "toc_entry": ParagraphStyle(
@@ -251,6 +295,22 @@ class CloneBuilder:
             ),
         }
 
+    def _attach_truth_qids(self, flowable: Any, qids: List[str]) -> Any:
+        """Attach QIDs to a flowable for tracking during pagination."""
+        setattr(flowable, "_truth_qids", [q for q in qids if q])
+        return flowable
+
+    def _on_flowable_placed(self, flowable: Any, page_num: int) -> None:
+        """Callback when ReportLab places a flowable - update manifest page numbers."""
+        if self._manifest is None:
+            return
+        qids = getattr(flowable, "_truth_qids", None)
+        if not qids:
+            return
+
+        for qid in qids:
+            self._manifest.update_object_page(qid, page_num)
+
     def _register_truth(
         self,
         qid: str,
@@ -262,7 +322,7 @@ class CloneBuilder:
         section_id: Optional[int] = None,
         depth: Optional[int] = None,
     ) -> str:
-        """Register a truth object and return rendered text."""
+        """Register a truth object with page_num=-1 (finalized during build)."""
         rendered = f"[{qid}]{logical_text}"
 
         obj = TruthObject(
@@ -270,7 +330,7 @@ class CloneBuilder:
             block_type=block_type,
             logical_text=logical_text,
             rendered_text=rendered,
-            page_num=self._current_page,
+            page_num=-1,  # Will be updated by _on_flowable_placed
             sequence_num=self._sequence_num,
             table_id=table_id,
             row=row,
@@ -280,7 +340,6 @@ class CloneBuilder:
         )
         self._manifest.register(obj)
         self._sequence_num += 1
-
         return rendered
 
     def _build_heading(
@@ -289,7 +348,6 @@ class CloneBuilder:
         depth: int,
         section_id: Optional[int] = None,
     ) -> Paragraph:
-        """Build a heading paragraph with QID."""
         qid, _ = self._qid_alloc.allocate("heading", section_id or self._sequence_num)
         rendered = self._register_truth(
             qid,
@@ -298,15 +356,15 @@ class CloneBuilder:
             section_id=section_id,
             depth=depth,
         )
-
         style_name = f"h{min(depth + 1, 3)}"
-        return Paragraph(rendered, self._styles[style_name])
+        para = Paragraph(rendered, self._styles[style_name])
+        return self._attach_truth_qids(para, [qid])
 
     def _build_paragraph(self, text: str) -> Paragraph:
-        """Build a body paragraph with QID."""
         qid, _ = self._qid_alloc.allocate("paragraph", self._sequence_num)
         rendered = self._register_truth(qid, BlockType.PARAGRAPH, text)
-        return Paragraph(rendered, self._styles["body"])
+        para = Paragraph(rendered, self._styles["body"])
+        return self._attach_truth_qids(para, [qid])
 
     def _build_toc_entry(
         self,
@@ -315,43 +373,36 @@ class CloneBuilder:
         depth: int,
         section_id: int,
     ) -> Paragraph:
-        """Build a TOC entry with QID."""
         qid, _ = self._qid_alloc.allocate("toc_entry", section_id)
-
-        # Format: title dots page_number
         dots = "." * max(1, 50 - len(title))
         display_text = f"{title} {dots} {page_num + 1}"
 
         rendered = self._register_truth(
             qid,
             BlockType.TOC_ENTRY,
-            title,  # logical text is just the title
+            title,
             section_id=section_id,
             depth=depth,
         )
 
-        # Register section in hierarchy
         self._manifest.register_section(section_id, title, depth, qid)
 
         style = self._styles["toc_indent"] if depth > 0 else self._styles["toc_entry"]
-        return Paragraph(rendered.replace(title, display_text), style)
+        para = Paragraph(rendered.replace(title, display_text), style)
+        return self._attach_truth_qids(para, [qid])
 
     def _build_table(
         self,
         headers: List[str],
         data: List[List[str]],
         table_id: str,
-    ) -> Tuple[Table, List[List[str]]]:
-        """Build a table with QIDs in cells using preset styling.
-
-        Returns:
-            (Table flowable, cell_qids grid for manifest)
-        """
+    ) -> Tuple[Any, List[List[str]]]:
+        """Build a table with QIDs in cells."""
         cell_qids: List[List[str]] = []
 
-        # Build header row
-        header_row = []
-        header_qids = []
+        # Build header row with QIDs
+        header_qids: List[str] = []
+        rendered_headers: List[str] = []
         for col_idx, header in enumerate(headers):
             qid, _ = self._qid_alloc.allocate("header", table_id, 0, col_idx)
             rendered = self._register_truth(
@@ -362,15 +413,15 @@ class CloneBuilder:
                 row=0,
                 col=col_idx,
             )
-            header_row.append(rendered)
+            rendered_headers.append(rendered)
             header_qids.append(qid)
         cell_qids.append(header_qids)
 
-        # Build data rows
-        table_data = [header_row]
+        # Build data rows with QIDs
+        rendered_rows: List[List[str]] = []
         for row_idx, row in enumerate(data):
-            data_row = []
-            row_qids = []
+            rendered_row: List[str] = []
+            row_qids: List[str] = []
             for col_idx, cell in enumerate(row):
                 qid, _ = self._qid_alloc.allocate("cell", table_id, row_idx + 1, col_idx)
                 rendered = self._register_truth(
@@ -381,63 +432,54 @@ class CloneBuilder:
                     row=row_idx + 1,
                     col=col_idx,
                 )
-                data_row.append(rendered)
+                rendered_row.append(rendered)
                 row_qids.append(qid)
-            table_data.append(data_row)
+            rendered_rows.append(rendered_row)
             cell_qids.append(row_qids)
 
-        # Build table with consistent styling
-        tbl = Table(table_data)
-        n_rows = len(table_data)
+        # Use preset-based table building
+        spec = TableSpec(headers=rendered_headers, rows=rendered_rows)
+        try:
+            tbl = build_table(spec, preset=self.table_preset)
+        except Exception:
+            # Fallback to manual table building
+            table_data = [rendered_headers] + rendered_rows
+            tbl = Table(table_data)
+            n_rows = len(table_data)
+            style_cmds = [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 6),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+                ("TOPPADDING", (0, 0), (-1, -1), 4),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+                ("FONTSIZE", (0, 0), (-1, -1), 9),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#D9E2F3")),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("LINEBELOW", (0, 0), (-1, 0), 1, colors.HexColor("#6B7280")),
+                ("LINEBELOW", (0, -1), (-1, -1), 0.8, colors.HexColor("#6B7280")),
+                ("BOX", (0, 0), (-1, -1), 0.8, colors.HexColor("#6B7280")),
+            ]
+            for i in range(2, n_rows, 2):
+                style_cmds.append(("BACKGROUND", (0, i), (-1, i), colors.HexColor("#FAFAFA")))
+            tbl.setStyle(TableStyle(style_cmds))
 
-        style_cmds = [
-            ("VALIGN", (0, 0), (-1, -1), "TOP"),
-            ("LEFTPADDING", (0, 0), (-1, -1), 6),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 6),
-            ("TOPPADDING", (0, 0), (-1, -1), 4),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
-            ("FONTSIZE", (0, 0), (-1, -1), 9),
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#D9E2F3")),
-            ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
-            ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-            ("LINEBELOW", (0, 0), (-1, 0), 1, colors.HexColor("#6B7280")),
-            ("LINEBELOW", (0, -1), (-1, -1), 0.8, colors.HexColor("#6B7280")),
-            ("BOX", (0, 0), (-1, -1), 0.8, colors.HexColor("#6B7280")),
-        ]
-
-        # Zebra striping
-        for i in range(2, n_rows, 2):
-            style_cmds.append(
-                ("BACKGROUND", (0, i), (-1, i), colors.HexColor("#FAFAFA"))
-            )
-
-        tbl.setStyle(TableStyle(style_cmds))
-
-        return tbl, cell_qids
+        # Attach all QIDs for tracking
+        flat_qids = [qid for row in cell_qids for qid in row]
+        return self._attach_truth_qids(tbl, flat_qids), cell_qids
 
     def _build_caption(self, text: str, table_idx: int) -> Paragraph:
-        """Build a table caption with QID."""
         qid, _ = self._qid_alloc.allocate("caption", table_idx)
         rendered = self._register_truth(qid, BlockType.CAPTION, text)
-        return Paragraph(rendered, self._styles["caption"])
+        para = Paragraph(rendered, self._styles["caption"])
+        return self._attach_truth_qids(para, [qid])
 
     def build(
         self,
         output_path: str,
         content_generator: Optional[Callable[[SectionBudget], Dict[str, Any]]] = None,
     ) -> TruthManifest:
-        """Build the cloned PDF and return TruthManifest.
-
-        Args:
-            output_path: Where to write the PDF
-            content_generator: Optional callback to generate content for each section.
-                Signature: fn(budget: SectionBudget) -> {"paragraphs": [...], "tables": [...]}
-                If None, generates placeholder content.
-
-        Returns:
-            TruthManifest with ground truth for validation
-        """
-        # Initialize manifest
+        """Build the cloned PDF and return TruthManifest."""
         self._manifest = TruthManifest(
             doc_id=self.plan.doc_id,
             source_path=self.plan.source_path,
@@ -445,14 +487,24 @@ class CloneBuilder:
             seed=self.plan.seed,
         )
 
-        # Get document title
         doc_title = Path(self.plan.source_path).stem if self.plan.source_path else "Document"
+        template_preset = self._select_template_preset()
 
-        # Create document using SimpleDocTemplate
-        # TODO: Upgrade to BaseDocTemplate with preset page templates once
-        # the onPageEnd issue is resolved in the presets module
-        doc = SimpleDocTemplate(
+        # Build on_page callback for headers/footers
+        try:
+            on_page = build_combined_callback(
+                header_preset=self.header_preset,
+                footer_preset=self.footer_preset,
+                doc_title=doc_title,
+            )
+        except Exception:
+            on_page = None  # Fallback: no headers/footers
+
+        doc = TrackingDocTemplate(
             output_path,
+            template_preset=template_preset,
+            on_page=on_page,
+            flowable_page_callback=self._on_flowable_placed,
             pagesize=letter,
             leftMargin=0.7 * inch,
             rightMargin=0.7 * inch,
@@ -460,54 +512,50 @@ class CloneBuilder:
             bottomMargin=0.7 * inch,
         )
 
-        # Build story
-        story = []
+        story: List[Any] = []
 
         # Title
         qid, _ = self._qid_alloc.allocate("title", 0)
         rendered_title = self._register_truth(qid, BlockType.TITLE, doc_title)
-        story.append(Paragraph(rendered_title, self._styles["title"]))
+        title_para = Paragraph(rendered_title, self._styles["title"])
+        story.append(self._attach_truth_qids(title_para, [qid]))
         story.append(Spacer(1, 0.3 * inch))
 
-        # TOC if we have sections
+        # TOC
         if self.plan.section_budgets:
             qid, _ = self._qid_alloc.allocate("toc_header", 0)
             rendered = self._register_truth(qid, BlockType.TOC_HEADER, "Table of Contents")
-            story.append(Paragraph(rendered, self._styles["h1"]))
+            toc_header = Paragraph(rendered, self._styles["h1"])
+            story.append(self._attach_truth_qids(toc_header, [qid]))
             story.append(Spacer(1, 0.1 * inch))
 
-            for budget in self.plan.section_budgets[:30]:  # Limit TOC entries
-                entry = self._build_toc_entry(
-                    budget.title,
-                    budget.start_page,
-                    budget.depth,
-                    budget.section_id,
+            for budget in self.plan.section_budgets[:30]:
+                story.append(
+                    self._build_toc_entry(
+                        budget.title,
+                        budget.start_page,
+                        budget.depth,
+                        budget.section_id,
+                    )
                 )
-                story.append(entry)
 
             story.append(PageBreak())
-            self._current_page += 1
-            self._sequence_num = 0
 
         # Build sections
         table_idx = 0
         for budget in self.plan.section_budgets:
-            # Section heading
-            heading = self._build_heading(budget.title, budget.depth, budget.section_id)
-            story.append(heading)
+            story.append(self._build_heading(budget.title, budget.depth, budget.section_id))
             story.append(Spacer(1, 0.1 * inch))
 
-            # Get content for section
-            if content_generator:
-                content = content_generator(budget)
-            else:
-                content = self._generate_placeholder_content(budget)
+            content = (
+                content_generator(budget)
+                if content_generator
+                else self._generate_placeholder_content(budget)
+            )
 
-            # Add paragraphs
             for para_text in content.get("paragraphs", []):
                 story.append(self._build_paragraph(para_text))
 
-            # Add tables
             for table_data in content.get("tables", []):
                 table_id = f"t{table_idx}"
                 headers = table_data.get("headers", ["Column A", "Column B"])
@@ -517,32 +565,30 @@ class CloneBuilder:
                 story.append(tbl)
                 story.append(Spacer(1, 0.05 * inch))
 
-                # Register table structure
                 self._manifest.register_table_structure(
                     table_id=table_id,
-                    rows=len(rows) + 1,  # +1 for header
+                    rows=len(rows) + 1,
                     cols=len(headers),
                     cell_qids=cell_qids,
                 )
 
-                # Caption
-                caption = self._build_caption(
-                    f"Table {table_idx + 1}: Data from section {budget.section_id}",
-                    table_idx,
+                story.append(
+                    self._build_caption(
+                        f"Table {table_idx + 1}: Data from section {budget.section_id}",
+                        table_idx,
+                    )
                 )
-                story.append(caption)
                 story.append(Spacer(1, 0.15 * inch))
-
                 table_idx += 1
 
-            # Page break between major sections
             if budget.page_span > 1:
                 story.append(PageBreak())
-                self._current_page += 1
-                self._sequence_num = 0
 
-        # Build PDF
+        # Build PDF - this triggers afterFlowable callbacks
         doc.build(story)
+
+        # Rebuild page ordering from actual page placements
+        self._manifest.rebuild_page_qid_order()
 
         return self._manifest
 
@@ -550,32 +596,27 @@ class CloneBuilder:
         self,
         budget: SectionBudget,
     ) -> Dict[str, Any]:
-        """Generate placeholder content based on section budget."""
         content: Dict[str, Any] = {"paragraphs": [], "tables": []}
 
-        # Placeholder paragraphs
         for i in range(min(budget.paragraph_count, 3)):
             content["paragraphs"].append(
                 f"This is placeholder paragraph {i + 1} for section '{budget.title}'. "
                 f"Content type: {budget.content_type}, domain: {budget.domain}."
             )
 
-        # Placeholder tables
-        for i in range(budget.table_count):
-            content["tables"].append({
-                "headers": ["ID", "Description", "Status"],
-                "rows": [
-                    [f"ITEM-{j:03d}", f"Description for item {j}", "Active"]
-                    for j in range(1, 6)
-                ],
-            })
+        for _ in range(budget.table_count):
+            content["tables"].append(
+                {
+                    "headers": ["ID", "Description", "Status"],
+                    "rows": [
+                        [f"ITEM-{j:03d}", f"Description for item {j}", "Active"]
+                        for j in range(1, 6)
+                    ],
+                }
+            )
 
         return content
 
-
-# =============================================================================
-# Convenience Functions
-# =============================================================================
 
 def build_clone(
     plan: RenderPlan,
@@ -584,18 +625,7 @@ def build_clone(
     header_preset: str = "doc_title_header",
     footer_preset: str = "page_number_footer",
 ) -> TruthManifest:
-    """Build a cloned PDF from a render plan.
-
-    Args:
-        plan: RenderPlan from derive_render_plan()
-        output_path: Where to write the PDF
-        content_generator: Optional callback for section content
-        header_preset: Running header preset name
-        footer_preset: Running footer preset name
-
-    Returns:
-        TruthManifest for validation
-    """
+    """Build a cloned PDF from a render plan."""
     builder = CloneBuilder(
         plan,
         header_preset=header_preset,
@@ -654,14 +684,9 @@ def build_table_with_qids(
     table_id: str,
     style_preset: str = "professional",
 ) -> Tuple[Table, List[Dict[str, Any]]]:
-    """Build ReportLab Table with QIDs embedded in cells (legacy compat).
-
-    Returns:
-        (Table flowable, list of cell manifests)
-    """
+    """Build ReportLab Table with QIDs embedded in cells (legacy compat)."""
     cell_manifests = []
 
-    # Build header row with QIDs
     header_row = []
     for col_idx, header in enumerate(table.headers):
         qid, token = qid_alloc.allocate("header", table_id, 0, col_idx)
@@ -675,7 +700,6 @@ def build_table_with_qids(
 
     data = [header_row]
 
-    # Build data rows with QIDs
     for row_idx, row in enumerate(table.data):
         data_row = []
         for col_idx, cell in enumerate(row):
@@ -689,7 +713,6 @@ def build_table_with_qids(
             })
         data.append(data_row)
 
-    # Style commands
     n_rows = len(data)
     style_cmds = [
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
@@ -728,7 +751,7 @@ def build_table_with_qids(
             style_cmds.append(
                 ('BACKGROUND', (0, i), (-1, i), colors.Color(0.92, 0.92, 0.96))
             )
-    else:  # minimal
+    else:
         style_cmds.extend([
             ('LINEABOVE', (0, 0), (-1, 0), 1, colors.black),
             ('LINEBELOW', (0, 0), (-1, 0), 0.5, colors.black),
@@ -752,7 +775,7 @@ class CloneManifest:
     page_count: int
     tables: List[Dict[str, Any]]
     toc_sections: List[Dict[str, Any]]
-    qid_manifest: Dict[str, str]  # qid -> text
+    qid_manifest: Dict[str, str]
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -778,18 +801,7 @@ def build_clone_from_generated(
     seed: int = 42,
     table_style: str = "professional",
 ) -> CloneManifest:
-    """Build cloned PDF from profiler manifest and generated table content (legacy).
-
-    Args:
-        source_profile: Output from clone_profiler.profile_for_cloning()
-        generated_tables: Tables with generated content
-        output_path: Where to write PDF
-        seed: Random seed for QID generation
-        table_style: Table style preset
-
-    Returns:
-        CloneManifest with ground truth
-    """
+    """Build cloned PDF from profiler manifest and generated table content (legacy)."""
     doc_id = hashlib.md5(f"{output_path}:{seed}".encode()).hexdigest()[:8]
     qid_alloc = QidAllocator(doc_id, seed)
     styles = get_styles()
@@ -797,14 +809,12 @@ def build_clone_from_generated(
     story = []
     table_manifests = []
 
-    # Title
     doc_title = Path(source_profile.get("path", "Document")).stem
     qid, _ = qid_alloc.allocate("title", 0)
     story.append(Paragraph(f"[{qid}]{doc_title}", styles["title"]))
     qid_alloc.register(qid, doc_title)
     story.append(Spacer(1, 0.3 * inch))
 
-    # TOC
     toc_sections = source_profile.get("toc_sections", [])
     if toc_sections:
         qid, _ = qid_alloc.allocate("toc_header", 0)
@@ -812,7 +822,7 @@ def build_clone_from_generated(
         qid_alloc.register(qid, "Table of Contents")
         story.append(Spacer(1, 0.1 * inch))
 
-        for section in toc_sections[:20]:  # Limit TOC entries
+        for section in toc_sections[:20]:
             title = section.get("title", "")
             page = section.get("page", 0)
             depth = section.get("depth", 0)
@@ -825,18 +835,14 @@ def build_clone_from_generated(
 
         story.append(PageBreak())
 
-    # Group tables by page
     tables_by_page: Dict[int, List[GeneratedTable]] = {}
     for table in generated_tables:
         tables_by_page.setdefault(table.page, []).append(table)
 
-    # Build pages with sections and tables
-    current_page = 0
     section_idx = 0
     table_idx = 0
 
     for page_num in sorted(tables_by_page.keys()):
-        # Add section heading if we have one for this page
         while section_idx < len(toc_sections):
             section = toc_sections[section_idx]
             section_page = section.get("page", 0)
@@ -855,11 +861,9 @@ def build_clone_from_generated(
 
             section_idx += 1
 
-        # Add tables for this page
         for table in tables_by_page[page_num]:
             table_id = f"t{table_idx}"
 
-            # Build table with QIDs
             tbl, cell_manifests = build_table_with_qids(
                 table, qid_alloc, table_id, table_style
             )
@@ -867,7 +871,6 @@ def build_clone_from_generated(
             story.append(tbl)
             story.append(Spacer(1, 0.1 * inch))
 
-            # Caption
             qid, _ = qid_alloc.allocate("caption", table_idx)
             caption_text = f"Table {table_idx + 1}: Generated from page {page_num + 1}"
             story.append(Paragraph(f"[{qid}]{caption_text}", styles["caption"]))
@@ -885,13 +888,9 @@ def build_clone_from_generated(
 
             table_idx += 1
 
-        # Page break between source pages
         if page_num < max(tables_by_page.keys()):
             story.append(PageBreak())
 
-        current_page = page_num
-
-    # Build PDF
     doc = SimpleDocTemplate(
         output_path,
         pagesize=letter,
@@ -902,7 +901,6 @@ def build_clone_from_generated(
     )
     doc.build(story)
 
-    # Count pages (approximate based on content)
     page_count = max(1, len(tables_by_page) + (1 if toc_sections else 0))
 
     return CloneManifest(
@@ -917,10 +915,6 @@ def build_clone_from_generated(
     )
 
 
-# =============================================================================
-# Full Pipeline (legacy async interface)
-# =============================================================================
-
 async def clone_pdf(
     source_pdf: str,
     output_pdf: str,
@@ -928,37 +922,22 @@ async def clone_pdf(
     table_style: str = "professional",
     model: str = "text",
 ) -> CloneManifest:
-    """Complete clone pipeline: profile → extract → generate → build.
-
-    Args:
-        source_pdf: Path to source PDF
-        output_pdf: Path for cloned PDF
-        seed: Random seed for determinism
-        table_style: Table style preset
-        model: scillm model for content generation
-
-    Returns:
-        CloneManifest with ground truth
-    """
+    """Complete clone pipeline: profile → extract → generate → build."""
     from pdf_oxide.clone_profiler import profile_for_cloning
     from pdf_oxide.clone.table_extractor import extract_all_tables
     from pdf_oxide.clone.content_generator import generate_all_tables
 
-    # Step 1: Profile
     print(f"[1/4] Profiling {source_pdf}...")
     profile = profile_for_cloning(source_pdf)
     table_shapes = profile.get("table_shapes", [])
 
     if not table_shapes:
         print("No tables found in source PDF")
-        # Build minimal clone with just TOC
         return build_clone_from_generated(profile, [], output_pdf, seed, table_style)
 
-    # Step 2: Extract
     print(f"[2/4] Extracting {len(table_shapes)} tables...")
     extracted = extract_all_tables(source_pdf, table_shapes)
 
-    # Step 3: Generate
     print(f"[3/4] Generating similar content via scillm...")
     generated = await generate_all_tables(
         extracted,
@@ -966,7 +945,6 @@ async def clone_pdf(
         model=model,
     )
 
-    # Step 4: Build
     print(f"[4/4] Building cloned PDF...")
     manifest = build_clone_from_generated(
         profile, generated, output_pdf, seed, table_style
@@ -991,10 +969,6 @@ def clone_pdf_sync(
     return asyncio.run(clone_pdf(source_pdf, output_pdf, seed, table_style, model))
 
 
-# =============================================================================
-# CLI
-# =============================================================================
-
 if __name__ == "__main__":
     import argparse
 
@@ -1010,12 +984,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # Default output path
     if not args.output:
         source = Path(args.source)
         args.output = str(source.parent / f"{source.stem}_clone.pdf")
 
-    # Run clone
     manifest = clone_pdf_sync(
         args.source,
         args.output,
@@ -1024,7 +996,6 @@ if __name__ == "__main__":
         model=args.model,
     )
 
-    # Save manifest
     if args.manifest:
         manifest_path = Path(args.output).with_suffix(".manifest.json")
         manifest.save(str(manifest_path))

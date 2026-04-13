@@ -71,6 +71,10 @@ from .clone_validate import (
     extract_qids_from_text,
     validate_extraction,
     validate_from_text,
+    # Pipeline integration
+    pipeline_result_to_extraction_result,
+    validate_pipeline_result,
+    validate_pdf,
 )
 
 __all__ = [
@@ -112,4 +116,8 @@ __all__ = [
     "extract_qids_from_text",
     "validate_extraction",
     "validate_from_text",
+    # Pipeline integration
+    "pipeline_result_to_extraction_result",
+    "validate_pipeline_result",
+    "validate_pdf",
 ]
