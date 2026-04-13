@@ -15,7 +15,7 @@ import json
 from typing import Any, Dict, List, Optional
 
 # Re-export everything from the oxide-based implementation
-from pdf_oxide.clone_v3.table_extractor_oxide import (
+from pdf_oxide.clone.table_extractor_oxide import (
     ExtractedTable,
     extract_table_from_shape,
     extract_tables_from_page,

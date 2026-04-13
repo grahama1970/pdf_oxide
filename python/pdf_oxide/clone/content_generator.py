@@ -15,7 +15,7 @@ from typing import Any, Dict, List, Optional
 
 import httpx
 
-from pdf_oxide.clone_v3.table_extractor import ExtractedTable
+from pdf_oxide.clone.table_extractor import ExtractedTable
 
 
 SCILLM_URL = "http://localhost:4001/v1/chat/completions"
@@ -337,7 +337,7 @@ if __name__ == "__main__":
     import asyncio
 
     from pdf_oxide.clone_profiler import profile_for_cloning
-    from pdf_oxide.clone_v3.table_extractor import extract_all_tables
+    from pdf_oxide.clone.table_extractor import extract_all_tables
 
     parser = argparse.ArgumentParser(description="Generate similar table content")
     parser.add_argument("pdf", help="PDF file path")

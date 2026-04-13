@@ -1,4 +1,4 @@
-"""Pydantic schemas for clone_v3 pipeline."""
+"""Pydantic schemas for clone pipeline."""
 from __future__ import annotations
 from pydantic import BaseModel, Field
 from typing import Literal

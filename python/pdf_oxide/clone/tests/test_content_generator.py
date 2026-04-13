@@ -1,12 +1,12 @@
 """Tests for content_generator module."""
 import pytest
 
-from pdf_oxide.clone_v3.content_generator import (
+from pdf_oxide.clone.content_generator import (
     GeneratedTable,
     _infer_column_types,
     _build_generation_prompt,
 )
-from pdf_oxide.clone_v3.table_extractor import ExtractedTable
+from pdf_oxide.clone.table_extractor import ExtractedTable
 
 
 class TestGeneratedTable:

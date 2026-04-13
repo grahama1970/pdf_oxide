@@ -2,7 +2,7 @@
 import pytest
 from pathlib import Path
 
-from pdf_oxide.clone_v3.table_extractor import (
+from pdf_oxide.clone.table_extractor import (
     ExtractedTable,
     extract_all_tables,
     extract_tables_from_page,

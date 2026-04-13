@@ -1,12 +1,12 @@
 """Tests for clone_builder module."""
 import pytest
 
-from pdf_oxide.clone_v3.clone_builder import (
+from pdf_oxide.clone.clone_builder import (
     QidAllocator,
     get_styles,
     build_table_with_qids,
 )
-from pdf_oxide.clone_v3.content_generator import GeneratedTable
+from pdf_oxide.clone.content_generator import GeneratedTable
 
 
 class TestQidAllocator:

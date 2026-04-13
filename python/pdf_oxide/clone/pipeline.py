@@ -1,4 +1,4 @@
-"""Pipeline orchestration for clone_v3."""
+"""Pipeline orchestration for clone."""
 from __future__ import annotations
 import argparse
 import json

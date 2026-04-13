@@ -33,8 +33,8 @@ from reportlab.platypus import (
     TableStyle,
 )
 
-from pdf_oxide.clone_v3.content_generator import GeneratedTable
-from pdf_oxide.clone_v3.table_extractor import ExtractedTable
+from pdf_oxide.clone.content_generator import GeneratedTable
+from pdf_oxide.clone.table_extractor import ExtractedTable
 
 
 # =============================================================================
@@ -55,7 +55,7 @@ class QidAllocator:
     - Token remains 20-bit for compact representation
     """
 
-    VERSION = "clone_v4"  # Bumped for hash length change
+    VERSION = "clone"  # Bumped for hash length change
 
     def __init__(self, doc_id: str, seed: int = 42):
         self.doc_id = doc_id
@@ -454,8 +454,8 @@ async def clone_pdf(
         CloneManifest with ground truth
     """
     from pdf_oxide.clone_profiler import profile_for_cloning
-    from pdf_oxide.clone_v3.table_extractor import extract_all_tables
-    from pdf_oxide.clone_v3.content_generator import generate_all_tables
+    from pdf_oxide.clone.table_extractor import extract_all_tables
+    from pdf_oxide.clone.content_generator import generate_all_tables
 
     # Step 1: Profile
     print(f"[1/4] Profiling {source_pdf}...")
