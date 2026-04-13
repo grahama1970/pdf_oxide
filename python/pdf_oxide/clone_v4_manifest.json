@@ -1,0 +1,3097 @@
+{
+  "source": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "page_count": 492,
+  "domain": "standards",
+  "table_shapes": [
+    {
+      "page": 18,
+      "rows": 21,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        157.3,
+        215.8,
+        476.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        132.9,
+        521.8,
+        624.7
+      ],
+      "ruled": true
+    },
+    {
+      "page": 19,
+      "rows": 27,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        157.3,
+        215.8,
+        476.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        73.1,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 20,
+      "rows": 28,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        157.3,
+        215.8,
+        476.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        90.6,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 21,
+      "rows": 35,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        157.3,
+        215.8,
+        476.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        80.6,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 22,
+      "rows": 29,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        157.3,
+        215.8,
+        476.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        95.6,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 23,
+      "rows": 30,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        157.3,
+        215.8,
+        476.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        75.6,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 24,
+      "rows": 18,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        157.3,
+        215.8,
+        476.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        131.6,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 25,
+      "rows": 31,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        157.3,
+        215.8,
+        476.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        81.1,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 26,
+      "rows": 34,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        157.3,
+        215.8,
+        476.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        203.2,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 34,
+      "rows": 17,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        129.4,
+        305.8,
+        345.4,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        72.8,
+        521.8,
+        594.1
+      ],
+      "ruled": true
+    },
+    {
+      "page": 455,
+      "rows": 46,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        76.0,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 456,
+      "rows": 44,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        83.5,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 457,
+      "rows": 44,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        83.5,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 458,
+      "rows": 23,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        364.2,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 459,
+      "rows": 21,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.6,
+        370.1,
+        445.9,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        401.8,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 460,
+      "rows": 45,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        76.9,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 461,
+      "rows": 29,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        283.3,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 462,
+      "rows": 36,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        198.3,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 463,
+      "rows": 45,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        79.4,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 464,
+      "rows": 27,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        310.3,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 465,
+      "rows": 45,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        76.9,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 466,
+      "rows": 16,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        458.6,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 467,
+      "rows": 45,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        76.9,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 468,
+      "rows": 31,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        258.8,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 469,
+      "rows": 45,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        373.3,
+        449.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        85.4,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 470,
+      "rows": 4,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        373.3,
+        449.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        594.1,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 471,
+      "rows": 34,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        225.2,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 472,
+      "rows": 34,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        225.2,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 473,
+      "rows": 45,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        76.9,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 474,
+      "rows": 19,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        418.1,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 475,
+      "rows": 21,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        400.6,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 476,
+      "rows": 43,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        373.3,
+        449.8,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        108.9,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 477,
+      "rows": 22,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        387.1,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 478,
+      "rows": 25,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        346.6,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 479,
+      "rows": 30,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        268.2,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 480,
+      "rows": 45,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        76.9,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 481,
+      "rows": 44,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        81.0,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 482,
+      "rows": 43,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        83.5,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 483,
+      "rows": 20,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        404.7,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 484,
+      "rows": 45,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        81.9,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 485,
+      "rows": 44,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        72.5,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 486,
+      "rows": 45,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        80.0,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 487,
+      "rows": 41,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        370.1,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        121.5,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 488,
+      "rows": 45,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        364.3,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        79.4,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    },
+    {
+      "page": 489,
+      "rows": 44,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        364.3,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        72.5,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 490,
+      "rows": 39,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        142.8,
+        364.3,
+        446.0,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        166.9,
+        521.8,
+        719.5
+      ],
+      "ruled": true
+    },
+    {
+      "page": 491,
+      "rows": 32,
+      "cols": 5,
+      "col_positions": [
+        39.3,
+        89.8,
+        139.0,
+        377.3,
+        449.5,
+        521.8
+      ],
+      "bbox": [
+        9.3,
+        254.7,
+        521.8,
+        709.3
+      ],
+      "ruled": true
+    }
+  ],
+  "toc": [
+    {
+      "title": "NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations",
+      "page": 1,
+      "level": 0,
+      "page_end": 3
+    },
+    {
+      "title": "Abstract",
+      "page": 4,
+      "level": 0,
+      "page_end": 3
+    },
+    {
+      "title": "Keywords",
+      "page": 4,
+      "level": 0,
+      "page_end": 18
+    },
+    {
+      "title": "Errata",
+      "page": 19,
+      "level": 0,
+      "page_end": 27
+    },
+    {
+      "title": "INTRODUCTION",
+      "page": 28,
+      "level": 0,
+      "page_end": 28
+    },
+    {
+      "title": "1.1   PURPOSE AND APPLICABILITY",
+      "page": 29,
+      "level": 1,
+      "page_end": 29
+    },
+    {
+      "title": "1.2   TARGET AUDIENCE",
+      "page": 30,
+      "level": 1,
+      "page_end": 29
+    },
+    {
+      "title": "1.3   ORGANIZATIONAL RESPONSIBILITIES",
+      "page": 30,
+      "level": 1,
+      "page_end": 31
+    },
+    {
+      "title": "1.4   RELATIONSHIP TO OTHER PUBLICATIONS",
+      "page": 32,
+      "level": 1,
+      "page_end": 31
+    },
+    {
+      "title": "1.5   REVISIONS AND EXTENSIONS",
+      "page": 32,
+      "level": 1,
+      "page_end": 31
+    },
+    {
+      "title": "1.6   PUBLICATION ORGANIZATION",
+      "page": 32,
+      "level": 1,
+      "page_end": 33
+    },
+    {
+      "title": "THE FUNDAMENTALS",
+      "page": 34,
+      "level": 0,
+      "page_end": 33
+    },
+    {
+      "title": "2.1   REQUIREMENTS AND CONTROLS",
+      "page": 34,
+      "level": 1,
+      "page_end": 34
+    },
+    {
+      "title": "2.2   CONTROL STRUCTURE AND ORGANIZATION",
+      "page": 35,
+      "level": 1,
+      "page_end": 37
+    },
+    {
+      "title": "2.3   CONTROL IMPLEMENTATION APPROACHES",
+      "page": 38,
+      "level": 1,
+      "page_end": 39
+    },
+    {
+      "title": "2.4   SECURITY AND PRIVACY CONTROLS",
+      "page": 40,
+      "level": 1,
+      "page_end": 40
+    },
+    {
+      "title": "2.5   TRUSTWORTHINESS AND ASSURANCE",
+      "page": 41,
+      "level": 1,
+      "page_end": 42
+    },
+    {
+      "title": "THE CONTROLS",
+      "page": 43,
+      "level": 0,
+      "page_end": 44
+    },
+    {
+      "title": "3.1   ACCESS CONTROL",
+      "page": 45,
+      "level": 1,
+      "page_end": 44
+    },
+    {
+      "title": "AC-1 POLICY AND PROCEDURES",
+      "page": 45,
+      "level": 2,
+      "page_end": 45
+    },
+    {
+      "title": "AC-2 ACCOUNT MANAGEMENT",
+      "page": 46,
+      "level": 2,
+      "page_end": 49
+    },
+    {
+      "title": "AC-3 ACCESS ENFORCEMENT",
+      "page": 50,
+      "level": 2,
+      "page_end": 54
+    },
+    {
+      "title": "AC-4 INFORMATION FLOW ENFORCEMENT",
+      "page": 55,
+      "level": 2,
+      "page_end": 62
+    },
+    {
+      "title": "AC-5 SEPARATION OF DUTIES",
+      "page": 63,
+      "level": 2,
+      "page_end": 62
+    },
+    {
+      "title": "AC-6 LEAST PRIVILEGE",
+      "page": 63,
+      "level": 2,
+      "page_end": 65
+    },
+    {
+      "title": "AC-7 UNSUCCESSFUL LOGON ATTEMPTS",
+      "page": 66,
+      "level": 2,
+      "page_end": 66
+    },
+    {
+      "title": "AC-8 SYSTEM USE NOTIFICATION",
+      "page": 67,
+      "level": 2,
+      "page_end": 67
+    },
+    {
+      "title": "AC-9 PREVIOUS LOGON NOTIFICATION",
+      "page": 68,
+      "level": 2,
+      "page_end": 68
+    },
+    {
+      "title": "AC-10 CONCURRENT SESSION CONTROL",
+      "page": 69,
+      "level": 2,
+      "page_end": 68
+    },
+    {
+      "title": "AC-11 DEVICE LOCK",
+      "page": 69,
+      "level": 2,
+      "page_end": 69
+    },
+    {
+      "title": "AC-12 SESSION TERMINATION",
+      "page": 70,
+      "level": 2,
+      "page_end": 70
+    },
+    {
+      "title": "AC-13 SUPERVISION AND REVIEW \u2014 ACCESS CONTROL",
+      "page": 71,
+      "level": 2,
+      "page_end": 70
+    },
+    {
+      "title": "AC-14 PERMITTED ACTIONS WITHOUT IDENTIFICATION OR AUTHENTICATION",
+      "page": 71,
+      "level": 2,
+      "page_end": 70
+    },
+    {
+      "title": "AC-15 AUTOMATED MARKING",
+      "page": 71,
+      "level": 2,
+      "page_end": 70
+    },
+    {
+      "title": "AC-16 SECURITY AND PRIVACY ATTRIBUTES",
+      "page": 71,
+      "level": 2,
+      "page_end": 74
+    },
+    {
+      "title": "AC-17 REMOTE ACCESS",
+      "page": 75,
+      "level": 2,
+      "page_end": 76
+    },
+    {
+      "title": "AC-18 WIRELESS ACCESS",
+      "page": 77,
+      "level": 2,
+      "page_end": 77
+    },
+    {
+      "title": "AC-19 ACCESS CONTROL FOR MOBILE DEVICES",
+      "page": 78,
+      "level": 2,
+      "page_end": 79
+    },
+    {
+      "title": "AC-20 USE OF EXTERNAL SYSTEMS",
+      "page": 80,
+      "level": 2,
+      "page_end": 81
+    },
+    {
+      "title": "AC-21 INFORMATION SHARING",
+      "page": 82,
+      "level": 2,
+      "page_end": 82
+    },
+    {
+      "title": "AC-22 PUBLICLY ACCESSIBLE CONTENT",
+      "page": 83,
+      "level": 2,
+      "page_end": 82
+    },
+    {
+      "title": "AC-23 DATA MINING PROTECTION",
+      "page": 83,
+      "level": 2,
+      "page_end": 83
+    },
+    {
+      "title": "AC-24 ACCESS CONTROL DECISIONS",
+      "page": 84,
+      "level": 2,
+      "page_end": 84
+    },
+    {
+      "title": "AC-25 REFERENCE MONITOR",
+      "page": 85,
+      "level": 2,
+      "page_end": 85
+    },
+    {
+      "title": "3.2   AWARENESS AND TRAINING",
+      "page": 86,
+      "level": 1,
+      "page_end": 85
+    },
+    {
+      "title": "AT-1 POLICY AND PROCEDURES",
+      "page": 86,
+      "level": 2,
+      "page_end": 86
+    },
+    {
+      "title": "AT-2 LITERACY TRAINING AND AWARENESS",
+      "page": 87,
+      "level": 2,
+      "page_end": 88
+    },
+    {
+      "title": "AT-3 ROLE-BASED TRAINING",
+      "page": 89,
+      "level": 2,
+      "page_end": 90
+    },
+    {
+      "title": "AT-4 TRAINING RECORDS",
+      "page": 91,
+      "level": 2,
+      "page_end": 90
+    },
+    {
+      "title": "AT-5 CONTACTS WITH SECURITY GROUPS AND ASSOCIATIONS",
+      "page": 91,
+      "level": 2,
+      "page_end": 90
+    },
+    {
+      "title": "AT-6 TRAINING FEEDBACK",
+      "page": 91,
+      "level": 2,
+      "page_end": 91
+    },
+    {
+      "title": "3.3   AUDIT AND ACCOUNTABILITY",
+      "page": 92,
+      "level": 1,
+      "page_end": 91
+    },
+    {
+      "title": "AU-1 POLICY AND PROCEDURES",
+      "page": 92,
+      "level": 2,
+      "page_end": 92
+    },
+    {
+      "title": "AU-2 EVENT LOGGING",
+      "page": 93,
+      "level": 2,
+      "page_end": 93
+    },
+    {
+      "title": "AU-3 CONTENT OF AUDIT RECORDS",
+      "page": 94,
+      "level": 2,
+      "page_end": 94
+    },
+    {
+      "title": "AU-4 AUDIT LOG STORAGE CAPACITY",
+      "page": 95,
+      "level": 2,
+      "page_end": 94
+    },
+    {
+      "title": "AU-5 RESPONSE TO AUDIT LOGGING PROCESS FAILURES",
+      "page": 95,
+      "level": 2,
+      "page_end": 96
+    },
+    {
+      "title": "AU-6 AUDIT RECORD REVIEW, ANALYSIS, AND REPORTING",
+      "page": 97,
+      "level": 2,
+      "page_end": 98
+    },
+    {
+      "title": "AU-7 AUDIT RECORD REDUCTION AND REPORT GENERATION",
+      "page": 99,
+      "level": 2,
+      "page_end": 99
+    },
+    {
+      "title": "AU-8 TIME STAMPS",
+      "page": 100,
+      "level": 2,
+      "page_end": 100
+    },
+    {
+      "title": "AU-9 PROTECTION OF AUDIT INFORMATION",
+      "page": 101,
+      "level": 2,
+      "page_end": 102
+    },
+    {
+      "title": "AU-10 NON-REPUDIATION",
+      "page": 103,
+      "level": 2,
+      "page_end": 103
+    },
+    {
+      "title": "AU-11 AUDIT RECORD RETENTION",
+      "page": 104,
+      "level": 2,
+      "page_end": 103
+    },
+    {
+      "title": "AU-12 AUDIT RECORD GENERATION",
+      "page": 104,
+      "level": 2,
+      "page_end": 105
+    },
+    {
+      "title": "AU-13 MONITORING FOR INFORMATION DISCLOSURE",
+      "page": 106,
+      "level": 2,
+      "page_end": 106
+    },
+    {
+      "title": "AU-14 SESSION AUDIT",
+      "page": 107,
+      "level": 2,
+      "page_end": 107
+    },
+    {
+      "title": "AU-15 ALTERNATE AUDIT LOGGING CAPABILITY",
+      "page": 108,
+      "level": 2,
+      "page_end": 107
+    },
+    {
+      "title": "AU-16 CROSS-ORGANIZATIONAL AUDIT LOGGING",
+      "page": 108,
+      "level": 2,
+      "page_end": 109
+    },
+    {
+      "title": "3.4   ASSESSMENT, AUTHORIZATION, AND MONITORING",
+      "page": 110,
+      "level": 1,
+      "page_end": 109
+    },
+    {
+      "title": "CA-1 POLICY AND PROCEDURES",
+      "page": 110,
+      "level": 2,
+      "page_end": 112
+    },
+    {
+      "title": "CA-3 INFORMATION EXCHANGE",
+      "page": 113,
+      "level": 2,
+      "page_end": 114
+    },
+    {
+      "title": "CA-4 SECURITY CERTIFICATION",
+      "page": 115,
+      "level": 2,
+      "page_end": 114
+    },
+    {
+      "title": "CA-5 PLAN OF ACTION AND MILESTONES",
+      "page": 115,
+      "level": 2,
+      "page_end": 115
+    },
+    {
+      "title": "CA-6 AUTHORIZATION",
+      "page": 116,
+      "level": 2,
+      "page_end": 119
+    },
+    {
+      "title": "CA-8 PENETRATION TESTING",
+      "page": 120,
+      "level": 2,
+      "page_end": 120
+    },
+    {
+      "title": "CA-9 INTERNAL SYSTEM CONNECTIONS",
+      "page": 121,
+      "level": 2,
+      "page_end": 122
+    },
+    {
+      "title": "3.5   CONFIGURATION MANAGEMENT",
+      "page": 123,
+      "level": 1,
+      "page_end": 122
+    },
+    {
+      "title": "CM-1 POLICY AND PROCEDURES",
+      "page": 123,
+      "level": 2,
+      "page_end": 123
+    },
+    {
+      "title": "CM-2 BASELINE CONFIGURATION",
+      "page": 124,
+      "level": 2,
+      "page_end": 124
+    },
+    {
+      "title": "CM-3 CONFIGURATION CHANGE CONTROL",
+      "page": 125,
+      "level": 2,
+      "page_end": 127
+    },
+    {
+      "title": "CM-4 IMPACT ANALYSES",
+      "page": 128,
+      "level": 2,
+      "page_end": 128
+    },
+    {
+      "title": "CM-5 ACCESS RESTRICTIONS FOR CHANGE",
+      "page": 129,
+      "level": 2,
+      "page_end": 129
+    },
+    {
+      "title": "CM-6 CONFIGURATION SETTINGS",
+      "page": 130,
+      "level": 2,
+      "page_end": 130
+    },
+    {
+      "title": "CM-7 LEAST FUNCTIONALITY",
+      "page": 131,
+      "level": 2,
+      "page_end": 133
+    },
+    {
+      "title": "CM-8 SYSTEM COMPONENT INVENTORY",
+      "page": 134,
+      "level": 2,
+      "page_end": 136
+    },
+    {
+      "title": "CM-9 CONFIGURATION MANAGEMENT PLAN",
+      "page": 137,
+      "level": 2,
+      "page_end": 137
+    },
+    {
+      "title": "CM-10 SOFTWARE USAGE RESTRICTIONS",
+      "page": 138,
+      "level": 2,
+      "page_end": 138
+    },
+    {
+      "title": "CM-11 USER-INSTALLED SOFTWARE",
+      "page": 139,
+      "level": 2,
+      "page_end": 139
+    },
+    {
+      "title": "CM-12 INFORMATION LOCATION",
+      "page": 140,
+      "level": 2,
+      "page_end": 139
+    },
+    {
+      "title": "CM-13 DATA ACTION MAPPING",
+      "page": 140,
+      "level": 2,
+      "page_end": 140
+    },
+    {
+      "title": "CM-14 SIGNED COMPONENTS",
+      "page": 141,
+      "level": 2,
+      "page_end": 141
+    },
+    {
+      "title": "3.6   CONTINGENCY PLANNING",
+      "page": 142,
+      "level": 1,
+      "page_end": 141
+    },
+    {
+      "title": "CP-1 POLICY AND PROCEDURES",
+      "page": 142,
+      "level": 2,
+      "page_end": 142
+    },
+    {
+      "title": "CP-2 CONTINGENCY PLAN",
+      "page": 143,
+      "level": 2,
+      "page_end": 144
+    },
+    {
+      "title": "CP-3 CONTINGENCY TRAINING",
+      "page": 145,
+      "level": 2,
+      "page_end": 145
+    },
+    {
+      "title": "CP-4 CONTINGENCY PLAN TESTING",
+      "page": 146,
+      "level": 2,
+      "page_end": 147
+    },
+    {
+      "title": "CP-5 CONTINGENCY PLAN UPDATE",
+      "page": 148,
+      "level": 2,
+      "page_end": 147
+    },
+    {
+      "title": "CP-6 ALTERNATE STORAGE SITE",
+      "page": 148,
+      "level": 2,
+      "page_end": 148
+    },
+    {
+      "title": "CP-7 ALTERNATE PROCESSING SITE",
+      "page": 149,
+      "level": 2,
+      "page_end": 150
+    },
+    {
+      "title": "CP-8 TELECOMMUNICATIONS SERVICES",
+      "page": 151,
+      "level": 2,
+      "page_end": 151
+    },
+    {
+      "title": "CP-9 SYSTEM BACKUP",
+      "page": 152,
+      "level": 2,
+      "page_end": 154
+    },
+    {
+      "title": "CP-10 SYSTEM RECOVERY AND RECONSTITUTION",
+      "page": 155,
+      "level": 2,
+      "page_end": 155
+    },
+    {
+      "title": "CP-11 ALTERNATE COMMUNICATIONS PROTOCOLS",
+      "page": 156,
+      "level": 2,
+      "page_end": 155
+    },
+    {
+      "title": "CP-12 SAFE MODE",
+      "page": 156,
+      "level": 2,
+      "page_end": 155
+    },
+    {
+      "title": "CP-13 ALTERNATIVE SECURITY MECHANISMS",
+      "page": 156,
+      "level": 2,
+      "page_end": 157
+    },
+    {
+      "title": "3.7   IDENTIFICATION AND AUTHENTICATION",
+      "page": 158,
+      "level": 1,
+      "page_end": 157
+    },
+    {
+      "title": "IA-1 POLICY AND PROCEDURES",
+      "page": 158,
+      "level": 2,
+      "page_end": 158
+    },
+    {
+      "title": "IA-2 IDENTIFICATION AND AUTHENTICATION (ORGANIZATIONAL USERS)",
+      "page": 159,
+      "level": 2,
+      "page_end": 161
+    },
+    {
+      "title": "IA-3 DEVICE IDENTIFICATION AND AUTHENTICATION",
+      "page": 162,
+      "level": 2,
+      "page_end": 162
+    },
+    {
+      "title": "IA-4 IDENTIFIER MANAGEMENT",
+      "page": 163,
+      "level": 2,
+      "page_end": 164
+    },
+    {
+      "title": "IA-5 AUTHENTICATOR MANAGEMENT",
+      "page": 165,
+      "level": 2,
+      "page_end": 169
+    },
+    {
+      "title": "IA-6 AUTHENTICATION FEEDBACK",
+      "page": 170,
+      "level": 2,
+      "page_end": 169
+    },
+    {
+      "title": "IA-7 CRYPTOGRAPHIC MODULE AUTHENTICATION",
+      "page": 170,
+      "level": 2,
+      "page_end": 169
+    },
+    {
+      "title": "IA-8 IDENTIFICATION AND AUTHENTICATION (NON-ORGANIZATIONAL USERS)",
+      "page": 170,
+      "level": 2,
+      "page_end": 171
+    },
+    {
+      "title": "IA-9 SERVICE IDENTIFICATION AND AUTHENTICATION",
+      "page": 172,
+      "level": 2,
+      "page_end": 172
+    },
+    {
+      "title": "IA-10 ADAPTIVE AUTHENTICATION",
+      "page": 173,
+      "level": 2,
+      "page_end": 172
+    },
+    {
+      "title": "IA-11 RE-AUTHENTICATION",
+      "page": 173,
+      "level": 2,
+      "page_end": 172
+    },
+    {
+      "title": "IA-12 IDENTITY PROOFING",
+      "page": 173,
+      "level": 2,
+      "page_end": 175
+    },
+    {
+      "title": "3.8   INCIDENT RESPONSE",
+      "page": 176,
+      "level": 1,
+      "page_end": 175
+    },
+    {
+      "title": "IR-1 POLICY AND PROCEDURES",
+      "page": 176,
+      "level": 2,
+      "page_end": 176
+    },
+    {
+      "title": "IR-2 INCIDENT RESPONSE TRAINING",
+      "page": 177,
+      "level": 2,
+      "page_end": 177
+    },
+    {
+      "title": "IR-3 INCIDENT RESPONSE TESTING",
+      "page": 178,
+      "level": 2,
+      "page_end": 178
+    },
+    {
+      "title": "IR-4 INCIDENT HANDLING",
+      "page": 179,
+      "level": 2,
+      "page_end": 183
+    },
+    {
+      "title": "IR-6 INCIDENT REPORTING",
+      "page": 184,
+      "level": 2,
+      "page_end": 184
+    },
+    {
+      "title": "IR-7 INCIDENT RESPONSE ASSISTANCE",
+      "page": 185,
+      "level": 2,
+      "page_end": 184
+    },
+    {
+      "title": "IR-8 INCIDENT RESPONSE PLAN",
+      "page": 185,
+      "level": 2,
+      "page_end": 185
+    },
+    {
+      "title": "IR-9 INFORMATION SPILLAGE RESPONSE",
+      "page": 186,
+      "level": 2,
+      "page_end": 188
+    },
+    {
+      "title": "3.9   MAINTENANCE",
+      "page": 189,
+      "level": 1,
+      "page_end": 188
+    },
+    {
+      "title": "MA-1 POLICY AND PROCEDURES",
+      "page": 189,
+      "level": 2,
+      "page_end": 189
+    },
+    {
+      "title": "MA-2 CONTROLLED MAINTENANCE",
+      "page": 190,
+      "level": 2,
+      "page_end": 189
+    },
+    {
+      "title": "MA-3 MAINTENANCE TOOLS",
+      "page": 190,
+      "level": 2,
+      "page_end": 191
+    },
+    {
+      "title": "MA-4 NONLOCAL MAINTENANCE",
+      "page": 192,
+      "level": 2,
+      "page_end": 193
+    },
+    {
+      "title": "MA-5 MAINTENANCE PERSONNEL",
+      "page": 194,
+      "level": 2,
+      "page_end": 195
+    },
+    {
+      "title": "MA-6 TIMELY MAINTENANCE",
+      "page": 196,
+      "level": 2,
+      "page_end": 196
+    },
+    {
+      "title": "MA-7 FIELD MAINTENANCE",
+      "page": 197,
+      "level": 2,
+      "page_end": 197
+    },
+    {
+      "title": "3.10   MEDIA PROTECTION",
+      "page": 198,
+      "level": 1,
+      "page_end": 197
+    },
+    {
+      "title": "MP-1 POLICY AND PROCEDURES",
+      "page": 198,
+      "level": 2,
+      "page_end": 198
+    },
+    {
+      "title": "MP-2 MEDIA ACCESS",
+      "page": 199,
+      "level": 2,
+      "page_end": 198
+    },
+    {
+      "title": "MP-3 MEDIA MARKING",
+      "page": 199,
+      "level": 2,
+      "page_end": 198
+    },
+    {
+      "title": "MP-4 MEDIA STORAGE",
+      "page": 199,
+      "level": 2,
+      "page_end": 199
+    },
+    {
+      "title": "MP-5 MEDIA TRANSPORT",
+      "page": 200,
+      "level": 2,
+      "page_end": 200
+    },
+    {
+      "title": "MP-6 MEDIA SANITIZATION",
+      "page": 201,
+      "level": 2,
+      "page_end": 202
+    },
+    {
+      "title": "MP-7 MEDIA USE",
+      "page": 203,
+      "level": 2,
+      "page_end": 203
+    },
+    {
+      "title": "MP-8 MEDIA DOWNGRADING",
+      "page": 204,
+      "level": 2,
+      "page_end": 205
+    },
+    {
+      "title": "3.11   PHYSICAL AND ENVIRONMENTAL PROTECTION",
+      "page": 206,
+      "level": 1,
+      "page_end": 205
+    },
+    {
+      "title": "PE-1 POLICY AND PROCEDURES",
+      "page": 206,
+      "level": 2,
+      "page_end": 206
+    },
+    {
+      "title": "PE-2 PHYSICAL ACCESS AUTHORIZATIONS",
+      "page": 207,
+      "level": 2,
+      "page_end": 207
+    },
+    {
+      "title": "PE-3 PHYSICAL ACCESS CONTROL",
+      "page": 208,
+      "level": 2,
+      "page_end": 209
+    },
+    {
+      "title": "PE-4 ACCESS CONTROL FOR TRANSMISSION",
+      "page": 210,
+      "level": 2,
+      "page_end": 209
+    },
+    {
+      "title": "PE-5 ACCESS CONTROL FOR OUTPUT DEVICES",
+      "page": 210,
+      "level": 2,
+      "page_end": 210
+    },
+    {
+      "title": "PE-6 MONITORING PHYSICAL ACCESS",
+      "page": 211,
+      "level": 2,
+      "page_end": 211
+    },
+    {
+      "title": "PE-7 VISITOR CONTROL",
+      "page": 212,
+      "level": 2,
+      "page_end": 211
+    },
+    {
+      "title": "PE-8 VISITOR ACCESS RECORDS",
+      "page": 212,
+      "level": 2,
+      "page_end": 212
+    },
+    {
+      "title": "PE-9 POWER EQUIPMENT AND CABLING",
+      "page": 213,
+      "level": 2,
+      "page_end": 213
+    },
+    {
+      "title": "PE-10 EMERGENCY SHUTOFF",
+      "page": 214,
+      "level": 2,
+      "page_end": 213
+    },
+    {
+      "title": "PE-11 EMERGENCY POWER",
+      "page": 214,
+      "level": 2,
+      "page_end": 214
+    },
+    {
+      "title": "PE-12 EMERGENCY LIGHTING",
+      "page": 215,
+      "level": 2,
+      "page_end": 214
+    },
+    {
+      "title": "PE-13 FIRE PROTECTION",
+      "page": 215,
+      "level": 2,
+      "page_end": 215
+    },
+    {
+      "title": "PE-14 ENVIRONMENTAL CONTROLS",
+      "page": 216,
+      "level": 2,
+      "page_end": 216
+    },
+    {
+      "title": "PE-15 WATER DAMAGE PROTECTION",
+      "page": 217,
+      "level": 2,
+      "page_end": 216
+    },
+    {
+      "title": "PE-16 DELIVERY AND REMOVAL",
+      "page": 217,
+      "level": 2,
+      "page_end": 217
+    },
+    {
+      "title": "PE-17 ALTERNATE WORK SITE",
+      "page": 218,
+      "level": 2,
+      "page_end": 217
+    },
+    {
+      "title": "PE-18 LOCATION OF SYSTEM COMPONENTS",
+      "page": 218,
+      "level": 2,
+      "page_end": 217
+    },
+    {
+      "title": "PE-19 INFORMATION LEAKAGE",
+      "page": 218,
+      "level": 2,
+      "page_end": 218
+    },
+    {
+      "title": "PE-20 ASSET MONITORING AND TRACKING",
+      "page": 219,
+      "level": 2,
+      "page_end": 218
+    },
+    {
+      "title": "PE-21 ELECTROMAGNETIC PULSE PROTECTION",
+      "page": 219,
+      "level": 2,
+      "page_end": 218
+    },
+    {
+      "title": "PE-22 COMPONENT MARKING",
+      "page": 219,
+      "level": 2,
+      "page_end": 219
+    },
+    {
+      "title": "PE-23 FACILITY LOCATION",
+      "page": 220,
+      "level": 2,
+      "page_end": 220
+    },
+    {
+      "title": "3.12   PLANNING",
+      "page": 221,
+      "level": 1,
+      "page_end": 220
+    },
+    {
+      "title": "PL-1 POLICY AND PROCEDURES",
+      "page": 221,
+      "level": 2,
+      "page_end": 221
+    },
+    {
+      "title": "PL-2 SYSTEM SECURITY AND PRIVACY PLANS",
+      "page": 222,
+      "level": 2,
+      "page_end": 222
+    },
+    {
+      "title": "PL-3 SYSTEM SECURITY PLAN UPDATE",
+      "page": 223,
+      "level": 2,
+      "page_end": 223
+    },
+    {
+      "title": "PL-4 RULES OF BEHAVIOR",
+      "page": 224,
+      "level": 2,
+      "page_end": 224
+    },
+    {
+      "title": "PL-5 PRIVACY IMPACT ASSESSMENT",
+      "page": 225,
+      "level": 2,
+      "page_end": 224
+    },
+    {
+      "title": "PL-6 SECURITY-RELATED ACTIVITY PLANNING",
+      "page": 225,
+      "level": 2,
+      "page_end": 224
+    },
+    {
+      "title": "PL-7 CONCEPT OF OPERATIONS",
+      "page": 225,
+      "level": 2,
+      "page_end": 224
+    },
+    {
+      "title": "PL-8 SECURITY AND PRIVACY ARCHITECTURES",
+      "page": 225,
+      "level": 2,
+      "page_end": 226
+    },
+    {
+      "title": "PL-9 CENTRAL MANAGEMENT",
+      "page": 227,
+      "level": 2,
+      "page_end": 227
+    },
+    {
+      "title": "PL-10 Baseline Selection",
+      "page": 228,
+      "level": 2,
+      "page_end": 227
+    },
+    {
+      "title": "PL-11 Baseline Tailoring",
+      "page": 228,
+      "level": 2,
+      "page_end": 229
+    },
+    {
+      "title": "3.13   PROGRAM MANAGEMENT",
+      "page": 230,
+      "level": 1,
+      "page_end": 229
+    },
+    {
+      "title": "PM-1 INFORMATION SECURITY PROGRAM PLAN",
+      "page": 230,
+      "level": 2,
+      "page_end": 230
+    },
+    {
+      "title": "PM-2 INFORMATION SECURITY PROGRAM LEADERSHIP ROLE",
+      "page": 231,
+      "level": 2,
+      "page_end": 230
+    },
+    {
+      "title": "PM-3 INFORMATION SECURITY AND PRIVACY RESOURCES",
+      "page": 231,
+      "level": 2,
+      "page_end": 231
+    },
+    {
+      "title": "PM-4 PLAN OF ACTION AND MILESTONES PROCESS",
+      "page": 232,
+      "level": 2,
+      "page_end": 232
+    },
+    {
+      "title": "PM-5 SYSTEM INVENTORY",
+      "page": 233,
+      "level": 2,
+      "page_end": 232
+    },
+    {
+      "title": "PM-6 MEASURES OF PERFORMANCE",
+      "page": 233,
+      "level": 2,
+      "page_end": 232
+    },
+    {
+      "title": "PM-7 ENTERPRISE ARCHITECTURE",
+      "page": 233,
+      "level": 2,
+      "page_end": 233
+    },
+    {
+      "title": "PM-8 CRITICAL INFRASTRUCTURE PLAN",
+      "page": 234,
+      "level": 2,
+      "page_end": 233
+    },
+    {
+      "title": "PM-9 RISK MANAGEMENT STRATEGY",
+      "page": 234,
+      "level": 2,
+      "page_end": 234
+    },
+    {
+      "title": "PM-10 AUTHORIZATION PROCESS",
+      "page": 235,
+      "level": 2,
+      "page_end": 234
+    },
+    {
+      "title": "PM-11 MISSION AND BUSINESS PROCESS DEFINITION",
+      "page": 235,
+      "level": 2,
+      "page_end": 235
+    },
+    {
+      "title": "PM-12 INSIDER THREAT PROGRAM",
+      "page": 236,
+      "level": 2,
+      "page_end": 236
+    },
+    {
+      "title": "PM-13 SECURITY AND PRIVACY WORKFORCE",
+      "page": 237,
+      "level": 2,
+      "page_end": 236
+    },
+    {
+      "title": "PM-14 TESTING, TRAINING, AND MONITORING",
+      "page": 237,
+      "level": 2,
+      "page_end": 237
+    },
+    {
+      "title": "PM-15 SECURITY AND PRIVACY GROUPS AND ASSOCIATIONS",
+      "page": 238,
+      "level": 2,
+      "page_end": 237
+    },
+    {
+      "title": "PM-16 THREAT AWARENESS PROGRAM",
+      "page": 238,
+      "level": 2,
+      "page_end": 238
+    },
+    {
+      "title": "PM-17 PROTECTING CONTROLLED UNCLASSIFIED INFORMATION ON EXTERNAL SYSTEMS",
+      "page": 239,
+      "level": 2,
+      "page_end": 238
+    },
+    {
+      "title": "PM-18 PRIVACY PROGRAM PLAN",
+      "page": 239,
+      "level": 2,
+      "page_end": 239
+    },
+    {
+      "title": "PM-19 PRIVACY PROGRAM LEADERSHIP ROLE",
+      "page": 240,
+      "level": 2,
+      "page_end": 239
+    },
+    {
+      "title": "PM-20 DISSEMINATION OF PRIVACY PROGRAM INFORMATION",
+      "page": 240,
+      "level": 2,
+      "page_end": 240
+    },
+    {
+      "title": "PM-21 ACCOUNTING OF DISCLOSURES",
+      "page": 241,
+      "level": 2,
+      "page_end": 241
+    },
+    {
+      "title": "PM-22 PERSONALLY IDENTIFIABLE INFORMATION QUALITY MANAGEMENT",
+      "page": 242,
+      "level": 2,
+      "page_end": 242
+    },
+    {
+      "title": "PM-23 DATA GOVERNANCE BODY",
+      "page": 243,
+      "level": 2,
+      "page_end": 242
+    },
+    {
+      "title": "PM-24 DATA INTEGRITY BOARD",
+      "page": 243,
+      "level": 2,
+      "page_end": 243
+    },
+    {
+      "title": "PM-26 COMPLAINT MANAGEMENT",
+      "page": 244,
+      "level": 2,
+      "page_end": 244
+    },
+    {
+      "title": "PM-27 PRIVACY REPORTING",
+      "page": 245,
+      "level": 2,
+      "page_end": 244
+    },
+    {
+      "title": "PM-28 RISK FRAMING",
+      "page": 245,
+      "level": 2,
+      "page_end": 245
+    },
+    {
+      "title": "PM-29 RISK MANAGEMENT PROGRAM LEADERSHIP ROLES",
+      "page": 246,
+      "level": 2,
+      "page_end": 245
+    },
+    {
+      "title": "PM-30 SUPPLY CHAIN RISK MANAGEMENT STRATEGY",
+      "page": 246,
+      "level": 2,
+      "page_end": 247
+    },
+    {
+      "title": "PM-32 PURPOSING",
+      "page": 248,
+      "level": 2,
+      "page_end": 248
+    },
+    {
+      "title": "3.14   PERSONNEL SECURITY",
+      "page": 249,
+      "level": 1,
+      "page_end": 248
+    },
+    {
+      "title": "PS-1 POLICY AND PROCEDURES",
+      "page": 249,
+      "level": 2,
+      "page_end": 249
+    },
+    {
+      "title": "PS-2 POSITION RISK DESIGNATION",
+      "page": 250,
+      "level": 2,
+      "page_end": 249
+    },
+    {
+      "title": "PS-3 PERSONNEL SCREENING",
+      "page": 250,
+      "level": 2,
+      "page_end": 250
+    },
+    {
+      "title": "PS-4 PERSONNEL TERMINATION",
+      "page": 251,
+      "level": 2,
+      "page_end": 251
+    },
+    {
+      "title": "PS-5 PERSONNEL TRANSFER",
+      "page": 252,
+      "level": 2,
+      "page_end": 252
+    },
+    {
+      "title": "PS-6 ACCESS AGREEMENTS",
+      "page": 253,
+      "level": 2,
+      "page_end": 253
+    },
+    {
+      "title": "PS-7 EXTERNAL PERSONNEL SECURITY",
+      "page": 254,
+      "level": 2,
+      "page_end": 253
+    },
+    {
+      "title": "PS-8 PERSONNEL SANCTIONS",
+      "page": 254,
+      "level": 2,
+      "page_end": 254
+    },
+    {
+      "title": "PS-9 POSITION DESCRIPTIONS",
+      "page": 255,
+      "level": 2,
+      "page_end": 255
+    },
+    {
+      "title": "3.15   PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY",
+      "page": 256,
+      "level": 1,
+      "page_end": 248
+    },
+    {
+      "title": "PS-1 POLICY AND PROCEDURES",
+      "page": 249,
+      "level": 2,
+      "page_end": 256
+    },
+    {
+      "title": "PT-2 AUTHORITY TO PROCESS PERSONALLY IDENTIFIABLE INFORMATION",
+      "page": 257,
+      "level": 2,
+      "page_end": 257
+    },
+    {
+      "title": "PT-3 PERSONALLY IDENTIFIABLE INFORMATION PROCESSING PURPOSES",
+      "page": 258,
+      "level": 2,
+      "page_end": 258
+    },
+    {
+      "title": "PT-4 CONSENT",
+      "page": 259,
+      "level": 2,
+      "page_end": 259
+    },
+    {
+      "title": "PT-5 PRIVACY NOTICE",
+      "page": 260,
+      "level": 2,
+      "page_end": 261
+    },
+    {
+      "title": "PT-6 SYSTEM OF RECORDS NOTICE",
+      "page": 262,
+      "level": 2,
+      "page_end": 262
+    },
+    {
+      "title": "PT-7 SPECIFIC CATEGORIES OF PERSONALLY IDENTIFIABLE INFORMATION",
+      "page": 263,
+      "level": 2,
+      "page_end": 263
+    },
+    {
+      "title": "PT-8 COMPUTER MATCHING REQUIREMENTS",
+      "page": 264,
+      "level": 2,
+      "page_end": 264
+    },
+    {
+      "title": "3.16   RISK ASSESSMENT",
+      "page": 265,
+      "level": 1,
+      "page_end": 264
+    },
+    {
+      "title": "RA-1 POLICY AND PROCEDURES",
+      "page": 265,
+      "level": 2,
+      "page_end": 265
+    },
+    {
+      "title": "RA-2 SECURITY CATEGORIZATION",
+      "page": 266,
+      "level": 2,
+      "page_end": 266
+    },
+    {
+      "title": "RA-3 RISK ASSESSMENT",
+      "page": 267,
+      "level": 2,
+      "page_end": 268
+    },
+    {
+      "title": "RA-4 RISK ASSESSMENT UPDATE",
+      "page": 269,
+      "level": 2,
+      "page_end": 268
+    },
+    {
+      "title": "RA-5 VULNERABILITY MONITORING AND SCANNING",
+      "page": 269,
+      "level": 2,
+      "page_end": 271
+    },
+    {
+      "title": "RA-6 TECHNICAL SURVEILLANCE COUNTERMEASURES SURVEY",
+      "page": 272,
+      "level": 2,
+      "page_end": 272
+    },
+    {
+      "title": "RA-7 RISK RESPONSE",
+      "page": 273,
+      "level": 2,
+      "page_end": 272
+    },
+    {
+      "title": "RA-8 PRIVACY IMPACT ASSESSMENTS",
+      "page": 273,
+      "level": 2,
+      "page_end": 273
+    },
+    {
+      "title": "RA-9 CRITICALITY ANALYSIS",
+      "page": 274,
+      "level": 2,
+      "page_end": 273
+    },
+    {
+      "title": "RA-10 THREAT HUNTING",
+      "page": 274,
+      "level": 2,
+      "page_end": 275
+    },
+    {
+      "title": "3.17   SYSTEM AND SERVICES ACQUISITION",
+      "page": 276,
+      "level": 1,
+      "page_end": 275
+    },
+    {
+      "title": "SA-1 POLICY AND PROCEDURES",
+      "page": 276,
+      "level": 2,
+      "page_end": 276
+    },
+    {
+      "title": "SA-2 ALLOCATION OF RESOURCES",
+      "page": 277,
+      "level": 2,
+      "page_end": 276
+    },
+    {
+      "title": "SA-3 SYSTEM DEVELOPMENT LIFE CYCLE",
+      "page": 277,
+      "level": 2,
+      "page_end": 278
+    },
+    {
+      "title": "SA-4 ACQUISITION PROCESS",
+      "page": 279,
+      "level": 2,
+      "page_end": 282
+    },
+    {
+      "title": "SA-5 SYSTEM DOCUMENTATION",
+      "page": 283,
+      "level": 2,
+      "page_end": 283
+    },
+    {
+      "title": "SA-6 SOFTWARE USAGE RESTRICTIONS",
+      "page": 284,
+      "level": 2,
+      "page_end": 283
+    },
+    {
+      "title": "SA-7 USER-INSTALLED SOFTWARE",
+      "page": 284,
+      "level": 2,
+      "page_end": 283
+    },
+    {
+      "title": "SA-8 SECURITY AND PRIVACY ENGINEERING PRINCIPLES",
+      "page": 284,
+      "level": 2,
+      "page_end": 297
+    },
+    {
+      "title": "SA-9 EXTERNAL SYSTEM SERVICES",
+      "page": 298,
+      "level": 2,
+      "page_end": 299
+    },
+    {
+      "title": "SA-10 DEVELOPER CONFIGURATION MANAGEMENT",
+      "page": 300,
+      "level": 2,
+      "page_end": 302
+    },
+    {
+      "title": "SA-11 DEVELOPER TESTING AND EVALUATION",
+      "page": 303,
+      "level": 2,
+      "page_end": 306
+    },
+    {
+      "title": "SA-12 SUPPLY CHAIN PROTECTION",
+      "page": 307,
+      "level": 2,
+      "page_end": 306
+    },
+    {
+      "title": "SA-13 TRUSTWORTHINESS",
+      "page": 307,
+      "level": 2,
+      "page_end": 307
+    },
+    {
+      "title": "SA-14 CRITICALITY ANALYSIS",
+      "page": 308,
+      "level": 2,
+      "page_end": 307
+    },
+    {
+      "title": "SA-15 DEVELOPMENT PROCESS, STANDARDS, AND TOOLS",
+      "page": 308,
+      "level": 2,
+      "page_end": 310
+    },
+    {
+      "title": "SA-16 DEVELOPER-PROVIDED TRAINING",
+      "page": 311,
+      "level": 2,
+      "page_end": 310
+    },
+    {
+      "title": "SA-17 DEVELOPER SECURITY AND PRIVACY ARCHITECTURE AND DESIGN",
+      "page": 311,
+      "level": 2,
+      "page_end": 314
+    },
+    {
+      "title": "SA-18 TAMPER RESISTANCE AND DETECTION",
+      "page": 315,
+      "level": 2,
+      "page_end": 315
+    },
+    {
+      "title": "SA-19 COMPONENT AUTHENTICITY",
+      "page": 316,
+      "level": 2,
+      "page_end": 315
+    },
+    {
+      "title": "SA-20 CUSTOMIZED DEVELOPMENT OF CRITICAL COMPONENTS",
+      "page": 316,
+      "level": 2,
+      "page_end": 315
+    },
+    {
+      "title": "SA-21 DEVELOPER SCREENING",
+      "page": 316,
+      "level": 2,
+      "page_end": 316
+    },
+    {
+      "title": "SA-22 UNSUPPORTED SYSTEM COMPONENTS",
+      "page": 317,
+      "level": 2,
+      "page_end": 317
+    },
+    {
+      "title": "SA-23 SPECIALIZATION",
+      "page": 318,
+      "level": 2,
+      "page_end": 318
+    },
+    {
+      "title": "3.18   SYSTEM AND COMMUNICATIONS PROTECTION",
+      "page": 319,
+      "level": 1,
+      "page_end": 318
+    },
+    {
+      "title": "SC-1 POLICY AND PROCEDURES",
+      "page": 319,
+      "level": 2,
+      "page_end": 319
+    },
+    {
+      "title": "SC-2 SEPARATION OF SYSTEM AND USER FUNCTIONALITY",
+      "page": 320,
+      "level": 2,
+      "page_end": 319
+    },
+    {
+      "title": "SC-3 SECURITY FUNCTION ISOLATION",
+      "page": 320,
+      "level": 2,
+      "page_end": 321
+    },
+    {
+      "title": "SC-4 INFORMATION IN SHARED SYSTEM RESOURCES",
+      "page": 322,
+      "level": 2,
+      "page_end": 322
+    },
+    {
+      "title": "SC-5 DENIAL-OF-SERVICE PROTECTION",
+      "page": 323,
+      "level": 2,
+      "page_end": 323
+    },
+    {
+      "title": "SC-6 RESOURCE AVAILABILITY",
+      "page": 324,
+      "level": 2,
+      "page_end": 323
+    },
+    {
+      "title": "SC-7  BOUNDARY PROTECTION",
+      "page": 324,
+      "level": 2,
+      "page_end": 330
+    },
+    {
+      "title": "SC-8 TRANSMISSION CONFIDENTIALITY AND INTEGRITY",
+      "page": 331,
+      "level": 2,
+      "page_end": 332
+    },
+    {
+      "title": "SC-9 TRANSMISSION CONFIDENTIALITY",
+      "page": 333,
+      "level": 2,
+      "page_end": 332
+    },
+    {
+      "title": "SC-10 NETWORK DISCONNECT",
+      "page": 333,
+      "level": 2,
+      "page_end": 332
+    },
+    {
+      "title": "SC-11 TRUSTED PATH",
+      "page": 333,
+      "level": 2,
+      "page_end": 333
+    },
+    {
+      "title": "SC-12 CRYPTOGRAPHIC KEY ESTABLISHMENT AND MANAGEMENT",
+      "page": 334,
+      "level": 2,
+      "page_end": 334
+    },
+    {
+      "title": "SC-13  CRYPTOGRAPHIC PROTECTION",
+      "page": 335,
+      "level": 2,
+      "page_end": 335
+    },
+    {
+      "title": "SC-14 PUBLIC ACCESS PROTECTIONS",
+      "page": 336,
+      "level": 2,
+      "page_end": 335
+    },
+    {
+      "title": "SC-15 COLLABORATIVE COMPUTING DEVICES AND APPLICATIONS",
+      "page": 336,
+      "level": 2,
+      "page_end": 336
+    },
+    {
+      "title": "SC-16 TRANSMISSION OF SECURITY AND PRIVACY ATTRIBUTES",
+      "page": 337,
+      "level": 2,
+      "page_end": 337
+    },
+    {
+      "title": "SC-17 PUBLIC KEY INFRASTRUCTURE CERTIFICATES",
+      "page": 338,
+      "level": 2,
+      "page_end": 337
+    },
+    {
+      "title": "SC-18 MOBILE CODE",
+      "page": 338,
+      "level": 2,
+      "page_end": 339
+    },
+    {
+      "title": "SC-19 VOICE OVER INTERNET PROTOCOL",
+      "page": 340,
+      "level": 2,
+      "page_end": 339
+    },
+    {
+      "title": "SC-20 SECURE NAME/ADDRESS RESOLUTION SERVICE (AUTHORITATIVE SOURCE)",
+      "page": 340,
+      "level": 2,
+      "page_end": 339
+    },
+    {
+      "title": "SC-21 SECURE NAME/ADDRESS RESOLUTION SERVICE (RECURSIVE OR CACHING RESOLVER)",
+      "page": 340,
+      "level": 2,
+      "page_end": 340
+    },
+    {
+      "title": "SC-22 ARCHITECTURE AND PROVISIONING FOR NAME/ADDRESS RESOLUTION SERVICE",
+      "page": 341,
+      "level": 2,
+      "page_end": 340
+    },
+    {
+      "title": "SC-23 SESSION AUTHENTICITY",
+      "page": 341,
+      "level": 2,
+      "page_end": 341
+    },
+    {
+      "title": "SC-24 FAIL IN KNOWN STATE",
+      "page": 342,
+      "level": 2,
+      "page_end": 341
+    },
+    {
+      "title": "SC-25 THIN NODES",
+      "page": 342,
+      "level": 2,
+      "page_end": 342
+    },
+    {
+      "title": "SC-26 DECOYS",
+      "page": 343,
+      "level": 2,
+      "page_end": 342
+    },
+    {
+      "title": "SC-27 PLATFORM-INDEPENDENT APPLICATIONS",
+      "page": 343,
+      "level": 2,
+      "page_end": 342
+    },
+    {
+      "title": "SC-28 PROTECTION OF INFORMATION AT REST",
+      "page": 343,
+      "level": 2,
+      "page_end": 343
+    },
+    {
+      "title": "SC-29 HETEROGENEITY",
+      "page": 344,
+      "level": 2,
+      "page_end": 344
+    },
+    {
+      "title": "SC-30 CONCEALMENT AND MISDIRECTION",
+      "page": 345,
+      "level": 2,
+      "page_end": 345
+    },
+    {
+      "title": "SC-31 COVERT CHANNEL ANALYSIS",
+      "page": 346,
+      "level": 2,
+      "page_end": 346
+    },
+    {
+      "title": "SC-32 SYSTEM PARTITIONING",
+      "page": 347,
+      "level": 2,
+      "page_end": 347
+    },
+    {
+      "title": "SC-33 TRANSMISSION PREPARATION INTEGRITY",
+      "page": 348,
+      "level": 2,
+      "page_end": 347
+    },
+    {
+      "title": "SC-34 NON-MODIFIABLE EXECUTABLE PROGRAMS",
+      "page": 348,
+      "level": 2,
+      "page_end": 348
+    },
+    {
+      "title": "SC-35 EXTERNAL MALICIOUS CODE IDENTIFICATION",
+      "page": 349,
+      "level": 2,
+      "page_end": 348
+    },
+    {
+      "title": "SC-36 DISTRIBUTED PROCESSING AND STORAGE",
+      "page": 349,
+      "level": 2,
+      "page_end": 349
+    },
+    {
+      "title": "SC-37 OUT-OF-BAND CHANNELS",
+      "page": 350,
+      "level": 2,
+      "page_end": 349
+    },
+    {
+      "title": "SC-38 OPERATIONS SECURITY",
+      "page": 350,
+      "level": 2,
+      "page_end": 350
+    },
+    {
+      "title": "SC-39 PROCESS ISOLATION",
+      "page": 351,
+      "level": 2,
+      "page_end": 350
+    },
+    {
+      "title": "SC-40 WIRELESS LINK PROTECTION",
+      "page": 351,
+      "level": 2,
+      "page_end": 352
+    },
+    {
+      "title": "SC-41 PORT AND I/O DEVICE ACCESS",
+      "page": 353,
+      "level": 2,
+      "page_end": 352
+    },
+    {
+      "title": "SC-42 SENSOR CAPABILITY AND DATA",
+      "page": 353,
+      "level": 2,
+      "page_end": 353
+    },
+    {
+      "title": "SC-43 USAGE RESTRICTIONS",
+      "page": 354,
+      "level": 2,
+      "page_end": 354
+    },
+    {
+      "title": "SC-44 DETONATION CHAMBERS",
+      "page": 355,
+      "level": 2,
+      "page_end": 354
+    },
+    {
+      "title": "SC-45  SYSTEM TIME SYNCHRONIZATION",
+      "page": 355,
+      "level": 2,
+      "page_end": 355
+    },
+    {
+      "title": "SC-46 CROSS DOMAIN POLICY ENFORCEMENT",
+      "page": 356,
+      "level": 2,
+      "page_end": 355
+    },
+    {
+      "title": "SC-47 ALTERNATE COMMUNICATIONS PATHS",
+      "page": 356,
+      "level": 2,
+      "page_end": 356
+    },
+    {
+      "title": "SC-48  SENSOR RELOCATION",
+      "page": 357,
+      "level": 2,
+      "page_end": 356
+    },
+    {
+      "title": "SC-49  HARDWARE-ENFORCED SEPARATION AND POLICY ENFORCEMENT",
+      "page": 357,
+      "level": 2,
+      "page_end": 356
+    },
+    {
+      "title": "SC-50  SOFTWARE-ENFORCED SEPARATION AND POLICY ENFORCEMENT",
+      "page": 357,
+      "level": 2,
+      "page_end": 357
+    },
+    {
+      "title": "SC-51 HARDWARE-BASED PROTECTION",
+      "page": 358,
+      "level": 2,
+      "page_end": 358
+    },
+    {
+      "title": "3.19   SYSTEM AND INFORMATION INTEGRITY",
+      "page": 359,
+      "level": 1,
+      "page_end": 358
+    },
+    {
+      "title": "SI-1 POLICY AND PROCEDURES",
+      "page": 359,
+      "level": 2,
+      "page_end": 359
+    },
+    {
+      "title": "SI-2 FLAW REMEDIATION",
+      "page": 360,
+      "level": 2,
+      "page_end": 360
+    },
+    {
+      "title": "SI-3 MALICIOUS CODE PROTECTION",
+      "page": 361,
+      "level": 2,
+      "page_end": 362
+    },
+    {
+      "title": "SI-4 SYSTEM MONITORING",
+      "page": 363,
+      "level": 2,
+      "page_end": 369
+    },
+    {
+      "title": "SI-5 SECURITY ALERTS, ADVISORIES, AND DIRECTIVES",
+      "page": 370,
+      "level": 2,
+      "page_end": 370
+    },
+    {
+      "title": "SI-6 SECURITY AND PRIVACY FUNCTION VERIFICATION",
+      "page": 371,
+      "level": 2,
+      "page_end": 371
+    },
+    {
+      "title": "SI-7 SOFTWARE, FIRMWARE, AND INFORMATION INTEGRITY",
+      "page": 372,
+      "level": 2,
+      "page_end": 374
+    },
+    {
+      "title": "SI-8 SPAM PROTECTION",
+      "page": 375,
+      "level": 2,
+      "page_end": 375
+    },
+    {
+      "title": "SI-9 INFORMATION INPUT RESTRICTIONS",
+      "page": 376,
+      "level": 2,
+      "page_end": 375
+    },
+    {
+      "title": "SI-10  INFORMATION INPUT VALIDATION",
+      "page": 376,
+      "level": 2,
+      "page_end": 377
+    },
+    {
+      "title": "SI-11 ERROR HANDLING",
+      "page": 378,
+      "level": 2,
+      "page_end": 377
+    },
+    {
+      "title": "SI-12 INFORMATION MANAGEMENT AND RETENTION",
+      "page": 378,
+      "level": 2,
+      "page_end": 379
+    },
+    {
+      "title": "SI-13 PREDICTABLE FAILURE PREVENTION",
+      "page": 380,
+      "level": 2,
+      "page_end": 380
+    },
+    {
+      "title": "SI-14 NON-PERSISTENCE",
+      "page": 381,
+      "level": 2,
+      "page_end": 381
+    },
+    {
+      "title": "SI-15 INFORMATION OUTPUT FILTERING",
+      "page": 382,
+      "level": 2,
+      "page_end": 381
+    },
+    {
+      "title": "SI-16 MEMORY PROTECTION",
+      "page": 382,
+      "level": 2,
+      "page_end": 382
+    },
+    {
+      "title": "SI-17 FAIL-SAFE PROCEDURES",
+      "page": 383,
+      "level": 2,
+      "page_end": 382
+    },
+    {
+      "title": "SI-18 PERSONALLY IDENTIFIABLE INFORMATION QUALITY OPERATIONS",
+      "page": 383,
+      "level": 2,
+      "page_end": 384
+    },
+    {
+      "title": "SI-19 DE-IDENTIFICATION",
+      "page": 385,
+      "level": 2,
+      "page_end": 386
+    },
+    {
+      "title": "SI-20 TAINTING",
+      "page": 387,
+      "level": 2,
+      "page_end": 387
+    },
+    {
+      "title": "SI-21 INFORMATION REFRESH",
+      "page": 388,
+      "level": 2,
+      "page_end": 387
+    },
+    {
+      "title": "SI-22 INFORMATION DIVERSITY",
+      "page": 388,
+      "level": 2,
+      "page_end": 387
+    },
+    {
+      "title": "SI-23 INFORMATION FRAGMENTATION",
+      "page": 388,
+      "level": 2,
+      "page_end": 389
+    },
+    {
+      "title": "3.20   SUPPLY CHAIN RISK MANAGEMENT",
+      "page": 390,
+      "level": 1,
+      "page_end": 389
+    },
+    {
+      "title": "SR-1 POLICY AND PROCEDURES",
+      "page": 390,
+      "level": 2,
+      "page_end": 390
+    },
+    {
+      "title": "SR-2 SUPPLY CHAIN RISK MANAGEMENT PLAN",
+      "page": 391,
+      "level": 2,
+      "page_end": 391
+    },
+    {
+      "title": "SR-3 SUPPLY CHAIN CONTROLS AND PROCESSES",
+      "page": 392,
+      "level": 2,
+      "page_end": 392
+    },
+    {
+      "title": "SR-4 PROVENANCE",
+      "page": 393,
+      "level": 2,
+      "page_end": 394
+    },
+    {
+      "title": "SR-5 ACQUISITION STRATEGIES, TOOLS, AND METHODS",
+      "page": 395,
+      "level": 2,
+      "page_end": 395
+    },
+    {
+      "title": "SR-6 SUPPLIER ASSESSMENTS AND REVIEWS",
+      "page": 396,
+      "level": 2,
+      "page_end": 396
+    },
+    {
+      "title": "SR-7 SUPPLY CHAIN OPERATIONS SECURITY",
+      "page": 397,
+      "level": 2,
+      "page_end": 397
+    },
+    {
+      "title": "SR-8 NOTIFICATION AGREEMENTS",
+      "page": 398,
+      "level": 2,
+      "page_end": 397
+    },
+    {
+      "title": "SR-9 TAMPER RESISTANCE AND DETECTION",
+      "page": 398,
+      "level": 2,
+      "page_end": 398
+    },
+    {
+      "title": "SR-10 INSPECTION OF SYSTEMS OR COMPONENTS",
+      "page": 399,
+      "level": 2,
+      "page_end": 398
+    },
+    {
+      "title": "SR-11 COMPONENT AUTHENTICITY",
+      "page": 399,
+      "level": 2,
+      "page_end": 399
+    },
+    {
+      "title": "SR-12 COMPONENT DISPOSAL",
+      "page": 400,
+      "level": 2,
+      "page_end": 400
+    },
+    {
+      "title": "REFERENCES",
+      "page": 401,
+      "level": 0,
+      "page_end": 420
+    },
+    {
+      "title": "GLOSSARY",
+      "page": 421,
+      "level": 0,
+      "page_end": 450
+    },
+    {
+      "title": "ACRONYMS",
+      "page": 451,
+      "level": 0,
+      "page_end": 454
+    },
+    {
+      "title": "CONTROL SUMMARIES",
+      "page": 455,
+      "level": 0,
+      "page_end": 492
+    }
+  ]
+}

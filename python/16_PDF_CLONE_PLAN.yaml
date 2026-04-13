@@ -1,0 +1,302 @@
+version: 1
+kind: orchestrate-plan
+repo_root: "/home/graham/workspace/experiments/pdf_oxide"
+
+metadata:
+  title: "Structurally Similar PDF Clone - NIST SP 800-53r5"
+  goal: "Build a PDF clone that mirrors NIST SP 800-53r5 structure using TOC as manifest, /create-text for content, /create-figure for figures, and ReportLab presets for styling"
+  plan_type: code
+  created: "2026-04-13"
+  primary_persona:
+    name: "Extractor QA"
+    role: "Testing pdf_oxide extraction accuracy on structurally similar documents"
+    source: "internal"
+
+execution:
+  max_concurrency: 2
+
+capability_overlap:
+  - "/create-text: Generates deterministic corpus text by content_type and domain"
+  - "/create-figure: Generates publication-quality figures (50+ types)"
+  - "pdf_oxide.presets: 136 ReportLab presets (tables, callouts, lists, etc.)"
+  - "pdf_oxide.clone_profiler: Extracts TOC, table shapes, figure locations"
+  - "No existing skill builds complete PDF from TOC manifest - this is new composition"
+
+questions_blockers: []
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Profile Source PDF"
+  - id: "1"
+    label: "Wave 1: Build Clone Module"
+  - id: "2"
+    label: "Wave 2: Generate Clone PDF"
+  - id: "3"
+    label: "Wave 3: Validate Extraction"
+
+tasks:
+  # ============================================================
+  # WAVE 0: Profile the source PDF to get the manifest
+  # ============================================================
+  - id: "1"
+    title: "Extract TOC manifest from NIST PDF"
+    lane: "0"
+    runner: "local"
+    depends_on: []
+    command: |
+      python3 -c "
+      import sys, json
+      sys.path.insert(0, 'python')
+      from pdf_oxide.clone_profiler import profile_for_cloning
+      from pypdf import PdfReader
+
+      pdf_path = '/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf'
+      profile = profile_for_cloning(pdf_path)
+      reader = PdfReader(pdf_path)
+
+      # Extract full TOC with section names
+      def walk_outline(items, level=0, results=None):
+          if results is None:
+              results = []
+          for item in items:
+              if isinstance(item, list):
+                  walk_outline(item, level + 1, results)
+              else:
+                  title = getattr(item, 'title', str(item))
+                  try:
+                      page = reader.get_destination_page_number(item) + 1
+                  except:
+                      page = None
+                  if page:
+                      results.append({'title': title, 'page': page, 'level': level})
+          return results
+
+      toc = walk_outline(reader.outline or [])
+
+      # Calculate page spans
+      for i, entry in enumerate(toc):
+          if i + 1 < len(toc):
+              entry['page_end'] = toc[i+1]['page'] - 1
+          else:
+              entry['page_end'] = profile['page_count']
+
+      manifest = {
+          'source': pdf_path,
+          'page_count': profile['page_count'],
+          'domain': profile['domain'],
+          'table_shapes': profile.get('table_shapes', []),
+          'toc': toc
+      }
+
+      with open('python/pdf_oxide/clone_v4_manifest.json', 'w') as f:
+          json.dump(manifest, f, indent=2)
+      print(f'Manifest saved: {len(toc)} TOC entries, {len(profile.get(\"table_shapes\", []))} tables')
+      "
+    definition_of_done:
+      command: "test -f python/pdf_oxide/clone_v4_manifest.json && python3 -c \"import json; m=json.load(open('python/pdf_oxide/clone_v4_manifest.json')); print(f'TOC entries: {len(m[\"toc\"])}'); assert len(m['toc']) > 50\""
+      assertion: "Manifest JSON exists with 50+ TOC entries"
+
+  # ============================================================
+  # WAVE 1: Build the clone module
+  # ============================================================
+  - id: "2"
+    title: "Create clone_v4.py module with TOC-driven assembly"
+    lane: "1"
+    runner: "scillm"
+    backend: "opus"
+    mode: "one_shot"
+    depends_on: ["1"]
+    prompt: |
+      Create python/pdf_oxide/clone_v4.py that builds a structurally similar PDF from a TOC manifest.
+
+      Requirements:
+      1. Read manifest from clone_v4_manifest.json
+      2. For each TOC entry:
+         - Use section title as context for /create-text
+         - Generate appropriate content (heading + paragraphs)
+         - If page has table (from table_shapes), use build_table with preset
+      3. Use ReportLab presets from pdf_oxide.presets
+      4. Inject QIDs into all text elements
+      5. Output: clone PDF + QID manifest JSON
+
+      Key functions:
+      - load_manifest(path) -> dict
+      - generate_section(toc_entry, qid_allocator) -> list[Flowable]
+      - generate_table(table_shape, qid_allocator) -> Table
+      - build_clone(manifest_path, output_path, seed=42) -> (pdf_bytes, qid_manifest)
+
+      Use existing:
+      - pdf_oxide.presets.build_table, TableSpec
+      - pdf_oxide.presets.build_list
+      - /create-text via subprocess: ./run.sh select --content-type prose --domain government --count N --seed S
+
+      The section title should inform content generation. For "AC-1 POLICY AND PROCEDURES",
+      generate policy/procedure style text. For "GLOSSARY", generate definition style text.
+    read_context:
+      - "python/pdf_oxide/presets/__init__.py"
+      - "python/pdf_oxide/presets/tables.py"
+      - "python/pdf_oxide/clone_v3/clone_builder.py"
+    allowlist:
+      - "python/pdf_oxide/clone_v4.py"
+    definition_of_done:
+      command: "python3 -c \"import sys; sys.path.insert(0,'python'); from pdf_oxide.clone_v4 import build_clone, load_manifest; print('Import OK')\""
+      assertion: "Module imports without error"
+
+  # ============================================================
+  # WAVE 2: Generate the clone PDF
+  # ============================================================
+  - id: "3"
+    title: "Generate clone PDF (first 50 pages for testing)"
+    lane: "2"
+    runner: "local"
+    depends_on: ["2"]
+    command: |
+      python3 -c "
+      import sys
+      sys.path.insert(0, 'python')
+      from pdf_oxide.clone_v4 import build_clone
+
+      pdf_bytes, qid_manifest = build_clone(
+          manifest_path='python/pdf_oxide/clone_v4_manifest.json',
+          output_path='/tmp/nist_clone_v4.pdf',
+          max_pages=50,
+          seed=42
+      )
+
+      import json
+      with open('/tmp/nist_clone_v4_qids.json', 'w') as f:
+          json.dump(qid_manifest, f, indent=2)
+
+      print(f'Clone: {len(pdf_bytes)} bytes')
+      print(f'QIDs: {len(qid_manifest)}')
+      "
+    definition_of_done:
+      command: "test -f /tmp/nist_clone_v4.pdf && python3 -c \"import fitz; pdf=fitz.open('/tmp/nist_clone_v4.pdf'); print(f'Pages: {pdf.page_count}'); assert pdf.page_count >= 10\""
+      assertion: "Clone PDF exists with at least 10 pages"
+
+  - id: "4"
+    title: "Visual inspection of clone quality"
+    lane: "2"
+    runner: "local"
+    depends_on: ["3"]
+    command: |
+      python3 -c "
+      import fitz
+
+      pdf = fitz.open('/tmp/nist_clone_v4.pdf')
+
+      print('CLONE VISUAL INSPECTION')
+      print('=' * 70)
+
+      for i in range(min(3, pdf.page_count)):
+          text = pdf[i].get_text()
+          lines = [l for l in text.split('\n') if l.strip()]
+          qid_count = text.count('[QID_')
+
+          print(f'Page {i+1}: {len(lines)} lines, {qid_count} QIDs')
+          print(f'  First line: {lines[0][:70] if lines else \"(empty)\"}')
+          print()
+
+      # Check for garbage indicators
+      all_text = ' '.join(pdf[i].get_text() for i in range(min(5, pdf.page_count)))
+
+      # Count unique sentences (not repetitive garbage)
+      sentences = [s.strip() for s in all_text.split('.') if len(s.strip()) > 20]
+      unique = len(set(sentences))
+      total = len(sentences)
+
+      print(f'Unique sentences: {unique}/{total} ({unique/max(total,1)*100:.0f}%)')
+
+      # Check for section titles from TOC
+      has_ac = 'ACCESS CONTROL' in all_text.upper() or 'AC-1' in all_text
+      has_structure = any(x in all_text for x in ['POLICY', 'PROCEDURE', 'CONTROL'])
+
+      print(f'Has access control section: {has_ac}')
+      print(f'Has structural keywords: {has_structure}')
+
+      assert unique/max(total,1) > 0.5, 'Too much repetitive text'
+      assert has_structure, 'Missing structural content'
+      "
+    definition_of_done:
+      command: "python3 -c \"import fitz; pdf=fitz.open('/tmp/nist_clone_v4.pdf'); text=pdf[0].get_text(); assert '[QID_' in text, 'No QIDs'; assert len(text) > 500, 'Too short'\""
+      assertion: "Clone has QIDs and substantial content"
+
+  # ============================================================
+  # WAVE 3: Validate extraction
+  # ============================================================
+  - id: "5"
+    title: "Extract clone with pdf_oxide and validate QIDs"
+    lane: "3"
+    runner: "local"
+    depends_on: ["4"]
+    command: |
+      python3 -c "
+      import sys, json, re
+      sys.path.insert(0, 'python')
+      from pdf_oxide import extract_pdf
+
+      # Load QID manifest (ground truth)
+      with open('/tmp/nist_clone_v4_qids.json') as f:
+          qid_manifest = json.load(f)
+
+      manifest_qids = set(qid_manifest.keys())
+
+      # Extract with pdf_oxide
+      result = extract_pdf('/tmp/nist_clone_v4.pdf')
+      extracted = result.markdown if hasattr(result, 'markdown') else str(result)
+
+      # Find QIDs in extraction
+      extracted_qids = set(re.findall(r'\[QID_[A-F0-9]{16}\]', extracted))
+
+      # Calculate accuracy
+      found = manifest_qids & extracted_qids
+      missing = manifest_qids - extracted_qids
+
+      print('QID EXTRACTION VALIDATION')
+      print('=' * 50)
+      print(f'Manifest QIDs: {len(manifest_qids)}')
+      print(f'Extracted QIDs: {len(extracted_qids)}')
+      print(f'Found: {len(found)}/{len(manifest_qids)} = {len(found)/max(len(manifest_qids),1)*100:.1f}%')
+      print(f'Missing: {len(missing)}')
+
+      if missing:
+          print(f'Sample missing: {list(missing)[:5]}')
+
+      # Fail if less than 90% extraction
+      accuracy = len(found) / max(len(manifest_qids), 1)
+      assert accuracy >= 0.90, f'Extraction accuracy {accuracy:.1%} < 90%'
+      print('PASS: Extraction accuracy >= 90%')
+      "
+    definition_of_done:
+      command: "python3 -c \"print('Extraction validation in task command')\""
+      assertion: "QID extraction accuracy >= 90%"
+
+  - id: "6"
+    title: "Generate full clone (all pages) if validation passes"
+    lane: "3"
+    runner: "local"
+    depends_on: ["5"]
+    command: |
+      python3 -c "
+      import sys
+      sys.path.insert(0, 'python')
+      from pdf_oxide.clone_v4 import build_clone
+
+      pdf_bytes, qid_manifest = build_clone(
+          manifest_path='python/pdf_oxide/clone_v4_manifest.json',
+          output_path='/tmp/nist_clone_v4_full.pdf',
+          max_pages=None,  # All pages
+          seed=42
+      )
+
+      import json
+      with open('/tmp/nist_clone_v4_full_qids.json', 'w') as f:
+          json.dump(qid_manifest, f, indent=2)
+
+      print(f'Full clone: {len(pdf_bytes)} bytes')
+      print(f'QIDs: {len(qid_manifest)}')
+      print(f'Output: /tmp/nist_clone_v4_full.pdf')
+      "
+    definition_of_done:
+      command: "test -f /tmp/nist_clone_v4_full.pdf"
+      assertion: "Full clone PDF generated"

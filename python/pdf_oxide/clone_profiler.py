@@ -6,7 +6,10 @@ from __future__ import annotations
 
 import hashlib
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
+
+from pypdf import PdfReader
+from pypdf.generic import Destination, IndirectObject
 
 import pdf_oxide
 from pdf_oxide.survey import survey_document
@@ -35,11 +38,157 @@ def _build_page_signatures(doc, survey: Dict[str, Any]) -> List[Dict[str, Any]]:
     return signatures
 
 
+_FONT_MAP: Dict[str, Tuple[str, str]] = {
+    "ArialMT": ("/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", "Arial"),
+    "Arial-BoldMT": ("/usr/share/fonts/truetype/msttcorefonts/Arial_Bold.ttf", "Arial-Bold"),
+    "Arial-ItalicMT": ("/usr/share/fonts/truetype/msttcorefonts/Arial_Italic.ttf", "Arial-Italic"),
+    "Arial-BoldItalicMT": ("/usr/share/fonts/truetype/msttcorefonts/Arial_Bold_Italic.ttf", "Arial-BoldItalic"),
+    "ArialNarrow": ("/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", "ArialNarrow"),
+    "TimesNewRomanPSMT": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman.ttf", "TimesNewRoman"),
+    "TimesNewRomanPS-BoldMT": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold.ttf", "TimesNewRoman-Bold"),
+    "TimesNewRomanPS-ItalicMT": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Italic.ttf", "TimesNewRoman-Italic"),
+    "TimesNewRomanPS-BoldItalicMT": (
+        "/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold_Italic.ttf",
+        "TimesNewRoman-BoldItalic",
+    ),
+    "Times-Roman": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman.ttf", "TimesNewRoman"),
+    "Times-Bold": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold.ttf", "TimesNewRoman-Bold"),
+    "Times-Italic": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Italic.ttf", "TimesNewRoman-Italic"),
+    "Times-BoldItalic": ("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold_Italic.ttf", "TimesNewRoman-BoldItalic"),
+}
+
+def _normalize_font_name(name: str) -> str:
+    name = name.lstrip("/")
+    if "+" in name:
+        name = name.split("+", 1)[1]
+    return name
+
+
+def _lookup_font(base_name: str) -> Tuple[str, str] | Tuple[None, str]:
+    if base_name in _FONT_MAP:
+        return _FONT_MAP[base_name]
+    fallback = base_name.split("-")[0]
+    if fallback in _FONT_MAP:
+        return _FONT_MAP[fallback]
+    return (None, base_name)
+
+
+def _font_descriptor_embedded(descriptor: Any | None) -> bool:
+    if not descriptor or not hasattr(descriptor, "get"):
+        return False
+    return any(descriptor.get(key) for key in ("/FontFile", "/FontFile2", "/FontFile3"))
+
+
+def _detect_fonts_with_pypdf(reader: PdfReader | None) -> Dict[str, Any]:
+    if reader is None:
+        return {"fonts": {}, "families": []}
+
+    fonts: Dict[str, Dict[str, Any]] = {}
+    for idx, page in enumerate(reader.pages):
+        resources = page.get("/Resources")
+        if not resources:
+            continue
+        font_dict = resources.get("/Font", {})
+        for _, font_ref in font_dict.items():
+            try:
+                font_obj = font_ref.get_object()
+            except Exception:
+                continue
+            base_name = _normalize_font_name(str(font_obj.get("/BaseFont", "")))
+            if not base_name:
+                continue
+            descriptor = font_obj.get("/FontDescriptor")
+            ttf_path, reportlab_name = _lookup_font(base_name)
+            entry = fonts.setdefault(
+                base_name,
+                {
+                    "base_name": base_name,
+                    "reportlab_name": reportlab_name,
+                    "ttf_path": ttf_path,
+                    "pages": set(),
+                    "is_embedded": False,
+                },
+            )
+            entry["pages"].add(idx + 1)
+            entry["is_embedded"] = entry["is_embedded"] or _font_descriptor_embedded(descriptor)
+
+    for entry in fonts.values():
+        entry["pages"] = sorted(entry["pages"])
+
+    return {
+        "fonts": {name: dict(data) for name, data in fonts.items()},
+        "families": sorted({data["reportlab_name"] for data in fonts.values()}),
+    }
+
+
+def _normalize_outline_items(reader: PdfReader | None) -> list[dict]:
+    if reader is None:
+        return []
+
+    try:
+        raw_outline = reader.outline
+    except Exception:
+        raw_outline = []
+
+    def _walk(items, level: int = 1) -> list[dict]:
+        results: list[dict] = []
+        last_entry: dict | None = None
+        for item in items or []:
+            if isinstance(item, list):
+                children = _walk(item, level + 1)
+                if last_entry is not None:
+                    last_entry.setdefault("children", []).extend(children)
+                else:
+                    results.extend(children)
+                continue
+
+            entry = _normalize_outline_entry(reader, item, level)
+            if entry:
+                results.append(entry)
+                last_entry = entry
+        return results
+
+    return _walk(raw_outline or [])
+
+
+def _normalize_outline_entry(reader: PdfReader, item: Any, level: int) -> dict | None:
+    title = ""
+    page_num: Optional[int] = None
+
+    if isinstance(item, Destination):
+        title = item.title or ""
+        try:
+            page_num = reader.get_destination_page_number(item) + 1
+        except Exception:
+            page_num = None
+    elif isinstance(item, dict):
+        title = str(item.get("/Title", "")).strip()
+        page_ref = item.get("/Page")
+        if isinstance(page_ref, IndirectObject):
+            try:
+                page_num = reader._get_page_number_by_indirect(page_ref) + 1
+            except Exception:
+                page_num = None
+    else:
+        title = str(getattr(item, "title", item))
+
+    if page_num is None:
+        return None
+
+    return {"title": title, "page": page_num, "level": level, "children": []}
+
+
 def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
     """Profile a PDF for cloning — structural features, TOC, tables, requirements."""
+    try:
+        reader = PdfReader(pdf_path)
+    except Exception:
+        reader = None
+
     doc = pdf_oxide.PdfDocument(pdf_path)
     survey = survey_document(doc, enrich_profile=True)
-    toc = doc.get_toc() or []
+    outline_tree = _normalize_outline_items(reader)
+    font_info = _detect_fonts_with_pypdf(reader)
     _ = doc.get_section_map()
 
     page_count = int(survey.get("page_count", 0) or 0)
@@ -53,9 +202,17 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
         "layout_mode": "multi_column" if int(survey.get("columns", 1) or 1) > 1 else "single_column",
         "has_toc": bool(survey.get("has_toc", False)),
         "toc_entry_count": int(survey.get("toc_entry_count", 0) or 0),
-        "toc_pages": [e.get("page") for e in toc if isinstance(e, dict)] or [],
-        "lof_entries": [e for e in toc if isinstance(e, dict) and e.get("entry_type") == "Figure"],
-        "lot_entries": [e for e in toc if isinstance(e, dict) and e.get("entry_type") == "Table"],
+        "toc_pages": [e.get("page") for e in outline_tree if e.get("page")] or [],
+        "lof_entries": [
+            {"title": e.get("title"), "page": e.get("page")}
+            for e in outline_tree
+            if "figure" in str(e.get("title", "")).lower()
+        ],
+        "lot_entries": [
+            {"title": e.get("title"), "page": e.get("page")}
+            for e in outline_tree
+            if "table" in str(e.get("title", "")).lower()
+        ],
         "has_tables": bool(survey.get("has_tables", False)),
         "table_density": len(survey.get("table_pages", []) or []) / max(page_count, 1),
         "has_figures": bool(survey.get("has_figures", False)),
@@ -74,7 +231,8 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
 
     # Derive requirements_pages from TOC (preferred) or text regex (fallback)
     from pdf_oxide.clone_sampler import _flatten_outline, _outline_to_regions
-    outline = _flatten_outline(doc.get_outline() or [])
+
+    outline = _flatten_outline(outline_tree)
     regions = _outline_to_regions(outline, page_count)
     toc_req_pages = []
     for r in regions:
@@ -128,6 +286,9 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
             "verified": verified,
         })
     result["toc_sections"] = toc_sections
+    result["font_detection_source"] = "pypdf" if font_info["fonts"] else "unknown"
+    result["font_map"] = font_info["fonts"]
+    result["font_families"] = font_info["families"]
 
     # Count requirement clauses in body text (3.x.y patterns)
     _clause_pat = re.compile(r"^(\d+\.\d+\.\d+)\s")
