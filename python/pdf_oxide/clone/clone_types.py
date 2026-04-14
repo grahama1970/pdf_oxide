@@ -253,6 +253,54 @@ class PageRegime:
 
 
 # =============================================================================
+# Figure and Element Specifications
+# =============================================================================
+
+@dataclass
+class FigureSpec:
+    """Specification for figure generation via /create-figure integration.
+    
+    This class defines the parameters needed to generate figures using
+    the create-figure skill, enabling automatic figure creation during
+    PDF cloning based on source document analysis.
+    """
+    figure_type: str  # "flowchart", "diagram", "chart", "architecture"
+    description: str  # Natural language description for /create-figure
+    caption: str
+    width: float = 6.0  # inches
+    height: float = 4.0  # inches
+    data: Optional[Dict[str, Any]] = None  # Chart data if applicable
+
+
+@dataclass
+class ElementSpec:
+    """Specification for a document element to be rendered.
+    
+    This class bridges the gap between content analysis and rendering,
+    providing a unified interface for different element types including
+    text, tables, and figures.
+    """
+    element_type: BlockType
+    content: str
+    qid: Optional[str] = None
+    
+    # Position and styling
+    page_num: int = 0
+    sequence_num: int = 0
+    
+    # Element-specific specifications
+    figure_spec: Optional[FigureSpec] = None
+    
+    # Table-related fields (if element_type is TABLE)
+    table_id: Optional[str] = None
+    row: Optional[int] = None
+    col: Optional[int] = None
+    
+    # Section-related fields (if element_type is HEADING)
+    section_id: Optional[int] = None
+    depth: Optional[int] = None
+
+# =============================================================================
 # Render Plan
 # =============================================================================
 
