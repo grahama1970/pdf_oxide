@@ -158,16 +158,24 @@ def classify_block(text: str) -> str:
         r'^\s*\w+\s*\|\s*\w+',  # starts with word | word
         r'\w+\s*\|\s*\w+\s*$',  # ends with word | word
         r'^\d+\s*\|\s*\w+',  # starts with number | word
-        r'^\w+\s*\|\s*\d+',  # starts with word | number
+        r'^[\w\s]+\|\s*[\w\s]+\|',  # multiple pipe separators
+        r'^\s*\|\s*[\w\s]+\|\s*$',  # content surrounded by pipes
     ]
     
     # Check if this looks like table content
     for pattern in table_indicators:
         if re.search(pattern, clean_text):
-            # Additional check: if it's very short and structured, likely table content
-            if len(clean_text) < 100 and '|' in clean_text:
+            # Additional check: if it's structured and has table-like formatting
+            if '|' in clean_text and (len(clean_text) < 200 or clean_text.count('|') >= 2):
                 return 'table'
-
+    
+    # Additional table detection: structured data with consistent formatting
+    lines = clean_text.split('\n')
+    if len(lines) >= 2:
+        # Check if multiple lines have similar structure (potential table rows)
+        pipe_counts = [line.count('|') for line in lines if line.strip()]
+        if pipe_counts and len(set(pipe_counts)) <= 2 and max(pipe_counts) >= 2:
+            return 'table'
     # Chapter/section headers (including APPENDIX) - but not if followed by sentence
     if re.match(r'^(CHAPTER|INTRODUCTION|THE FUNDAMENTALS|THE CONTROLS|APPENDIX)', clean_text, re.I):
         # Check if this is a sentence (body text) vs a title (header)
@@ -312,9 +320,12 @@ def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
             ]
             
             # Extract actual table content instead of placeholder
+            table_text = None
+            
+            # Method 1: Try structured table extraction first
             try:
                 table_data = table.extract()
-                if table_data:
+                if table_data and any(any(cell for cell in row if cell and str(cell).strip()) for row in table_data):
                     # Convert table data to readable text
                     table_text_parts = []
                     for row in table_data:
@@ -327,35 +338,69 @@ def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
                     
                     if table_text_parts:
                         table_text = '\n'.join(table_text_parts)
-                    else:
-                        # If no content extracted, try alternative method
-                        try:
-                            # Get text from table bbox area
-                            table_rect = fitz.Rect(bbox)
-                            table_text = page.get_text("text", clip=table_rect).strip()
-                            if not table_text:
-                                table_text = f'[Table {i+1}: {table.row_count} rows x {table.col_count} cols]'
-                        except Exception:
-                            table_text = f'[Table {i+1}: {table.row_count} rows x {table.col_count} cols]'
-                else:
-                    # Try alternative extraction method
-                    try:
-                        table_rect = fitz.Rect(bbox)
-                        table_text = page.get_text("text", clip=table_rect).strip()
-                        if not table_text:
-                            table_text = f'[Table {i+1}: {table.row_count} rows x {table.col_count} cols]'
-                    except Exception:
-                        table_text = f'[Table {i+1}: {table.row_count} rows x {table.col_count} cols]'
             except Exception:
-                # Fallback to text extraction from bbox area
+                pass
+            
+            # Method 2: If structured extraction failed, try text extraction from bbox
+            if not table_text:
                 try:
                     table_rect = fitz.Rect(bbox)
-                    table_text = page.get_text("text", clip=table_rect).strip()
-                    if not table_text:
-                        table_text = f'[Table {i+1}: {table.row_count} rows x {table.col_count} cols]'
+                    extracted_text = page.get_text("text", clip=table_rect).strip()
+                    
+                    # Clean and validate the extracted text
+                    if extracted_text and len(extracted_text) > 10:  # Must have substantial content
+                        # Clean up whitespace but preserve structure
+                        cleaned_text = re.sub(r'\n\s*\n\s*\n+', '\n\n', extracted_text)
+                        cleaned_text = re.sub(r'[ \t]+', ' ', cleaned_text)
+                        table_text = cleaned_text.strip()
                 except Exception:
-                    table_text = f'[Table {i+1}: {table.row_count} rows x {table.col_count} cols]'
+                    pass
             
+            # Method 3: Try alternative text extraction methods
+            if not table_text:
+                try:
+                    # Try with different text extraction flags
+                    table_rect = fitz.Rect(bbox)
+                    extracted_text = page.get_text("dict", clip=table_rect)
+                    
+                    # Extract text from the dict structure
+                    text_parts = []
+                    for block in extracted_text.get('blocks', []):
+                        if block.get('type') == 0:  # Text block
+                            for line in block.get('lines', []):
+                                line_text = []
+                                for span in line.get('spans', []):
+                                    span_text = span.get('text', '').strip()
+                                    if span_text:
+                                        line_text.append(span_text)
+                                if line_text:
+                                    text_parts.append(' '.join(line_text))
+                    
+                    if text_parts:
+                        table_text = '\n'.join(text_parts)
+                except Exception:
+                    pass
+            
+            # Method 4: Fallback to expanded bbox extraction
+            if not table_text:
+                try:
+                    # Expand bbox slightly to catch edge content
+                    margin = 2
+                    expanded_rect = fitz.Rect(
+                        max(0, bbox[0] - margin),
+                        max(0, bbox[1] - margin),
+                        min(page_width, bbox[2] + margin),
+                        min(page_height, bbox[3] + margin)
+                    )
+                    extracted_text = page.get_text("text", clip=expanded_rect).strip()
+                    if extracted_text:
+                        table_text = extracted_text
+                except Exception:
+                    pass
+            
+            # Final fallback: Use placeholder only if absolutely no content found
+            if not table_text:
+                table_text = f'[Table {i+1}: {table.row_count} rows x {table.col_count} cols]'
             blocks.append({
                 'id': f'block_{block_id}',
                 'page': page_num,
@@ -429,8 +474,11 @@ def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
             # Use actual text bounds if available, otherwise use block bbox
             if actual_bbox:
                 # Add more generous margin to avoid clipping - especially for multi-line content
-                margin_x = 5  # horizontal margin
-                margin_y = 8  # vertical margin (more generous for line spacing)
+                # Calculate margin based on font size if available
+                avg_font_size = sum(font_sizes) / len(font_sizes) if font_sizes else 12
+                margin_x = max(6, int(avg_font_size * 0.5))  # horizontal margin
+                margin_y = max(10, int(avg_font_size * 0.8))  # vertical margin (more generous for line spacing)
+                
                 expanded_bbox = [
                     max(0, actual_bbox[0] - margin_x),
                     max(0, actual_bbox[1] - margin_y), 
@@ -439,8 +487,8 @@ def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
                 ]
             else:
                 # Fallback to block bbox with generous margin
-                margin_x = 4
-                margin_y = 6
+                margin_x = 6
+                margin_y = 10
                 expanded_bbox = [
                     max(0, bbox[0] - margin_x),
                     max(0, bbox[1] - margin_y), 
@@ -454,11 +502,29 @@ def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
             verification_text = page.get_text("text", clip=verification_rect).strip()
             
             # If verification text is significantly longer, use it instead
-            if verification_text and len(verification_text) > len(text) * 1.2:
+            if verification_text and len(verification_text) > len(text) * 1.1:  # Lower threshold
                 # Clean up the verification text similarly
                 verification_text = re.sub(r'\n\s*\n\s*\n+', '\n\n', verification_text)
                 verification_text = re.sub(r'[ \t]+', ' ', verification_text)
                 text = verification_text.strip()
+            
+            # Additional check: try even more generous bbox if text seems truncated
+            if text and (text.endswith('-') or len(text.split('\n')[-1]) < 10):
+                # Text might be cut off, try larger bbox
+                extra_margin_y = 15
+                larger_rect = fitz.Rect(
+                    expanded_bbox[0],
+                    expanded_bbox[1],
+                    expanded_bbox[2],
+                    min(page_height, expanded_bbox[3] + extra_margin_y)
+                )
+                larger_text = page.get_text("text", clip=larger_rect).strip()
+                if larger_text and len(larger_text) > len(text):
+                    larger_text = re.sub(r'\n\s*\n\s*\n+', '\n\n', larger_text)
+                    larger_text = re.sub(r'[ \t]+', ' ', larger_text)
+                    text = larger_text.strip()
+                    # Update bbox to match the larger extraction
+                    expanded_bbox[3] = min(page_height, expanded_bbox[3] + extra_margin_y)
 
             # Normalize bbox to 0-1 range
             norm_bbox = [
@@ -506,7 +572,6 @@ def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
                 'confidence': 0.95,
             })
             block_id += 1
-
     result = {
         'pdfUrl': f'/{pdf_name}',
         'pageCount': doc.page_count,
