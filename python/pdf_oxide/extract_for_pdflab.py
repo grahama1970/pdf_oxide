@@ -86,6 +86,8 @@ def _is_likely_sentence(text: str) -> bool:
         r'\bprovides?\b', r'\bdescribes?\b', r'\bdefines?\b',
         r'\bincludes?\b', r'\bcontains?\b', r'\baddresses\b',
         r'\bensures?\b', r'\bdirected\b', r'\brequires?\b',
+        r'\bshall\b', r'\bmust\b', r'\bshould\b', r'\bmay\b',
+        r'\bestablishes?\b', r'\bimplements?\b', r'\bmaintains?\b',
     ]
     text_lower = text.lower()
     for pattern in sentence_indicators:
@@ -95,6 +97,26 @@ def _is_likely_sentence(text: str) -> bool:
     # Multiple sentences (period followed by capital letter)
     if re.search(r'\.\s+[A-Z]', text):
         return True
+    
+    # Contains common sentence connectors
+    connectors = [
+        r'\band\b', r'\bor\b', r'\bbut\b', r'\bhowever\b', r'\btherefore\b',
+        r'\bmoreover\b', r'\bfurthermore\b', r'\bin addition\b', r'\bfor example\b',
+        r'\bsuch as\b', r'\bincluding\b', r'\bas well as\b'
+    ]
+    for pattern in connectors:
+        if re.search(pattern, text_lower):
+            return True
+    
+    # Contains pronouns (common in sentences, rare in titles)
+    pronouns = [r'\bthis\b', r'\bthat\b', r'\bthese\b', r'\bthose\b', r'\bit\b', r'\bthey\b']
+    for pattern in pronouns:
+        if re.search(pattern, text_lower):
+            return True
+    
+    # Ends with punctuation that suggests a complete sentence
+    if re.search(r'[.!?]\s*$', text):
+        return True
 
     return False
 
@@ -103,8 +125,12 @@ def classify_block(text: str) -> str:
     """Classify a block based on its text content."""
     clean_text = text.strip()
 
-    # Page numbers
+    # Page numbers - be more specific to avoid false positives
     if re.match(r'^Page\s+\d+(?:\s+of\s+\d+)?$', clean_text, re.I):
+        return 'page_number'
+    
+    # Also catch page numbers at end of line (common pattern)
+    if re.match(r'.*\bPage\s+\d+(?:\s+of\s+\d+)?\s*$', clean_text, re.I) and len(clean_text) < 50:
         return 'page_number'
 
     # Running headers (page chrome with underlines) - check before other patterns
@@ -122,7 +148,9 @@ def classify_block(text: str) -> str:
 
     # NIST SP document titles (not running headers - those have underlines)
     if re.match(r'^NIST\s+SP', clean_text, re.I):
-        return 'header'
+        # But make sure it's not a sentence about NIST SP
+        if not _is_likely_sentence(clean_text):
+            return 'header'
 
     # Detect table content patterns (common in table cells)
     table_indicators = [
@@ -183,6 +211,26 @@ def classify_block(text: str) -> str:
         len(clean_text) < 60 and 
         not _is_likely_sentence(clean_text)):
         return 'header'
+    
+    # Improve detection of headers that might be misclassified as text
+    # Look for patterns that are likely headers but might not match above rules
+    
+    # Short text with title-case that doesn't look like a sentence
+    if (len(clean_text) < 100 and 
+        re.match(r'^[A-Z][a-z]+(?:\s+[A-Z][a-z]*)*$', clean_text) and
+        not _is_likely_sentence(clean_text) and
+        not re.search(r'\b(the|and|or|of|in|on|at|to|for|with|by)\b', clean_text.lower())):
+        return 'header'
+    
+    # Text that looks like a section or subsection title
+    if (len(clean_text) < 120 and
+        re.match(r'^[A-Z]', clean_text) and
+        clean_text.count('.') <= 1 and  # Not multiple sentences
+        not _is_likely_sentence(clean_text) and
+        not re.search(r'\b(this|that|these|those|which|where|when|how)\b', clean_text.lower())):
+        # Additional check: does it end with a period? If so, less likely to be header
+        if not clean_text.endswith('.'):
+            return 'header'
 
     return 'text'
 
@@ -320,8 +368,8 @@ def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
             })
             block_id += 1
 
-        # Get text blocks with improved bbox handling
-        text_dict = page.get_text('dict', flags=fitz.TEXT_PRESERVE_WHITESPACE | fitz.TEXT_PRESERVE_LIGATURES)
+        # Get text blocks with improved bbox handling and text extraction
+        text_dict = page.get_text('dict', flags=fitz.TEXT_PRESERVE_WHITESPACE | fitz.TEXT_PRESERVE_LIGATURES | fitz.TEXT_PRESERVE_SPANS)
 
         for blk in text_dict.get('blocks', []):
             if blk.get('type') != 0:  # Skip image blocks
@@ -333,60 +381,84 @@ def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
             if any(boxes_overlap(bbox, tb, 0.7) for tb in table_bboxes):
                 continue
 
-            # Extract text from spans with better handling
+            # Extract text from spans with better handling and preserve all content
             text_parts = []
             font_sizes = []
+            all_spans = []
             
             for line in blk.get('lines', []):
                 line_text = []
                 for span in line.get('spans', []):
-                    span_text = span.get('text', '').strip()
+                    span_text = span.get('text', '')
+                    # Don't strip here - preserve whitespace that might be significant
                     if span_text:
                         line_text.append(span_text)
                         font_sizes.append(span.get('size', 12))
+                        all_spans.append(span)
                 
                 if line_text:
-                    text_parts.append(' '.join(line_text))
+                    # Join spans in line, preserving internal spacing
+                    line_content = ''.join(line_text)
+                    text_parts.append(line_content)
 
-            text = '\n'.join(text_parts).strip()
+            # Join lines with newlines and then clean up excessive whitespace
+            raw_text = '\n'.join(text_parts)
+            # Clean up text but preserve structure
+            text = re.sub(r'\n\s*\n\s*\n+', '\n\n', raw_text)  # Collapse multiple blank lines
+            text = re.sub(r'[ \t]+', ' ', text)  # Normalize spaces but keep structure
+            text = text.strip()
+            
             if not text:
                 continue
 
-            # Improve bbox calculation to avoid clipping content
-            # Calculate actual text bounds more accurately
+            # Improve bbox calculation to avoid clipping content - be more generous
+            # Calculate actual text bounds more accurately from all spans
             actual_bbox = None
-            for line in blk.get('lines', []):
-                for span in line.get('spans', []):
-                    span_bbox = span.get('bbox')
-                    if span_bbox:
-                        if actual_bbox is None:
-                            actual_bbox = list(span_bbox)
-                        else:
-                            # Expand to include this span
-                            actual_bbox[0] = min(actual_bbox[0], span_bbox[0])  # left
-                            actual_bbox[1] = min(actual_bbox[1], span_bbox[1])  # top
-                            actual_bbox[2] = max(actual_bbox[2], span_bbox[2])  # right
-                            actual_bbox[3] = max(actual_bbox[3], span_bbox[3])  # bottom
+            for span in all_spans:
+                span_bbox = span.get('bbox')
+                if span_bbox:
+                    if actual_bbox is None:
+                        actual_bbox = list(span_bbox)
+                    else:
+                        # Expand to include this span
+                        actual_bbox[0] = min(actual_bbox[0], span_bbox[0])  # left
+                        actual_bbox[1] = min(actual_bbox[1], span_bbox[1])  # top
+                        actual_bbox[2] = max(actual_bbox[2], span_bbox[2])  # right
+                        actual_bbox[3] = max(actual_bbox[3], span_bbox[3])  # bottom
             
             # Use actual text bounds if available, otherwise use block bbox
             if actual_bbox:
-                # Add small margin to avoid clipping but not too much to avoid adjacent content
-                margin = 3  # pixels
+                # Add more generous margin to avoid clipping - especially for multi-line content
+                margin_x = 5  # horizontal margin
+                margin_y = 8  # vertical margin (more generous for line spacing)
                 expanded_bbox = [
-                    max(0, actual_bbox[0] - margin),
-                    max(0, actual_bbox[1] - margin), 
-                    min(page_width, actual_bbox[2] + margin),
-                    min(page_height, actual_bbox[3] + margin)
+                    max(0, actual_bbox[0] - margin_x),
+                    max(0, actual_bbox[1] - margin_y), 
+                    min(page_width, actual_bbox[2] + margin_x),
+                    min(page_height, actual_bbox[3] + margin_y)
                 ]
             else:
-                # Fallback to block bbox with smaller margin
-                margin = 2  # pixels
+                # Fallback to block bbox with generous margin
+                margin_x = 4
+                margin_y = 6
                 expanded_bbox = [
-                    max(0, bbox[0] - margin),
-                    max(0, bbox[1] - margin), 
-                    min(page_width, bbox[2] + margin),
-                    min(page_height, bbox[3] + margin)
+                    max(0, bbox[0] - margin_x),
+                    max(0, bbox[1] - margin_y), 
+                    min(page_width, bbox[2] + margin_x),
+                    min(page_height, bbox[3] + margin_y)
                 ]
+
+            # Double-check text extraction by re-extracting from the expanded bbox
+            # This helps catch any content that might have been missed
+            verification_rect = fitz.Rect(expanded_bbox)
+            verification_text = page.get_text("text", clip=verification_rect).strip()
+            
+            # If verification text is significantly longer, use it instead
+            if verification_text and len(verification_text) > len(text) * 1.2:
+                # Clean up the verification text similarly
+                verification_text = re.sub(r'\n\s*\n\s*\n+', '\n\n', verification_text)
+                verification_text = re.sub(r'[ \t]+', ' ', verification_text)
+                text = verification_text.strip()
 
             # Normalize bbox to 0-1 range
             norm_bbox = [
