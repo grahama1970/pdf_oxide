@@ -279,128 +279,120 @@ def boxes_overlap(box1, box2, threshold=0.5) -> bool:
 # Extraction
 # =============================================================================
 
-def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
-    """Extract PDF content for PDF Lab UI.
+def build_section_ranges(toc_entries: list[dict], effective_page_count: int) -> list[dict]:
+    """Build non-decreasing section ranges from TOC entries.
 
-    Returns dict with:
-        pdfUrl: relative URL for the PDF
-        pageCount: number of pages
-        blocks: list of extracted blocks with classification
+    Ranges are clamped to [0, effective_page_count-1] and never produce end < start.
     """
+    headers = [e for e in toc_entries if e.get('type') == 'header' and isinstance(e.get('page'), int)]
+    headers.sort(key=lambda e: e['page'])
+
+    ranges = []
+    if effective_page_count <= 0:
+        return ranges
+
+    for i, entry in enumerate(headers):
+        start = max(0, min(entry['page'] - 1, effective_page_count - 1))
+        if i + 1 < len(headers):
+            next_start = max(0, min(headers[i + 1]['page'] - 1, effective_page_count - 1))
+            end = max(start, next_start - 1)
+        else:
+            end = effective_page_count - 1
+
+        ranges.append({'title': entry['title'], 'start': start, 'end': end})
+
+    return ranges
+
+
+def section_type_for_page(page_num: int, section_ranges: list[dict]) -> str | None:
+    """Map page index to coarse section type using TOC-derived ranges."""
+    for section in section_ranges:
+        if section['start'] <= page_num <= section['end']:
+            title = section['title'].upper()
+            if 'ERRATA' in title:
+                return 'errata'
+            if 'GLOSSARY' in title:
+                return 'glossary'
+            if 'SUMMARY' in title and ('CONTROL' in title or 'APPENDIX' in title or 'SUMMARIES' in title):
+                return 'summaries'
+                return 'summaries'
+    return None
+
+
+def _merge_bracket_citation_rows(table_text: str) -> str:
+    lines = [ln for ln in table_text.splitlines() if ln.strip()]
+    if len(lines) < 2:
+        return table_text
+
+    merged = [lines[0]]
+    citation_re = re.compile(r'^\[\s*[^\]]+\s*\]$')
+
+    for line in lines[1:]:
+        stripped = line.strip()
+        if citation_re.match(stripped) and len(merged) > 1 and '|' in merged[-1]:
+            merged[-1] = f"{merged[-1]} {stripped}"
+        else:
+            merged.append(line)
+
+    return '\n'.join(merged)
+
+
+def extract_pdf(pdf_path: str, output_path: str | None = None, max_pages: int | None = None) -> dict:
+    """Extract PDF content for PDF Lab UI."""
     doc = fitz.open(pdf_path)
     pdf_name = Path(pdf_path).name
 
+    effective_page_count = min(doc.page_count, max_pages) if max_pages else doc.page_count
+
     blocks = []
     block_id = 0
+    toc_entries_all = []
 
-    # First pass: collect TOC titles for reference
-    toc_titles = set()
+    print(f'Extracting {effective_page_count} pages from {pdf_name}...')
 
-    print(f'Extracting {doc.page_count} pages from {pdf_name}...')
-
-    for page_num in range(doc.page_count):
+    for page_num in range(effective_page_count):
         if page_num % 50 == 0:
             print(f'  Page {page_num}...')
 
         page = doc[page_num]
         page_width, page_height = page.rect.width, page.rect.height
 
-        # Detect tables
         tables = page.find_tables()
         table_bboxes = [t.bbox for t in tables.tables]
 
-        # Add table blocks with actual content extraction
         for i, table in enumerate(tables.tables):
             bbox = table.bbox
-            norm_bbox = [
-                bbox[0] / page_width,
-                bbox[1] / page_height,
-                bbox[2] / page_width,
-                bbox[3] / page_height,
-            ]
-            
-            # Extract actual table content instead of placeholder
+            norm_bbox = [bbox[0] / page_width, bbox[1] / page_height, bbox[2] / page_width, bbox[3] / page_height]
             table_text = None
-            
-            # Method 1: Try structured table extraction first
+
             try:
                 table_data = table.extract()
                 if table_data and any(any(cell for cell in row if cell and str(cell).strip()) for row in table_data):
-                    # Convert table data to readable text
                     table_text_parts = []
                     for row in table_data:
-                        if row:  # Skip empty rows
-                            # Filter out empty/None cells and join with separator
+                        if row:
                             row_cells = [str(cell).strip() for cell in row if cell and str(cell).strip()]
                             if row_cells:
-                                row_text = ' | '.join(row_cells)
-                                table_text_parts.append(row_text)
-                    
+                                table_text_parts.append(' | '.join(row_cells))
                     if table_text_parts:
                         table_text = '\n'.join(table_text_parts)
             except Exception:
                 pass
-            
-            # Method 2: If structured extraction failed, try text extraction from bbox
+
             if not table_text:
                 try:
                     table_rect = fitz.Rect(bbox)
-                    extracted_text = page.get_text("text", clip=table_rect).strip()
-                    
-                    # Clean and validate the extracted text
-                    if extracted_text and len(extracted_text) > 10:  # Must have substantial content
-                        # Clean up whitespace but preserve structure
+                    extracted_text = page.get_text('text', clip=table_rect).strip()
+                    if extracted_text and len(extracted_text) > 10:
                         cleaned_text = re.sub(r'\n\s*\n\s*\n+', '\n\n', extracted_text)
                         cleaned_text = re.sub(r'[ \t]+', ' ', cleaned_text)
                         table_text = cleaned_text.strip()
                 except Exception:
                     pass
-            
-            # Method 3: Try alternative text extraction methods
-            if not table_text:
-                try:
-                    # Try with different text extraction flags
-                    table_rect = fitz.Rect(bbox)
-                    extracted_text = page.get_text("dict", clip=table_rect)
-                    
-                    # Extract text from the dict structure
-                    text_parts = []
-                    for block in extracted_text.get('blocks', []):
-                        if block.get('type') == 0:  # Text block
-                            for line in block.get('lines', []):
-                                line_text = []
-                                for span in line.get('spans', []):
-                                    span_text = span.get('text', '').strip()
-                                    if span_text:
-                                        line_text.append(span_text)
-                                if line_text:
-                                    text_parts.append(' '.join(line_text))
-                    
-                    if text_parts:
-                        table_text = '\n'.join(text_parts)
-                except Exception:
-                    pass
-            
-            # Method 4: Fallback to expanded bbox extraction
-            if not table_text:
-                try:
-                    # Expand bbox slightly to catch edge content
-                    margin = 2
-                    expanded_rect = fitz.Rect(
-                        max(0, bbox[0] - margin),
-                        max(0, bbox[1] - margin),
-                        min(page_width, bbox[2] + margin),
-                        min(page_height, bbox[3] + margin)
-                    )
-                    extracted_text = page.get_text("text", clip=expanded_rect).strip()
-                    if extracted_text:
-                        table_text = extracted_text
-                except Exception:
-                    pass
-            
-            # Final fallback: Use placeholder only if absolutely no content found
+
             if not table_text:
                 table_text = f'[Table {i+1}: {table.row_count} rows x {table.col_count} cols]'
+
             blocks.append({
                 'id': f'block_{block_id}',
                 'page': page_num,
@@ -413,153 +405,43 @@ def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
             })
             block_id += 1
 
-        # Get text blocks with improved bbox handling and text extraction
         text_dict = page.get_text('dict', flags=fitz.TEXT_PRESERVE_WHITESPACE | fitz.TEXT_PRESERVE_LIGATURES | fitz.TEXT_PRESERVE_SPANS)
 
         for blk in text_dict.get('blocks', []):
-            if blk.get('type') != 0:  # Skip image blocks
+            if blk.get('type') != 0:
                 continue
 
             bbox = blk['bbox']
-
-            # Skip if overlaps significantly with table (use higher threshold to be more precise)
             if any(boxes_overlap(bbox, tb, 0.7) for tb in table_bboxes):
                 continue
 
-            # Extract text from spans with better handling and preserve all content
             text_parts = []
-            font_sizes = []
-            all_spans = []
-            
             for line in blk.get('lines', []):
-                line_text = []
-                for span in line.get('spans', []):
-                    span_text = span.get('text', '')
-                    # Don't strip here - preserve whitespace that might be significant
-                    if span_text:
-                        line_text.append(span_text)
-                        font_sizes.append(span.get('size', 12))
-                        all_spans.append(span)
-                
+                line_text = ''.join(span.get('text', '') for span in line.get('spans', []) if span.get('text', ''))
                 if line_text:
-                    # Join spans in line, preserving internal spacing
-                    line_content = ''.join(line_text)
-                    text_parts.append(line_content)
+                    text_parts.append(line_text)
 
-            # Join lines with newlines and then clean up excessive whitespace
-            raw_text = '\n'.join(text_parts)
-            # Clean up text but preserve structure
-            text = re.sub(r'\n\s*\n\s*\n+', '\n\n', raw_text)  # Collapse multiple blank lines
-            text = re.sub(r'[ \t]+', ' ', text)  # Normalize spaces but keep structure
-            text = text.strip()
-            
+            text = re.sub(r'[ \t]+', ' ', re.sub(r'\n\s*\n\s*\n+', '\n\n', '\n'.join(text_parts))).strip()
             if not text:
                 continue
 
-            # Improve bbox calculation to avoid clipping content - be more generous
-            # Calculate actual text bounds more accurately from all spans
-            actual_bbox = None
-            for span in all_spans:
-                span_bbox = span.get('bbox')
-                if span_bbox:
-                    if actual_bbox is None:
-                        actual_bbox = list(span_bbox)
-                    else:
-                        # Expand to include this span
-                        actual_bbox[0] = min(actual_bbox[0], span_bbox[0])  # left
-                        actual_bbox[1] = min(actual_bbox[1], span_bbox[1])  # top
-                        actual_bbox[2] = max(actual_bbox[2], span_bbox[2])  # right
-                        actual_bbox[3] = max(actual_bbox[3], span_bbox[3])  # bottom
-            
-            # Use actual text bounds if available, otherwise use block bbox
-            if actual_bbox:
-                # Add more generous margin to avoid clipping - especially for multi-line content
-                # Calculate margin based on font size if available
-                avg_font_size = sum(font_sizes) / len(font_sizes) if font_sizes else 12
-                margin_x = max(6, int(avg_font_size * 0.5))  # horizontal margin
-                margin_y = max(10, int(avg_font_size * 0.8))  # vertical margin (more generous for line spacing)
-                
-                expanded_bbox = [
-                    max(0, actual_bbox[0] - margin_x),
-                    max(0, actual_bbox[1] - margin_y), 
-                    min(page_width, actual_bbox[2] + margin_x),
-                    min(page_height, actual_bbox[3] + margin_y)
-                ]
-            else:
-                # Fallback to block bbox with generous margin
-                margin_x = 6
-                margin_y = 10
-                expanded_bbox = [
-                    max(0, bbox[0] - margin_x),
-                    max(0, bbox[1] - margin_y), 
-                    min(page_width, bbox[2] + margin_x),
-                    min(page_height, bbox[3] + margin_y)
-                ]
-
-            # Double-check text extraction by re-extracting from the expanded bbox
-            # This helps catch any content that might have been missed
-            verification_rect = fitz.Rect(expanded_bbox)
-            verification_text = page.get_text("text", clip=verification_rect).strip()
-            
-            # If verification text is significantly longer, use it instead
-            if verification_text and len(verification_text) > len(text) * 1.1:  # Lower threshold
-                # Clean up the verification text similarly
-                verification_text = re.sub(r'\n\s*\n\s*\n+', '\n\n', verification_text)
-                verification_text = re.sub(r'[ \t]+', ' ', verification_text)
-                text = verification_text.strip()
-            
-            # Additional check: try even more generous bbox if text seems truncated
-            if text and (text.endswith('-') or len(text.split('\n')[-1]) < 10):
-                # Text might be cut off, try larger bbox
-                extra_margin_y = 15
-                larger_rect = fitz.Rect(
-                    expanded_bbox[0],
-                    expanded_bbox[1],
-                    expanded_bbox[2],
-                    min(page_height, expanded_bbox[3] + extra_margin_y)
-                )
-                larger_text = page.get_text("text", clip=larger_rect).strip()
-                if larger_text and len(larger_text) > len(text):
-                    larger_text = re.sub(r'\n\s*\n\s*\n+', '\n\n', larger_text)
-                    larger_text = re.sub(r'[ \t]+', ' ', larger_text)
-                    text = larger_text.strip()
-                    # Update bbox to match the larger extraction
-                    expanded_bbox[3] = min(page_height, expanded_bbox[3] + extra_margin_y)
-
-            # Normalize bbox to 0-1 range
-            norm_bbox = [
-                expanded_bbox[0] / page_width,
-                expanded_bbox[1] / page_height,
-                expanded_bbox[2] / page_width,
-                expanded_bbox[3] / page_height,
-            ]
-
-            # Classify with improved logic
+            norm_bbox = [bbox[0] / page_width, bbox[1] / page_height, bbox[2] / page_width, bbox[3] / page_height]
             block_type = classify_block(text)
-
-            # Check for TOC entries
             toc_entries = None
-            qids = None
 
-            # If this looks like TOC content (has dot leaders)
             if '...' in text or re.search(r'\s+\.\s+\d+', text):
-                # Try to parse individual TOC lines
-                lines = text.split('\n')
                 parsed_entries = []
-                for line in lines:
+                for line in text.split('\n'):
                     entry = parse_toc_entry(line.strip())
                     if entry:
                         entry_type = classify_toc_title(entry['title'])
-                        parsed_entries.append({
-                            'title': entry['title'],
-                            'page': entry['page'],
-                            'type': entry_type,
-                        })
-                        toc_titles.add(entry['title'])
+                        parsed = {'title': entry['title'], 'page': entry['page'], 'type': entry_type}
+                        parsed_entries.append(parsed)
+                        toc_entries_all.append(parsed)
 
                 if parsed_entries:
                     toc_entries = parsed_entries
-                    block_type = 'header'  # TOC blocks are headers
+                    block_type = 'header'
 
             blocks.append({
                 'id': f'block_{block_id}',
@@ -567,24 +449,29 @@ def extract_pdf(pdf_path: str, output_path: str | None = None) -> dict:
                 'bbox': norm_bbox,
                 'blockType': block_type,
                 'text': text,
-                'qids': qids,
+                'qids': None,
                 'tocEntries': toc_entries,
                 'confidence': 0.95,
             })
             block_id += 1
-    result = {
-        'pdfUrl': f'/{pdf_name}',
-        'pageCount': doc.page_count,
-        'blocks': blocks,
-    }
 
-    # Print summary
+    section_ranges = build_section_ranges(toc_entries_all, effective_page_count)
+
+    for block in blocks:
+        if block.get('blockType') != 'table':
+            continue
+        section_type = section_type_for_page(block.get('page', -1), section_ranges)
+        if section_type in {'glossary', 'acronyms'}:
+            block['text'] = _merge_bracket_citation_rows(block.get('text', ''))
+
+    result = {'pdfUrl': f'/{pdf_name}', 'pageCount': effective_page_count, 'blocks': blocks}
+
     type_counts = {}
     for b in blocks:
         t = b['blockType']
         type_counts[t] = type_counts.get(t, 0) + 1
 
-    print(f'\nExtraction complete:')
+    print('\nExtraction complete:')
     for t, c in sorted(type_counts.items()):
         print(f'  {t}: {c}')
 
