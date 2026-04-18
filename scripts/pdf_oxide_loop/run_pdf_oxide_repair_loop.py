@@ -1555,8 +1555,12 @@ def run_code_runner(
         "--backend", backend,
     ]
 
+    # Our DoD re-extracts a 492-page PDF — far longer than /code-runner's
+    # 60s default. Bump it via CODE_RUNNER_DOD_TIMEOUT (read by evidence.py).
+    env = {**os.environ, "CODE_RUNNER_DOD_TIMEOUT": "900"}
+
     logger.info("Running code-runner with spec {}", spec_path)
-    return subprocess.run(cmd, cwd=repo_root, capture_output=True, text=True)
+    return subprocess.run(cmd, cwd=repo_root, capture_output=True, text=True, env=env)
 
 
 # ----------------------------------------------------------------------------
