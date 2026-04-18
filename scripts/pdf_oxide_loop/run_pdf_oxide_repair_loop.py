@@ -1,30 +1,31 @@
 #!/usr/bin/env python3
-"""Conservative starter loop for pdf_oxide extraction repair.
+"""Deterministic repair loop for pdf_oxide shaping/classification fixes.
 
-This script is intentionally narrower than the earlier aspirational design.
-It assumes:
+This harness assumes:
 
 1. pdf_oxide performs deterministic pass-1 extraction.
-2. A shaped extraction function (currently extract_for_pdflab.extract_pdf) emits
-   PDF Lab-style blocks.
-3. The loop is trying to reduce obvious misses and bad shaping decisions.
-4. /code-runner is an exception handler that edits a small allowlist.
+2. A shaped extraction function (currently `extract_for_pdflab.extract_pdf`)
+   emits PDF Lab-style blocks from that pass-1 evidence.
+3. `/code-runner` is an exception handler that edits a small allowlist when the
+   shaped output regresses on a benchmark PDF.
 
-What this version does:
-- Builds a frozen deterministic reference from pdf_oxide primitives.
-- Runs the shaped extractor.
-- Scans for a conservative set of obvious defects.
-- Optionally renders suspicious pages for visual review.
-- Invokes /code-runner with a bounded prompt.
-- Gates acceptance against the last ACCEPTED baseline only.
+What this script does:
+- Builds and caches a frozen deterministic reference from pdf_oxide primitives.
+- Runs the shaped extractor and scans for conservative structural defects.
+- Builds a per-page review queue and a page-local focus packet for each round.
+- Generates focus-page screenshots and bbox-overlay images for `/code-runner`.
+- Optionally builds a frozen VLM visual reference (`--enable-visual`) and adds
+  visual findings as secondary evidence.
+- Gates acceptance against the last accepted blocking baseline plus any
+  configured benchmark PDFs.
 
-What this version does NOT do yet:
-- VLM adjudication in the hot path.
-- Repo-specific viewer integration beyond an optional render command template.
-- Aggressive semantic reasoning about sections/requirements.
-- Automatic git commit / revert orchestration.
+What this script does not do by default:
+- Use VLM findings as the primary accept/reject gate.
+- Perform repo/viewer-specific UI integration beyond page PNG generation.
+- Auto-commit accepted rounds to git.
 
-The intent is to give a project agent a clean, grounded starting point.
+The intent is to keep the loop deterministic by default while still giving the
+repair agent page-local visual evidence and exact extracted geometry.
 """
 from __future__ import annotations
 
@@ -34,6 +35,7 @@ import datetime as dt
 import hashlib
 import json
 import os
+import random
 import shlex
 import shutil
 import subprocess
@@ -54,6 +56,7 @@ DEFAULT_WORKDIR = Path("/tmp/pdf_oxide_repair_loop")
 DEFAULT_CODE_RUNNER = Path("/home/graham/.claude/skills/code-runner/run.sh")
 REFERENCE_SNAPSHOT_VERSION = 2
 METRICS_VERSION = 2
+FOCUS_RENDER_DPI = 150
 
 
 # ----------------------------------------------------------------------------
@@ -211,6 +214,18 @@ CATEGORY_WEIGHTS = {
     "BAD_BOUNDARY": 3,
     "OVER_MERGE": 4,
     "OVER_SPLIT": 4,
+}
+
+
+BLOCK_TYPE_COLORS = {
+    "table": "#3B82F6",
+    "header": "#F97316",
+    "text": "#A3A3A3",
+    "figure": "#22C55E",
+    "equation": "#1D4ED8",
+    "caption": "#F59E0B",
+    "boilerplate": "#64748B",
+    "page_number": "#EC4899",
 }
 
 
@@ -673,31 +688,150 @@ def build_reference_snapshot(pdf_path: Path, output_path: Path, max_pages: int |
 #     Drift is warned, never auto-resolved.
 
 
-VISUAL_PROMPT_VERSION = "v2"
+VISUAL_PROMPT_VERSION = "v3"
 
-VISUAL_PROMPT_TEMPLATE = """You are auditing a single PDF page rendered as an image.
+# Two prompts, two roles:
+#   VISUAL_REFERENCE_PROMPT — "what is on this page" element discovery used to
+#     build the frozen VLM reference snapshot (build_visual_reference()).
+#     Evidence-only. Never drives corrections directly.
+#
+#   VISUAL_REVIEW_PROMPT    — overlay-aware adjudication against EXISTING
+#     extracted blocks. Used by the per-page correction pass to decide whether
+#     each candidate block is correct / bad_bbox / wrong_type / over_merge /
+#     over_split, and to surface missed visible regions.
+#
+# Both prompts use the real shaped-extractor taxonomy — the 5 labels that
+# classify_block() in python/pdf_oxide/extract_for_pdflab.py actually emits,
+# confirmed against a full-document extraction:
+#
+#     text, header, table, boilerplate, page_number
+#
+# Nothing else. No figure/equation/caption — pdf_oxide does not emit those,
+# and telling the VLM to label them would create a false taxonomy the gate
+# cannot verify. If the extractor gains new types, add them here and bump
+# VISUAL_PROMPT_VERSION so the cached visual reference is rebuilt.
+#
+# Coord convention: pixel / top-left origin on the rendered PNG (NOT PDF
+# points, NOT PDF bottom-left). Image dimensions are substituted at format()
+# time so the VLM knows the valid range.
+
+
+VISUAL_REFERENCE_PROMPT = """You are auditing a single PDF page rendered as an image.
 
 Task: list every visibly distinct content element on the page.
 
 For each element, return:
-  type   one of: heading, paragraph, list, table, figure, caption,
-         header, footer, page_number, equation, code, sidebar
+  type   one of (shaped-extractor taxonomy):
+           text         body paragraphs, sentences, list items
+           header       section/subsection titles (any visible heading level)
+           table        tabular data arranged in rows and columns
+           boilerplate  running header/footer, legal notice, watermark
+           page_number  a standalone page number at the top or bottom
   bbox   [x0, y0, x1, y1] in pixels in THIS image's coordinate system,
          top-left origin. The image is {width}x{height} pixels.
+         0 <= x0 < x1 <= {width} and 0 <= y0 < y1 <= {height}.
   text   short excerpt (<= 200 chars) of the visible text; "" for non-text.
-  level  integer 1-6 for headings; null otherwise.
+  level  integer 1-6 for header elements; null otherwise.
 
 Rules:
   - Only report what you can SEE. Do not infer content from context.
+  - Use ONLY the five types above. If a visible element does not fit
+    (e.g. a figure, equation, or caption), skip it — the extractor does
+    not produce those types, so reporting them would pollute the oracle.
   - Prefer splitting into separate elements over merging.
-    A figure and its caption are two elements, not one.
-  - Skip purely decorative rules, borders, or bullets unless they define structure.
-  - If the page is blank or only contains watermark/boilerplate, return {{"elements": []}}.
+  - Skip purely decorative rules, borders, or bullets unless they define
+    structure.
+  - If the page is blank or only contains watermark/boilerplate, return
+    {{"elements": []}}.
 
 Return valid JSON only. No prose, no commentary, no markdown fences.
 Exact shape:
 {{"elements": [ {{"type": "...", "bbox": [x0,y0,x1,y1], "text": "...", "level": null}} ]}}
 """
+
+
+VISUAL_REVIEW_PROMPT = """You are reviewing how a PDF extractor shaped a single page.
+
+You see:
+  - The rendered page image ({width}x{height} pixels, top-left origin).
+  - A JSON list of candidate BLOCKS the extractor emitted for this page,
+    appended below as <BLOCKS>. Each block has: id, type, bbox (pixels),
+    text (excerpt).
+
+Your job is NOT to re-extract the page. ADJUDICATE each candidate against
+what you can see, and flag any VISIBLE region the extractor missed.
+
+Taxonomy (shaped-extractor types — use these EXACT strings, nothing else):
+  text, header, table, boilerplate, page_number
+
+For each candidate block, assign exactly one verdict:
+
+  correct      bbox and type both look right given what is visible.
+  bad_bbox     type is right, but the bbox is wrong (cuts off text, extends
+               into neighboring region, off by a line). Provide correct_bbox.
+  wrong_type   bbox is right, but the type is wrong. Provide correct_type.
+  over_merge   block combines two or more distinct elements that should have
+               been separate. Provide split_bboxes (one per intended piece).
+  over_split   block is one of several fragments of a single logical element.
+               Provide merge_with (list of other block ids that belong with it).
+
+Also return MISSED regions: visible elements on the page that have NO
+corresponding candidate block. Use verdict "missed" with a fresh proposed
+type + bbox; no id needed.
+
+Concrete examples (illustrative shapes; do not copy verbatim):
+
+  correct:
+    {{"id": "b_001", "verdict": "correct"}}
+
+  bad_bbox (bbox shaved the last line of a paragraph):
+    {{"id": "b_014", "verdict": "bad_bbox",
+     "correct_bbox": [72, 612, 540, 780],
+     "reason": "lost final line ending with '... not applicable.'"}}
+
+  wrong_type (a 3-row table was extracted as text):
+    {{"id": "b_027", "verdict": "wrong_type", "correct_type": "table",
+     "reason": "3 rows x 4 cols with visible rules"}}
+
+  over_merge (header + first paragraph combined into one text block):
+    {{"id": "b_033", "verdict": "over_merge",
+     "split_bboxes": [
+       {{"type": "header", "bbox": [72, 120, 540, 150]}},
+       {{"type": "text",   "bbox": [72, 160, 540, 360]}}
+     ],
+     "reason": "section title 'Controls' merged into first paragraph"}}
+
+  over_split (a single paragraph emitted as two adjacent text blocks):
+    {{"id": "b_041", "verdict": "over_split", "merge_with": ["b_042"],
+     "reason": "sentence continues from b_041 into b_042 without gap"}}
+
+  missed (table in bottom-right, not in candidate blocks):
+    {{"id": null, "verdict": "missed", "type": "table",
+     "bbox": [330, 640, 590, 780],
+     "reason": "3x2 table titled 'Impact Levels' not in candidates"}}
+
+Strict rules:
+  - Only report judgements for blocks you can see in the image.
+  - Do not invent blocks — if you cannot locate candidate b_XXX visually,
+    mark it bad_bbox with "reason": "not locatable on image".
+  - Use only the 5 taxonomy strings above for correct_type, split_bboxes[*].type,
+    and missed.type. Visible figures, equations, and captions are out of scope
+    (the extractor does not emit them); skip such regions silently.
+  - Bounding boxes must satisfy 0 <= x0 < x1 <= {width} and
+    0 <= y0 < y1 <= {height}.
+  - "reason" is a short string (<= 200 chars) explaining the evidence.
+
+Return valid JSON only. No prose, no commentary, no markdown fences.
+Exact shape:
+{{"judgements": [
+  {{"id": "b_...", "verdict": "...", ...fields per verdict above...}}
+]}}
+"""
+
+
+# Backwards-compatible alias — existing build_visual_reference() call site
+# formats this with width/height only.
+VISUAL_PROMPT_TEMPLATE = VISUAL_REFERENCE_PROMPT
 
 
 SCILLM_BASE_URL = os.environ.get("SCILLM_BASE_URL", "http://localhost:4001")
@@ -790,13 +924,21 @@ def _call_vlm_sonnet(image_path: Path, prompt: str, model: str, timeout: float =
 
 
 def _png_dimensions(png_path: Path) -> tuple[int, int]:
-    """Read PNG width/height from header without a full decoder dep."""
+    """Return image dimensions with a fast PNG-header path and Pillow fallback."""
     data = png_path.read_bytes()[:24]
-    if len(data) < 24 or data[:8] != b"\x89PNG\r\n\x1a\n":
+    if len(data) >= 24 and data[:8] == b"\x89PNG\r\n\x1a\n":
+        width = int.from_bytes(data[16:20], "big")
+        height = int.from_bytes(data[20:24], "big")
+        return (width, height)
+    try:
+        from PIL import Image
+    except ImportError:  # pragma: no cover
         return (0, 0)
-    width = int.from_bytes(data[16:20], "big")
-    height = int.from_bytes(data[20:24], "big")
-    return (width, height)
+    try:
+        with Image.open(png_path) as image:
+            return image.size
+    except Exception:  # pragma: no cover
+        return (0, 0)
 
 
 def build_visual_reference(
@@ -1435,6 +1577,209 @@ def _load_current_extraction(paths: LoopPaths) -> dict[str, Any]:
     return json.loads(paths.extraction_json.read_text())
 
 
+def _load_reference(paths: LoopPaths) -> dict[str, Any]:
+    return json.loads(paths.reference_json.read_text())
+
+
+def _page_ref_by_num(reference: dict[str, Any], page_num: int) -> dict[str, Any] | None:
+    for page in reference.get("pages", []):
+        if int(page.get("page", -1)) == page_num:
+            return page
+    return None
+
+
+def _normalized_bbox_from_pdf_bbox(bbox: list[float], page_width: float, page_height: float) -> list[float]:
+    if page_width <= 0 or page_height <= 0:
+        return [0.0, 0.0, 0.0, 0.0]
+    return [
+        round(float(bbox[0]) / page_width, 6),
+        round(float(bbox[1]) / page_height, 6),
+        round(float(bbox[2]) / page_width, 6),
+        round(float(bbox[3]) / page_height, 6),
+    ]
+
+
+def _block_bbox_image_pixels(
+    block: dict[str, Any],
+    image_width: int,
+    image_height: int,
+    page_width: float,
+    page_height: float,
+) -> list[float]:
+    bbox = block.get("bbox") or [0.0, 0.0, 0.0, 0.0]
+    if max(bbox) <= 1.5:
+        return [
+            float(bbox[0]) * image_width,
+            float(bbox[1]) * image_height,
+            float(bbox[2]) * image_width,
+            float(bbox[3]) * image_height,
+        ]
+    if page_width <= 0 or page_height <= 0:
+        return [float(x) for x in bbox]
+    return [
+        float(bbox[0]) * image_width / page_width,
+        float(bbox[1]) * image_height / page_height,
+        float(bbox[2]) * image_width / page_width,
+        float(bbox[3]) * image_height / page_height,
+    ]
+
+
+def _overlay_style_for_block(block_type: str) -> tuple[str, str]:
+    color = BLOCK_TYPE_COLORS.get(block_type, "#EF4444")
+    label = block_type.upper()
+    return (color, label)
+
+
+def _ensure_focus_page_image(
+    paths: LoopPaths,
+    page_num: int,
+    review_item: dict[str, Any],
+    *,
+    dpi: int,
+) -> tuple[Path | None, str | None]:
+    image_path = None
+    render_error = review_item.get("render_error")
+    review_image = review_item.get("image")
+    if review_image:
+        candidate = Path(review_image)
+        if candidate.exists():
+            image_path = candidate
+
+    if image_path is None:
+        image_path = paths.review_dir / f"page_{page_num:04d}.png"
+        if not image_path.exists():
+            try:
+                render_page_png(paths.pdf, page_num, image_path, dpi=dpi)
+            except Exception as exc:
+                render_error = str(exc)
+                image_path = None
+
+    return (image_path, render_error)
+
+
+def _write_focus_overlay(
+    image_path: Path,
+    out_path: Path,
+    *,
+    page_blocks: list[dict[str, Any]],
+    page_width: float,
+    page_height: float,
+) -> tuple[Path | None, dict[str, Any]]:
+    try:
+        from PIL import Image, ImageColor, ImageDraw
+    except ImportError as exc:  # pragma: no cover
+        logger.warning("Pillow not available for overlay rendering: {}", exc)
+        return (None, {})
+
+    image = Image.open(image_path).convert("RGBA")
+    draw = ImageDraw.Draw(image)
+    image_width, image_height = image.size
+    legend: dict[str, Any] = {}
+
+    for block in page_blocks:
+        block_type = str(block.get("blockType") or "unknown")
+        color_hex, label = _overlay_style_for_block(block_type)
+        rgba = ImageColor.getcolor(color_hex, "RGBA")
+        outline = (rgba[0], rgba[1], rgba[2], 255)
+        fill = (rgba[0], rgba[1], rgba[2], 38)
+        bbox = _block_bbox_image_pixels(
+            block,
+            image_width,
+            image_height,
+            page_width,
+            page_height,
+        )
+        x0, y0, x1, y1 = bbox
+        if x1 <= x0 or y1 <= y0:
+            continue
+        draw.rectangle([x0, y0, x1, y1], outline=outline, fill=fill, width=3)
+
+        block_id = str(block.get("id") or f"p{block.get('page', 0)}_{block_type}")
+        tag = f"{block_id}:{label}"
+        text_y = max(0.0, y0 - 16.0)
+        text_box = [x0, text_y, min(image_width, x0 + max(48, len(tag) * 7)), text_y + 14]
+        draw.rectangle(text_box, fill=outline)
+        draw.text((x0 + 2, text_y), tag, fill=(255, 255, 255, 255))
+
+        legend.setdefault(block_type, {"color": color_hex, "count": 0})
+        legend[block_type]["count"] += 1
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(out_path)
+    return (out_path, legend)
+
+
+def _candidate_block_packet(
+    block: dict[str, Any],
+    *,
+    page_width: float,
+    page_height: float,
+    image_width: int | None,
+    image_height: int | None,
+) -> dict[str, Any]:
+    bbox_pdf = block_bbox_pixels(block, page_width, page_height)
+    bbox_normalized = (
+        [round(float(x), 6) for x in (block.get("bbox") or bbox_pdf)]
+        if max(block.get("bbox") or [0.0, 0.0, 0.0, 0.0]) <= 1.5
+        else _normalized_bbox_from_pdf_bbox(bbox_pdf, page_width, page_height)
+    )
+    payload = {
+        "id": block.get("id"),
+        "page": int(block.get("page", -1)),
+        "blockType": block.get("blockType"),
+        "confidence": block.get("confidence"),
+        "text": block.get("text") or "",
+        "bbox_normalized": bbox_normalized,
+        "bbox_pdf_points": [round(float(x), 3) for x in bbox_pdf],
+        "qids": block.get("qids") or [],
+        "tocEntries": block.get("tocEntries") or [],
+    }
+    if image_width is not None and image_height is not None:
+        payload["bbox_image_pixels"] = [
+            round(float(x), 1)
+            for x in _block_bbox_image_pixels(
+                block,
+                image_width,
+                image_height,
+                page_width,
+                page_height,
+            )
+        ]
+    return payload
+
+
+def _page_reference_summary(page_ref: dict[str, Any]) -> dict[str, Any]:
+    table_boxes = [item["bbox"] for item in page_ref.get("tables", [])[:8]]
+    header_candidates = _derive_header_candidates(page_ref)
+    return {
+        "page_width_points": float(page_ref.get("width") or 0.0),
+        "page_height_points": float(page_ref.get("height") or 0.0),
+        "word_count": int(page_ref.get("word_count") or len(page_ref.get("words", []))),
+        "span_count": int(page_ref.get("span_count") or len(page_ref.get("spans", []))),
+        "table_expected": bool(page_ref.get("table_expected")),
+        "table_regions_pdf_points": table_boxes,
+        "header_candidate_preview": [c.get("text") for c in header_candidates[:5]],
+        "page_text_preview": normalize_text(page_ref.get("page_text") or "")[:400],
+    }
+
+
+def _normalized_scillm_chat_url(raw_url: str | None) -> str:
+    """Normalize SCILLM_API_BASE to the full chat-completions endpoint.
+
+    /code-runner expects the env var to be the full POST target, but this shell
+    often exports only the service root (`http://localhost:4001`). Normalize it
+    before spawning the subprocess so code-runner doesn't post to `/`.
+    """
+    if not raw_url:
+        return "http://localhost:4001/v1/chat/completions"
+    normalized = raw_url.rstrip("/")
+    if normalized.endswith("/v1/chat/completions"):
+        return normalized
+    if normalized.endswith("/v1"):
+        return f"{normalized}/chat/completions"
+    return f"{normalized}/v1/chat/completions"
+
+
 def _blocking_defect_count(review_item: dict[str, Any]) -> int:
     return sum(1 for defect in review_item.get("defects", []) if defect.get("blocking", True))
 
@@ -1461,25 +1806,77 @@ def write_page_focus_packet(
     review_item: dict[str, Any],
     defects_report: dict[str, Any],
     extraction: dict[str, Any],
+    render_dpi: int = FOCUS_RENDER_DPI,
 ) -> Path:
     page_num = int(review_item["page"])
+    reference = _load_reference(paths)
+    page_ref = _page_ref_by_num(reference, page_num)
+    if page_ref is None:
+        raise RuntimeError(f"Missing reference page for focus packet: {page_num}")
+
+    page_width = float(page_ref.get("width") or 1.0)
+    page_height = float(page_ref.get("height") or 1.0)
     page_blocks = [
         block
         for block in extraction.get("blocks", [])
         if int(block.get("page", -1)) == page_num
+    ]
+    image_path, render_error = _ensure_focus_page_image(
+        paths,
+        page_num,
+        review_item,
+        dpi=render_dpi,
+    )
+    image_width = None
+    image_height = None
+    if image_path is not None and image_path.exists():
+        image_width, image_height = _png_dimensions(image_path)
+
+    overlay_path = None
+    overlay_legend: dict[str, Any] = {}
+    if image_path is not None and image_path.exists():
+        overlay_path, overlay_legend = _write_focus_overlay(
+            image_path,
+            paths.review_dir / f"page_{page_num:04d}.overlay.png",
+            page_blocks=page_blocks,
+            page_width=page_width,
+            page_height=page_height,
+        )
+
+    candidate_blocks = [
+        _candidate_block_packet(
+            block,
+            page_width=page_width,
+            page_height=page_height,
+            image_width=image_width,
+            image_height=image_height,
+        )
+        for block in page_blocks
     ]
     packet = {
         "created_at": now_iso(),
         "pdf": str(paths.pdf),
         "round": round_num,
         "page": page_num,
-        "image": review_item.get("image"),
-        "render_error": review_item.get("render_error"),
+        "image": str(image_path) if image_path is not None and image_path.exists() else None,
+        "overlay_image": str(overlay_path) if overlay_path is not None and overlay_path.exists() else None,
+        "overlay_legend": overlay_legend,
+        "render_error": render_error,
+        "page_geometry": {
+            "page_width_points": page_width,
+            "page_height_points": page_height,
+            "image_width": image_width,
+            "image_height": image_height,
+            "overlay_coordinate_space": "top-left image pixels",
+            "pdf_coordinate_space": "top-left page points",
+            "normalized_coordinate_space": "[0,1] normalized page fractions",
+        },
         "defect_counts": review_item.get("defect_counts", {}),
         "blocking_defect_count": _blocking_defect_count(review_item),
         "defects": review_item.get("defects", []),
-        "candidate_blocks": page_blocks,
+        "candidate_blocks": candidate_blocks,
         "candidate_block_counts": dict(Counter(block.get("blockType") for block in page_blocks)),
+        "reference_summary": _page_reference_summary(page_ref),
         "document_blocking_summary": defects_report.get("blocking_summary", {}),
         "document_weighted_blocking": defects_report.get("blocking_weighted_total", 0),
     }
@@ -1632,9 +2029,9 @@ def run_shaped_extraction(pdf_path: Path, output_path: Path, max_pages: int | No
 # Consumer: /code-runner task spec for the pdf_oxide repair harness.
 # Why this matters: A vague repair prompt invites page-specific hacks, noisy
 # edits, or fake coverage wins that do not survive deterministic validation.
-# Input: page_focus_json with page-local defects and candidate blocks,
-# page_image when available, rounds_json for the accepted baseline, and the
-# exact DoD command below.
+# Input: page_focus_json with page-local defects, extracted blocks, page
+# geometry, page image, overlay image, project knowledge, and the exact DoD
+# command below.
 # Output: code edits only within the allowlist; success is determined by the
 # external DoD command, not by prose.
 FIX_PROMPT = """You are editing pdf_oxide extraction calibration code.
@@ -1647,23 +2044,35 @@ Files you may edit:
 {allowlist}
 
 Read these inputs first:
-1. Focus page packet: {page_focus_json}
+1. Project knowledge: {project_knowledge}
+   Use this to remember the intended split:
+   - pass 1 is deterministic extraction
+   - pass 2 is shaping/classification/enrichment
+   - /code-runner is the exception handler, not the runtime extractor
+2. Focus page packet: {page_focus_json}
    Use these exact fields:
-   - `page`: the page number under investigation
+   - `page`
    - `defects[]`: page-local defect records; use `category`, `detail`, `bbox`, `blocking`
-   - `candidate_blocks[]`: current extracted blocks on this page; use `blockType`, `bbox`, `text`
-   - `blocking_defect_count`, `defect_counts`, `candidate_block_counts`
+   - `page_geometry`: point-space, normalized-space, and image-space coordinates
+   - `candidate_blocks[]`: current extracted blocks on this page; use:
+     `id`, `blockType`, `confidence`, `text`,
+     `bbox_normalized`, `bbox_pdf_points`, `bbox_image_pixels`
+   - `candidate_block_counts`
+   - `reference_summary`
    - `document_blocking_summary`, `document_weighted_blocking`
-   - `image`: rendered page image path when available
-2. Focus page screenshot path: {page_image}
-3. Accepted-baseline state: {rounds_json}
+   - `image`, `overlay_image`, `overlay_legend`
+3. Focus page screenshot path: {page_image}
+4. Focus page overlay path: {page_overlay_image}
+5. Accepted-baseline state: {rounds_json}
 
 Required reasoning order:
-1. Identify which defect category on page {focus_page} is most actionable.
-2. Explain that defect using the packet fields above, not guesswork.
-3. Find the smallest mechanism-level code change in the allowlist that can
-   change that behavior on this page and similar pages.
-4. Reject any page-specific or PDF-specific special case.
+1. Inspect the focus page image and the overlay image together.
+2. Use `candidate_blocks[]` by `id` to decide which extracted element is wrong:
+   wrong type, bad bbox, missing region, over-merge, or over-split.
+3. Explain the failure using the packet fields above, not guesswork.
+4. Infer the smallest mechanism-level code change in the allowlist that can
+   correct that behavior on this page and similar pages.
+5. Reject any page-specific or PDF-specific special case.
 
 Priority categories:
 1. `MISSING_TEXT_REGION`
@@ -1684,18 +2093,25 @@ Success means all of these are true:
 Treat these as wrong answers:
 - any condition on this PDF name, this page number, or quoted page text
 - synthetic placeholder blocks added only to satisfy coverage
+- inventing content that is not visually present on the page image
+- ignoring the existing block ids / bbox evidence and reasoning from prose alone
 - edits outside the allowlist
 - broad speculative rewrites not justified by the packet fields
 - a change that helps page {focus_page} but fails the full-document DoD
 
 Example:
-- Acceptable: adjust a block-merging or filtering rule so body-text regions on
-  this page and similar pages are emitted as real content blocks.
-- Unacceptable: if page == {focus_page}, emit an extra text block over the
-  missing region.
+- Acceptable: the overlay shows block `b17` is tagged `text` but visually
+  aligns with a running header band; tighten the header classification rule so
+  similar top-of-page spans become `header`.
+- Acceptable: block `b22` visibly misses the right edge of a title region;
+  adjust a bbox-merging or normalization rule so the emitted title bbox expands
+  for similar spans.
+- Unacceptable: if page == {focus_page}, emit a special-case block or hardcode
+  this PDF's page text.
 
 Working style:
 - make the smallest viable code edit
+- use the page image, overlay, and extracted element geometry together
 - trust the external DoD command over your intuition
 - if the packet does not justify a safe fix, avoid speculative changes
 
@@ -1715,6 +2131,7 @@ def run_code_runner(
     focus_page: int,
     page_focus_json: Path,
     page_image: str | None,
+    page_overlay_image: str | None,
     inner_max_rounds: int = 3,
 ) -> subprocess.CompletedProcess[str]:
     """Invoke /code-runner via its task-spec JSON contract.
@@ -1725,15 +2142,29 @@ def run_code_runner(
     """
     if not code_runner_path.exists():
         raise FileNotFoundError(f"code-runner not found: {code_runner_path}")
+    project_knowledge = repo_root / "PROJECT_KNOWLEDGE.md"
 
     prompt = FIX_PROMPT.format(
         focus_page=focus_page,
         page_focus_json=str(page_focus_json),
         page_image=page_image or "not available",
+        page_overlay_image=page_overlay_image or "not available",
+        project_knowledge=str(project_knowledge),
         rounds_json=str(paths.rounds_json),
         dod_command=dod_command,
         allowlist=", ".join(allowlist),
     )
+
+    read_context = [
+        str(page_focus_json),
+        str(paths.rounds_json),
+    ]
+    if project_knowledge.exists():
+        read_context.append(str(project_knowledge))
+    if page_image:
+        read_context.append(str(page_image))
+    if page_overlay_image:
+        read_context.append(str(page_overlay_image))
 
     spec = {
         "task_id": f"{paths.key}_round_{round_num:02d}_page_{focus_page:04d}",
@@ -1743,10 +2174,7 @@ def run_code_runner(
         "cwd": str(repo_root),
         "output_dir": str(paths.workdir / f"{paths.key}.code_runner" / f"round_{round_num:02d}_page_{focus_page:04d}"),
         "allowlist": list(allowlist),
-        "read_context": [
-            str(page_focus_json),
-            str(paths.rounds_json),
-        ],
+        "read_context": read_context,
         "definition_of_done": {
             "command": dod_command,
             "assertion": '"accepted": true',
@@ -1766,7 +2194,13 @@ def run_code_runner(
 
     # Our DoD re-extracts a 492-page PDF — far longer than /code-runner's
     # 60s default. Bump it via CODE_RUNNER_DOD_TIMEOUT (read by evidence.py).
-    env = {**os.environ, "CODE_RUNNER_DOD_TIMEOUT": "900"}
+    # Also normalize SCILLM_API_BASE: code-runner expects the full
+    # /v1/chat/completions URL, but many shells export only the service root.
+    env = {
+        **os.environ,
+        "CODE_RUNNER_DOD_TIMEOUT": "900",
+        "SCILLM_API_BASE": _normalized_scillm_chat_url(os.environ.get("SCILLM_API_BASE")),
+    }
 
     logger.info("Running code-runner with spec {}", spec_path)
     return subprocess.run(cmd, cwd=repo_root, capture_output=True, text=True, env=env)
@@ -2059,6 +2493,93 @@ def do_dod_check(
     return 0 if accepted else 1
 
 
+def run_focus_packet_smoke_check(
+    paths: LoopPaths,
+    *,
+    sample_size: int,
+    sample_seed: int,
+    max_pages: int | None,
+    render_template: str | None,
+    visual: VisualConfig | None = None,
+) -> int:
+    """Build a deterministic sample of focus packets and assert core invariants."""
+    if sample_size <= 0:
+        raise ValueError("sample_size must be > 0")
+
+    _, defects_report, review_queue = run_diagnose_cycle(
+        paths,
+        max_pages=max_pages,
+        render_template=render_template,
+        visual=visual,
+    )
+    items = review_queue.get("items", [])
+    if not items:
+        print(json.dumps({
+            "status": "fail",
+            "reason": "review queue is empty",
+            "sample_size": sample_size,
+            "sample_seed": sample_seed,
+        }, indent=2))
+        return 1
+
+    rng = random.Random(sample_seed)
+    chosen = items if len(items) <= sample_size else rng.sample(items, sample_size)
+    extraction = _load_current_extraction(paths)
+
+    sampled_results: list[dict[str, Any]] = []
+    failures: list[dict[str, Any]] = []
+    for index, item in enumerate(chosen, start=1):
+        page_num = int(item["page"])
+        packet_path = write_page_focus_packet(
+            paths,
+            round_num=9000 + index,
+            review_item=item,
+            defects_report=defects_report,
+            extraction=extraction,
+        )
+        packet = json.loads(packet_path.read_text())
+        image_path = Path(packet["image"]) if packet.get("image") else None
+        overlay_path = Path(packet["overlay_image"]) if packet.get("overlay_image") else None
+        candidate_blocks = packet.get("candidate_blocks", [])
+        page_geometry = packet.get("page_geometry") or {}
+
+        checks = {
+            "image_exists": bool(image_path and image_path.exists()),
+            "overlay_exists": bool(overlay_path and overlay_path.exists()),
+            "candidate_blocks_present": bool(candidate_blocks),
+            "all_blocks_have_image_bbox": all(
+                "bbox_image_pixels" in block for block in candidate_blocks
+            ),
+            "image_dimensions_nonzero": bool(
+                int(page_geometry.get("image_width") or 0) > 0
+                and int(page_geometry.get("image_height") or 0) > 0
+            ),
+        }
+        passed = all(checks.values())
+        result = {
+            "page": page_num,
+            "packet": str(packet_path),
+            "checks": checks,
+            "candidate_block_count": len(candidate_blocks),
+            "block_types": dict(Counter(block.get("blockType") for block in candidate_blocks)),
+            "overlay_legend": packet.get("overlay_legend", {}),
+        }
+        sampled_results.append(result)
+        if not passed:
+            failures.append(result)
+
+    status = "pass" if not failures else "fail"
+    print(json.dumps({
+        "status": status,
+        "sample_size": sample_size,
+        "sample_seed": sample_seed,
+        "pages_tested": [int(item["page"]) for item in chosen],
+        "results": sampled_results,
+        "failure_count": len(failures),
+    }, indent=2))
+    return 0 if not failures else 1
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pdf", required=True, type=Path)
@@ -2092,6 +2613,18 @@ def main() -> int:
         ),
     )
     parser.add_argument("--dod-check", action="store_true")
+    parser.add_argument(
+        "--focus-packet-smoke-check",
+        type=int,
+        metavar="N",
+        help="Build and validate a deterministic random sample of N focus packets.",
+    )
+    parser.add_argument(
+        "--focus-packet-seed",
+        type=int,
+        default=53,
+        help="RNG seed for --focus-packet-smoke-check sampling.",
+    )
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument(
         "--enable-visual",
@@ -2140,6 +2673,15 @@ def main() -> int:
             visual=visual_cfg,
             benchmark_pdfs=args.benchmark_pdf,
         )
+    if args.focus_packet_smoke_check is not None:
+        return run_focus_packet_smoke_check(
+            paths,
+            sample_size=args.focus_packet_smoke_check,
+            sample_seed=args.focus_packet_seed,
+            max_pages=args.max_pages,
+            render_template=args.render_page_cmd,
+            visual=visual_cfg,
+        )
 
     state = load_round_state(paths.rounds_json, pdf_path)
 
@@ -2176,7 +2718,9 @@ def main() -> int:
             review_item=focus_item,
             defects_report=current_defects_report,
             extraction=_load_current_extraction(paths),
+            render_dpi=visual_cfg.dpi if visual_cfg.enabled else FOCUS_RENDER_DPI,
         )
+        focus_packet_data = json.loads(focus_packet.read_text())
         logger.info(
             "Round {} focus page={} blocking_defects={} context={}",
             round_num,
@@ -2228,7 +2772,8 @@ def main() -> int:
             round_num=round_num,
             focus_page=focus_page,
             page_focus_json=focus_packet,
-            page_image=focus_item.get("image"),
+            page_image=focus_packet_data.get("image"),
+            page_overlay_image=focus_packet_data.get("overlay_image"),
         )
         elapsed = round(time.time() - t0, 2)
 
