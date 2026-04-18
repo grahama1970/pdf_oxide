@@ -750,81 +750,140 @@ Exact shape:
 """
 
 
-VISUAL_REVIEW_PROMPT = """You are reviewing how a PDF extractor shaped a single page.
+VISUAL_REVIEW_PROMPT = """You are judging how a PDF extractor represented a single rendered page.
 
-You see:
-  - The rendered page image ({width}x{height} pixels, top-left origin).
-  - A JSON list of candidate BLOCKS the extractor emitted for this page,
-    appended below as <BLOCKS>. Each block has: id, type, bbox (pixels),
-    text (excerpt).
+You are given:
+  - PAGE_IMAGE: one page image, size {width}x{height} pixels.
+  - <BLOCKS>: a JSON array appended below.
 
-Your job is NOT to re-extract the page. ADJUDICATE each candidate against
-what you can see, and flag any VISIBLE region the extractor missed.
+Do NOT re-extract the page.
+Do NOT invent new taxonomy labels.
+Your job is to judge the extractor's existing BLOCKS and identify any
+in-scope visible region that has no corresponding candidate block.
 
-Taxonomy (shaped-extractor types — use these EXACT strings, nothing else):
+Each block in <BLOCKS> has:
+  - id: string
+  - type: one of: text, header, table, boilerplate, page_number
+  - bbox: [x0, y0, x1, y1]
+  - text: short excerpt
+
+Coordinate system:
+  - Pixel coordinates on PAGE_IMAGE.
+  - Origin is top-left.
+  - bbox values are integers.
+  - x0, y0 are inclusive; x1, y1 are exclusive.
+  - Must satisfy:
+      0 <= x0 < x1 <= {width}
+      0 <= y0 < y1 <= {height}
+
+Taxonomy (use ONLY these exact strings):
   text, header, table, boilerplate, page_number
 
-For each candidate block, assign exactly one verdict:
+Type guidance:
+  - text         body text, paragraphs, list items, ordinary prose
+  - header       titles, section headings, subsection headings
+  - table        tabular content with structured rows/columns
+  - boilerplate  running headers/footers, publication strings
+  - page_number  page number only
 
-  correct      bbox and type both look right given what is visible.
-  bad_bbox     type is right, but the bbox is wrong (cuts off text, extends
-               into neighboring region, off by a line). Provide correct_bbox.
-  wrong_type   bbox is right, but the type is wrong. Provide correct_type.
-  over_merge   block combines two or more distinct elements that should have
-               been separate. Provide split_bboxes (one per intended piece).
-  over_split   block is one of several fragments of a single logical element.
-               Provide merge_with (list of other block ids that belong with it).
+Out of scope (extractor does not emit these — NEVER label them):
+  - figures, photos, diagrams
+  - equations, formulas
+  - captions, decorative lines, shapes
+  - Never use "figure" / "equation" / "caption" / any out-of-scope string
+    in correct_type, split_bboxes[*].type, or missed.type.
+  - Never emit a "missed" entry for an out-of-scope visible region.
 
-Also return MISSED regions: visible elements on the page that have NO
-corresponding candidate block. Use verdict "missed" with a fresh proposed
-type + bbox; no id needed.
+Return JSON only. No prose. No markdown fences.
 
-Concrete examples (illustrative shapes; do not copy verbatim):
+Return exactly:
+  1. One judgement for EVERY input block id, in the SAME ORDER as <BLOCKS>.
+  2. Then zero or more extra judgements for missed regions.
 
-  correct:
-    {{"id": "b_001", "verdict": "correct"}}
+Allowed verdicts for input blocks:
+  correct, bad_bbox, wrong_type, over_merge, over_split
+Allowed verdict for extra regions:
+  missed
 
-  bad_bbox (bbox shaved the last line of a paragraph):
-    {{"id": "b_014", "verdict": "bad_bbox",
-     "correct_bbox": [72, 612, 540, 780],
-     "reason": "lost final line ending with '... not applicable.'"}}
+Precedence (when more than one verdict seems possible, pick the FIRST that applies):
+  1. over_merge
+  2. over_split
+  3. wrong_type
+  4. bad_bbox
+  5. correct
 
-  wrong_type (a 3-row table was extracted as text):
-    {{"id": "b_027", "verdict": "wrong_type", "correct_type": "table",
-     "reason": "3 rows x 4 cols with visible rules"}}
+Verdict definitions (and required fields):
 
-  over_merge (header + first paragraph combined into one text block):
-    {{"id": "b_033", "verdict": "over_merge",
-     "split_bboxes": [
-       {{"type": "header", "bbox": [72, 120, 540, 150]}},
-       {{"type": "text",   "bbox": [72, 160, 540, 360]}}
-     ],
-     "reason": "section title 'Controls' merged into first paragraph"}}
+correct
+  - Candidate refers to the right visible element.
+  - Type is right.
+  - bbox is acceptably tight.
+  - Include: id, verdict.
 
-  over_split (a single paragraph emitted as two adjacent text blocks):
-    {{"id": "b_041", "verdict": "over_split", "merge_with": ["b_042"],
-     "reason": "sentence continues from b_041 into b_042 without gap"}}
+bad_bbox
+  - Candidate refers to the right visible element.
+  - Type is basically right.
+  - bbox is wrong (shifted, too large, too small, cuts off text).
+  - Include: id, verdict, correct_bbox, reason.
+  - If the candidate cannot be matched to any visible in-scope region,
+    use:
+      verdict: "bad_bbox"
+      correct_bbox: null
+      reason: "not locatable on image"
 
-  missed (table in bottom-right, not in candidate blocks):
-    {{"id": null, "verdict": "missed", "type": "table",
-     "bbox": [330, 640, 590, 780],
-     "reason": "3x2 table titled 'Impact Levels' not in candidates"}}
+wrong_type
+  - Candidate refers to one visible element.
+  - bbox is basically right.
+  - type is wrong.
+  - Include: id, verdict, correct_type, reason.
 
-Strict rules:
-  - Only report judgements for blocks you can see in the image.
-  - Do not invent blocks — if you cannot locate candidate b_XXX visually,
-    mark it bad_bbox with "reason": "not locatable on image".
-  - Use only the 5 taxonomy strings above for correct_type, split_bboxes[*].type,
-    and missed.type. Visible figures, equations, and captions are out of scope
-    (the extractor does not emit them); skip such regions silently.
-  - Bounding boxes must satisfy 0 <= x0 < x1 <= {width} and
-    0 <= y0 < y1 <= {height}.
-  - "reason" is a short string (<= 200 chars) explaining the evidence.
+over_merge
+  - One candidate block combines 2 or more distinct in-scope logical
+    elements that should be separate blocks.
+  - Include: id, verdict,
+    split_bboxes: [{{"type": "...", "bbox": [x0,y0,x1,y1]}}, ...],
+    reason.
 
-Return valid JSON only. No prose, no commentary, no markdown fences.
-Exact shape:
+over_split
+  - One logical in-scope element was emitted as multiple candidate
+    blocks that should have been a single block.
+  - Every fragment in the split group gets verdict "over_split".
+  - For each such fragment, include:
+      id, verdict, merge_with, reason
+    where merge_with is the list of ALL OTHER ids in the same split
+    group, sorted lexicographically.
+
+missed
+  - Use ONLY when a visible in-scope region has NO corresponding candidate
+    block at all. Do NOT use "missed" for a region that already has some
+    candidate, even if that candidate is badly boxed or mistyped — judge
+    the candidate instead.
+  - Do NOT use "missed" for out-of-scope regions (figures, equations,
+    captions, decorative marks).
+  - Include: id (null), verdict, type, bbox, reason.
+
+General rules:
+  - Use only the 5 taxonomy strings for correct_type, split_bboxes[*].type,
+    and missed.type.
+  - reason must be short, concrete, and <= 200 characters.
+  - Do not duplicate ids.
+  - Do not omit any input id.
+  - Do not add fields not described above.
+
+Output shape (strict):
 {{"judgements": [
-  {{"id": "b_...", "verdict": "...", ...fields per verdict above...}}
+  {{"id": "b_001", "verdict": "correct"}},
+  {{"id": "b_002", "verdict": "bad_bbox", "correct_bbox": [72, 612, 540, 780], "reason": "cuts off final line"}},
+  {{"id": "b_003", "verdict": "wrong_type", "correct_type": "table", "reason": "visible rows and columns"}},
+  {{"id": "b_004", "verdict": "over_merge",
+   "split_bboxes": [
+     {{"type": "header", "bbox": [72, 120, 540, 150]}},
+     {{"type": "text",   "bbox": [72, 160, 540, 360]}}
+   ],
+   "reason": "header merged into paragraph"}},
+  {{"id": "b_005", "verdict": "over_split", "merge_with": ["b_006"], "reason": "same paragraph split across adjacent blocks"}},
+  {{"id": "b_006", "verdict": "over_split", "merge_with": ["b_005"], "reason": "same paragraph split across adjacent blocks"}},
+  {{"id": null, "verdict": "missed", "type": "table", "bbox": [330, 640, 590, 780], "reason": "visible table has no candidate"}}
 ]}}
 """
 
