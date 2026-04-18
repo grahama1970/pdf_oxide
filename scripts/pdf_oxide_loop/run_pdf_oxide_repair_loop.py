@@ -33,7 +33,6 @@ import dataclasses
 import datetime as dt
 import hashlib
 import json
-import logging
 import os
 import shlex
 import subprocess
@@ -42,6 +41,8 @@ import time
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Iterable
+
+from loguru import logger
 
 # ----------------------------------------------------------------------------
 # Repo wiring
@@ -56,14 +57,12 @@ DEFAULT_CODE_RUNNER = Path("/home/graham/.claude/skills/code-runner/run.sh")
 # Logging
 # ----------------------------------------------------------------------------
 
-logger = logging.getLogger("pdf_oxide_repair_loop")
-
-
 def configure_logging(verbose: bool) -> None:
-    level = logging.DEBUG if verbose else logging.INFO
-    logging.basicConfig(
-        level=level,
-        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    logger.remove()
+    logger.add(
+        sys.stderr,
+        level="DEBUG" if verbose else "INFO",
+        format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> <level>{level: <8}</level> {message}",
     )
 
 
@@ -1539,11 +1538,66 @@ def run_diagnose_cycle(
     return reference, defects_report, review_queue
 
 
+def check_benchmark_suite(
+    benchmark_pdfs: list[Path],
+    *,
+    workdir: Path,
+    max_pages: int | None,
+    render_template: str | None,
+    visual: VisualConfig | None = None,
+) -> tuple[bool, list[dict[str, Any]]]:
+    """Run the diagnose cycle on each benchmark PDF and require non-regression.
+
+    Improvement is not required, only non-regression. A benchmark fails if its
+    weighted blocking total rises OR any hard category regresses.
+    """
+    results: list[dict[str, Any]] = []
+    overall_ok = True
+
+    for benchmark_pdf in benchmark_pdfs:
+        benchmark_pdf = benchmark_pdf.resolve()
+        if not benchmark_pdf.exists():
+            results.append({"pdf": str(benchmark_pdf), "ok": False, "error": "benchmark PDF not found"})
+            overall_ok = False
+            continue
+
+        bench_paths = LoopPaths(pdf=benchmark_pdf, workdir=workdir.resolve())
+        bench_paths.ensure()
+        bench_state = load_round_state(bench_paths.rounds_json, benchmark_pdf)
+
+        _, bench_defects_report, _ = run_diagnose_cycle(
+            bench_paths,
+            max_pages=max_pages,
+            render_template=render_template,
+            visual=visual,
+        )
+        bench_state = baseline_if_missing(bench_state, bench_defects_report, bench_paths.rounds_json)
+        prior_summary = last_accepted_summary(bench_state)
+        gate = gate_candidate(prior_summary, bench_defects_report.get("blocking_summary", {}))
+
+        ok = (gate.current_total <= gate.prior_total) and not gate.hard_regressions
+        results.append(
+            {
+                "pdf": str(benchmark_pdf),
+                "ok": ok,
+                "prior_total": gate.prior_total,
+                "current_total": gate.current_total,
+                "regressions": gate.regressions,
+                "hard_regressions": gate.hard_regressions,
+            }
+        )
+        if not ok:
+            overall_ok = False
+
+    return overall_ok, results
+
+
 def do_dod_check(
     paths: LoopPaths,
     max_pages: int | None,
     render_template: str | None,
     visual: VisualConfig | None = None,
+    benchmark_pdfs: list[Path] | None = None,
 ) -> int:
     state = load_round_state(paths.rounds_json, paths.pdf)
     _, defects_report, _ = run_diagnose_cycle(
@@ -1553,14 +1607,26 @@ def do_dod_check(
     # Gate on blocking_summary only — non-blocking primitives and visual evidence
     # must not influence accept/revert.
     gate = gate_candidate(prior_summary, defects_report.get("blocking_summary", {}))
+
+    benchmarks_ok, benchmark_results = check_benchmark_suite(
+        benchmark_pdfs or [],
+        workdir=paths.workdir,
+        max_pages=max_pages,
+        render_template=render_template,
+        visual=visual,
+    )
+
+    accepted = gate.accepted and benchmarks_ok
     print(json.dumps({
-        "accepted": gate.accepted,
+        "accepted": accepted,
         "prior_total": gate.prior_total,
         "current_total": gate.current_total,
         "regressions": gate.regressions,
         "hard_regressions": gate.hard_regressions,
+        "benchmarks_ok": benchmarks_ok,
+        "benchmark_results": benchmark_results,
     }, indent=2))
-    return 0 if gate.accepted else 1
+    return 0 if accepted else 1
 
 
 def main() -> int:
@@ -1580,6 +1646,13 @@ def main() -> int:
         help="Repeatable allowlist entry for /code-runner. Defaults to the shaped "
              "extractor only; adding the scanner lets the agent move goalposts and "
              "should require an explicit --allowlist override.",
+    )
+    parser.add_argument(
+        "--benchmark-pdf",
+        action="append",
+        default=[],
+        type=Path,
+        help="Repeatable benchmark PDF path. Each benchmark must non-regress to accept.",
     )
     parser.add_argument(
         "--render-page-cmd",
@@ -1631,7 +1704,11 @@ def main() -> int:
 
     if args.dod_check:
         return do_dod_check(
-            paths, max_pages=args.max_pages, render_template=args.render_page_cmd, visual=visual_cfg,
+            paths,
+            max_pages=args.max_pages,
+            render_template=args.render_page_cmd,
+            visual=visual_cfg,
+            benchmark_pdfs=args.benchmark_pdf,
         )
 
     state = load_round_state(paths.rounds_json, pdf_path)
@@ -1666,6 +1743,8 @@ def main() -> int:
             dod_command += f" --max-pages {args.max_pages}"
         if args.render_page_cmd:
             dod_command += f" --render-page-cmd {shlex.quote(args.render_page_cmd)}"
+        for bench_pdf in args.benchmark_pdf:
+            dod_command += f" --benchmark-pdf {shlex.quote(str(bench_pdf.resolve()))}"
         if visual_cfg.enabled:
             dod_command += (
                 f" --enable-visual --visual-model {shlex.quote(visual_cfg.model)} "
@@ -1693,7 +1772,21 @@ def main() -> int:
         blocking_summary = defects_report.get("blocking_summary", {})
         gate = gate_candidate(prior_summary, blocking_summary)
 
-        status = "accepted" if (code_runner_result.returncode == 0 and gate.accepted) else "rejected"
+        # Benchmark non-regression check — guards against overfitting the
+        # triggering PDF at the expense of the fixture suite.
+        benchmarks_ok, benchmark_results = check_benchmark_suite(
+            args.benchmark_pdf,
+            workdir=paths.workdir,
+            max_pages=args.max_pages,
+            render_template=args.render_page_cmd,
+            visual=visual_cfg,
+        )
+
+        status = (
+            "accepted"
+            if (code_runner_result.returncode == 0 and gate.accepted and benchmarks_ok)
+            else "rejected"
+        )
 
         # Defense-in-depth: on rejection, explicitly restore allowlisted files.
         # /code-runner is supposed to isolate via worktree, but if any edit
@@ -1721,6 +1814,8 @@ def main() -> int:
             "weighted_total": defects_report.get("weighted_total", 0),
             "blocking_weighted_total": defects_report.get("blocking_weighted_total", 0),
             "gate": gate.to_dict(),
+            "benchmarks_ok": benchmarks_ok,
+            "benchmark_results": benchmark_results,
             "code_runner": {
                 "returncode": code_runner_result.returncode,
                 "stdout_tail": code_runner_result.stdout[-2000:],
