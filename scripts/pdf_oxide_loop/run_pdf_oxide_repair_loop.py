@@ -110,10 +110,23 @@ class LoopPaths:
     def logs_dir(self) -> Path:
         return self.workdir / f"{self.key}.logs"
 
+    @property
+    def visual_reference_json(self) -> Path:
+        return self.workdir / f"{self.key}.visual_reference.json"
+
+    @property
+    def visual_reference_meta_json(self) -> Path:
+        return self.workdir / f"{self.key}.visual_reference.meta.json"
+
+    @property
+    def visual_pages_dir(self) -> Path:
+        return self.workdir / f"{self.key}.visual_pages"
+
     def ensure(self) -> None:
         self.workdir.mkdir(parents=True, exist_ok=True)
         self.review_dir.mkdir(parents=True, exist_ok=True)
         self.logs_dir.mkdir(parents=True, exist_ok=True)
+        self.visual_pages_dir.mkdir(parents=True, exist_ok=True)
 
 
 @dataclasses.dataclass
@@ -169,7 +182,21 @@ HARD_CATEGORIES = {
     "MISSING_TABLE_PAGE",
 }
 
+# Visual categories are surfaced from the frozen VLM reference. They ride in the
+# review queue as evidence but do NOT gate acceptance until explicitly promoted.
+# Promotion is manual only — edit BLOCKING_VISUAL_CATEGORIES here or pass
+# --promote-visual-category on the CLI. Do not auto-promote.
+VISUAL_CATEGORIES = {
+    "MISSED_VISIBLE_REGION",
+    "BAD_BOUNDARY",
+    "OVER_MERGE",
+    "OVER_SPLIT",
+}
+
+BLOCKING_VISUAL_CATEGORIES: set[str] = set()
+
 CATEGORY_WEIGHTS = {
+    # Primitive (commit-blocking)
     "EMPTY_BLOCK": 4,
     "DUPLICATE_BLOCK": 5,
     "PHANTOM_BLOCK": 6,
@@ -177,6 +204,11 @@ CATEGORY_WEIGHTS = {
     "MISSING_TABLE_PAGE": 10,
     "MISSING_HEADER_CANDIDATE": 5,
     "WRONG_TYPE_TABLE_AS_TEXT": 6,
+    # Visual (evidence-only unless promoted)
+    "MISSED_VISIBLE_REGION": 7,
+    "BAD_BOUNDARY": 3,
+    "OVER_MERGE": 4,
+    "OVER_SPLIT": 4,
 }
 
 
@@ -186,6 +218,22 @@ def weighted_total(summary: dict[str, int]) -> int:
         weight = CATEGORY_WEIGHTS.get(category, 1)
         total += weight * count
     return total
+
+
+def primitive_summary_only(summary: dict[str, int], promoted: set[str]) -> dict[str, int]:
+    """Return only categories that the gate considers blocking.
+
+    Visual categories are excluded unless they appear in `promoted`.
+    """
+    return {
+        cat: count
+        for cat, count in summary.items()
+        if cat not in VISUAL_CATEGORIES or cat in promoted
+    }
+
+
+def effective_hard_categories(promoted: set[str]) -> set[str]:
+    return HARD_CATEGORIES | (VISUAL_CATEGORIES & promoted)
 
 
 def normalize_text(text: str) -> str:
@@ -462,6 +510,432 @@ def build_reference_snapshot(pdf_path: Path, output_path: Path, max_pages: int |
 
 
 # ----------------------------------------------------------------------------
+# Visual reference (frozen VLM oracle — evidence, not gate)
+# ----------------------------------------------------------------------------
+#
+# The visual reference is a second frozen oracle, computed ONCE per PDF via
+# /pdf-screenshot (page → PNG) + /scillm VLM (Sonnet OAuth). It surfaces
+# visible elements that the primitive APIs cannot see (rotated text, elements
+# below pdf_oxide's confidence threshold, etc.).
+#
+# Contract:
+#   - Built once; reused across all rounds. Rebuilt only with --refresh-visual-reference.
+#   - Findings ride in the review queue alongside primitive defects.
+#   - Findings do NOT gate acceptance unless the category is explicitly listed in
+#     BLOCKING_VISUAL_CATEGORIES (empty by default; promotion is manual).
+#   - Metadata sidecar tracks model, prompt version, render DPI, per-page image SHA.
+#     Drift is warned, never auto-resolved.
+
+
+VISUAL_PROMPT_VERSION = "v1"
+
+VISUAL_PROMPT_TEMPLATE = """You are auditing a single PDF page rendered as an image.
+
+Task: list every visibly distinct content element on the page.
+
+For each element, return:
+  type   one of: heading, paragraph, list, table, figure, caption,
+         header, footer, page_number, equation, code, sidebar
+  bbox   [x0, y0, x1, y1] in pixels in THIS image's coordinate system,
+         top-left origin. The image is {width}x{height} pixels.
+  text   short excerpt (<= 200 chars) of the visible text; "" for non-text.
+  level  integer 1-6 for headings; null otherwise.
+
+Rules:
+  - Only report what you can SEE. Do not infer content from context.
+  - Prefer splitting into separate elements over merging.
+    A figure and its caption are two elements, not one.
+  - Skip purely decorative rules, borders, or bullets unless they define structure.
+  - If the page is blank or only contains watermark/boilerplate, return {{"elements": []}}.
+
+Output strict JSON with this exact shape and nothing else:
+{{"elements": [ {{"type": "...", "bbox": [x0,y0,x1,y1], "text": "...", "level": null}} ]}}
+"""
+
+
+SCILLM_BASE_URL = os.environ.get("SCILLM_BASE_URL", "http://localhost:4001")
+SCILLM_BEARER = os.environ.get("SCILLM_BEARER", "sk-dev-proxy-123")
+PDF_SCREENSHOT_RUN = Path(
+    os.environ.get(
+        "PDF_SCREENSHOT_RUN",
+        "/home/graham/.claude/skills/pdf-screenshot/run.sh",
+    )
+)
+
+
+def _sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def render_page_png(pdf_path: Path, page_num: int, out_path: Path, dpi: int) -> Path:
+    """Render a single PDF page to PNG via /pdf-screenshot."""
+    if not PDF_SCREENSHOT_RUN.exists():
+        raise FileNotFoundError(f"pdf-screenshot not found: {PDF_SCREENSHOT_RUN}")
+    cmd = [
+        str(PDF_SCREENSHOT_RUN),
+        str(pdf_path),
+        "--page", str(page_num),
+        "--out", str(out_path),
+        "--dpi", str(dpi),
+    ]
+    subprocess.run(cmd, check=True, capture_output=True, text=True)
+    if not out_path.exists():
+        raise RuntimeError(f"pdf-screenshot did not produce {out_path}")
+    return out_path
+
+
+def _call_vlm_sonnet(image_path: Path, prompt: str, model: str, timeout: float = 120.0) -> dict[str, Any]:
+    """Send a page image + prompt to /scillm VLM; return parsed JSON response."""
+    try:
+        import httpx
+    except ImportError as exc:  # pragma: no cover
+        raise RuntimeError("httpx is required for VLM calls") from exc
+
+    import base64 as _b64
+    png_bytes = image_path.read_bytes()
+    data_url = f"data:image/png;base64,{_b64.b64encode(png_bytes).decode('ascii')}"
+
+    body = {
+        "model": model,
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": data_url}},
+                ],
+            }
+        ],
+        "temperature": 0.0,
+        "response_format": {"type": "json_object"},
+    }
+    headers = {
+        "Authorization": f"Bearer {SCILLM_BEARER}",
+        "Content-Type": "application/json",
+    }
+    url = f"{SCILLM_BASE_URL}/v1/chat/completions"
+    resp = httpx.post(url, json=body, headers=headers, timeout=timeout)
+    resp.raise_for_status()
+    payload = resp.json()
+
+    text = ""
+    try:
+        text = payload["choices"][0]["message"]["content"]
+    except Exception:
+        text = json.dumps(payload)
+    text = text.strip()
+    if text.startswith("```"):
+        text = text.strip("`")
+        if text.lower().startswith("json"):
+            text = text[4:]
+        text = text.strip()
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        return {"elements": [], "_raw": text}
+
+
+def _png_dimensions(png_path: Path) -> tuple[int, int]:
+    """Read PNG width/height from header without a full decoder dep."""
+    data = png_path.read_bytes()[:24]
+    if len(data) < 24 or data[:8] != b"\x89PNG\r\n\x1a\n":
+        return (0, 0)
+    width = int.from_bytes(data[16:20], "big")
+    height = int.from_bytes(data[20:24], "big")
+    return (width, height)
+
+
+def build_visual_reference(
+    paths: LoopPaths,
+    *,
+    model: str,
+    dpi: int,
+    max_pages: int | None,
+    prompt_version: str = VISUAL_PROMPT_VERSION,
+) -> dict[str, Any]:
+    """Freeze a per-page VLM audit for the current PDF.
+
+    Rebuilds every cached page PNG and calls /scillm VLM on each. This is
+    expensive — call only when --refresh-visual-reference is set or when the
+    reference does not exist. Reuse across rounds is the default.
+    """
+    logger.info("Building frozen VLM visual reference (model=%s, dpi=%s)", model, dpi)
+
+    reference = json.loads(paths.reference_json.read_text())
+    page_count = int(reference.get("page_count") or 0)
+    if max_pages is not None:
+        page_count = min(page_count, max_pages)
+
+    started = time.time()
+    pages_out: list[dict[str, Any]] = []
+    image_shas: dict[str, str] = {}
+
+    for page_num in range(page_count):
+        image_path = paths.visual_pages_dir / f"page_{page_num:04d}.png"
+        try:
+            render_page_png(paths.pdf, page_num, image_path, dpi=dpi)
+        except Exception as exc:
+            logger.warning("render failed on page %s: %s", page_num, exc)
+            pages_out.append({"page": page_num, "elements": [], "error": f"render: {exc}"})
+            continue
+
+        image_shas[str(page_num)] = _sha256_file(image_path)
+        width, height = _png_dimensions(image_path)
+        prompt = VISUAL_PROMPT_TEMPLATE.format(width=width or 1, height=height or 1)
+
+        try:
+            vlm = _call_vlm_sonnet(image_path, prompt, model=model)
+            raw_elements = vlm.get("elements") or []
+        except Exception as exc:
+            logger.warning("vlm failed on page %s: %s", page_num, exc)
+            pages_out.append({"page": page_num, "elements": [], "error": f"vlm: {exc}"})
+            continue
+
+        elements: list[dict[str, Any]] = []
+        for elem in raw_elements:
+            if not isinstance(elem, dict):
+                continue
+            bbox = elem.get("bbox")
+            if not isinstance(bbox, (list, tuple)) or len(bbox) < 4:
+                continue
+            elements.append(
+                {
+                    "type": str(elem.get("type") or "unknown"),
+                    "bbox": [float(bbox[0]), float(bbox[1]), float(bbox[2]), float(bbox[3])],
+                    "text": normalize_text(str(elem.get("text") or ""))[:200],
+                    "level": elem.get("level"),
+                }
+            )
+
+        pages_out.append(
+            {
+                "page": page_num,
+                "image_width": width,
+                "image_height": height,
+                "elements": elements,
+            }
+        )
+
+    snapshot = {
+        "pdf": str(paths.pdf),
+        "created_at": now_iso(),
+        "model": model,
+        "prompt_version": prompt_version,
+        "render_dpi": dpi,
+        "page_count": page_count,
+        "pages": pages_out,
+    }
+    meta = {
+        "pdf": str(paths.pdf),
+        "created_at": snapshot["created_at"],
+        "model": model,
+        "prompt_version": prompt_version,
+        "render_dpi": dpi,
+        "page_count": page_count,
+        "image_shas": image_shas,
+        "build_duration_seconds": round(time.time() - started, 2),
+    }
+    paths.visual_reference_json.write_text(json.dumps(snapshot, indent=2))
+    paths.visual_reference_meta_json.write_text(json.dumps(meta, indent=2))
+    return snapshot
+
+
+def load_visual_reference(
+    paths: LoopPaths,
+    *,
+    expected_model: str,
+    expected_dpi: int,
+    expected_prompt_version: str = VISUAL_PROMPT_VERSION,
+) -> dict[str, Any] | None:
+    """Return the cached visual reference, warning on config drift.
+
+    Returns None if no cached reference exists; caller decides whether to build.
+    Never auto-refreshes on drift.
+    """
+    if not paths.visual_reference_json.exists():
+        return None
+    if paths.visual_reference_meta_json.exists():
+        try:
+            meta = json.loads(paths.visual_reference_meta_json.read_text())
+        except Exception:
+            meta = {}
+        drift = []
+        if meta.get("model") != expected_model:
+            drift.append(f"model {meta.get('model')!r} != {expected_model!r}")
+        if meta.get("prompt_version") != expected_prompt_version:
+            drift.append(f"prompt {meta.get('prompt_version')!r} != {expected_prompt_version!r}")
+        if int(meta.get("render_dpi") or 0) != int(expected_dpi):
+            drift.append(f"dpi {meta.get('render_dpi')} != {expected_dpi}")
+        if drift:
+            logger.warning(
+                "visual reference metadata drift (reuse allowed, refresh recommended): %s",
+                "; ".join(drift),
+            )
+    return json.loads(paths.visual_reference_json.read_text())
+
+
+# ----------------------------------------------------------------------------
+# Visual defect scanner (evidence — non-blocking unless promoted)
+# ----------------------------------------------------------------------------
+
+
+def _image_to_pdf_bbox(
+    bbox_px: list[float],
+    image_w: int,
+    image_h: int,
+    page_w: float,
+    page_h: float,
+) -> list[float]:
+    """Map a VLM bbox (image pixels, top-left origin) into PDF point space.
+
+    pdf_oxide blocks are stored in PDF-point coordinates; we convert so visual
+    bboxes can be compared with block bboxes directly.
+    """
+    if image_w <= 0 or image_h <= 0:
+        return [float(x) for x in bbox_px]
+    sx = page_w / image_w
+    sy = page_h / image_h
+    return [bbox_px[0] * sx, bbox_px[1] * sy, bbox_px[2] * sx, bbox_px[3] * sy]
+
+
+def scan_visual_defects(
+    reference: dict[str, Any],
+    visual_ref: dict[str, Any],
+    extraction: dict[str, Any],
+) -> list[Defect]:
+    """Diagnose visual defects: MISSED_VISIBLE_REGION / BAD_BOUNDARY / OVER_MERGE / OVER_SPLIT.
+
+    These ride in the review queue as evidence; the gate ignores them unless a
+    category is promoted via BLOCKING_VISUAL_CATEGORIES.
+    """
+    defects: list[Defect] = []
+
+    ref_pages = {int(p.get("page", -1)): p for p in reference.get("pages", [])}
+    vis_pages = {int(p.get("page", -1)): p for p in visual_ref.get("pages", [])}
+
+    blocks_by_page: dict[int, list[dict[str, Any]]] = defaultdict(list)
+    for block in extraction.get("blocks", []):
+        blocks_by_page[int(block.get("page", 0))].append(block)
+
+    for page_num, vis_page in vis_pages.items():
+        ref_page = ref_pages.get(page_num)
+        if not ref_page:
+            continue
+        page_w = float(ref_page.get("width") or 1.0)
+        page_h = float(ref_page.get("height") or 1.0)
+        image_w = int(vis_page.get("image_width") or 0)
+        image_h = int(vis_page.get("image_height") or 0)
+
+        extracted = blocks_by_page.get(page_num, [])
+        extracted_boxes = [block_bbox_pixels(b, page_w, page_h) for b in extracted]
+
+        visual_boxes_in_pdf: list[tuple[dict[str, Any], list[float]]] = []
+        for elem in vis_page.get("elements") or []:
+            pdf_bbox = _image_to_pdf_bbox(elem["bbox"], image_w, image_h, page_w, page_h)
+            visual_boxes_in_pdf.append((elem, pdf_bbox))
+
+        # 1) MISSED_VISIBLE_REGION: VLM saw a content element, no extracted block covers it.
+        for elem, pdf_bbox in visual_boxes_in_pdf:
+            if elem["type"] in {"page_number", "header", "footer"}:
+                continue  # boilerplate — not a content miss
+            if not _covered_by_any(pdf_bbox, extracted_boxes, threshold=0.40):
+                defects.append(
+                    Defect(
+                        category="MISSED_VISIBLE_REGION",
+                        page=page_num,
+                        severity="medium",
+                        detail=f"VLM saw {elem['type']}: {elem['text'][:80]!r}",
+                        source="visual",
+                        bbox=pdf_bbox,
+                        blocking=("MISSED_VISIBLE_REGION" in BLOCKING_VISUAL_CATEGORIES),
+                        extra={"visual_type": elem["type"], "level": elem.get("level")},
+                    )
+                )
+
+        # 2) BAD_BOUNDARY: block overlaps a visual element but boundaries disagree sharply.
+        for block, block_box in zip(extracted, extracted_boxes):
+            if block.get("blockType") in {"boilerplate", "page_number"}:
+                continue
+            best = None
+            best_ratio = 0.0
+            for elem, pdf_bbox in visual_boxes_in_pdf:
+                ratio = bbox_intersection_ratio(block_box, pdf_bbox)
+                if ratio > best_ratio:
+                    best_ratio = ratio
+                    best = (elem, pdf_bbox)
+            if best is None or best_ratio < 0.30:
+                continue
+            elem, pdf_bbox = best
+            # Boundary disagreement: partial overlap, not a tight match.
+            if 0.30 <= best_ratio < 0.75:
+                defects.append(
+                    Defect(
+                        category="BAD_BOUNDARY",
+                        page=page_num,
+                        severity="low",
+                        detail=f"{block.get('blockType')} block boundary disagrees with visual {elem['type']}",
+                        source="visual",
+                        bbox=block_box,
+                        blocking=("BAD_BOUNDARY" in BLOCKING_VISUAL_CATEGORIES),
+                        extra={"overlap_ratio": round(best_ratio, 3), "visual_type": elem["type"]},
+                    )
+                )
+
+        # 3) OVER_MERGE: one extracted block covers multiple distinct visual elements.
+        for block, block_box in zip(extracted, extracted_boxes):
+            if block.get("blockType") in {"boilerplate", "page_number"}:
+                continue
+            covered = [
+                elem for elem, pdf_bbox in visual_boxes_in_pdf
+                if bbox_intersection_ratio(pdf_bbox, block_box) >= 0.70
+                and elem["type"] not in {"header", "footer", "page_number"}
+            ]
+            if len(covered) >= 2:
+                types = sorted({c["type"] for c in covered})
+                defects.append(
+                    Defect(
+                        category="OVER_MERGE",
+                        page=page_num,
+                        severity="medium",
+                        detail=f"{block.get('blockType')} block merges {len(covered)} visual elements: {types}",
+                        source="visual",
+                        bbox=block_box,
+                        blocking=("OVER_MERGE" in BLOCKING_VISUAL_CATEGORIES),
+                        extra={"merged_count": len(covered), "visual_types": types},
+                    )
+                )
+
+        # 4) OVER_SPLIT: a single visual element is covered by multiple extracted blocks.
+        for elem, pdf_bbox in visual_boxes_in_pdf:
+            if elem["type"] in {"header", "footer", "page_number"}:
+                continue
+            covering = [
+                (block, block_box) for block, block_box in zip(extracted, extracted_boxes)
+                if bbox_intersection_ratio(block_box, pdf_bbox) >= 0.35
+                and block.get("blockType") not in {"boilerplate", "page_number"}
+            ]
+            if len(covering) >= 3:  # >= 3 to avoid false positives on caption+figure
+                defects.append(
+                    Defect(
+                        category="OVER_SPLIT",
+                        page=page_num,
+                        severity="medium",
+                        detail=f"Visual {elem['type']} split across {len(covering)} blocks",
+                        source="visual",
+                        bbox=pdf_bbox,
+                        blocking=("OVER_SPLIT" in BLOCKING_VISUAL_CATEGORIES),
+                        extra={"split_count": len(covering), "visual_type": elem["type"]},
+                    )
+                )
+
+    return defects
+
+
+# ----------------------------------------------------------------------------
 # Conservative defect scanner
 # ----------------------------------------------------------------------------
 
@@ -695,24 +1169,65 @@ def scan_defects(reference: dict[str, Any], extraction: dict[str, Any]) -> dict[
 # ----------------------------------------------------------------------------
 
 
-def build_review_queue(defects_report: dict[str, Any], render_template: str | None, paths: LoopPaths) -> dict[str, Any]:
-    """Create a page-level queue for human or VLM second-pass review.
+def _defect_sort_key(defect: dict[str, Any]) -> tuple[int, int, str]:
+    """Order within a page: blocking primitive → non-blocking primitive → visual attached → visual-only.
 
-    render_template is optional and should be a format string containing:
-      {pdf}  absolute pdf path
-      {page} zero-based page number
-      {out}  output image path
-
-    Example:
-      python scripts/render_pdf_page.py --pdf {pdf} --page {page} --out {out}
+    The "visual attached" bucket is visual defects whose bbox overlaps a primitive
+    defect on the same page (attached evidence). "Visual-only" are visuals with no
+    matching primitive — they land at the end.
     """
-    defect_pages = sorted(
-        int(page)
-        for page, score in defects_report.get("page_scores", {}).items()
-        if int(score) > 0
-    )
+    is_visual = defect.get("category") in VISUAL_CATEGORIES
+    is_blocking = bool(defect.get("blocking", True))
+    is_attached = bool(defect.get("extra", {}).get("attached_to_primitive", False))
+
+    if not is_visual and is_blocking:
+        bucket = 0
+    elif not is_visual and not is_blocking:
+        bucket = 1
+    elif is_visual and is_attached:
+        bucket = 2
+    else:
+        bucket = 3
+    sev_rank = {"high": 0, "medium": 1, "low": 2}.get(defect.get("severity") or "low", 3)
+    return (bucket, sev_rank, defect.get("category", ""))
+
+
+def _tag_visual_attachments(defects: list[dict[str, Any]]) -> None:
+    """Mark visual defects whose bbox overlaps a primitive defect on the same page."""
+    by_page: dict[int, list[dict[str, Any]]] = defaultdict(list)
+    for d in defects:
+        by_page[int(d.get("page", -1))].append(d)
+    for page_num, page_defects in by_page.items():
+        primitive_boxes = [
+            d["bbox"] for d in page_defects
+            if d.get("category") not in VISUAL_CATEGORIES and d.get("bbox")
+        ]
+        for d in page_defects:
+            if d.get("category") not in VISUAL_CATEGORIES:
+                continue
+            bbox = d.get("bbox")
+            extra = d.setdefault("extra", {}) or {}
+            d["extra"] = extra
+            if bbox and any(bbox_intersection_ratio(bbox, pb) >= 0.20 for pb in primitive_boxes):
+                extra["attached_to_primitive"] = True
+
+
+def build_review_queue(defects_report: dict[str, Any], render_template: str | None, paths: LoopPaths) -> dict[str, Any]:
+    """Create a per-page queue for /code-runner (and humans).
+
+    Within each page, defects are ordered:
+      1. blocking primitive defects
+      2. non-blocking primitive defects
+      3. visual findings attached to the same page region as a primitive defect
+      4. visual-only findings
+    """
+    defects = defects_report.get("defects", [])
+    _tag_visual_attachments(defects)
+
+    pages_with_any_defect = sorted({int(d.get("page", -1)) for d in defects if int(d.get("page", -1)) >= 0})
+
     review_items = []
-    for page_num in defect_pages:
+    for page_num in pages_with_any_defect:
         image_path = paths.review_dir / f"page_{page_num:04d}.png"
         render_error = None
         if render_template:
@@ -721,15 +1236,35 @@ def build_review_queue(defects_report: dict[str, Any], render_template: str | No
                 subprocess.run(shlex.split(cmd), check=True, capture_output=True, text=True)
             except Exception as exc:  # pragma: no cover - environment dependent
                 render_error = str(exc)
+
+        page_defects = [d for d in defects if int(d.get("page", -1)) == page_num]
+        page_defects.sort(key=_defect_sort_key)
         review_items.append(
             {
                 "page": page_num,
                 "image": str(image_path) if image_path.exists() else None,
                 "render_error": render_error,
-                "defects": [
-                    d for d in defects_report.get("defects", [])
-                    if int(d.get("page", -1)) == page_num
-                ],
+                "defects": page_defects,
+                "defect_counts": {
+                    "primitive_blocking": sum(
+                        1 for d in page_defects
+                        if d.get("category") not in VISUAL_CATEGORIES and d.get("blocking", True)
+                    ),
+                    "primitive_nonblocking": sum(
+                        1 for d in page_defects
+                        if d.get("category") not in VISUAL_CATEGORIES and not d.get("blocking", True)
+                    ),
+                    "visual_attached": sum(
+                        1 for d in page_defects
+                        if d.get("category") in VISUAL_CATEGORIES
+                        and (d.get("extra") or {}).get("attached_to_primitive")
+                    ),
+                    "visual_only": sum(
+                        1 for d in page_defects
+                        if d.get("category") in VISUAL_CATEGORIES
+                        and not (d.get("extra") or {}).get("attached_to_primitive")
+                    ),
+                },
             }
         )
 
@@ -860,21 +1395,37 @@ def run_code_runner(
 # ----------------------------------------------------------------------------
 
 
-def gate_candidate(prior_summary: dict[str, int] | None, current_summary: dict[str, int]) -> GateResult:
-    prior_summary = prior_summary or {}
-    current_total = weighted_total(current_summary)
-    prior_total = weighted_total(prior_summary)
+def gate_candidate(
+    prior_summary: dict[str, int] | None,
+    current_summary: dict[str, int],
+    *,
+    promoted_visual: set[str] | None = None,
+) -> GateResult:
+    """Commit/revert gate.
 
+    Only primitive categories (and any explicitly promoted visual categories)
+    count toward the weighted score and hard-regression check. Visual findings
+    ride in the review queue as evidence but do NOT gate acceptance by default.
+    """
+    promoted = promoted_visual or BLOCKING_VISUAL_CATEGORIES
+    prior_summary = prior_summary or {}
+
+    prior_blocking = primitive_summary_only(prior_summary, promoted)
+    current_blocking = primitive_summary_only(current_summary, promoted)
+
+    current_total = weighted_total(current_blocking)
+    prior_total = weighted_total(prior_blocking)
+
+    hard_set = effective_hard_categories(promoted)
     regressions: list[str] = []
     hard_regressions: list[str] = []
-    for category, current_count in current_summary.items():
-        prior_count = int(prior_summary.get(category, 0))
+    for category, current_count in current_blocking.items():
+        prior_count = int(prior_blocking.get(category, 0))
         if current_count > prior_count:
             regressions.append(category)
-            if category in HARD_CATEGORIES:
+            if category in hard_set:
                 hard_regressions.append(category)
 
-    # Accept if the weighted score improved and there are no hard regressions.
     accepted = (current_total < prior_total) and not hard_regressions
     return GateResult(
         accepted=accepted,
@@ -905,18 +1456,88 @@ def baseline_if_missing(state: dict[str, Any], defects_report: dict[str, Any], r
     return state
 
 
-def run_diagnose_cycle(paths: LoopPaths, max_pages: int | None, render_template: str | None) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+@dataclasses.dataclass
+class VisualConfig:
+    enabled: bool = False
+    model: str = "vlm-claude"
+    dpi: int = 150
+    refresh: bool = False
+
+
+def ensure_visual_reference(paths: LoopPaths, config: VisualConfig, max_pages: int | None) -> dict[str, Any] | None:
+    if not config.enabled:
+        return None
+    if config.refresh or not paths.visual_reference_json.exists():
+        return build_visual_reference(
+            paths,
+            model=config.model,
+            dpi=config.dpi,
+            max_pages=max_pages,
+        )
+    cached = load_visual_reference(
+        paths,
+        expected_model=config.model,
+        expected_dpi=config.dpi,
+    )
+    if cached is None:
+        return build_visual_reference(
+            paths,
+            model=config.model,
+            dpi=config.dpi,
+            max_pages=max_pages,
+        )
+    return cached
+
+
+def run_diagnose_cycle(
+    paths: LoopPaths,
+    max_pages: int | None,
+    render_template: str | None,
+    visual: VisualConfig | None = None,
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     reference = ensure_reference(paths, max_pages=max_pages)
     extraction = run_shaped_extraction(paths.pdf, paths.extraction_json, max_pages=max_pages)
     defects_report = scan_defects(reference, extraction)
+
+    visual_ref = ensure_visual_reference(paths, visual or VisualConfig(), max_pages)
+    if visual_ref is not None:
+        try:
+            visual_defects = scan_visual_defects(reference, visual_ref, extraction)
+        except Exception as exc:
+            logger.warning("visual scan failed: %s", exc)
+            visual_defects = []
+        if visual_defects:
+            combined_defects = list(defects_report.get("defects", [])) + [d.to_dict() for d in visual_defects]
+            defects_report["defects"] = combined_defects
+            summary = Counter(d["category"] for d in combined_defects)
+            blocking_summary = Counter(
+                d["category"] for d in combined_defects if d.get("blocking", True)
+            )
+            defects_report["summary"] = dict(summary)
+            defects_report["blocking_summary"] = dict(blocking_summary)
+            defects_report["weighted_total"] = weighted_total(dict(summary))
+            defects_report["blocking_weighted_total"] = weighted_total(dict(blocking_summary))
+            # Update page_scores to include visual contributions.
+            page_scores: Counter[int] = Counter()
+            for d in combined_defects:
+                page_scores[int(d.get("page", -1))] += 1
+            defects_report["page_scores"] = dict(page_scores)
+
     paths.defects_json.write_text(json.dumps(defects_report, indent=2))
     review_queue = build_review_queue(defects_report, render_template, paths)
     return reference, defects_report, review_queue
 
 
-def do_dod_check(paths: LoopPaths, max_pages: int | None, render_template: str | None) -> int:
+def do_dod_check(
+    paths: LoopPaths,
+    max_pages: int | None,
+    render_template: str | None,
+    visual: VisualConfig | None = None,
+) -> int:
     state = load_round_state(paths.rounds_json, paths.pdf)
-    _, defects_report, _ = run_diagnose_cycle(paths, max_pages=max_pages, render_template=render_template)
+    _, defects_report, _ = run_diagnose_cycle(
+        paths, max_pages=max_pages, render_template=render_template, visual=visual,
+    )
     prior_summary = last_accepted_summary(state)
     gate = gate_candidate(prior_summary, defects_report.get("summary", {}))
     print(json.dumps({
@@ -954,9 +1575,30 @@ def main() -> int:
     )
     parser.add_argument("--dod-check", action="store_true")
     parser.add_argument("--verbose", action="store_true")
+    parser.add_argument(
+        "--enable-visual",
+        action="store_true",
+        help="Build/use a frozen VLM visual reference as secondary evidence (not a gate).",
+    )
+    parser.add_argument("--refresh-visual-reference", action="store_true")
+    parser.add_argument("--visual-model", default="vlm-claude")
+    parser.add_argument("--visual-dpi", type=int, default=150)
+    parser.add_argument(
+        "--promote-visual-category",
+        action="append",
+        default=[],
+        choices=sorted(VISUAL_CATEGORIES),
+        help="Promote a visual category to blocking (adds to BLOCKING_VISUAL_CATEGORIES for this run).",
+    )
     args = parser.parse_args()
 
     configure_logging(args.verbose)
+
+    # Apply visual-category promotions for this run (manual only — no auto).
+    for cat in args.promote_visual_category:
+        BLOCKING_VISUAL_CATEGORIES.add(cat)
+    if BLOCKING_VISUAL_CATEGORIES:
+        logger.info("BLOCKING_VISUAL_CATEGORIES promoted for this run: %s", sorted(BLOCKING_VISUAL_CATEGORIES))
 
     pdf_path = args.pdf.resolve()
     if not pdf_path.exists():
@@ -965,14 +1607,25 @@ def main() -> int:
     paths = LoopPaths(pdf=pdf_path, workdir=args.workdir.resolve())
     paths.ensure()
 
+    visual_cfg = VisualConfig(
+        enabled=args.enable_visual,
+        model=args.visual_model,
+        dpi=args.visual_dpi,
+        refresh=args.refresh_visual_reference,
+    )
+
     if args.dod_check:
-        return do_dod_check(paths, max_pages=args.max_pages, render_template=args.render_page_cmd)
+        return do_dod_check(
+            paths, max_pages=args.max_pages, render_template=args.render_page_cmd, visual=visual_cfg,
+        )
 
     state = load_round_state(paths.rounds_json, pdf_path)
 
     # Preflight / baseline.
     logger.info("Preflight diagnose cycle")
-    _, defects_report, _ = run_diagnose_cycle(paths, max_pages=args.max_pages, render_template=args.render_page_cmd)
+    _, defects_report, _ = run_diagnose_cycle(
+        paths, max_pages=args.max_pages, render_template=args.render_page_cmd, visual=visual_cfg,
+    )
     state = baseline_if_missing(state, defects_report, paths.rounds_json)
 
     last_total = weighted_total(last_accepted_summary(state) or {})
@@ -998,6 +1651,13 @@ def main() -> int:
             dod_command += f" --max-pages {args.max_pages}"
         if args.render_page_cmd:
             dod_command += f" --render-page-cmd {shlex.quote(args.render_page_cmd)}"
+        if visual_cfg.enabled:
+            dod_command += (
+                f" --enable-visual --visual-model {shlex.quote(visual_cfg.model)} "
+                f"--visual-dpi {visual_cfg.dpi}"
+            )
+            for cat in sorted(BLOCKING_VISUAL_CATEGORIES):
+                dod_command += f" --promote-visual-category {shlex.quote(cat)}"
 
         t0 = time.time()
         code_runner_result = run_code_runner(
@@ -1010,7 +1670,9 @@ def main() -> int:
         )
         elapsed = round(time.time() - t0, 2)
 
-        _, defects_report, _ = run_diagnose_cycle(paths, max_pages=args.max_pages, render_template=args.render_page_cmd)
+        _, defects_report, _ = run_diagnose_cycle(
+            paths, max_pages=args.max_pages, render_template=args.render_page_cmd, visual=visual_cfg,
+        )
         gate = gate_candidate(prior_summary, defects_report.get("summary", {}))
 
         status = "accepted" if (code_runner_result.returncode == 0 and gate.accepted) else "rejected"
