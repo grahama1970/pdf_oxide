@@ -1506,7 +1506,14 @@ def run_code_runner(
     paths: LoopPaths,
     dod_command: str,
     backend: str,
+    inner_max_rounds: int = 3,
 ) -> subprocess.CompletedProcess[str]:
+    """Invoke /code-runner via its task-spec JSON contract.
+
+    /code-runner's CLI is `run.sh run <spec.json> [--max-rounds N] [--backend M]`
+    — it does NOT take per-flag prompt/allowlist/dod overrides. Build the spec
+    file in the workdir, then invoke the subcommand form.
+    """
     if not code_runner_path.exists():
         raise FileNotFoundError(f"code-runner not found: {code_runner_path}")
 
@@ -1517,18 +1524,38 @@ def run_code_runner(
         allowlist=", ".join(allowlist),
     )
 
+    spec = {
+        "task_id": f"{paths.key}_round_{len(load_round_state(paths.rounds_json, paths.pdf).get('rounds', [])) + 1:02d}",
+        "title": "pdf_oxide extraction repair (single outer round)",
+        "prompt": prompt,
+        "backend": backend,
+        "cwd": str(repo_root),
+        "output_dir": str(paths.workdir / f"{paths.key}.code_runner"),
+        "allowlist": list(allowlist),
+        "read_context": [
+            str(paths.defects_json),
+            str(paths.review_json),
+            str(paths.rounds_json),
+            str(paths.reference_json),
+        ],
+        "definition_of_done": {
+            "command": dod_command,
+            "assertion": '"accepted": true',
+        },
+        "max_rounds": inner_max_rounds,
+    }
+    spec_path = paths.workdir / f"{paths.key}.code_runner_spec.json"
+    spec_path.write_text(json.dumps(spec, indent=2))
+
     cmd = [
         str(code_runner_path),
-        "--prompt", prompt,
+        "run",
+        str(spec_path),
+        "--max-rounds", str(inner_max_rounds),
         "--backend", backend,
-        "--dod-command", dod_command,
     ]
-    for item in allowlist:
-        cmd.extend(["--allowlist", item])
-    for item in (paths.defects_json, paths.review_json, paths.rounds_json, paths.reference_json):
-        cmd.extend(["--read-context", str(item)])
 
-    logger.info("Running code-runner")
+    logger.info("Running code-runner with spec {}", spec_path)
     return subprocess.run(cmd, cwd=repo_root, capture_output=True, text=True)
 
 
