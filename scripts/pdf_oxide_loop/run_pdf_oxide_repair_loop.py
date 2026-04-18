@@ -240,6 +240,7 @@ def visual_summary_only(summary: dict[str, int]) -> dict[str, int]:
 def build_metrics_views(
     summary_full: dict[str, int],
     *,
+    blocking_summary: dict[str, int] | None = None,
     promoted_visual: set[str] | None = None,
 ) -> dict[str, Any]:
     """Build explicit audit-friendly metric views from a full summary.
@@ -251,7 +252,17 @@ def build_metrics_views(
       - weighted totals for each view
     """
     promoted = promoted_visual or BLOCKING_VISUAL_CATEGORIES
-    summary_blocking = primitive_summary_only(summary_full, promoted)
+    if blocking_summary is None:
+        summary_blocking = primitive_summary_only(summary_full, promoted)
+    else:
+        summary_blocking = {
+            cat: int(count)
+            for cat, count in blocking_summary.items()
+            if cat not in VISUAL_CATEGORIES or cat in promoted
+        }
+        for cat in promoted:
+            if cat in summary_full:
+                summary_blocking[cat] = int(summary_full[cat])
     summary_visual = visual_summary_only(summary_full)
     return {
         "summary_full": dict(summary_full),
@@ -423,11 +434,67 @@ def _extract_paths(oxide_doc: Any, page_num: int) -> list[dict[str, Any]]:
     return _call_list(oxide_doc, "extract_paths", page_num)
 
 
-def _bbox_from_item(item: dict[str, Any]) -> list[float] | None:
+def _bbox_from_item(item: dict[str, Any], page_height: float) -> list[float] | None:
     bbox = item.get("bbox")
     if isinstance(bbox, (list, tuple)) and len(bbox) >= 4:
-        return [float(bbox[0]), float(bbox[1]), float(bbox[2]), float(bbox[3])]
+        x0 = float(bbox[0])
+        y0_pdf = float(bbox[1])
+        width = float(bbox[2])
+        height = float(bbox[3])
+        # pdf_oxide primitive extractors expose Rect as (x, y, width, height),
+        # in PDF bottom-left coordinates. The defect scanner expects
+        # [x0, y0, x1, y1] in top-left page coordinates.
+        x1 = x0 + width
+        y1_pdf = y0_pdf + height
+        return [x0, page_height - y1_pdf, x1, page_height - y0_pdf]
     return None
+
+
+def _normalize_reference_snapshot(reference: dict[str, Any]) -> tuple[dict[str, Any], bool]:
+    """Normalize cached reference primitive boxes to [x0, y0, x1, y1].
+
+    Older snapshots persisted pdf_oxide's native (x, y, width, height) tuples
+    directly. Detect that legacy shape cheaply and convert in-memory so cached
+    references do not poison later rounds.
+    """
+    sample_count = 0
+    saw_xywh = False
+    for page in reference.get("pages", []):
+        for key in ("words", "spans", "tables", "images", "paths"):
+            for item in page.get(key, []):
+                bbox = item.get("bbox")
+                if not isinstance(bbox, list | tuple) or len(bbox) < 4:
+                    continue
+                sample_count += 1
+                if float(bbox[2]) < float(bbox[0]) or float(bbox[3]) < float(bbox[1]):
+                    saw_xywh = True
+                    break
+                if sample_count >= 128:
+                    break
+            if saw_xywh or sample_count >= 128:
+                break
+        if saw_xywh or sample_count >= 128:
+            break
+
+    if not saw_xywh:
+        return reference, False
+
+    for page in reference.get("pages", []):
+        page_height = float(page.get("height") or 1.0)
+        for key in ("words", "spans", "tables", "images", "paths"):
+            for item in page.get(key, []):
+                bbox = item.get("bbox")
+                if not isinstance(bbox, list | tuple) or len(bbox) < 4:
+                    continue
+                x0 = float(bbox[0])
+                y0_pdf = float(bbox[1])
+                width = float(bbox[2])
+                height = float(bbox[3])
+                x1 = x0 + width
+                y1_pdf = y0_pdf + height
+                item["bbox"] = [x0, page_height - y1_pdf, x1, page_height - y0_pdf]
+
+    return reference, True
 
 
 def _text_from_wordish(item: dict[str, Any]) -> str:
@@ -463,7 +530,7 @@ def build_reference_snapshot(pdf_path: Path, output_path: Path, max_pages: int |
         try:
             survey = survey_fn(str(pdf_path))
         except Exception as exc:  # pragma: no cover - environment dependent
-            logger.warning("survey_document failed: %s", exc)
+            logger.warning("survey_document failed: {}", exc)
 
     toc_entries: list[dict[str, Any]] = []
     get_toc = _safe_getattr(oxide_doc, "get_toc")
@@ -472,7 +539,7 @@ def build_reference_snapshot(pdf_path: Path, output_path: Path, max_pages: int |
             toc = get_toc() or {}
             toc_entries = [e for e in toc.get("entries", []) if isinstance(e, dict)]
         except Exception as exc:  # pragma: no cover
-            logger.warning("get_toc failed: %s", exc)
+            logger.warning("get_toc failed: {}", exc)
 
     page_count = _extract_page_count(oxide_doc)
     if max_pages is not None:
@@ -494,7 +561,7 @@ def build_reference_snapshot(pdf_path: Path, output_path: Path, max_pages: int |
 
         normalized_words = []
         for word in words:
-            bbox = _bbox_from_item(word)
+            bbox = _bbox_from_item(word, page_height)
             text = normalize_text(_text_from_wordish(word))
             if not bbox or not text:
                 continue
@@ -502,7 +569,7 @@ def build_reference_snapshot(pdf_path: Path, output_path: Path, max_pages: int |
 
         normalized_spans = []
         for span in spans:
-            bbox = _bbox_from_item(span)
+            bbox = _bbox_from_item(span, page_height)
             text = normalize_text(_text_from_wordish(span))
             size = _font_size_from_span(span)
             if not bbox or not text:
@@ -511,19 +578,19 @@ def build_reference_snapshot(pdf_path: Path, output_path: Path, max_pages: int |
 
         normalized_tables = []
         for table in tables:
-            bbox = _bbox_from_item(table)
+            bbox = _bbox_from_item(table, page_height)
             if bbox:
                 normalized_tables.append({"bbox": bbox, "rows": len(table.get("data") or [])})
 
         normalized_images = []
         for image in images:
-            bbox = _bbox_from_item(image)
+            bbox = _bbox_from_item(image, page_height)
             if bbox:
                 normalized_images.append({"bbox": bbox})
 
         normalized_paths = []
         for path in paths:
-            bbox = _bbox_from_item(path)
+            bbox = _bbox_from_item(path, page_height)
             if bbox:
                 normalized_paths.append({"bbox": bbox})
 
@@ -715,7 +782,7 @@ def build_visual_reference(
     expensive — call only when --refresh-visual-reference is set or when the
     reference does not exist. Reuse across rounds is the default.
     """
-    logger.info("Building frozen VLM visual reference (model=%s, dpi=%s)", model, dpi)
+    logger.info("Building frozen VLM visual reference (model={}, dpi={})", model, dpi)
 
     reference = json.loads(paths.reference_json.read_text())
     page_count = int(reference.get("page_count") or 0)
@@ -731,7 +798,7 @@ def build_visual_reference(
         try:
             render_page_png(paths.pdf, page_num, image_path, dpi=dpi)
         except Exception as exc:
-            logger.warning("render failed on page %s: %s", page_num, exc)
+            logger.warning("render failed on page {}: {}", page_num, exc)
             pages_out.append({"page": page_num, "elements": [], "error": f"render: {exc}"})
             continue
 
@@ -743,7 +810,7 @@ def build_visual_reference(
             vlm = _call_vlm_sonnet(image_path, prompt, model=model)
             raw_elements = vlm.get("elements") or []
         except Exception as exc:
-            logger.warning("vlm failed on page %s: %s", page_num, exc)
+            logger.warning("vlm failed on page {}: {}", page_num, exc)
             pages_out.append({"page": page_num, "elements": [], "error": f"vlm: {exc}"})
             continue
 
@@ -1616,15 +1683,27 @@ def gate_candidate(
 
 def ensure_reference(paths: LoopPaths, max_pages: int | None) -> dict[str, Any]:
     if paths.reference_json.exists():
-        logger.info("Using existing reference snapshot: %s", paths.reference_json)
-        return json.loads(paths.reference_json.read_text())
+        logger.info("Using existing reference snapshot: {}", paths.reference_json)
+        reference = json.loads(paths.reference_json.read_text())
+        reference, changed = _normalize_reference_snapshot(reference)
+        if changed:
+            logger.warning(
+                "Normalized cached reference bbox format from xywh to xyxy: {}",
+                paths.reference_json,
+            )
+            paths.reference_json.write_text(json.dumps(reference, indent=2))
+        return reference
     logger.info("Building frozen pass-1 reference snapshot")
-    return build_reference_snapshot(paths.pdf, paths.reference_json, max_pages=max_pages)
+    reference = build_reference_snapshot(paths.pdf, paths.reference_json, max_pages=max_pages)
+    return reference
 
 
 def baseline_if_missing(state: dict[str, Any], defects_report: dict[str, Any], rounds_json: Path) -> dict[str, Any]:
     if state.get("baseline") is None:
-        metrics = build_metrics_views(defects_report.get("summary", {}))
+        metrics = build_metrics_views(
+            defects_report.get("summary", {}),
+            blocking_summary=defects_report.get("blocking_summary", {}),
+        )
         state["baseline"] = {
             "created_at": now_iso(),
             "metrics": metrics,
@@ -1672,16 +1751,31 @@ def run_diagnose_cycle(
     render_template: str | None,
     visual: VisualConfig | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    cycle_started = time.perf_counter()
     reference = ensure_reference(paths, max_pages=max_pages)
+    logger.info("Diagnose cycle: running shaped extraction -> {}", paths.extraction_json)
+    extraction_started = time.perf_counter()
     extraction = run_shaped_extraction(paths.pdf, paths.extraction_json, max_pages=max_pages)
+    logger.info(
+        "Diagnose cycle: shaped extraction complete in {:.2f}s ({} blocks)",
+        time.perf_counter() - extraction_started,
+        len(extraction.get("blocks", [])),
+    )
+    logger.info("Diagnose cycle: scanning defects")
+    scan_started = time.perf_counter()
     defects_report = scan_defects(reference, extraction)
+    logger.info(
+        "Diagnose cycle: defect scan complete in {:.2f}s (blocking_total={})",
+        time.perf_counter() - scan_started,
+        defects_report.get("blocking_weighted_total", 0),
+    )
 
     visual_ref = ensure_visual_reference(paths, visual or VisualConfig(), max_pages)
     if visual_ref is not None:
         try:
             visual_defects = scan_visual_defects(reference, visual_ref, extraction)
         except Exception as exc:
-            logger.warning("visual scan failed: %s", exc)
+            logger.warning("visual scan failed: {}", exc)
             visual_defects = []
         if visual_defects:
             combined_defects = list(defects_report.get("defects", [])) + [d.to_dict() for d in visual_defects]
@@ -1701,7 +1795,13 @@ def run_diagnose_cycle(
             defects_report["page_scores"] = dict(page_scores)
 
     paths.defects_json.write_text(json.dumps(defects_report, indent=2))
+    logger.info("Diagnose cycle: wrote defects -> {}", paths.defects_json)
     review_queue = build_review_queue(defects_report, render_template, paths)
+    logger.info(
+        "Diagnose cycle complete in {:.2f}s (review_pages={})",
+        time.perf_counter() - cycle_started,
+        len(review_queue.get("items", [])),
+    )
     return reference, defects_report, review_queue
 
 
@@ -1770,7 +1870,10 @@ def do_dod_check(
     _, defects_report, _ = run_diagnose_cycle(
         paths, max_pages=max_pages, render_template=render_template, visual=visual,
     )
-    metrics = build_metrics_views(defects_report.get("summary", {}))
+    metrics = build_metrics_views(
+        defects_report.get("summary", {}),
+        blocking_summary=defects_report.get("blocking_summary", {}),
+    )
     prior_summary = last_accepted_summary(state)
     # Gate on blocking view only — non-blocking primitives and visual evidence
     # must not influence accept/revert.
@@ -1858,7 +1961,7 @@ def main() -> int:
     for cat in args.promote_visual_category:
         BLOCKING_VISUAL_CATEGORIES.add(cat)
     if BLOCKING_VISUAL_CATEGORIES:
-        logger.info("BLOCKING_VISUAL_CATEGORIES promoted for this run: %s", sorted(BLOCKING_VISUAL_CATEGORIES))
+        logger.info("BLOCKING_VISUAL_CATEGORIES promoted for this run: {}", sorted(BLOCKING_VISUAL_CATEGORIES))
 
     pdf_path = args.pdf.resolve()
     if not pdf_path.exists():
@@ -1893,13 +1996,14 @@ def main() -> int:
     state = baseline_if_missing(state, defects_report, paths.rounds_json)
 
     last_total = weighted_total(last_accepted_summary(state) or {})
+    logger.info("Preflight baseline ready: weighted_blocking={}", last_total)
     stall_count = 0
 
     for _ in range(args.max_rounds):
         state = load_round_state(paths.rounds_json, pdf_path)
         round_num = len(state.get("rounds", [])) + 1
 
-        logger.info("Starting round %s", round_num)
+        logger.info("Starting round {}", round_num)
         prior_summary = last_accepted_summary(state)
 
         # Snapshot allowlisted files BEFORE the round so a rejected round
@@ -1953,7 +2057,10 @@ def main() -> int:
         #   metrics["summary_full"]     — every category seen this round
         #   metrics["summary_blocking"] — primitives + promoted visuals (gate oracle)
         #   metrics["summary_visual"]   — visual-only (evidence, not gate)
-        metrics = build_metrics_views(defects_report.get("summary", {}))
+        metrics = build_metrics_views(
+            defects_report.get("summary", {}),
+            blocking_summary=defects_report.get("blocking_summary", {}),
+        )
         gate = gate_candidate(prior_summary, metrics["summary_blocking"])
 
         # Benchmark non-regression check — guards against overfitting the
@@ -2048,10 +2155,10 @@ def main() -> int:
             stall_count += 1
 
         if stall_count >= args.stall_limit:
-            logger.info("Halting: stall limit reached (%s)", args.stall_limit)
+            logger.info("Halting: stall limit reached ({})", args.stall_limit)
             return 0
 
-    logger.info("Halting: max rounds reached (%s)", args.max_rounds)
+    logger.info("Halting: max rounds reached ({})", args.max_rounds)
     return 0
 
 
