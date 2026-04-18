@@ -52,6 +52,8 @@ from loguru import logger
 DEFAULT_REPO = Path(__file__).resolve().parents[2]
 DEFAULT_WORKDIR = Path("/tmp/pdf_oxide_repair_loop")
 DEFAULT_CODE_RUNNER = Path("/home/graham/.claude/skills/code-runner/run.sh")
+REFERENCE_SNAPSHOT_VERSION = 2
+METRICS_VERSION = 2
 
 
 # ----------------------------------------------------------------------------
@@ -497,6 +499,34 @@ def _normalize_reference_snapshot(reference: dict[str, Any]) -> tuple[dict[str, 
     return reference, True
 
 
+def _reference_bbox_health(reference: dict[str, Any], sample_limit: int = 256) -> tuple[int, int]:
+    """Sample reference boxes and count obviously invalid coordinates."""
+    total = 0
+    invalid = 0
+    for page in reference.get("pages", []):
+        page_width = float(page.get("width") or 1.0)
+        page_height = float(page.get("height") or 1.0)
+        for key in ("words", "spans", "tables", "images", "paths"):
+            for item in page.get(key, []):
+                bbox = item.get("bbox")
+                if not isinstance(bbox, list | tuple) or len(bbox) < 4:
+                    continue
+                total += 1
+                x0, y0, x1, y1 = [float(v) for v in bbox[:4]]
+                if (
+                    x1 < x0
+                    or y1 < y0
+                    or x0 < -1.0
+                    or y0 < -1.0
+                    or x1 > page_width + 1.0
+                    or y1 > page_height + 1.0
+                ):
+                    invalid += 1
+                if total >= sample_limit:
+                    return invalid, total
+    return invalid, total
+
+
 def _text_from_wordish(item: dict[str, Any]) -> str:
     for key in ("text", "word", "token", "value"):
         value = item.get(key)
@@ -615,6 +645,7 @@ def build_reference_snapshot(pdf_path: Path, output_path: Path, max_pages: int |
     snapshot = {
         "pdf": str(pdf_path),
         "created_at": now_iso(),
+        "snapshot_version": REFERENCE_SNAPSHOT_VERSION,
         "page_count": page_count,
         "toc_entries": toc_entries,
         "survey_table_pages": sorted(survey_table_pages),
@@ -1400,20 +1431,81 @@ def build_review_queue(defects_report: dict[str, Any], render_template: str | No
     return review_queue
 
 
+def _load_current_extraction(paths: LoopPaths) -> dict[str, Any]:
+    return json.loads(paths.extraction_json.read_text())
+
+
+def _blocking_defect_count(review_item: dict[str, Any]) -> int:
+    return sum(1 for defect in review_item.get("defects", []) if defect.get("blocking", True))
+
+
+def select_focus_review_item(review_queue: dict[str, Any]) -> dict[str, Any] | None:
+    items = review_queue.get("items", [])
+    blocking_items = [item for item in items if _blocking_defect_count(item) > 0]
+    if not blocking_items:
+        return None
+    return sorted(
+        blocking_items,
+        key=lambda item: (
+            -_blocking_defect_count(item),
+            -len(item.get("defects", [])),
+            int(item.get("page", -1)),
+        ),
+    )[0]
+
+
+def write_page_focus_packet(
+    paths: LoopPaths,
+    *,
+    round_num: int,
+    review_item: dict[str, Any],
+    defects_report: dict[str, Any],
+    extraction: dict[str, Any],
+) -> Path:
+    page_num = int(review_item["page"])
+    page_blocks = [
+        block
+        for block in extraction.get("blocks", [])
+        if int(block.get("page", -1)) == page_num
+    ]
+    packet = {
+        "created_at": now_iso(),
+        "pdf": str(paths.pdf),
+        "round": round_num,
+        "page": page_num,
+        "image": review_item.get("image"),
+        "render_error": review_item.get("render_error"),
+        "defect_counts": review_item.get("defect_counts", {}),
+        "blocking_defect_count": _blocking_defect_count(review_item),
+        "defects": review_item.get("defects", []),
+        "candidate_blocks": page_blocks,
+        "candidate_block_counts": dict(Counter(block.get("blockType") for block in page_blocks)),
+        "document_blocking_summary": defects_report.get("blocking_summary", {}),
+        "document_weighted_blocking": defects_report.get("blocking_weighted_total", 0),
+    }
+    packet_path = paths.workdir / f"{paths.key}.round_{round_num:02d}.page_{page_num:04d}.json"
+    packet_path.write_text(json.dumps(packet, indent=2))
+    return packet_path
+
+
 # ----------------------------------------------------------------------------
 # State management
 # ----------------------------------------------------------------------------
 
 
-def load_round_state(rounds_json: Path, pdf: Path) -> dict[str, Any]:
-    if rounds_json.exists():
-        return json.loads(rounds_json.read_text())
+def _default_round_state(pdf: Path) -> dict[str, Any]:
     return {
         "pdf": str(pdf),
         "created_at": now_iso(),
         "baseline": None,
         "rounds": [],
     }
+
+
+def load_round_state(rounds_json: Path, pdf: Path) -> dict[str, Any]:
+    if rounds_json.exists():
+        return json.loads(rounds_json.read_text())
+    return _default_round_state(pdf)
 
 
 def save_round_state(rounds_json: Path, state: dict[str, Any]) -> None:
@@ -1499,6 +1591,8 @@ def last_accepted_summary(state: dict[str, Any]) -> dict[str, int] | None:
     """
     for entry in reversed(state.get("rounds", [])):
         if entry.get("status") == "accepted":
+            if entry.get("metrics_version") != METRICS_VERSION:
+                continue
             metrics = entry.get("metrics") or {}
             source = (
                 metrics.get("summary_blocking")
@@ -1509,6 +1603,8 @@ def last_accepted_summary(state: dict[str, Any]) -> dict[str, int] | None:
             return {k: int(v) for k, v in source.items()}
     baseline = state.get("baseline")
     if isinstance(baseline, dict):
+        if baseline.get("metrics_version") != METRICS_VERSION:
+            return None
         if "metrics" in baseline:
             summary = baseline.get("metrics", {}).get("summary_blocking", {})
             return {k: int(v) for k, v in summary.items()}
@@ -1530,38 +1626,80 @@ def run_shaped_extraction(pdf_path: Path, output_path: Path, max_pages: int | No
     return result
 
 
-FIX_PROMPT = """You are patching pdf_oxide extraction calibration code.
+# RATIONALE (not sent to LLM)
+# Purpose: Guide /code-runner to repair one extraction failure mode using a
+# single page as the diagnostic lens while full-document DoD remains the gate.
+# Consumer: /code-runner task spec for the pdf_oxide repair harness.
+# Why this matters: A vague repair prompt invites page-specific hacks, noisy
+# edits, or fake coverage wins that do not survive deterministic validation.
+# Input: page_focus_json with page-local defects and candidate blocks,
+# page_image when available, rounds_json for the accepted baseline, and the
+# exact DoD command below.
+# Output: code edits only within the allowlist; success is determined by the
+# external DoD command, not by prose.
+FIX_PROMPT = """You are editing pdf_oxide extraction calibration code.
 
-Goal:
-Reduce obvious extraction misses and shaping errors reported in {defects_json}.
+Task:
+Use the focus-page evidence to identify one mechanism-level extraction problem,
+then patch the allowlisted code so the full-document deterministic gate improves.
 
-Constraints:
-- Prefer mechanism fixes over PDF-specific special cases.
-- Keep edits as small as possible.
-- Do not add document-title hardcoding unless the evidence packet explicitly proves
-  the logic is generalizable.
-- The last ACCEPTED baseline is the real target, not the last attempted round.
-- Improve the triggering PDF without regressing the benchmark/fixture checks.
-
-Editable scope:
+Files you may edit:
 {allowlist}
 
-Primary signals to fix first:
-- MISSING_TEXT_REGION
-- MISSING_TABLE_PAGE
-- DUPLICATE_BLOCK
-- EMPTY_BLOCK
-- PHANTOM_BLOCK
+Read these inputs first:
+1. Focus page packet: {page_focus_json}
+   Use these exact fields:
+   - `page`: the page number under investigation
+   - `defects[]`: page-local defect records; use `category`, `detail`, `bbox`, `blocking`
+   - `candidate_blocks[]`: current extracted blocks on this page; use `blockType`, `bbox`, `text`
+   - `blocking_defect_count`, `defect_counts`, `candidate_block_counts`
+   - `document_blocking_summary`, `document_weighted_blocking`
+   - `image`: rendered page image path when available
+2. Focus page screenshot path: {page_image}
+3. Accepted-baseline state: {rounds_json}
 
-Available context:
-- defects report: {defects_json}
-- review queue: {review_json}
-- rounds state:  {rounds_json}
+Required reasoning order:
+1. Identify which defect category on page {focus_page} is most actionable.
+2. Explain that defect using the packet fields above, not guesswork.
+3. Find the smallest mechanism-level code change in the allowlist that can
+   change that behavior on this page and similar pages.
+4. Reject any page-specific or PDF-specific special case.
 
-Definition of done:
-- rerun the deterministic extraction loop
-- weighted blocking defects improve vs the last accepted baseline
-- no new hard-regression categories
+Priority categories:
+1. `MISSING_TEXT_REGION`
+2. `MISSING_TABLE_PAGE`
+3. `PHANTOM_BLOCK`
+4. `DUPLICATE_BLOCK`
+5. `EMPTY_BLOCK`
+
+Validation command:
+`{dod_command}`
+
+Success means all of these are true:
+- the validation command passes on the full PDF
+- weighted blocking defects improve versus the last accepted baseline
+- no new hard-regression categories appear
+- the change is explainable as a general extraction rule
+
+Treat these as wrong answers:
+- any condition on this PDF name, this page number, or quoted page text
+- synthetic placeholder blocks added only to satisfy coverage
+- edits outside the allowlist
+- broad speculative rewrites not justified by the packet fields
+- a change that helps page {focus_page} but fails the full-document DoD
+
+Example:
+- Acceptable: adjust a block-merging or filtering rule so body-text regions on
+  this page and similar pages are emitted as real content blocks.
+- Unacceptable: if page == {focus_page}, emit an extra text block over the
+  missing region.
+
+Working style:
+- make the smallest viable code edit
+- trust the external DoD command over your intuition
+- if the packet does not justify a safe fix, avoid speculative changes
+
+You are evaluated by the code diff and the validation command result, not by prose.
 """
 
 
@@ -1573,6 +1711,10 @@ def run_code_runner(
     paths: LoopPaths,
     dod_command: str,
     backend: str,
+    round_num: int,
+    focus_page: int,
+    page_focus_json: Path,
+    page_image: str | None,
     inner_max_rounds: int = 3,
 ) -> subprocess.CompletedProcess[str]:
     """Invoke /code-runner via its task-spec JSON contract.
@@ -1585,25 +1727,25 @@ def run_code_runner(
         raise FileNotFoundError(f"code-runner not found: {code_runner_path}")
 
     prompt = FIX_PROMPT.format(
-        defects_json=str(paths.defects_json),
-        review_json=str(paths.review_json),
+        focus_page=focus_page,
+        page_focus_json=str(page_focus_json),
+        page_image=page_image or "not available",
         rounds_json=str(paths.rounds_json),
+        dod_command=dod_command,
         allowlist=", ".join(allowlist),
     )
 
     spec = {
-        "task_id": f"{paths.key}_round_{len(load_round_state(paths.rounds_json, paths.pdf).get('rounds', [])) + 1:02d}",
-        "title": "pdf_oxide extraction repair (single outer round)",
+        "task_id": f"{paths.key}_round_{round_num:02d}_page_{focus_page:04d}",
+        "title": f"pdf_oxide extraction repair (round {round_num}, page {focus_page})",
         "prompt": prompt,
         "backend": backend,
         "cwd": str(repo_root),
-        "output_dir": str(paths.workdir / f"{paths.key}.code_runner"),
+        "output_dir": str(paths.workdir / f"{paths.key}.code_runner" / f"round_{round_num:02d}_page_{focus_page:04d}"),
         "allowlist": list(allowlist),
         "read_context": [
-            str(paths.defects_json),
-            str(paths.review_json),
+            str(page_focus_json),
             str(paths.rounds_json),
-            str(paths.reference_json),
         ],
         "definition_of_done": {
             "command": dod_command,
@@ -1611,7 +1753,7 @@ def run_code_runner(
         },
         "max_rounds": inner_max_rounds,
     }
-    spec_path = paths.workdir / f"{paths.key}.code_runner_spec.json"
+    spec_path = paths.workdir / f"{paths.key}.round_{round_num:02d}.page_{focus_page:04d}.code_runner_spec.json"
     spec_path.write_text(json.dumps(spec, indent=2))
 
     cmd = [
@@ -1685,13 +1827,17 @@ def ensure_reference(paths: LoopPaths, max_pages: int | None) -> dict[str, Any]:
     if paths.reference_json.exists():
         logger.info("Using existing reference snapshot: {}", paths.reference_json)
         reference = json.loads(paths.reference_json.read_text())
-        reference, changed = _normalize_reference_snapshot(reference)
-        if changed:
+        invalid_boxes, sampled_boxes = _reference_bbox_health(reference)
+        snapshot_version = int(reference.get("snapshot_version") or 0)
+        if snapshot_version != REFERENCE_SNAPSHOT_VERSION or invalid_boxes:
             logger.warning(
-                "Normalized cached reference bbox format from xywh to xyxy: {}",
-                paths.reference_json,
+                "Rebuilding cached reference snapshot: version={} expected={} invalid_boxes={}/{}",
+                snapshot_version,
+                REFERENCE_SNAPSHOT_VERSION,
+                invalid_boxes,
+                sampled_boxes,
             )
-            paths.reference_json.write_text(json.dumps(reference, indent=2))
+            return build_reference_snapshot(paths.pdf, paths.reference_json, max_pages=max_pages)
         return reference
     logger.info("Building frozen pass-1 reference snapshot")
     reference = build_reference_snapshot(paths.pdf, paths.reference_json, max_pages=max_pages)
@@ -1699,13 +1845,22 @@ def ensure_reference(paths: LoopPaths, max_pages: int | None) -> dict[str, Any]:
 
 
 def baseline_if_missing(state: dict[str, Any], defects_report: dict[str, Any], rounds_json: Path) -> dict[str, Any]:
-    if state.get("baseline") is None:
+    baseline = state.get("baseline")
+    baseline_version = baseline.get("metrics_version") if isinstance(baseline, dict) else None
+    if baseline is None or baseline_version != METRICS_VERSION:
+        if baseline is not None and baseline_version != METRICS_VERSION:
+            logger.warning(
+                "Resetting baseline metrics due to version change: {} -> {}",
+                baseline_version,
+                METRICS_VERSION,
+            )
         metrics = build_metrics_views(
             defects_report.get("summary", {}),
             blocking_summary=defects_report.get("blocking_summary", {}),
         )
         state["baseline"] = {
             "created_at": now_iso(),
+            "metrics_version": METRICS_VERSION,
             "metrics": metrics,
         }
         save_round_state(rounds_json, state)
@@ -1990,13 +2145,16 @@ def main() -> int:
 
     # Preflight / baseline.
     logger.info("Preflight diagnose cycle")
-    _, defects_report, _ = run_diagnose_cycle(
+    _, defects_report, review_queue = run_diagnose_cycle(
         paths, max_pages=args.max_pages, render_template=args.render_page_cmd, visual=visual_cfg,
     )
     state = baseline_if_missing(state, defects_report, paths.rounds_json)
 
     last_total = weighted_total(last_accepted_summary(state) or {})
     logger.info("Preflight baseline ready: weighted_blocking={}", last_total)
+    if last_total == 0:
+        logger.info("Halting: zero weighted blocking defects at preflight")
+        return 0
     stall_count = 0
 
     for _ in range(args.max_rounds):
@@ -2005,6 +2163,27 @@ def main() -> int:
 
         logger.info("Starting round {}", round_num)
         prior_summary = last_accepted_summary(state)
+        current_review_queue = review_queue if round_num == 1 else json.loads(paths.review_json.read_text())
+        current_defects_report = defects_report if round_num == 1 else json.loads(paths.defects_json.read_text())
+        focus_item = select_focus_review_item(current_review_queue)
+        if focus_item is None:
+            logger.info("Halting: no blocking page-level defects remain")
+            return 0
+        focus_page = int(focus_item["page"])
+        focus_packet = write_page_focus_packet(
+            paths,
+            round_num=round_num,
+            review_item=focus_item,
+            defects_report=current_defects_report,
+            extraction=_load_current_extraction(paths),
+        )
+        logger.info(
+            "Round {} focus page={} blocking_defects={} context={}",
+            round_num,
+            focus_page,
+            _blocking_defect_count(focus_item),
+            focus_packet,
+        )
 
         # Snapshot allowlisted files BEFORE the round so a rejected round
         # can be restored regardless of whether /code-runner is promotion-safe.
@@ -2046,10 +2225,14 @@ def main() -> int:
             paths=paths,
             dod_command=dod_command,
             backend=args.backend,
+            round_num=round_num,
+            focus_page=focus_page,
+            page_focus_json=focus_packet,
+            page_image=focus_item.get("image"),
         )
         elapsed = round(time.time() - t0, 2)
 
-        _, defects_report, _ = run_diagnose_cycle(
+        _, defects_report, review_queue = run_diagnose_cycle(
             paths, max_pages=args.max_pages, render_template=args.render_page_cmd, visual=visual_cfg,
         )
         # Split the full summary into explicit views so that rounds.json and
@@ -2102,7 +2285,10 @@ def main() -> int:
             "round": round_num,
             "timestamp": now_iso(),
             "status": status,
+            "metrics_version": METRICS_VERSION,
             "elapsed_seconds": elapsed,
+            "focus_page": focus_page,
+            "focus_packet": str(focus_packet),
             "metrics": metrics,
             "gate": gate.to_dict(),
             "gate_metrics": {
