@@ -35,6 +35,7 @@ import hashlib
 import json
 import os
 import shlex
+import shutil
 import subprocess
 import sys
 import time
@@ -1299,6 +1300,77 @@ def save_round_state(rounds_json: Path, state: dict[str, Any]) -> None:
     rounds_json.write_text(json.dumps(state, indent=2))
 
 
+def snapshot_allowlist_files(
+    repo_root: Path,
+    allowlist: list[str],
+    backup_root: Path,
+) -> dict[str, Any]:
+    """Snapshot allowlisted files before a /code-runner round.
+
+    Records per-file existence + backup path so rejection can restore the
+    working-tree state exactly (not just the last committed version).
+    """
+    backup_root.mkdir(parents=True, exist_ok=True)
+    manifest: dict[str, Any] = {
+        "created_at": now_iso(),
+        "repo_root": str(repo_root),
+        "files": [],
+    }
+    for relpath in allowlist:
+        abs_path = (repo_root / relpath).resolve()
+        entry = {
+            "relpath": relpath,
+            "abs_path": str(abs_path),
+            "existed": abs_path.exists(),
+            "backup_path": None,
+        }
+        if abs_path.exists():
+            backup_path = backup_root / relpath
+            backup_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(abs_path, backup_path)
+            entry["backup_path"] = str(backup_path)
+        manifest["files"].append(entry)
+
+    manifest_path = backup_root / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2))
+    return manifest
+
+
+def restore_allowlist_files(manifest: dict[str, Any]) -> list[str]:
+    """Restore allowlisted files from a pre-round snapshot.
+
+    Handles three cases:
+      - file existed pre-round → copy backup back
+      - file did not exist pre-round → delete if created
+      - allowlist entry pointed to a directory → remove tree
+    Raises on inconsistent manifests (missing backup for existing file).
+    """
+    restored: list[str] = []
+    for entry in manifest.get("files", []):
+        relpath = entry["relpath"]
+        abs_path = Path(entry["abs_path"])
+        existed = bool(entry.get("existed"))
+        backup_path = entry.get("backup_path")
+
+        if existed:
+            if not backup_path:
+                raise RuntimeError(f"Missing backup path for existing file: {relpath}")
+            src = Path(backup_path)
+            if not src.exists():
+                raise RuntimeError(f"Backup missing for {relpath}: {src}")
+            abs_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, abs_path)
+            restored.append(relpath)
+        else:
+            if abs_path.exists():
+                if abs_path.is_file():
+                    abs_path.unlink()
+                else:
+                    shutil.rmtree(abs_path)
+                restored.append(relpath)
+    return restored
+
+
 def last_accepted_summary(state: dict[str, Any]) -> dict[str, int] | None:
     """Return the blocking (gate-relevant) category counts of the last accepted round.
 
@@ -1730,6 +1802,15 @@ def main() -> int:
         logger.info("Starting round %s", round_num)
         prior_summary = last_accepted_summary(state)
 
+        # Snapshot allowlisted files BEFORE the round so a rejected round
+        # can be restored regardless of whether /code-runner is promotion-safe.
+        backup_root = paths.workdir / f"{paths.key}.backup_round_{round_num:02d}"
+        snapshot_manifest = snapshot_allowlist_files(
+            args.repo_root.resolve(),
+            args.allowlist,
+            backup_root,
+        )
+
         dod_command = (
             f"python {shlex.quote(str(Path(__file__).resolve()))} "
             f"--pdf {shlex.quote(str(pdf_path))} "
@@ -1788,21 +1869,24 @@ def main() -> int:
             else "rejected"
         )
 
-        # Defense-in-depth: on rejection, explicitly restore allowlisted files.
-        # /code-runner is supposed to isolate via worktree, but if any edit
-        # leaked into the working tree, revert it here before the next round.
-        if status == "rejected":
-            for rel in args.allowlist:
-                try:
-                    subprocess.run(
-                        ["git", "restore", "--source=HEAD", "--", rel],
-                        cwd=args.repo_root.resolve(),
-                        check=False,
-                        capture_output=True,
-                        text=True,
-                    )
-                except Exception as exc:
-                    logger.warning("git restore %s failed: %s", rel, exc)
+        # On rejection, restore the pre-round snapshot of allowlisted files.
+        # This makes the loop safe regardless of whether /code-runner is
+        # promotion-safe. If restore itself fails, halt — we cannot continue
+        # with a possibly-dirty working tree.
+        restore_performed = False
+        restored_paths: list[str] = []
+        restore_error: str | None = None
+        if status != "accepted":
+            try:
+                restored_paths = restore_allowlist_files(snapshot_manifest)
+                restore_performed = True
+                logger.info("Rejected round restored allowlisted files: {}", restored_paths)
+            except Exception as exc:
+                restore_error = str(exc)
+                logger.exception("Failed to restore allowlisted files after rejected round")
+                raise SystemExit(
+                    f"Restore failed after rejected round {round_num}: {restore_error}"
+                )
 
         entry = {
             "round": round_num,
@@ -1816,6 +1900,12 @@ def main() -> int:
             "gate": gate.to_dict(),
             "benchmarks_ok": benchmarks_ok,
             "benchmark_results": benchmark_results,
+            "restore": {
+                "performed": restore_performed,
+                "paths": restored_paths,
+                "error": restore_error,
+                "backup_root": str(backup_root),
+            },
             "code_runner": {
                 "returncode": code_runner_result.returncode,
                 "stdout_tail": code_runner_result.stdout[-2000:],
