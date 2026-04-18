@@ -24,6 +24,8 @@ pub mod font_subsetter;
 /// Process-level cross-document font cache for batch processing.
 pub mod global_cache;
 pub mod non_text_detection;
+/// Shared text decoding module for PDF text extraction and rendering.
+pub mod text_decode;
 /// TrueType font CMap parsing for glyph-to-character mapping.
 pub mod truetype_cmap;
 /// TrueType/OpenType font parser for PDF embedding (v0.3.0).
@@ -31,8 +33,6 @@ pub mod truetype_parser;
 /// Type 1 font encoding parser for extracting built-in encoding from FontFile data.
 /// Type 1 font encoding parser for extracting built-in encoding from FontFile data.
 pub mod type1_encoding;
-/// Shared text decoding module for PDF text extraction and rendering.
-pub mod text_decode;
 
 pub use character_mapper::{CharacterMapper, PredefinedCMapConfig};
 pub use cmap::{parse_tounicode_cmap, CMap, LazyCMap};
@@ -41,6 +41,9 @@ pub use encoding_normalizer::EncodingNormalizer;
 pub use font_dict::{CIDSystemInfo, CIDToGIDMap, Encoding, FontInfo};
 pub use font_subsetter::FontSubsetter;
 pub use non_text_detection::NonTextDetector;
-pub use text_decode::{decode_pdf_text, decode_text_to_unicode, DecodedGlyph, fallback_char_to_unicode, get_byte_mode, ByteMode, TextCharIter};
+pub use text_decode::{
+    decode_pdf_text, decode_text_to_unicode, fallback_char_to_unicode, get_byte_mode, ByteMode,
+    DecodedGlyph, TextCharIter,
+};
 pub use truetype_cmap::TrueTypeCMap;
 pub use truetype_parser::{FontMetrics, TrueTypeError, TrueTypeFont, TrueTypeResult};

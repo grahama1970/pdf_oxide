@@ -1,0 +1,421 @@
+version: 1
+kind: orchestrate-plan
+repo_root: "/home/graham/workspace/experiments/pdf_oxide"
+
+metadata:
+  title: "PDF Cloner Refactor — Opus Manifest + Element Sequences"
+  goal: "Refactor clone pipeline: Opus analyzes source → manifest with element sequences → qwen3 generates content → /create-figure for images → presets render"
+  plan_type: code
+  created: "2026-04-14"
+  primary_persona:
+    name: "Graham Anderson"
+    role: "pdf_oxide Developer"
+    source: "CLAUDE.md"
+
+execution:
+  max_concurrency: 2
+
+capability_overlap:
+  - "Existing: clone_types.py has SectionBudget, RenderPlan, TruthManifest"
+  - "Existing: clone_builder.py has CloneBuilder with QID allocation, figure placeholders"
+  - "Existing: sampler_content.py has make_llm_content_generator_batch() via scillm"
+  - "Existing: presets/ has 136 presets across 11 categories"
+  - "Existing: /create-text skill for corpus-based text"
+  - "Existing: /create-figure skill for image generation"
+  - "Gap: Element sequences not tracked (only counts)"
+  - "Gap: Figures are placeholders, not /create-figure generated"
+  - "Gap: No cross-reference tracking"
+  - "Gap: No Opus-driven manifest enhancement"
+
+questions_blockers: []
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Schema Extension"
+  - id: "1"
+    label: "Wave 1: Manifest Generator"
+  - id: "2"
+    label: "Wave 2: Content Integration"
+  - id: "3"
+    label: "Wave 3: Validation"
+
+tasks:
+  # ==========================================================================
+  # Wave 0: Extend Schema
+  # ==========================================================================
+  - id: "1"
+    title: "Extend SectionBudget with element_sequence"
+    lane: "0"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: []
+    prompt: |
+      Extend SectionBudget in clone_types.py to track ordered element sequences.
+
+      Current: has paragraph_count, table_count, figure_count (just counts)
+      Need: element_sequence list that specifies ORDER of elements.
+
+      Add field:
+        element_sequence: List[ElementSpec] = field(default_factory=list)
+
+      Add dataclass:
+        @dataclass
+        class ElementSpec:
+            element_type: BlockType  # PARAGRAPH, TABLE, LIST, FIGURE, CALLOUT
+            preset: Optional[str] = None  # e.g., "control_matrix", "note_box"
+            count: int = 1  # How many of this element in sequence
+            config: Dict[str, Any] = field(default_factory=dict)  # Element-specific config
+
+      Example sequence for a control section:
+        [
+          ElementSpec(PARAGRAPH, count=2),
+          ElementSpec(TABLE, preset="control_matrix", config={"rows": 12}),
+          ElementSpec(LIST, preset="bullet_list", count=1),
+          ElementSpec(CALLOUT, preset="note_box"),
+          ElementSpec(PARAGRAPH, count=1),
+        ]
+
+      Keep backward compat: derive counts from sequence if sequence is populated.
+    allowlist:
+      - "python/pdf_oxide/clone/clone_types.py"
+    read_context:
+      - "python/pdf_oxide/presets/__init__.py"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pdf_oxide && python -c \"from pdf_oxide.clone.clone_types import SectionBudget, ElementSpec, BlockType; s = SectionBudget(0, 'Test', 1, 1, 5); print('ElementSpec:', ElementSpec); print('OK')\""
+      assertion: "Imports succeed, ElementSpec dataclass exists"
+    blind_tests:
+      - "python -c \"from pdf_oxide.clone.clone_types import ElementSpec, BlockType; e = ElementSpec(element_type=BlockType.TABLE, preset='data_grid', count=3); assert e.count == 3; assert e.preset == 'data_grid'\""
+      - "python -c \"from pdf_oxide.clone.clone_types import SectionBudget, ElementSpec, BlockType; s = SectionBudget(0, 'T', 1, 1, 5, element_sequence=[ElementSpec(BlockType.PARAGRAPH)]); assert len(s.element_sequence) == 1\""
+
+  - id: "2"
+    title: "Add FigureSpec for /create-figure integration"
+    lane: "0"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: []
+    prompt: |
+      Add FigureSpec dataclass to clone_types.py for /create-figure integration.
+
+      @dataclass
+      class FigureSpec:
+          figure_type: str  # "flowchart", "diagram", "chart", "architecture"
+          description: str  # Natural language description for /create-figure
+          caption: str
+          width: float = 6.0  # inches
+          height: float = 4.0  # inches
+          data: Optional[Dict[str, Any]] = None  # Chart data if applicable
+
+      Update ElementSpec to reference FigureSpec when element_type is FIGURE:
+        figure_spec: Optional[FigureSpec] = None
+    allowlist:
+      - "python/pdf_oxide/clone/clone_types.py"
+    read_context: []
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pdf_oxide && python -c \"from pdf_oxide.clone.clone_types import FigureSpec; f = FigureSpec('flowchart', 'Access control flow', 'Figure 1'); print(f)\""
+      assertion: "FigureSpec dataclass works"
+    blind_tests:
+      - "python -c \"from pdf_oxide.clone.clone_types import FigureSpec; f = FigureSpec('chart', 'test', 'cap', width=8.0); assert f.width == 8.0; assert f.figure_type == 'chart'\""
+      - "python -c \"from pdf_oxide.clone.clone_types import ElementSpec, FigureSpec, BlockType; e = ElementSpec(BlockType.FIGURE, figure_spec=FigureSpec('d', 'd', 'c')); assert e.figure_spec is not None\""
+
+  - id: "3"
+    title: "Add CrossRef tracking to manifest"
+    lane: "0"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: []
+    prompt: |
+      Add cross-reference tracking to clone_types.py.
+
+      @dataclass
+      class CrossRef:
+          source_qid: str  # QID of element containing the reference
+          target_id: str  # e.g., "AC-2(1)", "Section 3.1", "Table 5"
+          ref_text: str  # The display text "See AC-2(1)"
+          target_qid: Optional[str] = None  # Resolved after render
+
+      Add to RenderPlan:
+        cross_refs: List[CrossRef] = field(default_factory=list)
+
+      Add to TruthManifest:
+        cross_refs: Dict[str, CrossRef] = field(default_factory=dict)  # source_qid → CrossRef
+    allowlist:
+      - "python/pdf_oxide/clone/clone_types.py"
+    read_context: []
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pdf_oxide && python -c \"from pdf_oxide.clone.clone_types import CrossRef, RenderPlan; c = CrossRef('Q001', 'AC-2', 'See AC-2'); print(c)\""
+      assertion: "CrossRef dataclass works"
+    blind_tests:
+      - "python -c \"from pdf_oxide.clone.clone_types import CrossRef; c = CrossRef('Q1', 'T1', 'ref'); assert c.target_qid is None; c2 = CrossRef('Q2', 'T2', 'ref2', target_qid='Q99'); assert c2.target_qid == 'Q99'\""
+      - "python -c \"from pdf_oxide.clone.clone_types import RenderPlan, CrossRef; p = RenderPlan('d', 's', 1); assert hasattr(p, 'cross_refs'); p.cross_refs.append(CrossRef('a','b','c'))\""
+
+  # ==========================================================================
+  # Wave 1: Opus Manifest Generator
+  # ==========================================================================
+  - id: "4"
+    title: "Create manifest_generator.py with Opus analysis"
+    lane: "1"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["1", "2", "3"]
+    prompt: |
+      Create python/pdf_oxide/clone/manifest_generator.py
+
+      This module uses Opus via scillm to analyze source PDF and emit enhanced manifest.
+
+      Input: TOC extraction, table shapes, page signatures from clone_profiler
+      Output: Enhanced manifest with element_sequence per section
+
+      Key function:
+        async def generate_manifest(
+            toc: List[dict],
+            table_shapes: List[dict],
+            page_signatures: List[dict],
+            presets: Dict[str, List[str]],  # Available presets by category
+            model: str = "opus",  # Use Opus for structural analysis
+        ) -> Dict[str, Any]:
+
+      Opus prompt should:
+      1. Analyze each TOC section's page span
+      2. Infer element sequence based on section type (control family → table-heavy, glossary → definition table, etc.)
+      3. Assign appropriate presets from available list
+      4. Estimate counts based on page span
+      5. Generate figure specs for sections that typically have diagrams
+      6. Extract cross-reference patterns
+
+      Use scillm at localhost:4001 with httpx.
+      Response format: JSON with sections array, each having element_sequence.
+
+      Include fallback logic if Opus is unavailable (use gemini or rule-based).
+    allowlist:
+      - "python/pdf_oxide/clone/manifest_generator.py"
+    read_context:
+      - "python/pdf_oxide/clone/clone_types.py"
+      - "python/pdf_oxide/presets/__init__.py"
+      - "clone_from_toc.py"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pdf_oxide && python -c \"from pdf_oxide.clone.manifest_generator import generate_manifest; print('Import OK')\""
+      assertion: "Module imports successfully"
+    blind_tests:
+      - "python -c \"from pdf_oxide.clone.manifest_generator import generate_manifest; import inspect; sig = inspect.signature(generate_manifest); assert 'toc' in sig.parameters; assert 'model' in sig.parameters\""
+      - "python -c \"import asyncio; from pdf_oxide.clone.manifest_generator import generate_manifest; assert asyncio.iscoroutinefunction(generate_manifest)\""
+
+  - id: "5"
+    title: "Add preset availability check"
+    lane: "1"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["4"]
+    prompt: |
+      Add preset validation to manifest_generator.py.
+
+      Create function:
+        def validate_preset_coverage(
+            manifest: Dict[str, Any],
+            available_presets: Dict[str, List[str]],
+        ) -> List[str]:
+            '''Returns list of missing presets referenced in manifest.'''
+
+      Also add to the manifest output:
+        "missing_presets": ["preset_name_1", "preset_name_2"],
+        "preset_warnings": ["Section X references unknown preset Y"]
+
+      This allows flagging gaps for later preset creation.
+    allowlist:
+      - "python/pdf_oxide/clone/manifest_generator.py"
+    read_context:
+      - "python/pdf_oxide/presets/__init__.py"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pdf_oxide && python -c \"from pdf_oxide.clone.manifest_generator import validate_preset_coverage; print('OK')\""
+      assertion: "Function exists and imports"
+    blind_tests:
+      - "python -c \"from pdf_oxide.clone.manifest_generator import validate_preset_coverage; missing = validate_preset_coverage({'sections': [{'preset': 'nonexistent'}]}, {'tables': ['data_grid']}); assert 'nonexistent' in missing or len(missing) > 0\""
+
+  # ==========================================================================
+  # Wave 2: Content Integration
+  # ==========================================================================
+  - id: "6"
+    title: "Update sampler_content to use element_sequence"
+    lane: "2"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["1", "4"]
+    prompt: |
+      Update sampler_content.py to generate content following element_sequence.
+
+      Current: generates paragraphs and tables based on counts
+      Need: generate content in order specified by element_sequence
+
+      Update make_llm_content_generator_batch() to:
+      1. Read element_sequence from SectionBudget
+      2. Generate content for each ElementSpec in order
+      3. Return dict with "elements" list (not just "paragraphs" and "tables")
+
+      Output format per section:
+        {
+          "section_role": "requirements",
+          "elements": [
+            {"type": "paragraph", "content": "..."},
+            {"type": "table", "preset": "control_matrix", "headers": [...], "rows": [...]},
+            {"type": "list", "preset": "bullet_list", "items": [...]},
+            {"type": "callout", "preset": "note_box", "title": "...", "body": "..."},
+          ]
+        }
+
+      Keep backward compat: if element_sequence is empty, fall back to current behavior.
+    allowlist:
+      - "python/pdf_oxide/clone/sampler_content.py"
+    read_context:
+      - "python/pdf_oxide/clone/clone_types.py"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pdf_oxide && python -c \"from pdf_oxide.clone.sampler_content import make_llm_content_generator_batch; print('OK')\""
+      assertion: "Updated function imports"
+    blind_tests:
+      - "python -c \"from pdf_oxide.clone.sampler_content import make_llm_content_generator_batch; import inspect; sig = inspect.signature(make_llm_content_generator_batch); assert 'budgets' in sig.parameters or len(sig.parameters) >= 1\""
+
+  - id: "7"
+    title: "Add /create-figure integration to clone_builder"
+    lane: "2"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["2"]
+    prompt: |
+      Update clone_builder.py _build_figure() to use /create-figure skill.
+
+      Current: generates placeholder text
+      Need: call /create-figure to generate actual image
+
+      Integration approach:
+      1. Check if FigureSpec is provided in element config
+      2. If yes, call /create-figure via subprocess or skill API
+      3. If /create-figure fails, fall back to placeholder
+      4. Insert generated image into ReportLab flowables
+
+      /create-figure CLI:
+        ~/.claude/skills/create-figure/run.sh generate \
+          --type flowchart \
+          --description "Access control decision flow" \
+          --output /tmp/figure_001.png \
+          --width 6 --height 4
+
+      Use ReportLab's Image class to insert PNG:
+        from reportlab.platypus import Image
+        img = Image(path, width=6*inch, height=4*inch)
+    allowlist:
+      - "python/pdf_oxide/clone/clone_builder.py"
+    read_context:
+      - "python/pdf_oxide/clone/clone_types.py"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pdf_oxide && python -c \"from pdf_oxide.clone.clone_builder import CloneBuilder; print('OK')\""
+      assertion: "CloneBuilder still imports"
+    blind_tests:
+      - "python -c \"from pdf_oxide.clone.clone_builder import CloneBuilder; import inspect; src = inspect.getsource(CloneBuilder); assert '_build_figure' in src\""
+
+  - id: "8"
+    title: "Add cross-ref link generation"
+    lane: "2"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["3"]
+    prompt: |
+      Add cross-reference link generation to clone_builder.py.
+
+      When rendering text that contains cross-refs (from manifest):
+      1. Wrap ref text in ReportLab link annotation
+      2. Track target QID for later resolution
+      3. Add to TruthManifest for validation
+
+      ReportLab internal links:
+        <a href="#target_qid">See AC-2(1)</a>
+
+      Add method:
+        def _render_with_links(self, text: str, cross_refs: List[CrossRef]) -> str:
+            '''Replace cross-ref patterns with linked text.'''
+
+      Add to TruthManifest output: resolved cross_refs with target QIDs.
+    allowlist:
+      - "python/pdf_oxide/clone/clone_builder.py"
+    read_context:
+      - "python/pdf_oxide/clone/clone_types.py"
+    definition_of_done:
+      command: "cd /home/graham/workspace/experiments/pdf_oxide && python -c \"from pdf_oxide.clone.clone_builder import CloneBuilder; print('OK')\""
+      assertion: "CloneBuilder still imports"
+    blind_tests:
+      - "python -c \"from pdf_oxide.clone.clone_builder import CloneBuilder; import inspect; src = inspect.getsource(CloneBuilder); assert '_render_with_links' in src or 'cross_ref' in src.lower()\""
+
+  # ==========================================================================
+  # Wave 3: CLI + Validation
+  # ==========================================================================
+  - id: "9"
+    title: "Create unified clone CLI"
+    lane: "3"
+    runner: "code-runner"
+    backend: "claude"
+    mode: "iterative"
+    depends_on: ["4", "6", "7", "8"]
+    prompt: |
+      Create clone_pdf_v2.py as unified CLI for the refactored pipeline.
+
+      Usage:
+        python clone_pdf_v2.py --source NIST_SP_800-53r5.pdf --output clone.pdf
+        python clone_pdf_v2.py --manifest manifest.json --output clone.pdf
+        python clone_pdf_v2.py --source ... --model text-qwen3 --seed 42
+
+      Pipeline:
+      1. If --source: run clone_profiler to get TOC/tables/signatures
+      2. Call manifest_generator.generate_manifest() (Opus)
+      3. Save manifest to JSON (for debugging/reuse)
+      4. Build SectionBudgets from manifest with element_sequences
+      5. Call make_llm_content_generator_batch() (qwen3)
+      6. Build PDF via CloneBuilder
+      7. Save TruthManifest for validation
+
+      Options:
+        --source: Source PDF path
+        --manifest: Pre-generated manifest JSON (skip Opus call)
+        --output: Output PDF path
+        --model: LLM model for content (default: text-qwen3)
+        --opus-model: Model for manifest generation (default: opus)
+        --seed: Random seed for determinism
+        --limit: Limit sections for testing
+        --skip-figures: Skip /create-figure (use placeholders)
+    allowlist:
+      - "clone_pdf_v2.py"
+    read_context:
+      - "clone_from_toc.py"
+      - "python/pdf_oxide/clone/manifest_generator.py"
+      - "python/pdf_oxide/clone/clone_builder.py"
+    definition_of_done:
+      command: "python clone_pdf_v2.py --help"
+      assertion: "Shows usage with --source, --manifest, --output options"
+    blind_tests:
+      - "python clone_pdf_v2.py --help 2>&1 | grep -q -- '--source' && echo PASS"
+      - "python clone_pdf_v2.py --help 2>&1 | grep -q -- '--manifest' && echo PASS"
+      - "python clone_pdf_v2.py --help 2>&1 | grep -q -- '--model' && echo PASS"
+
+  - id: "10"
+    title: "End-to-end test with NIST 800-53"
+    lane: "3"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["9"]
+    command: |
+      cd /home/graham/workspace/experiments/pdf_oxide && \
+      python clone_pdf_v2.py \
+        --manifest .archive/clone_v4_deprecated/clone_v4_manifest.json \
+        --output /tmp/clone_v2_test.pdf \
+        --model text-qwen3 \
+        --limit 5 \
+        --skip-figures \
+        --seed 42
+    definition_of_done:
+      command: "test -f /tmp/clone_v2_test.pdf && echo 'PDF exists'"
+      assertion: "PDF file created successfully"

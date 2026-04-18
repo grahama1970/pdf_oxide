@@ -84,7 +84,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
             Operator::RestoreState => {
                 gs_stack.restore();
                 if in_text {
@@ -92,7 +92,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
             Operator::Cm { a, b, c, d, e, f } => {
                 let new_ctm = Matrix {
                     a: *a,
@@ -109,7 +109,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
 
             // Text state tracking
             Operator::Tf { ref font, size } => {
@@ -120,7 +120,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
             Operator::Tc { char_space } => {
                 gs_stack.current_mut().char_space = *char_space;
                 if in_text {
@@ -128,7 +128,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
             Operator::Tw { word_space } => {
                 gs_stack.current_mut().word_space = *word_space;
                 if in_text {
@@ -136,7 +136,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
             Operator::Tz { scale } => {
                 gs_stack.current_mut().horizontal_scaling = *scale;
                 if in_text {
@@ -144,7 +144,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
             Operator::TL { leading } => {
                 gs_stack.current_mut().leading = *leading;
                 if in_text {
@@ -152,7 +152,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
             Operator::Ts { rise } => {
                 gs_stack.current_mut().text_rise = *rise;
                 if in_text {
@@ -160,7 +160,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
             Operator::Tr { render } => {
                 gs_stack.current_mut().render_mode = *render;
                 if in_text {
@@ -168,7 +168,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
 
             // Text object boundaries
             Operator::BeginText => {
@@ -178,7 +178,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 text_block_ops.clear();
                 text_block_has_visible = false;
                 text_block_ops.push(op.clone());
-            }
+            },
             Operator::EndText => {
                 text_block_ops.push(op.clone());
                 // Emit the text block only if it has visible (non-redacted) content
@@ -187,7 +187,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 }
                 in_text = false;
                 text_block_ops.clear();
-            }
+            },
 
             // Text positioning
             Operator::Td { tx, ty } => {
@@ -198,7 +198,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 if in_text {
                     text_block_ops.push(op.clone());
                 }
-            }
+            },
             Operator::TD { tx, ty } => {
                 let gs = gs_stack.current_mut();
                 gs.leading = -*ty;
@@ -208,7 +208,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 if in_text {
                     text_block_ops.push(op.clone());
                 }
-            }
+            },
             Operator::Tm { a, b, c, d, e, f } => {
                 let tm = Matrix {
                     a: *a,
@@ -223,18 +223,17 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 if in_text {
                     text_block_ops.push(op.clone());
                 }
-            }
+            },
             Operator::TStar => {
                 let gs = gs_stack.current_mut();
                 let leading = gs.leading;
-                let new_line =
-                    Matrix::translation(0.0, -leading).multiply(&gs.text_line_matrix);
+                let new_line = Matrix::translation(0.0, -leading).multiply(&gs.text_line_matrix);
                 gs.text_matrix = new_line;
                 gs.text_line_matrix = new_line;
                 if in_text {
                     text_block_ops.push(op.clone());
                 }
-            }
+            },
 
             // Text showing operators — check redaction
             Operator::Tj { .. }
@@ -255,7 +254,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                         advance_text_matrix_for_op(op, gs_stack.current_mut());
                     }
                 }
-            }
+            },
 
             // XObject (Do) — check if image overlaps redaction
             Operator::Do { ref name } => {
@@ -271,20 +270,23 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 let min_y = p1.y.min(p2.y).min(p3.y).min(p4.y);
                 let max_y = p1.y.max(p2.y).max(p3.y).max(p4.y);
 
-                let is_redacted = rects
-                    .iter()
-                    .any(|r| r.overlaps(min_x, min_y, max_x, max_y));
+                let is_redacted = rects.iter().any(|r| r.overlaps(min_x, min_y, max_x, max_y));
                 if !is_redacted {
                     result.push(op.clone());
                 }
-            }
+            },
 
             // Path painting — check if path bbox overlaps redaction
-            Operator::Rectangle { x, y, width, height } => {
+            Operator::Rectangle {
+                x,
+                y,
+                width,
+                height,
+            } => {
                 // We handle path + paint as a unit; for now track path coords
                 // and pass through if outside redaction
                 result.push(op.clone());
-            }
+            },
 
             // Inline images — check bbox against redaction
             Operator::InlineImage { .. } => {
@@ -297,13 +299,11 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 let min_y = p1.y.min(p2.y);
                 let max_y = p1.y.max(p2.y);
 
-                let is_redacted = rects
-                    .iter()
-                    .any(|r| r.overlaps(min_x, min_y, max_x, max_y));
+                let is_redacted = rects.iter().any(|r| r.overlaps(min_x, min_y, max_x, max_y));
                 if !is_redacted {
                     result.push(op.clone());
                 }
-            }
+            },
 
             // All other operators pass through
             _ => {
@@ -312,7 +312,7 @@ fn filter_operators(operators: &[Operator], rects: &[RedactionRect]) -> Vec<Oper
                 } else {
                     result.push(op.clone());
                 }
-            }
+            },
         }
     }
 
@@ -347,15 +347,13 @@ fn compute_text_bbox(op: &Operator, gs: &GraphicsState) -> Option<(f32, f32, f32
     // This is approximate — proper width requires font metrics
     let char_count = match op {
         Operator::Tj { ref text } => text.len() as f32,
-        Operator::TJ { ref array } => {
-            array
-                .iter()
-                .map(|e| match e {
-                    TextElement::String(s) => s.len() as f32,
-                    TextElement::Offset(_) => 0.0,
-                })
-                .sum()
-        }
+        Operator::TJ { ref array } => array
+            .iter()
+            .map(|e| match e {
+                TextElement::String(s) => s.len() as f32,
+                TextElement::Offset(_) => 0.0,
+            })
+            .sum(),
         Operator::Quote { ref text } => text.len() as f32,
         Operator::DoubleQuote { ref text, .. } => text.len() as f32,
         _ => return None,
@@ -395,7 +393,7 @@ fn advance_text_matrix_for_op(op: &Operator, gs: &mut GraphicsState) {
             let advance = text.len() as f32 * font_size * 0.5 * h_scale;
             gs.text_matrix.e += advance * gs.text_matrix.a;
             gs.text_matrix.f += advance * gs.text_matrix.b;
-        }
+        },
         Operator::TJ { ref array } => {
             for elem in array {
                 match elem {
@@ -403,16 +401,16 @@ fn advance_text_matrix_for_op(op: &Operator, gs: &mut GraphicsState) {
                         let advance = s.len() as f32 * font_size * 0.5 * h_scale;
                         gs.text_matrix.e += advance * gs.text_matrix.a;
                         gs.text_matrix.f += advance * gs.text_matrix.b;
-                    }
+                    },
                     TextElement::Offset(offset) => {
                         // TJ offsets are in thousandths of a unit of text space
                         let advance = -offset / 1000.0 * font_size * h_scale;
                         gs.text_matrix.e += advance * gs.text_matrix.a;
                         gs.text_matrix.f += advance * gs.text_matrix.b;
-                    }
+                    },
                 }
             }
-        }
+        },
         Operator::Quote { ref text } => {
             // Move to next line first
             let leading = gs.leading;
@@ -423,7 +421,7 @@ fn advance_text_matrix_for_op(op: &Operator, gs: &mut GraphicsState) {
             let advance = text.len() as f32 * font_size * 0.5 * h_scale;
             gs.text_matrix.e += advance * gs.text_matrix.a;
             gs.text_matrix.f += advance * gs.text_matrix.b;
-        }
+        },
         Operator::DoubleQuote {
             word_space,
             char_space,
@@ -438,8 +436,8 @@ fn advance_text_matrix_for_op(op: &Operator, gs: &mut GraphicsState) {
             let advance = text.len() as f32 * font_size * 0.5 * h_scale;
             gs.text_matrix.e += advance * gs.text_matrix.a;
             gs.text_matrix.f += advance * gs.text_matrix.b;
-        }
-        _ => {}
+        },
+        _ => {},
     }
 }
 
@@ -464,13 +462,13 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*ty, out);
             out.extend_from_slice(b" Td");
-        }
+        },
         Operator::TD { tx, ty } => {
             write_f32(*tx, out);
             out.push(b' ');
             write_f32(*ty, out);
             out.extend_from_slice(b" TD");
-        }
+        },
         Operator::Tm { a, b, c, d, e, f } => {
             write_f32(*a, out);
             out.push(b' ');
@@ -484,14 +482,14 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*f, out);
             out.extend_from_slice(b" Tm");
-        }
+        },
         Operator::TStar => out.extend_from_slice(b"T*"),
 
         // Text showing
         Operator::Tj { ref text } => {
             write_pdf_string(text, out);
             out.extend_from_slice(b" Tj");
-        }
+        },
         Operator::TJ { ref array } => {
             out.push(b'[');
             for elem in array {
@@ -501,11 +499,11 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
                 }
             }
             out.extend_from_slice(b"] TJ");
-        }
+        },
         Operator::Quote { ref text } => {
             write_pdf_string(text, out);
             out.extend_from_slice(b" '");
-        }
+        },
         Operator::DoubleQuote {
             word_space,
             char_space,
@@ -517,40 +515,40 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_pdf_string(text, out);
             out.extend_from_slice(b" \"");
-        }
+        },
 
         // Text state
         Operator::Tc { char_space } => {
             write_f32(*char_space, out);
             out.extend_from_slice(b" Tc");
-        }
+        },
         Operator::Tw { word_space } => {
             write_f32(*word_space, out);
             out.extend_from_slice(b" Tw");
-        }
+        },
         Operator::Tz { scale } => {
             write_f32(*scale, out);
             out.extend_from_slice(b" Tz");
-        }
+        },
         Operator::TL { leading } => {
             write_f32(*leading, out);
             out.extend_from_slice(b" TL");
-        }
+        },
         Operator::Tf { ref font, size } => {
             out.push(b'/');
             out.extend_from_slice(font.as_bytes());
             out.push(b' ');
             write_f32(*size, out);
             out.extend_from_slice(b" Tf");
-        }
+        },
         Operator::Tr { render } => {
             out.extend_from_slice(render.to_string().as_bytes());
             out.extend_from_slice(b" Tr");
-        }
+        },
         Operator::Ts { rise } => {
             write_f32(*rise, out);
             out.extend_from_slice(b" Ts");
-        }
+        },
 
         // Graphics state
         Operator::SaveState => out.push(b'q'),
@@ -568,7 +566,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*f, out);
             out.extend_from_slice(b" cm");
-        }
+        },
 
         // Color operators
         Operator::SetFillRgb { r, g, b } => {
@@ -578,7 +576,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*b, out);
             out.extend_from_slice(b" rg");
-        }
+        },
         Operator::SetStrokeRgb { r, g, b } => {
             write_f32(*r, out);
             out.push(b' ');
@@ -586,15 +584,15 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*b, out);
             out.extend_from_slice(b" RG");
-        }
+        },
         Operator::SetFillGray { gray } => {
             write_f32(*gray, out);
             out.extend_from_slice(b" g");
-        }
+        },
         Operator::SetStrokeGray { gray } => {
             write_f32(*gray, out);
             out.extend_from_slice(b" G");
-        }
+        },
         Operator::SetFillCmyk { c, m, y, k } => {
             write_f32(*c, out);
             out.push(b' ');
@@ -604,7 +602,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*k, out);
             out.extend_from_slice(b" k");
-        }
+        },
         Operator::SetStrokeCmyk { c, m, y, k } => {
             write_f32(*c, out);
             out.push(b' ');
@@ -614,19 +612,19 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*k, out);
             out.extend_from_slice(b" K");
-        }
+        },
 
         // Color space
         Operator::SetFillColorSpace { ref name } => {
             out.push(b'/');
             out.extend_from_slice(name.as_bytes());
             out.extend_from_slice(b" cs");
-        }
+        },
         Operator::SetStrokeColorSpace { ref name } => {
             out.push(b'/');
             out.extend_from_slice(name.as_bytes());
             out.extend_from_slice(b" CS");
-        }
+        },
         Operator::SetFillColor { ref components } => {
             for (i, c) in components.iter().enumerate() {
                 if i > 0 {
@@ -635,7 +633,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
                 write_f32(*c, out);
             }
             out.extend_from_slice(b" sc");
-        }
+        },
         Operator::SetStrokeColor { ref components } => {
             for (i, c) in components.iter().enumerate() {
                 if i > 0 {
@@ -644,7 +642,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
                 write_f32(*c, out);
             }
             out.extend_from_slice(b" SC");
-        }
+        },
         Operator::SetFillColorN {
             ref components,
             ref name,
@@ -659,7 +657,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
                 out.push(b' ');
             }
             out.extend_from_slice(b"scn");
-        }
+        },
         Operator::SetStrokeColorN {
             ref components,
             ref name,
@@ -674,7 +672,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
                 out.push(b' ');
             }
             out.extend_from_slice(b"SCN");
-        }
+        },
 
         // Text object
         Operator::BeginText => out.extend_from_slice(b"BT"),
@@ -685,7 +683,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b'/');
             out.extend_from_slice(name.as_bytes());
             out.extend_from_slice(b" Do");
-        }
+        },
 
         // Path construction
         Operator::MoveTo { x, y } => {
@@ -693,13 +691,13 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*y, out);
             out.extend_from_slice(b" m");
-        }
+        },
         Operator::LineTo { x, y } => {
             write_f32(*x, out);
             out.push(b' ');
             write_f32(*y, out);
             out.extend_from_slice(b" l");
-        }
+        },
         Operator::CurveTo {
             x1,
             y1,
@@ -720,7 +718,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*y3, out);
             out.extend_from_slice(b" c");
-        }
+        },
         Operator::CurveToV { x2, y2, x3, y3 } => {
             write_f32(*x2, out);
             out.push(b' ');
@@ -730,7 +728,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*y3, out);
             out.extend_from_slice(b" v");
-        }
+        },
         Operator::CurveToY { x1, y1, x3, y3 } => {
             write_f32(*x1, out);
             out.push(b' ');
@@ -740,9 +738,14 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*y3, out);
             out.extend_from_slice(b" y");
-        }
+        },
         Operator::ClosePath => out.push(b'h'),
-        Operator::Rectangle { x, y, width, height } => {
+        Operator::Rectangle {
+            x,
+            y,
+            width,
+            height,
+        } => {
             write_f32(*x, out);
             out.push(b' ');
             write_f32(*y, out);
@@ -751,7 +754,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             write_f32(*height, out);
             out.extend_from_slice(b" re");
-        }
+        },
 
         // Path painting
         Operator::Stroke => out.push(b'S'),
@@ -766,7 +769,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
         Operator::SetLineWidth { width } => {
             write_f32(*width, out);
             out.extend_from_slice(b" w");
-        }
+        },
         Operator::SetDash { ref array, phase } => {
             out.push(b'[');
             for (i, v) in array.iter().enumerate() {
@@ -778,38 +781,38 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.extend_from_slice(b"] ");
             write_f32(*phase, out);
             out.extend_from_slice(b" d");
-        }
+        },
         Operator::SetLineCap { cap_style } => {
             out.extend_from_slice(cap_style.to_string().as_bytes());
             out.extend_from_slice(b" J");
-        }
+        },
         Operator::SetLineJoin { join_style } => {
             out.extend_from_slice(join_style.to_string().as_bytes());
             out.extend_from_slice(b" j");
-        }
+        },
         Operator::SetMiterLimit { limit } => {
             write_f32(*limit, out);
             out.extend_from_slice(b" M");
-        }
+        },
         Operator::SetRenderingIntent { ref intent } => {
             out.push(b'/');
             out.extend_from_slice(intent.as_bytes());
             out.extend_from_slice(b" ri");
-        }
+        },
         Operator::SetFlatness { tolerance } => {
             write_f32(*tolerance, out);
             out.extend_from_slice(b" i");
-        }
+        },
         Operator::SetExtGState { ref dict_name } => {
             out.push(b'/');
             out.extend_from_slice(dict_name.as_bytes());
             out.extend_from_slice(b" gs");
-        }
+        },
         Operator::PaintShading { ref name } => {
             out.push(b'/');
             out.extend_from_slice(name.as_bytes());
             out.extend_from_slice(b" sh");
-        }
+        },
 
         // Inline image
         Operator::InlineImage { ref dict, ref data } => {
@@ -824,14 +827,14 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.extend_from_slice(b"ID ");
             out.extend_from_slice(data);
             out.extend_from_slice(b"\nEI");
-        }
+        },
 
         // Marked content
         Operator::BeginMarkedContent { ref tag } => {
             out.push(b'/');
             out.extend_from_slice(tag.as_bytes());
             out.extend_from_slice(b" BMC");
-        }
+        },
         Operator::BeginMarkedContentDict {
             ref tag,
             ref properties,
@@ -841,7 +844,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
             out.push(b' ');
             serialize_object_inline(properties, out);
             out.extend_from_slice(b" BDC");
-        }
+        },
         Operator::EndMarkedContent => out.extend_from_slice(b"EMC"),
 
         // Catch-all for Other operators
@@ -859,7 +862,7 @@ fn serialize_operator(op: &Operator, out: &mut Vec<u8>) {
                 out.push(b' ');
             }
             out.extend_from_slice(name.as_bytes());
-        }
+        },
     }
 }
 
@@ -898,14 +901,14 @@ fn serialize_object_inline(obj: &crate::object::Object, out: &mut Vec<u8>) {
         Object::Null => out.extend_from_slice(b"null"),
         Object::Boolean(b) => {
             out.extend_from_slice(if *b { b"true" } else { b"false" });
-        }
+        },
         Object::Integer(i) => out.extend_from_slice(i.to_string().as_bytes()),
         Object::Real(f) => write_f32(*f as f32, out),
         Object::String(s) => write_pdf_string(s, out),
         Object::Name(n) => {
             out.push(b'/');
             out.extend_from_slice(n.as_bytes());
-        }
+        },
         Object::Array(arr) => {
             out.push(b'[');
             for (i, item) in arr.iter().enumerate() {
@@ -915,7 +918,7 @@ fn serialize_object_inline(obj: &crate::object::Object, out: &mut Vec<u8>) {
                 serialize_object_inline(item, out);
             }
             out.push(b']');
-        }
+        },
         Object::Dictionary(dict) => {
             out.extend_from_slice(b"<<");
             for (key, val) in dict {
@@ -925,14 +928,14 @@ fn serialize_object_inline(obj: &crate::object::Object, out: &mut Vec<u8>) {
                 serialize_object_inline(val, out);
             }
             out.extend_from_slice(b">>");
-        }
+        },
         Object::Reference(r) => {
             out.extend_from_slice(format!("{} {} R", r.id, r.gen).as_bytes());
-        }
+        },
         Object::Stream { .. } => {
             // Streams shouldn't appear inline in content streams
             out.extend_from_slice(b"null");
-        }
+        },
     }
 }
 
@@ -999,7 +1002,10 @@ mod tests {
                 font: "F1".to_string(),
                 size: 12.0,
             },
-            Operator::Td { tx: 100.0, ty: 700.0 },
+            Operator::Td {
+                tx: 100.0,
+                ty: 700.0,
+            },
             Operator::Tj {
                 text: b"Hello, World!".to_vec(),
             },
@@ -1036,7 +1042,8 @@ mod tests {
     #[test]
     fn test_strip_preserves_non_redacted_text() {
         // Two text operations with absolute positioning (Tm): one inside redaction, one outside
-        let content = b"BT /F1 12 Tf 1 0 0 1 100 700 Tm (Visible) Tj 1 0 0 1 100 500 Tm (Secret) Tj ET";
+        let content =
+            b"BT /F1 12 Tf 1 0 0 1 100 700 Tm (Visible) Tj 1 0 0 1 100 500 Tm (Secret) Tj ET";
         // Redact only the area around y=500
         let rects = vec![RedactionRect::new([90.0, 490.0, 400.0, 520.0])];
         let result = strip_redacted_content(content, &rects).unwrap();

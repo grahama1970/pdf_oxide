@@ -647,11 +647,7 @@ impl PdfDocument {
                 // First element is page reference or page number
                 let page = match &arr[0] {
                     Object::Integer(n) => *n as u32,
-                    Object::Reference(r) => {
-                        // Resolve page reference to page index
-                        // For now, just use object ID as approximation
-                        r.id
-                    },
+                    Object::Reference(r) => self.find_annotation_page_index(*r)? as u32,
                     _ => 0,
                 };
 
@@ -686,6 +682,23 @@ impl PdfDocument {
             },
             _ => Err(crate::error::Error::InvalidPdf("Invalid destination format".to_string())),
         }
+    }
+
+    fn find_annotation_page_index(&mut self, page_ref: crate::object::ObjectRef) -> Result<usize> {
+        let count = self.page_count()?;
+
+        for i in 0..count {
+            if let Ok(page_obj_ref) = self.get_page_ref(i) {
+                if page_obj_ref == page_ref {
+                    return Ok(i);
+                }
+            }
+        }
+
+        Err(crate::error::Error::InvalidPdf(format!(
+            "Page reference {:?} not found",
+            page_ref
+        )))
     }
 
     /// Parse an action dictionary.

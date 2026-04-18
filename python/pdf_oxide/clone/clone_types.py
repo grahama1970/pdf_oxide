@@ -55,6 +55,190 @@ class BlockType(str, Enum):
     RUNNING_FOOTER = "running_footer"
 
 
+class DiscrepancyType(str, Enum):
+    """Types of extraction discrepancies for calibration feedback."""
+    SECTION_UNDER_DETECT = "section_under_detect"  # Extractor missed sections
+    SECTION_OVER_DETECT = "section_over_detect"    # Extractor found noise as sections
+    TABLE_UNDER_DETECT = "table_under_detect"      # Extractor missed tables
+    TABLE_OVER_DETECT = "table_over_detect"        # Extractor found false positives
+    CONTROL_ID_MISS = "control_id_miss"            # Control IDs not recognized
+    TABLE_EMPTY = "table_empty"                    # Tables extracted but empty
+    STRUCTURE_MISMATCH = "structure_mismatch"      # General structure issues
+
+
+# =============================================================================
+# Extraction Discrepancy (Calibration Feedback)
+# =============================================================================
+
+@dataclass
+class ExtractionDiscrepancy:
+    """Captures extraction failures for PDF cloner calibration.
+
+    When profile counts differ significantly from extraction counts,
+    this dataclass captures the discrepancy details to feed into the
+    PDF cloner. The cloner then generates targeted calibration fixtures
+    to test/fix specific extraction patterns.
+
+    Usage:
+        discrepancy = ExtractionDiscrepancy(
+            source_pdf="/path/to/problem.pdf",
+            profile_sections=358,
+            extracted_sections=674,
+            profile_tables=47,
+            extracted_tables=243,
+            discrepancy_types=[DiscrepancyType.CONTROL_ID_MISS, DiscrepancyType.TABLE_OVER_DETECT],
+            failure_patterns=["XX-N control IDs not detected", "Empty 2x2 tables extracted"],
+        )
+        # Feed to PDF cloner for targeted fixture generation
+    """
+    source_pdf: str
+    profile_sections: int
+    extracted_sections: int
+    profile_tables: int
+    extracted_tables: int
+
+    # Specific failure patterns identified
+    discrepancy_types: List[DiscrepancyType] = field(default_factory=list)
+    failure_patterns: List[str] = field(default_factory=list)
+
+    # Detailed counts for calibration
+    profile_control_sections: int = 0   # Sections with XX-N pattern
+    extracted_control_sections: int = 0
+    empty_tables_count: int = 0         # Tables with no content
+    noise_sections_count: int = 0       # Non-structural text as sections
+
+    # Sample failures for debugging
+    sample_missed_controls: List[str] = field(default_factory=list)  # e.g., ["AC-1", "SI-7"]
+    sample_false_tables: List[Dict[str, Any]] = field(default_factory=list)
+
+    @property
+    def section_ratio(self) -> float:
+        """Ratio of extracted to profile sections (1.0 = exact match)."""
+        return self.extracted_sections / max(1, self.profile_sections)
+
+    @property
+    def table_ratio(self) -> float:
+        """Ratio of extracted to profile tables (1.0 = exact match)."""
+        return self.extracted_tables / max(1, self.profile_tables)
+
+    @property
+    def control_detection_rate(self) -> float:
+        """Rate of control section detection (1.0 = all detected)."""
+        return self.extracted_control_sections / max(1, self.profile_control_sections)
+
+    @property
+    def has_significant_discrepancy(self) -> bool:
+        """True if discrepancy exceeds calibration threshold (20%)."""
+        return (
+            abs(1.0 - self.section_ratio) > 0.2 or
+            abs(1.0 - self.table_ratio) > 0.2 or
+            self.control_detection_rate < 0.8
+        )
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "source_pdf": self.source_pdf,
+            "profile_sections": self.profile_sections,
+            "extracted_sections": self.extracted_sections,
+            "profile_tables": self.profile_tables,
+            "extracted_tables": self.extracted_tables,
+            "section_ratio": self.section_ratio,
+            "table_ratio": self.table_ratio,
+            "control_detection_rate": self.control_detection_rate,
+            "has_significant_discrepancy": self.has_significant_discrepancy,
+            "discrepancy_types": [d.value for d in self.discrepancy_types],
+            "failure_patterns": self.failure_patterns,
+            "profile_control_sections": self.profile_control_sections,
+            "extracted_control_sections": self.extracted_control_sections,
+            "empty_tables_count": self.empty_tables_count,
+            "noise_sections_count": self.noise_sections_count,
+            "sample_missed_controls": self.sample_missed_controls,
+        }
+
+    @classmethod
+    def from_comparison(
+        cls,
+        source_pdf: str,
+        profile: Dict[str, Any],
+        extraction: Dict[str, Any],
+    ) -> "ExtractionDiscrepancy":
+        """Create discrepancy from profile vs extraction comparison.
+
+        Args:
+            source_pdf: Path to the source PDF
+            profile: Output from clone_profiler.profile_for_cloning()
+            extraction: Output from extractor (extracted.json)
+
+        Returns:
+            ExtractionDiscrepancy with populated fields
+        """
+        import re
+
+        toc = profile.get("toc_sections", [])
+        tables = profile.get("table_shapes", [])
+        ext_sections = extraction.get("sections", [])
+        ext_tables = extraction.get("tables", [])
+
+        # Count control pattern sections in profile
+        control_re = re.compile(r"^[A-Z]{2}-\d+")
+        profile_controls = [
+            t for t in toc
+            if t.get("title") and control_re.match(t["title"].split()[0])
+        ]
+
+        # Count control pattern sections in extraction
+        ext_controls = [
+            s for s in ext_sections
+            if s.get("numbering") and isinstance(s["numbering"], str) and control_re.match(s["numbering"])
+        ]
+
+        # Count empty tables
+        empty_tables = [
+            t for t in ext_tables
+            if t.get("data") and all(all(cell == "" for cell in row) for row in t["data"])
+        ]
+
+        # Identify discrepancy types
+        discrepancy_types = []
+        failure_patterns = []
+
+        if len(ext_controls) < len(profile_controls) * 0.5:
+            discrepancy_types.append(DiscrepancyType.CONTROL_ID_MISS)
+            failure_patterns.append(f"XX-N control IDs: {len(ext_controls)}/{len(profile_controls)} detected")
+
+        if len(ext_sections) > len(toc) * 1.5:
+            discrepancy_types.append(DiscrepancyType.SECTION_OVER_DETECT)
+            failure_patterns.append(f"Noise sections: {len(ext_sections)} detected vs {len(toc)} expected")
+
+        if len(ext_tables) > len(tables) * 2:
+            discrepancy_types.append(DiscrepancyType.TABLE_OVER_DETECT)
+            failure_patterns.append(f"Table over-detection: {len(ext_tables)} vs {len(tables)} expected")
+
+        if empty_tables:
+            discrepancy_types.append(DiscrepancyType.TABLE_EMPTY)
+            failure_patterns.append(f"Empty tables: {len(empty_tables)} detected")
+
+        # Sample missed controls (first 10)
+        profile_control_ids = [t["title"].split()[0] for t in profile_controls]
+        ext_control_ids = [s.get("numbering", "") for s in ext_controls]
+        missed_controls = [c for c in profile_control_ids if c not in ext_control_ids][:10]
+
+        return cls(
+            source_pdf=source_pdf,
+            profile_sections=len(toc),
+            extracted_sections=len(ext_sections),
+            profile_tables=len(tables),
+            extracted_tables=len(ext_tables),
+            discrepancy_types=discrepancy_types,
+            failure_patterns=failure_patterns,
+            profile_control_sections=len(profile_controls),
+            extracted_control_sections=len(ext_controls),
+            empty_tables_count=len(empty_tables),
+            noise_sections_count=max(0, len(ext_sections) - len(toc)),
+            sample_missed_controls=missed_controls,
+        )
+
+
 # =============================================================================
 # Source Profile Reference
 # =============================================================================
@@ -212,6 +396,12 @@ class SectionBudget:
     content_type: str = "prose"  # prose, requirement, bullet_list, etc.
     domain: str = "general"
 
+    # Sampler hints for content generation (e.g., avg_char_count, density_hint)
+    sampler_hints: Dict[str, Any] = field(default_factory=dict)
+
+    # Element sequence for rendering order
+    element_sequence: List["ElementSpec"] = field(default_factory=list)
+
     @property
     def page_span(self) -> int:
         return max(1, self.end_page - self.start_page)
@@ -274,32 +464,34 @@ class FigureSpec:
 
 @dataclass
 class ElementSpec:
-    """Specification for a document element to be rendered.
-    
-    This class bridges the gap between content analysis and rendering,
-    providing a unified interface for different element types including
-    text, tables, and figures.
-    """
-    element_type: BlockType
-    content: str
-    qid: Optional[str] = None
-    
-    # Position and styling
-    page_num: int = 0
-    sequence_num: int = 0
-    
-    # Element-specific specifications
-    figure_spec: Optional[FigureSpec] = None
-    
-    # Table-related fields (if element_type is TABLE)
-    table_id: Optional[str] = None
-    row: Optional[int] = None
-    col: Optional[int] = None
-    
-    # Section-related fields (if element_type is HEADING)
-    section_id: Optional[int] = None
-    depth: Optional[int] = None
+    """Specification for an element in a section's element_sequence.
 
+    Used to define the order and configuration of elements to render
+    in a section: prose paragraphs, tables, lists, figures, callouts.
+    """
+    element_type: BlockType  # PARAGRAPH, TABLE, LIST, FIGURE, CALLOUT
+    preset: Optional[str] = None  # e.g., "control_matrix", "note_box"
+    count: int = 1  # How many of this element in sequence
+    config: Dict[str, Any] = field(default_factory=dict)  # Element-specific config
+
+    # Figure specification (if element_type is FIGURE)
+    figure_spec: Optional[FigureSpec] = None
+# =============================================================================
+# Cross-Reference Tracking
+# =============================================================================
+
+@dataclass
+class CrossRef:
+    """Cross-reference tracking for document elements.
+    
+    Tracks references between document elements (e.g., "See AC-2(1)", "Table 5").
+    Used for validation that cross-references are properly preserved during
+    PDF cloning and extraction.
+    """
+    source_qid: str  # QID of element containing the reference
+    target_id: str  # e.g., "AC-2(1)", "Section 3.1", "Table 5"
+    ref_text: str  # The display text "See AC-2(1)"
+    target_qid: Optional[str] = None  # Resolved after render
 # =============================================================================
 # Render Plan
 # =============================================================================
@@ -338,6 +530,8 @@ class RenderPlan:
     header_pattern: Optional[str] = None
     footer_pattern: Optional[str] = None
 
+    # Cross-reference tracking
+    cross_refs: List[CrossRef] = field(default_factory=list)
     def get_regime_for_page(self, page_num: int) -> Optional[PageRegime]:
         """Get the rendering regime for a specific page."""
         for regime in self.page_regimes:
@@ -489,6 +683,9 @@ class TruthManifest:
     # Page → [qid, ...] in render order
     page_qid_order: Dict[int, List[str]] = field(default_factory=dict)
 
+    # Cross-reference tracking: source_qid → CrossRef
+    cross_refs: Dict[str, CrossRef] = field(default_factory=dict)
+
     def register(self, obj: TruthObject) -> None:
         """Register a truth object and update indices."""
         self.objects.append(obj)
@@ -578,6 +775,12 @@ class TruthManifest:
             "table_structures": self.table_structures,
             "section_hierarchy": self.section_hierarchy,
             "page_qid_order": {str(k): v for k, v in self.page_qid_order.items()},
+            "cross_refs": {k: {
+                "source_qid": v.source_qid,
+                "target_id": v.target_id,
+                "ref_text": v.ref_text,
+                "target_qid": v.target_qid,
+            } for k, v in self.cross_refs.items()},
         }
 
     def save(self, path: str) -> None:
@@ -684,6 +887,24 @@ def derive_render_plan(
             profile_ref.toc_sections,
             profile_ref.page_count,
         )
+
+    # If we got a single "Document" region covering all pages AND we have tables,
+    # create per-page sections instead. This is critical for the self-improvement
+    # loop: tables must appear on their source pages for validation to work.
+    if (len(regions) == 1 and regions[0].get("title") == "Document"
+            and tables_by_page):
+        regions = []
+        for page in range(profile_ref.page_count):
+            tables_on_page = tables_by_page.get(page, [])
+            hints = ["tables"] if tables_on_page else []
+            regions.append({
+                "title": f"Page {page + 1}",
+                "start": page,
+                "end": page,
+                "size": 1,
+                "hints": hints,
+                "level": 1,
+            })
 
     # Build section budgets from regions (not thin TOC boundaries)
     for i, region in enumerate(regions):

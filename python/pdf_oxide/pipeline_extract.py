@@ -48,18 +48,32 @@ def extract_content(pdf_path: str, config: PipelineConfig) -> PipelineResult:
 
 
 def _build_sections(raw: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Build sections from Rust-detected sections only.
+
+    Sections come from:
+    - PDF outline/bookmarks
+    - Font-based heading detection (Rust build_sections)
+
+    Control IDs (AC-1, SI-7, etc.) are NOT sections - they are entities.
+    Use /extract-entities for control ID extraction.
+    """
     sections = []
+
     for s in raw.get("sections", []):
+        title = s.get("title", "")
         sections.append(
             {
-                "id": md5(f"sec_{s.get('title', '')}_{s.get('page', 0)}"),
-                "title": s.get("title", ""),
+                "id": md5(f"sec_{title}_{s.get('page', 0)}"),
+                "title": title,
                 "level": s.get("level", 1),
                 "page_start": s.get("page", 0),
                 "page_end": s.get("page", 0),
                 "numbering": s.get("numbering"),
             }
         )
+
+    # Sort by page then title
+    sections.sort(key=lambda s: (s["page_start"], s["title"]))
     return sections
 
 

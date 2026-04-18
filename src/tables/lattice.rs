@@ -10,9 +10,9 @@
 //!
 //! Uses `image` + `imageproc` crates (pure Rust, no OpenCV dependency).
 
-use image::{GrayImage, Luma};
-use crate::tables::types::{BBox, ExtractConfig, Flavor, Segment, Table, TextElement};
 use crate::tables::text_assign::{assign_text_to_cells, compute_accuracy};
+use crate::tables::types::{BBox, ExtractConfig, Flavor, Segment, Table, TextElement};
+use image::{GrayImage, Luma};
 
 // -- Image processing primitives --
 
@@ -284,7 +284,7 @@ fn extract_segments(mask: &GrayImage, direction: Direction) -> Vec<Segment> {
                     }
                 }
             }
-        }
+        },
         Direction::Vertical => {
             for x in 0..w {
                 let mut in_run = false;
@@ -309,7 +309,7 @@ fn extract_segments(mask: &GrayImage, direction: Direction) -> Vec<Segment> {
                     }
                 }
             }
-        }
+        },
     }
 
     // Merge segments that are adjacent (within 3px) in the same line
@@ -333,7 +333,9 @@ fn merge_segments(segments: &mut Vec<Segment>, direction: Direction) {
         Direction::Horizontal => {
             // Sort by y, then by x0
             segments.sort_by(|a, b| {
-                a.y0.partial_cmp(&b.y0).unwrap().then(a.x0.partial_cmp(&b.x0).unwrap())
+                a.y0.partial_cmp(&b.y0)
+                    .unwrap()
+                    .then(a.x0.partial_cmp(&b.x0).unwrap())
             });
             let mut i = 0;
             while i + 1 < segments.len() {
@@ -346,10 +348,12 @@ fn merge_segments(segments: &mut Vec<Segment>, direction: Direction) {
                     i += 1;
                 }
             }
-        }
+        },
         Direction::Vertical => {
             segments.sort_by(|a, b| {
-                a.x0.partial_cmp(&b.x0).unwrap().then(a.y0.partial_cmp(&b.y0).unwrap())
+                a.x0.partial_cmp(&b.x0)
+                    .unwrap()
+                    .then(a.y0.partial_cmp(&b.y0).unwrap())
             });
             let mut i = 0;
             while i + 1 < segments.len() {
@@ -362,7 +366,7 @@ fn merge_segments(segments: &mut Vec<Segment>, direction: Direction) {
                     i += 1;
                 }
             }
-        }
+        },
     }
 }
 
@@ -475,9 +479,7 @@ fn find_table_regions(
     for bbox in &blobs {
         let region_joints: Vec<(f64, f64)> = all_joints
             .iter()
-            .filter(|&&(jx, jy)| {
-                jx >= bbox.x0 && jx <= bbox.x1 && jy >= bbox.y0 && jy <= bbox.y1
-            })
+            .filter(|&&(jx, jy)| jx >= bbox.x0 && jx <= bbox.x1 && jy >= bbox.y0 && jy <= bbox.y1)
             .cloned()
             .collect();
 
@@ -523,10 +525,18 @@ fn find_blobs_with_bounds(img: &GrayImage) -> Vec<BBox> {
                     max_y = max_y.max(cy as f64);
                     pixel_count += 1;
 
-                    if cx > 0 { stack.push((cx - 1, cy)); }
-                    if cx + 1 < w { stack.push((cx + 1, cy)); }
-                    if cy > 0 { stack.push((cx, cy - 1)); }
-                    if cy + 1 < h { stack.push((cx, cy + 1)); }
+                    if cx > 0 {
+                        stack.push((cx - 1, cy));
+                    }
+                    if cx + 1 < w {
+                        stack.push((cx + 1, cy));
+                    }
+                    if cy > 0 {
+                        stack.push((cx, cy - 1));
+                    }
+                    if cy + 1 < h {
+                        stack.push((cx, cy + 1));
+                    }
                 }
             }
 
@@ -543,10 +553,7 @@ fn find_blobs_with_bounds(img: &GrayImage) -> Vec<BBox> {
 /// Build column and row boundaries from joint positions.
 ///
 /// Joints are merged within `line_tol` to create discrete grid lines.
-fn build_grid_from_joints(
-    joints: &[(f64, f64)],
-    line_tol: f64,
-) -> (Vec<f64>, Vec<f64>) {
+fn build_grid_from_joints(joints: &[(f64, f64)], line_tol: f64) -> (Vec<f64>, Vec<f64>) {
     if joints.is_empty() {
         return (Vec::new(), Vec::new());
     }
@@ -790,7 +797,8 @@ pub fn extract_lattice(
     let scale_y = page_height / img_h as f64;
 
     // Step 1: Adaptive threshold (invert foreground)
-    let threshold = adaptive_threshold(gray_image, config.threshold_blocksize, config.threshold_constant, true);
+    let threshold =
+        adaptive_threshold(gray_image, config.threshold_blocksize, config.threshold_constant, true);
 
     // Step 2: Morphological operations to isolate lines
     let h_kernel_size = (img_w / config.line_scale).max(3);
@@ -941,8 +949,10 @@ pub fn extract_lattice_from_paths(
             let vy_max = v.y0.max(v.y1);
 
             // Check if they cross: v's x within h's range, h's y within v's range
-            if vx >= hx_min - line_tol && vx <= hx_max + line_tol
-                && hy >= vy_min - line_tol && hy <= vy_max + line_tol
+            if vx >= hx_min - line_tol
+                && vx <= hx_max + line_tol
+                && hy >= vy_min - line_tol
+                && hy <= vy_max + line_tol
             {
                 joints.push(((vx, hy), hi, vi));
             }
@@ -1094,10 +1104,30 @@ pub fn paths_to_segments(
                         });
                     } else if rw.abs() >= min_length && rh.abs() >= min_length {
                         // Full rectangle: extract all 4 edges
-                        h_segments.push(Segment { x0: rx, y0: y_top, x1: rx + rw, y1: y_top });
-                        h_segments.push(Segment { x0: rx, y0: y_bot, x1: rx + rw, y1: y_bot });
-                        v_segments.push(Segment { x0: rx, y0: y_top, x1: rx, y1: y_bot });
-                        v_segments.push(Segment { x0: rx + rw, y0: y_top, x1: rx + rw, y1: y_bot });
+                        h_segments.push(Segment {
+                            x0: rx,
+                            y0: y_top,
+                            x1: rx + rw,
+                            y1: y_top,
+                        });
+                        h_segments.push(Segment {
+                            x0: rx,
+                            y0: y_bot,
+                            x1: rx + rw,
+                            y1: y_bot,
+                        });
+                        v_segments.push(Segment {
+                            x0: rx,
+                            y0: y_top,
+                            x1: rx,
+                            y1: y_bot,
+                        });
+                        v_segments.push(Segment {
+                            x0: rx + rw,
+                            y0: y_top,
+                            x1: rx + rw,
+                            y1: y_bot,
+                        });
                     }
                 }
             }
@@ -1114,9 +1144,10 @@ pub fn paths_to_segments(
         let is_compound = if is_stroked {
             false
         } else {
-            let has_rect_ops = path.operations.iter().any(|op| {
-                matches!(op, PathOperation::Rectangle(..))
-            });
+            let has_rect_ops = path
+                .operations
+                .iter()
+                .any(|op| matches!(op, PathOperation::Rectangle(..)));
             has_rect_ops || (bw > 5.0 && bh > 5.0)
         };
         if !is_compound {
@@ -1125,7 +1156,7 @@ pub fn paths_to_segments(
                 match op {
                     PathOperation::MoveTo(x, y) => {
                         current = Some((*x as f64, *y as f64));
-                    }
+                    },
                     PathOperation::LineTo(x, y) => {
                         if let Some((cx, cy)) = current {
                             let x1 = *x as f64;
@@ -1154,8 +1185,8 @@ pub fn paths_to_segments(
                             }
                             current = Some((x1, y1));
                         }
-                    }
-                    _ => {}
+                    },
+                    _ => {},
                 }
             }
         }
@@ -1184,13 +1215,9 @@ fn dedup_segments(mut segments: Vec<Segment>, horizontal: bool, tol: f64) -> Vec
     // Sort by the varying coordinate minimum so that overlap checks work.
     // Group segments at similar constant coordinate positions together.
     if horizontal {
-        segments.sort_by(|a, b| {
-            a.x0.min(a.x1).partial_cmp(&b.x0.min(b.x1)).unwrap()
-        });
+        segments.sort_by(|a, b| a.x0.min(a.x1).partial_cmp(&b.x0.min(b.x1)).unwrap());
     } else {
-        segments.sort_by(|a, b| {
-            a.y0.min(a.y1).partial_cmp(&b.y0.min(b.y1)).unwrap()
-        });
+        segments.sort_by(|a, b| a.y0.min(a.y1).partial_cmp(&b.y0.min(b.y1)).unwrap());
     }
 
     // Multi-pass: repeatedly merge overlapping segments at the same position
@@ -1287,12 +1314,7 @@ mod tests {
     #[test]
     fn build_grid_from_joints_2x2() {
         // 4 joints forming a 2x2 grid
-        let joints = vec![
-            (10.0, 10.0),
-            (100.0, 10.0),
-            (10.0, 50.0),
-            (100.0, 50.0),
-        ];
+        let joints = vec![(10.0, 10.0), (100.0, 10.0), (10.0, 50.0), (100.0, 50.0)];
         let (cols, rows) = build_grid_from_joints(&joints, 2.0);
         assert_eq!(cols.len(), 2, "expected 2 column lines");
         assert_eq!(rows.len(), 2, "expected 2 row lines");
@@ -1334,9 +1356,9 @@ mod tests {
         let cases = [
             ("column_span_1.pdf", 50, 8, 0),
             ("column_span_2.pdf", 11, 7, 0),
-            ("row_span_2.pdf",     7, 10, 0),
-            ("agstat.pdf",        33, 11, 0),
-            ("row_span_1.pdf",    40,  4, 1),  // off by 1 row (missing compound boundary)
+            ("row_span_2.pdf", 7, 10, 0),
+            ("agstat.pdf", 33, 11, 0),
+            ("row_span_1.pdf", 40, 4, 1), // off by 1 row (missing compound boundary)
         ];
         let config = ExtractConfig::default();
         for (file, exp_rows, exp_cols, row_tol) in &cases {
@@ -1350,19 +1372,27 @@ mod tests {
             let (h_segs, v_segs) = paths_to_segments(&paths, page_height, 5.0);
 
             let spans = doc.extract_spans(0).unwrap_or_default();
-            let elements: Vec<TextElement> = spans.iter().map(|s| {
-                TextElement {
+            let elements: Vec<TextElement> = spans
+                .iter()
+                .map(|s| TextElement {
                     text: s.text.clone(),
                     x0: s.bbox.x as f64,
                     y0: page_height - s.bbox.y as f64 - s.bbox.height as f64,
                     x1: s.bbox.x as f64 + s.bbox.width as f64,
                     y1: page_height - s.bbox.y as f64,
                     font_size: s.font_size as f64,
-                }
-            }).collect();
+                    is_bold: s.font_weight.is_bold(),
+                    chars: None,
+                })
+                .collect();
 
             let tables = extract_lattice_from_paths(
-                &h_segs, &v_segs, &elements, page_width, page_height, &config,
+                &h_segs,
+                &v_segs,
+                &elements,
+                page_width,
+                page_height,
+                &config,
             );
             assert!(!tables.is_empty(), "{}: no tables found", file);
             let t = &tables[0];
@@ -1371,7 +1401,11 @@ mod tests {
             assert_eq!(cols, *exp_cols, "{}: cols mismatch", file);
             assert!(
                 (rows as i32 - *exp_rows as i32).unsigned_abs() <= *row_tol as u32,
-                "{}: rows={} expected={} (tol={})", file, rows, exp_rows, row_tol
+                "{}: rows={} expected={} (tol={})",
+                file,
+                rows,
+                exp_rows,
+                row_tol
             );
         }
     }
@@ -1390,20 +1424,28 @@ mod tests {
         let (h_segs, v_segs) = paths_to_segments(&paths, page_height, 5.0);
 
         let spans = doc.extract_spans(0).unwrap_or_default();
-        let elements: Vec<TextElement> = spans.iter().map(|s| {
-            TextElement {
+        let elements: Vec<TextElement> = spans
+            .iter()
+            .map(|s| TextElement {
                 text: s.text.clone(),
                 x0: s.bbox.x as f64,
                 y0: page_height - s.bbox.y as f64 - s.bbox.height as f64,
                 x1: s.bbox.x as f64 + s.bbox.width as f64,
                 y1: page_height - s.bbox.y as f64,
                 font_size: s.font_size as f64,
-            }
-        }).collect();
+                is_bold: s.font_weight.is_bold(),
+                chars: None,
+            })
+            .collect();
 
         let config = ExtractConfig::default();
         let tables = extract_lattice_from_paths(
-            &h_segs, &v_segs, &elements, page_width, page_height, &config,
+            &h_segs,
+            &v_segs,
+            &elements,
+            page_width,
+            page_height,
+            &config,
         );
         assert_eq!(tables.len(), 2, "twotables_1 should produce 2 tables, got {}", tables.len());
     }
@@ -1430,10 +1472,14 @@ mod tests {
         // Table 2: h-segments 2,3 x v-segments 2,3
         // Same y-coordinates but no shared segments -> 2 clusters.
         let joints = vec![
-            ((10.0, 10.0), 0, 0), ((100.0, 10.0), 0, 1),
-            ((10.0, 50.0), 1, 0), ((100.0, 50.0), 1, 1),
-            ((500.0, 10.0), 2, 2), ((600.0, 10.0), 2, 3),
-            ((500.0, 50.0), 3, 2), ((600.0, 50.0), 3, 3),
+            ((10.0, 10.0), 0, 0),
+            ((100.0, 10.0), 0, 1),
+            ((10.0, 50.0), 1, 0),
+            ((100.0, 50.0), 1, 1),
+            ((500.0, 10.0), 2, 2),
+            ((600.0, 10.0), 2, 3),
+            ((500.0, 50.0), 3, 2),
+            ((600.0, 50.0), 3, 3),
         ];
         let groups = cluster_joints(&joints);
         assert_eq!(groups.len(), 2, "expected 2 clusters, got {}", groups.len());
@@ -1448,13 +1494,16 @@ mod tests {
         // Joints 0-3 use h-segments 0,1, joints 4-7 use h-segments 1,2
         // Shared h-segment 1 -> single cluster.
         let joints = vec![
-            ((10.0, 10.0), 0, 0), ((100.0, 10.0), 0, 1),
-            ((10.0, 50.0), 1, 0), ((100.0, 50.0), 1, 1),
-            ((200.0, 50.0), 1, 2), ((300.0, 50.0), 1, 3),
-            ((200.0, 90.0), 2, 2), ((300.0, 90.0), 2, 3),
+            ((10.0, 10.0), 0, 0),
+            ((100.0, 10.0), 0, 1),
+            ((10.0, 50.0), 1, 0),
+            ((100.0, 50.0), 1, 1),
+            ((200.0, 50.0), 1, 2),
+            ((300.0, 50.0), 1, 3),
+            ((200.0, 90.0), 2, 2),
+            ((300.0, 90.0), 2, 3),
         ];
         let groups = cluster_joints(&joints);
         assert_eq!(groups.len(), 1, "shared segment should merge into 1 cluster");
     }
-
 }

@@ -5,7 +5,8 @@
 
 use crate::document::PdfDocument;
 use crate::error::{Error, Result};
-use crate::object::Object;
+use crate::object::{Object, ObjectRef};
+use std::collections::HashSet;
 
 /// A single outline item (bookmark) in the document hierarchy.
 #[derive(Debug, Clone)]
@@ -84,9 +85,15 @@ impl PdfDocument {
         // Parse outline items at root level
         let mut items = Vec::new();
         let mut current_ref = Some(first_ref);
+        let mut visited = HashSet::new();
+        let page_index_map = self.build_page_index_map()?;
 
         while let Some(item_ref) = current_ref {
-            if let Ok(item) = self.parse_outline_item(item_ref) {
+            if !visited.insert(item_ref) {
+                break;
+            }
+
+            if let Ok(item) = self.parse_outline_item(item_ref, &mut visited, &page_index_map) {
                 items.push(item);
             }
 
@@ -109,7 +116,12 @@ impl PdfDocument {
     }
 
     /// Parse a single outline item and its children recursively.
-    fn parse_outline_item(&mut self, item_ref: crate::object::ObjectRef) -> Result<OutlineItem> {
+    fn parse_outline_item(
+        &mut self,
+        item_ref: ObjectRef,
+        visited: &mut HashSet<ObjectRef>,
+        page_index_map: &std::collections::HashMap<ObjectRef, usize>,
+    ) -> Result<OutlineItem> {
         let item_obj = self.load_object(item_ref)?;
 
         // Extract title
@@ -122,7 +134,7 @@ impl PdfDocument {
         };
 
         // Extract destination
-        let dest = self.parse_outline_destination(&item_obj)?;
+        let dest = self.parse_outline_destination(&item_obj, page_index_map)?;
 
         // Parse children if present
         let mut children = Vec::new();
@@ -131,7 +143,11 @@ impl PdfDocument {
                 let mut child_ref = Some(*first_child_ref);
 
                 while let Some(c_ref) = child_ref {
-                    if let Ok(child) = self.parse_outline_item(c_ref) {
+                    if !visited.insert(c_ref) {
+                        break;
+                    }
+
+                    if let Ok(child) = self.parse_outline_item(c_ref, visited, page_index_map) {
                         children.push(child);
                     }
 
@@ -156,7 +172,11 @@ impl PdfDocument {
     }
 
     /// Parse destination from an outline item.
-    fn parse_outline_destination(&mut self, item: &Object) -> Result<Option<Destination>> {
+    fn parse_outline_destination(
+        &mut self,
+        item: &Object,
+        page_index_map: &std::collections::HashMap<ObjectRef, usize>,
+    ) -> Result<Option<Destination>> {
         let dict = match item.as_dict() {
             Some(d) => d,
             None => return Ok(None),
@@ -164,7 +184,7 @@ impl PdfDocument {
 
         // Try /Dest entry first
         if let Some(dest_obj) = dict.get("Dest") {
-            return self.resolve_destination(dest_obj);
+            return self.resolve_destination(dest_obj, page_index_map);
         }
 
         // Try /A (action) entry
@@ -180,7 +200,7 @@ impl PdfDocument {
         // Look for destination under /D key
         if let Some(Object::Dictionary(action)) = action {
             if let Some(dest_obj) = action.get("D") {
-                return self.resolve_destination(dest_obj);
+                return self.resolve_destination(dest_obj, page_index_map);
             }
         }
 
@@ -188,7 +208,11 @@ impl PdfDocument {
     }
 
     /// Resolve a destination object to a Destination enum.
-    fn resolve_destination(&mut self, dest_obj: &Object) -> Result<Option<Destination>> {
+    fn resolve_destination(
+        &mut self,
+        dest_obj: &Object,
+        page_index_map: &std::collections::HashMap<ObjectRef, usize>,
+    ) -> Result<Option<Destination>> {
         match dest_obj {
             // Named destination (string)
             Object::String(name) => {
@@ -199,14 +223,10 @@ impl PdfDocument {
             Object::Array(arr) if !arr.is_empty() => {
                 // First element is page reference
                 match &arr[0] {
-                    Object::Reference(page_ref) => {
-                        // Try to find which page this is
-                        if let Ok(page_index) = self.find_page_index(*page_ref) {
-                            Ok(Some(Destination::PageIndex(page_index)))
-                        } else {
-                            Ok(None)
-                        }
-                    },
+                    Object::Reference(page_ref) => Ok(page_index_map
+                        .get(page_ref)
+                        .copied()
+                        .map(Destination::PageIndex)),
                     _ => Ok(None),
                 }
             },
@@ -214,28 +234,24 @@ impl PdfDocument {
             // Indirect reference to destination
             Object::Reference(dest_ref) => {
                 let resolved = self.load_object(*dest_ref)?;
-                self.resolve_destination(&resolved)
+                self.resolve_destination(&resolved, page_index_map)
             },
 
             _ => Ok(None),
         }
     }
 
-    /// Find the page index for a given page object reference.
-    fn find_page_index(&mut self, page_ref: crate::object::ObjectRef) -> Result<usize> {
-        // Get page count to iterate through pages
+    fn build_page_index_map(&mut self) -> Result<std::collections::HashMap<ObjectRef, usize>> {
         let count = self.page_count()?;
+        let mut page_index_map = std::collections::HashMap::with_capacity(count);
 
         for i in 0..count {
-            // Get page object reference for this index
             if let Ok(page_obj_ref) = self.get_page_ref(i) {
-                if page_obj_ref == page_ref {
-                    return Ok(i);
-                }
+                page_index_map.insert(page_obj_ref, i);
             }
         }
 
-        Err(Error::InvalidPdf(format!("Page reference {:?} not found", page_ref)))
+        Ok(page_index_map)
     }
 }
 

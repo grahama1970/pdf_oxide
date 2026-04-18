@@ -436,6 +436,30 @@ pdf_oxide (Rust core)
   pdf_oxide_mcp/         # MCP server for AI assistants
 ```
 
+## PDF Cloning (Test Fixture Generation)
+
+Generate structurally similar PDFs with known ground truth for extraction testing and training:
+
+```bash
+# Clone a PDF with style extraction
+python clone_pdf_v2.py --source document.pdf --output clone.pdf --extract-style
+
+# Clone with specific model for content generation
+python clone_pdf_v2.py --source document.pdf --output clone.pdf --model sonnet
+```
+
+**Use case:** When extraction fails (e.g., 47 tables profiled but only 12 extracted), generate a clone with QID markers as ground truth. If extraction passes on the clone, the issue is PDF-specific. If it fails, there's an extractor bug.
+
+**Pipeline:**
+1. Profile source PDF (TOC, tables, page signatures)
+2. Extract visual style via VLM (header/footer/table presets)
+3. Generate content structure manifest
+4. LLM batch generates text/table content
+5. Render PDF with embedded QID markers
+6. Output TruthManifest JSON for validation
+
+See `python/pdf_oxide/clone/` for the module and `PROJECT_KNOWLEDGE.md` for architecture details.
+
 ## Documentation
 
 - **[Full Documentation](https://pdf.oxide.fyi)** - Complete documentation site

@@ -33,6 +33,8 @@ SECTION_COUNT_PATTERNS = [
     r"^\s*(?:Appendix|Annex|Section|Chapter|Part)\s+[A-Za-z0-9IVXLCDM.]+",
     r"^\s*[IVXLCDM]+\.\s+[A-Z]",
     r"^\s*[A-Z]\.\s+[A-Z]",
+    # NIST/compliance control IDs: AC-1, SI-7, PM-11, AC-2(1), etc.
+    r"^\s*[A-Z]{2}-\d+(?:\(\d+\))?[\s:.\-–—]",
 ]
 
 CAPTION_RE = re.compile(
@@ -130,7 +132,7 @@ def detect_section_style(text: str) -> Optional[str]:
 def estimate_section_count(text: str) -> Dict[str, Any]:
     """Estimate section count from text patterns."""
     lines = text.split("\n")
-    counts = {"decimal": 0, "labeled": 0, "roman": 0, "alpha": 0}
+    counts = {"decimal": 0, "labeled": 0, "roman": 0, "alpha": 0, "control_id": 0}
     seen: set = set()
 
     for line in lines:
@@ -143,7 +145,7 @@ def estimate_section_count(text: str) -> Dict[str, Any]:
                 matched = match.group(0).strip()[:20]
                 if matched not in seen:
                     seen.add(matched)
-                    names = ["decimal", "labeled", "roman", "alpha"]
+                    names = ["decimal", "labeled", "roman", "alpha", "control_id"]
                     counts[names[i]] += 1
                 break
 

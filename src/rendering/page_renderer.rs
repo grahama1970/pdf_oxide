@@ -158,7 +158,15 @@ impl PageRenderer {
         let font_map = Self::resolve_fonts_from_resources(&resources, doc);
 
         // Execute operators and render
-        self.execute_operators(&mut pixmap, transform, &operators, doc, page_num, &resources, &font_map)?;
+        self.execute_operators(
+            &mut pixmap,
+            transform,
+            &operators,
+            doc,
+            page_num,
+            &resources,
+            &font_map,
+        )?;
 
         // Encode to output format
         let data = match self.options.format {
@@ -503,8 +511,9 @@ impl PageRenderer {
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
                         let font_ref = current_font.as_deref();
-                        self.text_rasterizer
-                            .render_text(pixmap, text, transform, gs, font_ref, resources, doc, clip)?;
+                        self.text_rasterizer.render_text(
+                            pixmap, text, transform, gs, font_ref, resources, doc, clip,
+                        )?;
 
                         // Advance text position per PDF spec §9.4.4:
                         // tx = ((w0 - Tj/1000) × Tfs + Tc + Tw) × Th
@@ -535,8 +544,9 @@ impl PageRenderer {
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
                         let font_ref = current_font.as_deref();
-                        self.text_rasterizer
-                            .render_tj_array(pixmap, array, transform, gs, font_ref, resources, doc, clip)?;
+                        self.text_rasterizer.render_tj_array(
+                            pixmap, array, transform, gs, font_ref, resources, doc, clip,
+                        )?;
                     }
                 },
                 Operator::DoubleQuote {
@@ -551,8 +561,9 @@ impl PageRenderer {
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
                         let font_ref = current_font.as_deref();
-                        self.text_rasterizer
-                            .render_text(pixmap, text, transform, gs, font_ref, resources, doc, clip)?;
+                        self.text_rasterizer.render_text(
+                            pixmap, text, transform, gs, font_ref, resources, doc, clip,
+                        )?;
                     }
                 },
 
@@ -594,7 +605,9 @@ impl PageRenderer {
     ) -> Result<()> {
         // Get XObject from resources
         if let Object::Dictionary(res_dict) = resources {
-            if let Some(Object::Dictionary(xobjects)) = res_dict.get("XObject").or(res_dict.get("XObjects")) {
+            if let Some(Object::Dictionary(xobjects)) =
+                res_dict.get("XObject").or(res_dict.get("XObjects"))
+            {
                 if let Some(xobj_ref) = xobjects.get(name) {
                     // Resolve reference if needed
                     let xobj = doc.resolve_object(xobj_ref)?;
@@ -608,7 +621,8 @@ impl PageRenderer {
                                 },
                                 "Form" => {
                                     self.render_form_xobject(
-                                        pixmap, &dict, &data, transform, doc, page_num, resources, font_map,
+                                        pixmap, &dict, &data, transform, doc, page_num, resources,
+                                        font_map,
                                     )?;
                                 },
                                 _ => {},

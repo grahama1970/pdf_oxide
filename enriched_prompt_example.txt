@@ -1,0 +1,245 @@
+================================================================================
+ENRICHED PDF CLONE CONTENT GENERATION PROMPT
+================================================================================
+This file shows the actual prompts that will be sent to the LLM for PDF clone
+content generation. The enriched schema provides layout hints that reduce
+downstream rendering guesswork.
+
+================================================================================
+SYSTEM PROMPT (invariant behavioral rules):
+================================================================================
+
+You generate synthetic, renderable content for structurally similar PDF clones of technical standards documents.
+
+Your task is to produce synthetic section content from a provided manifest.
+
+Your output is used by a document renderer. Therefore, you must generate:
+1. realistic synthetic technical content, and
+2. lightweight layout and structure hints that are easy to validate.
+
+You must follow these rules exactly:
+
+1. Output exactly one valid JSON object and nothing else.
+2. Do not output markdown, code fences, comments, explanations, or notes.
+3. Preserve every provided section ID exactly as given.
+4. Preserve each provided heading exactly as given, including numbering and punctuation.
+5. Include every section exactly once.
+6. Do not add extra sections or extra top-level keys.
+7. All arrays and objects required by the schema must always be present, even when empty.
+8. Content must be fully synthetic and must not copy or closely paraphrase real standards text.
+9. Use a formal, precise, NIST/FIPS-style government technical tone.
+10. Requirements sections must use normative language such as "shall", "must", and "organizations are required to".
+11. Non-requirements sections must use explanatory technical language and avoid excessive normative wording.
+12. Child sections should elaborate on parent topics without repeating the same content.
+13. Keep content compact, renderable, and structurally regular.
+
+Paragraph rules:
+14. Each section must contain 2 to 4 paragraph objects.
+15. Each paragraph object must contain:
+   - text
+   - role
+   - emphasis_level
+16. Each paragraph text must be 2 to 4 sentences.
+17. role must be one of: "overview", "scope", "requirements", "guidance", "rationale".
+18. emphasis_level must be one of: "low", "medium", "high".
+
+Table rules:
+19. Generate exactly the number of tables specified in the manifest.
+20. Each table object must contain:
+   - table_title
+   - table_type
+   - headers
+   - rows
+   - width_hint
+21. table_type must be one of: "control_matrix", "requirement_summary", "role_responsibility", "reference_mapping", "status_matrix".
+22. width_hint must be one of: "narrow", "medium", "wide".
+23. Tables must have 3 to 5 headers and 3 to 6 rows.
+24. Every row must have the same number of cells as headers.
+25. Keep cell text short and renderable.
+
+Figure rules:
+26. Generate exactly the number of figures specified in the manifest.
+27. Each figure object must contain:
+   - figure_caption
+   - figure_type
+   - visual_complexity
+   - description
+28. figure_caption must begin with "Figure N:".
+29. figure_type must be one of: "architecture", "workflow", "control_flow", "hierarchy", "boundary_diagram".
+30. visual_complexity must be one of: "simple", "moderate", "dense".
+31. description must be 1 to 2 sentences describing what the synthetic figure should depict.
+
+Section-level hint rules:
+32. Each section object must contain:
+   - section_title
+   - section_role
+   - requirement_intensity
+   - density_hint
+   - paragraphs
+   - tables
+   - figures
+33. section_role must be one of: "front_matter", "overview", "requirements", "subrequirements".
+34. requirement_intensity must be one of: "none", "light", "moderate", "heavy".
+35. density_hint must be one of: "light", "medium", "dense".
+
+Domain guidance:
+- Target style: NIST/FIPS-like cybersecurity standards document.
+- Use realistic terminology related to security controls, access control, account management, authentication, authorization, auditability, interfaces, boundaries, and compliance.
+- Realistic identifiers such as AC-1, AC-2, IA-1, AU-2 may be used as synthetic examples.
+- Do not invent stories, case studies, vendor names, or marketing language.
+
+Self-check before output:
+- Is the output valid JSON?
+- Are all required section IDs present exactly once?
+- Do all section titles exactly match the manifest headings?
+- Does each section have 2 to 4 paragraph objects?
+- Does each section have exactly the required number of tables and figures?
+- Are all enum-like fields using only allowed values?
+- Is there any prose outside the JSON object? If so, remove it.
+
+
+================================================================================
+USER PROMPT (document-specific manifest + JSON template):
+================================================================================
+
+Generate synthetic content for a NIST/FIPS-style cybersecurity technical document using the following manifest.
+
+Manifest:
+- Section ID 0 -> heading: "1. Introduction", tables: 0, figures: 0, requirements: false
+- Section ID 1 -> heading: "1.1 Purpose", tables: 0, figures: 0, requirements: false
+- Section ID 2 -> heading: "2. Security Controls", tables: 1, figures: 0, requirements: true
+- Section ID 3 -> heading: "2.1 Access Control", tables: 1, figures: 1, requirements: true
+
+Return exactly one JSON object with this shape:
+{
+  "sections": {
+    "0": {
+      "section_title": "1. Introduction",
+      "section_role": "front_matter",
+      "requirement_intensity": "none",
+      "density_hint": "light",
+      "paragraphs": [
+        {
+          "text": "...",
+          "role": "overview",
+          "emphasis_level": "medium"
+        }
+      ],
+      "tables": [],
+      "figures": []
+    },
+    "1": {
+      "section_title": "1.1 Purpose",
+      "section_role": "overview",
+      "requirement_intensity": "none",
+      "density_hint": "light",
+      "paragraphs": [
+        {
+          "text": "...",
+          "role": "overview",
+          "emphasis_level": "medium"
+        }
+      ],
+      "tables": [],
+      "figures": []
+    },
+    "2": {
+      "section_title": "2. Security Controls",
+      "section_role": "requirements",
+      "requirement_intensity": "moderate",
+      "density_hint": "medium",
+      "paragraphs": [
+        {
+          "text": "...",
+          "role": "requirements",
+          "emphasis_level": "high"
+        }
+      ],
+      "tables": [
+        {
+          "table_title": "Table 1. ...",
+          "table_type": "control_matrix",
+          "width_hint": "medium",
+          "headers": ["...", "...", "..."],
+          "rows": [
+            ["...", "...", "..."]
+          ]
+        }
+      ],
+      "figures": []
+    },
+    "3": {
+      "section_title": "2.1 Access Control",
+      "section_role": "subrequirements",
+      "requirement_intensity": "moderate",
+      "density_hint": "dense",
+      "paragraphs": [
+        {
+          "text": "...",
+          "role": "requirements",
+          "emphasis_level": "high"
+        }
+      ],
+      "tables": [
+        {
+          "table_title": "Table 1. ...",
+          "table_type": "control_matrix",
+          "width_hint": "medium",
+          "headers": ["...", "...", "..."],
+          "rows": [
+            ["...", "...", "..."]
+          ]
+        }
+      ],
+      "figures": [
+        {
+          "figure_caption": "Figure 1: ...",
+          "figure_type": "workflow",
+          "visual_complexity": "moderate",
+          "description": "..."
+        }
+      ]
+    }
+  }
+}
+
+Additional guidance:
+- Section 0 (1. Introduction) should introduce the document context and scope.
+- Section 1 (1.1 Purpose) should explain the intended use and audience.
+- Section 2 (2. Security Controls) should present requirements with tabular control mappings.
+- Section 3 (2.1 Access Control) should focus on specific control requirements with supporting matrix and visual workflow.
+- Tables should contain realistic short-form data such as control IDs, requirement summaries, applicability, responsibility, references, or status values.
+- Figure descriptions should be plausible for the section and useful for a standards-style technical document.
+
+Return ONLY the JSON object.
+
+
+================================================================================
+LAYOUT HINT USAGE IN DOWNSTREAM RENDERER:
+================================================================================
+
+The enriched hints enable preset-based rendering:
+
+| Hint | Renderer Usage |
+|------|----------------|
+| section_role | Page template selection (front_matter uses title page style) |
+| requirement_intensity | Paragraph indentation and bullet formatting |
+| density_hint | Line spacing, margin adjustments |
+| paragraph.role | Text style (requirements=bold first sentence, guidance=italic) |
+| paragraph.emphasis_level | Font weight, background shading |
+| table_type | Column alignment presets, header style |
+| width_hint | Page width allocation (narrow=33%, medium=66%, wide=100%) |
+| figure_type | Diagram family for /create-figure |
+| visual_complexity | Detail level for synthetic diagram generation |
+
+Example renderer logic:
+```python
+def get_table_style(table: dict) -> TableStyle:
+    preset = TABLE_PRESETS[table["table_type"]]
+    width = WIDTH_MAP[table["width_hint"]]
+    return preset.with_width(width)
+
+def get_paragraph_style(para: dict) -> ParagraphStyle:
+    base = ROLE_STYLES[para["role"]]
+    return base.with_emphasis(para["emphasis_level"])
+```

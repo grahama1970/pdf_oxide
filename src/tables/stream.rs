@@ -14,8 +14,8 @@
 //! 4. Find edges that intersect the most horizontal rows → these define table regions
 //! 5. Build table bounding boxes from the edges, then extract rows and columns within each
 
-use crate::tables::types::{BBox, ExtractConfig, Flavor, Table, TextElement};
 use crate::tables::text_assign::{assign_text_to_cells, compute_accuracy};
+use crate::tables::types::{BBox, ExtractConfig, Flavor, Table, TextElement};
 
 /// Which alignment a text edge represents.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -138,11 +138,41 @@ impl TextEdges {
         }
     }
 
-    /// Get the valid edges with the most intersecting elements.
+    /// Get the valid edges from the dominant alignment type.
     ///
-    /// Returns edges sorted by count (descending), filtered to valid only.
+    /// Matches Camelot's behavior: picks the alignment type (left/right/middle)
+    /// that has the most total intersections, then returns only those edges.
     fn relevant_edges(&self) -> Vec<&TextEdge> {
-        let mut valid: Vec<&TextEdge> = self.edges.iter().filter(|e| e.is_valid).collect();
+        // Sum intersections per alignment type
+        let mut left_sum = 0usize;
+        let mut right_sum = 0usize;
+        let mut middle_sum = 0usize;
+
+        for edge in &self.edges {
+            if edge.is_valid {
+                match edge.align {
+                    Align::Left => left_sum += edge.count,
+                    Align::Right => right_sum += edge.count,
+                    Align::Middle => middle_sum += edge.count,
+                }
+            }
+        }
+
+        // Pick the dominant alignment
+        let dominant = if left_sum >= right_sum && left_sum >= middle_sum {
+            Align::Left
+        } else if right_sum >= middle_sum {
+            Align::Right
+        } else {
+            Align::Middle
+        };
+
+        // Return only valid edges from the dominant alignment, sorted by count
+        let mut valid: Vec<&TextEdge> = self
+            .edges
+            .iter()
+            .filter(|e| e.is_valid && e.align == dominant)
+            .collect();
         valid.sort_by(|a, b| b.count.cmp(&a.count));
         valid
     }
@@ -170,10 +200,10 @@ impl TextEdges {
             match merged {
                 Some(existing) => {
                     *existing = existing.union(&area);
-                }
+                },
                 None => {
                     areas.push(area);
-                }
+                },
             }
         }
 
@@ -298,7 +328,11 @@ fn detect_columns(rows: &[Vec<&TextElement>], page_width: f64) -> Vec<(f64, f64)
     // Convert to (left, right) pairs
     let mut cols = Vec::with_capacity(boundaries.len());
     for i in 0..boundaries.len() {
-        let left = if i == 0 { 0.0 } else { (boundaries[i - 1] + boundaries[i]) / 2.0 };
+        let left = if i == 0 {
+            0.0
+        } else {
+            (boundaries[i - 1] + boundaries[i]) / 2.0
+        };
         let right = if i == boundaries.len() - 1 {
             page_width
         } else {
@@ -327,7 +361,10 @@ fn detect_row_boundaries(rows: &[Vec<&TextElement>]) -> Vec<(f64, f64)> {
         let top = if i == 0 {
             y_top
         } else {
-            let prev_bottom = boundaries.last().map(|&(_, b): &(f64, f64)| b).unwrap_or(y_top);
+            let prev_bottom = boundaries
+                .last()
+                .map(|&(_, b): &(f64, f64)| b)
+                .unwrap_or(y_top);
             (prev_bottom + y_top) / 2.0
         };
 
@@ -345,9 +382,7 @@ fn detect_row_boundaries(rows: &[Vec<&TextElement>]) -> Vec<(f64, f64)> {
 /// Filter rows that are likely titles or footers (not part of the table).
 ///
 /// Rows at the start/end with element count below half the mode are stripped.
-fn filter_title_footer_rows<'a>(
-    rows: &[Vec<&'a TextElement>],
-) -> Vec<Vec<&'a TextElement>> {
+fn filter_title_footer_rows<'a>(rows: &[Vec<&'a TextElement>]) -> Vec<Vec<&'a TextElement>> {
     if rows.len() < 3 {
         return rows.to_vec();
     }
@@ -528,6 +563,8 @@ mod tests {
                     x1,
                     y1,
                     font_size: 12.0,
+                    is_bold: false,
+                    chars: None,
                 })
             })
             .collect()
@@ -536,8 +573,14 @@ mod tests {
     #[test]
     fn group_rows_basic() {
         let elements = make_elements(&[
-            &[("A", 10.0, 10.0, 50.0, 22.0), ("B", 110.0, 10.0, 150.0, 22.0)],
-            &[("C", 10.0, 30.0, 50.0, 42.0), ("D", 110.0, 30.0, 150.0, 42.0)],
+            &[
+                ("A", 10.0, 10.0, 50.0, 22.0),
+                ("B", 110.0, 10.0, 150.0, 22.0),
+            ],
+            &[
+                ("C", 10.0, 30.0, 50.0, 42.0),
+                ("D", 110.0, 30.0, 150.0, 42.0),
+            ],
         ]);
         let rows = group_rows(&elements, 2.0);
         assert_eq!(rows.len(), 2);
@@ -548,9 +591,18 @@ mod tests {
     #[test]
     fn detect_columns_2col() {
         let elements = make_elements(&[
-            &[("A", 10.0, 10.0, 50.0, 22.0), ("B", 110.0, 10.0, 150.0, 22.0)],
-            &[("C", 10.0, 30.0, 50.0, 42.0), ("D", 110.0, 30.0, 150.0, 42.0)],
-            &[("E", 10.0, 50.0, 50.0, 62.0), ("F", 110.0, 50.0, 150.0, 62.0)],
+            &[
+                ("A", 10.0, 10.0, 50.0, 22.0),
+                ("B", 110.0, 10.0, 150.0, 22.0),
+            ],
+            &[
+                ("C", 10.0, 30.0, 50.0, 42.0),
+                ("D", 110.0, 30.0, 150.0, 42.0),
+            ],
+            &[
+                ("E", 10.0, 50.0, 50.0, 62.0),
+                ("F", 110.0, 50.0, 150.0, 62.0),
+            ],
         ]);
         let rows = group_rows(&elements, 2.0);
         let cols = detect_columns(&rows, 200.0);
@@ -564,9 +616,18 @@ mod tests {
     fn filter_title_row() {
         let elements = make_elements(&[
             &[("Title", 10.0, 5.0, 180.0, 17.0)], // 1 element = title
-            &[("A", 10.0, 25.0, 50.0, 37.0), ("B", 110.0, 25.0, 150.0, 37.0)],
-            &[("C", 10.0, 45.0, 50.0, 57.0), ("D", 110.0, 45.0, 150.0, 57.0)],
-            &[("E", 10.0, 65.0, 50.0, 77.0), ("F", 110.0, 65.0, 150.0, 77.0)],
+            &[
+                ("A", 10.0, 25.0, 50.0, 37.0),
+                ("B", 110.0, 25.0, 150.0, 37.0),
+            ],
+            &[
+                ("C", 10.0, 45.0, 50.0, 57.0),
+                ("D", 110.0, 45.0, 150.0, 57.0),
+            ],
+            &[
+                ("E", 10.0, 65.0, 50.0, 77.0),
+                ("F", 110.0, 65.0, 150.0, 77.0),
+            ],
         ]);
         let rows = group_rows(&elements, 2.0);
         assert_eq!(rows.len(), 4);
@@ -590,9 +651,18 @@ mod tests {
     fn extract_stream_basic_table() {
         // 3x2 table with clear column structure
         let elements = make_elements(&[
-            &[("Name", 10.0, 10.0, 50.0, 22.0), ("Value", 110.0, 10.0, 160.0, 22.0)],
-            &[("alpha", 10.0, 30.0, 50.0, 42.0), ("100", 110.0, 30.0, 140.0, 42.0)],
-            &[("beta", 10.0, 50.0, 50.0, 62.0), ("200", 110.0, 50.0, 140.0, 62.0)],
+            &[
+                ("Name", 10.0, 10.0, 50.0, 22.0),
+                ("Value", 110.0, 10.0, 160.0, 22.0),
+            ],
+            &[
+                ("alpha", 10.0, 30.0, 50.0, 42.0),
+                ("100", 110.0, 30.0, 140.0, 42.0),
+            ],
+            &[
+                ("beta", 10.0, 50.0, 50.0, 62.0),
+                ("200", 110.0, 50.0, 140.0, 62.0),
+            ],
         ]);
         let config = ExtractConfig {
             flavor: Flavor::Stream,

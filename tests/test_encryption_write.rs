@@ -238,11 +238,8 @@ mod aes256_encryption_tests {
         let input_path = dir.path().join("input.pdf");
         let encrypted_path = dir.path().join("encrypted_owner_rt.pdf");
 
-        create_test_pdf_with_content(
-            input_path.to_str().unwrap(),
-            "AES-256 owner round-trip test",
-        )
-        .unwrap();
+        create_test_pdf_with_content(input_path.to_str().unwrap(), "AES-256 owner round-trip test")
+            .unwrap();
 
         let mut editor = DocumentEditor::open(&input_path).unwrap();
         let config = EncryptionConfig::new("userpass", "ownerpass")
@@ -266,8 +263,8 @@ mod aes256_encryption_tests {
         create_test_pdf_with_content(input_path.to_str().unwrap(), "Wrong password test").unwrap();
 
         let mut editor = DocumentEditor::open(&input_path).unwrap();
-        let config = EncryptionConfig::new("correct", "owner")
-            .with_algorithm(EncryptionAlgorithm::Aes256);
+        let config =
+            EncryptionConfig::new("correct", "owner").with_algorithm(EncryptionAlgorithm::Aes256);
         editor
             .save_with_options(&encrypted_path, SaveOptions::with_encryption(config))
             .unwrap();
@@ -392,7 +389,6 @@ mod rc4_encryption_tests {
         let mut doc = pdf_oxide::document::PdfDocument::open(&encrypted_path).unwrap();
         assert!(doc.has_encryption());
         assert!(doc.authenticate(b"rc4user").unwrap(), "RC4-128 user password should work");
-
     }
 
     #[test]
@@ -515,8 +511,8 @@ mod empty_password_tests {
             .unwrap();
 
         let mut editor = DocumentEditor::open(&input_path).unwrap();
-        let config = EncryptionConfig::new("", "owneronly")
-            .with_permissions(Permissions::read_only());
+        let config =
+            EncryptionConfig::new("", "owneronly").with_permissions(Permissions::read_only());
         editor
             .save_with_options(&encrypted_path, SaveOptions::with_encryption(config))
             .unwrap();

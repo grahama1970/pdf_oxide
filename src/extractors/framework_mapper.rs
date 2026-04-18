@@ -111,8 +111,12 @@ impl ControlCatalog {
         let upper = candidate.to_uppercase();
         if let Some(key) = self.upper_map.get(&upper) {
             // Find the original-case ID
-            let cid = self.ids.iter().find(|id| id.to_uppercase() == upper)
-                .cloned().unwrap_or_else(|| upper.clone());
+            let cid = self
+                .ids
+                .iter()
+                .find(|id| id.to_uppercase() == upper)
+                .cloned()
+                .unwrap_or_else(|| upper.clone());
             return Some((cid, key.clone(), 1.0));
         }
         None
@@ -149,7 +153,11 @@ impl ControlCatalog {
     }
 
     /// Resolve a candidate: exact → parent_exact → fuzzy.
-    pub fn resolve(&self, candidate: &str, fuzz_threshold: f32) -> Option<(String, String, f32, String)> {
+    pub fn resolve(
+        &self,
+        candidate: &str,
+        fuzz_threshold: f32,
+    ) -> Option<(String, String, f32, String)> {
         // Try exact
         if let Some((cid, key, conf)) = self.exact_match(candidate) {
             return Some((cid, key, conf, "exact".to_string()));
@@ -172,7 +180,10 @@ impl ControlCatalog {
     }
 
     pub fn get_framework(&self, control_id: &str) -> &str {
-        self.frameworks.get(control_id).map(|s| s.as_str()).unwrap_or("UNKNOWN")
+        self.frameworks
+            .get(control_id)
+            .map(|s| s.as_str())
+            .unwrap_or("UNKNOWN")
     }
 }
 
@@ -307,7 +318,7 @@ pub fn map_controls(
             match resolved {
                 None => {
                     stats.unmatched += 1;
-                }
+                },
                 Some((control_id, control_key, confidence, method)) => {
                     if seen_controls.contains(&control_id) {
                         continue;
@@ -318,7 +329,7 @@ pub fn map_controls(
                         "exact" => stats.exact_matches += 1,
                         "parent_exact" => stats.parent_exact_matches += 1,
                         "fuzzy" => stats.fuzzy_matches += 1,
-                        _ => {}
+                        _ => {},
                     }
 
                     let framework = catalog.get_framework(&control_id).to_string();
@@ -332,7 +343,7 @@ pub fn map_controls(
                         method,
                         context_window: cand.context_window.clone(),
                     });
-                }
+                },
             }
         }
 
@@ -423,9 +434,7 @@ mod tests {
     #[test]
     fn test_catalog_parent_exact() {
         let mut catalog = ControlCatalog::new();
-        catalog.load(vec![
-            ("AC-2".to_string(), "nist_ac_2".to_string(), "NIST".to_string()),
-        ]);
+        catalog.load(vec![("AC-2".to_string(), "nist_ac_2".to_string(), "NIST".to_string())]);
 
         // AC-2(3) should match parent AC-2 with reduced confidence
         let result = catalog.resolve("AC-2(3)", 85.0);
@@ -474,7 +483,11 @@ mod tests {
         ]);
 
         let chunks = vec![
-            ("chunk_1".to_string(), "Implement AC-2 for account management.".to_string(), true),
+            (
+                "chunk_1".to_string(),
+                "Implement AC-2 for account management.".to_string(),
+                true,
+            ),
             ("chunk_2".to_string(), "No controls here.".to_string(), false),
             ("chunk_3".to_string(), "Mitigate CWE-787 buffer overflow.".to_string(), false),
         ];

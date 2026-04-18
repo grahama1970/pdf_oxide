@@ -161,8 +161,8 @@ pub use table_renderer::{
     SimpleFontMetrics, Table, TableBorderStyle, TableCell, TableLayout, TableRow, TableStyle,
 };
 pub use text_annotations::TextAnnotation;
-pub use text_writer::{TextWriter, TextWriterAlign};
 pub use text_markup::TextMarkupAnnotation;
+pub use text_writer::{TextWriter, TextWriterAlign};
 pub use threed::{
     ThreeDActivation, ThreeDAnnotation, ThreeDBackground, ThreeDCamera, ThreeDDeactivation,
     ThreeDFormat, ThreeDLighting, ThreeDProjection, ThreeDRenderMode, ThreeDStream, ThreeDView,

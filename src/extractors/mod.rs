@@ -2,8 +2,16 @@
 //!
 //! Provides high-performance extraction of text, images, paths, and layout analysis.
 
+pub mod block_classifier;
+pub mod block_merger;
 pub mod ccitt_bilevel;
+pub mod content_assembler;
+pub mod document_extractor;
+pub mod document_profiler;
+pub mod engineering;
+pub mod figure_detector;
 pub mod forms;
+pub mod framework_mapper;
 pub mod gap_statistics;
 pub mod geometric_spacing;
 pub mod hierarchical;
@@ -11,20 +19,12 @@ pub mod images;
 pub mod page_labels;
 pub mod paths;
 pub mod pattern_detector;
-pub mod structured;
-pub mod synthetic_structure;
-pub mod text;
-pub mod block_classifier;
-pub mod block_merger;
-pub mod content_assembler;
-pub mod framework_mapper;
-pub mod table_merger;
-pub mod document_extractor;
-pub mod document_profiler;
-pub mod engineering;
-pub mod figure_detector;
 pub mod prediction;
 pub mod section_hierarchy;
+pub mod structured;
+pub mod synthetic_structure;
+pub mod table_merger;
+pub mod text;
 pub mod text_normalizer;
 pub mod xmp;
 

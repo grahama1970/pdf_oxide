@@ -58,7 +58,11 @@ fn is_junk_table(t: &MergeableTable) -> bool {
 fn horizontal_iou(b1: &[f32; 4], b2: &[f32; 4]) -> f32 {
     let inter = (b1[2].min(b2[2]) - b1[0].max(b2[0])).max(0.0);
     let union = b1[2].max(b2[2]) - b1[0].min(b2[0]);
-    if union > 0.0 { inter / union } else { 0.0 }
+    if union > 0.0 {
+        inter / union
+    } else {
+        0.0
+    }
 }
 
 /// Word-overlap cosine between two titles.
@@ -66,8 +70,10 @@ pub fn word_overlap(t1: &str, t2: &str) -> f32 {
     if t1.is_empty() || t2.is_empty() {
         return 0.0;
     }
-    let w1: std::collections::HashSet<String> = t1.split_whitespace().map(|w| w.to_lowercase()).collect();
-    let w2: std::collections::HashSet<String> = t2.split_whitespace().map(|w| w.to_lowercase()).collect();
+    let w1: std::collections::HashSet<String> =
+        t1.split_whitespace().map(|w| w.to_lowercase()).collect();
+    let w2: std::collections::HashSet<String> =
+        t2.split_whitespace().map(|w| w.to_lowercase()).collect();
     if w1.is_empty() || w2.is_empty() {
         return 0.0;
     }
@@ -106,14 +112,13 @@ fn should_merge_pair(t1: &MergeableTable, t2: &MergeableTable) -> bool {
 ///
 /// Tables must be sorted by (page, y-position) before calling.
 pub fn merge_tables(tables: &[MergeableTable]) -> MergeResult {
-    let junk_indices: Vec<usize> = tables.iter()
+    let junk_indices: Vec<usize> = tables
+        .iter()
         .filter(|t| is_junk_table(t))
         .map(|t| t.index)
         .collect();
 
-    let clean: Vec<&MergeableTable> = tables.iter()
-        .filter(|t| !is_junk_table(t))
-        .collect();
+    let clean: Vec<&MergeableTable> = tables.iter().filter(|t| !is_junk_table(t)).collect();
 
     if clean.len() < 2 {
         return MergeResult {
@@ -261,10 +266,20 @@ pub struct MergeFeatures {
 mod tests {
     use super::*;
 
-    fn make_table(index: usize, page: usize, bbox: [f32; 4], cols: usize, rows: usize, title: &str) -> MergeableTable {
+    fn make_table(
+        index: usize,
+        page: usize,
+        bbox: [f32; 4],
+        cols: usize,
+        rows: usize,
+        title: &str,
+    ) -> MergeableTable {
         MergeableTable {
-            index, page, bbox,
-            column_count: cols, row_count: rows,
+            index,
+            page,
+            bbox,
+            column_count: cols,
+            row_count: rows,
             title: title.to_string(),
             headers: (0..cols).map(|i| format!("col_{}", i)).collect(),
             headers_are_numeric: false,
@@ -329,9 +344,11 @@ mod tests {
     fn test_junk_filtering() {
         let tables = vec![
             MergeableTable {
-                index: 0, page: 0,
+                index: 0,
+                page: 0,
                 bbox: [50.0, 100.0, 500.0, 120.0],
-                column_count: 1, row_count: 1,
+                column_count: 1,
+                row_count: 1,
                 title: String::new(),
                 headers: vec!["0".into()],
                 headers_are_numeric: true,

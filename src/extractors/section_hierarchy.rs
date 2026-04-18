@@ -11,8 +11,7 @@
 use crate::document::PdfDocument;
 use crate::error::Result;
 use crate::extractors::block_classifier::{
-    BlockClassifier, BlockType, ClassifiedBlock, HeaderDisposition,
-    analyze_section_numbering,
+    analyze_section_numbering, BlockClassifier, BlockType, ClassifiedBlock, HeaderDisposition,
 };
 use crate::geometry::Rect;
 
@@ -78,21 +77,17 @@ pub struct FlatSection {
 /// It takes classified blocks (from BlockClassifier) and groups them into
 /// sections: each header block starts a new section, subsequent non-header
 /// blocks become the section's body content.
-pub fn build_flat_sections(
-    page_blocks: &[(usize, Vec<ClassifiedBlock>)],
-) -> Vec<FlatSection> {
+pub fn build_flat_sections(page_blocks: &[(usize, Vec<ClassifiedBlock>)]) -> Vec<FlatSection> {
     let mut sections: Vec<FlatSection> = Vec::new();
     let mut current: Option<FlatSection> = None;
 
     for (page, blocks) in page_blocks {
         for block in blocks {
-            let is_header = block.block_type == BlockType::Title
-                && block.header_level.is_some();
+            let is_header = block.block_type == BlockType::Title && block.header_level.is_some();
 
             if is_header {
                 // Check disposition — only start a new section for Accept or Escalate
-                let disposition = block.header_validation.as_ref()
-                    .map(|hv| hv.disposition);
+                let disposition = block.header_validation.as_ref().map(|hv| hv.disposition);
 
                 // If disposition is Reject, treat as body text
                 if disposition == Some(HeaderDisposition::Reject) {
@@ -224,8 +219,8 @@ fn merge_continuation_sections(sections: Vec<FlatSection>) -> Vec<FlatSection> {
         };
 
         // Check for lowercase-starting title (mid-sentence fragment)
-        let is_lowercase_start = !title.is_empty()
-            && title.chars().next().map_or(false, |c| c.is_lowercase());
+        let is_lowercase_start =
+            !title.is_empty() && title.chars().next().map_or(false, |c| c.is_lowercase());
 
         if !merged.is_empty() && (is_continuation || is_lowercase_start) {
             let prev = merged.last_mut().unwrap();
@@ -327,17 +322,33 @@ fn is_partial_sentence(text: &str) -> bool {
     // Starts with continuation words
     let lower = t.to_lowercase();
     let continuation = [
-        "and ", "or ", "but ", "that ", "which ", "where ", "when ",
-        "including ", "such as ", "as well as ", "in addition ",
-        "for example", "e.g.", "i.e.",
+        "and ",
+        "or ",
+        "but ",
+        "that ",
+        "which ",
+        "where ",
+        "when ",
+        "including ",
+        "such as ",
+        "as well as ",
+        "in addition ",
+        "for example",
+        "e.g.",
+        "i.e.",
     ];
     if continuation.iter().any(|w| lower.starts_with(w)) {
         return true;
     }
     // Contains clause-internal markers
     let internal = [
-        " e.g. ", " i.e. ", " etc.", " et al.",
-        " is defined as ", " contains ", " includes ",
+        " e.g. ",
+        " i.e. ",
+        " etc.",
+        " et al.",
+        " is defined as ",
+        " contains ",
+        " includes ",
     ];
     if internal.iter().any(|m| lower.contains(m)) {
         return true;
@@ -373,7 +384,9 @@ fn is_citation_fragment(text: &str) -> bool {
     }
 
     // Pure numeric: "0.315", "12.5%"
-    if t.chars().all(|c| c.is_ascii_digit() || c == '.' || c == ',' || c == '%' || c == ' ') {
+    if t.chars()
+        .all(|c| c.is_ascii_digit() || c == '.' || c == ',' || c == '%' || c == ' ')
+    {
         return true;
     }
 
@@ -413,7 +426,10 @@ fn is_citation_fragment(text: &str) -> bool {
 ///
 /// Absorbs S04a's layout audit. Returns a list of (section_index, is_ok) pairs.
 /// Canonical order: (page, y, x) ascending.
-pub fn validate_section_order(sections: &[FlatSection], page_blocks: &[(usize, Vec<ClassifiedBlock>)]) -> Vec<(usize, bool)> {
+pub fn validate_section_order(
+    sections: &[FlatSection],
+    page_blocks: &[(usize, Vec<ClassifiedBlock>)],
+) -> Vec<(usize, bool)> {
     // Build a flat list of (page, block) tuples for each section
     // Since FlatSection doesn't store individual block bboxes, we validate
     // at the section level: sections should be in page order
@@ -448,7 +464,8 @@ pub fn build_section_hierarchy(doc: &mut PdfDocument) -> Result<SectionTree> {
             continue;
         }
 
-        let (width, height) = doc.get_page_info(pg)
+        let (width, height) = doc
+            .get_page_info(pg)
             .ok()
             .map(|info| (info.media_box.width, info.media_box.height))
             .unwrap_or((612.0, 792.0));
@@ -525,17 +542,31 @@ fn is_false_positive_header(text: &str) -> bool {
     }
 
     // Pure page numbers
-    if trimmed.chars().all(|c| c.is_ascii_digit() || c == '-' || c == '.') {
+    if trimmed
+        .chars()
+        .all(|c| c.is_ascii_digit() || c == '-' || c == '.')
+    {
         return true;
     }
 
     // Common running headers that aren't real sections
     let lower = trimmed.to_lowercase();
-    if matches!(lower.as_str(),
-        "abstract" | "references" | "bibliography" | "acknowledgments" |
-        "acknowledgements" | "table of contents" | "contents" |
-        "list of figures" | "list of tables" | "index" | "appendix" |
-        "glossary" | "acronyms" | "abbreviations"
+    if matches!(
+        lower.as_str(),
+        "abstract"
+            | "references"
+            | "bibliography"
+            | "acknowledgments"
+            | "acknowledgements"
+            | "table of contents"
+            | "contents"
+            | "list of figures"
+            | "list of tables"
+            | "index"
+            | "appendix"
+            | "glossary"
+            | "acronyms"
+            | "abbreviations"
     ) {
         // These are valid section-like headings, keep them
         return false;
@@ -600,10 +631,10 @@ fn parse_section_numbering(text: &str) -> (Option<String>, Option<u8>) {
     if trimmed.starts_with('(') {
         if let Some(close) = trimmed.find(')') {
             let inner = &trimmed[1..close];
-            if inner.len() <= 4 && (
-                inner.chars().all(|c| c.is_ascii_lowercase()) ||
-                inner.chars().all(|c| c.is_ascii_digit())
-            ) {
+            if inner.len() <= 4
+                && (inner.chars().all(|c| c.is_ascii_lowercase())
+                    || inner.chars().all(|c| c.is_ascii_digit()))
+            {
                 let numbering = trimmed[..=close].to_string();
                 return (Some(numbering), Some(3));
             }
@@ -626,10 +657,9 @@ fn is_dotted_numbering(s: &str) -> bool {
 
     // Each part must be a number or short alpha (A, B, I, II, etc.)
     parts.iter().all(|part| {
-        !part.is_empty() && (
-            part.chars().all(|c| c.is_ascii_digit()) ||
-            (part.len() <= 4 && part.chars().all(|c| c.is_ascii_uppercase()))
-        )
+        !part.is_empty()
+            && (part.chars().all(|c| c.is_ascii_digit())
+                || (part.len() <= 4 && part.chars().all(|c| c.is_ascii_uppercase())))
     })
 }
 
@@ -650,12 +680,10 @@ fn promote_from_outline(
         let mut adjusted_block = block.clone();
         let title_normalized = normalize_for_matching(&block.text);
 
-        if let Some((_, outline_level)) = outline_map.iter()
-            .find(|(outline_title, _)| {
-                let outline_normalized = normalize_for_matching(outline_title);
-                titles_match(&title_normalized, &outline_normalized)
-            })
-        {
+        if let Some((_, outline_level)) = outline_map.iter().find(|(outline_title, _)| {
+            let outline_normalized = normalize_for_matching(outline_title);
+            titles_match(&title_normalized, &outline_normalized)
+        }) {
             adjusted_block.header_level = Some(*outline_level);
         }
 
@@ -771,14 +799,18 @@ fn insert_child(sections: &mut Vec<Section>, stack: &[(u8, usize)], child: Secti
 }
 
 fn count_sections(sections: &[Section]) -> usize {
-    sections.iter().map(|s| 1 + count_sections(&s.children)).sum()
+    sections
+        .iter()
+        .map(|s| 1 + count_sections(&s.children))
+        .sum()
 }
 
 fn max_section_depth(sections: &[Section], depth: u8) -> u8 {
     if sections.is_empty() {
         return depth;
     }
-    sections.iter()
+    sections
+        .iter()
         .map(|s| max_section_depth(&s.children, depth + 1))
         .max()
         .unwrap_or(depth)
@@ -810,27 +842,31 @@ mod tests {
 
     #[test]
     fn test_count_sections() {
-        let sections = vec![
-            Section {
-                title: "Chapter 1".to_string(), level: 1, page: 0,
-                bbox: (0.0, 0.0, 100.0, 20.0),
-                children: vec![
-                    Section {
-                        title: "Section 1.1".to_string(), level: 2, page: 1,
-                        bbox: (0.0, 0.0, 100.0, 20.0),
-                        children: vec![],
-                        numbering: Some("1.1".to_string()),
-                    },
-                    Section {
-                        title: "Section 1.2".to_string(), level: 2, page: 2,
-                        bbox: (0.0, 0.0, 100.0, 20.0),
-                        children: vec![],
-                        numbering: Some("1.2".to_string()),
-                    },
-                ],
-                numbering: Some("1".to_string()),
-            },
-        ];
+        let sections = vec![Section {
+            title: "Chapter 1".to_string(),
+            level: 1,
+            page: 0,
+            bbox: (0.0, 0.0, 100.0, 20.0),
+            children: vec![
+                Section {
+                    title: "Section 1.1".to_string(),
+                    level: 2,
+                    page: 1,
+                    bbox: (0.0, 0.0, 100.0, 20.0),
+                    children: vec![],
+                    numbering: Some("1.1".to_string()),
+                },
+                Section {
+                    title: "Section 1.2".to_string(),
+                    level: 2,
+                    page: 2,
+                    bbox: (0.0, 0.0, 100.0, 20.0),
+                    children: vec![],
+                    numbering: Some("1.2".to_string()),
+                },
+            ],
+            numbering: Some("1".to_string()),
+        }];
         assert_eq!(count_sections(&sections), 3);
         assert_eq!(max_section_depth(&sections, 0), 2);
     }
@@ -838,21 +874,21 @@ mod tests {
     #[test]
     fn test_flat_list() {
         let tree = SectionTree {
-            sections: vec![
-                Section {
-                    title: "Intro".to_string(), level: 1, page: 0,
+            sections: vec![Section {
+                title: "Intro".to_string(),
+                level: 1,
+                page: 0,
+                bbox: (0.0, 0.0, 100.0, 20.0),
+                children: vec![Section {
+                    title: "Background".to_string(),
+                    level: 2,
+                    page: 1,
                     bbox: (0.0, 0.0, 100.0, 20.0),
-                    children: vec![
-                        Section {
-                            title: "Background".to_string(), level: 2, page: 1,
-                            bbox: (0.0, 0.0, 100.0, 20.0),
-                            children: vec![],
-                            numbering: None,
-                        },
-                    ],
+                    children: vec![],
                     numbering: None,
-                },
-            ],
+                }],
+                numbering: None,
+            }],
             total_sections: 2,
             max_depth: 2,
         };
@@ -1061,10 +1097,7 @@ mod tests {
             header_validation: None,
         };
 
-        let page_blocks = vec![
-            (0, vec![h1, body]),
-            (1, vec![cont, body2]),
-        ];
+        let page_blocks = vec![(0, vec![h1, body]), (1, vec![cont, body2])];
         let sections = build_flat_sections(&page_blocks);
 
         // "(continued)" section should be merged with the previous one

@@ -89,9 +89,7 @@ pub fn build_invisible_text_layer(
         }
 
         // Position text at the span location
-        builder.op(ContentStreamOp::SetTextMatrix(
-            1.0, 0.0, 0.0, 1.0, pdf_x, pdf_y,
-        ));
+        builder.op(ContentStreamOp::SetTextMatrix(1.0, 0.0, 0.0, 1.0, pdf_x, pdf_y));
         builder.op(ContentStreamOp::ShowText(span.text.clone()));
     }
 

@@ -66,13 +66,24 @@ class ScanReport:
                 print(f"  Page {issue.page}, {issue.block_id}: {issue.actual_type} -> {issue.expected_type or '?'}")
                 print(f"    Text: {snippet!r}")
                 print(f"    Reason: {issue.reason}")
+# Constants for header detection
+SIMPLE_HEADERS = ['ABSTRACT', 'KEYWORDS', 'ERRATA', 'REFERENCES', 'GLOSSARY', 'ACRONYMS']
+HEADER_CONTINUATIONS = ['Systems and Organizations', 'Information Systems and Organizations']
+CONTROL_FAMILIES = ['AC', 'AT', 'AU', 'CA', 'CM', 'CP', 'IA', 'IR', 'MA', 'MP', 'PE', 'PL', 'PM', 'PS', 'PT', 'RA', 'SA', 'SC', 'SI', 'SR']
+
+HEADER_PATTERNS = [
+    (r'^NIST\s+SP', 'NIST document title'),
+    (r'^(CHAPTER|INTRODUCTION|THE FUNDAMENTALS|THE CONTROLS|APPENDIX)', 'Chapter/section header'),
+    (r'^\d+\.\d+\s+[A-Z]', 'Numbered section'),
+    (rf'^({"|".join(CONTROL_FAMILIES)})-\d+', 'Control ID'),
+    (r'^\(\d+\)\s+[A-Z]', 'Control enhancement'),
+]
+
+PAGE_NUMBER_PATTERN = r'^Page\s+\d+(?:\s+of\s+\d+)?$'
+
+
 def _is_likely_sentence(text: str) -> bool:
-    """Check if text is likely a sentence (body text) rather than a title.
-
-    Must match extract_for_pdflab.py's logic.
-    """
-    import re
-
+    """Check if text is likely a sentence (body text) rather than a title."""
     # Long text is likely a sentence
     if len(text) > 150:
         return True
@@ -82,59 +93,7 @@ def _is_likely_sentence(text: str) -> bool:
         r'\bis\b', r'\bare\b', r'\bwas\b', r'\bwere\b',
         r'\bprovides?\b', r'\bdescribes?\b', r'\bdefines?\b',
         r'\bincludes?\b', r'\bcontains?\b', r'\baddresses\b',
-        r'\bensures?\b', r'\bdirected\b', r'\brequires?\b',
-        r'\bshall\b', r'\bmust\b', r'\bshould\b', r'\bmay\b',
-        r'\bestablishes?\b', r'\bimplements?\b', r'\bmaintains?\b',
-    ]
-    text_lower = text.lower()
-    for pattern in sentence_indicators:
-        if re.search(pattern, text_lower):
-            return True
-
-    # Multiple sentences (period followed by capital letter)
-    if re.search(r'\.\s+[A-Z]', text):
-        return True
-    
-    # Contains common sentence connectors
-    connectors = [
-        r'\band\b', r'\bor\b', r'\bbut\b', r'\bhowever\b', r'\btherefore\b',
-        r'\bmoreover\b', r'\bfurthermore\b', r'\bin addition\b', r'\bfor example\b',
-        r'\bsuch as\b', r'\bincluding\b', r'\bas well as\b'
-    ]
-    for pattern in connectors:
-        if re.search(pattern, text_lower):
-            return True
-    
-    # Contains pronouns (common in sentences, rare in titles)
-    pronouns = [r'\bthis\b', r'\bthat\b', r'\bthese\b', r'\bthose\b', r'\bit\b', r'\bthey\b']
-    for pattern in pronouns:
-        if re.search(pattern, text_lower):
-            return True
-    
-    # Ends with punctuation that suggests a complete sentence
-    if re.search(r'[.!?]\s*$', text):
-        return True
-
-    return False
-
-
-def _is_likely_sentence(text: str) -> bool:
-    """Check if text is likely a sentence (body text) rather than a title.
-
-    Must match extract_for_pdflab.py's logic.
-    """
-    import re
-
-    # Long text is likely a sentence
-    if len(text) > 150:
-        return True
-
-    # Contains sentence indicators (common verbs/phrases in body text)
-    sentence_indicators = [
-        r'\bis\b', r'\bare\b', r'\bwas\b', r'\bwere\b',
-        r'\bprovides?\b', r'\bdescribes?\b', r'\bdefines?\b',
-        r'\bincludes?\b', r'\bcontains?\b', r'\baddresses\b',
-        r'\bensures?\b', r'\bdirected\b', r'\brequires?\b',
+        r'\bensures?\b', r'\brequires?\b', r'\bshall\b', r'\bmust\b'
     ]
     text_lower = text.lower()
     for pattern in sentence_indicators:
@@ -146,7 +105,6 @@ def _is_likely_sentence(text: str) -> bool:
         return True
 
     return False
-
 
 def should_be_header(text: str) -> tuple[bool, str]:
     """Check if text matches header patterns.

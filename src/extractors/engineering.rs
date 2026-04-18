@@ -71,7 +71,8 @@ pub fn detect_engineering_features(doc: &mut PdfDocument) -> Result<EngineeringP
 
     for &pg in &pages_to_check {
         let spans = doc.extract_spans_unsorted(pg).unwrap_or_default();
-        let (width, height) = doc.get_page_info(pg)
+        let (width, height) = doc
+            .get_page_info(pg)
             .ok()
             .map(|info| (info.media_box.width, info.media_box.height))
             .unwrap_or((612.0, 792.0));
@@ -125,13 +126,15 @@ fn build_engineering_profile(
     let distribution_statement = extract_distribution_statement(&all_elements);
 
     let is_engineering = !all_elements.is_empty()
-        && all_elements.iter().any(|e| matches!(
-            e.element_type,
-            EngineeringElement::TitleBlock
-                | EngineeringElement::DrawingBorder
-                | EngineeringElement::DrawingNumber
-                | EngineeringElement::RevisionTable
-        ));
+        && all_elements.iter().any(|e| {
+            matches!(
+                e.element_type,
+                EngineeringElement::TitleBlock
+                    | EngineeringElement::DrawingBorder
+                    | EngineeringElement::DrawingNumber
+                    | EngineeringElement::RevisionTable
+            )
+        });
 
     let doc_subtype = classify_engineering_subtype(&all_elements, page_count);
 
@@ -158,7 +161,12 @@ fn empty_profile() -> EngineeringProfile {
     }
 }
 
-fn detect_page_elements(spans: &[TextSpan], page_width: f32, page_height: f32, page: usize) -> Vec<DetectedElement> {
+fn detect_page_elements(
+    spans: &[TextSpan],
+    page_width: f32,
+    page_height: f32,
+    page: usize,
+) -> Vec<DetectedElement> {
     let mut elements = Vec::new();
 
     // Check for title block (bottom-right quadrant, dense short text)
@@ -210,28 +218,49 @@ fn detect_page_elements(spans: &[TextSpan], page_width: f32, page_height: f32, p
 }
 
 /// Title block: bottom-right quadrant, contains labels like TITLE, DRAWN, CHECKED, SCALE, SIZE
-fn detect_title_block(spans: &[TextSpan], page_width: f32, page_height: f32, page: usize) -> Option<DetectedElement> {
-    let br_spans: Vec<&TextSpan> = spans.iter()
-        .filter(|s| {
-            s.bbox.x + s.bbox.width > page_width * 0.5
-                && s.bbox.y > page_height * 0.7
-        })
+fn detect_title_block(
+    spans: &[TextSpan],
+    page_width: f32,
+    page_height: f32,
+    page: usize,
+) -> Option<DetectedElement> {
+    let br_spans: Vec<&TextSpan> = spans
+        .iter()
+        .filter(|s| s.bbox.x + s.bbox.width > page_width * 0.5 && s.bbox.y > page_height * 0.7)
         .collect();
 
     if br_spans.is_empty() {
         return None;
     }
 
-    let combined_text: String = br_spans.iter().map(|s| s.text.as_str()).collect::<Vec<_>>().join(" ");
+    let combined_text: String = br_spans
+        .iter()
+        .map(|s| s.text.as_str())
+        .collect::<Vec<_>>()
+        .join(" ");
     let lower = combined_text.to_lowercase();
 
     let title_block_keywords = [
-        "title", "drawn", "checked", "approved", "scale", "size",
-        "dwg no", "drawing no", "sheet", "rev", "date", "cage code",
-        "tolerances", "material", "finish", "weight",
+        "title",
+        "drawn",
+        "checked",
+        "approved",
+        "scale",
+        "size",
+        "dwg no",
+        "drawing no",
+        "sheet",
+        "rev",
+        "date",
+        "cage code",
+        "tolerances",
+        "material",
+        "finish",
+        "weight",
     ];
 
-    let keyword_hits = title_block_keywords.iter()
+    let keyword_hits = title_block_keywords
+        .iter()
         .filter(|kw| lower.contains(*kw))
         .count();
 
@@ -251,20 +280,27 @@ fn detect_title_block(spans: &[TextSpan], page_width: f32, page_height: f32, pag
 
 /// Revision table: contains REV, ECN/ECO, DATE columns, typically near top-right or above title block.
 /// Must have short label-like spans (not body text) and be in the right page region.
-fn detect_revision_table(spans: &[TextSpan], page_width: f32, page_height: f32, page: usize) -> Option<DetectedElement> {
+fn detect_revision_table(
+    spans: &[TextSpan],
+    page_width: f32,
+    page_height: f32,
+    page: usize,
+) -> Option<DetectedElement> {
     // Only look for short spans (< 60 chars) that contain revision keywords
     // and are in the upper-right or bottom-right quadrant
     let rev_primary = ["rev", "revision"];
     let rev_secondary = ["ecn", "eco", "date", "by", "zone"];
 
-    let candidate_spans: Vec<&TextSpan> = spans.iter()
+    let candidate_spans: Vec<&TextSpan> = spans
+        .iter()
         .filter(|s| {
             let lower = s.text.to_lowercase();
             let is_short = s.text.trim().len() < 60;
             let in_right_region = s.bbox.x + s.bbox.width > page_width * 0.5
                 || s.bbox.y < page_height * 0.15
                 || s.bbox.y > page_height * 0.7;
-            is_short && in_right_region
+            is_short
+                && in_right_region
                 && (rev_primary.iter().any(|kw| lower.contains(kw))
                     || rev_secondary.iter().any(|kw| lower.contains(kw)))
         })
@@ -281,7 +317,11 @@ fn detect_revision_table(spans: &[TextSpan], page_width: f32, page_height: f32, 
     }
 
     let bbox = compute_bounding_box(&candidate_spans);
-    let text: String = candidate_spans.iter().map(|s| s.text.as_str()).collect::<Vec<_>>().join(" ");
+    let text: String = candidate_spans
+        .iter()
+        .map(|s| s.text.as_str())
+        .collect::<Vec<_>>()
+        .join(" ");
     Some(DetectedElement {
         element_type: EngineeringElement::RevisionTable,
         bbox,
@@ -292,18 +332,23 @@ fn detect_revision_table(spans: &[TextSpan], page_width: f32, page_height: f32, 
 }
 
 /// Drawing border: text very close to page margins forming a frame
-fn detect_drawing_border(spans: &[TextSpan], page_width: f32, page_height: f32, page: usize) -> Option<DetectedElement> {
+fn detect_drawing_border(
+    spans: &[TextSpan],
+    page_width: f32,
+    page_height: f32,
+    page: usize,
+) -> Option<DetectedElement> {
     let margin = page_width * 0.04; // ~24pt on letter size
 
     // Check for zone markers (A, B, C, D or 1, 2, 3, 4 along edges)
-    let edge_spans: Vec<&TextSpan> = spans.iter()
+    let edge_spans: Vec<&TextSpan> = spans
+        .iter()
         .filter(|s| {
             let near_left = s.bbox.x < margin;
             let near_right = s.bbox.x + s.bbox.width > page_width - margin;
             let near_top = s.bbox.y < margin * 1.5;
             let near_bottom = s.bbox.y + s.bbox.height > page_height - margin * 1.5;
-            (near_left || near_right || near_top || near_bottom)
-                && s.text.trim().len() <= 3
+            (near_left || near_right || near_top || near_bottom) && s.text.trim().len() <= 3
         })
         .collect();
 
@@ -315,7 +360,11 @@ fn detect_drawing_border(spans: &[TextSpan], page_width: f32, page_height: f32, 
             width: page_width,
             height: page_height,
         };
-        let text: String = edge_spans.iter().map(|s| s.text.trim()).collect::<Vec<_>>().join(" ");
+        let text: String = edge_spans
+            .iter()
+            .map(|s| s.text.trim())
+            .collect::<Vec<_>>()
+            .join(" ");
         Some(DetectedElement {
             element_type: EngineeringElement::DrawingBorder,
             bbox,
@@ -351,11 +400,24 @@ fn detect_distribution_statement(spans: &[TextSpan], page: usize) -> Option<Dete
 }
 
 /// Security marking: UNCLASSIFIED, CUI, FOUO, SECRET, etc.
-fn detect_security_marking(spans: &[TextSpan], page_width: f32, _page_height: f32, page: usize) -> Option<DetectedElement> {
+fn detect_security_marking(
+    spans: &[TextSpan],
+    page_width: f32,
+    _page_height: f32,
+    page: usize,
+) -> Option<DetectedElement> {
     let markings = [
-        "unclassified", "classified", "secret", "top secret",
-        "confidential", "fouo", "cui", "controlled unclassified",
-        "noforn", "rel to", "orcon",
+        "unclassified",
+        "classified",
+        "secret",
+        "top secret",
+        "confidential",
+        "fouo",
+        "cui",
+        "controlled unclassified",
+        "noforn",
+        "rel to",
+        "orcon",
     ];
 
     for span in spans {
@@ -381,9 +443,15 @@ fn detect_security_marking(spans: &[TextSpan], page_width: f32, _page_height: f3
 }
 
 /// Drawing number: alphanumeric pattern like "12345-67890" or "DWG-ABC-123"
-fn detect_drawing_number(spans: &[TextSpan], page_width: f32, page_height: f32, page: usize) -> Option<DetectedElement> {
+fn detect_drawing_number(
+    spans: &[TextSpan],
+    page_width: f32,
+    page_height: f32,
+    page: usize,
+) -> Option<DetectedElement> {
     // Look in bottom-right area (title block region)
-    let candidates: Vec<&TextSpan> = spans.iter()
+    let candidates: Vec<&TextSpan> = spans
+        .iter()
         .filter(|s| s.bbox.x + s.bbox.width > page_width * 0.5 && s.bbox.y > page_height * 0.7)
         .collect();
 
@@ -419,25 +487,44 @@ fn detect_drawing_number(spans: &[TextSpan], page_width: f32, page_height: f32, 
 
 /// Parts table / BOM: contains QTY, PART NUMBER, DESCRIPTION, MATERIAL
 fn detect_parts_table(spans: &[TextSpan], page: usize) -> Option<DetectedElement> {
-    let bom_keywords = ["qty", "quantity", "part number", "part no", "description", "material",
-        "item", "nomenclature", "specification", "bill of materials", "bom"];
+    let bom_keywords = [
+        "qty",
+        "quantity",
+        "part number",
+        "part no",
+        "description",
+        "material",
+        "item",
+        "nomenclature",
+        "specification",
+        "bill of materials",
+        "bom",
+    ];
 
-    let matching_spans: Vec<&TextSpan> = spans.iter()
+    let matching_spans: Vec<&TextSpan> = spans
+        .iter()
         .filter(|s| {
             let lower = s.text.to_lowercase();
             bom_keywords.iter().any(|kw| lower.contains(kw))
         })
         .collect();
 
-    let keyword_hits = bom_keywords.iter()
+    let keyword_hits = bom_keywords
+        .iter()
         .filter(|kw| {
-            matching_spans.iter().any(|s| s.text.to_lowercase().contains(*kw))
+            matching_spans
+                .iter()
+                .any(|s| s.text.to_lowercase().contains(*kw))
         })
         .count();
 
     if keyword_hits >= 3 {
         let bbox = compute_bounding_box(&matching_spans);
-        let text: String = matching_spans.iter().map(|s| s.text.as_str()).collect::<Vec<_>>().join(" ");
+        let text: String = matching_spans
+            .iter()
+            .map(|s| s.text.as_str())
+            .collect::<Vec<_>>()
+            .join(" ");
         Some(DetectedElement {
             element_type: EngineeringElement::PartsTable,
             bbox,
@@ -451,21 +538,37 @@ fn detect_parts_table(spans: &[TextSpan], page: usize) -> Option<DetectedElement
 }
 
 /// Approval block: APPROVED BY, CHECKED BY, DRAWN BY with date fields
-fn detect_approval_block(spans: &[TextSpan], page_width: f32, page_height: f32, page: usize) -> Option<DetectedElement> {
-    let approval_keywords = ["approved by", "checked by", "drawn by", "designed by",
-        "engineer", "signature", "approvals"];
+fn detect_approval_block(
+    spans: &[TextSpan],
+    page_width: f32,
+    page_height: f32,
+    page: usize,
+) -> Option<DetectedElement> {
+    let approval_keywords = [
+        "approved by",
+        "checked by",
+        "drawn by",
+        "designed by",
+        "engineer",
+        "signature",
+        "approvals",
+    ];
 
-    let matching_spans: Vec<&TextSpan> = spans.iter()
+    let matching_spans: Vec<&TextSpan> = spans
+        .iter()
         .filter(|s| {
             let lower = s.text.to_lowercase();
-            approval_keywords.iter().any(|kw| lower.contains(kw))
-                && s.bbox.y > page_height * 0.6
+            approval_keywords.iter().any(|kw| lower.contains(kw)) && s.bbox.y > page_height * 0.6
         })
         .collect();
 
     if matching_spans.len() >= 2 {
         let bbox = compute_bounding_box(&matching_spans);
-        let text: String = matching_spans.iter().map(|s| s.text.as_str()).collect::<Vec<_>>().join(" ");
+        let text: String = matching_spans
+            .iter()
+            .map(|s| s.text.as_str())
+            .collect::<Vec<_>>()
+            .join(" ");
         Some(DetectedElement {
             element_type: EngineeringElement::ApprovalBlock,
             bbox,
@@ -482,7 +585,8 @@ fn detect_approval_block(spans: &[TextSpan], page_width: f32, page_height: f32, 
 fn detect_notes_block(spans: &[TextSpan], page: usize) -> Option<DetectedElement> {
     for (i, span) in spans.iter().enumerate() {
         let lower = span.text.to_lowercase();
-        if lower.starts_with("notes") || lower.starts_with("general notes")
+        if lower.starts_with("notes")
+            || lower.starts_with("general notes")
             || lower.starts_with("unless otherwise specified")
         {
             // Gather subsequent spans as part of notes block
@@ -490,7 +594,11 @@ fn detect_notes_block(spans: &[TextSpan], page: usize) -> Option<DetectedElement
                 .chain(spans[i + 1..].iter().take(20))
                 .collect();
             let bbox = compute_bounding_box(&note_spans);
-            let text: String = note_spans.iter().map(|s| s.text.as_str()).collect::<Vec<_>>().join(" ");
+            let text: String = note_spans
+                .iter()
+                .map(|s| s.text.as_str())
+                .collect::<Vec<_>>()
+                .join(" ");
             return Some(DetectedElement {
                 element_type: EngineeringElement::NotesBlock,
                 bbox,
@@ -512,22 +620,42 @@ fn is_drawing_number_pattern(text: &str) -> bool {
     let has_dash = trimmed.contains('-');
     let alnum_count = trimmed.chars().filter(|c| c.is_alphanumeric()).count();
     let total = trimmed.chars().count();
-    has_dash && alnum_count as f32 / total as f32 > 0.7 && trimmed.chars().any(|c| c.is_ascii_digit())
+    has_dash
+        && alnum_count as f32 / total as f32 > 0.7
+        && trimmed.chars().any(|c| c.is_ascii_digit())
 }
 
 fn compute_bounding_box(spans: &[&TextSpan]) -> Rect {
     if spans.is_empty() {
-        return Rect { x: 0.0, y: 0.0, width: 0.0, height: 0.0 };
+        return Rect {
+            x: 0.0,
+            y: 0.0,
+            width: 0.0,
+            height: 0.0,
+        };
     }
-    spans.iter().skip(1).fold(spans[0].bbox, |acc, s| acc.union(&s.bbox))
+    spans
+        .iter()
+        .skip(1)
+        .fold(spans[0].bbox, |acc, s| acc.union(&s.bbox))
 }
 
 fn classify_engineering_subtype(elements: &[DetectedElement], page_count: usize) -> String {
-    let has_drawing_border = elements.iter().any(|e| e.element_type == EngineeringElement::DrawingBorder);
-    let has_title_block = elements.iter().any(|e| e.element_type == EngineeringElement::TitleBlock);
-    let has_parts_table = elements.iter().any(|e| e.element_type == EngineeringElement::PartsTable);
-    let has_dist_stmt = elements.iter().any(|e| e.element_type == EngineeringElement::DistributionStatement);
-    let has_security = elements.iter().any(|e| e.element_type == EngineeringElement::SecurityMarking);
+    let has_drawing_border = elements
+        .iter()
+        .any(|e| e.element_type == EngineeringElement::DrawingBorder);
+    let has_title_block = elements
+        .iter()
+        .any(|e| e.element_type == EngineeringElement::TitleBlock);
+    let has_parts_table = elements
+        .iter()
+        .any(|e| e.element_type == EngineeringElement::PartsTable);
+    let has_dist_stmt = elements
+        .iter()
+        .any(|e| e.element_type == EngineeringElement::DistributionStatement);
+    let has_security = elements
+        .iter()
+        .any(|e| e.element_type == EngineeringElement::SecurityMarking);
 
     if has_drawing_border && has_title_block {
         return "engineering_drawing".to_string();
@@ -549,20 +677,27 @@ fn classify_engineering_subtype(elements: &[DetectedElement], page_count: usize)
 }
 
 fn extract_drawing_number(elements: &[DetectedElement]) -> Option<String> {
-    elements.iter()
+    elements
+        .iter()
         .find(|e| e.element_type == EngineeringElement::DrawingNumber)
         .map(|e| e.text.clone())
 }
 
 fn extract_revision(elements: &[DetectedElement]) -> Option<String> {
-    elements.iter()
+    elements
+        .iter()
         .find(|e| e.element_type == EngineeringElement::RevisionTable)
         .and_then(|e| {
             // Try to extract revision letter/number from the text
             let lower = e.text.to_lowercase();
             if let Some(idx) = lower.find("rev") {
                 let after = &e.text[idx + 3..];
-                let rev = after.trim().split_whitespace().next().unwrap_or("").trim_matches(|c: char| !c.is_alphanumeric());
+                let rev = after
+                    .trim()
+                    .split_whitespace()
+                    .next()
+                    .unwrap_or("")
+                    .trim_matches(|c: char| !c.is_alphanumeric());
                 if !rev.is_empty() {
                     return Some(rev.to_string());
                 }
@@ -576,7 +711,11 @@ fn extract_cage_code(elements: &[DetectedElement]) -> Option<String> {
         let lower = element.text.to_lowercase();
         if let Some(idx) = lower.find("cage") {
             let after = &element.text[idx + 4..];
-            let code = after.trim().split_whitespace().next().unwrap_or("")
+            let code = after
+                .trim()
+                .split_whitespace()
+                .next()
+                .unwrap_or("")
                 .trim_matches(|c: char| !c.is_alphanumeric());
             if code.len() == 5 && code.chars().all(|c| c.is_alphanumeric()) {
                 return Some(code.to_uppercase());
@@ -587,7 +726,8 @@ fn extract_cage_code(elements: &[DetectedElement]) -> Option<String> {
 }
 
 fn extract_distribution_statement(elements: &[DetectedElement]) -> Option<String> {
-    elements.iter()
+    elements
+        .iter()
         .find(|e| e.element_type == EngineeringElement::DistributionStatement)
         .map(|e| e.text.clone())
 }
@@ -595,17 +735,26 @@ fn extract_distribution_statement(elements: &[DetectedElement]) -> Option<String
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::layout::text_block::{FontWeight, Color};
+    use crate::layout::text_block::{Color, FontWeight};
 
     fn make_span(text: &str, x: f32, y: f32, font_size: f32) -> TextSpan {
         TextSpan {
             text: text.to_string(),
-            bbox: Rect { x, y, width: text.len() as f32 * font_size * 0.5, height: font_size },
+            bbox: Rect {
+                x,
+                y,
+                width: text.len() as f32 * font_size * 0.5,
+                height: font_size,
+            },
             font_name: "TestFont".to_string(),
             font_size,
             font_weight: FontWeight::Normal,
             is_italic: false,
-            color: Color { r: 0.0, g: 0.0, b: 0.0 },
+            color: Color {
+                r: 0.0,
+                g: 0.0,
+                b: 0.0,
+            },
             mcid: None,
             sequence: 0,
             split_boundary_before: false,
@@ -629,25 +778,32 @@ mod tests {
         ];
 
         let elements = detect_page_elements(&spans, 612.0, 792.0, 0);
-        assert!(elements.iter().any(|e| e.element_type == EngineeringElement::TitleBlock));
+        assert!(elements
+            .iter()
+            .any(|e| e.element_type == EngineeringElement::TitleBlock));
     }
 
     #[test]
     fn test_distribution_statement() {
-        let spans = vec![
-            make_span("DISTRIBUTION STATEMENT A: Approved for public release", 100.0, 750.0, 9.0),
-        ];
+        let spans = vec![make_span(
+            "DISTRIBUTION STATEMENT A: Approved for public release",
+            100.0,
+            750.0,
+            9.0,
+        )];
         let elements = detect_page_elements(&spans, 612.0, 792.0, 0);
-        assert!(elements.iter().any(|e| e.element_type == EngineeringElement::DistributionStatement));
+        assert!(elements
+            .iter()
+            .any(|e| e.element_type == EngineeringElement::DistributionStatement));
     }
 
     #[test]
     fn test_security_marking() {
-        let spans = vec![
-            make_span("UNCLASSIFIED", 250.0, 10.0, 10.0),
-        ];
+        let spans = vec![make_span("UNCLASSIFIED", 250.0, 10.0, 10.0)];
         let elements = detect_page_elements(&spans, 612.0, 792.0, 0);
-        assert!(elements.iter().any(|e| e.element_type == EngineeringElement::SecurityMarking));
+        assert!(elements
+            .iter()
+            .any(|e| e.element_type == EngineeringElement::SecurityMarking));
     }
 
     #[test]
@@ -673,7 +829,9 @@ mod tests {
             make_span("ABC-123", 150.0, 215.0, 8.0),
         ];
         let elements = detect_page_elements(&spans, 612.0, 792.0, 0);
-        assert!(elements.iter().any(|e| e.element_type == EngineeringElement::PartsTable));
+        assert!(elements
+            .iter()
+            .any(|e| e.element_type == EngineeringElement::PartsTable));
     }
 
     #[test]
@@ -681,14 +839,24 @@ mod tests {
         let drawing_elements = vec![
             DetectedElement {
                 element_type: EngineeringElement::DrawingBorder,
-                bbox: Rect { x: 0.0, y: 0.0, width: 612.0, height: 792.0 },
+                bbox: Rect {
+                    x: 0.0,
+                    y: 0.0,
+                    width: 612.0,
+                    height: 792.0,
+                },
                 page: 0,
                 text: "A B C D".to_string(),
                 confidence: 0.8,
             },
             DetectedElement {
                 element_type: EngineeringElement::TitleBlock,
-                bbox: Rect { x: 400.0, y: 700.0, width: 200.0, height: 80.0 },
+                bbox: Rect {
+                    x: 400.0,
+                    y: 700.0,
+                    width: 200.0,
+                    height: 80.0,
+                },
                 page: 0,
                 text: "TITLE DRAWN CHECKED".to_string(),
                 confidence: 0.9,
@@ -699,14 +867,24 @@ mod tests {
         let defense_elements = vec![
             DetectedElement {
                 element_type: EngineeringElement::DistributionStatement,
-                bbox: Rect { x: 100.0, y: 750.0, width: 400.0, height: 12.0 },
+                bbox: Rect {
+                    x: 100.0,
+                    y: 750.0,
+                    width: 400.0,
+                    height: 12.0,
+                },
                 page: 0,
                 text: "DISTRIBUTION STATEMENT A".to_string(),
                 confidence: 0.95,
             },
             DetectedElement {
                 element_type: EngineeringElement::SecurityMarking,
-                bbox: Rect { x: 250.0, y: 10.0, width: 100.0, height: 12.0 },
+                bbox: Rect {
+                    x: 250.0,
+                    y: 10.0,
+                    width: 100.0,
+                    height: 12.0,
+                },
                 page: 0,
                 text: "UNCLASSIFIED".to_string(),
                 confidence: 0.9,
@@ -723,6 +901,8 @@ mod tests {
             make_span("2. Surface finish 125 RMS.", 50.0, 428.0, 8.0),
         ];
         let elements = detect_page_elements(&spans, 612.0, 792.0, 0);
-        assert!(elements.iter().any(|e| e.element_type == EngineeringElement::NotesBlock));
+        assert!(elements
+            .iter()
+            .any(|e| e.element_type == EngineeringElement::NotesBlock));
     }
 }

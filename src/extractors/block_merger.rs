@@ -73,11 +73,11 @@ pub fn mark_running_headers_footers(page_blocks: &mut [Vec<MergedBlock>]) {
             match block.block_type {
                 BlockType::Header | BlockType::PageNumber => {
                     *header_counts.entry(normalized.clone()).or_default() += 1;
-                }
+                },
                 BlockType::Footer => {
                     *footer_counts.entry(normalized.clone()).or_default() += 1;
-                }
-                _ => {}
+                },
+                _ => {},
             }
         }
     }
@@ -87,7 +87,9 @@ pub fn mark_running_headers_footers(page_blocks: &mut [Vec<MergedBlock>]) {
         for block in blocks.iter_mut() {
             let normalized = block.text.trim().to_lowercase();
             if let Some(&count) = header_counts.get(&normalized) {
-                if count >= 3 && matches!(block.block_type, BlockType::Header | BlockType::PageNumber) {
+                if count >= 3
+                    && matches!(block.block_type, BlockType::Header | BlockType::PageNumber)
+                {
                     block.is_running_header = true;
                 }
             }
@@ -158,7 +160,8 @@ fn suppress_overlaps(blocks: &[ClassifiedBlock]) -> Vec<ClassifiedBlock> {
         }
     }
 
-    blocks.iter()
+    blocks
+        .iter()
         .enumerate()
         .filter(|(idx, _)| keep[*idx])
         .map(|(_, b)| b.clone())
@@ -211,7 +214,14 @@ fn vertical_distance(a: &Rect, b: &Rect) -> f32 {
 mod tests {
     use super::*;
 
-    fn make_block(text: &str, x: f32, y: f32, w: f32, h: f32, block_type: BlockType) -> ClassifiedBlock {
+    fn make_block(
+        text: &str,
+        x: f32,
+        y: f32,
+        w: f32,
+        h: f32,
+        block_type: BlockType,
+    ) -> ClassifiedBlock {
         ClassifiedBlock {
             block_type,
             text: text.to_string(),
@@ -251,7 +261,7 @@ mod tests {
         let blocks = vec![
             make_block("First sentence.", 10.0, 10.0, 400.0, 14.0, BlockType::Body),
             make_block("Second sentence.", 10.0, 24.0, 400.0, 14.0, BlockType::Body), // gap = 0, < 1.5*11
-            make_block("Third sentence.", 10.0, 38.0, 400.0, 14.0, BlockType::Body),  // gap = 0, < 1.5*11
+            make_block("Third sentence.", 10.0, 38.0, 400.0, 14.0, BlockType::Body), // gap = 0, < 1.5*11
         ];
         let result = merge_paragraphs(&blocks);
         assert_eq!(result.len(), 1);
@@ -283,9 +293,9 @@ mod tests {
 
     #[test]
     fn test_running_headers() {
-        let mut pages: Vec<Vec<MergedBlock>> = (0..4).map(|_| {
-            vec![
-                MergedBlock {
+        let mut pages: Vec<Vec<MergedBlock>> = (0..4)
+            .map(|_| {
+                vec![MergedBlock {
                     block_type: BlockType::Header,
                     text: "Chapter 1 - Introduction".to_string(),
                     bbox: Rect::new(10.0, 10.0, 200.0, 14.0),
@@ -297,9 +307,9 @@ mod tests {
                     paragraph_id: 0,
                     is_running_header: false,
                     is_running_footer: false,
-                },
-            ]
-        }).collect();
+                }]
+            })
+            .collect();
 
         mark_running_headers_footers(&mut pages);
 

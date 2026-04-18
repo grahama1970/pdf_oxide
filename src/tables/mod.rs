@@ -13,12 +13,15 @@
 //! - Phantom table filtering
 //! - Multi-page strategy caching
 
-pub mod types;
-pub mod text_assign;
-pub mod stream;
 pub mod lattice;
+pub mod stream;
+pub mod text_assign;
+pub mod types;
 
-pub use types::{BBox, Cell, ExtractConfig, Flavor, Segment, Table, TextElement};
+pub use types::{
+    BBox, Cell, CharPosition, ExtractConfig, Flavor, MergedRegion, Segment, Strategy, Table,
+    TextElement,
+};
 
 use crate::document::PdfDocument;
 
@@ -67,7 +70,10 @@ fn extract_page(
     // Extract text spans
     let spans = doc.extract_spans(page_num)?;
 
-    // Convert spans to TextElements (bottom-left origin → top-left origin)
+    // Extract characters for precise column splitting (Camelot LTChar equivalent)
+    let chars = doc.extract_chars(page_num).unwrap_or_default();
+
+    // Convert spans to TextElements with character-level positions.
     let elements: Vec<TextElement> = spans
         .iter()
         .map(|span| {
@@ -76,11 +82,33 @@ fn extract_page(
             let ow = span.bbox.width as f64;
             let oh = span.bbox.height as f64;
 
-            // Normalize to (0,0)-based coords and convert to top-left origin
+            // Normalize to (0,0)-based coords and convert to top-left origin.
             let x0 = ox - mb_x0;
             let x1 = ox - mb_x0 + ow;
             let y0_top = page_height - (oy - mb_y0) - oh;
             let y1_bottom = page_height - (oy - mb_y0);
+
+            // Match chars back to the span so stream extraction can split cells precisely.
+            let span_chars: Vec<CharPosition> = chars
+                .iter()
+                .filter(|ch| {
+                    let ch_cx = (ch.bbox.x + ch.bbox.width / 2.0) as f64;
+                    let ch_cy = (ch.bbox.y + ch.bbox.height / 2.0) as f64;
+                    ch_cx >= ox - 1.0
+                        && ch_cx <= ox + ow + 1.0
+                        && ch_cy >= oy - 1.0
+                        && ch_cy <= oy + oh + 1.0
+                })
+                .map(|ch| {
+                    let cx0 = ch.bbox.x as f64 - mb_x0;
+                    let cx1 = (ch.bbox.x + ch.bbox.width) as f64 - mb_x0;
+                    CharPosition {
+                        char: ch.char,
+                        x0: cx0,
+                        x1: cx1,
+                    }
+                })
+                .collect();
 
             TextElement {
                 text: span.text.clone(),
@@ -89,17 +117,29 @@ fn extract_page(
                 x1,
                 y1: y1_bottom,
                 font_size: span.font_size as f64,
+                is_bold: span.font_weight.is_bold(),
+                chars: if span_chars.is_empty() {
+                    None
+                } else {
+                    Some(span_chars)
+                },
             }
         })
         .collect();
 
-    match config.flavor {
-        Flavor::Stream => Ok(stream::extract_stream(
+    if config.strategy == Strategy::DefinitionList {
+        return Ok(text_assign::extract_definition_list_table(
             &elements,
             page_width,
             page_height,
             config,
-        )),
+        )
+        .into_iter()
+        .collect());
+    }
+
+    match config.flavor {
+        Flavor::Stream => Ok(stream::extract_stream(&elements, page_width, page_height, config)),
         Flavor::Lattice => {
             // Try vector path-based detection first (more accurate than rendering)
             let paths = doc.extract_paths(page_num).unwrap_or_default();
@@ -119,6 +159,23 @@ fn extract_page(
                 }
             }
 
+            // Hybrid fallback: if we have horizontal lines but no vertical lines,
+            // this is likely a "row-separated" table (common in government docs).
+            // Try stream detection instead.
+            if h_segs.len() >= 2 && v_segs.len() < 2 {
+                log::debug!(
+                    "Page {}: {} h_segs, {} v_segs - trying stream for row-separated table",
+                    page_num,
+                    h_segs.len(),
+                    v_segs.len()
+                );
+                let stream_tables =
+                    stream::extract_stream(&elements, page_width, page_height, config);
+                if !stream_tables.is_empty() {
+                    return Ok(stream_tables);
+                }
+            }
+
             // Fall back to image-based detection
             #[cfg(feature = "rendering")]
             {
@@ -130,18 +187,35 @@ fn extract_page(
                         match image::load_from_memory(rendered.as_bytes()) {
                             Ok(img) => {
                                 let gray = img.to_luma8();
-                                Ok(lattice::extract_lattice(
+                                let tables = lattice::extract_lattice(
                                     &gray,
                                     &elements,
                                     page_width,
                                     page_height,
                                     config,
-                                ))
-                            }
-                            Err(_) => Ok(Vec::new()),
+                                );
+                                // Final fallback to stream if image-based also fails
+                                if tables.is_empty() {
+                                    return Ok(stream::extract_stream(
+                                        &elements,
+                                        page_width,
+                                        page_height,
+                                        config,
+                                    ));
+                                }
+                                Ok(tables)
+                            },
+                            Err(_) => Ok(stream::extract_stream(
+                                &elements,
+                                page_width,
+                                page_height,
+                                config,
+                            )),
                         }
-                    }
-                    Err(_) => Ok(Vec::new()),
+                    },
+                    Err(_) => {
+                        Ok(stream::extract_stream(&elements, page_width, page_height, config))
+                    },
                 }
             }
             #[cfg(not(feature = "rendering"))]
@@ -149,13 +223,8 @@ fn extract_page(
                 log::warn!(
                     "Lattice extraction requires 'rendering' feature; falling back to stream"
                 );
-                Ok(stream::extract_stream(
-                    &elements,
-                    page_width,
-                    page_height,
-                    config,
-                ))
+                Ok(stream::extract_stream(&elements, page_width, page_height, config))
             }
-        }
+        },
     }
 }

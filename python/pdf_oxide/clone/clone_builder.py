@@ -33,6 +33,7 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import (
     BaseDocTemplate,
+    Flowable,
     PageBreak,
     PageTemplate,
     Paragraph,
@@ -42,6 +43,106 @@ from reportlab.platypus import (
     TableStyle,
     Frame,
 )
+
+
+class InvisibleTextFlowable(Flowable):
+    """Zero-height flowable that draws invisible but extractable text.
+
+    Uses PDF text render mode 3 (invisible) - text is not rendered visually
+    but IS included in the PDF text stream and can be extracted by PDF readers.
+    This is the proper way to embed QID markers without visual artifacts.
+
+    NOTE: This standalone flowable creates separate text blocks. For QIDs that
+    should extract with their associated content, use QIDParagraph instead.
+    """
+
+    def __init__(self, text: str, font_name: str = "Helvetica", font_size: float = 10):
+        super().__init__()
+        self.text = text
+        self.font_name = font_name
+        self.font_size = font_size
+        self.width = 0
+        self.height = 0  # Zero height - doesn't affect layout
+
+    def draw(self):
+        """Draw invisible text using render mode 3."""
+        canvas = self.canv
+        # Save state
+        canvas.saveState()
+        # Create text object with invisible render mode
+        text_obj = canvas.beginText(0, 0)
+        text_obj.setTextRenderMode(3)  # 3 = invisible (neither fill nor stroke)
+        text_obj.setFont(self.font_name, self.font_size)
+        text_obj.textLine(self.text)
+        canvas.drawText(text_obj)
+        # Restore state
+        canvas.restoreState()
+
+
+class QIDParagraph(Flowable):
+    """Paragraph with embedded invisible QID that extracts as a single text block.
+
+    Wraps a Paragraph and draws an invisible QID marker at the same position,
+    ensuring they extract together as one block instead of separate elements.
+    """
+
+    def __init__(self, qid: str, paragraph: Paragraph, font_name: str = "Helvetica", font_size: float = 10):
+        super().__init__()
+        self.qid = qid if qid.startswith("[") else f"[{qid}]"
+        self.paragraph = paragraph
+        self.font_name = font_name
+        self.font_size = font_size
+
+    def wrap(self, availWidth, availHeight):
+        """Delegate wrapping to the inner paragraph."""
+        w, h = self.paragraph.wrap(availWidth, availHeight)
+        self.width = w
+        self.height = h
+        return w, h
+
+    def draw(self):
+        """Draw invisible QID then the visible paragraph at the same position."""
+        canvas = self.canv
+
+        # Draw invisible QID at the paragraph's baseline position
+        canvas.saveState()
+        text_obj = canvas.beginText(0, 0)
+        text_obj.setTextRenderMode(3)  # 3 = invisible
+        text_obj.setFont(self.font_name, self.font_size)
+        text_obj.textLine(self.qid)
+        canvas.drawText(text_obj)
+        canvas.restoreState()
+
+        # Draw the visible paragraph at the same position
+        self.paragraph.drawOn(canvas, 0, 0)
+
+    def split(self, availWidth, availHeight):
+        """Handle page breaks by delegating to inner paragraph."""
+        splits = self.paragraph.split(availWidth, availHeight)
+        if not splits:
+            return []
+        # First fragment keeps the QID, subsequent fragments are plain paragraphs
+        result = [QIDParagraph(self.qid, splits[0], self.font_name, self.font_size)]
+        result.extend(splits[1:])
+        return result
+
+
+class BookmarkFlowable(Flowable):
+    """Zero-height flowable that creates a PDF bookmark at render time."""
+
+    def __init__(self, title: str, level: int = 0, key: str | None = None):
+        super().__init__()
+        self.title = title
+        self.level = level  # 0 = top level, 1 = subsection, etc.
+        self.key = key or title.replace(" ", "_")[:32]
+        self.width = 0
+        self.height = 0
+
+    def draw(self):
+        # Create bookmark destination at current position
+        self.canv.bookmarkPage(self.key)
+        # Add to PDF outline (table of contents in PDF viewer)
+        self.canv.addOutlineEntry(self.title, self.key, self.level, closed=False)
 
 from pdf_oxide.clone.clone_types import (
     BlockType,
@@ -65,6 +166,11 @@ from pdf_oxide.presets import (
 # =============================================================================
 # QID Allocation
 # =============================================================================
+
+def _plain_qid(qid: str) -> str:
+    """Plain text QID marker for table cells (no HTML - ReportLab escapes it)."""
+    return f"[{qid}]"
+
 
 class QidCollisionError(ValueError):
     """Raised when a QID collision is detected during build."""
@@ -321,9 +427,25 @@ class CloneBuilder:
         col: Optional[int] = None,
         section_id: Optional[int] = None,
         depth: Optional[int] = None,
+        use_plain_qid: bool = False,
     ) -> str:
-        """Register a truth object with page_num=-1 (finalized during build)."""
-        rendered = f"[{qid}]{logical_text}"
+        """Register a truth object with page_num=-1 (finalized during build).
+
+        Args:
+            use_plain_qid: If True, use plain text QID format (for table cells).
+                          ReportLab Table escapes HTML, so we use [QID_xxx]text format.
+
+        Returns:
+            For table cells (use_plain_qid=True): "[QID_xxx]text" format
+            For other elements: just the logical_text (QID is added via QIDParagraph)
+        """
+        # For table cells, use plain text QID prefix (HTML gets escaped in tables)
+        # For other elements, return just the text - QID is added via QIDParagraph
+        if use_plain_qid:
+            rendered = f"{_plain_qid(qid)}{logical_text}"
+        else:
+            # QID marker is placed via QIDParagraph, not embedded in text
+            rendered = f"[{qid}]{logical_text}"  # For manifest tracking only
 
         obj = TruthObject(
             qid=qid,
@@ -340,16 +462,24 @@ class CloneBuilder:
         )
         self._manifest.register(obj)
         self._sequence_num += 1
-        return rendered
+        # Return just the logical text - caller uses QIDParagraph for QID
+        return logical_text if not use_plain_qid else rendered
 
     def _build_heading(
         self,
         text: str,
         depth: int,
         section_id: Optional[int] = None,
-    ) -> Paragraph:
-        qid, _ = self._qid_alloc.allocate("heading", section_id or self._sequence_num)
-        rendered = self._register_truth(
+    ) -> List[Flowable]:
+        """Build a heading with invisible QID marker.
+
+        Returns list with single QIDParagraph that extracts as one block.
+        """
+        # Fix: section_id=0 is valid, so use explicit None check instead of falsy check
+        qid, _ = self._qid_alloc.allocate(
+            "heading", section_id if section_id is not None else self._sequence_num
+        )
+        display_text = self._register_truth(
             qid,
             BlockType.HEADING,
             text,
@@ -357,14 +487,22 @@ class CloneBuilder:
             depth=depth,
         )
         style_name = f"h{min(depth + 1, 3)}"
-        para = Paragraph(rendered, self._styles[style_name])
-        return self._attach_truth_qids(para, [qid])
+        para = Paragraph(display_text, self._styles[style_name])
+        para = self._attach_truth_qids(para, [qid])
+        # Use QIDParagraph so QID and text extract as single block
+        return [QIDParagraph(qid, para)]
 
-    def _build_paragraph(self, text: str) -> Paragraph:
+    def _build_paragraph(self, text: str) -> List[Flowable]:
+        """Build a paragraph with invisible QID marker.
+
+        Returns list with single QIDParagraph that extracts as one block.
+        """
         qid, _ = self._qid_alloc.allocate("paragraph", self._sequence_num)
-        rendered = self._register_truth(qid, BlockType.PARAGRAPH, text)
-        para = Paragraph(rendered, self._styles["body"])
-        return self._attach_truth_qids(para, [qid])
+        display_text = self._register_truth(qid, BlockType.PARAGRAPH, text)
+        para = Paragraph(display_text, self._styles["body"])
+        para = self._attach_truth_qids(para, [qid])
+        # Use QIDParagraph so QID and text extract as single block
+        return [QIDParagraph(qid, para)]
 
     def _build_toc_entry(
         self,
@@ -372,12 +510,17 @@ class CloneBuilder:
         page_num: int,
         depth: int,
         section_id: int,
-    ) -> Paragraph:
+    ) -> List[Flowable]:
+        """Build a TOC entry with invisible QID marker.
+
+        Returns list with single QIDParagraph that extracts as one block.
+        """
         qid, _ = self._qid_alloc.allocate("toc_entry", section_id)
         dots = "." * max(1, 50 - len(title))
         display_text = f"{title} {dots} {page_num + 1}"
 
-        rendered = self._register_truth(
+        # Register truth (returns just the title now, QID added via flowable)
+        self._register_truth(
             qid,
             BlockType.TOC_ENTRY,
             title,
@@ -388,8 +531,10 @@ class CloneBuilder:
         self._manifest.register_section(section_id, title, depth, qid)
 
         style = self._styles["toc_indent"] if depth > 0 else self._styles["toc_entry"]
-        para = Paragraph(rendered.replace(title, display_text), style)
-        return self._attach_truth_qids(para, [qid])
+        para = Paragraph(display_text, style)
+        para = self._attach_truth_qids(para, [qid])
+        # Use QIDParagraph so QID and text extract as single block
+        return [QIDParagraph(qid, para)]
 
     def _build_table(
         self,
@@ -400,7 +545,7 @@ class CloneBuilder:
         """Build a table with QIDs in cells."""
         cell_qids: List[List[str]] = []
 
-        # Build header row with QIDs
+        # Build header row with QIDs (plain text format - HTML gets escaped in tables)
         header_qids: List[str] = []
         rendered_headers: List[str] = []
         for col_idx, header in enumerate(headers):
@@ -412,6 +557,7 @@ class CloneBuilder:
                 table_id=table_id,
                 row=0,
                 col=col_idx,
+                use_plain_qid=True,  # Plain text [QID_xxx] for tables
             )
             rendered_headers.append(rendered)
             header_qids.append(qid)
@@ -431,6 +577,7 @@ class CloneBuilder:
                     table_id=table_id,
                     row=row_idx + 1,
                     col=col_idx,
+                    use_plain_qid=True,  # Plain text [QID_xxx] for tables
                 )
                 rendered_row.append(rendered)
                 row_qids.append(qid)
@@ -468,11 +615,116 @@ class CloneBuilder:
         flat_qids = [qid for row in cell_qids for qid in row]
         return self._attach_truth_qids(tbl, flat_qids), cell_qids
 
-    def _build_caption(self, text: str, table_idx: int) -> Paragraph:
+    def _build_caption(self, text: str, table_idx: int) -> List[Flowable]:
+        """Build a caption with invisible QID marker.
+
+        Returns list with single QIDParagraph that extracts as one block.
+        """
         qid, _ = self._qid_alloc.allocate("caption", table_idx)
-        rendered = self._register_truth(qid, BlockType.CAPTION, text)
-        para = Paragraph(rendered, self._styles["caption"])
-        return self._attach_truth_qids(para, [qid])
+        display_text = self._register_truth(qid, BlockType.CAPTION, text)
+        para = Paragraph(display_text, self._styles["caption"])
+        para = self._attach_truth_qids(para, [qid])
+        # Use QIDParagraph so QID and text extract as single block
+        return [QIDParagraph(qid, para)]
+
+    def _build_figure(
+        self,
+        figure_spec: "FigureSpec",
+        figure_idx: int,
+        skip_create_figure: bool = True,
+    ) -> List[Any]:
+        """Build a figure flowable, optionally using /create-figure skill.
+
+        Args:
+            figure_spec: FigureSpec with type, description, caption
+            figure_idx: Figure index for QID allocation
+            skip_create_figure: If True, use placeholder (default); if False, call skill
+
+        Returns:
+            List of flowables [Image or placeholder Paragraph, caption Paragraph]
+        """
+        import subprocess
+        import tempfile
+        from pathlib import Path as PathLib
+
+        qid, _ = self._qid_alloc.allocate("figure", figure_idx)
+        flowables = []
+
+        # Try to generate image via /create-figure skill
+        image_path = None
+        if not skip_create_figure and figure_spec:
+            try:
+                with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+                    image_path = tmp.name
+
+                result = subprocess.run(
+                    [
+                        PathLib.home() / ".claude/skills/create-figure/run.sh",
+                        "generate",
+                        "--type", figure_spec.figure_type,
+                        "--description", figure_spec.description,
+                        "--output", image_path,
+                        "--width", str(int(figure_spec.width)),
+                        "--height", str(int(figure_spec.height)),
+                    ],
+                    capture_output=True,
+                    timeout=60,
+                )
+                if result.returncode != 0:
+                    image_path = None
+            except Exception:
+                image_path = None
+
+        # Use image if generated, otherwise placeholder
+        if image_path and PathLib(image_path).exists():
+            from reportlab.platypus import Image
+            img = Image(
+                image_path,
+                width=figure_spec.width * inch,
+                height=figure_spec.height * inch,
+            )
+            flowables.append(img)
+        else:
+            # Placeholder - logical text without QID (QID added by _register_truth)
+            placeholder_text = f"[Figure: {figure_spec.description if figure_spec else 'placeholder'}]"
+            rendered = self._register_truth(qid, BlockType.FIGURE, placeholder_text)
+            para = Paragraph(rendered, self._styles["body"])
+            flowables.append(self._attach_truth_qids(para, [qid]))
+
+        # Add caption
+        if figure_spec and figure_spec.caption:
+            caption_qid, _ = self._qid_alloc.allocate("caption", figure_idx)
+            cap_rendered = self._register_truth(caption_qid, BlockType.CAPTION, figure_spec.caption)
+            cap_para = Paragraph(cap_rendered, self._styles["caption"])
+            flowables.append(self._attach_truth_qids(cap_para, [caption_qid]))
+
+        return flowables
+
+    def _render_with_links(
+        self,
+        text: str,
+        cross_refs: List["CrossRef"],
+    ) -> str:
+        """Replace cross-reference patterns with linked text.
+
+        Args:
+            text: Original text content
+            cross_refs: List of CrossRef objects to resolve
+
+        Returns:
+            Text with cross-references wrapped in ReportLab link tags
+        """
+        import re
+
+        result = text
+        for ref in cross_refs:
+            if ref.ref_text in result:
+                # Create internal link to target QID or ID
+                target = ref.target_qid or ref.target_id
+                linked = f'<a href="#{target}">{ref.ref_text}</a>'
+                result = result.replace(ref.ref_text, linked, 1)
+
+        return result
 
     def build(
         self,
@@ -487,7 +739,13 @@ class CloneBuilder:
             seed=self.plan.seed,
         )
 
-        doc_title = Path(self.plan.source_path).stem if self.plan.source_path else "Document"
+        # Use first section title as document title if available, else filename
+        if self.plan.section_budgets and self.plan.section_budgets[0].title:
+            doc_title = self.plan.section_budgets[0].title
+        elif self.plan.source_path:
+            doc_title = Path(self.plan.source_path).stem
+        else:
+            doc_title = "Document"
         template_preset = self._select_template_preset()
 
         # Build on_page callback for headers/footers
@@ -514,23 +772,27 @@ class CloneBuilder:
 
         story: List[Any] = []
 
-        # Title
+        # Title with invisible QID marker
         qid, _ = self._qid_alloc.allocate("title", 0)
-        rendered_title = self._register_truth(qid, BlockType.TITLE, doc_title)
-        title_para = Paragraph(rendered_title, self._styles["title"])
-        story.append(self._attach_truth_qids(title_para, [qid]))
+        display_title = self._register_truth(qid, BlockType.TITLE, doc_title)
+        title_para = Paragraph(display_title, self._styles["title"])
+        title_para = self._attach_truth_qids(title_para, [qid])
+        # Use QIDParagraph so title and QID extract as single block
+        story.append(QIDParagraph(qid, title_para))
         story.append(Spacer(1, 0.3 * inch))
 
-        # TOC
+        # TOC with invisible QID markers
         if self.plan.section_budgets:
             qid, _ = self._qid_alloc.allocate("toc_header", 0)
-            rendered = self._register_truth(qid, BlockType.TOC_HEADER, "Table of Contents")
-            toc_header = Paragraph(rendered, self._styles["h1"])
-            story.append(self._attach_truth_qids(toc_header, [qid]))
+            display_toc = self._register_truth(qid, BlockType.TOC_HEADER, "Table of Contents")
+            toc_header = Paragraph(display_toc, self._styles["h1"])
+            toc_header = self._attach_truth_qids(toc_header, [qid])
+            # Use QIDParagraph so TOC header and QID extract as single block
+            story.append(QIDParagraph(qid, toc_header))
             story.append(Spacer(1, 0.1 * inch))
 
             for budget in self.plan.section_budgets[:30]:
-                story.append(
+                story.extend(
                     self._build_toc_entry(
                         budget.title,
                         budget.start_page,
@@ -541,10 +803,27 @@ class CloneBuilder:
 
             story.append(PageBreak())
 
-        # Build sections
+        # Build sections with PAGE-ALIGNED rendering
+        # The key insight: tables must appear on the SAME pages as in the source PDF
+        # so our self-improvement loop can validate page-level extraction accuracy.
         table_idx = 0
-        for budget in self.plan.section_budgets:
-            story.append(self._build_heading(budget.title, budget.depth, budget.section_id))
+
+        # Detect per-page mode: all sections span exactly 1 page (end = start + 1)
+        per_page_mode = all(
+            b.end_page - b.start_page == 1
+            for b in self.plan.section_budgets
+        )
+
+        for i, budget in enumerate(self.plan.section_budgets):
+            # In per-page mode: each section gets its own page (insert break before each except first)
+            # In normal mode: only break when section explicitly spans multiple pages
+            if per_page_mode and i > 0:
+                story.append(PageBreak())
+
+            # Add PDF bookmark for this section (creates navigable outline in PDF viewer)
+            bookmark_key = f"section_{budget.section_id}"
+            story.append(BookmarkFlowable(budget.title, level=budget.depth, key=bookmark_key))
+            story.extend(self._build_heading(budget.title, budget.depth, budget.section_id))
             story.append(Spacer(1, 0.1 * inch))
 
             content = (
@@ -554,7 +833,7 @@ class CloneBuilder:
             )
 
             for para_text in content.get("paragraphs", []):
-                story.append(self._build_paragraph(para_text))
+                story.extend(self._build_paragraph(para_text))
 
             for table_data in content.get("tables", []):
                 table_id = f"t{table_idx}"
@@ -572,7 +851,7 @@ class CloneBuilder:
                     cell_qids=cell_qids,
                 )
 
-                story.append(
+                story.extend(
                     self._build_caption(
                         f"Table {table_idx + 1}: Data from section {budget.section_id}",
                         table_idx,
@@ -581,7 +860,8 @@ class CloneBuilder:
                 story.append(Spacer(1, 0.15 * inch))
                 table_idx += 1
 
-            if budget.page_span > 1:
+            # In non-per-page mode, add break for multi-page sections
+            if not per_page_mode and budget.page_span > 1:
                 story.append(PageBreak())
 
         # Build PDF - this triggers afterFlowable callbacks
@@ -596,6 +876,12 @@ class CloneBuilder:
         self,
         budget: SectionBudget,
     ) -> Dict[str, Any]:
+        """Generate placeholder content that MATCHES source PDF structure.
+
+        For self-improvement loop: tables must have the same dimensions as source
+        so we can validate extraction accuracy. A 21x5 source table should produce
+        a 21x5 clone table, not a generic 3x5 placeholder.
+        """
         content: Dict[str, Any] = {"paragraphs": [], "tables": []}
 
         for i in range(min(budget.paragraph_count, 3)):
@@ -604,16 +890,41 @@ class CloneBuilder:
                 f"Content type: {budget.content_type}, domain: {budget.domain}."
             )
 
-        for _ in range(budget.table_count):
-            content["tables"].append(
-                {
-                    "headers": ["ID", "Description", "Status"],
-                    "rows": [
-                        [f"ITEM-{j:03d}", f"Description for item {j}", "Active"]
-                        for j in range(1, 6)
-                    ],
-                }
-            )
+        # Collect table shapes from pages in this section's range
+        section_table_shapes = []
+        for page in range(budget.start_page, budget.end_page):
+            shapes = self.plan.table_targets.get(page, [])
+            section_table_shapes.extend(shapes)
+
+        # Generate tables with ACTUAL dimensions from source PDF
+        for i, shape in enumerate(section_table_shapes[:budget.table_count]):
+            rows = shape.get("rows", 5)
+            cols = shape.get("cols", 3)
+
+            # Generate headers matching source column count
+            headers = [f"Col_{c+1}" for c in range(cols)]
+
+            # Generate rows matching source row count (minus header)
+            data_rows = [
+                [f"R{r+1}C{c+1}" for c in range(cols)]
+                for r in range(rows - 1)  # -1 because rows includes header
+            ]
+
+            content["tables"].append({
+                "headers": headers,
+                "rows": data_rows,
+            })
+
+        # If we have more table_count than shapes, fill with generic tables
+        remaining = budget.table_count - len(section_table_shapes)
+        for _ in range(remaining):
+            content["tables"].append({
+                "headers": ["ID", "Description", "Status"],
+                "rows": [
+                    [f"ITEM-{j:03d}", f"Description for item {j}", "Active"]
+                    for j in range(1, 6)
+                ],
+            })
 
         return content
 
@@ -687,10 +998,11 @@ def build_table_with_qids(
     """Build ReportLab Table with QIDs embedded in cells (legacy compat)."""
     cell_manifests = []
 
+    # Note: Table cells don't get QID prefix - HTML gets escaped by presets
     header_row = []
     for col_idx, header in enumerate(table.headers):
         qid, token = qid_alloc.allocate("header", table_id, 0, col_idx)
-        rendered = f"[{qid}]{header}"
+        rendered = header  # No QID prefix for tables
         header_row.append(rendered)
         qid_alloc.register(qid, header)
         cell_manifests.append({
@@ -704,7 +1016,7 @@ def build_table_with_qids(
         data_row = []
         for col_idx, cell in enumerate(row):
             qid, token = qid_alloc.allocate("cell", table_id, row_idx + 1, col_idx)
-            rendered = f"[{qid}]{cell}"
+            rendered = cell  # No QID prefix for tables
             data_row.append(rendered)
             qid_alloc.register(qid, cell)
             cell_manifests.append({
@@ -811,14 +1123,16 @@ def build_clone_from_generated(
 
     doc_title = Path(source_profile.get("path", "Document")).stem
     qid, _ = qid_alloc.allocate("title", 0)
-    story.append(Paragraph(f"[{qid}]{doc_title}", styles["title"]))
+    title_para = Paragraph(doc_title, styles["title"])
+    story.append(QIDParagraph(qid, title_para))
     qid_alloc.register(qid, doc_title)
     story.append(Spacer(1, 0.3 * inch))
 
     toc_sections = source_profile.get("toc_sections", [])
     if toc_sections:
         qid, _ = qid_alloc.allocate("toc_header", 0)
-        story.append(Paragraph(f"[{qid}]Table of Contents", styles["h1"]))
+        toc_header = Paragraph("Table of Contents", styles["h1"])
+        story.append(QIDParagraph(qid, toc_header))
         qid_alloc.register(qid, "Table of Contents")
         story.append(Spacer(1, 0.1 * inch))
 
@@ -830,7 +1144,8 @@ def build_clone_from_generated(
             qid, _ = qid_alloc.allocate("toc_entry", section.get("id", 0))
             style = styles["toc_indent"] if depth > 0 else styles["toc"]
             text = f"{title} {'.' * max(1, 50 - len(title))} {page + 1}"
-            story.append(Paragraph(f"[{qid}]{text}", style))
+            toc_para = Paragraph(text, style)
+            story.append(QIDParagraph(qid, toc_para))
             qid_alloc.register(qid, title)
 
         story.append(PageBreak())
@@ -855,7 +1170,8 @@ def build_clone_from_generated(
                 qid, _ = qid_alloc.allocate("heading", section.get("id", section_idx))
 
                 style_name = f"h{min(depth + 1, 3)}"
-                story.append(Paragraph(f"[{qid}]{title}", styles[style_name]))
+                heading_para = Paragraph(title, styles[style_name])
+                story.append(QIDParagraph(qid, heading_para))
                 qid_alloc.register(qid, title)
                 story.append(Spacer(1, 0.1 * inch))
 
@@ -873,7 +1189,8 @@ def build_clone_from_generated(
 
             qid, _ = qid_alloc.allocate("caption", table_idx)
             caption_text = f"Table {table_idx + 1}: Generated from page {page_num + 1}"
-            story.append(Paragraph(f"[{qid}]{caption_text}", styles["caption"]))
+            caption_para = Paragraph(caption_text, styles["caption"])
+            story.append(QIDParagraph(qid, caption_para))
             qid_alloc.register(qid, caption_text)
 
             story.append(Spacer(1, 0.2 * inch))

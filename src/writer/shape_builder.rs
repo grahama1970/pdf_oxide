@@ -129,14 +129,7 @@ impl Shape {
     /// Draw a rectangle with rounded corners.
     ///
     /// `radius` is clamped so it does not exceed half the width or height.
-    pub fn draw_rounded_rect(
-        &mut self,
-        x: f32,
-        y: f32,
-        w: f32,
-        h: f32,
-        radius: f32,
-    ) -> &mut Self {
+    pub fn draw_rounded_rect(&mut self, x: f32, y: f32, w: f32, h: f32, radius: f32) -> &mut Self {
         self.builder.rounded_rect(x, y, w, h, radius);
         self
     }
@@ -483,15 +476,7 @@ impl Shape {
     }
 
     /// Emit a single Bezier segment approximating an arc of <= 90 degrees.
-    fn emit_arc_segment(
-        &mut self,
-        cx: f32,
-        cy: f32,
-        rx: f32,
-        ry: f32,
-        a1: f32,
-        a2: f32,
-    ) {
+    fn emit_arc_segment(&mut self, cx: f32, cy: f32, rx: f32, ry: f32, a1: f32, a2: f32) {
         let half = (a2 - a1) / 2.0;
         let alpha = (4.0 / 3.0) * (1.0 - half.cos()) / half.sin();
 
@@ -674,11 +659,7 @@ mod tests {
         assert!(text.contains("0 0 m"));
         // Should contain multiple line_to ops.
         let line_count = text.matches(" l\n").count();
-        assert!(
-            line_count >= 8,
-            "expected at least 8 line_to ops, got {}",
-            line_count
-        );
+        assert!(line_count >= 8, "expected at least 8 line_to ops, got {}", line_count);
     }
 
     #[test]

@@ -6,7 +6,7 @@
 use pdf_oxide::editor::{DocumentEditor, EditableDocument};
 use pdf_oxide::geometry::Rect;
 use pdf_oxide::writer::{PdfWriter, RedactAnnotation};
-use pdf_oxide::{PdfDocument};
+use pdf_oxide::PdfDocument;
 use std::fs;
 use tempfile::tempdir;
 
@@ -115,8 +115,5 @@ fn test_redaction_with_no_annotations_is_noop() {
     // Verify text is still present
     let mut pdf = PdfDocument::open(&output_path).unwrap();
     let text = pdf.extract_text(0).unwrap();
-    assert!(
-        text.contains("Normal"),
-        "Text should be preserved when no redactions"
-    );
+    assert!(text.contains("Normal"), "Text should be preserved when no redactions");
 }

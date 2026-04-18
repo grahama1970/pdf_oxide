@@ -3144,7 +3144,7 @@ impl PdfDocument {
             (0x2E80..=0x2EFF).contains(&cp)  // CJK Radicals Supplement
                 || (0x2F00..=0x2FD5).contains(&cp)  // Kangxi Radicals
                 || (0xFB50..=0xFDFF).contains(&cp)  // Arabic Presentation Forms-A
-                || (0xFE70..=0xFEFF).contains(&cp)  // Arabic Presentation Forms-B
+                || (0xFE70..=0xFEFF).contains(&cp) // Arabic Presentation Forms-B
         });
         if !needs_normalization {
             return text.to_string();
@@ -3348,19 +3348,30 @@ impl PdfDocument {
                 line_fs = max_font;
             } else {
                 let sum_y: f32 = (line_start..i).map(|j| spans[j].bbox.y).sum();
-                lines.push(Line { start: line_start, end: i, avg_y: sum_y / (i - line_start) as f32 });
+                lines.push(Line {
+                    start: line_start,
+                    end: i,
+                    avg_y: sum_y / (i - line_start) as f32,
+                });
                 line_start = i;
                 line_y = spans[i].bbox.y;
                 line_fs = span_fs;
             }
         }
         let sum_y: f32 = (line_start..spans.len()).map(|j| spans[j].bbox.y).sum();
-        lines.push(Line { start: line_start, end: spans.len(), avg_y: sum_y / (spans.len() - line_start) as f32 });
+        lines.push(Line {
+            start: line_start,
+            end: spans.len(),
+            avg_y: sum_y / (spans.len() - line_start) as f32,
+        });
 
         // Sort spans within each line by X position (left to right)
         for line in &lines {
             spans[line.start..line.end].sort_by(|a, b| {
-                a.bbox.x.partial_cmp(&b.bbox.x).unwrap_or(std::cmp::Ordering::Equal)
+                a.bbox
+                    .x
+                    .partial_cmp(&b.bbox.x)
+                    .unwrap_or(std::cmp::Ordering::Equal)
             });
         }
 
@@ -3383,7 +3394,9 @@ impl PdfDocument {
             let ay = if a.bbox.y.is_finite() { a.bbox.y } else { 0.0 };
             let by = if b.bbox.y.is_finite() { b.bbox.y } else { 0.0 };
             let y_cmp = by.partial_cmp(&ay).unwrap_or(std::cmp::Ordering::Equal);
-            if y_cmp != std::cmp::Ordering::Equal { return y_cmp; }
+            if y_cmp != std::cmp::Ordering::Equal {
+                return y_cmp;
+            }
             let ax = if a.bbox.x.is_finite() { a.bbox.x } else { 0.0 };
             let bx = if b.bbox.x.is_finite() { b.bbox.x } else { 0.0 };
             ax.partial_cmp(&bx).unwrap_or(std::cmp::Ordering::Equal)
@@ -3416,14 +3429,20 @@ impl PdfDocument {
                 line_fs = max_font;
             } else {
                 // Finalize current line
-                let (min_x, max_x, sum_y, max_fs) = Self::compute_line_metrics(spans, &current_indices);
+                let (min_x, max_x, sum_y, max_fs) =
+                    Self::compute_line_metrics(spans, &current_indices);
                 lines.push(Line {
                     span_indices: std::mem::take(&mut current_indices),
-                    min_x, max_x,
-                    avg_y: sum_y / lines.last().map_or(current_indices.len(), |_| {
-                        // recalculate from the indices we just took
-                        0
-                    }).max(1) as f32,
+                    min_x,
+                    max_x,
+                    avg_y: sum_y
+                        / lines
+                            .last()
+                            .map_or(current_indices.len(), |_| {
+                                // recalculate from the indices we just took
+                                0
+                            })
+                            .max(1) as f32,
                     max_font_size: max_fs,
                 });
                 // Recompute avg_y properly
@@ -3441,7 +3460,8 @@ impl PdfDocument {
             let (min_x, max_x, sum_y, max_fs) = Self::compute_line_metrics(spans, &current_indices);
             lines.push(Line {
                 span_indices: current_indices,
-                min_x, max_x,
+                min_x,
+                max_x,
                 avg_y: sum_y / n as f32,
                 max_font_size: max_fs,
             });
@@ -3454,7 +3474,7 @@ impl PdfDocument {
             line_indices: Vec<usize>,
             min_x: f32,
             max_x: f32,
-            top_y: f32,  // highest Y (top of block)
+            top_y: f32, // highest Y (top of block)
         }
 
         let mut blocks: Vec<Block> = Vec::new();
@@ -3515,10 +3535,14 @@ impl PdfDocument {
             let y_close = (a.top_y - b.top_y).abs() < 15.0;
             if y_close {
                 // Same vertical position -> sort left to right
-                a.min_x.partial_cmp(&b.min_x).unwrap_or(std::cmp::Ordering::Equal)
+                a.min_x
+                    .partial_cmp(&b.min_x)
+                    .unwrap_or(std::cmp::Ordering::Equal)
             } else {
                 // Different vertical position -> sort top to bottom
-                b.top_y.partial_cmp(&a.top_y).unwrap_or(std::cmp::Ordering::Equal)
+                b.top_y
+                    .partial_cmp(&a.top_y)
+                    .unwrap_or(std::cmp::Ordering::Equal)
             }
         });
 
@@ -3528,11 +3552,13 @@ impl PdfDocument {
             for &li in &block.line_indices {
                 let line = &lines[li];
                 // Sort spans within line by X
-                let mut line_spans: Vec<&TextSpan> = line.span_indices.iter()
-                    .map(|&i| &spans[i])
-                    .collect();
+                let mut line_spans: Vec<&TextSpan> =
+                    line.span_indices.iter().map(|&i| &spans[i]).collect();
                 line_spans.sort_by(|a, b| {
-                    a.bbox.x.partial_cmp(&b.bbox.x).unwrap_or(std::cmp::Ordering::Equal)
+                    a.bbox
+                        .x
+                        .partial_cmp(&b.bbox.x)
+                        .unwrap_or(std::cmp::Ordering::Equal)
                 });
                 for s in line_spans {
                     result.push(s.clone());
@@ -3551,7 +3577,11 @@ impl PdfDocument {
         for &i in indices {
             let s = &spans[i];
             let sx = if s.bbox.x.is_finite() { s.bbox.x } else { 0.0 };
-            let sw = if s.bbox.width.is_finite() { s.bbox.width } else { 0.0 };
+            let sw = if s.bbox.width.is_finite() {
+                s.bbox.width
+            } else {
+                0.0
+            };
             min_x = min_x.min(sx);
             max_x = max_x.max(sx + sw);
             sum_y += if s.bbox.y.is_finite() { s.bbox.y } else { 0.0 };
@@ -3571,7 +3601,9 @@ impl PdfDocument {
 
         // Helper: sort a slice of spans into lines and return ordered indices
         let sort_column = |col_spans: &mut Vec<TextSpan>| {
-            if col_spans.is_empty() { return; }
+            if col_spans.is_empty() {
+                return;
+            }
 
             // Sort by Y descending, X ascending
             col_spans.sort_by(|a, b| {
@@ -3616,16 +3648,27 @@ impl PdfDocument {
             }
 
             // Compute average Y per line for stable sorting
-            let line_ys: Vec<f32> = lines.iter().map(|line| {
-                let sum: f32 = line.iter().map(|&i| col_spans[i].bbox.y).sum();
-                sum / line.len() as f32
-            }).collect();
+            let line_ys: Vec<f32> = lines
+                .iter()
+                .map(|line| {
+                    let sum: f32 = line.iter().map(|&i| col_spans[i].bbox.y).sum();
+                    sum / line.len() as f32
+                })
+                .collect();
 
             // Sort lines by Y descending (quantized for stability)
             let mut line_order: Vec<usize> = (0..lines.len()).collect();
             line_order.sort_by(|&a, &b| {
-                let ay = if line_ys[a].is_finite() { line_ys[a] } else { 0.0 };
-                let by = if line_ys[b].is_finite() { line_ys[b] } else { 0.0 };
+                let ay = if line_ys[a].is_finite() {
+                    line_ys[a]
+                } else {
+                    0.0
+                };
+                let by = if line_ys[b].is_finite() {
+                    line_ys[b]
+                } else {
+                    0.0
+                };
                 let ay_bin = (ay * 2.0).round() as i64;
                 let by_bin = (by * 2.0).round() as i64;
                 by_bin.cmp(&ay_bin)
@@ -3636,8 +3679,16 @@ impl PdfDocument {
             for &li in &line_order {
                 let mut line_span_indices: Vec<usize> = lines[li].clone();
                 line_span_indices.sort_by(|&a, &b| {
-                    let ax = if col_spans[a].bbox.x.is_finite() { col_spans[a].bbox.x } else { 0.0 };
-                    let bx = if col_spans[b].bbox.x.is_finite() { col_spans[b].bbox.x } else { 0.0 };
+                    let ax = if col_spans[a].bbox.x.is_finite() {
+                        col_spans[a].bbox.x
+                    } else {
+                        0.0
+                    };
+                    let bx = if col_spans[b].bbox.x.is_finite() {
+                        col_spans[b].bbox.x
+                    } else {
+                        0.0
+                    };
                     ax.partial_cmp(&bx).unwrap_or(std::cmp::Ordering::Equal)
                 });
                 for idx in line_span_indices {
@@ -3674,17 +3725,24 @@ impl PdfDocument {
         }
 
         fn fin(v: f32) -> f32 {
-            if v.is_finite() { v } else { 0.0 }
+            if v.is_finite() {
+                v
+            } else {
+                0.0
+            }
         }
 
         // Step 1: Sort all spans by Y descending (top of page first), X ascending
         spans.sort_by(|a, b| {
             let y_cmp = fin(b.bbox.y).total_cmp(&fin(a.bbox.y));
-            if y_cmp != std::cmp::Ordering::Equal { return y_cmp; }
+            if y_cmp != std::cmp::Ordering::Equal {
+                return y_cmp;
+            }
             fin(a.bbox.x).total_cmp(&fin(b.bbox.x))
         });
 
-        let avg_fs: f32 = (spans.iter().map(|s| s.font_size).sum::<f32>() / spans.len() as f32).max(6.0);
+        let avg_fs: f32 =
+            (spans.iter().map(|s| s.font_size).sum::<f32>() / spans.len() as f32).max(6.0);
 
         if spans.len() < 8 {
             return;
@@ -3692,7 +3750,10 @@ impl PdfDocument {
 
         // Step 2: Detect columns via histogram of span X-start positions.
         let page_min_x = spans.iter().map(|s| fin(s.bbox.x)).fold(f32::MAX, f32::min);
-        let page_max_x = spans.iter().map(|s| fin(s.bbox.x) + fin(s.bbox.width)).fold(0.0f32, f32::max);
+        let page_max_x = spans
+            .iter()
+            .map(|s| fin(s.bbox.x) + fin(s.bbox.width))
+            .fold(0.0f32, f32::max);
         let page_width = (page_max_x - page_min_x).max(1.0);
 
         if page_width < avg_fs * 10.0 {
@@ -3770,11 +3831,19 @@ impl PdfDocument {
         let right_margin_hi = right_x + bin_width * 1.5;
 
         let span_is_right: Vec<bool> = spans.iter().map(|s| fin(s.bbox.x) >= boundary).collect();
-        let span_is_left_margin: Vec<bool> = spans.iter()
-            .map(|s| { let x = fin(s.bbox.x); x >= left_margin_lo && x <= left_margin_hi })
+        let span_is_left_margin: Vec<bool> = spans
+            .iter()
+            .map(|s| {
+                let x = fin(s.bbox.x);
+                x >= left_margin_lo && x <= left_margin_hi
+            })
             .collect();
-        let span_is_right_margin: Vec<bool> = spans.iter()
-            .map(|s| { let x = fin(s.bbox.x); x >= right_margin_lo && x <= right_margin_hi })
+        let span_is_right_margin: Vec<bool> = spans
+            .iter()
+            .map(|s| {
+                let x = fin(s.bbox.x);
+                x >= right_margin_lo && x <= right_margin_hi
+            })
             .collect();
 
         // Step 5: Group spans into lines.
@@ -3857,8 +3926,14 @@ impl PdfDocument {
         // At least 20% of lines in the region should be left-aligned,
         // and at least 20% should be right-aligned.
         let region_len = col_end - col_start + 1;
-        let la_count = lines[col_start..=col_end].iter().filter(|l| l.is_left_aligned).count();
-        let ra_count = lines[col_start..=col_end].iter().filter(|l| l.is_right_aligned).count();
+        let la_count = lines[col_start..=col_end]
+            .iter()
+            .filter(|l| l.is_left_aligned)
+            .count();
+        let ra_count = lines[col_start..=col_end]
+            .iter()
+            .filter(|l| l.is_right_aligned)
+            .count();
         let min_col_lines = (region_len / 5).max(3);
         if la_count < min_col_lines || ra_count < min_col_lines {
             return; // Not enough lines in each column — probably not truly two-column
@@ -3909,9 +3984,21 @@ impl PdfDocument {
         let mut max_x = f32::MIN;
         let mut sum_y = 0.0f32;
         for i in start..end {
-            let x = if spans[i].bbox.x.is_finite() { spans[i].bbox.x } else { 0.0 };
-            let w = if spans[i].bbox.width.is_finite() { spans[i].bbox.width } else { 0.0 };
-            let y = if spans[i].bbox.y.is_finite() { spans[i].bbox.y } else { 0.0 };
+            let x = if spans[i].bbox.x.is_finite() {
+                spans[i].bbox.x
+            } else {
+                0.0
+            };
+            let w = if spans[i].bbox.width.is_finite() {
+                spans[i].bbox.width
+            } else {
+                0.0
+            };
+            let y = if spans[i].bbox.y.is_finite() {
+                spans[i].bbox.y
+            } else {
+                0.0
+            };
             min_x = min_x.min(x);
             max_x = max_x.max(x + w);
             sum_y += y;
@@ -3934,9 +4021,17 @@ impl PdfDocument {
         let mut avg_fs = 0.0f32;
         for s in spans.iter() {
             let x = if s.bbox.x.is_finite() { s.bbox.x } else { 0.0 };
-            let w = if s.bbox.width.is_finite() { s.bbox.width } else { 0.0 };
+            let w = if s.bbox.width.is_finite() {
+                s.bbox.width
+            } else {
+                0.0
+            };
             let y = if s.bbox.y.is_finite() { s.bbox.y } else { 0.0 };
-            let h = if s.bbox.height.is_finite() { s.bbox.height } else { s.font_size };
+            let h = if s.bbox.height.is_finite() {
+                s.bbox.height
+            } else {
+                s.font_size
+            };
             min_x = min_x.min(x);
             max_x = max_x.max(x + w);
             min_y = min_y.min(y - h); // y is baseline, top is y - height
@@ -3975,7 +4070,11 @@ impl PdfDocument {
             let mut right: Vec<TextSpan> = Vec::new();
             for s in spans.drain(..) {
                 let sx = if s.bbox.x.is_finite() { s.bbox.x } else { 0.0 };
-                let sw = if s.bbox.width.is_finite() { s.bbox.width } else { 0.0 };
+                let sw = if s.bbox.width.is_finite() {
+                    s.bbox.width
+                } else {
+                    0.0
+                };
                 let mid = sx + sw / 2.0;
                 if mid < cut_x {
                     left.push(s);
@@ -4052,7 +4151,11 @@ impl PdfDocument {
 
         for s in spans {
             let x = if s.bbox.x.is_finite() { s.bbox.x } else { 0.0 };
-            let w = if s.bbox.width.is_finite() { s.bbox.width } else { 0.0 };
+            let w = if s.bbox.width.is_finite() {
+                s.bbox.width
+            } else {
+                0.0
+            };
             let start_bin = ((x - min_x) / bin_width).floor().max(0.0) as usize;
             let end_bin = (((x + w) - min_x) / bin_width).ceil().max(0.0) as usize;
             for b in start_bin..end_bin.min(num_bins) {
@@ -4122,7 +4225,11 @@ impl PdfDocument {
 
         for s in spans {
             let y = if s.bbox.y.is_finite() { s.bbox.y } else { 0.0 };
-            let h = if s.bbox.height.is_finite() { s.bbox.height } else { s.font_size };
+            let h = if s.bbox.height.is_finite() {
+                s.bbox.height
+            } else {
+                s.font_size
+            };
             let y_top = y;
             let y_bot = y - h;
             let start_bin = ((y_bot - min_y) / bin_height).floor().max(0.0) as usize;
@@ -4204,13 +4311,25 @@ impl PdfDocument {
             return vec![];
         }
 
-        let page_min_x = spans.iter()
-            .map(|s| if s.bbox.x.is_finite() { s.bbox.x } else { f32::MAX })
+        let page_min_x = spans
+            .iter()
+            .map(|s| {
+                if s.bbox.x.is_finite() {
+                    s.bbox.x
+                } else {
+                    f32::MAX
+                }
+            })
             .fold(f32::MAX, f32::min);
-        let page_max_x = spans.iter()
+        let page_max_x = spans
+            .iter()
             .map(|s| {
                 let r = s.bbox.x + s.bbox.width;
-                if r.is_finite() { r } else { f32::MIN }
+                if r.is_finite() {
+                    r
+                } else {
+                    f32::MIN
+                }
             })
             .fold(f32::MIN, f32::max);
         let page_width = (page_max_x - page_min_x).max(1.0);
@@ -4221,7 +4340,8 @@ impl PdfDocument {
 
         // Step 1: Rough Y grouping to find line-start X positions.
         // Sort spans by Y descending, group spans within 3pt of each other.
-        let mut sorted_spans: Vec<(f32, f32)> = spans.iter()
+        let mut sorted_spans: Vec<(f32, f32)> = spans
+            .iter()
             .filter(|s| s.bbox.x.is_finite() && s.bbox.y.is_finite())
             .map(|s| (s.bbox.x, s.bbox.y))
             .collect();
@@ -4235,7 +4355,9 @@ impl PdfDocument {
         let mut line_y = sorted_spans[0].1;
         for &(x, y) in &sorted_spans[1..] {
             if (y - line_y).abs() <= 3.0 {
-                if x < line_min_x { line_min_x = x; }
+                if x < line_min_x {
+                    line_min_x = x;
+                }
             } else {
                 line_starts.push(line_min_x);
                 line_min_x = x;
@@ -4253,7 +4375,9 @@ impl PdfDocument {
         let bin_width = page_width / num_bins as f32;
         let mut hist = vec![0usize; num_bins];
         for &x in &line_starts {
-            let b = ((x - page_min_x) / bin_width).min((num_bins - 1) as f32).max(0.0) as usize;
+            let b = ((x - page_min_x) / bin_width)
+                .min((num_bins - 1) as f32)
+                .max(0.0) as usize;
             hist[b] += 1;
         }
 
@@ -4265,7 +4389,11 @@ impl PdfDocument {
         let mut smoothed = vec![0usize; num_bins];
         for b in 0..num_bins {
             let lo = if b > 0 { b - 1 } else { 0 };
-            let hi = if b + 1 < num_bins { b + 1 } else { num_bins - 1 };
+            let hi = if b + 1 < num_bins {
+                b + 1
+            } else {
+                num_bins - 1
+            };
             smoothed[b] = hist[lo] + hist[b] + hist[hi];
         }
 
@@ -4303,7 +4431,9 @@ impl PdfDocument {
         for peak in &peaks {
             if let Some(last) = merged_peaks.last_mut() {
                 if peak.0 - last.0 < min_gap_bins {
-                    if peak.1 > last.1 { *last = *peak; }
+                    if peak.1 > last.1 {
+                        *last = *peak;
+                    }
                     continue;
                 }
             }
@@ -4334,7 +4464,10 @@ impl PdfDocument {
                 if valley_min < (peak_avg as f32 * 0.40) as usize {
                     let gutter_center = (left_peak + right_peak) / 2;
                     let gutter_half = gap / 6;
-                    gutters.push((gutter_center.saturating_sub(gutter_half), gutter_center + gutter_half));
+                    gutters.push((
+                        gutter_center.saturating_sub(gutter_half),
+                        gutter_center + gutter_half,
+                    ));
                 }
             }
         }
@@ -4392,8 +4525,20 @@ impl PdfDocument {
     /// Check if a short text string looks like a ligature glyph.
     /// PDFs use separate Type0 fonts for ligature glyphs like fi, fl, ff, ffi, ffl.
     fn looks_like_ligature(text: &str) -> bool {
-        matches!(text, "fi" | "fl" | "ff" | "ffi" | "ffl" | "ft" | "st" |
-                 "\u{FB00}" | "\u{FB01}" | "\u{FB02}" | "\u{FB03}" | "\u{FB04}")
+        matches!(
+            text,
+            "fi" | "fl"
+                | "ff"
+                | "ffi"
+                | "ffl"
+                | "ft"
+                | "st"
+                | "\u{FB00}"
+                | "\u{FB01}"
+                | "\u{FB02}"
+                | "\u{FB03}"
+                | "\u{FB04}"
+        )
     }
 
     /// Text assembly with column detection for multi-column PDFs.
@@ -4415,10 +4560,10 @@ impl PdfDocument {
         // produce large horizontal jumps that trigger new blocks.
 
         // MuPDF thresholds (normalized by font size):
-        const BASE_MAX_DIST: f32 = 0.8;      // max baseline offset for same line
-        const PARAGRAPH_DIST: f32 = 1.5;      // baseline offset for new paragraph
-        const SPACE_DIST: f32 = 0.15;         // min spacing to ignore (kerning)
-        const SPACE_MAX_DIST: f32 = 0.8;      // max spacing before new line
+        const BASE_MAX_DIST: f32 = 0.8; // max baseline offset for same line
+        const PARAGRAPH_DIST: f32 = 1.5; // baseline offset for new paragraph
+        const SPACE_DIST: f32 = 0.15; // min spacing to ignore (kerning)
+        const SPACE_MAX_DIST: f32 = 0.8; // max spacing before new line
 
         struct Word {
             x0: f32,
@@ -4465,7 +4610,14 @@ impl PdfDocument {
 
             if !text.trim().is_empty() {
                 let font_size = span.font_size.max((y1 - y0).abs()).max(1.0);
-                words.push(Word { x0, y0, x1, y1, text, font_size });
+                words.push(Word {
+                    x0,
+                    y0,
+                    x1,
+                    y1,
+                    text,
+                    font_size,
+                });
                 prev_bbox = Some((x0, y0, x1, y1));
             }
         }
@@ -4580,7 +4732,10 @@ impl PdfDocument {
         for block in &mut blocks {
             for line in &mut block.lines {
                 line.words.sort_by(|&a, &b| {
-                    words[a].x0.partial_cmp(&words[b].x0).unwrap_or(std::cmp::Ordering::Equal)
+                    words[a]
+                        .x0
+                        .partial_cmp(&words[b].x0)
+                        .unwrap_or(std::cmp::Ordering::Equal)
                 });
             }
         }
@@ -6077,7 +6232,10 @@ impl PdfDocument {
 
     /// Extract text spans in content stream order (unsorted).
     /// Used internally for MuPDF-style text assembly.
-    pub fn extract_spans_unsorted(&mut self, page_index: usize) -> Result<Vec<crate::layout::TextSpan>> {
+    pub fn extract_spans_unsorted(
+        &mut self,
+        page_index: usize,
+    ) -> Result<Vec<crate::layout::TextSpan>> {
         use crate::extractors::TextExtractor;
 
         let page = self.get_page(page_index)?;
@@ -6641,12 +6799,15 @@ impl PdfDocument {
         // Cache the decompressed content stream (bounded: evict oldest when > 32 pages)
         if self.page_content_cache.len() >= 32 {
             // Simple eviction: remove the page furthest from current
-            let to_remove = *self.page_content_cache.keys()
+            let to_remove = *self
+                .page_content_cache
+                .keys()
                 .min_by_key(|&&k| if k <= page_index { page_index - k } else { k })
                 .unwrap_or(&0);
             self.page_content_cache.remove(&to_remove);
         }
-        self.page_content_cache.insert(page_index, std::sync::Arc::new(content_data.clone()));
+        self.page_content_cache
+            .insert(page_index, std::sync::Arc::new(content_data.clone()));
 
         Ok(content_data)
     }
@@ -8903,11 +9064,9 @@ impl PdfDocument {
                 },
                 Operator::Do { name } => {
                     if let Some(ref xobj_dict) = xobj_dict_map {
-                        if let Some(meta) = self.extract_metadata_from_xobject_do(
-                            &name,
-                            xobj_dict,
-                            &ctm_stack,
-                        ) {
+                        if let Some(meta) =
+                            self.extract_metadata_from_xobject_do(&name, xobj_dict, &ctm_stack)
+                        {
                             metadata.push(meta);
                         }
                     }
@@ -8949,7 +9108,10 @@ impl PdfDocument {
             return None;
         }
 
-        let ctm = ctm_stack.last().copied().unwrap_or_else(crate::content::Matrix::identity);
+        let ctm = ctm_stack
+            .last()
+            .copied()
+            .unwrap_or_else(crate::content::Matrix::identity);
         let unit_rect = crate::geometry::Rect::new(0.0, 0.0, 1.0, 1.0);
         let bbox = self.transform_bbox_with_ctm(&unit_rect, ctm);
 

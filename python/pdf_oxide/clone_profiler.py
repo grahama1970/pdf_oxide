@@ -178,6 +178,33 @@ def _normalize_outline_entry(reader: PdfReader, item: Any, level: int) -> dict |
     return {"title": title, "page": page_num, "level": level, "children": []}
 
 
+def _extract_actual_table_shapes(doc, page_count: int) -> List[Dict[str, Any]]:
+    """Extract actual table dimensions using pdf_oxide's table extractor.
+
+    This gives accurate rows/cols/bbox, unlike line-based estimation which
+    picks up page borders and headers giving wrong dimensions.
+    """
+    table_shapes = []
+    for page_idx in range(page_count):
+        try:
+            page_tables = doc.read_pdf(
+                pages=str(page_idx + 1),
+                flavor="lattice",
+                line_scale=40,
+            )
+            for t in page_tables:
+                table_shapes.append({
+                    "page": page_idx,
+                    "rows": t.get("rows", 0),
+                    "cols": t.get("cols", 0),
+                    "bbox": t.get("bbox"),
+                    "ruled": True,
+                })
+        except Exception:
+            pass
+    return table_shapes
+
+
 def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
     """Profile a PDF for cloning — structural features, TOC, tables, requirements."""
     try:
@@ -192,6 +219,13 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
     _ = doc.get_section_map()
 
     page_count = int(survey.get("page_count", 0) or 0)
+
+    # Use actual table extraction for accurate dimensions (not line-based estimation)
+    # Line-based estimation from survey uses full-page lines which gives wrong bboxes
+    table_shapes = _extract_actual_table_shapes(doc, page_count)
+    if not table_shapes:
+        # Fallback to survey's line-based estimation if extraction fails
+        table_shapes = survey.get("table_shapes", [])
 
     result = {
         "doc_id": hashlib.md5(pdf_path.encode("utf-8")).hexdigest(),
@@ -223,7 +257,7 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
         "section_style": survey.get("section_style"),
         "is_scanned": bool(survey.get("is_scanned", False)),
         "page_signatures": _build_page_signatures(doc, survey),
-        "table_shapes": survey.get("table_shapes", []),
+        "table_shapes": table_shapes,
         "page_spanning_tables": survey.get("page_spanning_tables", []),
         "running_headers": survey.get("running_headers", []),
         "running_footers": survey.get("running_footers", []),
@@ -292,20 +326,37 @@ def profile_for_cloning(pdf_path: str) -> Dict[str, Any]:
 
     # Count requirement clauses in body text (3.x.y patterns)
     _clause_pat = re.compile(r"^(\d+\.\d+\.\d+)\s")
+    # Control ID pattern: AC-1, SI-7, PM-11, AC-2(1), etc.
+    # In NIST PDFs, control ID is often on its own line (no title on same line)
+    _control_id_pat = re.compile(
+        r"^(?:\[QID_[A-F0-9]+\])?"  # Optional QID marker
+        r"([A-Z]{2}-\d+(?:\(\d+\))?)"  # Control ID
+        r"\s*$"  # End of line (control ID alone) or whitespace
+    )
     body_clauses: set[str] = set()
+    control_ids: set[str] = set()
     for pg in range(page_count):
         try:
             text = doc.extract_text(pg)
         except Exception:
             continue
         for line in text.split("\n"):
-            cm = _clause_pat.match(line.strip())
+            stripped = line.strip()
+            # Skip TOC entries (dot leaders)
+            if '...' in stripped:
+                continue
+            cm = _clause_pat.match(stripped)
             if cm:
                 body_clauses.add(cm.group(1))
+            ctrl = _control_id_pat.match(stripped)
+            if ctrl:
+                control_ids.add(ctrl.group(1).split('(')[0])  # Normalize AC-2(1) -> AC-2
     result["toc_section_count"] = len(toc_sections)
     result["toc_verified_count"] = sum(1 for s in toc_sections if s["verified"])
     result["body_clause_count"] = len(body_clauses)
-    result["section_count"] = len(toc_sections) + len(body_clauses)
+    result["control_id_count"] = len(control_ids)
+    result["control_ids"] = sorted(control_ids)
+    result["section_count"] = len(toc_sections) + len(body_clauses) + len(control_ids)
 
     # List, footnote, callout detection
     _bullet_re = re.compile(r"^[\u2022\u2023\u25E6\u2043\u2219\u2013\u2014\-]\s")

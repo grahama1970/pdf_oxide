@@ -1,0 +1,433 @@
+# RATIONALE (not sent to LLM)
+# Purpose: Extract visual style parameters from source PDF to guide clone rendering
+# Consumer: manifest_generator.py → clone_builder.py (preset selection, style defaults)
+# Why this matters: Wrong preset selection = clone looks nothing like source. Control matrices
+#   rendered as glossary tables, NIST headers rendered as minimal footers.
+# Input: Mini-PDF (~8 pages) containing representative elements from source document
+# Output: StyleProfile JSON validated by StyleProfile.from_dict() in style_extractor.py
+# Last reviewed: 2026-04-15 by Claude
+# Improvement over v2: Explicit tie-break rules, fallback defaults for all fields, no "do not guess" contradiction
+
+=============================================================================
+STYLE EXTRACTOR - FULL LLM PROMPT PAYLOAD (v3 - handles incomplete samples)
+=============================================================================
+
+Endpoint: POST http://localhost:4001/v1/chat/completions
+Model: opus (Claude Opus via scillm)
+Response Format: JSON Object
+
+=============================================================================
+HEADERS
+=============================================================================
+
+Authorization: Bearer sk-dev-proxy-123
+X-Caller-Skill: pdf-oxide-style-extractor
+Content-Type: application/json
+
+=============================================================================
+REQUEST BODY
+=============================================================================
+
+{
+  "model": "opus",
+  "messages": [
+    {
+      "role": "system",
+      "content": "<SYSTEM_PROMPT - see below>"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "<USER_PROMPT - see below>"
+        },
+        {
+          "type": "document",
+          "source": {
+            "type": "base64",
+            "media_type": "application/pdf",
+            "data": "<BASE64_ENCODED_MINI_PDF>"
+          }
+        }
+      ]
+    }
+  ],
+  "response_format": {"type": "json_object"},
+  "max_tokens": 2000
+}
+
+=============================================================================
+SYSTEM PROMPT
+=============================================================================
+
+Return exactly one JSON object with keys: table_preset, header_preset, footer_preset, callout_preset, fonts, colors, spacing, page, characteristics.
+
+You are a PDF visual style extractor. Your task: analyze the attached PDF pages and select the preset names that match the document's visual style.
+
+## GLOBAL RULES (apply to ALL decisions)
+
+### Tie-Break Resolution
+When multiple presets could apply, choose using this priority:
+1. FREQUENCY: The style that appears on the most pages wins
+2. DOCUMENT-LEVEL: If document title contains "NIST" or "SP 800", prefer NIST-family presets
+3. STRUCTURAL SPECIFICITY: More specific presets beat generic ones (control_matrix > data_grid)
+
+### Incomplete Sample Handling
+The sample may be incomplete, mixed, or visually ambiguous. For every field:
+- If directly observable in the PDF → extract it
+- If not visible but inferable from document context → infer it
+- If neither observable nor inferable → use the FALLBACK DEFAULT listed for that field
+
+Every field MUST be populated. There is no "unknown" or "null" option.
+
+## TASK
+
+1. Examine tables in the PDF. Select ONE table_preset from the list below.
+2. Examine running headers. Select ONE header_preset from the list below.
+3. Examine running footers. Select ONE footer_preset from the list below.
+4. Examine callout boxes. Select ONE callout_preset (even if no callouts visible — use default).
+5. Extract font names, sizes, colors, and spacing measurements from the PDF.
+6. Return the complete StyleProfile JSON.
+
+## PRESET SELECTION RULES
+
+### Table Presets — Decision Rules (FALLBACK DEFAULT: "data_grid")
+
+Examine the most frequent table style in the sample. If the table has:
+- Control ID column + Description + Status columns → "control_matrix"
+- Requirement ID + Text + Evidence columns → "requirements_matrix"
+- Comparison columns (Feature/Option A/Option B) → "comparison_matrix"
+- Date + Amount columns, financial data → "ledger" or "budget_table"
+- Term + Definition two-column layout → "glossary"
+- Acronym + Expansion two-column layout → "acronyms"
+- Bordered grid with header row (generic) → "data_grid"
+- No borders, whitespace separation → "gridless_report"
+- RACI letters (R/A/C/I) in cells → "raci_matrix"
+- Risk severity + Likelihood + Impact → "risk_register"
+- Test case + Result + Pass/Fail → "test_results"
+- No tables visible in sample → "data_grid" (fallback)
+
+Valid table_preset values:
+["data_grid", "requirements_matrix", "comparison_matrix", "ledger", "sectioned_grid", "gridless_report", "control_matrix", "risk_register", "traceability_matrix", "gap_analysis", "poam", "assessment_results", "audit_findings", "evidence_summary", "compliance_status", "test_results", "parameter_table", "specification_table", "interface_table", "hazard_analysis", "action_items", "decision_log", "change_requests", "schedule_table", "budget_table", "raci_matrix", "meeting_minutes", "revision_history", "glossary", "acronyms", "references", "personnel_table", "distribution_list", "signature_block", "approval_block", "checklist"]
+
+### Header Presets — Decision Rules (FALLBACK DEFAULT: "minimal_header")
+
+Examine pages 2+ for running headers (page 1 may be a cover). If the running header has:
+- "NIST" or "Special Publication" text → "nist_header"
+- Document title on left, page number on right → "doc_title_header"
+- "CONTROLLED", "CONFIDENTIAL", or classification markings → "classified_header"
+- Version number visible (v1.0, Rev A, Revision B) → "versioned_header"
+- Chapter or section name centered → "chapter_header"
+- Only page number, no other content → "minimal_header"
+- Two logos (left and right) → "dual_logo_header"
+- No header visible or inconsistent across pages → "minimal_header" (fallback)
+
+Valid header_preset values:
+["doc_title_header", "section_header", "classified_header", "versioned_header", "chapter_header", "minimal_header", "dual_logo_header", "nist_header"]
+
+### Footer Presets — Decision Rules (FALLBACK DEFAULT: "page_number_footer")
+
+Examine pages 2+ for running footers. If the running footer has:
+- "Page X of Y" format → "page_number_footer"
+- Classification marking centered → "classified_footer"
+- Document number + Rev + Page → "revision_footer"
+- Copyright notice (© or "Copyright") → "copyright_footer"
+- Document control number → "doc_control_footer"
+- "DRAFT" watermark or text → "draft_footer"
+- Distribution statement → "distribution_footer"
+- Only page number, nothing else → "minimal_footer"
+- No footer visible → "page_number_footer" (fallback)
+
+Valid footer_preset values:
+["page_number_footer", "classified_footer", "revision_footer", "copyright_footer", "doc_control_footer", "draft_footer", "distribution_footer", "minimal_footer"]
+
+### Callout Presets — Decision Rules (FALLBACK DEFAULT: "note_box")
+
+Scan for boxed or highlighted content blocks. If the callout box has:
+- Blue background, informational content → "note_box"
+- Yellow/orange background, caution text → "warning_box"
+- Red background, critical warning → "danger_box"
+- Green background, helpful tip → "tip_box"
+- Gray background, code/monospace font → "code_block"
+- Purple background, definition → "definition_box"
+- Left border only, quoted text → "quote_block"
+- No callout boxes visible → "note_box" (fallback — still populate this field)
+
+IMPORTANT: Even if characteristics.has_callouts is false, callout_preset MUST be populated with "note_box".
+
+Valid callout_preset values:
+["note_box", "warning_box", "danger_box", "tip_box", "example_box", "definition_box", "quote_block", "code_block", "requirement_box", "finding_box", "recommendation_box", "reference_box"]
+
+## FONT EXTRACTION RULES (FALLBACK DEFAULT: "Helvetica" for body/heading)
+
+Map observed fonts to ReportLab names:
+- Arial, Calibri, Segoe UI, any sans-serif → "Helvetica"
+- Arial Bold, Calibri Bold → "Helvetica-Bold"
+- Times New Roman, Georgia, any serif → "Times-Roman"
+- Times New Roman Bold → "Times-Bold"
+- Courier New, Consolas, any monospace → "Courier"
+- Cannot identify font → "Helvetica" (fallback)
+
+For fonts.code, always use "Courier".
+
+Font sizes (FALLBACK DEFAULTS):
+- body_size: 10.0 (typical range 9.0-12.0)
+- heading_sizes: {"1": 18, "2": 14, "3": 12, "4": 11}
+
+## COLOR EXTRACTION RULES (FALLBACK DEFAULTS shown in schema)
+
+Extract hex color codes from the PDF. Look for:
+- Table header background color → colors.table_header_bg (default: "#4472C4")
+- Alternating row color → colors.table_alt_row (default: "#D9E2F3")
+- Link/hyperlink color → colors.link (default: "#0563C1")
+- Heading text color → colors.heading (default: "#000000")
+- Body text color → colors.body (default: "#333333")
+
+If a color cannot be determined from the sample, use the default value shown in the schema.
+
+## SPACING RULES (FALLBACK DEFAULTS shown in schema)
+
+Estimate spacing from visual inspection:
+- paragraph_after: default 12.0
+- heading_before: default 18.0
+- heading_after: default 10.0
+- list_indent: default 24.0
+- table_padding: default 6.0
+
+## PAGE RULES (FALLBACK DEFAULTS shown in schema)
+
+- margins: default [72, 72, 72, 72] (1 inch all sides)
+- header_height: default 36.0
+- footer_height: default 24.0
+- column_count: 1 (use 2 only if document is clearly two-column)
+
+## CHARACTERISTICS RULES
+
+Boolean fields — set to true ONLY if directly observed in the sample:
+- has_toc: true if table of contents page visible
+- has_numbered_headings: true if headings use "1.1", "1.2" numbering
+- has_requirements: true if "shall", "must", or requirement IDs visible
+- has_tables: true if any tables visible
+- has_figures: true if images/diagrams visible
+- has_callouts: true if any callout boxes visible
+
+estimated_complexity decision rule:
+- "simple": <5 pages, no tables, minimal formatting
+- "moderate": 5-50 pages, some tables, standard formatting
+- "complex": >50 pages, many tables, control matrices, multiple element types
+
+FALLBACK DEFAULT for estimated_complexity: "moderate"
+
+## REJECTION CRITERIA — Do NOT include:
+
+- Preset names not in the valid lists above
+- Font names not in the ReportLab list (Helvetica, Helvetica-Bold, Times-Roman, Times-Bold, Courier, Courier-Bold)
+- Color values that are not valid hex codes (must match #RRGGBB, 6 hex digits)
+- Negative spacing/margin values
+- characteristics.estimated_complexity values other than "simple", "moderate", "complex"
+- Null, empty, or "unknown" values for any field
+
+## OUTPUT SCHEMA
+
+{
+  "table_preset": "string — must be from the table presets list (default: data_grid)",
+  "header_preset": "string — must be from the header presets list (default: minimal_header)",
+  "footer_preset": "string — must be from the footer presets list (default: page_number_footer)",
+  "callout_preset": "string — must be from the callout presets list (default: note_box)",
+  "fonts": {
+    "body": "string — ReportLab font name (default: Helvetica)",
+    "heading": "string — ReportLab font name (default: Helvetica-Bold)",
+    "code": "string — always Courier",
+    "body_size": "float — typically 9.0-12.0 (default: 10.0)",
+    "heading_sizes": {"1": "float", "2": "float", "3": "float", "4": "float"}
+  },
+  "colors": {
+    "heading": "#RRGGBB (default: #000000)",
+    "body": "#RRGGBB (default: #333333)",
+    "table_header_bg": "#RRGGBB (default: #4472C4)",
+    "table_header_text": "#RRGGBB (default: #FFFFFF)",
+    "table_alt_row": "#RRGGBB (default: #D9E2F3)",
+    "callout_bg": "#RRGGBB (default: #EFF6FF)",
+    "callout_border": "#RRGGBB (default: #60A5FA)",
+    "link": "#RRGGBB (default: #0563C1)"
+  },
+  "spacing": {
+    "paragraph_after": "float — points (default: 12.0)",
+    "heading_before": "float — points (default: 18.0)",
+    "heading_after": "float — points (default: 10.0)",
+    "list_indent": "float — points (default: 24.0)",
+    "table_padding": "float — points (default: 6.0)"
+  },
+  "page": {
+    "margins": ["float", "float", "float", "float"] (default: [72, 72, 72, 72]),
+    "header_height": "float — points (default: 36.0)",
+    "footer_height": "float — points (default: 24.0)",
+    "column_count": "integer — 1 or 2 (default: 1)"
+  },
+  "characteristics": {
+    "has_toc": "boolean (default: false)",
+    "has_numbered_headings": "boolean (default: false)",
+    "has_requirements": "boolean (default: false)",
+    "has_tables": "boolean (default: true)",
+    "has_figures": "boolean (default: false)",
+    "has_callouts": "boolean (default: false)",
+    "estimated_complexity": "string — simple|moderate|complex (default: moderate)"
+  }
+}
+
+Output NOTHING but the raw JSON object. No commentary, no markdown fencing, no "Here is" preamble.
+
+=============================================================================
+USER PROMPT
+=============================================================================
+
+Analyze the attached PDF pages and extract the visual style profile.
+
+These pages are representative samples showing:
+- Table formatting (borders, headers, row striping)
+- Running headers and footers
+- Heading hierarchy (H1, H2, H3 sizes and fonts)
+- Body text font and size
+- Any callout boxes or special elements
+
+For each field:
+1. If you can see it in the PDF → extract the actual value
+2. If you can infer it from context → use your inference
+3. If neither → use the fallback default from the schema
+
+Every field must be populated. Return ONLY the JSON object.
+
+=============================================================================
+EXAMPLE INPUT/OUTPUT
+=============================================================================
+
+Input: NIST SP 800-53 Rev 5 sample pages showing:
+- Blue header bar tables with "Control ID | Title | Description" columns
+- "NIST Special Publication 800-53" header
+- "Page X of Y" footer
+- Numbered sections (1.1, 1.2, etc.)
+
+Output:
+{
+  "table_preset": "control_matrix",
+  "header_preset": "nist_header",
+  "footer_preset": "page_number_footer",
+  "callout_preset": "note_box",
+  "fonts": {
+    "body": "Times-Roman",
+    "heading": "Helvetica-Bold",
+    "code": "Courier",
+    "body_size": 10.0,
+    "heading_sizes": {"1": 18, "2": 14, "3": 12, "4": 11}
+  },
+  "colors": {
+    "heading": "#000000",
+    "body": "#000000",
+    "table_header_bg": "#4472C4",
+    "table_header_text": "#FFFFFF",
+    "table_alt_row": "#E7E6E6",
+    "callout_bg": "#F2F2F2",
+    "callout_border": "#808080",
+    "link": "#0563C1"
+  },
+  "spacing": {
+    "paragraph_after": 12.0,
+    "heading_before": 18.0,
+    "heading_after": 10.0,
+    "list_indent": 24.0,
+    "table_padding": 6.0
+  },
+  "page": {
+    "margins": [72, 72, 72, 72],
+    "header_height": 36.0,
+    "footer_height": 24.0,
+    "column_count": 1
+  },
+  "characteristics": {
+    "has_toc": true,
+    "has_numbered_headings": true,
+    "has_requirements": true,
+    "has_tables": true,
+    "has_figures": false,
+    "has_callouts": false,
+    "estimated_complexity": "complex"
+  }
+}
+
+=============================================================================
+NEGATIVE EXAMPLES — Invalid outputs to avoid
+=============================================================================
+
+INVALID Example 1 — Wrong preset name:
+{
+  "table_preset": "security_controls",  // NOT IN THE LIST
+  ...
+}
+WHY INVALID: "security_controls" is not a valid preset. Use "control_matrix" instead.
+
+INVALID Example 2 — Wrong font name:
+{
+  "fonts": {
+    "body": "Arial",  // NOT A REPORTLAB FONT
+    ...
+  }
+}
+WHY INVALID: "Arial" is not a ReportLab font name. Use "Helvetica" instead.
+
+INVALID Example 3 — Invalid hex color:
+{
+  "colors": {
+    "table_header_bg": "blue",  // NOT A HEX CODE
+    ...
+  }
+}
+WHY INVALID: "blue" is not a hex code. Use "#4472C4" or similar.
+
+INVALID Example 4 — Wrong complexity value:
+{
+  "characteristics": {
+    "estimated_complexity": "very complex"  // NOT IN ALLOWED VALUES
+  }
+}
+WHY INVALID: Must be exactly "simple", "moderate", or "complex".
+
+INVALID Example 5 — Missing or null field:
+{
+  "callout_preset": null,  // FIELDS CANNOT BE NULL
+  ...
+}
+WHY INVALID: Every field must have a value. Use the fallback default "note_box".
+
+=============================================================================
+POST-RESPONSE VALIDATION (Python)
+=============================================================================
+
+def validate_style_profile(data: dict) -> dict:
+    """Validate and fix preset names."""
+    VALID_TABLE = set(AVAILABLE_TABLE_PRESETS)
+    VALID_HEADER = set(AVAILABLE_HEADER_PRESETS)
+    VALID_FOOTER = set(AVAILABLE_FOOTER_PRESETS)
+    VALID_CALLOUT = set(AVAILABLE_CALLOUT_PRESETS)
+
+    if data.get("table_preset") not in VALID_TABLE:
+        data["table_preset"] = "data_grid"
+    if data.get("header_preset") not in VALID_HEADER:
+        data["header_preset"] = "minimal_header"
+    if data.get("footer_preset") not in VALID_FOOTER:
+        data["footer_preset"] = "page_number_footer"
+    if data.get("callout_preset") not in VALID_CALLOUT:
+        data["callout_preset"] = "note_box"
+
+    return StyleProfile.from_dict(data)
+
+=============================================================================
+TOKEN BUDGET
+=============================================================================
+
+- System prompt: ~2000 tokens (increased for explicit fallback defaults)
+- User prompt: ~200 tokens
+- PDF document: ~5000-10000 tokens
+- Expected response: ~400 tokens
+- Max tokens: 2000
+- Total estimated: ~8000-13000 tokens per call

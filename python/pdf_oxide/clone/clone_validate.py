@@ -268,7 +268,8 @@ def validate_grid_recovery(
         best_overlap = 0
 
         for ext_table in extracted_tables:
-            ext_cells = ext_table.get("cells", [])
+            # Support both 'cells' and 'data' field names (pipeline uses 'data')
+            ext_cells = ext_table.get("cells") or ext_table.get("data", [])
             ext_qids = set()
             for row in ext_cells:
                 for cell in row:
@@ -292,14 +293,15 @@ def validate_grid_recovery(
             ))
             continue
 
-        # Compare structure
-        found_rows = best_match.get("rows", len(best_match.get("cells", [])))
+        # Compare structure (support both 'cells' and 'data' field names)
+        match_cells = best_match.get("cells") or best_match.get("data", [])
+        found_rows = best_match.get("rows", len(match_cells))
         found_cols = best_match.get("cols", 0)
-        if best_match.get("cells"):
-            found_cols = max(len(row) for row in best_match["cells"]) if best_match["cells"] else 0
+        if match_cells:
+            found_cols = max(len(row) for row in match_cells) if match_cells else 0
 
         # Count recovered cells by QID
-        ext_cells = best_match.get("cells", [])
+        ext_cells = best_match.get("cells") or best_match.get("data", [])
         ext_qids = set()
         for row in ext_cells:
             for cell in row:
@@ -403,18 +405,21 @@ def validate_contamination(
             })
             continue
 
-        # Check table ID mismatch (QID from table A found in table B)
+        # Note: Table ID mismatch tracking is informational only.
+        # Since we can't embed table IDs in the PDF, the extractor generates
+        # its own hash-based IDs. We log mismatches but don't count them as
+        # contamination - the block type boundary check above is what matters.
         if expected_is_table and found_is_table:
             expected_table = truth_obj.table_id
             found_table = extracted.get("table_id")
 
             if expected_table and found_table and expected_table != found_table:
-                contaminated += 1
+                # Log for informational purposes, but don't count as contamination
                 details.append({
                     "qid": qid,
                     "expected_table_id": expected_table,
                     "found_table_id": found_table,
-                    "issue": "table_id_mismatch",
+                    "issue": "table_id_mismatch_info",  # Informational, not a failure
                 })
 
     return ContaminationResult(

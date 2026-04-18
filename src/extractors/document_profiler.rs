@@ -77,7 +77,11 @@ pub fn profile_document(doc: &mut PdfDocument) -> Result<DocumentProfile> {
 
     let (page_width, page_height) = page_dims.unwrap_or((612.0, 792.0));
     let is_scanned = scanned_pages as f32 / sample_pages.len() as f32 > 0.5;
-    let avg_chars = if sample_pages.is_empty() { 0.0 } else { total_chars as f32 / sample_pages.len() as f32 };
+    let avg_chars = if sample_pages.is_empty() {
+        0.0
+    } else {
+        total_chars as f32 / sample_pages.len() as f32
+    };
 
     // Font analysis
     let (primary_font, primary_font_size) = analyze_fonts(&all_spans);
@@ -93,8 +97,11 @@ pub fn profile_document(doc: &mut PdfDocument) -> Result<DocumentProfile> {
     let has_header = blocks.iter().any(|b| b.block_type == BlockType::Header);
     let has_footer = blocks.iter().any(|b| b.block_type == BlockType::Footer);
     let has_page_numbers = blocks.iter().any(|b| b.block_type == BlockType::PageNumber);
-    let has_toc = blocks.iter().any(|b| b.block_type == BlockType::TableOfContents);
-    let title = blocks.iter()
+    let has_toc = blocks
+        .iter()
+        .any(|b| b.block_type == BlockType::TableOfContents);
+    let title = blocks
+        .iter()
         .find(|b| b.block_type == BlockType::Title && b.header_level == Some(0))
         .map(|b| b.text.clone());
 
@@ -109,12 +116,16 @@ pub fn profile_document(doc: &mut PdfDocument) -> Result<DocumentProfile> {
 
     // Annotation detection
     let has_annotations = sample_pages.iter().any(|&pg| {
-        doc.get_annotations(pg).map(|a| !a.is_empty()).unwrap_or(false)
+        doc.get_annotations(pg)
+            .map(|a| !a.is_empty())
+            .unwrap_or(false)
     });
 
     // Table detection on first few pages
     let has_tables = sample_pages.iter().take(3).any(|&pg| {
-        doc.extract_tables(pg).map(|t| !t.is_empty()).unwrap_or(false)
+        doc.extract_tables(pg)
+            .map(|t| !t.is_empty())
+            .unwrap_or(false)
     });
 
     // Domain detection
@@ -124,11 +135,22 @@ pub fn profile_document(doc: &mut PdfDocument) -> Result<DocumentProfile> {
 
     // Complexity scoring
     let complexity_score = compute_complexity(
-        page_count, columns, has_tables, has_images, has_forms,
-        is_scanned, has_annotations, avg_chars,
+        page_count,
+        columns,
+        has_tables,
+        has_images,
+        has_forms,
+        is_scanned,
+        has_annotations,
+        avg_chars,
     );
 
-    let orientation = if page_width > page_height { "landscape" } else { "portrait" }.to_string();
+    let orientation = if page_width > page_height {
+        "landscape"
+    } else {
+        "portrait"
+    }
+    .to_string();
 
     Ok(DocumentProfile {
         page_count,
@@ -176,7 +198,11 @@ pub fn profile_document_with_cache(
     let mut scanned_pages = 0;
 
     for &pg in &sample_pages {
-        let spans = if pg < all_spans.len() { &all_spans[pg] } else { &[] as &[TextSpan] };
+        let spans = if pg < all_spans.len() {
+            &all_spans[pg]
+        } else {
+            &[] as &[TextSpan]
+        };
         let text = doc.extract_text(pg).unwrap_or_default();
         total_chars += text.len();
 
@@ -202,17 +228,30 @@ pub fn profile_document_with_cache(
 
     let (page_width, page_height) = page_dims.unwrap_or((612.0, 792.0));
     let is_scanned = scanned_pages as f32 / sample_pages.len().max(1) as f32 > 0.5;
-    let avg_chars = if sample_pages.is_empty() { 0.0 } else { total_chars as f32 / sample_pages.len() as f32 };
+    let avg_chars = if sample_pages.is_empty() {
+        0.0
+    } else {
+        total_chars as f32 / sample_pages.len() as f32
+    };
 
     let (primary_font, primary_font_size) = analyze_fonts(&combined_spans);
     let columns = detect_columns(&combined_spans, page_width);
 
     // Use pre-classified blocks for first page
-    let has_header = first_page_blocks.iter().any(|b| b.block_type == BlockType::Header);
-    let has_footer = first_page_blocks.iter().any(|b| b.block_type == BlockType::Footer);
-    let has_page_numbers = first_page_blocks.iter().any(|b| b.block_type == BlockType::PageNumber);
-    let has_toc = first_page_blocks.iter().any(|b| b.block_type == BlockType::TableOfContents);
-    let title = first_page_blocks.iter()
+    let has_header = first_page_blocks
+        .iter()
+        .any(|b| b.block_type == BlockType::Header);
+    let has_footer = first_page_blocks
+        .iter()
+        .any(|b| b.block_type == BlockType::Footer);
+    let has_page_numbers = first_page_blocks
+        .iter()
+        .any(|b| b.block_type == BlockType::PageNumber);
+    let has_toc = first_page_blocks
+        .iter()
+        .any(|b| b.block_type == BlockType::TableOfContents);
+    let title = first_page_blocks
+        .iter()
         .find(|b| b.block_type == BlockType::Title && b.header_level == Some(0))
         .map(|b| b.text.clone());
 
@@ -223,10 +262,14 @@ pub fn profile_document_with_cache(
 
     let has_forms = false;
     let has_annotations = sample_pages.iter().any(|&pg| {
-        doc.get_annotations(pg).map(|a| !a.is_empty()).unwrap_or(false)
+        doc.get_annotations(pg)
+            .map(|a| !a.is_empty())
+            .unwrap_or(false)
     });
     let has_tables = sample_pages.iter().take(3).any(|&pg| {
-        doc.extract_tables(pg).map(|t| !t.is_empty()).unwrap_or(false)
+        doc.extract_tables(pg)
+            .map(|t| !t.is_empty())
+            .unwrap_or(false)
     });
 
     let first_page_text = doc.extract_text(0).unwrap_or_default();
@@ -234,11 +277,22 @@ pub fn profile_document_with_cache(
     let preset = domain_to_preset(&domain);
 
     let complexity_score = compute_complexity(
-        page_count, columns, has_tables, has_images, has_forms,
-        is_scanned, has_annotations, avg_chars,
+        page_count,
+        columns,
+        has_tables,
+        has_images,
+        has_forms,
+        is_scanned,
+        has_annotations,
+        avg_chars,
     );
 
-    let orientation = if page_width > page_height { "landscape" } else { "portrait" }.to_string();
+    let orientation = if page_width > page_height {
+        "landscape"
+    } else {
+        "portrait"
+    }
+    .to_string();
 
     Ok(DocumentProfile {
         page_count,
@@ -314,7 +368,8 @@ fn detect_columns(spans: &[TextSpan], page_width: f32) -> u8 {
     let content_width = page_width - 2.0 * margin;
 
     // Collect X start positions (excluding headers/footers)
-    let x_positions: Vec<f32> = spans.iter()
+    let x_positions: Vec<f32> = spans
+        .iter()
         .filter(|s| s.bbox.width > 10.0 && s.text.len() > 5)
         .map(|s| s.bbox.x)
         .collect();
@@ -336,7 +391,8 @@ fn detect_columns(spans: &[TextSpan], page_width: f32) -> u8 {
 
     // Find significant start positions (>10% of total spans start here)
     let threshold = x_positions.len() / 10;
-    let significant: Vec<f32> = sorted_bins.iter()
+    let significant: Vec<f32> = sorted_bins
+        .iter()
         .filter(|&&(_, count)| count > threshold)
         .map(|&(bin, _)| bin as f32 * 10.0)
         .collect();
@@ -362,16 +418,23 @@ fn detect_domain(text: &str, title: &Option<String>, page_count: usize) -> Strin
     let title_lower = title.as_deref().unwrap_or("").to_lowercase();
 
     // Defense/military
-    if lower.contains("mil-std") || lower.contains("mil-hdbk") || lower.contains("mil-spec")
-        || lower.contains("department of defense") || lower.contains("distribution statement")
-        || lower.contains("navpers") || lower.contains("navsea") || lower.contains("darpa")
-        || lower.contains("dtic") || lower.contains("unclassified")
+    if lower.contains("mil-std")
+        || lower.contains("mil-hdbk")
+        || lower.contains("mil-spec")
+        || lower.contains("department of defense")
+        || lower.contains("distribution statement")
+        || lower.contains("navpers")
+        || lower.contains("navsea")
+        || lower.contains("darpa")
+        || lower.contains("dtic")
+        || lower.contains("unclassified")
     {
         return "defense".to_string();
     }
 
     // NIST/standards
-    if lower.contains("nist sp") || lower.contains("nist special publication")
+    if lower.contains("nist sp")
+        || lower.contains("nist special publication")
         || lower.contains("national institute of standards")
         || lower.contains("fips pub")
     {
@@ -379,37 +442,45 @@ fn detect_domain(text: &str, title: &Option<String>, page_count: usize) -> Strin
     }
 
     // IETF/RFC
-    if lower.contains("request for comments") || lower.contains("rfc ")
+    if lower.contains("request for comments")
+        || lower.contains("rfc ")
         || lower.contains("internet engineering task force")
     {
         return "ietf".to_string();
     }
 
     // NASA
-    if lower.contains("nasa") || lower.contains("national aeronautics")
-        || lower.contains("nasa technical") || lower.contains("ntrs")
+    if lower.contains("nasa")
+        || lower.contains("national aeronautics")
+        || lower.contains("nasa technical")
+        || lower.contains("ntrs")
     {
         return "nasa".to_string();
     }
 
     // Academic/arxiv
-    if lower.contains("abstract") && lower.contains("introduction")
+    if lower.contains("abstract")
+        && lower.contains("introduction")
         && (lower.contains("references") || lower.contains("bibliography"))
     {
         return "academic".to_string();
     }
 
     // Engineering
-    if lower.contains("drawing no") || lower.contains("revision")
-        || lower.contains("engineering change") || lower.contains("bill of materials")
-        || lower.contains("specifications") || title_lower.contains("specification")
+    if lower.contains("drawing no")
+        || lower.contains("revision")
+        || lower.contains("engineering change")
+        || lower.contains("bill of materials")
+        || lower.contains("specifications")
+        || title_lower.contains("specification")
     {
         return "engineering".to_string();
     }
 
     // Legal
     if lower.contains("hereby") && lower.contains("whereas")
-        || lower.contains("terms and conditions") || lower.contains("contract")
+        || lower.contains("terms and conditions")
+        || lower.contains("contract")
     {
         return "legal".to_string();
     }
@@ -433,24 +504,49 @@ fn domain_to_preset(domain: &str) -> String {
         "legal" => "legal_document",
         "slides" => "slide_deck",
         _ => "general_document",
-    }.to_string()
+    }
+    .to_string()
 }
 
 fn compute_complexity(
-    page_count: usize, columns: u8, has_tables: bool, has_images: bool,
-    has_forms: bool, is_scanned: bool, has_annotations: bool, avg_chars: f32,
+    page_count: usize,
+    columns: u8,
+    has_tables: bool,
+    has_images: bool,
+    has_forms: bool,
+    is_scanned: bool,
+    has_annotations: bool,
+    avg_chars: f32,
 ) -> u8 {
     let mut score: u8 = 1;
 
-    if page_count > 50 { score += 1; }
-    if page_count > 200 { score += 1; }
-    if columns > 1 { score += 1; }
-    if has_tables { score += 1; }
-    if has_images { score += 1; }
-    if has_forms { score += 1; }
-    if is_scanned { score += 2; }
-    if has_annotations { score += 1; }
-    if avg_chars > 3000.0 { score += 1; }
+    if page_count > 50 {
+        score += 1;
+    }
+    if page_count > 200 {
+        score += 1;
+    }
+    if columns > 1 {
+        score += 1;
+    }
+    if has_tables {
+        score += 1;
+    }
+    if has_images {
+        score += 1;
+    }
+    if has_forms {
+        score += 1;
+    }
+    if is_scanned {
+        score += 2;
+    }
+    if has_annotations {
+        score += 1;
+    }
+    if avg_chars > 3000.0 {
+        score += 1;
+    }
 
     score.min(10)
 }
@@ -462,7 +558,10 @@ mod tests {
     #[test]
     fn test_domain_detection() {
         assert_eq!(detect_domain("MIL-STD-498 Department of Defense", &None, 50), "defense");
-        assert_eq!(detect_domain("NIST SP 800-53 National Institute of Standards", &None, 100), "standards");
+        assert_eq!(
+            detect_domain("NIST SP 800-53 National Institute of Standards", &None, 100),
+            "standards"
+        );
         assert_eq!(detect_domain("Request for Comments: 9136 IETF", &None, 20), "ietf");
         assert_eq!(detect_domain("Abstract\nIntroduction\nReferences", &None, 12), "academic");
         assert_eq!(detect_domain("Hello world this is general text", &None, 5), "general");

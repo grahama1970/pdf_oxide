@@ -9,6 +9,8 @@ These tests verify the Python API works correctly, including:
 - Error handling
 """
 
+from pathlib import Path
+
 import pytest
 
 from pdf_oxide import PdfDocument
@@ -657,6 +659,28 @@ def test_get_outline():
                 assert "children" in item
     except (OSError, RuntimeError):
         pytest.skip("Test fixture 'simple.pdf' not available or invalid")
+
+
+def test_get_toc_prefers_structured_toc_pages_for_nist():
+    """NIST TOC emission should return real section titles with physical pages."""
+    pdf_path = Path("/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf")
+    if not pdf_path.exists():
+        pytest.skip("NIST fixture not available")
+
+    doc = PdfDocument(str(pdf_path))
+    toc = doc.get_toc()
+    assert isinstance(toc, dict)
+    assert toc["source"] in {"structure_tree", "outline"}
+
+    entries = toc.get("entries", [])
+    assert entries
+    assert any("GLOSSARY" in entry.get("text", "") for entry in entries)
+    assert any("ACRONYMS" in entry.get("text", "") for entry in entries)
+
+    glossary = next(entry for entry in entries if "GLOSSARY" in entry.get("text", ""))
+    acronyms = next(entry for entry in entries if "ACRONYMS" in entry.get("text", ""))
+    assert glossary.get("page") == 420
+    assert acronyms.get("page") == 450
 
 
 def test_get_annotations():

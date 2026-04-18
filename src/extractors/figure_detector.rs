@@ -29,7 +29,8 @@ pub fn detect_figures(doc: &mut PdfDocument, page: usize) -> Result<Vec<Detected
     }
 
     let spans = doc.extract_spans_unsorted(page).unwrap_or_default();
-    let (width, height) = doc.get_page_info(page)
+    let (width, height) = doc
+        .get_page_info(page)
         .ok()
         .map(|info| (info.media_box.width, info.media_box.height))
         .unwrap_or((612.0, 792.0));
@@ -107,7 +108,7 @@ fn find_caption(blocks: &[ClassifiedBlock], fig_bbox: &Rect) -> (Option<String>,
         Some((block, _)) => {
             let number = parse_figure_number(&block.text);
             (Some(block.text.clone()), number)
-        }
+        },
         None => (None, None),
     }
 }
@@ -159,7 +160,8 @@ fn find_context(blocks: &[ClassifiedBlock], fig_bbox: &Rect, above: bool) -> Str
         da.partial_cmp(&db).unwrap_or(std::cmp::Ordering::Equal)
     });
 
-    context_blocks.iter()
+    context_blocks
+        .iter()
         .take(2)
         .map(|b| b.text.as_str())
         .collect::<Vec<_>>()
@@ -170,7 +172,8 @@ fn find_context(blocks: &[ClassifiedBlock], fig_bbox: &Rect, above: bool) -> Str
 fn find_section(blocks: &[ClassifiedBlock], fig_bbox: &Rect) -> Option<String> {
     let fig_top = fig_bbox.y;
 
-    blocks.iter()
+    blocks
+        .iter()
         .filter(|b| b.block_type == BlockType::Title && b.bbox.y < fig_top)
         .last()
         .map(|b| b.text.clone())
@@ -258,19 +261,17 @@ mod tests {
 
     #[test]
     fn test_no_caption_found() {
-        let blocks = vec![
-            ClassifiedBlock {
-                block_type: BlockType::Body,
-                text: "Just body".to_string(),
-                bbox: Rect::new(10.0, 500.0, 400.0, 14.0),
-                font_size: 11.0,
-                font_name: "Arial".to_string(),
-                is_bold: false,
-                confidence: 0.9,
-                header_level: None,
-                header_validation: None,
-            },
-        ];
+        let blocks = vec![ClassifiedBlock {
+            block_type: BlockType::Body,
+            text: "Just body".to_string(),
+            bbox: Rect::new(10.0, 500.0, 400.0, 14.0),
+            font_size: 11.0,
+            font_name: "Arial".to_string(),
+            is_bold: false,
+            confidence: 0.9,
+            header_level: None,
+            header_validation: None,
+        }];
         let fig_bbox = Rect::new(50.0, 200.0, 200.0, 80.0);
         let (caption, num) = find_caption(&blocks, &fig_bbox);
         assert!(caption.is_none());

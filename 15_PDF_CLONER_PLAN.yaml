@@ -1,0 +1,394 @@
+version: 1
+kind: orchestrate-plan
+
+metadata:
+  title: "PDF Cloner with Ground-Truth Manifest"
+  goal: "Clone PDF layouts with synthetic text, emit exact manifest for pdf_oxide extraction validation"
+  plan_type: code
+  created: "2026-04-10"
+  primary_persona:
+    name: "Graham Anderson"
+    role: "pdf_oxide Developer"
+    source: "Project owner - needs test fixtures with known ground truth"
+
+execution:
+  max_concurrency: 2
+  repo_root: "/home/graham/workspace/experiments/pdf_oxide"
+
+capability_overlap:
+  - "/create-pdf-fixture exists but creates PDFs from scratch, does NOT clone existing layouts"
+  - "/create-text provides deterministic corpus - WILL USE THIS"
+  - "/extract-pdf extracts from PDFs - different direction (we render TO PDF)"
+  - "No existing skill clones PDF layouts with text substitution + manifest generation"
+
+questions_blockers: []
+
+# Key learnings from ReportLab documentation:
+# 1. canvas.drawString(x, y, text) - single string, NO wrap
+# 2. canvas.beginText(x, y) → PDFTextObject - multi-line container
+# 3. textObject.setFont(name, size, leading) - sets font AND line spacing
+# 4. textObject.textLine(text) - draws line, cursor moves down by leading
+# 5. pdfmetrics.stringWidth(text, font, size) - measure text width for custom breaking
+# 6. For manifest accuracy: custom line breaking with stringWidth, render with textLine
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Foundation"
+  - id: "1"
+    label: "Wave 1: Core Implementation"
+  - id: "2"
+    label: "Wave 2: Integration & Validation"
+
+tasks:
+  # ============================================================================
+  # WAVE 0: Foundation - Setup and utilities
+  # ============================================================================
+
+  - id: "1"
+    title: "Create line breaker module using stringWidth"
+    lane: "0"
+    runner: "scillm"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: []
+    prompt: |
+      Create python/pdf_oxide/clone/line_breaker.py with:
+
+      1. break_into_lines(text: str, max_width: float, font_name: str, font_size: float) -> list[str]
+         - Use reportlab.pdfbase.pdfmetrics.stringWidth() to measure each word
+         - Accumulate words until width exceeds max_width
+         - Return list of line strings
+         - Handle edge case: single word wider than max_width (keep it, will overflow)
+
+      2. measure_lines(lines: list[str], font_name: str, font_size: float) -> list[tuple[str, float]]
+         - Return list of (line_text, line_width) tuples
+         - Used for manifest generation
+
+      This is the CORE of custom line breaking - we control exactly what lines exist.
+      The manifest will record these exact lines.
+    allowlist:
+      - "python/pdf_oxide/clone/line_breaker.py"
+      - "python/pdf_oxide/clone/__init__.py"
+    definition_of_done:
+      command: "python -c \"from pdf_oxide.clone.line_breaker import break_into_lines; print(len(break_into_lines('test words here for breaking', 100, 'Helvetica', 11)))\""
+      assertion: "Returns integer > 0"
+
+  - id: "2"
+    title: "Create font registry module"
+    lane: "0"
+    runner: "scillm"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: []
+    prompt: |
+      Create python/pdf_oxide/clone/fonts.py with:
+
+      1. register_fonts() - Register DejaVu font family (Sans, Sans-Bold, Sans-Oblique, Sans-BoldOblique)
+         Path: /usr/share/fonts/truetype/dejavu/
+
+      2. select_font(is_bold: bool, is_italic: bool) -> str
+         - Returns font name string: "DejaVu", "DejaVu-Bold", "DejaVu-Oblique", "DejaVu-BoldOblique"
+
+      3. FONT_MAP dict for canonical family mapping (serif→DejaVuSerif, sans→DejaVu, mono→DejaVuMono)
+
+      Use reportlab.pdfbase.pdfmetrics.registerFont and reportlab.pdfbase.ttfonts.TTFont
+    allowlist:
+      - "python/pdf_oxide/clone/fonts.py"
+    definition_of_done:
+      command: "python -c \"from pdf_oxide.clone.fonts import register_fonts, select_font; register_fonts(); print(select_font(True, False))\""
+      assertion: "Prints DejaVu-Bold"
+
+  - id: "3"
+    title: "Create corpus loader using /create-text"
+    lane: "0"
+    runner: "scillm"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: []
+    prompt: |
+      Create python/pdf_oxide/clone/corpus.py with:
+
+      1. load_corpus(count: int, seed: int, domain: str = "government") -> list[str]
+         - Try to import from /home/graham/.claude/skills/create-text
+         - Call create_text(content_type="paragraph", domain=domain, count=count, seed=seed)
+         - Extract text from returned chunks
+         - If fails, return FALLBACK_CORPUS (20 government-style sentences)
+
+      2. FALLBACK_CORPUS - list of 20 deterministic sentences about security controls
+
+      3. get_text_for_block(corpus: list[str], index: int, target_length: int) -> str
+         - Returns corpus[index % len(corpus)]
+         - Used for deterministic text selection per block
+    allowlist:
+      - "python/pdf_oxide/clone/corpus.py"
+    definition_of_done:
+      command: "python -c \"from pdf_oxide.clone.corpus import load_corpus; c = load_corpus(10, 42); print(len(c), type(c[0]))\""
+      assertion: "Returns list of strings"
+
+  # ============================================================================
+  # WAVE 1: Core Implementation - Extractor and Renderer
+  # ============================================================================
+
+  - id: "4"
+    title: "Create block extractor using pdf_oxide.extract_text_dict"
+    lane: "1"
+    runner: "scillm"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: ["1", "2"]
+    prompt: |
+      Create python/pdf_oxide/clone/extractor.py with:
+
+      1. @dataclass ExtractedBlock:
+         - id: str (p{page}_b{idx})
+         - bbox: tuple[float, float, float, float]  # x0, y0, x1, y1 in PyMuPDF coords
+         - text: str (concatenated from all spans)
+         - font_size: float (dominant)
+         - is_bold: bool
+         - is_italic: bool
+         - line_count: int (original line count)
+
+      2. extract_blocks(pdf_path: str, page_idx: int) -> tuple[list[ExtractedBlock], float, float]
+         - Use pdf_oxide.PdfDocument(pdf_path)
+         - Call doc.extract_text_dict(page_idx) to get block structure
+         - Filter to type==0 (text blocks)
+         - Determine dominant font from span flags
+         - Return (blocks, page_width, page_height)
+
+      Note: PyMuPDF coords have y=0 at TOP. We'll convert to PDF coords (y=0 at bottom) in renderer.
+    allowlist:
+      - "python/pdf_oxide/clone/extractor.py"
+    read_context:
+      - "python/pdf_oxide/clone_v4.py"
+    definition_of_done:
+      command: "python -c \"from pdf_oxide.clone.extractor import extract_blocks; blocks, w, h = extract_blocks('/tmp/nist_800_171.pdf', 14); print(f'{len(blocks)} blocks, page {w}x{h}')\""
+      assertion: "Extracts blocks with dimensions"
+
+  - id: "5"
+    title: "Create renderer using beginText/textLine API"
+    lane: "1"
+    runner: "code-runner"
+    backend: "codex"
+    mode: "iterative"
+    depends_on: ["1", "2", "4"]
+    prompt: |
+      Create python/pdf_oxide/clone/renderer.py with:
+
+      1. @dataclass RenderedLine:
+         - text: str
+         - x: float
+         - y: float (PDF coords, y=0 at bottom)
+         - width: float
+
+      2. @dataclass RenderedBlock:
+         - qid: str
+         - lines: list[RenderedLine]
+         - bbox: tuple (actual rendered bbox)
+         - font_name: str
+         - font_size: float
+         - original_text: str
+         - rendered_text: str
+
+      3. render_page(blocks: list[ExtractedBlock], corpus: list[str], page_width: float, page_height: float, seed: int) -> tuple[bytes, list[RenderedBlock]]
+
+         For each block:
+         a. Convert PyMuPDF coords to PDF coords: y_pdf = page_height - y_pymupdf
+         b. Select corpus text for block
+         c. Use break_into_lines() to break text to fit block width
+         d. Create canvas with canvas.Canvas(buf, pagesize=(width, height))
+         e. Use canvas.beginText(x, y_top) to create text object
+         f. Call textobj.setFont(font_name, font_size, leading=font_size*1.2)
+         g. For each line: textobj.textLine(line_text)
+         h. Call canvas.drawText(textobj)
+         i. Record RenderedLine for each line with exact coordinates
+         j. Generate QID for block (hash of page:block:seed)
+
+         Return (pdf_bytes, rendered_blocks)
+
+      THIS IS THE CORE RENDERER. Use the ReportLab API correctly:
+      - beginText() creates text object at position
+      - setFont() sets font AND leading
+      - textLine() draws text and moves cursor down by leading
+      - drawText() commits to canvas
+    allowlist:
+      - "python/pdf_oxide/clone/renderer.py"
+    read_context:
+      - "python/pdf_oxide/clone/extractor.py"
+      - "python/pdf_oxide/clone/line_breaker.py"
+      - "python/pdf_oxide/clone/fonts.py"
+    definition_of_done:
+      command: "python -c \"
+from pdf_oxide.clone.extractor import extract_blocks
+from pdf_oxide.clone.renderer import render_page
+from pdf_oxide.clone.corpus import load_corpus
+blocks, w, h = extract_blocks('/tmp/nist_800_171.pdf', 14)
+corpus = load_corpus(50, 42)
+pdf_bytes, rendered = render_page(blocks, corpus, w, h, 42)
+print(f'{len(pdf_bytes)} bytes, {len(rendered)} blocks rendered')
+\""
+      assertion: "Returns PDF bytes and rendered block list"
+
+  - id: "6"
+    title: "Create manifest schema and generator"
+    lane: "1"
+    runner: "scillm"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: ["5"]
+    prompt: |
+      Create python/pdf_oxide/clone/manifest.py with:
+
+      1. @dataclass PageManifest:
+         - page_num: int
+         - width: float
+         - height: float
+         - blocks: list[RenderedBlock]
+
+      2. @dataclass DocumentManifest:
+         - source_path: str
+         - seed: int
+         - generated_at: str (ISO timestamp)
+         - pages: list[PageManifest]
+         - total_blocks property
+         - total_lines property
+
+      3. save_manifest(manifest: DocumentManifest, path: str) -> None
+         - Convert to dict using dataclasses.asdict
+         - Write as JSON with indent=2
+
+      4. load_manifest(path: str) -> DocumentManifest
+         - Load JSON and reconstruct dataclasses
+
+      The manifest IS the ground truth - it records exactly what lines were rendered and where.
+    allowlist:
+      - "python/pdf_oxide/clone/manifest.py"
+    read_context:
+      - "python/pdf_oxide/clone/renderer.py"
+    definition_of_done:
+      command: "python -c \"from pdf_oxide.clone.manifest import DocumentManifest, PageManifest; print('Manifest schema loaded')\""
+      assertion: "Imports successfully"
+
+  # ============================================================================
+  # WAVE 2: Integration & Validation
+  # ============================================================================
+
+  - id: "7"
+    title: "Create main pipeline orchestrator"
+    lane: "2"
+    runner: "code-runner"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["5", "6"]
+    prompt: |
+      Create python/pdf_oxide/clone/pipeline.py with:
+
+      1. clone_page(pdf_path: str, page_idx: int, seed: int, domain: str) -> tuple[bytes, PageManifest]
+         - Extract blocks using extractor
+         - Load corpus using corpus loader
+         - Render page using renderer
+         - Build PageManifest from rendered blocks
+         - Return (pdf_bytes, manifest)
+
+      2. clone_document(pdf_path: str, pages: list[int] | None, seed: int, domain: str) -> tuple[bytes, DocumentManifest]
+         - Clone each page
+         - Merge PDFs using pypdf.PdfWriter
+         - Build DocumentManifest
+         - Return (merged_pdf_bytes, manifest)
+
+      3. main() with argparse:
+         --src: Source PDF path (required)
+         --out: Output PDF path (required)
+         --pages: "1,5,10" or "1-5" or "all" (default: "1")
+         --seed: Random seed (default: 42)
+         --domain: Text domain (default: "government")
+         --save-manifest: Save .manifest.json alongside PDF
+
+      4. if __name__ == "__main__": main()
+    allowlist:
+      - "python/pdf_oxide/clone/pipeline.py"
+    read_context:
+      - "python/pdf_oxide/clone/extractor.py"
+      - "python/pdf_oxide/clone/renderer.py"
+      - "python/pdf_oxide/clone/manifest.py"
+      - "python/pdf_oxide/clone/corpus.py"
+    definition_of_done:
+      command: "python -m pdf_oxide.clone.pipeline --src /tmp/nist_800_171.pdf --out /tmp/clone_test.pdf --pages 15 --save-manifest && test -f /tmp/clone_test.pdf && test -f /tmp/clone_test.manifest.json"
+      assertion: "Creates PDF and manifest files"
+
+  - id: "8"
+    title: "Create validation module comparing extraction to manifest"
+    lane: "2"
+    runner: "scillm"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: ["6", "7"]
+    prompt: |
+      Create python/pdf_oxide/clone/validator.py with:
+
+      1. @dataclass ValidationResult:
+         - page_num: int
+         - total_blocks: int
+         - matched_blocks: int
+         - position_errors: list[dict] (qid, expected, actual, delta)
+         - text_errors: list[dict] (qid, expected, actual)
+         - score: float (0-100)
+
+      2. validate_extraction(cloned_pdf: str, manifest_path: str) -> list[ValidationResult]
+         - Load manifest
+         - For each page:
+           a. Extract text using pdf_oxide.extract_spans() or extract_text_dict()
+           b. Compare extracted positions to manifest positions
+           c. Compare extracted text to manifest text
+           d. Calculate match score
+         - Return validation results per page
+
+      3. print_validation_report(results: list[ValidationResult]) -> None
+         - Print summary: pages validated, overall score
+         - Print per-page breakdown
+         - Flag any position errors > 1pt or text mismatches
+
+      This validates that pdf_oxide can accurately extract what we rendered.
+    allowlist:
+      - "python/pdf_oxide/clone/validator.py"
+    read_context:
+      - "python/pdf_oxide/clone/manifest.py"
+    definition_of_done:
+      command: "python -c \"from pdf_oxide.clone.validator import validate_extraction; print('Validator loaded')\""
+      assertion: "Imports successfully"
+
+  - id: "9"
+    title: "Visual verification test"
+    lane: "2"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["7"]
+    command: |
+      python -m pdf_oxide.clone.pipeline --src /tmp/nist_800_171.pdf --out /tmp/clone_final.pdf --pages 15 --save-manifest && \
+      python3 -c "
+      import fitz
+      doc = fitz.open('/tmp/clone_final.pdf')
+      pix = doc[0].get_pixmap(dpi=150)
+      pix.save('/tmp/clone_final.png')
+      print('Screenshot saved to /tmp/clone_final.png')
+      "
+    definition_of_done:
+      command: "test -f /tmp/clone_final.png"
+      assertion: "Screenshot exists for visual inspection"
+
+  - id: "10"
+    title: "Run validation and report"
+    lane: "2"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: ["8", "9"]
+    command: |
+      python -c "
+      from pdf_oxide.clone.validator import validate_extraction, print_validation_report
+      results = validate_extraction('/tmp/clone_final.pdf', '/tmp/clone_final.manifest.json')
+      print_validation_report(results)
+      "
+    definition_of_done:
+      command: "python -c \"from pdf_oxide.clone.validator import validate_extraction\""
+      assertion: "Validation runs without error"

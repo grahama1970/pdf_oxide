@@ -1,0 +1,1666 @@
+{
+  "fixture_id": "ab8350c2",
+  "generated_at": "2026-04-12T14:48:29.592577+00:00",
+  "seed": 42,
+  "presets_used": [
+    "requirements_matrix",
+    "compliance_matrix",
+    "spec_table",
+    "simple_grid",
+    "merged_cells"
+  ],
+  "pages": [
+    {
+      "page_num": 1,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t0",
+          "rows": 9,
+          "cols": 5,
+          "preset": "requirements_matrix",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_88D69E9342E4",
+              "text": "Req ID",
+              "rendered_text": "[QID_88D69E9342E4]Req ID",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 1,
+              "qid": "QID_CF9C4CD66C9B",
+              "text": "Requirement Description",
+              "rendered_text": "[QID_CF9C4CD66C9B]Requirement Description",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 2,
+              "qid": "QID_FA8029F75B61",
+              "text": "Status",
+              "rendered_text": "[QID_FA8029F75B61]Status",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 3,
+              "qid": "QID_DBCB88DAB1BE",
+              "text": "Evidence Ref",
+              "rendered_text": "[QID_DBCB88DAB1BE]Evidence Ref",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 4,
+              "qid": "QID_8C2B4E84325A",
+              "text": "Notes",
+              "rendered_text": "[QID_8C2B4E84325A]Notes",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_D124C0C983D6",
+              "text": "AC-1",
+              "rendered_text": "[QID_D124C0C983D6]AC-1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_1EE3B7CE1BCE",
+              "text": "Access Control Policy and Procedures",
+              "rendered_text": "[QID_1EE3B7CE1BCE]Access Control Policy and Procedures",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 2,
+              "qid": "QID_1C3E12C146E5",
+              "text": "Implemented",
+              "rendered_text": "[QID_1C3E12C146E5]Implemented",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 3,
+              "qid": "QID_4FE34DF0A9BC",
+              "text": "SSP-3.1",
+              "rendered_text": "[QID_4FE34DF0A9BC]SSP-3.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 4,
+              "qid": "QID_A488FAC5F04F",
+              "text": "Annual review",
+              "rendered_text": "[QID_A488FAC5F04F]Annual review",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 0,
+              "qid": "QID_91BE8F58B3FF",
+              "text": "AC-2",
+              "rendered_text": "[QID_91BE8F58B3FF]AC-2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_D421114991BA",
+              "text": "Account Management",
+              "rendered_text": "[QID_D421114991BA]Account Management",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 2,
+              "qid": "QID_244272D5F73E",
+              "text": "Partial",
+              "rendered_text": "[QID_244272D5F73E]Partial",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 3,
+              "qid": "QID_00115C3D9467",
+              "text": "SSP-3.2.1",
+              "rendered_text": "[QID_00115C3D9467]SSP-3.2.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 4,
+              "qid": "QID_C757B12391C8",
+              "text": "Pending automation",
+              "rendered_text": "[QID_C757B12391C8]Pending automation",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 0,
+              "qid": "QID_3A7BAACBF46C",
+              "text": "AC-3",
+              "rendered_text": "[QID_3A7BAACBF46C]AC-3",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 1,
+              "qid": "QID_905C07C64595",
+              "text": "Access Enforcement",
+              "rendered_text": "[QID_905C07C64595]Access Enforcement",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 2,
+              "qid": "QID_6B7E2FBFCDC9",
+              "text": "Implemented",
+              "rendered_text": "[QID_6B7E2FBFCDC9]Implemented",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 3,
+              "qid": "QID_4DDB21832960",
+              "text": "SSP-3.3",
+              "rendered_text": "[QID_4DDB21832960]SSP-3.3",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 4,
+              "qid": "QID_CA63D8E9ECD4",
+              "text": "Role-based",
+              "rendered_text": "[QID_CA63D8E9ECD4]Role-based",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 0,
+              "qid": "QID_53F8AD324B8D",
+              "text": "AC-4",
+              "rendered_text": "[QID_53F8AD324B8D]AC-4",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 1,
+              "qid": "QID_49E03AD00832",
+              "text": "Information Flow Enforcement",
+              "rendered_text": "[QID_49E03AD00832]Information Flow Enforcement",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 2,
+              "qid": "QID_29A0ACF47389",
+              "text": "Not Implemented",
+              "rendered_text": "[QID_29A0ACF47389]Not Implemented",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 3,
+              "qid": "QID_FF0A09D45500",
+              "text": "-",
+              "rendered_text": "[QID_FF0A09D45500]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 4,
+              "qid": "QID_15B5F4901E65",
+              "text": "Phase 2",
+              "rendered_text": "[QID_15B5F4901E65]Phase 2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 0,
+              "qid": "QID_26D1C8105CB6",
+              "text": "AC-5",
+              "rendered_text": "[QID_26D1C8105CB6]AC-5",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 1,
+              "qid": "QID_A81C65C9C80B",
+              "text": "Separation of Duties",
+              "rendered_text": "[QID_A81C65C9C80B]Separation of Duties",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 2,
+              "qid": "QID_420BB6EDBE9A",
+              "text": "Implemented",
+              "rendered_text": "[QID_420BB6EDBE9A]Implemented",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 3,
+              "qid": "QID_F628860A8AF1",
+              "text": "SSP-3.5",
+              "rendered_text": "[QID_F628860A8AF1]SSP-3.5",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 4,
+              "qid": "QID_2D3F610979BA",
+              "text": "Verified Q1",
+              "rendered_text": "[QID_2D3F610979BA]Verified Q1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 0,
+              "qid": "QID_5B3953D475B8",
+              "text": "AC-6",
+              "rendered_text": "[QID_5B3953D475B8]AC-6",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 1,
+              "qid": "QID_995F47BCACDB",
+              "text": "Least Privilege",
+              "rendered_text": "[QID_995F47BCACDB]Least Privilege",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 2,
+              "qid": "QID_6B5BF5B17FD7",
+              "text": "Partial",
+              "rendered_text": "[QID_6B5BF5B17FD7]Partial",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 3,
+              "qid": "QID_8D2BCA978F5F",
+              "text": "SSP-3.6",
+              "rendered_text": "[QID_8D2BCA978F5F]SSP-3.6",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 4,
+              "qid": "QID_A67AF1E1AB8B",
+              "text": "In progress",
+              "rendered_text": "[QID_A67AF1E1AB8B]In progress",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 0,
+              "qid": "QID_98FC5F73DCD4",
+              "text": "AC-7",
+              "rendered_text": "[QID_98FC5F73DCD4]AC-7",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 1,
+              "qid": "QID_C26DF522D6C6",
+              "text": "Unsuccessful Logon Attempts",
+              "rendered_text": "[QID_C26DF522D6C6]Unsuccessful Logon Attempts",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 2,
+              "qid": "QID_DE9E631DC658",
+              "text": "Implemented",
+              "rendered_text": "[QID_DE9E631DC658]Implemented",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 3,
+              "qid": "QID_6E575E1EB81C",
+              "text": "SSP-3.7",
+              "rendered_text": "[QID_6E575E1EB81C]SSP-3.7",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 4,
+              "qid": "QID_C5B5FB2C3BE6",
+              "text": "Threshold: 3",
+              "rendered_text": "[QID_C5B5FB2C3BE6]Threshold: 3",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 0,
+              "qid": "QID_6DC149BA26B3",
+              "text": "AC-8",
+              "rendered_text": "[QID_6DC149BA26B3]AC-8",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 1,
+              "qid": "QID_2B81FD9A71D1",
+              "text": "System Use Notification",
+              "rendered_text": "[QID_2B81FD9A71D1]System Use Notification",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 2,
+              "qid": "QID_687508837019",
+              "text": "Implemented",
+              "rendered_text": "[QID_687508837019]Implemented",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 3,
+              "qid": "QID_AF693D1FDF02",
+              "text": "SSP-3.8",
+              "rendered_text": "[QID_AF693D1FDF02]SSP-3.8",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 4,
+              "qid": "QID_06B0B00F6DDA",
+              "text": "Banner active",
+              "rendered_text": "[QID_06B0B00F6DDA]Banner active",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_num": 2,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t1",
+          "rows": 9,
+          "cols": 5,
+          "preset": "compliance_matrix",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_90E776060B59",
+              "text": "Control Family",
+              "rendered_text": "[QID_90E776060B59]Control Family",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 1,
+              "qid": "QID_ECAD6A4E8CF4",
+              "text": "ISO 27001",
+              "rendered_text": "[QID_ECAD6A4E8CF4]ISO 27001",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 2,
+              "qid": "QID_F4C305705733",
+              "text": "NIST 800-53",
+              "rendered_text": "[QID_F4C305705733]NIST 800-53",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 3,
+              "qid": "QID_BD0A0CF8BEF7",
+              "text": "CMMC L2",
+              "rendered_text": "[QID_BD0A0CF8BEF7]CMMC L2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 4,
+              "qid": "QID_043746326E74",
+              "text": "SOC 2",
+              "rendered_text": "[QID_043746326E74]SOC 2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_214A566B200A",
+              "text": "Access Control",
+              "rendered_text": "[QID_214A566B200A]Access Control",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_AD627EB8D367",
+              "text": "A.9",
+              "rendered_text": "[QID_AD627EB8D367]A.9",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 2,
+              "qid": "QID_2818321E39DD",
+              "text": "AC",
+              "rendered_text": "[QID_2818321E39DD]AC",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 3,
+              "qid": "QID_4A818043101E",
+              "text": "AC.L2-3.1.1",
+              "rendered_text": "[QID_4A818043101E]AC.L2-3.1.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 4,
+              "qid": "QID_4D7BE7546F12",
+              "text": "CC6.1",
+              "rendered_text": "[QID_4D7BE7546F12]CC6.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 0,
+              "qid": "QID_B4666E777E64",
+              "text": "Audit & Accountability",
+              "rendered_text": "[QID_B4666E777E64]Audit & Accountability",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_D893F676FBD5",
+              "text": "A.12.4",
+              "rendered_text": "[QID_D893F676FBD5]A.12.4",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 2,
+              "qid": "QID_68DD3DC6785B",
+              "text": "AU",
+              "rendered_text": "[QID_68DD3DC6785B]AU",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 3,
+              "qid": "QID_F3B98571D502",
+              "text": "AU.L2-3.3.1",
+              "rendered_text": "[QID_F3B98571D502]AU.L2-3.3.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 4,
+              "qid": "QID_BE50CEBED942",
+              "text": "CC7.2",
+              "rendered_text": "[QID_BE50CEBED942]CC7.2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 0,
+              "qid": "QID_F14887BFBF2A",
+              "text": "Configuration Management",
+              "rendered_text": "[QID_F14887BFBF2A]Configuration Management",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 1,
+              "qid": "QID_044CF9C7B8CA",
+              "text": "A.12.5",
+              "rendered_text": "[QID_044CF9C7B8CA]A.12.5",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 2,
+              "qid": "QID_3B338D728092",
+              "text": "CM",
+              "rendered_text": "[QID_3B338D728092]CM",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 3,
+              "qid": "QID_1658BB9FBF2E",
+              "text": "CM.L2-3.4.1",
+              "rendered_text": "[QID_1658BB9FBF2E]CM.L2-3.4.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 4,
+              "qid": "QID_15533F608F7E",
+              "text": "CC6.6",
+              "rendered_text": "[QID_15533F608F7E]CC6.6",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 0,
+              "qid": "QID_6F6BFD15ECDB",
+              "text": "Identification & Auth",
+              "rendered_text": "[QID_6F6BFD15ECDB]Identification & Auth",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 1,
+              "qid": "QID_6D3270D0E896",
+              "text": "A.9.4",
+              "rendered_text": "[QID_6D3270D0E896]A.9.4",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 2,
+              "qid": "QID_7F04D3E6A1DA",
+              "text": "IA",
+              "rendered_text": "[QID_7F04D3E6A1DA]IA",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 3,
+              "qid": "QID_74982054C960",
+              "text": "IA.L2-3.5.1",
+              "rendered_text": "[QID_74982054C960]IA.L2-3.5.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 4,
+              "qid": "QID_380F9199C45E",
+              "text": "CC6.1",
+              "rendered_text": "[QID_380F9199C45E]CC6.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 0,
+              "qid": "QID_761135461FA4",
+              "text": "Incident Response",
+              "rendered_text": "[QID_761135461FA4]Incident Response",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 1,
+              "qid": "QID_9CE08547BB81",
+              "text": "A.16",
+              "rendered_text": "[QID_9CE08547BB81]A.16",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 2,
+              "qid": "QID_3660D6618715",
+              "text": "IR",
+              "rendered_text": "[QID_3660D6618715]IR",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 3,
+              "qid": "QID_AE6BE24BE820",
+              "text": "IR.L2-3.6.1",
+              "rendered_text": "[QID_AE6BE24BE820]IR.L2-3.6.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 4,
+              "qid": "QID_4640D7DD1F31",
+              "text": "CC7.3",
+              "rendered_text": "[QID_4640D7DD1F31]CC7.3",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 0,
+              "qid": "QID_3A067DED4A58",
+              "text": "Maintenance",
+              "rendered_text": "[QID_3A067DED4A58]Maintenance",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 1,
+              "qid": "QID_00B8D20F2DF4",
+              "text": "A.11.2",
+              "rendered_text": "[QID_00B8D20F2DF4]A.11.2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 2,
+              "qid": "QID_E59F055FC75D",
+              "text": "MA",
+              "rendered_text": "[QID_E59F055FC75D]MA",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 3,
+              "qid": "QID_45EC44308406",
+              "text": "MA.L2-3.7.1",
+              "rendered_text": "[QID_45EC44308406]MA.L2-3.7.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 4,
+              "qid": "QID_D9DD3865F9B1",
+              "text": "-",
+              "rendered_text": "[QID_D9DD3865F9B1]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 0,
+              "qid": "QID_D3F43F4CB5D1",
+              "text": "Physical Protection",
+              "rendered_text": "[QID_D3F43F4CB5D1]Physical Protection",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 1,
+              "qid": "QID_C2D94FC02EB5",
+              "text": "A.11.1",
+              "rendered_text": "[QID_C2D94FC02EB5]A.11.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 2,
+              "qid": "QID_156F9873E2B3",
+              "text": "PE",
+              "rendered_text": "[QID_156F9873E2B3]PE",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 3,
+              "qid": "QID_0A59EC31A838",
+              "text": "PE.L2-3.10.1",
+              "rendered_text": "[QID_0A59EC31A838]PE.L2-3.10.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 4,
+              "qid": "QID_73E4738307EF",
+              "text": "CC6.4",
+              "rendered_text": "[QID_73E4738307EF]CC6.4",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 0,
+              "qid": "QID_D2B918ACD91F",
+              "text": "Risk Assessment",
+              "rendered_text": "[QID_D2B918ACD91F]Risk Assessment",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 1,
+              "qid": "QID_68457D46B490",
+              "text": "A.8.2",
+              "rendered_text": "[QID_68457D46B490]A.8.2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 2,
+              "qid": "QID_13B3E41A72F6",
+              "text": "RA",
+              "rendered_text": "[QID_13B3E41A72F6]RA",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 3,
+              "qid": "QID_A013F3633146",
+              "text": "RA.L2-3.11.1",
+              "rendered_text": "[QID_A013F3633146]RA.L2-3.11.1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 4,
+              "qid": "QID_096A669F6D76",
+              "text": "CC3.2",
+              "rendered_text": "[QID_096A669F6D76]CC3.2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_num": 3,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t2",
+          "rows": 10,
+          "cols": 5,
+          "preset": "spec_table",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_0BB968FB7FD0",
+              "text": "Electrical Characteristics (TA = 25\u00b0C)",
+              "rendered_text": "[QID_0BB968FB7FD0]Electrical Characteristics (TA = 25\u00b0C)",
+              "is_merged": true,
+              "merge_span": [
+                1,
+                5
+              ],
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_A1BB295DDFF0",
+              "text": "Parameter",
+              "rendered_text": "[QID_A1BB295DDFF0]Parameter",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_E916C61C0492",
+              "text": "Min",
+              "rendered_text": "[QID_E916C61C0492]Min",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 2,
+              "qid": "QID_52C375C6EA15",
+              "text": "Typ",
+              "rendered_text": "[QID_52C375C6EA15]Typ",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 3,
+              "qid": "QID_DF692C201BED",
+              "text": "Max",
+              "rendered_text": "[QID_DF692C201BED]Max",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 4,
+              "qid": "QID_B17747A65C69",
+              "text": "Unit",
+              "rendered_text": "[QID_B17747A65C69]Unit",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 0,
+              "qid": "QID_6E871E1B68B1",
+              "text": "Supply Voltage (VDD)",
+              "rendered_text": "[QID_6E871E1B68B1]Supply Voltage (VDD)",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_2E7F0CD1610E",
+              "text": "3.0",
+              "rendered_text": "[QID_2E7F0CD1610E]3.0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 2,
+              "qid": "QID_44F696ACE4BF",
+              "text": "3.3",
+              "rendered_text": "[QID_44F696ACE4BF]3.3",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 3,
+              "qid": "QID_709EE33DEA0E",
+              "text": "3.6",
+              "rendered_text": "[QID_709EE33DEA0E]3.6",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 4,
+              "qid": "QID_9D27D0D5A9E9",
+              "text": "V",
+              "rendered_text": "[QID_9D27D0D5A9E9]V",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 0,
+              "qid": "QID_2C061C688602",
+              "text": "Supply Current (IDD)",
+              "rendered_text": "[QID_2C061C688602]Supply Current (IDD)",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 1,
+              "qid": "QID_114BE4F255F7",
+              "text": "-",
+              "rendered_text": "[QID_114BE4F255F7]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 2,
+              "qid": "QID_8A03D3C3B9F2",
+              "text": "15",
+              "rendered_text": "[QID_8A03D3C3B9F2]15",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 3,
+              "qid": "QID_EE8131785CEF",
+              "text": "25",
+              "rendered_text": "[QID_EE8131785CEF]25",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 4,
+              "qid": "QID_3A0407759859",
+              "text": "mA",
+              "rendered_text": "[QID_3A0407759859]mA",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 0,
+              "qid": "QID_4A05819BF87C",
+              "text": "Input Voltage High (VIH)",
+              "rendered_text": "[QID_4A05819BF87C]Input Voltage High (VIH)",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 1,
+              "qid": "QID_D34E89B43C75",
+              "text": "2.0",
+              "rendered_text": "[QID_D34E89B43C75]2.0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 2,
+              "qid": "QID_53CF673146AC",
+              "text": "-",
+              "rendered_text": "[QID_53CF673146AC]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 3,
+              "qid": "QID_ACAF5E83C2F1",
+              "text": "VDD",
+              "rendered_text": "[QID_ACAF5E83C2F1]VDD",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 4,
+              "qid": "QID_01C76A504AE8",
+              "text": "V",
+              "rendered_text": "[QID_01C76A504AE8]V",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 0,
+              "qid": "QID_17775BCFB221",
+              "text": "Input Voltage Low (VIL)",
+              "rendered_text": "[QID_17775BCFB221]Input Voltage Low (VIL)",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 1,
+              "qid": "QID_1DB9CBA75D31",
+              "text": "0",
+              "rendered_text": "[QID_1DB9CBA75D31]0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 2,
+              "qid": "QID_E55EB94F8A84",
+              "text": "-",
+              "rendered_text": "[QID_E55EB94F8A84]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 3,
+              "qid": "QID_CCBE380979E9",
+              "text": "0.8",
+              "rendered_text": "[QID_CCBE380979E9]0.8",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 4,
+              "qid": "QID_6FB772A83203",
+              "text": "V",
+              "rendered_text": "[QID_6FB772A83203]V",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 0,
+              "qid": "QID_DB0F465729DA",
+              "text": "Output Voltage High (VOH)",
+              "rendered_text": "[QID_DB0F465729DA]Output Voltage High (VOH)",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 1,
+              "qid": "QID_C45DC0A9573F",
+              "text": "2.4",
+              "rendered_text": "[QID_C45DC0A9573F]2.4",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 2,
+              "qid": "QID_A3DD83908A55",
+              "text": "-",
+              "rendered_text": "[QID_A3DD83908A55]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 3,
+              "qid": "QID_1E90C447A7AD",
+              "text": "-",
+              "rendered_text": "[QID_1E90C447A7AD]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 6,
+              "col": 4,
+              "qid": "QID_C12730FC0448",
+              "text": "V",
+              "rendered_text": "[QID_C12730FC0448]V",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 0,
+              "qid": "QID_DF7E5DE0DBA6",
+              "text": "Output Voltage Low (VOL)",
+              "rendered_text": "[QID_DF7E5DE0DBA6]Output Voltage Low (VOL)",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 1,
+              "qid": "QID_34DACED0DAD1",
+              "text": "-",
+              "rendered_text": "[QID_34DACED0DAD1]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 2,
+              "qid": "QID_AD8D44D77DEA",
+              "text": "-",
+              "rendered_text": "[QID_AD8D44D77DEA]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 3,
+              "qid": "QID_2CCAF064E0CC",
+              "text": "0.4",
+              "rendered_text": "[QID_2CCAF064E0CC]0.4",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 7,
+              "col": 4,
+              "qid": "QID_3E7CE0E9E149",
+              "text": "V",
+              "rendered_text": "[QID_3E7CE0E9E149]V",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 0,
+              "qid": "QID_5622EE0A7B5B",
+              "text": "Clock Frequency (fCLK)",
+              "rendered_text": "[QID_5622EE0A7B5B]Clock Frequency (fCLK)",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 1,
+              "qid": "QID_8E3AAF83D62D",
+              "text": "1",
+              "rendered_text": "[QID_8E3AAF83D62D]1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 2,
+              "qid": "QID_0E4F03418D43",
+              "text": "-",
+              "rendered_text": "[QID_0E4F03418D43]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 3,
+              "qid": "QID_CDC03B27B973",
+              "text": "20",
+              "rendered_text": "[QID_CDC03B27B973]20",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 8,
+              "col": 4,
+              "qid": "QID_16CDA4E25827",
+              "text": "MHz",
+              "rendered_text": "[QID_16CDA4E25827]MHz",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 9,
+              "col": 0,
+              "qid": "QID_D97E377C7461",
+              "text": "Rise Time (tR)",
+              "rendered_text": "[QID_D97E377C7461]Rise Time (tR)",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 9,
+              "col": 1,
+              "qid": "QID_B6A34276EC6B",
+              "text": "-",
+              "rendered_text": "[QID_B6A34276EC6B]-",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 9,
+              "col": 2,
+              "qid": "QID_248FBDB47BB3",
+              "text": "10",
+              "rendered_text": "[QID_248FBDB47BB3]10",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 9,
+              "col": 3,
+              "qid": "QID_33BE95A0F029",
+              "text": "20",
+              "rendered_text": "[QID_33BE95A0F029]20",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 9,
+              "col": 4,
+              "qid": "QID_8325349717E7",
+              "text": "ns",
+              "rendered_text": "[QID_8325349717E7]ns",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_num": 4,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t3",
+          "rows": 4,
+          "cols": 3,
+          "preset": "simple_grid",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_2B43754FE781",
+              "text": "Header 1",
+              "rendered_text": "[QID_2B43754FE781]Header 1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 1,
+              "qid": "QID_BF351B6BC758",
+              "text": "Header 2",
+              "rendered_text": "[QID_BF351B6BC758]Header 2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 2,
+              "qid": "QID_9389F978002F",
+              "text": "Header 3",
+              "rendered_text": "[QID_9389F978002F]Header 3",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_B64F765392A9",
+              "text": "Cell R1C0",
+              "rendered_text": "[QID_B64F765392A9]Cell R1C0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_EAD893D3C6C2",
+              "text": "Cell R1C1",
+              "rendered_text": "[QID_EAD893D3C6C2]Cell R1C1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 2,
+              "qid": "QID_C6B35B793C94",
+              "text": "Cell R1C2",
+              "rendered_text": "[QID_C6B35B793C94]Cell R1C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 0,
+              "qid": "QID_0AE3F0A44AF1",
+              "text": "Cell R2C0",
+              "rendered_text": "[QID_0AE3F0A44AF1]Cell R2C0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_148490B30EBA",
+              "text": "Cell R2C1",
+              "rendered_text": "[QID_148490B30EBA]Cell R2C1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 2,
+              "qid": "QID_08D262CC0D1D",
+              "text": "Cell R2C2",
+              "rendered_text": "[QID_08D262CC0D1D]Cell R2C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 0,
+              "qid": "QID_5EC47CB90DB1",
+              "text": "Cell R3C0",
+              "rendered_text": "[QID_5EC47CB90DB1]Cell R3C0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 1,
+              "qid": "QID_D9888B6BB5F9",
+              "text": "Cell R3C1",
+              "rendered_text": "[QID_D9888B6BB5F9]Cell R3C1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 2,
+              "qid": "QID_0C3B9AB3399B",
+              "text": "Cell R3C2",
+              "rendered_text": "[QID_0C3B9AB3399B]Cell R3C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_num": 5,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t4",
+          "rows": 4,
+          "cols": 3,
+          "preset": "merged_cells",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_570C3AA4B602",
+              "text": "Spanning Header",
+              "rendered_text": "[QID_570C3AA4B602]Spanning Header",
+              "is_merged": true,
+              "merge_span": [
+                1,
+                3
+              ],
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_50D74F9BE159",
+              "text": "Row Span",
+              "rendered_text": "[QID_50D74F9BE159]Row Span",
+              "is_merged": true,
+              "merge_span": [
+                2,
+                1
+              ],
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_2E2B0846C20C",
+              "text": "R1C1",
+              "rendered_text": "[QID_2E2B0846C20C]R1C1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 2,
+              "qid": "QID_8FA57E49C7B7",
+              "text": "R1C2",
+              "rendered_text": "[QID_8FA57E49C7B7]R1C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_E75084CE9C1E",
+              "text": "R2C1",
+              "rendered_text": "[QID_E75084CE9C1E]R2C1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 2,
+              "qid": "QID_6230859157B9",
+              "text": "R2C2",
+              "rendered_text": "[QID_6230859157B9]R2C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 0,
+              "qid": "QID_9C8D01DAC5F0",
+              "text": "Footer Span",
+              "rendered_text": "[QID_9C8D01DAC5F0]Footer Span",
+              "is_merged": true,
+              "merge_span": [
+                1,
+                2
+              ],
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 2,
+              "qid": "QID_12ADFE9814E8",
+              "text": "R3C2",
+              "rendered_text": "[QID_12ADFE9814E8]R3C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

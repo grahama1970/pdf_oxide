@@ -406,14 +406,7 @@ impl TextWriter {
             }
 
             // Position this line
-            builder.op(ContentStreamOp::SetTextMatrix(
-                1.0,
-                0.0,
-                0.0,
-                1.0,
-                x + x_offset,
-                y,
-            ));
+            builder.op(ContentStreamOp::SetTextMatrix(1.0, 0.0, 0.0, 1.0, x + x_offset, y));
 
             // Render each span in the line
             for span in &line.spans {

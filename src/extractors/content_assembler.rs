@@ -120,7 +120,10 @@ pub fn assign_assets_to_sections(
         blocks_by_page.entry(b.page).or_default().push(b);
     }
 
-    let assign_spatial = |page: usize, bbox: &Rect, blocks_by_page: &std::collections::HashMap<usize, Vec<&ContentBlock>>| -> Option<String> {
+    let assign_spatial = |page: usize,
+                          bbox: &Rect,
+                          blocks_by_page: &std::collections::HashMap<usize, Vec<&ContentBlock>>|
+     -> Option<String> {
         let page_blocks = blocks_by_page.get(&page)?;
         if page_blocks.is_empty() {
             return None;
@@ -139,10 +142,7 @@ pub fn assign_assets_to_sections(
             .filter(|s| s.page_start <= page && page <= s.page_end)
             .collect();
         if candidates.is_empty() {
-            candidates = sections
-                .iter()
-                .filter(|s| s.page_start <= page)
-                .collect();
+            candidates = sections.iter().filter(|s| s.page_start <= page).collect();
         }
         if candidates.is_empty() {
             return None;
@@ -347,8 +347,13 @@ pub fn merge_content(
                 ObjRef::Block(b) => {
                     if b.block_type == "SectionHeader" {
                         flush_text(
-                            &mut merged, &mut content_id, &mut text_buffer,
-                            &mut text_bboxes, &current_page, text_sort_base, sid,
+                            &mut merged,
+                            &mut content_id,
+                            &mut text_buffer,
+                            &mut text_bboxes,
+                            &current_page,
+                            text_sort_base,
+                            sid,
                         );
                         content_id += 1;
                         merged.push(MergedContentEntry {
@@ -365,8 +370,13 @@ pub fn merge_content(
                         text_sort_base = sort_order + 1;
                     } else if b.is_equation {
                         flush_text(
-                            &mut merged, &mut content_id, &mut text_buffer,
-                            &mut text_bboxes, &current_page, text_sort_base, sid,
+                            &mut merged,
+                            &mut content_id,
+                            &mut text_buffer,
+                            &mut text_bboxes,
+                            &current_page,
+                            text_sort_base,
+                            sid,
                         );
                         content_id += 1;
                         merged.push(MergedContentEntry {
@@ -387,25 +397,35 @@ pub fn merge_content(
                             None => {
                                 current_page = Some(b.page);
                                 text_sort_base = *sort_order;
-                            }
+                            },
                             Some(cp) if cp != b.page => {
                                 flush_text(
-                                    &mut merged, &mut content_id, &mut text_buffer,
-                                    &mut text_bboxes, &current_page, text_sort_base, sid,
+                                    &mut merged,
+                                    &mut content_id,
+                                    &mut text_buffer,
+                                    &mut text_bboxes,
+                                    &current_page,
+                                    text_sort_base,
+                                    sid,
                                 );
                                 current_page = Some(b.page);
                                 text_sort_base = *sort_order;
-                            }
-                            _ => {}
+                            },
+                            _ => {},
                         }
                         text_buffer.push(b.text.trim());
                         text_bboxes.push(b.bbox);
                     }
-                }
+                },
                 ObjRef::Table(t) => {
                     flush_text(
-                        &mut merged, &mut content_id, &mut text_buffer,
-                        &mut text_bboxes, &current_page, text_sort_base, sid,
+                        &mut merged,
+                        &mut content_id,
+                        &mut text_buffer,
+                        &mut text_bboxes,
+                        &current_page,
+                        text_sort_base,
+                        sid,
                     );
                     content_id += 1;
                     merged.push(MergedContentEntry {
@@ -420,11 +440,16 @@ pub fn merge_content(
                     });
                     current_page = Some(t.page);
                     text_sort_base = sort_order + 1;
-                }
+                },
                 ObjRef::Figure(f) => {
                     flush_text(
-                        &mut merged, &mut content_id, &mut text_buffer,
-                        &mut text_bboxes, &current_page, text_sort_base, sid,
+                        &mut merged,
+                        &mut content_id,
+                        &mut text_buffer,
+                        &mut text_bboxes,
+                        &current_page,
+                        text_sort_base,
+                        sid,
                     );
                     content_id += 1;
                     merged.push(MergedContentEntry {
@@ -439,14 +464,19 @@ pub fn merge_content(
                     });
                     current_page = Some(f.page);
                     text_sort_base = sort_order + 1;
-                }
+                },
             }
         }
 
         // Flush remaining text
         flush_text(
-            &mut merged, &mut content_id, &mut text_buffer,
-            &mut text_bboxes, &current_page, text_sort_base, sid,
+            &mut merged,
+            &mut content_id,
+            &mut text_buffer,
+            &mut text_bboxes,
+            &current_page,
+            text_sort_base,
+            sid,
         );
     }
 
@@ -528,7 +558,16 @@ pub fn assemble_content(
 mod tests {
     use super::*;
 
-    fn make_block(id: &str, page: usize, x: f32, y: f32, w: f32, h: f32, text: &str, section_id: &str) -> ContentBlock {
+    fn make_block(
+        id: &str,
+        page: usize,
+        x: f32,
+        y: f32,
+        w: f32,
+        h: f32,
+        text: &str,
+        section_id: &str,
+    ) -> ContentBlock {
         ContentBlock {
             id: id.to_string(),
             page,
@@ -581,9 +620,16 @@ mod tests {
 
     #[test]
     fn test_spatial_assignment() {
-        let blocks = vec![
-            make_block("b1", 0, 10.0, 100.0, 400.0, 14.0, "Text near table", "sec1"),
-        ];
+        let blocks = vec![make_block(
+            "b1",
+            0,
+            10.0,
+            100.0,
+            400.0,
+            14.0,
+            "Text near table",
+            "sec1",
+        )];
         let mut tables = vec![make_table("t1", 0, 10.0, 120.0, 400.0, 100.0)];
         let sections = vec![make_section("sec1", "Introduction", 0, 2)];
 
@@ -656,9 +702,16 @@ mod tests {
     #[test]
     fn test_full_assembly() {
         let sections = vec![make_section("sec1", "Intro", 0, 0)];
-        let blocks = vec![
-            make_block("b1", 0, 10.0, 50.0, 400.0, 14.0, "Hello world.", "sec1"),
-        ];
+        let blocks = vec![make_block(
+            "b1",
+            0,
+            10.0,
+            50.0,
+            400.0,
+            14.0,
+            "Hello world.",
+            "sec1",
+        )];
         let tables = vec![make_table("t1", 0, 10.0, 200.0, 400.0, 100.0)];
         let figures = vec![];
 

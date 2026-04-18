@@ -65,7 +65,8 @@ pub fn predict_extraction(doc: &mut PdfDocument) -> Result<ExtractionPrediction>
             continue;
         }
 
-        let (width, height) = doc.get_page_info(pg)
+        let (width, height) = doc
+            .get_page_info(pg)
             .ok()
             .map(|info| (info.media_box.width, info.media_box.height))
             .unwrap_or((612.0, 792.0));
@@ -78,12 +79,27 @@ pub fn predict_extraction(doc: &mut PdfDocument) -> Result<ExtractionPrediction>
         page_block_summary.push(PageBlockSummary {
             page: pg,
             total_blocks: blocks.len(),
-            title_count: blocks.iter().filter(|b| b.block_type == BlockType::Title).count(),
-            body_count: blocks.iter().filter(|b| b.block_type == BlockType::Body).count(),
-            list_count: blocks.iter().filter(|b| b.block_type == BlockType::List).count(),
+            title_count: blocks
+                .iter()
+                .filter(|b| b.block_type == BlockType::Title)
+                .count(),
+            body_count: blocks
+                .iter()
+                .filter(|b| b.block_type == BlockType::Body)
+                .count(),
+            list_count: blocks
+                .iter()
+                .filter(|b| b.block_type == BlockType::List)
+                .count(),
             table_count: tables.len(),
-            caption_count: blocks.iter().filter(|b| b.block_type == BlockType::Caption).count(),
-            footnote_count: blocks.iter().filter(|b| b.block_type == BlockType::Footnote).count(),
+            caption_count: blocks
+                .iter()
+                .filter(|b| b.block_type == BlockType::Caption)
+                .count(),
+            footnote_count: blocks
+                .iter()
+                .filter(|b| b.block_type == BlockType::Footnote)
+                .count(),
             has_header: blocks.iter().any(|b| b.block_type == BlockType::Header),
             has_footer: blocks.iter().any(|b| b.block_type == BlockType::Footer),
             has_page_number: blocks.iter().any(|b| b.block_type == BlockType::PageNumber),
@@ -125,7 +141,7 @@ fn recommend_strategy(profile: &DocumentProfile, engineering: &EngineeringProfil
             } else {
                 "standard_extraction".to_string()
             }
-        }
+        },
     }
 }
 

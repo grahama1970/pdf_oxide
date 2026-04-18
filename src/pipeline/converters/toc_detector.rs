@@ -97,7 +97,8 @@ impl TocDetector {
         }
 
         // Step 1: Filter out non-entry lines FIRST, then cluster
-        let valid_lines: Vec<&TocLine> = lines.iter()
+        let valid_lines: Vec<&TocLine> = lines
+            .iter()
             .filter(|l| !is_toc_title(&l.text) && l.title_text.trim().len() >= 2)
             .collect();
 
@@ -153,13 +154,25 @@ impl TocDetector {
 
         // Signal 2: Right-aligned page numbers (weight: 2)
         if lines_with_numbers >= 3 {
-            let right_xs: Vec<f32> = lines.iter()
-                .filter_map(|l| if l.page_number.is_some() { Some(l.right_x) } else { None })
+            let right_xs: Vec<f32> = lines
+                .iter()
+                .filter_map(|l| {
+                    if l.page_number.is_some() {
+                        Some(l.right_x)
+                    } else {
+                        None
+                    }
+                })
                 .collect();
             if !right_xs.is_empty() {
                 let mean = right_xs.iter().sum::<f32>() / right_xs.len() as f32;
-                let variance = right_xs.iter().map(|x| (x - mean).powi(2)).sum::<f32>() / right_xs.len() as f32;
-                let alignment_score = if variance.sqrt() < self.page_number_alignment_tolerance { 1.0 } else { 0.3 };
+                let variance = right_xs.iter().map(|x| (x - mean).powi(2)).sum::<f32>()
+                    / right_xs.len() as f32;
+                let alignment_score = if variance.sqrt() < self.page_number_alignment_tolerance {
+                    1.0
+                } else {
+                    0.3
+                };
                 signals += alignment_score * 2.0;
             }
             total_weight += 2.0;
@@ -168,7 +181,8 @@ impl TocDetector {
         // Signal 3: Multiple indent levels (weight: 1)
         let left_edges: Vec<f32> = lines.iter().map(|l| l.left_x).collect();
         let indent_levels = cluster_x_positions(&left_edges, self.indent_tolerance);
-        let unique_levels: std::collections::HashSet<usize> = indent_levels.iter().copied().collect();
+        let unique_levels: std::collections::HashSet<usize> =
+            indent_levels.iter().copied().collect();
         let indent_score = if unique_levels.len() >= 2 { 1.0 } else { 0.3 };
         signals += indent_score * 1.0;
         total_weight += 1.0;
@@ -182,7 +196,11 @@ impl TocDetector {
             total_weight += 2.0;
         }
 
-        if total_weight > 0.0 { signals / total_weight } else { 0.0 }
+        if total_weight > 0.0 {
+            signals / total_weight
+        } else {
+            0.0
+        }
     }
 
     /// Group spans into logical lines based on Y-coordinate proximity.
@@ -191,9 +209,10 @@ impl TocDetector {
             return Vec::new();
         }
 
-        // Sort by Y (top-to-bottom in page coords)
+        // PDF page coordinates grow upward from the bottom-left, so higher Y
+        // values appear earlier on the page.
         let mut sorted: Vec<&TextSpan> = spans.iter().collect();
-        sorted.sort_by(|a, b| safe_float_cmp(a.bbox.top(), b.bbox.top()));
+        sorted.sort_by(|a, b| safe_float_cmp(b.bbox.top(), a.bbox.top()));
 
         let mut lines: Vec<Vec<&TextSpan>> = Vec::new();
         let mut current: Vec<&TextSpan> = vec![sorted[0]];
@@ -204,7 +223,8 @@ impl TocDetector {
             if (span.bbox.top() - centroid_y).abs() <= self.line_tolerance {
                 current.push(span);
                 // Update centroid as running average
-                centroid_y = current.iter().map(|s| s.bbox.top()).sum::<f32>() / current.len() as f32;
+                centroid_y =
+                    current.iter().map(|s| s.bbox.top()).sum::<f32>() / current.len() as f32;
             } else {
                 current.sort_by(|a, b| safe_float_cmp(a.bbox.left(), b.bbox.left()));
                 lines.push(current);
@@ -217,9 +237,11 @@ impl TocDetector {
             lines.push(current);
         }
 
-        lines.iter().map(|line_spans| TocLine::from_spans(line_spans)).collect()
+        lines
+            .iter()
+            .map(|line_spans| TocLine::from_spans(line_spans))
+            .collect()
     }
-
 }
 
 /// A predicted section with its page span, derived from consecutive TOC entries.
@@ -251,9 +273,12 @@ pub fn build_section_map(entries: &[TocEntry], total_pages: u32) -> Vec<SectionS
     // Use physical_page if resolved. For non-roman entries without physical_page,
     // treat page_number as physical (arabic pages usually are). For roman entries
     // without resolution, skip — we can't map them reliably.
-    let mut with_pages: Vec<(&TocEntry, u32)> = entries.iter()
+    let mut with_pages: Vec<(&TocEntry, u32)> = entries
+        .iter()
         .filter_map(|e| {
-            if e.text.trim().is_empty() { return None; }
+            if e.text.trim().is_empty() {
+                return None;
+            }
             let page = if let Some(p) = e.physical_page {
                 p as u32
             } else if !e.is_roman {
@@ -263,7 +288,9 @@ pub fn build_section_map(entries: &[TocEntry], total_pages: u32) -> Vec<SectionS
             } else {
                 return None; // Roman numeral without PageLabels resolution — skip
             };
-            if page >= total_pages { return None; } // bounds check
+            if page >= total_pages {
+                return None;
+            } // bounds check
             Some((e, page))
         })
         .collect();
@@ -278,7 +305,11 @@ pub fn build_section_map(entries: &[TocEntry], total_pages: u32) -> Vec<SectionS
         let (entry, start) = with_pages[i];
         let end = if i + 1 < with_pages.len() {
             let next_start = with_pages[i + 1].1;
-            if next_start > start { next_start - 1 } else { start }
+            if next_start > start {
+                next_start - 1
+            } else {
+                start
+            }
         } else {
             total_pages.saturating_sub(1)
         };
@@ -303,20 +334,23 @@ pub fn build_section_map_from_outline(
     items: &[(String, Option<u32>, usize)], // (title, page, depth)
     total_pages: u32,
 ) -> Vec<SectionSpan> {
-    let entries: Vec<TocEntry> = items.iter().map(|(title, page, depth)| {
-        let entry_type = classify_toc_entry(title, false);
-        TocEntry {
-            text: title.clone(),
-            page_number: *page,
-            is_roman: false,
-            physical_page: page.map(|p| p as usize), // outline pages are already physical
-            entry_type,
-            indent_level: *depth,
-            font_size: 0.0,
-            is_bold: false,
-            y_range: 0.0..0.0,
-        }
-    }).collect();
+    let entries: Vec<TocEntry> = items
+        .iter()
+        .map(|(title, page, depth)| {
+            let entry_type = classify_toc_entry(title, false);
+            TocEntry {
+                text: title.clone(),
+                page_number: *page,
+                is_roman: false,
+                physical_page: page.map(|p| p as usize), // outline pages are already physical
+                entry_type,
+                indent_level: *depth,
+                font_size: 0.0,
+                is_bold: false,
+                y_range: 0.0..0.0,
+            }
+        })
+        .collect();
     build_section_map(&entries, total_pages)
 }
 
@@ -326,7 +360,8 @@ pub fn build_section_map_from_outline(
 /// and a pre-computed label-to-physical mapping, then sets `physical_page` on each entry.
 pub fn resolve_page_labels(entries: &mut [TocEntry], labels: &[(String, usize)]) {
     // Build reverse lookup: label string -> physical page index
-    let label_map: std::collections::HashMap<String, usize> = labels.iter()
+    let label_map: std::collections::HashMap<String, usize> = labels
+        .iter()
         .map(|(label, idx)| (label.to_lowercase(), *idx))
         .collect();
 
@@ -353,10 +388,24 @@ pub fn resolve_page_labels(entries: &mut [TocEntry], labels: &[(String, usize)])
 }
 
 fn to_roman_lower(n: u32) -> String {
-    if n == 0 { return String::new(); }
-    let values = [(1000, "m"), (900, "cm"), (500, "d"), (400, "cd"),
-                  (100, "c"), (90, "xc"), (50, "l"), (40, "xl"),
-                  (10, "x"), (9, "ix"), (5, "v"), (4, "iv"), (1, "i")];
+    if n == 0 {
+        return String::new();
+    }
+    let values = [
+        (1000, "m"),
+        (900, "cm"),
+        (500, "d"),
+        (400, "cd"),
+        (100, "c"),
+        (90, "xc"),
+        (50, "l"),
+        (40, "xl"),
+        (10, "x"),
+        (9, "ix"),
+        (5, "v"),
+        (4, "iv"),
+        (1, "i"),
+    ];
     let mut result = String::new();
     let mut remaining = n;
     for &(val, sym) in &values {
@@ -395,25 +444,51 @@ impl TocLine {
     fn from_spans(spans: &[&TextSpan]) -> Self {
         if spans.is_empty() {
             return Self {
-                text: String::new(), title_text: String::new(), page_number: None,
-                is_roman: false, left_x: 0.0, right_x: 0.0, font_size: 0.0,
-                is_bold: false, y_top: 0.0, y_bottom: 0.0,
+                text: String::new(),
+                title_text: String::new(),
+                page_number: None,
+                is_roman: false,
+                left_x: 0.0,
+                right_x: 0.0,
+                font_size: 0.0,
+                is_bold: false,
+                y_top: 0.0,
+                y_bottom: 0.0,
             };
         }
 
-        let full_text: String = spans.iter().map(|s| s.text.as_str()).collect::<Vec<_>>().join(" ");
+        let full_text: String = spans
+            .iter()
+            .map(|s| s.text.as_str())
+            .collect::<Vec<_>>()
+            .join(" ");
 
         // left_x: skip leader-only spans, use first span with actual text content
-        let left_x = spans.iter()
-            .find(|s| s.text.trim().chars().any(|c| !is_leader_char(c) && !c.is_whitespace()))
+        let left_x = spans
+            .iter()
+            .find(|s| {
+                s.text
+                    .trim()
+                    .chars()
+                    .any(|c| !is_leader_char(c) && !c.is_whitespace())
+            })
             .map(|s| s.bbox.left())
             .unwrap_or_else(|| spans.first().map(|s| s.bbox.left()).unwrap_or(0.0));
         let right_x = spans.last().map(|s| s.bbox.right()).unwrap_or(0.0);
-        let y_top = spans.iter().map(|s| s.bbox.top()).min_by(|a, b| safe_float_cmp(*a, *b)).unwrap_or(0.0);
-        let y_bottom = spans.iter().map(|s| s.bbox.bottom()).max_by(|a, b| safe_float_cmp(*a, *b)).unwrap_or(0.0);
+        let y_top = spans
+            .iter()
+            .map(|s| s.bbox.top())
+            .min_by(|a, b| safe_float_cmp(*a, *b))
+            .unwrap_or(0.0);
+        let y_bottom = spans
+            .iter()
+            .map(|s| s.bbox.bottom())
+            .max_by(|a, b| safe_float_cmp(*a, *b))
+            .unwrap_or(0.0);
 
         // Dominant font: by total text length, not max size
-        let mut size_coverage: std::collections::HashMap<u32, usize> = std::collections::HashMap::new();
+        let mut size_coverage: std::collections::HashMap<u32, usize> =
+            std::collections::HashMap::new();
         let mut bold_chars = 0usize;
         let mut total_chars = 0usize;
         for s in spans.iter() {
@@ -421,9 +496,12 @@ impl TocLine {
             let key = (s.font_size * 10.0) as u32; // bucket to 0.1pt
             *size_coverage.entry(key).or_insert(0) += len;
             total_chars += len;
-            if s.font_weight.is_bold() { bold_chars += len; }
+            if s.font_weight.is_bold() {
+                bold_chars += len;
+            }
         }
-        let font_size = size_coverage.into_iter()
+        let font_size = size_coverage
+            .into_iter()
             .max_by_key(|(_, count)| *count)
             .map(|(key, _)| key as f32 / 10.0)
             .unwrap_or(12.0);
@@ -437,7 +515,8 @@ impl TocLine {
         // Build title text: everything except the page number and leader dots
         let title_text = if page_number.is_some() && spans.len() > 1 {
             // Take all spans except the last (page number), strip leaders
-            let title_spans: Vec<&str> = spans[..spans.len()-1].iter()
+            let title_spans: Vec<&str> = spans[..spans.len() - 1]
+                .iter()
                 .map(|s| s.text.as_str())
                 .collect();
             strip_leaders(&title_spans.join(" "))
@@ -474,6 +553,37 @@ fn parse_page_number(text: &str) -> Option<u32> {
     parse_page_number_typed(text).0
 }
 
+fn parse_page_number_token(text: &str) -> (Option<u32>, bool) {
+    if text.is_empty() {
+        return (None, false);
+    }
+
+    // Arabic numerals first
+    if let Ok(n) = text.parse::<u32>() {
+        return (Some(n), false);
+    }
+
+    // Compound page numbers like "A-1", "ES-1", "2-14" — extract trailing number
+    if let Some(pos) = text.rfind('-') {
+        if let Ok(n) = text[pos + 1..].parse::<u32>() {
+            // Only accept if the part before dash is short (prefix, not a title)
+            let prefix = &text[..pos];
+            if prefix.len() <= 4 && prefix.chars().all(|c| c.is_alphanumeric()) {
+                return (Some(n), false);
+            }
+        }
+    }
+
+    // Roman numerals (only if short — avoid matching words like "civil")
+    if text.len() <= 8 {
+        if let Some(n) = parse_roman(text) {
+            return (Some(n), true);
+        }
+    }
+
+    (None, false)
+}
+
 /// Parse page number, also returning whether it was roman numeral.
 fn parse_page_number_typed(text: &str) -> (Option<u32>, bool) {
     let trimmed = text.trim();
@@ -485,28 +595,28 @@ fn parse_page_number_typed(text: &str) -> (Option<u32>, bool) {
         .trim_end_matches(|c: char| c == '.' || c == ')' || c == ']')
         .trim_start_matches(|c: char| c == '(' || c == '[');
 
-    // Arabic numerals first
-    if let Ok(n) = cleaned.parse::<u32>() {
-        return (Some(n), false);
+    let direct = parse_page_number_token(cleaned);
+    if direct.0.is_some() {
+        return direct;
     }
 
-    // Compound page numbers like "A-1", "ES-1", "2-14" — extract trailing number
-    if let Some(pos) = cleaned.rfind('-') {
-        if let Ok(n) = cleaned[pos+1..].parse::<u32>() {
-            // Only accept if the part before dash is short (prefix, not a title)
-            let prefix = &cleaned[..pos];
-            if prefix.len() <= 4 && prefix.chars().all(|c| c.is_alphanumeric()) {
-                return (Some(n), false);
-            }
+    // TOC lines are sometimes flattened into a single span, so fall back to the
+    // last whitespace-delimited token after stripping leader characters.
+    if let Some(last_token) = cleaned
+        .trim_end_matches(|c: char| is_leader_char(c) || c.is_whitespace())
+        .split_whitespace()
+        .last()
+    {
+        let token = last_token
+            .trim_end_matches(|c: char| is_leader_char(c))
+            .trim_end_matches(|c: char| c == '.' || c == ')' || c == ']')
+            .trim_start_matches(|c: char| c == '(' || c == '[');
+        let trailing = parse_page_number_token(token);
+        if trailing.0.is_some() {
+            return trailing;
         }
     }
 
-    // Roman numerals (only if short — avoid matching words like "civil")
-    if cleaned.len() <= 8 {
-        if let Some(n) = parse_roman(cleaned) {
-            return (Some(n), true);
-        }
-    }
     (None, false)
 }
 
@@ -517,7 +627,8 @@ pub fn classify_toc_entry(text: &str, is_roman_page: bool) -> TocEntryType {
     let content = lower.trim_start_matches(|c: char| c.is_ascii_digit() || c == '.' || c == ' ');
 
     // Figure entries
-    if content.starts_with("figure ") || content.starts_with("fig. ") || content.starts_with("fig ") {
+    if content.starts_with("figure ") || content.starts_with("fig. ") || content.starts_with("fig ")
+    {
         return TocEntryType::Figure;
     }
 
@@ -535,12 +646,28 @@ pub fn classify_toc_entry(text: &str, is_roman_page: bool) -> TocEntryType {
 
     // Front matter keywords — match at start, allow trailing punctuation/content
     const FRONT_MATTER: &[&str] = &[
-        "abstract", "acknowledgment", "acknowledgement", "acknowledgments",
-        "acknowledgements", "foreword", "preface", "executive summary",
-        "list of figures", "list of tables", "list of acronyms",
-        "list of abbreviations", "list of symbols", "glossary",
-        "acronyms", "abbreviations", "revision history", "document history",
-        "table of contents", "contents", "references", "bibliography",
+        "abstract",
+        "acknowledgment",
+        "acknowledgement",
+        "acknowledgments",
+        "acknowledgements",
+        "foreword",
+        "preface",
+        "executive summary",
+        "list of figures",
+        "list of tables",
+        "list of acronyms",
+        "list of abbreviations",
+        "list of symbols",
+        "glossary",
+        "acronyms",
+        "abbreviations",
+        "revision history",
+        "document history",
+        "table of contents",
+        "contents",
+        "references",
+        "bibliography",
         "index",
     ];
     for &fm in FRONT_MATTER {
@@ -569,14 +696,27 @@ fn parse_roman(text: &str) -> Option<u32> {
     let mut prev = 0u32;
     for c in lower.chars().rev() {
         let val = match c {
-            'i' => 1, 'v' => 5, 'x' => 10, 'l' => 50,
-            'c' => 100, 'd' => 500, 'm' => 1000,
+            'i' => 1,
+            'v' => 5,
+            'x' => 10,
+            'l' => 50,
+            'c' => 100,
+            'd' => 500,
+            'm' => 1000,
             _ => return None,
         };
-        if val < prev { total -= val; } else { total += val; }
+        if val < prev {
+            total -= val;
+        } else {
+            total += val;
+        }
         prev = val;
     }
-    if total > 0 { Some(total) } else { None }
+    if total > 0 {
+        Some(total)
+    } else {
+        None
+    }
 }
 
 /// Strip dot leaders and similar filler characters from text.
@@ -640,20 +780,24 @@ fn cluster_x_positions(positions: &[f32], tolerance: f32) -> Vec<usize> {
     centroids.sort_by(|a, b| safe_float_cmp(*a, *b));
 
     // Map each position to its nearest centroid index
-    positions.iter().map(|&x| {
-        centroids.iter()
-            .enumerate()
-            .min_by(|(_, a), (_, b)| safe_float_cmp((*a - x).abs(), (*b - x).abs()))
-            .map(|(i, _)| i)
-            .unwrap_or(0)
-    }).collect()
+    positions
+        .iter()
+        .map(|&x| {
+            centroids
+                .iter()
+                .enumerate()
+                .min_by(|(_, a), (_, b)| safe_float_cmp((*a - x).abs(), (*b - x).abs()))
+                .map(|(i, _)| i)
+                .unwrap_or(0)
+        })
+        .collect()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::geometry::Rect;
-    use crate::layout::text_block::{FontWeight, Color};
+    use crate::layout::text_block::{Color, FontWeight};
 
     fn make_span(text: &str, x: f32, y: f32, width: f32, font_size: f32, bold: bool) -> TextSpan {
         TextSpan {
@@ -661,9 +805,17 @@ mod tests {
             bbox: Rect::new(x, y, x + width, y + font_size),
             font_size,
             font_name: "TestFont".to_string(),
-            font_weight: if bold { FontWeight::Bold } else { FontWeight::Normal },
+            font_weight: if bold {
+                FontWeight::Bold
+            } else {
+                FontWeight::Normal
+            },
             is_italic: false,
-            color: Color { r: 0.0, g: 0.0, b: 0.0 },
+            color: Color {
+                r: 0.0,
+                g: 0.0,
+                b: 0.0,
+            },
             mcid: None,
             sequence: 0,
             split_boundary_before: false,
@@ -745,6 +897,7 @@ mod tests {
         assert_eq!(parse_page_number_typed("(12)"), (Some(12), false)); // parens
         assert_eq!(parse_page_number_typed("A-1"), (Some(1), false)); // compound
         assert_eq!(parse_page_number_typed("ES-3"), (Some(3), false)); // prefix compound
+        assert_eq!(parse_page_number_typed("APPENDIX A GLOSSARY 394"), (Some(394), false));
         assert_eq!(parse_page_number_typed("iv"), (Some(4), true));
         assert_eq!(parse_page_number_typed("XII"), (Some(12), true));
         assert_eq!(parse_page_number_typed("abc"), (None, false));

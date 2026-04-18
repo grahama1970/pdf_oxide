@@ -1662,8 +1662,7 @@ impl DocumentEditor {
                                 };
 
                                 // Check if we have draw overlays for this page
-                                let has_draw_overlay =
-                                    self.draw_overlays.contains_key(&page_index);
+                                let has_draw_overlay = self.draw_overlays.contains_key(&page_index);
                                 let draw_overlay_id = if has_draw_overlay {
                                     Some(self.allocate_object_id())
                                 } else {
@@ -1730,20 +1729,25 @@ impl DocumentEditor {
                                 let should_apply_redactions =
                                     self.apply_redactions_pages.contains(&page_index);
                                 // (redaction_rects, overlay_id, stripped_content_bytes, stripped_content_id)
-                                let redaction_data: Option<(Vec<RedactionData>, u32, Option<Vec<u8>>, Option<u32>)> =
-                                    if should_apply_redactions {
-                                        let redactions = self.get_redaction_data(page_index)?;
-                                        if !redactions.is_empty() {
-                                            let overlay_id = self.allocate_object_id();
-                                            // True content stripping: parse content stream and remove redacted content
-                                            let (stripped_bytes, stripped_id) = self.strip_page_content(page_index, &redactions)?;
-                                            Some((redactions, overlay_id, stripped_bytes, stripped_id))
-                                        } else {
-                                            None
-                                        }
+                                let redaction_data: Option<(
+                                    Vec<RedactionData>,
+                                    u32,
+                                    Option<Vec<u8>>,
+                                    Option<u32>,
+                                )> = if should_apply_redactions {
+                                    let redactions = self.get_redaction_data(page_index)?;
+                                    if !redactions.is_empty() {
+                                        let overlay_id = self.allocate_object_id();
+                                        // True content stripping: parse content stream and remove redacted content
+                                        let (stripped_bytes, stripped_id) =
+                                            self.strip_page_content(page_index, &redactions)?;
+                                        Some((redactions, overlay_id, stripped_bytes, stripped_id))
                                     } else {
                                         None
-                                    };
+                                    }
+                                } else {
+                                    None
+                                };
 
                                 // Check if we need to flatten form fields for this page
                                 let should_flatten_forms =
@@ -1916,17 +1920,20 @@ impl DocumentEditor {
 
                                 // If we're applying redactions, update page dictionary
                                 if let (
-                                    Some((ref _redactions, redact_overlay_id, ref stripped_bytes, ref stripped_id)),
+                                    Some((
+                                        ref _redactions,
+                                        redact_overlay_id,
+                                        ref stripped_bytes,
+                                        ref stripped_id,
+                                    )),
                                     Some(page_dict),
                                 ) = (&redaction_data, final_page_obj.as_dict())
                                 {
                                     let mut new_dict = page_dict.clone();
 
                                     // True redaction: replace Contents with stripped content + overlay
-                                    let overlay_ref = Object::Reference(ObjectRef::new(
-                                        *redact_overlay_id,
-                                        0,
-                                    ));
+                                    let overlay_ref =
+                                        Object::Reference(ObjectRef::new(*redact_overlay_id, 0));
 
                                     if let Some(stripped_content_id) = stripped_id {
                                         // Replace Contents entirely with [stripped_content, overlay]
@@ -1938,7 +1945,8 @@ impl DocumentEditor {
                                             "Contents".to_string(),
                                             Object::Array(vec![stripped_ref, overlay_ref]),
                                         );
-                                    } else if let Some(contents) = new_dict.get("Contents").cloned() {
+                                    } else if let Some(contents) = new_dict.get("Contents").cloned()
+                                    {
                                         // Fallback: just append overlay (original behavior)
                                         let contents_array = match contents {
                                             Object::Reference(_) => {
@@ -2081,7 +2089,9 @@ impl DocumentEditor {
                                 }
 
                                 // Remove annotations by index if requested
-                                if let Some(remove_indices) = self.removed_annotations.get(&page_index) {
+                                if let Some(remove_indices) =
+                                    self.removed_annotations.get(&page_index)
+                                {
                                     if !remove_indices.is_empty() {
                                         if let Some(page_dict) = final_page_obj.as_dict() {
                                             let mut new_dict = page_dict.clone();
@@ -2104,7 +2114,10 @@ impl DocumentEditor {
                                             if filtered.is_empty() {
                                                 new_dict.remove("Annots");
                                             } else {
-                                                new_dict.insert("Annots".to_string(), Object::Array(filtered));
+                                                new_dict.insert(
+                                                    "Annots".to_string(),
+                                                    Object::Array(filtered),
+                                                );
                                             }
                                             final_page_obj = Object::Dictionary(new_dict);
                                         }
@@ -2375,9 +2388,10 @@ impl DocumentEditor {
                                         } else {
                                             // Skip writing original content stream if redaction
                                             // stripped it (the stripped version is written separately)
-                                            let redaction_replaced_content = redaction_data
-                                                .as_ref()
-                                                .is_some_and(|(_, _, stripped, _)| stripped.is_some());
+                                            let redaction_replaced_content =
+                                                redaction_data.as_ref().is_some_and(
+                                                    |(_, _, stripped, _)| stripped.is_some(),
+                                                );
 
                                             if !redaction_replaced_content {
                                                 // Use original contents
@@ -2544,29 +2558,48 @@ impl DocumentEditor {
                                             _ => vec![],
                                         };
 
-                                        let page_refs_for_links = if !self.modified_links.is_empty() {
+                                        let page_refs_for_links = if !self.modified_links.is_empty()
+                                        {
                                             self.get_page_refs().unwrap_or_default()
                                         } else {
                                             vec![]
                                         };
 
-                                        for (annot_idx, annot_obj) in annots_array.iter().enumerate() {
+                                        for (annot_idx, annot_obj) in
+                                            annots_array.iter().enumerate()
+                                        {
                                             if let Some(ref_obj) = annot_obj.as_reference() {
                                                 // Skip if already written
-                                                if xref_entries.iter().any(|(id, _, _, _)| *id == ref_obj.id) {
+                                                if xref_entries
+                                                    .iter()
+                                                    .any(|(id, _, _, _)| *id == ref_obj.id)
+                                                {
                                                     continue;
                                                 }
                                                 // Skip if this annotation was removed
-                                                if let Some(remove_indices) = self.removed_annotations.get(&page_index) {
+                                                if let Some(remove_indices) =
+                                                    self.removed_annotations.get(&page_index)
+                                                {
                                                     if remove_indices.contains(&annot_idx) {
                                                         continue;
                                                     }
                                                 }
-                                                if let Ok(annot_loaded) = self.source.load_object(ref_obj) {
+                                                if let Ok(annot_loaded) =
+                                                    self.source.load_object(ref_obj)
+                                                {
                                                     // Check if this annotation needs link modification
-                                                    let final_annot = if let Some(modification) = self.modified_links.get(&(page_index, annot_idx)) {
-                                                        if let Some(mut annot_dict) = annot_loaded.as_dict().cloned() {
-                                                            Self::apply_link_modification(&mut annot_dict, modification, &page_refs_for_links);
+                                                    let final_annot = if let Some(modification) =
+                                                        self.modified_links
+                                                            .get(&(page_index, annot_idx))
+                                                    {
+                                                        if let Some(mut annot_dict) =
+                                                            annot_loaded.as_dict().cloned()
+                                                        {
+                                                            Self::apply_link_modification(
+                                                                &mut annot_dict,
+                                                                modification,
+                                                                &page_refs_for_links,
+                                                            );
                                                             Object::Dictionary(annot_dict)
                                                         } else {
                                                             annot_loaded
@@ -2583,7 +2616,8 @@ impl DocumentEditor {
                                                         &encryption_handler,
                                                     );
                                                     writer.write_all(&bytes)?;
-                                                    xref_entries.push((ref_obj.id, offset, 0, true));
+                                                    xref_entries
+                                                        .push((ref_obj.id, offset, 0, true));
                                                 }
                                             }
                                         }
@@ -2745,9 +2779,17 @@ impl DocumentEditor {
                                 }
 
                                 // Write redaction content streams if present
-                                if let Some((ref redactions, redact_overlay_id, ref stripped_bytes, ref stripped_id)) = redaction_data {
+                                if let Some((
+                                    ref redactions,
+                                    redact_overlay_id,
+                                    ref stripped_bytes,
+                                    ref stripped_id,
+                                )) = redaction_data
+                                {
                                     // Write stripped content stream if we have one
-                                    if let (Some(content_bytes), Some(content_id)) = (stripped_bytes, stripped_id) {
+                                    if let (Some(content_bytes), Some(content_id)) =
+                                        (stripped_bytes, stripped_id)
+                                    {
                                         let stripped_stream = Object::Stream {
                                             dict: HashMap::new(),
                                             data: content_bytes.clone().into(),
@@ -3202,7 +3244,10 @@ impl DocumentEditor {
     ///
     /// Returns a list of `(index, annotation)` tuples for all Link annotations
     /// on the page. The index can be used with `update_link_uri()` etc.
-    pub fn get_links(&mut self, page: usize) -> Result<Vec<(usize, crate::annotations::Annotation)>> {
+    pub fn get_links(
+        &mut self,
+        page: usize,
+    ) -> Result<Vec<(usize, crate::annotations::Annotation)>> {
         if page >= self.current_page_count() {
             return Err(Error::InvalidPdf(format!("Page index {} out of range", page)));
         }
@@ -3225,14 +3270,17 @@ impl DocumentEditor {
     /// * `page` - Page index (0-based)
     /// * `annot_index` - Annotation index in the page's /Annots array
     /// * `new_uri` - New target URI
-    pub fn update_link_uri(&mut self, page: usize, annot_index: usize, new_uri: impl Into<String>) -> Result<()> {
+    pub fn update_link_uri(
+        &mut self,
+        page: usize,
+        annot_index: usize,
+        new_uri: impl Into<String>,
+    ) -> Result<()> {
         if page >= self.current_page_count() {
             return Err(Error::InvalidPdf(format!("Page index {} out of range", page)));
         }
-        self.modified_links.insert(
-            (page, annot_index),
-            LinkModification::SetUri(new_uri.into()),
-        );
+        self.modified_links
+            .insert((page, annot_index), LinkModification::SetUri(new_uri.into()));
         self.is_modified = true;
         Ok(())
     }
@@ -3243,14 +3291,17 @@ impl DocumentEditor {
     /// * `page` - Page index (0-based) where the link annotation is
     /// * `annot_index` - Annotation index in the page's /Annots array
     /// * `target_page` - Target page number (0-based)
-    pub fn update_link_destination(&mut self, page: usize, annot_index: usize, target_page: usize) -> Result<()> {
+    pub fn update_link_destination(
+        &mut self,
+        page: usize,
+        annot_index: usize,
+        target_page: usize,
+    ) -> Result<()> {
         if page >= self.current_page_count() {
             return Err(Error::InvalidPdf(format!("Page index {} out of range", page)));
         }
-        self.modified_links.insert(
-            (page, annot_index),
-            LinkModification::SetGoToPage(target_page),
-        );
+        self.modified_links
+            .insert((page, annot_index), LinkModification::SetGoToPage(target_page));
         self.is_modified = true;
         Ok(())
     }
@@ -3261,14 +3312,17 @@ impl DocumentEditor {
     /// * `page` - Page index (0-based) where the link annotation is
     /// * `annot_index` - Annotation index in the page's /Annots array
     /// * `dest_name` - Named destination string
-    pub fn update_link_named_destination(&mut self, page: usize, annot_index: usize, dest_name: impl Into<String>) -> Result<()> {
+    pub fn update_link_named_destination(
+        &mut self,
+        page: usize,
+        annot_index: usize,
+        dest_name: impl Into<String>,
+    ) -> Result<()> {
         if page >= self.current_page_count() {
             return Err(Error::InvalidPdf(format!("Page index {} out of range", page)));
         }
-        self.modified_links.insert(
-            (page, annot_index),
-            LinkModification::SetGoToNamed(dest_name.into()),
-        );
+        self.modified_links
+            .insert((page, annot_index), LinkModification::SetGoToNamed(dest_name.into()));
         self.is_modified = true;
         Ok(())
     }
@@ -3297,7 +3351,7 @@ impl DocumentEditor {
                 annot_dict.insert("A".to_string(), Object::Dictionary(action_dict));
                 // Remove /Dest if present (action takes precedence)
                 annot_dict.remove("Dest");
-            }
+            },
             LinkModification::SetGoToPage(target_page) => {
                 // Create /Dest with explicit destination [page /Fit]
                 if *target_page < page_refs.len() {
@@ -3310,15 +3364,12 @@ impl DocumentEditor {
                     // Remove /A if present (dest takes precedence for GoTo)
                     annot_dict.remove("A");
                 }
-            }
+            },
             LinkModification::SetGoToNamed(name) => {
                 // Create /Dest with named destination
-                annot_dict.insert(
-                    "Dest".to_string(),
-                    Object::String(name.as_bytes().to_vec()),
-                );
+                annot_dict.insert("Dest".to_string(), Object::String(name.as_bytes().to_vec()));
                 annot_dict.remove("A");
-            }
+            },
         }
     }
 
@@ -3614,10 +3665,22 @@ impl DocumentEditor {
 
         if let Some(art_box) = page_dict.get("ArtBox").and_then(|c| c.as_array()) {
             if art_box.len() >= 4 {
-                let llx = art_box[0].as_real().or_else(|| art_box[0].as_integer().map(|i| i as f64)).unwrap_or(0.0) as f32;
-                let lly = art_box[1].as_real().or_else(|| art_box[1].as_integer().map(|i| i as f64)).unwrap_or(0.0) as f32;
-                let urx = art_box[2].as_real().or_else(|| art_box[2].as_integer().map(|i| i as f64)).unwrap_or(612.0) as f32;
-                let ury = art_box[3].as_real().or_else(|| art_box[3].as_integer().map(|i| i as f64)).unwrap_or(792.0) as f32;
+                let llx = art_box[0]
+                    .as_real()
+                    .or_else(|| art_box[0].as_integer().map(|i| i as f64))
+                    .unwrap_or(0.0) as f32;
+                let lly = art_box[1]
+                    .as_real()
+                    .or_else(|| art_box[1].as_integer().map(|i| i as f64))
+                    .unwrap_or(0.0) as f32;
+                let urx = art_box[2]
+                    .as_real()
+                    .or_else(|| art_box[2].as_integer().map(|i| i as f64))
+                    .unwrap_or(612.0) as f32;
+                let ury = art_box[3]
+                    .as_real()
+                    .or_else(|| art_box[3].as_integer().map(|i| i as f64))
+                    .unwrap_or(792.0) as f32;
                 return Ok(Some([llx, lly, urx, ury]));
             }
         }
@@ -3661,10 +3724,22 @@ impl DocumentEditor {
 
         if let Some(bleed_box) = page_dict.get("BleedBox").and_then(|c| c.as_array()) {
             if bleed_box.len() >= 4 {
-                let llx = bleed_box[0].as_real().or_else(|| bleed_box[0].as_integer().map(|i| i as f64)).unwrap_or(0.0) as f32;
-                let lly = bleed_box[1].as_real().or_else(|| bleed_box[1].as_integer().map(|i| i as f64)).unwrap_or(0.0) as f32;
-                let urx = bleed_box[2].as_real().or_else(|| bleed_box[2].as_integer().map(|i| i as f64)).unwrap_or(612.0) as f32;
-                let ury = bleed_box[3].as_real().or_else(|| bleed_box[3].as_integer().map(|i| i as f64)).unwrap_or(792.0) as f32;
+                let llx = bleed_box[0]
+                    .as_real()
+                    .or_else(|| bleed_box[0].as_integer().map(|i| i as f64))
+                    .unwrap_or(0.0) as f32;
+                let lly = bleed_box[1]
+                    .as_real()
+                    .or_else(|| bleed_box[1].as_integer().map(|i| i as f64))
+                    .unwrap_or(0.0) as f32;
+                let urx = bleed_box[2]
+                    .as_real()
+                    .or_else(|| bleed_box[2].as_integer().map(|i| i as f64))
+                    .unwrap_or(612.0) as f32;
+                let ury = bleed_box[3]
+                    .as_real()
+                    .or_else(|| bleed_box[3].as_integer().map(|i| i as f64))
+                    .unwrap_or(792.0) as f32;
                 return Ok(Some([llx, lly, urx, ury]));
             }
         }
@@ -3708,10 +3783,22 @@ impl DocumentEditor {
 
         if let Some(trim_box) = page_dict.get("TrimBox").and_then(|c| c.as_array()) {
             if trim_box.len() >= 4 {
-                let llx = trim_box[0].as_real().or_else(|| trim_box[0].as_integer().map(|i| i as f64)).unwrap_or(0.0) as f32;
-                let lly = trim_box[1].as_real().or_else(|| trim_box[1].as_integer().map(|i| i as f64)).unwrap_or(0.0) as f32;
-                let urx = trim_box[2].as_real().or_else(|| trim_box[2].as_integer().map(|i| i as f64)).unwrap_or(612.0) as f32;
-                let ury = trim_box[3].as_real().or_else(|| trim_box[3].as_integer().map(|i| i as f64)).unwrap_or(792.0) as f32;
+                let llx = trim_box[0]
+                    .as_real()
+                    .or_else(|| trim_box[0].as_integer().map(|i| i as f64))
+                    .unwrap_or(0.0) as f32;
+                let lly = trim_box[1]
+                    .as_real()
+                    .or_else(|| trim_box[1].as_integer().map(|i| i as f64))
+                    .unwrap_or(0.0) as f32;
+                let urx = trim_box[2]
+                    .as_real()
+                    .or_else(|| trim_box[2].as_integer().map(|i| i as f64))
+                    .unwrap_or(612.0) as f32;
+                let ury = trim_box[3]
+                    .as_real()
+                    .or_else(|| trim_box[3].as_integer().map(|i| i as f64))
+                    .unwrap_or(792.0) as f32;
                 return Ok(Some([llx, lly, urx, ury]));
             }
         }
@@ -3810,7 +3897,10 @@ impl DocumentEditor {
         if page >= self.current_page_count() {
             return Err(Error::InvalidPdf(format!("Page index {} out of range", page)));
         }
-        self.draw_overlays.entry(page).or_default().push(content_bytes);
+        self.draw_overlays
+            .entry(page)
+            .or_default()
+            .push(content_bytes);
         self.is_modified = true;
         Ok(())
     }
@@ -3973,18 +4063,14 @@ impl DocumentEditor {
             match self.make_page_searchable(page, engine, dpi) {
                 Ok(spans) if spans > 0 => {
                     pages_processed += 1;
-                    log::info!(
-                        "Made page {} searchable ({} text spans)",
-                        page,
-                        spans
-                    );
-                }
+                    log::info!("Made page {} searchable ({} text spans)", page, spans);
+                },
                 Ok(_) => {
                     log::debug!("Page {} had no OCR results, skipping", page);
-                }
+                },
                 Err(e) => {
                     log::warn!("Failed to make page {} searchable: {}", page, e);
-                }
+                },
             }
         }
 
@@ -5677,7 +5763,7 @@ impl DocumentEditor {
         page_index: usize,
         redactions: &[RedactionData],
     ) -> Result<(Option<Vec<u8>>, Option<u32>)> {
-        use crate::editor::redaction::{RedactionRect, strip_redacted_content};
+        use crate::editor::redaction::{strip_redacted_content, RedactionRect};
 
         // Convert RedactionData to RedactionRect
         let rects: Vec<RedactionRect> = redactions
@@ -5709,7 +5795,7 @@ impl DocumentEditor {
             Object::Reference(ref_obj) => {
                 let obj = self.source.load_object(ref_obj)?;
                 obj.decode_stream_data()?
-            }
+            },
             Object::Array(arr) => {
                 let mut data = Vec::new();
                 for item in arr {
@@ -5722,7 +5808,7 @@ impl DocumentEditor {
                     }
                 }
                 data
-            }
+            },
             _ => return Ok((None, None)),
         };
 

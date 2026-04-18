@@ -74,12 +74,7 @@ impl SvgRenderer {
         svg.push('\n');
 
         // PDF uses Y-up, SVG uses Y-down. Apply a flip transform.
-        write!(
-            svg,
-            r#"<g transform="translate(0,{}) scale(1,-1)">"#,
-            height
-        )
-        .unwrap();
+        write!(svg, r#"<g transform="translate(0,{}) scale(1,-1)">"#, height).unwrap();
         svg.push('\n');
 
         self.process_operators(&mut svg, &operators, doc, page_num, &resources)?;
@@ -108,97 +103,139 @@ impl SvgRenderer {
                     gs_stack.save();
                     svg.push_str("<g>\n");
                     group_depth += 1;
-                }
+                },
                 Operator::RestoreState => {
                     gs_stack.restore();
                     if group_depth > 0 {
                         svg.push_str("</g>\n");
                         group_depth -= 1;
                     }
-                }
+                },
                 Operator::Cm { a, b, c, d, e, f } => {
                     let matrix = Matrix {
-                        a: *a, b: *b, c: *c, d: *d, e: *e, f: *f,
+                        a: *a,
+                        b: *b,
+                        c: *c,
+                        d: *d,
+                        e: *e,
+                        f: *f,
                     };
                     let current = gs_stack.current_mut();
                     current.ctm = matrix.multiply(&current.ctm);
-                }
+                },
 
                 // Color operators
                 Operator::SetFillRgb { r, g, b } => {
                     gs_stack.current_mut().fill_color_rgb = (*r, *g, *b);
-                }
+                },
                 Operator::SetStrokeRgb { r, g, b } => {
                     gs_stack.current_mut().stroke_color_rgb = (*r, *g, *b);
-                }
+                },
                 Operator::SetFillGray { gray } => {
                     gs_stack.current_mut().fill_color_rgb = (*gray, *gray, *gray);
-                }
+                },
                 Operator::SetStrokeGray { gray } => {
                     gs_stack.current_mut().stroke_color_rgb = (*gray, *gray, *gray);
-                }
+                },
                 Operator::SetFillCmyk { c, m, y, k } => {
                     let (r, g, b) = cmyk_to_rgb(*c, *m, *y, *k);
                     gs_stack.current_mut().fill_color_rgb = (r, g, b);
-                }
+                },
                 Operator::SetStrokeCmyk { c, m, y, k } => {
                     let (r, g, b) = cmyk_to_rgb(*c, *m, *y, *k);
                     gs_stack.current_mut().stroke_color_rgb = (r, g, b);
-                }
+                },
 
                 // Line style
                 Operator::SetLineWidth { width } => {
                     gs_stack.current_mut().line_width = *width;
-                }
+                },
                 Operator::SetLineCap { cap_style } => {
                     gs_stack.current_mut().line_cap = *cap_style;
-                }
+                },
                 Operator::SetLineJoin { join_style } => {
                     gs_stack.current_mut().line_join = *join_style;
-                }
+                },
                 Operator::SetDash { array, phase } => {
                     gs_stack.current_mut().dash_pattern = (array.clone(), *phase);
-                }
+                },
 
                 // Path construction
                 Operator::MoveTo { x, y } => {
                     write!(path_data, "M{} {} ", fmt_f32(*x), fmt_f32(*y)).unwrap();
-                }
+                },
                 Operator::LineTo { x, y } => {
                     write!(path_data, "L{} {} ", fmt_f32(*x), fmt_f32(*y)).unwrap();
-                }
-                Operator::CurveTo { x1, y1, x2, y2, x3, y3 } => {
+                },
+                Operator::CurveTo {
+                    x1,
+                    y1,
+                    x2,
+                    y2,
+                    x3,
+                    y3,
+                } => {
                     write!(
-                        path_data, "C{} {} {} {} {} {} ",
-                        fmt_f32(*x1), fmt_f32(*y1), fmt_f32(*x2), fmt_f32(*y2), fmt_f32(*x3), fmt_f32(*y3)
-                    ).unwrap();
-                }
+                        path_data,
+                        "C{} {} {} {} {} {} ",
+                        fmt_f32(*x1),
+                        fmt_f32(*y1),
+                        fmt_f32(*x2),
+                        fmt_f32(*y2),
+                        fmt_f32(*x3),
+                        fmt_f32(*y3)
+                    )
+                    .unwrap();
+                },
                 Operator::CurveToV { x2, y2, x3, y3 } => {
                     // v operator: first control point = current point (use S as approximation)
                     write!(
-                        path_data, "S{} {} {} {} ",
-                        fmt_f32(*x2), fmt_f32(*y2), fmt_f32(*x3), fmt_f32(*y3)
-                    ).unwrap();
-                }
+                        path_data,
+                        "S{} {} {} {} ",
+                        fmt_f32(*x2),
+                        fmt_f32(*y2),
+                        fmt_f32(*x3),
+                        fmt_f32(*y3)
+                    )
+                    .unwrap();
+                },
                 Operator::CurveToY { x1, y1, x3, y3 } => {
                     // y operator: second control point = endpoint
                     write!(
-                        path_data, "C{} {} {} {} {} {} ",
-                        fmt_f32(*x1), fmt_f32(*y1), fmt_f32(*x3), fmt_f32(*y3), fmt_f32(*x3), fmt_f32(*y3)
-                    ).unwrap();
-                }
-                Operator::Rectangle { x, y, width, height } => {
+                        path_data,
+                        "C{} {} {} {} {} {} ",
+                        fmt_f32(*x1),
+                        fmt_f32(*y1),
+                        fmt_f32(*x3),
+                        fmt_f32(*y3),
+                        fmt_f32(*x3),
+                        fmt_f32(*y3)
+                    )
+                    .unwrap();
+                },
+                Operator::Rectangle {
+                    x,
+                    y,
+                    width,
+                    height,
+                } => {
                     write!(
-                        path_data, "M{} {} L{} {} L{} {} L{} {} Z ",
-                        fmt_f32(*x), fmt_f32(*y),
-                        fmt_f32(x + width), fmt_f32(*y),
-                        fmt_f32(x + width), fmt_f32(y + height),
-                        fmt_f32(*x), fmt_f32(y + height),
-                    ).unwrap();
-                }
+                        path_data,
+                        "M{} {} L{} {} L{} {} L{} {} Z ",
+                        fmt_f32(*x),
+                        fmt_f32(*y),
+                        fmt_f32(x + width),
+                        fmt_f32(*y),
+                        fmt_f32(x + width),
+                        fmt_f32(y + height),
+                        fmt_f32(*x),
+                        fmt_f32(y + height),
+                    )
+                    .unwrap();
+                },
                 Operator::ClosePath => {
                     path_data.push_str("Z ");
-                }
+                },
 
                 // Path painting
                 Operator::Stroke => {
@@ -207,21 +244,21 @@ impl SvgRenderer {
                         self.emit_path(svg, &path_data, gs, PathPaint::Stroke);
                         path_data.clear();
                     }
-                }
+                },
                 Operator::Fill => {
                     if !path_data.is_empty() {
                         let gs = gs_stack.current();
                         self.emit_path(svg, &path_data, gs, PathPaint::Fill);
                         path_data.clear();
                     }
-                }
+                },
                 Operator::FillEvenOdd => {
                     if !path_data.is_empty() {
                         let gs = gs_stack.current();
                         self.emit_path(svg, &path_data, gs, PathPaint::FillEvenOdd);
                         path_data.clear();
                     }
-                }
+                },
                 Operator::CloseFillStroke => {
                     path_data.push_str("Z ");
                     if !path_data.is_empty() {
@@ -229,10 +266,10 @@ impl SvgRenderer {
                         self.emit_path(svg, &path_data, gs, PathPaint::FillStroke);
                         path_data.clear();
                     }
-                }
+                },
                 Operator::EndPath => {
                     path_data.clear();
-                }
+                },
 
                 // Text
                 Operator::BeginText => {
@@ -240,10 +277,10 @@ impl SvgRenderer {
                     let gs = gs_stack.current_mut();
                     gs.text_matrix = Matrix::identity();
                     gs.text_line_matrix = Matrix::identity();
-                }
+                },
                 Operator::EndText => {
                     in_text_object = false;
-                }
+                },
                 Operator::Td { tx, ty } => {
                     if in_text_object {
                         let gs = gs_stack.current_mut();
@@ -251,7 +288,7 @@ impl SvgRenderer {
                         gs.text_line_matrix = gs.text_line_matrix.multiply(&translation);
                         gs.text_matrix = gs.text_line_matrix;
                     }
-                }
+                },
                 Operator::TD { tx, ty } => {
                     if in_text_object {
                         let gs = gs_stack.current_mut();
@@ -260,16 +297,21 @@ impl SvgRenderer {
                         gs.text_line_matrix = gs.text_line_matrix.multiply(&translation);
                         gs.text_matrix = gs.text_line_matrix;
                     }
-                }
+                },
                 Operator::Tm { a, b, c, d, e, f } => {
                     if in_text_object {
                         let gs = gs_stack.current_mut();
                         gs.text_matrix = Matrix {
-                            a: *a, b: *b, c: *c, d: *d, e: *e, f: *f,
+                            a: *a,
+                            b: *b,
+                            c: *c,
+                            d: *d,
+                            e: *e,
+                            f: *f,
                         };
                         gs.text_line_matrix = gs.text_matrix;
                     }
-                }
+                },
                 Operator::TStar => {
                     if in_text_object {
                         let gs = gs_stack.current_mut();
@@ -278,30 +320,30 @@ impl SvgRenderer {
                         gs.text_line_matrix = gs.text_line_matrix.multiply(&translation);
                         gs.text_matrix = gs.text_line_matrix;
                     }
-                }
+                },
                 Operator::Tf { font, size } => {
                     let gs = gs_stack.current_mut();
                     gs.font_name = Some(font.clone());
                     gs.font_size = *size;
-                }
+                },
                 Operator::Tc { char_space } => {
                     gs_stack.current_mut().char_space = *char_space;
-                }
+                },
                 Operator::Tw { word_space } => {
                     gs_stack.current_mut().word_space = *word_space;
-                }
+                },
                 Operator::Tz { scale } => {
                     gs_stack.current_mut().horizontal_scaling = *scale;
-                }
+                },
                 Operator::TL { leading } => {
                     gs_stack.current_mut().leading = *leading;
-                }
+                },
                 Operator::Ts { rise } => {
                     gs_stack.current_mut().text_rise = *rise;
-                }
+                },
                 Operator::Tr { render } => {
                     gs_stack.current_mut().render_mode = *render;
-                }
+                },
 
                 // Text showing
                 Operator::Tj { text } | Operator::Quote { text } => {
@@ -314,7 +356,7 @@ impl SvgRenderer {
                         let translation = Matrix::translation(advance, 0.0);
                         gs_mut.text_matrix = gs_mut.text_matrix.multiply(&translation);
                     }
-                }
+                },
                 Operator::TJ { array } => {
                     if in_text_object && self.options.text_as_text {
                         for item in array {
@@ -326,18 +368,18 @@ impl SvgRenderer {
                                     let advance = self.compute_text_advance(bytes, gs_mut);
                                     let translation = Matrix::translation(advance, 0.0);
                                     gs_mut.text_matrix = gs_mut.text_matrix.multiply(&translation);
-                                }
+                                },
                                 TextElement::Offset(adj) => {
                                     let gs_mut = gs_stack.current_mut();
                                     let offset = -adj / 1000.0 * gs_mut.font_size;
                                     let h_scale = gs_mut.horizontal_scaling / 100.0;
                                     let translation = Matrix::translation(offset * h_scale, 0.0);
                                     gs_mut.text_matrix = gs_mut.text_matrix.multiply(&translation);
-                                }
+                                },
                             }
                         }
                     }
-                }
+                },
 
                 // XObject (images)
                 Operator::Do { name } => {
@@ -345,9 +387,9 @@ impl SvgRenderer {
                         let gs = gs_stack.current();
                         self.emit_xobject(svg, name, gs, resources, doc, page_num);
                     }
-                }
+                },
 
-                _ => {}
+                _ => {},
             }
         }
 
@@ -363,22 +405,24 @@ impl SvgRenderer {
         let ctm = &gs.ctm;
         let transform = format!(
             "matrix({},{},{},{},{},{})",
-            fmt_f32(ctm.a), fmt_f32(ctm.b), fmt_f32(ctm.c), fmt_f32(ctm.d),
-            fmt_f32(ctm.e), fmt_f32(ctm.f)
+            fmt_f32(ctm.a),
+            fmt_f32(ctm.b),
+            fmt_f32(ctm.c),
+            fmt_f32(ctm.d),
+            fmt_f32(ctm.e),
+            fmt_f32(ctm.f)
         );
 
         let fill = match paint {
             PathPaint::Stroke => "none".to_string(),
             PathPaint::Fill | PathPaint::FillStroke | PathPaint::FillEvenOdd => {
                 rgb_to_css(gs.fill_color_rgb)
-            }
+            },
         };
 
         let stroke = match paint {
             PathPaint::Fill | PathPaint::FillEvenOdd => "none".to_string(),
-            PathPaint::Stroke | PathPaint::FillStroke => {
-                rgb_to_css(gs.stroke_color_rgb)
-            }
+            PathPaint::Stroke | PathPaint::FillStroke => rgb_to_css(gs.stroke_color_rgb),
         };
 
         let fill_rule = match paint {
@@ -448,7 +492,10 @@ impl SvgRenderer {
 
         let x = combined.e;
         let y = combined.f;
-        let font_size = gs.font_size * (combined.a * combined.a + combined.b * combined.b).sqrt().abs();
+        let font_size = gs.font_size
+            * (combined.a * combined.a + combined.b * combined.b)
+                .sqrt()
+                .abs();
 
         let fill_color = rgb_to_css(gs.fill_color_rgb);
         let font_name = gs.font_name.as_deref().unwrap_or("Helvetica");
@@ -499,11 +546,13 @@ impl SvgRenderer {
                                         let width = xobj_dict
                                             .get("Width")
                                             .and_then(|w| w.as_integer())
-                                            .unwrap_or(1) as f32;
+                                            .unwrap_or(1)
+                                            as f32;
                                         let height = xobj_dict
                                             .get("Height")
                                             .and_then(|h| h.as_integer())
-                                            .unwrap_or(1) as f32;
+                                            .unwrap_or(1)
+                                            as f32;
 
                                         let ctm = &gs.ctm;
                                         let b64 = base64_encode(&image_data);

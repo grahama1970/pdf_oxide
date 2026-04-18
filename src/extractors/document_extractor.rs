@@ -9,7 +9,7 @@ use serde::Serialize;
 use crate::document::PdfDocument;
 use crate::error::Result;
 use crate::extractors::block_classifier::{BlockClassifier, BlockType, ClassifiedBlock};
-use crate::extractors::block_merger::{merge_blocks, mark_running_headers_footers, MergedBlock};
+use crate::extractors::block_merger::{mark_running_headers_footers, merge_blocks, MergedBlock};
 use crate::extractors::document_profiler::{profile_document_with_cache, DocumentProfile};
 use crate::extractors::engineering::{detect_engineering_features_from_spans, EngineeringProfile};
 use crate::extractors::figure_detector::{detect_figures_from_blocks, DetectedFigure};
@@ -186,13 +186,16 @@ pub fn extract_document_with_config(
             continue;
         }
 
-        let (width, height) = doc.get_page_info(pg)
+        let (width, height) = doc
+            .get_page_info(pg)
             .ok()
             .map(|info| (info.media_box.width, info.media_box.height))
             .unwrap_or((612.0, 792.0));
 
         let classifier = BlockClassifier::new_with_overrides(
-            width, height, &spans,
+            width,
+            height,
+            &spans,
             config.body_font_size_override,
             config.header_ratio_override,
         );
@@ -200,8 +203,11 @@ pub fn extract_document_with_config(
         let merged = merge_blocks(&classified, height);
 
         // Build page text from merged blocks
-        let page_text: String = merged.iter()
-            .filter(|b| matches!(b.block_type, BlockType::Body | BlockType::Title | BlockType::List))
+        let page_text: String = merged
+            .iter()
+            .filter(|b| {
+                matches!(b.block_type, BlockType::Body | BlockType::Title | BlockType::List)
+            })
             .map(|b| {
                 if config.normalize_text {
                     full_normalize(&b.text)
@@ -212,10 +218,15 @@ pub fn extract_document_with_config(
             .collect::<Vec<_>>()
             .join("\n");
 
-        let block_summaries: Vec<BlockSummary> = merged.iter()
+        let block_summaries: Vec<BlockSummary> = merged
+            .iter()
             .map(|b| BlockSummary {
                 block_type: format!("{:?}", b.block_type),
-                text: if config.normalize_text { full_normalize(&b.text) } else { b.text.clone() },
+                text: if config.normalize_text {
+                    full_normalize(&b.text)
+                } else {
+                    b.text.clone()
+                },
                 bbox: [b.bbox.x, b.bbox.y, b.bbox.width, b.bbox.height],
                 font_size: b.font_size,
                 font_name: b.font_name.clone(),
@@ -238,7 +249,11 @@ pub fn extract_document_with_config(
     }
 
     // Step 2: Profile using cached spans and first-page classified blocks
-    let first_page_blocks = if !all_classified.is_empty() { &all_classified[0] } else { &[] as &[ClassifiedBlock] };
+    let first_page_blocks = if !all_classified.is_empty() {
+        &all_classified[0]
+    } else {
+        &[] as &[ClassifiedBlock]
+    };
     let profile = profile_document_with_cache(doc, &all_spans, first_page_blocks)?;
 
     // Step 3: Mark running headers/footers across pages
@@ -286,7 +301,8 @@ pub fn extract_document_with_config(
     // Step 5: Build section hierarchy from cached classified blocks
     let mut sections: Vec<SectionSummary> = Vec::new();
     if config.build_sections {
-        let page_blocks: Vec<(usize, Vec<ClassifiedBlock>)> = all_classified.iter()
+        let page_blocks: Vec<(usize, Vec<ClassifiedBlock>)> = all_classified
+            .iter()
             .enumerate()
             .map(|(pg, blocks)| (pg, blocks.clone()))
             .collect();
@@ -305,29 +321,43 @@ pub fn extract_document_with_config(
         } else {
             vec![0, 1, max_pages - 1]
         };
-        let eng_data: Vec<(&[TextSpan], f32, f32, usize)> = pages_to_check.iter()
+        let eng_data: Vec<(&[TextSpan], f32, f32, usize)> = pages_to_check
+            .iter()
             .map(|&pg| (all_spans[pg].as_slice(), all_dims[pg].0, all_dims[pg].1, pg))
             .collect();
-        detect_engineering_features_from_spans(&eng_data, page_count).ok().and_then(|eng| {
-            if !eng.is_engineering {
-                return None;
-            }
-            use crate::extractors::engineering::EngineeringElement;
-            let has_title_block = eng.elements.iter().any(|e| matches!(e.element_type, EngineeringElement::TitleBlock));
-            let has_revision_table = eng.elements.iter().any(|e| matches!(e.element_type, EngineeringElement::RevisionTable));
-            let has_drawing_border = eng.elements.iter().any(|e| matches!(e.element_type, EngineeringElement::DrawingBorder));
-            let security_markings: Vec<String> = eng.elements.iter()
-                .filter(|e| matches!(e.element_type, EngineeringElement::SecurityMarking))
-                .map(|e| e.text.clone())
-                .collect();
-            Some(EngineeringSummary {
-                has_title_block,
-                has_revision_table,
-                has_drawing_border,
-                security_markings,
-                document_number: eng.drawing_number.clone(),
+        detect_engineering_features_from_spans(&eng_data, page_count)
+            .ok()
+            .and_then(|eng| {
+                if !eng.is_engineering {
+                    return None;
+                }
+                use crate::extractors::engineering::EngineeringElement;
+                let has_title_block = eng
+                    .elements
+                    .iter()
+                    .any(|e| matches!(e.element_type, EngineeringElement::TitleBlock));
+                let has_revision_table = eng
+                    .elements
+                    .iter()
+                    .any(|e| matches!(e.element_type, EngineeringElement::RevisionTable));
+                let has_drawing_border = eng
+                    .elements
+                    .iter()
+                    .any(|e| matches!(e.element_type, EngineeringElement::DrawingBorder));
+                let security_markings: Vec<String> = eng
+                    .elements
+                    .iter()
+                    .filter(|e| matches!(e.element_type, EngineeringElement::SecurityMarking))
+                    .map(|e| e.text.clone())
+                    .collect();
+                Some(EngineeringSummary {
+                    has_title_block,
+                    has_revision_table,
+                    has_drawing_border,
+                    security_markings,
+                    document_number: eng.drawing_number.clone(),
+                })
             })
-        })
     } else {
         None
     };
@@ -378,7 +408,10 @@ pub fn extract_document_with_config(
     })
 }
 
-fn flatten_sections(section: &crate::extractors::section_hierarchy::Section, out: &mut Vec<SectionSummary>) {
+fn flatten_sections(
+    section: &crate::extractors::section_hierarchy::Section,
+    out: &mut Vec<SectionSummary>,
+) {
     out.push(SectionSummary {
         title: section.title.clone(),
         level: section.level,
@@ -390,7 +423,10 @@ fn flatten_sections(section: &crate::extractors::section_hierarchy::Section, out
     }
 }
 
-fn recommend_strategy(profile: &DocumentProfile, engineering: &Option<EngineeringSummary>) -> String {
+fn recommend_strategy(
+    profile: &DocumentProfile,
+    engineering: &Option<EngineeringSummary>,
+) -> String {
     if profile.is_scanned {
         return "ocr_first".to_string();
     }

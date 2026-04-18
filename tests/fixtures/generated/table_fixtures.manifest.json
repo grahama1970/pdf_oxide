@@ -1,0 +1,987 @@
+{
+  "fixture_id": "fd01102a",
+  "generated_at": "2026-04-12T13:15:19.519705+00:00",
+  "seed": 42,
+  "presets_used": [
+    "simple_grid",
+    "merged_cells",
+    "borderless",
+    "alternating_rows",
+    "nested_table",
+    "with_paragraphs",
+    "numeric_data"
+  ],
+  "pages": [
+    {
+      "page_num": 1,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t0",
+          "rows": 4,
+          "cols": 3,
+          "preset": "simple_grid",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_7E4D0A01C770",
+              "text": "Header 1",
+              "rendered_text": "[QID_7E4D0A01C770]Header 1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 1,
+              "qid": "QID_CDFCBC754362",
+              "text": "Header 2",
+              "rendered_text": "[QID_CDFCBC754362]Header 2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 2,
+              "qid": "QID_095444C62536",
+              "text": "Header 3",
+              "rendered_text": "[QID_095444C62536]Header 3",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_9573F7FE867E",
+              "text": "Cell R1C0",
+              "rendered_text": "[QID_9573F7FE867E]Cell R1C0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_16640B3429FB",
+              "text": "Cell R1C1",
+              "rendered_text": "[QID_16640B3429FB]Cell R1C1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 2,
+              "qid": "QID_2122C102854D",
+              "text": "Cell R1C2",
+              "rendered_text": "[QID_2122C102854D]Cell R1C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 0,
+              "qid": "QID_4AF733975B40",
+              "text": "Cell R2C0",
+              "rendered_text": "[QID_4AF733975B40]Cell R2C0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_84624908049C",
+              "text": "Cell R2C1",
+              "rendered_text": "[QID_84624908049C]Cell R2C1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 2,
+              "qid": "QID_AD118C044C9D",
+              "text": "Cell R2C2",
+              "rendered_text": "[QID_AD118C044C9D]Cell R2C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 0,
+              "qid": "QID_5D3125F44AD1",
+              "text": "Cell R3C0",
+              "rendered_text": "[QID_5D3125F44AD1]Cell R3C0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 1,
+              "qid": "QID_DF0B969B956A",
+              "text": "Cell R3C1",
+              "rendered_text": "[QID_DF0B969B956A]Cell R3C1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 2,
+              "qid": "QID_11EFB3EEA1E6",
+              "text": "Cell R3C2",
+              "rendered_text": "[QID_11EFB3EEA1E6]Cell R3C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_num": 2,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t1",
+          "rows": 4,
+          "cols": 3,
+          "preset": "merged_cells",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_16F0A64F9B79",
+              "text": "Spanning Header",
+              "rendered_text": "[QID_16F0A64F9B79]Spanning Header",
+              "is_merged": true,
+              "merge_span": [
+                1,
+                3
+              ],
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_AC65D8D19863",
+              "text": "Row Span",
+              "rendered_text": "[QID_AC65D8D19863]Row Span",
+              "is_merged": true,
+              "merge_span": [
+                2,
+                1
+              ],
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_5742D2806AB1",
+              "text": "R1C1",
+              "rendered_text": "[QID_5742D2806AB1]R1C1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 2,
+              "qid": "QID_34E8C9E12F9C",
+              "text": "R1C2",
+              "rendered_text": "[QID_34E8C9E12F9C]R1C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_4278D6D959C0",
+              "text": "R2C1",
+              "rendered_text": "[QID_4278D6D959C0]R2C1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 2,
+              "qid": "QID_811F8CDBE0ED",
+              "text": "R2C2",
+              "rendered_text": "[QID_811F8CDBE0ED]R2C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 0,
+              "qid": "QID_240D67E1A5D6",
+              "text": "Footer Span",
+              "rendered_text": "[QID_240D67E1A5D6]Footer Span",
+              "is_merged": true,
+              "merge_span": [
+                1,
+                2
+              ],
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 2,
+              "qid": "QID_66ED30BB9733",
+              "text": "R3C2",
+              "rendered_text": "[QID_66ED30BB9733]R3C2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_num": 3,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t2",
+          "rows": 3,
+          "cols": 4,
+          "preset": "borderless",
+          "ruled": false,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_70F0C0CC508C",
+              "text": "B00",
+              "rendered_text": "[QID_70F0C0CC508C]B00",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 1,
+              "qid": "QID_50A091BE64E9",
+              "text": "B01",
+              "rendered_text": "[QID_50A091BE64E9]B01",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 2,
+              "qid": "QID_1697AB9A5977",
+              "text": "B02",
+              "rendered_text": "[QID_1697AB9A5977]B02",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 3,
+              "qid": "QID_61869278DEE5",
+              "text": "B03",
+              "rendered_text": "[QID_61869278DEE5]B03",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_5EABD675B360",
+              "text": "B10",
+              "rendered_text": "[QID_5EABD675B360]B10",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_0E538A3CA921",
+              "text": "B11",
+              "rendered_text": "[QID_0E538A3CA921]B11",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 2,
+              "qid": "QID_E9B15E40C23B",
+              "text": "B12",
+              "rendered_text": "[QID_E9B15E40C23B]B12",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 3,
+              "qid": "QID_94E3C7A84DEF",
+              "text": "B13",
+              "rendered_text": "[QID_94E3C7A84DEF]B13",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 0,
+              "qid": "QID_870C16AF1DB9",
+              "text": "B20",
+              "rendered_text": "[QID_870C16AF1DB9]B20",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_018E79EEFDE8",
+              "text": "B21",
+              "rendered_text": "[QID_018E79EEFDE8]B21",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 2,
+              "qid": "QID_DB63610026D8",
+              "text": "B22",
+              "rendered_text": "[QID_DB63610026D8]B22",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 3,
+              "qid": "QID_97A32FC6087C",
+              "text": "B23",
+              "rendered_text": "[QID_97A32FC6087C]B23",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_num": 4,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t3",
+          "rows": 6,
+          "cols": 3,
+          "preset": "alternating_rows",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_CE06784544E8",
+              "text": "Col 1",
+              "rendered_text": "[QID_CE06784544E8]Col 1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 1,
+              "qid": "QID_12D32DAD5AC5",
+              "text": "Col 2",
+              "rendered_text": "[QID_12D32DAD5AC5]Col 2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 2,
+              "qid": "QID_0141D530A0C9",
+              "text": "Col 3",
+              "rendered_text": "[QID_0141D530A0C9]Col 3",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_EADFB56C109B",
+              "text": "Value 1-0",
+              "rendered_text": "[QID_EADFB56C109B]Value 1-0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_381DABF83E22",
+              "text": "Value 1-1",
+              "rendered_text": "[QID_381DABF83E22]Value 1-1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 2,
+              "qid": "QID_4AF825A7BC41",
+              "text": "Value 1-2",
+              "rendered_text": "[QID_4AF825A7BC41]Value 1-2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 0,
+              "qid": "QID_20A120D4C1C1",
+              "text": "Value 2-0",
+              "rendered_text": "[QID_20A120D4C1C1]Value 2-0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_699747F79012",
+              "text": "Value 2-1",
+              "rendered_text": "[QID_699747F79012]Value 2-1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 2,
+              "qid": "QID_1BABB81BAA49",
+              "text": "Value 2-2",
+              "rendered_text": "[QID_1BABB81BAA49]Value 2-2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 0,
+              "qid": "QID_E613CC08FBF1",
+              "text": "Value 3-0",
+              "rendered_text": "[QID_E613CC08FBF1]Value 3-0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 1,
+              "qid": "QID_9B8D7C5D9679",
+              "text": "Value 3-1",
+              "rendered_text": "[QID_9B8D7C5D9679]Value 3-1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 2,
+              "qid": "QID_F822214AFA38",
+              "text": "Value 3-2",
+              "rendered_text": "[QID_F822214AFA38]Value 3-2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 0,
+              "qid": "QID_2DE970B41D10",
+              "text": "Value 4-0",
+              "rendered_text": "[QID_2DE970B41D10]Value 4-0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 1,
+              "qid": "QID_C5FC0608741A",
+              "text": "Value 4-1",
+              "rendered_text": "[QID_C5FC0608741A]Value 4-1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 2,
+              "qid": "QID_415C8066D82E",
+              "text": "Value 4-2",
+              "rendered_text": "[QID_415C8066D82E]Value 4-2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 0,
+              "qid": "QID_5AC6B123D1D3",
+              "text": "Value 5-0",
+              "rendered_text": "[QID_5AC6B123D1D3]Value 5-0",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 1,
+              "qid": "QID_F73B1A382F4C",
+              "text": "Value 5-1",
+              "rendered_text": "[QID_F73B1A382F4C]Value 5-1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 5,
+              "col": 2,
+              "qid": "QID_A9E308DFA676",
+              "text": "Value 5-2",
+              "rendered_text": "[QID_A9E308DFA676]Value 5-2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_num": 5,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t4",
+          "rows": 2,
+          "cols": 2,
+          "preset": "nested_table",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_86C512B9D7F4",
+              "text": "Header 1",
+              "rendered_text": "[QID_86C512B9D7F4]Header 1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 1,
+              "qid": "QID_88A6A05EA39D",
+              "text": "Header 2",
+              "rendered_text": "[QID_88A6A05EA39D]Header 2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_AEEDB14E83BC",
+              "text": "Contains nested",
+              "rendered_text": "[QID_AEEDB14E83BC]Contains nested",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_16B3031B7332",
+              "text": "[Nested Table]",
+              "rendered_text": "[QID_16B3031B7332][Nested Table]",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_num": 6,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t5",
+          "rows": 3,
+          "cols": 2,
+          "preset": "with_paragraphs",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_2E92897D55BB",
+              "text": "Description",
+              "rendered_text": "[QID_2E92897D55BB]Description",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 1,
+              "qid": "QID_7A207BDA4473",
+              "text": "Details",
+              "rendered_text": "[QID_7A207BDA4473]Details",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_0039854F7EEF",
+              "text": "Item One",
+              "rendered_text": "[QID_0039854F7EEF]Item One",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_D6C240AD3F40",
+              "text": "This is a longer description that demonstrates text wrapping within a table cell.",
+              "rendered_text": "[QID_D6C240AD3F40]This is a longer description that demonstrates text wrapping within a table cell.",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 0,
+              "qid": "QID_4805BE3CB624",
+              "text": "Item Two",
+              "rendered_text": "[QID_4805BE3CB624]Item Two",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_BDA9CFC1CDFA",
+              "text": "Short note.",
+              "rendered_text": "[QID_BDA9CFC1CDFA]Short note.",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_num": 7,
+      "width": 612.0,
+      "height": 792.0,
+      "tables": [
+        {
+          "table_id": "t6",
+          "rows": 5,
+          "cols": 5,
+          "preset": "numeric_data",
+          "ruled": true,
+          "cells": [
+            {
+              "row": 0,
+              "col": 0,
+              "qid": "QID_C959CEC47F35",
+              "text": "Item",
+              "rendered_text": "[QID_C959CEC47F35]Item",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 1,
+              "qid": "QID_B14107E74A77",
+              "text": "Q1",
+              "rendered_text": "[QID_B14107E74A77]Q1",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 2,
+              "qid": "QID_FFED5B80F50F",
+              "text": "Q2",
+              "rendered_text": "[QID_FFED5B80F50F]Q2",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 3,
+              "qid": "QID_1909A4B04CB4",
+              "text": "Q3",
+              "rendered_text": "[QID_1909A4B04CB4]Q3",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 0,
+              "col": 4,
+              "qid": "QID_4A064BA9BFE0",
+              "text": "Total",
+              "rendered_text": "[QID_4A064BA9BFE0]Total",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 0,
+              "qid": "QID_D84516E0CA79",
+              "text": "Revenue",
+              "rendered_text": "[QID_D84516E0CA79]Revenue",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 1,
+              "qid": "QID_7EB5CF415C9F",
+              "text": "$2,824",
+              "rendered_text": "[QID_7EB5CF415C9F]$2,824",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 2,
+              "qid": "QID_3A2358B2B45F",
+              "text": "$1,409",
+              "rendered_text": "[QID_3A2358B2B45F]$1,409",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 3,
+              "qid": "QID_A2FFCF904035",
+              "text": "$5,506",
+              "rendered_text": "[QID_A2FFCF904035]$5,506",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 1,
+              "col": 4,
+              "qid": "QID_76194AB4A018",
+              "text": "$9,739",
+              "rendered_text": "[QID_76194AB4A018]$9,739",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 0,
+              "qid": "QID_6C970E2B14F9",
+              "text": "Expenses",
+              "rendered_text": "[QID_6C970E2B14F9]Expenses",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 1,
+              "qid": "QID_CC20BE88E7D0",
+              "text": "$5,012",
+              "rendered_text": "[QID_CC20BE88E7D0]$5,012",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 2,
+              "qid": "QID_EE455E3096CB",
+              "text": "$4,657",
+              "rendered_text": "[QID_EE455E3096CB]$4,657",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 3,
+              "qid": "QID_B4F677C0BEDB",
+              "text": "$3,286",
+              "rendered_text": "[QID_B4F677C0BEDB]$3,286",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 2,
+              "col": 4,
+              "qid": "QID_0603406DCD49",
+              "text": "$12,955",
+              "rendered_text": "[QID_0603406DCD49]$12,955",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 0,
+              "qid": "QID_00B36F792DAA",
+              "text": "Profit",
+              "rendered_text": "[QID_00B36F792DAA]Profit",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 1,
+              "qid": "QID_E4BCE007D597",
+              "text": "$2,679",
+              "rendered_text": "[QID_E4BCE007D597]$2,679",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 2,
+              "qid": "QID_66BE99FC0270",
+              "text": "$9,935",
+              "rendered_text": "[QID_66BE99FC0270]$9,935",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 3,
+              "qid": "QID_BCC865F598D4",
+              "text": "$2,424",
+              "rendered_text": "[QID_BCC865F598D4]$2,424",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 3,
+              "col": 4,
+              "qid": "QID_097AC1AF4489",
+              "text": "$15,038",
+              "rendered_text": "[QID_097AC1AF4489]$15,038",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 0,
+              "qid": "QID_F21126CCE0A0",
+              "text": "Tax",
+              "rendered_text": "[QID_F21126CCE0A0]Tax",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 1,
+              "qid": "QID_4ED49281BAEF",
+              "text": "$7,912",
+              "rendered_text": "[QID_4ED49281BAEF]$7,912",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 2,
+              "qid": "QID_40ECCEEAF149",
+              "text": "$1,520",
+              "rendered_text": "[QID_40ECCEEAF149]$1,520",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 3,
+              "qid": "QID_988FEE492B8D",
+              "text": "$1,488",
+              "rendered_text": "[QID_988FEE492B8D]$1,488",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            },
+            {
+              "row": 4,
+              "col": 4,
+              "qid": "QID_369FC846CF79",
+              "text": "$10,920",
+              "rendered_text": "[QID_369FC846CF79]$10,920",
+              "is_merged": false,
+              "merge_span": null,
+              "has_image": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

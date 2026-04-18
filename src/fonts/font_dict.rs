@@ -2224,7 +2224,9 @@ impl FontInfo {
                 {
                     if let Some(tt_cmap) = self.truetype_cmap() {
                         // Try charcode-based lookup first (correct for all cmap types)
-                        if let Some(unicode_char) = tt_cmap.get_unicode_by_charcode(char_code as u16) {
+                        if let Some(unicode_char) =
+                            tt_cmap.get_unicode_by_charcode(char_code as u16)
+                        {
                             return Some(unicode_char.to_string());
                         }
                         // Legacy fallback: treat char_code as GID

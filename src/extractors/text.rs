@@ -11,8 +11,8 @@ use crate::content::parse_and_execute_text_only;
 use crate::content::parse_content_stream_text_only;
 use crate::error::Result;
 use crate::extract_log_debug;
-use crate::fonts::FontInfo;
 use crate::fonts::text_decode;
+use crate::fonts::FontInfo;
 use crate::geometry::Rect;
 use crate::layout::{Color, FontWeight, TextChar, TextSpan};
 use crate::object::{Object, ObjectRef};
@@ -841,8 +841,7 @@ fn ends_with_ligature(s: &str) -> bool {
     let len = b.len();
     if len >= 3 && b[len - 3] == b'f' && b[len - 2] == b'f' {
         // "ffi" or "ffl" or "ff"
-        return len >= 3 && (b[len - 1] == b'i' || b[len - 1] == b'l')
-            || len >= 2;
+        return len >= 3 && (b[len - 1] == b'i' || b[len - 1] == b'l') || len >= 2;
     }
     if len >= 2 {
         b[len - 2] == b'f' && (b[len - 1] == b'i' || b[len - 1] == b'l' || b[len - 1] == b'f')
@@ -859,7 +858,9 @@ fn is_whitespace_only(s: &str) -> bool {
         return true;
     }
     // Fast path: all ASCII whitespace (covers 99%+ of PDF text)
-    s.as_bytes().iter().all(|&b| b == b' ' || b == b'\t' || b == b'\n' || b == b'\r')
+    s.as_bytes()
+        .iter()
+        .all(|&b| b == b' ' || b == b'\t' || b == b'\n' || b == b'\r')
 }
 
 /// ISO 32000-1:2008, Section 9.4.4 NOTE 6:
@@ -2800,9 +2801,13 @@ impl TextExtractor {
         let mut min_x = f32::INFINITY;
         let mut max_x = f32::NEG_INFINITY;
         for s in &self.spans {
-            if s.bbox.x < min_x { min_x = s.bbox.x; }
+            if s.bbox.x < min_x {
+                min_x = s.bbox.x;
+            }
             let right = s.bbox.x + s.bbox.width;
-            if right > max_x { max_x = right; }
+            if right > max_x {
+                max_x = right;
+            }
         }
 
         let page_width = max_x - min_x;
@@ -2956,7 +2961,9 @@ impl TextExtractor {
             let geometric_duplicate = if let (Some(prev_y), Some(prev_x_val), Some(prev_idx)) =
                 (prev_y_rounded, prev_x, prev_text_idx)
             {
-                y_rounded == prev_y && (x - prev_x_val).abs() < 2.0 && span.text == deduplicated[prev_idx].text
+                y_rounded == prev_y
+                    && (x - prev_x_val).abs() < 2.0
+                    && span.text == deduplicated[prev_idx].text
             } else {
                 false
             };
@@ -3092,12 +3099,21 @@ impl TextExtractor {
             // bbox (it includes ALL base-font text), and the ligature span sits
             // INSIDE it (huge negative gap). We detect this pattern and force merge.
             let is_ligature_subset_switch = {
-                let base_a = current.font_name.rsplitn(2, '-').last().unwrap_or(&current.font_name);
-                let base_b = span.font_name.rsplitn(2, '-').last().unwrap_or(&span.font_name);
+                let base_a = current
+                    .font_name
+                    .rsplitn(2, '-')
+                    .last()
+                    .unwrap_or(&current.font_name);
+                let base_b = span
+                    .font_name
+                    .rsplitn(2, '-')
+                    .last()
+                    .unwrap_or(&span.font_name);
                 let same_base = base_a == base_b && current.font_name != span.font_name;
                 if same_base {
                     // Next span is short ligature text
-                    let next_is_ligature = matches!(span.text.as_str(), "fi" | "fl" | "ff" | "ffi" | "ffl");
+                    let next_is_ligature =
+                        matches!(span.text.as_str(), "fi" | "fl" | "ff" | "ffi" | "ffl");
                     // Or current span just absorbed a ligature and next continues the word
                     let current_ends_ligature = ends_with_ligature(&current.text);
                     next_is_ligature || current_ends_ligature
@@ -3134,15 +3150,26 @@ impl TextExtractor {
                     let ends_ligature = ends_with_ligature(&current.text);
                     if ends_ligature {
                         // Check if fonts share a common base (strip last segment after '-')
-                        let base_a = current.font_name.rsplitn(2, '-').last().unwrap_or(&current.font_name);
-                        let base_b = span.font_name.rsplitn(2, '-').last().unwrap_or(&span.font_name);
+                        let base_a = current
+                            .font_name
+                            .rsplitn(2, '-')
+                            .last()
+                            .unwrap_or(&current.font_name);
+                        let base_b = span
+                            .font_name
+                            .rsplitn(2, '-')
+                            .last()
+                            .unwrap_or(&span.font_name);
                         base_a == base_b
                     } else {
                         false
                     }
                 };
-                if !current.text.ends_with(' ') && !span.text.starts_with(' ')
-                    && !starts_with_punct && !is_ligature_font_switch && !is_ligature_subset_switch
+                if !current.text.ends_with(' ')
+                    && !span.text.starts_with(' ')
+                    && !starts_with_punct
+                    && !is_ligature_font_switch
+                    && !is_ligature_subset_switch
                 {
                     current.text.push(' ');
                 }
@@ -3213,7 +3240,11 @@ impl TextExtractor {
                                 );
                                 current.text.push_str(&span.text);
                             } else {
-                                log::trace!("Space via {:?} (double={})", space_decision.source, space_decision.double_space);
+                                log::trace!(
+                                    "Space via {:?} (double={})",
+                                    space_decision.source,
+                                    space_decision.double_space
+                                );
                                 if space_decision.double_space {
                                     current.text.push_str("  ");
                                 } else {
@@ -3668,7 +3699,9 @@ impl TextExtractor {
                                                 let wt = font.get_byte_to_width_table();
                                                 for &b in s.iter() {
                                                     let mut w = wt[b as usize] * fs * hs + cs;
-                                                    if b == 0x20 { w += ws; }
+                                                    if b == 0x20 {
+                                                        w += ws;
+                                                    }
                                                     total_array_width += w;
                                                 }
                                             } else {
@@ -3678,8 +3711,11 @@ impl TextExtractor {
                                                     } else {
                                                         chunk[0] as u16
                                                     };
-                                                    let mut w = font.get_glyph_width(cid) * fs * hs + cs;
-                                                    if cid == 32 { w += ws; }
+                                                    let mut w =
+                                                        font.get_glyph_width(cid) * fs * hs + cs;
+                                                    if cid == 32 {
+                                                        w += ws;
+                                                    }
                                                     total_array_width += w;
                                                 }
                                             }
@@ -5068,7 +5104,11 @@ impl TextExtractor {
                         // may contain "Prefi" where the last glyph was a ligature.
                         let buffer_ends_with_ligature = {
                             let buf = &buffer.unicode;
-                            buf.ends_with("ffi") || buf.ends_with("ffl") || buf.ends_with("fi") || buf.ends_with("fl") || buf.ends_with("ff")
+                            buf.ends_with("ffi")
+                                || buf.ends_with("ffl")
+                                || buf.ends_with("fi")
+                                || buf.ends_with("fl")
+                                || buf.ends_with("ff")
                         };
 
                         // Flush buffer before space
@@ -5089,7 +5129,10 @@ impl TextExtractor {
 
                         // Only insert space if neither side already has whitespace
                         // and this is not a ligature kerning offset
-                        if !buffer_ends_with_space && !next_element_starts_with_space && !buffer_ends_with_ligature {
+                        if !buffer_ends_with_space
+                            && !next_element_starts_with_space
+                            && !buffer_ends_with_ligature
+                        {
                             // Insert space character as separate span
                             self.insert_space_as_span()?;
                         }
@@ -5739,7 +5782,6 @@ impl TextExtractor {
         let ws_hs = word_space * hs_factor;
 
         let font = self.cached_current_font.as_deref();
-
 
         let total_width = if let Some(font) = font {
             if font.subtype != "Type0" {

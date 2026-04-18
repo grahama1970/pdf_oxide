@@ -243,12 +243,20 @@ impl BlockClassifier {
     }
 
     fn classify_line(&self, spans: &[&TextSpan]) -> ClassifiedBlock {
-        let text: String = spans.iter().map(|s| s.text.as_str()).collect::<Vec<_>>().join("");
+        let text: String = spans
+            .iter()
+            .map(|s| s.text.as_str())
+            .collect::<Vec<_>>()
+            .join("");
         let text = text.trim().to_string();
 
-        let bbox = spans.iter().fold(spans[0].bbox, |acc, s| acc.union(&s.bbox));
+        let bbox = spans
+            .iter()
+            .fold(spans[0].bbox, |acc, s| acc.union(&s.bbox));
         let avg_font_size = spans.iter().map(|s| s.font_size).sum::<f32>() / spans.len() as f32;
-        let is_bold = spans.iter().any(|s| s.font_weight == crate::layout::text_block::FontWeight::Bold);
+        let is_bold = spans
+            .iter()
+            .any(|s| s.font_weight == crate::layout::text_block::FontWeight::Bold);
         let font_name = spans[0].font_name.clone();
 
         let y_ratio = bbox.y / self.page_height;
@@ -260,54 +268,147 @@ impl BlockClassifier {
 
         // Page number detection (top/bottom of page)
         if is_page_number(trimmed, y_ratio) {
-            return self.make_block(BlockType::PageNumber, text, bbox, avg_font_size, font_name, is_bold, 0.9, None, None);
+            return self.make_block(
+                BlockType::PageNumber,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.9,
+                None,
+                None,
+            );
         }
 
         // Boilerplate detection (TLP, copyright, arXiv stamps, etc.)
         if is_boilerplate(trimmed) {
-            return self.make_block(BlockType::Boilerplate, text, bbox, avg_font_size, font_name, is_bold, 0.9, None, None);
+            return self.make_block(
+                BlockType::Boilerplate,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.9,
+                None,
+                None,
+            );
         }
 
         // Running footer (bottom 8% of page, short text)
         if y_ratio > 0.92 && trimmed.len() < 200 {
             // But check if it's actually a section header that happens to be at the bottom
             if !is_content_exception(trimmed) {
-                return self.make_block(BlockType::Footer, text, bbox, avg_font_size, font_name, is_bold, 0.85, None, None);
+                return self.make_block(
+                    BlockType::Footer,
+                    text,
+                    bbox,
+                    avg_font_size,
+                    font_name,
+                    is_bold,
+                    0.85,
+                    None,
+                    None,
+                );
             }
         }
 
         // Running header (top 8% of page, short text, not larger than median)
         if y_ratio < 0.08 && trimmed.len() < 200 && avg_font_size <= self.median_font_size {
             if !is_content_exception(trimmed) {
-                return self.make_block(BlockType::Header, text, bbox, avg_font_size, font_name, is_bold, 0.8, None, None);
+                return self.make_block(
+                    BlockType::Header,
+                    text,
+                    bbox,
+                    avg_font_size,
+                    font_name,
+                    is_bold,
+                    0.8,
+                    None,
+                    None,
+                );
             }
         }
 
         // Caption detection (Figure/Table prefix)
         if is_caption(trimmed, size_ratio) {
-            return self.make_block(BlockType::Caption, text, bbox, avg_font_size, font_name, is_bold, 0.8, None, None);
+            return self.make_block(
+                BlockType::Caption,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.8,
+                None,
+                None,
+            );
         }
 
         // Footnote detection (small font, bottom of page, starts with marker)
         if size_ratio < 0.85 && y_ratio > 0.75 && trimmed.len() < 500 {
-            if trimmed.starts_with(|c: char| c.is_ascii_digit()) || trimmed.starts_with('*') || trimmed.starts_with('†') {
-                return self.make_block(BlockType::Footnote, text, bbox, avg_font_size, font_name, is_bold, 0.75, None, None);
+            if trimmed.starts_with(|c: char| c.is_ascii_digit())
+                || trimmed.starts_with('*')
+                || trimmed.starts_with('†')
+            {
+                return self.make_block(
+                    BlockType::Footnote,
+                    text,
+                    bbox,
+                    avg_font_size,
+                    font_name,
+                    is_bold,
+                    0.75,
+                    None,
+                    None,
+                );
             }
         }
 
         // Reference/bibliography detection
         if is_reference_entry(trimmed) {
-            return self.make_block(BlockType::Reference, text, bbox, avg_font_size, font_name, is_bold, 0.7, None, None);
+            return self.make_block(
+                BlockType::Reference,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.7,
+                None,
+                None,
+            );
         }
 
         // TOC entry detection
         if is_toc_entry(trimmed) {
-            return self.make_block(BlockType::TableOfContents, text, bbox, avg_font_size, font_name, is_bold, 0.8, None, None);
+            return self.make_block(
+                BlockType::TableOfContents,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.8,
+                None,
+                None,
+            );
         }
 
         // Equation detection
         if is_equation(trimmed) {
-            return self.make_block(BlockType::Equation, text, bbox, avg_font_size, font_name, is_bold, 0.6, None, None);
+            return self.make_block(
+                BlockType::Equation,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.6,
+                None,
+                None,
+            );
         }
 
         // List item detection (but not if bold/large — those are likely numbered headers)
@@ -318,40 +419,91 @@ impl BlockClassifier {
             if !numbering.has_numbering || numbering.depth_level <= 1 {
                 // Only if it doesn't look like a real section number
                 if !numbering.has_numbering {
-                    return self.make_block(BlockType::List, text, bbox, avg_font_size, font_name, is_bold, 0.85, None, None);
+                    return self.make_block(
+                        BlockType::List,
+                        text,
+                        bbox,
+                        avg_font_size,
+                        font_name,
+                        is_bold,
+                        0.85,
+                        None,
+                        None,
+                    );
                 }
             }
         }
 
         // Title detection (document title: large font, centered, near top)
         if size_ratio > 1.8 && is_centered && y_ratio < 0.4 && trimmed.len() < 200 {
-            return self.make_block(BlockType::Title, text, bbox, avg_font_size, font_name, is_bold, 0.85, Some(0), None);
+            return self.make_block(
+                BlockType::Title,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.85,
+                Some(0),
+                None,
+            );
         }
 
         // Section header detection — the main S03-equivalent logic
         // Candidate: bold or larger-than-median font, short text
         if (is_bold || size_ratio > 1.15) && trimmed.len() < 200 {
-            let validation = validate_header_with_ratio(trimmed, is_bold, avg_font_size, self.median_font_size, self.max_font_size, self.header_ratio);
+            let validation = validate_header_with_ratio(
+                trimmed,
+                is_bold,
+                avg_font_size,
+                self.median_font_size,
+                self.max_font_size,
+                self.header_ratio,
+            );
 
             if validation.is_header {
                 let level = validation.level.unwrap_or_else(|| {
                     compute_header_level(size_ratio, is_bold, &self.max_font_size, avg_font_size)
                 });
                 return self.make_block(
-                    BlockType::Title, text, bbox, avg_font_size, font_name, is_bold,
-                    validation.confidence, Some(level), Some(validation),
+                    BlockType::Title,
+                    text,
+                    bbox,
+                    avg_font_size,
+                    font_name,
+                    is_bold,
+                    validation.confidence,
+                    Some(level),
+                    Some(validation),
                 );
             } else {
                 // Demoted to body — the block looks like a header visually but fails heuristics
                 return self.make_block(
-                    BlockType::Body, text, bbox, avg_font_size, font_name, is_bold,
-                    validation.confidence, None, Some(validation),
+                    BlockType::Body,
+                    text,
+                    bbox,
+                    avg_font_size,
+                    font_name,
+                    is_bold,
+                    validation.confidence,
+                    None,
+                    Some(validation),
                 );
             }
         }
 
         // Default: body text
-        self.make_block(BlockType::Body, text, bbox, avg_font_size, font_name, is_bold, 0.9, None, None)
+        self.make_block(
+            BlockType::Body,
+            text,
+            bbox,
+            avg_font_size,
+            font_name,
+            is_bold,
+            0.9,
+            None,
+            None,
+        )
     }
 
     fn make_block(
@@ -403,17 +555,29 @@ pub fn analyze_section_numbering(text: &str) -> NumberingAnalysis {
 
     // Try each pattern in priority order
     // 1. Labeled: "Appendix A Title" / "Chapter 3 Title"
-    if let Some(r) = try_labeled(t) { return r; }
+    if let Some(r) = try_labeled(t) {
+        return r;
+    }
     // 2. Decimal: "1.2.3 Title" or "1.2.3. Title" or "1 Title"
-    if let Some(r) = try_decimal(t) { return r; }
+    if let Some(r) = try_decimal(t) {
+        return r;
+    }
     // 3. Decimal paren: "1) Title"
-    if let Some(r) = try_decimal_paren(t) { return r; }
+    if let Some(r) = try_decimal_paren(t) {
+        return r;
+    }
     // 4. Roman paren: "(iv) Title"
-    if let Some(r) = try_roman_paren(t) { return r; }
+    if let Some(r) = try_roman_paren(t) {
+        return r;
+    }
     // 5. Roman: "IV. Title"
-    if let Some(r) = try_roman(t) { return r; }
+    if let Some(r) = try_roman(t) {
+        return r;
+    }
     // 6. Alpha: "A. Title" or "A.1 Title"
-    if let Some(r) = try_alpha(t) { return r; }
+    if let Some(r) = try_alpha(t) {
+        return r;
+    }
 
     NumberingAnalysis {
         has_numbering: false,
@@ -438,11 +602,14 @@ fn try_labeled(text: &str) -> Option<NumberingAnalysis> {
         }
         let rest = rest.trim_start();
         // Extract the number/identifier part
-        let num_end = rest.find(|c: char| c == ':' || c == '.' || c == '-' || c == '–' || c == '—')
+        let num_end = rest
+            .find(|c: char| c == ':' || c == '.' || c == '-' || c == '–' || c == '—')
             .or_else(|| rest.find(|c: char| c.is_whitespace()));
         let (num_text, title_text) = if let Some(pos) = num_end {
             let num = rest[..pos].trim();
-            let title = rest[pos..].trim_start_matches(|c: char| c == ':' || c == '.' || c == '-' || c == '–' || c == '—' || c.is_whitespace());
+            let title = rest[pos..].trim_start_matches(|c: char| {
+                c == ':' || c == '.' || c == '-' || c == '–' || c == '—' || c.is_whitespace()
+            });
             (num.to_string(), title.to_string())
         } else {
             (rest.trim().to_string(), String::new())
@@ -494,7 +661,9 @@ fn try_decimal(text: &str) -> Option<NumberingAnalysis> {
     let rest = &t[i..];
 
     // Must have separator (.:)-–— or space) then text
-    let rest_trimmed = rest.trim_start_matches(|c: char| c == ':' || c == '.' || c == ')' || c == '-' || c == '–' || c == '—');
+    let rest_trimmed = rest.trim_start_matches(|c: char| {
+        c == ':' || c == '.' || c == ')' || c == '-' || c == '–' || c == '—'
+    });
     if rest_trimmed.is_empty() && rest.is_empty() {
         return None; // Just a number with no title
     }
@@ -504,7 +673,17 @@ fn try_decimal(text: &str) -> Option<NumberingAnalysis> {
     }
 
     // Require at least a space or separator after the number
-    if !rest.is_empty() && !rest.starts_with(|c: char| c.is_whitespace() || c == ':' || c == '.' || c == ')' || c == '-' || c == '–' || c == '—') {
+    if !rest.is_empty()
+        && !rest.starts_with(|c: char| {
+            c.is_whitespace()
+                || c == ':'
+                || c == '.'
+                || c == ')'
+                || c == '-'
+                || c == '–'
+                || c == '—'
+        })
+    {
         return None;
     }
 
@@ -703,12 +882,21 @@ pub fn validate_header_with_ratio(
     // --- Step 1: Extract features (pure observation, no decisions) ---
     let words: Vec<&str> = trimmed.split_whitespace().collect();
     let word_count = words.len();
-    let size_ratio = if median_font_size > 0.0 { font_size / median_font_size } else { 1.0 };
+    let size_ratio = if median_font_size > 0.0 {
+        font_size / median_font_size
+    } else {
+        1.0
+    };
 
-    let cap_count = words.iter()
+    let cap_count = words
+        .iter()
         .filter(|w| w.chars().next().map_or(false, |c| c.is_uppercase()))
         .count();
-    let title_case_ratio = if word_count > 0 { cap_count as f32 / word_count as f32 } else { 0.0 };
+    let title_case_ratio = if word_count > 0 {
+        cap_count as f32 / word_count as f32
+    } else {
+        0.0
+    };
 
     let alpha_chars: Vec<char> = trimmed.chars().filter(|c| c.is_alphabetic()).collect();
     let is_all_caps = !alpha_chars.is_empty() && alpha_chars.iter().all(|c| c.is_uppercase());
@@ -791,7 +979,9 @@ pub fn validate_header_with_ratio(
         reasons.push("title_case_like");
     }
 
-    if features.is_all_caps && trimmed.len() >= 5 && trimmed.len() <= 60
+    if features.is_all_caps
+        && trimmed.len() >= 5
+        && trimmed.len() <= 60
         && !trimmed.chars().any(|c| c.is_ascii_digit())
     {
         confidence = confidence.max(0.45);
@@ -957,12 +1147,15 @@ fn is_page_number(text: &str, y_ratio: f32) -> bool {
     }
     // "1 / 10" or "1/10" style
     let parts: Vec<&str> = trimmed.split('/').collect();
-    if parts.len() == 2 && parts[0].trim().parse::<u32>().is_ok() && parts[1].trim().parse::<u32>().is_ok() {
+    if parts.len() == 2
+        && parts[0].trim().parse::<u32>().is_ok()
+        && parts[1].trim().parse::<u32>().is_ok()
+    {
         return true;
     }
     // "[1]" style at top/bottom
     if trimmed.starts_with('[') && trimmed.ends_with(']') && trimmed.len() < 8 {
-        let inner = &trimmed[1..trimmed.len()-1];
+        let inner = &trimmed[1..trimmed.len() - 1];
         if inner.trim().parse::<u32>().is_ok() {
             return true;
         }
@@ -980,7 +1173,10 @@ fn is_boilerplate(text: &str) -> bool {
         return true;
     }
     // Copyright / proprietary / confidential
-    if lower.starts_with("confidential") || lower.starts_with("proprietary") || lower.starts_with("copyright") {
+    if lower.starts_with("confidential")
+        || lower.starts_with("proprietary")
+        || lower.starts_with("copyright")
+    {
         return true;
     }
     // arXiv stamps
@@ -1003,9 +1199,12 @@ fn is_boilerplate(text: &str) -> bool {
         }
     }
     // Document reference patterns
-    if lower.starts_with("document no") || lower.starts_with("document number")
-        || lower.starts_with("document ref") || lower.starts_with("revision:")
-        || lower.starts_with("version:") || lower.starts_with("revision ")
+    if lower.starts_with("document no")
+        || lower.starts_with("document number")
+        || lower.starts_with("document ref")
+        || lower.starts_with("revision:")
+        || lower.starts_with("version:")
+        || lower.starts_with("revision ")
         || lower.starts_with("version ")
     {
         return trimmed.len() < 80;
@@ -1032,7 +1231,10 @@ fn is_content_exception(text: &str) -> bool {
     }
     // "Section N", "Chapter N", "Appendix X"
     let lower = trimmed.to_lowercase();
-    if lower.starts_with("section ") || lower.starts_with("chapter ") || lower.starts_with("appendix ") {
+    if lower.starts_with("section ")
+        || lower.starts_with("chapter ")
+        || lower.starts_with("appendix ")
+    {
         return true;
     }
     false
@@ -1041,9 +1243,14 @@ fn is_content_exception(text: &str) -> bool {
 fn is_list_item(text: &str) -> bool {
     let trimmed = text.trim();
     // Bullet points
-    if trimmed.starts_with('•') || trimmed.starts_with('·') || trimmed.starts_with('◦')
-        || trimmed.starts_with('▪') || trimmed.starts_with('▸') || trimmed.starts_with('-')
-        || trimmed.starts_with('–') || trimmed.starts_with('—')
+    if trimmed.starts_with('•')
+        || trimmed.starts_with('·')
+        || trimmed.starts_with('◦')
+        || trimmed.starts_with('▪')
+        || trimmed.starts_with('▸')
+        || trimmed.starts_with('-')
+        || trimmed.starts_with('–')
+        || trimmed.starts_with('—')
     {
         return true;
     }
@@ -1054,7 +1261,9 @@ fn is_list_item(text: &str) -> bool {
             if let Some(close) = trimmed.find(')') {
                 if close <= 4 {
                     let inner = &trimmed[1..close];
-                    if inner.parse::<u32>().is_ok() || (inner.len() == 1 && inner.chars().next().unwrap().is_alphabetic()) {
+                    if inner.parse::<u32>().is_ok()
+                        || (inner.len() == 1 && inner.chars().next().unwrap().is_alphabetic())
+                    {
                         return true;
                     }
                 }
@@ -1063,7 +1272,9 @@ fn is_list_item(text: &str) -> bool {
             if let Some(pos) = trimmed.find(|c: char| c == '.' || c == ')') {
                 if pos <= 4 {
                     let prefix = &trimmed[..pos];
-                    if prefix.parse::<u32>().is_ok() || (prefix.len() == 1 && prefix.chars().next().unwrap().is_alphabetic()) {
+                    if prefix.parse::<u32>().is_ok()
+                        || (prefix.len() == 1 && prefix.chars().next().unwrap().is_alphabetic())
+                    {
                         return true;
                     }
                 }
@@ -1131,9 +1342,10 @@ fn is_equation(text: &str) -> bool {
     if trimmed.len() > 200 || trimmed.len() < 3 {
         return false;
     }
-    let math_chars = trimmed.chars().filter(|c| {
-        "=+−×÷∑∏∫∂√∞≈≠≤≥∈∉⊂⊃∩∪αβγδεζηθλμπσφψω".contains(*c)
-    }).count();
+    let math_chars = trimmed
+        .chars()
+        .filter(|c| "=+−×÷∑∏∫∂√∞≈≠≤≥∈∉⊂⊃∩∪αβγδεζηθλμπσφψω".contains(*c))
+        .count();
     let total = trimmed.chars().count();
     if total > 0 && math_chars as f32 / total as f32 > 0.15 {
         return true;
@@ -1163,9 +1375,14 @@ fn compute_header_level(size_ratio: f32, is_bold: bool, max_font_size: &f32, fon
 /// Check for bullet prefix characters.
 fn has_bullet_prefix(text: &str) -> bool {
     let trimmed = text.trim();
-    trimmed.starts_with('•') || trimmed.starts_with('●') || trimmed.starts_with('▪')
-        || trimmed.starts_with('‣') || trimmed.starts_with('⁃') || trimmed.starts_with('–')
-        || trimmed.starts_with('—') || trimmed.starts_with('·')
+    trimmed.starts_with('•')
+        || trimmed.starts_with('●')
+        || trimmed.starts_with('▪')
+        || trimmed.starts_with('‣')
+        || trimmed.starts_with('⁃')
+        || trimmed.starts_with('–')
+        || trimmed.starts_with('—')
+        || trimmed.starts_with('·')
         || (trimmed.starts_with('-') && trimmed.len() > 1 && trimmed.as_bytes()[1] == b' ')
         || (trimmed.starts_with('*') && trimmed.len() > 1 && trimmed.as_bytes()[1] == b' ')
         || (trimmed.starts_with('+') && trimmed.len() > 1 && trimmed.as_bytes()[1] == b' ')
@@ -1210,17 +1427,30 @@ fn count_sentence_breaks(text: &str) -> usize {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::layout::text_block::{FontWeight, Color};
+    use crate::layout::text_block::{Color, FontWeight};
 
     fn make_span(text: &str, x: f32, y: f32, font_size: f32, bold: bool) -> TextSpan {
         TextSpan {
             text: text.to_string(),
-            bbox: Rect { x, y, width: text.len() as f32 * font_size * 0.5, height: font_size },
+            bbox: Rect {
+                x,
+                y,
+                width: text.len() as f32 * font_size * 0.5,
+                height: font_size,
+            },
             font_name: "TestFont".to_string(),
             font_size,
-            font_weight: if bold { FontWeight::Bold } else { FontWeight::Normal },
+            font_weight: if bold {
+                FontWeight::Bold
+            } else {
+                FontWeight::Normal
+            },
             is_italic: false,
-            color: Color { r: 0.0, g: 0.0, b: 0.0 },
+            color: Color {
+                r: 0.0,
+                g: 0.0,
+                b: 0.0,
+            },
             mcid: None,
             sequence: 0,
             split_boundary_before: false,
@@ -1334,7 +1564,8 @@ mod tests {
 
     #[test]
     fn test_multi_sentence_rejected() {
-        let v = validate_header("First sentence. Second sentence. Third one.", true, 14.0, 11.0, 18.0);
+        let v =
+            validate_header("First sentence. Second sentence. Third one.", true, 14.0, 11.0, 18.0);
         assert!(!v.is_header);
         assert!(v.reasons.contains(&"multi_sentence_negative"));
     }
@@ -1426,9 +1657,13 @@ mod tests {
     #[test]
     fn test_sentence_ending_demotes_to_body() {
         // Bold text that ends with "." — should be demoted to body
-        let spans = vec![
-            make_span("The analysis shows significant results.", 72.0, 700.0, 14.0, true),
-        ];
+        let spans = vec![make_span(
+            "The analysis shows significant results.",
+            72.0,
+            700.0,
+            14.0,
+            true,
+        )];
         let classifier = BlockClassifier::new(612.0, 792.0, &spans);
         let blocks = classifier.classify_spans(&spans);
         assert_eq!(blocks[0].block_type, BlockType::Body);
@@ -1437,9 +1672,7 @@ mod tests {
     #[test]
     fn test_numbered_header_not_demoted() {
         // Bold numbered header ending with "." — numbering should override sentence negative
-        let spans = vec![
-            make_span("1.2 Introduction", 72.0, 700.0, 14.0, true),
-        ];
+        let spans = vec![make_span("1.2 Introduction", 72.0, 700.0, 14.0, true)];
         let classifier = BlockClassifier::new(612.0, 792.0, &spans);
         let blocks = classifier.classify_spans(&spans);
         assert_eq!(blocks[0].block_type, BlockType::Title);
@@ -1485,7 +1718,8 @@ mod tests {
 
     #[test]
     fn test_disposition_reject_multi_sentence() {
-        let v = validate_header("First sentence. Second sentence. Third one.", true, 14.0, 11.0, 18.0);
+        let v =
+            validate_header("First sentence. Second sentence. Third one.", true, 14.0, 11.0, 18.0);
         assert_eq!(v.disposition, HeaderDisposition::Reject);
         assert!(v.features.is_multi_sentence);
     }

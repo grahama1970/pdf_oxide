@@ -463,7 +463,11 @@ pub fn compute_owner_password_hash(
 ///
 /// Also returns OE (32 bytes): the file encryption key encrypted with
 /// a key derived from SHA-256(password || owner_key_salt || U).
-pub fn compute_owner_hash_r5(owner_password: &[u8], u_value: &[u8], encryption_key: &[u8]) -> (Vec<u8>, Vec<u8>) {
+pub fn compute_owner_hash_r5(
+    owner_password: &[u8],
+    u_value: &[u8],
+    encryption_key: &[u8],
+) -> (Vec<u8>, Vec<u8>) {
     let validation_salt = generate_random_bytes(8);
     let key_salt = generate_random_bytes(8);
 

@@ -1,0 +1,113 @@
+version: 1
+kind: orchestrate-plan
+metadata:
+  title: "PDF Extraction Calibration Loop"
+  goal: "Iteratively improve pdf_oxide extraction accuracy using scanner-driven self-improvement"
+  plan_type: code
+  created: "2026-04-16"
+
+# Capability Overlap (Phase 0 verification)
+# - /memory recall "pdf extraction classification": Found prior work on block_classifier.rs
+# - skills-manifest.json: /extract-pdf exists but uses Rust pipeline, not Python calibration
+# - Decision: CREATE extract_for_pdflab.py (Python extraction for rapid iteration)
+# - Decision: CREATE extraction_scanner.py (heuristic error detection)
+# - Anti-silo: These complement the Rust extractor, don't replace it
+
+execution:
+  max_concurrency: 1  # Sequential - each task depends on previous
+
+lanes:
+  - id: "setup"
+    label: "Setup"
+  - id: "calibrate"
+    label: "Calibration Loop"
+  - id: "validate"
+    label: "Validation"
+
+tasks:
+  # ==========================================================================
+  # SETUP: Create test fixture and baseline
+  # ==========================================================================
+  - id: "1.0"
+    title: "Create test fixture PDF with edge cases"
+    lane: "setup"
+    runner: "local"
+    depends_on: []
+    implementation:
+      - "Extract 6-10 pages from source PDF covering edge cases"
+      - "Include: title page, TOC, content pages, appendix, pages with known issues"
+      - "Save to /tmp/test-fixture.pdf"
+    definition_of_done:
+      command: "test -f /tmp/test-fixture.pdf && python -c \"import fitz; print(fitz.open('/tmp/test-fixture.pdf').page_count)\""
+      assertion: "File exists and has expected page count"
+
+  - id: "1.1"
+    title: "Extract baseline and establish issue count"
+    lane: "setup"
+    runner: "local"
+    depends_on: ["1.0"]
+    implementation:
+      - "Run extract_for_pdflab.py on test fixture"
+      - "Run extraction_scanner.py to get baseline issue count"
+      - "Save baseline metrics to /tmp/calibration-baseline.json"
+    definition_of_done:
+      command: "uv run python -m pdf_oxide.extract_for_pdflab /tmp/test-fixture.pdf -o /tmp/test-extraction.json && uv run python -m pdf_oxide.extraction_scanner /tmp/test-extraction.json --json > /tmp/calibration-baseline.json && cat /tmp/calibration-baseline.json | jq '.summary.issue_count'"
+      assertion: "Baseline issue count captured"
+
+  # ==========================================================================
+  # CALIBRATION LOOP: Fix issues iteratively
+  # ==========================================================================
+  - id: "2.0"
+    title: "Fix classification issues identified by scanner"
+    lane: "calibrate"
+    runner: "code-runner"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["1.1"]
+    implementation:
+      - "Read scanner output from /tmp/calibration-baseline.json"
+      - "For each issue type, analyze the pattern causing misclassification"
+      - "Update extract_for_pdflab.py classification logic"
+      - "Keep extraction_scanner.py in sync with classification logic"
+      - "Add test cases to test_extraction_classification.py"
+    definition_of_done:
+      command: |
+        uv run pytest tests/test_extraction_classification.py -v && \
+        uv run python -m pdf_oxide.extract_for_pdflab /tmp/test-fixture.pdf -o /tmp/test-extraction.json && \
+        uv run python -m pdf_oxide.extraction_scanner /tmp/test-extraction.json --json | jq -e '.summary.issue_count == 0'
+      assertion: "All tests pass AND scanner finds 0 issues on test fixture"
+
+  # ==========================================================================
+  # VALIDATION: Run on full document
+  # ==========================================================================
+  - id: "3.0"
+    title: "Validate on full source PDF"
+    lane: "validate"
+    runner: "local"
+    depends_on: ["2.0"]
+    implementation:
+      - "Run extraction on full PDF (not just test fixture)"
+      - "Run scanner to verify no regressions"
+      - "Compare block type distribution to baseline"
+    definition_of_done:
+      command: |
+        uv run python -m pdf_oxide.extract_for_pdflab "$SOURCE_PDF" -o /tmp/full-extraction.json && \
+        uv run python -m pdf_oxide.extraction_scanner /tmp/full-extraction.json --json | jq -e '.summary.issue_count < 10'
+      assertion: "Full extraction has fewer than 10 issues"
+
+  - id: "3.1"
+    title: "Update production extraction JSON"
+    lane: "validate"
+    runner: "local"
+    depends_on: ["3.0"]
+    implementation:
+      - "Copy validated extraction to ux-lab public folder"
+      - "Verify PDF Lab can load the new extraction"
+    definition_of_done:
+      command: "cp /tmp/full-extraction.json $OUTPUT_PATH && test -f $OUTPUT_PATH"
+      assertion: "Production extraction updated"
+
+# Environment variables for the plan
+env:
+  SOURCE_PDF: "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf"
+  OUTPUT_PATH: "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/nist-800-53-extraction.json"

@@ -12,10 +12,7 @@ fn create_pdf_with_link(uri: &str) -> Vec<u8> {
     let mut writer = PdfWriter::new();
     let mut page = writer.add_page(612.0, 792.0);
     page.add_text("Click here", 72.0, 720.0, "Helvetica", 12.0);
-    page.add_link(LinkAnnotation::uri(
-        Rect::new(72.0, 710.0, 100.0, 20.0),
-        uri,
-    ));
+    page.add_link(LinkAnnotation::uri(Rect::new(72.0, 710.0, 100.0, 20.0), uri));
     writer.finish().unwrap()
 }
 
@@ -33,10 +30,7 @@ fn test_get_links_returns_link_annotations() {
 
     let (idx, annot) = &links[0];
     assert_eq!(*idx, 0);
-    assert_eq!(
-        annot.subtype_enum,
-        pdf_oxide::annotation_types::AnnotationSubtype::Link
-    );
+    assert_eq!(annot.subtype_enum, pdf_oxide::annotation_types::AnnotationSubtype::Link);
 }
 
 #[test]
@@ -54,17 +48,16 @@ fn test_update_link_uri() {
         let links = editor.get_links(0).unwrap();
         assert!(!links.is_empty());
         let (idx, _) = &links[0];
-        editor.update_link_uri(0, *idx, "https://new-url.com").unwrap();
+        editor
+            .update_link_uri(0, *idx, "https://new-url.com")
+            .unwrap();
         editor.save(&output_path).unwrap();
     }
 
     // Verify the output contains the new URI
     let output_content = fs::read(&output_path).unwrap();
     let output_str = String::from_utf8_lossy(&output_content);
-    assert!(
-        output_str.contains("new-url.com"),
-        "Output should contain the new URI"
-    );
+    assert!(output_str.contains("new-url.com"), "Output should contain the new URI");
 
     // Verify the output is a valid PDF
     let mut pdf = PdfDocument::open(&output_path).unwrap();

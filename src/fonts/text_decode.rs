@@ -47,7 +47,7 @@ pub struct DecodedGlyph {
 /// ```
 pub fn decode_pdf_text(bytes: &[u8], font: Option<&FontInfo>) -> Vec<DecodedGlyph> {
     let mut glyphs = Vec::new();
-    
+
     if let Some(font) = font {
         // Use font-specific decoding
         if font.subtype == "Type0" {
@@ -61,7 +61,7 @@ pub fn decode_pdf_text(bytes: &[u8], font: Option<&FontInfo>) -> Vec<DecodedGlyp
         // No font: fallback to Latin-1 encoding
         decode_latin1_fallback(bytes, &mut glyphs);
     }
-    
+
     glyphs
 }
 
@@ -69,12 +69,12 @@ pub fn decode_pdf_text(bytes: &[u8], font: Option<&FontInfo>) -> Vec<DecodedGlyp
 fn decode_type0_font(bytes: &[u8], font: &FontInfo, glyphs: &mut Vec<DecodedGlyph>) {
     let byte_mode = get_byte_mode(Some(font));
     let mut iter = TextCharIter::new(bytes, Some(font), byte_mode);
-    
+
     while let Some((char_code, bytes_consumed)) = iter.next() {
         let unicode = font
             .char_to_unicode(char_code as u32)
             .unwrap_or_else(|| fallback_char_to_unicode(char_code as u32));
-        
+
         // Filter out replacement characters from failed mappings
         if unicode != "\u{FFFD}" {
             glyphs.push(DecodedGlyph {
@@ -90,7 +90,7 @@ fn decode_type0_font(bytes: &[u8], font: &FontInfo, glyphs: &mut Vec<DecodedGlyp
 fn decode_simple_font(bytes: &[u8], font: &FontInfo, glyphs: &mut Vec<DecodedGlyph>) {
     // Use pre-computed lookup table for performance
     let table = font.get_byte_to_char_table();
-    
+
     for &byte in bytes {
         let char_code = byte as u32;
         let unicode = if table[byte as usize] != '\0' {
@@ -100,7 +100,7 @@ fn decode_simple_font(bytes: &[u8], font: &FontInfo, glyphs: &mut Vec<DecodedGly
             font.char_to_unicode(char_code)
                 .unwrap_or_else(|| fallback_char_to_unicode(char_code))
         };
-        
+
         // Filter out replacement characters from failed mappings
         if unicode != "\u{FFFD}" {
             glyphs.push(DecodedGlyph {
@@ -117,7 +117,7 @@ fn decode_latin1_fallback(bytes: &[u8], glyphs: &mut Vec<DecodedGlyph>) {
     for &byte in bytes {
         let char_code = byte as u32;
         let unicode = char::from(byte).to_string();
-        
+
         glyphs.push(DecodedGlyph {
             char_code,
             unicode,
@@ -512,13 +512,13 @@ mod tests {
     #[test]
     #[test]
     fn test_fallback_char_to_unicode_private_use_area() {
-    #[test]
-    fn test_fallback_char_to_unicode_private_use_area() {
-        let result = fallback_char_to_unicode(0xE000);
-        // Should be a valid character in the Private Use Area
-        assert_eq!(result.chars().count(), 1);
-        assert_eq!(result.chars().next().unwrap() as u32, 0xE000);
-    }
+        #[test]
+        fn test_fallback_char_to_unicode_private_use_area() {
+            let result = fallback_char_to_unicode(0xE000);
+            // Should be a valid character in the Private Use Area
+            assert_eq!(result.chars().count(), 1);
+            assert_eq!(result.chars().next().unwrap() as u32, 0xE000);
+        }
         let result = decode_text_to_unicode(b"Hello", None);
         assert_eq!(result, "Hello");
     }

@@ -84,10 +84,15 @@ pub fn is_binary_leak(text: &str) -> bool {
     if total < 10 {
         return false;
     }
-    let non_printable = text.chars().filter(|c| {
-        !c.is_whitespace() && !c.is_alphanumeric() && !c.is_ascii_punctuation()
-            && !is_common_unicode_punct(*c)
-    }).count();
+    let non_printable = text
+        .chars()
+        .filter(|c| {
+            !c.is_whitespace()
+                && !c.is_alphanumeric()
+                && !c.is_ascii_punctuation()
+                && !is_common_unicode_punct(*c)
+        })
+        .count();
     non_printable as f32 / total as f32 > 0.3
 }
 
@@ -100,7 +105,8 @@ pub fn full_normalize(text: &str) -> String {
 // --- Private helpers ---
 
 fn is_invisible_char(ch: char) -> bool {
-    matches!(ch,
+    matches!(
+        ch,
         '\u{200B}' | // zero-width space
         '\u{200C}' | // zero-width non-joiner
         '\u{200D}' | // zero-width joiner
@@ -117,7 +123,7 @@ fn is_invisible_char(ch: char) -> bool {
         '\u{2063}' | // invisible separator
         '\u{2064}' | // invisible plus
         '\u{FEFF}' | // BOM / zero-width no-break space
-        '\u{00AD}'   // soft hyphen
+        '\u{00AD}' // soft hyphen
     )
 }
 
@@ -150,8 +156,10 @@ fn is_math_or_special(ch: char) -> bool {
 }
 
 fn is_common_unicode_punct(ch: char) -> bool {
-    matches!(ch,
-        '\u{2018}'..='\u{201F}' | // smart quotes
+    matches!(
+        ch,
+        '\u{2018}'
+            ..='\u{201F}' | // smart quotes
         '\u{2013}' | '\u{2014}' | // en/em dash
         '\u{2026}' | // ellipsis
         '\u{00A9}' | '\u{00AE}' | '\u{2122}' | // copyright, registered, trademark
@@ -159,7 +167,7 @@ fn is_common_unicode_punct(ch: char) -> bool {
         '\u{00A7}' | // section sign
         '\u{00B6}' | // pilcrow
         '\u{2022}' | '\u{2023}' | '\u{25CF}' | '\u{25CB}' | // bullets
-        '\u{00AB}' | '\u{00BB}'   // guillemets
+        '\u{00AB}' | '\u{00BB}' // guillemets
     )
 }
 
@@ -215,7 +223,9 @@ mod tests {
     fn test_binary_leak() {
         assert!(!is_binary_leak("Normal text here"));
         // Construct text with many non-printable chars
-        let leak: String = (0..20).map(|i| if i % 3 == 0 { '\u{0001}' } else { 'a' }).collect();
+        let leak: String = (0..20)
+            .map(|i| if i % 3 == 0 { '\u{0001}' } else { 'a' })
+            .collect();
         assert!(is_binary_leak(&leak));
     }
 

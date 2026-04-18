@@ -107,11 +107,11 @@ pub(crate) fn do_repair_xref(doc: &mut PdfDocument) -> Result<bool> {
             doc.replace_xref(new_xref, new_trailer);
             log::info!("Xref table rebuilt successfully");
             Ok(true)
-        }
+        },
         Err(e) => {
             log::warn!("Xref reconstruction failed: {}", e);
             Err(e)
-        }
+        },
     }
 }
 
@@ -190,7 +190,7 @@ pub(crate) fn do_repair_page_tree(doc: &mut PdfDocument) -> Result<bool> {
         None => {
             // No Kids at all -- nothing to rebuild
             return Ok(false);
-        }
+        },
     };
 
     // Walk the kids and keep only those that resolve to valid page or pages objects
@@ -211,11 +211,11 @@ pub(crate) fn do_repair_page_tree(doc: &mut PdfDocument) -> Result<bool> {
                     // Object exists but is not a page
                     removed += 1;
                     log::debug!("Removing non-page kid from /Pages: {}", kid_ref);
-                }
+                },
                 Err(_) => {
                     removed += 1;
                     log::debug!("Removing broken kid reference from /Pages: {}", kid_ref);
-                }
+                },
             }
         } else {
             // Kids should be references; skip inline entries
@@ -230,10 +230,7 @@ pub(crate) fn do_repair_page_tree(doc: &mut PdfDocument) -> Result<bool> {
     // Rebuild the pages dictionary with corrected Kids and Count
     let mut new_pages = pages_dict.clone();
     let count = count_leaf_pages(doc, &valid_kids);
-    new_pages.insert(
-        "Kids".to_string(),
-        Object::Array(valid_kids),
-    );
+    new_pages.insert("Kids".to_string(), Object::Array(valid_kids));
     new_pages.insert("Count".to_string(), Object::Integer(count as i64));
     doc.update_object(pages_ref.id, Object::Dictionary(new_pages));
 
@@ -311,33 +308,29 @@ fn find_reachable_objects(doc: &mut PdfDocument) -> Result<HashSet<u32>> {
 
 /// Collect all indirect reference IDs from an object tree, adding newly
 /// discovered ones to `queue`.
-fn collect_refs_from_object(
-    obj: &Object,
-    queue: &mut VecDeque<u32>,
-    seen: &mut HashSet<u32>,
-) {
+fn collect_refs_from_object(obj: &Object, queue: &mut VecDeque<u32>, seen: &mut HashSet<u32>) {
     match obj {
         Object::Reference(r) => {
             if seen.insert(r.id) {
                 queue.push_back(r.id);
             }
-        }
+        },
         Object::Array(arr) => {
             for item in arr {
                 collect_refs_from_object(item, queue, seen);
             }
-        }
+        },
         Object::Dictionary(dict) => {
             for val in dict.values() {
                 collect_refs_from_object(val, queue, seen);
             }
-        }
+        },
         Object::Stream { dict, .. } => {
             for val in dict.values() {
                 collect_refs_from_object(val, queue, seen);
             }
-        }
-        _ => {}
+        },
+        _ => {},
     }
 }
 
@@ -379,7 +372,7 @@ fn fix_refs_in_object(obj: &Object, valid_ids: &HashSet<u32>) -> (Object, usize)
             } else {
                 (Object::Null, 1)
             }
-        }
+        },
         Object::Array(arr) => {
             let mut new_arr = Vec::with_capacity(arr.len());
             let mut count = 0;
@@ -389,7 +382,7 @@ fn fix_refs_in_object(obj: &Object, valid_ids: &HashSet<u32>) -> (Object, usize)
                 new_arr.push(fixed);
             }
             (Object::Array(new_arr), count)
-        }
+        },
         Object::Dictionary(dict) => {
             let mut new_dict = HashMap::with_capacity(dict.len());
             let mut count = 0;
@@ -399,7 +392,7 @@ fn fix_refs_in_object(obj: &Object, valid_ids: &HashSet<u32>) -> (Object, usize)
                 new_dict.insert(key.clone(), fixed);
             }
             (Object::Dictionary(new_dict), count)
-        }
+        },
         Object::Stream { dict, data } => {
             let mut new_dict = HashMap::with_capacity(dict.len());
             let mut count = 0;
@@ -415,7 +408,7 @@ fn fix_refs_in_object(obj: &Object, valid_ids: &HashSet<u32>) -> (Object, usize)
                 },
                 count,
             )
-        }
+        },
         _ => (obj.clone(), 0),
     }
 }
@@ -585,14 +578,8 @@ mod tests {
 
         let obj = Object::Dictionary({
             let mut d = HashMap::new();
-            d.insert(
-                "Good".to_string(),
-                Object::Reference(ObjectRef::new(1, 0)),
-            );
-            d.insert(
-                "Bad".to_string(),
-                Object::Reference(ObjectRef::new(99, 0)),
-            );
+            d.insert("Good".to_string(), Object::Reference(ObjectRef::new(1, 0)));
+            d.insert("Bad".to_string(), Object::Reference(ObjectRef::new(99, 0)));
             d
         });
 
@@ -614,10 +601,7 @@ mod tests {
         let obj = Object::Stream {
             dict: {
                 let mut d = HashMap::new();
-                d.insert(
-                    "Ref".to_string(),
-                    Object::Reference(ObjectRef::new(999, 0)),
-                );
+                d.insert("Ref".to_string(), Object::Reference(ObjectRef::new(999, 0)));
                 d.insert("Length".to_string(), Object::Integer(0));
                 d
             },
@@ -638,10 +622,7 @@ mod tests {
         let obj = Object::Dictionary({
             let mut d = HashMap::new();
             d.insert("A".to_string(), Object::Reference(ObjectRef::new(1, 0)));
-            d.insert(
-                "B".to_string(),
-                Object::Array(vec![Object::Reference(ObjectRef::new(2, 0))]),
-            );
+            d.insert("B".to_string(), Object::Array(vec![Object::Reference(ObjectRef::new(2, 0))]));
             d
         });
 
