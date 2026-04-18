@@ -232,6 +232,39 @@ def primitive_summary_only(summary: dict[str, int], promoted: set[str]) -> dict[
     }
 
 
+def visual_summary_only(summary: dict[str, int]) -> dict[str, int]:
+    """Return only the visual-category counts from a summary."""
+    return {cat: count for cat, count in summary.items() if cat in VISUAL_CATEGORIES}
+
+
+def build_metrics_views(
+    summary_full: dict[str, int],
+    *,
+    promoted_visual: set[str] | None = None,
+) -> dict[str, Any]:
+    """Build explicit audit-friendly metric views from a full summary.
+
+    Separates:
+      - everything the scanner saw (summary_full)
+      - what the gate acts on (summary_blocking — primitives + promoted visuals)
+      - what was visual evidence only (summary_visual)
+      - weighted totals for each view
+    """
+    promoted = promoted_visual or BLOCKING_VISUAL_CATEGORIES
+    summary_blocking = primitive_summary_only(summary_full, promoted)
+    summary_visual = visual_summary_only(summary_full)
+    return {
+        "summary_full": dict(summary_full),
+        "summary_blocking": dict(summary_blocking),
+        "summary_visual": dict(summary_visual),
+        "totals": {
+            "weighted_full": weighted_total(summary_full),
+            "weighted_blocking": weighted_total(summary_blocking),
+            "weighted_visual": weighted_total(summary_visual),
+        },
+    }
+
+
 def effective_hard_categories(promoted: set[str]) -> set[str]:
     return HARD_CATEGORIES | (VISUAL_CATEGORIES & promoted)
 
@@ -1394,15 +1427,24 @@ def restore_allowlist_files(manifest: dict[str, Any]) -> list[str]:
 def last_accepted_summary(state: dict[str, Any]) -> dict[str, int] | None:
     """Return the blocking (gate-relevant) category counts of the last accepted round.
 
-    Gate, baseline, DoD, and stall all operate on blocking_summary — never on
-    the full `summary`, which includes non-blocking primitives and visual evidence.
+    Reads the new `metrics.summary_blocking` structure first, falls back to
+    legacy flat fields for state files written before the metrics-views patch.
     """
     for entry in reversed(state.get("rounds", [])):
         if entry.get("status") == "accepted":
-            source = entry.get("blocking_summary") or entry.get("summary") or {}
+            metrics = entry.get("metrics") or {}
+            source = (
+                metrics.get("summary_blocking")
+                or entry.get("blocking_summary")
+                or entry.get("summary")
+                or {}
+            )
             return {k: int(v) for k, v in source.items()}
     baseline = state.get("baseline")
     if isinstance(baseline, dict):
+        if "metrics" in baseline:
+            summary = baseline.get("metrics", {}).get("summary_blocking", {})
+            return {k: int(v) for k, v in summary.items()}
         return {k: int(v) for k, v in baseline.items()}
     return None
 
@@ -1551,9 +1593,11 @@ def ensure_reference(paths: LoopPaths, max_pages: int | None) -> dict[str, Any]:
 
 def baseline_if_missing(state: dict[str, Any], defects_report: dict[str, Any], rounds_json: Path) -> dict[str, Any]:
     if state.get("baseline") is None:
-        # Gate operates on blocking_summary only. Baseline must match.
-        state["baseline"] = defects_report.get("blocking_summary", {})
-        state["baseline_full_summary"] = defects_report.get("summary", {})
+        metrics = build_metrics_views(defects_report.get("summary", {}))
+        state["baseline"] = {
+            "created_at": now_iso(),
+            "metrics": metrics,
+        }
         save_round_state(rounds_json, state)
     return state
 
@@ -1695,10 +1739,11 @@ def do_dod_check(
     _, defects_report, _ = run_diagnose_cycle(
         paths, max_pages=max_pages, render_template=render_template, visual=visual,
     )
+    metrics = build_metrics_views(defects_report.get("summary", {}))
     prior_summary = last_accepted_summary(state)
-    # Gate on blocking_summary only — non-blocking primitives and visual evidence
+    # Gate on blocking view only — non-blocking primitives and visual evidence
     # must not influence accept/revert.
-    gate = gate_candidate(prior_summary, defects_report.get("blocking_summary", {}))
+    gate = gate_candidate(prior_summary, metrics["summary_blocking"])
 
     benchmarks_ok, benchmark_results = check_benchmark_suite(
         benchmark_pdfs or [],
@@ -1711,10 +1756,14 @@ def do_dod_check(
     accepted = gate.accepted and benchmarks_ok
     print(json.dumps({
         "accepted": accepted,
-        "prior_total": gate.prior_total,
-        "current_total": gate.current_total,
-        "regressions": gate.regressions,
-        "hard_regressions": gate.hard_regressions,
+        "metrics": metrics,
+        "gate_metrics": {
+            "prior_weighted_blocking": gate.prior_total,
+            "current_weighted_blocking": gate.current_total,
+            "accepted": gate.accepted,
+            "regressions": gate.regressions,
+            "hard_regressions": gate.hard_regressions,
+        },
         "benchmarks_ok": benchmarks_ok,
         "benchmark_results": benchmark_results,
     }, indent=2))
@@ -1868,10 +1917,13 @@ def main() -> int:
         _, defects_report, _ = run_diagnose_cycle(
             paths, max_pages=args.max_pages, render_template=args.render_page_cmd, visual=visual_cfg,
         )
-        # Gate on blocking_summary only. Non-blocking primitives and visual
-        # evidence are logged in `summary` for audit, but never influence the gate.
-        blocking_summary = defects_report.get("blocking_summary", {})
-        gate = gate_candidate(prior_summary, blocking_summary)
+        # Split the full summary into explicit views so that rounds.json and
+        # the gate never share a single ambiguous "summary" field:
+        #   metrics["summary_full"]     — every category seen this round
+        #   metrics["summary_blocking"] — primitives + promoted visuals (gate oracle)
+        #   metrics["summary_visual"]   — visual-only (evidence, not gate)
+        metrics = build_metrics_views(defects_report.get("summary", {}))
+        gate = gate_candidate(prior_summary, metrics["summary_blocking"])
 
         # Benchmark non-regression check — guards against overfitting the
         # triggering PDF at the expense of the fixture suite.
@@ -1913,11 +1965,15 @@ def main() -> int:
             "timestamp": now_iso(),
             "status": status,
             "elapsed_seconds": elapsed,
-            "summary": defects_report.get("summary", {}),
-            "blocking_summary": blocking_summary,
-            "weighted_total": defects_report.get("weighted_total", 0),
-            "blocking_weighted_total": defects_report.get("blocking_weighted_total", 0),
+            "metrics": metrics,
             "gate": gate.to_dict(),
+            "gate_metrics": {
+                "prior_weighted_blocking": gate.prior_total,
+                "current_weighted_blocking": gate.current_total,
+                "accepted": gate.accepted,
+                "regressions": gate.regressions,
+                "hard_regressions": gate.hard_regressions,
+            },
             "benchmarks_ok": benchmarks_ok,
             "benchmark_results": benchmark_results,
             "restore": {
@@ -1935,16 +1991,17 @@ def main() -> int:
         state.setdefault("rounds", []).append(entry)
         save_round_state(paths.rounds_json, state)
 
-        # Stall detection also uses blocking weighted total — visual fluctuations
-        # must not influence halt logic.
-        current_total = weighted_total(blocking_summary)
+        # Stall detection uses the blocking weighted total from the metrics
+        # view — visual fluctuations must not influence halt logic.
+        current_total = metrics["totals"]["weighted_blocking"]
         logger.info(
-            "Round %s status=%s current_total=%s prior_total=%s regressions=%s",
+            "Round {} status={} current_total={} prior_total={} regressions={} benchmarks_ok={}",
             round_num,
             status,
             current_total,
             gate.prior_total,
             gate.regressions,
+            benchmarks_ok,
         )
 
         if status == "accepted":
