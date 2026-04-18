@@ -252,6 +252,21 @@ def block_bbox_pixels(block: dict[str, Any], page_width: float, page_height: flo
     return [float(x) for x in bbox]
 
 
+def quantize_bbox(bbox: list[float], digits: int = 1) -> tuple[float, float, float, float]:
+    """Round bbox coordinates for stable duplicate keys.
+
+    Sub-pixel coordinate drift between rounds can falsely differentiate
+    identical blocks. Quantize to 1 decimal by default; bump to 0 if
+    noise persists.
+    """
+    return (
+        round(float(bbox[0]), digits),
+        round(float(bbox[1]), digits),
+        round(float(bbox[2]), digits),
+        round(float(bbox[3]), digits),
+    )
+
+
 def bbox_intersection_ratio(a: list[float], b: list[float]) -> float:
     ax0, ay0, ax1, ay1 = a
     bx0, by0, bx1, by1 = b
@@ -1030,22 +1045,27 @@ def scan_defects(reference: dict[str, Any], extraction: dict[str, Any]) -> dict[
                     )
                 )
 
-        # 2) Duplicate blocks.
-        seen: set[tuple[str, str]] = set()
+        # 2) Duplicate blocks — keyed on (blockType, rounded bbox, text prefix).
+        # Including the bbox prevents legitimate repeated phrases (e.g. "Low",
+        # "Moderate" in a control-summary table) from registering as duplicates
+        # when they sit at clearly different positions on the page.
+        seen: set[tuple[str, tuple[float, float, float, float], str]] = set()
         for block in extracted:
             text = normalize_text(block.get("text") or "")
             if len(text) < 20:
                 continue
-            key = (str(block.get("blockType", "?")), text[:100])
+            bbox_px = block_bbox_pixels(block, page_width, page_height)
+            bbox_key = quantize_bbox(bbox_px, digits=1)
+            key = (str(block.get("blockType", "?")), bbox_key, text[:100])
             if key in seen:
                 defects.append(
                     Defect(
                         category="DUPLICATE_BLOCK",
                         page=page_num,
                         severity="high",
-                        detail=f"Duplicate {key[0]} block: {key[1][:80]}",
+                        detail=f"Duplicate {key[0]} block at {bbox_key}: {text[:80]}",
                         source="deterministic",
-                        bbox=block_bbox_pixels(block, page_width, page_height),
+                        bbox=bbox_px,
                     )
                 )
             else:
