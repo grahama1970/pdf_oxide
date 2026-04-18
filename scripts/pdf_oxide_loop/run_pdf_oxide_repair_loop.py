@@ -47,7 +47,7 @@ from typing import Any, Iterable
 # Repo wiring
 # ----------------------------------------------------------------------------
 
-DEFAULT_REPO = Path(__file__).resolve().parents[0]
+DEFAULT_REPO = Path(__file__).resolve().parents[2]
 DEFAULT_WORKDIR = Path("/tmp/pdf_oxide_repair_loop")
 DEFAULT_CODE_RUNNER = Path("/home/graham/.claude/skills/code-runner/run.sh")
 
@@ -527,7 +527,7 @@ def build_reference_snapshot(pdf_path: Path, output_path: Path, max_pages: int |
 #     Drift is warned, never auto-resolved.
 
 
-VISUAL_PROMPT_VERSION = "v1"
+VISUAL_PROMPT_VERSION = "v2"
 
 VISUAL_PROMPT_TEMPLATE = """You are auditing a single PDF page rendered as an image.
 
@@ -548,7 +548,8 @@ Rules:
   - Skip purely decorative rules, borders, or bullets unless they define structure.
   - If the page is blank or only contains watermark/boilerplate, return {{"elements": []}}.
 
-Output strict JSON with this exact shape and nothing else:
+Return valid JSON only. No prose, no commentary, no markdown fences.
+Exact shape:
 {{"elements": [ {{"type": "...", "bbox": [x0,y0,x1,y1], "text": "...", "level": null}} ]}}
 """
 
@@ -599,6 +600,10 @@ def _call_vlm_sonnet(image_path: Path, prompt: str, model: str, timeout: float =
     png_bytes = image_path.read_bytes()
     data_url = f"data:image/png;base64,{_b64.b64encode(png_bytes).decode('ascii')}"
 
+    # NOTE: Claude (vlm-claude) rejects response_format=json_object per
+    # /scillm SKILL.md lines 713, 790 — we ask for strict JSON in the prompt
+    # and rely on the proxy's JSON Guard middleware to strip ```json fences
+    # and auto-repair minor JSON errors.
     body = {
         "model": model,
         "messages": [
@@ -611,7 +616,6 @@ def _call_vlm_sonnet(image_path: Path, prompt: str, model: str, timeout: float =
             }
         ],
         "temperature": 0.0,
-        "response_format": {"type": "json_object"},
     }
     headers = {
         "Authorization": f"Bearer {SCILLM_BEARER}",
@@ -995,7 +999,6 @@ def scan_defects(reference: dict[str, Any], extraction: dict[str, Any]) -> dict[
         page_height = float(page_ref["height"])
         extracted = blocks_by_page.get(page_num, [])
 
-        all_block_boxes = [block_bbox_pixels(block, page_width, page_height) for block in extracted]
         content_blocks = [
             block for block in extracted
             if block.get("blockType") not in {"boilerplate", "page_number"}
@@ -1298,9 +1301,15 @@ def save_round_state(rounds_json: Path, state: dict[str, Any]) -> None:
 
 
 def last_accepted_summary(state: dict[str, Any]) -> dict[str, int] | None:
+    """Return the blocking (gate-relevant) category counts of the last accepted round.
+
+    Gate, baseline, DoD, and stall all operate on blocking_summary — never on
+    the full `summary`, which includes non-blocking primitives and visual evidence.
+    """
     for entry in reversed(state.get("rounds", [])):
         if entry.get("status") == "accepted":
-            return {k: int(v) for k, v in (entry.get("summary") or {}).items()}
+            source = entry.get("blocking_summary") or entry.get("summary") or {}
+            return {k: int(v) for k, v in source.items()}
     baseline = state.get("baseline")
     if isinstance(baseline, dict):
         return {k: int(v) for k, v in baseline.items()}
@@ -1451,7 +1460,9 @@ def ensure_reference(paths: LoopPaths, max_pages: int | None) -> dict[str, Any]:
 
 def baseline_if_missing(state: dict[str, Any], defects_report: dict[str, Any], rounds_json: Path) -> dict[str, Any]:
     if state.get("baseline") is None:
-        state["baseline"] = defects_report.get("summary", {})
+        # Gate operates on blocking_summary only. Baseline must match.
+        state["baseline"] = defects_report.get("blocking_summary", {})
+        state["baseline_full_summary"] = defects_report.get("summary", {})
         save_round_state(rounds_json, state)
     return state
 
@@ -1539,7 +1550,9 @@ def do_dod_check(
         paths, max_pages=max_pages, render_template=render_template, visual=visual,
     )
     prior_summary = last_accepted_summary(state)
-    gate = gate_candidate(prior_summary, defects_report.get("summary", {}))
+    # Gate on blocking_summary only — non-blocking primitives and visual evidence
+    # must not influence accept/revert.
+    gate = gate_candidate(prior_summary, defects_report.get("blocking_summary", {}))
     print(json.dumps({
         "accepted": gate.accepted,
         "prior_total": gate.prior_total,
@@ -1563,8 +1576,10 @@ def main() -> int:
     parser.add_argument(
         "--allowlist",
         action="append",
-        default=["python/pdf_oxide/extract_for_pdflab.py", "python/pdf_oxide/extraction_scanner.py"],
-        help="Repeatable allowlist entry for /code-runner",
+        default=["python/pdf_oxide/extract_for_pdflab.py"],
+        help="Repeatable allowlist entry for /code-runner. Defaults to the shaped "
+             "extractor only; adding the scanner lets the agent move goalposts and "
+             "should require an explicit --allowlist override.",
     )
     parser.add_argument(
         "--render-page-cmd",
@@ -1673,16 +1688,38 @@ def main() -> int:
         _, defects_report, _ = run_diagnose_cycle(
             paths, max_pages=args.max_pages, render_template=args.render_page_cmd, visual=visual_cfg,
         )
-        gate = gate_candidate(prior_summary, defects_report.get("summary", {}))
+        # Gate on blocking_summary only. Non-blocking primitives and visual
+        # evidence are logged in `summary` for audit, but never influence the gate.
+        blocking_summary = defects_report.get("blocking_summary", {})
+        gate = gate_candidate(prior_summary, blocking_summary)
 
         status = "accepted" if (code_runner_result.returncode == 0 and gate.accepted) else "rejected"
+
+        # Defense-in-depth: on rejection, explicitly restore allowlisted files.
+        # /code-runner is supposed to isolate via worktree, but if any edit
+        # leaked into the working tree, revert it here before the next round.
+        if status == "rejected":
+            for rel in args.allowlist:
+                try:
+                    subprocess.run(
+                        ["git", "restore", "--source=HEAD", "--", rel],
+                        cwd=args.repo_root.resolve(),
+                        check=False,
+                        capture_output=True,
+                        text=True,
+                    )
+                except Exception as exc:
+                    logger.warning("git restore %s failed: %s", rel, exc)
+
         entry = {
             "round": round_num,
             "timestamp": now_iso(),
             "status": status,
             "elapsed_seconds": elapsed,
             "summary": defects_report.get("summary", {}),
+            "blocking_summary": blocking_summary,
             "weighted_total": defects_report.get("weighted_total", 0),
+            "blocking_weighted_total": defects_report.get("blocking_weighted_total", 0),
             "gate": gate.to_dict(),
             "code_runner": {
                 "returncode": code_runner_result.returncode,
@@ -1693,7 +1730,9 @@ def main() -> int:
         state.setdefault("rounds", []).append(entry)
         save_round_state(paths.rounds_json, state)
 
-        current_total = weighted_total(defects_report.get("summary", {}))
+        # Stall detection also uses blocking weighted total — visual fluctuations
+        # must not influence halt logic.
+        current_total = weighted_total(blocking_summary)
         logger.info(
             "Round %s status=%s current_total=%s prior_total=%s regressions=%s",
             round_num,
