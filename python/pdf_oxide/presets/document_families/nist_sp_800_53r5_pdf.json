@@ -1,0 +1,275 @@
+{
+  "schema_version": "pdf-oxide.document-family-preset.v1",
+  "name": "nist_sp_800_53r5_pdf",
+  "description": "Document-family preset for NIST SP 800-53 Rev. 5 style PDFs. Keeps NIST-specific geometry, type aliases, and scoring policy isolated from global pdf_oxide extraction behavior.",
+  "applies_to": {
+    "document_family": "NIST SP 800-53 Rev. 5",
+    "source_patterns": [
+      "NIST_SP_800-53r5.pdf",
+      "NIST SP 800-53",
+      "Security and Privacy Controls for Information Systems and Organizations"
+    ]
+  },
+  "match_policy_overrides": {
+    "text_similarity_threshold": 0.74,
+    "text_similarity_thresholds": {
+      "paragraph": 0.68,
+      "section_header": 0.68,
+      "list_item": 0.68
+    },
+    "bbox_iou_thresholds": {
+      "default": 0.3,
+      "paragraph": 0.3,
+      "section_header": 0.3,
+      "requirement": 0.3,
+      "list_item": 0.3,
+      "running_header": 0.3,
+      "running_footer": 0.3,
+      "caption": 0.35,
+      "table_candidate": 0.35
+    },
+    "type_aliases": {
+      "paragraph": [
+        "paragraph",
+        "table_candidate",
+        "requirement",
+        "control_reference",
+        "list_item",
+        "section_header"
+      ],
+      "section_header": [
+        "section_header",
+        "requirement",
+        "paragraph",
+        "list_item"
+      ],
+      "requirement": [
+        "requirement",
+        "control_reference",
+        "paragraph",
+        "table_candidate",
+        "section_header"
+      ],
+      "control_reference": [
+        "control_reference",
+        "requirement",
+        "paragraph"
+      ],
+      "list_item": [
+        "list_item",
+        "paragraph",
+        "section_header"
+      ],
+      "running_header": [
+        "running_header",
+        "section_header"
+      ],
+      "running_footer": [
+        "running_footer",
+        "paragraph"
+      ]
+    }
+  },
+  "actual_element_transforms": {
+    "bbox_expansion": {
+      "default": 0.0015,
+      "running_header": 0.002,
+      "running_footer": 0.002,
+      "section_header": 0.002,
+      "requirement": 0.0015,
+      "control_reference": 0.0015,
+      "list_item": 0.0015
+    },
+    "type_rules": [
+      {
+        "pattern": "^[a-z]\\.\\s+",
+        "type": "list_item"
+      },
+      {
+        "pattern": "^[a-z]{2}-\\d+(?:\\(\\d+\\))?\\b",
+        "type": "requirement"
+      },
+      {
+        "pattern": "^[-—]\\s+[A-Z0-9]",
+        "type": "section_header"
+      }
+    ],
+    "embedded_elements": [
+      {
+        "source_text_regex": "^[A-Z]{2}-\\d+(?:\\(\\d+\\))?\\s+\\S+",
+        "extract_regex": "^([A-Z]{2}-\\d+(?:\\(\\d+\\))?)(?=\\s|$|[.,;:])",
+        "group": 1,
+        "type": "requirement",
+        "confidence": 0.9,
+        "bbox_template": {
+          "x0": 0.145,
+          "x1": 0.212,
+          "y0_offset": 0.0,
+          "y1_offset": 0.0
+        }
+      },
+      {
+        "source_text_regex": "this publication is available|free of charge|https://doi\\.org",
+        "extract_regex": "\\b([A-Z]{2}-\\d+(?:\\(\\d+\\))?)(?=\\s|$|[.,;:])",
+        "group": 1,
+        "type": "control_reference",
+        "confidence": 0.82,
+        "bbox_template": {
+          "x0": 0.154,
+          "x1": 0.212,
+          "y0_offset": 0.0,
+          "y1_offset": 0.0
+        }
+      }
+    ],
+    "revision_log_cells": {
+      "enabled": true,
+      "date_regex": "\\d{2}-\\d{2}-\\d{4}",
+      "allowed_types": [
+        "Administrative",
+        "Editorial",
+        "Technical"
+      ],
+      "confidence": 0.9,
+      "columns": {
+        "date": [
+          0.167,
+          0.237
+        ],
+        "type": [
+          0.28,
+          0.331
+        ],
+        "revision": [
+          0.36,
+          0.77
+        ],
+        "page": [
+          0.805,
+          0.829
+        ]
+      }
+    },
+    "text_replacements": [
+      {
+        "pattern": "^([0-9ivxlcdm]+) PAGE$",
+        "replacement": "PAGE \\1"
+      },
+      {
+        "pattern": "\\s+-\\s+",
+        "replacement": "-"
+      },
+      {
+        "pattern": "\\s+([,.;:])",
+        "replacement": "\\1"
+      },
+      {
+        "pattern": "([\\[(“])\\s+",
+        "replacement": "\\1"
+      },
+      {
+        "pattern": "\\s+([\\]”])",
+        "replacement": "\\1"
+      },
+      {
+        "pattern": "\\s+",
+        "replacement": " "
+      }
+    ],
+    "drop_rules": [
+      {
+        "text_regex": "^_+$"
+      },
+      {
+        "text_equals": "\u221a"
+      },
+      {
+        "max_x1": 0.08,
+        "text_regex": "this publication is available|https://doi\\.org|^-\\s*53r5$"
+      }
+    ],
+    "merge_same_line": {
+      "enabled": true,
+      "types": [
+        "running_header",
+        "section_header",
+        "paragraph",
+        "list_item"
+      ],
+      "max_gap": 0.045,
+      "max_y_delta": 0.006,
+      "min_y_overlap": 0.45
+    }
+  },
+  "safety": {
+    "scope": "document_family_only",
+    "core_patch_policy": "Do not promote these thresholds or aliases to global pdf_oxide unless the same mismatch reproduces across unrelated PDF families."
+  },
+  "expected_element_transforms": {
+    "text_replacements": [
+      {
+        "pattern": "\\s+-\\s+",
+        "replacement": "-"
+      },
+      {
+        "pattern": "\\s+([,.;:])",
+        "replacement": "\\1"
+      },
+      {
+        "pattern": "([\\[(“])\\s+",
+        "replacement": "\\1"
+      },
+      {
+        "pattern": "\\s+([\\]”])",
+        "replacement": "\\1"
+      },
+      {
+        "pattern": "\\s+",
+        "replacement": " "
+      }
+    ],
+    "drop_rules": [
+      {
+        "text_regex": "^_+$"
+      },
+      {
+        "text_equals": "\u221a"
+      },
+      {
+        "max_x1": 0.06,
+        "text_regex": "this publication is available|https://doi\\.org"
+      },
+      {
+        "max_x1": 0.08,
+        "text_regex": "^-\\s*53r5$"
+      },
+      {
+        "text_regex": "^\\d+\\.$"
+      }
+    ],
+    "type_rules": [
+      {
+        "pattern": "^[a-z]\\.\\s+",
+        "type": "list_item"
+      },
+      {
+        "pattern": "^[a-z]{2}-\\d+(?:\\(\\d+\\))?\\b",
+        "type": "requirement"
+      }
+    ],
+    "merge_same_line": {
+      "enabled": true,
+      "types": [
+        "running_header",
+        "running_footer",
+        "section_header",
+        "paragraph",
+        "list_item",
+        "requirement"
+      ],
+      "max_gap": 0.045,
+      "max_y_delta": 0.006,
+      "min_y_overlap": 0.45
+    }
+  }
+}
