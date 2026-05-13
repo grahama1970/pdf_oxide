@@ -154,13 +154,57 @@ pub struct HeaderFeatures {
     pub is_too_long: bool,
 }
 
+/// One line of text inside a `ClassifiedBlock`.
+///
+/// Preserves the per-line geometry that `classify_line` computes from
+/// spans and that `merge_consecutive_body` would otherwise collapse into a
+/// single block-level bbox. Required by `paragraph_bbox_audit` on the
+/// Python side (WebGPT 2026-05-12).
+#[derive(Debug, Clone)]
+pub struct BlockLine {
+    /// Line bounding box in page points (xywh, top-left origin).
+    pub bbox: Rect,
+    /// Joined text content of all spans on this line.
+    pub text: String,
+    /// Average font size of the spans on this line.
+    pub font_size: f32,
+    /// Font name of the first span on this line.
+    pub font_name: String,
+    /// Whether any span on this line is bold.
+    pub is_bold: bool,
+}
+
+impl BlockLine {
+    /// Build one `BlockLine` from the spans that share a line.
+    fn from_spans(spans: &[&TextSpan]) -> Self {
+        let bbox = spans.iter().fold(spans[0].bbox, |acc, s| acc.union(&s.bbox));
+        let text: String = spans
+            .iter()
+            .map(|s| s.text.as_str())
+            .collect::<Vec<_>>()
+            .join("");
+        let avg_font_size = spans.iter().map(|s| s.font_size).sum::<f32>() / spans.len() as f32;
+        let font_name = spans[0].font_name.clone();
+        let is_bold = spans
+            .iter()
+            .any(|s| s.font_weight == crate::layout::text_block::FontWeight::Bold);
+        Self {
+            bbox,
+            text: text.trim().to_string(),
+            font_size: avg_font_size,
+            font_name,
+            is_bold,
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct ClassifiedBlock {
     /// The classified block type
     pub block_type: BlockType,
     /// Full text content of the block
     pub text: String,
-    /// Bounding box in PDF coordinates
+    /// Bounding box in PDF coordinates (page points, xywh, top-left origin)
     pub bbox: Rect,
     /// Average font size of the block
     pub font_size: f32,
@@ -174,6 +218,10 @@ pub struct ClassifiedBlock {
     pub header_level: Option<u8>,
     /// Detailed header validation (only populated for candidate headers)
     pub header_validation: Option<HeaderValidation>,
+    /// One entry per source line that contributes to this block. For
+    /// non-merged blocks this is a single entry. For Body blocks merged by
+    /// `merge_consecutive_body`, one entry per original line in source order.
+    pub lines: Vec<BlockLine>,
 }
 
 pub struct BlockClassifier {
@@ -233,17 +281,36 @@ impl BlockClassifier {
             if line_spans.is_empty() {
                 continue;
             }
-            let block = self.classify_line(line_spans);
+            let mut block = self.classify_line(line_spans);
+            block.lines = vec![BlockLine::from_spans(line_spans)];
             blocks.push(block);
         }
 
         merge_consecutive_body(&mut blocks);
+        promote_isolated_heading_blocks(&mut blocks);
 
         blocks
     }
 
     fn classify_line(&self, spans: &[&TextSpan]) -> ClassifiedBlock {
-        let text: String = spans
+        // WebGPT 2026-05-13 R6 — sort spans by (bbox.x, sequence) before
+        // joining their text. PDFs can emit "Modern" via TJ kerning shifts
+        // that put glyph fragments out of left-to-right content-stream
+        // order (e.g. "der" drawn before "Mo" then "n"). When `classify_blocks`
+        // feeds spans from `extract_spans_unsorted`, the iteration order
+        // matches content-stream order rather than reading order, producing
+        // artifacts like "derMon". Sorting here normalizes the line text
+        // without altering page-level block order or per-span bbox/font
+        // calculations below (those still use the original `spans` slice).
+        let mut sorted_for_text: Vec<&TextSpan> = spans.to_vec();
+        sorted_for_text.sort_by(|a, b| {
+            a.bbox
+                .x
+                .partial_cmp(&b.bbox.x)
+                .unwrap_or(std::cmp::Ordering::Equal)
+                .then(a.sequence.cmp(&b.sequence))
+        });
+        let text: String = sorted_for_text
             .iter()
             .map(|s| s.text.as_str())
             .collect::<Vec<_>>()
@@ -528,6 +595,7 @@ impl BlockClassifier {
             confidence,
             header_level,
             header_validation,
+            lines: Vec::new(),
         }
     }
 }
@@ -1108,20 +1176,164 @@ fn group_spans_into_lines(spans: &[TextSpan]) -> Vec<Vec<&TextSpan>> {
     lines
 }
 
+/// Heuristic: does this block's text look like a section heading?
+///
+/// True for short, mostly-uppercase, alphabetic-dominant text. Used as a
+/// guard in `merge_consecutive_body` so a standalone bold all-caps heading
+/// like "INTRODUCTION" does not get absorbed into the surrounding Body
+/// paragraph just because vertical spacing is small (WebGPT 2026-05-13 R4).
+fn looks_like_heading(b: &ClassifiedBlock) -> bool {
+    let text = b.text.trim();
+    let len = text.chars().count();
+    if !(3..=60).contains(&len) {
+        return false;
+    }
+    let alpha: usize = text.chars().filter(|c| c.is_alphabetic()).count();
+    if alpha == 0 {
+        return false;
+    }
+    let upper: usize = text
+        .chars()
+        .filter(|c| c.is_uppercase() || (c.is_alphabetic() && !c.is_lowercase()))
+        .count();
+    let upper_ratio = upper as f32 / alpha as f32;
+    if upper_ratio < 0.80 {
+        return false;
+    }
+    // A standalone heading should be one or two words OR end with no body
+    // sentence punctuation.
+    let trailing = text.chars().last();
+    if matches!(trailing, Some('.') | Some(',') | Some(';') | Some(':')) {
+        // Sentence-final punctuation suggests body prose, not a heading.
+        return false;
+    }
+    true
+}
+
 fn merge_consecutive_body(blocks: &mut Vec<ClassifiedBlock>) {
     let mut i = 0;
     while i + 1 < blocks.len() {
+        // R4 heading-protection guard (WebGPT 2026-05-13): never absorb a
+        // heading-shaped block (the current one OR the next one) into a Body
+        // paragraph. Prevents the NIST 800-53r5 page-28 INTRODUCTION + subtitle
+        // + first body paragraph collapse.
         if blocks[i].block_type == BlockType::Body
             && blocks[i + 1].block_type == BlockType::Body
             && (blocks[i].bbox.y - blocks[i + 1].bbox.y).abs() < blocks[i].font_size * 1.5
+            && !looks_like_heading(&blocks[i])
+            && !looks_like_heading(&blocks[i + 1])
         {
             let next = blocks.remove(i + 1);
             blocks[i].text.push(' ');
             blocks[i].text.push_str(&next.text);
             blocks[i].bbox = blocks[i].bbox.union(&next.bbox);
+            // WebGPT 2026-05-12: preserve per-line evidence through merges so
+            // paragraph_bbox_audit can walk lines[].bbox after this collapse.
+            blocks[i].lines.extend(next.lines);
         } else {
             i += 1;
         }
+    }
+}
+
+/// Subtitle-shaped neighbor check for `promote_isolated_heading_blocks`.
+///
+/// True for uppercase-dominant, alphabetic-dominant blocks without sentence-
+/// final punctuation, up to 200 characters. Loosened from
+/// `looks_like_heading` (which caps at 60 chars) so a multi-line all-caps
+/// subtitle counts as a heading-shaped neighbor for context detection only.
+fn heading_shaped_subtitle(b: &ClassifiedBlock) -> bool {
+    let text = b.text.trim();
+    let len = text.chars().count();
+    if !(3..=200).contains(&len) {
+        return false;
+    }
+    let alpha: usize = text.chars().filter(|c| c.is_alphabetic()).count();
+    if alpha == 0 {
+        return false;
+    }
+    let upper: usize = text
+        .chars()
+        .filter(|c| c.is_uppercase() || (c.is_alphabetic() && !c.is_lowercase()))
+        .count();
+    if (upper as f32 / alpha as f32) < 0.80 {
+        return false;
+    }
+    let trailing = text.chars().last();
+    if matches!(trailing, Some('.') | Some(',') | Some(';') | Some(':')) {
+        return false;
+    }
+    true
+}
+
+/// Narrow post-merge promotion: after `merge_consecutive_body` has separated
+/// heading-shaped blocks (R4 guard), promote isolated short uppercase Body
+/// blocks to Title when neighbor context confirms a heading/body boundary
+/// (WebGPT 2026-05-13 R5).
+///
+/// Conservative criteria — all must hold:
+///   1. Block is currently `BlockType::Body`
+///   2. Block passes the strict `looks_like_heading` predicate (short, mostly
+///      uppercase, alphabetic-dominant, no terminal sentence punctuation)
+///   3. Previous block is `Title` OR a heading-shaped Body (e.g. CHAPTER ONE
+///      followed by INTRODUCTION) — or the block is the first on the page
+///   4. Next block is Body / Title / Subtitle (the heading sits at the start
+///      of a section) — or the block is the last on the page AND prev is
+///      Title
+///
+/// This deliberately does NOT touch `classify_line`; the broader corpus-wide
+/// behavior of single-line bold-uppercase detection is unchanged. Only blocks
+/// that survived past `merge_consecutive_body` while still typed Body — i.e.
+/// those the R4 heading-protection guard already refused to merge — are
+/// promoted, and only when their neighbors confirm the boundary.
+fn promote_isolated_heading_blocks(blocks: &mut Vec<ClassifiedBlock>) {
+    use BlockType::{Body, Subtitle, Title};
+
+    let n = blocks.len();
+    if n == 0 {
+        return;
+    }
+
+    let mut to_promote: Vec<usize> = Vec::new();
+    for i in 0..n {
+        let b = &blocks[i];
+        if b.block_type != Body {
+            continue;
+        }
+        if !looks_like_heading(b) {
+            continue;
+        }
+
+        let prev_ok = if i == 0 {
+            // No predecessor (or only chrome filtered out earlier); accept
+            // if there's a clear successor context.
+            true
+        } else {
+            let p = &blocks[i - 1];
+            p.block_type == Title
+                || (p.block_type == Body && heading_shaped_subtitle(p))
+        };
+
+        let next_ok = if i + 1 >= n {
+            i > 0 && blocks[i - 1].block_type == Title
+        } else {
+            let q = &blocks[i + 1];
+            matches!(q.block_type, Body | Title | Subtitle)
+        };
+
+        if prev_ok && next_ok {
+            to_promote.push(i);
+        }
+    }
+
+    for i in to_promote {
+        let inherited_level = if i > 0 && blocks[i - 1].block_type == Title {
+            blocks[i - 1].header_level.map(|lvl| lvl.saturating_add(1))
+        } else {
+            None
+        };
+        blocks[i].block_type = Title;
+        blocks[i].header_level = Some(inherited_level.unwrap_or(2));
     }
 }
 
@@ -1764,5 +1976,180 @@ mod tests {
         assert!((v.features.size_ratio - 16.0 / 11.0).abs() < 0.01);
         assert!(v.features.is_all_caps);
         assert_eq!(v.features.font_size, 16.0);
+    }
+
+    // --- BlockLine preservation tests (WebGPT 2026-05-12 PR A1) ---
+
+    /// Bbox/text/font/count invariants must not change just because we now
+    /// preserve per-line evidence on ClassifiedBlock. This builds three
+    /// synthetic Body lines that merge_consecutive_body will collapse and
+    /// asserts the collapse semantics are unchanged.
+    #[test]
+    fn test_lines_preserved_through_body_merge() {
+        // Three short Body lines at increasing Y, close enough to merge.
+        // Note: descending Y in PDF coordinates (top-of-page = high y).
+        let spans = vec![
+            make_span("Line one of body.", 90.0, 700.0, 11.0, false),
+            make_span("Line two of body.", 90.0, 685.0, 11.0, false),
+            make_span("Line three of body.", 90.0, 670.0, 11.0, false),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        // All three lines collapse to one Body block (existing semantic).
+        assert_eq!(blocks.len(), 1, "expected 1 merged Body block, got {}", blocks.len());
+        let block = &blocks[0];
+        assert_eq!(block.block_type, BlockType::Body);
+
+        // Block text is the existing concatenation (with spaces).
+        assert!(block.text.contains("Line one of body."));
+        assert!(block.text.contains("Line two of body."));
+        assert!(block.text.contains("Line three of body."));
+
+        // Block bbox is the union of the three line bboxes (existing semantic).
+        // Union: x in [90, 90+19*11*0.5=194.5], y in [670, 711].
+        assert!(block.bbox.x <= 90.0 + 0.01);
+        assert!(block.bbox.y <= 670.0 + 0.01);
+
+        // NEW: per-line evidence is preserved.
+        assert_eq!(block.lines.len(), 3, "expected 3 lines preserved after merge");
+
+        // Each line bbox stays within the block bbox (line union == block bbox).
+        let line_union = block.lines.iter().fold(
+            block.lines[0].bbox,
+            |acc, line| acc.union(&line.bbox),
+        );
+        let drift_x = (block.bbox.x - line_union.x).abs();
+        let drift_y = (block.bbox.y - line_union.y).abs();
+        let drift_w = (block.bbox.width - line_union.width).abs();
+        let drift_h = (block.bbox.height - line_union.height).abs();
+        assert!(drift_x < 0.5, "block.bbox.x drift {} from line union", drift_x);
+        assert!(drift_y < 0.5, "block.bbox.y drift {} from line union", drift_y);
+        assert!(drift_w < 0.5, "block.bbox.width drift {} from line union", drift_w);
+        assert!(drift_h < 0.5, "block.bbox.height drift {} from line union", drift_h);
+
+        // Lines appear in source order.
+        assert_eq!(block.lines[0].text, "Line one of body.");
+        assert_eq!(block.lines[1].text, "Line two of body.");
+        assert_eq!(block.lines[2].text, "Line three of body.");
+    }
+
+    /// Single-line non-merged block still gets a lines entry of length 1.
+    #[test]
+    fn test_single_line_block_has_one_line() {
+        let spans = vec![make_span("A single title.", 90.0, 700.0, 18.0, true)];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].lines.len(), 1);
+        assert_eq!(blocks[0].lines[0].text, "A single title.");
+        assert!(blocks[0].lines[0].is_bold);
+    }
+
+    /// Make_block default still produces an empty lines vec — required so
+    /// that non-classify_spans constructors of ClassifiedBlock keep working.
+    #[test]
+    fn test_make_block_default_lines_empty() {
+        let spans = vec![make_span("dummy", 0.0, 0.0, 11.0, false)];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let block = classifier.make_block(
+            BlockType::Body,
+            "x".to_string(),
+            Rect { x: 0.0, y: 0.0, width: 1.0, height: 1.0 },
+            11.0,
+            "F".to_string(),
+            false,
+            0.5,
+            None,
+            None,
+        );
+        assert_eq!(block.lines.len(), 0);
+    }
+
+    /// merge_consecutive_body must not collapse non-Body neighbors. Header
+    /// + Body stays as two distinct blocks, each with its own lines.
+    #[test]
+    fn test_header_body_not_merged_each_has_lines() {
+        let spans = vec![
+            // Big bold heading at the top
+            make_span("HEADING", 90.0, 700.0, 18.0, true),
+            // Body line below (close enough to not be page-header noise)
+            make_span("Body paragraph text.", 90.0, 660.0, 11.0, false),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+        assert_eq!(blocks.len(), 2);
+        assert_eq!(blocks[0].lines.len(), 1);
+        assert_eq!(blocks[1].lines.len(), 1);
+    }
+
+    /// GS001 R6 row-4 regression — kerned NIST 800-53r5 page-27 text where
+    /// the PDF's TJ operator emits "Modern" as fragments in content-stream
+    /// order ["der", "Mo", "n information systems"] (out of x-order), and a
+    /// superscript footnote marker "1" appears slightly above the baseline.
+    ///
+    /// Pre-R6: classify_line joined spans in iteration order →
+    /// "derMon information systems1 can include...".
+    /// Post-R6 (this test): classify_line sorts by (bbox.x, sequence) before
+    /// joining text →
+    /// "Modern information systems1 can include...".
+    ///
+    /// The page-level block ordering is unchanged; only the per-line text
+    /// concatenation is re-sorted.
+    #[test]
+    fn test_classify_line_kerned_span_order_yields_modern_not_dermon() {
+        // Build spans with the same x-positions WebGPT specified in the R6
+        // plan: der(x=105), Mo(x=90), "n information systems"(x=120),
+        // superscript "1"(x=220, y slightly above baseline), and the rest of
+        // the line " can include..." (x=224).
+        let mut der = make_span("der", 105.0, 631.3, 10.98, false);
+        der.sequence = 57; // content-stream order: der drawn FIRST
+        let mut mo = make_span("Mo", 90.0, 631.3, 10.98, false);
+        mo.sequence = 58; // then "Mo" via TJ backward shift
+        let mut n_rest = make_span("n information systems", 120.0, 631.3, 10.98, false);
+        n_rest.sequence = 59;
+        let mut sup_one = make_span("1", 220.6, 635.3, 7.02, false);
+        sup_one.sequence = 60; // superscript footnote marker
+        let mut can_include = make_span(
+            " can include a variety of computing platforms",
+            224.1,
+            631.3,
+            10.98,
+            false,
+        );
+        can_include.sequence = 61;
+        let spans = vec![der, mo, n_rest, sup_one, can_include];
+
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+        assert_eq!(blocks.len(), 1, "all spans should group into a single line/block");
+        let text = &blocks[0].text;
+        assert!(
+            !text.contains("derMon"),
+            "post-R6 text must not contain the 'derMon' artifact; got: {text:?}"
+        );
+        assert!(
+            !text.starts_with("1Modern"),
+            "post-R6 text must not start with '1Modern' (would mean superscript leaked to front); got: {text:?}"
+        );
+        assert!(
+            text.starts_with("Modern information systems"),
+            "post-R6 text must begin exactly 'Modern information systems...'; got: {text:?}"
+        );
+    }
+
+    /// Companion control — when spans already arrive in x-order, the sort
+    /// is a no-op and the joined text is unchanged.
+    #[test]
+    fn test_classify_line_already_sorted_spans_unchanged() {
+        let mut a = make_span("Hello ", 90.0, 700.0, 11.0, false);
+        a.sequence = 1;
+        let mut b = make_span("world.", 130.0, 700.0, 11.0, false);
+        b.sequence = 2;
+        let spans = vec![a, b];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].text, "Hello world.");
     }
 }

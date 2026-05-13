@@ -1,0 +1,1969 @@
+{
+  "compiled_preset_sha256": "dd136785cf2283bfa4bf07f65b173d102a807c404dcc5a6bb9f71af92f52e5ef",
+  "description": "Promotion ledger for NIST SP 800-53 Rev. 5. Source of truth for ledger-derivable rules; the preset's compiled_rules block is the compiled output of this file. Entries are typed-prefix + 3-digit counter (e.g., nist-tomap-001).",
+  "document_family": "nist_sp_800_53r5_pdf",
+  "entries": [
+    {
+      "added_at": "2026-05-11T17:50:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2.0 first-entry proof)",
+      "applied_at": "2026-05-11T17:56:00Z",
+      "applier_rule_kind": "block_type_map",
+      "category": "type_remap",
+      "checklist_item": "Map block_type=TableOfContents \u2192 element_type=reference and set semantic_role=toc_entry. Field-level enrichment (label, target_page, dot_leader) is a separate rule.",
+      "closed_at": "2026-05-11T17:58:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2.0 \u2014 lifecycle proof complete)",
+      "closure_notes": "Closed at ledger_only_single_extract scope: the applier reproduces the snapshot script's effect against a single PDF extraction. Full pipeline closure (preset+core only, no snapshot domain rules) is gated on B.3 retiring the snapshot rules; fixture provisional flag flips when that lands.",
+      "entry_id": "nist-tomap-004",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist_tomap_004_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "TableOfContents__reference__type_mismatch",
+          "candidate_count": 38,
+          "sample_candidate_ids": [
+            "actual:p14:block:9",
+            "actual:p14:block:10",
+            "actual:p14:block:11",
+            "actual:p14:block:12",
+            "actual:p14:block:13"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p14:block:10",
+          "actual:p14:block:11",
+          "actual:p14:block:12"
+        ],
+        "risk_reasons_observed": [
+          "type:unknown_region"
+        ],
+        "second_pass_results": [
+          "resolved_by_snapshot_rule (pdf.unknown_region.v1 \u2192 reference)"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "actual:p14:block:8 \u2014 text='Table of Contents' with source_type=Caption (toc_heading), NOT a TOC entry. Rule must not match (source_type filter rejects it).",
+          "Any future non-NIST PDF where block_type=TableOfContents should map to a different element_type. None known at v6 authoring; this is the candidate for migration to a shared baseline ledger once a counterexample appears."
+        ],
+        "candidates_that_prove": [
+          "actual:p14:block:9",
+          "actual:p14:block:10",
+          "actual:p14:block:11"
+        ],
+        "deterministic_rule": "If source_type='TableOfContents' \u2192 set type='reference' and semantic_role='toc_entry'. Per-element field enrichment (label, target_page, dot_leader) is handled by a separate text_classifier_rule entry; structural grouping under a toc parent is a separate structural_grouping_rule entry.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "TableOfContents__reference__type_mismatch",
+            "TableOfContents__missing_extras_semantic_role"
+          ],
+          "candidate_count_max": 40,
+          "candidate_count_min": 36,
+          "kinds_resolved": [
+            "type_mismatch",
+            "missing_extras"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p14_block_10.json",
+          "tests/closure_fixtures/nist_800_53r5/actual_p14_block_8.json"
+        ],
+        "lives_in": "nist_preset for now; rule_class=baseline_adapter signals candidacy for migration to a shared baseline ledger once a second PDF confirms universality.",
+        "observed_pattern": "pdf_oxide emits block_type='TableOfContents' for every line of the NIST 800-53r5 TOC on page 14 (38 elements). Without a mapping, type stays at 'unknown_region' and downstream queries that filter by type=reference miss every TOC entry."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p14_block_8.json"
+        ],
+        "do_not_apply_if": [
+          "source_type != 'TableOfContents'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T17:55:00Z",
+      "human_reviewed_by": "human:graham (B.2.0 review \u2014 counterexample fixture present; rule_class=baseline_adapter accepted with migration tag)",
+      "revision": 1,
+      "rule": {
+        "extras": {
+          "semantic_role": "toc_entry"
+        },
+        "source_type": "TableOfContents",
+        "target_type": "reference"
+      },
+      "rule_class": "baseline_adapter",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 40,
+          "candidate_count_min": 36,
+          "kinds_resolved": [
+            "type_mismatch",
+            "missing_extras"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 12873,
+        "post_summary": {
+          "missing_extras": 147,
+          "missing_grouping": 39,
+          "missing_in_pipeline": 2,
+          "missing_synthetic": 1,
+          "type_mismatch": 12684
+        },
+        "pre_residual_count": 12949,
+        "pre_summary": {
+          "missing_extras": 185,
+          "missing_grouping": 39,
+          "missing_in_pipeline": 2,
+          "missing_synthetic": 1,
+          "type_mismatch": 12722
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-tomap-004__resolved.json",
+        "resolved_candidate_ids_sha256": "0200e2cdbe9f4d237883fbdf09ede4f4ac70c9f2bc3c07e665889c778cb24291",
+        "resolved_count_filtered_by_kind": 38,
+        "verified_at": "2026-05-11T18:14:00.688443+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "block_type_map",
+      "category": "type_remap",
+      "checklist_item": "Map block_type=Body \u2192 type=paragraph_block",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-tomap-005",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-tomap-005_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "Body__paragraph_block__type_mismatch",
+          "candidate_count": 9626,
+          "sample_candidate_ids": [
+            "actual:p0:block:0",
+            "actual:p0:block:8",
+            "actual:p100:block:10",
+            "actual:p100:block:11",
+            "actual:p100:block:13"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p0:block:0",
+          "actual:p0:block:8",
+          "actual:p100:block:10"
+        ],
+        "risk_reasons_observed": [
+          "type:unknown_region"
+        ],
+        "second_pass_results": [
+          "resolved_by_baseline_adapter (Body \u2192 paragraph_block)"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any future PDF where block_type='Body' should map to a different element_type. None known; this is a baseline_adapter rule that will migrate when a counterexample appears."
+        ],
+        "candidates_that_prove": [
+          "actual:p0:block:0",
+          "actual:p0:block:8",
+          "actual:p100:block:10"
+        ],
+        "deterministic_rule": "If source_type='Body' \u2192 set type='paragraph_block'.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "Body__paragraph_block__type_mismatch"
+          ],
+          "candidate_count_max": 9628,
+          "candidate_count_min": 9624,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p0_block_0.json"
+        ],
+        "lives_in": "nist_preset; rule_class=baseline_adapter signals candidacy for migration to a shared baseline ledger once a second PDF confirms universality.",
+        "observed_pattern": "pdf_oxide emits block_type='Body' for 9626 elements in NIST 800-53r5; baseline type is 'paragraph_block'. Without a mapping, type stays at 'unknown_region'."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "baseline_adapter: block_type='Body' universally maps to element_type='paragraph_block' in the PDF Lab vocabulary; no known counterexample. Migration to a shared baseline ledger pending a second-PDF run.",
+        "do_not_apply_if": [
+          "source_type != 'Body'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch review \u2014 baseline_adapter exemption accepted)",
+      "revision": 1,
+      "rule": {
+        "source_type": "Body",
+        "target_type": "paragraph_block"
+      },
+      "rule_class": "baseline_adapter",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 9628,
+          "candidate_count_min": 9624,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 37,
+        "post_summary": {
+          "extras_mismatch": 34,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 9663,
+        "pre_summary": {
+          "extras_mismatch": 34,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 9627
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-tomap-005__resolved.json",
+        "resolved_candidate_ids_sha256": "4331a85b931f677747db1ea94c3261260cbf0685d7f681e1b59c018b56b7cbd2",
+        "resolved_count_filtered_by_kind": 9626,
+        "verified_at": "2026-05-11T18:21:00.261878+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "block_type_map",
+      "category": "type_remap",
+      "checklist_item": "Map block_type=Footer \u2192 type=header_footer_noise",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-tomap-006",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-tomap-006_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "Footer__header_footer_noise__type_mismatch",
+          "candidate_count": 980,
+          "sample_candidate_ids": [
+            "actual:p100:block:0",
+            "actual:p100:block:1",
+            "actual:p101:block:0",
+            "actual:p101:block:1",
+            "actual:p102:block:0"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p100:block:0",
+          "actual:p100:block:1",
+          "actual:p101:block:0"
+        ],
+        "risk_reasons_observed": [
+          "type:unknown_region"
+        ],
+        "second_pass_results": [
+          "resolved_by_baseline_adapter (Footer \u2192 header_footer_noise)"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any future PDF where block_type='Footer' should map to a different element_type. None known; this is a baseline_adapter rule that will migrate when a counterexample appears."
+        ],
+        "candidates_that_prove": [
+          "actual:p100:block:0",
+          "actual:p100:block:1",
+          "actual:p101:block:0"
+        ],
+        "deterministic_rule": "If source_type='Footer' \u2192 set type='header_footer_noise'.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "Footer__header_footer_noise__type_mismatch"
+          ],
+          "candidate_count_max": 982,
+          "candidate_count_min": 978,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p100_block_0.json"
+        ],
+        "lives_in": "nist_preset; rule_class=baseline_adapter signals candidacy for migration to a shared baseline ledger once a second PDF confirms universality.",
+        "observed_pattern": "pdf_oxide emits block_type='Footer' for 980 elements in NIST 800-53r5; baseline type is 'header_footer_noise'. Without a mapping, type stays at 'unknown_region'."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "baseline_adapter: block_type='Footer' universally maps to element_type='header_footer_noise' in the PDF Lab vocabulary; no known counterexample. Migration to a shared baseline ledger pending a second-PDF run.",
+        "do_not_apply_if": [
+          "source_type != 'Footer'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch review \u2014 baseline_adapter exemption accepted)",
+      "revision": 1,
+      "rule": {
+        "source_type": "Footer",
+        "target_type": "header_footer_noise"
+      },
+      "rule_class": "baseline_adapter",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 982,
+          "candidate_count_min": 978,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 37,
+        "post_summary": {
+          "extras_mismatch": 34,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 1017,
+        "pre_summary": {
+          "extras_mismatch": 34,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 981
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-tomap-006__resolved.json",
+        "resolved_candidate_ids_sha256": "eeb95d4999e8621fc45b1f1b19eab2662ab62daa03dd23344bb3d473bb8b46c7",
+        "resolved_count_filtered_by_kind": 980,
+        "verified_at": "2026-05-11T18:21:11.788745+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "block_type_map",
+      "category": "type_remap",
+      "checklist_item": "Map block_type=Title \u2192 type=section_heading",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-tomap-007",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-tomap-007_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "Title__section_heading__type_mismatch",
+          "candidate_count": 880,
+          "sample_candidate_ids": [
+            "actual:p0:block:4",
+            "actual:p0:block:5",
+            "actual:p100:block:24",
+            "actual:p105:block:17",
+            "actual:p105:block:18"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p0:block:4",
+          "actual:p0:block:5",
+          "actual:p100:block:24"
+        ],
+        "risk_reasons_observed": [
+          "type:unknown_region"
+        ],
+        "second_pass_results": [
+          "resolved_by_baseline_adapter (Title \u2192 section_heading)"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any future PDF where block_type='Title' should map to a different element_type. None known; this is a baseline_adapter rule that will migrate when a counterexample appears."
+        ],
+        "candidates_that_prove": [
+          "actual:p0:block:4",
+          "actual:p0:block:5",
+          "actual:p100:block:24"
+        ],
+        "deterministic_rule": "If source_type='Title' \u2192 set type='section_heading'.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "Title__section_heading__type_mismatch"
+          ],
+          "candidate_count_max": 882,
+          "candidate_count_min": 878,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p0_block_4.json"
+        ],
+        "lives_in": "nist_preset; rule_class=baseline_adapter signals candidacy for migration to a shared baseline ledger once a second PDF confirms universality.",
+        "observed_pattern": "pdf_oxide emits block_type='Title' for 880 elements in NIST 800-53r5; baseline type is 'section_heading'. Without a mapping, type stays at 'unknown_region'."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "baseline_adapter: block_type='Title' universally maps to element_type='section_heading' in the PDF Lab vocabulary; no known counterexample. Migration to a shared baseline ledger pending a second-PDF run.",
+        "do_not_apply_if": [
+          "source_type != 'Title'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch review \u2014 baseline_adapter exemption accepted)",
+      "revision": 1,
+      "rule": {
+        "source_type": "Title",
+        "target_type": "section_heading"
+      },
+      "rule_class": "baseline_adapter",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 882,
+          "candidate_count_min": 878,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 37,
+        "post_summary": {
+          "extras_mismatch": 34,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 917,
+        "pre_summary": {
+          "extras_mismatch": 34,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 881
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-tomap-007__resolved.json",
+        "resolved_candidate_ids_sha256": "6f0aa95a2785694695a961dc7dd1d6c576e4070d0e46ad594994563633ef09bc",
+        "resolved_count_filtered_by_kind": 880,
+        "verified_at": "2026-05-11T18:21:23.039085+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "block_type_map",
+      "category": "type_remap",
+      "checklist_item": "Map block_type=List \u2192 type=list",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-tomap-008",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-tomap-008_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "List__list__type_mismatch",
+          "candidate_count": 744,
+          "sample_candidate_ids": [
+            "actual:p100:block:12",
+            "actual:p100:block:5",
+            "actual:p101:block:5",
+            "actual:p102:block:5",
+            "actual:p103:block:5"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p100:block:12",
+          "actual:p100:block:5",
+          "actual:p101:block:5"
+        ],
+        "risk_reasons_observed": [
+          "type:unknown_region"
+        ],
+        "second_pass_results": [
+          "resolved_by_baseline_adapter (List \u2192 list)"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any future PDF where block_type='List' should map to a different element_type. None known; this is a baseline_adapter rule that will migrate when a counterexample appears."
+        ],
+        "candidates_that_prove": [
+          "actual:p100:block:12",
+          "actual:p100:block:5",
+          "actual:p101:block:5"
+        ],
+        "deterministic_rule": "If source_type='List' \u2192 set type='list'.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "List__list__type_mismatch"
+          ],
+          "candidate_count_max": 746,
+          "candidate_count_min": 742,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p100_block_12.json"
+        ],
+        "lives_in": "nist_preset; rule_class=baseline_adapter signals candidacy for migration to a shared baseline ledger once a second PDF confirms universality.",
+        "observed_pattern": "pdf_oxide emits block_type='List' for 744 elements in NIST 800-53r5; baseline type is 'list'. Without a mapping, type stays at 'unknown_region'."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "baseline_adapter: block_type='List' universally maps to element_type='list' in the PDF Lab vocabulary; no known counterexample. Migration to a shared baseline ledger pending a second-PDF run.",
+        "do_not_apply_if": [
+          "source_type != 'List'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch review \u2014 baseline_adapter exemption accepted)",
+      "revision": 1,
+      "rule": {
+        "source_type": "List",
+        "target_type": "list"
+      },
+      "rule_class": "baseline_adapter",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 746,
+          "candidate_count_min": 742,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 35,
+        "post_summary": {
+          "extras_mismatch": 34,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 779,
+        "pre_summary": {
+          "extras_mismatch": 34,
+          "type_mismatch": 745
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-tomap-008__resolved.json",
+        "resolved_candidate_ids_sha256": "bfa035cf1948f63701d298bfba4905bdcaff80202fc2a659e8e7d9bd686c450e",
+        "resolved_count_filtered_by_kind": 744,
+        "verified_at": "2026-05-11T18:21:34.413368+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "block_type_map",
+      "category": "type_remap",
+      "checklist_item": "Map block_type=Reference \u2192 type=reference",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-tomap-009",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-tomap-009_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "Reference__reference__type_mismatch",
+          "candidate_count": 356,
+          "sample_candidate_ids": [
+            "actual:p136:block:20",
+            "actual:p199:block:22",
+            "actual:p202:block:20",
+            "actual:p225:block:9",
+            "actual:p229:block:35"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p136:block:20",
+          "actual:p199:block:22",
+          "actual:p202:block:20"
+        ],
+        "risk_reasons_observed": [
+          "type:unknown_region"
+        ],
+        "second_pass_results": [
+          "resolved_by_baseline_adapter (Reference \u2192 reference)"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any future PDF where block_type='Reference' should map to a different element_type. None known; this is a baseline_adapter rule that will migrate when a counterexample appears."
+        ],
+        "candidates_that_prove": [
+          "actual:p136:block:20",
+          "actual:p199:block:22",
+          "actual:p202:block:20"
+        ],
+        "deterministic_rule": "If source_type='Reference' \u2192 set type='reference'.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "Reference__reference__type_mismatch"
+          ],
+          "candidate_count_max": 358,
+          "candidate_count_min": 354,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p136_block_20.json"
+        ],
+        "lives_in": "nist_preset; rule_class=baseline_adapter signals candidacy for migration to a shared baseline ledger once a second PDF confirms universality.",
+        "observed_pattern": "pdf_oxide emits block_type='Reference' for 356 elements in NIST 800-53r5; baseline type is 'reference'. Without a mapping, type stays at 'unknown_region'."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "baseline_adapter: block_type='Reference' universally maps to element_type='reference' in the PDF Lab vocabulary; no known counterexample. Migration to a shared baseline ledger pending a second-PDF run.",
+        "do_not_apply_if": [
+          "source_type != 'Reference'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch review \u2014 baseline_adapter exemption accepted)",
+      "revision": 1,
+      "rule": {
+        "source_type": "Reference",
+        "target_type": "reference"
+      },
+      "rule_class": "baseline_adapter",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 358,
+          "candidate_count_min": 354,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 35,
+        "post_summary": {
+          "extras_mismatch": 34,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 391,
+        "pre_summary": {
+          "extras_mismatch": 34,
+          "type_mismatch": 357
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-tomap-009__resolved.json",
+        "resolved_candidate_ids_sha256": "47e5a767499cbe60abd322ec52b8ad9e15daeb888a9c614806d785210a0bdb3e",
+        "resolved_count_filtered_by_kind": 356,
+        "verified_at": "2026-05-11T18:21:45.610734+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "block_type_map",
+      "category": "type_remap",
+      "checklist_item": "Map block_type=Caption \u2192 type=caption. semantic_role is filled by semantic_enrichment rules per text prefix.",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-tomap-010",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-tomap-010_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "Caption__caption__type_mismatch",
+          "candidate_count": 32,
+          "sample_candidate_ids": [
+            "actual:p26:block:15",
+            "actual:p26:block:19",
+            "actual:p26:block:22",
+            "actual:p26:block:25",
+            "actual:p26:block:29"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p26:block:15",
+          "actual:p26:block:19",
+          "actual:p26:block:22"
+        ],
+        "risk_reasons_observed": [
+          "type:unknown_region"
+        ],
+        "second_pass_results": [
+          "resolved_by_baseline_adapter (Caption \u2192 caption)"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any future PDF where block_type='Caption' should map to a different element_type. None known; this is a baseline_adapter rule that will migrate when a counterexample appears."
+        ],
+        "candidates_that_prove": [
+          "actual:p26:block:15",
+          "actual:p26:block:19",
+          "actual:p26:block:22"
+        ],
+        "deterministic_rule": "If source_type='Caption' \u2192 set type='caption'. Per-element semantic_role (table_caption / figure_caption / toc_heading) is owned by separate semantic_enrichment entries.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "Caption__caption__type_mismatch"
+          ],
+          "candidate_count_max": 34,
+          "candidate_count_min": 30,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p26_block_15.json"
+        ],
+        "lives_in": "nist_preset; rule_class=baseline_adapter signals candidacy for migration to a shared baseline ledger once a second PDF confirms universality.",
+        "observed_pattern": "pdf_oxide emits block_type='Caption' for 32 elements in NIST 800-53r5; baseline type is 'caption'. Without a mapping, type stays at 'unknown_region'."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "baseline_adapter: block_type='Caption' universally maps to element_type='caption' in the PDF Lab vocabulary; no known counterexample. Migration to a shared baseline ledger pending a second-PDF run.",
+        "do_not_apply_if": [
+          "source_type != 'Caption'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch review \u2014 baseline_adapter exemption accepted)",
+      "revision": 1,
+      "rule": {
+        "source_type": "Caption",
+        "target_type": "caption"
+      },
+      "rule_class": "baseline_adapter",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 34,
+          "candidate_count_min": 30,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 14,
+        "post_summary": {
+          "extras_mismatch": 1,
+          "missing_extras": 10,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 46,
+        "pre_summary": {
+          "extras_mismatch": 1,
+          "missing_extras": 10,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 33
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-tomap-010__resolved.json",
+        "resolved_candidate_ids_sha256": "431342330c49a80115e98d21f6e55c04167bf4853d536754d0ed40726c594b2e",
+        "resolved_count_filtered_by_kind": 32,
+        "verified_at": "2026-05-11T18:24:40.176754+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "block_type_map",
+      "category": "type_remap",
+      "checklist_item": "Map block_type=PageNumber \u2192 type=header_footer_noise",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-tomap-011",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-tomap-011_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "PageNumber__header_footer_noise__type_mismatch",
+          "candidate_count": 25,
+          "sample_candidate_ids": [
+            "actual:p10:block:2",
+            "actual:p11:block:2",
+            "actual:p12:block:2",
+            "actual:p13:block:2",
+            "actual:p14:block:2"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p10:block:2",
+          "actual:p11:block:2",
+          "actual:p12:block:2"
+        ],
+        "risk_reasons_observed": [
+          "type:unknown_region"
+        ],
+        "second_pass_results": [
+          "resolved_by_baseline_adapter (PageNumber \u2192 header_footer_noise)"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any future PDF where block_type='PageNumber' should map to a different element_type. None known; this is a baseline_adapter rule that will migrate when a counterexample appears."
+        ],
+        "candidates_that_prove": [
+          "actual:p10:block:2",
+          "actual:p11:block:2",
+          "actual:p12:block:2"
+        ],
+        "deterministic_rule": "If source_type='PageNumber' \u2192 set type='header_footer_noise'.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "PageNumber__header_footer_noise__type_mismatch"
+          ],
+          "candidate_count_max": 27,
+          "candidate_count_min": 23,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p10_block_2.json"
+        ],
+        "lives_in": "nist_preset; rule_class=baseline_adapter signals candidacy for migration to a shared baseline ledger once a second PDF confirms universality.",
+        "observed_pattern": "pdf_oxide emits block_type='PageNumber' for 25 elements in NIST 800-53r5; baseline type is 'header_footer_noise'. Without a mapping, type stays at 'unknown_region'."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "baseline_adapter: block_type='PageNumber' universally maps to element_type='header_footer_noise' in the PDF Lab vocabulary; no known counterexample. Migration to a shared baseline ledger pending a second-PDF run.",
+        "do_not_apply_if": [
+          "source_type != 'PageNumber'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch review \u2014 baseline_adapter exemption accepted)",
+      "revision": 1,
+      "rule": {
+        "source_type": "PageNumber",
+        "target_type": "header_footer_noise"
+      },
+      "rule_class": "baseline_adapter",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 27,
+          "candidate_count_min": 23,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 37,
+        "post_summary": {
+          "extras_mismatch": 34,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 62,
+        "pre_summary": {
+          "extras_mismatch": 34,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 26
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-tomap-011__resolved.json",
+        "resolved_candidate_ids_sha256": "3f00e6fab7de3da35727976232404ff40158a8dad1578abcb63d7e955ef3d336",
+        "resolved_count_filtered_by_kind": 25,
+        "verified_at": "2026-05-11T18:22:07.395323+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "block_type_map",
+      "category": "type_remap",
+      "checklist_item": "Map block_type=Boilerplate \u2192 type=header_footer_noise",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-tomap-012",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-tomap-012_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "Boilerplate__header_footer_noise__type_mismatch",
+          "candidate_count": 20,
+          "sample_candidate_ids": [
+            "actual:p0:block:1",
+            "actual:p131:block:19",
+            "actual:p137:block:21",
+            "actual:p153:block:27",
+            "actual:p192:block:33"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p0:block:1",
+          "actual:p131:block:19",
+          "actual:p137:block:21"
+        ],
+        "risk_reasons_observed": [
+          "type:unknown_region"
+        ],
+        "second_pass_results": [
+          "resolved_by_baseline_adapter (Boilerplate \u2192 header_footer_noise)"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any future PDF where block_type='Boilerplate' should map to a different element_type. None known; this is a baseline_adapter rule that will migrate when a counterexample appears."
+        ],
+        "candidates_that_prove": [
+          "actual:p0:block:1",
+          "actual:p131:block:19",
+          "actual:p137:block:21"
+        ],
+        "deterministic_rule": "If source_type='Boilerplate' \u2192 set type='header_footer_noise'.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "Boilerplate__header_footer_noise__type_mismatch"
+          ],
+          "candidate_count_max": 22,
+          "candidate_count_min": 18,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p0_block_1.json"
+        ],
+        "lives_in": "nist_preset; rule_class=baseline_adapter signals candidacy for migration to a shared baseline ledger once a second PDF confirms universality.",
+        "observed_pattern": "pdf_oxide emits block_type='Boilerplate' for 20 elements in NIST 800-53r5; baseline type is 'header_footer_noise'. Without a mapping, type stays at 'unknown_region'."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "baseline_adapter: block_type='Boilerplate' universally maps to element_type='header_footer_noise' in the PDF Lab vocabulary; no known counterexample. Migration to a shared baseline ledger pending a second-PDF run.",
+        "do_not_apply_if": [
+          "source_type != 'Boilerplate'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch review \u2014 baseline_adapter exemption accepted)",
+      "revision": 1,
+      "rule": {
+        "source_type": "Boilerplate",
+        "target_type": "header_footer_noise"
+      },
+      "rule_class": "baseline_adapter",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 22,
+          "candidate_count_min": 18,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 35,
+        "post_summary": {
+          "extras_mismatch": 34,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 55,
+        "pre_summary": {
+          "extras_mismatch": 34,
+          "type_mismatch": 21
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-tomap-012__resolved.json",
+        "resolved_candidate_ids_sha256": "d3c22c5cda8abfa614aa94f3bfe058579b549c256612cf6954c8eae55c67315f",
+        "resolved_count_filtered_by_kind": 20,
+        "verified_at": "2026-05-11T18:22:18.575251+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "block_type_map",
+      "category": "type_remap",
+      "checklist_item": "Map block_type=Header \u2192 type=section_heading",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-tomap-013",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-tomap-013_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "Header__section_heading__type_mismatch",
+          "candidate_count": 20,
+          "sample_candidate_ids": [
+            "actual:p400:block:2",
+            "actual:p401:block:2",
+            "actual:p402:block:2",
+            "actual:p403:block:2",
+            "actual:p404:block:2"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p400:block:2",
+          "actual:p401:block:2",
+          "actual:p402:block:2"
+        ],
+        "risk_reasons_observed": [
+          "type:unknown_region"
+        ],
+        "second_pass_results": [
+          "resolved_by_baseline_adapter (Header \u2192 section_heading)"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any future PDF where block_type='Header' should map to a different element_type. None known; this is a baseline_adapter rule that will migrate when a counterexample appears."
+        ],
+        "candidates_that_prove": [
+          "actual:p400:block:2",
+          "actual:p401:block:2",
+          "actual:p402:block:2"
+        ],
+        "deterministic_rule": "If source_type='Header' \u2192 set type='section_heading'.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "Header__section_heading__type_mismatch"
+          ],
+          "candidate_count_max": 22,
+          "candidate_count_min": 18,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p400_block_2.json"
+        ],
+        "lives_in": "nist_preset; rule_class=baseline_adapter signals candidacy for migration to a shared baseline ledger once a second PDF confirms universality.",
+        "observed_pattern": "pdf_oxide emits block_type='Header' for 20 elements in NIST 800-53r5; baseline type is 'section_heading'. Without a mapping, type stays at 'unknown_region'."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "baseline_adapter: block_type='Header' universally maps to element_type='section_heading' in the PDF Lab vocabulary; no known counterexample. Migration to a shared baseline ledger pending a second-PDF run.",
+        "do_not_apply_if": [
+          "source_type != 'Header'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch review \u2014 baseline_adapter exemption accepted)",
+      "revision": 1,
+      "rule": {
+        "source_type": "Header",
+        "target_type": "section_heading"
+      },
+      "rule_class": "baseline_adapter",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 22,
+          "candidate_count_min": 18,
+          "kinds_resolved": [
+            "type_mismatch"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 37,
+        "post_summary": {
+          "extras_mismatch": 34,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 57,
+        "pre_summary": {
+          "extras_mismatch": 34,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 21
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-tomap-013__resolved.json",
+        "resolved_candidate_ids_sha256": "a51db513339af9705b12477b06c467b519126f1682ee79de97a68858d02f5811",
+        "resolved_count_filtered_by_kind": 20,
+        "verified_at": "2026-05-11T18:22:29.019007+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Parse TOC dot-leader text into label / target_page / dot_leader extras.",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-semantic-001",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-semantic-001_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "TableOfContents__dot_leader_parser",
+          "candidate_count": 38,
+          "sample_candidate_ids": [
+            "actual:p14:block:10",
+            "actual:p14:block:11",
+            "actual:p14:block:12",
+            "actual:p14:block:13",
+            "actual:p14:block:14"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p14:block:10",
+          "actual:p14:block:11",
+          "actual:p14:block:12"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A TOC without dot leaders (some books use space-fill); rule won't match \u2014 safe.",
+          "Page numbers in the TOC that aren't trailing digits \u2014 rule won't match \u2014 safe."
+        ],
+        "candidates_that_prove": [
+          "actual:p14:block:10",
+          "actual:p14:block:11",
+          "actual:p14:block:12"
+        ],
+        "deterministic_rule": "If source_type='TableOfContents' AND text contains a run of >=4 dots with a label on the left and a positive integer on the right \u2192 set label=<left>, target_page=int(<right>), dot_leader=true. Failures (no dot leader, non-numeric tail) are silent \u2014 rule does not fire.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "TableOfContents__missing_extras_label",
+            "TableOfContents__missing_extras_target_page",
+            "TableOfContents__missing_extras_dot_leader"
+          ],
+          "candidate_count_max": 40,
+          "candidate_count_min": 36,
+          "kinds_resolved": [
+            "missing_extras"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p14_block_10.json"
+        ],
+        "lives_in": "nist_preset (universal TOC-with-dot-leader pattern; could migrate to baseline).",
+        "observed_pattern": "After nist-tomap-004 maps TableOfContents \u2192 reference, 38 entries still lack label/target_page/dot_leader semantic fields. The text pattern is 'LABEL ......... PAGE' (dot leader between)."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_fixtures": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p14_block_8.json"
+        ],
+        "do_not_apply_if": [
+          "source_type != 'TableOfContents'",
+          "text does not match the dot-leader pattern"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch \u2014 dot-leader regex universal for any TOC)",
+      "revision": 1,
+      "rule": {
+        "applies_when": {
+          "source_type": "TableOfContents"
+        },
+        "extract": [
+          {
+            "dot_leader_parser": true,
+            "fields": {
+              "dot_leader": true,
+              "label": "${label}",
+              "target_page": "${target_page}"
+            }
+          }
+        ]
+      },
+      "rule_class": "semantic_enrichment",
+      "status": "verified",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 40,
+          "candidate_count_min": 36,
+          "kinds_resolved": [
+            "missing_extras"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 5,
+        "post_summary": {
+          "extra_in_pipeline": 2,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 119,
+        "pre_summary": {
+          "extra_in_pipeline": 2,
+          "missing_extras": 114,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-semantic-001__resolved.json",
+        "resolved_candidate_ids_sha256": "b1a52a878f387b8e501cf17f1f1ed707a02873b039461ab7633ad24b97fae318",
+        "resolved_count_filtered_by_kind": 38,
+        "verified_at": "2026-05-11T18:43:16.055035+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Caption with text matching ^TABLE\\b \u2192 semantic_role=table_caption.",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-semantic-002",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-semantic-002_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "Caption__table_caption__semantic_enrichment",
+          "candidate_count": 30,
+          "sample_candidate_ids": [
+            "actual:p26:block:15",
+            "actual:p26:block:19",
+            "actual:p26:block:22",
+            "actual:p26:block:25",
+            "actual:p26:block:29"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p26:block:15",
+          "actual:p26:block:19",
+          "actual:p26:block:22"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A Caption that doesn't match the prefix pattern \u2014 rule won't match \u2014 safe."
+        ],
+        "candidates_that_prove": [
+          "actual:p26:block:15",
+          "actual:p26:block:19",
+          "actual:p26:block:22"
+        ],
+        "deterministic_rule": "If source_type='Caption' AND text starts (case-insensitive) with 'TABLE' \u2192 set semantic_role='table_caption'. Specificity ordering (equals_ci > prefix_ci) ensures nist-semantic-004 ('table of contents' equality) fires first and claims the toc_heading element BEFORE this prefix rule.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "Caption__table_caption__semantic_enrichment"
+          ],
+          "candidate_count_max": 31,
+          "candidate_count_min": 29,
+          "kinds_resolved": [
+            "missing_extras"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p26_block_15.json"
+        ],
+        "lives_in": "nist_preset (NIST-specific caption prefix convention).",
+        "observed_pattern": "NIST 800-53r5 table captions all begin with 'TABLE' (e.g. 'TABLE C-3 (AU-7(2)) Title')."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_rationale_exempt": "Narrow scope: applies only when both source_type=Caption AND the text matches the specific prefix regex.",
+        "do_not_apply_if": [
+          "source_type != 'Caption'",
+          "text does not start (case-insensitive) with 'TABLE'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch \u2014 NIST caption convention)",
+      "revision": 1,
+      "rule": {
+        "applies_when": {
+          "source_type": "Caption"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "table_caption"
+            },
+            "prefix_ci": "TABLE"
+          }
+        ]
+      },
+      "rule_class": "document_family_specific",
+      "status": "verified",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 31,
+          "candidate_count_min": 29,
+          "kinds_resolved": [
+            "missing_extras"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 3,
+        "post_summary": {
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 33,
+        "pre_summary": {
+          "missing_extras": 30,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-semantic-002__resolved.json",
+        "resolved_candidate_ids_sha256": "531da03b948d257c73026f3100bad1a217ae4ea6c423d568d3cc47e32f890951",
+        "resolved_count_filtered_by_kind": 30,
+        "verified_at": "2026-05-11T18:43:26.766792+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Caption with text matching ^FIGURE\\b \u2192 semantic_role=figure_caption.",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-semantic-003",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-semantic-003_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "Caption__figure_caption__semantic_enrichment",
+          "candidate_count": 2,
+          "sample_candidate_ids": [
+            "actual:p35:block:11",
+            "actual:p35:block:33"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p35:block:11",
+          "actual:p35:block:33"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A Caption that doesn't match the prefix pattern \u2014 rule won't match \u2014 safe."
+        ],
+        "candidates_that_prove": [
+          "actual:p35:block:11",
+          "actual:p35:block:33"
+        ],
+        "deterministic_rule": "If source_type='Caption' AND text starts (case-insensitive) with 'FIGURE' \u2192 set semantic_role='figure_caption'.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "Caption__figure_caption__semantic_enrichment"
+          ],
+          "candidate_count_max": 3,
+          "candidate_count_min": 1,
+          "kinds_resolved": [
+            "missing_extras"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p35_block_11.json"
+        ],
+        "lives_in": "nist_preset (NIST-specific caption prefix convention).",
+        "observed_pattern": "NIST 800-53r5 figure captions begin with 'FIGURE'."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_rationale_exempt": "Narrow scope: applies only when both source_type=Caption AND the text matches the specific prefix regex.",
+        "do_not_apply_if": [
+          "source_type != 'Caption'",
+          "text does not start (case-insensitive) with 'FIGURE'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch \u2014 NIST caption convention)",
+      "revision": 1,
+      "rule": {
+        "applies_when": {
+          "source_type": "Caption"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "figure_caption"
+            },
+            "prefix_ci": "FIGURE"
+          }
+        ]
+      },
+      "rule_class": "document_family_specific",
+      "status": "verified",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 3,
+          "candidate_count_min": 1,
+          "kinds_resolved": [
+            "missing_extras"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 1,
+        "post_summary": {
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 3,
+        "pre_summary": {
+          "missing_extras": 2,
+          "type_mismatch": 1
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-semantic-003__resolved.json",
+        "resolved_candidate_ids_sha256": "96191b9b0653fabdebe45714a12acf3656906e2320baf3296eff3e0a306caf7f",
+        "resolved_count_filtered_by_kind": 2,
+        "verified_at": "2026-05-11T18:43:38.582441+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Caption with text='Table of Contents' \u2192 type=section_heading + semantic_role=toc_heading.",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-semantic-004",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-semantic-004_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "Caption__toc_heading__semantic_enrichment",
+          "candidate_count": 1,
+          "sample_candidate_ids": [
+            "actual:p14:block:8"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p14:block:8"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A Caption that doesn't match the prefix pattern \u2014 rule won't match \u2014 safe."
+        ],
+        "candidates_that_prove": [
+          "actual:p14:block:8"
+        ],
+        "deterministic_rule": "If source_type='Caption' AND text equals (case-insensitive, trimmed) 'Table of Contents' \u2192 set type='section_heading' and semantic_role='toc_heading'. equals_ci has highest specificity priority, so this rule fires before any prefix_ci rule that would also match.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "Caption__toc_heading__semantic_enrichment"
+          ],
+          "candidate_count_max": 2,
+          "candidate_count_min": 0,
+          "kinds_resolved": [
+            "missing_extras",
+            "type_mismatch"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p14_block_8.json"
+        ],
+        "lives_in": "nist_preset (NIST-specific caption prefix convention).",
+        "observed_pattern": "One Caption element ('Table of Contents') is the TOC's own heading."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_rationale_exempt": "Narrow scope: applies only when both source_type=Caption AND the text matches the specific prefix regex.",
+        "do_not_apply_if": [
+          "source_type != 'Caption'",
+          "text (trimmed, case-insensitive) != 'table of contents'"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch \u2014 NIST caption convention)",
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "nist-tomap-010 (block_type_map: Caption \u2192 caption) sets type=caption as the default for ALL Caption elements. This rule is more specific: when the Caption's text equals 'Table of Contents' (case-insensitive), the element is the TOC heading, not a generic caption \u2014 type must be section_heading. The waiver acknowledges this intentional override of a block_type_map default by a more specific text_classifier_rule.",
+      "revision": 1,
+      "rule": {
+        "applies_when": {
+          "source_type": "Caption"
+        },
+        "extract": [
+          {
+            "equals_ci": "Table of Contents",
+            "fields": {
+              "semantic_role": "toc_heading",
+              "type": "section_heading"
+            }
+          }
+        ]
+      },
+      "rule_class": "document_family_specific",
+      "status": "verified",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 2,
+          "candidate_count_min": 0,
+          "kinds_resolved": [
+            "missing_extras",
+            "type_mismatch"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 3,
+        "post_summary": {
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 4,
+        "pre_summary": {
+          "extras_mismatch": 1,
+          "missing_in_pipeline": 2,
+          "type_mismatch": 1
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-semantic-004__resolved.json",
+        "resolved_candidate_ids_sha256": "476eb9a817f6e503a485379ef247da4ff7500250b2e8aa429224a1a5b6ff5b04",
+        "resolved_count_filtered_by_kind": 0,
+        "verified_at": "2026-05-11T18:43:49.563758+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T18:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
+      "applied_at": "2026-05-11T18:30:00Z",
+      "applier_rule_kind": "structural_grouping_rule",
+      "category": "structural_grouping",
+      "checklist_item": "Group consecutive toc_entry elements under a synthetic 'toc' parent with heading lookahead.",
+      "closed_at": "2026-05-11T18:50:00Z",
+      "closed_by": "agent:claude-opus-4-7 (B.2 batch close)",
+      "entry_id": "nist-grouping-001",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_nist-grouping-001_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "TableOfContents__toc_parent_grouping",
+          "candidate_count": 39,
+          "sample_candidate_ids": [
+            "actual:p14:block:10",
+            "actual:p14:block:11",
+            "actual:p14:block:12",
+            "actual:p14:block:13",
+            "actual:p14:block:14"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p14:block:10",
+          "actual:p14:block:11",
+          "actual:p14:block:12"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A TOC under 3 entries (rule.min_run_length); not grouped \u2014 safe.",
+          "Sparse toc_entry markers from a misclassified Body block; would not be 3 consecutive \u2014 safe."
+        ],
+        "candidates_that_prove": [
+          "actual:p14:block:10",
+          "actual:p14:block:11",
+          "actual:p14:block:12"
+        ],
+        "deterministic_rule": "Find runs of >= 3 consecutive elements with semantic_role='toc_entry'; synthesize a parent element with type='toc', page_range, entry_count, and heading={element_id, label} from the immediately-prior element if its text matches /^Table of Contents$/i. Set parent_id on every leaf.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "TableOfContents__toc_parent_grouping"
+          ],
+          "candidate_count_max": 40,
+          "candidate_count_min": 36,
+          "kinds_resolved": [
+            "missing_grouping",
+            "missing_synthetic"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p14_toc_0.json"
+        ],
+        "lives_in": "nist_preset (NIST TOC layout; could generalize to other dot-leader TOCs).",
+        "observed_pattern": "After nist-tomap-004 + nist-semantic-001, TOC leaves have type=reference + semantic_role=toc_entry. The baseline groups them under a synthetic 'toc' parent with the 'Table of Contents' caption as the parent's heading."
+      },
+      "fix_target": "nist_preset",
+      "fixture_provisional_until_workstream": "B.3",
+      "guards": {
+        "counterexample_rationale_exempt": "Structural rule with min_run_length guard; cannot over-apply to scattered elements.",
+        "do_not_apply_if": [
+          "fewer than 3 consecutive toc_entry leaves"
+        ]
+      },
+      "human_reviewed_at": "2026-05-11T18:30:00Z",
+      "human_reviewed_by": "human:graham (B.2 batch \u2014 TOC structural grouping)",
+      "revision": 1,
+      "rule": {
+        "group_when": {
+          "semantic_role": "toc_entry"
+        },
+        "leaf_link_field": "parent_id",
+        "min_run_length": 3,
+        "synthesize_parent": {
+          "fields_from_children": [
+            "page_range",
+            "entry_count"
+          ],
+          "heading_lookahead": {
+            "text_matches": "^\\s*[Tt]able of [Cc]ontents\\s*$"
+          },
+          "semantic_role": "toc",
+          "source_type": "TableOfContents",
+          "type": "toc"
+        }
+      },
+      "rule_class": "structural",
+      "status": "closed",
+      "verification": {
+        "allow_new_residuals": false,
+        "allowed_new_residual_kinds": [],
+        "expected_residual_reduction": {
+          "candidate_count_max": 40,
+          "candidate_count_min": 36,
+          "kinds_resolved": [
+            "missing_grouping",
+            "missing_synthetic"
+          ]
+        }
+      },
+      "verification_result": {
+        "failures": [],
+        "introduced_residuals": [],
+        "passed": true,
+        "post_residual_count": 2,
+        "post_summary": {
+          "extras_mismatch": 1,
+          "type_mismatch": 1
+        },
+        "pre_residual_count": 42,
+        "pre_summary": {
+          "extras_mismatch": 1,
+          "missing_grouping": 39,
+          "missing_synthetic": 1,
+          "type_mismatch": 1
+        },
+        "resolved_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/ledger_audit/nist-grouping-001__resolved.json",
+        "resolved_candidate_ids_sha256": "5b61b0b1bfc404c4cca0a10b688482d50e02f6ba091a36da02a8e19797c2a80e",
+        "resolved_count_filtered_by_kind": 40,
+        "verified_at": "2026-05-11T18:26:56.575987+00:00"
+      },
+      "verification_scope": "ledger_only_single_extract"
+    },
+    {
+      "added_at": "2026-05-11T20:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.4 spot-check)",
+      "applier_rule_kind": null,
+      "category": "bbox_refinement",
+      "checklist_item": "extract_tables should populate per-cell bbox in raw.rows[*].cells[*].bbox so downstream bbox refinement can shrink an over-broad table.bbox to the union of its cell bboxes.",
+      "core_component": "table_extractor",
+      "core_issue_spec": {
+        "b5_dependency": "B.5 cannot author a working applier rule_kind=bbox_refinement_rule until Rust exposes cell bboxes OR a separate table_postprocessor is built to coordinate classify_blocks + extract_tables.",
+        "defect_description": "pdf_oxide.extract_tables emits row_count/col_count and a coarse table.bbox but does NOT expose per-cell bboxes in the raw output. On NIST 800-53r5 the coarse bbox is over-broad (occupies most of the page horizontally). With cell bboxes available, a deterministic post-processor could shrink table.bbox to union(cell.bbox). Today this signal is unavailable; the workaround would involve coordinating classify_blocks (text positions) with extract_tables, which belongs in a shared table_postprocessor layer rather than the ledger.",
+        "non_nist_reproducer_path": null,
+        "non_nist_reproducer_required": true,
+        "pr_link": null,
+        "reproducer_fixture_path": "tests/closure_fixtures/nist_800_53r5/actual_p19_table_0.json",
+        "src_path_hint": "src/tables/"
+      },
+      "entry_id": "core-bbox-001",
+      "evidence": {
+        "all_candidate_ids_path": "tests/closure_fixtures/nist_800_53r5/_core_bbox_001_candidate_ids.json",
+        "corroborating_summary": {
+          "authoring_summary_key": "table_over_broad_bbox",
+          "candidate_count": 27,
+          "sample_candidate_ids": [
+            "actual:p19:table:0",
+            "actual:p20:table:0",
+            "actual:p21:table:0",
+            "actual:p22:table:0",
+            "actual:p23:table:0"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p19:table:0",
+          "actual:p20:table:0",
+          "actual:p21:table:0"
+        ],
+        "risk_reasons_observed": [
+          "type:table",
+          "table_no_header",
+          "bbox_over_broad"
+        ],
+        "second_pass_results": [
+          "emit_correction \u00d7 27, fix_layer=deterministic_bbox_refinement, corrected_bbox=null"
+        ],
+        "spot_check_findings": {
+          "alternative_signal_available": "doc.classify_blocks() within the table bbox returns ~24 text blocks per page (header row + body rows). Each text block has a real bbox. A post-processor could union those text-block bboxes to compute the tight table bbox WITHOUT a Rust change \u2014 but it would require classify_blocks + extract_tables coordination, which is naturally a table_postprocessor concern.",
+          "checked_candidates": [
+            "actual:p19:table:0",
+            "actual:p467:table:0",
+            "actual:p490:table:0"
+          ],
+          "conclusion": "27 candidates route to pdf_oxide_core (core_component=table_extractor) for cell-bbox-exposure fix; B.5 also needs a downstream bbox-shrink rule once cell bboxes are available.",
+          "raw_table_bbox_observation": "All three tables emit page-space bbox starting at x\u224889.76, w=432.0 (occupies most of page horizontally), with row_count/col_count populated. rows[i] is a dict, NOT a list-of-cells with bboxes."
+        }
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A table where the raw bbox correctly equals the cell-union (i.e., NOT over-broad). Such tables should not trigger the post-processor rule.",
+          "A non-NIST table fixture where cell bboxes are already exposed \u2014 would prove the gap is NIST-layout-specific, not core. Spot-check on a second PDF in B.4.1."
+        ],
+        "candidates_that_prove": [
+          "actual:p19:table:0",
+          "actual:p20:table:0",
+          "actual:p21:table:0"
+        ],
+        "deterministic_rule": "extract_tables should expose per-cell bbox in the raw output (e.g., raw.rows[i].cells[j].bbox). With cell bboxes available, a post-processor rule (preset OR core invariant) can set table.bbox = union(cell.bbox) when the raw bbox is materially larger than the union (defining 'materially larger' as a tolerance the rule owns).",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "table_over_broad_bbox"
+          ],
+          "candidate_count_max": 30,
+          "candidate_count_min": 24,
+          "kinds_resolved": [
+            "bbox_drift"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p19_table_0.json",
+          "tests/closure_fixtures/nist_800_53r5/actual_p20_table_0.json",
+          "tests/closure_fixtures/nist_800_53r5/actual_p21_table_0.json"
+        ],
+        "lives_in": "pdf_oxide_core (Rust src/tables/) \u2014 the cell-bbox-exposure gap is a core API completeness issue, not a NIST-specific transform.",
+        "observed_pattern": "All 27 NIST over-broad tables share the same shape: pdf_oxide.extract_tables emits a table.bbox covering most of the page, rows[i] are dicts (not lists of cells with bboxes), and no per-cell bbox field is exposed in the raw output. Spot-checked p19/p467/p490: each has row_count/col_count populated but `cells with bbox: 0`."
+      },
+      "fix_target": "pdf_oxide_core",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "core_pending: rule is not active until Rust patch lands. Counterexample requirement applies to ledger-applied rules; this entry is a core_issue_spec marker."
+      },
+      "lessons_for_second_pass_agent": "Future bbox_over_broad classifications should compute union(cell.bbox) before reporting over_broad. If the cells span the same area as the raw bbox, the table is NOT over-broad \u2014 it just covers a large region. Visual proportion to page size is not a reliable signal.",
+      "rejected_at": "2026-05-12T00:00:00Z",
+      "rejected_by": "agent:claude-opus-4-7 (B.5 spot-check found 0.00pt drift)",
+      "rejection_rationale": "B.5 deep spot-check on p19/p467/p490/p456 revealed that the raw table.bbox IS ALREADY EQUAL to union(cell.bbox) with 0.00pt drift across all 4 samples. The 104/172/140/172 cells in those tables each carry a populated bbox (accessed via rows[i].cells[j].bbox, NOT via the top-level cells field which doesn't exist). The second-pass agent's bbox_error_class='over_broad' label was a false positive \u2014 based on visual inspection ('table covers most of the page') rather than data inspection. No Rust patch is needed for these 27 candidates. They reclassify to positive_fixture.",
+      "revision": 1,
+      "rule_class": "baseline_adapter",
+      "status": "rejected"
+    },
+    {
+      "added_at": "2026-05-11T20:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (B.4 spot-check \u2014 outlier)",
+      "applier_rule_kind": null,
+      "category": "bbox_refinement",
+      "checklist_item": "Single paragraph_block on p1 has an over-broad bbox; separate from the 27 table cases.",
+      "core_component": "block_classifier",
+      "core_issue_spec": {
+        "b5_dependency": "Independent of the 27-table issue. Could be resolved by an applier bbox_refinement_rule if a deterministic signal exists, OR by Rust block_classifier change.",
+        "defect_description": "One paragraph_block on p1 has an over-broad bbox. Likely a block_classifier edge case (merged paragraphs or page-region misclassified as a single block).",
+        "non_nist_reproducer_path": null,
+        "non_nist_reproducer_required": false,
+        "pr_link": null,
+        "reproducer_fixture_path": "tests/closure_fixtures/nist_800_53r5/actual_p1_block_6.json",
+        "src_path_hint": "src/structure/ or src/classify/"
+      },
+      "entry_id": "core-bbox-002",
+      "evidence": {
+        "all_candidate_ids_path": null,
+        "corroborating_summary": {
+          "authoring_summary_key": "paragraph_block_over_broad_outlier",
+          "candidate_count": 1,
+          "sample_candidate_ids": [
+            "actual:p1:block:6"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p1:block:6"
+        ],
+        "risk_reasons_observed": [
+          "bbox_over_broad"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any well-formed paragraph_block \u2014 should NOT trigger the same defect."
+        ],
+        "candidates_that_prove": [
+          "actual:p1:block:6"
+        ],
+        "deterministic_rule": "Needs separate investigation \u2014 block_classifier may be merging multiple paragraphs or emitting a page-region as one block. Spot-check before authoring a Rust fix.",
+        "expected_residual_reduction": {
+          "authoring_summary_keys_drained": [
+            "paragraph_block_over_broad_outlier"
+          ],
+          "candidate_count_max": 1,
+          "candidate_count_min": 1,
+          "kinds_resolved": [
+            "bbox_drift"
+          ]
+        },
+        "fixture_lock": [
+          "tests/closure_fixtures/nist_800_53r5/actual_p1_block_6.json"
+        ],
+        "lives_in": "pdf_oxide_core (block_classifier).",
+        "observed_pattern": "actual:p1:block:6: a paragraph_block element with bbox occupying most of the page. Different shape from the 27 table cases."
+      },
+      "fix_target": "pdf_oxide_core",
+      "guards": {
+        "counterexample_fixtures": [],
+        "counterexample_rationale_exempt": "Single-candidate outlier; investigate before authoring rule."
+      },
+      "revision": 1,
+      "rule_class": "baseline_adapter",
+      "status": "proposed"
+    },
+    {
+      "entry_id": "nist-chrome-001",
+      "category": "semantic_enrichment",
+      "applier_rule_kind": "text_classifier_rule",
+      "added_at": "2026-05-13T15:00:00Z",
+      "added_by": "agent:claude-opus-4-7 (GS001 R4 \u2014 row 2: side DOI watermark \u2192 header_footer_noise per WebGPT plan)",
+      "checklist_item": "Route NIST 800-53r5 left-margin DOI watermark text ('This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5') to type=header_footer_noise. Uses bbox_constraints.x_min_lt=0.10 (left page edge) AND a regex text anchor \u2014 so normal body content cannot be captured even if a body paragraph happened to mention 'this publication is available free of charge'. category=semantic_enrichment so it fires AFTER type_remap (Body\u2192paragraph_block, List\u2192list). release_conflict_waiver=true authorizes overwriting the prior type field; a `release_conflict_waiver_override` event is recorded for audit.",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p27:block:3",
+          "actual:p27:block:4",
+          "actual:p27:block:5"
+        ],
+        "corroborating_summary": {
+          "authoring_summary_key": "side_doi_watermark_paragraph_block_or_list_left_margin",
+          "candidate_count": 3,
+          "sample_candidate_ids": [
+            "actual:p27:block:3",
+            "actual:p27:block:4",
+            "actual:p27:block:5"
+          ]
+        },
+        "risk_reasons_observed": [
+          "type:paragraph_block_for_chrome",
+          "type:list_for_chrome",
+          "text:doi_watermark_in_body_position"
+        ],
+        "second_pass_results": [
+          "GS001 R3 golden_slice_comparison: row 2 (side_watermark_or_page_chrome_noise) missing because blocks 3/4/5 typed as paragraph_block/list",
+          "WebGPT 2026-05-13 R3 verdict APPROVE_EVIDENCE: 'Row 2: nist_preset_ledger. NIST-specific side DOI/page chrome. Use text anchors plus left-margin/page-edge geometry'"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_prove": [
+          "actual:p27:block:3 (text 'This publication is available free of charge from:', type=paragraph_block, bbox.x_min=0.0344)",
+          "actual:p27:block:4 (text 'https://doi.org/10.6028/NIST.SP.800', type=paragraph_block, bbox.x_min=0.0344)",
+          "actual:p27:block:5 (text '-53r5', type=list, bbox.x_min=0.0344)"
+        ],
+        "candidates_that_could_disprove": [
+          "Any NIST page where a body paragraph genuinely contains 'This publication is available free of charge' as content. The bbox_constraints.x_min_lt=0.10 guard prevents body text (which starts at x_min \u2248 0.147) from matching."
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_lt": 0.1
+          }
+        },
+        "extract": [
+          {
+            "regex": "^This publication is available free of charge",
+            "fields": {
+              "type": "header_footer_noise"
+            }
+          },
+          {
+            "regex": "^https?://doi\\.org/.*NIST",
+            "fields": {
+              "type": "header_footer_noise"
+            }
+          },
+          {
+            "regex": "^-?\\s*53r5",
+            "fields": {
+              "type": "header_footer_noise"
+            }
+          }
+        ]
+      },
+      "status": "closed",
+      "applied_at": "2026-05-13T15:00:00Z",
+      "release_conflict_waiver": true,
+      "closed_at": "2026-05-13T15:10:00Z",
+      "closed_by": "agent:claude-opus-4-7 (GS001 R4 \u2014 pinned by regression test tests/test_nist_page_28_regression.py::test_side_doi_chrome_routed_to_header_footer_noise)"
+    }
+  ],
+  "preset_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
+  "schema_version": "pdf_lab.promotion_ledger.v2"
+}
