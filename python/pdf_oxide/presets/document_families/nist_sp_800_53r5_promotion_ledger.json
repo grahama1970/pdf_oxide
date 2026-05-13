@@ -1962,6 +1962,58 @@
       "release_conflict_waiver": true,
       "closed_at": "2026-05-13T15:10:00Z",
       "closed_by": "agent:claude-opus-4-7 (GS001 R4 \u2014 pinned by regression test tests/test_nist_page_28_regression.py::test_side_doi_chrome_routed_to_header_footer_noise)"
+    },
+    {
+      "entry_id": "nist-subtitle-001",
+      "category": "semantic_enrichment",
+      "applier_rule_kind": "text_classifier_rule",
+      "added_at": "2026-05-13T17:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (GS001 R11 \u2014 subtitle row added per graham's font-characteristic guidance)",
+      "checklist_item": "Type NIST 800-53r5 section subtitles (e.g. 'THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS' immediately under INTRODUCTION) as `section_subtitle` instead of `paragraph_block`. Triple-anchor: font_size_lt=10.4 (smaller than body ~10.62pt, larger than footnotes), bbox main column (x_min in [0.12, 0.20], width > 0.30, y_max < 0.30 to stay above body region), and ALL CAPS text regex 15-200 chars. release_conflict_waiver=true authorizes promoting paragraph_block \u2192 section_subtitle.",
+      "evidence": {
+        "primary_candidate_ids": ["actual:p27:block:8"],
+        "corroborating_summary": {
+          "authoring_summary_key": "nist_section_subtitle_under_section_heading",
+          "candidate_count": 1,
+          "sample_candidate_ids": ["actual:p27:block:8"]
+        }
+      },
+      "evidence_and_intent": {
+        "candidates_that_prove": [
+          "actual:p27:block:8 (text 'THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS', font_size=10.02, font_name=TT0, is_bold=False per pdf_oxide, bbox.x_min=0.147, type=paragraph_block) appears directly under section_heading 'INTRODUCTION' (block:7, fs=16.02 bold) and is visually a section subtitle."
+        ],
+        "candidates_that_could_disprove": [
+          "Any NIST paragraph_block whose font_size is below 10.4pt AND is ALL CAPS AND sits in the main column above y=0.30. NIST body is consistently fs>=10.6 mixed-case, so no body content matches. The footer 'CHAPTER ONE PAGE 1' sits at y_min~0.94 so y_max_lt=0.30 excludes it."
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "type": "paragraph_block",
+          "bbox_constraints": {
+            "x_min_gt": 0.12,
+            "x_min_lt": 0.20,
+            "width_gt": 0.30,
+            "y_max_lt": 0.30
+          },
+          "font_properties": {
+            "font_size_lt": 10.4
+          }
+        },
+        "extract": [
+          {
+            "regex": "^[A-Z][A-Z0-9\\s,.;:/()\\-\u2014'\"]{14,200}$",
+            "fields": {
+              "type": "section_subtitle"
+            }
+          }
+        ]
+      },
+      "status": "closed",
+      "applied_at": "2026-05-13T17:30:00Z",
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "nist-tomap-005 (block_type_map: Body \u2192 paragraph_block) sets paragraph_block as the default for all Body elements. This entry is more specific: when the paragraph_block sits under a section_heading at smaller font_size in the main column AND its text is all-caps, it is the section subtitle. The waiver acknowledges this intentional override of the paragraph_block default by a more specific text+font+bbox classifier_rule.",
+      "closed_at": "2026-05-13T17:30:00Z",
+      "closed_by": "agent:claude-opus-4-7 (GS001 R11 \u2014 pinned by regression test tests/test_nist_page_28_regression.py::test_section_subtitle_THE_NEED_TO_PROTECT_is_typed_section_subtitle)"
     }
   ],
   "preset_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",

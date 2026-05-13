@@ -151,6 +151,14 @@ def _matches_when(el: dict[str, Any], when: dict[str, Any]) -> bool:
       `width_lt`, `width_gt`. Element with no bbox or malformed bbox is
       rejected. Unknown sub-keys are treated as failing constraints.
 
+    - `font_properties` (sub-object): typographic checks against
+      `el.font_size`, `el.font_name`, `el.is_bold` (populated at
+      `_extract_page` time from the underlying classify_blocks payload).
+      Supported keys: `is_bold` (bool, exact match), `font_size_lt`,
+      `font_size_gt`, `font_size_eq` (within ±0.1pt), `font_name`
+      (exact), `font_name_contains` (substring). Element with no
+      font_size is rejected if any font_size_* check is given.
+
     - List values on a regular key: any-of match. e.g. `{"type": ["paragraph_block", "list"]}`
       passes if `el.type` is in the list.
     """
@@ -183,6 +191,47 @@ def _matches_when(el: dict[str, Any], when: dict[str, Any]) -> bool:
                     if not checks[ck](float(cv)):
                         return False
                 except (TypeError, ValueError):
+                    return False
+            continue
+        if k == "font_properties":
+            font_size = el.get("font_size")
+            font_name = el.get("font_name") or ""
+            is_bold = el.get("is_bold")
+            for ck, cv in (v or {}).items():
+                if ck == "is_bold":
+                    if bool(is_bold) is not bool(cv):
+                        return False
+                elif ck == "font_size_lt":
+                    if font_size is None:
+                        return False
+                    try:
+                        if not float(font_size) < float(cv):
+                            return False
+                    except (TypeError, ValueError):
+                        return False
+                elif ck == "font_size_gt":
+                    if font_size is None:
+                        return False
+                    try:
+                        if not float(font_size) > float(cv):
+                            return False
+                    except (TypeError, ValueError):
+                        return False
+                elif ck == "font_size_eq":
+                    if font_size is None:
+                        return False
+                    try:
+                        if abs(float(font_size) - float(cv)) > 0.1:
+                            return False
+                    except (TypeError, ValueError):
+                        return False
+                elif ck == "font_name":
+                    if font_name != cv:
+                        return False
+                elif ck == "font_name_contains":
+                    if str(cv) not in font_name:
+                        return False
+                else:
                     return False
             continue
         el_v = el.get(k)

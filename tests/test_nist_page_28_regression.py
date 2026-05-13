@@ -109,6 +109,25 @@ def test_no_element_text_contains_derMon_artifact(release_json):
 # --- Gate 2: section_heading element with text exactly "INTRODUCTION" ---
 
 
+def test_section_subtitle_THE_NEED_TO_PROTECT_is_typed_section_subtitle(release_json):
+    """R11 gate: the bold all-caps line directly under INTRODUCTION must
+    be typed `section_subtitle`, not `paragraph_block`. Routed by the
+    NIST ledger entry `nist-subtitle-001` using a font_size + bbox +
+    text-pattern triple anchor."""
+    matches = [
+        el for el in release_json["elements"]
+        if el.get("type") == "section_subtitle"
+        and "the need to protect" in _normalize(el.get("text") or "")
+    ]
+    assert matches, (
+        "no section_subtitle element contains 'THE NEED TO PROTECT'; "
+        f"section_subtitle elements: "
+        f"{[(e.get('id'), (e.get('text') or '')[:80]) for e in release_json['elements'] if e.get('type') == 'section_subtitle']}; "
+        f"paragraph_block candidates: "
+        f"{[(e.get('id'), (e.get('text') or '')[:80]) for e in release_json['elements'] if e.get('type') == 'paragraph_block' and 'NEED TO PROTECT' in (e.get('text') or '')]}"
+    )
+
+
 def test_section_heading_INTRODUCTION_is_exact(release_json):
     """Row 3 contract: an emitted element typed `section_heading` whose
     normalized text equals exactly 'INTRODUCTION' (not merged with
