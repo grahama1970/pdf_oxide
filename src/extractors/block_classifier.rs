@@ -288,6 +288,13 @@ impl BlockClassifier {
 
         merge_consecutive_body(&mut blocks);
         promote_isolated_heading_blocks(&mut blocks);
+        // WebGPT 2026-05-13 R8 — suppress empty-text classified blocks
+        // before they reach the release element list. PDFs occasionally
+        // emit zero-width whitespace-only blocks; these should not appear
+        // as paragraph content. Non-text structures (tables, figures) are
+        // emitted by separate pipelines and are not affected.
+        blocks.retain(|b| !b.text.trim().is_empty());
+        merge_list_runs_and_continuations(&mut blocks);
 
         blocks
     }
@@ -1337,6 +1344,104 @@ fn promote_isolated_heading_blocks(blocks: &mut Vec<ClassifiedBlock>) {
     }
 }
 
+/// Narrow post-classification pass: merge bullet-list runs and absorb
+/// indented body continuation lines into their preceding list anchor
+/// (WebGPT 2026-05-13 R8).
+///
+/// Runs after `merge_consecutive_body`, `promote_isolated_heading_blocks`
+/// and the empty-block filter. Conservative criteria — every neighbor
+/// absorbed into a list anchor must satisfy ALL of:
+///
+///   - y_gap between anchor's bottom and neighbor's top is at most one
+///     line-height of slack (i.e. they are visually contiguous);
+///   - font size is within ±15% of the anchor (rules out footnotes which
+///     are emitted at ~9pt vs body's ~11pt);
+///   - either:
+///       * neighbor is `Body` AND its x is indented past the anchor's x
+///         (bullet text continuation, e.g. x=108 under anchor at x=90), OR
+///       * neighbor is `List` AND its x matches the anchor's x within 2pt
+///         (sibling bullet in the same run);
+///   - neighbor is not a footnote/footer/header/page-number block.
+///
+/// The merge preserves `lines[]` so paragraph_bbox_audit consumers see
+/// per-bullet-item evidence. The anchor's `block_type` stays `List`.
+fn merge_list_runs_and_continuations(blocks: &mut Vec<ClassifiedBlock>) {
+    use BlockType::{Body, List};
+
+    let mut i = 0;
+    while i + 1 < blocks.len() {
+        if blocks[i].block_type != List {
+            i += 1;
+            continue;
+        }
+        let anchor_x = blocks[i].bbox.x;
+        let anchor_fs = blocks[i].font_size.max(1.0);
+
+        loop {
+            if i + 1 >= blocks.len() {
+                break;
+            }
+            // Inspect the next block. Only Body or List are candidates;
+            // anything else (Footer/Header/Footnote/PageNumber/Caption/
+            // Reference/Equation/Boilerplate/Title/Subtitle/TOC) breaks
+            // the run.
+            if !matches!(blocks[i + 1].block_type, Body | List) {
+                break;
+            }
+
+            let next = &blocks[i + 1];
+            // pdf_oxide bboxes use PDF bottom-left origin: bbox.y is the
+            // BOTTOM y, and bbox.y + height is the TOP y. A block that
+            // appears visually below another has a SMALLER bbox.y.
+            //
+            // Visual whitespace between anchor (above) and next (below) is
+            // (anchor.bottom_y) - (next.top_y) =
+            // anchor.bbox.y - (next.bbox.y + next.bbox.height)
+            //
+            // Positive = whitespace between them. Negative = vertical
+            // overlap (can happen after bbox.union of earlier merges).
+            let anchor_bottom_y = blocks[i].bbox.y;
+            let next_top_y = next.bbox.y + next.bbox.height;
+            let y_gap = anchor_bottom_y - next_top_y;
+            // next must be visually below anchor (i.e. not above it on
+            // the page) — bottom_y(anchor) >= top_y(next)+epsilon would
+            // place next above anchor.
+            if next.bbox.y > blocks[i].bbox.y {
+                break;
+            }
+            if y_gap > anchor_fs * 1.5 {
+                break;
+            }
+            if y_gap < -anchor_fs * 2.0 {
+                break;
+            }
+
+            let fs_ratio = next.font_size / anchor_fs;
+            if !(0.85..=1.18).contains(&fs_ratio) {
+                break;
+            }
+
+            // Indentation classification.
+            let dx = next.bbox.x - anchor_x;
+            let is_continuation =
+                next.block_type == Body && dx > 0.5 && dx <= anchor_fs * 4.0;
+            let is_sibling_list = next.block_type == List && dx.abs() <= 2.0;
+            if !is_continuation && !is_sibling_list {
+                break;
+            }
+
+            // Absorb next into anchor.
+            let absorbed = blocks.remove(i + 1);
+            blocks[i].text.push(' ');
+            blocks[i].text.push_str(&absorbed.text);
+            blocks[i].bbox = blocks[i].bbox.union(&absorbed.bbox);
+            blocks[i].lines.extend(absorbed.lines);
+            // anchor stays typed List; iterate to look for further merges.
+        }
+        i += 1;
+    }
+}
+
 fn is_page_number(text: &str, y_ratio: f32) -> bool {
     let trimmed = text.trim();
     if trimmed.is_empty() {
@@ -2136,6 +2241,108 @@ mod tests {
             text.starts_with("Modern information systems"),
             "post-R6 text must begin exactly 'Modern information systems...'; got: {text:?}"
         );
+    }
+
+    /// GS001 R8 — bullet-list run grouping. The classifier should merge a
+    /// bullet anchor with its sibling bullets AND its body continuations
+    /// into ONE List block. Footnotes following the run must NOT be
+    /// absorbed.
+    #[test]
+    fn test_merge_list_runs_groups_bullets_and_continuations() {
+        // PDF bottom-left origin (page-points): larger y is higher on
+        // the page. NIST page-28-like geometry: bullets at x=90,
+        // continuations at x=108, footnote at x=90 below the list with
+        // smaller font + larger y_gap.
+        let spans = vec![
+            // Header paragraph above (won't be merged with the list run)
+            make_span("Preamble text.", 90.0, 300.0, 11.0, false),
+            // Bullet 1 (below preamble)
+            make_span("• First bullet text starts here.", 90.0, 270.0, 11.0, false),
+            // Continuation of bullet 1 (indented, just below bullet 1)
+            make_span("continuation of first bullet.", 108.0, 255.0, 11.0, false),
+            // Bullet 2 (sibling)
+            make_span("• Second bullet text.", 90.0, 240.0, 11.0, false),
+            // Bullet 3 (sibling)
+            make_span("• Third bullet text.", 90.0, 225.0, 11.0, false),
+            // Continuation of bullet 3 (indented)
+            make_span("continuation of third bullet.", 108.0, 210.0, 11.0, false),
+            // Footnote below — smaller font (9pt) + larger y_gap. Must NOT
+            // be absorbed into the list run.
+            make_span("1 Footnote text at base column.", 90.0, 170.0, 9.0, false),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        // Expected blocks: [Preamble Body, merged-List, Footnote Body]
+        let list_blocks: Vec<&ClassifiedBlock> = blocks
+            .iter()
+            .filter(|b| b.block_type == BlockType::List)
+            .collect();
+        assert_eq!(
+            list_blocks.len(),
+            1,
+            "bullet-list run should merge into a single List block, got {} list blocks: {:?}",
+            list_blocks.len(),
+            blocks
+                .iter()
+                .map(|b| (format!("{:?}", b.block_type), b.text.chars().take(40).collect::<String>()))
+                .collect::<Vec<_>>()
+        );
+        let list = list_blocks[0];
+        for needle in [
+            "First bullet text",
+            "continuation of first",
+            "Second bullet text",
+            "Third bullet text",
+            "continuation of third",
+        ] {
+            assert!(
+                list.text.contains(needle),
+                "merged list missing fragment {needle:?}; got: {:?}",
+                list.text
+            );
+        }
+        assert!(
+            !list.text.contains("Footnote"),
+            "merged list should NOT absorb the footnote; got: {:?}",
+            list.text
+        );
+        // Footnote should remain its own block
+        let footnotes: Vec<&ClassifiedBlock> = blocks
+            .iter()
+            .filter(|b| b.text.contains("Footnote"))
+            .collect();
+        assert_eq!(footnotes.len(), 1, "footnote should be preserved as a separate block");
+        // Preamble untouched
+        let preambles: Vec<&ClassifiedBlock> = blocks
+            .iter()
+            .filter(|b| b.text.contains("Preamble"))
+            .collect();
+        assert_eq!(preambles.len(), 1, "preamble should remain separate from the list run");
+    }
+
+    /// GS001 R8 — empty-text classified blocks must not appear in the
+    /// final block list.
+    #[test]
+    fn test_classify_spans_drops_empty_text_blocks() {
+        let spans = vec![
+            make_span("Real paragraph text.", 90.0, 100.0, 11.0, false),
+            make_span("   ", 90.0, 130.0, 11.0, false), // whitespace-only
+            make_span("", 90.0, 160.0, 11.0, false),    // empty
+            make_span("Second paragraph.", 90.0, 200.0, 11.0, false),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+        for b in &blocks {
+            assert!(
+                !b.text.trim().is_empty(),
+                "empty-text block leaked through the filter: {b:?}"
+            );
+        }
+        // We should still see both real paragraphs (possibly merged into one body block)
+        let total_text: String = blocks.iter().map(|b| b.text.as_str()).collect();
+        assert!(total_text.contains("Real paragraph text"));
+        assert!(total_text.contains("Second paragraph"));
     }
 
     /// Companion control — when spans already arrive in x-order, the sort

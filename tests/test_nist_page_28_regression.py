@@ -161,6 +161,59 @@ def test_first_body_paragraph_starts_with_Modern_information_systems(release_jso
 # --- Gate 4: side DOI chrome is NOT body/list ---
 
 
+def test_no_release_element_has_empty_text(release_json):
+    """R8 gate: every emitted release element must have non-empty normalized
+    text. R6 produced 2 empty paragraph_block elements (blocks 6, 7)."""
+    offenders = [
+        {"id": el.get("id"), "type": el.get("type"), "bbox": el.get("bbox")}
+        for el in release_json["elements"]
+        if not (el.get("text") or "").strip()
+    ]
+    assert not offenders, (
+        f"release JSON has {len(offenders)} element(s) with empty/whitespace text: {offenders}"
+    )
+
+
+def test_bullet_list_region_emits_as_one_logical_list(release_json):
+    """R8 gate: the human-boxed bullet-list region on page 28 (3 bullets +
+    2 continuations) must emit as a SINGLE `list` element, not 3 list +
+    2 paragraph_block fragments. The matched element must contain text
+    fragments from all 3 bullets and both continuations."""
+    list_elements = [el for el in release_json["elements"] if el.get("type") == "list"]
+    # Find the bullet-list element by anchoring on the first bullet's text.
+    bullet_starts = [
+        "what security and privacy controls are needed",
+        "have the selected controls been implemented",
+        "what is the required level of assurance",
+    ]
+    continuations = [
+        "and to adequately manage mission/business risks",
+        "controls, as designed and implemented, are effective",
+    ]
+    # Allow optional leading bullet glyph (•, ·, *, -, etc.) before the
+    # first bullet's text content.
+    anchors = [
+        el for el in list_elements
+        if bullet_starts[0] in _normalize(el.get("text") or "")
+    ]
+    assert anchors, (
+        f"no list element contains '{bullet_starts[0]}'; "
+        f"list element starters: {[(e.get('id'), (e.get('text') or '')[:80]) for e in list_elements]}"
+    )
+    anchor = anchors[0]
+    anchor_norm = _normalize(anchor.get("text") or "")
+    for bs in bullet_starts[1:]:
+        assert bs in anchor_norm, (
+            f"merged bullet-list element {anchor['id']} is missing bullet fragment "
+            f"{bs!r}; text was {(anchor.get('text') or '')[:200]!r}"
+        )
+    for cont in continuations:
+        assert cont in anchor_norm, (
+            f"merged bullet-list element {anchor['id']} is missing continuation "
+            f"fragment {cont!r}; text was {(anchor.get('text') or '')[:200]!r}"
+        )
+
+
 def test_side_doi_chrome_routed_to_header_footer_noise(release_json):
     """Row 2 contract: any release-mode element whose text contains
     'This publication is available free of charge' MUST be typed
