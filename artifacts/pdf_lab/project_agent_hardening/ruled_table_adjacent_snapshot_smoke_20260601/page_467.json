@@ -1,0 +1,695 @@
+{
+  "generated_at": "2026-06-01T21:19:24.498948+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04500001849550189,
+            1.0,
+            0.055075751410590276
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p467:block:0",
+          "is_bold": false,
+          "page": 467,
+          "pdf_page_index": 466,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "source_type": "Footer",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05719703134864268,
+            0.8558836294934641,
+            0.06727276426373106
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p467:block:1",
+          "is_bold": false,
+          "page": 467,
+          "pdf_page_index": 466,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "source_type": "Footer",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.940454545647207,
+            0.8562647002974367,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 8.107500076293945,
+          "id": "actual:p467:block:2",
+          "is_bold": false,
+          "page": 467,
+          "pdf_page_index": 466,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.107500076293945,
+            "header_level": null,
+            "is_bold": false,
+            "text": "APPENDIX C   PAGE 440"
+          },
+          "source_type": "Body",
+          "text": "APPENDIX C   PAGE 440",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.3498234998166951,
+            0.28780303338561397
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p467:block:3",
+          "is_bold": false,
+          "page": 467,
+          "pdf_page_index": 466,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              564.0599975585938,
+              193.031982421875,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from:"
+          },
+          "source_type": "Body",
+          "text": "This publication is available free of charge from:",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.5202272588556464,
+            0.2705250191532709,
+            0.5315908952192827
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p467:block:4",
+          "is_bold": false,
+          "page": 467,
+          "pdf_page_index": 466,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              370.9800109863281,
+              144.50131225585938,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "https://doi.org/10.6028/NIST.SP.800"
+          },
+          "source_type": "Body",
+          "text": "https://doi.org/10.6028/NIST.SP.800",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.7027272696446891,
+            0.06380882761836831,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p467:block:5",
+          "is_bold": false,
+          "page": 467,
+          "pdf_page_index": 466,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              17.991003036499023,
+              12.0
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "-53r5"
+          },
+          "source_type": "List",
+          "text": "-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.420909072413589
+          ],
+          "id": "actual:p467:table:0",
+          "page": 467,
+          "pdf_page_index": 466,
+          "raw": {
+            "accuracy": 99.08518662303055,
+            "bbox": [
+              89.76000213623047,
+              72.47998046875,
+              521.760009765625,
+              333.3599853515625
+            ],
+            "cols": 4,
+            "column_count": 4,
+            "data": [
+              [
+                "CONTROL\nNUMBER",
+                "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "IMPLEMENTED\nBY",
+                "ASSURANCE"
+              ],
+              [
+                "CP-9(5)",
+                "TRANSFER TO ALTERNATE STORAGE SITE",
+                "O",
+                ""
+              ],
+              [
+                "CP-9(6)",
+                "REDUNDANT SECONDARY SYSTEM",
+                "O",
+                ""
+              ],
+              [
+                "CP-9(7)",
+                "DUAL AUTHORIZATION FOR DELETION OR DESTRUCTION",
+                "O",
+                ""
+              ],
+              [
+                "CP-9(8)",
+                "CRYPTOGRAPHIC PROTECTION",
+                "O",
+                ""
+              ],
+              [
+                "CP-10",
+                "System Recovery and Reconstitution",
+                "O",
+                ""
+              ],
+              [
+                "CP-10(1)",
+                "CONTINGENCY PLAN TESTING",
+                "W: Incorporated into CP-4.",
+                ""
+              ],
+              [
+                "CP-10(2)",
+                "TRANSACTION RECOVERY",
+                "O",
+                ""
+              ],
+              [
+                "CP-10(3)",
+                "COMPENSATING SECURITY CONTROLS",
+                "W: ddressed hroug",
+                "h aiorig."
+              ],
+              [
+                "CP-10(4)",
+                "RESTORE WITHIN TIME PERIOD",
+                "O",
+                ""
+              ],
+              [
+                "CP-10(5)",
+                "FAILOVER CAPABILITY",
+                "W: Incorporated into SI-13.",
+                ""
+              ],
+              [
+                "CP-10(6)",
+                "COMPONENT PROTECTION",
+                "O",
+                ""
+              ],
+              [
+                "CP-11",
+                "Alternate Communications Protocols",
+                "O",
+                ""
+              ],
+              [
+                "CP-12",
+                "Safe Mode",
+                "S",
+                "\u221a"
+              ],
+              [
+                "CP-13",
+                "Alternative Security Mechanisms",
+                "O/S",
+                ""
+              ],
+              [
+                "",
+                "",
+                "",
+                ""
+              ]
+            ],
+            "df_data": [
+              {
+                "0": "CONTROL\nNUMBER",
+                "1": "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "2": "IMPLEMENTED\nBY",
+                "3": "ASSURANCE"
+              },
+              {
+                "0": "CP-9(5)",
+                "1": "TRANSFER TO ALTERNATE STORAGE SITE",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CP-9(6)",
+                "1": "REDUNDANT SECONDARY SYSTEM",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CP-9(7)",
+                "1": "DUAL AUTHORIZATION FOR DELETION OR DESTRUCTION",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CP-9(8)",
+                "1": "CRYPTOGRAPHIC PROTECTION",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CP-10",
+                "1": "System Recovery and Reconstitution",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CP-10(1)",
+                "1": "CONTINGENCY PLAN TESTING",
+                "2": "W: Incorporated into CP-4.",
+                "3": ""
+              },
+              {
+                "0": "CP-10(2)",
+                "1": "TRANSACTION RECOVERY",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CP-10(3)",
+                "1": "COMPENSATING SECURITY CONTROLS",
+                "2": "W: ddressed hroug",
+                "3": "h aiorig."
+              },
+              {
+                "0": "CP-10(4)",
+                "1": "RESTORE WITHIN TIME PERIOD",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CP-10(5)",
+                "1": "FAILOVER CAPABILITY",
+                "2": "W: Incorporated into SI-13.",
+                "3": ""
+              },
+              {
+                "0": "CP-10(6)",
+                "1": "COMPONENT PROTECTION",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CP-11",
+                "1": "Alternate Communications Protocols",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CP-12",
+                "1": "Safe Mode",
+                "2": "S",
+                "3": "\u221a"
+              },
+              {
+                "0": "CP-13",
+                "1": "Alternative Security Mechanisms",
+                "2": "O/S",
+                "3": ""
+              },
+              {
+                "0": "",
+                "1": "",
+                "2": "",
+                "3": ""
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 0,
+            "page": 466,
+            "row_count": 16,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "CONTROL NUMBER"
+                  },
+                  {
+                    "text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
+                  },
+                  {
+                    "text": "IMPLEMENTED BY"
+                  },
+                  {
+                    "text": "ASSURANCE"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-9(5)"
+                  },
+                  {
+                    "text": "TRANSFER TO ALTERNATE STORAGE SITE"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-9(6)"
+                  },
+                  {
+                    "text": "REDUNDANT SECONDARY SYSTEM"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-9(7)"
+                  },
+                  {
+                    "text": "DUAL AUTHORIZATION FOR DELETION OR DESTRUCTION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-9(8)"
+                  },
+                  {
+                    "text": "CRYPTOGRAPHIC PROTECTION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-10"
+                  },
+                  {
+                    "text": "System Recovery and Reconstitution"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-10(1)"
+                  },
+                  {
+                    "text": "CONTINGENCY PLAN TESTING"
+                  },
+                  {
+                    "text": "W: Incorporated into CP-4."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-10(2)"
+                  },
+                  {
+                    "text": "TRANSACTION RECOVERY"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-10(3)"
+                  },
+                  {
+                    "text": "COMPENSATING SECURITY CONTROLS"
+                  },
+                  {
+                    "text": "W: ddressed hroug"
+                  },
+                  {
+                    "text": "h aiorig."
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-10(4)"
+                  },
+                  {
+                    "text": "RESTORE WITHIN TIME PERIOD"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-10(5)"
+                  },
+                  {
+                    "text": "FAILOVER CAPABILITY"
+                  },
+                  {
+                    "text": "W: Incorporated into SI-13."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-10(6)"
+                  },
+                  {
+                    "text": "COMPONENT PROTECTION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-11"
+                  },
+                  {
+                    "text": "Alternate Communications Protocols"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-12"
+                  },
+                  {
+                    "text": "Safe Mode"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP-13"
+                  },
+                  {
+                    "text": "Alternative Security Mechanisms"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "whitespace": 25.0
+          },
+          "source_type": "table",
+          "text": "CONTROL NUMBER | CONTROL NAME CONTROL ENHANCEMENT NAME | IMPLEMENTED BY | ASSURANCE\nCP-9(5) | TRANSFER TO ALTERNATE STORAGE SITE | O |\nCP-9(6) | REDUNDANT SECONDARY SYSTEM | O |\nCP-9(7) | DUAL AUTHORIZATION FOR DELETION OR DESTRUCTION | O |\nCP-9(8) | CRYPTOGRAPHIC PROTECTION | O |\nCP-10 | System Recovery and Reconstitution | O |\nCP-10(1) | CONTINGENCY PLAN TESTING | W: Incorporated into CP-4. |\nCP-10(2) | TRANSACTION RECOVERY | O |\nCP-10(3) | COMPENSATING SECURITY CONTROLS | W: ddressed hroug | h aiorig.\nCP-10(4) | RESTORE WITHIN TIME PERIOD | O |\nCP-10(5) | FAILOVER CAPABILITY | W: Incorporated into SI-13. |\nCP-10(6) | COMPONENT PROTECTION | O |\nCP-11 | Alternate Communications Protocols | O |\nCP-12 | Safe Mode | S | \u221a\nCP-13 | Alternative Security Mechanisms | O/S |\n|  |  |",
+          "type": "table"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 467,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 466
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

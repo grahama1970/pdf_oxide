@@ -36,6 +36,13 @@ _RULE_KINDS = frozenset({
     "text_classifier_rule",
     "structural_grouping_rule",
     "bbox_refinement_rule",
+    "table_contained_suppression_rule",
+    "table_false_positive_suppression_rule",
+    "same_band_merge_rule",
+    "adjacent_text_merge_rule",
+    "field_split_rule",
+    "text_normalization_rule",
+    "page_chrome_prefix_strip_rule",
 })
 
 
@@ -427,6 +434,405 @@ def _bbox_union(boxes: list[list[float]]) -> list[float] | None:
             max(b[2] for b in boxes), max(b[3] for b in boxes)]
 
 
+def _bbox_area(bbox: list[float]) -> float:
+    if not bbox or len(bbox) != 4:
+        return 0.0
+    return max(0.0, float(bbox[2]) - float(bbox[0])) * max(0.0, float(bbox[3]) - float(bbox[1]))
+
+
+def _bbox_coverage(inner: list[float], outer: list[float]) -> float:
+    inner_area = _bbox_area(inner)
+    if inner_area <= 0:
+        return 0.0
+    x0 = max(float(inner[0]), float(outer[0]))
+    y0 = max(float(inner[1]), float(outer[1]))
+    x1 = min(float(inner[2]), float(outer[2]))
+    y1 = min(float(inner[3]), float(outer[3]))
+    intersection = max(0.0, x1 - x0) * max(0.0, y1 - y0)
+    return intersection / inner_area
+
+
+def _bbox_y_center(bbox: list[float]) -> float:
+    return (float(bbox[1]) + float(bbox[3])) / 2.0
+
+
+def _strip_leading_sidebar_tokens(text: str, token_patterns: list[str]) -> str:
+    tokens = text.split()
+    if not tokens:
+        return ""
+    compiled = [re.compile(pattern, re.I) for pattern in token_patterns]
+    kept: list[str] = []
+    original_lower = text.lower()
+    for index, token in enumerate(tokens):
+        normalized = token.strip(" ,.;:")
+        next_normalized = tokens[index + 1].strip(" ,.;:") if index + 1 < len(tokens) else ""
+        if normalized.lower() == "of" and next_normalized.lower() == "charge":
+            continue
+        if normalized.lower() == "from" and "this publication" in original_lower:
+            continue
+        if any(pattern.search(normalized) for pattern in compiled):
+            continue
+        kept.append(token)
+    return " ".join(kept).strip()
+
+
+def _strip_leading_prefix_patterns(text: str, prefix_patterns: list[str]) -> str:
+    stripped = text.strip()
+    for pattern in prefix_patterns:
+        stripped = re.sub(pattern, "", stripped, count=1, flags=re.I).strip()
+    return stripped
+
+
+def _apply_page_chrome_prefix_strip_rule(
+    elements: list[dict[str, Any]],
+    rule: dict[str, Any],
+    entry_id: str,
+    cfg: ApplierConfig,
+) -> list[dict[str, Any]]:
+    """Strip NIST left-margin chrome tokens that PyMuPDF interleaves into body lines."""
+    applies_when = rule.get("applies_when") or {}
+    token_patterns = rule.get("strip_token_patterns") or []
+    prefix_patterns = rule.get("strip_prefix_patterns") or []
+    body_column_x_min = rule.get("body_column_x_min")
+    empty_type = rule.get("empty_type") or "header_footer_noise"
+    tiny_fragment_when = rule.get("tiny_fragment_when") or {}
+    tiny_fragment_type = rule.get("tiny_fragment_type") or empty_type
+    fired = 0
+
+    for el in elements:
+        if not _matches_when(el, applies_when):
+            continue
+        original_text = el.get("text") or ""
+        cleaned = _strip_leading_prefix_patterns(original_text, prefix_patterns)
+        cleaned = _strip_leading_sidebar_tokens(cleaned, token_patterns)
+        cleaned = " ".join(cleaned.split())
+
+        if cleaned != " ".join(original_text.split()):
+            if cleaned:
+                el["text"] = cleaned
+                if body_column_x_min is not None and el.get("bbox") and len(el["bbox"]) == 4:
+                    bbox = list(el["bbox"])
+                    bbox[0] = max(float(bbox[0]), float(body_column_x_min))
+                    el["bbox"] = bbox
+            else:
+                el["type"] = empty_type
+                el["semantic_role"] = "page_chrome"
+            fired += 1
+            continue
+
+        if tiny_fragment_when and _matches_when(el, tiny_fragment_when):
+            el["type"] = tiny_fragment_type
+            el["semantic_role"] = "page_chrome"
+            fired += 1
+
+    cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
+    return elements
+
+
+def _apply_same_band_merge_rule(
+    elements: list[dict[str, Any]],
+    rule: dict[str, Any],
+    entry_id: str,
+    cfg: ApplierConfig,
+) -> list[dict[str, Any]]:
+    """Merge same-page chrome fragments that occupy one horizontal band."""
+    merge_when = rule.get("merge_when") or {}
+    min_count = int(rule.get("min_count") or 2)
+    max_y_center_delta = float(rule.get("max_y_center_delta") or 0.02)
+    suppress_children = bool(rule.get("suppress_children", True))
+    synth_spec = rule.get("synthesize") or {}
+    parent_type = synth_spec.get("type") or "running_header"
+    parent_source_type = synth_spec.get("source_type") or "synthetic"
+
+    candidates_by_page: dict[Any, list[dict[str, Any]]] = {}
+    for el in elements:
+        if el.get("bbox") and _matches_when(el, merge_when):
+            candidates_by_page.setdefault(el.get("page"), []).append(el)
+
+    groups_by_first_id: dict[str, dict[str, Any]] = {}
+    child_ids: set[str] = set()
+    fired = 0
+    for page, candidates in candidates_by_page.items():
+        remaining = sorted(candidates, key=lambda el: (_bbox_y_center(el["bbox"]), float(el["bbox"][0])))
+        while remaining:
+            seed = remaining.pop(0)
+            seed_center = _bbox_y_center(seed["bbox"])
+            group = [seed]
+            keep: list[dict[str, Any]] = []
+            for candidate in remaining:
+                if abs(_bbox_y_center(candidate["bbox"]) - seed_center) <= max_y_center_delta:
+                    group.append(candidate)
+                else:
+                    keep.append(candidate)
+            remaining = keep
+            if len(group) < min_count:
+                continue
+            group.sort(key=lambda el: float(el["bbox"][0]))
+            first = group[0]
+            synth = {
+                "id": f"actual:p{page}:{parent_type}:merged:{fired}",
+                "page": page,
+                "type": parent_type,
+                "source_type": parent_source_type,
+                "bbox": _bbox_union([el["bbox"] for el in group if el.get("bbox")]),
+                "text": " ".join((el.get("text") or "").strip() for el in group if (el.get("text") or "").strip()),
+                "child_ids": [el.get("id") for el in group],
+            }
+            if synth_spec.get("semantic_role"):
+                synth["semantic_role"] = synth_spec["semantic_role"]
+            groups_by_first_id[str(first.get("id"))] = synth
+            if suppress_children:
+                child_ids.update(str(el.get("id")) for el in group)
+            fired += 1
+
+    if not groups_by_first_id:
+        return elements
+
+    out: list[dict[str, Any]] = []
+    for el in elements:
+        el_id = str(el.get("id"))
+        if el_id in groups_by_first_id:
+            out.append(groups_by_first_id[el_id])
+        if el_id in child_ids:
+            continue
+        out.append(el)
+
+    cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
+    return out
+
+
+def _apply_adjacent_text_merge_rule(
+    elements: list[dict[str, Any]],
+    rule: dict[str, Any],
+    entry_id: str,
+    cfg: ApplierConfig,
+) -> list[dict[str, Any]]:
+    """Merge a tightly guarded adjacent text continuation into its predecessor."""
+    lead_when = rule.get("lead_when") or {}
+    tail_when = rule.get("tail_when") or {}
+    lead_text_regex = rule.get("lead_text_regex")
+    tail_text_regex = rule.get("tail_text_regex")
+    max_y_gap = float(rule.get("max_y_gap", 0.02))
+    max_x_delta = float(rule.get("max_x_delta", 0.03))
+    join_style = rule.get("join_style") or "space"
+    merged_fields = rule.get("merged_fields") or {}
+    child_ids_field = rule.get("child_ids_field") or "child_ids"
+
+    lead_pattern = re.compile(lead_text_regex) if lead_text_regex else None
+    tail_pattern = re.compile(tail_text_regex) if tail_text_regex else None
+
+    out: list[dict[str, Any]] = []
+    fired = 0
+    i = 0
+    while i < len(elements):
+        lead = dict(elements[i])
+        if i + 1 >= len(elements):
+            out.append(lead)
+            i += 1
+            continue
+        tail = elements[i + 1]
+
+        if not (_matches_when(lead, lead_when) and _matches_when(tail, tail_when)):
+            out.append(lead)
+            i += 1
+            continue
+        if lead.get("page") != tail.get("page"):
+            out.append(lead)
+            i += 1
+            continue
+        lead_text = str(lead.get("text") or "").strip()
+        tail_text = str(tail.get("text") or "").strip()
+        if lead_pattern and not lead_pattern.search(lead_text):
+            out.append(lead)
+            i += 1
+            continue
+        if tail_pattern and not tail_pattern.search(tail_text):
+            out.append(lead)
+            i += 1
+            continue
+
+        lead_bbox = lead.get("bbox") or []
+        tail_bbox = tail.get("bbox") or []
+        if len(lead_bbox) != 4 or len(tail_bbox) != 4:
+            out.append(lead)
+            i += 1
+            continue
+        y_gap = float(tail_bbox[1]) - float(lead_bbox[3])
+        x_delta = abs(float(tail_bbox[0]) - float(lead_bbox[0]))
+        if y_gap < -max_y_gap or y_gap > max_y_gap or x_delta > max_x_delta:
+            out.append(lead)
+            i += 1
+            continue
+
+        if join_style == "hyphen_continuation" and lead_text.endswith("-"):
+            merged_text = f"{lead_text}{tail_text}"
+        else:
+            merged_text = " ".join(part for part in [lead_text, tail_text] if part)
+        lead["text"] = merged_text
+        lead["bbox"] = _bbox_union([lead_bbox, tail_bbox])
+        lead[child_ids_field] = [lead.get("id"), tail.get("id")]
+        for field, value in merged_fields.items():
+            lead[field] = value
+        out.append(lead)
+        fired += 1
+        i += 2
+
+    cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
+    return out
+
+
+def _collapse_url_internal_whitespace(text: str) -> str:
+    def replace_url(match: re.Match[str]) -> str:
+        return re.sub(r"\s+", "", match.group(0))
+
+    return re.sub(r"https?://.*?(?=\s+\[|$)", replace_url, text)
+
+
+def _apply_text_normalization_rule(
+    elements: list[dict[str, Any]],
+    rule: dict[str, Any],
+    entry_id: str,
+    cfg: ApplierConfig,
+) -> None:
+    applies_when = rule.get("applies_when") or {}
+    transforms = rule.get("transforms") or []
+    fired = 0
+    for el in elements:
+        if not _matches_when(el, applies_when):
+            continue
+        original = str(el.get("text") or "")
+        text = original
+        for transform in transforms:
+            if transform == "remove_space_after_standard_citation_hyphen":
+                text = re.sub(
+                    r"(\[(?:SP|NIST\s+SP|FIPS|IR)\s+[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-)\s+([A-Za-z0-9])",
+                    r"\1\2",
+                    text,
+                )
+            elif transform == "collapse_url_internal_whitespace":
+                text = _collapse_url_internal_whitespace(text)
+            else:
+                raise LedgerSchemaError(f"{entry_id}: unknown text normalization transform {transform!r}")
+        if text != original:
+            el["text"] = text
+            fired += 1
+    cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
+
+
+def _slice_bbox(bbox: list[Any], index: int, count: int) -> list[Any]:
+    if len(bbox) != 4 or count <= 1:
+        return bbox
+    try:
+        x0, y0, x1, y1 = (float(c) for c in bbox)
+    except (TypeError, ValueError):
+        return bbox
+    height = y1 - y0
+    if height <= 0:
+        return bbox
+    seg_y0 = y0 + height * (index / count)
+    seg_y1 = y0 + height * ((index + 1) / count)
+    return [x0, seg_y0, x1, seg_y1]
+
+
+def _slice_bbox_by_weight(
+    bbox: list[Any],
+    start_weight: float,
+    end_weight: float,
+    total_weight: float,
+) -> list[Any]:
+    if len(bbox) != 4 or total_weight <= 0:
+        return bbox
+    try:
+        x0, y0, x1, y1 = (float(c) for c in bbox)
+    except (TypeError, ValueError):
+        return bbox
+    height = y1 - y0
+    if height <= 0:
+        return bbox
+    return [
+        x0,
+        y0 + height * (start_weight / total_weight),
+        x1,
+        y0 + height * (end_weight / total_weight),
+    ]
+
+
+def _apply_field_split_rule(
+    elements: list[dict[str, Any]],
+    rule: dict[str, Any],
+    entry_id: str,
+    cfg: ApplierConfig,
+) -> list[dict[str, Any]]:
+    applies_when = rule.get("applies_when") or {}
+    split_regex = rule.get("split_regex")
+    segments = rule.get("segments") or []
+    if not split_regex or not segments:
+        raise LedgerSchemaError(f"{entry_id}: field_split_rule missing split_regex/segments")
+    pattern = re.compile(split_regex)
+    bbox_strategy = rule.get("bbox_strategy") or "slice_even"
+    out: list[dict[str, Any]] = []
+    fired = 0
+    for el in elements:
+        if not _matches_when(el, applies_when):
+            out.append(el)
+            continue
+        text = str(el.get("text") or "").strip()
+        match = pattern.match(text)
+        if not match:
+            out.append(el)
+            continue
+        group_texts = [
+            (match.groupdict().get(segment.get("group") or "") or "").strip()
+            for segment in segments
+        ]
+        weights = [max(1, (len(text) + 79) // 80) for text in group_texts]
+        total_weight = float(sum(weights))
+        cumulative_weight = 0.0
+        child_ids: list[Any] = []
+        split_parts: list[dict[str, Any]] = []
+        for idx, segment in enumerate(segments):
+            group_name = segment.get("group")
+            if not group_name:
+                raise LedgerSchemaError(f"{entry_id}: field_split_rule segment missing group")
+            segment_text = (match.groupdict().get(group_name) or "").strip()
+            if not segment_text:
+                continue
+            part = dict(el)
+            suffix = segment.get("id_suffix")
+            if suffix:
+                part["id"] = f"{el.get('id')}#{suffix}"
+            part["text"] = segment_text
+            if bbox_strategy == "retain_parent":
+                part["bbox"] = el.get("bbox") or []
+            elif bbox_strategy == "slice_even":
+                part["bbox"] = _slice_bbox(el.get("bbox") or [], idx, len(segments))
+            elif bbox_strategy == "text_length_weighted":
+                start_weight = cumulative_weight
+                cumulative_weight += float(weights[idx])
+                part["bbox"] = _slice_bbox_by_weight(
+                    el.get("bbox") or [],
+                    start_weight,
+                    cumulative_weight,
+                    total_weight,
+                )
+            else:
+                raise LedgerSchemaError(f"{entry_id}: unknown field_split_rule bbox_strategy {bbox_strategy!r}")
+            for field, value in (segment.get("fields") or {}).items():
+                part[field] = value
+            split_parts.append(part)
+            child_ids.append(part.get("id"))
+        if len(split_parts) <= 1:
+            out.append(el)
+            continue
+        for part in split_parts:
+            part["parent_id"] = el.get("id")
+        split_parts[0]["child_ids"] = child_ids
+        out.extend(split_parts)
+        fired += 1
+    cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
+    return out
+
+
 def _apply_bbox_refinement_rule(
     elements: list[dict[str, Any]],
     rule: dict[str, Any],
@@ -466,6 +872,137 @@ def _apply_bbox_refinement_rule(
             el["bbox"] = union
             fired += 1
     cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
+
+
+def _apply_table_contained_suppression_rule(
+    elements: list[dict[str, Any]],
+    rule: dict[str, Any],
+    entry_id: str,
+    cfg: ApplierConfig,
+) -> list[dict[str, Any]]:
+    """Remove standalone content elements already represented by table regions."""
+    table_when = rule.get("table_when") or {"type": "table"}
+    suppress_when = rule.get("suppress_when") or {}
+    min_coverage = float(rule.get("min_coverage") or 0.90)
+
+    tables = [
+        el for el in elements
+        if el.get("bbox") and _matches_when(el, table_when)
+    ]
+    if not tables:
+        return elements
+
+    out: list[dict[str, Any]] = []
+    fired = 0
+    for el in elements:
+        bbox = el.get("bbox")
+        if not bbox or not _matches_when(el, suppress_when):
+            out.append(el)
+            continue
+        page = el.get("page")
+        covered = any(
+            table.get("page") == page
+            and _bbox_coverage(bbox, table.get("bbox") or []) >= min_coverage
+            for table in tables
+        )
+        if covered:
+            fired += 1
+            if cfg.trace:
+                cfg.warnings.append(
+                    f"table_contained_suppression: {entry_id} removed {el.get('id')}"
+                )
+            continue
+        out.append(el)
+
+    cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
+    return out
+
+
+def _iter_raw_table_rows(el: dict[str, Any]) -> Iterable[list[str]]:
+    raw = el.get("raw") or {}
+    rows = raw.get("rows") or []
+    if not isinstance(rows, list):
+        return
+    for row in rows:
+        cells = row.get("cells") if isinstance(row, dict) else row
+        if not isinstance(cells, list):
+            continue
+        values: list[str] = []
+        for cell in cells:
+            if isinstance(cell, dict):
+                text = cell.get("text")
+            else:
+                text = cell
+            if text is None:
+                continue
+            cleaned = " ".join(str(text).split())
+            if cleaned:
+                values.append(cleaned)
+        yield values
+
+
+def _raw_table_matches_false_positive_rule(el: dict[str, Any], rule: dict[str, Any]) -> bool:
+    if not _matches_when(el, rule.get("table_when") or {"type": "table"}):
+        return False
+
+    text = " ".join(str(el.get("text") or "").split())
+    if rule.get("require_empty_text", True) and text:
+        return False
+
+    bbox = el.get("bbox") or []
+    if len(bbox) != 4:
+        return False
+    min_height = float(rule.get("min_bbox_height") or 0.0)
+    if min_height and (float(bbox[3]) - float(bbox[1])) < min_height:
+        return False
+
+    raw = el.get("raw") or {}
+    min_rows = int(rule.get("min_row_count") or 0)
+    min_columns = int(rule.get("min_column_count") or 0)
+    if min_rows and int(raw.get("row_count") or 0) < min_rows:
+        return False
+    raw_column_count = raw.get("column_count") or raw.get("col_count")
+    if min_columns and int(raw_column_count or 0) < min_columns:
+        return False
+
+    ignore_patterns = [re.compile(pattern, re.I) for pattern in rule.get("ignore_row_patterns") or []]
+    required_patterns = [re.compile(pattern, re.I) for pattern in rule.get("required_row_patterns") or []]
+    max_content_rows = int(rule.get("max_content_rows") or 0)
+
+    content_rows: list[str] = []
+    for values in _iter_raw_table_rows(el):
+        row_text = " ".join(values)
+        if not row_text:
+            continue
+        if any(pattern.search(row_text) for pattern in ignore_patterns):
+            continue
+        content_rows.append(row_text)
+
+    if max_content_rows and len(content_rows) > max_content_rows:
+        return False
+    return all(any(pattern.search(row) for row in content_rows) for pattern in required_patterns)
+
+
+def _apply_table_false_positive_suppression_rule(
+    elements: list[dict[str, Any]],
+    rule: dict[str, Any],
+    entry_id: str,
+    cfg: ApplierConfig,
+) -> list[dict[str, Any]]:
+    """Remove table blocks that are parser artifacts, before they suppress body text."""
+    out: list[dict[str, Any]] = []
+    fired = 0
+    for el in elements:
+        if _raw_table_matches_false_positive_rule(el, rule):
+            fired += 1
+            if cfg.trace:
+                cfg.warnings.append(
+                    f"table_false_positive_suppression: {entry_id} removed {el.get('id')}"
+                )
+            continue
+        out.append(el)
+    cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
+    return out
 
 
 def _apply_structural_grouping_rule(
@@ -632,6 +1169,20 @@ def apply_ledger(
                 _apply_bbox_refinement_rule(out, rule, eid, cfg)
             elif applier_kind == "structural_grouping_rule":
                 out = _apply_structural_grouping_rule(out, rule, eid, cfg)
+            elif applier_kind == "table_contained_suppression_rule":
+                out = _apply_table_contained_suppression_rule(out, rule, eid, cfg)
+            elif applier_kind == "table_false_positive_suppression_rule":
+                out = _apply_table_false_positive_suppression_rule(out, rule, eid, cfg)
+            elif applier_kind == "same_band_merge_rule":
+                out = _apply_same_band_merge_rule(out, rule, eid, cfg)
+            elif applier_kind == "adjacent_text_merge_rule":
+                out = _apply_adjacent_text_merge_rule(out, rule, eid, cfg)
+            elif applier_kind == "field_split_rule":
+                out = _apply_field_split_rule(out, rule, eid, cfg)
+            elif applier_kind == "text_normalization_rule":
+                _apply_text_normalization_rule(out, rule, eid, cfg)
+            elif applier_kind == "page_chrome_prefix_strip_rule":
+                out = _apply_page_chrome_prefix_strip_rule(out, rule, eid, cfg)
 
     return out
 

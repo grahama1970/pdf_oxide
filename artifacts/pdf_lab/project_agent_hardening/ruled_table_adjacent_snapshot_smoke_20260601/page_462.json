@@ -1,0 +1,1059 @@
+{
+  "generated_at": "2026-06-01T21:19:20.640002+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04500001849550189,
+            1.0,
+            0.055075751410590276
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p462:block:0",
+          "is_bold": false,
+          "page": 462,
+          "pdf_page_index": 461,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "source_type": "Footer",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05719703134864268,
+            0.8558836294934641,
+            0.06727276426373106
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p462:block:1",
+          "is_bold": false,
+          "page": 462,
+          "pdf_page_index": 461,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "source_type": "Footer",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.940454545647207,
+            0.8562647002974367,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 8.107500076293945,
+          "id": "actual:p462:block:2",
+          "is_bold": false,
+          "page": 462,
+          "pdf_page_index": 461,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.107500076293945,
+            "header_level": null,
+            "is_bold": false,
+            "text": "APPENDIX C   PAGE 435"
+          },
+          "source_type": "Body",
+          "text": "APPENDIX C   PAGE 435",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.3498234998166951,
+            0.28780303338561397
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p462:block:3",
+          "is_bold": false,
+          "page": 462,
+          "pdf_page_index": 461,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              564.0599975585938,
+              193.031982421875,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from:"
+          },
+          "source_type": "Body",
+          "text": "This publication is available free of charge from:",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.5202272588556464,
+            0.2705250191532709,
+            0.5315908952192827
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p462:block:4",
+          "is_bold": false,
+          "page": 462,
+          "pdf_page_index": 461,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              370.9800109863281,
+              144.50131225585938,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "https://doi.org/10.6028/NIST.SP.800"
+          },
+          "source_type": "Body",
+          "text": "https://doi.org/10.6028/NIST.SP.800",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.7027272696446891,
+            0.06380882761836831,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p462:block:5",
+          "is_bold": false,
+          "page": 462,
+          "pdf_page_index": 461,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              17.991003036499023,
+              12.0
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "-53r5"
+          },
+          "source_type": "List",
+          "text": "-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.6422727180249763
+          ],
+          "id": "actual:p462:table:0",
+          "page": 462,
+          "pdf_page_index": 461,
+          "raw": {
+            "accuracy": 99.32372780267654,
+            "bbox": [
+              89.76000213623047,
+              72.47998046875,
+              521.760009765625,
+              508.67999267578125
+            ],
+            "cols": 4,
+            "column_count": 4,
+            "data": [
+              [
+                "CONTROL\nNUMBER",
+                "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "IMPLEMENTED\nBY",
+                "ASSURANCE"
+              ],
+              [
+                "AU-9(7)",
+                "STORE ON COMPONENT WITH DIFFERENT OPERATING SYSTEM",
+                "O",
+                ""
+              ],
+              [
+                "AU-10",
+                "Non-repudiation",
+                "S",
+                "\u221a"
+              ],
+              [
+                "AU-10(1)",
+                "ASSOCIATION OF IDENTITIES",
+                "S",
+                "\u221a"
+              ],
+              [
+                "AU-10(2)",
+                "VALIDATE BINDING OF INFORMATION PRODUCER IDENTITY",
+                "S",
+                "\u221a"
+              ],
+              [
+                "AU-10(3)",
+                "CHAIN OF CUSTODY",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "AU-10(4)",
+                "VALIDATE BINDING OF INFORMATION REVIEWER IDENTITY",
+                "S",
+                "\u221a"
+              ],
+              [
+                "AU-10(5)",
+                "DIGITAL SIGNATURES",
+                "W: Incorporated into SI-7.",
+                ""
+              ],
+              [
+                "AU-11",
+                "Audit Record Retention",
+                "O",
+                ""
+              ],
+              [
+                "AU-11(1)",
+                "LONG-TERM RETRIEVAL CAPABILITY",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AU-12",
+                "Audit Record Generation",
+                "S",
+                ""
+              ],
+              [
+                "AU-12(1)",
+                "SYSTEM-WIDE AND TIME-CORRELATED AUDIT TRAIL",
+                "S",
+                ""
+              ],
+              [
+                "AU-12(2)",
+                "STANDARDIZED FORMATS",
+                "S",
+                ""
+              ],
+              [
+                "AU-12(3)",
+                "CHANGES BY AUTHORIZED INDIVIDUALS",
+                "S",
+                ""
+              ],
+              [
+                "AU-12(4)",
+                "QUERY PARAMETER AUDITS OF PERSONALLY IDENTIFIABLE INFORMATION",
+                "S",
+                ""
+              ],
+              [
+                "AU-13",
+                "Monitoring for Information Disclosure",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AU-13(1)",
+                "USE OF AUTOMATED TOOLS",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "AU-13(2)",
+                "REVIEW OF MONITORED SITES",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AU-13(3)",
+                "UNAUTHORIZED REPLICATION OF INFORMATION",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "AU-14",
+                "Session Audit",
+                "S",
+                "\u221a"
+              ],
+              [
+                "AU-14(1)",
+                "SYSTEM START-UP",
+                "S",
+                "\u221a"
+              ],
+              [
+                "AU-14(2)",
+                "CAPTURE AND RECORD CONTENT",
+                "W: Incorporated into AU-14.",
+                ""
+              ],
+              [
+                "AU-14(3)",
+                "REMOTE VIEWING AND LISTENING",
+                "S",
+                "\u221a"
+              ],
+              [
+                "AU-15",
+                "Alternate Audit Logging Capability",
+                "W: Moved to AU-5(5).",
+                ""
+              ],
+              [
+                "AU-16",
+                "Cross-Organizational Audit Logging",
+                "O",
+                ""
+              ],
+              [
+                "AU-16(1)",
+                "IDENTITY PRESERVATION",
+                "O",
+                ""
+              ],
+              [
+                "AU-16(2)",
+                "SHARING OF AUDIT INFORMATION",
+                "O",
+                ""
+              ],
+              [
+                "AU-16(3)",
+                "DISASSOCIABILITY",
+                "O",
+                ""
+              ],
+              [
+                "",
+                "",
+                "",
+                ""
+              ]
+            ],
+            "df_data": [
+              {
+                "0": "CONTROL\nNUMBER",
+                "1": "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "2": "IMPLEMENTED\nBY",
+                "3": "ASSURANCE"
+              },
+              {
+                "0": "AU-9(7)",
+                "1": "STORE ON COMPONENT WITH DIFFERENT OPERATING SYSTEM",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AU-10",
+                "1": "Non-repudiation",
+                "2": "S",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-10(1)",
+                "1": "ASSOCIATION OF IDENTITIES",
+                "2": "S",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-10(2)",
+                "1": "VALIDATE BINDING OF INFORMATION PRODUCER IDENTITY",
+                "2": "S",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-10(3)",
+                "1": "CHAIN OF CUSTODY",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-10(4)",
+                "1": "VALIDATE BINDING OF INFORMATION REVIEWER IDENTITY",
+                "2": "S",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-10(5)",
+                "1": "DIGITAL SIGNATURES",
+                "2": "W: Incorporated into SI-7.",
+                "3": ""
+              },
+              {
+                "0": "AU-11",
+                "1": "Audit Record Retention",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AU-11(1)",
+                "1": "LONG-TERM RETRIEVAL CAPABILITY",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-12",
+                "1": "Audit Record Generation",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AU-12(1)",
+                "1": "SYSTEM-WIDE AND TIME-CORRELATED AUDIT TRAIL",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AU-12(2)",
+                "1": "STANDARDIZED FORMATS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AU-12(3)",
+                "1": "CHANGES BY AUTHORIZED INDIVIDUALS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AU-12(4)",
+                "1": "QUERY PARAMETER AUDITS OF PERSONALLY IDENTIFIABLE INFORMATION",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AU-13",
+                "1": "Monitoring for Information Disclosure",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-13(1)",
+                "1": "USE OF AUTOMATED TOOLS",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-13(2)",
+                "1": "REVIEW OF MONITORED SITES",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-13(3)",
+                "1": "UNAUTHORIZED REPLICATION OF INFORMATION",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-14",
+                "1": "Session Audit",
+                "2": "S",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-14(1)",
+                "1": "SYSTEM START-UP",
+                "2": "S",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-14(2)",
+                "1": "CAPTURE AND RECORD CONTENT",
+                "2": "W: Incorporated into AU-14.",
+                "3": ""
+              },
+              {
+                "0": "AU-14(3)",
+                "1": "REMOTE VIEWING AND LISTENING",
+                "2": "S",
+                "3": "\u221a"
+              },
+              {
+                "0": "AU-15",
+                "1": "Alternate Audit Logging Capability",
+                "2": "W: Moved to AU-5(5).",
+                "3": ""
+              },
+              {
+                "0": "AU-16",
+                "1": "Cross-Organizational Audit Logging",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AU-16(1)",
+                "1": "IDENTITY PRESERVATION",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AU-16(2)",
+                "1": "SHARING OF AUDIT INFORMATION",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AU-16(3)",
+                "1": "DISASSOCIABILITY",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "",
+                "1": "",
+                "2": "",
+                "3": ""
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 0,
+            "page": 461,
+            "row_count": 29,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "CONTROL NUMBER"
+                  },
+                  {
+                    "text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
+                  },
+                  {
+                    "text": "IMPLEMENTED BY"
+                  },
+                  {
+                    "text": "ASSURANCE"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-9(7)"
+                  },
+                  {
+                    "text": "STORE ON COMPONENT WITH DIFFERENT OPERATING SYSTEM"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-10"
+                  },
+                  {
+                    "text": "Non-repudiation"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-10(1)"
+                  },
+                  {
+                    "text": "ASSOCIATION OF IDENTITIES"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-10(2)"
+                  },
+                  {
+                    "text": "VALIDATE BINDING OF INFORMATION PRODUCER IDENTITY"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-10(3)"
+                  },
+                  {
+                    "text": "CHAIN OF CUSTODY"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-10(4)"
+                  },
+                  {
+                    "text": "VALIDATE BINDING OF INFORMATION REVIEWER IDENTITY"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-10(5)"
+                  },
+                  {
+                    "text": "DIGITAL SIGNATURES"
+                  },
+                  {
+                    "text": "W: Incorporated into SI-7."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-11"
+                  },
+                  {
+                    "text": "Audit Record Retention"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-11(1)"
+                  },
+                  {
+                    "text": "LONG-TERM RETRIEVAL CAPABILITY"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-12"
+                  },
+                  {
+                    "text": "Audit Record Generation"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-12(1)"
+                  },
+                  {
+                    "text": "SYSTEM-WIDE AND TIME-CORRELATED AUDIT TRAIL"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-12(2)"
+                  },
+                  {
+                    "text": "STANDARDIZED FORMATS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-12(3)"
+                  },
+                  {
+                    "text": "CHANGES BY AUTHORIZED INDIVIDUALS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-12(4)"
+                  },
+                  {
+                    "text": "QUERY PARAMETER AUDITS OF PERSONALLY IDENTIFIABLE INFORMATION"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-13"
+                  },
+                  {
+                    "text": "Monitoring for Information Disclosure"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-13(1)"
+                  },
+                  {
+                    "text": "USE OF AUTOMATED TOOLS"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-13(2)"
+                  },
+                  {
+                    "text": "REVIEW OF MONITORED SITES"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-13(3)"
+                  },
+                  {
+                    "text": "UNAUTHORIZED REPLICATION OF INFORMATION"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-14"
+                  },
+                  {
+                    "text": "Session Audit"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-14(1)"
+                  },
+                  {
+                    "text": "SYSTEM START-UP"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-14(2)"
+                  },
+                  {
+                    "text": "CAPTURE AND RECORD CONTENT"
+                  },
+                  {
+                    "text": "W: Incorporated into AU-14."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-14(3)"
+                  },
+                  {
+                    "text": "REMOTE VIEWING AND LISTENING"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-15"
+                  },
+                  {
+                    "text": "Alternate Audit Logging Capability"
+                  },
+                  {
+                    "text": "W: Moved to AU-5(5)."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-16"
+                  },
+                  {
+                    "text": "Cross-Organizational Audit Logging"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-16(1)"
+                  },
+                  {
+                    "text": "IDENTITY PRESERVATION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-16(2)"
+                  },
+                  {
+                    "text": "SHARING OF AUDIT INFORMATION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU-16(3)"
+                  },
+                  {
+                    "text": "DISASSOCIABILITY"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "whitespace": 15.517241379310345
+          },
+          "source_type": "table",
+          "text": "CONTROL NUMBER | CONTROL NAME CONTROL ENHANCEMENT NAME | IMPLEMENTED BY | ASSURANCE\nAU-9(7) | STORE ON COMPONENT WITH DIFFERENT OPERATING SYSTEM | O |\nAU-10 | Non-repudiation | S | \u221a\nAU-10(1) | ASSOCIATION OF IDENTITIES | S | \u221a\nAU-10(2) | VALIDATE BINDING OF INFORMATION PRODUCER IDENTITY | S | \u221a\nAU-10(3) | CHAIN OF CUSTODY | O/S | \u221a\nAU-10(4) | VALIDATE BINDING OF INFORMATION REVIEWER IDENTITY | S | \u221a\nAU-10(5) | DIGITAL SIGNATURES | W: Incorporated into SI-7. |\nAU-11 | Audit Record Retention | O |\nAU-11(1) | LONG-TERM RETRIEVAL CAPABILITY | O | \u221a\nAU-12 | Audit Record Generation | S |\nAU-12(1) | SYSTEM-WIDE AND TIME-CORRELATED AUDIT TRAIL | S |\nAU-12(2) | STANDARDIZED FORMATS | S |\nAU-12(3) | CHANGES BY AUTHORIZED INDIVIDUALS | S |\nAU-12(4) | QUERY PARAMETER AUDITS OF PERSONALLY IDENTIFIABLE INFORMATION | S |\nAU-13 | Monitoring for Information Disclosure | O | \u221a\nAU-13(1) | USE OF AUTOMATED TOOLS | O/S | \u221a\nAU-13(2) | REVIEW OF MONITORED SITES | O | \u221a\nAU-13(3) | UNAUTHORIZED REPLICATION OF INFORMATION | O/S | \u221a\nAU-14 | Session Audit | S | \u221a\nAU-14(1) | SYSTEM START-UP | S | \u221a\nAU-14(2) | CAPTURE AND RECORD CONTENT | W: Incorporated into AU-14. |\nAU-14(3) | REMOTE VIEWING AND LISTENING | S | \u221a\nAU-15 | Alternate Audit Logging Capability | W: Moved to AU-5(5). |\nAU-16 | Cross-Organizational Audit Logging | O |\nAU-16(1) | IDENTITY PRESERVATION | O |\nAU-16(2) | SHARING OF AUDIT INFORMATION | O |\nAU-16(3) | DISASSOCIABILITY | O |\n|  |  |",
+          "type": "table"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 462,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 461
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

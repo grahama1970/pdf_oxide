@@ -1,0 +1,1484 @@
+{
+  "generated_at": "2026-06-01T21:19:16.806704+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04500001849550189,
+            1.0,
+            0.055075751410590276
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p456:block:0",
+          "is_bold": false,
+          "page": 456,
+          "pdf_page_index": 455,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "source_type": "Footer",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05719703134864268,
+            0.8558836294934641,
+            0.06727276426373106
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p456:block:1",
+          "is_bold": false,
+          "page": 456,
+          "pdf_page_index": 455,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "source_type": "Footer",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.940454545647207,
+            0.8562647002974367,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 8.107500076293945,
+          "id": "actual:p456:block:2",
+          "is_bold": false,
+          "page": 456,
+          "pdf_page_index": 455,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.107500076293945,
+            "header_level": null,
+            "is_bold": false,
+            "text": "APPENDIX C   PAGE 429"
+          },
+          "source_type": "Body",
+          "text": "APPENDIX C   PAGE 429",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.3498234998166951,
+            0.28780303338561397
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p456:block:3",
+          "is_bold": false,
+          "page": 456,
+          "pdf_page_index": 455,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              564.0599975585938,
+              193.031982421875,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from:"
+          },
+          "source_type": "Body",
+          "text": "This publication is available free of charge from:",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.5202272588556464,
+            0.2705250191532709,
+            0.5315908952192827
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p456:block:4",
+          "is_bold": false,
+          "page": 456,
+          "pdf_page_index": 455,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              370.9800109863281,
+              144.50131225585938,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "https://doi.org/10.6028/NIST.SP.800"
+          },
+          "source_type": "Body",
+          "text": "https://doi.org/10.6028/NIST.SP.800",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.7027272696446891,
+            0.06380882761836831,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p456:block:5",
+          "is_bold": false,
+          "page": 456,
+          "pdf_page_index": 455,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              17.991003036499023,
+              12.0
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "-53r5"
+          },
+          "source_type": "List",
+          "text": "-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.3790196188135085,
+            0.09037880945687342,
+            0.624481201171875,
+            0.1023484817659012
+          ],
+          "font_name": "TT2",
+          "font_size": 9.479999542236328,
+          "id": "actual:p456:block:6",
+          "is_bold": true,
+          "page": 456,
+          "pdf_page_index": 455,
+          "raw": {
+            "bbox": [
+              231.9600067138672,
+              710.9400024414062,
+              150.2224884033203,
+              9.47998046875
+            ],
+            "block_type": "Caption",
+            "confidence": 0.800000011920929,
+            "font_name": "TT2",
+            "font_size": 9.479999542236328,
+            "header_level": null,
+            "is_bold": true,
+            "text": "TABLE C-1:  ACCESS CONTROL FAMILY"
+          },
+          "semantic_role": "table_caption",
+          "source_type": "Caption",
+          "text": "TABLE C-1:  ACCESS CONTROL FAMILY",
+          "type": "caption"
+        },
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.11371211812953756,
+            0.8525490355647467,
+            0.9040909102468779
+          ],
+          "id": "actual:p456:table:0",
+          "page": 456,
+          "pdf_page_index": 455,
+          "raw": {
+            "accuracy": 99.24211838405496,
+            "bbox": [
+              89.76000213623047,
+              90.05999755859375,
+              521.760009765625,
+              716.0400009155273
+            ],
+            "cols": 4,
+            "column_count": 4,
+            "data": [
+              [
+                "CONTROL\nNUMBER",
+                "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "IMPLEMENTED\nBY",
+                "ASSURANCE"
+              ],
+              [
+                "AC-1",
+                "Policy and Procedures",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AC-2",
+                "Account Management",
+                "O",
+                ""
+              ],
+              [
+                "AC-2(1)",
+                "AUTOMATED SYSTEM ACCOUNT MANAGEMENT",
+                "O",
+                ""
+              ],
+              [
+                "AC-2(2)",
+                "AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT",
+                "S",
+                ""
+              ],
+              [
+                "AC-2(3)",
+                "DISABLE ACCOUNTS",
+                "S",
+                ""
+              ],
+              [
+                "AC-2(4)",
+                "AUTOMATED AUDIT ACTIONS",
+                "S",
+                ""
+              ],
+              [
+                "AC-2(5)",
+                "INACTIVITY LOGOUT",
+                "O/S",
+                ""
+              ],
+              [
+                "AC-2(6)",
+                "DYNAMIC PRIVILEGE MANAGEMENT",
+                "S",
+                ""
+              ],
+              [
+                "AC-2(7)",
+                "PRIVILEGED USER ACCOUNTS",
+                "O",
+                ""
+              ],
+              [
+                "AC-2(8)",
+                "DYNAMIC ACCOUNT MANAGEMENT",
+                "S",
+                ""
+              ],
+              [
+                "AC-2(9)",
+                "RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS",
+                "O",
+                ""
+              ],
+              [
+                "AC-2(10)",
+                "SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE",
+                "W: Incorporated into AC-2k.",
+                ""
+              ],
+              [
+                "AC-2(11)",
+                "USAGE CONDITIONS",
+                "S",
+                ""
+              ],
+              [
+                "AC-2(12)",
+                "ACCOUNT MONITORING FOR ATYPICAL USAGE",
+                "O/S",
+                ""
+              ],
+              [
+                "AC-2(13)",
+                "DISABLE ACCOUNTS FOR HIGH-RISK INDIVIDUALS",
+                "O",
+                ""
+              ],
+              [
+                "AC-3",
+                "Access Enforcement",
+                "S",
+                ""
+              ],
+              [
+                "AC-3(1)",
+                "RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS",
+                "W: Incorporated into AC-6.",
+                ""
+              ],
+              [
+                "AC-3(2)",
+                "DUAL AUTHORIZATION",
+                "S",
+                ""
+              ],
+              [
+                "AC-3(3)",
+                "MANDATORY ACCESS CONTROL",
+                "S",
+                ""
+              ],
+              [
+                "AC-3(4)",
+                "DISCRETIONARY ACCESS CONTROL",
+                "S",
+                ""
+              ],
+              [
+                "AC-3(5)",
+                "SECURITY-RELEVANT INFORMATION",
+                "S",
+                ""
+              ],
+              [
+                "AC-3(6)",
+                "PROTECTION OF USER AND SYSTEM INFORMATION",
+                "W: Incorporated into MP-4 and SC-28.",
+                ""
+              ],
+              [
+                "AC-3(7)",
+                "ROLE-BASED ACCESS CONTROL",
+                "O/S",
+                ""
+              ],
+              [
+                "AC-3(8)",
+                "REVOCATION OF ACCESS AUTHORIZATIONS",
+                "O/S",
+                ""
+              ],
+              [
+                "AC-3(9)",
+                "CONTROLLED RELEASE",
+                "O/S",
+                ""
+              ],
+              [
+                "AC-3(10)",
+                "AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS",
+                "O",
+                ""
+              ],
+              [
+                "AC-3(11)",
+                "RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES",
+                "S",
+                ""
+              ],
+              [
+                "AC-3(12)",
+                "ASSERT AND ENFORCE APPLICATION ACCESS",
+                "S",
+                ""
+              ],
+              [
+                "AC-3(13)",
+                "ATTRIBUTE-BASED ACCESS CONTROL",
+                "S",
+                ""
+              ],
+              [
+                "AC-3(14)",
+                "INDIVIDUAL ACCESS",
+                "S",
+                ""
+              ],
+              [
+                "AC-3(15)",
+                "DISCRETIONARY AND MANDATORY ACCESS CONTROL",
+                "S",
+                ""
+              ],
+              [
+                "AC-4",
+                "Information Flow Enforcement",
+                "S",
+                ""
+              ],
+              [
+                "AC-4(1)",
+                "OBJECT SECURITY AND PRIVACY ATTRIBUTES",
+                "S",
+                ""
+              ],
+              [
+                "AC-4(2)",
+                "PROCESSING DOMAINS",
+                "S",
+                ""
+              ],
+              [
+                "AC-4(3)",
+                "DYNAMIC INFORMATION FLOW CONTROL",
+                "S",
+                ""
+              ],
+              [
+                "AC-4(4)",
+                "FLOW CONTROL OF ENCRYPTED INFORMATION",
+                "S",
+                ""
+              ],
+              [
+                "AC-4(5)",
+                "EMBEDDED DATA TYPES",
+                "S",
+                ""
+              ],
+              [
+                "AC-4(6)",
+                "METADATA",
+                "S",
+                ""
+              ],
+              [
+                "AC-4(7)",
+                "ONE-WAY FLOW MECHANISMS",
+                "S",
+                ""
+              ],
+              [
+                "AC-4(8)",
+                "SECURITY AND PRIVACY POLICY FILTERS",
+                "S",
+                ""
+              ],
+              [
+                "AC-4(9)",
+                "HUMAN REVIEWS",
+                "O/S",
+                ""
+              ],
+              [
+                "AC-4(10)",
+                "ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS",
+                "S",
+                ""
+              ]
+            ],
+            "df_data": [
+              {
+                "0": "CONTROL\nNUMBER",
+                "1": "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "2": "IMPLEMENTED\nBY",
+                "3": "ASSURANCE"
+              },
+              {
+                "0": "AC-1",
+                "1": "Policy and Procedures",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AC-2",
+                "1": "Account Management",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-2(1)",
+                "1": "AUTOMATED SYSTEM ACCOUNT MANAGEMENT",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-2(2)",
+                "1": "AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-2(3)",
+                "1": "DISABLE ACCOUNTS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-2(4)",
+                "1": "AUTOMATED AUDIT ACTIONS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-2(5)",
+                "1": "INACTIVITY LOGOUT",
+                "2": "O/S",
+                "3": ""
+              },
+              {
+                "0": "AC-2(6)",
+                "1": "DYNAMIC PRIVILEGE MANAGEMENT",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-2(7)",
+                "1": "PRIVILEGED USER ACCOUNTS",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-2(8)",
+                "1": "DYNAMIC ACCOUNT MANAGEMENT",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-2(9)",
+                "1": "RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-2(10)",
+                "1": "SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE",
+                "2": "W: Incorporated into AC-2k.",
+                "3": ""
+              },
+              {
+                "0": "AC-2(11)",
+                "1": "USAGE CONDITIONS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-2(12)",
+                "1": "ACCOUNT MONITORING FOR ATYPICAL USAGE",
+                "2": "O/S",
+                "3": ""
+              },
+              {
+                "0": "AC-2(13)",
+                "1": "DISABLE ACCOUNTS FOR HIGH-RISK INDIVIDUALS",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-3",
+                "1": "Access Enforcement",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(1)",
+                "1": "RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS",
+                "2": "W: Incorporated into AC-6.",
+                "3": ""
+              },
+              {
+                "0": "AC-3(2)",
+                "1": "DUAL AUTHORIZATION",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(3)",
+                "1": "MANDATORY ACCESS CONTROL",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(4)",
+                "1": "DISCRETIONARY ACCESS CONTROL",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(5)",
+                "1": "SECURITY-RELEVANT INFORMATION",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(6)",
+                "1": "PROTECTION OF USER AND SYSTEM INFORMATION",
+                "2": "W: Incorporated into MP-4 and SC-28.",
+                "3": ""
+              },
+              {
+                "0": "AC-3(7)",
+                "1": "ROLE-BASED ACCESS CONTROL",
+                "2": "O/S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(8)",
+                "1": "REVOCATION OF ACCESS AUTHORIZATIONS",
+                "2": "O/S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(9)",
+                "1": "CONTROLLED RELEASE",
+                "2": "O/S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(10)",
+                "1": "AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-3(11)",
+                "1": "RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(12)",
+                "1": "ASSERT AND ENFORCE APPLICATION ACCESS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(13)",
+                "1": "ATTRIBUTE-BASED ACCESS CONTROL",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(14)",
+                "1": "INDIVIDUAL ACCESS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-3(15)",
+                "1": "DISCRETIONARY AND MANDATORY ACCESS CONTROL",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-4",
+                "1": "Information Flow Enforcement",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-4(1)",
+                "1": "OBJECT SECURITY AND PRIVACY ATTRIBUTES",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-4(2)",
+                "1": "PROCESSING DOMAINS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-4(3)",
+                "1": "DYNAMIC INFORMATION FLOW CONTROL",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-4(4)",
+                "1": "FLOW CONTROL OF ENCRYPTED INFORMATION",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-4(5)",
+                "1": "EMBEDDED DATA TYPES",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-4(6)",
+                "1": "METADATA",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-4(7)",
+                "1": "ONE-WAY FLOW MECHANISMS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-4(8)",
+                "1": "SECURITY AND PRIVACY POLICY FILTERS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-4(9)",
+                "1": "HUMAN REVIEWS",
+                "2": "O/S",
+                "3": ""
+              },
+              {
+                "0": "AC-4(10)",
+                "1": "ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS",
+                "2": "S",
+                "3": ""
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 0,
+            "page": 455,
+            "row_count": 43,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "CONTROL NUMBER"
+                  },
+                  {
+                    "text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
+                  },
+                  {
+                    "text": "IMPLEMENTED BY"
+                  },
+                  {
+                    "text": "ASSURANCE"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-1"
+                  },
+                  {
+                    "text": "Policy and Procedures"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2"
+                  },
+                  {
+                    "text": "Account Management"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(1)"
+                  },
+                  {
+                    "text": "AUTOMATED SYSTEM ACCOUNT MANAGEMENT"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(2)"
+                  },
+                  {
+                    "text": "AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(3)"
+                  },
+                  {
+                    "text": "DISABLE ACCOUNTS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(4)"
+                  },
+                  {
+                    "text": "AUTOMATED AUDIT ACTIONS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(5)"
+                  },
+                  {
+                    "text": "INACTIVITY LOGOUT"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(6)"
+                  },
+                  {
+                    "text": "DYNAMIC PRIVILEGE MANAGEMENT"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(7)"
+                  },
+                  {
+                    "text": "PRIVILEGED USER ACCOUNTS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(8)"
+                  },
+                  {
+                    "text": "DYNAMIC ACCOUNT MANAGEMENT"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(9)"
+                  },
+                  {
+                    "text": "RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(10)"
+                  },
+                  {
+                    "text": "SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE"
+                  },
+                  {
+                    "text": "W: Incorporated into AC-2k."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(11)"
+                  },
+                  {
+                    "text": "USAGE CONDITIONS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(12)"
+                  },
+                  {
+                    "text": "ACCOUNT MONITORING FOR ATYPICAL USAGE"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-2(13)"
+                  },
+                  {
+                    "text": "DISABLE ACCOUNTS FOR HIGH-RISK INDIVIDUALS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3"
+                  },
+                  {
+                    "text": "Access Enforcement"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(1)"
+                  },
+                  {
+                    "text": "RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS"
+                  },
+                  {
+                    "text": "W: Incorporated into AC-6."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(2)"
+                  },
+                  {
+                    "text": "DUAL AUTHORIZATION"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(3)"
+                  },
+                  {
+                    "text": "MANDATORY ACCESS CONTROL"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(4)"
+                  },
+                  {
+                    "text": "DISCRETIONARY ACCESS CONTROL"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(5)"
+                  },
+                  {
+                    "text": "SECURITY-RELEVANT INFORMATION"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(6)"
+                  },
+                  {
+                    "text": "PROTECTION OF USER AND SYSTEM INFORMATION"
+                  },
+                  {
+                    "text": "W: Incorporated into MP-4 and SC-28."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(7)"
+                  },
+                  {
+                    "text": "ROLE-BASED ACCESS CONTROL"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(8)"
+                  },
+                  {
+                    "text": "REVOCATION OF ACCESS AUTHORIZATIONS"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(9)"
+                  },
+                  {
+                    "text": "CONTROLLED RELEASE"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(10)"
+                  },
+                  {
+                    "text": "AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(11)"
+                  },
+                  {
+                    "text": "RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(12)"
+                  },
+                  {
+                    "text": "ASSERT AND ENFORCE APPLICATION ACCESS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(13)"
+                  },
+                  {
+                    "text": "ATTRIBUTE-BASED ACCESS CONTROL"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(14)"
+                  },
+                  {
+                    "text": "INDIVIDUAL ACCESS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-3(15)"
+                  },
+                  {
+                    "text": "DISCRETIONARY AND MANDATORY ACCESS CONTROL"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4"
+                  },
+                  {
+                    "text": "Information Flow Enforcement"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4(1)"
+                  },
+                  {
+                    "text": "OBJECT SECURITY AND PRIVACY ATTRIBUTES"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4(2)"
+                  },
+                  {
+                    "text": "PROCESSING DOMAINS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4(3)"
+                  },
+                  {
+                    "text": "DYNAMIC INFORMATION FLOW CONTROL"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4(4)"
+                  },
+                  {
+                    "text": "FLOW CONTROL OF ENCRYPTED INFORMATION"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4(5)"
+                  },
+                  {
+                    "text": "EMBEDDED DATA TYPES"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4(6)"
+                  },
+                  {
+                    "text": "METADATA"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4(7)"
+                  },
+                  {
+                    "text": "ONE-WAY FLOW MECHANISMS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4(8)"
+                  },
+                  {
+                    "text": "SECURITY AND PRIVACY POLICY FILTERS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4(9)"
+                  },
+                  {
+                    "text": "HUMAN REVIEWS"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-4(10)"
+                  },
+                  {
+                    "text": "ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "whitespace": 23.837209302325583
+          },
+          "source_type": "table",
+          "text": "CONTROL NUMBER | CONTROL NAME CONTROL ENHANCEMENT NAME | IMPLEMENTED BY | ASSURANCE\nAC-1 | Policy and Procedures | O | \u221a\nAC-2 | Account Management | O |\nAC-2(1) | AUTOMATED SYSTEM ACCOUNT MANAGEMENT | O |\nAC-2(2) | AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT | S |\nAC-2(3) | DISABLE ACCOUNTS | S |\nAC-2(4) | AUTOMATED AUDIT ACTIONS | S |\nAC-2(5) | INACTIVITY LOGOUT | O/S |\nAC-2(6) | DYNAMIC PRIVILEGE MANAGEMENT | S |\nAC-2(7) | PRIVILEGED USER ACCOUNTS | O |\nAC-2(8) | DYNAMIC ACCOUNT MANAGEMENT | S |\nAC-2(9) | RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS | O |\nAC-2(10) | SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE | W: Incorporated into AC-2k. |\nAC-2(11) | USAGE CONDITIONS | S |\nAC-2(12) | ACCOUNT MONITORING FOR ATYPICAL USAGE | O/S |\nAC-2(13) | DISABLE ACCOUNTS FOR HIGH-RISK INDIVIDUALS | O |\nAC-3 | Access Enforcement | S |\nAC-3(1) | RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS | W: Incorporated into AC-6. |\nAC-3(2) | DUAL AUTHORIZATION | S |\nAC-3(3) | MANDATORY ACCESS CONTROL | S |\nAC-3(4) | DISCRETIONARY ACCESS CONTROL | S |\nAC-3(5) | SECURITY-RELEVANT INFORMATION | S |\nAC-3(6) | PROTECTION OF USER AND SYSTEM INFORMATION | W: Incorporated into MP-4 and SC-28. |\nAC-3(7) | ROLE-BASED ACCESS CONTROL | O/S |\nAC-3(8) | REVOCATION OF ACCESS AUTHORIZATIONS | O/S |\nAC-3(9) | CONTROLLED RELEASE | O/S |\nAC-3(10) | AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS | O |\nAC-3(11) | RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES | S |\nAC-3(12) | ASSERT AND ENFORCE APPLICATION ACCESS | S |\nAC-3(13) | ATTRIBUTE-BASED ACCESS CONTROL | S |\nAC-3(14) | INDIVIDUAL ACCESS | S |\nAC-3(15) | DISCRETIONARY AND MANDATORY ACCESS CONTROL | S |\nAC-4 | Information Flow Enforcement | S |\nAC-4(1) | OBJECT SECURITY AND PRIVACY ATTRIBUTES | S |\nAC-4(2) | PROCESSING DOMAINS | S |\nAC-4(3) | DYNAMIC INFORMATION FLOW CONTROL | S |\nAC-4(4) | FLOW CONTROL OF ENCRYPTED INFORMATION | S |\nAC-4(5) | EMBEDDED DATA TYPES | S |\nAC-4(6) | METADATA | S |\nAC-4(7) | ONE-WAY FLOW MECHANISMS | S |\nAC-4(8) | SECURITY AND PRIVACY POLICY FILTERS | S |\nAC-4(9) | HUMAN REVIEWS | O/S |\nAC-4(10) | ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS | S |",
+          "type": "table"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 456,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 455
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

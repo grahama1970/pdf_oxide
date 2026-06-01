@@ -7,6 +7,8 @@
 
 use crate::tables::types::{BBox, CharPosition, ExtractConfig, Flavor, Table, TextElement};
 
+const COLUMN_EDGE_TOLERANCE_PT: f64 = 2.0;
+
 const WATERMARK_PHRASES: [&str; 3] = [
     "This publication is available",
     "https://doi.org",
@@ -25,6 +27,9 @@ pub fn assign_text_to_cells(table: &mut Table, elements: &[TextElement]) -> Vec<
     for elem in elements {
         let text = elem.text.trim();
         if text.is_empty() {
+            continue;
+        }
+        if is_watermark_text(text) {
             continue;
         }
 
@@ -53,6 +58,7 @@ pub fn assign_text_to_cells(table: &mut Table, elements: &[TextElement]) -> Vec<
         }
     }
 
+    normalize_merged_status_cells(table);
     errors
 }
 
@@ -72,13 +78,41 @@ fn assign_with_char_splitting(
     let mut col_chars: Vec<Vec<&CharPosition>> = vec![Vec::new(); table.cols.len()];
 
     for ch in chars {
-        let x_mid = ch.x_mid();
-        // Find column containing this character's center
-        for (c, &(cx0, cx1)) in table.cols.iter().enumerate() {
-            if x_mid >= cx0 && x_mid <= cx1 {
-                col_chars[c].push(ch);
-                break;
-            }
+        if let Some(col_idx) = column_for_char(table, ch) {
+            col_chars[col_idx].push(ch);
+        }
+    }
+    merge_edge_fragments(table, &mut col_chars);
+
+    let nonempty_cols: Vec<usize> = col_chars
+        .iter()
+        .enumerate()
+        .filter_map(|(col_idx, chars)| (!chars.is_empty()).then_some(col_idx))
+        .collect();
+    if nonempty_cols.len() == 1 {
+        let col_idx = nonempty_cols[0];
+        let char_text: String = col_chars[col_idx].iter().map(|c| c.char).collect();
+        let elem_text = elem.text.trim();
+        if normalized_text(&char_text) != normalized_text(elem_text)
+            && !is_watermark_text(elem_text)
+        {
+            let error = assignment_error(elem, table, row_idx, col_idx);
+            append_to_cell(table, row_idx, col_idx, elem_text);
+            return vec![error];
+        }
+    }
+    if nonempty_cols.len() > 1 {
+        let elem_text = elem.text.trim();
+        if is_merged_status_text(elem_text) {
+            let col_idx = nonempty_cols[0];
+            let error = assignment_error(elem, table, row_idx, col_idx);
+            append_to_cell(table, row_idx, col_idx, elem_text);
+            return vec![error];
+        }
+        if let Some(col_idx) = status_col_for_row(table, row_idx) {
+            let error = assignment_error(elem, table, row_idx, col_idx);
+            append_text_fragment(&mut table.cells[row_idx][col_idx].text, elem_text);
+            return vec![error];
         }
     }
 
@@ -154,12 +188,297 @@ fn assign_whole_element(table: &Table, elem: &TextElement, row_idx: usize) -> Op
 /// Append text to a cell, joining with newline if cell already has content.
 fn append_to_cell(table: &mut Table, row: usize, col: usize, text: &str) {
     let cell = &mut table.cells[row][col];
+    let trimmed = text.trim();
+    if trimmed.is_empty() {
+        return;
+    }
+    let existing_lines: Vec<String> = cell.text.lines().map(|line| line.to_string()).collect();
+    let mut replaced = false;
+    let updated_lines: Vec<String> = existing_lines
+        .iter()
+        .map(|line| {
+            if should_replace_duplicate_fragment(line.trim(), trimmed) {
+                replaced = true;
+                trimmed.to_string()
+            } else {
+                line.clone()
+            }
+        })
+        .collect();
+    if replaced {
+        cell.text = updated_lines.join("\n");
+        return;
+    }
+    if cell
+        .text
+        .lines()
+        .any(|line| is_duplicate_cell_line(line.trim(), trimmed))
+    {
+        return;
+    }
     if cell.text.is_empty() {
-        cell.text = text.to_string();
+        cell.text = trimmed.to_string();
     } else {
         cell.text.push('\n');
-        cell.text.push_str(text);
+        cell.text.push_str(trimmed);
     }
+}
+
+fn column_for_char(table: &Table, ch: &CharPosition) -> Option<usize> {
+    let x_mid = ch.x_mid();
+
+    for (c, &(cx0, cx1)) in table.cols.iter().enumerate() {
+        if x_mid >= cx0 && x_mid <= cx1 {
+            return Some(c);
+        }
+    }
+
+    let mut nearest: Option<(usize, f64)> = None;
+    for (c, &(cx0, cx1)) in table.cols.iter().enumerate() {
+        let distance = if x_mid < cx0 {
+            cx0 - x_mid
+        } else if x_mid > cx1 {
+            x_mid - cx1
+        } else {
+            0.0
+        };
+        if distance <= COLUMN_EDGE_TOLERANCE_PT && nearest.map_or(true, |(_, best)| distance < best)
+        {
+            nearest = Some((c, distance));
+        }
+    }
+
+    nearest.map(|(c, _)| c)
+}
+
+fn merge_edge_fragments<'a>(table: &Table, col_chars: &mut [Vec<&'a CharPosition>]) {
+    if table.cols.len() < 2 {
+        return;
+    }
+
+    for col_idx in 0..table.cols.len() - 1 {
+        if col_chars[col_idx].is_empty() || col_chars[col_idx + 1].is_empty() {
+            continue;
+        }
+        if col_chars[col_idx].len() > 2 {
+            continue;
+        }
+
+        let next_left = table.cols[col_idx + 1].0;
+        let near_next_left = col_chars[col_idx]
+            .iter()
+            .all(|ch| (next_left - ch.x_mid()).abs() <= COLUMN_EDGE_TOLERANCE_PT);
+        if near_next_left {
+            let mut moved = std::mem::take(&mut col_chars[col_idx]);
+            moved.append(&mut col_chars[col_idx + 1]);
+            col_chars[col_idx + 1] = moved;
+        }
+    }
+}
+
+fn normalized_text(text: &str) -> String {
+    text.chars().filter(|ch| !ch.is_whitespace()).collect()
+}
+
+fn is_watermark_text(text: &str) -> bool {
+    WATERMARK_PHRASES.iter().any(|phrase| text.contains(phrase))
+}
+
+fn status_col_for_row(table: &Table, row: usize) -> Option<usize> {
+    table.cells[row]
+        .iter()
+        .enumerate()
+        .find_map(|(idx, cell)| is_merged_status_text(cell.text.trim()).then_some(idx))
+}
+
+fn is_merged_status_text(text: &str) -> bool {
+    let trimmed = text.trim();
+    trimmed.starts_with("W: Incorporated into ")
+        || trimmed.starts_with("W: Moved to ")
+        || trimmed.starts_with("W: Withdrawn")
+}
+
+fn normalize_merged_status_cells(table: &mut Table) {
+    for row in &mut table.cells {
+        let Some(status_col) = row
+            .iter()
+            .enumerate()
+            .find_map(|(idx, cell)| is_merged_status_text(cell.text.trim()).then_some(idx))
+        else {
+            continue;
+        };
+
+        for col_idx in status_col + 1..row.len() {
+            let continuation = row[col_idx].text.trim().to_string();
+            if continuation.is_empty() || is_assurance_marker(&continuation) {
+                continue;
+            }
+            append_text_fragment(&mut row[status_col].text, &continuation);
+            row[col_idx].text.clear();
+        }
+    }
+}
+
+fn append_text_fragment(text: &mut String, fragment: &str) {
+    if text.is_empty() {
+        *text = fragment.to_string();
+        return;
+    }
+    if text.ends_with('-') {
+        text.push_str(fragment);
+    } else {
+        text.push(' ');
+        text.push_str(fragment);
+    }
+}
+
+fn is_assurance_marker(text: &str) -> bool {
+    matches!(text.trim(), "√" | "O" | "S" | "O/S")
+}
+
+fn is_duplicate_cell_line(existing: &str, new: &str) -> bool {
+    if existing == new {
+        return true;
+    }
+
+    let existing_norm = normalized_text(existing);
+    let new_norm = normalized_text(new);
+    if existing_norm.is_empty() || new_norm.is_empty() {
+        return false;
+    }
+    if is_known_distinct_header_fragment(&new_norm) {
+        return false;
+    }
+    if !is_suspicious_duplicate_fragment(existing, new) {
+        return false;
+    }
+
+    let new_len = new_norm.chars().count();
+    let existing_len = existing_norm.chars().count();
+    if existing_len < new_len {
+        return false;
+    }
+
+    let lcs = lcs_len(&existing_norm, &new_norm);
+    if new_len < 6 {
+        return new_len >= 3 && existing_len >= new_len * 2 && lcs == new_len;
+    }
+    if new_len * 2 >= existing_len && lcs * 4 >= new_len * 3 {
+        return true;
+    }
+    existing_len >= new_len + 10 && lcs * 10 >= new_len * 9
+}
+
+fn should_replace_duplicate_fragment(existing: &str, replacement: &str) -> bool {
+    let existing_len = normalized_text(existing).chars().count();
+    let replacement_len = normalized_text(replacement).chars().count();
+    if replacement_len <= existing_len {
+        return false;
+    }
+    if existing_len < 6 {
+        return is_duplicate_cell_line(replacement, existing);
+    }
+    existing_len * 5 >= replacement_len * 3 && is_duplicate_cell_line(replacement, existing)
+}
+
+fn is_known_distinct_header_fragment(norm: &str) -> bool {
+    matches!(norm, "CONTROLNAME")
+}
+
+fn is_suspicious_duplicate_fragment(existing: &str, new: &str) -> bool {
+    let existing_words = normalized_words(existing);
+    let new_words = normalized_words(new);
+    if existing_words.is_empty() || new_words.is_empty() {
+        return false;
+    }
+
+    new_words.iter().enumerate().any(|(idx, new_word)| {
+        let has_exact_word = existing_words
+            .iter()
+            .any(|existing_word| existing_word == new_word);
+        if has_exact_word {
+            return false;
+        }
+        if is_trailing_acronym(&new_words, idx) {
+            return false;
+        }
+        if is_common_continuation_word(new_word) {
+            return false;
+        }
+        if new_word.chars().count() < 3 {
+            return true;
+        }
+        existing_words
+            .iter()
+            .any(|existing_word| is_suspicious_word_fragment(existing_word, new_word))
+    })
+}
+
+fn is_trailing_acronym(words: &[String], idx: usize) -> bool {
+    if idx + 1 != words.len() || idx == 0 {
+        return false;
+    }
+    let acronym = &words[idx];
+    let acronym_len = acronym.chars().count();
+    if acronym_len < 2 || acronym_len > idx {
+        return false;
+    }
+    let start = idx - acronym_len;
+    let candidate: String = words[start..idx]
+        .iter()
+        .filter_map(|word| word.chars().next())
+        .collect();
+    candidate == *acronym
+}
+
+fn is_common_continuation_word(word: &str) -> bool {
+    matches!(word, "TO" | "AND" | "OR" | "AS" | "ANY" | "ITS")
+}
+
+fn is_suspicious_word_fragment(existing_word: &str, new_word: &str) -> bool {
+    let new_len = new_word.chars().count();
+    let existing_len = existing_word.chars().count();
+    if existing_len <= new_len {
+        return false;
+    }
+    if existing_word.strip_suffix('S') == Some(new_word) {
+        return false;
+    }
+    if existing_word.starts_with(new_word) || existing_word.contains(new_word) {
+        return true;
+    }
+    if new_len < 4 {
+        return false;
+    }
+    let same_first = existing_word.chars().next() == new_word.chars().next();
+    same_first && lcs_len(existing_word, new_word) * 5 >= new_len * 4
+}
+
+fn normalized_words(norm: &str) -> Vec<String> {
+    norm.split(|ch: char| !ch.is_ascii_alphanumeric())
+        .filter(|word| !word.is_empty())
+        .map(|word| word.to_ascii_uppercase())
+        .collect()
+}
+
+fn lcs_len(a: &str, b: &str) -> usize {
+    let b_chars: Vec<char> = b.chars().collect();
+    let mut prev = vec![0; b_chars.len() + 1];
+    let mut curr = vec![0; b_chars.len() + 1];
+
+    for a_ch in a.chars() {
+        for (idx, b_ch) in b_chars.iter().enumerate() {
+            curr[idx + 1] = if a_ch == *b_ch {
+                prev[idx] + 1
+            } else {
+                curr[idx].max(prev[idx + 1])
+            };
+        }
+        std::mem::swap(&mut prev, &mut curr);
+        curr.fill(0);
+    }
+
+    prev[b_chars.len()]
 }
 
 /// Calculate how much a text element spills outside its assigned cell.
@@ -634,6 +953,376 @@ mod tests {
 
         assert_eq!(table.cells[0][0].text, "AB");
         assert!(table.cells[0][1].text.is_empty());
+    }
+
+    #[test]
+    fn split_text_keeps_chars_near_column_edge() {
+        let mut table = make_table();
+        let elements = vec![TextElement {
+            text: "privacy".into(),
+            x0: 98.5,
+            y0: 60.0,
+            x1: 150.0,
+            y1: 80.0,
+            font_size: 12.0,
+            is_bold: false,
+            chars: Some(vec![
+                CharPosition {
+                    char: 'p',
+                    x0: 98.2,
+                    x1: 99.2,
+                },
+                CharPosition {
+                    char: 'r',
+                    x0: 101.0,
+                    x1: 102.0,
+                },
+                CharPosition {
+                    char: 'i',
+                    x0: 103.0,
+                    x1: 104.0,
+                },
+                CharPosition {
+                    char: 'v',
+                    x0: 105.0,
+                    x1: 106.0,
+                },
+                CharPosition {
+                    char: 'a',
+                    x0: 107.0,
+                    x1: 108.0,
+                },
+                CharPosition {
+                    char: 'c',
+                    x0: 109.0,
+                    x1: 110.0,
+                },
+                CharPosition {
+                    char: 'y',
+                    x0: 111.0,
+                    x1: 112.0,
+                },
+            ]),
+        }];
+
+        assign_text_to_cells(&mut table, &elements);
+
+        assert_eq!(table.cells[1][1].text, "privacy");
+    }
+
+    #[test]
+    fn append_to_cell_skips_exact_duplicate_lines() {
+        let mut table = make_table();
+        append_to_cell(&mut table, 0, 0, "12-10-2020");
+        append_to_cell(&mut table, 0, 0, "12-10-2020");
+        append_to_cell(&mut table, 0, 0, "Editorial");
+
+        assert_eq!(table.cells[0][0].text, "12-10-2020\nEditorial");
+    }
+
+    #[test]
+    fn append_to_cell_skips_fuzzy_duplicate_fragments() {
+        let mut table = make_table();
+        append_to_cell(&mut table, 0, 0, "DOMAIN AUTHENTICATION");
+        append_to_cell(&mut table, 0, 0, "DOMAI UTHENTIAT");
+        append_to_cell(&mut table, 0, 0, "CONNECTIONS TO PUBLIC NETWORKS");
+        append_to_cell(&mut table, 0, 0, "CONNECTINS O UB");
+        append_to_cell(&mut table, 0, 0, "CONTROL NAME");
+        append_to_cell(&mut table, 0, 0, "CONTROL ENHANCEMENT NAME");
+        append_to_cell(
+            &mut table,
+            0,
+            0,
+            "Call Out Box: Change “Special Publication 800-53B contains control baselines” to “SP 800-53B contains security and privacy control",
+        );
+        append_to_cell(&mut table, 0, 0, "baselines”");
+        append_to_cell(
+            &mut table,
+            0,
+            0,
+            "Control PL-2 References: Change “[OMB A-130, Appendix II]” to",
+        );
+        append_to_cell(&mut table, 0, 0, "“[OMB A-130]”");
+        append_to_cell(
+            &mut table,
+            0,
+            0,
+            "Control SC-17 Discussion: Change “Public Key Infrastructure” to",
+        );
+        append_to_cell(&mut table, 0, 0, "“Public Key Infrastructure (PKI)”");
+        append_to_cell(
+            &mut table,
+            0,
+            0,
+            "Control AC-19 Discussion: Change “the organizational network” to",
+        );
+        append_to_cell(&mut table, 0, 0, "“its network”");
+        append_to_cell(
+            &mut table,
+            0,
+            0,
+            "Control SC-19: Change “addressed by other controls for protocols”",
+        );
+        append_to_cell(&mut table, 0, 0, "to “addressed as any other technology or protocol”");
+        append_to_cell(
+            &mut table,
+            0,
+            0,
+            "Control Enhancement SC-31(2): Change “ Selection (one or more); ”",
+        );
+        append_to_cell(&mut table, 0, 0, "to “ Selection (one or more): ”");
+        append_to_cell(&mut table, 1, 0, "PROCE");
+        append_to_cell(&mut table, 1, 0, "PROCESS REQUIREMENTS FOR INFORMATION TRANSFER");
+        append_to_cell(&mut table, 0, 1, "IENT");
+        append_to_cell(
+            &mut table,
+            0,
+            1,
+            "IDENTIFICATION OF FUNCTIONS, PORTS, PROTOCOLS, AND SERVICES",
+        );
+
+        assert_eq!(
+            table.cells[0][0].text,
+            "DOMAIN AUTHENTICATION\nCONNECTIONS TO PUBLIC NETWORKS\nCONTROL NAME\nCONTROL ENHANCEMENT NAME\nCall Out Box: Change “Special Publication 800-53B contains control baselines” to “SP 800-53B contains security and privacy control\nbaselines”\nControl PL-2 References: Change “[OMB A-130, Appendix II]” to\n“[OMB A-130]”\nControl SC-17 Discussion: Change “Public Key Infrastructure” to\n“Public Key Infrastructure (PKI)”\nControl AC-19 Discussion: Change “the organizational network” to\n“its network”\nControl SC-19: Change “addressed by other controls for protocols”\nto “addressed as any other technology or protocol”\nControl Enhancement SC-31(2): Change “ Selection (one or more); ”\nto “ Selection (one or more): ”"
+        );
+        assert_eq!(table.cells[1][0].text, "PROCESS REQUIREMENTS FOR INFORMATION TRANSFER");
+        assert_eq!(
+            table.cells[0][1].text,
+            "IDENTIFICATION OF FUNCTIONS, PORTS, PROTOCOLS, AND SERVICES"
+        );
+    }
+
+    #[test]
+    fn split_text_uses_span_text_when_single_column_chars_are_incomplete() {
+        let mut table = make_table();
+        let elements = vec![TextElement {
+            text: "privacy".into(),
+            x0: 110.0,
+            y0: 60.0,
+            x1: 150.0,
+            y1: 80.0,
+            font_size: 12.0,
+            is_bold: false,
+            chars: Some(vec![
+                CharPosition {
+                    char: 'r',
+                    x0: 111.0,
+                    x1: 112.0,
+                },
+                CharPosition {
+                    char: 'i',
+                    x0: 113.0,
+                    x1: 114.0,
+                },
+                CharPosition {
+                    char: 'v',
+                    x0: 115.0,
+                    x1: 116.0,
+                },
+                CharPosition {
+                    char: 'a',
+                    x0: 117.0,
+                    x1: 118.0,
+                },
+                CharPosition {
+                    char: 'c',
+                    x0: 119.0,
+                    x1: 120.0,
+                },
+                CharPosition {
+                    char: 'y',
+                    x0: 121.0,
+                    x1: 122.0,
+                },
+            ]),
+        }];
+
+        assign_text_to_cells(&mut table, &elements);
+
+        assert_eq!(table.cells[1][1].text, "privacy");
+    }
+
+    #[test]
+    fn split_text_skips_watermark_span_instead_of_assigning_partial_chars() {
+        let mut table = make_table();
+        let elements = vec![TextElement {
+            text: "https://doi.org/10.6028/NIST.SP.800 12-10-2020".into(),
+            x0: 110.0,
+            y0: 60.0,
+            x1: 180.0,
+            y1: 80.0,
+            font_size: 12.0,
+            is_bold: false,
+            chars: Some(
+                "12-10-2020"
+                    .chars()
+                    .enumerate()
+                    .map(|(idx, ch)| {
+                        let x = 112.0 + idx as f64 * 2.0;
+                        CharPosition {
+                            char: ch,
+                            x0: x,
+                            x1: x + 1.0,
+                        }
+                    })
+                    .collect(),
+            ),
+        }];
+
+        assign_text_to_cells(&mut table, &elements);
+
+        assert!(table.cells[1][1].text.is_empty());
+    }
+
+    #[test]
+    fn assign_text_skips_watermark_spans_before_cell_assignment() {
+        let mut table = make_table();
+        let elements = vec![TextElement {
+            text: "This publication is available free of charge from:".into(),
+            x0: 110.0,
+            y0: 60.0,
+            x1: 180.0,
+            y1: 80.0,
+            font_size: 12.0,
+            is_bold: false,
+            chars: None,
+        }];
+
+        let errors = assign_text_to_cells(&mut table, &elements);
+
+        assert!(errors.is_empty());
+        assert!(table.cells[1][1].text.is_empty());
+    }
+
+    #[test]
+    fn split_text_preserves_merged_status_span_across_columns() {
+        let mut table = Table::new(
+            vec![(0.0, 100.0), (100.0, 160.0), (160.0, 220.0)],
+            vec![(0.0, 50.0), (50.0, 100.0)],
+            Flavor::Stream,
+        );
+        let elements = vec![TextElement {
+            text: "W: Incorporated into AC-4.".into(),
+            x0: 110.0,
+            y0: 60.0,
+            x1: 210.0,
+            y1: 80.0,
+            font_size: 12.0,
+            is_bold: false,
+            chars: Some(vec![
+                CharPosition {
+                    char: 'W',
+                    x0: 110.0,
+                    x1: 112.0,
+                },
+                CharPosition {
+                    char: ':',
+                    x0: 113.0,
+                    x1: 114.0,
+                },
+                CharPosition {
+                    char: ' ',
+                    x0: 115.0,
+                    x1: 116.0,
+                },
+                CharPosition {
+                    char: 'n',
+                    x0: 120.0,
+                    x1: 122.0,
+                },
+                CharPosition {
+                    char: 't',
+                    x0: 150.0,
+                    x1: 152.0,
+                },
+                CharPosition {
+                    char: 'C',
+                    x0: 170.0,
+                    x1: 172.0,
+                },
+                CharPosition {
+                    char: '-',
+                    x0: 173.0,
+                    x1: 174.0,
+                },
+                CharPosition {
+                    char: '4',
+                    x0: 175.0,
+                    x1: 177.0,
+                },
+                CharPosition {
+                    char: '.',
+                    x0: 178.0,
+                    x1: 179.0,
+                },
+            ]),
+        }];
+
+        assign_text_to_cells(&mut table, &elements);
+
+        assert_eq!(table.cells[1][1].text, "W: Incorporated into AC-4.");
+        assert!(table.cells[1][2].text.is_empty());
+    }
+
+    #[test]
+    fn split_text_keeps_status_continuation_in_existing_status_cell() {
+        let mut table = Table::new(
+            vec![(0.0, 100.0), (100.0, 160.0), (160.0, 220.0)],
+            vec![(0.0, 50.0), (50.0, 100.0)],
+            Flavor::Stream,
+        );
+        let elements = vec![
+            TextElement {
+                text: "W: Incorporated into AC-2, SI-".into(),
+                x0: 110.0,
+                y0: 60.0,
+                x1: 190.0,
+                y1: 70.0,
+                font_size: 12.0,
+                is_bold: false,
+                chars: Some(vec![
+                    CharPosition {
+                        char: 'W',
+                        x0: 110.0,
+                        x1: 112.0,
+                    },
+                    CharPosition {
+                        char: '-',
+                        x0: 170.0,
+                        x1: 172.0,
+                    },
+                ]),
+            },
+            TextElement {
+                text: "3, SI-4, SI-5, and SI-10.".into(),
+                x0: 110.0,
+                y0: 72.0,
+                x1: 190.0,
+                y1: 82.0,
+                font_size: 12.0,
+                is_bold: false,
+                chars: Some(vec![
+                    CharPosition {
+                        char: '3',
+                        x0: 110.0,
+                        x1: 112.0,
+                    },
+                    CharPosition {
+                        char: 'S',
+                        x0: 170.0,
+                        x1: 172.0,
+                    },
+                ]),
+            },
+        ];
+
+        assign_text_to_cells(&mut table, &elements);
+
+        assert_eq!(
+            table.cells[1][1].text,
+            "W: Incorporated into AC-2, SI-3, SI-4, SI-5, and SI-10."
+        );
+        assert!(table.cells[1][2].text.is_empty());
     }
 
     #[test]

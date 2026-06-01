@@ -1889,18 +1889,16 @@
       "status": "proposed"
     },
     {
-      "entry_id": "nist-chrome-001",
-      "category": "semantic_enrichment",
-      "applier_rule_kind": "text_classifier_rule",
       "added_at": "2026-05-13T15:00:00Z",
       "added_by": "agent:claude-opus-4-7 (GS001 R4 \u2014 row 2: side DOI watermark \u2192 header_footer_noise per WebGPT plan)",
-      "checklist_item": "Route NIST 800-53r5 left-margin DOI watermark text ('This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5') to type=header_footer_noise. Uses bbox_constraints.x_min_lt=0.10 (left page edge) AND a regex text anchor \u2014 so normal body content cannot be captured even if a body paragraph happened to mention 'this publication is available free of charge'. category=semantic_enrichment so it fires AFTER type_remap (Body\u2192paragraph_block, List\u2192list). release_conflict_waiver=true authorizes overwriting the prior type field; a `release_conflict_waiver_override` event is recorded for audit.",
+      "applied_at": "2026-05-13T15:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route NIST 800-53r5 left-margin DOI watermark text ('This publication is available ... free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5', including table-text interruptions) to type=header_footer_noise. Uses bbox_constraints.x_min_lt=0.10 (left page edge) AND a regex text anchor \u2014 so normal body content cannot be captured even if a body paragraph happened to mention 'this publication is available free of charge'. category=semantic_enrichment so it fires AFTER type_remap (Body\u2192paragraph_block, List\u2192list). release_conflict_waiver=true authorizes overwriting the prior type field; a `release_conflict_waiver_override` event is recorded for audit.",
+      "closed_at": "2026-05-13T15:10:00Z",
+      "closed_by": "agent:claude-opus-4-7 (GS001 R4 \u2014 pinned by regression test tests/test_nist_page_28_regression.py::test_side_doi_chrome_routed_to_header_footer_noise)",
+      "entry_id": "nist-chrome-001",
       "evidence": {
-        "primary_candidate_ids": [
-          "actual:p27:block:3",
-          "actual:p27:block:4",
-          "actual:p27:block:5"
-        ],
         "corroborating_summary": {
           "authoring_summary_key": "side_doi_watermark_paragraph_block_or_list_left_margin",
           "candidate_count": 3,
@@ -1910,6 +1908,11 @@
             "actual:p27:block:5"
           ]
         },
+        "primary_candidate_ids": [
+          "actual:p27:block:3",
+          "actual:p27:block:4",
+          "actual:p27:block:5"
+        ],
         "risk_reasons_observed": [
           "type:paragraph_block_for_chrome",
           "type:list_for_chrome",
@@ -1917,19 +1920,21 @@
         ],
         "second_pass_results": [
           "GS001 R3 golden_slice_comparison: row 2 (side_watermark_or_page_chrome_noise) missing because blocks 3/4/5 typed as paragraph_block/list",
-          "WebGPT 2026-05-13 R3 verdict APPROVE_EVIDENCE: 'Row 2: nist_preset_ledger. NIST-specific side DOI/page chrome. Use text anchors plus left-margin/page-edge geometry'"
+          "WebGPT 2026-05-13 R3 verdict APPROVE_EVIDENCE: 'Row 2: nist_preset_ledger. NIST-specific side DOI/page chrome. Use text anchors plus left-margin/page-edge geometry'",
+          "2026-05-31 page_0456_table_duplicate_cells: side-margin chrome appeared as 'This publication is available AC-2(4) free of charge from:' after table text interleaving; regex now allows bounded interruption between anchor phrases."
         ]
       },
       "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any NIST page where a body paragraph genuinely contains 'This publication is available free of charge' as content. The bbox_constraints.x_min_lt=0.10 guard prevents body text (which starts at x_min \u2248 0.147) from matching."
+        ],
         "candidates_that_prove": [
           "actual:p27:block:3 (text 'This publication is available free of charge from:', type=paragraph_block, bbox.x_min=0.0344)",
           "actual:p27:block:4 (text 'https://doi.org/10.6028/NIST.SP.800', type=paragraph_block, bbox.x_min=0.0344)",
           "actual:p27:block:5 (text '-53r5', type=list, bbox.x_min=0.0344)"
-        ],
-        "candidates_that_could_disprove": [
-          "Any NIST page where a body paragraph genuinely contains 'This publication is available free of charge' as content. The bbox_constraints.x_min_lt=0.10 guard prevents body text (which starts at x_min \u2248 0.147) from matching."
         ]
       },
+      "release_conflict_waiver": true,
       "rule": {
         "applies_when": {
           "bbox_constraints": {
@@ -1938,82 +1943,2093 @@
         },
         "extract": [
           {
-            "regex": "^This publication is available free of charge",
             "fields": {
               "type": "header_footer_noise"
-            }
+            },
+            "regex": "^This publication is available\\b.*\\bfree of charge"
           },
           {
-            "regex": "^https?://doi\\.org/.*NIST",
             "fields": {
               "type": "header_footer_noise"
-            }
+            },
+            "regex": "^https?://doi\\.org/.*NIST"
           },
           {
-            "regex": "^-?\\s*53r5",
             "fields": {
               "type": "header_footer_noise"
-            }
+            },
+            "regex": "^-?\\s*53r5"
           }
         ]
       },
-      "status": "closed",
-      "applied_at": "2026-05-13T15:00:00Z",
-      "release_conflict_waiver": true,
-      "closed_at": "2026-05-13T15:10:00Z",
-      "closed_by": "agent:claude-opus-4-7 (GS001 R4 \u2014 pinned by regression test tests/test_nist_page_28_regression.py::test_side_doi_chrome_routed_to_header_footer_noise)"
+      "status": "closed"
     },
     {
-      "entry_id": "nist-subtitle-001",
+      "added_at": "2026-05-31T19:55:00Z",
+      "added_by": "agent:codex (OpenCode pdf-page-analyzer page_0034 one-case recommendation)",
+      "applied_at": "2026-05-31T19:55:00Z",
+      "applier_rule_kind": "page_chrome_prefix_strip_rule",
       "category": "semantic_enrichment",
-      "applier_rule_kind": "text_classifier_rule",
-      "added_at": "2026-05-13T17:30:00Z",
-      "added_by": "agent:claude-opus-4-7 (GS001 R11 \u2014 subtitle row added per graham's font-characteristic guidance)",
-      "checklist_item": "Type NIST 800-53r5 section subtitles (e.g. 'THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS' immediately under INTRODUCTION) as `section_subtitle` instead of `paragraph_block`. Triple-anchor: font_size_lt=10.4 (smaller than body ~10.62pt, larger than footnotes), bbox main column (x_min in [0.12, 0.20], width > 0.30, y_max < 0.30 to stay above body region), and ALL CAPS text regex 15-200 chars. release_conflict_waiver=true authorizes promoting paragraph_block \u2192 section_subtitle.",
+      "checklist_item": "Strip NIST 800-53r5 left-sidebar publication/DOI chrome tokens when PyMuPDF interleaves them into body paragraph lines, preserving non-sidebar body text and moving retained text back to the body column. Tiny left-edge sidebar fragments are routed to header_footer_noise.",
+      "closed_at": "2026-05-31T19:55:00Z",
+      "closed_by": "agent:codex (page_0034 one-case artifact; verification still scoped to local tests/artifact audit)",
+      "entry_id": "nist-chrome-002",
       "evidence": {
-        "primary_candidate_ids": ["actual:p27:block:8"],
-        "corroborating_summary": {
-          "authoring_summary_key": "nist_section_subtitle_under_section_heading",
-          "candidate_count": 1,
-          "sample_candidate_ids": ["actual:p27:block:8"]
-        }
+        "primary_candidate_ids": [
+          "actual:p34:line:11",
+          "actual:p34:line:24",
+          "actual:p34:line:33",
+          "actual:p34:line:35"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/page_0034_one_case_agentic_second_pass/opencode_recovery/stream_result.json: patch_recommended for page chrome prefix strip rule"
+        ]
       },
       "evidence_and_intent": {
-        "candidates_that_prove": [
-          "actual:p27:block:8 (text 'THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS', font_size=10.02, font_name=TT0, is_bold=False per pdf_oxide, bbox.x_min=0.147, type=paragraph_block) appears directly under section_heading 'INTRODUCTION' (block:7, fs=16.02 bold) and is visually a section subtitle."
-        ],
         "candidates_that_could_disprove": [
-          "Any NIST paragraph_block whose font_size is below 10.4pt AND is ALL CAPS AND sits in the main column above y=0.30. NIST body is consistently fs>=10.6 mixed-case, so no body content matches. The footer 'CHAPTER ONE PAGE 1' sits at y_min~0.94 so y_max_lt=0.30 excludes it."
+          "Any NIST body paragraph that truly starts in the left margin below x_min < 0.06 and needs the exact sidebar tokens as document content."
+        ],
+        "candidates_that_prove": [
+          "actual:p34:line:11 text begins with sidebar publication tokens interleaved with valid body words.",
+          "actual:p34:line:24 text begins with corrupted DOI/NIST sidebar token followed by valid body words.",
+          "actual:p34:line:33 and actual:p34:line:35 are tiny left-edge sidebar leftovers."
         ]
       },
       "rule": {
         "applies_when": {
-          "type": "paragraph_block",
           "bbox_constraints": {
+            "x_min_lt": 0.06
+          },
+          "type": [
+            "paragraph",
+            "paragraph_block",
+            "list",
+            "text"
+          ]
+        },
+        "body_column_x_min": 0.145,
+        "empty_type": "header_footer_noise",
+        "strip_prefix_patterns": [
+          "^(?:https?\\S*|\\S*oi\\.org\\S*|\\S*NIST\\S*|\\S*S008\\S*)\\s+"
+        ],
+        "strip_token_patterns": [
+          "^this$",
+          "^publication$",
+          "^is$",
+          "^available$",
+          "^free$",
+          "^charge$"
+        ],
+        "tiny_fragment_type": "header_footer_noise",
+        "tiny_fragment_when": {
+          "bbox_constraints": {
+            "width_lt": 0.02,
+            "x_min_lt": 0.06
+          }
+        }
+      },
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-05-13T17:30:00Z",
+      "added_by": "agent:claude-opus-4-7 (GS001 R11 \u2014 subtitle row added per graham's font-characteristic guidance)",
+      "applied_at": "2026-05-13T17:30:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Type NIST 800-53r5 section subtitles (e.g. 'THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS' immediately under INTRODUCTION) as `section_subtitle` instead of `paragraph_block`. Triple-anchor: font_size_lt=10.4 (smaller than body ~10.62pt, larger than footnotes), bbox main column (x_min in [0.12, 0.20], width > 0.30, y_max < 0.30 to stay above body region), and ALL CAPS text regex 15-200 chars. release_conflict_waiver=true authorizes promoting paragraph_block \u2192 section_subtitle.",
+      "closed_at": "2026-05-13T17:30:00Z",
+      "closed_by": "agent:claude-opus-4-7 (GS001 R11 \u2014 pinned by regression test tests/test_nist_page_28_regression.py::test_section_subtitle_THE_NEED_TO_PROTECT_is_typed_section_subtitle)",
+      "entry_id": "nist-subtitle-001",
+      "evidence": {
+        "corroborating_summary": {
+          "authoring_summary_key": "nist_section_subtitle_under_section_heading",
+          "candidate_count": 1,
+          "sample_candidate_ids": [
+            "actual:p27:block:8"
+          ]
+        },
+        "primary_candidate_ids": [
+          "actual:p27:block:8"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any NIST paragraph_block whose font_size is below 10.4pt AND is ALL CAPS AND sits in the main column above y=0.30. NIST body is consistently fs>=10.6 mixed-case, so no body content matches. The footer 'CHAPTER ONE PAGE 1' sits at y_min~0.94 so y_max_lt=0.30 excludes it."
+        ],
+        "candidates_that_prove": [
+          "actual:p27:block:8 (text 'THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS', font_size=10.02, font_name=TT0, is_bold=False per pdf_oxide, bbox.x_min=0.147, type=paragraph_block) appears directly under section_heading 'INTRODUCTION' (block:7, fs=16.02 bold) and is visually a section subtitle."
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "nist-tomap-005 (block_type_map: Body \u2192 paragraph_block) sets paragraph_block as the default for all Body elements. This entry is more specific: when the paragraph_block sits under a section_heading at smaller font_size in the main column AND its text is all-caps, it is the section subtitle. The waiver acknowledges this intentional override of the paragraph_block default by a more specific text+font+bbox classifier_rule.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "width_gt": 0.3,
             "x_min_gt": 0.12,
-            "x_min_lt": 0.20,
-            "width_gt": 0.30,
-            "y_max_lt": 0.30
+            "x_min_lt": 0.2,
+            "y_max_lt": 0.3
           },
           "font_properties": {
             "font_size_lt": 10.4
-          }
+          },
+          "type": "paragraph_block"
         },
         "extract": [
           {
-            "regex": "^[A-Z][A-Z0-9\\s,.;:/()\\-\u2014'\"]{14,200}$",
             "fields": {
               "type": "section_subtitle"
+            },
+            "regex": "^[A-Z][A-Z0-9\\s,.;:/()\\-\u2014'\"]{14,200}$"
+          }
+        ]
+      },
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-05-31T22:35:00Z",
+      "added_by": "agent:codex (PDF Lab page 28 second-pass hardening)",
+      "applied_at": "2026-05-31T22:35:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route compact NIST footer strings such as 'CHAPTER ONE PAGE 1' to page chrome instead of body content.",
+      "closed_at": "2026-05-31T22:35:00Z",
+      "closed_by": "agent:codex (validated by page 28 closure and focused regression tests)",
+      "entry_id": "nist-footer-page-chrome-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p28:block:2"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55/page_0028/bug_report.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A main-column NIST paragraph above the footer band whose text intentionally starts with CHAPTER or APPENDIX and PAGE."
+        ],
+        "candidates_that_prove": [
+          "Page 28 emits bottom footer text 'CHAPTER ONE PAGE 1' at y_min > 0.90; it is page chrome, not paragraph content."
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "Body block-type remapping sets paragraph_block by default; this rule is narrower because it requires the bottom footer band and a compact CHAPTER/APPENDIX PAGE pattern.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "y_min_gt": 0.9
+          },
+          "type": [
+            "paragraph_block",
+            "paragraph"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "type": "header_footer_noise"
+            },
+            "regex": "^(?:CHAPTER|APPENDIX)\\s+[A-Z0-9]+(?:\\s+[A-Z0-9]+)?\\s+PAGE\\s+\\d+$"
+          }
+        ]
+      },
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-05-31T23:05:00Z",
+      "added_by": "agent:codex (expanded NIST candidate scan)",
+      "applied_at": "2026-05-31T23:05:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route front-matter NIST publication availability/DOI boilerplate to page chrome even when it appears in the body column rather than the rotated left sidebar.",
+      "closed_at": "2026-05-31T23:05:00Z",
+      "closed_by": "agent:codex (validated by expanded candidate scan and sidebar chrome regression test)",
+      "entry_id": "nist-publication-availability-chrome-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p1:block:5",
+          "actual:p2:block:5",
+          "actual:p3:block:11"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/expanded_nist_candidate_scan_20260531Tnow/scan.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A real body paragraph that starts with exactly the publication availability boilerplate but is semantically body content rather than page/publication chrome."
+        ],
+        "candidates_that_prove": [
+          "Pages 1, 2, and 3 emit 'This publication is available free of charge from:' plus a NIST DOI as paragraph_block; this is publication boilerplate, not document body content."
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "Body block-type remapping sets paragraph_block by default; this rule is narrower because it requires the exact NIST publication availability boilerplate plus NIST DOI.",
+      "rule": {
+        "applies_when": {
+          "type": [
+            "paragraph_block",
+            "paragraph",
+            "list",
+            "text"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "type": "header_footer_noise"
+            },
+            "regex": "^This publication is available\\b.*\\bfree of charge\\b.*\\bhttps?://doi\\.org/10\\.6028/NIST\\."
+          }
+        ]
+      },
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-05-31T22:35:00Z",
+      "added_by": "agent:codex (PDF Lab page 28 second-pass hardening)",
+      "applied_at": "2026-05-31T22:35:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route bottom grouped NIST numbered footnotes to footnote instead of paragraph_block when PyMuPDF/Rust extraction returns the footnote band as one body block.",
+      "closed_at": "2026-05-31T22:35:00Z",
+      "closed_by": "agent:codex (validated by page 28 closure and focused regression tests)",
+      "entry_id": "nist-footnote-group-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p28:block:13"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55/page_0028/bug_report.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A bottom-band NIST body paragraph that begins with a number but is not a footnote group and does not contain subsequent numbered notes."
+        ],
+        "candidates_that_prove": [
+          "Page 28 emits a bottom-band block starting with numbered note 1 and containing notes 2 through 7; the expected PDF Lab family is footnote."
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "Body block-type remapping sets paragraph_block by default; this rule is narrower because it requires the NIST bottom footnote band and multiple numbered note anchors.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.12,
+            "x_min_lt": 0.2,
+            "y_max_gt": 0.78,
+            "y_min_gt": 0.68
+          },
+          "type": [
+            "paragraph_block",
+            "paragraph"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "type": "footnote"
+            },
+            "regex": "^1\\s+\\S+.*\\s2\\s+\\S+.*\\s3\\s+\\S+.*"
+          }
+        ]
+      },
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-05-31T19:36:00Z",
+      "added_by": "agent:codex (PDF Lab second-pass running-header hardening)",
+      "applied_at": "2026-05-31T19:36:00Z",
+      "applier_rule_kind": "same_band_merge_rule",
+      "category": "structural_grouping",
+      "checklist_item": "Merge same-band NIST top running-header fragments into one page-chrome running_header element and suppress the child fragments, matching the compact PDF Lab candidate contract.",
+      "closed_at": "2026-05-31T19:36:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_running_header_merge.py)",
+      "entry_id": "nist-running-header-merge-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "human:p27:running_header_merged",
+          "actual:p27:line:0",
+          "actual:p27:line:68+actual:p27:line:111"
+        ],
+        "second_pass_results": [
+          "scillm_bug_report_pilot_gpt55_clusters/page_0027_page_chrome"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A page with two same-band running headers that must remain separate semantic release elements rather than one page chrome band."
+        ],
+        "candidates_that_prove": [
+          "Page 27 top margin has two running_header fragments on the same horizontal band; PDF Lab compact contract expects one running-header/page-chrome region."
+        ]
+      },
+      "rule": {
+        "max_y_center_delta": 0.02,
+        "merge_when": {
+          "bbox_constraints": {
+            "y_max_lt": 0.08
+          },
+          "type": "running_header"
+        },
+        "min_count": 2,
+        "suppress_children": true,
+        "synthesize": {
+          "semantic_role": "page_chrome",
+          "source_type": "synthetic",
+          "type": "running_header"
+        }
+      },
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T16:52:00Z",
+      "added_by": "agent:codex (next-30 supplemental reference rerun)",
+      "applied_at": "2026-06-01T16:52:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Keep bracketed NIST withdrawn control/enhancement notes out of the reference family.",
+      "closed_at": "2026-06-01T16:52:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-withdrawn-note-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p100:block:15",
+          "actual:p100:block:24",
+          "actual:p200:block:11",
+          "actual:p336:block:12",
+          "actual:p336:block:14",
+          "actual:p336:block:16",
+          "actual:p336:block:18",
+          "actual:p336:block:21"
+        ],
+        "risk_reasons_observed": [
+          "withdrawn_status_note_promoted_to_reference",
+          "bracketed_control_citation_not_bibliographic_reference"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_reference_rerun/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/supplemental_reference_rerun_findings.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A true bibliographic reference entry beginning with a bracketed citation key; rejected because it does not begin with '[Withdrawn:'.",
+          "A withdrawn note outside the NIST body column or outside normal body font size; rejected by body-column and font-size guards."
+        ],
+        "candidates_that_prove": [
+          "Pages 100, 200, and 336 emit bracketed '[Withdrawn: ...]' status notes under controls or enhancements; the broad reference-continuation rule promoted them to reference because they begin with '[' and contain control identifiers."
+        ],
+        "deterministic_rule": "If a NIST Body block in the main body column starts with '[Withdrawn:', classify it as paragraph_block with semantic_role=nist_withdrawn_note before broader reference continuation matching runs."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block, section_heading, or reference",
+          "bbox x_min is outside the observed withdrawn-note body indent band",
+          "font_size is outside the observed normal body-note band",
+          "text does not start with '[Withdrawn:'"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overrides a prior generic reference typing only for bracketed NIST withdrawn-status notes, and it is more specific than the broad reference-continuation regex.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_min_lt": 0.25,
+            "y_max_lt": 0.92
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 10.35
+          },
+          "source_type": "Body",
+          "type": [
+            "paragraph_block",
+            "section_heading",
+            "reference"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "nist_withdrawn_note",
+              "type": "paragraph_block"
+            },
+            "prefix_ci": "[Withdrawn:"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T17:33:00Z",
+      "added_by": "agent:codex (next-30 references appendix closure)",
+      "applied_at": "2026-06-01T17:33:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route NIST References appendix hanging-indent continuation lines to the reference family even when the line text lacks citation keywords.",
+      "closed_at": "2026-06-01T17:33:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-reference-appendix-hanging-continuation-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p403:block:7",
+          "actual:p403:block:26"
+        ],
+        "risk_reasons_observed": [
+          "references_appendix_hanging_continuation_as_body",
+          "references_appendix_hanging_continuation_as_list"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Ordinary NIST control body/list content at the same indent; rejected because the rule is restricted to the NIST References appendix page range.",
+          "Footer, page number, DOI side chrome, and left-column reference labels; rejected by x_min/font/body band guards.",
+          "Related Controls wrapped numeric fragments on control pages; rejected by the page guard."
+        ],
+        "candidates_that_prove": [
+          "Page 403 block 7 is a References appendix hanging-indent continuation beginning with '731.106' and was misclassified as list.",
+          "Page 403 block 26 is a References appendix hanging-indent continuation beginning with 'and Responding' and was misclassified as body."
+        ],
+        "deterministic_rule": "On NIST References appendix pages, classify Body/List paragraph/list blocks in the hanging-reference continuation indent and body font band as reference with semantic_role=reference_continuation."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "page is outside the NIST References appendix page range",
+          "source_type is not Body or List",
+          "type is not paragraph_block or list",
+          "bbox x_min is outside the hanging-reference continuation indent band",
+          "font size is outside body/reference continuation range",
+          "block is in bottom footer band"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overrides generic Body/List typing only on NIST References appendix pages and only in the hanging-reference continuation indent band.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.27,
+            "x_min_lt": 0.31,
+            "y_max_lt": 0.89
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 11.1
+          },
+          "page": [
+            403,
+            404,
+            405,
+            406,
+            407,
+            408,
+            409,
+            410,
+            411,
+            412,
+            413
+          ],
+          "source_type": [
+            "Body",
+            "List"
+          ],
+          "type": [
+            "paragraph_block",
+            "list"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "reference_continuation",
+              "type": "reference"
+            },
+            "regex": "^(?!\\d+\\.$).+$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T16:40:00Z",
+      "added_by": "agent:codex (next-30 full-text agentic second pass)",
+      "applied_at": "2026-06-01T16:40:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route NIST reference lead lines and hanging reference continuations emitted as Body/Title/List blocks to the reference family.",
+      "closed_at": "2026-06-01T16:40:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-reference-continuation-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p137:block:17",
+          "actual:p200:block:16",
+          "actual:p251:block:23",
+          "actual:p403:block:7",
+          "actual:p403:block:27",
+          "actual:p409:block:12",
+          "actual:p413:block:7"
+        ],
+        "risk_reasons_observed": [
+          "references_lead_line_as_paragraph",
+          "reference_continuation_as_body",
+          "reference_continuation_as_list",
+          "reference_continuation_as_section_heading"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Ordinary body/list text outside the observed reference indent bands; rejected by x_min guards and citation/URL/reference regex.",
+          "Control enhancement headings with pipe separators; rejected because they do not match reference text forms."
+        ],
+        "candidates_that_prove": [
+          "Control pages emit 'References: [..]' lead lines as paragraph_block while immediate continuations are reference.",
+          "Reference appendix pages emit hanging-indented citation bodies, URLs, revision fragments, and year fragments as paragraph_block/list rather than reference.",
+          "Page 251 emits a wrapped citation continuation as a Title/section_heading."
+        ],
+        "deterministic_rule": "If a NIST block is in a references lead/continuation indent band and its text is a References lead line, citation continuation, DOI/URL/reference publication line, or short year/revision fragment, classify it as reference with semantic_role=reference_continuation."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body, Title, or List",
+          "type is not paragraph_block, section_heading, or list",
+          "bbox x_min is outside the control-page or reference-appendix reference bands",
+          "text does not match a reference lead, bracketed citation continuation, URL/DOI/publication line, or short reference fragment"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overwrites generic Body/List/Title typing only for tightly guarded NIST reference lead and continuation shapes.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_min_lt": 0.31,
+            "y_max_lt": 0.92
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 11.1
+          },
+          "source_type": [
+            "Body",
+            "Title",
+            "List"
+          ],
+          "type": [
+            "paragraph_block",
+            "section_heading",
+            "list"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "reference_continuation",
+              "type": "reference"
+            },
+            "regex": "^(?![a-z]\\.\\s)(?:References:\\s+.*|(?:\\[|800-|SP\\s+800-|NIST\\.|https?://|.*\\b(?:NIST|Special Publication|Federal Register|Code of Federal Regulations|C\\.F\\.R\\.|govinfo|federalregister|doi\\.org|whitehouse\\.gov|archives\\.gov|National Institute of Standards and Technology)\\b).*|\\d{4}\\.|[\\u2013-]\\s+Best Practices.*)$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T17:25:00Z",
+      "added_by": "agent:codex (next-30 supplemental reference rerun)",
+      "applied_at": "2026-06-01T17:25:00Z",
+      "applier_rule_kind": "adjacent_text_merge_rule",
+      "category": "structural_grouping",
+      "checklist_item": "Merge NIST reference appendix revision-number fragments such as 'Rev.' followed by '2.' or '1.'.",
+      "closed_at": "2026-06-01T17:25:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-reference-revision-fragment-merge-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p413:block:9",
+          "actual:p413:block:10",
+          "actual:p413:block:13",
+          "actual:p413:block:14"
+        ],
+        "risk_reasons_observed": [
+          "reference_revision_number_fragment_as_list",
+          "bare_numeric_fragment_after_reference_rev_abbreviation"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_reference_rerun/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A true numbered list item; rejected because the lead must already be a reference continuation ending in 'Rev.'.",
+          "Related Controls wrapped control identifiers; rejected because the lead indent, type, and text pattern differ.",
+          "Non-adjacent same-page fragments; rejected by vertical and x alignment guards."
+        ],
+        "candidates_that_prove": [
+          "Page 413 emits a reference continuation ending in 'Rev.' followed by a standalone List block '2.'.",
+          "Page 413 emits a second reference continuation ending in 'Rev.' followed by a standalone List block '1.'."
+        ],
+        "deterministic_rule": "If a NIST reference-continuation block in the appendix hanging-reference indent ends with 'Rev.' and the immediately following aligned List block is only a numeric-period fragment, merge the fragment into the lead block with a space."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "lead block is not a reference continuation in the reference appendix hanging indent",
+          "lead text does not end with Rev.",
+          "tail block is not a List/list block in the same hanging indent",
+          "tail text is not a bare numeric-period fragment",
+          "tail is not vertically adjacent to the lead"
+        ]
+      },
+      "rule": {
+        "join_style": "space",
+        "lead_text_regex": "\\bRev\\.$",
+        "lead_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.27,
+            "x_min_lt": 0.31,
+            "y_max_lt": 0.92
+          },
+          "font_properties": {
+            "font_size_gt": 10.8,
+            "font_size_lt": 11.1
+          },
+          "semantic_role": "reference_continuation",
+          "source_type": "Body",
+          "type": "reference"
+        },
+        "max_x_delta": 0.005,
+        "max_y_gap": 0.01,
+        "merged_fields": {
+          "semantic_role": "reference_continuation",
+          "type": "reference"
+        },
+        "tail_text_regex": "^\\d+\\.$",
+        "tail_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.27,
+            "x_min_lt": 0.31,
+            "y_max_lt": 0.92
+          },
+          "font_properties": {
+            "font_size_gt": 10.8,
+            "font_size_lt": 11.1
+          },
+          "source_type": "List",
+          "type": "list"
+        }
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T17:45:00Z",
+      "added_by": "agent:codex (next-30 materializer spacing closure)",
+      "applied_at": "2026-06-01T17:45:00Z",
+      "applier_rule_kind": "text_normalization_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Remove materializer-inserted spaces inside wrapped NIST reference citation tokens and URL substrings.",
+      "closed_at": "2026-06-01T17:45:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-reference-token-dewrap-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p298:block:7",
+          "actual:p403:block:8",
+          "actual:p403:block:10",
+          "actual:p403:block:16",
+          "actual:p403:block:18",
+          "actual:p403:block:20",
+          "actual:p403:block:22",
+          "actual:p403:block:24",
+          "actual:p403:block:28"
+        ],
+        "risk_reasons_observed": [
+          "standard_citation_hyphen_wrap_space",
+          "url_internal_linewrap_space"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Ordinary prose spacing in reference text; preserved because only standard-citation hyphen wraps and substrings beginning with http(s):// are normalized.",
+          "Bracketed commentary after a URL; preserved because URL whitespace collapse stops before whitespace followed by '['.",
+          "Non-reference body text; rejected by type and semantic_role guards."
+        ],
+        "candidates_that_prove": [
+          "Page 298 emits '[SP 800- 60-1]' inside a References line where the visible citation is '[SP 800-60-1]'.",
+          "Page 403 emits URL substrings with injected spaces such as 'title5- vol2', 'controlled- unclassified-information', 'Policy. pdf', and '2017 /m-17-12_0.pdf'."
+        ],
+        "deterministic_rule": "For reference lead and reference-continuation blocks, remove spaces inserted after a hyphen inside bracketed standard citation tokens and collapse whitespace within URL substrings."
+      },
+      "fix_target": "materializer",
+      "guards": {
+        "do_not_apply_if": [
+          "block type is not reference",
+          "semantic_role is not reference_lead or reference_continuation",
+          "text contains neither a bracketed standard citation hyphen-wrap nor an http(s) URL substring"
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "semantic_role": [
+            "reference_lead",
+            "reference_continuation"
+          ],
+          "type": "reference"
+        },
+        "transforms": [
+          "remove_space_after_standard_citation_hyphen",
+          "collapse_url_internal_whitespace"
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T16:40:00Z",
+      "added_by": "agent:codex (next-30 full-text agentic second pass)",
+      "applied_at": "2026-06-01T16:40:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Demote wrapped Related Controls numeric fragments such as '4.' and '7.' from list to paragraph continuation.",
+      "closed_at": "2026-06-01T16:40:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-related-controls-wrap-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p100:block:8",
+          "actual:p336:block:9"
+        ],
+        "risk_reasons_observed": [
+          "related_controls_wrapped_code_fragment_as_list"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A real numbered list item with following content; rejected because the regex only matches a bare numeric fragment.",
+          "Reference appendix revision fragments at x_min around 0.288; handled by the reference-continuation rule and rejected here by x_min_lt=0.23."
+        ],
+        "candidates_that_prove": [
+          "Pages 100 and 336 wrap 'SI-4.' and 'SI-7.' across a line break, leaving the numeric tail as a standalone List block at the Related Controls indent."
+        ],
+        "deterministic_rule": "If a NIST List block at the Related Controls continuation indent is only a numeric fragment like '4.', classify it as paragraph_block with semantic_role=related_controls_continuation."
+      },
+      "fix_target": "nist_preset",
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overwrites generic List typing only for bare numeric Related Controls wrap fragments in the observed continuation indent band.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_min_lt": 0.23,
+            "y_max_lt": 0.4
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 10.15
+          },
+          "source_type": "List",
+          "type": "list"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "related_controls_continuation",
+              "type": "paragraph_block"
+            },
+            "regex": "^\\d+\\.$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T17:12:00Z",
+      "added_by": "agent:codex (next-30 supplemental reference rerun)",
+      "applied_at": "2026-06-01T17:12:00Z",
+      "applier_rule_kind": "adjacent_text_merge_rule",
+      "category": "structural_grouping",
+      "checklist_item": "Merge NIST Related Controls identifiers wrapped after a control-family hyphen, such as 'SI-' followed by '4.' or '7.'.",
+      "closed_at": "2026-06-01T17:12:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-related-controls-wrap-merge-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p100:block:7",
+          "actual:p100:block:8",
+          "actual:p336:block:8",
+          "actual:p336:block:9"
+        ],
+        "risk_reasons_observed": [
+          "related_controls_identifier_split_across_blocks",
+          "bare_numeric_fragment_after_control_family_hyphen"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_withdrawn_note_rerun/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_core_list_segmentation_rerun/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A real numbered list item with following content; rejected because the tail regex only matches a bare numeric-period fragment.",
+          "A reference appendix revision fragment; rejected because the lead must begin with 'Related Controls:' and end with an uppercase control-family hyphen.",
+          "Non-adjacent same-page fragments; rejected by vertical and x alignment guards."
+        ],
+        "candidates_that_prove": [
+          "Page 100 emits a Related Controls paragraph ending in 'SI-' immediately followed by a bare numeric fragment '4.'.",
+          "Page 336 emits a Related Controls paragraph ending in 'SI-' immediately followed by a bare numeric fragment '7.'."
+        ],
+        "deterministic_rule": "If a NIST Related Controls paragraph in the main body column ends with an uppercase control-family hyphen and the immediately following aligned block is only a numeric-period fragment, merge the fragment into the lead block without inserting a space."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "lead block is not a paragraph_block Body block in the main control column",
+          "lead text does not start with Related Controls: and end with an uppercase control-family hyphen",
+          "tail block is not a paragraph/list fragment in the same column",
+          "tail text is not a bare numeric-period fragment",
+          "tail is not vertically adjacent to the lead"
+        ]
+      },
+      "rule": {
+        "join_style": "hyphen_continuation",
+        "lead_text_regex": "^Related Controls:\\s+.*\\b[A-Z]{2}-$",
+        "lead_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_min_lt": 0.23,
+            "y_max_lt": 0.4
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 10.15
+          },
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "max_x_delta": 0.01,
+        "max_y_gap": 0.02,
+        "merged_fields": {
+          "semantic_role": "related_controls",
+          "type": "paragraph_block"
+        },
+        "tail_text_regex": "^\\d+\\.$",
+        "tail_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_min_lt": 0.23,
+            "y_max_lt": 0.42
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 10.15
+          },
+          "source_type": [
+            "Body",
+            "List"
+          ],
+          "type": [
+            "paragraph_block",
+            "list"
+          ]
+        }
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T18:35:00Z",
+      "added_by": "agent:codex (remaining list rerun closure)",
+      "applied_at": "2026-06-01T18:35:00Z",
+      "applier_rule_kind": "adjacent_text_merge_rule",
+      "category": "structural_grouping",
+      "checklist_item": "Merge wrapped continuations of parenthesized alpha NIST list items that were emitted as paragraph/reference/heading blocks.",
+      "closed_at": "2026-06-01T18:35:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_list_item_preset.py)",
+      "entry_id": "nist-list-continuation-merge-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p51:block:14",
+          "actual:p51:block:15",
+          "actual:p178:block:26",
+          "actual:p178:block:27",
+          "actual:p254:block:6",
+          "actual:p254:block:7"
+        ],
+        "risk_reasons_observed": [
+          "parenthesized_alpha_list_item_continuation_as_reference",
+          "parenthesized_alpha_list_item_continuation_as_paragraph",
+          "parenthesized_alpha_list_item_continuation_as_heading"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_remaining_list_rerun/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A real next list item; rejected because the tail cannot begin with an alpha/numeric list marker.",
+          "A NIST field label or section heading; rejected because the tail cannot begin with Discussion, Related Controls, References, or Control Enhancements.",
+          "Nested numeric list items at the deeper indent; rejected because the lead must be in the parenthesized-alpha body indent band."
+        ],
+        "candidates_that_prove": [
+          "Page 51 block 14 starts '(c)' and block 15 is its indented continuation but was classified as reference.",
+          "Page 178 block 26 starts '(c)' and block 27 is its indented continuation but was classified as paragraph_block.",
+          "Page 254 block 6 starts '(b)' and block 7 is its indented continuation but was classified as section_heading."
+        ],
+        "deterministic_rule": "If a parenthesized-alpha NIST list item in the body list indent is immediately followed by an indented non-marker continuation line, merge the continuation into the list item and keep type=list/semantic_role=nist_list_item."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "lead block is not list/nist_list_item",
+          "lead text does not start with a parenthesized alpha marker",
+          "tail starts with a new list marker or NIST field label",
+          "tail is not vertically adjacent and indented under the lead"
+        ]
+      },
+      "rule": {
+        "join_style": "space",
+        "lead_text_regex": "^\\([a-z]\\)\\s+.+[^.;:]$",
+        "lead_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.23,
+            "x_min_lt": 0.24,
+            "y_max_lt": 0.91
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 10.15
+          },
+          "semantic_role": "nist_list_item",
+          "type": "list"
+        },
+        "max_x_delta": 0.04,
+        "max_y_gap": 0.006,
+        "merged_fields": {
+          "semantic_role": "nist_list_item",
+          "type": "list"
+        },
+        "tail_text_regex": "^(?!(?:\\([a-z0-9]+\\)|[a-z]\\.\\s|\\d+\\.\\s|Discussion:|Related Controls:|References:|Control Enhancements:)).+",
+        "tail_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.26,
+            "x_min_lt": 0.27,
+            "y_max_lt": 0.91
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 10.15
+          },
+          "source_type": [
+            "Body",
+            "Title"
+          ],
+          "type": [
+            "paragraph_block",
+            "reference",
+            "section_heading"
+          ]
+        }
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T17:58:00Z",
+      "added_by": "agent:codex (next-30 field-merge closure)",
+      "applied_at": "2026-06-01T17:58:00Z",
+      "applier_rule_kind": "field_split_rule",
+      "category": "structural_grouping",
+      "checklist_item": "Split merged NIST control/enhancement body paragraphs when visible field labels 'Discussion:' and 'Related Controls:' were materialized into the same block.",
+      "closed_at": "2026-06-01T17:58:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_field_split_preset.py)",
+      "entry_id": "nist-field-split-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p382:block:6",
+          "actual:p399:block:24"
+        ],
+        "risk_reasons_observed": [
+          "control_statement_discussion_related_controls_merged",
+          "enhancement_requirement_discussion_related_controls_merged"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Already separate Discussion or Related Controls blocks; rejected because the split regex requires lead text before both labels in the same block.",
+          "Reference blocks that include words such as discussion; rejected by source/type/x/font guards and label regex.",
+          "Body paragraphs where labels are not NIST field labels; rejected because both exact labels must appear in order."
+        ],
+        "candidates_that_prove": [
+          "Page 382 block 6 contains a control statement followed by 'Discussion:' and 'Related Controls:' in one paragraph block.",
+          "Page 399 block 24 contains an enhancement requirement followed by 'Discussion:' and 'Related Controls:' in one paragraph block."
+        ],
+        "deterministic_rule": "For NIST body paragraph blocks in the control/enhancement body indent band that contain lead text, 'Discussion:', and 'Related Controls:' in sequence, split the original block into control_statement, discussion, and related_controls segment blocks."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block",
+          "bbox x_min is outside the NIST body/control field indent band",
+          "font size is outside the observed body field merge range",
+          "text does not contain lead text followed by Discussion: and Related Controls:"
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.23,
+            "x_min_lt": 0.24,
+            "y_max_lt": 0.86
+          },
+          "font_properties": {
+            "font_size_gt": 10.0,
+            "font_size_lt": 11.1
+          },
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "bbox_strategy": "text_length_weighted",
+        "segments": [
+          {
+            "fields": {
+              "semantic_role": "control_statement",
+              "type": "paragraph_block"
+            },
+            "group": "control"
+          },
+          {
+            "fields": {
+              "semantic_role": "discussion",
+              "type": "paragraph_block"
+            },
+            "group": "discussion",
+            "id_suffix": "discussion"
+          },
+          {
+            "fields": {
+              "semantic_role": "related_controls",
+              "type": "paragraph_block"
+            },
+            "group": "related",
+            "id_suffix": "related_controls"
+          }
+        ],
+        "split_regex": "^(?P<control>.+?)\\s+(?P<discussion>Discussion:\\s+.+?)\\s+(?P<related>Related Controls:\\s+.+)$"
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T18:08:00Z",
+      "added_by": "agent:codex (next-30 field-merge rerun)",
+      "applied_at": "2026-06-01T18:08:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Keep standalone NIST field labels such as 'Control:' out of the section-heading family.",
+      "closed_at": "2026-06-01T18:08:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_field_split_preset.py)",
+      "entry_id": "nist-field-label-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p399:block:13"
+        ],
+        "risk_reasons_observed": [
+          "standalone_control_label_promoted_to_section_heading"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_field_split_rerun/summary.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "True NIST control headings such as 'SR-11 COMPONENT AUTHENTICITY'; rejected because this rule only matches exact standalone field-label text.",
+          "Long body paragraphs beginning with a field label and content; rejected because this rule only matches exact labels."
+        ],
+        "candidates_that_prove": [
+          "Page 399 block 13 is a standalone 'Control:' field label immediately before list items, not a structural section heading."
+        ],
+        "deterministic_rule": "If a NIST Body block text exactly equals a known standalone field label, classify it as paragraph_block with semantic_role=nist_field_label."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "text is not exactly one of the standalone NIST field labels"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This exact-label rule intentionally wins over broader heading promotion rules for standalone NIST field labels.",
+      "rule": {
+        "applies_when": {
+          "source_type": "Body"
+        },
+        "extract": [
+          {
+            "equals_ci": "Control:",
+            "fields": {
+              "semantic_role": "nist_field_label",
+              "type": "paragraph_block"
+            }
+          },
+          {
+            "equals_ci": "Discussion:",
+            "fields": {
+              "semantic_role": "nist_field_label",
+              "type": "paragraph_block"
+            }
+          },
+          {
+            "equals_ci": "Related Controls:",
+            "fields": {
+              "semantic_role": "nist_field_label",
+              "type": "paragraph_block"
+            }
+          },
+          {
+            "equals_ci": "References:",
+            "fields": {
+              "semantic_role": "nist_field_label",
+              "type": "paragraph_block"
             }
           }
         ]
       },
-      "status": "closed",
-      "applied_at": "2026-05-13T17:30:00Z",
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T16:27:00Z",
+      "added_by": "agent:codex (next-30 full-text agentic second pass)",
+      "applied_at": "2026-06-01T16:27:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route bottom-band NIST grouped footnote blocks that start with later footnote numbers, such as notes 13 and 14 on page 30, to footnote.",
+      "closed_at": "2026-06-01T16:27:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_footnote_preset.py)",
+      "entry_id": "nist-footnote-group-002",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p30:block:13"
+        ],
+        "risk_reasons_observed": [
+          "bottom_band_footnote_group_as_body",
+          "later_numbered_footnotes_merged"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/pages/page_0030/model_review.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A main-body paragraph with numbered clauses; rejected by y_min_gt/y_max_lt bottom footnote band guards.",
+          "A bottom-band page footer; rejected because it does not begin with two numbered note anchors."
+        ],
+        "candidates_that_prove": [
+          "Page 30 emits bottom-band text beginning with '13 Risk management...' and containing '14 [OMB A-130]...' as one paragraph_block; visually this is a grouped footnote region below a separator rule."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block is in the bottom footnote band and contains two numbered note anchors, classify it as footnote with semantic_role=footnote_group."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block or paragraph",
+          "bbox is outside y_min > 0.78 and y_max < 0.92",
+          "text does not contain at least two numbered footnote anchors"
+        ]
+      },
       "release_conflict_waiver": true,
-      "release_conflict_waiver_rationale": "nist-tomap-005 (block_type_map: Body \u2192 paragraph_block) sets paragraph_block as the default for all Body elements. This entry is more specific: when the paragraph_block sits under a section_heading at smaller font_size in the main column AND its text is all-caps, it is the section subtitle. The waiver acknowledges this intentional override of the paragraph_block default by a more specific text+font+bbox classifier_rule.",
-      "closed_at": "2026-05-13T17:30:00Z",
-      "closed_by": "agent:claude-opus-4-7 (GS001 R11 \u2014 pinned by regression test tests/test_nist_page_28_regression.py::test_section_subtitle_THE_NEED_TO_PROTECT_is_typed_section_subtitle)"
+      "release_conflict_waiver_rationale": "This rule intentionally overwrites generic Body paragraph_block typing only for bottom-band grouped numbered footnotes.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.12,
+            "x_min_lt": 0.2,
+            "y_max_lt": 0.92,
+            "y_min_gt": 0.78
+          },
+          "source_type": "Body",
+          "type": [
+            "paragraph_block",
+            "paragraph"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "footnote_group",
+              "type": "footnote"
+            },
+            "regex": "^\\s*\\d{1,2}\\s+\\S+[\\s\\S]*\\s\\d{1,2}\\s+\\S+"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T16:16:00Z",
+      "added_by": "agent:codex (next-30 full-text agentic second pass)",
+      "applied_at": "2026-06-01T16:16:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route NIST main-column lower-alpha, parenthesized-alpha, and numeric list marker blocks emitted as paragraph_block or section_heading to list.",
+      "closed_at": "2026-06-01T16:16:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_list_item_preset.py)",
+      "entry_id": "nist-list-item-typing-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p298:block:11",
+          "actual:p298:block:16",
+          "actual:p178:block:26",
+          "actual:p253:block:14",
+          "actual:p253:block:25"
+        ],
+        "risk_reasons_observed": [
+          "lower_alpha_list_item_as_paragraph_block",
+          "parenthesized_alpha_list_item_as_paragraph_block",
+          "numeric_nested_list_item_as_paragraph_block",
+          "list_item_false_section_heading"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Numbered control enhancement headings such as '(1) EXTERNAL SYSTEM SERVICES | RISK ASSESSMENTS ...' are rejected by the pipe-heading negative lookahead and remain section_heading.",
+          "Bare reference revision numbers such as '2.' are rejected because the marker must have following content."
+        ],
+        "candidates_that_prove": [
+          "Blocks such as 'c. Employ ...', '(a) Conduct ...', and '1. Sign ...' are visible NIST list items but are emitted as paragraph_block.",
+          "Blocks such as '(c) Have read, understood, and signed a nondisclosure agreement.' are visible list items but are emitted as section_heading."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block/section_heading is in the observed list indent band, has normal list font size, and starts with lower-alpha, parenthesized-alpha, nested numeric, or non-heading parenthesized-numeric marker plus content, set type=list and semantic_role=nist_list_item."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block or section_heading",
+          "bbox x_min is outside the observed list indent band",
+          "font_size is outside the observed 9.9-10.15pt list-item band",
+          "text is a numbered control enhancement heading containing a pipe separator",
+          "text is only a bare revision number marker with no content"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overwrites generic Body paragraph_block typing and false section_heading typing only for tightly guarded NIST list-marker blocks. It is narrower than the control-heading rule because it excludes pipe-style numbered enhancement headings.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_min_lt": 0.275,
+            "y_max_lt": 0.92
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 10.35
+          },
+          "source_type": [
+            "Body",
+            "Title"
+          ],
+          "type": [
+            "paragraph_block",
+            "section_heading"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "nist_list_item",
+              "type": "list"
+            },
+            "regex": "^(?:[a-z]\\.\\s+\\S|\\d+\\.\\s+\\S|\\([a-z]\\)\\s+\\S|\\(\\d+\\)\\s+(?![A-Z0-9][A-Z0-9 /,;:'()&.\\-]+\\s+\\|\\s+)[\\s\\S]+)"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T15:55:00Z",
+      "added_by": "agent:codex (next-30 full-text agentic second pass)",
+      "applied_at": "2026-06-01T15:55:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route NIST main-column control headings, control labels, and numbered control-enhancement headings emitted as paragraph_block to section_heading.",
+      "closed_at": "2026-06-01T15:55:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_control_heading_preset.py)",
+      "entry_id": "nist-control-heading-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p298:block:8",
+          "actual:p298:block:9",
+          "actual:p298:block:14",
+          "actual:p298:block:15",
+          "actual:p190:block:6",
+          "actual:p382:block:17",
+          "actual:p338:block:19"
+        ],
+        "risk_reasons_observed": [
+          "nist_control_heading_as_paragraph_block",
+          "control_label_as_paragraph_block",
+          "control_enhancement_heading_as_paragraph_block"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Alphabetic body list items such as 'c. Define ...' are rejected by the regex.",
+          "Bottom footer strings are rejected by the y_max_lt guard and by existing footer page-chrome rules.",
+          "Mixed-case body prose is rejected by the all-caps/control-label regex."
+        ],
+        "candidates_that_prove": [
+          "Control title lines such as 'SA-9 EXTERNAL SYSTEM SERVICES' and 'SC-17 PUBLIC KEY INFRASTRUCTURE CERTIFICATES' are visually bold NIST section/control headings in the main column.",
+          "Standalone labels 'Control:' and 'Control Enhancements:' are structural labels, not prose paragraphs.",
+          "Numbered enhancement title lines such as '(1) EXTERNAL SYSTEM SERVICES | RISK ASSESSMENTS AND ORGANIZATIONAL APPROVALS' are visual subsection headings."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block is in the main control column, has normal control-heading font size, and matches a control title, Control label, Control Enhancements label, or numbered enhancement title pattern, set type=section_heading and semantic_role=nist_control_heading."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block",
+          "bbox is outside the NIST main control column",
+          "font_size is outside the observed 9.4-11.2pt heading/label band",
+          "text does not match the exact NIST control heading patterns"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overwrites generic Body paragraph_block typing only for tightly guarded NIST control headings and labels in the main control column.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.14,
+            "x_min_lt": 0.22,
+            "y_max_lt": 0.9
+          },
+          "font_properties": {
+            "font_size_gt": 9.4,
+            "font_size_lt": 11.2
+          },
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "nist_control_heading",
+              "type": "section_heading"
+            },
+            "regex": "^(?:[A-Z]{2}-\\d+[A-Z]?\\s+[A-Z0-9][A-Z0-9 /,;:'()&.\\-]+|Control:|Control Enhancements:|\\(\\d+\\)\\s+[A-Z0-9][A-Z0-9 /,;:'()&.\\-]+\\s+\\|\\s+[A-Z0-9][A-Z0-9 /,;:'()&.\\-]+)$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T15:36:00Z",
+      "added_by": "agent:codex (next-30 full-text agentic second pass)",
+      "applied_at": "2026-06-01T15:36:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route bottom-band NIST chapter/reference footer strings emitted as Body/Header blocks to header_footer_noise.",
+      "closed_at": "2026-06-01T15:36:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_sidebar_chrome_preset.py)",
+      "entry_id": "nist-footer-chrome-002",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p51:block:2",
+          "actual:p100:block:2",
+          "actual:p116:block:2",
+          "actual:p403:block:2",
+          "actual:p409:block:2",
+          "actual:p413:block:2"
+        ],
+        "risk_reasons_observed": [
+          "bottom_band_page_chrome",
+          "source_type_body_or_header",
+          "type_paragraph_block_or_section_heading"
+        ],
+        "second_pass_results": [
+          "next30_agentic_second_pass_fulltext: footer_misclassified_as_body_or_heading"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A non-footer body line above the bottom band that happens to mention CHAPTER or REFERENCES and PAGE; rejected by y_min_gt guard.",
+          "A real references section heading near the top of a page; rejected by y_min_gt guard."
+        ],
+        "candidates_that_prove": [
+          "p51/p100/p116 footer strings such as 'CHAPTER THREE 73 PAGE' are in the bottom page band and are page chrome.",
+          "p403/p409/p413 footer strings such as 'REFERENCES PAGE 386' are in the bottom page band and are page chrome."
+        ],
+        "deterministic_rule": "If a NIST Body/Header block is in the bottom footer band and text matches CHAPTER ... PAGE or REFERENCES PAGE ..., set type=header_footer_noise and semantic_role=page_chrome."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "bbox y_min <= 0.93",
+          "type is not paragraph_block or section_heading",
+          "text does not match CHAPTER/REFERENCES footer form"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overwrites generic Body/Header type mappings only when the block is in the bottom page band and matches a NIST footer string.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "y_min_gt": 0.93
+          },
+          "source_type": [
+            "Body",
+            "Header"
+          ],
+          "type": [
+            "paragraph_block",
+            "section_heading"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "page_chrome",
+              "type": "header_footer_noise"
+            },
+            "regex": "^\\s*(?:CHAPTER\\s+\\w+\\s+\\d*\\s*PAGE|REFERENCES\\s+PAGE\\s+\\d+)\\s*$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T14:12:00Z",
+      "added_by": "agent:codex (PDF Lab next-30 visual review)",
+      "applied_at": "2026-06-01T14:12:00Z",
+      "applier_rule_kind": "table_false_positive_suppression_rule",
+      "category": "bbox_refinement",
+      "checklist_item": "Suppress NIST parser-artifact table blocks produced from page chrome plus only the Control Enhancements/References none rows, before table-contained duplicate suppression removes the real body text blocks.",
+      "closed_at": "2026-06-01T14:12:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_table_duplicate_suppression.py and page 157 regeneration)",
+      "entry_id": "nist-table-false-positive-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p157:table:0",
+          "actual:p157:block:6",
+          "actual:p157:block:7"
+        ],
+        "risk_reasons_observed": [
+          "empty_table_text",
+          "table_bbox_spans_page_chrome",
+          "table_duplicate_suppression_would_remove_non_table_body_lines"
+        ],
+        "second_pass_results": [
+          "next30 visual review: page 157 visibly contains only two body rows, not a table; emitted table bbox covers top header, sidebar DOI watermark, footer, and blank page area."
+        ],
+        "visual_evidence": [
+          "artifacts/pdf_lab/project_agent_hardening/next30_review_packet_20260601Tnow/pages/page_0157/page.png",
+          "artifacts/pdf_lab/project_agent_hardening/next30_review_packet_20260601Tnow/pages/page_0157/bbox_overlay.png"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A NIST table with empty release text and the same raw row shape whose non-chrome rows are a genuine table, not the Control Enhancements/References none boilerplate.",
+          "A table where the raw non-chrome rows exceed the configured max_content_rows; this rule must leave it for normal table duplicate suppression."
+        ],
+        "candidates_that_prove": [
+          "actual:p157:table:0 has empty text, row_count=53, column_count=19, near-full-page bbox, and raw row text limited to repeated chrome plus 'Control Enhancements: None' and 'References: None.'."
+        ],
+        "deterministic_rule": "Before structural duplicate suppression, remove an empty table block when it has a large bbox, many raw rows/columns, and after ignoring NIST running header/sidebar/footer rows the remaining rows are only Control Enhancements: None and References: None.",
+        "expected_residual_reduction": {
+          "candidate_count_max": 1,
+          "candidate_count_min": 1,
+          "kinds_resolved": [
+            "false_positive_table",
+            "missing_body_after_duplicate_suppression"
+          ]
+        },
+        "lives_in": "nist_preset; the rule is explicitly tied to NIST control-page none rows plus NIST chrome patterns."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "table text is non-empty",
+          "bbox height is less than 0.75 page height",
+          "raw row_count < 20 or column_count < 10",
+          "non-chrome raw content rows are not limited to Control Enhancements: None and References: None"
+        ]
+      },
+      "rule": {
+        "ignore_row_patterns": [
+          "^NIST\\b",
+          "^SP\\s*800-53\\b",
+          "^SECURITY AND PRIVACY CONTROLS\\b",
+          "^_+$",
+          "^This publication is available\\b",
+          "^https?://doi\\.org\\b",
+          "^CHAPTER\\b.*\\bPAGE\\b",
+          "^CHAPTER\\b.*\\bAGE\\b",
+          "^[A-Z]?\\s*PAGE\\s*\\d+\\s*$",
+          "^[A-Za-z0-9./:-]{1,6}$",
+          "^(?:[A-Za-z0-9./:-]{1,3}\\s+){1,3}[A-Za-z0-9./:-]{1,3}$"
+        ],
+        "max_content_rows": 2,
+        "min_bbox_height": 0.75,
+        "min_column_count": 10,
+        "min_row_count": 20,
+        "require_empty_text": true,
+        "required_row_patterns": [
+          "\\bControl\\s+Enhancements:\\s+None\\b",
+          "\\bReferences:\\s+None\\.?\\b"
+        ],
+        "table_when": {
+          "source_type": "table",
+          "type": "table"
+        }
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-05-31T18:58:00Z",
+      "added_by": "agent:codex (PDF Lab second-pass table duplicate hardening)",
+      "applied_at": "2026-05-31T18:58:00Z",
+      "applier_rule_kind": "table_contained_suppression_rule",
+      "category": "structural_grouping",
+      "checklist_item": "Suppress standalone paragraph/section/caption/requirement elements whose bboxes are covered by an emitted table on the same page, so table-cell text is represented by the table rather than duplicate release elements.",
+      "closed_at": "2026-05-31T18:58:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_table_duplicate_suppression.py)",
+      "entry_id": "nist-table-duplicate-suppression-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p27:line:100",
+          "actual:p27:line:102",
+          "actual:p27:line:112",
+          "actual:p456:line:100",
+          "actual:p468:line:105"
+        ],
+        "risk_reasons_observed": [
+          "table_cell_text_duplicated_as_standalone_section_heading",
+          "table_cell_text_duplicated_as_standalone_paragraph_or_caption",
+          "table_block_already_present"
+        ],
+        "second_pass_results": [
+          "scillm_bug_report_pilot_gpt55_clusters/page_0027_table_duplicate_cells",
+          "scillm_bug_report_pilot_gpt55_clusters/page_0456_table_duplicate_cells",
+          "scillm_bug_report_pilot_gpt55_clusters/page_0468_table_duplicate_cells",
+          "2026-05-31 verifier expansion: report artifacts use legacy type names section_header/paragraph as well as canonical section_heading/paragraph_block."
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A non-table element inside a table bbox that is semantically independent and should remain a release element."
+        ],
+        "candidates_that_prove": [
+          "Pages 27, 456, and 468 have emitted table blocks plus standalone text elements fully inside those table bboxes."
+        ]
+      },
+      "rule": {
+        "min_coverage": 0.9,
+        "suppress_when": {
+          "type": [
+            "paragraph_block",
+            "paragraph",
+            "body",
+            "text",
+        "section_heading",
+        "section_header",
+        "section_subtitle",
+        "header",
+        "caption",
+        "unknown_region",
+            "requirement",
+            "control_reference",
+            "list"
+          ]
+        },
+        "table_when": {
+          "type": "table"
+        }
+      },
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T19:05:00Z",
+      "added_by": "agent:codex (fresh next-30 references appendix closure)",
+      "applied_at": "2026-06-01T19:05:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route expanded NIST References appendix hanging-indent continuation lines to the reference family across pages 402-419.",
+      "closed_at": "2026-06-01T19:05:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-reference-appendix-hanging-continuation-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p402:block:26",
+          "actual:p402:block:28",
+          "actual:p404:block:32",
+          "actual:p419:block:7"
+        ],
+        "risk_reasons_observed": [
+          "references_appendix_hanging_continuation_as_body",
+          "references_appendix_hanging_continuation_as_list"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Ordinary NIST control body/list content at the same indent; rejected because the rule is restricted to the NIST References appendix page range.",
+          "Footer, page number, DOI side chrome, and left-column reference labels; rejected by x_min/font/body band guards.",
+          "Related Controls wrapped numeric fragments on control pages; rejected by the page guard."
+        ],
+        "candidates_that_prove": [
+          "Page 402 blocks 26 and 28 are hanging-indented continuation lines under bracketed reference labels.",
+          "Page 404 block 32 is a bottom hanging-indented URL/date continuation under [ISO 15026-1].",
+          "Page 419 block 7 is a hanging-indented RFC reference continuation beyond the earlier page guard."
+        ],
+        "deterministic_rule": "On NIST References appendix pages 402-419, classify Body/List paragraph/list blocks in the hanging-reference continuation indent and body font band as reference with semantic_role=reference_continuation."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "page is outside the NIST References appendix page range 402-419",
+          "source_type is not Body or List",
+          "type is not paragraph_block or list",
+          "bbox x_min is outside the hanging-reference continuation indent band",
+          "font size is outside body/reference continuation range",
+          "block is below the protected footer boundary"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overrides generic Body/List typing only on NIST References appendix pages and only in the hanging-reference continuation indent band.",
+      "revision": 2,
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.27,
+            "x_min_lt": 0.31,
+            "y_max_lt": 0.92
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 11.1
+          },
+          "page": [
+            402,
+            403,
+            404,
+            405,
+            406,
+            407,
+            408,
+            409,
+            410,
+            411,
+            412,
+            413,
+            414,
+            415,
+            416,
+            417,
+            418,
+            419
+          ],
+          "source_type": [
+            "Body",
+            "List"
+          ],
+          "type": [
+            "paragraph_block",
+            "list"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "reference_continuation",
+              "type": "reference"
+            },
+            "regex": "^(?!\\d+\\.$).+$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T19:05:00Z",
+      "added_by": "agent:codex (fresh next-30 references appendix closure)",
+      "applied_at": "2026-06-01T19:05:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Classify centered all-caps gray-band divider labels in the NIST References appendix as section headings.",
+      "closed_at": "2026-06-01T19:05:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-reference-appendix-divider-heading-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p402:block:24",
+          "actual:p404:block:28"
+        ],
+        "risk_reasons_observed": [
+          "reference_appendix_gray_band_divider_as_paragraph"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Normal reference body continuations in the hanging indent; rejected by x_min_gt=0.33 and all-caps text regex.",
+          "Table cell uppercase labels; rejected because the page range is restricted to the references appendix divider pages."
+        ],
+        "candidates_that_prove": [
+          "Page 402 block 24 is centered all-caps 'REGULATIONS, DIRECTIVES, PLANS, AND POLICIES' inside a gray divider band.",
+          "Page 404 block 28 is centered all-caps 'STANDARDS, GUIDELINES, AND REPORTS' inside a gray divider band."
+        ],
+        "deterministic_rule": "On NIST References appendix pages, centered all-caps Body blocks in the divider band x-range are section_heading with semantic_role=reference_section_heading."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "page is outside 402-419",
+          "source_type is not Body",
+          "type is not paragraph_block",
+          "bbox x_min is outside centered divider range",
+          "text is not all-caps words with comma/and separators",
+          "font size is outside the observed gray-band heading range"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overrides generic Body paragraph typing only for centered references appendix divider headings.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.33,
+            "x_min_lt": 0.4,
+            "y_max_lt": 0.9
+          },
+          "font_properties": {
+            "font_size_gt": 9.5,
+            "font_size_lt": 11.1
+          },
+          "page": [
+            402,
+            403,
+            404,
+            405,
+            406,
+            407,
+            408,
+            409,
+            410,
+            411,
+            412,
+            413,
+            414,
+            415,
+            416,
+            417,
+            418,
+            419
+          ],
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "reference_section_heading",
+              "type": "section_heading"
+            },
+            "regex": "^[A-Z][A-Z,\\s]+(?:AND\\s+[A-Z]+)?$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T19:05:00Z",
+      "added_by": "agent:codex (fresh next-30 references appendix closure)",
+      "applied_at": "2026-06-01T19:05:00Z",
+      "applier_rule_kind": "adjacent_text_merge_rule",
+      "category": "structural_grouping",
+      "checklist_item": "Merge NIST reference appendix volume-number fragments such as 'Volume' followed by '4.'.",
+      "closed_at": "2026-06-01T19:05:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-reference-volume-fragment-merge-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p417:block:19",
+          "actual:p417:block:20"
+        ],
+        "risk_reasons_observed": [
+          "reference_volume_number_fragment_as_list"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "True numbered list items; rejected because the lead must already be a reference continuation ending in Volume.",
+          "Revision fragments; handled by nist-reference-revision-fragment-merge-001."
+        ],
+        "candidates_that_prove": [
+          "Page 417 block 19 ends with 'Volume' and adjacent block 20 is a standalone List block '4.' in the same reference indent."
+        ],
+        "deterministic_rule": "If a NIST reference-continuation block in the appendix hanging-reference indent ends with 'Volume' and the immediately following aligned List block is only a numeric-period fragment, merge the fragment into the lead block with a space."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "lead block is not a reference continuation in the reference appendix hanging indent",
+          "lead text does not end with 'Volume'",
+          "tail block is not a List/list block in the same hanging indent",
+          "tail text is not a bare numeric-period fragment",
+          "tail is not vertically adjacent to the lead"
+        ]
+      },
+      "rule": {
+        "join_style": "space",
+        "lead_text_regex": "\\bVolume$",
+        "lead_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.27,
+            "x_min_lt": 0.31,
+            "y_max_lt": 0.92
+          },
+          "font_properties": {
+            "font_size_gt": 10.8,
+            "font_size_lt": 11.1
+          },
+          "semantic_role": "reference_continuation",
+          "source_type": "Body",
+          "type": "reference"
+        },
+        "max_x_delta": 0.005,
+        "max_y_gap": 0.01,
+        "merged_fields": {
+          "semantic_role": "reference_continuation",
+          "type": "reference"
+        },
+        "tail_text_regex": "^\\d+\\.$",
+        "tail_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.27,
+            "x_min_lt": 0.31,
+            "y_max_lt": 0.92
+          },
+          "font_properties": {
+            "font_size_gt": 10.8,
+            "font_size_lt": 11.1
+          },
+          "source_type": "List",
+          "type": "list"
+        }
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T19:05:00Z",
+      "added_by": "agent:codex (fresh next-30 frontmatter closure)",
+      "applied_at": "2026-06-01T19:05:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Classify the NIST frontmatter 'Errata' title as a section heading.",
+      "closed_at": "2026-06-01T19:05:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_control_heading_preset.py)",
+      "entry_id": "nist-frontmatter-errata-heading-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p19:block:6"
+        ],
+        "risk_reasons_observed": [
+          "frontmatter_centered_bold_title_as_paragraph"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/summary.json",
+          "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_triage_ledger_20260601Tnow/triage_ledger.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Ordinary single-word body text; rejected by page, exact text, bold, font-size, and top-band guards."
+        ],
+        "candidates_that_prove": [
+          "Page 19 block 6 is centered, bold, large-font text 'Errata' above the errata table."
+        ],
+        "deterministic_rule": "On NIST page 19, exact bold large-font text 'Errata' in the top band is section_heading with semantic_role=frontmatter_section_heading."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "page is not 19",
+          "text is not exactly 'Errata'",
+          "font is not bold/large",
+          "block is outside top title band"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overrides generic Body paragraph typing only for the exact NIST Errata title.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.45,
+            "x_min_lt": 0.49,
+            "y_max_lt": 0.12
+          },
+          "font_properties": {
+            "font_size_gt": 13.5,
+            "font_size_lt": 14.5,
+            "is_bold": true
+          },
+          "page": 19,
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "equals_ci": "Errata",
+            "fields": {
+              "semantic_role": "frontmatter_section_heading",
+              "type": "section_heading"
+            }
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-01T19:25:00Z",
+      "added_by": "agent:codex (fresh next-30 final rerun supplemental)",
+      "applied_at": "2026-06-01T19:25:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Mark NIST References lead lines as reference_lead rather than reference_continuation.",
+      "closed_at": "2026-06-01T19:25:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-reference-lead-role-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p186:block:25"
+        ],
+        "risk_reasons_observed": [
+          "references_lead_line_semantic_role_as_continuation"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/summary.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Hanging reference continuations without the References: lead label; rejected by prefix matcher."
+        ],
+        "candidates_that_prove": [
+          "Page 186 block 25 begins with 'References:' and introduces bracketed reference citations on the same line."
+        ],
+        "deterministic_rule": "If a NIST block in the reference band begins with 'References:', classify it as reference with semantic_role=reference_lead."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "text does not begin with References:",
+          "source_type is not Body/Title/List",
+          "type is not paragraph_block/section_heading/list/reference",
+          "bbox x_min is outside reference lead band"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overrides the generic reference_continuation semantic role only for explicit References: lead lines.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.19,
+            "x_min_lt": 0.31,
+            "y_max_lt": 0.92
+          },
+          "font_properties": {
+            "font_size_gt": 9.8,
+            "font_size_lt": 11.2
+          },
+          "source_type": [
+            "Body",
+            "Title",
+            "List",
+            "Reference"
+          ],
+          "type": [
+            "paragraph_block",
+            "section_heading",
+            "list",
+            "reference"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "reference_lead",
+              "type": "reference"
+            },
+            "prefix_ci": "References:"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
     }
   ],
   "preset_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",

@@ -1,0 +1,877 @@
+{
+  "generated_at": "2026-06-01T21:19:19.377638+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04500001849550189,
+            1.0,
+            0.055075751410590276
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p460:block:0",
+          "is_bold": false,
+          "page": 460,
+          "pdf_page_index": 459,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "source_type": "Footer",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05719703134864268,
+            0.8558836294934641,
+            0.06727276426373106
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p460:block:1",
+          "is_bold": false,
+          "page": 460,
+          "pdf_page_index": 459,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "source_type": "Footer",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.940454545647207,
+            0.8562647002974367,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 8.107500076293945,
+          "id": "actual:p460:block:2",
+          "is_bold": false,
+          "page": 460,
+          "pdf_page_index": 459,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.107500076293945,
+            "header_level": null,
+            "is_bold": false,
+            "text": "APPENDIX C   PAGE 433"
+          },
+          "source_type": "Body",
+          "text": "APPENDIX C   PAGE 433",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.3498234998166951,
+            0.28780303338561397
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p460:block:3",
+          "is_bold": false,
+          "page": 460,
+          "pdf_page_index": 459,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              564.0599975585938,
+              193.031982421875,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from:"
+          },
+          "source_type": "Body",
+          "text": "This publication is available free of charge from:",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.5202272588556464,
+            0.2705250191532709,
+            0.5315908952192827
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p460:block:4",
+          "is_bold": false,
+          "page": 460,
+          "pdf_page_index": 459,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              370.9800109863281,
+              144.50131225585938,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "https://doi.org/10.6028/NIST.SP.800"
+          },
+          "source_type": "Body",
+          "text": "https://doi.org/10.6028/NIST.SP.800",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.7027272696446891,
+            0.06380882761836831,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p460:block:5",
+          "is_bold": false,
+          "page": 460,
+          "pdf_page_index": 459,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              17.991003036499023,
+              12.0
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "-53r5"
+          },
+          "source_type": "List",
+          "text": "-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.34480392854977276,
+            0.09037880945687342,
+            0.6586968914356107,
+            0.1023484817659012
+          ],
+          "font_name": "TT2",
+          "font_size": 9.480000495910645,
+          "id": "actual:p460:block:6",
+          "is_bold": true,
+          "page": 460,
+          "pdf_page_index": 459,
+          "raw": {
+            "bbox": [
+              211.02000427246094,
+              710.9400024414062,
+              192.1024932861328,
+              9.47998046875
+            ],
+            "block_type": "Caption",
+            "confidence": 0.800000011920929,
+            "font_name": "TT2",
+            "font_size": 9.480000495910645,
+            "header_level": null,
+            "is_bold": true,
+            "text": "TABLE C-2:  AWARENESS AND TRAINING FAMILY"
+          },
+          "semantic_role": "table_caption",
+          "source_type": "Caption",
+          "text": "TABLE C-2:  AWARENESS AND TRAINING FAMILY",
+          "type": "caption"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.4609091016981337,
+            0.7975546643624898,
+            0.5040908967605745
+          ],
+          "font_name": "TT2",
+          "font_size": 8.63454532623291,
+          "id": "actual:p460:block:30",
+          "is_bold": true,
+          "page": 460,
+          "pdf_page_index": 459,
+          "raw": {
+            "bbox": [
+              90.0,
+              392.760009765625,
+              398.10345458984375,
+              34.199981689453125
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT2",
+            "font_size": 8.63454532623291,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 8.63454532623291,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9593939185142517,
+                "text_len": 28,
+                "title_case_ratio": 0.800000011920929,
+                "word_count": 5
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "AT-6 Training Feedback O \u221a"
+            },
+            "is_bold": true,
+            "text": "AT-6 Training Feedback O \u221a  "
+          },
+          "source_type": "Body",
+          "text": "AT-6 Training Feedback O \u221a",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.11371211812953756,
+            0.8525490355647467,
+            0.4926515059037642
+          ],
+          "id": "actual:p460:table:0",
+          "page": 460,
+          "pdf_page_index": 459,
+          "raw": {
+            "accuracy": 99.02726521130852,
+            "bbox": [
+              89.76000213623047,
+              90.05999755859375,
+              521.760009765625,
+              390.17999267578125
+            ],
+            "cols": 4,
+            "column_count": 4,
+            "data": [
+              [
+                "CONTROL\nNUMBER",
+                "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "IMPLEMENTED\nBY",
+                "ASSURANCE"
+              ],
+              [
+                "AT-1",
+                "Policy and Procedures",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-2",
+                "Literacy Training and Awareness",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-2(1)",
+                "PRACTICAL EXERCISES",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-2(2)",
+                "INSIDER THREAT",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-2(3)",
+                "SOCIAL ENGINEERING AND MINING",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-2(4)",
+                "SUSPICIOUS COMMUNICATIONS AND ANOMALOUS SYSTEM BEHAVIOR",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-2(5)",
+                "ADVANCED PERSISTENT THREAT",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-2(6)",
+                "CYBER THREAT ENVIRONMENT",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-3",
+                "Role-Based Training",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-3(1)",
+                "ENVIRONMENTAL CONTROLS",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-3(2)",
+                "PHYSICAL SECURITY CONTROLS",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-3(3)",
+                "PRACTICAL EXERCISES",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-3(4)",
+                "SUSPICIOUS COMMUNICATIONS AND ANOMALOUS SYSTEM BEHAVIOR",
+                "W: Incorporated into AT-2(4).",
+                ""
+              ],
+              [
+                "AT-3(5)",
+                "PROCESSING PERSONALLY IDENTIFIABLE INFORMATION",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-4",
+                "Training Records",
+                "O",
+                "\u221a"
+              ],
+              [
+                "AT-5",
+                "Contacts with Security Groups and Associations",
+                "W: Incorporated into PM-15.",
+                ""
+              ],
+              [
+                "AT-6",
+                "Training Feedback",
+                "O",
+                "\u221a"
+              ],
+              [
+                "",
+                "",
+                "",
+                ""
+              ]
+            ],
+            "df_data": [
+              {
+                "0": "CONTROL\nNUMBER",
+                "1": "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "2": "IMPLEMENTED\nBY",
+                "3": "ASSURANCE"
+              },
+              {
+                "0": "AT-1",
+                "1": "Policy and Procedures",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-2",
+                "1": "Literacy Training and Awareness",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-2(1)",
+                "1": "PRACTICAL EXERCISES",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-2(2)",
+                "1": "INSIDER THREAT",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-2(3)",
+                "1": "SOCIAL ENGINEERING AND MINING",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-2(4)",
+                "1": "SUSPICIOUS COMMUNICATIONS AND ANOMALOUS SYSTEM BEHAVIOR",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-2(5)",
+                "1": "ADVANCED PERSISTENT THREAT",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-2(6)",
+                "1": "CYBER THREAT ENVIRONMENT",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-3",
+                "1": "Role-Based Training",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-3(1)",
+                "1": "ENVIRONMENTAL CONTROLS",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-3(2)",
+                "1": "PHYSICAL SECURITY CONTROLS",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-3(3)",
+                "1": "PRACTICAL EXERCISES",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-3(4)",
+                "1": "SUSPICIOUS COMMUNICATIONS AND ANOMALOUS SYSTEM BEHAVIOR",
+                "2": "W: Incorporated into AT-2(4).",
+                "3": ""
+              },
+              {
+                "0": "AT-3(5)",
+                "1": "PROCESSING PERSONALLY IDENTIFIABLE INFORMATION",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-4",
+                "1": "Training Records",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "AT-5",
+                "1": "Contacts with Security Groups and Associations",
+                "2": "W: Incorporated into PM-15.",
+                "3": ""
+              },
+              {
+                "0": "AT-6",
+                "1": "Training Feedback",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "",
+                "1": "",
+                "2": "",
+                "3": ""
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 0,
+            "page": 459,
+            "row_count": 19,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "CONTROL NUMBER"
+                  },
+                  {
+                    "text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
+                  },
+                  {
+                    "text": "IMPLEMENTED BY"
+                  },
+                  {
+                    "text": "ASSURANCE"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-1"
+                  },
+                  {
+                    "text": "Policy and Procedures"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-2"
+                  },
+                  {
+                    "text": "Literacy Training and Awareness"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-2(1)"
+                  },
+                  {
+                    "text": "PRACTICAL EXERCISES"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-2(2)"
+                  },
+                  {
+                    "text": "INSIDER THREAT"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-2(3)"
+                  },
+                  {
+                    "text": "SOCIAL ENGINEERING AND MINING"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-2(4)"
+                  },
+                  {
+                    "text": "SUSPICIOUS COMMUNICATIONS AND ANOMALOUS SYSTEM BEHAVIOR"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-2(5)"
+                  },
+                  {
+                    "text": "ADVANCED PERSISTENT THREAT"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-2(6)"
+                  },
+                  {
+                    "text": "CYBER THREAT ENVIRONMENT"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-3"
+                  },
+                  {
+                    "text": "Role-Based Training"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-3(1)"
+                  },
+                  {
+                    "text": "ENVIRONMENTAL CONTROLS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-3(2)"
+                  },
+                  {
+                    "text": "PHYSICAL SECURITY CONTROLS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-3(3)"
+                  },
+                  {
+                    "text": "PRACTICAL EXERCISES"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-3(4)"
+                  },
+                  {
+                    "text": "SUSPICIOUS COMMUNICATIONS AND ANOMALOUS SYSTEM BEHAVIOR"
+                  },
+                  {
+                    "text": "W: Incorporated into AT-2(4)."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-3(5)"
+                  },
+                  {
+                    "text": "PROCESSING PERSONALLY IDENTIFIABLE INFORMATION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-4"
+                  },
+                  {
+                    "text": "Training Records"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-5"
+                  },
+                  {
+                    "text": "Contacts with Security Groups and Associations"
+                  },
+                  {
+                    "text": "W: Incorporated into PM-15."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT-6"
+                  },
+                  {
+                    "text": "Training Feedback"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "whitespace": 7.894736842105263
+          },
+          "source_type": "table",
+          "text": "CONTROL NUMBER | CONTROL NAME CONTROL ENHANCEMENT NAME | IMPLEMENTED BY | ASSURANCE\nAT-1 | Policy and Procedures | O | \u221a\nAT-2 | Literacy Training and Awareness | O | \u221a\nAT-2(1) | PRACTICAL EXERCISES | O | \u221a\nAT-2(2) | INSIDER THREAT | O | \u221a\nAT-2(3) | SOCIAL ENGINEERING AND MINING | O | \u221a\nAT-2(4) | SUSPICIOUS COMMUNICATIONS AND ANOMALOUS SYSTEM BEHAVIOR | O | \u221a\nAT-2(5) | ADVANCED PERSISTENT THREAT | O | \u221a\nAT-2(6) | CYBER THREAT ENVIRONMENT | O | \u221a\nAT-3 | Role-Based Training | O | \u221a\nAT-3(1) | ENVIRONMENTAL CONTROLS | O | \u221a\nAT-3(2) | PHYSICAL SECURITY CONTROLS | O | \u221a\nAT-3(3) | PRACTICAL EXERCISES | O | \u221a\nAT-3(4) | SUSPICIOUS COMMUNICATIONS AND ANOMALOUS SYSTEM BEHAVIOR | W: Incorporated into AT-2(4). |\nAT-3(5) | PROCESSING PERSONALLY IDENTIFIABLE INFORMATION | O | \u221a\nAT-4 | Training Records | O | \u221a\nAT-5 | Contacts with Security Groups and Associations | W: Incorporated into PM-15. |\nAT-6 | Training Feedback | O | \u221a\n|  |  |",
+          "type": "table"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 460,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 459
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

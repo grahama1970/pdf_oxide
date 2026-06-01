@@ -1,0 +1,1003 @@
+{
+  "generated_at": "2026-06-01T21:19:23.265777+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04500001849550189,
+            1.0,
+            0.055075751410590276
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p465:block:0",
+          "is_bold": false,
+          "page": 465,
+          "pdf_page_index": 464,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "source_type": "Footer",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05719703134864268,
+            0.8558836294934641,
+            0.06727276426373106
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p465:block:1",
+          "is_bold": false,
+          "page": 465,
+          "pdf_page_index": 464,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "source_type": "Footer",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.940454545647207,
+            0.8562647002974367,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 8.107500076293945,
+          "id": "actual:p465:block:2",
+          "is_bold": false,
+          "page": 465,
+          "pdf_page_index": 464,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.107500076293945,
+            "header_level": null,
+            "is_bold": false,
+            "text": "APPENDIX C   PAGE 438"
+          },
+          "source_type": "Body",
+          "text": "APPENDIX C   PAGE 438",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.3498234998166951,
+            0.28780303338561397
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p465:block:3",
+          "is_bold": false,
+          "page": 465,
+          "pdf_page_index": 464,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              564.0599975585938,
+              193.031982421875,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from:"
+          },
+          "source_type": "Body",
+          "text": "This publication is available free of charge from:",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.5202272588556464,
+            0.2705250191532709,
+            0.5315908952192827
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p465:block:4",
+          "is_bold": false,
+          "page": 465,
+          "pdf_page_index": 464,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              370.9800109863281,
+              144.50131225585938,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "https://doi.org/10.6028/NIST.SP.800"
+          },
+          "source_type": "Body",
+          "text": "https://doi.org/10.6028/NIST.SP.800",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.7027272696446891,
+            0.06380882761836831,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p465:block:5",
+          "is_bold": false,
+          "page": 465,
+          "pdf_page_index": 464,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              17.991003036499023,
+              12.0
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "-53r5"
+          },
+          "source_type": "List",
+          "text": "-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.6082575634272411
+          ],
+          "id": "actual:p465:table:0",
+          "page": 465,
+          "pdf_page_index": 464,
+          "raw": {
+            "accuracy": 99.29562783221375,
+            "bbox": [
+              89.76000213623047,
+              72.47998046875,
+              521.760009765625,
+              481.739990234375
+            ],
+            "cols": 4,
+            "column_count": 4,
+            "data": [
+              [
+                "CONTROL\nNUMBER",
+                "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "IMPLEMENTED\nBY",
+                "ASSURANCE"
+              ],
+              [
+                "CM-7(7)",
+                "CODE EXECUTION IN PROTECTED ENVIRONMENTS",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "CM-7(8)",
+                "BINARY OR MACHINE EXECUTABLE CODE",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "CM-7(9)",
+                "PROHIBITING THE USE OF UNAUTHORIZED HARDWARE",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "CM-8",
+                "System Component Inventory",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-8(1)",
+                "UPDATES DURING INSTALLATION AND REMOVAL",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-8(2)",
+                "AUTOMATED MAINTENANCE",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-8(3)",
+                "AUTOMATED UNAUTHORIZED COMPONENT DETECTION",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-8(4)",
+                "ACCOUNTABILITY INFORMATION",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-8(5)",
+                "NO DUPLICATE ACCOUNTING OF COMPONENTS",
+                "W: Incorporated into CM-8.",
+                ""
+              ],
+              [
+                "CM-8(6)",
+                "ASSESSED CONFIGURATIONS AND APPROVED DEVIATIONS",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-8(7)",
+                "CENTRALIZED REPOSITORY",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-8(8)",
+                "AUTOMATED LOCATION TRACKING",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-8(9)",
+                "ASSIGNMENT OF COMPONENTS TO SYSTEMS",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-9",
+                "Configuration Management Plan",
+                "O",
+                ""
+              ],
+              [
+                "CM-9(1)",
+                "ASSIGNMENT OF RESPONSIBILITY",
+                "O",
+                ""
+              ],
+              [
+                "CM-10",
+                "Software Usage Restrictions",
+                "O",
+                ""
+              ],
+              [
+                "CM-10(1)",
+                "OPEN-SOURCE SOFTWARE",
+                "O",
+                ""
+              ],
+              [
+                "CM-11",
+                "User-Installed Software",
+                "O",
+                ""
+              ],
+              [
+                "CM-11(1)",
+                "ALERTS FOR UNAUTHORIZED INSTALLATIONS",
+                "W: Incorporated into CM-8(3).",
+                ""
+              ],
+              [
+                "CM-11(2)",
+                "SOFTWARE INSTALLATION WITH PRIVILEGED STATUS",
+                "S",
+                ""
+              ],
+              [
+                "CM-11(3)",
+                "AUTOMATED ENFORCEMENT AND MONITORING",
+                "S",
+                "\u221a"
+              ],
+              [
+                "CM-12",
+                "Information Location",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-12(1)",
+                "AUTOMATED TOOLS TO SUPPORT INFORMATION LOCATION",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CM-13",
+                "Data Action Mapping",
+                "O",
+                ""
+              ],
+              [
+                "CM-14",
+                "Signed Components",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "",
+                "",
+                "",
+                ""
+              ]
+            ],
+            "df_data": [
+              {
+                "0": "CONTROL\nNUMBER",
+                "1": "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "2": "IMPLEMENTED\nBY",
+                "3": "ASSURANCE"
+              },
+              {
+                "0": "CM-7(7)",
+                "1": "CODE EXECUTION IN PROTECTED ENVIRONMENTS",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-7(8)",
+                "1": "BINARY OR MACHINE EXECUTABLE CODE",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-7(9)",
+                "1": "PROHIBITING THE USE OF UNAUTHORIZED HARDWARE",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-8",
+                "1": "System Component Inventory",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-8(1)",
+                "1": "UPDATES DURING INSTALLATION AND REMOVAL",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-8(2)",
+                "1": "AUTOMATED MAINTENANCE",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-8(3)",
+                "1": "AUTOMATED UNAUTHORIZED COMPONENT DETECTION",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-8(4)",
+                "1": "ACCOUNTABILITY INFORMATION",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-8(5)",
+                "1": "NO DUPLICATE ACCOUNTING OF COMPONENTS",
+                "2": "W: Incorporated into CM-8.",
+                "3": ""
+              },
+              {
+                "0": "CM-8(6)",
+                "1": "ASSESSED CONFIGURATIONS AND APPROVED DEVIATIONS",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-8(7)",
+                "1": "CENTRALIZED REPOSITORY",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-8(8)",
+                "1": "AUTOMATED LOCATION TRACKING",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-8(9)",
+                "1": "ASSIGNMENT OF COMPONENTS TO SYSTEMS",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-9",
+                "1": "Configuration Management Plan",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CM-9(1)",
+                "1": "ASSIGNMENT OF RESPONSIBILITY",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CM-10",
+                "1": "Software Usage Restrictions",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CM-10(1)",
+                "1": "OPEN-SOURCE SOFTWARE",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CM-11",
+                "1": "User-Installed Software",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CM-11(1)",
+                "1": "ALERTS FOR UNAUTHORIZED INSTALLATIONS",
+                "2": "W: Incorporated into CM-8(3).",
+                "3": ""
+              },
+              {
+                "0": "CM-11(2)",
+                "1": "SOFTWARE INSTALLATION WITH PRIVILEGED STATUS",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "CM-11(3)",
+                "1": "AUTOMATED ENFORCEMENT AND MONITORING",
+                "2": "S",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-12",
+                "1": "Information Location",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-12(1)",
+                "1": "AUTOMATED TOOLS TO SUPPORT INFORMATION LOCATION",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CM-13",
+                "1": "Data Action Mapping",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "CM-14",
+                "1": "Signed Components",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "",
+                "1": "",
+                "2": "",
+                "3": ""
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 0,
+            "page": 464,
+            "row_count": 27,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "CONTROL NUMBER"
+                  },
+                  {
+                    "text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
+                  },
+                  {
+                    "text": "IMPLEMENTED BY"
+                  },
+                  {
+                    "text": "ASSURANCE"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-7(7)"
+                  },
+                  {
+                    "text": "CODE EXECUTION IN PROTECTED ENVIRONMENTS"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-7(8)"
+                  },
+                  {
+                    "text": "BINARY OR MACHINE EXECUTABLE CODE"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-7(9)"
+                  },
+                  {
+                    "text": "PROHIBITING THE USE OF UNAUTHORIZED HARDWARE"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-8"
+                  },
+                  {
+                    "text": "System Component Inventory"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-8(1)"
+                  },
+                  {
+                    "text": "UPDATES DURING INSTALLATION AND REMOVAL"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-8(2)"
+                  },
+                  {
+                    "text": "AUTOMATED MAINTENANCE"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-8(3)"
+                  },
+                  {
+                    "text": "AUTOMATED UNAUTHORIZED COMPONENT DETECTION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-8(4)"
+                  },
+                  {
+                    "text": "ACCOUNTABILITY INFORMATION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-8(5)"
+                  },
+                  {
+                    "text": "NO DUPLICATE ACCOUNTING OF COMPONENTS"
+                  },
+                  {
+                    "text": "W: Incorporated into CM-8."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-8(6)"
+                  },
+                  {
+                    "text": "ASSESSED CONFIGURATIONS AND APPROVED DEVIATIONS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-8(7)"
+                  },
+                  {
+                    "text": "CENTRALIZED REPOSITORY"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-8(8)"
+                  },
+                  {
+                    "text": "AUTOMATED LOCATION TRACKING"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-8(9)"
+                  },
+                  {
+                    "text": "ASSIGNMENT OF COMPONENTS TO SYSTEMS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-9"
+                  },
+                  {
+                    "text": "Configuration Management Plan"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-9(1)"
+                  },
+                  {
+                    "text": "ASSIGNMENT OF RESPONSIBILITY"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-10"
+                  },
+                  {
+                    "text": "Software Usage Restrictions"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-10(1)"
+                  },
+                  {
+                    "text": "OPEN-SOURCE SOFTWARE"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-11"
+                  },
+                  {
+                    "text": "User-Installed Software"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-11(1)"
+                  },
+                  {
+                    "text": "ALERTS FOR UNAUTHORIZED INSTALLATIONS"
+                  },
+                  {
+                    "text": "W: Incorporated into CM-8(3)."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-11(2)"
+                  },
+                  {
+                    "text": "SOFTWARE INSTALLATION WITH PRIVILEGED STATUS"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-11(3)"
+                  },
+                  {
+                    "text": "AUTOMATED ENFORCEMENT AND MONITORING"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-12"
+                  },
+                  {
+                    "text": "Information Location"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-12(1)"
+                  },
+                  {
+                    "text": "AUTOMATED TOOLS TO SUPPORT INFORMATION LOCATION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-13"
+                  },
+                  {
+                    "text": "Data Action Mapping"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM-14"
+                  },
+                  {
+                    "text": "Signed Components"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "whitespace": 12.037037037037036
+          },
+          "source_type": "table",
+          "text": "CONTROL NUMBER | CONTROL NAME CONTROL ENHANCEMENT NAME | IMPLEMENTED BY | ASSURANCE\nCM-7(7) | CODE EXECUTION IN PROTECTED ENVIRONMENTS | O/S | \u221a\nCM-7(8) | BINARY OR MACHINE EXECUTABLE CODE | O/S | \u221a\nCM-7(9) | PROHIBITING THE USE OF UNAUTHORIZED HARDWARE | O/S | \u221a\nCM-8 | System Component Inventory | O | \u221a\nCM-8(1) | UPDATES DURING INSTALLATION AND REMOVAL | O | \u221a\nCM-8(2) | AUTOMATED MAINTENANCE | O | \u221a\nCM-8(3) | AUTOMATED UNAUTHORIZED COMPONENT DETECTION | O | \u221a\nCM-8(4) | ACCOUNTABILITY INFORMATION | O | \u221a\nCM-8(5) | NO DUPLICATE ACCOUNTING OF COMPONENTS | W: Incorporated into CM-8. |\nCM-8(6) | ASSESSED CONFIGURATIONS AND APPROVED DEVIATIONS | O | \u221a\nCM-8(7) | CENTRALIZED REPOSITORY | O | \u221a\nCM-8(8) | AUTOMATED LOCATION TRACKING | O | \u221a\nCM-8(9) | ASSIGNMENT OF COMPONENTS TO SYSTEMS | O | \u221a\nCM-9 | Configuration Management Plan | O |\nCM-9(1) | ASSIGNMENT OF RESPONSIBILITY | O |\nCM-10 | Software Usage Restrictions | O |\nCM-10(1) | OPEN-SOURCE SOFTWARE | O |\nCM-11 | User-Installed Software | O |\nCM-11(1) | ALERTS FOR UNAUTHORIZED INSTALLATIONS | W: Incorporated into CM-8(3). |\nCM-11(2) | SOFTWARE INSTALLATION WITH PRIVILEGED STATUS | S |\nCM-11(3) | AUTOMATED ENFORCEMENT AND MONITORING | S | \u221a\nCM-12 | Information Location | O | \u221a\nCM-12(1) | AUTOMATED TOOLS TO SUPPORT INFORMATION LOCATION | O | \u221a\nCM-13 | Data Action Mapping | O |\nCM-14 | Signed Components | O/S | \u221a\n|  |  |",
+          "type": "table"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 465,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 464
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}
