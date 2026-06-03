@@ -2408,6 +2408,28 @@ def test_validate_scillm_patch_delegate_bug_report_zip_rejects_undeclared_entry(
     assert "undeclared_zip_entries: undeclared.json" in harness.package_validation_errors(validation)
 
 
+def test_validate_scillm_patch_delegate_bug_report_zip_rejects_invalid_zip(tmp_path: Path) -> None:
+    harness = _load_module()
+    source = tmp_path / "scillm_patch_delegate_bug_reports.json"
+    source.write_text(json.dumps({"artifact": "fresh"}), encoding="utf-8")
+    zip_path = tmp_path / "scillm_patch_delegate_bug_reports.zip"
+    zip_path.write_text("not a zip archive", encoding="utf-8")
+
+    validation = harness.validate_scillm_patch_delegate_bug_report_zip(
+        zip_path=zip_path,
+        included_artifacts=["scillm_patch_delegate_bug_reports.json"],
+        missing_artifacts=[],
+        required_zip_entries=["scillm_patch_delegate_bug_reports.json"],
+        expected_sources={"scillm_patch_delegate_bug_reports.json": source},
+    )
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert validation["invalid_zip"] is True
+    assert validation["zip_entry_count"] == 0
+    assert "invalid_zip is true" in harness.package_validation_errors(validation)
+
+
 def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_path: Path) -> None:
     harness = _load_module()
     case_a = tmp_path / "case-a"
