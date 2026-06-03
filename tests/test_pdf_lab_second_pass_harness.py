@@ -5989,6 +5989,54 @@ def test_readiness_audit_rejects_underreported_live_canary_bug_report(tmp_path: 
     assert "failed_checks mismatch" in json.dumps(audit)
 
 
+def test_readiness_audit_rejects_malformed_live_canary_bug_report_containers(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+    failed_write_canary = {
+        "schema": "pdf_lab.second_pass.scillm_transport_write_canary.v1",
+        "ok": False,
+        "errors": ["scillm_transport_write_canary_call_failed"],
+    }
+    malformed_bug_report = {
+        "schema": "pdf_lab.second_pass.live_scillm_canary_bug_report.v1",
+        "lane_required": True,
+        "ok": False,
+        "errors": "live scillm canary checks failed",
+        "failed_checks": "scillm_transport_write_canary",
+        "observed_checks": "not-a-list",
+    }
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[],
+        aggregate={"ok": True, "errors": [], "status_counts": {}, "unresolved_count": 0},
+        patch_mode="live",
+        patch_backend="scillm_orchestrator",
+        code_root_visibility={"schema": "visibility", "ok": True, "errors": []},
+        scillm_proof_floor={"schema": "proof", "ok": True, "errors": []},
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary={"schema": "readonly", "ok": True, "errors": []},
+        scillm_transport_write_canary=failed_write_canary,
+        scillm_bug_report_zip_validation={"ok": True, "missing_artifacts": []},
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation={"ok": True, "missing_artifacts": []},
+        live_scillm_canary_bug_report=malformed_bug_report,
+    )
+
+    dumped = json.dumps(audit)
+    assert audit["ok"] is False
+    assert "live scillm canary bug report is deterministic" in audit["failed_requirements"]
+    assert "live scillm canary bug report errors must be a list of strings" in dumped
+    assert "live scillm canary bug report failed_checks must be a list" in dumped
+    assert "live scillm canary bug report observed_checks must be a list" in dumped
+
+
 def test_readiness_audit_rejects_live_canary_bug_report_missing_observed_active_check(tmp_path: Path) -> None:
     harness = _load_module()
     manifest_path = tmp_path / "candidate_manifest.json"

@@ -3247,6 +3247,17 @@ def build_harness_readiness_audit(
                 live_canary_bug_report_errors.append("live scillm canary bug report schema mismatch")
             if live_scillm_canary_bug_report.get("lane_required") is not True:
                 live_canary_bug_report_errors.append("live scillm canary bug report lane_required is not true")
+            bug_report_errors = live_scillm_canary_bug_report.get("errors")
+            if not isinstance(bug_report_errors, list) or not all(isinstance(error, str) for error in bug_report_errors):
+                live_canary_bug_report_errors.append("live scillm canary bug report errors must be a list of strings")
+            failed_checks_payload = live_scillm_canary_bug_report.get("failed_checks")
+            if not isinstance(failed_checks_payload, list):
+                live_canary_bug_report_errors.append("live scillm canary bug report failed_checks must be a list")
+                failed_checks_payload = []
+            observed_checks_payload = live_scillm_canary_bug_report.get("observed_checks")
+            if not isinstance(observed_checks_payload, list):
+                live_canary_bug_report_errors.append("live scillm canary bug report observed_checks must be a list")
+                observed_checks_payload = []
             any_live_canary_failed = any(
                 payload is not None and isinstance(payload, dict) and payload.get("ok") is not True
                 for payload in [
@@ -3293,17 +3304,17 @@ def build_harness_readiness_audit(
             ]
             reported_failed_check_ids = sorted(
                 str(check.get("check_id") or "")
-                for check in live_scillm_canary_bug_report.get("failed_checks") or []
+                for check in failed_checks_payload
                 if isinstance(check, dict)
             )
             reported_observed_checks = {
                 str(check.get("check_id") or ""): check
-                for check in live_scillm_canary_bug_report.get("observed_checks") or []
+                for check in observed_checks_payload
                 if isinstance(check, dict)
             }
             if any_live_canary_failed and live_scillm_canary_bug_report.get("ok") is not False:
                 live_canary_bug_report_errors.append("live scillm canary bug report did not fail closed for failed canary checks")
-            if any_live_canary_failed and not live_scillm_canary_bug_report.get("failed_checks"):
+            if any_live_canary_failed and not failed_checks_payload:
                 live_canary_bug_report_errors.append("live scillm canary bug report missing failed_checks for failed canary checks")
             if expected_failed_check_ids != reported_failed_check_ids:
                 live_canary_bug_report_errors.append(
