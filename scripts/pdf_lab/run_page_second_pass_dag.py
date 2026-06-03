@@ -4167,6 +4167,13 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             return {}
         return payload
 
+    def validate_candidate_count(payload: dict[str, Any], expected_count: int, label: str) -> None:
+        candidate_count = payload.get("candidate_count")
+        if type(candidate_count) is not int or candidate_count < 0:
+            errors.append(f"{label} candidate_count must be a non-negative integer")
+        elif candidate_count != expected_count:
+            errors.append(f"{label} candidate_count does not match candidates")
+
     if terminal.get("schema") != "pdf_lab.second_pass.page_terminal_ledger.v1":
         errors.append("terminal ledger schema mismatch")
     terminal_status = terminal.get("terminal_status")
@@ -4267,8 +4274,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append(f"selected_candidates candidate_ids contain duplicates: {duplicate_selected_candidate_ids}")
         if len(selected_candidate_ids_from_artifact) != len(selected_candidates):
             errors.append("selected_candidates candidates contain missing candidate_id")
-        if selected_candidates_artifact.get("candidate_count") != len(selected_candidates):
-            errors.append("selected_candidates candidate_count does not match candidates")
+        validate_candidate_count(selected_candidates_artifact, len(selected_candidates), "selected_candidates")
     if candidate_presets_artifact:
         if candidate_presets_artifact.get("schema") != CANDIDATE_PRESETS_SCHEMA:
             errors.append("candidate_presets schema mismatch")
@@ -4298,8 +4304,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append(f"candidate_presets candidate_ids contain duplicates: {duplicate_preset_candidate_ids}")
         if len(preset_candidate_ids) != len(preset_candidates):
             errors.append("candidate_presets candidates contain missing candidate_id")
-        if candidate_presets_artifact.get("candidate_count") != len(preset_candidates):
-            errors.append("candidate_presets candidate_count does not match candidates")
+        validate_candidate_count(candidate_presets_artifact, len(preset_candidates), "candidate_presets")
         if selected_candidate_ids_from_artifact and preset_candidate_ids != selected_candidate_ids_from_artifact:
             errors.append("candidate_presets candidate_ids do not match selected_candidates")
     manifest_candidate_ids: list[str] = []
@@ -4332,8 +4337,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append(f"sampled_candidate_manifest candidate_ids contain duplicates: {duplicate_manifest_candidate_ids}")
         if len(manifest_candidate_ids) != len(manifest_candidates):
             errors.append("sampled_candidate_manifest candidates contain missing candidate_id")
-        if sampled_manifest.get("candidate_count") != len(manifest_candidates):
-            errors.append("sampled_candidate_manifest candidate_count does not match candidates")
+        validate_candidate_count(sampled_manifest, len(manifest_candidates), "sampled_candidate_manifest")
         page_case_candidate_ids = page_case.get("candidate_ids")
         if not isinstance(page_case_candidate_ids, list) or not all(
             isinstance(candidate_id, str) for candidate_id in page_case_candidate_ids

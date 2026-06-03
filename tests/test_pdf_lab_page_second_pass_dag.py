@@ -8400,6 +8400,64 @@ def test_validate_page_terminal_ledger_rejects_stale_selected_candidates_contrac
     assert "selected_candidates candidate_count does not match candidates" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_boolean_candidate_counts(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    selected_payload = _selected_candidates_payload(["cand:p0001:0000:table"], candidate_count=True)
+    preset_payload = _candidate_presets_payload(["cand:p0001:0000:table"], candidate_count=True)
+    sampled_payload = {
+        "schema": dag.SAMPLED_CANDIDATE_MANIFEST_SCHEMA,
+        "page_case": {
+            "case_id": "page_case_0001_p0001",
+            "page_number": 1,
+            "candidate_ids": ["cand:p0001:0000:table"],
+        },
+        "candidate_count": True,
+        "candidates": [{"candidate_id": "cand:p0001:0000:table"}],
+    }
+    (case_dir / "selected_candidates.json").write_text(json.dumps(selected_payload), encoding="utf-8")
+    (case_dir / "candidate_presets.json").write_text(json.dumps(preset_payload), encoding="utf-8")
+    (case_dir / "sampled_candidate_manifest.json").write_text(json.dumps(sampled_payload), encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": False,
+                "errors": ["dry_run_review_not_executed"],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "candidate_presets.json",
+            "sampled_candidate_manifest.json",
+            "review_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "selected_candidates candidate_count must be a non-negative integer" in errors
+    assert "candidate_presets candidate_count must be a non-negative integer" in errors
+    assert "sampled_candidate_manifest candidate_count must be a non-negative integer" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_stale_review_validation_contract(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
