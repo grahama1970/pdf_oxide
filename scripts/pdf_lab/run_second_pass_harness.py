@@ -2847,10 +2847,20 @@ def validate_harness_review_bundle_zip(
     }
 
 
-def package_validation_errors(validation: dict[str, Any] | None) -> list[str]:
+def package_validation_errors(
+    validation: dict[str, Any] | None,
+    *,
+    expected_schema: str | None = None,
+    label: str | None = None,
+) -> list[str]:
     if not validation:
         return []
     errors: list[str] = []
+    if expected_schema is not None and validation.get("schema") != expected_schema:
+        error_label = label or "package validation"
+        errors.append(
+            f"{error_label} schema mismatch: expected {expected_schema}, got {validation.get('schema')!r}"
+        )
     for key in [
         "included_artifacts",
         "required_zip_entries",
@@ -2902,8 +2912,13 @@ def package_validation_errors(validation: dict[str, Any] | None) -> list[str]:
     return errors
 
 
-def package_validation_passed(validation: dict[str, Any] | None) -> tuple[bool, list[str]]:
-    errors = package_validation_errors(validation)
+def package_validation_passed(
+    validation: dict[str, Any] | None,
+    *,
+    expected_schema: str | None = None,
+    label: str | None = None,
+) -> tuple[bool, list[str]]:
+    errors = package_validation_errors(validation, expected_schema=expected_schema, label=label)
     if not isinstance(validation, dict):
         return False, errors
     if validation.get("zip_content_ok") is not True:
@@ -3646,7 +3661,11 @@ def build_harness_readiness_audit(
         page_errors,
     )
 
-    scillm_bug_report_zip_ok, scillm_bug_report_zip_errors = package_validation_passed(scillm_bug_report_zip_validation)
+    scillm_bug_report_zip_ok, scillm_bug_report_zip_errors = package_validation_passed(
+        scillm_bug_report_zip_validation,
+        expected_schema="pdf_lab.second_pass.scillm_patch_delegate_bug_report_zip.v1",
+        label="scillm_patch_delegate_bug_report_zip",
+    )
     add_check(
         "scillm patch delegate bug report bundle is packageable",
         scillm_bug_report_zip_ok,
@@ -3765,14 +3784,22 @@ def build_harness_readiness_audit(
         },
         patch_commit_errors,
     )
-    patch_commit_ledger_zip_ok, patch_commit_ledger_zip_errors = package_validation_passed(patch_commit_ledger_zip_validation)
+    patch_commit_ledger_zip_ok, patch_commit_ledger_zip_errors = package_validation_passed(
+        patch_commit_ledger_zip_validation,
+        expected_schema="pdf_lab.second_pass.patch_commit_ledger_zip.v1",
+        label="patch_commit_ledger_zip",
+    )
     add_check(
         "patch commit ledger bundle is packageable",
         patch_commit_ledger_zip_ok,
         patch_commit_ledger_zip_validation,
         patch_commit_ledger_zip_errors,
     )
-    harness_review_bundle_ok, harness_review_bundle_errors = package_validation_passed(harness_review_bundle_validation)
+    harness_review_bundle_ok, harness_review_bundle_errors = package_validation_passed(
+        harness_review_bundle_validation,
+        expected_schema="pdf_lab.second_pass.harness_review_bundle_zip.v1",
+        label="harness_review_bundle_zip",
+    )
     add_check(
         "harness review bundle is packageable",
         harness_review_bundle_ok,

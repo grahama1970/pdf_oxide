@@ -5945,6 +5945,51 @@ def test_readiness_audit_rejects_malformed_package_validation_lists(tmp_path: Pa
     assert "missing_required_artifacts must be a list" in dumped
 
 
+def test_readiness_audit_rejects_package_validation_schema_mismatch(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+
+    validation = {
+        "schema": "wrong.schema",
+        "ok": True,
+        "zip_content_ok": True,
+        "included_count": 0,
+        "included_artifacts": [],
+        "required_zip_entries": [],
+        "zip_entry_count": 0,
+    }
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[],
+        aggregate={"ok": True, "errors": [], "status_counts": {}, "unresolved_count": 0},
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": []},
+        scillm_proof_floor=None,
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation=dict(validation),
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation=dict(validation),
+        harness_review_bundle_validation=dict(validation),
+    )
+
+    dumped = json.dumps(audit)
+    assert audit["ok"] is False
+    assert "scillm patch delegate bug report bundle is packageable" in audit["failed_requirements"]
+    assert "patch commit ledger bundle is packageable" in audit["failed_requirements"]
+    assert "harness review bundle is packageable" in audit["failed_requirements"]
+    assert "scillm_patch_delegate_bug_report_zip schema mismatch" in dumped
+    assert "patch_commit_ledger_zip schema mismatch" in dumped
+    assert "harness_review_bundle_zip schema mismatch" in dumped
+
+
 def test_readiness_audit_requires_live_orchestrator_page_registration(tmp_path: Path) -> None:
     harness = _load_module()
     manifest_path = tmp_path / "candidate_manifest.json"
