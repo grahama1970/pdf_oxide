@@ -3520,19 +3520,20 @@ def validate_repair_diagnosis_delegate_receipt(
 def patch_validation_has_delegate_timeout(validation: dict[str, Any] | None) -> bool:
     if not validation:
         return False
+    validation_errors = validation_error_list(validation, "patch_validation")
     return any(
         "stream deadline" in str(error)
         or "stream_deadline" in str(error)
         or "timed out" in str(error).lower()
         or "status is not completed/success/ok: timeout" in str(error)
-        for error in validation.get("errors") or []
+        for error in validation_errors
     )
 
 
 def patch_validation_has_recoverable_transport_failure(validation: dict[str, Any] | None) -> bool:
     if not validation:
         return False
-    errors = [str(error) for error in validation.get("errors") or []]
+    errors = [str(error) for error in validation_error_list(validation, "patch_validation")]
     joined = "\n".join(errors).lower()
     return any(
         marker in joined
@@ -3545,6 +3546,19 @@ def patch_validation_has_recoverable_transport_failure(validation: dict[str, Any
             "transport stream did not include message.completed",
         ]
     )
+
+
+def validation_error_list(validation: dict[str, Any] | None, label: str) -> list[str]:
+    if not isinstance(validation, dict):
+        return [f"{label} missing"]
+    raw_errors = validation.get("errors")
+    if raw_errors is None:
+        return []
+    if not isinstance(raw_errors, list):
+        return [f"{label} errors must be a list"]
+    if not all(isinstance(error, str) for error in raw_errors):
+        return [f"{label} errors must be a list of strings"]
+    return raw_errors
 
 
 def build_patch_delegate_bug_report(
@@ -3587,7 +3601,7 @@ def build_patch_delegate_bug_report(
             "blocked attempt returns a concrete substrate reason without pretending success",
         ],
         "observed": {
-            "validation_errors": patch_validation.get("errors") or [],
+            "validation_errors": validation_error_list(patch_validation, "patch_validation"),
             "receipt_schema": receipt_schema,
             "endpoint": patch_request.get("endpoint") if isinstance(patch_request, dict) else None,
             "transport_run_id": patch_receipt.get("transport_run_id") if isinstance(patch_receipt, dict) else None,
@@ -7299,16 +7313,22 @@ def run_page_case(
                 terminal_status, terminal_reason = "still_open", "repair_plan_failed"
             elif patch_validation_has_delegate_timeout(patch_validation):
                 terminal_status, terminal_reason = "blocked_substrate", "patch_delegate_timeout"
-            elif patch_validation and any("patch_prompt_contract_failed" in error for error in patch_validation.get("errors") or []):
+            elif patch_validation and any(
+                "patch_prompt_contract_failed" in error
+                for error in validation_error_list(patch_validation, "patch_validation")
+            ):
                 terminal_status, terminal_reason = "still_open", "patch_prompt_contract_failed"
-            elif patch_validation and any("repair_diagnosis_dry_run" in error for error in patch_validation.get("errors") or []):
+            elif patch_validation and any(
+                "repair_diagnosis_dry_run" in error
+                for error in validation_error_list(patch_validation, "patch_validation")
+            ):
                 terminal_status, terminal_reason = "still_open", "repair_diagnosis_dry_run"
             elif patch_validation and any(
                 "worker/provider error" in error
                 or "blocked substrate" in error
                 or "session_error" in error
                 or "failed tool_call" in error
-                for error in patch_validation.get("errors") or []
+                for error in validation_error_list(patch_validation, "patch_validation")
             ):
                 terminal_status, terminal_reason = "blocked_substrate", "patch_delegate_substrate_error"
             else:

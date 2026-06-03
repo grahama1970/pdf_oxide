@@ -5430,6 +5430,54 @@ def test_opencode_serve_timeout_validation_is_timeout_classified() -> None:
     assert dag.patch_validation_has_delegate_timeout(validation) is True
 
 
+def test_patch_validation_predicates_reject_string_errors_without_character_scanning() -> None:
+    dag = _load_module()
+    malformed_timeout = {
+        "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+        "ok": False,
+        "errors": "stream deadline exceeded",
+    }
+    malformed_transport = {
+        "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+        "ok": False,
+        "errors": "RemoteProtocolError incomplete chunked read",
+    }
+
+    assert dag.validation_error_list(malformed_timeout, "patch_validation") == ["patch_validation errors must be a list"]
+    assert dag.patch_validation_has_delegate_timeout(malformed_timeout) is False
+    assert dag.patch_validation_has_recoverable_transport_failure(malformed_transport) is False
+
+
+def test_patch_delegate_bug_report_replaces_malformed_validation_errors(tmp_path: Path) -> None:
+    dag = _load_module()
+
+    bug_report = dag.build_patch_delegate_bug_report(
+        case_id="page_case_0001_p0001",
+        page_number=1,
+        code_root=tmp_path,
+        patch_backend="opencode_serve",
+        patch_mode="live",
+        terminal_reason="patch_delegate_failed",
+        patch_request={"endpoint": "POST /v1/scillm/opencode/runs"},
+        patch_receipt={
+            "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
+            "http_status": 200,
+            "raw_response": {"status": "failed", "assistant_text": "", "diff": []},
+        },
+        patch_error=None,
+        patch_validation={
+            "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+            "ok": False,
+            "errors": "patch_delegate_failed",
+        },
+        patch_attempts_ledger=None,
+        transport_event_artifacts=[],
+        opencode_host_artifacts=[],
+    )
+
+    assert bug_report["observed"]["validation_errors"] == ["patch_validation errors must be a list"]
+
+
 def test_validate_transport_patch_receipt_rejects_permission_requests() -> None:
     dag = _load_module()
 
