@@ -4827,6 +4827,39 @@ def test_readiness_audit_names_live_opencode_write_capability_gate(tmp_path: Pat
     assert ".pdf_lab_write_canary/opencode_write_canary.txt" in json.dumps(audit)
 
 
+def test_readiness_audit_rejects_string_code_root_visibility_errors(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[],
+        aggregate={"ok": True, "errors": [], "status_counts": {}, "unresolved_count": 0},
+        patch_mode="live",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": "workspace is stale"},
+        scillm_proof_floor={"ok": True, "errors": []},
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation={"ok": True, "missing_artifacts": []},
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation={"ok": True, "missing_artifacts": []},
+        candidate_manifest_integrity_validation={"ok": True, "errors": []},
+        candidate_sample_linkage_validation={"ok": True, "errors": []},
+        deterministic_execution_plan_validation={"ok": True, "errors": []},
+    )
+
+    assert audit["ok"] is False
+    assert "live scillm code root visibility passed" in audit["failed_requirements"]
+    assert "code_root_visibility errors must be a list" in json.dumps(audit)
+
+
 def test_run_scillm_proof_floor_requires_positive_and_negative_chat_contracts(tmp_path: Path, monkeypatch) -> None:
     harness = _load_module()
     calls: list[tuple[str, str, bool]] = []

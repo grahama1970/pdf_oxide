@@ -2759,16 +2759,21 @@ def build_harness_readiness_audit(
         cleanup_schema="pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
         cleanup_artifact_name="scillm_transport_write_canary_cleanup.json",
     )
+    code_root_visibility_errors, code_root_visibility_errors_malformed = validation_error_list(
+        code_root_visibility,
+        "code_root_visibility",
+    )
     add_check(
         "live scillm code root visibility passed",
-        (not live_patch_required) or bool(code_root_visibility and code_root_visibility.get("ok") is True),
+        (not live_patch_required)
+        or bool(code_root_visibility and code_root_visibility.get("ok") is True and not code_root_visibility_errors_malformed),
         {
             "required": live_patch_required,
             "patch_mode": patch_mode,
             "patch_backend": patch_backend,
             "visibility": code_root_visibility,
         },
-        list((code_root_visibility or {}).get("errors") or []),
+        code_root_visibility_errors,
     )
     add_check(
         "live scillm proof floor passed",
