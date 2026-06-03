@@ -4208,6 +4208,56 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             if page_orchestrator_run_validation != recomputed_page_orchestrator_run_validation:
                 errors.append("scillm_page_orchestrator_run_validation does not match recomputed page_orchestrator_run contract")
 
+    patch_evidence_workspace_artifact = (
+        read_required_json_artifact("patch_evidence_workspace.json")
+        if "patch_evidence_workspace.json" in evidence_artifacts
+        else {}
+    )
+    patch_baseline_artifact = read_required_json_artifact("patch_baseline.json") if "patch_baseline.json" in evidence_artifacts else {}
+    if patch_evidence_workspace_artifact:
+        if patch_evidence_workspace_artifact.get("schema") != "pdf_lab.second_pass.patch_evidence_workspace.v1":
+            errors.append("patch_evidence_workspace schema mismatch")
+        if patch_evidence_workspace_artifact.get("case_id") != terminal.get("case_id"):
+            errors.append("patch_evidence_workspace case_id does not match terminal ledger")
+        if patch_evidence_workspace_artifact.get("ok") not in {True, False}:
+            errors.append("patch_evidence_workspace ok must be boolean")
+        copied = patch_evidence_workspace_artifact.get("copied")
+        missing = patch_evidence_workspace_artifact.get("missing")
+        if not isinstance(copied, list):
+            errors.append("patch_evidence_workspace copied must be a list")
+            copied = []
+        if not isinstance(missing, list) or not all(isinstance(item, str) for item in missing):
+            errors.append("patch_evidence_workspace missing must be a list of strings")
+            missing = []
+        copied_artifacts = sorted(
+            item.get("artifact")
+            for item in copied
+            if isinstance(item, dict) and isinstance(item.get("artifact"), str)
+        )
+        if len(copied_artifacts) != len(copied):
+            errors.append("patch_evidence_workspace copied entries must include artifact names")
+        workspace_artifacts = sorted(copied_artifacts + list(missing))
+        if workspace_artifacts != sorted(PATCH_EVIDENCE_WORKSPACE_FILES):
+            errors.append("patch_evidence_workspace copied and missing artifacts do not match required workspace files")
+        if patch_evidence_workspace_artifact.get("ok") is True and missing:
+            errors.append("patch_evidence_workspace ok true requires empty missing list")
+        if patch_evidence_workspace_artifact.get("ok") is False and not missing:
+            errors.append("patch_evidence_workspace ok false requires non-empty missing list")
+    if patch_baseline_artifact:
+        if patch_baseline_artifact.get("schema") != "pdf_lab.second_pass.patch_baseline.v1":
+            errors.append("patch_baseline schema mismatch")
+        changed_files = patch_baseline_artifact.get("changed_files")
+        if not isinstance(changed_files, list) or not all(isinstance(path, str) for path in changed_files):
+            errors.append("patch_baseline changed_files must be a list of strings")
+            changed_files = []
+        if patch_baseline_artifact.get("dirty") != bool(changed_files):
+            errors.append("patch_baseline dirty does not match changed_files")
+        embedded_workspace = patch_baseline_artifact.get("patch_evidence_workspace")
+        if not isinstance(embedded_workspace, dict):
+            errors.append("patch_baseline patch_evidence_workspace must be an object")
+        elif patch_evidence_workspace_artifact and embedded_workspace != patch_evidence_workspace_artifact:
+            errors.append("patch_baseline patch_evidence_workspace does not match patch_evidence_workspace artifact")
+
     review_request = read_required_json_artifact("review_request.json") if "review_request.json" in evidence_artifacts else {}
     review_request_validation = (
         read_required_json_artifact("review_request_validation.json")

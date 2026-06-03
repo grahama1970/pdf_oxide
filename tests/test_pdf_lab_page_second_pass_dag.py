@@ -6188,6 +6188,66 @@ def test_validate_page_terminal_ledger_rejects_stale_page_orchestrator_run_valid
     assert "scillm_page_orchestrator_run_validation does not match recomputed page_orchestrator_run contract" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_patch_evidence_workspace(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    current_workspace = {
+        "schema": "pdf_lab.second_pass.patch_evidence_workspace.v1",
+        "case_id": "page_case_9999_p9999",
+        "code_root": str(tmp_path / "workspace"),
+        "workspace_case_dir": str(tmp_path / "workspace/.pdf_lab_runtime/page_cases/page_case_9999_p9999"),
+        "git_info_exclude_pattern": ".pdf_lab_runtime/",
+        "copied": [{"artifact": "page_before.json", "source": "case/page_before.json", "workspace_path": "workspace/page_before.json"}],
+        "missing": [],
+        "ok": True,
+    }
+    stale_embedded_workspace = {
+        **current_workspace,
+        "case_id": "page_case_0001_p0001",
+        "copied": [
+            {"artifact": artifact, "source": f"case/{artifact}", "workspace_path": f"workspace/{artifact}"}
+            for artifact in dag.PATCH_EVIDENCE_WORKSPACE_FILES
+        ],
+    }
+    (case_dir / "patch_evidence_workspace.json").write_text(json.dumps(current_workspace), encoding="utf-8")
+    (case_dir / "patch_baseline.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_baseline.v1",
+                "changed_files": ["tests/test_fix.py"],
+                "dirty": False,
+                "patch_evidence_workspace": stale_embedded_workspace,
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "patch_delegate_dry_run",
+        "evidence_artifacts": [
+            "review.html",
+            "patch_evidence_workspace.json",
+            "patch_baseline.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "patch_evidence_workspace case_id does not match terminal ledger" in errors
+    assert "patch_evidence_workspace copied and missing artifacts do not match required workspace files" in errors
+    assert "patch_baseline dirty does not match changed_files" in errors
+    assert "patch_baseline patch_evidence_workspace does not match patch_evidence_workspace artifact" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_stale_orchestrator_spec_validations(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
