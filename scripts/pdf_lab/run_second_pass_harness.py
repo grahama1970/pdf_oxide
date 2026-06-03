@@ -4916,6 +4916,36 @@ def scillm_transport_readonly_canary_artifacts(out_dir: Path, canary: dict[str, 
     return artifacts
 
 
+def validate_live_transport_receipt_artifact_payload(
+    receipt_payload: dict[str, Any],
+    *,
+    validation_schema: str,
+) -> list[str]:
+    raw = receipt_payload.get("message_response")
+    if not isinstance(raw, dict):
+        raw = {}
+    event_stream = receipt_payload.get("event_stream")
+    if not isinstance(event_stream, dict):
+        event_stream = {}
+    delivery_state = raw.get("delivery_state") or raw.get("status") or event_stream.get("delivery_state")
+    assistant_text = str(raw.get("assistant_text") or raw.get("output") or raw.get("text") or "")
+    diff = raw.get("diff")
+    errors: list[str] = []
+    if delivery_state != "completed":
+        errors.append("live canary receipt_artifact did not prove completed delivery")
+    if validation_schema == "pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1":
+        if not assistant_text.strip().startswith("PDF_LAB_TRANSPORT_CANARY_OK"):
+            errors.append("live canary receipt_artifact assistant_text did not prove readonly sentinel")
+        if diff not in (None, "", [], {}):
+            errors.append("live canary receipt_artifact readonly diff was not empty")
+    elif validation_schema == "pdf_lab.second_pass.scillm_transport_write_canary_validation.v1":
+        if not assistant_text.strip().startswith("PDF_LAB_TRANSPORT_WRITE_CANARY_OK"):
+            errors.append("live canary receipt_artifact assistant_text did not prove write sentinel")
+        if diff in (None, "", [], {}):
+            errors.append("live canary receipt_artifact write diff was empty")
+    return errors
+
+
 def validate_live_canary_artifacts(
     *,
     out_dir: Path,
@@ -4995,6 +5025,24 @@ def validate_live_canary_artifacts(
             errors.append(f"live canary {field} has no expected artifact path")
         elif canary.get(field) != str(expected_path):
             errors.append(f"live canary {field} does not match expected artifact path")
+        elif field == "receipt_artifact" and field in required_green_artifact_fields and validation_schema in {
+            "pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1",
+            "pdf_lab.second_pass.scillm_transport_write_canary_validation.v1",
+        }:
+            try:
+                receipt_payload = json.loads(expected_path.read_text(encoding="utf-8"))
+            except Exception as exc:  # noqa: BLE001 - receipt evidence must fail closed.
+                errors.append(f"live canary receipt_artifact unreadable: {type(exc).__name__}: {exc}")
+            else:
+                if not isinstance(receipt_payload, dict):
+                    errors.append("live canary receipt_artifact is not a JSON object")
+                else:
+                    errors.extend(
+                        validate_live_transport_receipt_artifact_payload(
+                            receipt_payload,
+                            validation_schema=validation_schema,
+                        )
+                    )
         elif field == "event_stream_artifact" and field in required_green_artifact_fields:
             try:
                 event_stream_payload = json.loads(expected_path.read_text(encoding="utf-8"))
