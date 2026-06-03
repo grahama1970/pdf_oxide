@@ -5004,6 +5004,7 @@ def scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, Any] | No
 def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, Any] | None) -> dict[str, Any]:
     errors: list[str] = []
     artifacts = scillm_proof_floor_artifacts(out_dir, proof_floor)
+    loaded_proof_floor: dict[str, Any] = {}
     if not isinstance(proof_floor, dict):
         errors.append("scillm proof floor missing")
     elif proof_floor.get("schema") != "pdf_lab.second_pass.scillm_proof_floor.v1":
@@ -5032,6 +5033,7 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
             if not isinstance(loaded, dict):
                 errors.append("scillm proof floor artifact is not a JSON object")
             elif loaded == proof_floor:
+                loaded_proof_floor = loaded
                 proof_floor_artifact_matches_argument = True
             else:
                 errors.append("scillm proof floor artifact does not match proof floor argument")
@@ -5071,6 +5073,78 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
                     f"scillm proof floor validation failed: {error}"
                     for error in (validation_errors or ["validation ok is not true"])
                 )
+    proof_floor_response_contract_checked = False
+    if loaded_proof_floor and isinstance(loaded_proof_floor.get("checks"), list):
+        proof_floor_response_contract_checked = True
+
+        def load_response_artifact(name: str) -> dict[str, Any]:
+            path = artifacts.get(name)
+            if path is None:
+                errors.append(f"scillm proof floor response artifact path missing: {name}")
+                return {}
+            if not path.is_file():
+                errors.append(f"scillm proof floor response artifact missing: {name}")
+                return {}
+            try:
+                loaded_response = json.loads(path.read_text(encoding="utf-8"))
+            except Exception as exc:  # noqa: BLE001 - response evidence must fail closed.
+                errors.append(f"scillm proof floor response artifact unreadable {name}: {type(exc).__name__}: {exc}")
+                return {}
+            if not isinstance(loaded_response, dict):
+                errors.append(f"scillm proof floor response artifact is not a JSON object: {name}")
+                return {}
+            return loaded_response
+
+        liveliness = load_response_artifact("liveliness_response.json")
+        opencode_health = load_response_artifact("opencode_health_response.json")
+        positive_chat = load_response_artifact("positive_chat_response.json")
+        missing_caller = load_response_artifact("missing_caller_chat_response.json")
+
+        if liveliness:
+            if liveliness.get("check_id") != "liveliness":
+                errors.append("liveliness_response check_id mismatch")
+            if liveliness.get("method") != "GET" or liveliness.get("path") != "/health/liveliness":
+                errors.append("liveliness_response method/path mismatch")
+            if liveliness.get("include_caller_skill") is not True:
+                errors.append("liveliness_response did not include caller skill")
+            if liveliness.get("http_status") != 200 or (liveliness.get("payload") or {}).get("status") != "ok":
+                errors.append("liveliness_response did not prove status ok")
+        if opencode_health:
+            opencode_payload = opencode_health.get("payload") if isinstance(opencode_health.get("payload"), dict) else {}
+            opencode_status = opencode_payload.get("status")
+            if opencode_health.get("check_id") != "opencode_health":
+                errors.append("opencode_health_response check_id mismatch")
+            if opencode_health.get("method") != "GET" or opencode_health.get("path") != "/v1/scillm/opencode/health":
+                errors.append("opencode_health_response method/path mismatch")
+            if opencode_health.get("include_caller_skill") is not True:
+                errors.append("opencode_health_response did not include caller skill")
+            if opencode_health.get("http_status") != 200 or (
+                opencode_status not in {"ok", "healthy", "enabled"} and not opencode_payload.get("opencode_serve")
+            ):
+                errors.append("opencode_health_response did not prove OpenCode serve health")
+        if positive_chat:
+            if positive_chat.get("check_id") != "positive_chat":
+                errors.append("positive_chat_response check_id mismatch")
+            if positive_chat.get("method") != "POST" or positive_chat.get("path") != "/v1/chat/completions":
+                errors.append("positive_chat_response method/path mismatch")
+            if positive_chat.get("include_caller_skill") is not True:
+                errors.append("positive_chat_response did not include caller skill")
+            if positive_chat.get("http_status") != 200:
+                errors.append("positive_chat_response did not return HTTP 200")
+            elif "PDF_LAB_SCILLM_PREFLIGHT_OK" not in _chat_content(positive_chat.get("payload")):
+                errors.append("positive_chat_response missing PDF_LAB_SCILLM_PREFLIGHT_OK sentinel")
+        if missing_caller:
+            if missing_caller.get("check_id") != "missing_caller_chat":
+                errors.append("missing_caller_chat_response check_id mismatch")
+            if missing_caller.get("method") != "POST" or missing_caller.get("path") != "/v1/chat/completions":
+                errors.append("missing_caller_chat_response method/path mismatch")
+            if missing_caller.get("include_caller_skill") is not False:
+                errors.append("missing_caller_chat_response included caller skill")
+            missing_caller_text = str(
+                missing_caller.get("response_text") or json.dumps(missing_caller.get("payload"), sort_keys=True)
+            )
+            if missing_caller.get("http_status") != 400 or "caller_skill_required" not in missing_caller_text:
+                errors.append("missing_caller_chat_response did not prove caller_skill_required")
     return {
         "schema": "pdf_lab.second_pass.scillm_proof_floor_artifact_validation.v1",
         "ok": not errors,
@@ -5079,6 +5153,7 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
         "proof_floor_artifact": str(proof_floor_artifact_path) if proof_floor_artifact_path else None,
         "proof_floor_artifact_matches_argument": proof_floor_artifact_matches_argument,
         "validation_artifact": str(validation_path) if validation_path else None,
+        "proof_floor_response_contract_checked": proof_floor_response_contract_checked,
     }
 
 
