@@ -1230,6 +1230,10 @@ def validate_page_orchestrator_run_receipt(
     elif receipt.get("schema") != "pdf_lab.second_pass.page_orchestrator_run_receipt.v1":
         errors.append("page orchestrator run receipt schema mismatch")
     else:
+        if receipt.get("endpoint") != "POST /v1/scillm/opencode/transport/runs":
+            errors.append("page orchestrator run receipt endpoint mismatch")
+        if receipt.get("http_status") != 200:
+            errors.append("page orchestrator run receipt http_status must be 200")
         transport_run_id = receipt.get("transport_run_id")
         if not transport_run_id:
             errors.append("page orchestrator run receipt missing transport_run_id")
