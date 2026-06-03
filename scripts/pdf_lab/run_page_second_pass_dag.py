@@ -4018,6 +4018,15 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         errors.append("missing case_id")
     if not isinstance(terminal.get("page_number"), int):
         errors.append("missing integer page_number")
+    else:
+        terminal_identity = validate_page_case_identity(
+            {
+                "case_id": terminal.get("case_id"),
+                "page_number": terminal.get("page_number"),
+            },
+        )
+        if terminal_identity["ok"] is not True:
+            errors.extend(f"terminal ledger {error}" for error in terminal_identity["errors"])
     if not isinstance(terminal.get("reason"), str) or not terminal.get("reason", "").strip():
         errors.append("missing terminal reason")
     evidence_artifacts = terminal.get("evidence_artifacts")
