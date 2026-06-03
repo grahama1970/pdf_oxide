@@ -2402,6 +2402,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("review_bundle_validation schema mismatch")
             if review_bundle_validation.get("ok") is not True:
                 entry_errors.append("review_bundle_validation.ok is not true")
+            elif review_bundle_validation.get("errors") not in (None, []):
+                entry_errors.append("review_bundle_validation ok is true but errors are not empty")
             if review_bundle_validation.get("zip_content_ok") is not True:
                 entry_errors.append("review_bundle_validation.zip_content_ok is not true")
             if review_bundle_validation.get("case_id") != result.get("case_id"):
