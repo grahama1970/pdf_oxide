@@ -2413,6 +2413,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("patch_scope_validation schema mismatch")
             if patch_scope_validation.get("ok") is not True:
                 entry_errors.append("patch_scope_validation.ok is not true")
+            elif patch_scope_validation.get("errors") not in (None, []):
+                entry_errors.append("patch_scope_validation ok is true but errors are not empty")
             patch_scope_changed_files = read_string_set_field(
                 patch_scope_validation,
                 field_name="changed_files",
