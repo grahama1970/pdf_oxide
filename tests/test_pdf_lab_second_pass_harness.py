@@ -3176,6 +3176,21 @@ def test_commit_acceptance_gate_requires_matching_file_sets() -> None:
             },
         }
     )
+    empty_file_sets = harness.validate_commit_gate_acceptance(
+        {
+            "schema": "pdf_lab.second_pass.commit_gate.v1",
+            "ok": True,
+            "commit_sha": "abc123",
+            "exact_file_match": True,
+            "changed_files": [],
+            "committed_files": [],
+            "revertability_check": {
+                "schema": "pdf_lab.second_pass.revertability_check.v1",
+                "ok": True,
+                "commit_sha": "abc123",
+            },
+        }
+    )
     mismatched_file_sets = harness.validate_commit_gate_acceptance(
         {
             "schema": "pdf_lab.second_pass.commit_gate.v1",
@@ -3196,6 +3211,9 @@ def test_commit_acceptance_gate_requires_matching_file_sets() -> None:
     assert missing_file_sets["ok"] is False
     assert "commit_gate changed_files must be a non-empty list of strings" in missing_file_sets["errors"]
     assert "commit_gate committed_files must be a non-empty list of strings" in missing_file_sets["errors"]
+    assert empty_file_sets["ok"] is False
+    assert "commit_gate changed_files must be a non-empty list of strings" in empty_file_sets["errors"]
+    assert "commit_gate committed_files must be a non-empty list of strings" in empty_file_sets["errors"]
     assert mismatched_file_sets["ok"] is False
     assert "commit_gate changed_files do not match committed_files" in mismatched_file_sets["errors"]
 
