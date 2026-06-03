@@ -1816,9 +1816,11 @@ def package_scillm_patch_delegate_bug_report_bundle(
     included: list[str] = []
     missing: list[str] = []
     required_zip_entries: list[str] = []
+    expected_sources: dict[str, Path] = {}
 
     def add_file(bundle: zipfile.ZipFile, source: Path, arcname: str) -> None:
         required_zip_entries.append(arcname)
+        expected_sources[arcname] = source
         if source.is_file():
             bundle.write(source, arcname=arcname)
             included.append(arcname)
@@ -1845,27 +1847,52 @@ def package_scillm_patch_delegate_bug_report_bundle(
                 "terminal_ledger_validation.json",
             ]:
                 add_file(bundle, case_dir / artifact, f"{case_prefix}/{artifact}")
+    validation = validate_scillm_patch_delegate_bug_report_zip(
+        zip_path=zip_path,
+        included_artifacts=included,
+        missing_artifacts=missing,
+        required_zip_entries=required_zip_entries,
+        expected_sources=expected_sources,
+    )
+    return validation
+
+
+def validate_scillm_patch_delegate_bug_report_zip(
+    *,
+    zip_path: Path,
+    included_artifacts: list[str],
+    missing_artifacts: list[str],
+    required_zip_entries: list[str],
+    expected_sources: dict[str, Path],
+) -> dict[str, Any]:
     zip_entries: list[str] = []
     duplicate_zip_entries: list[str] = []
+    mismatched_zip_entries: list[str] = []
     if zip_path.is_file():
         with zipfile.ZipFile(zip_path) as bundle:
             zip_entries = bundle.namelist()
+            for arcname in included_artifacts:
+                source = expected_sources.get(arcname)
+                if source is not None and arcname in zip_entries and source.is_file():
+                    if bundle.read(arcname) != source.read_bytes():
+                        mismatched_zip_entries.append(arcname)
         entry_counts = Counter(zip_entries)
         duplicate_zip_entries = sorted(entry for entry, count in entry_counts.items() if count > 1)
     missing_expected_zip_entries = sorted(entry for entry in required_zip_entries if entry not in set(zip_entries))
-    zip_content_ok = zip_path.is_file() and not missing_expected_zip_entries and not duplicate_zip_entries
+    zip_content_ok = zip_path.is_file() and not missing_expected_zip_entries and not duplicate_zip_entries and not mismatched_zip_entries
     return {
         "schema": "pdf_lab.second_pass.scillm_patch_delegate_bug_report_zip.v1",
         "zip_path": str(zip_path),
-        "included_count": len(included),
-        "included_artifacts": included,
-        "missing_artifacts": missing,
+        "included_count": len(included_artifacts),
+        "included_artifacts": included_artifacts,
+        "missing_artifacts": missing_artifacts,
         "required_zip_entries": required_zip_entries,
         "zip_entry_count": len(zip_entries),
         "zip_content_ok": zip_content_ok,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
-        "ok": not missing and zip_content_ok,
+        "mismatched_zip_entries": sorted(mismatched_zip_entries),
+        "ok": not missing_artifacts and zip_content_ok,
     }
 
 
