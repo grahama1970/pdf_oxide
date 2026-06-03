@@ -1043,6 +1043,14 @@ def validate_page_orchestrator_dag_spec(spec: dict[str, Any]) -> dict[str, Any]:
     errors: list[str] = []
     if spec.get("schema") != "pdf_lab.second_pass.page_orchestrator_dag_spec.v1":
         errors.append("schema must be pdf_lab.second_pass.page_orchestrator_dag_spec.v1")
+    spec_identity = validate_page_case_identity(
+        {
+            "case_id": spec.get("case_id"),
+            "page_number": spec.get("page_number"),
+        },
+    )
+    if spec_identity["ok"] is not True:
+        errors.extend(f"orchestrator DAG {error}" for error in spec_identity["errors"])
     node_ids = [node.get("node_id") for node in spec.get("nodes") or [] if isinstance(node, dict)]
     for required in [
         "extract_page_json",

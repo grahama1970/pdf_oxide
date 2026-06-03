@@ -504,6 +504,56 @@ def test_validate_page_orchestrator_dag_spec_rejects_stale_patched_confirmed_con
     )
 
 
+def test_validate_page_orchestrator_dag_spec_rejects_malformed_page_identity(tmp_path: Path) -> None:
+    dag = _load_module()
+    spec = dag.build_page_orchestrator_dag_spec(
+        page_case={
+            "case_id": "page_case_0001_p0001",
+            "page_number": 1,
+            "page_index": 0,
+            "candidate_ids": ["cand:p0001:0000:table"],
+        },
+        candidates=[
+            {
+                "candidate_id": "cand:p0001:0000:table",
+                "page_number": 1,
+                "preset_type": "table",
+                "bbox": [0.1, 0.2, 0.8, 0.4],
+                "features": {},
+            }
+        ],
+        review_request_artifact="review_request.json",
+        patch_backend="scillm_orchestrator",
+        patch_mode="dry_run",
+        review_mode="dry_run",
+        repair_strategy="single",
+        opencode_agent="build",
+        opencode_agent_sequence=None,
+        opencode_model=None,
+        code_root=tmp_path,
+        caller_skill="pdf-lab",
+        page_extract_timeout_s=30.0,
+        status="ready",
+    )
+    unsafe = json.loads(json.dumps(spec))
+    unsafe["case_id"] = "../escape"
+    unsafe["page_case"]["case_id"] = "../escape"
+    stale = json.loads(json.dumps(spec))
+    stale["case_id"] = "page_case_0001_p0002"
+    stale["page_case"]["case_id"] = "page_case_0001_p0002"
+
+    unsafe_validation = dag.validate_page_orchestrator_dag_spec(unsafe)
+    stale_validation = dag.validate_page_orchestrator_dag_spec(stale)
+
+    assert unsafe_validation["ok"] is False
+    assert stale_validation["ok"] is False
+    assert "orchestrator DAG ../escape case_id must match page_case_####_p####" in unsafe_validation["errors"]
+    assert (
+        "orchestrator DAG page_case_0001_p0002 case_id page suffix does not match page_number 1"
+        in stale_validation["errors"]
+    )
+
+
 def test_validate_page_orchestrator_submission_rejects_stale_identity_metadata(tmp_path: Path) -> None:
     dag = _load_module()
     page_case = {
