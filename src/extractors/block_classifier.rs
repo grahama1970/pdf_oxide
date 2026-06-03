@@ -177,7 +177,9 @@ pub struct BlockLine {
 impl BlockLine {
     /// Build one `BlockLine` from the spans that share a line.
     fn from_spans(spans: &[&TextSpan]) -> Self {
-        let bbox = spans.iter().fold(spans[0].bbox, |acc, s| acc.union(&s.bbox));
+        let bbox = spans
+            .iter()
+            .fold(spans[0].bbox, |acc, s| acc.union(&s.bbox));
         let text: String = spans
             .iter()
             .map(|s| s.text.as_str())
@@ -333,7 +335,9 @@ impl BlockClassifier {
             .any(|s| s.font_weight == crate::layout::text_block::FontWeight::Bold);
         let font_name = spans[0].font_name.clone();
 
-        let y_ratio = bbox.y / self.page_height;
+        // Text bboxes use bottom-origin PDF coordinates. Convert to a visual
+        // top-origin ratio before applying top/header and bottom/footer bands.
+        let y_ratio = (self.page_height - (bbox.y + bbox.height)) / self.page_height;
         let x_center = bbox.x + bbox.width / 2.0;
         let page_center = self.page_width / 2.0;
         let is_centered = (x_center - page_center).abs() < self.page_width * 0.1;
@@ -1317,8 +1321,7 @@ fn promote_isolated_heading_blocks(blocks: &mut Vec<ClassifiedBlock>) {
             true
         } else {
             let p = &blocks[i - 1];
-            p.block_type == Title
-                || (p.block_type == Body && heading_shaped_subtitle(p))
+            p.block_type == Title || (p.block_type == Body && heading_shaped_subtitle(p))
         };
 
         let next_ok = if i + 1 >= n {
@@ -1358,9 +1361,10 @@ fn promote_isolated_heading_blocks(blocks: &mut Vec<ClassifiedBlock>) {
 ///     are emitted at ~9pt vs body's ~11pt);
 ///   - either:
 ///       * neighbor is `Body` AND its x is indented past the anchor's x
-///         (bullet text continuation, e.g. x=108 under anchor at x=90), OR
-///       * neighbor is `List` AND its x matches the anchor's x within 2pt
-///         (sibling bullet in the same run);
+///         (bullet/list text continuation, e.g. x=108 under anchor at x=90), OR
+///       * neighbor is a symbol-bullet `List` AND its x matches the anchor's
+///         x within 2pt (sibling bullet in the same run). Explicit enumerated
+///         list siblings such as `a.` and `b.` remain separate list items.
 ///   - neighbor is not a footnote/footer/header/page-number block.
 ///
 /// The merge preserves `lines[]` so paragraph_bbox_audit consumers see
@@ -1423,9 +1427,11 @@ fn merge_list_runs_and_continuations(blocks: &mut Vec<ClassifiedBlock>) {
 
             // Indentation classification.
             let dx = next.bbox.x - anchor_x;
-            let is_continuation =
-                next.block_type == Body && dx > 0.5 && dx <= anchor_fs * 4.0;
-            let is_sibling_list = next.block_type == List && dx.abs() <= 2.0;
+            let is_continuation = next.block_type == Body && dx > 0.5 && dx <= anchor_fs * 4.0;
+            let is_sibling_list = next.block_type == List
+                && dx.abs() <= 2.0
+                && starts_with_symbol_bullet(&blocks[i].text)
+                && starts_with_symbol_bullet(&next.text);
             if !is_continuation && !is_sibling_list {
                 break;
             }
@@ -1440,6 +1446,18 @@ fn merge_list_runs_and_continuations(blocks: &mut Vec<ClassifiedBlock>) {
         }
         i += 1;
     }
+}
+
+fn starts_with_symbol_bullet(text: &str) -> bool {
+    let trimmed = text.trim_start();
+    trimmed.starts_with('•')
+        || trimmed.starts_with('·')
+        || trimmed.starts_with('◦')
+        || trimmed.starts_with('▪')
+        || trimmed.starts_with('▸')
+        || trimmed.starts_with('-')
+        || trimmed.starts_with('–')
+        || trimmed.starts_with('—')
 }
 
 fn is_page_number(text: &str, y_ratio: f32) -> bool {
@@ -1634,6 +1652,9 @@ fn is_strict_caption_pattern(text: &str) -> bool {
 
 fn is_reference_entry(text: &str) -> bool {
     let trimmed = text.trim();
+    if trimmed.starts_with("[QID_") {
+        return false;
+    }
     if trimmed.starts_with('[') {
         if let Some(close) = trimmed.find(']') {
             if close < 20 {
@@ -2120,10 +2141,10 @@ mod tests {
         assert_eq!(block.lines.len(), 3, "expected 3 lines preserved after merge");
 
         // Each line bbox stays within the block bbox (line union == block bbox).
-        let line_union = block.lines.iter().fold(
-            block.lines[0].bbox,
-            |acc, line| acc.union(&line.bbox),
-        );
+        let line_union = block
+            .lines
+            .iter()
+            .fold(block.lines[0].bbox, |acc, line| acc.union(&line.bbox));
         let drift_x = (block.bbox.x - line_union.x).abs();
         let drift_y = (block.bbox.y - line_union.y).abs();
         let drift_w = (block.bbox.width - line_union.width).abs();
@@ -2160,7 +2181,12 @@ mod tests {
         let block = classifier.make_block(
             BlockType::Body,
             "x".to_string(),
-            Rect { x: 0.0, y: 0.0, width: 1.0, height: 1.0 },
+            Rect {
+                x: 0.0,
+                y: 0.0,
+                width: 1.0,
+                height: 1.0,
+            },
             11.0,
             "F".to_string(),
             false,
@@ -2215,13 +2241,8 @@ mod tests {
         n_rest.sequence = 59;
         let mut sup_one = make_span("1", 220.6, 635.3, 7.02, false);
         sup_one.sequence = 60; // superscript footnote marker
-        let mut can_include = make_span(
-            " can include a variety of computing platforms",
-            224.1,
-            631.3,
-            10.98,
-            false,
-        );
+        let mut can_include =
+            make_span(" can include a variety of computing platforms", 224.1, 631.3, 10.98, false);
         can_include.sequence = 61;
         let spans = vec![der, mo, n_rest, sup_one, can_include];
 
@@ -2285,7 +2306,10 @@ mod tests {
             list_blocks.len(),
             blocks
                 .iter()
-                .map(|b| (format!("{:?}", b.block_type), b.text.chars().take(40).collect::<String>()))
+                .map(|b| (
+                    format!("{:?}", b.block_type),
+                    b.text.chars().take(40).collect::<String>()
+                ))
                 .collect::<Vec<_>>()
         );
         let list = list_blocks[0];
@@ -2321,6 +2345,49 @@ mod tests {
         assert_eq!(preambles.len(), 1, "preamble should remain separate from the list run");
     }
 
+    #[test]
+    fn test_enumerated_list_siblings_remain_separate_with_continuations() {
+        let spans = vec![
+            make_span(
+                "a. Schedule, document, and review maintenance records;",
+                126.0,
+                650.0,
+                10.0,
+                false,
+            ),
+            make_span("including vendor maintenance records.", 144.0, 636.0, 10.0, false),
+            make_span(
+                "b. Approve and monitor all maintenance activities;",
+                126.0,
+                622.0,
+                10.0,
+                false,
+            ),
+            make_span("including remote maintenance.", 144.0, 608.0, 10.0, false),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        let list_blocks: Vec<&ClassifiedBlock> = blocks
+            .iter()
+            .filter(|b| b.block_type == BlockType::List)
+            .collect();
+        assert_eq!(
+            list_blocks.len(),
+            2,
+            "enumerated list siblings should remain item-level blocks: {:?}",
+            blocks
+                .iter()
+                .map(|b| (format!("{:?}", b.block_type), b.text.as_str()))
+                .collect::<Vec<_>>()
+        );
+        assert!(list_blocks[0].text.starts_with("a."));
+        assert!(list_blocks[0].text.contains("vendor maintenance"));
+        assert!(!list_blocks[0].text.contains("b. Approve"));
+        assert!(list_blocks[1].text.starts_with("b."));
+        assert!(list_blocks[1].text.contains("remote maintenance"));
+    }
+
     /// GS001 R8 — empty-text classified blocks must not appear in the
     /// final block list.
     #[test]
@@ -2334,10 +2401,7 @@ mod tests {
         let classifier = BlockClassifier::new(612.0, 792.0, &spans);
         let blocks = classifier.classify_spans(&spans);
         for b in &blocks {
-            assert!(
-                !b.text.trim().is_empty(),
-                "empty-text block leaked through the filter: {b:?}"
-            );
+            assert!(!b.text.trim().is_empty(), "empty-text block leaked through the filter: {b:?}");
         }
         // We should still see both real paragraphs (possibly merged into one body block)
         let total_text: String = blocks.iter().map(|b| b.text.as_str()).collect();
@@ -2358,5 +2422,32 @@ mod tests {
         let blocks = classifier.classify_spans(&spans);
         assert_eq!(blocks.len(), 1);
         assert_eq!(blocks[0].text, "Hello world.");
+    }
+
+    #[test]
+    fn test_page_top_title_and_qid_table_row_are_not_footer_or_reference() {
+        let spans = vec![
+            make_span("Preset: requirements_matrix (Table ID: t0)", 42.0, 736.0, 14.0, true),
+            make_span("[QID_88D69E9342E4]Req ID", 0.0, 704.0, 11.0, false),
+            make_span("[QID_D124C0C983D6]AC-1", 0.0, 684.0, 11.0, false),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        let preset = blocks
+            .iter()
+            .find(|b| b.text.contains("requirements_matrix"))
+            .expect("expected top-page preset label block");
+        assert_ne!(preset.block_type, BlockType::Footer);
+
+        let qid_rows: Vec<&ClassifiedBlock> = blocks
+            .iter()
+            .filter(|b| b.text.contains("[QID_"))
+            .collect();
+        assert!(!qid_rows.is_empty(), "expected QID table-row-like text");
+        for row in qid_rows {
+            assert_ne!(row.block_type, BlockType::Footer, "QID row should not be footer: {row:?}");
+            assert_ne!(row.block_type, BlockType::Reference, "QID row should not be reference: {row:?}");
+        }
     }
 }
