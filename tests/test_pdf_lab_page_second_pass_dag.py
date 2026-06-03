@@ -5142,6 +5142,38 @@ def test_merge_transport_event_streams_preserves_replayed_failure() -> None:
     assert merged["session_errors"][0]["error"] == "timeout"
 
 
+def test_merge_transport_event_streams_rejects_coerced_raw_line_counts() -> None:
+    dag = _load_module()
+
+    merged = dag.merge_transport_event_streams(
+        {
+            "schema": "pdf_lab.second_pass.scillm_transport_event_stream.v1",
+            "event_count": 1,
+            "events": [
+                {"event_type": "message.completed", "event_id": "complete-1", "result": {"delivery_state": "completed", "diff": []}},
+            ],
+            "raw_line_count": True,
+            "final_result": {"delivery_state": "completed", "diff": []},
+            "saw_message_completed": True,
+        },
+        {
+            "schema": "pdf_lab.second_pass.scillm_transport_event_stream.v1",
+            "event_count": 1,
+            "events": [
+                {"event_type": "heartbeat", "event_id": "heartbeat-1"},
+            ],
+            "raw_line_count": "1",
+            "final_result": {},
+            "saw_message_completed": False,
+        },
+    )
+
+    assert merged["raw_line_count"] == 0
+    errors = "\n".join(error["error"] for error in merged["parse_errors"])
+    assert "raw_line_count must be a non-negative integer: True" in errors
+    assert "raw_line_count must be a non-negative integer: '1'" in errors
+
+
 def test_broken_transport_stream_becomes_session_error() -> None:
     dag = _load_module()
 

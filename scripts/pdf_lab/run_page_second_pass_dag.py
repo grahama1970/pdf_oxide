@@ -161,6 +161,25 @@ class PageExtractionTimeout(TimeoutError):
     """Raised when page extraction exceeds the page DAG timeout."""
 
 
+def is_plain_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def transport_raw_line_count(stream: dict[str, Any], *, label: str, parse_errors: list[dict[str, Any]]) -> int:
+    value = stream.get("raw_line_count", 0)
+    if not is_plain_int(value) or value < 0:
+        parse_errors.append(
+            {
+                "event_type": "parse_error",
+                "source": label,
+                "field": "raw_line_count",
+                "error": f"raw_line_count must be a non-negative integer: {value!r}",
+            }
+        )
+        return 0
+    return value
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -2681,8 +2700,14 @@ def merge_transport_event_streams(primary: dict[str, Any], replay: dict[str, Any
     session_errors: list[dict[str, Any]] = []
     permission_requests: list[dict[str, Any]] = []
     parse_errors: list[dict[str, Any]] = []
+    raw_line_count = 0
     final_result = primary.get("final_result") or replay.get("final_result") or {}
     saw_message_completed = bool(primary.get("saw_message_completed") or replay.get("saw_message_completed"))
+    for label, stream in [("primary", primary), ("replay", replay)]:
+        raw_line_count += transport_raw_line_count(stream, label=label, parse_errors=parse_errors)
+        for parse_error in stream.get("parse_errors") or []:
+            if isinstance(parse_error, dict):
+                parse_errors.append(parse_error)
     for event in events:
         event_type = str(event.get("event_type") or "unknown")
         event_type_counts[event_type] = event_type_counts.get(event_type, 0) + 1
@@ -2703,7 +2728,7 @@ def merge_transport_event_streams(primary: dict[str, Any], replay: dict[str, Any
         "event_count": len(events),
         "event_type_counts": event_type_counts,
         "events": events,
-        "raw_line_count": int(primary.get("raw_line_count") or 0) + int(replay.get("raw_line_count") or 0),
+        "raw_line_count": raw_line_count,
         "final_result": final_result,
         "delivery_state": delivery_state or "unknown",
         "saw_message_completed": saw_message_completed,
