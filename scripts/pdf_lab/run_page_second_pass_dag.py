@@ -107,6 +107,7 @@ PROMPT_PAYLOAD_EXACT_KEYS = {
     "patch_targets",
 }
 REQUIRED_PATCHED_CONFIRMED_ARTIFACTS = {
+    "selected_candidates.json",
     "patch_delta.json",
     "patch_scope_validation.json",
     "test_validation.json",
@@ -3677,12 +3678,14 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append(f"patched_confirmed terminal ledger artifact missing on disk: {artifact}")
         patch_scope_validation = read_required_json_artifact("patch_scope_validation.json")
         test_validation = read_required_json_artifact("test_validation.json")
+        selected_candidates = read_required_json_artifact("selected_candidates.json")
         review_after_request_validation = read_required_json_artifact("review_after_request_validation.json")
         review_after_validation = read_required_json_artifact("review_after_validation.json")
         review_after_response = read_required_json_artifact("review_after_response.json")
         commit_acceptance = read_required_json_artifact("commit_acceptance_gate.json")
         commit_gate = read_required_json_artifact("commit_gate.json")
         revertability = read_required_json_artifact("revertability_check.json")
+        selected_candidate_ids: list[str] = []
         if patch_scope_validation:
             if patch_scope_validation.get("schema") != "pdf_lab.second_pass.patch_scope_validation.v1":
                 errors.append("patch_scope_validation schema mismatch")
@@ -3718,6 +3721,25 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("review_after_validation schema mismatch")
             if review_after_validation.get("ok") is not True:
                 errors.append("review_after_validation.ok is not true")
+            if selected_candidates:
+                candidates = selected_candidates.get("candidates")
+                if not isinstance(candidates, list):
+                    errors.append("selected_candidates candidates is not a list")
+                else:
+                    selected_candidate_ids = sorted(
+                        candidate["candidate_id"]
+                        for candidate in candidates
+                        if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
+                    )
+                    if len(selected_candidate_ids) != len(candidates):
+                        errors.append("selected_candidates candidates contain missing candidate_id")
+            if selected_candidate_ids:
+                expected_after_ids = sorted(str(candidate_id) for candidate_id in review_after_validation.get("expected_candidate_ids") or [])
+                seen_after_ids = sorted(str(candidate_id) for candidate_id in review_after_validation.get("seen_candidate_ids") or [])
+                if expected_after_ids != selected_candidate_ids:
+                    errors.append("review_after_validation expected_candidate_ids do not match selected_candidates")
+                if seen_after_ids != selected_candidate_ids:
+                    errors.append("review_after_validation seen_candidate_ids do not match selected_candidates")
         if review_after_response:
             if review_after_response.get("schema") != "pdf_lab.second_pass.review_response.v1":
                 errors.append("review_after_response schema mismatch")
@@ -3726,8 +3748,17 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             findings = review_after_response.get("candidate_findings")
             if not isinstance(findings, list):
                 errors.append("review_after_response candidate_findings is not a list")
-            elif any(not isinstance(finding, dict) or finding.get("status") != "clean" for finding in findings):
-                errors.append("review_after_response candidate_findings are not all clean")
+            else:
+                if any(not isinstance(finding, dict) or finding.get("status") != "clean" for finding in findings):
+                    errors.append("review_after_response candidate_findings are not all clean")
+                if selected_candidate_ids:
+                    response_candidate_ids = sorted(
+                        finding["candidate_id"]
+                        for finding in findings
+                        if isinstance(finding, dict) and isinstance(finding.get("candidate_id"), str)
+                    )
+                    if response_candidate_ids != selected_candidate_ids:
+                        errors.append("review_after_response candidate_findings do not match selected_candidates")
         if commit_acceptance:
             if commit_acceptance.get("schema") != "pdf_lab.second_pass.commit_acceptance_gate.v1":
                 errors.append("commit_acceptance_gate schema mismatch")
@@ -5567,6 +5598,7 @@ def run_page_case(
             "page_before.json",
             "page_before.png",
             "page_candidates.png",
+            "selected_candidates.json",
             "candidate_presets.json",
             "review_request.json",
             "review_request_validation.json",
