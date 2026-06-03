@@ -738,6 +738,29 @@ def test_validate_page_orchestrator_run_receipt_rejects_stale_request_identity(t
     assert "page orchestrator create_response transport_run_id does not match receipt" in validation["errors"]
 
 
+def test_validate_page_orchestrator_run_receipt_rejects_malformed_dry_run_request_identity() -> None:
+    dag = _load_module()
+    request = {
+        "schema": "pdf_lab.second_pass.page_orchestrator_run_request.v1",
+        "endpoint": "POST /v1/scillm/opencode/transport/runs",
+        "dag_spec_sha256": "current-dag",
+        "scillm_metadata": {
+            "case_id": "../escape",
+            "page_number": 1,
+            "dag_spec_sha256": "stale-dag",
+        },
+    }
+
+    validation = dag.validate_page_orchestrator_run_receipt(None, mode="dry_run", request=request)
+
+    assert validation["ok"] is False
+    assert "page orchestrator run request ../escape case_id must match page_case_####_p####" in validation["errors"]
+    assert (
+        "page orchestrator run request scillm_metadata.dag_spec_sha256 must match request.dag_spec_sha256"
+        in validation["errors"]
+    )
+
+
 def test_validate_page_orchestrator_run_receipt_rejects_stale_nested_transport_evidence(tmp_path: Path) -> None:
     dag = _load_module()
     page_case = {

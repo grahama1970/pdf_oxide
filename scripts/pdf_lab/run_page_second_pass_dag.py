@@ -1318,11 +1318,29 @@ def validate_page_orchestrator_run_receipt(
     expected_page_number = expected_metadata.get("page_number") if isinstance(expected_metadata, dict) else None
     expected_dag_spec_sha256 = expected_metadata.get("dag_spec_sha256") if isinstance(expected_metadata, dict) else None
     expected_cwd = request.get("cwd") if isinstance(request, dict) else None
+    if isinstance(request, dict):
+        if request.get("schema") != "pdf_lab.second_pass.page_orchestrator_run_request.v1":
+            errors.append("page orchestrator run request schema mismatch")
+        if request.get("endpoint") != "POST /v1/scillm/opencode/transport/runs":
+            errors.append("page orchestrator run request endpoint mismatch")
+        if not isinstance(expected_metadata, dict):
+            errors.append("page orchestrator run request missing scillm_metadata")
+        else:
+            request_identity = validate_page_case_identity(
+                {
+                    "case_id": expected_case_id,
+                    "page_number": expected_page_number,
+                },
+            )
+            if request_identity["ok"] is not True:
+                errors.extend(f"page orchestrator run request {error}" for error in request_identity["errors"])
+            if expected_dag_spec_sha256 != request.get("dag_spec_sha256"):
+                errors.append("page orchestrator run request scillm_metadata.dag_spec_sha256 must match request.dag_spec_sha256")
     if mode == "dry_run":
         return {
             "schema": "pdf_lab.second_pass.page_orchestrator_run_validation.v1",
-            "ok": True,
-            "errors": [],
+            "ok": not errors,
+            "errors": errors,
             "mode": mode,
             "transport_run_id": None,
             "registered": False,
