@@ -5023,6 +5023,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         patch_attempts_ledger = read_required_json_artifact("patch_attempts_ledger.json")
         patch_validation = read_required_json_artifact("patch_validation.json")
         if patch_attempts_ledger:
+            if patch_validation and not isinstance(patch_validation.get("errors"), list):
+                errors.append("patch_validation errors must be a list")
             if patch_attempts_ledger.get("schema") != "pdf_lab.second_pass.patch_attempts_ledger.v1":
                 errors.append("patch_attempts_ledger schema mismatch")
             ledger_page_case = patch_attempts_ledger.get("page_case")
@@ -5105,10 +5107,16 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 if attempt_validation:
                     if attempt_validation.get("schema") != "pdf_lab.second_pass.patch_delegate_validation.v1":
                         errors.append(f"patch_attempts_ledger attempts[{index}].validation_artifact schema mismatch")
+                    if not isinstance(attempt_validation.get("errors"), list):
+                        errors.append(f"patch_attempts_ledger attempts[{index}].validation_artifact errors must be a list")
                     if attempt_validation.get("ok") != attempt.get("ok"):
                         errors.append(f"patch_attempts_ledger attempts[{index}].ok does not match validation_artifact")
-                    validation_errors = list(attempt_validation.get("errors") or [])
-                    attempt_errors = list(attempt.get("errors") or [])
+                    validation_errors = attempt_validation.get("errors") if isinstance(attempt_validation.get("errors"), list) else []
+                    if not isinstance(attempt.get("errors"), list):
+                        errors.append(f"patch_attempts_ledger attempts[{index}].errors must be a list")
+                        attempt_errors = []
+                    else:
+                        attempt_errors = attempt.get("errors")
                     if validation_errors != attempt_errors:
                         errors.append(f"patch_attempts_ledger attempts[{index}].errors do not match validation_artifact")
                 attempt_request: dict[str, Any] = {}

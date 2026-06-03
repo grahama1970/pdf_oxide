@@ -7578,6 +7578,97 @@ def test_validate_page_terminal_ledger_rejects_coerced_patch_attempt_ok(tmp_path
     assert "patch_attempts_ledger attempts[0].ok must be boolean" in validation["errors"]
 
 
+def test_validate_page_terminal_ledger_rejects_string_patch_attempt_errors(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "patch_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+                "ok": False,
+                "errors": "patch_delegate_failed",
+                "patch_status": "failed",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_attempt_01_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+                "ok": False,
+                "errors": "patch_delegate_failed",
+                "patch_status": "failed",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_attempts_ledger.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_attempts_ledger.v1",
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "candidate_ids": ["cand:p0001:0000:unknown_layout"],
+                "patch_backend": "scillm_orchestrator",
+                "patch_mode": "live",
+                "patch_prompt_profile": "plan_only",
+                "repair_strategy": "direct",
+                "agent_sequence": ["build"],
+                "attempt_count": 1,
+                "selected_attempt_index": None,
+                "attempts": [
+                    {
+                        "attempt_index": 1,
+                        "agent": "build",
+                        "validation_artifact": "patch_attempt_01_validation.json",
+                        "ok": False,
+                        "errors": "patch_delegate_failed",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(
+            {
+                "schema": dag.SELECTED_CANDIDATES_SCHEMA,
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "candidates": [{"candidate_id": "cand:p0001:0000:unknown_layout"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "patch_delegate_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "patch_validation.json",
+            "patch_attempts_ledger.json",
+            "patch_attempt_01_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "patch_validation errors must be a list" in errors
+    assert "patch_attempts_ledger attempts[0].validation_artifact errors must be a list" in errors
+    assert "patch_attempts_ledger attempts[0].errors must be a list" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_stale_root_patch_validation_fields(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
