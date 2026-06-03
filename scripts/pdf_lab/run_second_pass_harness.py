@@ -4234,10 +4234,18 @@ def validate_live_canary_artifacts(
         if validation_payload.get("schema") != validation_schema:
             errors.append(f"live canary validation schema mismatch: {validation_payload.get('schema')}")
         if validation_payload.get("ok") is not True:
-            errors.extend(
-                f"live canary validation failed: {error}"
-                for error in validation_payload.get("errors") or ["validation ok is not true"]
-            )
+            validation_errors = validation_payload.get("errors")
+            if validation_errors is None:
+                errors.append("live canary validation failed: validation ok is not true")
+            elif not isinstance(validation_errors, list):
+                errors.append("live canary validation errors must be a list")
+            elif not all(isinstance(error, str) for error in validation_errors):
+                errors.append("live canary validation errors must be a list of strings")
+            else:
+                errors.extend(
+                    f"live canary validation failed: {error}"
+                    for error in validation_errors or ["validation ok is not true"]
+                )
 
     cleanup_payload: dict[str, Any] = {}
     cleanup_path = artifacts.get(cleanup_artifact_name or "") if cleanup_artifact_name else None
@@ -4254,10 +4262,18 @@ def validate_live_canary_artifacts(
             if cleanup_payload.get("schema") != cleanup_schema:
                 errors.append(f"live canary cleanup schema mismatch: {cleanup_payload.get('schema')}")
             if cleanup_payload.get("ok") is not True:
-                errors.extend(
-                    f"live canary cleanup failed: {error}"
-                    for error in cleanup_payload.get("errors") or ["cleanup ok is not true"]
-                )
+                cleanup_errors = cleanup_payload.get("errors")
+                if cleanup_errors is None:
+                    errors.append("live canary cleanup failed: cleanup ok is not true")
+                elif not isinstance(cleanup_errors, list):
+                    errors.append("live canary cleanup errors must be a list")
+                elif not all(isinstance(error, str) for error in cleanup_errors):
+                    errors.append("live canary cleanup errors must be a list of strings")
+                else:
+                    errors.extend(
+                        f"live canary cleanup failed: {error}"
+                        for error in cleanup_errors or ["cleanup ok is not true"]
+                    )
 
     return {
         "schema": "pdf_lab.second_pass.live_canary_artifact_validation.v1",

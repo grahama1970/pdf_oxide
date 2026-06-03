@@ -5055,6 +5055,102 @@ def test_live_canary_artifact_validation_rejects_string_canary_errors(tmp_path: 
     assert "live canary errors must be a list" in validation["errors"]
 
 
+def test_live_canary_artifact_validation_rejects_string_validation_errors(tmp_path: Path) -> None:
+    harness = _load_module()
+    canary_dir = tmp_path / "opencode_completion_canary"
+    canary_dir.mkdir()
+    canary = {
+        "schema": "pdf_lab.second_pass.opencode_completion_canary.v1",
+        "ok": True,
+        "errors": [],
+    }
+    (canary_dir / "opencode_completion_canary.json").write_text(json.dumps(canary), encoding="utf-8")
+    (canary_dir / "opencode_completion_canary_request.json").write_text(json.dumps({"prompt": "sentinel"}), encoding="utf-8")
+    (canary_dir / "opencode_completion_canary_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+                "ok": False,
+                "errors": "sentinel missing",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (canary_dir / "opencode_completion_canary_cleanup.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_live_canary_artifacts(
+        out_dir=tmp_path,
+        canary=canary,
+        artifact_builder=harness.opencode_completion_canary_artifacts,
+        canary_schema="pdf_lab.second_pass.opencode_completion_canary.v1",
+        validation_schema="pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+        validation_artifact_name="opencode_completion_canary_validation.json",
+        cleanup_schema="pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+        cleanup_artifact_name="opencode_completion_canary_cleanup.json",
+    )
+
+    assert validation["ok"] is False
+    assert "live canary validation errors must be a list" in validation["errors"]
+    assert "live canary validation failed: s" not in validation["errors"]
+
+
+def test_live_canary_artifact_validation_rejects_string_cleanup_errors(tmp_path: Path) -> None:
+    harness = _load_module()
+    canary_dir = tmp_path / "opencode_completion_canary"
+    canary_dir.mkdir()
+    canary = {
+        "schema": "pdf_lab.second_pass.opencode_completion_canary.v1",
+        "ok": True,
+        "errors": [],
+    }
+    (canary_dir / "opencode_completion_canary.json").write_text(json.dumps(canary), encoding="utf-8")
+    (canary_dir / "opencode_completion_canary_request.json").write_text(json.dumps({"prompt": "sentinel"}), encoding="utf-8")
+    (canary_dir / "opencode_completion_canary_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (canary_dir / "opencode_completion_canary_cleanup.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+                "ok": False,
+                "errors": "sentinel cleanup failed",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_live_canary_artifacts(
+        out_dir=tmp_path,
+        canary=canary,
+        artifact_builder=harness.opencode_completion_canary_artifacts,
+        canary_schema="pdf_lab.second_pass.opencode_completion_canary.v1",
+        validation_schema="pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+        validation_artifact_name="opencode_completion_canary_validation.json",
+        cleanup_schema="pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+        cleanup_artifact_name="opencode_completion_canary_cleanup.json",
+    )
+
+    assert validation["ok"] is False
+    assert "live canary cleanup errors must be a list" in validation["errors"]
+    assert "live canary cleanup failed: s" not in validation["errors"]
+
+
 def test_live_canary_artifact_validation_rejects_transport_ok_without_validation_artifact(tmp_path: Path) -> None:
     harness = _load_module()
 
