@@ -3908,6 +3908,16 @@ def build_opencode_completion_canary_request(
     return request
 
 
+def diff_mentions_path(diff: Any, relpath: str) -> bool:
+    if isinstance(diff, str):
+        return relpath in diff
+    if isinstance(diff, dict):
+        return any(diff_mentions_path(value, relpath) for value in diff.values())
+    if isinstance(diff, list):
+        return any(diff_mentions_path(item, relpath) for item in diff)
+    return False
+
+
 def validate_opencode_completion_canary_receipt(
     receipt: dict[str, Any] | None,
     *,
@@ -3942,9 +3952,13 @@ def validate_opencode_completion_canary_receipt(
         pass
     elif not sentinel_content_ok:
         errors.append("OpenCode completion canary sentinel file content mismatch")
-    diff_present = bool(raw.get("diff"))
+    diff = raw.get("diff")
+    diff_present = diff not in (None, "", [], {})
+    diff_references_canary_path = diff_mentions_path(diff, canary_relpath)
     if not diff_present:
         errors.append("OpenCode completion canary produced no patch diff evidence")
+    elif not diff_references_canary_path:
+        errors.append("OpenCode completion canary diff did not reference sentinel file")
     return {
         "schema": "pdf_lab.second_pass.opencode_completion_canary_validation.v1",
         "ok": not errors,
@@ -3956,6 +3970,7 @@ def validate_opencode_completion_canary_receipt(
         "write_sentinel_present": bool(sentinel_path is not None and sentinel_path.is_file()),
         "write_sentinel_content_ok": sentinel_content_ok,
         "diff_present": diff_present,
+        "diff_references_canary_path": diff_references_canary_path,
     }
 
 
@@ -4298,6 +4313,7 @@ def validate_scillm_transport_write_canary_receipt(
     assistant_text = str(raw.get("assistant_text") or raw.get("output") or raw.get("text") or "")
     diff = raw.get("diff")
     diff_present = diff not in (None, "", [], {})
+    diff_references_canary_path = diff_mentions_path(diff, canary_relpath)
     sentinel_path = code_root / canary_relpath
     sentinel_text = sentinel_path.read_text(encoding="utf-8") if sentinel_path.is_file() else None
     if delivery_state != "completed":
@@ -4314,6 +4330,8 @@ def validate_scillm_transport_write_canary_receipt(
         errors.append("transport write canary sentinel file content mismatch")
     if not diff_present:
         errors.append("transport write canary produced no patch diff evidence")
+    elif not diff_references_canary_path:
+        errors.append("transport write canary diff did not reference sentinel file")
     for session_error in event_stream.get("session_errors") or []:
         if isinstance(session_error, dict):
             error_type = session_error.get("error_type") or "unknown"
@@ -4338,6 +4356,7 @@ def validate_scillm_transport_write_canary_receipt(
         "assistant_text_present": bool(assistant_text.strip()),
         "sentinel_present": assistant_text.strip().startswith("PDF_LAB_TRANSPORT_WRITE_CANARY_OK"),
         "diff_present": diff_present,
+        "diff_references_canary_path": diff_references_canary_path,
         "write_sentinel_path": str(sentinel_path),
         "write_sentinel_present": sentinel_path.is_file(),
         "write_sentinel_content_ok": sentinel_text == "PDF_LAB_SCILLM_TRANSPORT_WRITE_CANARY_OK\n",
