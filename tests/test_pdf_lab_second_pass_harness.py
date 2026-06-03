@@ -786,6 +786,22 @@ def test_validate_sampling_gate_rejects_malformed_statistical_audit() -> None:
     assert "sampling_audit selected_count must be a non-negative integer: True" in errors
 
 
+def test_validate_sampling_gate_rejects_unsorted_selected_pages() -> None:
+    harness = _load_module()
+    gate = harness.validate_sampling_gate(
+        manifest={"candidate_count": 2},
+        sampled_cases={
+            "selected_count": 2,
+            "selected_pages": [2, 1],
+            "seed": 1234,
+            "sampling_audit": _passing_sampling_audit(candidate_count=2, selected_count=2, seed=1234),
+        },
+    )
+
+    assert gate["ok"] is False
+    assert "sampled_page_cases selected_pages must be sorted ascending" in gate["errors"]
+
+
 def test_validate_sampling_gate_rejects_coerced_declared_counts() -> None:
     harness = _load_module()
     gate = harness.validate_sampling_gate(
@@ -1383,6 +1399,34 @@ def test_validate_candidate_sample_linkage_rejects_duplicate_sampled_pages() -> 
     assert "selected_pages contains duplicates: [1]" in errors
     assert "page_cases contains duplicate case_ids: ['page_case_0001_p0001']" in errors
     assert "page_cases contains duplicate page_numbers: [1]" in errors
+
+
+def test_validate_candidate_sample_linkage_rejects_unsorted_sample_order() -> None:
+    harness = _load_module()
+    manifest = _candidate_manifest(
+        [
+            _manifest_candidate("cand:p0001:0000:table", 1, "table"),
+            _manifest_candidate("cand:p0002:0000:table", 2, "table"),
+        ],
+        page_count=2,
+    )
+    validation = harness.validate_candidate_sample_linkage(
+        manifest=manifest,
+        sampled_cases={
+            "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+            "selected_count": 2,
+            "selected_pages": [2, 1],
+            "page_cases": [
+                _sampled_page_case(candidate_id="cand:p0002:0000:table", page_number=2, case_index=1),
+                _sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1, case_index=2),
+            ],
+        },
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert "sampled page cases selected_pages must be sorted ascending" in errors
+    assert "sampled page cases page_cases must be sorted by page_number ascending" in errors
 
 
 def test_validate_candidate_sample_linkage_rejects_malformed_candidate_ids() -> None:

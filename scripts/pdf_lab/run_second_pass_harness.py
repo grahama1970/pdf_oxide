@@ -917,6 +917,8 @@ def validate_sampling_gate(
     )
     if duplicate_selected_pages:
         errors.append(f"sampled_page_cases selected_pages contains duplicates: {duplicate_selected_pages}")
+    if selected_pages and selected_pages != sorted(selected_pages):
+        errors.append("sampled_page_cases selected_pages must be sorted ascending")
     if candidate_count > 0 and selected_count != len(selected_pages):
         errors.append("selected_count does not equal selected_pages length")
     if isinstance(forced_pages, dict):
@@ -1303,6 +1305,8 @@ def validate_candidate_sample_linkage(
     )
     if duplicate_selected_pages:
         errors.append(f"sampled page cases selected_pages contains duplicates: {duplicate_selected_pages}")
+    if selected_pages and selected_pages != sorted(selected_pages):
+        errors.append("sampled page cases selected_pages must be sorted ascending")
     selected_page_set = {page for page in selected_pages if is_plain_int(page) and page >= 1}
     forced_pages = sampled_cases.get("forced_pages")
     accepted_forced_pages: list[int] = []
@@ -1446,6 +1450,13 @@ def validate_candidate_sample_linkage(
         errors.append(
             f"selected_pages do not match page_case page_numbers: selected={sorted(selected_page_set)}, cases={sorted(page_case_pages)}"
         )
+    page_case_page_sequence = [
+        case.get("page_number")
+        for case in page_cases
+        if isinstance(case, dict) and is_plain_int(case.get("page_number")) and case.get("page_number") >= 1
+    ]
+    if page_case_page_sequence and page_case_page_sequence != sorted(page_case_page_sequence):
+        errors.append("sampled page cases page_cases must be sorted by page_number ascending")
     duplicate_page_case_pages = sorted(page for page, count in page_case_page_counts.items() if count > 1)
     if duplicate_page_case_ids:
         errors.append(f"sampled page cases page_cases contains duplicate case_ids: {sorted(duplicate_page_case_ids)}")
