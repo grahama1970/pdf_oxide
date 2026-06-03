@@ -130,6 +130,7 @@ def _extract_fitz_text_lines(pdf_path: Path, page_index: int, page_w: float, pag
                     "text": _normalize_text(text),
                     "bbox": _norm_bbox_corners([x0, y0, x1, y1], page_w, page_h),
                     "raw_bbox": [x0, y0, x1, y1],
+                    "dir": list(line.get("dir") or []),
                     "font_name": fonts[0] if fonts else None,
                     "font_size": sizes[0] if sizes else None,
                     "is_bold": any("bold" in font.lower() for font in fonts),
@@ -227,6 +228,88 @@ def _block_elements(
             }
         )
     return elements
+
+
+def _is_vertical_margin_line(line: dict[str, Any]) -> bool:
+    bbox = line.get("bbox")
+    direction = line.get("dir")
+    if not isinstance(bbox, list) or len(bbox) != 4:
+        return False
+    if not isinstance(direction, list) or len(direction) != 2:
+        return False
+    try:
+        dx, dy = [float(value) for value in direction]
+    except (TypeError, ValueError):
+        return False
+    return abs(dy) > abs(dx) and (float(bbox[2]) <= 0.12 or float(bbox[0]) >= 0.88)
+
+
+def _consolidate_rotated_side_chrome_fragments(
+    raw_elements: list[dict[str, Any]],
+    text_lines: list[dict[str, Any]],
+    page_index: int,
+) -> list[dict[str, Any]]:
+    """Collapse classifier fragments that PyMuPDF exposes as one rotated margin line."""
+    replacements: dict[int, dict[str, Any]] = {}
+    consumed: set[int] = set()
+    replacement_index = 0
+
+    for line in text_lines:
+        if not _is_vertical_margin_line(line):
+            continue
+        line_text = _normalize_text(line.get("text") or "")
+        if not line_text:
+            continue
+        matching_indexes: list[int] = []
+        for index, element in enumerate(raw_elements):
+            if index in consumed:
+                continue
+            text = _normalize_text(element.get("text") or "")
+            if not text or text not in line_text:
+                continue
+            bbox = element.get("bbox")
+            if not isinstance(bbox, list) or len(bbox) != 4:
+                continue
+            if not (float(bbox[0]) <= 0.12 or float(bbox[2]) >= 0.88):
+                continue
+            matching_indexes.append(index)
+
+        if not matching_indexes:
+            continue
+        first_index = matching_indexes[0]
+        fragments = [raw_elements[index] for index in matching_indexes]
+        consumed.update(matching_indexes)
+        replacement_index += 1
+        replacements[first_index] = {
+            "id": f"actual:p{page_index + 1}:rotated_side_chrome:{replacement_index}",
+            "page": page_index + 1,
+            "pdf_page_index": page_index,
+            "type": "header_footer_noise",
+            "source_type": "RotatedSideChrome",
+            "bbox": line["bbox"],
+            "text": line_text,
+            "font_size": line.get("font_size"),
+            "font_name": line.get("font_name"),
+            "is_bold": line.get("is_bold"),
+            "raw": {
+                "source": "fitz_rawdict_rotated_margin_line",
+                "line_bbox": line.get("raw_bbox"),
+                "line_dir": line.get("dir"),
+                "fragment_ids": [fragment.get("id") for fragment in fragments],
+                "fragments": fragments,
+            },
+        }
+
+    if not replacements:
+        return raw_elements
+
+    consolidated: list[dict[str, Any]] = []
+    for index, element in enumerate(raw_elements):
+        if index in replacements:
+            consolidated.append(replacements[index])
+        elif index not in consumed:
+            consolidated.append(element)
+    return consolidated
 
 
 def _table_bbox(table: dict[str, Any], page_w: float, page_h: float) -> list[float]:
@@ -355,6 +438,7 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
                 text_lines=text_lines,
             )
         )
+    raw_elements = _consolidate_rotated_side_chrome_fragments(raw_elements, text_lines, page_index)
 
     for index, table in enumerate(_extract_tables_for_snapshot(doc, page_index)):
         metrics = _table_metrics(table)

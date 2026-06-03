@@ -97,3 +97,61 @@ def test_tiny_empty_lattice_table_false_positive_is_suppressed() -> None:
         "data": [["A", "B"], ["C", "D"]],
     }
     assert mod._is_tiny_empty_table_false_positive(table_with_text, metrics, [0.1, 0.1, 0.4, 0.2]) is False
+
+
+def test_rotated_margin_line_fragments_consolidate_to_side_chrome() -> None:
+    mod = _load_module()
+    text_lines = [
+        {
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+            "bbox": [0.029, 0.288, 0.050, 0.742],
+            "raw_bbox": [18.1, 227.9, 30.4, 589.0],
+            "dir": [0.0, 1.0],
+            "font_name": "ArialMT",
+            "font_size": 9.0,
+            "is_bold": False,
+        }
+    ]
+    raw_elements = [
+        {
+            "id": "actual:p15:block:3",
+            "page": 15,
+            "pdf_page_index": 14,
+            "type": "unknown_region",
+            "source_type": "Body",
+            "bbox": [0.034, 0.276, 0.350, 0.288],
+            "text": "This publication is available free of charge from:",
+        },
+        {
+            "id": "actual:p15:block:4",
+            "page": 15,
+            "pdf_page_index": 14,
+            "type": "unknown_region",
+            "source_type": "Body",
+            "bbox": [0.034, 0.520, 0.271, 0.532],
+            "text": "https://doi.org/10.6028/NIST.SP.800",
+        },
+        {
+            "id": "actual:p15:block:5",
+            "page": 15,
+            "pdf_page_index": 14,
+            "type": "unknown_region",
+            "source_type": "List",
+            "bbox": [0.034, 0.703, 0.064, 0.718],
+            "text": "-53r5",
+        },
+    ]
+
+    elements = mod._consolidate_rotated_side_chrome_fragments(raw_elements, text_lines, page_index=14)
+
+    assert len(elements) == 1
+    assert elements[0]["id"] == "actual:p15:rotated_side_chrome:1"
+    assert elements[0]["type"] == "header_footer_noise"
+    assert elements[0]["source_type"] == "RotatedSideChrome"
+    assert elements[0]["bbox"] == [0.029, 0.288, 0.050, 0.742]
+    assert elements[0]["text"].endswith("NIST.SP.800-53r5")
+    assert elements[0]["raw"]["fragment_ids"] == [
+        "actual:p15:block:3",
+        "actual:p15:block:4",
+        "actual:p15:block:5",
+    ]
