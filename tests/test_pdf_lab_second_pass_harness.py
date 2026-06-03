@@ -6073,6 +6073,54 @@ def test_live_canary_artifact_validation_rejects_stale_canary_artifact(tmp_path:
     assert "live canary artifact opencode_completion_canary.json does not match canary argument" in validation["errors"]
 
 
+def test_live_canary_artifact_validation_rejects_non_object_canary_artifact(tmp_path: Path) -> None:
+    harness = _load_module()
+    canary_dir = tmp_path / "opencode_completion_canary"
+    canary_dir.mkdir()
+    canary = {
+        "schema": "pdf_lab.second_pass.opencode_completion_canary.v1",
+        "ok": True,
+        "errors": [],
+    }
+    (canary_dir / "opencode_completion_canary.json").write_text(json.dumps(["not-object"]), encoding="utf-8")
+    (canary_dir / "opencode_completion_canary_request.json").write_text(json.dumps({"prompt": "sentinel"}), encoding="utf-8")
+    (canary_dir / "opencode_completion_canary_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (canary_dir / "opencode_completion_canary_cleanup.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_live_canary_artifacts(
+        out_dir=tmp_path,
+        canary=canary,
+        artifact_builder=harness.opencode_completion_canary_artifacts,
+        canary_schema="pdf_lab.second_pass.opencode_completion_canary.v1",
+        validation_schema="pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+        validation_artifact_name="opencode_completion_canary_validation.json",
+        cleanup_schema="pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+        cleanup_artifact_name="opencode_completion_canary_cleanup.json",
+    )
+
+    assert validation["ok"] is False
+    assert validation["canary_artifact_matches_argument"] is False
+    assert "live canary artifact opencode_completion_canary.json is not a JSON object" in validation["errors"]
+
+
 def test_live_canary_artifact_validation_rejects_mismatched_summary_artifact_paths(tmp_path: Path) -> None:
     harness = _load_module()
     canary_dir = tmp_path / "opencode_completion_canary"

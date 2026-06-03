@@ -4514,7 +4514,9 @@ def validate_live_canary_artifacts(
         except Exception as exc:  # noqa: BLE001 - malformed canary evidence must fail closed.
             errors.append(f"live canary artifact unreadable: {type(exc).__name__}: {exc}")
         else:
-            if loaded == canary:
+            if not isinstance(loaded, dict):
+                errors.append(f"live canary artifact {canary_artifact_name} is not a JSON object")
+            elif loaded == canary:
                 canary_artifact_matches_argument = True
             else:
                 errors.append(f"live canary artifact {canary_artifact_name} does not match canary argument")
