@@ -1449,6 +1449,8 @@ def validate_review_response(
                 for key in ["batch_id", "item_id"]:
                     if receipt_metadata.get(key) != expected_metadata.get(key):
                         errors.append(f"review receipt scillm_metadata {key} does not match request")
+            if "review_response" in receipt and receipt.get("review_response") != review:
+                errors.append("review receipt review_response does not match validated review response")
     if review.get("schema") != "pdf_lab.second_pass.review_response.v1":
         errors.append("schema must be pdf_lab.second_pass.review_response.v1")
     if review.get("page_status") not in REVIEW_STATUSES:

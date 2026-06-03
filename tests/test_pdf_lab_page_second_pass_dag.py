@@ -1127,6 +1127,61 @@ def test_validate_review_response_rejects_stale_receipt_metadata() -> None:
     assert "review receipt scillm_metadata item_id does not match request" in validation["errors"]
 
 
+def test_validate_review_response_rejects_stale_receipt_payload() -> None:
+    dag = _load_module()
+    review = {
+        "schema": "pdf_lab.second_pass.review_response.v1",
+        "page_status": "defect",
+        "page_rationale": "visual and JSON disagree",
+        "candidate_findings": [
+            {
+                "candidate_id": "cand:p0003:0000:table",
+                "status": "defect",
+                "evidence": "bbox misses the rendered table",
+                "rationale": "table-like evidence is not represented",
+                "suggested_fix_surface": "python/pdf_oxide classifier",
+            }
+        ],
+    }
+    stale_review = {
+        "schema": "pdf_lab.second_pass.review_response.v1",
+        "page_status": "clean",
+        "page_rationale": "stale clean review",
+        "candidate_findings": [
+            {
+                "candidate_id": "cand:p0003:0000:table",
+                "status": "clean",
+                "evidence": "stale rendered evidence",
+                "rationale": "stale rationale",
+                "suggested_fix_surface": "none",
+            }
+        ],
+    }
+    request = {
+        "scillm_metadata": {
+            "batch_id": "batch-review",
+            "item_id": "page_case_0001_p0003",
+        }
+    }
+    receipt = {
+        "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+        "endpoint": "POST /v1/chat/completions",
+        "http_status": 200,
+        "scillm_metadata": request["scillm_metadata"],
+        "review_response": stale_review,
+    }
+
+    validation = dag.validate_review_response(
+        review,
+        ["cand:p0003:0000:table"],
+        receipt=receipt,
+        request=request,
+    )
+
+    assert validation["ok"] is False
+    assert "review receipt review_response does not match validated review response" in validation["errors"]
+
+
 def test_validate_review_response_rejects_wrong_receipt_surface_and_status() -> None:
     dag = _load_module()
     review = {
