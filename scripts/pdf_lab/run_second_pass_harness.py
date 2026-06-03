@@ -2889,6 +2889,16 @@ def package_validation_errors(
         errors.append(
             f"included_count {included_count} does not match included_artifacts length {len(included_artifacts)}"
         )
+    required_zip_entries = validation.get("required_zip_entries")
+    zip_entry_count = validation.get("zip_entry_count")
+    if isinstance(included_artifacts, list) and is_plain_int(zip_entry_count) and zip_entry_count < len(included_artifacts):
+        errors.append(
+            f"zip_entry_count {zip_entry_count} is less than included_artifacts length {len(included_artifacts)}"
+        )
+    if isinstance(required_zip_entries, list) and is_plain_int(zip_entry_count) and zip_entry_count < len(required_zip_entries):
+        errors.append(
+            f"zip_entry_count {zip_entry_count} is less than required_zip_entries length {len(required_zip_entries)}"
+        )
     for key in [
         "missing_artifacts",
         "missing_required_artifacts",
