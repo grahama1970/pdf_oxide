@@ -2861,6 +2861,11 @@ def package_validation_errors(
         errors.append(
             f"{error_label} schema mismatch: expected {expected_schema}, got {validation.get('schema')!r}"
         )
+    if expected_schema is not None:
+        zip_path = validation.get("zip_path")
+        if not isinstance(zip_path, str) or not zip_path:
+            error_label = label or "package validation"
+            errors.append(f"{error_label} zip_path missing or not a string")
     for key in [
         "included_artifacts",
         "required_zip_entries",
