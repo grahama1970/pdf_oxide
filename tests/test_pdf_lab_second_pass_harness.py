@@ -892,6 +892,38 @@ def test_validate_candidate_sample_linkage_rejects_coerced_declared_counts() -> 
     assert "sampled_page_cases selected_count must be a non-negative integer: '1'" in errors
 
 
+def test_validate_candidate_sample_linkage_rejects_boolean_page_references() -> None:
+    harness = _load_module()
+    candidate = {
+        **_manifest_candidate("cand:p0001:0000:table", 1, "table"),
+        "page_number": True,
+    }
+    manifest = _candidate_manifest([candidate])
+    sampled_cases = {
+        "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+        "selected_count": 1,
+        "selected_pages": [True],
+        "forced_pages": {"requested": [True], "accepted": [True], "rejected": []},
+        "probabilistic_selected_pages": [True],
+        "page_cases": [
+            {
+                **_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1),
+                "page_number": True,
+            }
+        ],
+    }
+
+    validation = harness.validate_candidate_sample_linkage(manifest=manifest, sampled_cases=sampled_cases)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "cand:p0001:0000:table missing valid page_number" in errors
+    assert "sampled page cases selected_pages must be a list of page numbers" in errors
+    assert "sampled page cases forced_pages.accepted must be a list of page numbers" in errors
+    assert "sampled page cases probabilistic_selected_pages must be a list of page numbers" in errors
+    assert "page_case_0001_p0001 missing valid page_number" in errors
+
+
 def test_validate_candidate_sample_linkage_rejects_malformed_preset_types() -> None:
     harness = _load_module()
     candidate = _manifest_candidate("cand:p0001:0000:table", 1, "table")

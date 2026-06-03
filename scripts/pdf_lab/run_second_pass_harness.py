@@ -1028,7 +1028,7 @@ def validate_candidate_sample_linkage(
             candidate_by_id[candidate_id] = candidate
 
         page_number = candidate.get("page_number")
-        if not isinstance(page_number, int) or page_number < 1:
+        if not is_plain_int(page_number) or page_number < 1:
             errors.append(f"{candidate_id or f'candidate[{index}]'} missing valid page_number")
         else:
             manifest_pages.add(page_number)
@@ -1042,7 +1042,7 @@ def validate_candidate_sample_linkage(
             errors.append(f"{candidate_id}: preset_type {preset_type!r} is not in manifest preset_types")
         else:
             manifest_preset_counts[preset_type] += 1
-            if isinstance(page_number, int) and page_number >= 1:
+            if is_plain_int(page_number) and page_number >= 1:
                 preset_counts_by_page.setdefault(page_number, Counter())[preset_type] += 1
 
         bbox = candidate.get("bbox")
@@ -1058,19 +1058,23 @@ def validate_candidate_sample_linkage(
     if not isinstance(selected_pages, list):
         errors.append("sampled page cases selected_pages is not a list")
         selected_pages = []
+    elif not all(is_plain_int(page) and page >= 1 for page in selected_pages):
+        errors.append("sampled page cases selected_pages must be a list of page numbers")
     duplicate_selected_pages = sorted(
         page
-        for page, count in Counter(page for page in selected_pages if isinstance(page, int)).items()
+        for page, count in Counter(page for page in selected_pages if is_plain_int(page) and page >= 1).items()
         if count > 1
     )
     if duplicate_selected_pages:
         errors.append(f"sampled page cases selected_pages contains duplicates: {duplicate_selected_pages}")
-    selected_page_set = {page for page in selected_pages if isinstance(page, int)}
+    selected_page_set = {page for page in selected_pages if is_plain_int(page) and page >= 1}
     forced_pages = sampled_cases.get("forced_pages")
     accepted_forced_pages: list[int] = []
     if isinstance(forced_pages, dict):
         raw_accepted_forced_pages = forced_pages.get("accepted") or []
-        if not isinstance(raw_accepted_forced_pages, list) or not all(isinstance(page, int) for page in raw_accepted_forced_pages):
+        if not isinstance(raw_accepted_forced_pages, list) or not all(
+            is_plain_int(page) and page >= 1 for page in raw_accepted_forced_pages
+        ):
             errors.append("sampled page cases forced_pages.accepted must be a list of page numbers")
         else:
             accepted_forced_pages = sorted(set(raw_accepted_forced_pages))
@@ -1080,7 +1084,7 @@ def validate_candidate_sample_linkage(
     raw_probabilistic_selected_pages = sampled_cases.get("probabilistic_selected_pages")
     if raw_probabilistic_selected_pages is not None:
         if not isinstance(raw_probabilistic_selected_pages, list) or not all(
-            isinstance(page, int) for page in raw_probabilistic_selected_pages
+            is_plain_int(page) and page >= 1 for page in raw_probabilistic_selected_pages
         ):
             errors.append("sampled page cases probabilistic_selected_pages must be a list of page numbers")
         else:
@@ -1109,7 +1113,7 @@ def validate_candidate_sample_linkage(
         else:
             page_case_ids.add(case_id)
         page_number = case.get("page_number")
-        if not isinstance(page_number, int) or page_number < 1:
+        if not is_plain_int(page_number) or page_number < 1:
             errors.append(f"{case_id} missing valid page_number")
         else:
             page_case_pages.add(page_number)
