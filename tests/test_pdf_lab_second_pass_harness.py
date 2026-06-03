@@ -747,6 +747,21 @@ def test_validate_sampling_gate_rejects_coerced_declared_counts() -> None:
     assert "sampled_page_cases selected_count must be a non-negative integer: 3.0" in gate["errors"]
 
 
+def test_validate_sampling_gate_rejects_boolean_seed() -> None:
+    harness = _load_module()
+    gate = harness.validate_sampling_gate(
+        manifest={"candidate_count": 1},
+        sampled_cases={
+            "selected_count": 1,
+            "seed": True,
+            "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=True),
+        },
+    )
+
+    assert gate["ok"] is False
+    assert "sampled_page_cases seed must be an integer" in gate["errors"]
+
+
 def test_validate_sampling_gate_requires_additive_forced_page_accounting() -> None:
     harness = _load_module()
     gate = harness.validate_sampling_gate(

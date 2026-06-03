@@ -726,9 +726,9 @@ def validate_sampling_gate(
     if candidate_count > 0 and not isinstance(statistical_basis, dict):
         errors.append("sampling_audit missing statistical_significance_basis")
         statistical_basis = {}
-    if candidate_count > 0 and not isinstance(sampled_seed, int):
+    if candidate_count > 0 and not is_plain_int(sampled_seed):
         errors.append("sampled_page_cases seed must be an integer")
-    if candidate_count > 0 and isinstance(sampled_seed, int):
+    if candidate_count > 0 and is_plain_int(sampled_seed):
         if audit.get("seed") != sampled_seed:
             errors.append("sampling_audit seed does not match sampled_page_cases seed")
         if statistical_basis.get("seed") != sampled_seed:
