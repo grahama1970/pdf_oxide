@@ -1852,6 +1852,42 @@ def test_build_scillm_patch_delegate_bug_report_bundle_records_malformed_report(
     assert bundle["reports"][0]["read_errors"] == ["scillm_patch_delegate_bug_report.json is not a JSON object"]
 
 
+def test_build_scillm_patch_delegate_bug_report_bundle_rejects_wrong_schema_and_reason(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    report_path = case_dir / "scillm_patch_delegate_bug_report.json"
+    report_path.write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.other_report.v1",
+                "terminal_reason": "unrelated_reason",
+                "observed": {"transport_run_id": "otr-bug"},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    bundle = harness.build_scillm_patch_delegate_bug_report_bundle(
+        out_dir=tmp_path / "out",
+        page_results=[
+            {
+                "case_id": "page_case_0001_p0002",
+                "page_number": 2,
+                "terminal_status": "blocked_substrate",
+                "reason": "patch_delegate_substrate_error",
+                "case_dir": str(case_dir),
+                "scillm_patch_delegate_bug_report": str(report_path),
+            }
+        ],
+    )
+
+    errors = "\n".join(bundle["reports"][0]["read_errors"])
+    assert bundle["malformed_bug_report_count"] == 1
+    assert "scillm patch delegate bug report schema mismatch" in errors
+    assert "scillm patch delegate bug report terminal_reason does not match page result" in errors
+
+
 def test_package_scillm_patch_delegate_bug_report_bundle(tmp_path: Path) -> None:
     harness = _load_module()
     out_dir = tmp_path / "out"

@@ -1817,6 +1817,12 @@ def build_scillm_patch_delegate_bug_report_bundle(
             continue
         path = Path(str(bug_report_path))
         report, read_errors = read_json_object_if_exists(path)
+        report_errors = list(read_errors or result.get("scillm_patch_delegate_bug_report_read_errors") or [])
+        if not report_errors:
+            if report.get("schema") != "pdf_lab.second_pass.scillm_patch_delegate_bug_report.v1":
+                report_errors.append(f"scillm patch delegate bug report schema mismatch: {report.get('schema')}")
+            if report.get("terminal_reason") != result.get("reason"):
+                report_errors.append("scillm patch delegate bug report terminal_reason does not match page result")
         reports.append(
             {
                 "case_id": result.get("case_id"),
@@ -1833,7 +1839,7 @@ def build_scillm_patch_delegate_bug_report_bundle(
                 "validation_errors": (report.get("observed") or {}).get("validation_errors", [])
                 if isinstance(report.get("observed"), dict)
                 else [],
-                "read_errors": read_errors or list(result.get("scillm_patch_delegate_bug_report_read_errors") or []),
+                "read_errors": report_errors,
                 "scillm_project_agent_bug_report": report.get("scillm_project_agent_bug_report"),
             }
         )
