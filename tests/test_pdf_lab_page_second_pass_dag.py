@@ -6980,6 +6980,117 @@ def test_validate_page_terminal_ledger_rejects_successful_patch_attempt_without_
     assert "patch_attempts_ledger attempts[0].receipt_artifact must be non-empty for ok attempt" in errors
 
 
+def test_validate_page_terminal_ledger_recomputes_patch_attempt_request_receipt_validation(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(_selected_candidates_payload(["cand:p0001:0000:unknown_layout"])),
+        encoding="utf-8",
+    )
+    stale_successful_validation = {
+        "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+        "ok": True,
+        "errors": [],
+        "patch_status": "completed",
+        "artifacts_present": True,
+        "applied_claim": {
+            "schema": "pdf_lab.second_pass.patch_applied_claim.v1",
+            "status": "applied",
+            "raw_line": "PATCH_APPLIED changed_files=tests/test_fix.py tests=tests/test_fix.py commands=pytest",
+            "changed_files": ["tests/test_fix.py"],
+            "tests": ["tests/test_fix.py"],
+            "commands": "pytest",
+            "errors": [],
+        },
+    }
+    request = {
+        "schema": "pdf_lab.second_pass.opencode_patch_request.v1",
+        "endpoint": "POST /v1/scillm/opencode/runs",
+        "timeout_s": 0,
+        "scillm_metadata": {
+            "graph_node": "opencode_patch_attempt",
+            "case_id": "page_case_0001_p0001",
+            "page_number": 1,
+            "attempt_index": 1,
+            "attempt_count": 1,
+            "agent": "build",
+        },
+    }
+    receipt = {
+        "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
+        "endpoint": "POST /v1/scillm/opencode/runs",
+        "http_status": 200,
+        "request_metadata": request["scillm_metadata"],
+        "raw_response": {
+            "status": "completed",
+            "assistant_text": "PATCH_APPLIED changed_files=tests/test_fix.py tests=tests/test_fix.py commands=pytest",
+            "diff": "diff --git a/tests/test_fix.py b/tests/test_fix.py",
+            "artifacts": {},
+        },
+    }
+    (case_dir / "patch_validation.json").write_text(json.dumps(stale_successful_validation), encoding="utf-8")
+    (case_dir / "patch_attempt_01_validation.json").write_text(json.dumps(stale_successful_validation), encoding="utf-8")
+    (case_dir / "patch_attempt_01_request.json").write_text(json.dumps(request), encoding="utf-8")
+    (case_dir / "patch_attempt_01_receipt.json").write_text(json.dumps(receipt), encoding="utf-8")
+    (case_dir / "patch_attempts_ledger.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_attempts_ledger.v1",
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "candidate_ids": ["cand:p0001:0000:unknown_layout"],
+                "patch_backend": "opencode_serve",
+                "patch_mode": "live",
+                "patch_prompt_profile": "plan_only",
+                "repair_strategy": "direct",
+                "agent_sequence": ["build"],
+                "attempt_count": 1,
+                "selected_attempt_index": 1,
+                "attempts": [
+                    {
+                        "attempt_index": 1,
+                        "agent": "build",
+                        "validation_artifact": "patch_attempt_01_validation.json",
+                        "request_artifact": "patch_attempt_01_request.json",
+                        "receipt_artifact": "patch_attempt_01_receipt.json",
+                        "ok": True,
+                        "errors": [],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "patch_scope_validation_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "patch_validation.json",
+            "patch_attempts_ledger.json",
+            "patch_attempt_01_validation.json",
+            "patch_attempt_01_request.json",
+            "patch_attempt_01_receipt.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert (
+        "patch_attempts_ledger attempts[0].validation_artifact does not match recomputed request/receipt validation"
+        in validation["errors"]
+    )
+
+
 def test_validate_page_terminal_ledger_rejects_unsafe_patch_attempt_artifact_paths(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

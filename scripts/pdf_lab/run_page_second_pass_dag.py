@@ -4862,6 +4862,34 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     attempt_errors = list(attempt.get("errors") or [])
                     if validation_errors != attempt_errors:
                         errors.append(f"patch_attempts_ledger attempts[{index}].errors do not match validation_artifact")
+                attempt_request: dict[str, Any] = {}
+                attempt_receipt: dict[str, Any] = {}
+                for artifact_key in ["request_artifact", "receipt_artifact"]:
+                    attempt_artifact = attempt.get(artifact_key)
+                    if not isinstance(attempt_artifact, str) or not attempt_artifact or not is_safe_patch_attempt_artifact(attempt_artifact):
+                        continue
+                    if attempt_artifact in evidence_artifacts:
+                        payload = read_required_json_artifact(attempt_artifact)
+                        if artifact_key == "request_artifact":
+                            attempt_request = payload
+                        else:
+                            attempt_receipt = payload
+                if attempt_validation and attempt_request and attempt_receipt:
+                    recomputed_attempt_validation = validate_patch_delegate_receipt(
+                        attempt_receipt,
+                        patch_mode=str(patch_attempts_ledger.get("patch_mode") or "live"),
+                        request=attempt_request
+                        if attempt_request.get("schema")
+                        in {
+                            "pdf_lab.second_pass.opencode_patch_request.v1",
+                            "pdf_lab.second_pass.scillm_orchestrator_patch_request.v1",
+                        }
+                        else None,
+                    )
+                    if attempt_validation != recomputed_attempt_validation:
+                        errors.append(
+                            f"patch_attempts_ledger attempts[{index}].validation_artifact does not match recomputed request/receipt validation"
+                        )
                 if attempt.get("ok") is True:
                     for artifact_key in ["request_artifact", "receipt_artifact"]:
                         attempt_artifact = attempt.get(artifact_key)
@@ -4875,7 +4903,6 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                             errors.append(
                                 f"patch_attempts_ledger attempts[{index}].{artifact_key} is not declared terminal evidence"
                             )
-                        read_required_json_artifact(attempt_artifact)
                 if attempt.get("ok") is True or index == len(attempts) - 1:
                     selected_or_final_validation = attempt_validation
             if patch_validation and selected_or_final_validation:
