@@ -4689,6 +4689,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("commit_acceptance_gate schema mismatch")
             if commit_acceptance.get("ok") is not True:
                 errors.append("commit_acceptance_gate.ok is not true")
+            if terminal.get("commit_acceptance_ok") != commit_acceptance.get("ok"):
+                errors.append("terminal commit_acceptance_ok does not match commit_acceptance_gate.ok")
             if commit_acceptance.get("commit_sha") != commit_sha:
                 errors.append("commit_acceptance_gate commit_sha does not match terminal ledger")
             if commit_gate:
@@ -4700,10 +4702,14 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("commit_gate schema mismatch")
             if commit_gate.get("ok") is not True:
                 errors.append("commit_gate.ok is not true")
+            if terminal.get("commit_gate_ok") != commit_gate.get("ok"):
+                errors.append("terminal commit_gate_ok does not match commit_gate.ok")
             if commit_gate.get("commit_sha") != commit_sha:
                 errors.append("commit_gate commit_sha does not match terminal ledger")
             if commit_gate.get("exact_file_match") is not True:
                 errors.append("commit_gate.exact_file_match is not true")
+            if terminal.get("commit_exact_file_match") != commit_gate.get("exact_file_match"):
+                errors.append("terminal commit_exact_file_match does not match commit_gate.exact_file_match")
             if patch_scope_validation and isinstance(patch_scope_validation.get("changed_files"), list):
                 expected_changed_files = sorted(str(path) for path in patch_scope_validation.get("changed_files") or [])
                 committed_files = commit_gate.get("committed_files")
@@ -4728,6 +4734,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("revertability_check schema mismatch")
             if revertability.get("ok") is not True:
                 errors.append("revertability_check.ok is not true")
+            if terminal.get("commit_revertability_ok") != revertability.get("ok"):
+                errors.append("terminal commit_revertability_ok does not match revertability_check.ok")
             if revertability.get("commit_sha") != commit_sha:
                 errors.append("revertability_check commit_sha does not match terminal ledger")
             if commit_gate and isinstance(commit_gate.get("revertability_check"), dict):

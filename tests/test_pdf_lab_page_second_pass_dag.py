@@ -5304,6 +5304,53 @@ def test_validate_page_terminal_ledger_rejects_stale_commit_acceptance_and_rever
     assert "revertability_check does not match commit_gate.revertability_check" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_commit_terminal_flags(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    _write_full_patched_confirmed_artifacts(case_dir)
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "patched_confirmed",
+        "reason": "patch_committed_and_after_review_clean",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "patch_delta.json",
+            "patch_scope_validation.json",
+            "test_validation.json",
+            "page_after.json",
+            "page_after.png",
+            "page_after_candidates.png",
+            "review_after_request.json",
+            "review_after_request_validation.json",
+            "review_after_response.json",
+            "review_after_validation.json",
+            "commit_acceptance_gate.json",
+            "commit_gate.json",
+            "revertability_check.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": "abc123",
+        "commit_gate_ok": False,
+        "commit_exact_file_match": False,
+        "commit_revertability_ok": False,
+        "commit_acceptance_ok": False,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "patched_confirmed terminal ledger requires commit_gate_ok true" in errors
+    assert "terminal commit_gate_ok does not match commit_gate.ok" in errors
+    assert "terminal commit_exact_file_match does not match commit_gate.exact_file_match" in errors
+    assert "terminal commit_revertability_ok does not match revertability_check.ok" in errors
+    assert "terminal commit_acceptance_ok does not match commit_acceptance_gate.ok" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_invalid_after_request_validation(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
