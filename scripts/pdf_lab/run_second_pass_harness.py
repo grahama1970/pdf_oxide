@@ -1224,6 +1224,8 @@ def validate_deterministic_execution_plan(
         errors.append(f"deterministic execution plan duplicate case_ids: {duplicate_planned_case_ids}")
     if duplicate_planned_page_numbers:
         errors.append(f"deterministic execution plan duplicate page_numbers: {duplicate_planned_page_numbers}")
+    malformed_planned_case_ids: list[str] = []
+    planned_case_id_page_suffix_mismatches: list[str] = []
     malformed_probability_case_ids: list[str] = []
     malformed_forced_probability_case_ids: list[str] = []
     for index, case in enumerate(page_case_order):
@@ -1231,6 +1233,12 @@ def validate_deterministic_execution_plan(
             errors.append(f"deterministic execution plan page_case_order[{index}] is not an object")
             continue
         case_id = str(case.get("case_id") or f"page_case_order[{index}]")
+        case_id_match = PAGE_CASE_ID_RE.fullmatch(case_id)
+        if case_id_match is None:
+            malformed_planned_case_ids.append(case_id)
+        page_number = case.get("page_number")
+        if case_id_match is not None and isinstance(page_number, int) and int(case_id_match.group("page_number")) != page_number:
+            planned_case_id_page_suffix_mismatches.append(case_id)
         estimate = case.get("selection_probability_estimate")
         basis = case.get("selection_probability_basis")
         if estimate is not None:
@@ -1241,6 +1249,13 @@ def validate_deterministic_execution_plan(
         if case.get("forced_by_human_annotation") is True:
             if estimate != 1.0 or not isinstance(basis, dict) or basis.get("method") != "forced_human_annotation":
                 malformed_forced_probability_case_ids.append(case_id)
+    if malformed_planned_case_ids:
+        errors.append(f"deterministic execution plan has malformed case_ids: {sorted(set(malformed_planned_case_ids))}")
+    if planned_case_id_page_suffix_mismatches:
+        errors.append(
+            "deterministic execution plan case_id page suffixes do not match page_number: "
+            f"{sorted(set(planned_case_id_page_suffix_mismatches))}"
+        )
     if malformed_probability_case_ids:
         errors.append(f"deterministic execution plan has malformed selection probability metadata: {sorted(set(malformed_probability_case_ids))}")
     if malformed_forced_probability_case_ids:
@@ -1261,6 +1276,8 @@ def validate_deterministic_execution_plan(
         "planned_page_numbers": planned_page_numbers,
         "duplicate_planned_case_ids": duplicate_planned_case_ids,
         "duplicate_planned_page_numbers": duplicate_planned_page_numbers,
+        "malformed_planned_case_ids": sorted(set(malformed_planned_case_ids)),
+        "planned_case_id_page_suffix_mismatches": sorted(set(planned_case_id_page_suffix_mismatches)),
         "malformed_probability_case_ids": sorted(set(malformed_probability_case_ids)),
         "malformed_forced_probability_case_ids": sorted(set(malformed_forced_probability_case_ids)),
         "observed_case_ids": actual_case_ids,

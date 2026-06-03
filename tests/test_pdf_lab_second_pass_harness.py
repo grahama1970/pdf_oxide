@@ -3074,13 +3074,13 @@ def test_validate_deterministic_execution_plan_rejects_agent_or_reordered_pages(
             "execution_mode": "sequential",
             "page_case_order": [
                 {
-                    "case_id": "a",
+                    "case_id": "page_case_0001_p0001",
                     "page_number": 1,
                     "selection_probability_estimate": 0.5,
                     "selection_probability_basis": {"method": "weighted"},
                 },
                 {
-                    "case_id": "b",
+                    "case_id": "page_case_0002_p0002",
                     "page_number": 2,
                     "selection_probability_estimate": 1.0,
                     "selection_probability_basis": {"method": "forced_human_annotation"},
@@ -3089,7 +3089,7 @@ def test_validate_deterministic_execution_plan_rejects_agent_or_reordered_pages(
             ],
             "commit_policy": {"one_git_commit_per_verified_bug_fix": True},
         },
-        page_results=[{"case_id": "a", "page_number": 1}],
+        page_results=[{"case_id": "page_case_0001_p0001", "page_number": 1}],
     )
     invalid = harness.validate_deterministic_execution_plan(
         {
@@ -3097,16 +3097,44 @@ def test_validate_deterministic_execution_plan_rejects_agent_or_reordered_pages(
             "owner": "agent",
             "agent_decision_allowed": True,
             "execution_mode": "async",
-            "page_case_order": [{"case_id": "a", "page_number": 1}, {"case_id": "b", "page_number": 2}],
+            "page_case_order": [
+                {"case_id": "page_case_0001_p0001", "page_number": 1},
+                {"case_id": "page_case_0002_p0002", "page_number": 2},
+            ],
             "commit_policy": {"one_git_commit_per_verified_bug_fix": False},
         },
-        page_results=[{"case_id": "b", "page_number": 2}],
+        page_results=[{"case_id": "page_case_0002_p0002", "page_number": 2}],
     )
 
     assert valid["ok"] is True
     assert invalid["ok"] is False
     assert "agent_decision_allowed false" in "\n".join(invalid["errors"])
     assert "page result order does not match" in "\n".join(invalid["errors"])
+
+
+def test_validate_deterministic_execution_plan_rejects_malformed_case_ids() -> None:
+    harness = _load_module()
+    validation = harness.validate_deterministic_execution_plan(
+        {
+            "schema": "pdf_lab.second_pass.deterministic_execution_plan.v1",
+            "owner": "pdf_lab_harness_code",
+            "agent_decision_allowed": False,
+            "execution_mode": "sequential",
+            "page_case_order": [
+                {"case_id": "../escape", "page_number": 1},
+                {"case_id": "page_case_0002_p0001", "page_number": 2},
+            ],
+            "commit_policy": {"one_git_commit_per_verified_bug_fix": True},
+        },
+        page_results=[],
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert validation["malformed_planned_case_ids"] == ["../escape"]
+    assert validation["planned_case_id_page_suffix_mismatches"] == ["page_case_0002_p0001"]
+    assert "deterministic execution plan has malformed case_ids: ['../escape']" in errors
+    assert "case_id page suffixes do not match page_number: ['page_case_0002_p0001']" in errors
 
 
 def test_validate_deterministic_execution_plan_rejects_duplicate_planned_pages() -> None:
