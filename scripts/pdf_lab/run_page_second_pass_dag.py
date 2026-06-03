@@ -1947,6 +1947,17 @@ def validate_repair_plan(
 ) -> dict[str, Any]:
     errors: list[str] = []
     expected_metadata = request.get("scillm_metadata") if isinstance(request, dict) else None
+    request_page_case = request.get("page_case") if isinstance(request, dict) else None
+    if isinstance(request_page_case, dict):
+        page_case = {
+            "case_id": request_page_case.get("case_id"),
+            "page_number": request_page_case.get("page_number"),
+        }
+        candidate_ids = request_page_case.get("candidate_ids")
+        expected_candidate_ids = sorted(candidate_ids) if isinstance(candidate_ids, list) and all(isinstance(item, str) for item in candidate_ids) else []
+    else:
+        page_case = None
+        expected_candidate_ids = []
     if receipt is not None:
         if not isinstance(receipt, dict):
             errors.append("repair plan receipt must be an object")
@@ -1985,6 +1996,9 @@ def validate_repair_plan(
         "schema": "pdf_lab.second_pass.repair_plan_validation.v1",
         "ok": not errors,
         "errors": errors,
+        "page_case": page_case,
+        "candidate_count": len(expected_candidate_ids),
+        "expected_candidate_ids": expected_candidate_ids,
     }
 
 
@@ -4173,6 +4187,39 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             )
             if response_candidate_ids != selected_candidate_ids_from_artifact:
                 errors.append("review_response candidate_findings do not match selected_candidates")
+    if "repair_plan_validation.json" in evidence_artifacts:
+        repair_plan_validation = read_required_json_artifact("repair_plan_validation.json")
+        repair_plan_request = read_required_json_artifact("repair_plan_request.json")
+        repair_plan_receipt = (
+            read_required_json_artifact("repair_plan_receipt.json")
+            if "repair_plan_receipt.json" in evidence_artifacts or (case_dir / "repair_plan_receipt.json").is_file()
+            else {}
+        )
+        if repair_plan_validation:
+            if repair_plan_validation.get("schema") != "pdf_lab.second_pass.repair_plan_validation.v1":
+                errors.append("repair_plan_validation schema mismatch")
+            repair_plan_page_case = repair_plan_validation.get("page_case")
+            if not isinstance(repair_plan_page_case, dict):
+                errors.append("repair_plan_validation page_case must be an object")
+                repair_plan_page_case = {}
+            if repair_plan_page_case.get("case_id") != terminal.get("case_id"):
+                errors.append("repair_plan_validation page_case.case_id does not match terminal ledger")
+            if repair_plan_page_case.get("page_number") != terminal.get("page_number"):
+                errors.append("repair_plan_validation page_case.page_number does not match terminal ledger")
+            if selected_candidate_ids_from_artifact:
+                expected_repair_plan_ids = sorted(str(candidate_id) for candidate_id in repair_plan_validation.get("expected_candidate_ids") or [])
+                if repair_plan_validation.get("candidate_count") != len(selected_candidate_ids_from_artifact):
+                    errors.append("repair_plan_validation candidate_count does not match selected_candidates")
+                if expected_repair_plan_ids != selected_candidate_ids_from_artifact:
+                    errors.append("repair_plan_validation expected_candidate_ids do not match selected_candidates")
+            if repair_plan_receipt:
+                recomputed_repair_plan_validation = validate_repair_plan(
+                    repair_plan_receipt.get("repair_plan"),
+                    receipt=repair_plan_receipt,
+                    request=repair_plan_request if repair_plan_request.get("schema") == "pdf_lab.second_pass.scillm_repair_plan_request.v1" else None,
+                )
+                if repair_plan_validation != recomputed_repair_plan_validation:
+                    errors.append("repair_plan_validation does not match recomputed repair_plan contract")
     if "patch_attempts_ledger.json" in evidence_artifacts:
         patch_attempts_ledger = read_required_json_artifact("patch_attempts_ledger.json")
         patch_validation = read_required_json_artifact("patch_validation.json")
@@ -5393,12 +5440,18 @@ def run_page_case(
                         "schema": "pdf_lab.second_pass.repair_plan_validation.v1",
                         "ok": False,
                         "errors": repair_plan_validation_errors,
+                        "page_case": {"case_id": page_case["case_id"], "page_number": page_number},
+                        "candidate_count": len(candidates),
+                        "expected_candidate_ids": sorted(candidate["candidate_id"] for candidate in candidates),
                     }
                 elif attempt_repair_plan_receipt is None:
                     attempt_repair_plan_validation = {
                         "schema": "pdf_lab.second_pass.repair_plan_validation.v1",
                         "ok": False,
                         "errors": ["repair_plan_dry_run"],
+                        "page_case": {"case_id": page_case["case_id"], "page_number": page_number},
+                        "candidate_count": len(candidates),
+                        "expected_candidate_ids": sorted(candidate["candidate_id"] for candidate in candidates),
                     }
                 else:
                     attempt_repair_plan_validation = validate_repair_plan(

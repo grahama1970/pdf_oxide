@@ -2100,9 +2100,13 @@ def test_scillm_repair_plan_request_and_validation_are_bounded(tmp_path: Path) -
             "test_plan": ["add focused unknown-layout regression"],
             "patch_constraints": ["smallest safe change", "no generated artifacts"],
             "confidence": "medium",
-        }
+        },
+        request=request,
     )
     assert validation["ok"] is True
+    assert validation["page_case"] == {"case_id": "case-1", "page_number": 1}
+    assert validation["candidate_count"] == 1
+    assert validation["expected_candidate_ids"] == ["cand:p0001:0000:unknown_layout"]
 
     bad = dag.validate_repair_plan({"schema": "pdf_lab.second_pass.repair_plan.v1", "confidence": "certain"})
     assert bad["ok"] is False
@@ -2661,6 +2665,10 @@ def test_chat_plan_split_feeds_repair_plan_into_patch_prompt(tmp_path: Path, mon
     assert (case_dir / "repair_plan_request_validation.json").is_file()
     assert (case_dir / "repair_plan_receipt.json").is_file()
     assert (case_dir / "repair_plan_validation.json").is_file()
+    repair_plan_validation = json.loads((case_dir / "repair_plan_validation.json").read_text(encoding="utf-8"))
+    assert repair_plan_validation["page_case"] == {"case_id": "page_case_0001_p0003", "page_number": 3}
+    assert repair_plan_validation["candidate_count"] == 1
+    assert repair_plan_validation["expected_candidate_ids"] == ["cand:p0003:0000:unknown_layout"]
     assert "repair_plan_request_validation.json" in ledger["evidence_artifacts"]
     assert "repair_plan_receipt.json" in ledger["evidence_artifacts"]
     assert attempts["repair_strategy"] == "chat_plan_split"
@@ -5752,6 +5760,59 @@ def test_validate_page_terminal_ledger_rejects_stale_root_patch_validation_field
 
     assert validation["ok"] is False
     assert "patch_validation does not match selected/final patch attempt validation" in validation["errors"]
+
+
+def test_validate_page_terminal_ledger_rejects_stale_repair_plan_validation(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(
+            {
+                "schema": dag.SELECTED_CANDIDATES_SCHEMA,
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "candidates": [{"candidate_id": "cand:p0001:0000:unknown_layout"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "repair_plan_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.repair_plan_validation.v1",
+                "ok": False,
+                "errors": ["repair_plan_dry_run"],
+                "page_case": {"case_id": "page_case_9999_p9999", "page_number": 99},
+                "candidate_count": 1,
+                "expected_candidate_ids": ["stale:candidate"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "repair_plan_dry_run",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "repair_plan_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "repair_plan_validation page_case.case_id does not match terminal ledger" in errors
+    assert "repair_plan_validation page_case.page_number does not match terminal ledger" in errors
+    assert "repair_plan_validation expected_candidate_ids do not match selected_candidates" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_reviewed_clean_with_defect_response(tmp_path: Path) -> None:
