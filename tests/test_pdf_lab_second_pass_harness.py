@@ -5708,6 +5708,7 @@ def test_validate_scillm_proof_floor_artifacts_rejects_stale_proof_floor_artifac
         "schema": "pdf_lab.second_pass.scillm_proof_floor.v1",
         "ok": True,
         "errors": [],
+        "validation_artifact": str(proof_dir / "scillm_proof_floor_validation.json"),
     }
     for name in harness.scillm_proof_floor_artifacts(tmp_path, proof_floor).keys():
         (proof_dir / name).write_text("{}", encoding="utf-8")
@@ -5731,6 +5732,35 @@ def test_validate_scillm_proof_floor_artifacts_rejects_stale_proof_floor_artifac
     assert validation["ok"] is False
     assert validation["proof_floor_artifact_matches_argument"] is False
     assert "scillm proof floor artifact does not match proof floor argument" in validation["errors"]
+
+
+def test_validate_scillm_proof_floor_artifacts_requires_validation_artifact_path(tmp_path: Path) -> None:
+    harness = _load_module()
+    proof_dir = tmp_path / "scillm_proof_floor"
+    proof_dir.mkdir()
+    proof_floor = {
+        "schema": "pdf_lab.second_pass.scillm_proof_floor.v1",
+        "ok": True,
+        "errors": [],
+    }
+    for name in harness.scillm_proof_floor_artifacts(tmp_path, proof_floor).keys():
+        (proof_dir / name).write_text("{}", encoding="utf-8")
+    (proof_dir / "scillm_proof_floor.json").write_text(json.dumps(proof_floor), encoding="utf-8")
+    (proof_dir / "scillm_proof_floor_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_proof_floor_validation.v1",
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_scillm_proof_floor_artifacts(tmp_path, proof_floor)
+
+    assert validation["ok"] is False
+    assert "scillm proof floor validation_artifact does not match expected artifact path" in validation["errors"]
 
 
 def test_validate_scillm_proof_floor_artifacts_rejects_mismatched_validation_artifact_path(tmp_path: Path) -> None:

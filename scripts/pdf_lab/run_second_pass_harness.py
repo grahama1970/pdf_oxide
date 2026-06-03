@@ -4907,7 +4907,6 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
     if (
         isinstance(proof_floor, dict)
         and validation_path
-        and proof_floor.get("validation_artifact") is not None
         and proof_floor.get("validation_artifact") != str(validation_path)
     ):
         errors.append("scillm proof floor validation_artifact does not match expected artifact path")
