@@ -4530,6 +4530,8 @@ def validate_live_canary_artifacts(
 
     validation_payload: dict[str, Any] = {}
     validation_path = artifacts.get(validation_artifact_name)
+    if isinstance(canary, dict) and validation_path and canary.get("validation_artifact") != str(validation_path):
+        errors.append("live canary validation_artifact does not match expected artifact path")
     if validation_path and validation_path.is_file():
         try:
             loaded = json.loads(validation_path.read_text(encoding="utf-8"))
@@ -4558,6 +4560,8 @@ def validate_live_canary_artifacts(
     cleanup_payload: dict[str, Any] = {}
     cleanup_path = artifacts.get(cleanup_artifact_name or "") if cleanup_artifact_name else None
     if cleanup_schema and cleanup_artifact_name:
+        if isinstance(canary, dict) and cleanup_path and canary.get("cleanup_artifact") != str(cleanup_path):
+            errors.append("live canary cleanup_artifact does not match expected artifact path")
         if cleanup_path and cleanup_path.is_file():
             try:
                 loaded = json.loads(cleanup_path.read_text(encoding="utf-8"))
