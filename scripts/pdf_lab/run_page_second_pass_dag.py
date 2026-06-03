@@ -4284,7 +4284,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 for check in checks
             ):
                 errors.append(f"{artifact} ok true requires missing-caller caller_skill_required check")
-            if surface == "chat" and not successful_check_matches(
+            if surface in {"chat", "opencode_serve"} and not successful_check_matches(
                 "/v1/scillm/health",
                 payload_matches=lambda payload: payload.get("status") == "ok",
             ):
