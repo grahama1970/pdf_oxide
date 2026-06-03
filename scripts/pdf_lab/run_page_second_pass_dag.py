@@ -3131,6 +3131,8 @@ def validate_patch_delegate_receipt(
         if not has_nonempty_patch_artifact(raw.get("diff")):
             errors.append("transport patch delegate produced no diff")
     elif isinstance(receipt, dict):
+        if receipt.get("schema") != "pdf_lab.second_pass.opencode_patch_receipt.v1":
+            errors.append("OpenCode patch receipt schema mismatch")
         if receipt.get("endpoint") != "POST /v1/scillm/opencode/runs":
             errors.append("OpenCode patch receipt endpoint mismatch")
         if receipt.get("http_status") != 200:
@@ -3245,6 +3247,8 @@ def validate_repair_diagnosis_delegate_receipt(
         if has_nonempty_patch_artifact(raw.get("diff")):
             errors.append("repair diagnosis delegate must not produce a patch diff")
     elif isinstance(receipt, dict):
+        if receipt.get("schema") != "pdf_lab.second_pass.opencode_patch_receipt.v1":
+            errors.append("OpenCode diagnosis receipt schema mismatch")
         if receipt.get("endpoint") != "POST /v1/scillm/opencode/runs":
             errors.append("OpenCode diagnosis receipt endpoint mismatch")
         if receipt.get("http_status") != 200:

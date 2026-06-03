@@ -4227,6 +4227,40 @@ def test_validate_patch_delegate_receipt_rejects_wrong_opencode_surface_and_stat
     assert "OpenCode patch receipt http_status must be 200" in validation["errors"]
 
 
+def test_validate_patch_delegate_receipt_rejects_wrong_opencode_schema() -> None:
+    dag = _load_module()
+    request = {
+        "scillm_metadata": {
+            "graph_node": "opencode_patch_attempt",
+            "case_id": "page_case_0001_p0003",
+            "page_number": 3,
+            "attempt_index": 1,
+            "attempt_count": 1,
+            "agent": "build",
+            "transport_retry_fresh_parent": False,
+        }
+    }
+    validation = dag.validate_patch_delegate_receipt(
+        {
+            "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+            "endpoint": "POST /v1/scillm/opencode/runs",
+            "http_status": 200,
+            "request_metadata": request["scillm_metadata"],
+            "raw_response": {
+                "status": "completed",
+                "assistant_text": "PATCH_APPLIED changed_files=tests/test_fix.py tests=tests/test_fix.py commands=pytest",
+                "diff": "diff --git a/tests/test_fix.py b/tests/test_fix.py",
+                "artifacts": {},
+            },
+        },
+        patch_mode="live",
+        request=request,
+    )
+
+    assert validation["ok"] is False
+    assert "OpenCode patch receipt schema mismatch" in validation["errors"]
+
+
 def test_validate_patch_delegate_receipt_rejects_stale_transport_request_metadata() -> None:
     dag = _load_module()
     request = {
@@ -4438,6 +4472,37 @@ def test_validate_repair_diagnosis_receipt_rejects_wrong_opencode_surface_and_st
     assert validation["ok"] is False
     assert "OpenCode diagnosis receipt endpoint mismatch" in validation["errors"]
     assert "OpenCode diagnosis receipt http_status must be 200" in validation["errors"]
+
+
+def test_validate_repair_diagnosis_receipt_rejects_wrong_opencode_schema() -> None:
+    dag = _load_module()
+    request = {
+        "scillm_metadata": {
+            "graph_node": "opencode_repair_diagnosis_attempt",
+            "case_id": "page_case_0001_p0003",
+            "page_number": 3,
+            "attempt_index": 1,
+            "attempt_count": 1,
+            "agent": "build",
+        }
+    }
+    validation = dag.validate_repair_diagnosis_delegate_receipt(
+        {
+            "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+            "endpoint": "POST /v1/scillm/opencode/runs",
+            "http_status": 200,
+            "request_metadata": request["scillm_metadata"],
+            "raw_response": {
+                "status": "completed",
+                "assistant_text": "Diagnosis: classifier needs table-like block regression.",
+            },
+        },
+        patch_mode="live",
+        request=request,
+    )
+
+    assert validation["ok"] is False
+    assert "OpenCode diagnosis receipt schema mismatch" in validation["errors"]
 
 
 def test_validate_repair_diagnosis_receipt_rejects_stale_transport_request_metadata() -> None:
