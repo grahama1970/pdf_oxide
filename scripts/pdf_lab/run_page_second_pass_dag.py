@@ -2735,7 +2735,13 @@ def validate_patch_delegate_receipt(
     }
 
 
-def validate_repair_diagnosis_delegate_receipt(receipt: dict[str, Any] | None, *, patch_mode: str) -> dict[str, Any]:
+def validate_repair_diagnosis_delegate_receipt(
+    receipt: dict[str, Any] | None,
+    *,
+    patch_mode: str,
+    request: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    expected_metadata = request.get("scillm_metadata") if isinstance(request, dict) else None
     if patch_mode == "dry_run":
         return {
             "schema": "pdf_lab.second_pass.repair_diagnosis_validation.v1",
@@ -2749,7 +2755,15 @@ def validate_repair_diagnosis_delegate_receipt(receipt: dict[str, Any] | None, *
     status = "missing"
     if not isinstance(receipt, dict):
         errors.append("repair diagnosis receipt missing")
-    elif receipt.get("schema") == "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1":
+    else:
+        request_metadata = receipt.get("request_metadata")
+        if not isinstance(request_metadata, dict):
+            errors.append("repair diagnosis receipt missing request_metadata")
+        elif isinstance(expected_metadata, dict):
+            for key in ["graph_node", "case_id", "page_number", "attempt_index", "attempt_count", "agent"]:
+                if key in expected_metadata and request_metadata.get(key) != expected_metadata.get(key):
+                    errors.append(f"repair diagnosis receipt request_metadata {key} does not match request")
+    if isinstance(receipt, dict) and receipt.get("schema") == "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1":
         raw = receipt.get("message_response")
         if not isinstance(raw, dict):
             errors.append("orchestrator diagnosis receipt missing message_response")
@@ -2772,8 +2786,8 @@ def validate_repair_diagnosis_delegate_receipt(receipt: dict[str, Any] | None, *
         assistant_text = str(raw.get("assistant_text") or "")
         if has_nonempty_patch_artifact(raw.get("diff")):
             errors.append("repair diagnosis delegate must not produce a patch diff")
-    else:
-        raw = receipt.get("raw_response") if isinstance(receipt, dict) else {}
+    elif isinstance(receipt, dict):
+        raw = receipt.get("raw_response")
         if not isinstance(raw, dict):
             errors.append("repair diagnosis receipt missing raw_response")
             raw = {}
@@ -4739,6 +4753,7 @@ def run_page_case(
                     attempt_repair_diagnosis_validation = validate_repair_diagnosis_delegate_receipt(
                         attempt_repair_diagnosis_receipt,
                         patch_mode=patch_mode,
+                        request=diagnosis_request,
                     )
                 diagnosis_validation_artifact = f"{attempt_prefix}diagnosis_validation.json"
                 write_json(case_dir / diagnosis_validation_artifact, attempt_repair_diagnosis_validation)

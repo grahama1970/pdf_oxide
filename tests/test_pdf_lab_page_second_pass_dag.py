@@ -3091,6 +3091,92 @@ def test_validate_patch_delegate_receipt_rejects_stale_transport_request_metadat
     assert "patch receipt request_metadata transport_retry_fresh_parent does not match request" in validation["errors"]
 
 
+def test_validate_repair_diagnosis_receipt_rejects_stale_opencode_request_metadata() -> None:
+    dag = _load_module()
+    request = {
+        "scillm_metadata": {
+            "graph_node": "opencode_repair_diagnosis_attempt",
+            "case_id": "page_case_0001_p0003",
+            "page_number": 3,
+            "attempt_index": 2,
+            "attempt_count": 3,
+            "agent": "build",
+        }
+    }
+    validation = dag.validate_repair_diagnosis_delegate_receipt(
+        {
+            "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
+            "request_metadata": {
+                "graph_node": "opencode_repair_diagnosis_attempt",
+                "case_id": "page_case_9999_p9999",
+                "page_number": 9999,
+                "attempt_index": 1,
+                "attempt_count": 3,
+                "agent": "review",
+            },
+            "raw_response": {
+                "status": "completed",
+                "assistant_text": "Diagnosis: classifier needs table-like block regression.",
+            },
+        },
+        patch_mode="live",
+        request=request,
+    )
+
+    assert validation["ok"] is False
+    assert "repair diagnosis receipt request_metadata case_id does not match request" in validation["errors"]
+    assert "repair diagnosis receipt request_metadata page_number does not match request" in validation["errors"]
+    assert "repair diagnosis receipt request_metadata attempt_index does not match request" in validation["errors"]
+    assert "repair diagnosis receipt request_metadata agent does not match request" in validation["errors"]
+
+
+def test_validate_repair_diagnosis_receipt_rejects_stale_transport_request_metadata() -> None:
+    dag = _load_module()
+    request = {
+        "scillm_metadata": {
+            "graph_node": "scillm_orchestrator_repair_diagnosis_attempt",
+            "case_id": "page_case_0001_p0003",
+            "page_number": 3,
+            "attempt_index": 1,
+            "attempt_count": 2,
+            "agent": "build",
+        }
+    }
+    validation = dag.validate_repair_diagnosis_delegate_receipt(
+        {
+            "schema": "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1",
+            "request_metadata": {
+                "graph_node": "scillm_orchestrator_repair_diagnosis_attempt",
+                "case_id": "page_case_0001_p0004",
+                "page_number": 4,
+                "attempt_index": 2,
+                "attempt_count": 2,
+                "agent": "review",
+            },
+            "message_response": {
+                "delivery_state": "completed",
+                "assistant_text": "Diagnosis: read-only analysis completed.",
+            },
+            "event_stream": {
+                "schema": "pdf_lab.second_pass.scillm_transport_event_stream.v1",
+                "event_count": 3,
+                "saw_message_completed": True,
+                "parse_errors": [],
+                "session_errors": [],
+                "tool_errors": [],
+            },
+        },
+        patch_mode="live",
+        request=request,
+    )
+
+    assert validation["ok"] is False
+    assert "repair diagnosis receipt request_metadata case_id does not match request" in validation["errors"]
+    assert "repair diagnosis receipt request_metadata page_number does not match request" in validation["errors"]
+    assert "repair diagnosis receipt request_metadata attempt_index does not match request" in validation["errors"]
+    assert "repair diagnosis receipt request_metadata agent does not match request" in validation["errors"]
+
+
 def test_parse_transport_sse_response_records_message_failed_as_session_error() -> None:
     dag = _load_module()
 
