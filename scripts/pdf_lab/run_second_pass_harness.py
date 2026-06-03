@@ -2340,6 +2340,16 @@ def build_patch_commit_ledger(
                 entry_errors.append("commit_gate.exact_file_match is not true")
             if patch_scope_validation and isinstance(patch_scope_validation.get("changed_files"), list):
                 verified_changed_files = sorted(str(path) for path in patch_scope_validation.get("changed_files") or [])
+                changed_files = commit_gate.get("changed_files")
+                if not isinstance(changed_files, list):
+                    entry_errors.append("commit_gate changed_files missing or not a list")
+                    changed_files = []
+                else:
+                    changed_files = sorted(str(path) for path in changed_files)
+                    if changed_files != verified_changed_files:
+                        entry_errors.append(
+                            "commit_gate changed_files do not match patch_scope_validation changed_files"
+                        )
                 committed_files = commit_gate.get("committed_files")
                 if not isinstance(committed_files, list):
                     entry_errors.append("commit_gate committed_files missing or not a list")
