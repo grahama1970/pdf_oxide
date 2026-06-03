@@ -2866,6 +2866,9 @@ def package_validation_errors(
         if not isinstance(zip_path, str) or not zip_path:
             error_label = label or "package validation"
             errors.append(f"{error_label} zip_path missing or not a string")
+        elif not Path(zip_path).is_file():
+            error_label = label or "package validation"
+            errors.append(f"{error_label} zip_path is not an existing file: {zip_path}")
     for key in [
         "included_artifacts",
         "required_zip_entries",

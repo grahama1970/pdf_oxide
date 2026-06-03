@@ -6135,6 +6135,63 @@ def test_readiness_audit_rejects_package_validation_missing_zip_path(tmp_path: P
     assert "harness_review_bundle_zip zip_path missing or not a string" in dumped
 
 
+def test_readiness_audit_rejects_package_validation_nonexistent_zip_path(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+
+    def validation(schema: str, zip_name: str) -> dict[str, object]:
+        return {
+            "schema": schema,
+            "zip_path": str(tmp_path / zip_name),
+            "ok": True,
+            "zip_content_ok": True,
+            "included_count": 0,
+            "included_artifacts": [],
+            "required_zip_entries": [],
+            "zip_entry_count": 0,
+        }
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[],
+        aggregate={"ok": True, "errors": [], "status_counts": {}, "unresolved_count": 0},
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": []},
+        scillm_proof_floor=None,
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation=validation(
+            "pdf_lab.second_pass.scillm_patch_delegate_bug_report_zip.v1",
+            "missing_scillm_bug_reports.zip",
+        ),
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation=validation(
+            "pdf_lab.second_pass.patch_commit_ledger_zip.v1",
+            "missing_patch_commit_ledger.zip",
+        ),
+        harness_review_bundle_validation=validation(
+            "pdf_lab.second_pass.harness_review_bundle_zip.v1",
+            "missing_harness_review_bundle.zip",
+        ),
+    )
+
+    dumped = json.dumps(audit)
+    assert audit["ok"] is False
+    assert "scillm patch delegate bug report bundle is packageable" in audit["failed_requirements"]
+    assert "patch commit ledger bundle is packageable" in audit["failed_requirements"]
+    assert "harness review bundle is packageable" in audit["failed_requirements"]
+    assert "scillm_patch_delegate_bug_report_zip zip_path is not an existing file" in dumped
+    assert "patch_commit_ledger_zip zip_path is not an existing file" in dumped
+    assert "harness_review_bundle_zip zip_path is not an existing file" in dumped
+
+
 def test_readiness_audit_requires_live_orchestrator_page_registration(tmp_path: Path) -> None:
     harness = _load_module()
     manifest_path = tmp_path / "candidate_manifest.json"
