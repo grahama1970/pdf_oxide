@@ -4120,6 +4120,40 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             expected_patch_surfaces = {"opencode_transport"}
         validate_preflight_artifact("scillm_patch_preflight.json", expected_patch_surfaces)
 
+    page_orchestrator_run_request = (
+        read_required_json_artifact("scillm_page_orchestrator_run_request.json")
+        if "scillm_page_orchestrator_run_request.json" in evidence_artifacts
+        else {}
+    )
+    page_orchestrator_run_validation = (
+        read_required_json_artifact("scillm_page_orchestrator_run_validation.json")
+        if "scillm_page_orchestrator_run_validation.json" in evidence_artifacts
+        else {}
+    )
+    page_orchestrator_run_receipt = (
+        read_required_json_artifact("scillm_page_orchestrator_run_receipt.json")
+        if "scillm_page_orchestrator_run_receipt.json" in evidence_artifacts
+        or (case_dir / "scillm_page_orchestrator_run_receipt.json").is_file()
+        else {}
+    )
+    if page_orchestrator_run_validation:
+        if page_orchestrator_run_validation.get("schema") != "pdf_lab.second_pass.page_orchestrator_run_validation.v1":
+            errors.append("scillm_page_orchestrator_run_validation schema mismatch")
+        if page_orchestrator_run_validation.get("case_id") != terminal.get("case_id"):
+            errors.append("scillm_page_orchestrator_run_validation case_id does not match terminal ledger")
+        if page_orchestrator_run_validation.get("page_number") != terminal.get("page_number"):
+            errors.append("scillm_page_orchestrator_run_validation page_number does not match terminal ledger")
+        if page_orchestrator_run_request:
+            recomputed_page_orchestrator_run_validation = validate_page_orchestrator_run_receipt(
+                page_orchestrator_run_receipt or None,
+                mode=str(page_orchestrator_run_validation.get("mode") or "dry_run"),
+                request=page_orchestrator_run_request
+                if page_orchestrator_run_request.get("schema") == "pdf_lab.second_pass.page_orchestrator_run_request.v1"
+                else None,
+            )
+            if page_orchestrator_run_validation != recomputed_page_orchestrator_run_validation:
+                errors.append("scillm_page_orchestrator_run_validation does not match recomputed page_orchestrator_run contract")
+
     review_request = read_required_json_artifact("review_request.json") if "review_request.json" in evidence_artifacts else {}
     review_request_validation = (
         read_required_json_artifact("review_request_validation.json")

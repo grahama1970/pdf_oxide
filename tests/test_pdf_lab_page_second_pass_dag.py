@@ -5873,6 +5873,64 @@ def test_validate_page_terminal_ledger_rejects_stale_repair_diagnosis_validation
     assert "repair_diagnosis_validation expected_candidate_ids do not match selected_candidates" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_page_orchestrator_run_validation(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "scillm_page_orchestrator_run_request.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.page_orchestrator_run_request.v1",
+                "scillm_metadata": {
+                    "case_id": "page_case_0001_p0001",
+                    "page_number": 1,
+                    "dag_spec_sha256": "current-dag",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "scillm_page_orchestrator_run_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.page_orchestrator_run_validation.v1",
+                "ok": True,
+                "errors": [],
+                "mode": "dry_run",
+                "transport_run_id": None,
+                "registered": False,
+                "case_id": "page_case_9999_p9999",
+                "page_number": 99,
+                "dag_spec_sha256": "stale-dag",
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "scillm_page_orchestrator_run_request.json",
+            "scillm_page_orchestrator_run_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_page_orchestrator_run_validation case_id does not match terminal ledger" in errors
+    assert "scillm_page_orchestrator_run_validation page_number does not match terminal ledger" in errors
+    assert "scillm_page_orchestrator_run_validation does not match recomputed page_orchestrator_run contract" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_reviewed_clean_with_defect_response(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
