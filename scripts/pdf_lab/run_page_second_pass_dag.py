@@ -3837,6 +3837,7 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
     unsafe_zip_entries: list[str] = []
     terminal_ledger_matches_argument = False
     terminal_ledger_validation_matches_recomputed = False
+    terminal_ledger_validation_ok = False
     terminal_ledger_path = case_dir / "terminal_ledger.json"
     if terminal_ledger_path.is_file():
         try:
@@ -3858,8 +3859,11 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
             recomputed_terminal_validation = validate_page_terminal_ledger(case_dir, terminal)
             if terminal_ledger_validation_payload == recomputed_terminal_validation:
                 terminal_ledger_validation_matches_recomputed = True
+                terminal_ledger_validation_ok = recomputed_terminal_validation.get("ok") is True
             else:
                 errors.append("terminal_ledger_validation.json does not match recomputed terminal validation")
+            if recomputed_terminal_validation.get("ok") is not True:
+                errors.append("terminal_ledger_validation ok is not true")
     if unsafe_evidence_artifacts:
         errors.append(f"terminal evidence_artifacts contains unsafe bundle paths: {unsafe_evidence_artifacts}")
     if not zip_path.is_file():
@@ -3908,6 +3912,7 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
         "zip_content_ok": zip_content_ok,
         "terminal_ledger_matches_argument": terminal_ledger_matches_argument,
         "terminal_ledger_validation_matches_recomputed": terminal_ledger_validation_matches_recomputed,
+        "terminal_ledger_validation_ok": terminal_ledger_validation_ok,
         "missing_artifacts": missing_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
@@ -4376,8 +4381,10 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("review_validation candidate_count does not match selected_candidates")
             if expected_ids != selected_candidate_ids_from_artifact:
                 errors.append("review_validation expected_candidate_ids do not match selected_candidates")
-            if seen_ids != selected_candidate_ids_from_artifact:
+            if review_response and seen_ids != selected_candidate_ids_from_artifact:
                 errors.append("review_validation seen_candidate_ids do not match selected_candidates")
+            if not review_response and seen_ids:
+                errors.append("review_validation seen_candidate_ids must be empty without review_response")
             if review_response:
                 recomputed_review_validation = validate_review_response(
                     review_response,
