@@ -5271,6 +5271,81 @@ def test_validate_page_terminal_ledger_rejects_duplicate_and_unsafe_evidence_art
     assert "evidence_artifacts contains unsafe artifact paths: ['../outside.json', '/tmp/outside.json']" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_state_and_candidate_manifest(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "state.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.page_state.v1",
+                "case_id": "page_case_9999_p9999",
+                "page_number": 9999,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "sampled_candidate_manifest.json").write_text(
+        json.dumps(
+            {
+                "page_case": {
+                    "case_id": "page_case_9999_p9999",
+                    "page_number": 9999,
+                },
+                "candidates": [{"candidate_id": "cand:p0001:0000:table"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(
+            {
+                "candidates": [{"candidate_id": "cand:p0001:0001:table"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": False,
+                "errors": ["dry_run_review_not_executed"],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "state.json",
+            "sampled_candidate_manifest.json",
+            "selected_candidates.json",
+            "review.html",
+            "review_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "state.json case_id does not match terminal ledger" in errors
+    assert "state.json page_number does not match terminal ledger" in errors
+    assert "sampled_candidate_manifest page_case.case_id does not match terminal ledger" in errors
+    assert "sampled_candidate_manifest page_case.page_number does not match terminal ledger" in errors
+    assert "selected_candidates candidate_ids do not match sampled_candidate_manifest" in errors
+
+
 def test_validate_page_review_bundle_rejects_missing_zip_entry(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

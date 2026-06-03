@@ -3676,6 +3676,57 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     if missing_artifacts:
         errors.append(f"declared evidence artifacts are missing: {missing_artifacts}")
 
+    state_artifact = read_required_json_artifact("state.json") if "state.json" in evidence_artifacts else {}
+    if state_artifact:
+        if state_artifact.get("case_id") != terminal.get("case_id"):
+            errors.append("state.json case_id does not match terminal ledger")
+        if state_artifact.get("page_number") != terminal.get("page_number"):
+            errors.append("state.json page_number does not match terminal ledger")
+    sampled_manifest = (
+        read_required_json_artifact("sampled_candidate_manifest.json")
+        if "sampled_candidate_manifest.json" in evidence_artifacts
+        else {}
+    )
+    selected_candidates_artifact = (
+        read_required_json_artifact("selected_candidates.json")
+        if "selected_candidates.json" in evidence_artifacts
+        else {}
+    )
+    if sampled_manifest:
+        page_case = sampled_manifest.get("page_case")
+        if not isinstance(page_case, dict):
+            errors.append("sampled_candidate_manifest page_case must be an object")
+            page_case = {}
+        if page_case.get("case_id") != terminal.get("case_id"):
+            errors.append("sampled_candidate_manifest page_case.case_id does not match terminal ledger")
+        if page_case.get("page_number") != terminal.get("page_number"):
+            errors.append("sampled_candidate_manifest page_case.page_number does not match terminal ledger")
+    if sampled_manifest and selected_candidates_artifact:
+        manifest_candidates = sampled_manifest.get("candidates")
+        selected_candidates = selected_candidates_artifact.get("candidates")
+        if not isinstance(manifest_candidates, list):
+            errors.append("sampled_candidate_manifest candidates must be a list")
+            manifest_candidates = []
+        if not isinstance(selected_candidates, list):
+            errors.append("selected_candidates candidates is not a list")
+            selected_candidates = []
+        manifest_candidate_ids = sorted(
+            candidate["candidate_id"]
+            for candidate in manifest_candidates
+            if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
+        )
+        selected_candidate_ids = sorted(
+            candidate["candidate_id"]
+            for candidate in selected_candidates
+            if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
+        )
+        if len(manifest_candidate_ids) != len(manifest_candidates):
+            errors.append("sampled_candidate_manifest candidates contain missing candidate_id")
+        if len(selected_candidate_ids) != len(selected_candidates):
+            errors.append("selected_candidates candidates contain missing candidate_id")
+        if manifest_candidate_ids != selected_candidate_ids:
+            errors.append("selected_candidates candidate_ids do not match sampled_candidate_manifest")
+
     def validate_preflight_artifact(artifact: str, expected_surfaces: set[str]) -> dict[str, Any]:
         preflight = read_required_json_artifact(artifact)
         if not preflight:
