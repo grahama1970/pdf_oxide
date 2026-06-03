@@ -4946,6 +4946,25 @@ def validate_live_transport_receipt_artifact_payload(
     return errors
 
 
+def validate_live_opencode_receipt_artifact_payload(receipt_payload: dict[str, Any]) -> list[str]:
+    raw = receipt_payload.get("raw_response")
+    if not isinstance(raw, dict):
+        raw = {}
+    status = raw.get("status")
+    assistant_text = str(raw.get("assistant_text") or raw.get("output") or raw.get("text") or "")
+    diff = raw.get("diff")
+    errors: list[str] = []
+    if status not in {"completed", "success", "ok"}:
+        errors.append("live canary receipt_artifact did not prove OpenCode completion")
+    if not assistant_text.strip().startswith("PDF_LAB_CANARY_OK"):
+        errors.append("live canary receipt_artifact assistant_text did not prove OpenCode sentinel")
+    if diff in (None, "", [], {}):
+        errors.append("live canary receipt_artifact OpenCode diff was empty")
+    elif not diff_mentions_path(diff, ".pdf_lab_write_canary/opencode_write_canary.txt"):
+        errors.append("live canary receipt_artifact OpenCode diff did not reference sentinel file")
+    return errors
+
+
 def validate_live_canary_artifacts(
     *,
     out_dir: Path,
@@ -5025,10 +5044,7 @@ def validate_live_canary_artifacts(
             errors.append(f"live canary {field} has no expected artifact path")
         elif canary.get(field) != str(expected_path):
             errors.append(f"live canary {field} does not match expected artifact path")
-        elif field == "receipt_artifact" and field in required_green_artifact_fields and validation_schema in {
-            "pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1",
-            "pdf_lab.second_pass.scillm_transport_write_canary_validation.v1",
-        }:
+        elif field == "receipt_artifact" and field in required_green_artifact_fields:
             try:
                 receipt_payload = json.loads(expected_path.read_text(encoding="utf-8"))
             except Exception as exc:  # noqa: BLE001 - receipt evidence must fail closed.
@@ -5036,7 +5052,12 @@ def validate_live_canary_artifacts(
             else:
                 if not isinstance(receipt_payload, dict):
                     errors.append("live canary receipt_artifact is not a JSON object")
-                else:
+                elif validation_schema == "pdf_lab.second_pass.opencode_completion_canary_validation.v1":
+                    errors.extend(validate_live_opencode_receipt_artifact_payload(receipt_payload))
+                elif validation_schema in {
+                    "pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1",
+                    "pdf_lab.second_pass.scillm_transport_write_canary_validation.v1",
+                }:
                     errors.extend(
                         validate_live_transport_receipt_artifact_payload(
                             receipt_payload,

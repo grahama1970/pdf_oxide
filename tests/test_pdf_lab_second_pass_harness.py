@@ -8092,6 +8092,78 @@ def test_live_canary_artifact_validation_rejects_opencode_ok_with_missing_diff_p
     assert "opencode completion canary validation diff_references_canary_path is not true" in errors
 
 
+def test_live_canary_artifact_validation_checks_opencode_receipt_artifact(tmp_path: Path) -> None:
+    harness = _load_module()
+    canary_dir = tmp_path / "opencode_completion_canary"
+    canary_dir.mkdir()
+    canary = {
+        "schema": "pdf_lab.second_pass.opencode_completion_canary.v1",
+        "ok": True,
+        "errors": [],
+        "request_artifact": str(canary_dir / "opencode_completion_canary_request.json"),
+        "receipt_artifact": str(canary_dir / "opencode_completion_canary_receipt.json"),
+        "validation_artifact": str(canary_dir / "opencode_completion_canary_validation.json"),
+        "cleanup_artifact": str(canary_dir / "opencode_completion_canary_cleanup.json"),
+    }
+    (canary_dir / "opencode_completion_canary.json").write_text(json.dumps(canary), encoding="utf-8")
+    (canary_dir / "opencode_completion_canary_request.json").write_text(json.dumps({"prompt": "sentinel"}), encoding="utf-8")
+    (canary_dir / "opencode_completion_canary_receipt.json").write_text(
+        json.dumps(
+            {
+                "raw_response": {
+                    "status": "failed",
+                    "assistant_text": "unexpected stale receipt",
+                    "diff": [{"path": ".pdf_lab_write_canary/opencode_write_canary.txt", "status": "added"}],
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    (canary_dir / "opencode_completion_canary_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+                "ok": True,
+                "errors": [],
+                "status": "completed",
+                "assistant_text_present": True,
+                "sentinel_present": True,
+                "write_sentinel_present": True,
+                "write_sentinel_content_ok": True,
+                "diff_present": True,
+                "diff_references_canary_path": True,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (canary_dir / "opencode_completion_canary_cleanup.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_live_canary_artifacts(
+        out_dir=tmp_path,
+        canary=canary,
+        artifact_builder=harness.opencode_completion_canary_artifacts,
+        canary_schema="pdf_lab.second_pass.opencode_completion_canary.v1",
+        validation_schema="pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+        validation_artifact_name="opencode_completion_canary_validation.json",
+        cleanup_schema="pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+        cleanup_artifact_name="opencode_completion_canary_cleanup.json",
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert "live canary receipt_artifact did not prove OpenCode completion" in errors
+    assert "live canary receipt_artifact assistant_text did not prove OpenCode sentinel" in errors
+
+
 def test_live_canary_artifact_validation_rejects_mismatched_optional_artifact_paths(tmp_path: Path) -> None:
     harness = _load_module()
     canary_dir = tmp_path / "scillm_transport_readonly_canary"
