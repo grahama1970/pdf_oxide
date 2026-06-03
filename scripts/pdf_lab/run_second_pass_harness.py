@@ -141,6 +141,10 @@ def is_plain_int(value: Any) -> bool:
     return isinstance(value, int) and not isinstance(value, bool)
 
 
+def is_plain_number(value: Any) -> bool:
+    return isinstance(value, int | float) and not isinstance(value, bool)
+
+
 def read_non_negative_int_field(
     payload: dict[str, Any],
     *,
@@ -876,7 +880,7 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
         elif preset_types and preset_type not in preset_types:
             errors.append(f"{candidate_label}: preset_type {preset_type!r} is not in manifest preset_types")
         bbox = candidate.get("bbox")
-        if not isinstance(bbox, list) or len(bbox) != 4 or not all(isinstance(value, int | float) for value in bbox):
+        if not isinstance(bbox, list) or len(bbox) != 4 or not all(is_plain_number(value) for value in bbox):
             errors.append(f"{candidate_label} missing numeric bbox[4]")
         elif not all(math.isfinite(float(value)) for value in bbox):
             errors.append(f"{candidate_label} bbox contains non-finite values")
@@ -1048,7 +1052,7 @@ def validate_candidate_sample_linkage(
                 preset_counts_by_page.setdefault(page_number, Counter())[preset_type] += 1
 
         bbox = candidate.get("bbox")
-        if not isinstance(bbox, list) or len(bbox) != 4 or not all(isinstance(value, int | float) for value in bbox):
+        if not isinstance(bbox, list) or len(bbox) != 4 or not all(is_plain_number(value) for value in bbox):
             errors.append(f"{candidate_id or f'candidate[{index}]'} missing numeric bbox[4]")
         if not str(candidate.get("json_pointer") or ""):
             errors.append(f"{candidate_id or f'candidate[{index}]'} missing json_pointer")

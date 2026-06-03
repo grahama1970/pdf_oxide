@@ -948,6 +948,7 @@ def test_validate_candidate_sample_linkage_rejects_boolean_page_references() -> 
     candidate = {
         **_manifest_candidate("cand:p0001:0000:table", 1, "table"),
         "page_number": True,
+        "bbox": [False, 0.2, 0.8, True],
     }
     manifest = _candidate_manifest([candidate])
     sampled_cases = {
@@ -986,6 +987,7 @@ def test_validate_candidate_sample_linkage_rejects_boolean_page_references() -> 
     assert "sampled page cases probabilistic_selected_pages must be a list of page numbers" in errors
     assert "page_case_0001_p0001 missing valid page_number" in errors
     assert "sampled candidate_ids do not belong to their page_case page_number" in selected_page_errors
+    assert "cand:p0001:0000:table missing numeric bbox[4]" in selected_page_errors
 
 
 def test_validate_candidate_sample_linkage_rejects_malformed_preset_types() -> None:
@@ -1376,6 +1378,7 @@ def test_validate_candidate_manifest_integrity_rejects_boolean_page_identity() -
         "page_number": True,
         "page_index": False,
         "block_index": False,
+        "bbox": [False, 0.2, 0.8, True],
     }
     manifest = _candidate_manifest([bad_candidate], page_count=True)
 
@@ -1387,6 +1390,7 @@ def test_validate_candidate_manifest_integrity_rejects_boolean_page_identity() -
     assert "cand:p0001:0000:table missing valid page_number" in errors
     assert "cand:p0001:0000:table page_index does not match page_number - 1" in errors
     assert "cand:p0001:0000:table missing valid block_index" in errors
+    assert "cand:p0001:0000:table missing numeric bbox[4]" in errors
     assert "page summary at index 0 missing valid page_number" in errors
 
 
