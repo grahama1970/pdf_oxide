@@ -1125,6 +1125,19 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
         block_index = candidate.get("block_index")
         if not is_plain_int(block_index) or block_index < 0:
             errors.append(f"{candidate_label} missing valid block_index")
+        if is_plain_int(page_number) and page_number >= 1 and is_plain_int(block_index) and block_index >= 0 and preset_type:
+            expected_candidate_id = f"cand:p{page_number:04d}:{block_index:04d}:{preset_type}"
+            if candidate_id and candidate_id != expected_candidate_id:
+                errors.append(
+                    f"{candidate_label} candidate_id does not match page_number/block_index/preset_type: "
+                    f"expected {expected_candidate_id}"
+                )
+            expected_json_pointer = f"/pages/{page_number - 1}/blocks/{block_index}"
+            if str(candidate.get("json_pointer") or "") != expected_json_pointer:
+                errors.append(
+                    f"{candidate_label} json_pointer does not match page_number/block_index: "
+                    f"expected {expected_json_pointer}"
+                )
         if is_plain_int(page_number) and page_number >= 1 and preset_type:
             page_candidate_counts[page_number] += 1
             page_preset_counts.setdefault(page_number, Counter())[preset_type] += 1

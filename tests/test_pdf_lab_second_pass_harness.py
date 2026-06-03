@@ -1669,6 +1669,23 @@ def test_validate_candidate_manifest_integrity_rejects_coerced_candidate_count()
     assert "candidate manifest candidate_count must be a non-negative integer: 1.2" in float_validation["errors"]
 
 
+def test_validate_candidate_manifest_integrity_rejects_stale_candidate_identity_anchors() -> None:
+    harness = _load_module()
+    candidate = _manifest_candidate("cand:p0001:0000:table", 1, "table")
+    candidate["candidate_id"] = "cand:p0002:9999:table"
+    candidate["json_pointer"] = "/pages/999/blocks/999"
+    manifest = _candidate_manifest([candidate], page_count=1)
+
+    validation = harness.validate_candidate_manifest_integrity(manifest)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "candidate_id does not match page_number/block_index/preset_type" in errors
+    assert "expected cand:p0001:0000:table" in errors
+    assert "json_pointer does not match page_number/block_index" in errors
+    assert "expected /pages/0/blocks/0" in errors
+
+
 def test_validate_candidate_manifest_integrity_rejects_boolean_page_identity() -> None:
     harness = _load_module()
     bad_candidate = {
