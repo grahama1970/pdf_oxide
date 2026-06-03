@@ -4054,6 +4054,8 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
                 errors.append("terminal_ledger_validation ok is not true")
     if not zip_path.is_file():
         errors.append("review bundle zip is missing")
+    elif not zipfile.is_zipfile(zip_path):
+        errors.append("review bundle zip is not a valid ZIP archive")
     else:
         with zipfile.ZipFile(zip_path) as bundle:
             zip_entries = bundle.namelist()

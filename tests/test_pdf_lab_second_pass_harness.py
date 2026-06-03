@@ -4866,6 +4866,38 @@ def test_harness_page_review_bundle_rejects_undeclared_zip_entry(tmp_path: Path)
     assert "review bundle zip has undeclared entries: ['undeclared.json']" in "\n".join(validation["errors"])
 
 
+def test_harness_page_review_bundle_rejects_non_zip_file(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "terminal_ledger_validation.json",
+        ],
+    }
+    (case_dir / "terminal_ledger.json").write_text(json.dumps(terminal), encoding="utf-8")
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "terminal_ledger_validation.json").write_text(
+        json.dumps(harness.validate_harness_page_terminal_ledger(case_dir, terminal)),
+        encoding="utf-8",
+    )
+    zip_path = case_dir / "review_bundle.zip"
+    zip_path.write_text("not a zip archive", encoding="utf-8")
+
+    validation = harness.validate_harness_page_review_bundle(case_dir, zip_path, terminal)
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert validation["zip_entry_count"] == 0
+    assert "review bundle zip is not a valid ZIP archive" in "\n".join(validation["errors"])
+
+
 def test_validate_deterministic_execution_plan_rejects_agent_or_reordered_pages() -> None:
     harness = _load_module()
     valid = harness.validate_deterministic_execution_plan(
