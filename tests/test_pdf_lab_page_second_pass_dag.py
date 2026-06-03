@@ -8210,6 +8210,57 @@ def test_validate_page_terminal_ledger_rejects_stale_patch_evidence_workspace(tm
     assert "patch_baseline patch_evidence_workspace does not match patch_evidence_workspace artifact" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_coerced_patch_baseline_dirty(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    workspace = {
+        "schema": "pdf_lab.second_pass.patch_evidence_workspace.v1",
+        "case_id": "page_case_0001_p0001",
+        "code_root": str(tmp_path / "workspace"),
+        "workspace_case_dir": str(tmp_path / "workspace/.pdf_lab_runtime/page_cases/page_case_0001_p0001"),
+        "git_info_exclude_pattern": ".pdf_lab_runtime/",
+        "copied": [
+            {"artifact": artifact, "source": f"case/{artifact}", "workspace_path": f"workspace/{artifact}"}
+            for artifact in dag.PATCH_EVIDENCE_WORKSPACE_FILES
+        ],
+        "missing": [],
+        "ok": True,
+    }
+    (case_dir / "patch_evidence_workspace.json").write_text(json.dumps(workspace), encoding="utf-8")
+    (case_dir / "patch_baseline.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_baseline.v1",
+                "changed_files": ["tests/test_fix.py"],
+                "dirty": 1,
+                "patch_evidence_workspace": workspace,
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "patch_delegate_dry_run",
+        "evidence_artifacts": [
+            "review.html",
+            "patch_evidence_workspace.json",
+            "patch_baseline.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "patch_baseline dirty must be boolean" in validation["errors"]
+
+
 def test_validate_page_terminal_ledger_rejects_stale_page_extraction_error(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

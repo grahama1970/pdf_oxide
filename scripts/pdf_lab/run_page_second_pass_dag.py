@@ -4721,7 +4721,9 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if not isinstance(changed_files, list) or not all(isinstance(path, str) for path in changed_files):
             errors.append("patch_baseline changed_files must be a list of strings")
             changed_files = []
-        if patch_baseline_artifact.get("dirty") != bool(changed_files):
+        if not is_plain_bool(patch_baseline_artifact.get("dirty")):
+            errors.append("patch_baseline dirty must be boolean")
+        elif patch_baseline_artifact.get("dirty") != bool(changed_files):
             errors.append("patch_baseline dirty does not match changed_files")
         embedded_workspace = patch_baseline_artifact.get("patch_evidence_workspace")
         if not isinstance(embedded_workspace, dict):
