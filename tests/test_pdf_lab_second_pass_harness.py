@@ -1138,6 +1138,38 @@ def test_validate_candidate_sample_linkage_requires_forced_page_partition() -> N
     assert "selected_pages do not equal probabilistic_selected_pages plus accepted forced pages" in errors
 
 
+def test_validate_candidate_sample_linkage_rejects_duplicate_forced_partition_pages() -> None:
+    harness = _load_module()
+    validation = harness.validate_candidate_sample_linkage(
+        manifest={
+            "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+            "candidate_count": 3,
+            "candidates": [
+                _manifest_candidate("cand:p0001:0000:table", 1, "table"),
+                _manifest_candidate("cand:p0002:0000:equation", 2, "equation"),
+                _manifest_candidate("cand:p0003:0000:figure", 3, "figure"),
+            ],
+        },
+        sampled_cases={
+            "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+            "selected_count": 3,
+            "selected_pages": [1, 2, 3],
+            "forced_pages": {"requested": [1], "accepted": [1, 1], "rejected": []},
+            "probabilistic_selected_pages": [2, 2, 3],
+            "page_cases": [
+                _sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1, preset_type="table", case_index=1, forced=True),
+                _sampled_page_case(candidate_id="cand:p0002:0000:equation", page_number=2, preset_type="equation", case_index=2),
+                _sampled_page_case(candidate_id="cand:p0003:0000:figure", page_number=3, preset_type="figure", case_index=3),
+            ],
+        },
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert "forced_pages.accepted contains duplicates: [1]" in errors
+    assert "probabilistic_selected_pages contains duplicates: [2]" in errors
+
+
 def test_validate_candidate_sample_linkage_accepts_forced_page_partition() -> None:
     harness = _load_module()
     validation = harness.validate_candidate_sample_linkage(

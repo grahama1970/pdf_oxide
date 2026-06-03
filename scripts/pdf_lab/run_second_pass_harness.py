@@ -1187,6 +1187,11 @@ def validate_candidate_sample_linkage(
         ):
             errors.append("sampled page cases forced_pages.accepted must be a list of page numbers")
         else:
+            duplicate_accepted_forced_pages = sorted(
+                page for page, count in Counter(raw_accepted_forced_pages).items() if count > 1
+            )
+            if duplicate_accepted_forced_pages:
+                errors.append(f"sampled page cases forced_pages.accepted contains duplicates: {duplicate_accepted_forced_pages}")
             accepted_forced_pages = sorted(set(raw_accepted_forced_pages))
     elif forced_pages is not None:
         errors.append("sampled page cases forced_pages is not an object")
@@ -1198,6 +1203,14 @@ def validate_candidate_sample_linkage(
         ):
             errors.append("sampled page cases probabilistic_selected_pages must be a list of page numbers")
         else:
+            duplicate_probabilistic_selected_pages = sorted(
+                page for page, count in Counter(raw_probabilistic_selected_pages).items() if count > 1
+            )
+            if duplicate_probabilistic_selected_pages:
+                errors.append(
+                    "sampled page cases probabilistic_selected_pages contains duplicates: "
+                    f"{duplicate_probabilistic_selected_pages}"
+                )
             probabilistic_selected_pages = sorted(set(raw_probabilistic_selected_pages))
     page_case_pages: set[int] = set()
     page_case_page_counts: Counter[int] = Counter()
