@@ -3853,6 +3853,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if "selected_candidates.json" in evidence_artifacts
         else {}
     )
+    candidate_presets_artifact = (
+        read_required_json_artifact("candidate_presets.json")
+        if "candidate_presets.json" in evidence_artifacts or (case_dir / "candidate_presets.json").is_file()
+        else {}
+    )
     selected_candidate_ids_from_artifact: list[str] = []
     if selected_candidates_artifact:
         selected_candidates = selected_candidates_artifact.get("candidates")
@@ -3866,6 +3871,20 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         )
         if len(selected_candidate_ids_from_artifact) != len(selected_candidates):
             errors.append("selected_candidates candidates contain missing candidate_id")
+    if candidate_presets_artifact:
+        preset_candidates = candidate_presets_artifact.get("candidates")
+        if not isinstance(preset_candidates, list):
+            errors.append("candidate_presets candidates is not a list")
+            preset_candidates = []
+        preset_candidate_ids = sorted(
+            candidate["candidate_id"]
+            for candidate in preset_candidates
+            if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
+        )
+        if len(preset_candidate_ids) != len(preset_candidates):
+            errors.append("candidate_presets candidates contain missing candidate_id")
+        if selected_candidate_ids_from_artifact and preset_candidate_ids != selected_candidate_ids_from_artifact:
+            errors.append("candidate_presets candidate_ids do not match selected_candidates")
     if sampled_manifest:
         page_case = sampled_manifest.get("page_case")
         if not isinstance(page_case, dict):

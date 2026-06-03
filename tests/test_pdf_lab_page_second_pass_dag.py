@@ -5234,6 +5234,74 @@ def test_validate_page_terminal_ledger_rejects_stale_review_candidate_set(tmp_pa
     assert "review_response candidate_findings do not match selected_candidates" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_candidate_presets(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.selected_candidates.v1",
+                "candidates": [{"candidate_id": "cand:p0001:0000:table"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "candidate_presets.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.candidate_presets.v1",
+                "candidates": [{"candidate_id": "cand:p0002:0000:table", "preset_type": "table"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": True,
+                "errors": [],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": ["cand:p0001:0000:table"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "review_response.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_response.v1",
+                "page_status": "clean",
+                "candidate_findings": [{"candidate_id": "cand:p0001:0000:table", "status": "clean"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "reviewed_clean",
+        "reason": "scillm_review_validated_clean",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "candidate_presets.json",
+            "review_validation.json",
+            "review_response.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "candidate_presets candidate_ids do not match selected_candidates" in validation["errors"]
+
+
 def test_validate_page_terminal_ledger_rejects_dry_run_with_review_response(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
