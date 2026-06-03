@@ -4723,6 +4723,50 @@ def validate_live_canary_artifacts(
                     f"live canary validation failed: {error}"
                     for error in validation_errors or ["validation ok is not true"]
                 )
+        else:
+            validation_errors = validation_payload.get("errors")
+            if validation_errors not in (None, []):
+                errors.append(f"live canary validation ok is true but errors are not empty: {validation_errors!r}")
+            if validation_schema == "pdf_lab.second_pass.opencode_completion_canary_validation.v1":
+                if validation_payload.get("status") not in {"completed", "success", "ok"}:
+                    errors.append("opencode completion canary validation status is not completed/success/ok")
+                for field in [
+                    "assistant_text_present",
+                    "sentinel_present",
+                    "write_sentinel_present",
+                    "write_sentinel_content_ok",
+                    "diff_present",
+                    "diff_references_canary_path",
+                ]:
+                    if validation_payload.get(field) is not True:
+                        errors.append(f"opencode completion canary validation {field} is not true")
+            elif validation_schema == "pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1":
+                if validation_payload.get("delivery_state") != "completed":
+                    errors.append("transport read-only canary validation delivery_state is not completed")
+                for field in ["saw_message_completed", "assistant_text_present", "sentinel_present"]:
+                    if validation_payload.get(field) is not True:
+                        errors.append(f"transport read-only canary validation {field} is not true")
+                if validation_payload.get("diff_present") not in (False, None):
+                    errors.append("transport read-only canary validation diff_present is not false")
+                worktree_status = validation_payload.get("worktree_status")
+                if not isinstance(worktree_status, list):
+                    errors.append("transport read-only canary validation worktree_status is not a list")
+                elif worktree_status:
+                    errors.append(f"transport read-only canary validation worktree_status is not clean: {worktree_status}")
+            elif validation_schema == "pdf_lab.second_pass.scillm_transport_write_canary_validation.v1":
+                if validation_payload.get("delivery_state") != "completed":
+                    errors.append("transport write canary validation delivery_state is not completed")
+                for field in [
+                    "saw_message_completed",
+                    "assistant_text_present",
+                    "sentinel_present",
+                    "write_sentinel_present",
+                    "write_sentinel_content_ok",
+                    "diff_present",
+                    "diff_references_canary_path",
+                ]:
+                    if validation_payload.get(field) is not True:
+                        errors.append(f"transport write canary validation {field} is not true")
 
     cleanup_payload: dict[str, Any] = {}
     cleanup_path = artifacts.get(cleanup_artifact_name or "") if cleanup_artifact_name else None
