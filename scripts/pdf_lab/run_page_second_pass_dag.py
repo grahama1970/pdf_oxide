@@ -4691,6 +4691,10 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("commit_acceptance_gate.ok is not true")
             if commit_acceptance.get("commit_sha") != commit_sha:
                 errors.append("commit_acceptance_gate commit_sha does not match terminal ledger")
+            if commit_gate:
+                recomputed_commit_acceptance = validate_commit_gate_acceptance(commit_gate)
+                if commit_acceptance != recomputed_commit_acceptance:
+                    errors.append("commit_acceptance_gate does not match recomputed commit_gate acceptance")
         if commit_gate:
             if commit_gate.get("schema") != "pdf_lab.second_pass.commit_gate.v1":
                 errors.append("commit_gate schema mismatch")
@@ -4726,6 +4730,9 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("revertability_check.ok is not true")
             if revertability.get("commit_sha") != commit_sha:
                 errors.append("revertability_check commit_sha does not match terminal ledger")
+            if commit_gate and isinstance(commit_gate.get("revertability_check"), dict):
+                if revertability != commit_gate.get("revertability_check"):
+                    errors.append("revertability_check does not match commit_gate.revertability_check")
     else:
         if terminal.get("commit_sha"):
             errors.append(f"{terminal_status} terminal ledger must not carry commit_sha")
