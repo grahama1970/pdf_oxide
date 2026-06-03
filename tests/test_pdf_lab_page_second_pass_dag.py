@@ -726,17 +726,22 @@ def test_validate_page_orchestrator_submission_rejects_malformed_page_identity(t
     stale["case_id"] = "page_case_0001_p0002"
     stale["scillm_metadata"]["case_id"] = "page_case_0001_p0002"
     stale["transport_create_body"]["orchestrator_context"]["case_id"] = "page_case_0001_p0002"
+    bool_page = json.loads(json.dumps(submission))
+    bool_page["page_number"] = True
 
     unsafe_validation = dag.validate_page_orchestrator_submission(unsafe, dag_spec=spec)
     stale_validation = dag.validate_page_orchestrator_submission(stale, dag_spec=spec)
+    bool_page_validation = dag.validate_page_orchestrator_submission(bool_page, dag_spec=spec)
 
     assert unsafe_validation["ok"] is False
     assert stale_validation["ok"] is False
+    assert bool_page_validation["ok"] is False
     assert "submission ../escape case_id must match page_case_####_p####" in unsafe_validation["errors"]
     assert (
         "submission page_case_0001_p0002 case_id page suffix does not match page_number 1"
         in stale_validation["errors"]
     )
+    assert "submission missing integer page_number" in bool_page_validation["errors"]
 
 
 def test_validate_page_orchestrator_run_receipt_rejects_stale_request_identity(tmp_path: Path) -> None:
@@ -9167,7 +9172,7 @@ def test_validate_page_terminal_ledger_rejects_malformed_page_identity(tmp_path:
     bool_page_validation = dag.validate_page_terminal_ledger(case_dir, bool_page_terminal)
 
     assert bool_page_validation["ok"] is False
-    assert "terminal ledger page_case page_number must be a positive integer" in bool_page_validation["errors"]
+    assert "missing integer page_number" in bool_page_validation["errors"]
 
 
 def test_validate_page_terminal_ledger_rejects_stale_state_and_candidate_manifest(tmp_path: Path) -> None:

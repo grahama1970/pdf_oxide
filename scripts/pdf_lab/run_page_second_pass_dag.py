@@ -671,7 +671,7 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
     elif isinstance(metadata, dict) and metadata.get("item_id") != case_id:
         errors.append("scillm_payload scillm_metadata.item_id must match review_request page_case.case_id")
     page_case_number = page_case.get("page_number")
-    if isinstance(page_case_number, int):
+    if type(page_case_number) is int:
         page_json_artifact = artifacts.get("page_json")
         if (
             isinstance(page_json_artifact, str)
@@ -1214,7 +1214,7 @@ def validate_page_orchestrator_submission(
         errors.append("submission schema mismatch")
     if not expected_case_id:
         errors.append("submission missing case_id")
-    if not isinstance(expected_page_number, int):
+    if type(expected_page_number) is not int:
         errors.append("submission missing integer page_number")
     else:
         submission_identity = validate_page_case_identity(
@@ -4194,7 +4194,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         errors.append(f"invalid terminal_status: {terminal_status}")
     if not terminal.get("case_id"):
         errors.append("missing case_id")
-    if not isinstance(terminal.get("page_number"), int):
+    if type(terminal.get("page_number")) is not int:
         errors.append("missing integer page_number")
     else:
         terminal_identity = validate_page_case_identity(
