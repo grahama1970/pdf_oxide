@@ -1086,6 +1086,7 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
     preset_counts: Counter[str] = Counter()
     page_candidate_counts: Counter[int] = Counter()
     page_preset_counts: dict[int, Counter[str]] = {}
+    candidate_order_keys: list[tuple[int, int, str]] = []
     for index, candidate in enumerate(candidates):
         if not isinstance(candidate, dict):
             errors.append(f"candidate at index {index} is not an object")
@@ -1126,6 +1127,7 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
         if not is_plain_int(block_index) or block_index < 0:
             errors.append(f"{candidate_label} missing valid block_index")
         if is_plain_int(page_number) and page_number >= 1 and is_plain_int(block_index) and block_index >= 0 and preset_type:
+            candidate_order_keys.append((page_number, block_index, preset_type))
             expected_candidate_id = f"cand:p{page_number:04d}:{block_index:04d}:{preset_type}"
             if candidate_id and candidate_id != expected_candidate_id:
                 errors.append(
@@ -1143,6 +1145,8 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
             page_preset_counts.setdefault(page_number, Counter())[preset_type] += 1
         if preset_type:
             preset_counts[preset_type] += 1
+    if candidate_order_keys and candidate_order_keys != sorted(candidate_order_keys):
+        errors.append("candidate manifest candidates must be sorted by page_number, block_index, preset_type")
     if duplicate_candidate_ids:
         errors.append(f"duplicate candidate_ids: {sorted(duplicate_candidate_ids)}")
     declared_preset_counts = manifest.get("preset_counts")
@@ -1153,7 +1157,9 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
             f"manifest preset_counts do not match candidates: "
             f"declared={declared_preset_counts}, expected={dict(sorted(preset_counts.items()))}"
         )
+    page_summary_order: list[int] = []
     page_summary_numbers: set[int] = set()
+    duplicate_page_summaries: list[int] = []
     for index, page_summary in enumerate(pages):
         if not isinstance(page_summary, dict):
             errors.append(f"page summary at index {index} is not an object")
@@ -1162,6 +1168,9 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
         if not is_plain_int(page_number) or page_number < 1:
             errors.append(f"page summary at index {index} missing valid page_number")
             continue
+        page_summary_order.append(page_number)
+        if page_number in page_summary_numbers:
+            duplicate_page_summaries.append(page_number)
         page_summary_numbers.add(page_number)
         expected_count = page_candidate_counts.get(page_number, 0)
         declared_page_candidate_count = page_summary.get("candidate_count")
@@ -1180,6 +1189,10 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
                 f"page {page_number} preset_counts do not match candidates: "
                 f"declared={page_summary.get('preset_counts')}, expected={expected_preset_counts}"
             )
+    if page_summary_order and page_summary_order != sorted(page_summary_order):
+        errors.append("candidate manifest pages must be sorted by page_number")
+    if duplicate_page_summaries:
+        errors.append(f"duplicate candidate manifest page summaries: {sorted(duplicate_page_summaries)}")
     missing_page_summaries = sorted(set(page_candidate_counts) - page_summary_numbers)
     if missing_page_summaries:
         errors.append(f"candidate pages missing page summaries: {missing_page_summaries}")

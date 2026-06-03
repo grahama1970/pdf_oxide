@@ -1686,6 +1686,52 @@ def test_validate_candidate_manifest_integrity_rejects_stale_candidate_identity_
     assert "expected /pages/0/blocks/0" in errors
 
 
+def test_validate_candidate_manifest_integrity_rejects_reordered_candidates() -> None:
+    harness = _load_module()
+    manifest = _candidate_manifest(
+        [
+            _manifest_candidate("cand:p0002:0000:table", 2, "table"),
+            _manifest_candidate("cand:p0001:0000:table", 1, "table"),
+        ],
+        page_count=2,
+    )
+
+    validation = harness.validate_candidate_manifest_integrity(manifest)
+
+    assert validation["ok"] is False
+    assert "candidate manifest candidates must be sorted by page_number, block_index, preset_type" in "\n".join(
+        validation["errors"]
+    )
+
+
+def test_validate_candidate_manifest_integrity_rejects_reordered_or_duplicate_page_summaries() -> None:
+    harness = _load_module()
+    manifest = _candidate_manifest(
+        [
+            _manifest_candidate("cand:p0001:0000:table", 1, "table"),
+            _manifest_candidate("cand:p0002:0000:table", 2, "table"),
+        ],
+        page_count=2,
+    )
+    manifest["pages"] = [
+        manifest["pages"][1],
+        manifest["pages"][0],
+        {
+            "page_number": 1,
+            "candidate_count": 1,
+            "risk_candidate_count": 1,
+            "preset_counts": {"table": 1},
+        },
+    ]
+
+    validation = harness.validate_candidate_manifest_integrity(manifest)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "candidate manifest pages must be sorted by page_number" in errors
+    assert "duplicate candidate manifest page summaries: [1]" in errors
+
+
 def test_validate_candidate_manifest_integrity_rejects_boolean_page_identity() -> None:
     harness = _load_module()
     bad_candidate = {
