@@ -703,13 +703,13 @@ def test_validate_sampling_gate_rejects_malformed_statistical_audit() -> None:
             "seed": 777,
             "sampling_audit": {
                 "schema": "wrong.schema",
-                "seed": 778,
+                "seed": True,
                 "selected_count": True,
                 "adequate_sample_size": True,
                 "adequate_for_priority_strata": True,
                 "recommended_min_sample_size": 4,
                 "statistical_significance_basis": {
-                    "seed": 779,
+                    "seed": True,
                     "adequate": True,
                     "recommended_min_sample_size": 7,
                 },
@@ -725,8 +725,8 @@ def test_validate_sampling_gate_rejects_malformed_statistical_audit() -> None:
     assert gate["statistical_significance_adequate"] is True
     errors = "\n".join(gate["errors"])
     assert "sampling_audit schema mismatch" in errors
-    assert "sampling_audit seed does not match sampled_page_cases seed" in errors
-    assert "sampling_audit statistical_significance_basis seed does not match sampled_page_cases seed" in errors
+    assert "sampling_audit seed must be an integer: True" in errors
+    assert "sampling_audit statistical_significance_basis seed must be an integer: True" in errors
     assert "sampling_audit statistical_significance_basis recommended_min_sample_size mismatch" in errors
     assert "sampling_audit selected_count must be a non-negative integer: True" in errors
 

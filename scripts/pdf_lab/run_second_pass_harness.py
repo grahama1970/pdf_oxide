@@ -729,9 +729,15 @@ def validate_sampling_gate(
     if candidate_count > 0 and not is_plain_int(sampled_seed):
         errors.append("sampled_page_cases seed must be an integer")
     if candidate_count > 0 and is_plain_int(sampled_seed):
-        if audit.get("seed") != sampled_seed:
+        audit_seed = audit.get("seed")
+        statistical_basis_seed = statistical_basis.get("seed")
+        if not is_plain_int(audit_seed):
+            errors.append(f"sampling_audit seed must be an integer: {audit_seed!r}")
+        elif audit_seed != sampled_seed:
             errors.append("sampling_audit seed does not match sampled_page_cases seed")
-        if statistical_basis.get("seed") != sampled_seed:
+        if not is_plain_int(statistical_basis_seed):
+            errors.append(f"sampling_audit statistical_significance_basis seed must be an integer: {statistical_basis_seed!r}")
+        elif statistical_basis_seed != sampled_seed:
             errors.append("sampling_audit statistical_significance_basis seed does not match sampled_page_cases seed")
     if candidate_count > 0 and selected_count <= 0:
         errors.append("candidate manifest has candidates but selected_count is zero")
