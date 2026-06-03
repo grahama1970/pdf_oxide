@@ -4111,18 +4111,12 @@ def test_validate_page_review_bundle_rejects_missing_zip_entry(tmp_path: Path) -
     dag = _load_module()
     case_dir = tmp_path / "case"
     case_dir.mkdir()
-    for name in [
-        "terminal_ledger.json",
-        "terminal_ledger_validation.json",
-        "review.html",
-        "review_request.json",
-    ]:
+    for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS):
         (case_dir / name).write_text(json.dumps({"artifact": name}), encoding="utf-8")
     zip_path = case_dir / "review_bundle.zip"
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
-        bundle.write(case_dir / "terminal_ledger.json", "terminal_ledger.json")
-        bundle.write(case_dir / "terminal_ledger_validation.json", "terminal_ledger_validation.json")
-        bundle.write(case_dir / "review.html", "review.html")
+        for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS - {"review_request.json"}):
+            bundle.write(case_dir / name, name)
     terminal = {
         "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
         "case_id": "page_case_0001_p0001",
@@ -4146,7 +4140,7 @@ def test_validate_page_review_bundle_rejects_missing_zip_entry(tmp_path: Path) -
     assert "required bundle artifacts are missing from zip" in "\n".join(validation["errors"])
 
 
-def test_validate_page_review_bundle_rejects_stale_zip_entry(tmp_path: Path) -> None:
+def test_validate_page_review_bundle_requires_minimum_one_case_evidence(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
     case_dir.mkdir()
@@ -4156,12 +4150,51 @@ def test_validate_page_review_bundle_rejects_stale_zip_entry(tmp_path: Path) -> 
         "review.html",
         "review_request.json",
     ]:
+        (case_dir / name).write_text(json.dumps({"artifact": name}), encoding="utf-8")
+    zip_path = case_dir / "review_bundle.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+        for name in [
+            "terminal_ledger.json",
+            "terminal_ledger_validation.json",
+            "review.html",
+            "review_request.json",
+        ]:
+            bundle.write(case_dir / name, name)
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_request.json",
+            "terminal_ledger_validation.json",
+        ],
+    }
+
+    validation = dag.validate_page_review_bundle(case_dir, zip_path, terminal)
+
+    assert validation["schema"] == "pdf_lab.second_pass.page_review_bundle_validation.v1"
+    assert validation["ok"] is False
+    assert "page_before.json" in validation["missing_artifacts"]
+    assert "page_before.png" in validation["missing_artifacts"]
+    assert "candidate_presets.json" in validation["missing_artifacts"]
+    assert "selected_candidates.json" in validation["missing_artifacts"]
+    assert "scillm_orchestrator_page_dag_spec.json" in validation["missing_artifacts"]
+    assert "required bundle artifacts are missing from case dir" in "\n".join(validation["errors"])
+
+
+def test_validate_page_review_bundle_rejects_stale_zip_entry(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS):
         (case_dir / name).write_text(json.dumps({"artifact": name, "version": "current"}), encoding="utf-8")
     zip_path = case_dir / "review_bundle.zip"
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
-        bundle.write(case_dir / "terminal_ledger.json", "terminal_ledger.json")
-        bundle.write(case_dir / "terminal_ledger_validation.json", "terminal_ledger_validation.json")
-        bundle.write(case_dir / "review.html", "review.html")
+        for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS - {"review_request.json"}):
+            bundle.write(case_dir / name, name)
         bundle.writestr("review_request.json", json.dumps({"artifact": "review_request.json", "version": "stale"}))
     terminal = {
         "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",

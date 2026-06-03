@@ -120,6 +120,23 @@ REQUIRED_PATCHED_CONFIRMED_ARTIFACTS = {
     "commit_gate.json",
     "revertability_check.json",
 }
+MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
+    "sampled_candidate_manifest.json",
+    "selected_candidates.json",
+    "page_before.json",
+    "page_before.png",
+    "page_candidates.png",
+    "candidate_presets.json",
+    "review_request.json",
+    "review_validation.json",
+    "scillm_orchestrator_page_dag_spec.json",
+    "scillm_orchestrator_page_dag_spec_validation.json",
+    "scillm_orchestrator_page_submission.json",
+    "scillm_orchestrator_page_submission_validation.json",
+    "terminal_ledger.json",
+    "terminal_ledger_validation.json",
+    "review.html",
+}
 PATCH_EVIDENCE_WORKSPACE_FILES = [
     "page_before.json",
     "page_before.png",
@@ -3241,9 +3258,7 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
         evidence_artifacts = []
     required_zip_entries = sorted(
         {
-            "terminal_ledger.json",
-            "terminal_ledger_validation.json",
-            "review.html",
+            *MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS,
             *[artifact for artifact in evidence_artifacts if isinstance(artifact, str) and artifact],
         }
     )
