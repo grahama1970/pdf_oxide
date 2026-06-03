@@ -3498,6 +3498,73 @@ def test_fixture_review_clean_cannot_prove_page_clean(tmp_path: Path, monkeypatc
     assert ledger["reason"] == "fixture_review_cannot_prove_clean"
 
 
+def test_validate_page_terminal_ledger_rejects_stale_review_fixture_response(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    candidate_id = "cand:p0001:0000:unknown_layout"
+    review_response = {
+        "schema": "pdf_lab.second_pass.review_response.v1",
+        "page_status": "defect",
+        "page_rationale": "fixture review marks candidate defective",
+        "candidate_findings": [
+            {
+                "candidate_id": candidate_id,
+                "status": "defect",
+                "evidence": "current fixture evidence",
+                "rationale": "current fixture rationale",
+                "suggested_fix_surface": "python/pdf_oxide extractor",
+            }
+        ],
+    }
+    review_validation = dag.validate_review_response(
+        review_response,
+        [candidate_id],
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1},
+    )
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(_selected_candidates_payload([candidate_id])),
+        encoding="utf-8",
+    )
+    (case_dir / "review_response.json").write_text(json.dumps(review_response), encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(json.dumps(review_validation), encoding="utf-8")
+    (case_dir / "review_fixture.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_fixture_materialized.v1",
+                "source_path": str(tmp_path / "stale_fixture.json"),
+                "review_response": {
+                    **review_response,
+                    "page_rationale": "stale fixture response from a prior case",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "defect_patch_not_implemented",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "review_fixture.json",
+            "review_response.json",
+            "review_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "review_fixture review_response does not match review_response" in validation["errors"]
+
+
 def test_live_patch_delegate_failure_writes_blocked_substrate_bundle(tmp_path: Path, monkeypatch) -> None:
     dag = _load_module()
 

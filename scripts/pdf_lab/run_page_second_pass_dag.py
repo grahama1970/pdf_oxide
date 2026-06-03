@@ -4621,6 +4621,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("review_request_validation does not match recomputed review_request contract")
     review_validation = read_required_json_artifact("review_validation.json") if "review_validation.json" in evidence_artifacts else {}
     review_response = read_required_json_artifact("review_response.json") if "review_response.json" in evidence_artifacts else {}
+    review_fixture = (
+        read_required_json_artifact("review_fixture.json")
+        if "review_fixture.json" in evidence_artifacts or (case_dir / "review_fixture.json").is_file()
+        else {}
+    )
     review_receipt = (
         read_required_json_artifact("scillm_review_receipt.json")
         if "scillm_review_receipt.json" in evidence_artifacts or (case_dir / "scillm_review_receipt.json").is_file()
@@ -4705,6 +4710,16 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             )
             if response_candidate_ids != selected_candidate_ids_from_artifact:
                 errors.append("review_response candidate_findings do not match selected_candidates")
+    if review_fixture:
+        if review_fixture.get("schema") != "pdf_lab.second_pass.review_fixture_materialized.v1":
+            errors.append("review_fixture schema mismatch")
+        if not isinstance(review_fixture.get("source_path"), str) or not review_fixture.get("source_path", "").strip():
+            errors.append("review_fixture source_path must be non-empty")
+        fixture_review_response = review_fixture.get("review_response")
+        if not isinstance(fixture_review_response, dict):
+            errors.append("review_fixture review_response must be an object")
+        elif review_response and fixture_review_response != review_response:
+            errors.append("review_fixture review_response does not match review_response")
     if "repair_plan_validation.json" in evidence_artifacts:
         repair_plan_validation = read_required_json_artifact("repair_plan_validation.json")
         repair_plan_request = read_required_json_artifact("repair_plan_request.json")
