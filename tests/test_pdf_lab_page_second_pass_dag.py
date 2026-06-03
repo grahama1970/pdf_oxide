@@ -627,6 +627,80 @@ def test_validate_page_orchestrator_run_receipt_rejects_stale_request_identity(t
     assert "page orchestrator create_response transport_run_id does not match receipt" in validation["errors"]
 
 
+def test_validate_page_orchestrator_run_receipt_rejects_stale_nested_transport_evidence(tmp_path: Path) -> None:
+    dag = _load_module()
+    page_case = {
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "page_index": 0,
+        "candidate_ids": ["cand:p0001:0000:table"],
+    }
+    code_root = tmp_path / "code-root"
+    stale_root = tmp_path / "stale-root"
+    code_root.mkdir()
+    stale_root.mkdir()
+    spec = dag.build_page_orchestrator_dag_spec(
+        page_case=page_case,
+        candidates=[
+            {
+                "candidate_id": "cand:p0001:0000:table",
+                "page_number": 1,
+                "preset_type": "table",
+                "bbox": [0.1, 0.2, 0.8, 0.4],
+                "features": {},
+            }
+        ],
+        review_request_artifact="review_request.json",
+        patch_backend="scillm_orchestrator",
+        patch_mode="dry_run",
+        review_mode="dry_run",
+        repair_strategy="single",
+        opencode_agent="build",
+        opencode_agent_sequence=None,
+        opencode_model=None,
+        code_root=code_root,
+        caller_skill="pdf-lab",
+        page_extract_timeout_s=30.0,
+        status="ready",
+    )
+    submission = dag.build_page_orchestrator_submission(
+        case_dir=tmp_path / "page_case_0001_p0001",
+        page_case=page_case,
+        dag_spec=spec,
+        dag_spec_artifact="scillm_orchestrator_page_dag_spec.json",
+        code_root=code_root,
+        timeout_s=60.0,
+    )
+    request = dag.build_page_orchestrator_run_request(
+        case_dir=tmp_path / "page_case_0001_p0001",
+        page_case=page_case,
+        submission=submission,
+        dag_spec_artifact="scillm_orchestrator_page_dag_spec.json",
+        code_root=code_root,
+        timeout_s=60.0,
+    )
+    receipt = {
+        "schema": "pdf_lab.second_pass.page_orchestrator_run_receipt.v1",
+        "endpoint": "POST /v1/scillm/opencode/transport/runs",
+        "http_status": 200,
+        "request_metadata": request["scillm_metadata"],
+        "transport_run_id": "tr-page-0001",
+        "create_response": {
+            "transport_run_id": "tr-page-0001",
+            "workspace": str(stale_root.resolve()),
+            "observation": {"schema": "scillm.opencode_transport.observation.v1", "transport_run_id": "tr-stale"},
+        },
+        "observation": {"schema": "scillm.opencode_transport.observation.v1", "transport_run_id": "tr-stale"},
+    }
+
+    validation = dag.validate_page_orchestrator_run_receipt(receipt, mode="live", request=request)
+
+    assert validation["ok"] is False
+    assert "page orchestrator create_response workspace does not match request cwd" in validation["errors"]
+    assert "page orchestrator create_response observation transport_run_id does not match receipt" in validation["errors"]
+    assert "page orchestrator observation transport_run_id does not match receipt" in validation["errors"]
+
+
 def test_validate_page_orchestrator_run_receipt_rejects_wrong_surface_and_status(tmp_path: Path) -> None:
     dag = _load_module()
     page_case = {
