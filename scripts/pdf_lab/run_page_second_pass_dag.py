@@ -1052,6 +1052,34 @@ def validate_page_orchestrator_dag_spec(spec: dict[str, Any]) -> dict[str, Any]:
     )
     if spec_identity["ok"] is not True:
         errors.extend(f"orchestrator DAG {error}" for error in spec_identity["errors"])
+    candidate_ids = spec.get("candidate_ids")
+    if not isinstance(candidate_ids, list):
+        errors.append("orchestrator DAG candidate_ids must be a list")
+        normalized_candidate_ids: list[str] = []
+    else:
+        invalid_candidate_ids = [
+            candidate_id
+            for candidate_id in candidate_ids
+            if not isinstance(candidate_id, str) or not candidate_id
+        ]
+        if invalid_candidate_ids:
+            errors.append(f"orchestrator DAG candidate_ids must be non-empty strings: {invalid_candidate_ids}")
+        duplicate_candidate_ids = sorted(
+            candidate_id
+            for candidate_id, count in Counter(
+                candidate_id
+                for candidate_id in candidate_ids
+                if isinstance(candidate_id, str) and candidate_id
+            ).items()
+            if count > 1
+        )
+        if duplicate_candidate_ids:
+            errors.append(f"orchestrator DAG candidate_ids contain duplicates: {duplicate_candidate_ids}")
+        normalized_candidate_ids = [
+            candidate_id for candidate_id in candidate_ids if isinstance(candidate_id, str) and candidate_id
+        ]
+        if spec.get("candidate_count") != len(candidate_ids):
+            errors.append("orchestrator DAG candidate_count does not match candidate_ids")
     node_ids = [node.get("node_id") for node in spec.get("nodes") or [] if isinstance(node, dict)]
     for required in [
         "extract_page_json",
@@ -1105,8 +1133,8 @@ def validate_page_orchestrator_dag_spec(spec: dict[str, Any]) -> dict[str, Any]:
         "case_id": spec.get("case_id"),
         "page_number": spec.get("page_number"),
         "dag_spec_sha256": stable_json_sha256(spec),
-        "candidate_count": len(spec.get("candidate_ids") or []),
-        "candidate_ids": sorted(str(candidate_id) for candidate_id in spec.get("candidate_ids") or []),
+        "candidate_count": len(normalized_candidate_ids),
+        "candidate_ids": sorted(normalized_candidate_ids),
         "node_count": len(spec.get("nodes") or []),
         "target_dag_state_owner": spec.get("target_dag_state_owner"),
     }

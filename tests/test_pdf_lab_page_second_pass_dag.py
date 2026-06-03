@@ -583,6 +583,50 @@ def test_validate_page_orchestrator_dag_spec_rejects_malformed_page_identity(tmp
     )
 
 
+def test_validate_page_orchestrator_dag_spec_rejects_malformed_candidate_ids(tmp_path: Path) -> None:
+    dag = _load_module()
+    spec = dag.build_page_orchestrator_dag_spec(
+        page_case={
+            "case_id": "page_case_0001_p0001",
+            "page_number": 1,
+            "page_index": 0,
+            "candidate_ids": ["cand:p0001:0000:table"],
+        },
+        candidates=[
+            {
+                "candidate_id": "cand:p0001:0000:table",
+                "page_number": 1,
+                "preset_type": "table",
+                "bbox": [0.1, 0.2, 0.8, 0.4],
+                "features": {},
+            }
+        ],
+        review_request_artifact="review_request.json",
+        patch_backend="scillm_orchestrator",
+        patch_mode="dry_run",
+        review_mode="dry_run",
+        repair_strategy="single",
+        opencode_agent="build",
+        opencode_agent_sequence=None,
+        opencode_model=None,
+        code_root=tmp_path,
+        caller_skill="pdf-lab",
+        page_extract_timeout_s=30.0,
+        status="ready",
+    )
+    spec["candidate_ids"] = ["cand:p0001:0000:table", "", 17, "cand:p0001:0000:table"]
+    spec["candidate_count"] = 99
+
+    validation = dag.validate_page_orchestrator_dag_spec(spec)
+
+    assert validation["ok"] is False
+    assert "orchestrator DAG candidate_ids must be non-empty strings: ['', 17]" in validation["errors"]
+    assert "orchestrator DAG candidate_ids contain duplicates: ['cand:p0001:0000:table']" in validation["errors"]
+    assert "orchestrator DAG candidate_count does not match candidate_ids" in validation["errors"]
+    assert validation["candidate_ids"] == ["cand:p0001:0000:table", "cand:p0001:0000:table"]
+    assert validation["candidate_count"] == 2
+
+
 def test_validate_page_orchestrator_submission_rejects_stale_identity_metadata(tmp_path: Path) -> None:
     dag = _load_module()
     page_case = {
