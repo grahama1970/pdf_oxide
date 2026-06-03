@@ -2235,7 +2235,17 @@ def build_patch_commit_ledger(
         if result.get("terminal_status") != "patched_confirmed":
             continue
         case_dir = Path(str(result.get("case_dir") or ""))
-        evidence_artifacts = result.get("evidence_artifacts") or []
+        raw_evidence_artifacts = result.get("evidence_artifacts")
+        evidence_artifacts_malformed = False
+        if raw_evidence_artifacts is None:
+            evidence_artifacts: list[str] = []
+        elif not isinstance(raw_evidence_artifacts, list) or not all(
+            isinstance(artifact, str) and artifact for artifact in raw_evidence_artifacts
+        ):
+            evidence_artifacts_malformed = True
+            evidence_artifacts = []
+        else:
+            evidence_artifacts = raw_evidence_artifacts
         commit_sha = result.get("commit_sha")
         commit_acceptance_path = case_dir / "commit_acceptance_gate.json"
         commit_gate_path = case_dir / "commit_gate.json"
@@ -2263,6 +2273,8 @@ def build_patch_commit_ledger(
         review_after_response: dict[str, Any] = {}
         patch_scope_changed_files: set[str] | None = None
         patch_scope_test_files: set[str] | None = None
+        if evidence_artifacts_malformed:
+            entry_errors.append("page result evidence_artifacts must be a list of artifact names")
         if not isinstance(commit_sha, str) or not commit_sha:
             entry_errors.append("missing commit_sha")
         if "commit_gate.json" not in evidence_artifacts:
