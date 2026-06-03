@@ -132,6 +132,27 @@ def test_sampler_rejects_boolean_integer_fields_in_manifest_contract() -> None:
     assert "manifest candidates[0].page_number must be a positive integer" in message
 
 
+def test_sampler_rejects_coerced_candidate_count_before_probability_basis() -> None:
+    sampler = _load_module()
+    manifest = {
+        "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "page_count": 5,
+        "candidate_count": "1",
+        "candidates": [
+            {"candidate_id": "cand:p0001:0000:table", "page_number": 1, "preset_type": "table"},
+        ],
+    }
+
+    try:
+        sampler.select_page_cases(manifest, sample_size=1, seed=1)
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for string candidate_count")
+
+    assert "manifest candidate_count must be a non-negative integer" in message
+
+
 def test_sampler_page_feature_helpers_reject_coerced_page_numbers() -> None:
     sampler = _load_module()
     manifest = {

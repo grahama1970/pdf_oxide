@@ -490,7 +490,10 @@ def select_page_cases(
         rejected_forced_pages=rejected_forced_pages,
     )
     page_cases = []
-    total_candidate_count = max(1, int(manifest.get("candidate_count") or 0))
+    manifest_candidate_count = manifest.get("candidate_count")
+    if not is_plain_int(manifest_candidate_count) or manifest_candidate_count < 0:
+        raise ValueError(f"manifest candidate_count must be a non-negative integer: {manifest_candidate_count!r}")
+    total_candidate_count = max(1, manifest_candidate_count)
     total_page_score = max(0.001, sum(max(0.001, float(features.get(page, {}).get("score", 1.0))) for page in all_pages))
     for rank, page in enumerate(selected_pages, start=1):
         page_feature = features.get(page, {"candidate_ids": [], "preset_counts": {}, "score": 0.0, "reasons": []})
