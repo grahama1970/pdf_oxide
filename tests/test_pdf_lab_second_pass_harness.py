@@ -375,6 +375,7 @@ def _write_page_dag_case(
     if terminal_status == "patched_confirmed":
         terminal.update(
             {
+                "commit_gate_ok": True,
                 "commit_acceptance_ok": True,
                 "commit_revertability_ok": True,
                 "commit_exact_file_match": True,
@@ -2667,6 +2668,30 @@ def test_terminal_ledger_validation_requires_full_patched_confirmed_evidence(tmp
     assert "patched_confirmed terminal ledger missing test_validation.json" in errors
     assert "patched_confirmed terminal ledger missing review_after_request_validation.json" in errors
     assert "patched_confirmed terminal ledger missing review_after_response.json" in errors
+
+
+def test_terminal_ledger_validation_rejects_unproven_commit_flags(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="patched_confirmed",
+        commit_sha="abc123",
+        extra_evidence=PATCHED_CONFIRMED_ARTIFACTS,
+    )
+    terminal = json.loads((case_dir / "terminal_ledger.json").read_text(encoding="utf-8"))
+    terminal["commit_gate_ok"] = False
+    terminal["commit_exact_file_match"] = False
+    terminal["commit_revertability_ok"] = False
+
+    validation = harness.validate_harness_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "patched_confirmed terminal ledger requires commit_gate_ok true" in errors
+    assert "patched_confirmed terminal ledger requires commit_exact_file_match true" in errors
+    assert "patched_confirmed terminal ledger requires commit_revertability_ok true" in errors
 
 
 def test_readiness_audit_requires_patch_commit_count_to_match_patched_pages(tmp_path: Path) -> None:

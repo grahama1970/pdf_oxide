@@ -2656,6 +2656,12 @@ def validate_harness_page_terminal_ledger(case_dir: Path, terminal: dict[str, An
     if terminal_status == "patched_confirmed":
         if not terminal.get("commit_sha"):
             errors.append("patched_confirmed terminal ledger missing commit_sha")
+        if terminal.get("commit_gate_ok") is not True:
+            errors.append("patched_confirmed terminal ledger requires commit_gate_ok true")
+        if terminal.get("commit_exact_file_match") is not True:
+            errors.append("patched_confirmed terminal ledger requires commit_exact_file_match true")
+        if terminal.get("commit_revertability_ok") is not True:
+            errors.append("patched_confirmed terminal ledger requires commit_revertability_ok true")
         if terminal.get("commit_acceptance_ok") is not True:
             errors.append("patched_confirmed terminal ledger requires commit_acceptance_ok true")
         for artifact in sorted(REQUIRED_PATCHED_CONFIRMED_ARTIFACTS):
