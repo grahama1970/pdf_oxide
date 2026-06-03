@@ -124,6 +124,27 @@ def test_sampler_rejects_boolean_integer_fields_in_manifest_contract() -> None:
     assert "manifest candidates[0].page_number must be a positive integer" in message
 
 
+def test_sampler_page_feature_helpers_reject_coerced_page_numbers() -> None:
+    sampler = _load_module()
+    manifest = {
+        "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "page_count": 5,
+        "candidate_count": 1,
+        "candidates": [
+            {"candidate_id": "cand:p0001:0000:table", "page_number": "1", "preset_type": "table"},
+        ],
+    }
+
+    for helper in [sampler.page_features, sampler.stratify_candidates]:
+        try:
+            helper(manifest)
+        except ValueError as exc:
+            message = str(exc)
+        else:
+            raise AssertionError(f"expected ValueError from {helper.__name__}")
+        assert "candidate 'cand:p0001:0000:table' page_number must be a positive integer: '1'" in message
+
+
 def test_sampler_rejects_malformed_detection_reason_contract() -> None:
     sampler = _load_module()
     manifest = {
@@ -386,5 +407,18 @@ def test_load_forced_pages_rejects_bool_page_numbers(tmp_path: Path) -> None:
         message = str(exc)
     else:
         raise AssertionError("expected ValueError for boolean forced page")
+
+    assert "forced page at index 0 is not an integer: True" in message
+
+
+def test_select_page_cases_rejects_direct_bool_forced_pages() -> None:
+    sampler = _load_module()
+
+    try:
+        sampler.select_page_cases(_manifest(), sample_size=1, seed=1, forced_pages=[True])
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for direct boolean forced page")
 
     assert "forced page at index 0 is not an integer: True" in message

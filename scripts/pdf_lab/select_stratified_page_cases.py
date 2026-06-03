@@ -72,7 +72,11 @@ def load_forced_pages(path: Path | None) -> list[int]:
 
 
 def _page_number(candidate: dict[str, Any]) -> int:
-    return int(candidate["page_number"])
+    page_number = candidate.get("page_number")
+    if not is_plain_int(page_number) or page_number < 1:
+        candidate_id = candidate.get("candidate_id")
+        raise ValueError(f"candidate {candidate_id!r} page_number must be a positive integer: {page_number!r}")
+    return page_number
 
 
 def _candidate_weight(candidate: dict[str, Any]) -> float:
@@ -386,7 +390,14 @@ def select_page_cases(
     features = page_features(manifest)
     strata = stratify_candidates(manifest)
     all_pages = sorted(features)
-    requested_forced_pages = sorted(set(int(page) for page in (forced_pages or [])))
+    requested_forced_pages: list[int] = []
+    for index, page in enumerate(forced_pages or []):
+        if not is_plain_int(page):
+            raise ValueError(f"forced page at index {index} is not an integer: {page!r}")
+        if page < 1:
+            raise ValueError(f"forced page at index {index} must be >= 1: {page!r}")
+        requested_forced_pages.append(page)
+    requested_forced_pages = sorted(set(requested_forced_pages))
     candidate_page_set = set(all_pages)
     accepted_forced_pages = [page for page in requested_forced_pages if page in candidate_page_set]
     rejected_forced_pages = [page for page in requested_forced_pages if page not in candidate_page_set]
