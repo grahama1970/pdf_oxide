@@ -6420,6 +6420,72 @@ def test_validate_page_terminal_ledger_rejects_stale_after_review_candidate_set(
     assert "review_after_response candidate_findings do not match selected_candidates" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_after_review_fixture_response(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    _write_full_patched_confirmed_artifacts(case_dir)
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_after_fixture.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_after_fixture_materialized.v1",
+                "source_path": str(tmp_path / "stale_after_fixture.json"),
+                "review_response": {
+                    "schema": "pdf_lab.second_pass.review_response.v1",
+                    "page_status": "clean",
+                    "page_rationale": "stale fixture response from another run",
+                    "candidate_findings": [
+                        {
+                            "candidate_id": "cand:p0001:0000:table",
+                            "status": "clean",
+                            "evidence": "stale fixture evidence",
+                            "rationale": "stale fixture rationale",
+                            "suggested_fix_surface": "none",
+                        }
+                    ],
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "patched_confirmed",
+        "reason": "patch_validated_and_committed_with_after_fixture",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "patch_delta.json",
+            "patch_scope_validation.json",
+            "test_validation.json",
+            "page_after.json",
+            "page_after.png",
+            "page_after_candidates.png",
+            "review_after_request.json",
+            "review_after_request_validation.json",
+            "review_after_fixture.json",
+            "review_after_response.json",
+            "review_after_validation.json",
+            "commit_acceptance_gate.json",
+            "commit_gate.json",
+            "revertability_check.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": "abc123",
+        "commit_gate_ok": True,
+        "commit_exact_file_match": True,
+        "commit_revertability_ok": True,
+        "commit_acceptance_ok": True,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "review_after_fixture review_response does not match review_after_response" in validation["errors"]
+
+
 def test_validate_page_terminal_ledger_rejects_stale_after_review_validation_for_current_response(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

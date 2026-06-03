@@ -5154,6 +5154,16 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     )
                     if response_candidate_ids != selected_candidate_ids:
                         errors.append("review_after_response candidate_findings do not match selected_candidates")
+        if after_review_fixture:
+            if after_review_fixture.get("schema") != "pdf_lab.second_pass.review_after_fixture_materialized.v1":
+                errors.append("review_after_fixture schema mismatch")
+            if not isinstance(after_review_fixture.get("source_path"), str) or not after_review_fixture.get("source_path", "").strip():
+                errors.append("review_after_fixture source_path must be non-empty")
+            fixture_review_response = after_review_fixture.get("review_response")
+            if not isinstance(fixture_review_response, dict):
+                errors.append("review_after_fixture review_response must be an object")
+            elif review_after_response and fixture_review_response != review_after_response:
+                errors.append("review_after_fixture review_response does not match review_after_response")
         if commit_acceptance:
             if commit_acceptance.get("schema") != "pdf_lab.second_pass.commit_acceptance_gate.v1":
                 errors.append("commit_acceptance_gate schema mismatch")
