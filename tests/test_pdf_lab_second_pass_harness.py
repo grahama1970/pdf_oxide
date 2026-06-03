@@ -1165,6 +1165,27 @@ def test_validate_candidate_sample_linkage_accepts_forced_page_partition() -> No
     assert validation["probabilistic_selected_pages"] == [2, 3]
 
 
+def test_validate_candidate_sample_linkage_rejects_coerced_empty_forced_pages() -> None:
+    harness = _load_module()
+    validation = harness.validate_candidate_sample_linkage(
+        manifest={
+            "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+            "candidate_count": 1,
+            "candidates": [_manifest_candidate("cand:p0001:0000:table", 1, "table")],
+        },
+        sampled_cases={
+            "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+            "selected_count": 1,
+            "selected_pages": [1],
+            "forced_pages": {"requested": [], "accepted": "", "rejected": []},
+            "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
+        },
+    )
+
+    assert validation["ok"] is False
+    assert "sampled page cases forced_pages.accepted must be a list of page numbers" in validation["errors"]
+
+
 def test_validate_candidate_sample_linkage_rejects_duplicate_sampled_pages() -> None:
     harness = _load_module()
     validation = harness.validate_candidate_sample_linkage(

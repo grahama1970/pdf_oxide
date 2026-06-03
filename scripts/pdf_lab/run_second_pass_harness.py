@@ -1181,7 +1181,7 @@ def validate_candidate_sample_linkage(
     forced_pages = sampled_cases.get("forced_pages")
     accepted_forced_pages: list[int] = []
     if isinstance(forced_pages, dict):
-        raw_accepted_forced_pages = forced_pages.get("accepted") or []
+        raw_accepted_forced_pages = forced_pages.get("accepted", [])
         if not isinstance(raw_accepted_forced_pages, list) or not all(
             is_plain_int(page) and page >= 1 for page in raw_accepted_forced_pages
         ):
