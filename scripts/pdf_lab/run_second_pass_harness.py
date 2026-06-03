@@ -2485,6 +2485,15 @@ def package_validation_errors(validation: dict[str, Any] | None) -> list[str]:
     return errors
 
 
+def package_validation_passed(validation: dict[str, Any] | None) -> tuple[bool, list[str]]:
+    errors = package_validation_errors(validation)
+    if not isinstance(validation, dict):
+        return False, errors
+    if validation.get("zip_content_ok") is not True:
+        errors = [*errors, "zip_content_ok is not true"] if "zip_content_ok is not true" not in errors else errors
+    return validation.get("ok") is True and not errors, errors
+
+
 def strict_validation_error_list(payload: dict[str, Any] | None, label: str) -> tuple[list[str], bool]:
     if not isinstance(payload, dict):
         return [], False
@@ -3179,11 +3188,12 @@ def build_harness_readiness_audit(
         page_errors,
     )
 
+    scillm_bug_report_zip_ok, scillm_bug_report_zip_errors = package_validation_passed(scillm_bug_report_zip_validation)
     add_check(
         "scillm patch delegate bug report bundle is packageable",
-        bool(scillm_bug_report_zip_validation and scillm_bug_report_zip_validation.get("ok") is True),
+        scillm_bug_report_zip_ok,
         scillm_bug_report_zip_validation,
-        package_validation_errors(scillm_bug_report_zip_validation),
+        scillm_bug_report_zip_errors,
     )
     add_check(
         "patch commit ledger passed",
@@ -3297,17 +3307,19 @@ def build_harness_readiness_audit(
         },
         patch_commit_errors,
     )
+    patch_commit_ledger_zip_ok, patch_commit_ledger_zip_errors = package_validation_passed(patch_commit_ledger_zip_validation)
     add_check(
         "patch commit ledger bundle is packageable",
-        bool(patch_commit_ledger_zip_validation and patch_commit_ledger_zip_validation.get("ok") is True),
+        patch_commit_ledger_zip_ok,
         patch_commit_ledger_zip_validation,
-        package_validation_errors(patch_commit_ledger_zip_validation),
+        patch_commit_ledger_zip_errors,
     )
+    harness_review_bundle_ok, harness_review_bundle_errors = package_validation_passed(harness_review_bundle_validation)
     add_check(
         "harness review bundle is packageable",
-        bool(harness_review_bundle_validation and harness_review_bundle_validation.get("ok") is True),
+        harness_review_bundle_ok,
         harness_review_bundle_validation,
-        package_validation_errors(harness_review_bundle_validation),
+        harness_review_bundle_errors,
     )
 
     failed_checks = [check for check in checks if not check["ok"]]
