@@ -3448,6 +3448,36 @@ def test_validate_page_results_match_sampled_cases_rejects_green_missing_pages(t
     assert "page result page_numbers do not match sampled_page_cases" in errors
 
 
+def test_validate_page_results_match_sampled_cases_rejects_coerced_identity(tmp_path: Path) -> None:
+    harness = _load_module()
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+                "selected_count": 1,
+                "selected_pages": [1],
+                "page_cases": [
+                    {"case_id": 123, "page_number": True, "candidate_ids": ["c1"]},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_page_results_match_sampled_cases(
+        sampled_cases_path=sampled_path,
+        page_results=[{"case_id": 123, "page_number": True}],
+        aggregate={"ok": False},
+    )
+
+    assert validation["ok"] is False
+    assert validation["expected_sequence"] == []
+    assert validation["observed_sequence"] == [{"case_id": "", "page_number": True}]
+    assert validation["malformed_sampled_cases"] == ["page_cases[0] missing case_id or integer page_number"]
+    assert validation["malformed_observed_results"] == ["page_results[0] missing case_id or integer page_number"]
+
+
 def test_validate_page_results_match_sampled_cases_allows_failed_closed_prefix(tmp_path: Path) -> None:
     harness = _load_module()
     sampled_path = tmp_path / "sampled_page_cases.json"

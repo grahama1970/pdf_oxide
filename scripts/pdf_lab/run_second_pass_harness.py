@@ -204,20 +204,28 @@ def validate_page_results_match_sampled_cases(
             continue
         case_id = case.get("case_id")
         page_number = case.get("page_number")
-        if not case_id or not isinstance(page_number, int):
+        if not isinstance(case_id, str) or not case_id or not is_plain_int(page_number) or page_number < 1:
             malformed_sampled_cases.append(f"page_cases[{index}] missing case_id or integer page_number")
             continue
-        expected_sequence.append({"case_id": str(case_id), "page_number": page_number})
+        expected_sequence.append({"case_id": case_id, "page_number": page_number})
     if malformed_sampled_cases:
         errors.extend(malformed_sampled_cases)
 
-    observed_sequence = [
-        {
-            "case_id": str(result.get("case_id") or ""),
-            "page_number": result.get("page_number"),
-        }
-        for result in page_results
-    ]
+    observed_sequence: list[dict[str, Any]] = []
+    malformed_observed_results: list[str] = []
+    for index, result in enumerate(page_results):
+        case_id = result.get("case_id")
+        page_number = result.get("page_number")
+        if not isinstance(case_id, str) or not case_id or not is_plain_int(page_number) or page_number < 1:
+            malformed_observed_results.append(f"page_results[{index}] missing case_id or integer page_number")
+        observed_sequence.append(
+            {
+                "case_id": case_id if isinstance(case_id, str) else "",
+                "page_number": page_number,
+            }
+        )
+    if malformed_observed_results:
+        errors.extend(malformed_observed_results)
     observed_case_ids = [item["case_id"] for item in observed_sequence if item["case_id"]]
     duplicate_observed_case_ids = sorted(
         case_id
@@ -279,6 +287,8 @@ def validate_page_results_match_sampled_cases(
         "missing_sampled_case_ids": missing_sampled_case_ids,
         "extra_observed_case_ids": extra_observed_case_ids,
         "duplicate_observed_case_ids": duplicate_observed_case_ids,
+        "malformed_sampled_cases": malformed_sampled_cases,
+        "malformed_observed_results": malformed_observed_results,
         "aggregate_ok": aggregate.get("ok") is True,
     }
 
