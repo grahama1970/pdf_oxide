@@ -2389,6 +2389,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("terminal_ledger_validation schema mismatch")
             if terminal_ledger_validation.get("ok") is not True:
                 entry_errors.append("terminal_ledger_validation.ok is not true")
+            elif terminal_ledger_validation.get("errors") not in (None, []):
+                entry_errors.append("terminal_ledger_validation ok is true but errors are not empty")
             if terminal_ledger_validation.get("case_id") != result.get("case_id"):
                 entry_errors.append("terminal_ledger_validation case_id does not match page result")
             if terminal_ledger_validation.get("page_number") != result.get("page_number"):
