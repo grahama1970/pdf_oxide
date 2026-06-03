@@ -377,9 +377,19 @@ def validate_page_results_match_sampled_cases(
         item["case_id"]
         for item in expected_sequence[len(observed_sequence):]
     ]
+    last_observed_terminal_status = page_results[-1].get("terminal_status") if page_results else None
     if missing_sampled_case_ids and aggregate.get("ok") is True:
         errors.append(
             "green page aggregate cannot omit sampled page cases: "
+            f"{missing_sampled_case_ids}"
+        )
+    if (
+        missing_sampled_case_ids
+        and page_results
+        and last_observed_terminal_status in RESOLVED_PASS_STATUSES
+    ):
+        errors.append(
+            "resolved page result prefix cannot omit sampled page cases without a nonterminal stop: "
             f"{missing_sampled_case_ids}"
         )
 
@@ -398,6 +408,7 @@ def validate_page_results_match_sampled_cases(
         "malformed_sampled_cases": malformed_sampled_cases,
         "malformed_observed_results": malformed_observed_results,
         "aggregate_ok": aggregate.get("ok") is True,
+        "last_observed_terminal_status": last_observed_terminal_status,
     }
 
 

@@ -4343,12 +4343,35 @@ def test_validate_page_results_match_sampled_cases_allows_failed_closed_prefix(t
 
     validation = harness.validate_page_results_match_sampled_cases(
         sampled_cases_path=sampled_path,
-        page_results=[{"case_id": "page_case_0001_p0001", "page_number": 1}],
+        page_results=[{"case_id": "page_case_0001_p0001", "page_number": 1, "terminal_status": "blocked_substrate"}],
         aggregate={"ok": False},
     )
 
     assert validation["ok"] is True
     assert validation["missing_sampled_case_ids"] == ["page_case_0002_p0002"]
+    assert validation["last_observed_terminal_status"] == "blocked_substrate"
+
+
+def test_validate_page_results_match_sampled_cases_rejects_resolved_prefix_missing_pages(tmp_path: Path) -> None:
+    harness = _load_module()
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    _write_sampled_page_cases(
+        sampled_path,
+        [
+            {"case_id": "page_case_0001_p0001", "page_number": 1, "candidate_ids": ["c1"]},
+            {"case_id": "page_case_0002_p0002", "page_number": 2, "candidate_ids": ["c2"]},
+        ],
+    )
+
+    validation = harness.validate_page_results_match_sampled_cases(
+        sampled_cases_path=sampled_path,
+        page_results=[{"case_id": "page_case_0001_p0001", "page_number": 1, "terminal_status": "reviewed_clean"}],
+        aggregate={"ok": False},
+    )
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "resolved page result prefix cannot omit sampled page cases without a nonterminal stop" in errors
 
 
 def test_readiness_audit_rejects_green_page_results_missing_sampled_case(tmp_path: Path) -> None:
