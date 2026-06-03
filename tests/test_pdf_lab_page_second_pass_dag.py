@@ -10712,6 +10712,38 @@ def test_validate_page_review_bundle_rejects_stale_terminal_ledger_json(tmp_path
     assert "terminal_ledger.json does not match terminal argument" in validation["errors"]
 
 
+def test_validate_page_review_bundle_rejects_non_object_terminal_ledger_json(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS):
+        (case_dir / name).write_text(json.dumps({"artifact": name}), encoding="utf-8")
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_request.json",
+            "terminal_ledger_validation.json",
+        ],
+    }
+    (case_dir / "terminal_ledger.json").write_text(json.dumps(["not-object"]), encoding="utf-8")
+    zip_path = case_dir / "review_bundle.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+        for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS):
+            bundle.write(case_dir / name, name)
+
+    validation = dag.validate_page_review_bundle(case_dir, zip_path, terminal)
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is True
+    assert validation["terminal_ledger_matches_argument"] is False
+    assert "terminal_ledger.json is not a JSON object" in validation["errors"]
+
+
 def test_validate_page_review_bundle_rejects_stale_terminal_validation_json(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
@@ -10770,6 +10802,53 @@ def test_validate_page_review_bundle_rejects_stale_terminal_validation_json(tmp_
     assert validation["terminal_ledger_matches_argument"] is True
     assert validation["terminal_ledger_validation_matches_recomputed"] is False
     assert "terminal_ledger_validation.json does not match recomputed terminal validation" in validation["errors"]
+
+
+def test_validate_page_review_bundle_rejects_non_object_terminal_validation_json(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS):
+        (case_dir / name).write_text(json.dumps({"artifact": name}), encoding="utf-8")
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+    (case_dir / "terminal_ledger.json").write_text(json.dumps(terminal), encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": False,
+                "errors": ["dry_run_review_not_executed"],
+                "expected_candidate_ids": [],
+                "seen_candidate_ids": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "terminal_ledger_validation.json").write_text(json.dumps(["not-object"]), encoding="utf-8")
+    zip_path = case_dir / "review_bundle.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+        for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS):
+            bundle.write(case_dir / name, name)
+
+    validation = dag.validate_page_review_bundle(case_dir, zip_path, terminal)
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is True
+    assert validation["terminal_ledger_matches_argument"] is True
+    assert validation["terminal_ledger_validation_matches_recomputed"] is False
+    assert "terminal_ledger_validation.json is not a JSON object" in validation["errors"]
 
 
 def test_validate_page_review_bundle_rejects_matching_failed_terminal_validation(tmp_path: Path) -> None:
