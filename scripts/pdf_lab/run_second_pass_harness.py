@@ -2608,6 +2608,14 @@ def build_harness_readiness_audit(
                 terminal_validation = {"ok": False, "errors": [f"terminal_ledger_validation unreadable: {type(exc).__name__}: {exc}"]}
             if terminal_validation.get("ok") is not True:
                 page_errors.append(f"{case_id}: terminal_ledger_validation failed: {terminal_validation.get('errors')}")
+            if terminal_validation.get("schema") != "pdf_lab.second_pass.page_terminal_ledger_validation.v1":
+                page_errors.append(f"{case_id}: terminal_ledger_validation schema mismatch")
+            if terminal_validation.get("case_id") != case_id:
+                page_errors.append(f"{case_id}: terminal_ledger_validation case_id does not match page result")
+            if terminal_validation.get("page_number") != result.get("page_number"):
+                page_errors.append(f"{case_id}: terminal_ledger_validation page_number does not match page result")
+            if terminal_validation.get("terminal_status") != result.get("terminal_status"):
+                page_errors.append(f"{case_id}: terminal_ledger_validation terminal_status does not match page result")
         if "terminal_ledger_validation.json" not in evidence_artifacts:
             page_errors.append(f"{case_id}: terminal evidence missing terminal_ledger_validation.json")
         if not review_bundle.is_file():
