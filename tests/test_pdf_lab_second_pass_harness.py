@@ -4164,6 +4164,48 @@ def test_readiness_audit_rejects_boolean_patch_commit_count(tmp_path: Path) -> N
     assert "patch commit ledger commit_count must be a non-negative integer: True" in json.dumps(audit)
 
 
+def test_readiness_audit_rejects_non_list_patch_commit_shas(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[],
+        aggregate={
+            "ok": True,
+            "errors": [],
+            "status_counts": {"patched_confirmed": 0},
+            "patched_confirmed_count": 0,
+            "unresolved_count": 0,
+        },
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": []},
+        scillm_proof_floor=None,
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation={"ok": True, "missing_artifacts": []},
+        patch_commit_ledger={
+            "ok": True,
+            "commit_count": 0,
+            "commit_shas": {},
+            "duplicate_commit_shas": [],
+            "errors": [],
+        },
+        patch_commit_ledger_zip_validation={"ok": True, "missing_artifacts": []},
+    )
+
+    assert audit["ok"] is False
+    assert "patch commit ledger matches patched-confirmed page count" in audit["failed_requirements"]
+    assert "patch commit ledger commit_shas missing or not a list" in json.dumps(audit)
+
+
 def test_readiness_audit_requires_patch_commit_entries_to_match_patched_pages(tmp_path: Path) -> None:
     harness = _load_module()
     manifest_path = tmp_path / "candidate_manifest.json"

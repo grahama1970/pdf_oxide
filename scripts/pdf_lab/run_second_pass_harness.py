@@ -3104,7 +3104,15 @@ def build_harness_readiness_audit(
                 expected_patch_commit_count = raw_status_patched_confirmed
                 patch_commit_errors = []
     patch_commit_count = (patch_commit_ledger or {}).get("commit_count")
-    patch_commit_shas = list((patch_commit_ledger or {}).get("commit_shas") or [])
+    raw_patch_commit_shas = (patch_commit_ledger or {}).get("commit_shas")
+    if not isinstance(raw_patch_commit_shas, list):
+        patch_commit_errors.append("patch commit ledger commit_shas missing or not a list")
+        patch_commit_shas: list[str] = []
+    elif not all(isinstance(sha, str) for sha in raw_patch_commit_shas):
+        patch_commit_errors.append("patch commit ledger commit_shas must be a list of strings")
+        patch_commit_shas = [sha for sha in raw_patch_commit_shas if isinstance(sha, str)]
+    else:
+        patch_commit_shas = raw_patch_commit_shas
     if not is_plain_int(patch_commit_count) or patch_commit_count < 0:
         patch_commit_errors.append(f"patch commit ledger commit_count must be a non-negative integer: {patch_commit_count!r}")
     elif patch_commit_count != expected_patch_commit_count:
