@@ -3561,9 +3561,20 @@ def package_bundle(case_dir: Path, out: Path) -> None:
 
 
 def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[str, Any]) -> dict[str, Any]:
+    errors: list[str] = []
     evidence_artifacts = terminal.get("evidence_artifacts")
+    invalid_evidence_artifacts: list[Any] = []
     if not isinstance(evidence_artifacts, list):
+        errors.append("terminal evidence_artifacts must be a list of artifact names")
         evidence_artifacts = []
+    else:
+        invalid_evidence_artifacts = [
+            artifact
+            for artifact in evidence_artifacts
+            if not isinstance(artifact, str) or not artifact
+        ]
+        if invalid_evidence_artifacts:
+            errors.append(f"terminal evidence_artifacts contains invalid artifact names: {invalid_evidence_artifacts}")
     unsafe_evidence_artifacts = sorted(
         artifact
         for artifact in evidence_artifacts
@@ -3575,7 +3586,9 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
             *[
                 artifact
                 for artifact in evidence_artifacts
-                if isinstance(artifact, str) and artifact and artifact not in unsafe_evidence_artifacts
+                if isinstance(artifact, str)
+                and artifact
+                and artifact not in unsafe_evidence_artifacts
             ],
         }
     )
@@ -3586,7 +3599,6 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
     duplicate_zip_entries: list[str] = []
     mismatched_zip_entries: list[str] = []
     unsafe_zip_entries: list[str] = []
-    errors: list[str] = []
     terminal_ledger_matches_argument = False
     terminal_ledger_path = case_dir / "terminal_ledger.json"
     if terminal_ledger_path.is_file():
@@ -3649,6 +3661,7 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
         "missing_artifacts": missing_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
+        "invalid_evidence_artifacts": invalid_evidence_artifacts,
         "unsafe_evidence_artifacts": unsafe_evidence_artifacts,
         "unsafe_zip_entries": unsafe_zip_entries,
         "mismatched_zip_entries": sorted(mismatched_zip_entries),
