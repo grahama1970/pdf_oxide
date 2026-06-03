@@ -1162,7 +1162,7 @@ def validate_candidate_sample_linkage(
             malformed_sampling_metadata_case_ids.append(case_id)
         if forced_by_human_annotation not in {True, False}:
             malformed_sampling_metadata_case_ids.append(case_id)
-        if not isinstance(selection_probability_estimate, int | float) or not 0 <= float(selection_probability_estimate) <= 1:
+        if not is_plain_number(selection_probability_estimate) or not 0 <= float(selection_probability_estimate) <= 1:
             malformed_sampling_metadata_case_ids.append(case_id)
         if not isinstance(selection_probability_basis, dict):
             malformed_sampling_metadata_case_ids.append(case_id)
@@ -1422,7 +1422,7 @@ def validate_deterministic_execution_plan(
         estimate = case.get("selection_probability_estimate")
         basis = case.get("selection_probability_basis")
         if estimate is not None:
-            if not isinstance(estimate, int | float) or not 0 <= float(estimate) <= 1:
+            if not is_plain_number(estimate) or not 0 <= float(estimate) <= 1:
                 malformed_probability_case_ids.append(case_id)
         if basis is not None and not isinstance(basis, dict):
             malformed_probability_case_ids.append(case_id)
