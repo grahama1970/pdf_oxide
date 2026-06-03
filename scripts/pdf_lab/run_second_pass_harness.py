@@ -1725,7 +1725,7 @@ def build_patch_commit_ledger(
         review_after_request_validation: dict[str, Any] = {}
         review_after_validation: dict[str, Any] = {}
         review_after_response: dict[str, Any] = {}
-        if not commit_sha:
+        if not isinstance(commit_sha, str) or not commit_sha:
             entry_errors.append("missing commit_sha")
         if "commit_gate.json" not in evidence_artifacts:
             entry_errors.append("terminal evidence missing commit_gate.json")
@@ -1970,8 +1970,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("revertability_check.ok is not true")
             if revertability.get("commit_sha") != commit_sha:
                 entry_errors.append("revertability_check commit_sha does not match page result")
-        if commit_sha:
-            commit_shas.append(str(commit_sha))
+        if isinstance(commit_sha, str) and commit_sha:
+            commit_shas.append(commit_sha)
         entries.append(
             {
                 "case_id": result.get("case_id"),
