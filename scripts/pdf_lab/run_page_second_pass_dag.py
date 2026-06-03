@@ -574,6 +574,8 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
         artifact = artifacts.get(key)
         if not isinstance(artifact, str) or not artifact:
             errors.append(f"review_request artifacts.{key} missing")
+        elif Path(artifact).is_absolute() or ".." in Path(artifact).parts:
+            errors.append(f"review_request artifacts.{key} unsafe path: {artifact}")
         elif not (case_dir / artifact).is_file():
             errors.append(f"review_request artifact does not exist: {artifact}")
     payload = review_request.get("scillm_payload")

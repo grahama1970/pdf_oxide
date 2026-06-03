@@ -5647,6 +5647,56 @@ def test_validate_review_request_contract_rejects_missing_multimodal_evidence(tm
     assert "scillm_payload must include exactly two image_url evidence parts" in errors
 
 
+def test_validate_review_request_contract_rejects_unsafe_artifact_paths(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    absolute_page_json = outside / "page_before.json"
+    traversal_candidate_presets = tmp_path / "candidate_presets.json"
+    absolute_page_json.write_text(json.dumps({"blocks": []}), encoding="utf-8")
+    traversal_candidate_presets.write_text(json.dumps({"candidates": []}), encoding="utf-8")
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "page_candidates.png").write_bytes(b"png")
+    review_request = {
+        "schema": "pdf_lab.second_pass.review_request.v1",
+        "endpoint": "POST /v1/chat/completions",
+        "response_format": {"type": "json_object"},
+        "scillm_metadata": {"batch_id": "batch", "item_id": "page_case_0001_p0001"},
+        "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+        "artifacts": {
+            "page_json": str(absolute_page_json),
+            "original_image": "page_before.png",
+            "annotated_image": "page_candidates.png",
+            "candidate_presets": "../candidate_presets.json",
+        },
+        "required_response_schema": {"schema": "pdf_lab.second_pass.review_response.v1"},
+        "scillm_payload": {
+            "model": "gpt-5.5",
+            "response_format": {"type": "json_object"},
+            "scillm_metadata": {"batch_id": "batch", "item_id": "page_case_0001_p0001"},
+            "messages": [
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": "review"},
+                        {"type": "image_url", "image_url": {"url": "data:image/png;base64,cG5n"}},
+                        {"type": "image_url", "image_url": {"url": "data:image/png;base64,cG5n"}},
+                    ],
+                }
+            ],
+        },
+    }
+
+    validation = dag.validate_review_request_contract(case_dir, review_request)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert f"review_request artifacts.page_json unsafe path: {absolute_page_json}" in errors
+    assert "review_request artifacts.candidate_presets unsafe path: ../candidate_presets.json" in errors
+
+
 def test_validate_page_review_bundle_requires_minimum_one_case_evidence(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
