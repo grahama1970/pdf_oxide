@@ -8040,6 +8040,65 @@ def test_validate_page_terminal_ledger_rejects_successful_preflight_without_proo
     assert "scillm_review_preflight.json ok true requires /v1/scillm/health check" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_successful_preflight_failed_surface_check(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": False,
+                "errors": ["scillm_review_call_failed"],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    failed_surface_checks = _successful_preflight_checks("chat")
+    failed_surface_checks[-1] = {
+        "path": "/v1/scillm/health",
+        "http_status": 503,
+        "payload": {"status": "unavailable"},
+    }
+    (case_dir / "scillm_review_preflight.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_preflight.v1",
+                "surface": "chat",
+                "base_url": "http://localhost:4001",
+                "caller_skill": "pdf-lab",
+                "checks": failed_surface_checks,
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "blocked_substrate",
+        "reason": "scillm_review_call_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_validation.json",
+            "scillm_review_preflight.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_review_preflight.json ok true requires /v1/scillm/health check" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_patch_preflight_surface_mismatch(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
