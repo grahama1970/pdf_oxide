@@ -180,6 +180,23 @@ def transport_raw_line_count(stream: dict[str, Any], *, label: str, parse_errors
     return value
 
 
+def transport_saw_message_completed(stream: dict[str, Any], *, label: str, parse_errors: list[dict[str, Any]]) -> bool:
+    if "saw_message_completed" not in stream:
+        return False
+    value = stream.get("saw_message_completed")
+    if type(value) is not bool:
+        parse_errors.append(
+            {
+                "event_type": "parse_error",
+                "source": label,
+                "field": "saw_message_completed",
+                "error": f"saw_message_completed must be a boolean: {value!r}",
+            }
+        )
+        return False
+    return value
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -2702,9 +2719,13 @@ def merge_transport_event_streams(primary: dict[str, Any], replay: dict[str, Any
     parse_errors: list[dict[str, Any]] = []
     raw_line_count = 0
     final_result = primary.get("final_result") or replay.get("final_result") or {}
-    saw_message_completed = bool(primary.get("saw_message_completed") or replay.get("saw_message_completed"))
+    saw_message_completed = False
     for label, stream in [("primary", primary), ("replay", replay)]:
         raw_line_count += transport_raw_line_count(stream, label=label, parse_errors=parse_errors)
+        saw_message_completed = (
+            saw_message_completed
+            or transport_saw_message_completed(stream, label=label, parse_errors=parse_errors)
+        )
         for parse_error in stream.get("parse_errors") or []:
             if isinstance(parse_error, dict):
                 parse_errors.append(parse_error)

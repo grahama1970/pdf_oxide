@@ -5273,6 +5273,38 @@ def test_merge_transport_event_streams_rejects_coerced_raw_line_counts() -> None
     assert "raw_line_count must be a non-negative integer: '1'" in errors
 
 
+def test_merge_transport_event_streams_rejects_coerced_completion_flags() -> None:
+    dag = _load_module()
+
+    merged = dag.merge_transport_event_streams(
+        {
+            "schema": "pdf_lab.second_pass.scillm_transport_event_stream.v1",
+            "event_count": 1,
+            "events": [
+                {"event_type": "heartbeat", "event_id": "heartbeat-1"},
+            ],
+            "raw_line_count": 1,
+            "final_result": {},
+            "saw_message_completed": "true",
+        },
+        {
+            "schema": "pdf_lab.second_pass.scillm_transport_event_stream.v1",
+            "event_count": 1,
+            "events": [
+                {"event_type": "heartbeat", "event_id": "heartbeat-2"},
+            ],
+            "raw_line_count": 1,
+            "final_result": {},
+            "saw_message_completed": None,
+        },
+    )
+
+    assert merged["saw_message_completed"] is False
+    errors = "\n".join(error["error"] for error in merged["parse_errors"])
+    assert "saw_message_completed must be a boolean: 'true'" in errors
+    assert "saw_message_completed must be a boolean: None" in errors
+
+
 def test_broken_transport_stream_becomes_session_error() -> None:
     dag = _load_module()
 
