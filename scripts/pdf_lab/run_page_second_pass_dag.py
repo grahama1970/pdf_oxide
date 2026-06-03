@@ -317,9 +317,9 @@ def validate_page_case_identity(page_case: dict[str, Any], *, allow_after_patch:
         case_id_match = PAGE_CASE_ID_RE.fullmatch(base_case_id)
         if case_id_match is None:
             errors.append(f"{case_id} case_id must match page_case_####_p####")
-        elif isinstance(page_number, int) and int(case_id_match.group("page_number")) != page_number:
+        elif type(page_number) is int and int(case_id_match.group("page_number")) != page_number:
             errors.append(f"{case_id} case_id page suffix does not match page_number {page_number}")
-    if not isinstance(page_number, int) or page_number < 1:
+    if type(page_number) is not int or page_number < 1:
         errors.append("page_case page_number must be a positive integer")
     return {
         "schema": "pdf_lab.second_pass.page_case_identity_validation.v1",

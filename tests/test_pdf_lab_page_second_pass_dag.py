@@ -430,11 +430,14 @@ def test_validate_page_case_identity_rejects_unsafe_or_stale_case_ids() -> None:
     dag = _load_module()
     unsafe = dag.validate_page_case_identity({"case_id": "../escape", "page_number": 1})
     stale = dag.validate_page_case_identity({"case_id": "page_case_0002_p0001", "page_number": 2})
+    bool_page = dag.validate_page_case_identity({"case_id": "page_case_0001_p0001", "page_number": True})
 
     assert unsafe["ok"] is False
     assert stale["ok"] is False
+    assert bool_page["ok"] is False
     assert "../escape case_id must match page_case_####_p####" in unsafe["errors"]
     assert "page_case_0002_p0001 case_id page suffix does not match page_number 2" in stale["errors"]
+    assert "page_case page_number must be a positive integer" in bool_page["errors"]
 
 
 def test_run_page_case_rejects_unsafe_case_id_before_writing_case_dir(tmp_path: Path) -> None:
@@ -8867,6 +8870,14 @@ def test_validate_page_terminal_ledger_rejects_malformed_page_identity(tmp_path:
 
     assert validation["ok"] is False
     assert "terminal ledger ../escape case_id must match page_case_####_p####" in validation["errors"]
+
+    bool_page_terminal = dict(terminal)
+    bool_page_terminal["case_id"] = "page_case_0001_p0001"
+    bool_page_terminal["page_number"] = True
+    bool_page_validation = dag.validate_page_terminal_ledger(case_dir, bool_page_terminal)
+
+    assert bool_page_validation["ok"] is False
+    assert "terminal ledger page_case page_number must be a positive integer" in bool_page_validation["errors"]
 
 
 def test_validate_page_terminal_ledger_rejects_stale_state_and_candidate_manifest(tmp_path: Path) -> None:
