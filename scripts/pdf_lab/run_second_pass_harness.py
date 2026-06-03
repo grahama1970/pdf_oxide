@@ -750,7 +750,12 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
     if not isinstance(pages, list):
         errors.append("candidate manifest pages is not a list")
         pages = []
-    declared_candidate_count = int(manifest.get("candidate_count") or 0)
+    declared_candidate_count_raw = manifest.get("candidate_count")
+    if isinstance(declared_candidate_count_raw, bool) or not isinstance(declared_candidate_count_raw, int) or declared_candidate_count_raw < 0:
+        errors.append(f"candidate manifest candidate_count must be a non-negative integer: {declared_candidate_count_raw!r}")
+        declared_candidate_count = 0
+    else:
+        declared_candidate_count = declared_candidate_count_raw
     declared_page_count = manifest.get("page_count")
     if declared_page_count is not None and (not isinstance(declared_page_count, int) or declared_page_count < 1):
         errors.append(f"candidate manifest page_count must be a positive integer when present: {declared_page_count!r}")

@@ -1144,6 +1144,22 @@ def test_validate_candidate_manifest_integrity_requires_preset_counts() -> None:
     assert "candidate manifest preset_counts is not an object" in "\n".join(validation["errors"])
 
 
+def test_validate_candidate_manifest_integrity_rejects_coerced_candidate_count() -> None:
+    harness = _load_module()
+    string_count = _candidate_manifest([_manifest_candidate("cand:p0001:0000:table", 1, "table")])
+    string_count["candidate_count"] = "1"
+    float_count = _candidate_manifest([_manifest_candidate("cand:p0001:0000:table", 1, "table")])
+    float_count["candidate_count"] = 1.2
+
+    string_validation = harness.validate_candidate_manifest_integrity(string_count)
+    float_validation = harness.validate_candidate_manifest_integrity(float_count)
+
+    assert string_validation["ok"] is False
+    assert float_validation["ok"] is False
+    assert "candidate manifest candidate_count must be a non-negative integer: '1'" in string_validation["errors"]
+    assert "candidate manifest candidate_count must be a non-negative integer: 1.2" in float_validation["errors"]
+
+
 def test_validate_candidate_manifest_integrity_rejects_malformed_geometry_and_page_refs() -> None:
     harness = _load_module()
     bad_candidate = {
