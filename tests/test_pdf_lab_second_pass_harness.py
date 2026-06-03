@@ -648,6 +648,27 @@ def test_aggregate_rejects_raw_page_result_identity_mismatch() -> None:
     assert "raw page result identity mismatches" in "\n".join(aggregate["errors"])
 
 
+def test_aggregate_requires_positive_page_artifact_validation_for_resolved_pages() -> None:
+    harness = _load_module()
+    aggregate = harness.aggregate_page_results(
+        [
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "terminal_status": "reviewed_clean",
+                "terminal_ledger_validation_ok": True,
+                "review_bundle_validation_ok": False,
+                "review_bundle_zip_content_ok": True,
+            },
+        ]
+    )
+
+    assert aggregate["ok"] is False
+    assert aggregate["page_result_validation_failed_count"] == 1
+    assert aggregate["page_result_validation_failed_cases"][0]["case_id"] == "page_case_0001_p0001"
+    assert "resolved page results missing positive terminal/review bundle validation" in "\n".join(aggregate["errors"])
+
+
 def test_aggregate_indexes_scillm_patch_delegate_bug_reports() -> None:
     harness = _load_module()
     aggregate = harness.aggregate_page_results(

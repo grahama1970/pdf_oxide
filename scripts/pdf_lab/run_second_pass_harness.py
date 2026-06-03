@@ -689,6 +689,28 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
         for result in page_results
         if result.get("raw_result_identity_mismatch_errors")
     ]
+    page_result_validation_failed_cases = [
+        result
+        for result in page_results
+        if result.get("terminal_status") in RESOLVED_PASS_STATUSES
+        and (
+            result.get("terminal_ledger_validation_ok") is not True
+            or result.get("review_bundle_validation_ok") is not True
+            or result.get("review_bundle_zip_content_ok") is not True
+        )
+    ]
+    page_result_read_error_cases = [
+        result
+        for result in page_results
+        if any(
+            result.get(error_key)
+            for error_key in (
+                "terminal_ledger_read_errors",
+                "terminal_ledger_validation_read_errors",
+                "review_bundle_validation_read_errors",
+            )
+        )
+    ]
     nonterminal = [
         result
         for result in page_results
@@ -766,6 +788,16 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
             "raw page result identity mismatches: "
             f"{[(item.get('case_id'), item.get('raw_result_identity_mismatch_errors')) for item in raw_identity_mismatch_cases]}"
         )
+    if page_result_validation_failed_cases:
+        errors.append(
+            "resolved page results missing positive terminal/review bundle validation: "
+            f"{[item.get('case_id') for item in page_result_validation_failed_cases]}"
+        )
+    if page_result_read_error_cases:
+        errors.append(
+            "page result evidence read errors: "
+            f"{[(item.get('case_id'), {key: item.get(key) for key in ('terminal_ledger_read_errors', 'terminal_ledger_validation_read_errors', 'review_bundle_validation_read_errors') if item.get(key)}) for item in page_result_read_error_cases]}"
+        )
     return {
         "status_counts": dict(sorted(status_counts.items())),
         "case_ids": case_ids,
@@ -780,6 +812,10 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
         "case_id_page_suffix_mismatches": sorted(case_id_page_suffix_mismatches),
         "raw_identity_mismatch_count": len(raw_identity_mismatch_cases),
         "raw_identity_mismatch_cases": raw_identity_mismatch_cases,
+        "page_result_validation_failed_count": len(page_result_validation_failed_cases),
+        "page_result_validation_failed_cases": page_result_validation_failed_cases,
+        "page_result_read_error_count": len(page_result_read_error_cases),
+        "page_result_read_error_cases": page_result_read_error_cases,
         "nonterminal_count": len(nonterminal),
         "nonterminal_cases": nonterminal,
         "unresolved_count": len(unresolved),
