@@ -114,6 +114,7 @@ REQUIRED_PATCHED_CONFIRMED_ARTIFACTS = {
     "page_after.png",
     "page_after_candidates.png",
     "review_after_request.json",
+    "review_after_request_validation.json",
     "review_after_response.json",
     "review_after_validation.json",
     "commit_acceptance_gate.json",
@@ -736,6 +737,7 @@ def build_page_orchestrator_dag_spec(
                 "page_after.png",
                 "page_after_candidates.png",
                 "review_after_request.json",
+                "review_after_request_validation.json",
             ],
         },
         {
@@ -760,6 +762,7 @@ def build_page_orchestrator_dag_spec(
                 "page_after.json",
                 "review_after_response.json",
                 "review_after_validation.json",
+                "review_after_request_validation.json",
             ],
             "required_outputs": [],
         },
@@ -3441,6 +3444,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append(f"patched_confirmed terminal ledger artifact missing on disk: {artifact}")
         patch_scope_validation = read_required_json_artifact("patch_scope_validation.json")
         test_validation = read_required_json_artifact("test_validation.json")
+        review_after_request_validation = read_required_json_artifact("review_after_request_validation.json")
         review_after_validation = read_required_json_artifact("review_after_validation.json")
         review_after_response = read_required_json_artifact("review_after_response.json")
         commit_acceptance = read_required_json_artifact("commit_acceptance_gate.json")
@@ -3458,6 +3462,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("test_validation schema mismatch")
             if test_validation.get("ok") is not True:
                 errors.append("test_validation.ok is not true")
+        if review_after_request_validation:
+            if review_after_request_validation.get("schema") != "pdf_lab.second_pass.review_request_validation.v1":
+                errors.append("review_after_request_validation schema mismatch")
+            if review_after_request_validation.get("ok") is not True:
+                errors.append("review_after_request_validation.ok is not true")
         if review_after_validation:
             if review_after_validation.get("schema") != "pdf_lab.second_pass.review_validation.v1":
                 errors.append("review_after_validation schema mismatch")
@@ -5025,6 +5034,8 @@ def run_page_case(
                         batch_id=batch_id,
                     )
                     write_json(case_dir / "review_after_request.json", after_review_request)
+                    after_review_request_validation = validate_review_request_contract(case_dir, after_review_request)
+                    write_json(case_dir / "review_after_request_validation.json", after_review_request_validation)
                     if review_after_fixture_path is not None:
                         try:
                             after_review_fixture = {
@@ -5079,8 +5090,9 @@ def run_page_case(
                     write_json(case_dir / "review_after_validation.json", after_review_validation)
                     receipts.write(
                         "rerun_page_review_after_patch",
-                        input_artifacts=["review_after_request.json"],
+                        input_artifacts=["review_after_request.json", "review_after_request_validation.json"],
                         output_artifacts=[
+                            "review_after_request_validation.json",
                             "review_after_validation.json",
                             *(["review_after_fixture.json", "review_after_response.json"] if after_review_fixture_artifact is not None else []),
                             *(
@@ -5091,27 +5103,41 @@ def run_page_case(
                             *(["scillm_after_review_error.json"] if after_review_error is not None else []),
                         ],
                         command_or_endpoint="fixture:review_after_response" if after_review_fixture_artifact is not None else "POST /v1/chat/completions",
-                        validator_result={"ok": after_review_validation["ok"], "errors": after_review_validation["errors"]},
+                        validator_result={
+                            "ok": after_review_request_validation["ok"] and after_review_validation["ok"],
+                            "request_errors": after_review_request_validation["errors"],
+                            "errors": after_review_validation["errors"],
+                        },
                         next_allowed_nodes=["deterministic_page_closure_gate"],
                     )
                     if after_review_error is not None:
                         after_status, after_reason = "blocked_substrate", "after_review_call_failed"
+                    elif not after_review_request_validation["ok"]:
+                        after_status, after_reason = "still_open", "after_review_request_validation_failed"
                     else:
                         after_status, after_reason = route_review_result(
                             after_review_validation,
                             after_review_response,
                             "live" if after_review_fixture_artifact is not None else review_mode,
                         )
-                    closure_ok = after_status == "reviewed_clean"
+                    closure_ok = after_review_request_validation["ok"] and after_status == "reviewed_clean"
                     receipts.write(
                         "deterministic_page_closure_gate",
-                        input_artifacts=["patch_delta.json", "patch_scope_validation.json", "test_validation.json", "page_after.json", "review_after_validation.json"],
+                        input_artifacts=[
+                            "patch_delta.json",
+                            "patch_scope_validation.json",
+                            "test_validation.json",
+                            "page_after.json",
+                            "review_after_request_validation.json",
+                            "review_after_validation.json",
+                        ],
                         output_artifacts=[],
                         command_or_endpoint="run_page_second_pass_dag.deterministic_page_closure_gate",
                         validator_result={
                             "ok": closure_ok,
                             "after_status": after_status,
                             "after_reason": after_reason,
+                            "after_review_request_errors": after_review_request_validation["errors"],
                             "after_review_source": "fixture" if after_review_fixture_artifact is not None else review_mode,
                         },
                         next_allowed_nodes=["commit_page_bug_fix"] if closure_ok else ["write_page_terminal_ledger"],
@@ -5304,7 +5330,16 @@ def run_page_case(
     if test_validation is not None:
         terminal["evidence_artifacts"].append("test_validation.json")
     if after_review_validation is not None:
-        terminal["evidence_artifacts"].extend(["page_after.json", "page_after.png", "page_after_candidates.png", "review_after_request.json", "review_after_validation.json"])
+        terminal["evidence_artifacts"].extend(
+            [
+                "page_after.json",
+                "page_after.png",
+                "page_after_candidates.png",
+                "review_after_request.json",
+                "review_after_request_validation.json",
+                "review_after_validation.json",
+            ]
+        )
     if after_review_fixture_artifact is not None:
         terminal["evidence_artifacts"].append(after_review_fixture_artifact)
     if after_review_response is not None:

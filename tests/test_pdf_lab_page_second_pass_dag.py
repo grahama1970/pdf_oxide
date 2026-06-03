@@ -55,6 +55,16 @@ def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "a
         encoding="utf-8",
     )
     (case_dir / "review_after_request.json").write_text(json.dumps({"messages": []}), encoding="utf-8")
+    (case_dir / "review_after_request_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_request_validation.v1",
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
     (case_dir / "review_after_response.json").write_text(
         json.dumps(
             {
@@ -235,6 +245,7 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
     assert "patch_scope_validation.json" in terminal_requires
     assert "test_validation.json" in terminal_requires
     assert "review_after_response.json" in terminal_requires
+    assert "review_after_request_validation.json" in terminal_requires
     assert "commit_acceptance_gate.json" in terminal_requires
     assert "commit_sha" in terminal_requires
     assert submission["target_dag_state_owner"] == "scillm_orchestrator"
@@ -3950,6 +3961,7 @@ def test_validate_page_terminal_ledger_accepts_committed_verified_patch(tmp_path
             "page_after.png",
             "page_after_candidates.png",
             "review_after_request.json",
+            "review_after_request_validation.json",
             "review_after_response.json",
             "review_after_validation.json",
             "commit_acceptance_gate.json",
@@ -4029,6 +4041,7 @@ def test_validate_page_terminal_ledger_rejects_commit_artifact_mismatch(tmp_path
             "page_after.png",
             "page_after_candidates.png",
             "review_after_request.json",
+            "review_after_request_validation.json",
             "review_after_response.json",
             "review_after_validation.json",
             "commit_acceptance_gate.json",
@@ -4051,6 +4064,57 @@ def test_validate_page_terminal_ledger_rejects_commit_artifact_mismatch(tmp_path
     assert "commit_gate.revertability_check schema mismatch" in errors
     assert "commit_gate.revertability_check commit_sha does not match terminal ledger" in errors
     assert "revertability_check commit_sha does not match terminal ledger" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_invalid_after_request_validation(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    _write_full_patched_confirmed_artifacts(case_dir)
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_after_request_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_request_validation.v1",
+                "ok": False,
+                "errors": ["missing after-patch image evidence"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "patched_confirmed",
+        "reason": "patch_committed_and_after_review_clean",
+        "evidence_artifacts": [
+            "review.html",
+            "patch_delta.json",
+            "patch_scope_validation.json",
+            "test_validation.json",
+            "page_after.json",
+            "page_after.png",
+            "page_after_candidates.png",
+            "review_after_request.json",
+            "review_after_request_validation.json",
+            "review_after_response.json",
+            "review_after_validation.json",
+            "commit_acceptance_gate.json",
+            "commit_gate.json",
+            "revertability_check.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": "abc123",
+        "commit_gate_ok": True,
+        "commit_exact_file_match": True,
+        "commit_revertability_ok": True,
+        "commit_acceptance_ok": True,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "review_after_request_validation.ok is not true" in validation["errors"]
 
 
 def test_validate_page_terminal_ledger_rejects_missing_patched_confirmed_evidence(tmp_path: Path) -> None:
@@ -4084,6 +4148,7 @@ def test_validate_page_terminal_ledger_rejects_missing_patched_confirmed_evidenc
     errors = "\n".join(validation["errors"])
     assert "patched_confirmed terminal ledger missing patch_scope_validation.json" in errors
     assert "patched_confirmed terminal ledger missing test_validation.json" in errors
+    assert "patched_confirmed terminal ledger missing review_after_request_validation.json" in errors
     assert "patched_confirmed terminal ledger missing review_after_response.json" in errors
 
 
