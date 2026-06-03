@@ -928,6 +928,40 @@ def test_validate_candidate_sample_linkage_accepts_forced_page_partition() -> No
     assert validation["probabilistic_selected_pages"] == [2, 3]
 
 
+def test_validate_candidate_sample_linkage_rejects_duplicate_sampled_pages() -> None:
+    harness = _load_module()
+    validation = harness.validate_candidate_sample_linkage(
+        manifest={
+            "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+            "candidate_count": 1,
+            "candidates": [_manifest_candidate("cand:p0001:0000:table", 1, "table")],
+        },
+        sampled_cases={
+            "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+            "selected_count": 2,
+            "selected_pages": [1, 1],
+            "page_cases": [
+                {
+                    "case_id": "page_case_0001_p0001",
+                    "page_number": 1,
+                    "candidate_ids": ["cand:p0001:0000:table"],
+                },
+                {
+                    "case_id": "page_case_0001_p0001",
+                    "page_number": 1,
+                    "candidate_ids": ["cand:p0001:0000:table"],
+                },
+            ],
+        },
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert "selected_pages contains duplicates: [1]" in errors
+    assert "page_cases contains duplicate case_ids: ['page_case_0001_p0001']" in errors
+    assert "page_cases contains duplicate page_numbers: [1]" in errors
+
+
 def test_validate_candidate_manifest_integrity_rejects_stale_counts() -> None:
     harness = _load_module()
     valid_manifest = {

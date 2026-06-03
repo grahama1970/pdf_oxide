@@ -928,6 +928,13 @@ def validate_candidate_sample_linkage(
     if not isinstance(selected_pages, list):
         errors.append("sampled page cases selected_pages is not a list")
         selected_pages = []
+    duplicate_selected_pages = sorted(
+        page
+        for page, count in Counter(page for page in selected_pages if isinstance(page, int)).items()
+        if count > 1
+    )
+    if duplicate_selected_pages:
+        errors.append(f"sampled page cases selected_pages contains duplicates: {duplicate_selected_pages}")
     selected_page_set = {page for page in selected_pages if isinstance(page, int)}
     forced_pages = sampled_cases.get("forced_pages")
     accepted_forced_pages: list[int] = []
@@ -949,6 +956,9 @@ def validate_candidate_sample_linkage(
         else:
             probabilistic_selected_pages = sorted(set(raw_probabilistic_selected_pages))
     page_case_pages: set[int] = set()
+    page_case_page_counts: Counter[int] = Counter()
+    page_case_ids: set[str] = set()
+    duplicate_page_case_ids: list[str] = []
     forced_page_case_pages: set[int] = set()
     sampled_candidate_ids: set[str] = set()
     unknown_sampled_candidate_ids: list[str] = []
@@ -959,11 +969,16 @@ def validate_candidate_sample_linkage(
             errors.append(f"page_case at index {index} is not an object")
             continue
         case_id = str(case.get("case_id") or f"page_case[{index}]")
+        if case_id in page_case_ids:
+            duplicate_page_case_ids.append(case_id)
+        else:
+            page_case_ids.add(case_id)
         page_number = case.get("page_number")
         if not isinstance(page_number, int) or page_number < 1:
             errors.append(f"{case_id} missing valid page_number")
         else:
             page_case_pages.add(page_number)
+            page_case_page_counts[page_number] += 1
             if page_number not in selected_page_set:
                 errors.append(f"{case_id} page_number {page_number} is not in selected_pages")
             if case.get("forced_by_human_annotation") is True:
@@ -1004,6 +1019,11 @@ def validate_candidate_sample_linkage(
         errors.append(
             f"selected_pages do not match page_case page_numbers: selected={sorted(selected_page_set)}, cases={sorted(page_case_pages)}"
         )
+    duplicate_page_case_pages = sorted(page for page, count in page_case_page_counts.items() if count > 1)
+    if duplicate_page_case_ids:
+        errors.append(f"sampled page cases page_cases contains duplicate case_ids: {sorted(duplicate_page_case_ids)}")
+    if duplicate_page_case_pages:
+        errors.append(f"sampled page cases page_cases contains duplicate page_numbers: {duplicate_page_case_pages}")
     if accepted_forced_pages:
         accepted_forced_page_set = set(accepted_forced_pages)
         missing_forced_selected = sorted(accepted_forced_page_set - selected_page_set)
