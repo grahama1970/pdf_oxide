@@ -1264,7 +1264,7 @@ def validate_candidate_sample_linkage(
             isinstance(reason, str) and reason for reason in selection_reason
         ):
             malformed_sampling_metadata_case_ids.append(case_id)
-        if forced_by_human_annotation not in {True, False}:
+        if type(forced_by_human_annotation) is not bool:
             malformed_sampling_metadata_case_ids.append(case_id)
         if not is_plain_number(selection_probability_estimate) or not 0 <= float(selection_probability_estimate) <= 1:
             malformed_sampling_metadata_case_ids.append(case_id)

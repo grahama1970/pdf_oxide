@@ -1275,6 +1275,32 @@ def test_validate_candidate_sample_linkage_rejects_boolean_probability_estimate(
     assert "sampled page cases have malformed sampling metadata: ['page_case_0001_p0001']" in "\n".join(validation["errors"])
 
 
+def test_validate_candidate_sample_linkage_rejects_coerced_forced_flag() -> None:
+    harness = _load_module()
+    validation = harness.validate_candidate_sample_linkage(
+        manifest={
+            "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+            "candidate_count": 1,
+            "candidates": [_manifest_candidate("cand:p0001:0000:table", 1, "table")],
+        },
+        sampled_cases={
+            "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+            "selected_count": 1,
+            "selected_pages": [1],
+            "page_cases": [
+                {
+                    **_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1),
+                    "forced_by_human_annotation": 1,
+                }
+            ],
+        },
+    )
+
+    assert validation["ok"] is False
+    assert validation["malformed_sampling_metadata_case_ids"] == ["page_case_0001_p0001"]
+    assert "sampled page cases have malformed sampling metadata: ['page_case_0001_p0001']" in "\n".join(validation["errors"])
+
+
 def test_validate_candidate_sample_linkage_rejects_malformed_page_case_ids() -> None:
     harness = _load_module()
     validation = harness.validate_candidate_sample_linkage(
