@@ -860,7 +860,15 @@ def validate_sampling_gate(
     if not isinstance(accepted_forced_pages, list) or not all(is_plain_int(page) and page >= 1 for page in accepted_forced_pages):
         errors.append("sampled_page_cases forced_pages.accepted must be a list of page numbers")
         accepted_forced_pages = []
+    duplicate_accepted_forced_pages = sorted(
+        page
+        for page, count in Counter(page for page in accepted_forced_pages if is_plain_int(page) and page >= 1).items()
+        if count > 1
+    )
+    if duplicate_accepted_forced_pages:
+        errors.append(f"sampled_page_cases forced_pages.accepted contains duplicates: {duplicate_accepted_forced_pages}")
     probabilistic_selected_pages = sampled_cases.get("probabilistic_selected_pages")
+    duplicate_probabilistic_selected_pages: list[int] = []
     if not isinstance(audit, dict):
         errors.append("sampled_page_cases missing sampling_audit")
         audit = {}
@@ -913,6 +921,17 @@ def validate_sampling_gate(
         ):
             errors.append("sampled_page_cases probabilistic_selected_pages must be a list of page numbers when forced pages are accepted")
             probabilistic_selected_pages = []
+        duplicate_probabilistic_selected_pages = sorted(
+            page
+            for page, count in Counter(
+                page for page in (probabilistic_selected_pages or []) if is_plain_int(page) and page >= 1
+            ).items()
+            if count > 1
+        )
+        if duplicate_probabilistic_selected_pages:
+            errors.append(
+                f"sampled_page_cases probabilistic_selected_pages contains duplicates: {duplicate_probabilistic_selected_pages}"
+            )
         if set(probabilistic_selected_pages or []) & set(accepted_forced_pages):
             errors.append("probabilistic_selected_pages overlaps accepted forced pages")
         probabilistic_count = len(probabilistic_selected_pages or [])
@@ -932,6 +951,7 @@ def validate_sampling_gate(
         "candidate_count": candidate_count,
         "selected_count": selected_count,
         "accepted_forced_page_count": len(accepted_forced_pages),
+        "duplicate_accepted_forced_pages": duplicate_accepted_forced_pages,
         "seed": sampled_seed,
         "sampling_audit_seed": audit.get("seed") if isinstance(audit, dict) else None,
         "statistical_significance_seed": statistical_basis.get("seed") if isinstance(statistical_basis, dict) else None,
@@ -942,6 +962,7 @@ def validate_sampling_gate(
             if isinstance(audit, dict)
             else None
         ),
+        "duplicate_probabilistic_selected_pages": duplicate_probabilistic_selected_pages,
         "forced_pages_are_additive": audit.get("forced_pages_are_additive") if isinstance(audit, dict) else None,
         "sampling_audit_schema": audit.get("schema") if isinstance(audit, dict) else None,
         "adequate_sample_size": audit.get("adequate_sample_size") if isinstance(audit, dict) else None,

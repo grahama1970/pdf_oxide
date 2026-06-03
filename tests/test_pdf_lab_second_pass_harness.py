@@ -833,6 +833,47 @@ def test_validate_sampling_gate_requires_additive_forced_page_accounting() -> No
     assert "sampling_audit statistical_significance_basis accepted_forced_page_count mismatch" in errors
 
 
+def test_validate_sampling_gate_rejects_duplicate_forced_partition_pages() -> None:
+    harness = _load_module()
+    gate = harness.validate_sampling_gate(
+        manifest={"candidate_count": 8},
+        sampled_cases={
+            "selected_count": 5,
+            "seed": 1234,
+            "forced_pages": {"requested": [1], "accepted": [1, 1], "rejected": []},
+            "probabilistic_selected_pages": [2, 2, 3],
+            "sampling_audit": {
+                "schema": "pdf_lab.second_pass.sampling_audit.v1",
+                "seed": 1234,
+                "selected_count": 5,
+                "probabilistic_selected_count": 3,
+                "forced_pages_are_additive": True,
+                "adequate_sample_size": True,
+                "adequate_for_priority_strata": True,
+                "recommended_min_sample_size": 3,
+                "statistical_significance_basis": {
+                    "seed": 1234,
+                    "adequate": True,
+                    "recommended_min_sample_size": 3,
+                    "probabilistic_selected_page_count": 3,
+                    "accepted_forced_page_count": 2,
+                    "forced_pages_are_additive": True,
+                },
+                "covered_priority_strata": ["preset:table"],
+                "missed_priority_strata": [],
+                "warnings": [],
+            },
+        },
+    )
+
+    errors = "\n".join(gate["errors"])
+    assert gate["ok"] is False
+    assert gate["duplicate_accepted_forced_pages"] == [1]
+    assert gate["duplicate_probabilistic_selected_pages"] == [2]
+    assert "sampled_page_cases forced_pages.accepted contains duplicates: [1]" in errors
+    assert "sampled_page_cases probabilistic_selected_pages contains duplicates: [2]" in errors
+
+
 def test_validate_sampling_gate_rejects_boolean_forced_page_references() -> None:
     harness = _load_module()
     invalid_forced_gate = harness.validate_sampling_gate(
