@@ -2995,6 +2995,102 @@ def test_validate_transport_patch_receipt_requires_stream_completion() -> None:
     assert any("message.completed" in error for error in validation["errors"])
 
 
+def test_validate_patch_delegate_receipt_rejects_stale_opencode_request_metadata() -> None:
+    dag = _load_module()
+    request = {
+        "scillm_metadata": {
+            "graph_node": "opencode_patch_attempt",
+            "case_id": "page_case_0001_p0003",
+            "page_number": 3,
+            "attempt_index": 2,
+            "attempt_count": 3,
+            "agent": "build",
+            "transport_retry_fresh_parent": False,
+        }
+    }
+    validation = dag.validate_patch_delegate_receipt(
+        {
+            "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
+            "request_metadata": {
+                "graph_node": "opencode_patch_attempt",
+                "case_id": "page_case_9999_p9999",
+                "page_number": 9999,
+                "attempt_index": 1,
+                "attempt_count": 3,
+                "agent": "review",
+                "transport_retry_fresh_parent": True,
+            },
+            "raw_response": {
+                "status": "completed",
+                "assistant_text": "PATCH_APPLIED changed_files=tests/test_fix.py tests=tests/test_fix.py commands=pytest",
+                "diff": "diff --git a/tests/test_fix.py b/tests/test_fix.py",
+                "artifacts": {},
+            },
+        },
+        patch_mode="live",
+        request=request,
+    )
+
+    assert validation["ok"] is False
+    assert "patch receipt request_metadata case_id does not match request" in validation["errors"]
+    assert "patch receipt request_metadata page_number does not match request" in validation["errors"]
+    assert "patch receipt request_metadata attempt_index does not match request" in validation["errors"]
+    assert "patch receipt request_metadata agent does not match request" in validation["errors"]
+    assert "patch receipt request_metadata transport_retry_fresh_parent does not match request" in validation["errors"]
+
+
+def test_validate_patch_delegate_receipt_rejects_stale_transport_request_metadata() -> None:
+    dag = _load_module()
+    request = {
+        "scillm_metadata": {
+            "graph_node": "scillm_orchestrator_patch_attempt",
+            "case_id": "page_case_0001_p0003",
+            "page_number": 3,
+            "attempt_index": 1,
+            "attempt_count": 2,
+            "agent": "build",
+            "transport_retry_fresh_parent": False,
+        }
+    }
+    validation = dag.validate_patch_delegate_receipt(
+        {
+            "schema": "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1",
+            "request_metadata": {
+                "graph_node": "scillm_orchestrator_patch_attempt",
+                "case_id": "page_case_0001_p0004",
+                "page_number": 4,
+                "attempt_index": 2,
+                "attempt_count": 2,
+                "agent": "review",
+                "transport_retry_fresh_parent": True,
+            },
+            "message_response": {
+                "delivery_state": "completed",
+                "assistant_text": "PATCH_APPLIED changed_files=tests/test_fix.py tests=tests/test_fix.py commands=pytest",
+                "diff": "diff --git a/tests/test_fix.py b/tests/test_fix.py",
+            },
+            "event_stream": {
+                "schema": "pdf_lab.second_pass.scillm_transport_event_stream.v1",
+                "event_count": 3,
+                "saw_message_completed": True,
+                "parse_errors": [],
+                "session_errors": [],
+                "tool_errors": [],
+                "permission_requests": [],
+            },
+        },
+        patch_mode="live",
+        request=request,
+    )
+
+    assert validation["ok"] is False
+    assert "patch receipt request_metadata case_id does not match request" in validation["errors"]
+    assert "patch receipt request_metadata page_number does not match request" in validation["errors"]
+    assert "patch receipt request_metadata attempt_index does not match request" in validation["errors"]
+    assert "patch receipt request_metadata agent does not match request" in validation["errors"]
+    assert "patch receipt request_metadata transport_retry_fresh_parent does not match request" in validation["errors"]
+
+
 def test_parse_transport_sse_response_records_message_failed_as_session_error() -> None:
     dag = _load_module()
 
@@ -4594,20 +4690,23 @@ def test_verified_patch_flow_requires_commit_sha_for_patched_confirmed(tmp_path:
     monkeypatch.setattr(dag, "render_original_page", fake_render_original)
     monkeypatch.setattr(dag, "render_candidate_overlay", fake_render_overlay)
     monkeypatch.setattr(dag, "call_scillm_review", fake_call_scillm_review)
-    monkeypatch.setattr(dag, "call_opencode_patch", lambda *args, **kwargs: {
-        "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
-        "endpoint": "POST /v1/scillm/opencode/runs",
-        "http_status": 200,
-        "request_metadata": {},
-        "raw_response": {
-            "status": "completed",
-            "assistant_text": (
-                "PATCH_APPLIED changed_files=python/pdf_oxide/extract_for_pdflab.py,tests/test_fix.py "
-                "tests=tests/test_fix.py commands=pytest tests/test_fix.py -q"
-            ),
-            "artifacts": {"diff": "diff.patch"},
-        },
-    })
+    def fake_call_opencode_patch(patch_request, **kwargs):
+        return {
+            "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
+            "endpoint": "POST /v1/scillm/opencode/runs",
+            "http_status": 200,
+            "request_metadata": patch_request["scillm_metadata"],
+            "raw_response": {
+                "status": "completed",
+                "assistant_text": (
+                    "PATCH_APPLIED changed_files=python/pdf_oxide/extract_for_pdflab.py,tests/test_fix.py "
+                    "tests=tests/test_fix.py commands=pytest tests/test_fix.py -q"
+                ),
+                "artifacts": {"diff": "diff.patch"},
+            },
+        }
+
+    monkeypatch.setattr(dag, "call_opencode_patch", fake_call_opencode_patch)
     changed_snapshots = iter([
         ["PROJECT_KNOWLEDGE.md", "artifacts/pdf_lab/existing.json"],
         [
@@ -4999,20 +5098,23 @@ def test_verified_patch_flow_uses_configured_code_root(tmp_path: Path, monkeypat
     monkeypatch.setattr(dag, "render_original_page", fake_render_original)
     monkeypatch.setattr(dag, "render_candidate_overlay", fake_render_overlay)
     monkeypatch.setattr(dag, "call_scillm_review", fake_call_scillm_review)
-    monkeypatch.setattr(dag, "call_opencode_patch", lambda *args, **kwargs: {
-        "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
-        "endpoint": "POST /v1/scillm/opencode/runs",
-        "http_status": 200,
-        "request_metadata": {},
-        "raw_response": {
-            "status": "completed",
-            "assistant_text": (
-                "PATCH_APPLIED changed_files=python/pdf_oxide/extract_for_pdflab.py,tests/test_fix.py "
-                "tests=tests/test_fix.py commands=pytest tests/test_fix.py -q"
-            ),
-            "artifacts": {"diff": "diff.patch"},
-        },
-    })
+    def fake_call_opencode_patch(patch_request, **kwargs):
+        return {
+            "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
+            "endpoint": "POST /v1/scillm/opencode/runs",
+            "http_status": 200,
+            "request_metadata": patch_request["scillm_metadata"],
+            "raw_response": {
+                "status": "completed",
+                "assistant_text": (
+                    "PATCH_APPLIED changed_files=python/pdf_oxide/extract_for_pdflab.py,tests/test_fix.py "
+                    "tests=tests/test_fix.py commands=pytest tests/test_fix.py -q"
+                ),
+                "artifacts": {"diff": "diff.patch"},
+            },
+        }
+
+    monkeypatch.setattr(dag, "call_opencode_patch", fake_call_opencode_patch)
     monkeypatch.setattr(dag, "git_changed_files", fake_git_changed_files)
     monkeypatch.setattr(dag, "run_validation_commands", fake_run_validation_commands)
     monkeypatch.setattr(dag, "create_patch_commit", fake_create_patch_commit)

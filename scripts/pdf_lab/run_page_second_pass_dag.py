@@ -2606,7 +2606,13 @@ def patch_delegate_stopped_after_tool_call(raw: dict[str, Any]) -> bool:
     return saw_tool and not has_nonempty_patch_artifact(raw.get("diff")) and not has_nonempty_patch_artifact(raw.get("artifacts"))
 
 
-def validate_patch_delegate_receipt(receipt: dict[str, Any] | None, *, patch_mode: str) -> dict[str, Any]:
+def validate_patch_delegate_receipt(
+    receipt: dict[str, Any] | None,
+    *,
+    patch_mode: str,
+    request: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    expected_metadata = request.get("scillm_metadata") if isinstance(request, dict) else None
     if patch_mode == "dry_run":
         return {
             "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
@@ -2615,12 +2621,29 @@ def validate_patch_delegate_receipt(receipt: dict[str, Any] | None, *, patch_mod
             "patch_status": "not_attempted",
         }
     errors: list[str] = []
+    assistant_text = ""
     if not isinstance(receipt, dict):
         errors.append("patch receipt missing")
         raw = {}
         status = "missing"
         artifacts = None
-    elif receipt.get("schema") == "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1":
+    else:
+        request_metadata = receipt.get("request_metadata")
+        if not isinstance(request_metadata, dict):
+            errors.append("patch receipt missing request_metadata")
+        elif isinstance(expected_metadata, dict):
+            for key in [
+                "graph_node",
+                "case_id",
+                "page_number",
+                "attempt_index",
+                "attempt_count",
+                "agent",
+                "transport_retry_fresh_parent",
+            ]:
+                if key in expected_metadata and request_metadata.get(key) != expected_metadata.get(key):
+                    errors.append(f"patch receipt request_metadata {key} does not match request")
+    if isinstance(receipt, dict) and receipt.get("schema") == "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1":
         raw = receipt.get("message_response")
         if not isinstance(raw, dict):
             errors.append("orchestrator receipt missing message_response")
@@ -2673,7 +2696,7 @@ def validate_patch_delegate_receipt(receipt: dict[str, Any] | None, *, patch_mod
         }
         if not has_nonempty_patch_artifact(raw.get("diff")):
             errors.append("transport patch delegate produced no diff")
-    else:
+    elif isinstance(receipt, dict):
         raw = receipt.get("raw_response")
         if not isinstance(raw, dict):
             errors.append("patch receipt missing raw_response")
@@ -4958,7 +4981,11 @@ def run_page_case(
                     "artifacts_present": False,
                 }
             else:
-                patch_validation = validate_patch_delegate_receipt(patch_receipt, patch_mode=patch_mode)
+                patch_validation = validate_patch_delegate_receipt(
+                    patch_receipt,
+                    patch_mode=patch_mode,
+                    request=patch_request,
+                )
             validation_artifact = f"{attempt_prefix}validation.json"
             write_json(case_dir / validation_artifact, patch_validation)
             write_json(case_dir / "patch_validation.json", patch_validation)
