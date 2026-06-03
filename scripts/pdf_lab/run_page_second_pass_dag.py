@@ -5189,7 +5189,12 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     errors.append("patch_validation schema does not match selected/final patch attempt validation")
                 if patch_validation.get("ok") != selected_or_final_validation.get("ok"):
                     errors.append("patch_validation ok does not match selected/final patch attempt validation")
-                if list(patch_validation.get("errors") or []) != list(selected_or_final_validation.get("errors") or []):
+                patch_validation_errors = validation_error_list(patch_validation, "patch_validation")
+                selected_or_final_validation_errors = validation_error_list(
+                    selected_or_final_validation,
+                    "selected/final patch attempt validation",
+                )
+                if patch_validation_errors != selected_or_final_validation_errors:
                     errors.append("patch_validation errors do not match selected/final patch attempt validation")
                 if patch_validation != selected_or_final_validation:
                     errors.append("patch_validation does not match selected/final patch attempt validation")

@@ -7989,6 +7989,7 @@ def test_validate_page_terminal_ledger_rejects_string_patch_attempt_errors(tmp_p
     assert "patch_validation errors must be a list" in errors
     assert "patch_attempts_ledger attempts[0].validation_artifact errors must be a list" in errors
     assert "patch_attempts_ledger attempts[0].errors must be a list" in errors
+    assert "patch_validation errors do not match selected/final patch attempt validation" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_stale_root_patch_validation_fields(tmp_path: Path) -> None:
