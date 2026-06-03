@@ -4237,6 +4237,41 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append(f"{artifact} ok false requires non-empty errors")
         if preflight.get("ok") not in {True, False}:
             errors.append(f"{artifact} ok must be boolean")
+        checks = preflight.get("checks") if isinstance(preflight.get("checks"), list) else []
+        if preflight.get("ok") is True:
+            def check_matches(path: str, *, method: str | None = None) -> bool:
+                return any(
+                    isinstance(check, dict)
+                    and check.get("path") == path
+                    and (method is None or check.get("method") == method)
+                    for check in checks
+                )
+
+            if not any(
+                isinstance(check, dict)
+                and check.get("path") == "/health/liveliness"
+                and check.get("http_status") == 200
+                and isinstance(check.get("payload"), dict)
+                and check["payload"].get("status") == "ok"
+                for check in checks
+            ):
+                errors.append(f"{artifact} ok true requires successful /health/liveliness check")
+            if not any(
+                isinstance(check, dict)
+                and check.get("path") == "/v1/chat/completions"
+                and check.get("method") == "POST"
+                and check.get("include_caller_skill") is False
+                and check.get("http_status") == 400
+                and "caller_skill_required" in json.dumps(check.get("payload"), sort_keys=True)
+                for check in checks
+            ):
+                errors.append(f"{artifact} ok true requires missing-caller caller_skill_required check")
+            if surface == "chat" and not check_matches("/v1/scillm/health"):
+                errors.append(f"{artifact} ok true requires /v1/scillm/health check")
+            if surface == "opencode_serve" and not check_matches("/v1/scillm/opencode/health"):
+                errors.append(f"{artifact} ok true requires /v1/scillm/opencode/health check")
+            if surface == "opencode_transport" and not check_matches("/v1/scillm/opencode/transport/capabilities"):
+                errors.append(f"{artifact} ok true requires /v1/scillm/opencode/transport/capabilities check")
         return preflight
 
     if "scillm_review_preflight.json" in evidence_artifacts:

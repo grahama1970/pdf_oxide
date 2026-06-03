@@ -80,6 +80,32 @@ def _review_validation_payload(
     }
 
 
+def _successful_preflight_checks(surface: str) -> list[dict]:
+    checks = [
+        {"path": "/health/liveliness", "http_status": 200, "payload": {"status": "ok"}},
+        {
+            "path": "/v1/chat/completions",
+            "method": "POST",
+            "http_status": 400,
+            "include_caller_skill": False,
+            "payload": {"error": {"code": "caller_skill_required"}},
+        },
+    ]
+    if surface == "chat":
+        checks.append({"path": "/v1/scillm/health", "http_status": 200, "payload": {"status": "ok"}})
+    elif surface == "opencode_serve":
+        checks.append({"path": "/v1/scillm/opencode/health", "http_status": 200, "payload": {"status": "ok"}})
+    elif surface == "opencode_transport":
+        checks.append(
+            {
+                "path": "/v1/scillm/opencode/transport/capabilities",
+                "http_status": 200,
+                "payload": {"transport_api": True, "event_stream": "sse_with_reasoning", "child_sessions": True},
+            }
+        )
+    return checks
+
+
 def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "abc123") -> None:
     case_dir.mkdir(parents=True, exist_ok=True)
     for image_name in ["page_after.png", "page_after_candidates.png"]:
@@ -3027,7 +3053,7 @@ def test_chat_plan_split_feeds_repair_plan_into_patch_prompt(tmp_path: Path, mon
             "surface": kwargs["surface"],
             "base_url": kwargs["base_url"],
             "caller_skill": kwargs["caller_skill"],
-            "checks": [],
+            "checks": _successful_preflight_checks(kwargs["surface"]),
             "ok": True,
             "errors": [],
         }
@@ -3430,7 +3456,7 @@ def test_live_patch_delegate_failure_writes_blocked_substrate_bundle(tmp_path: P
             "surface": kwargs["surface"],
             "base_url": kwargs["base_url"],
             "caller_skill": kwargs["caller_skill"],
-            "checks": [{"path": "/health/liveliness", "http_status": 200, "payload": {"status": "ok"}}],
+            "checks": _successful_preflight_checks(kwargs["surface"]),
             "ok": True,
             "errors": [],
         }
@@ -7815,6 +7841,61 @@ def test_validate_page_terminal_ledger_rejects_stale_review_preflight_surface(tm
     assert "scillm_review_preflight.json surface does not match expected scillm surface" in errors
     assert "scillm_review_preflight.json caller_skill must be pdf-lab" in errors
     assert "scillm_review_preflight.json ok false requires non-empty errors" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_successful_preflight_without_proof_checks(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": False,
+                "errors": ["scillm_review_call_failed"],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "scillm_review_preflight.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_preflight.v1",
+                "surface": "chat",
+                "base_url": "http://localhost:4001",
+                "caller_skill": "pdf-lab",
+                "checks": [],
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "blocked_substrate",
+        "reason": "scillm_review_call_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_validation.json",
+            "scillm_review_preflight.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_review_preflight.json ok true requires successful /health/liveliness check" in errors
+    assert "scillm_review_preflight.json ok true requires missing-caller caller_skill_required check" in errors
+    assert "scillm_review_preflight.json ok true requires /v1/scillm/health check" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_patch_preflight_surface_mismatch(tmp_path: Path) -> None:
