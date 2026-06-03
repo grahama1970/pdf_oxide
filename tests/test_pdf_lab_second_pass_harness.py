@@ -1273,6 +1273,26 @@ def test_validate_candidate_manifest_integrity_rejects_coerced_candidate_count()
     assert "candidate manifest candidate_count must be a non-negative integer: 1.2" in float_validation["errors"]
 
 
+def test_validate_candidate_manifest_integrity_rejects_boolean_page_identity() -> None:
+    harness = _load_module()
+    bad_candidate = {
+        **_manifest_candidate("cand:p0001:0000:table", 1, "table"),
+        "page_number": True,
+        "page_index": False,
+        "block_index": False,
+    }
+    manifest = _candidate_manifest([bad_candidate], page_count=True)
+
+    validation = harness.validate_candidate_manifest_integrity(manifest)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "candidate manifest page_count must be a positive integer when present: True" in errors
+    assert "cand:p0001:0000:table missing valid page_number" in errors
+    assert "cand:p0001:0000:table page_index does not match page_number - 1" in errors
+    assert "cand:p0001:0000:table missing valid block_index" in errors
+
+
 def test_validate_candidate_manifest_integrity_rejects_malformed_geometry_and_page_refs() -> None:
     harness = _load_module()
     bad_candidate = {

@@ -830,7 +830,7 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
         errors=errors,
     )
     declared_page_count = manifest.get("page_count")
-    if declared_page_count is not None and (not isinstance(declared_page_count, int) or declared_page_count < 1):
+    if declared_page_count is not None and (not is_plain_int(declared_page_count) or declared_page_count < 1):
         errors.append(f"candidate manifest page_count must be a positive integer when present: {declared_page_count!r}")
     if declared_candidate_count != len(candidates):
         errors.append(f"candidate_count {declared_candidate_count} does not equal candidates length {len(candidates)}")
@@ -861,12 +861,12 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
         else:
             candidate_ids.add(candidate_id)
         page_number = candidate.get("page_number")
-        if not isinstance(page_number, int) or page_number < 1:
+        if not is_plain_int(page_number) or page_number < 1:
             errors.append(f"{candidate_label} missing valid page_number")
-        elif isinstance(declared_page_count, int) and page_number > declared_page_count:
+        elif is_plain_int(declared_page_count) and page_number > declared_page_count:
             errors.append(f"{candidate_label} page_number {page_number} exceeds manifest page_count {declared_page_count}")
         page_index = candidate.get("page_index")
-        if not isinstance(page_index, int) or (isinstance(page_number, int) and page_number >= 1 and page_index != page_number - 1):
+        if not is_plain_int(page_index) or (is_plain_int(page_number) and page_number >= 1 and page_index != page_number - 1):
             errors.append(f"{candidate_label} page_index does not match page_number - 1")
         preset_type = str(candidate.get("preset_type") or "")
         if not preset_type:
@@ -885,9 +885,9 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
         if not str(candidate.get("json_pointer") or ""):
             errors.append(f"{candidate_label} missing json_pointer")
         block_index = candidate.get("block_index")
-        if not isinstance(block_index, int) or block_index < 0:
+        if not is_plain_int(block_index) or block_index < 0:
             errors.append(f"{candidate_label} missing valid block_index")
-        if isinstance(page_number, int) and page_number >= 1 and preset_type:
+        if is_plain_int(page_number) and page_number >= 1 and preset_type:
             page_candidate_counts[page_number] += 1
             page_preset_counts.setdefault(page_number, Counter())[preset_type] += 1
         if preset_type:
