@@ -555,6 +555,48 @@ def extract_pages(pdf_path: Path, ledger_path: Path | None, apply_mode: str, max
     return pages, page_count
 
 
+def build_failed_manifest(
+    *,
+    pdf_path: Path,
+    ledger_path: Path | None,
+    apply_mode: str,
+    command: list[str] | None,
+    error: BaseException,
+) -> dict[str, Any]:
+    return {
+        "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "ok": False,
+        "errors": [f"candidate census failed: {type(error).__name__}: {error}"],
+        "created_at": utc_now(),
+        "git_head": git_head(),
+        "command": " ".join(command or sys.argv),
+        "pdf_path": str(pdf_path),
+        "pdf_id": pdf_path.stem,
+        "page_count": None,
+        "ledger_path": str(ledger_path) if ledger_path else None,
+        "apply_mode": apply_mode,
+        "preset_types": sorted(PRESET_TYPES),
+        "candidate_count": 0,
+        "extracted_page_count": 0,
+        "census_failure_count": 1,
+        "census_failures": [
+            {
+                "schema": "pdf_lab.second_pass.page_census_failure.v1",
+                "page_number": None,
+                "page_index": None,
+                "status": "substrate_error",
+                "error_type": type(error).__name__,
+                "error": str(error),
+                "page_timeout_s": None,
+            }
+        ],
+        "page_count_with_candidates": 0,
+        "preset_counts": {},
+        "pages": [],
+        "candidates": [],
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pdf", required=True, type=Path)
@@ -568,9 +610,20 @@ def main() -> int:
     parser.add_argument("--progress-path", type=Path)
     args = parser.parse_args()
 
-    if args.debug_log:
-        args.debug_log.parent.mkdir(parents=True, exist_ok=True)
-        with args.debug_log.open("w", encoding="utf-8") as log, contextlib.redirect_stdout(log), contextlib.redirect_stderr(log):
+    try:
+        if args.debug_log:
+            args.debug_log.parent.mkdir(parents=True, exist_ok=True)
+            with args.debug_log.open("w", encoding="utf-8") as log, contextlib.redirect_stdout(log), contextlib.redirect_stderr(log):
+                pages, page_count, census_failures = extract_pages_with_failures(
+                    args.pdf,
+                    args.ledger,
+                    args.apply_mode,
+                    args.max_pages,
+                    page_timeout_s=args.page_timeout_s,
+                    progress_path=args.progress_path,
+                    page_numbers=args.page_numbers,
+                )
+        else:
             pages, page_count, census_failures = extract_pages_with_failures(
                 args.pdf,
                 args.ledger,
@@ -580,16 +633,17 @@ def main() -> int:
                 progress_path=args.progress_path,
                 page_numbers=args.page_numbers,
             )
-    else:
-        pages, page_count, census_failures = extract_pages_with_failures(
-            args.pdf,
-            args.ledger,
-            args.apply_mode,
-            args.max_pages,
-            page_timeout_s=args.page_timeout_s,
-            progress_path=args.progress_path,
-            page_numbers=args.page_numbers,
+    except Exception as exc:  # noqa: BLE001 - census CLI must leave deterministic failure evidence.
+        manifest = build_failed_manifest(
+            pdf_path=args.pdf,
+            ledger_path=args.ledger,
+            apply_mode=args.apply_mode,
+            command=sys.argv,
+            error=exc,
         )
+        write_json(args.out, manifest)
+        print(json.dumps({"out": str(args.out), "candidate_count": 0, "ok": False}), file=sys.stderr)
+        return 2
     manifest = build_manifest_from_pages(
         pdf_path=args.pdf,
         pages=pages,

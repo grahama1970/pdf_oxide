@@ -198,6 +198,47 @@ def test_build_manifest_records_page_census_failures(tmp_path: Path) -> None:
     assert payload["preset_counts"] == {"equation": 1}
 
 
+def test_candidate_manifest_cli_writes_failure_artifact_for_census_setup_failure(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    manifest = _load_module()
+    pdf_path = tmp_path / "sample.pdf"
+    pdf_path.write_bytes(b"%PDF-1.7\n")
+    out_path = tmp_path / "candidate_manifest.json"
+
+    def fail_extract_pages_with_failures(*args, **kwargs):
+        raise RuntimeError("fitz open failed")
+
+    monkeypatch.setattr(manifest, "extract_pages_with_failures", fail_extract_pages_with_failures)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "build_pdf_element_candidate_manifest.py",
+            "--pdf",
+            str(pdf_path),
+            "--out",
+            str(out_path),
+            "--max-pages",
+            "1",
+        ],
+    )
+
+    exit_code = manifest.main()
+
+    payload = json.loads(out_path.read_text(encoding="utf-8"))
+    assert exit_code == 2
+    assert payload["schema"] == "pdf_lab.second_pass.candidate_manifest.v1"
+    assert payload["ok"] is False
+    assert payload["candidate_count"] == 0
+    assert payload["extracted_page_count"] == 0
+    assert payload["census_failure_count"] == 1
+    assert payload["census_failures"][0]["status"] == "substrate_error"
+    assert payload["census_failures"][0]["error_type"] == "RuntimeError"
+    assert "fitz open failed" in payload["errors"][0]
+
+
 def test_page_census_subprocess_timeout_is_page_failure(tmp_path: Path, monkeypatch) -> None:
     manifest = _load_module()
 
