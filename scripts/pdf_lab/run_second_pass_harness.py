@@ -2864,6 +2864,22 @@ def package_validation_errors(validation: dict[str, Any] | None) -> list[str]:
         if not all(isinstance(value, str) for value in values):
             errors.append(f"{key} must be a list of strings")
     for key in [
+        "included_count",
+        "zip_entry_count",
+        "page_case_count",
+    ]:
+        value = validation.get(key)
+        if value is None:
+            continue
+        if not is_plain_int(value) or value < 0:
+            errors.append(f"{key} must be a non-negative integer: {value!r}")
+    included_artifacts = validation.get("included_artifacts")
+    included_count = validation.get("included_count")
+    if isinstance(included_artifacts, list) and is_plain_int(included_count) and included_count != len(included_artifacts):
+        errors.append(
+            f"included_count {included_count} does not match included_artifacts length {len(included_artifacts)}"
+        )
+    for key in [
         "missing_artifacts",
         "missing_required_artifacts",
         "missing_expected_source_artifacts",
