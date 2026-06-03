@@ -80,6 +80,18 @@ REQUIRED_PATCHED_CONFIRMED_ARTIFACTS = {
     "commit_gate.json",
     "revertability_check.json",
 }
+TERMINAL_REASON_SUBSTRATE_ARTIFACTS = {
+    "page_dag_setup_failed": {
+        "artifact": "page_dag_setup_error.json",
+        "node_id": "load_cli_inputs",
+        "endpoint": "run_page_second_pass_dag.main",
+    },
+    "page_extraction_failed": {
+        "artifact": "page_extraction_error.json",
+        "node_id": "extract_page_json",
+        "endpoint": "snapshot_current_extraction._extract_page",
+    },
+}
 OPTIONAL_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
     "scillm_patch_delegate_bug_report.json",
     "patch_request.json",
@@ -3557,6 +3569,30 @@ def validate_harness_page_terminal_ledger(case_dir: Path, terminal: dict[str, An
     )
     if missing_artifacts:
         errors.append(f"declared evidence artifacts are missing: {missing_artifacts}")
+    terminal_reason = terminal.get("reason")
+    substrate_contract = TERMINAL_REASON_SUBSTRATE_ARTIFACTS.get(str(terminal_reason))
+    if substrate_contract is not None:
+        artifact = substrate_contract["artifact"]
+        if artifact not in evidence_artifacts:
+            errors.append(f"{terminal_reason} terminal ledger requires {artifact}")
+        elif artifact not in unsafe_evidence_artifacts and (case_dir / artifact).is_file():
+            substrate_error, read_errors = read_required_json_object(case_dir / artifact, artifact)
+            errors.extend(read_errors)
+            if substrate_error:
+                if substrate_error.get("schema") != "pdf_lab.second_pass.substrate_error.v1":
+                    errors.append(f"{artifact} schema mismatch")
+                if substrate_error.get("node_id") != substrate_contract["node_id"]:
+                    errors.append(f"{artifact} node_id mismatch")
+                if substrate_error.get("endpoint") != substrate_contract["endpoint"]:
+                    errors.append(f"{artifact} endpoint mismatch")
+                if substrate_error.get("case_id") != case_id:
+                    errors.append(f"{artifact} case_id does not match terminal ledger")
+                if substrate_error.get("page_number") != page_number:
+                    errors.append(f"{artifact} page_number does not match terminal ledger")
+                if not isinstance(substrate_error.get("error_type"), str) or not substrate_error.get("error_type", "").strip():
+                    errors.append(f"{artifact} error_type must be non-empty")
+                if not isinstance(substrate_error.get("error"), str) or not substrate_error.get("error", "").strip():
+                    errors.append(f"{artifact} error must be non-empty")
     if terminal_status == "patched_confirmed":
         commit_sha = terminal.get("commit_sha")
         if not isinstance(commit_sha, str) or not commit_sha:

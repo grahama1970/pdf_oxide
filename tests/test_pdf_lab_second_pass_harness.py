@@ -4799,6 +4799,90 @@ def test_terminal_ledger_validation_rejects_commit_flags_on_unpatched_status(tmp
     assert "reviewed_clean terminal ledger must not carry commit_acceptance_ok" in errors
 
 
+def test_terminal_ledger_validation_requires_reason_substrate_error(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0003",
+        "page_number": 3,
+        "terminal_status": "blocked_substrate",
+        "reason": "page_dag_setup_failed",
+        "commit_sha": None,
+        "evidence_artifacts": ["review.html", "terminal_ledger_validation.json"],
+    }
+
+    validation = harness.validate_harness_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "page_dag_setup_failed terminal ledger requires page_dag_setup_error.json" in validation["errors"]
+
+    terminal["evidence_artifacts"].append("page_dag_setup_error.json")
+    (case_dir / "page_dag_setup_error.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.substrate_error.v1",
+                "node_id": "extract_page_json",
+                "endpoint": "snapshot_current_extraction._extract_page",
+                "case_id": "page_case_0001_p0003",
+                "page_number": 99,
+                "error_type": "",
+                "error": "",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_harness_page_terminal_ledger(case_dir, terminal)
+    errors = "\n".join(validation["errors"])
+    assert "page_dag_setup_error.json node_id mismatch" in errors
+    assert "page_dag_setup_error.json endpoint mismatch" in errors
+    assert "page_dag_setup_error.json page_number does not match terminal ledger" in errors
+    assert "page_dag_setup_error.json error_type must be non-empty" in errors
+    assert "page_dag_setup_error.json error must be non-empty" in errors
+
+
+def test_terminal_ledger_validation_accepts_page_extraction_substrate_error(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "page_extraction_error.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.substrate_error.v1",
+                "node_id": "extract_page_json",
+                "endpoint": "snapshot_current_extraction._extract_page",
+                "case_id": "page_case_0001_p0003",
+                "page_number": 3,
+                "error_type": "PageExtractionTimeout",
+                "error": "timed out",
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0003",
+        "page_number": 3,
+        "terminal_status": "blocked_substrate",
+        "reason": "page_extraction_failed",
+        "commit_sha": None,
+        "evidence_artifacts": [
+            "review.html",
+            "page_extraction_error.json",
+            "terminal_ledger_validation.json",
+        ],
+    }
+
+    validation = harness.validate_harness_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is True
+    assert validation["errors"] == []
+
+
 def test_harness_terminal_ledger_rejects_duplicate_and_unsafe_evidence(tmp_path: Path) -> None:
     harness = _load_module()
     case_dir = tmp_path / "case"
