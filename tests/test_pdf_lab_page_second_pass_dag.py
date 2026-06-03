@@ -38,6 +38,7 @@ def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "a
                 "schema": "pdf_lab.second_pass.patch_scope_validation.v1",
                 "ok": True,
                 "changed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+                "test_files": ["tests/test_fix.py"],
                 "errors": [],
             }
         ),
@@ -50,6 +51,9 @@ def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "a
                 "ok": True,
                 "errors": [],
                 "results": [],
+                "required_test_files": ["tests/test_fix.py"],
+                "covered_test_files": ["tests/test_fix.py"],
+                "missing_test_file_coverage": [],
             }
         ),
         encoding="utf-8",
@@ -3656,6 +3660,32 @@ def test_run_validation_commands_disables_bytecode_writes(tmp_path: Path, monkey
     assert not (tmp_path / "tests" / "__pycache__").exists()
 
 
+def test_run_validation_commands_requires_changed_test_coverage(tmp_path: Path, monkeypatch) -> None:
+    dag = _load_module()
+
+    def fake_run(command, **kwargs):
+        return subprocess.CompletedProcess(args=command, returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(dag.subprocess, "run", fake_run)
+
+    missing = dag.run_validation_commands(
+        ["python -m py_compile tests/unrelated.py"],
+        cwd=tmp_path,
+        required_test_files=["tests/test_fix.py"],
+    )
+    covered = dag.run_validation_commands(
+        ["python -m py_compile tests/test_fix.py"],
+        cwd=tmp_path,
+        required_test_files=["tests/test_fix.py"],
+    )
+
+    assert missing["ok"] is False
+    assert missing["missing_test_file_coverage"] == ["tests/test_fix.py"]
+    assert "validation commands did not cover changed regression tests" in "\n".join(missing["errors"])
+    assert covered["ok"] is True
+    assert covered["covered_test_files"] == ["tests/test_fix.py"]
+
+
 def test_patch_delta_ignores_generated_bytecode_for_scope_claim_match() -> None:
     dag = _load_module()
 
@@ -4117,6 +4147,63 @@ def test_validate_page_terminal_ledger_rejects_invalid_after_request_validation(
     assert "review_after_request_validation.ok is not true" in validation["errors"]
 
 
+def test_validate_page_terminal_ledger_rejects_uncovered_changed_tests(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    _write_full_patched_confirmed_artifacts(case_dir)
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "test_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.test_validation.v1",
+                "ok": True,
+                "errors": [],
+                "results": [{"command": "python -m py_compile tests/unrelated.py", "exit_code": 0}],
+                "required_test_files": ["tests/test_fix.py"],
+                "covered_test_files": [],
+                "missing_test_file_coverage": ["tests/test_fix.py"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "patched_confirmed",
+        "reason": "patch_committed_and_after_review_clean",
+        "evidence_artifacts": [
+            "review.html",
+            "patch_delta.json",
+            "patch_scope_validation.json",
+            "test_validation.json",
+            "page_after.json",
+            "page_after.png",
+            "page_after_candidates.png",
+            "review_after_request.json",
+            "review_after_request_validation.json",
+            "review_after_response.json",
+            "review_after_validation.json",
+            "commit_acceptance_gate.json",
+            "commit_gate.json",
+            "revertability_check.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": "abc123",
+        "commit_gate_ok": True,
+        "commit_exact_file_match": True,
+        "commit_revertability_ok": True,
+        "commit_acceptance_ok": True,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "test_validation covered_test_files do not match patch_scope_validation test_files" in errors
+    assert "test_validation missing_test_file_coverage is not empty" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_missing_patched_confirmed_evidence(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
@@ -4406,11 +4493,14 @@ def test_verified_patch_flow_requires_commit_sha_for_patched_confirmed(tmp_path:
         ],
     ])
     monkeypatch.setattr(dag, "git_changed_files", lambda repo=dag.REPO: next(changed_snapshots))
-    monkeypatch.setattr(dag, "run_validation_commands", lambda commands, cwd=dag.REPO: {
+    monkeypatch.setattr(dag, "run_validation_commands", lambda commands, cwd=dag.REPO, required_test_files=None: {
         "schema": "pdf_lab.second_pass.test_validation.v1",
         "ok": True,
         "errors": [],
         "results": [{"command": commands[0], "exit_code": 0, "stdout": "ok", "stderr": ""}],
+        "required_test_files": sorted(required_test_files or []),
+        "covered_test_files": sorted(required_test_files or []),
+        "missing_test_file_coverage": [],
     })
     monkeypatch.setattr(dag, "create_patch_commit", lambda **kwargs: {
         "schema": "pdf_lab.second_pass.commit_gate.v1",
@@ -4747,13 +4837,16 @@ def test_verified_patch_flow_uses_configured_code_root(tmp_path: Path, monkeypat
         seen["git"].append(str(repo))
         return next(changed_snapshots)
 
-    def fake_run_validation_commands(commands, cwd=dag.REPO):
+    def fake_run_validation_commands(commands, cwd=dag.REPO, required_test_files=None):
         seen["tests"].append(str(cwd))
         return {
             "schema": "pdf_lab.second_pass.test_validation.v1",
             "ok": True,
             "errors": [],
             "results": [{"command": commands[0], "exit_code": 0, "stdout": "ok", "stderr": ""}],
+            "required_test_files": sorted(required_test_files or []),
+            "covered_test_files": sorted(required_test_files or []),
+            "missing_test_file_coverage": [],
         }
 
     def fake_create_patch_commit(**kwargs):

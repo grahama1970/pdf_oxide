@@ -2961,7 +2961,12 @@ def validate_patch_scope(
     }
 
 
-def run_validation_commands(commands: list[str], cwd: Path = REPO) -> dict[str, Any]:
+def run_validation_commands(
+    commands: list[str],
+    cwd: Path = REPO,
+    required_test_files: list[str] | None = None,
+) -> dict[str, Any]:
+    required_test_files = sorted(required_test_files or [])
     results = []
     env = os.environ.copy()
     env["PYTHONDONTWRITEBYTECODE"] = "1"
@@ -2987,11 +2992,22 @@ def run_validation_commands(commands: list[str], cwd: Path = REPO) -> dict[str, 
     errors = [f"command failed: {item['command']}" for item in results if item["exit_code"] != 0]
     if not commands:
         errors.append("no validation commands configured")
+    covered_test_files = sorted(
+        test_file
+        for test_file in required_test_files
+        if any(test_file in command for command in commands)
+    )
+    missing_test_file_coverage = sorted(set(required_test_files) - set(covered_test_files))
+    if missing_test_file_coverage:
+        errors.append(f"validation commands did not cover changed regression tests: {missing_test_file_coverage}")
     return {
         "schema": "pdf_lab.second_pass.test_validation.v1",
         "ok": not errors,
         "errors": errors,
         "results": results,
+        "required_test_files": required_test_files,
+        "covered_test_files": covered_test_files,
+        "missing_test_file_coverage": missing_test_file_coverage,
         "bytecode_cache_cleanup": bytecode_cleanup,
     }
 
@@ -3457,11 +3473,24 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("patch_scope_validation.ok is not true")
             if not isinstance(patch_scope_validation.get("changed_files"), list):
                 errors.append("patch_scope_validation changed_files is not a list")
+            if not isinstance(patch_scope_validation.get("test_files"), list):
+                errors.append("patch_scope_validation test_files is not a list")
         if test_validation:
             if test_validation.get("schema") != "pdf_lab.second_pass.test_validation.v1":
                 errors.append("test_validation schema mismatch")
             if test_validation.get("ok") is not True:
                 errors.append("test_validation.ok is not true")
+            if patch_scope_validation and isinstance(patch_scope_validation.get("test_files"), list):
+                required_tests = sorted(str(path) for path in patch_scope_validation.get("test_files") or [])
+                validation_required_tests = sorted(str(path) for path in test_validation.get("required_test_files") or [])
+                validation_covered_tests = sorted(str(path) for path in test_validation.get("covered_test_files") or [])
+                validation_missing_tests = sorted(str(path) for path in test_validation.get("missing_test_file_coverage") or [])
+                if validation_required_tests and validation_required_tests != required_tests:
+                    errors.append("test_validation required_test_files do not match patch_scope_validation test_files")
+                if validation_covered_tests != required_tests:
+                    errors.append("test_validation covered_test_files do not match patch_scope_validation test_files")
+                if validation_missing_tests:
+                    errors.append("test_validation missing_test_file_coverage is not empty")
         if review_after_request_validation:
             if review_after_request_validation.get("schema") != "pdf_lab.second_pass.review_request_validation.v1":
                 errors.append("review_after_request_validation schema mismatch")
@@ -4991,7 +5020,11 @@ def run_page_case(
                 next_allowed_nodes=["run_page_targeted_tests"] if patch_scope_validation["ok"] else ["write_page_terminal_ledger"],
             )
             if patch_scope_validation["ok"]:
-                test_validation = run_validation_commands(validation_commands or [], code_root)
+                test_validation = run_validation_commands(
+                    validation_commands or [],
+                    code_root,
+                    required_test_files=patch_scope_validation.get("test_files") or [],
+                )
                 write_json(case_dir / "test_validation.json", test_validation)
                 receipts.write(
                     "run_page_targeted_tests",
