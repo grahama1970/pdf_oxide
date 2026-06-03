@@ -1682,7 +1682,7 @@ def build_patch_commit_ledger(
                 entry_errors.append("review_bundle_validation.ok is not true")
             if review_bundle_validation.get("zip_content_ok") is not True:
                 entry_errors.append("review_bundle_validation.zip_content_ok is not true")
-            if review_bundle_validation.get("case_id") not in (None, result.get("case_id")):
+            if review_bundle_validation.get("case_id") != result.get("case_id"):
                 entry_errors.append("review_bundle_validation case_id does not match page result")
             if review_bundle_validation.get("page_number") != result.get("page_number"):
                 entry_errors.append("review_bundle_validation page_number does not match page result")
@@ -2642,7 +2642,7 @@ def build_harness_readiness_audit(
                 page_errors.append(f"{case_id}: review_bundle_validation zip_content_ok is not true")
             if review_bundle_validation.get("schema") != "pdf_lab.second_pass.page_review_bundle_validation.v1":
                 page_errors.append(f"{case_id}: review_bundle_validation schema mismatch")
-            if review_bundle_validation.get("case_id") not in (None, case_id):
+            if review_bundle_validation.get("case_id") != case_id:
                 page_errors.append(f"{case_id}: review_bundle_validation case_id does not match page result")
             if review_bundle_validation.get("page_number") != result.get("page_number"):
                 page_errors.append(f"{case_id}: review_bundle_validation page_number does not match page result")

@@ -1741,6 +1741,43 @@ def test_build_patch_commit_ledger_rejects_review_bundle_page_identity_mismatch(
     assert "review_bundle_validation page_number does not match page result" in "\n".join(ledger["errors"])
 
 
+def test_build_patch_commit_ledger_rejects_review_bundle_missing_case_identity(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="patched_confirmed",
+        commit_sha="abc123",
+        extra_evidence=PATCHED_CONFIRMED_ARTIFACTS,
+    )
+    bundle_validation = json.loads((case_dir / "review_bundle_validation.json").read_text(encoding="utf-8"))
+    bundle_validation.pop("case_id")
+    (case_dir / "review_bundle_validation.json").write_text(json.dumps(bundle_validation), encoding="utf-8")
+
+    ledger = harness.build_patch_commit_ledger(
+        out_dir=tmp_path / "out",
+        page_results=[
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "terminal_status": "patched_confirmed",
+                "reason": "verified",
+                "case_dir": str(case_dir),
+                "commit_sha": "abc123",
+                "evidence_artifacts": [
+                    "terminal_ledger_validation.json",
+                    *PATCHED_CONFIRMED_ARTIFACTS,
+                ],
+            }
+        ],
+    )
+
+    assert ledger["ok"] is False
+    assert ledger["entries"][0]["ok"] is False
+    assert "review_bundle_validation case_id does not match page result" in "\n".join(ledger["errors"])
+
+
 def test_build_patch_commit_ledger_rejects_commit_files_not_matching_patch_scope(tmp_path: Path) -> None:
     harness = _load_module()
     case_dir = tmp_path / "case"
@@ -2684,6 +2721,56 @@ def test_readiness_audit_rejects_review_bundle_validation_identity_mismatch(tmp_
     assert audit["ok"] is False
     assert "each resolved page case has self-contained DAG evidence" in audit["failed_requirements"]
     assert "review_bundle_validation page_number does not match page result" in json.dumps(audit)
+
+
+def test_readiness_audit_rejects_review_bundle_validation_missing_case_identity(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    _write_sampled_page_cases(
+        sampled_path,
+        [{"case_id": "page_case_0001_p0001", "page_number": 1, "candidate_ids": ["c1"]}],
+    )
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="reviewed_clean",
+    )
+    validation = json.loads((case_dir / "review_bundle_validation.json").read_text(encoding="utf-8"))
+    validation.pop("case_id")
+    (case_dir / "review_bundle_validation.json").write_text(json.dumps(validation), encoding="utf-8")
+    page_result = harness._page_result_from_case(
+        {"case_id": "page_case_0001_p0001", "page_number": 1},
+        {"case_dir": str(case_dir), "terminal_status": "reviewed_clean"},
+    )
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[page_result],
+        aggregate={"ok": True, "errors": [], "status_counts": {"reviewed_clean": 1}, "unresolved_count": 0},
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": []},
+        scillm_proof_floor=None,
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation={"ok": True, "missing_artifacts": []},
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation={"ok": True, "missing_artifacts": []},
+        harness_review_bundle_validation={"ok": True, "missing_artifacts": []},
+        candidate_sample_linkage_validation={"ok": True, "errors": []},
+        candidate_manifest_integrity_validation={"ok": True, "errors": []},
+        deterministic_execution_plan_validation={"ok": True, "errors": []},
+    )
+
+    assert audit["ok"] is False
+    assert "each resolved page case has self-contained DAG evidence" in audit["failed_requirements"]
+    assert "review_bundle_validation case_id does not match page result" in json.dumps(audit)
 
 
 def test_write_blocked_case_result_includes_terminal_ledger_validation(tmp_path: Path) -> None:
