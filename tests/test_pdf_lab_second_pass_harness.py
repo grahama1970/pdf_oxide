@@ -8182,6 +8182,51 @@ def test_live_canary_artifact_validation_rejects_readonly_ok_with_dirty_worktree
     assert "transport read-only canary validation worktree_status is not clean" in "\n".join(validation["errors"])
 
 
+def test_live_canary_artifact_validation_requires_readonly_delivery_artifacts(tmp_path: Path) -> None:
+    harness = _load_module()
+    canary_dir = tmp_path / "scillm_transport_readonly_canary"
+    canary_dir.mkdir()
+    canary = {
+        "schema": "pdf_lab.second_pass.scillm_transport_readonly_canary.v1",
+        "ok": True,
+        "errors": [],
+        "request_artifact": str(canary_dir / "scillm_transport_readonly_canary_request.json"),
+        "validation_artifact": str(canary_dir / "scillm_transport_readonly_canary_validation.json"),
+    }
+    (canary_dir / "scillm_transport_readonly_canary.json").write_text(json.dumps(canary), encoding="utf-8")
+    (canary_dir / "scillm_transport_readonly_canary_request.json").write_text(json.dumps({"prompt": "sentinel"}), encoding="utf-8")
+    (canary_dir / "scillm_transport_readonly_canary_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1",
+                "ok": True,
+                "errors": [],
+                "delivery_state": "completed",
+                "saw_message_completed": True,
+                "assistant_text_present": True,
+                "sentinel_present": True,
+                "diff_present": False,
+                "worktree_status": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_live_canary_artifacts(
+        out_dir=tmp_path,
+        canary=canary,
+        artifact_builder=harness.scillm_transport_readonly_canary_artifacts,
+        canary_schema="pdf_lab.second_pass.scillm_transport_readonly_canary.v1",
+        validation_schema="pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1",
+        validation_artifact_name="scillm_transport_readonly_canary_validation.json",
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert "live canary receipt_artifact is required for green canary evidence" in errors
+    assert "live canary event_stream_artifact is required for green canary evidence" in errors
+
+
 def test_live_canary_artifact_validation_rejects_string_cleanup_errors(tmp_path: Path) -> None:
     harness = _load_module()
     canary_dir = tmp_path / "opencode_completion_canary"

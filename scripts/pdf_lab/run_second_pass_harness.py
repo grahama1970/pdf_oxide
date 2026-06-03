@@ -4969,11 +4969,26 @@ def validate_live_canary_artifacts(
         "error_artifact": "_error.json",
         "event_stream_artifact": "_event_stream.json",
     }
+    required_green_artifact_fields: set[str] = set()
+    if isinstance(canary, dict) and canary.get("ok") is True:
+        if validation_schema in {
+            "pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+            "pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1",
+            "pdf_lab.second_pass.scillm_transport_write_canary_validation.v1",
+        }:
+            required_green_artifact_fields.add("receipt_artifact")
+        if validation_schema in {
+            "pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1",
+            "pdf_lab.second_pass.scillm_transport_write_canary_validation.v1",
+        }:
+            required_green_artifact_fields.add("event_stream_artifact")
     for field, suffix in optional_artifact_suffixes.items():
         if not isinstance(canary, dict):
             continue
         artifact_name = next((name for name in sorted(artifacts) if name.endswith(suffix)), None)
         expected_path = artifacts.get(artifact_name or "") if artifact_name else None
+        if field in required_green_artifact_fields and canary.get(field) is None:
+            errors.append(f"live canary {field} is required for green canary evidence")
         if field != "request_artifact" and canary.get(field) is None:
             continue
         if expected_path is None:
