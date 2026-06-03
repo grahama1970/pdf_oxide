@@ -6547,6 +6547,7 @@ def test_validate_page_terminal_ledger_rejects_stale_after_review_candidate_set(
                 "schema": "pdf_lab.second_pass.review_validation.v1",
                 "ok": True,
                 "errors": [],
+                "candidate_count": True,
                 "expected_candidate_ids": ["cand:p0002:0000:table"],
                 "seen_candidate_ids": ["cand:p0002:0000:table"],
             }
@@ -6588,6 +6589,7 @@ def test_validate_page_terminal_ledger_rejects_stale_after_review_candidate_set(
 
     assert validation["ok"] is False
     errors = "\n".join(validation["errors"])
+    assert "review_after_validation candidate_count must be a non-negative integer" in errors
     assert "review_after_validation expected_candidate_ids do not match selected_candidates" in errors
     assert "review_after_validation seen_candidate_ids do not match selected_candidates" in errors
     assert "review_after_response candidate_findings do not match selected_candidates" in errors
@@ -8318,6 +8320,7 @@ def test_validate_page_terminal_ledger_rejects_stale_candidate_presets_contract(
                 "schema": "pdf_lab.second_pass.review_validation.v1",
                 "ok": False,
                 "errors": ["dry_run_review_not_executed"],
+                "candidate_count": True,
                 "expected_candidate_ids": ["cand:p0001:0000:table"],
                 "seen_candidate_ids": [],
             }
@@ -8456,6 +8459,7 @@ def test_validate_page_terminal_ledger_rejects_boolean_candidate_counts(tmp_path
     assert "selected_candidates candidate_count must be a non-negative integer" in errors
     assert "candidate_presets candidate_count must be a non-negative integer" in errors
     assert "sampled_candidate_manifest candidate_count must be a non-negative integer" in errors
+    assert "review_validation candidate_count must be a non-negative integer" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_stale_review_validation_contract(tmp_path: Path) -> None:

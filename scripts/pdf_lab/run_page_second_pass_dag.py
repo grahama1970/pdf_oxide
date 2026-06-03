@@ -4167,12 +4167,18 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             return {}
         return payload
 
-    def validate_candidate_count(payload: dict[str, Any], expected_count: int, label: str) -> None:
+    def validate_candidate_count(
+        payload: dict[str, Any],
+        expected_count: int,
+        label: str,
+        *,
+        expected_label: str = "candidates",
+    ) -> None:
         candidate_count = payload.get("candidate_count")
         if type(candidate_count) is not int or candidate_count < 0:
             errors.append(f"{label} candidate_count must be a non-negative integer")
         elif candidate_count != expected_count:
-            errors.append(f"{label} candidate_count does not match candidates")
+            errors.append(f"{label} candidate_count does not match {expected_label}")
 
     if terminal.get("schema") != "pdf_lab.second_pass.page_terminal_ledger.v1":
         errors.append("terminal ledger schema mismatch")
@@ -4716,8 +4722,12 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if selected_candidate_ids_from_artifact:
             expected_ids = sorted(str(candidate_id) for candidate_id in review_validation.get("expected_candidate_ids") or [])
             seen_ids = sorted(str(candidate_id) for candidate_id in review_validation.get("seen_candidate_ids") or [])
-            if review_validation.get("candidate_count") != len(selected_candidate_ids_from_artifact):
-                errors.append("review_validation candidate_count does not match selected_candidates")
+            validate_candidate_count(
+                review_validation,
+                len(selected_candidate_ids_from_artifact),
+                "review_validation",
+                expected_label="selected_candidates",
+            )
             if expected_ids != selected_candidate_ids_from_artifact:
                 errors.append("review_validation expected_candidate_ids do not match selected_candidates")
             if review_response and seen_ids != selected_candidate_ids_from_artifact:
@@ -5205,13 +5215,16 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     )
                     if len(selected_candidate_ids) != len(candidates):
                         errors.append("selected_candidates candidates contain missing candidate_id")
-                    if selected_candidates.get("candidate_count") != len(candidates):
-                        errors.append("selected_candidates candidate_count does not match candidates")
+                    validate_candidate_count(selected_candidates, len(candidates), "selected_candidates")
             if selected_candidate_ids:
                 expected_after_ids = sorted(str(candidate_id) for candidate_id in review_after_validation.get("expected_candidate_ids") or [])
                 seen_after_ids = sorted(str(candidate_id) for candidate_id in review_after_validation.get("seen_candidate_ids") or [])
-                if review_after_validation.get("candidate_count") != len(selected_candidate_ids):
-                    errors.append("review_after_validation candidate_count does not match selected_candidates")
+                validate_candidate_count(
+                    review_after_validation,
+                    len(selected_candidate_ids),
+                    "review_after_validation",
+                    expected_label="selected_candidates",
+                )
                 if expected_after_ids != selected_candidate_ids:
                     errors.append("review_after_validation expected_candidate_ids do not match selected_candidates")
                 if seen_after_ids != selected_candidate_ids:
