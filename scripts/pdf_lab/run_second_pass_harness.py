@@ -31,6 +31,16 @@ TERMINAL_PAGE_STATUSES = {
     "still_open",
 }
 RESOLVED_PASS_STATUSES = {"reviewed_clean", "patched_confirmed", "rejected_with_proof"}
+PAGE_RESULT_READ_ERROR_KEYS = (
+    "terminal_ledger_read_errors",
+    "terminal_ledger_validation_read_errors",
+    "orchestrator_dag_spec_validation_read_errors",
+    "orchestrator_page_submission_validation_read_errors",
+    "page_orchestrator_run_validation_read_errors",
+    "state_read_errors",
+    "scillm_patch_delegate_bug_report_read_errors",
+    "review_bundle_validation_read_errors",
+)
 DEFAULT_SCILLM_MOUNTED_WORKSPACE_PREFIXES = ["/home/graham/workspace"]
 BASE_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
     "terminal_ledger.json",
@@ -726,14 +736,7 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
     page_result_read_error_cases = [
         result
         for result in page_results
-        if any(
-            result.get(error_key)
-            for error_key in (
-                "terminal_ledger_read_errors",
-                "terminal_ledger_validation_read_errors",
-                "review_bundle_validation_read_errors",
-            )
-        )
+        if any(result.get(error_key) for error_key in PAGE_RESULT_READ_ERROR_KEYS)
     ]
     nonterminal = [
         result
@@ -820,7 +823,7 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
     if page_result_read_error_cases:
         errors.append(
             "page result evidence read errors: "
-            f"{[(item.get('case_id'), {key: item.get(key) for key in ('terminal_ledger_read_errors', 'terminal_ledger_validation_read_errors', 'review_bundle_validation_read_errors') if item.get(key)}) for item in page_result_read_error_cases]}"
+            f"{[(item.get('case_id'), {key: item.get(key) for key in PAGE_RESULT_READ_ERROR_KEYS if item.get(key)}) for item in page_result_read_error_cases]}"
         )
     return {
         "status_counts": dict(sorted(status_counts.items())),
@@ -3286,16 +3289,7 @@ def build_harness_readiness_audit(
             page_errors.append(f"{case_id}: raw page result identity mismatch: {identity_mismatch_errors}")
         if result.get("terminal_status") not in TERMINAL_PAGE_STATUSES:
             page_errors.append(f"{case_id}: invalid terminal_status {result.get('terminal_status')}")
-        for read_error_key in [
-            "terminal_ledger_read_errors",
-            "terminal_ledger_validation_read_errors",
-            "orchestrator_dag_spec_validation_read_errors",
-            "orchestrator_page_submission_validation_read_errors",
-            "page_orchestrator_run_validation_read_errors",
-            "state_read_errors",
-            "scillm_patch_delegate_bug_report_read_errors",
-            "review_bundle_validation_read_errors",
-        ]:
+        for read_error_key in PAGE_RESULT_READ_ERROR_KEYS:
             read_errors = result.get(read_error_key) or []
             if read_errors:
                 page_errors.append(f"{case_id}: {read_error_key}: {read_errors}")

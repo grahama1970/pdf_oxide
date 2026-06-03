@@ -669,6 +669,31 @@ def test_aggregate_requires_positive_page_artifact_validation_for_resolved_pages
     assert "resolved page results missing positive terminal/review bundle validation" in "\n".join(aggregate["errors"])
 
 
+def test_aggregate_rejects_scillm_patch_delegate_bug_report_read_errors() -> None:
+    harness = _load_module()
+    aggregate = harness.aggregate_page_results(
+        [
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "terminal_status": "reviewed_clean",
+                "terminal_ledger_validation_ok": True,
+                "review_bundle_validation_ok": True,
+                "review_bundle_zip_content_ok": True,
+                "scillm_patch_delegate_bug_report_read_errors": [
+                    "scillm patch delegate bug report schema mismatch: wrong.schema"
+                ],
+            },
+        ]
+    )
+
+    errors = "\n".join(aggregate["errors"])
+    assert aggregate["ok"] is False
+    assert aggregate["page_result_read_error_count"] == 1
+    assert aggregate["page_result_read_error_cases"][0]["case_id"] == "page_case_0001_p0001"
+    assert "scillm_patch_delegate_bug_report_read_errors" in errors
+
+
 def test_aggregate_indexes_scillm_patch_delegate_bug_reports() -> None:
     harness = _load_module()
     aggregate = harness.aggregate_page_results(
