@@ -36,6 +36,7 @@ TERMINAL_STATUSES = {
     "human_needed",
     "still_open",
 }
+SAMPLED_CANDIDATE_MANIFEST_SCHEMA = "pdf_lab.second_pass.sampled_candidate_manifest.v1"
 REVIEW_STATUSES = {"clean", "defect", "unsure", "substrate_blocked"}
 DEFAULT_OPENCODE_SKILLS = ["memory", "debugger", "scillm"]
 DEFAULT_TRANSPORT_CHILD_MODE = "apply_patches"
@@ -320,6 +321,15 @@ def materialize_case_candidates(manifest: dict[str, Any], page_case: dict[str, A
     if missing:
         raise ValueError(f"sampled page case references missing candidate_ids: {missing}")
     return selected
+
+
+def build_sampled_candidate_manifest(page_case: dict[str, Any], candidates: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "schema": SAMPLED_CANDIDATE_MANIFEST_SCHEMA,
+        "page_case": page_case,
+        "candidate_count": len(candidates),
+        "candidates": candidates,
+    }
 
 
 def extract_page(
@@ -3913,7 +3923,10 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append("candidate_presets candidates contain missing candidate_id")
         if selected_candidate_ids_from_artifact and preset_candidate_ids != selected_candidate_ids_from_artifact:
             errors.append("candidate_presets candidate_ids do not match selected_candidates")
+    manifest_candidate_ids: list[str] = []
     if sampled_manifest:
+        if sampled_manifest.get("schema") != SAMPLED_CANDIDATE_MANIFEST_SCHEMA:
+            errors.append("sampled_candidate_manifest schema mismatch")
         page_case = sampled_manifest.get("page_case")
         if not isinstance(page_case, dict):
             errors.append("sampled_candidate_manifest page_case must be an object")
@@ -3922,9 +3935,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append("sampled_candidate_manifest page_case.case_id does not match terminal ledger")
         if page_case.get("page_number") != terminal.get("page_number"):
             errors.append("sampled_candidate_manifest page_case.page_number does not match terminal ledger")
-    if sampled_manifest and selected_candidates_artifact:
         manifest_candidates = sampled_manifest.get("candidates")
-        selected_candidates = selected_candidates_artifact.get("candidates")
         if not isinstance(manifest_candidates, list):
             errors.append("sampled_candidate_manifest candidates must be a list")
             manifest_candidates = []
@@ -3935,6 +3946,16 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         )
         if len(manifest_candidate_ids) != len(manifest_candidates):
             errors.append("sampled_candidate_manifest candidates contain missing candidate_id")
+        if sampled_manifest.get("candidate_count") != len(manifest_candidates):
+            errors.append("sampled_candidate_manifest candidate_count does not match candidates")
+        page_case_candidate_ids = page_case.get("candidate_ids")
+        if not isinstance(page_case_candidate_ids, list) or not all(
+            isinstance(candidate_id, str) for candidate_id in page_case_candidate_ids
+        ):
+            errors.append("sampled_candidate_manifest page_case.candidate_ids must be a list of strings")
+        elif sorted(page_case_candidate_ids) != manifest_candidate_ids:
+            errors.append("sampled_candidate_manifest page_case.candidate_ids do not match candidates")
+    if sampled_manifest and selected_candidates_artifact:
         if manifest_candidate_ids != selected_candidate_ids_from_artifact:
             errors.append("selected_candidates candidate_ids do not match sampled_candidate_manifest")
 
@@ -4605,7 +4626,7 @@ def run_page_case(
     )
 
     candidates = materialize_case_candidates(manifest, page_case)
-    write_json(case_dir / "sampled_candidate_manifest.json", {"page_case": page_case, "candidates": candidates})
+    write_json(case_dir / "sampled_candidate_manifest.json", build_sampled_candidate_manifest(page_case, candidates))
     receipts.write(
         "load_sampled_candidate_manifest",
         input_artifacts=["state.json"],
