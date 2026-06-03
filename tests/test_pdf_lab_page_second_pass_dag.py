@@ -5910,6 +5910,67 @@ def test_validate_page_terminal_ledger_rejects_stale_review_validation_contract(
     assert "review_validation candidate_count does not match selected_candidates" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_review_validation_for_current_response(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(_selected_candidates_payload(["cand:p0001:0000:table"])),
+        encoding="utf-8",
+    )
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            _review_validation_payload(
+                ["cand:p0001:0000:table"],
+                ok=True,
+                errors=[],
+                seen_candidate_ids=["cand:p0001:0000:table"],
+            )
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "review_response.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_response.v1",
+                "page_status": "clean",
+                "candidate_findings": [
+                    {
+                        "candidate_id": "cand:p0001:0000:table",
+                        "status": "clean",
+                        "evidence": "bbox matches rendered table",
+                        "rationale": "visual and JSON agree",
+                        "suggested_fix_surface": "none",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "reviewed_clean",
+        "reason": "scillm_review_validated_clean",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "review_validation.json",
+            "review_response.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "review_validation does not match recomputed review_response contract" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_stale_review_request_validation(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

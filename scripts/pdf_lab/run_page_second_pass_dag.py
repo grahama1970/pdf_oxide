@@ -4090,6 +4090,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("review_request_validation does not match recomputed review_request contract")
     review_validation = read_required_json_artifact("review_validation.json") if "review_validation.json" in evidence_artifacts else {}
     review_response = read_required_json_artifact("review_response.json") if "review_response.json" in evidence_artifacts else {}
+    review_receipt = (
+        read_required_json_artifact("scillm_review_receipt.json")
+        if "scillm_review_receipt.json" in evidence_artifacts or (case_dir / "scillm_review_receipt.json").is_file()
+        else {}
+    )
     terminal_reason = terminal.get("reason")
     if review_validation:
         if review_validation.get("schema") != "pdf_lab.second_pass.review_validation.v1":
@@ -4112,6 +4117,16 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("review_validation expected_candidate_ids do not match selected_candidates")
             if seen_ids != selected_candidate_ids_from_artifact:
                 errors.append("review_validation seen_candidate_ids do not match selected_candidates")
+            if review_response:
+                recomputed_review_validation = validate_review_response(
+                    review_response,
+                    selected_candidate_ids_from_artifact,
+                    receipt=review_receipt or None,
+                    request=review_request or None,
+                    page_case={"case_id": terminal.get("case_id"), "page_number": terminal.get("page_number")},
+                )
+                if review_validation != recomputed_review_validation:
+                    errors.append("review_validation does not match recomputed review_response contract")
         if terminal_status == "reviewed_clean":
             if review_validation.get("ok") is not True:
                 errors.append("reviewed_clean terminal ledger requires review_validation.ok true")
