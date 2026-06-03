@@ -2877,6 +2877,10 @@ def validate_patch_delegate_receipt(
                 if key in expected_metadata and request_metadata.get(key) != expected_metadata.get(key):
                     errors.append(f"patch receipt request_metadata {key} does not match request")
     if isinstance(receipt, dict) and receipt.get("schema") == "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1":
+        if receipt.get("endpoint") != "POST /v1/scillm/opencode/transport/runs + children + message":
+            errors.append("transport patch receipt endpoint mismatch")
+        if receipt.get("http_status") != 200:
+            errors.append("transport patch receipt http_status must be 200")
         raw = receipt.get("message_response")
         if not isinstance(raw, dict):
             errors.append("orchestrator receipt missing message_response")
@@ -2930,6 +2934,10 @@ def validate_patch_delegate_receipt(
         if not has_nonempty_patch_artifact(raw.get("diff")):
             errors.append("transport patch delegate produced no diff")
     elif isinstance(receipt, dict):
+        if receipt.get("endpoint") != "POST /v1/scillm/opencode/runs":
+            errors.append("OpenCode patch receipt endpoint mismatch")
+        if receipt.get("http_status") != 200:
+            errors.append("OpenCode patch receipt http_status must be 200")
         raw = receipt.get("raw_response")
         if not isinstance(raw, dict):
             errors.append("patch receipt missing raw_response")
@@ -2997,6 +3005,10 @@ def validate_repair_diagnosis_delegate_receipt(
                 if key in expected_metadata and request_metadata.get(key) != expected_metadata.get(key):
                     errors.append(f"repair diagnosis receipt request_metadata {key} does not match request")
     if isinstance(receipt, dict) and receipt.get("schema") == "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1":
+        if receipt.get("endpoint") != "POST /v1/scillm/opencode/transport/runs + children + message":
+            errors.append("transport diagnosis receipt endpoint mismatch")
+        if receipt.get("http_status") != 200:
+            errors.append("transport diagnosis receipt http_status must be 200")
         raw = receipt.get("message_response")
         if not isinstance(raw, dict):
             errors.append("orchestrator diagnosis receipt missing message_response")
@@ -3020,6 +3032,10 @@ def validate_repair_diagnosis_delegate_receipt(
         if has_nonempty_patch_artifact(raw.get("diff")):
             errors.append("repair diagnosis delegate must not produce a patch diff")
     elif isinstance(receipt, dict):
+        if receipt.get("endpoint") != "POST /v1/scillm/opencode/runs":
+            errors.append("OpenCode diagnosis receipt endpoint mismatch")
+        if receipt.get("http_status") != 200:
+            errors.append("OpenCode diagnosis receipt http_status must be 200")
         raw = receipt.get("raw_response")
         if not isinstance(raw, dict):
             errors.append("repair diagnosis receipt missing raw_response")
