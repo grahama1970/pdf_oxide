@@ -2890,6 +2890,10 @@ def package_validation_errors(
                     errors.append(
                         f"{error_label} actual ZIP missing included artifacts: {missing_included_artifacts}"
                     )
+                undeclared_zip_entries = sorted(set(actual_zip_entries) - set(included_artifacts))
+                if undeclared_zip_entries:
+                    error_label = label or "package validation"
+                    errors.append(f"{error_label} actual ZIP has undeclared entries: {undeclared_zip_entries}")
             required_zip_entries = validation.get("required_zip_entries")
             if isinstance(required_zip_entries, list) and all(
                 isinstance(entry, str) for entry in required_zip_entries
