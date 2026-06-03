@@ -261,6 +261,8 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
     assert context["required_terminal_gate"] == "deterministic_pdf_lab_acceptance_before_commit"
     assert submission_validation["ok"] is True
     assert submission_validation["dag_spec_sha256"] == submission["dag_spec_sha256"]
+    assert submission_validation["case_id"] == submission["case_id"]
+    assert submission_validation["page_number"] == submission["page_number"]
     assert any(node["node_id"] == "scillm_one_shot_page_review" and node["endpoint"] == "POST /v1/chat/completions" for node in dag_spec["nodes"])
     html = (case_dir / "review.html").read_text(encoding="utf-8")
     assert "PDF Lab Second-Pass Page Review" in html
@@ -332,6 +334,57 @@ def test_validate_page_orchestrator_dag_spec_rejects_stale_patched_confirmed_con
         "terminal_requirements.patched_confirmed_requires does not match patched-confirmed evidence contract"
         in validation["errors"]
     )
+
+
+def test_validate_page_orchestrator_submission_rejects_stale_identity_metadata(tmp_path: Path) -> None:
+    dag = _load_module()
+    page_case = {
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "page_index": 0,
+        "candidate_ids": ["cand:p0001:0000:table"],
+    }
+    spec = dag.build_page_orchestrator_dag_spec(
+        page_case=page_case,
+        candidates=[
+            {
+                "candidate_id": "cand:p0001:0000:table",
+                "page_number": 1,
+                "preset_type": "table",
+                "bbox": [0.1, 0.2, 0.8, 0.4],
+                "features": {},
+            }
+        ],
+        review_request_artifact="review_request.json",
+        patch_backend="scillm_orchestrator",
+        patch_mode="dry_run",
+        review_mode="dry_run",
+        repair_strategy="single",
+        opencode_agent="build",
+        opencode_agent_sequence=None,
+        opencode_model=None,
+        code_root=tmp_path,
+        caller_skill="pdf-lab",
+        page_extract_timeout_s=30.0,
+        status="ready",
+    )
+    submission = dag.build_page_orchestrator_submission(
+        case_dir=tmp_path / "page_case_0001_p0001",
+        page_case=page_case,
+        dag_spec=spec,
+        dag_spec_artifact="scillm_orchestrator_page_dag_spec.json",
+        code_root=tmp_path,
+        timeout_s=60.0,
+    )
+    stale = json.loads(json.dumps(submission))
+    stale["scillm_metadata"]["case_id"] = "page_case_9999_p9999"
+    stale["transport_create_body"]["orchestrator_context"]["page_number"] = 9999
+
+    validation = dag.validate_page_orchestrator_submission(stale, dag_spec=spec)
+
+    assert validation["ok"] is False
+    assert "submission scillm_metadata case_id does not match submission" in validation["errors"]
+    assert "orchestrator_context page_number does not match submission" in validation["errors"]
 
 
 def test_extract_page_for_code_root_subprocess_timeout_is_page_timeout(tmp_path: Path, monkeypatch) -> None:

@@ -969,12 +969,28 @@ def validate_page_orchestrator_submission(
     dag_spec: dict[str, Any],
 ) -> dict[str, Any]:
     errors: list[str] = []
+    expected_case_id = submission.get("case_id")
+    expected_page_number = submission.get("page_number")
     if submission.get("schema") != "pdf_lab.second_pass.scillm_orchestrator_page_submission.v1":
         errors.append("submission schema mismatch")
+    if not expected_case_id:
+        errors.append("submission missing case_id")
+    if not isinstance(expected_page_number, int):
+        errors.append("submission missing integer page_number")
     if submission.get("target_dag_state_owner") != "scillm_orchestrator":
         errors.append("submission target_dag_state_owner must be scillm_orchestrator")
     if submission.get("dag_spec_sha256") != stable_json_sha256(dag_spec):
         errors.append("submission dag_spec_sha256 does not match current DAG spec")
+    metadata = submission.get("scillm_metadata")
+    if not isinstance(metadata, dict):
+        errors.append("submission missing scillm_metadata")
+    else:
+        if metadata.get("case_id") != expected_case_id:
+            errors.append("submission scillm_metadata case_id does not match submission")
+        if metadata.get("page_number") != expected_page_number:
+            errors.append("submission scillm_metadata page_number does not match submission")
+        if metadata.get("dag_spec_sha256") != submission.get("dag_spec_sha256"):
+            errors.append("submission scillm_metadata dag_spec_sha256 does not match submission")
     create_body = submission.get("transport_create_body")
     if not isinstance(create_body, dict):
         errors.append("submission missing transport_create_body")
@@ -989,6 +1005,10 @@ def validate_page_orchestrator_submission(
         else:
             if context.get("schema") != "pdf_lab.second_pass.scillm_orchestrator_context.v1":
                 errors.append("orchestrator_context schema mismatch")
+            if context.get("case_id") != expected_case_id:
+                errors.append("orchestrator_context case_id does not match submission")
+            if context.get("page_number") != expected_page_number:
+                errors.append("orchestrator_context page_number does not match submission")
             if context.get("dag_spec_sha256") != stable_json_sha256(dag_spec):
                 errors.append("orchestrator_context dag_spec_sha256 does not match current DAG spec")
             if context.get("target_dag_state_owner") != "scillm_orchestrator":
@@ -1003,6 +1023,8 @@ def validate_page_orchestrator_submission(
         "errors": errors,
         "dag_spec_sha256": submission.get("dag_spec_sha256"),
         "target_dag_state_owner": submission.get("target_dag_state_owner"),
+        "case_id": expected_case_id,
+        "page_number": expected_page_number,
     }
 
 
