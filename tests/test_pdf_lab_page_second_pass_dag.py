@@ -2624,6 +2624,46 @@ def test_validate_repair_plan_rejects_stale_receipt_metadata() -> None:
     assert "repair plan receipt scillm_metadata item_id does not match request" in validation["errors"]
 
 
+def test_validate_repair_plan_rejects_stale_receipt_payload() -> None:
+    dag = _load_module()
+    plan = {
+        "schema": "pdf_lab.second_pass.repair_plan.v1",
+        "summary": "unknown layout should be classified more precisely",
+        "suspected_fault": "classifier misses table-like block",
+        "patch_targets": ["python/pdf_oxide/classifier.py", "tests/test_classifier.py"],
+        "test_plan": ["add focused unknown-layout regression"],
+        "patch_constraints": ["smallest safe change", "no generated artifacts"],
+        "confidence": "medium",
+    }
+    stale_plan = {
+        "schema": "pdf_lab.second_pass.repair_plan.v1",
+        "summary": "stale repair plan",
+        "suspected_fault": "stale fault",
+        "patch_targets": ["python/pdf_oxide/stale.py"],
+        "test_plan": ["stale test"],
+        "patch_constraints": ["stale constraint"],
+        "confidence": "low",
+    }
+    request = {
+        "scillm_metadata": {
+            "batch_id": "batch-repair",
+            "item_id": "page_case_0001_p0003:repair_plan",
+        }
+    }
+    receipt = {
+        "schema": "pdf_lab.second_pass.scillm_repair_plan_receipt.v1",
+        "endpoint": "POST /v1/chat/completions",
+        "http_status": 200,
+        "scillm_metadata": request["scillm_metadata"],
+        "repair_plan": stale_plan,
+    }
+
+    validation = dag.validate_repair_plan(plan, receipt=receipt, request=request)
+
+    assert validation["ok"] is False
+    assert "repair plan receipt repair_plan does not match validated repair plan" in validation["errors"]
+
+
 def test_validate_repair_plan_rejects_wrong_receipt_surface_and_status() -> None:
     dag = _load_module()
     plan = {

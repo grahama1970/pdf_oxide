@@ -2070,6 +2070,8 @@ def validate_repair_plan(
                 for key in ["batch_id", "item_id"]:
                     if receipt_metadata.get(key) != expected_metadata.get(key):
                         errors.append(f"repair plan receipt scillm_metadata {key} does not match request")
+            if "repair_plan" in receipt and receipt.get("repair_plan") != plan:
+                errors.append("repair plan receipt repair_plan does not match validated repair plan")
     if not isinstance(plan, dict):
         errors.append("repair plan missing or not an object")
         plan = {}
