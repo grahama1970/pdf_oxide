@@ -5187,6 +5187,16 @@ def validate_live_canary_artifacts(
                         f"live canary cleanup failed: {error}"
                         for error in cleanup_errors or ["cleanup ok is not true"]
                     )
+            else:
+                cleanup_errors = cleanup_payload.get("errors")
+                if cleanup_errors not in (None, []):
+                    errors.append(f"live canary cleanup ok is true but errors are not empty: {cleanup_errors!r}")
+                cleanup_status = cleanup_payload.get("git_status_after_cleanup")
+                if cleanup_status is not None:
+                    if not isinstance(cleanup_status, list):
+                        errors.append("live canary cleanup git_status_after_cleanup is not a list")
+                    elif cleanup_status:
+                        errors.append(f"live canary cleanup git_status_after_cleanup is not clean: {cleanup_status}")
 
     return {
         "schema": "pdf_lab.second_pass.live_canary_artifact_validation.v1",
