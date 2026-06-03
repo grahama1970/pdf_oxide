@@ -141,10 +141,14 @@ def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "a
             {
                 "schema": "pdf_lab.second_pass.review_response.v1",
                 "page_status": "clean",
+                "page_rationale": "after-patch extraction evidence is clean",
                 "candidate_findings": [
                     {
                         "candidate_id": "cand:p0001:0000:table",
                         "status": "clean",
+                        "evidence": "after-patch bbox and extracted JSON agree",
+                        "rationale": "visual and JSON evidence are aligned after patch",
+                        "suggested_fix_surface": "none",
                     }
                 ],
             }
@@ -157,6 +161,8 @@ def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "a
                 "schema": "pdf_lab.second_pass.review_validation.v1",
                 "ok": True,
                 "errors": [],
+                "page_case": {"case_id": "page_case_0001_p0001:after_patch", "page_number": 1},
+                "candidate_count": 1,
                 "expected_candidate_ids": ["cand:p0001:0000:table"],
                 "seen_candidate_ids": ["cand:p0001:0000:table"],
             }
@@ -5391,6 +5397,66 @@ def test_validate_page_terminal_ledger_rejects_stale_after_review_candidate_set(
     assert "review_after_validation expected_candidate_ids do not match selected_candidates" in errors
     assert "review_after_validation seen_candidate_ids do not match selected_candidates" in errors
     assert "review_after_response candidate_findings do not match selected_candidates" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_stale_after_review_validation_for_current_response(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    _write_full_patched_confirmed_artifacts(case_dir)
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_after_response.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_response.v1",
+                "page_status": "clean",
+                "candidate_findings": [
+                    {
+                        "candidate_id": "cand:p0001:0000:table",
+                        "status": "clean",
+                        "evidence": "bbox matches rendered table",
+                        "rationale": "visual and JSON agree",
+                        "suggested_fix_surface": "none",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "patched_confirmed",
+        "reason": "patch_committed_and_after_review_clean",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "patch_delta.json",
+            "patch_scope_validation.json",
+            "test_validation.json",
+            "page_after.json",
+            "page_after.png",
+            "page_after_candidates.png",
+            "review_after_request.json",
+            "review_after_request_validation.json",
+            "review_after_response.json",
+            "review_after_validation.json",
+            "commit_acceptance_gate.json",
+            "commit_gate.json",
+            "revertability_check.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": "abc123",
+        "commit_gate_ok": True,
+        "commit_exact_file_match": True,
+        "commit_revertability_ok": True,
+        "commit_acceptance_ok": True,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "review_after_validation does not match recomputed review_after_response contract" in validation["errors"]
 
 
 def test_validate_page_terminal_ledger_rejects_uncovered_changed_tests(tmp_path: Path) -> None:

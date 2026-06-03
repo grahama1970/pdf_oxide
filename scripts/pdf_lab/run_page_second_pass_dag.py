@@ -4255,6 +4255,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         review_after_request_validation = read_required_json_artifact("review_after_request_validation.json")
         review_after_validation = read_required_json_artifact("review_after_validation.json")
         review_after_response = read_required_json_artifact("review_after_response.json")
+        after_review_receipt = (
+            read_required_json_artifact("scillm_after_review_receipt.json")
+            if "scillm_after_review_receipt.json" in evidence_artifacts or (case_dir / "scillm_after_review_receipt.json").is_file()
+            else {}
+        )
         commit_acceptance = read_required_json_artifact("commit_acceptance_gate.json")
         commit_gate = read_required_json_artifact("commit_gate.json")
         revertability = read_required_json_artifact("revertability_check.json")
@@ -4298,6 +4303,18 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("review_after_validation schema mismatch")
             if review_after_validation.get("ok") is not True:
                 errors.append("review_after_validation.ok is not true")
+            expected_after_case = {
+                "case_id": f"{terminal.get('case_id')}:after_patch",
+                "page_number": terminal.get("page_number"),
+            }
+            after_validation_page_case = review_after_validation.get("page_case")
+            if not isinstance(after_validation_page_case, dict):
+                errors.append("review_after_validation page_case must be an object")
+                after_validation_page_case = {}
+            if after_validation_page_case.get("case_id") != expected_after_case["case_id"]:
+                errors.append("review_after_validation page_case.case_id does not match after-patch page case")
+            if after_validation_page_case.get("page_number") != expected_after_case["page_number"]:
+                errors.append("review_after_validation page_case.page_number does not match terminal ledger")
             if selected_candidates:
                 if selected_candidates.get("schema") != SELECTED_CANDIDATES_SCHEMA:
                     errors.append("selected_candidates schema mismatch")
@@ -4325,10 +4342,22 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             if selected_candidate_ids:
                 expected_after_ids = sorted(str(candidate_id) for candidate_id in review_after_validation.get("expected_candidate_ids") or [])
                 seen_after_ids = sorted(str(candidate_id) for candidate_id in review_after_validation.get("seen_candidate_ids") or [])
+                if review_after_validation.get("candidate_count") != len(selected_candidate_ids):
+                    errors.append("review_after_validation candidate_count does not match selected_candidates")
                 if expected_after_ids != selected_candidate_ids:
                     errors.append("review_after_validation expected_candidate_ids do not match selected_candidates")
                 if seen_after_ids != selected_candidate_ids:
                     errors.append("review_after_validation seen_candidate_ids do not match selected_candidates")
+                if review_after_response:
+                    recomputed_after_validation = validate_review_response(
+                        review_after_response,
+                        selected_candidate_ids,
+                        receipt=after_review_receipt or None,
+                        request=review_after_request if review_after_request.get("schema") == "pdf_lab.second_pass.review_request.v1" else None,
+                        page_case=expected_after_case,
+                    )
+                    if review_after_validation != recomputed_after_validation:
+                        errors.append("review_after_validation does not match recomputed review_after_response contract")
         if review_after_response:
             if review_after_response.get("schema") != "pdf_lab.second_pass.review_response.v1":
                 errors.append("review_after_response schema mismatch")
