@@ -4723,6 +4723,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             if patch_attempts_ledger.get("selected_attempt_index") != expected_selected_attempt:
                 errors.append("patch_attempts_ledger selected_attempt_index does not match first ok attempt")
             selected_or_final_validation: dict[str, Any] | None = None
+
+            def is_safe_patch_attempt_artifact(artifact: str) -> bool:
+                artifact_path = Path(artifact)
+                return not artifact_path.is_absolute() and ".." not in artifact_path.parts
+
             for index, attempt in enumerate(attempts):
                 if not isinstance(attempt, dict):
                     errors.append(f"patch_attempts_ledger attempts[{index}] is not an object")
@@ -4735,6 +4740,9 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 validation_artifact = attempt.get("validation_artifact")
                 if not isinstance(validation_artifact, str) or not validation_artifact:
                     errors.append(f"patch_attempts_ledger attempts[{index}].validation_artifact must be non-empty")
+                    attempt_validation = {}
+                elif not is_safe_patch_attempt_artifact(validation_artifact):
+                    errors.append(f"patch_attempts_ledger attempts[{index}].validation_artifact contains unsafe artifact path")
                     attempt_validation = {}
                 else:
                     attempt_validation = read_required_json_artifact(validation_artifact)
@@ -4754,6 +4762,9 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                         attempt_artifact = attempt.get(artifact_key)
                         if not isinstance(attempt_artifact, str) or not attempt_artifact:
                             errors.append(f"patch_attempts_ledger attempts[{index}].{artifact_key} must be non-empty for ok attempt")
+                            continue
+                        if not is_safe_patch_attempt_artifact(attempt_artifact):
+                            errors.append(f"patch_attempts_ledger attempts[{index}].{artifact_key} contains unsafe artifact path")
                             continue
                         if attempt_artifact not in evidence_artifacts:
                             errors.append(

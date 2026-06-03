@@ -6761,6 +6761,78 @@ def test_validate_page_terminal_ledger_rejects_successful_patch_attempt_without_
     assert "patch_attempts_ledger attempts[0].receipt_artifact must be non-empty for ok attempt" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_unsafe_patch_attempt_artifact_paths(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(_selected_candidates_payload(["cand:p0001:0000:unknown_layout"])),
+        encoding="utf-8",
+    )
+    successful_validation = {
+        "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+        "ok": True,
+        "errors": [],
+        "patch_status": "completed",
+        "artifacts_present": True,
+    }
+    (case_dir / "patch_validation.json").write_text(json.dumps(successful_validation), encoding="utf-8")
+    (case_dir / "patch_attempts_ledger.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_attempts_ledger.v1",
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "candidate_ids": ["cand:p0001:0000:unknown_layout"],
+                "patch_backend": "scillm_orchestrator",
+                "patch_mode": "live",
+                "patch_prompt_profile": "plan_only",
+                "repair_strategy": "direct",
+                "agent_sequence": ["build"],
+                "attempt_count": 1,
+                "selected_attempt_index": 1,
+                "attempts": [
+                    {
+                        "attempt_index": 1,
+                        "agent": "build",
+                        "validation_artifact": "../outside_validation.json",
+                        "request_artifact": "../outside_request.json",
+                        "receipt_artifact": "/tmp/outside_receipt.json",
+                        "ok": True,
+                        "errors": [],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "patch_scope_validation_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "patch_validation.json",
+            "patch_attempts_ledger.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "patch_attempts_ledger attempts[0].validation_artifact contains unsafe artifact path" in errors
+    assert "patch_attempts_ledger attempts[0].request_artifact contains unsafe artifact path" in errors
+    assert "patch_attempts_ledger attempts[0].receipt_artifact contains unsafe artifact path" in errors
+    assert not (case_dir.parent / "outside_validation.json").exists()
+
+
 def test_validate_page_terminal_ledger_rejects_stale_patch_scope_validation(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
