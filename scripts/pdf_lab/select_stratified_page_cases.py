@@ -187,7 +187,13 @@ def page_features(manifest: dict[str, Any]) -> dict[int, dict[str, Any]]:
 
 
 def stratify_candidates(manifest: dict[str, Any]) -> dict[str, set[int]]:
-    page_count = int(manifest.get("page_count") or 0)
+    raw_page_count = manifest.get("page_count")
+    if raw_page_count is None:
+        page_count = 0
+    elif not is_plain_int(raw_page_count) or raw_page_count < 1:
+        raise ValueError(f"manifest page_count must be null or a positive integer: {raw_page_count!r}")
+    else:
+        page_count = raw_page_count
     strata: dict[str, set[int]] = defaultdict(set)
     candidate_pages: set[int] = set()
     for candidate in manifest.get("candidates") or []:

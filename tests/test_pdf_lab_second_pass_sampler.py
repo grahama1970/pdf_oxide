@@ -145,6 +145,27 @@ def test_sampler_page_feature_helpers_reject_coerced_page_numbers() -> None:
         assert "candidate 'cand:p0001:0000:table' page_number must be a positive integer: '1'" in message
 
 
+def test_sampler_stratify_rejects_coerced_page_count() -> None:
+    sampler = _load_module()
+    manifest = {
+        "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "page_count": "5",
+        "candidate_count": 1,
+        "candidates": [
+            {"candidate_id": "cand:p0001:0000:table", "page_number": 1, "preset_type": "table"},
+        ],
+    }
+
+    try:
+        sampler.stratify_candidates(manifest)
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for string page_count")
+
+    assert "manifest page_count must be null or a positive integer: '5'" in message
+
+
 def test_sampler_rejects_malformed_detection_reason_contract() -> None:
     sampler = _load_module()
     manifest = {
