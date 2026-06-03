@@ -731,7 +731,10 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
                 )
                 if len(preset_candidate_ids) != len(preset_candidates):
                     errors.append("review_request artifacts.candidate_presets candidates contain missing candidate_id")
-                if candidate_presets_payload.get("candidate_count") != len(preset_candidates):
+                candidate_count = candidate_presets_payload.get("candidate_count")
+                if type(candidate_count) is not int or candidate_count < 0:
+                    errors.append("review_request artifacts.candidate_presets candidate_count must be a non-negative integer")
+                elif candidate_count != len(preset_candidates):
                     errors.append("review_request artifacts.candidate_presets candidate_count does not match candidates")
                 if preset_candidate_ids != sorted(str(candidate_id) for candidate_id in expected_candidate_ids):
                     errors.append("review_request artifacts.candidate_presets candidate_ids do not match page_case.candidate_ids")

@@ -2115,7 +2115,7 @@ def test_validate_review_request_contract_rejects_stale_candidate_presets_contra
         ["cand:p0001:0000:table"],
         case_id="page_case_9999_p9999",
         page_number=9999,
-        candidate_count=2,
+        candidate_count=True,
     )
     preset_payload["schema"] = "pdf_lab.second_pass.candidate_presets.v0"
     (case_dir / "candidate_presets.json").write_text(json.dumps(preset_payload), encoding="utf-8")
@@ -2143,7 +2143,7 @@ def test_validate_review_request_contract_rejects_stale_candidate_presets_contra
     assert "review_request artifacts.candidate_presets schema mismatch" in errors
     assert "review_request artifacts.candidate_presets page_case.case_id does not match page_case.case_id" in errors
     assert "review_request artifacts.candidate_presets page_case.page_number does not match page_case.page_number" in errors
-    assert "review_request artifacts.candidate_presets candidate_count does not match candidates" in errors
+    assert "review_request artifacts.candidate_presets candidate_count must be a non-negative integer" in errors
 
 
 def test_patch_worker_prompt_uses_absolute_workspace_and_evidence_paths(tmp_path: Path) -> None:
