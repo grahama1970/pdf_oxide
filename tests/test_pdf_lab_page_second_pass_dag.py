@@ -1828,7 +1828,7 @@ def test_patch_prompt_contract_accepts_plan_only_prompt_and_writes_review_payloa
     workspace.mkdir()
     patch_request = dag.build_opencode_patch_request(
         case_dir=case_dir,
-        page_case={"case_id": "case-1", "page_number": 1, "candidate_ids": ["cand:p0001:0000:unknown_layout"]},
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1, "candidate_ids": ["cand:p0001:0000:unknown_layout"]},
         candidates=[{"candidate_id": "cand:p0001:0000:unknown_layout", "preset_type": "unknown_layout"}],
         review_response={
             "schema": "pdf_lab.second_pass.review_response.v1",
@@ -1877,7 +1877,7 @@ def test_patch_prompt_contract_rejects_stale_request_identity(tmp_path: Path) ->
     case_dir = tmp_path / "case"
     workspace = tmp_path / "workspace"
     page_case = {
-        "case_id": "case-1",
+        "case_id": "page_case_0001_p0001",
         "page_number": 1,
         "candidate_ids": ["cand:p0001:0000:unknown_layout"],
     }
@@ -1973,6 +1973,44 @@ def test_patch_prompt_contract_rejects_stale_request_identity(tmp_path: Path) ->
         "patch request transport_retry_fresh_parent must be present in both request and scillm_metadata"
         in missing_retry_contract["errors"]
     )
+
+
+def test_patch_prompt_contract_rejects_unsafe_page_case_identity(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    workspace = tmp_path / "workspace"
+    page_case = {
+        "case_id": "../escape",
+        "page_number": 1,
+        "candidate_ids": ["cand:p0001:0000:unknown_layout"],
+    }
+    case_dir.mkdir()
+    workspace.mkdir()
+    patch_request = dag.build_opencode_patch_request(
+        case_dir=case_dir,
+        page_case=page_case,
+        candidates=[{"candidate_id": "cand:p0001:0000:unknown_layout", "preset_type": "unknown_layout"}],
+        review_response={
+            "schema": "pdf_lab.second_pass.review_response.v1",
+            "candidate_findings": [{"candidate_id": "cand:p0001:0000:unknown_layout", "status": "defect"}],
+        },
+        agent="build",
+        opencode_model=None,
+        skills=["scillm"],
+        timeout_s=30,
+        cleanup_session=True,
+        cwd=workspace,
+        prompt_profile="plan_only",
+    )
+
+    contract = dag.validate_patch_prompt_contract(
+        patch_request,
+        live_patch_required=True,
+        expected_page_case=page_case,
+    )
+
+    assert contract["ok"] is False
+    assert "patch request ../escape case_id must match page_case_####_p####" in contract["errors"]
 
 
 def test_plan_only_patch_prompt_sanitizes_dynamic_review_weasel_words(tmp_path: Path) -> None:

@@ -2156,6 +2156,9 @@ def validate_patch_prompt_contract(
     else:
         errors.append("patch request schema mismatch")
     if expected_page_case is not None:
+        page_case_identity = validate_page_case_identity(expected_page_case)
+        if page_case_identity["ok"] is not True:
+            errors.extend(f"patch request {error}" for error in page_case_identity["errors"])
         expected_case_id = expected_page_case.get("case_id")
         if metadata.get("case_id") != expected_case_id:
             errors.append("patch request scillm_metadata.case_id must match page_case.case_id")
