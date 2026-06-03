@@ -3692,6 +3692,19 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if "selected_candidates.json" in evidence_artifacts
         else {}
     )
+    selected_candidate_ids_from_artifact: list[str] = []
+    if selected_candidates_artifact:
+        selected_candidates = selected_candidates_artifact.get("candidates")
+        if not isinstance(selected_candidates, list):
+            errors.append("selected_candidates candidates is not a list")
+            selected_candidates = []
+        selected_candidate_ids_from_artifact = sorted(
+            candidate["candidate_id"]
+            for candidate in selected_candidates
+            if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
+        )
+        if len(selected_candidate_ids_from_artifact) != len(selected_candidates):
+            errors.append("selected_candidates candidates contain missing candidate_id")
     if sampled_manifest:
         page_case = sampled_manifest.get("page_case")
         if not isinstance(page_case, dict):
@@ -3707,24 +3720,14 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if not isinstance(manifest_candidates, list):
             errors.append("sampled_candidate_manifest candidates must be a list")
             manifest_candidates = []
-        if not isinstance(selected_candidates, list):
-            errors.append("selected_candidates candidates is not a list")
-            selected_candidates = []
         manifest_candidate_ids = sorted(
             candidate["candidate_id"]
             for candidate in manifest_candidates
             if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
         )
-        selected_candidate_ids = sorted(
-            candidate["candidate_id"]
-            for candidate in selected_candidates
-            if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
-        )
         if len(manifest_candidate_ids) != len(manifest_candidates):
             errors.append("sampled_candidate_manifest candidates contain missing candidate_id")
-        if len(selected_candidate_ids) != len(selected_candidates):
-            errors.append("selected_candidates candidates contain missing candidate_id")
-        if manifest_candidate_ids != selected_candidate_ids:
+        if manifest_candidate_ids != selected_candidate_ids_from_artifact:
             errors.append("selected_candidates candidate_ids do not match sampled_candidate_manifest")
 
     def validate_preflight_artifact(artifact: str, expected_surfaces: set[str]) -> dict[str, Any]:
@@ -3777,6 +3780,13 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if review_validation.get("schema") != "pdf_lab.second_pass.review_validation.v1":
             errors.append("review_validation schema mismatch")
         review_errors = list(review_validation.get("errors") or [])
+        if selected_candidate_ids_from_artifact:
+            expected_ids = sorted(str(candidate_id) for candidate_id in review_validation.get("expected_candidate_ids") or [])
+            seen_ids = sorted(str(candidate_id) for candidate_id in review_validation.get("seen_candidate_ids") or [])
+            if expected_ids != selected_candidate_ids_from_artifact:
+                errors.append("review_validation expected_candidate_ids do not match selected_candidates")
+            if seen_ids != selected_candidate_ids_from_artifact:
+                errors.append("review_validation seen_candidate_ids do not match selected_candidates")
         if terminal_status == "reviewed_clean":
             if review_validation.get("ok") is not True:
                 errors.append("reviewed_clean terminal ledger requires review_validation.ok true")
@@ -3815,6 +3825,14 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("reviewed_clean terminal ledger requires review_response candidate_findings list")
             elif any(not isinstance(finding, dict) or finding.get("status") != "clean" for finding in findings):
                 errors.append("reviewed_clean terminal ledger requires all review_response candidate_findings clean")
+        if selected_candidate_ids_from_artifact and isinstance(findings, list):
+            response_candidate_ids = sorted(
+                finding["candidate_id"]
+                for finding in findings
+                if isinstance(finding, dict) and isinstance(finding.get("candidate_id"), str)
+            )
+            if response_candidate_ids != selected_candidate_ids_from_artifact:
+                errors.append("review_response candidate_findings do not match selected_candidates")
     if "patch_attempts_ledger.json" in evidence_artifacts:
         patch_attempts_ledger = read_required_json_artifact("patch_attempts_ledger.json")
         patch_validation = read_required_json_artifact("patch_validation.json")
