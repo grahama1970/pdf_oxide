@@ -3600,6 +3600,7 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
     mismatched_zip_entries: list[str] = []
     unsafe_zip_entries: list[str] = []
     terminal_ledger_matches_argument = False
+    terminal_ledger_validation_matches_recomputed = False
     terminal_ledger_path = case_dir / "terminal_ledger.json"
     if terminal_ledger_path.is_file():
         try:
@@ -3611,6 +3612,18 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
                 terminal_ledger_matches_argument = True
             else:
                 errors.append("terminal_ledger.json does not match terminal argument")
+    terminal_ledger_validation_path = case_dir / "terminal_ledger_validation.json"
+    if terminal_ledger_matches_argument and terminal_ledger_validation_path.is_file():
+        try:
+            terminal_ledger_validation_payload = json.loads(terminal_ledger_validation_path.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001 - malformed evidence is a validation failure.
+            errors.append(f"terminal_ledger_validation.json unreadable: {type(exc).__name__}: {exc}")
+        else:
+            recomputed_terminal_validation = validate_page_terminal_ledger(case_dir, terminal)
+            if terminal_ledger_validation_payload == recomputed_terminal_validation:
+                terminal_ledger_validation_matches_recomputed = True
+            else:
+                errors.append("terminal_ledger_validation.json does not match recomputed terminal validation")
     if unsafe_evidence_artifacts:
         errors.append(f"terminal evidence_artifacts contains unsafe bundle paths: {unsafe_evidence_artifacts}")
     if not zip_path.is_file():
@@ -3658,6 +3671,7 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
         "zip_entry_count": len(zip_entries),
         "zip_content_ok": zip_content_ok,
         "terminal_ledger_matches_argument": terminal_ledger_matches_argument,
+        "terminal_ledger_validation_matches_recomputed": terminal_ledger_validation_matches_recomputed,
         "missing_artifacts": missing_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
