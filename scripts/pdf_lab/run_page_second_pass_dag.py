@@ -4836,6 +4836,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             if "scillm_after_review_receipt.json" in evidence_artifacts or (case_dir / "scillm_after_review_receipt.json").is_file()
             else {}
         )
+        after_review_fixture = (
+            read_required_json_artifact("review_after_fixture.json")
+            if "review_after_fixture.json" in evidence_artifacts or (case_dir / "review_after_fixture.json").is_file()
+            else {}
+        )
         commit_acceptance = read_required_json_artifact("commit_acceptance_gate.json")
         commit_gate = read_required_json_artifact("commit_gate.json")
         revertability = read_required_json_artifact("revertability_check.json")
@@ -4934,6 +4939,13 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     )
                     if review_after_validation != recomputed_after_validation:
                         errors.append("review_after_validation does not match recomputed review_after_response contract")
+            if (
+                review_after_validation.get("ok") is True
+                and review_after_request.get("schema") == "pdf_lab.second_pass.review_request.v1"
+                and not after_review_receipt
+                and not after_review_fixture
+            ):
+                errors.append("review_after_validation ok true requires scillm_after_review_receipt.json or review_after_fixture.json evidence")
         if review_after_response:
             if review_after_response.get("schema") != "pdf_lab.second_pass.review_response.v1":
                 errors.append("review_after_response schema mismatch")
