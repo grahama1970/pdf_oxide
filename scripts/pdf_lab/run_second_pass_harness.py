@@ -4526,10 +4526,18 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
         if validation_payload.get("schema") != "pdf_lab.second_pass.scillm_proof_floor_validation.v1":
             errors.append("scillm proof floor validation schema mismatch")
         if validation_payload.get("ok") is not True:
-            errors.extend(
-                f"scillm proof floor validation failed: {error}"
-                for error in validation_payload.get("errors") or ["validation ok is not true"]
-            )
+            validation_errors = validation_payload.get("errors")
+            if validation_errors is None:
+                errors.append("scillm proof floor validation failed: validation ok is not true")
+            elif not isinstance(validation_errors, list):
+                errors.append("scillm proof floor validation errors must be a list")
+            elif not all(isinstance(error, str) for error in validation_errors):
+                errors.append("scillm proof floor validation errors must be a list of strings")
+            else:
+                errors.extend(
+                    f"scillm proof floor validation failed: {error}"
+                    for error in (validation_errors or ["validation ok is not true"])
+                )
     return {
         "schema": "pdf_lab.second_pass.scillm_proof_floor_artifact_validation.v1",
         "ok": not errors,

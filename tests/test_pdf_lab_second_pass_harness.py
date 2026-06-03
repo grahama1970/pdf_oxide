@@ -4980,6 +4980,36 @@ def test_validate_scillm_proof_floor_artifacts_rejects_string_errors(tmp_path: P
     assert "scillm proof floor errors must be a list" in validation["errors"]
 
 
+def test_validate_scillm_proof_floor_artifacts_rejects_string_validation_errors(tmp_path: Path) -> None:
+    harness = _load_module()
+    proof_dir = tmp_path / "scillm_proof_floor"
+    proof_dir.mkdir()
+    for name in harness.scillm_proof_floor_artifacts(tmp_path, {"ok": True}).keys():
+        (proof_dir / name).write_text("{}", encoding="utf-8")
+    (proof_dir / "scillm_proof_floor_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_proof_floor_validation.v1",
+                "ok": False,
+                "errors": "missing_caller_chat_response did not return caller_skill_required",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_scillm_proof_floor_artifacts(
+        tmp_path,
+        {
+            "schema": "pdf_lab.second_pass.scillm_proof_floor.v1",
+            "ok": True,
+            "errors": [],
+        },
+    )
+
+    assert validation["ok"] is False
+    assert "scillm proof floor validation errors must be a list" in validation["errors"]
+
+
 def test_live_canary_artifact_validation_rejects_opencode_ok_without_artifacts(tmp_path: Path) -> None:
     harness = _load_module()
 
