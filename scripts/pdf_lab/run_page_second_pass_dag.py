@@ -1181,6 +1181,15 @@ def validate_page_orchestrator_submission(
         errors.append("submission missing case_id")
     if not isinstance(expected_page_number, int):
         errors.append("submission missing integer page_number")
+    else:
+        submission_identity = validate_page_case_identity(
+            {
+                "case_id": expected_case_id,
+                "page_number": expected_page_number,
+            },
+        )
+        if submission_identity["ok"] is not True:
+            errors.extend(f"submission {error}" for error in submission_identity["errors"])
     if submission.get("target_dag_state_owner") != "scillm_orchestrator":
         errors.append("submission target_dag_state_owner must be scillm_orchestrator")
     if submission.get("dag_spec_sha256") != stable_json_sha256(dag_spec):

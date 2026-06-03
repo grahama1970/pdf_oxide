@@ -605,6 +605,67 @@ def test_validate_page_orchestrator_submission_rejects_stale_identity_metadata(t
     assert "orchestrator_context page_number does not match submission" in validation["errors"]
 
 
+def test_validate_page_orchestrator_submission_rejects_malformed_page_identity(tmp_path: Path) -> None:
+    dag = _load_module()
+    page_case = {
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "page_index": 0,
+        "candidate_ids": ["cand:p0001:0000:table"],
+    }
+    spec = dag.build_page_orchestrator_dag_spec(
+        page_case=page_case,
+        candidates=[
+            {
+                "candidate_id": "cand:p0001:0000:table",
+                "page_number": 1,
+                "preset_type": "table",
+                "bbox": [0.1, 0.2, 0.8, 0.4],
+                "features": {},
+            }
+        ],
+        review_request_artifact="review_request.json",
+        patch_backend="scillm_orchestrator",
+        patch_mode="dry_run",
+        review_mode="dry_run",
+        repair_strategy="single",
+        opencode_agent="build",
+        opencode_agent_sequence=None,
+        opencode_model=None,
+        code_root=tmp_path,
+        caller_skill="pdf-lab",
+        page_extract_timeout_s=30.0,
+        status="ready",
+    )
+    submission = dag.build_page_orchestrator_submission(
+        case_dir=tmp_path / "page_case_0001_p0001",
+        page_case=page_case,
+        dag_spec=spec,
+        dag_spec_artifact="scillm_orchestrator_page_dag_spec.json",
+        code_root=tmp_path,
+        timeout_s=60.0,
+    )
+    unsafe = json.loads(json.dumps(submission))
+    unsafe["case_id"] = "../escape"
+    unsafe["scillm_metadata"]["case_id"] = "../escape"
+    unsafe["transport_create_body"]["orchestrator_context"]["case_id"] = "../escape"
+    stale = json.loads(json.dumps(submission))
+    stale["case_id"] = "page_case_0001_p0002"
+    stale["scillm_metadata"]["case_id"] = "page_case_0001_p0002"
+    stale["transport_create_body"]["orchestrator_context"]["case_id"] = "page_case_0001_p0002"
+
+    unsafe_validation = dag.validate_page_orchestrator_submission(unsafe, dag_spec=spec)
+    stale_validation = dag.validate_page_orchestrator_submission(stale, dag_spec=spec)
+
+    assert unsafe_validation["ok"] is False
+    assert stale_validation["ok"] is False
+    assert "submission ../escape case_id must match page_case_####_p####" in unsafe_validation["errors"]
+    assert (
+        "submission page_case_0001_p0002 case_id page suffix does not match page_number 1"
+        in stale_validation["errors"]
+    )
+
+
 def test_validate_page_orchestrator_run_receipt_rejects_stale_request_identity(tmp_path: Path) -> None:
     dag = _load_module()
     page_case = {
