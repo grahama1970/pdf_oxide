@@ -137,6 +137,20 @@ def read_json_object_if_exists(path: Path) -> tuple[dict[str, Any], list[str]]:
     return payload, []
 
 
+def read_non_negative_int_field(
+    payload: dict[str, Any],
+    *,
+    field_name: str,
+    artifact_label: str,
+    errors: list[str],
+) -> int:
+    value = payload.get(field_name)
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        errors.append(f"{artifact_label} {field_name} must be a non-negative integer: {value!r}")
+        return 0
+    return value
+
+
 def validate_page_results_match_sampled_cases(
     *,
     sampled_cases_path: Path | None,
@@ -642,12 +656,22 @@ def validate_sampling_gate(
     sampled_cases: dict[str, Any],
 ) -> dict[str, Any]:
     audit = sampled_cases.get("sampling_audit")
-    candidate_count = int(manifest.get("candidate_count") or 0)
-    selected_count = int(sampled_cases.get("selected_count") or 0)
     forced_pages = sampled_cases.get("forced_pages")
     sampled_seed = sampled_cases.get("seed")
     accepted_forced_pages = []
     errors: list[str] = []
+    candidate_count = read_non_negative_int_field(
+        manifest,
+        field_name="candidate_count",
+        artifact_label="candidate manifest",
+        errors=errors,
+    )
+    selected_count = read_non_negative_int_field(
+        sampled_cases,
+        field_name="selected_count",
+        artifact_label="sampled_page_cases",
+        errors=errors,
+    )
     if isinstance(forced_pages, dict):
         accepted_forced_pages = forced_pages.get("accepted") or []
     if not isinstance(accepted_forced_pages, list):
@@ -750,12 +774,12 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
     if not isinstance(pages, list):
         errors.append("candidate manifest pages is not a list")
         pages = []
-    declared_candidate_count_raw = manifest.get("candidate_count")
-    if isinstance(declared_candidate_count_raw, bool) or not isinstance(declared_candidate_count_raw, int) or declared_candidate_count_raw < 0:
-        errors.append(f"candidate manifest candidate_count must be a non-negative integer: {declared_candidate_count_raw!r}")
-        declared_candidate_count = 0
-    else:
-        declared_candidate_count = declared_candidate_count_raw
+    declared_candidate_count = read_non_negative_int_field(
+        manifest,
+        field_name="candidate_count",
+        artifact_label="candidate manifest",
+        errors=errors,
+    )
     declared_page_count = manifest.get("page_count")
     if declared_page_count is not None and (not isinstance(declared_page_count, int) or declared_page_count < 1):
         errors.append(f"candidate manifest page_count must be a positive integer when present: {declared_page_count!r}")
@@ -884,11 +908,21 @@ def validate_candidate_sample_linkage(
         errors.append("sampled page cases page_cases is not a list")
         page_cases = []
 
-    declared_candidate_count = int(manifest.get("candidate_count") or 0)
+    declared_candidate_count = read_non_negative_int_field(
+        manifest,
+        field_name="candidate_count",
+        artifact_label="candidate manifest",
+        errors=errors,
+    )
     if declared_candidate_count != len(candidates):
         errors.append(f"candidate_count {declared_candidate_count} does not equal candidates length {len(candidates)}")
 
-    declared_selected_count = int(sampled_cases.get("selected_count") or 0)
+    declared_selected_count = read_non_negative_int_field(
+        sampled_cases,
+        field_name="selected_count",
+        artifact_label="sampled_page_cases",
+        errors=errors,
+    )
     if declared_selected_count != len(page_cases):
         errors.append(f"selected_count {declared_selected_count} does not equal page_cases length {len(page_cases)}")
 

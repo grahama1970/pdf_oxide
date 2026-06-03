@@ -704,6 +704,22 @@ def test_validate_sampling_gate_rejects_malformed_statistical_audit() -> None:
     assert "sampling_audit selected_count does not match sampled_page_cases selected_count" in errors
 
 
+def test_validate_sampling_gate_rejects_coerced_declared_counts() -> None:
+    harness = _load_module()
+    gate = harness.validate_sampling_gate(
+        manifest={"candidate_count": "8"},
+        sampled_cases={
+            "selected_count": 3.0,
+            "seed": 1234,
+            "sampling_audit": _passing_sampling_audit(candidate_count=8, selected_count=3, seed=1234),
+        },
+    )
+
+    assert gate["ok"] is False
+    assert "candidate manifest candidate_count must be a non-negative integer: '8'" in gate["errors"]
+    assert "sampled_page_cases selected_count must be a non-negative integer: 3.0" in gate["errors"]
+
+
 def test_validate_sampling_gate_requires_additive_forced_page_accounting() -> None:
     harness = _load_module()
     gate = harness.validate_sampling_gate(
@@ -812,6 +828,26 @@ def test_validate_candidate_sample_linkage_fails_on_unknown_candidate_id() -> No
     assert validation["schema"] == "pdf_lab.second_pass.candidate_sample_linkage_validation.v1"
     assert validation["ok"] is False
     assert "sampled candidate_ids missing from manifest" in "\n".join(validation["errors"])
+
+
+def test_validate_candidate_sample_linkage_rejects_coerced_declared_counts() -> None:
+    harness = _load_module()
+    candidate = _manifest_candidate("cand:p0001:0000:table", 1, "table")
+    manifest = _candidate_manifest([candidate])
+    manifest["candidate_count"] = True
+    sampled_cases = {
+        "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+        "selected_count": "1",
+        "selected_pages": [1],
+        "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
+    }
+
+    validation = harness.validate_candidate_sample_linkage(manifest=manifest, sampled_cases=sampled_cases)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "candidate manifest candidate_count must be a non-negative integer: True" in errors
+    assert "sampled_page_cases selected_count must be a non-negative integer: '1'" in errors
 
 
 def test_validate_candidate_sample_linkage_requires_all_candidates_for_selected_page() -> None:
