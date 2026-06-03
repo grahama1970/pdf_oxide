@@ -2882,6 +2882,16 @@ def package_validation_errors(
             if actual_duplicate_zip_entries:
                 error_label = label or "package validation"
                 errors.append(f"{error_label} actual ZIP has duplicate entries: {actual_duplicate_zip_entries}")
+            required_zip_entries = validation.get("required_zip_entries")
+            if isinstance(required_zip_entries, list) and all(
+                isinstance(entry, str) for entry in required_zip_entries
+            ):
+                missing_required_zip_entries = sorted(set(required_zip_entries) - set(actual_zip_entries))
+                if missing_required_zip_entries:
+                    error_label = label or "package validation"
+                    errors.append(
+                        f"{error_label} actual ZIP missing required entries: {missing_required_zip_entries}"
+                    )
             reported_zip_entry_count = validation.get("zip_entry_count")
             if is_plain_int(reported_zip_entry_count) and reported_zip_entry_count != actual_zip_entry_count:
                 error_label = label or "package validation"
