@@ -99,6 +99,24 @@ def test_tiny_empty_lattice_table_false_positive_is_suppressed() -> None:
     assert mod._is_tiny_empty_table_false_positive(table_with_text, metrics, [0.1, 0.1, 0.4, 0.2]) is False
 
 
+def test_table_geometry_metadata_preserves_off_page_extent() -> None:
+    mod = _load_module()
+
+    metadata = mod._table_geometry_metadata(
+        [-92.808, 73.2, 704.808, 235.2],
+        [0.0, 0.092424, 1.0, 0.29697],
+        612.0,
+        792.0,
+    )
+
+    assert metadata["visible_bbox"] == [0.0, 0.092424, 1.0, 0.29697]
+    assert metadata["full_normalized_bbox"][0] < 0.0
+    assert metadata["full_normalized_bbox"][2] > 1.0
+    assert metadata["bbox_clipped_to_page"] is True
+    assert metadata["off_page_extent"]["left"] > 0.0
+    assert metadata["off_page_extent"]["right"] > 0.0
+
+
 def test_rotated_margin_line_fragments_consolidate_to_side_chrome() -> None:
     mod = _load_module()
     text_lines = [

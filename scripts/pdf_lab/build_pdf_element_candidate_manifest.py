@@ -217,6 +217,7 @@ def candidate_record(
     preset_type = infer_preset_type(block, page_number, page_count)
     block_id = str(block.get("id") or f"page:{page_number}:block:{block_index}")
     text = _norm_text(block.get("text"))
+    table_geometry = block.get("table_geometry") if isinstance(block.get("table_geometry"), dict) else {}
     return {
         "candidate_id": f"cand:p{page_number:04d}:{block_index:04d}:{preset_type}",
         "pdf_id": pdf_id,
@@ -235,6 +236,16 @@ def candidate_record(
             "has_toc_entries": bool(block.get("tocEntries") or block.get("toc_entries")),
             "source_type": block.get("source_type"),
             "semantic_role": block.get("semantic_role"),
+            **(
+                {
+                    "table_visible_bbox": table_geometry.get("visible_bbox"),
+                    "table_full_normalized_bbox": table_geometry.get("full_normalized_bbox"),
+                    "table_bbox_clipped_to_page": table_geometry.get("bbox_clipped_to_page"),
+                    "table_off_page_extent": table_geometry.get("off_page_extent"),
+                }
+                if table_geometry
+                else {}
+            ),
         },
         "confidence": float(block.get("confidence") or (0.65 if preset_type == "unknown_layout" else 0.8)),
         "detection_reason": detection_reasons(block, preset_type, page_number, page_count),

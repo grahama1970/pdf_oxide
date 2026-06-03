@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,6 +17,31 @@ def _bbox_area(bbox: list[float]) -> float:
     if len(bbox) != 4:
         return 0.0
     return max(0.0, bbox[2] - bbox[0]) * max(0.0, bbox[3] - bbox[1])
+
+
+def _bbox_coverage(inner: list[float], outer: list[float]) -> float:
+    inner_area = _bbox_area(inner)
+    if inner_area <= 0.0 or len(inner) != 4 or len(outer) != 4:
+        return 0.0
+    x0 = max(float(inner[0]), float(outer[0]))
+    y0 = max(float(inner[1]), float(outer[1]))
+    x1 = min(float(inner[2]), float(outer[2]))
+    y1 = min(float(inner[3]), float(outer[3]))
+    intersection = max(0.0, x1 - x0) * max(0.0, y1 - y0)
+    return intersection / inner_area
+
+
+def _bbox_axis_coverage(inner: list[float], outer: list[float], start: int, end: int) -> float:
+    if len(inner) != 4 or len(outer) != 4:
+        return 0.0
+    inner_span = max(0.0, float(inner[end]) - float(inner[start]))
+    if inner_span <= 0.0:
+        return 0.0
+    overlap = max(
+        0.0,
+        min(float(inner[end]), float(outer[end])) - max(float(inner[start]), float(outer[start])),
+    )
+    return overlap / inner_span
 
 
 def _norm_bbox_block(bbox: Any, page_w: float, page_h: float) -> list[float]:
@@ -75,6 +101,39 @@ def _norm_bbox_corners(bbox: Any, page_w: float, page_h: float) -> list[float]:
         max(0.0, min(1.0, x1 / page_w)),
         max(0.0, min(1.0, y1 / page_h)),
     ]
+
+
+def _norm_bbox_corners_unclamped(bbox: Any, page_w: float, page_h: float) -> list[float]:
+    if not bbox or len(bbox) != 4 or page_w <= 0 or page_h <= 0:
+        return [0.0, 0.0, 0.0, 0.0]
+    x0, y0, x1, y1 = [float(v) for v in bbox]
+    x0, x1 = sorted((x0, x1))
+    y0, y1 = sorted((y0, y1))
+    return [x0 / page_w, y0 / page_h, x1 / page_w, y1 / page_h]
+
+
+def _off_page_extent(full_bbox: list[float]) -> dict[str, float]:
+    if len(full_bbox) != 4:
+        return {"left": 0.0, "top": 0.0, "right": 0.0, "bottom": 0.0}
+    return {
+        "left": round(max(0.0, -float(full_bbox[0])), 6),
+        "top": round(max(0.0, -float(full_bbox[1])), 6),
+        "right": round(max(0.0, float(full_bbox[2]) - 1.0), 6),
+        "bottom": round(max(0.0, float(full_bbox[3]) - 1.0), 6),
+    }
+
+
+def _table_geometry_metadata(raw_bbox: Any, visible_bbox: list[float], page_w: float, page_h: float) -> dict[str, Any]:
+    raw_values = _bbox_values(raw_bbox)
+    full_bbox = _norm_bbox_corners_unclamped(raw_bbox, page_w, page_h)
+    off_page_extent = _off_page_extent(full_bbox)
+    return {
+        "raw_bbox": raw_values,
+        "visible_bbox": visible_bbox,
+        "full_normalized_bbox": full_bbox,
+        "bbox_clipped_to_page": any(value > 0.0 for value in off_page_extent.values()),
+        "off_page_extent": off_page_extent,
+    }
 
 
 def _bbox_union(boxes: list[list[float]]) -> list[float]:
@@ -328,10 +387,135 @@ def _table_bbox(table: dict[str, Any], page_w: float, page_h: float) -> list[flo
     return _norm_bbox_block(bbox, page_w, page_h)
 
 
+def _table_raw_bbox(table: dict[str, Any]) -> list[float]:
+    bbox = table.get("bbox") or table.get("bounding_box") or table.get("rect")
+    if isinstance(bbox, dict):
+        bbox = [
+            bbox.get("x0", bbox.get("left", 0.0)),
+            bbox.get("y0", bbox.get("top", 0.0)),
+            bbox.get("x1", bbox.get("right", 0.0)),
+            bbox.get("y1", bbox.get("bottom", 0.0)),
+        ]
+    return _bbox_values(bbox)
+
+
+def _bbox_values(bbox: Any) -> list[float]:
+    if not isinstance(bbox, (list, tuple)) or len(bbox) != 4:
+        return []
+    try:
+        return [float(v) for v in bbox]
+    except (TypeError, ValueError):
+        return []
+
+
 def _clean_table_cell(value: Any) -> str:
     if value is None:
         return ""
     return " ".join(str(value).split())
+
+
+_QID_MARKER_RE = re.compile(r"\[QID_[^\]]+\]", re.IGNORECASE)
+
+
+def _qid_marker_count(text: str) -> int:
+    return len(_QID_MARKER_RE.findall(text or ""))
+
+
+def _qid_cells_from_row_text(text: str, expected_columns: int) -> list[str]:
+    if expected_columns <= 0:
+        return []
+    matches = list(_QID_MARKER_RE.finditer(text or ""))
+    if len(matches) != expected_columns:
+        return []
+    cells: list[str] = []
+    for index, match in enumerate(matches):
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+        cell = _clean_table_cell(text[match.start():end])
+        if not cell:
+            return []
+        cells.append(cell)
+    return cells
+
+
+def _row_blocks_inside_table(
+    raw_elements: list[dict[str, Any]],
+    table_bbox: list[float],
+    page_number: int,
+    expected_columns: int,
+) -> list[tuple[float, list[str]]]:
+    rows: list[tuple[float, list[str]]] = []
+    for element in raw_elements:
+        if element.get("type") == "table" or element.get("page") != page_number:
+            continue
+        bbox = element.get("bbox")
+        if not isinstance(bbox, list) or len(bbox) != 4:
+            continue
+        text = str(element.get("text") or "")
+        cells = _qid_cells_from_row_text(text, expected_columns)
+        if not cells:
+            continue
+        covered = _bbox_coverage(bbox, table_bbox) >= 0.9 or (
+            _bbox_axis_coverage(bbox, table_bbox, 1, 3) >= 0.9
+            and _bbox_axis_coverage(table_bbox, bbox, 0, 2) >= 0.9
+        )
+        if covered:
+            rows.append(((float(bbox[1]) + float(bbox[3])) / 2.0, cells))
+    rows.sort(key=lambda row: row[0])
+    return rows
+
+
+def _repair_table_with_qid_rows(
+    table: dict[str, Any],
+    raw_elements: list[dict[str, Any]],
+    table_bbox: list[float],
+    page_number: int,
+) -> dict[str, Any]:
+    metrics = _table_metrics(table)
+    expected_columns = int(metrics.get("column_count") or 0)
+    expected_rows = int(metrics.get("row_count") or 0)
+    qid_rows = _row_blocks_inside_table(raw_elements, table_bbox, page_number, expected_columns)
+    if expected_columns <= 0 or not qid_rows:
+        return table
+    if expected_rows and len(qid_rows) != expected_rows:
+        return table
+    repaired = dict(table)
+    repaired["data"] = [cells for _, cells in qid_rows]
+    return repaired
+
+
+def _suppress_qid_table_row_duplicates(elements: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    tables = [
+        element
+        for element in elements
+        if element.get("type") == "table" and isinstance(element.get("bbox"), list)
+    ]
+    if not tables:
+        return elements
+
+    out: list[dict[str, Any]] = []
+    for element in elements:
+        if element.get("type") == "table":
+            out.append(element)
+            continue
+        bbox = element.get("bbox")
+        text = str(element.get("text") or "")
+        if not isinstance(bbox, list) or len(bbox) != 4 or _qid_marker_count(text) < 2:
+            out.append(element)
+            continue
+        covered = any(
+            table.get("page") == element.get("page")
+            and (
+                _bbox_coverage(bbox, table.get("bbox") or []) >= 0.9
+                or (
+                    _bbox_axis_coverage(bbox, table.get("bbox") or [], 1, 3) >= 0.9
+                    and _bbox_axis_coverage(table.get("bbox") or [], bbox, 0, 2) >= 0.9
+                )
+            )
+            for table in tables
+        )
+        if not covered:
+            out.append(element)
+    return out
 
 
 def _table_data(table: dict[str, Any]) -> list[list[str]]:
@@ -418,7 +602,6 @@ def _extract_tables_for_snapshot(doc: Any, page_index: int) -> list[dict[str, An
 def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, apply_mode: str) -> dict[str, Any]:
     sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "python"))
     import pdf_oxide  # noqa: PLC0415
-    from pdf_oxide.presets.applier import ApplierConfig, apply_ledger  # noqa: PLC0415
 
     doc = pdf_oxide.open(str(pdf_path))
     page_w, page_h = doc.page_dimensions(page_index)
@@ -443,8 +626,12 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
     for index, table in enumerate(_extract_tables_for_snapshot(doc, page_index)):
         metrics = _table_metrics(table)
         bbox = _table_bbox(table, page_w, page_h)
+        raw_bbox = _table_raw_bbox(table)
+        table_geometry = _table_geometry_metadata(raw_bbox, bbox, page_w, page_h)
         if _is_tiny_empty_table_false_positive(table, metrics, bbox):
             continue
+        table = _repair_table_with_qid_rows(table, raw_elements, bbox, page_index + 1)
+        metrics = _table_metrics(table)
         raw_elements.append(
             {
                 "id": f"actual:p{page_index + 1}:table:{index}",
@@ -454,11 +641,16 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
                 "source_type": "table",
                 "bbox": bbox,
                 "text": _table_text(table),
-                "raw": _raw_table_payload(table, metrics),
+                "table_geometry": table_geometry,
+                "raw": {**_raw_table_payload(table, metrics), "table_geometry": table_geometry},
             }
         )
 
+    raw_elements = _suppress_qid_table_row_duplicates(raw_elements)
+
     if ledger_path and ledger_path.exists():
+        from pdf_oxide.presets.applier import ApplierConfig, apply_ledger  # noqa: PLC0415
+
         ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
         blocks = apply_ledger(raw_elements, ledger, ApplierConfig(mode=apply_mode))
         ledger_used = str(ledger_path)

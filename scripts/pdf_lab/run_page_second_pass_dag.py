@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import contextlib
 import hashlib
 import html as html_lib
 import json
@@ -20,6 +21,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import zipfile
 from collections import Counter
@@ -601,10 +603,21 @@ def extract_page(
     apply_mode: str,
     repo: Path = REPO,
 ) -> dict[str, Any]:
-    sys.path.insert(0, str(repo / "scripts/pdf_lab"))
-    import snapshot_current_extraction as snapshot  # noqa: PLC0415
+    for module_name in list(sys.modules):
+        if module_name == "snapshot_current_extraction" or module_name == "pdf_oxide" or module_name.startswith("pdf_oxide."):
+            sys.modules.pop(module_name, None)
+    script_path = str(repo / "scripts/pdf_lab")
+    python_path = str(repo / "python")
+    sys.path.insert(0, python_path)
+    sys.path.insert(0, script_path)
+    try:
+        import snapshot_current_extraction as snapshot  # noqa: PLC0415
 
-    return snapshot._extract_page(pdf_path, page_number - 1, ledger_path, apply_mode)
+        return snapshot._extract_page(pdf_path, page_number - 1, ledger_path, apply_mode)
+    finally:
+        for path in (script_path, python_path):
+            with contextlib.suppress(ValueError):
+                sys.path.remove(path)
 
 
 def extract_page_subprocess(
@@ -615,28 +628,28 @@ def extract_page_subprocess(
     repo: Path,
     timeout_s: float,
 ) -> dict[str, Any]:
-    child_code = f"""
-import json
-import sys
-from pathlib import Path
-
-sys.path.insert(0, {str(repo / "scripts/pdf_lab")!r})
-import snapshot_current_extraction as snapshot
-
-pdf_path = Path(sys.argv[1])
-page_index = int(sys.argv[2])
-ledger_path = None if sys.argv[3] == "__NONE__" else Path(sys.argv[3])
-apply_mode = sys.argv[4]
-out_path = Path(sys.argv[5])
-page = snapshot._extract_page(pdf_path, page_index, ledger_path, apply_mode)
-out_path.write_text(json.dumps(page), encoding="utf-8")
-"""
+    child_code = (
+        "import json\n"
+        "import sys\n"
+        "from pathlib import Path\n\n"
+        f"sys.path.insert(0, {str(repo / 'scripts/pdf_lab')!r})\n"
+        f"sys.path.insert(0, {str(repo / 'python')!r})\n"
+        "import snapshot_current_extraction as snapshot\n\n"
+        "pdf_path = Path(sys.argv[1])\n"
+        "page_index = int(sys.argv[2])\n"
+        "ledger_path = None if sys.argv[3] == '__NONE__' else Path(sys.argv[3])\n"
+        "apply_mode = sys.argv[4]\n"
+        "out_path = Path(sys.argv[5])\n"
+        "page = snapshot._extract_page(pdf_path, page_index, ledger_path, apply_mode)\n"
+        "out_path.write_text(json.dumps(page), encoding='utf-8')\n"
+    )
     with tempfile.TemporaryDirectory(prefix="pdf_lab_page_dag_extract_") as tmpdir:
         out_path = Path(tmpdir) / "page.json"
+        completed: subprocess.CompletedProcess[str] | None = None
         try:
             env = os.environ.copy()
             env["PYTHONDONTWRITEBYTECODE"] = "1"
-            subprocess.run(
+            completed = subprocess.run(
                 [
                     sys.executable,
                     "-c",
@@ -649,15 +662,21 @@ out_path.write_text(json.dumps(page), encoding="utf-8")
                 ],
                 cwd=repo,
                 env=env,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
                 timeout=timeout_s,
                 check=True,
             )
         except subprocess.TimeoutExpired as exc:
             raise PageExtractionTimeout(f"page {page_number} extraction exceeded page_extract_timeout_s={timeout_s}") from exc
         except subprocess.CalledProcessError as exc:
-            raise RuntimeError(f"page {page_number} extraction subprocess failed with exit code {exc.returncode}") from exc
+            stderr_tail = (exc.stderr or "")[-1000:]
+            stdout_tail = (exc.stdout or "")[-1000:]
+            raise RuntimeError(
+                f"page {page_number} extraction subprocess failed with exit code {exc.returncode}: "
+                f"stderr_tail={stderr_tail!r} stdout_tail={stdout_tail!r}"
+            ) from exc
         return json.loads(out_path.read_text(encoding="utf-8"))
 
 
@@ -670,6 +689,15 @@ def extract_page_for_code_root(
     page_extract_timeout_s: float | None = None,
 ) -> dict[str, Any]:
     repo = REPO if code_root.resolve() == REPO.resolve() else code_root
+    if repo.resolve() != REPO.resolve():
+        return extract_page_subprocess(
+            pdf_path,
+            page_number,
+            ledger_path,
+            apply_mode,
+            repo,
+            page_extract_timeout_s if page_extract_timeout_s is not None and page_extract_timeout_s > 0 else 300.0,
+        )
     if page_extract_timeout_s is not None and page_extract_timeout_s > 0:
         return extract_page_subprocess(pdf_path, page_number, ledger_path, apply_mode, repo, page_extract_timeout_s)
     if repo.resolve() == REPO.resolve():
@@ -750,6 +778,18 @@ def render_candidate_overlay(pdf_path: Path, page_number: int, candidates: list[
 
 
 def build_candidate_presets(page_case: dict[str, Any], candidates: list[dict[str, Any]]) -> dict[str, Any]:
+    def candidate_question(candidate: dict[str, Any]) -> str:
+        features = candidate.get("features") if isinstance(candidate.get("features"), dict) else {}
+        if candidate.get("preset_type") == "table" and features.get("table_bbox_clipped_to_page") is True:
+            return (
+                "Does the rendered page evidence agree with this table candidate's visible bbox, "
+                "row/column structure, and explicit off-page/full-bbox metadata?"
+            )
+        return (
+            "Does the rendered page evidence agree with this extracted candidate's preset type, "
+            "bounding box, text, and nearby structure?"
+        )
+
     return {
         "schema": CANDIDATE_PRESETS_SCHEMA,
         "page_case": {
@@ -763,10 +803,7 @@ def build_candidate_presets(page_case: dict[str, Any], candidates: list[dict[str
                 "preset_type": candidate["preset_type"],
                 "bbox": candidate.get("bbox"),
                 "features": candidate.get("features") or {},
-                "question": (
-                    "Does the rendered page evidence agree with this extracted candidate's preset type, "
-                    "bounding box, text, and nearby structure?"
-                ),
+                "question": candidate_question(candidate),
                 "allowed_review_statuses": ["clean", "defect", "unsure", "substrate_blocked"],
             }
             for candidate in candidates
@@ -1809,8 +1846,11 @@ def validate_review_response(
         errors.append("page_status clean requires every candidate finding status to be clean")
     if page_status == "defect" and "defect" not in finding_statuses:
         errors.append("page_status defect requires at least one defect candidate finding")
-    if page_status == "substrate_blocked" and finding_statuses and any(status != "substrate_blocked" for status in finding_statuses):
-        errors.append("page_status substrate_blocked requires all candidate finding statuses to be substrate_blocked")
+    if page_status == "substrate_blocked":
+        if "substrate_blocked" not in finding_statuses:
+            errors.append("page_status substrate_blocked requires at least one substrate_blocked candidate finding")
+        if any(status not in {"clean", "substrate_blocked"} for status in finding_statuses):
+            errors.append("page_status substrate_blocked allows only clean or substrate_blocked candidate findings")
     return {
         "schema": "pdf_lab.second_pass.review_validation.v1",
         "ok": not errors,
@@ -2008,6 +2048,151 @@ def _defect_findings(review: dict[str, Any] | None) -> list[dict[str, Any]]:
     ]
 
 
+def _truncate_patch_prompt_text(value: Any, max_chars: int = 120) -> str | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    if len(text) <= max_chars:
+        return text
+    return text[: max_chars - 3].rstrip() + "..."
+
+
+def compact_patch_prompt_defect_findings(defects: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    compact: list[dict[str, Any]] = []
+    for finding in defects:
+        item = {
+            "candidate_id": finding.get("candidate_id"),
+            "status": finding.get("status"),
+            "suggested_fix_surface": _truncate_patch_prompt_text(finding.get("suggested_fix_surface"), 180),
+            "rationale": _truncate_patch_prompt_text(finding.get("rationale"), 120),
+        }
+        compact.append({key: value for key, value in item.items() if value not in (None, "")})
+    return compact
+
+
+def clustered_patch_prompt_defect_scope(defects: list[dict[str, Any]]) -> dict[str, Any]:
+    """Build a small implementation scope from visual findings for live patch delegates."""
+    required_test_name = "test_page_top_title_and_qid_table_row_are_not_footer_or_reference"
+    joined = " ".join(
+        str(finding.get(key) or "")
+        for finding in defects
+        for key in ("candidate_id", "suggested_fix_surface", "rationale", "status")
+    ).lower()
+    candidate_ids = [
+        str(finding.get("candidate_id"))
+        for finding in defects
+        if isinstance(finding.get("candidate_id"), str)
+    ]
+    primary_scope = "classification_defect"
+    likely_files = ["src/extractors/block_classifier.rs", "tests/test_integration.py"]
+    actionable_findings: list[dict[str, Any]] = []
+    if "table" in joined and any(
+        token in joined
+        for token in (
+            "bbox",
+            "bounding box",
+            "boundary",
+            "crop",
+            "clipped",
+            "off-page",
+            "off page",
+            "outside the page",
+            "extends beyond",
+        )
+    ):
+        primary_scope = "table_geometry_cropping_defect"
+        required_test_name = "test_off_page_table_bbox_does_not_emit_clipped_text_as_visible"
+        likely_files = [
+            "scripts/pdf_lab/snapshot_current_extraction.py",
+            "tests/test_nist_table_duplicate_suppression.py",
+        ]
+        actionable_findings.append({
+            "defect_class": primary_scope,
+            "candidate_ids": [
+                candidate_id
+                for candidate_id in candidate_ids
+                if ":table" in candidate_id
+            ][:3],
+            "required_behavior": (
+                "Tables whose raw bbox extends beyond the rendered page/crop boundary must not "
+                "treat off-page or clipped cell text as normally visible page text."
+            ),
+            "likely_code_surface": "scripts/pdf_lab/snapshot_current_extraction.py",
+            "implementation_hint": (
+                "Inspect table bbox normalization and table text construction; when raw table "
+                "geometry extends beyond page bounds, clip or explicitly mark out-of-crop text "
+                "instead of routing the finding through block classification."
+            ),
+            "test_hint": (
+                "Add a focused Python regression named "
+                f"`{required_test_name}` that exercises the page-level table extraction path; "
+                "do not edit generated artifacts."
+            ),
+        })
+    if "reference" in joined and "table" in joined:
+        primary_scope = "table_rows_misclassified_as_references"
+        actionable_findings.append({
+            "defect_class": primary_scope,
+            "candidate_ids": [
+                candidate_id
+                for candidate_id in candidate_ids
+                if ":reference" in candidate_id
+            ][:5],
+            "required_behavior": (
+                "Text rows visually contained by a table must not be emitted as "
+                "Reference blocks or duplicate non-table blocks."
+            ),
+            "likely_code_surface": "src/extractors/block_classifier.rs",
+            "implementation_hint": (
+                "Inspect `fn is_reference_entry`; if a line starts with bracketed IDs but "
+                "contains multiple bracketed cell markers, reject it as a reference entry."
+            ),
+            "test_hint": (
+                "Add a small Rust unit test named "
+                f"`{required_test_name}` near `is_reference_entry` or the classifier tests; "
+                "do not inspect PDF fixtures or Python bindings for this helper-level defect."
+            ),
+        })
+    if "footer" in joined or "top margin" in joined or "page title" in joined or "title/header" in joined:
+        actionable_findings.append({
+            "defect_class": "top_page_title_misclassified_as_footer",
+            "candidate_ids": [
+                candidate_id
+                for candidate_id in candidate_ids
+                if ":unknown_layout" in candidate_id
+            ][:3],
+            "required_behavior": "Top-of-page title/header text must not be classified as Footer.",
+            "likely_code_surface": "src/extractors/block_classifier.rs",
+            "implementation_hint": (
+                "Inspect the line-level `y_ratio` used before footer detection; if PDF "
+                "coordinates are bottom-origin there, compute visual top/bottom ratio from "
+                "`page_height - (bbox.y + bbox.height)` before applying footer thresholds."
+            ),
+            "test_hint": (
+                "Add a small Rust unit test named "
+                f"`{required_test_name}` for a top-page line not becoming Footer; "
+                "do not spend the run creating a synthetic PDF."
+            ),
+        })
+    if not actionable_findings:
+        actionable_findings = compact_patch_prompt_defect_findings(defects[:3])
+    return {
+        "primary_scope": primary_scope,
+        "candidate_count": len(candidate_ids),
+        "representative_candidate_ids": candidate_ids[:8],
+        "actionable_findings": actionable_findings[:3],
+        "required_test_name": required_test_name,
+        "likely_files": likely_files,
+        "max_initial_file_reads": 2,
+        "block_if_not_localized": (
+            "If the fix is not localizable after reading the likely files and evidence JSON, "
+            "return PATCH_DELEGATE_BLOCKED reason=unsupported_defect."
+        ),
+    }
+
+
 def sanitize_patch_prompt_payload(value: Any, *, key: str | None = None) -> Any:
     """Remove banned vague words from dynamic prose before prompt serialization."""
     if key in PROMPT_PAYLOAD_EXACT_KEYS:
@@ -2068,18 +2253,20 @@ def build_patch_worker_prompt(
         "case_dir": str(evidence_case_dir_abs),
         "artifact_case_dir": str(case_dir_abs),
         "workspace_root": str(workspace_root_abs),
-        "page_before_json": str(evidence_case_dir_abs / "page_before.json"),
-        "page_before_image": str(evidence_case_dir_abs / "page_before.png"),
-        "page_candidates_image": str(evidence_case_dir_abs / "page_candidates.png"),
-        "candidate_presets": str(evidence_case_dir_abs / "candidate_presets.json"),
-        "review_response": str(evidence_case_dir_abs / "review_response.json"),
-        "review_validation": str(evidence_case_dir_abs / "review_validation.json"),
+        "case_files": {
+            "page_before_json": "page_before.json",
+            "page_before_image": "page_before.png",
+            "page_candidates_image": "page_candidates.png",
+            "candidate_presets": "candidate_presets.json",
+            "review_response": "review_response.json",
+            "review_validation": "review_validation.json",
+        },
     }
     contract = (
         "## Role\n"
         f"Bounded {executor_label} patch executor for one PDF Oxide pdf-lab page DAG node.\n\n"
         "## Task\n"
-        "Perform the patch now. Create or edit source files in the workspace root, add one focused Python regression test, and leave a non-empty git diff.\n\n"
+        "Perform the patch now. Create or edit source files in the workspace root, add one focused regression test, and leave a non-empty git diff.\n\n"
         "## Context\n"
         f"- Workspace root: {workspace_root_abs}\n"
         f"- Evidence case directory: {evidence_case_dir_abs}\n"
@@ -2138,6 +2325,7 @@ def build_patch_worker_prompt(
             + output_format
         )
     if prompt_profile == "plan_only":
+        fallback_scope = clustered_patch_prompt_defect_scope(defects) if diagnosis_summary is None else None
         plan_payload = {
             "evidence_paths": evidence_paths,
             "page_case": {
@@ -2146,15 +2334,19 @@ def build_patch_worker_prompt(
                 "candidate_ids": page_case.get("candidate_ids"),
             },
             "repair_diagnosis": diagnosis_summary,
-            "fallback_defect_findings": defects if diagnosis_summary is None else [],
+            "fallback_scope": fallback_scope,
         }
         return (
             contract
             + "## Plan Payload\n"
-            + "Use these exact JSON fields: `evidence_paths`, `page_case`, `repair_diagnosis`, `fallback_defect_findings`.\n"
-            + "- Use the validated repair plan below as the primary patch scope.\n"
-            + "- Inspect only the files needed to implement that plan.\n"
-            + "- Add or update exactly one focused Python regression test unless the plan explicitly requires more.\n"
+            + "Use these exact JSON fields: `evidence_paths`, `page_case`, `repair_diagnosis`, `fallback_scope`.\n"
+            + "- If `repair_diagnosis` is null, use `fallback_scope.actionable_findings` as the whole patch scope.\n"
+            + "- Apply `implementation_hint` entries directly after reading the named function or local block.\n"
+            + "- Inspect only `fallback_scope.likely_files`; do not run broad repository searches.\n"
+            + "- If the defect is not localizable within `fallback_scope.max_initial_file_reads`, return `PATCH_DELEGATE_BLOCKED reason=unsupported_defect: <one sentence>`.\n"
+            + "- Add or update exactly one focused regression test; a Rust unit test is preferred when the scoped code surface is Rust.\n"
+            + "- If `fallback_scope.required_test_name` is present, use that exact test function name.\n"
+            + "- Follow `test_hint`; do not inspect PDF fixtures or Python bindings when a helper-level Rust unit test is named.\n"
             + "- Do not repeat visual review; the harness already owns visual review and closure.\n\n"
             + f"{json.dumps(plan_payload, indent=2, sort_keys=True)}"
             + output_format
@@ -2780,6 +2972,294 @@ def call_opencode_patch(
         "request_metadata": patch_request["scillm_metadata"],
         "raw_response": raw,
     }
+
+
+def safe_opencode_child_run_id(case_dir: Path, page_case: dict[str, Any], attempt_index: int) -> str:
+    case_id = re.sub(r"[^A-Za-z0-9_.-]+", "-", str(page_case.get("case_id") or "page-case")).strip("-")
+    digest = hashlib.sha256(str(case_dir.resolve()).encode("utf-8")).hexdigest()[:10]
+    return f"oc-pdflab-{case_id}-a{attempt_index:02d}-{digest}"
+
+
+def opencode_workspace_route(*, workspace_path: str | None) -> str | None:
+    if not workspace_path:
+        return None
+    workspace_token = base64.b64encode(str(workspace_path).encode("utf-8")).decode("ascii").rstrip("=")
+    return f"/{workspace_token}"
+
+
+def opencode_child_run_urls(
+    *,
+    base_url: str,
+    run_id: str,
+    session_id: str | None = None,
+    workspace_path: str | None = None,
+) -> dict[str, Any]:
+    root = base_url.rstrip("/")
+    opencode_base_url = os.environ.get("OPENCODE_SERVER_URL", "http://127.0.0.1:4098").rstrip("/")
+    urls: dict[str, Any] = {
+        "scillm_run_url": f"{root}/v1/scillm/opencode/runs/{run_id}",
+        "scillm_status_url": f"{root}/v1/scillm/opencode/runs/{run_id}/status",
+        "scillm_events_url": f"{root}/v1/scillm/opencode/runs/{run_id}/events?tail=200",
+        "scillm_diff_url": f"{root}/v1/scillm/opencode/runs/{run_id}/diff",
+        "opencode_base_url": opencode_base_url,
+    }
+    if session_id:
+        api_url = f"{opencode_base_url}/session/{session_id}"
+        urls["opencode_session_api_url"] = api_url
+        workspace_route = opencode_workspace_route(workspace_path=workspace_path)
+        if workspace_route:
+            urls["opencode_workspace_url"] = f"{opencode_base_url}{workspace_route}"
+    return urls
+
+
+def fetch_opencode_run_snapshot(
+    *,
+    base_url: str,
+    auth_token: str,
+    caller_skill: str,
+    run_id: str,
+    timeout_s: float = 5.0,
+) -> dict[str, Any] | None:
+    import httpx  # noqa: PLC0415
+
+    response = httpx.get(
+        f"{base_url.rstrip('/')}/v1/scillm/opencode/runs/{run_id}",
+        headers={
+            "Authorization": f"Bearer {auth_token}",
+            "X-Caller-Skill": caller_skill,
+        },
+        timeout=timeout_s,
+    )
+    if response.status_code == 404:
+        return None
+    response.raise_for_status()
+    payload = response.json()
+    return payload if isinstance(payload, dict) else None
+
+
+def human_monitor_from_scillm_sources(
+    *,
+    snapshot: dict[str, Any] | None,
+    raw: dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    """Prefer scillm human_monitor bundle over locally recomputed URLs."""
+    for source in (snapshot, raw):
+        if not isinstance(source, dict):
+            continue
+        monitor = source.get("human_monitor")
+        if isinstance(monitor, dict):
+            return monitor
+        status = source.get("status")
+        if isinstance(status, dict):
+            nested = status.get("human_monitor")
+            if isinstance(nested, dict):
+                return nested
+    return None
+
+
+def write_opencode_child_run_handle(
+    case_dir: Path,
+    *,
+    artifact_name: str,
+    base_url: str,
+    run_id: str,
+    session_id: str | None = None,
+    snapshot: dict[str, Any] | None = None,
+    receipt: dict[str, Any] | None = None,
+    workspace_path: str | None = None,
+    state: str = "pending",
+) -> str:
+    raw = receipt.get("raw_response") if isinstance(receipt, dict) else None
+    if isinstance(raw, dict):
+        session_id = str(raw.get("session_id") or session_id or "") or None
+        workspace_path = str(raw.get("cwd") or workspace_path or "") or None
+        artifacts = raw.get("artifacts") if isinstance(raw.get("artifacts"), dict) else {}
+        status = raw.get("status")
+    else:
+        artifacts = {}
+        status = None
+    if isinstance(snapshot, dict):
+        session_id = str(snapshot.get("session_id") or session_id or "") or None
+        workspace_path = str(
+            snapshot.get("workspace_path")
+            or snapshot.get("cwd")
+            or workspace_path
+            or ""
+        ) or None
+        if not artifacts and isinstance(snapshot.get("artifacts"), dict):
+            artifacts = snapshot["artifacts"]
+        if status is None:
+            snapshot_status = snapshot.get("status")
+            if isinstance(snapshot_status, dict):
+                status = snapshot_status.get("state") or snapshot_status.get("phase")
+    raw_dict = raw if isinstance(raw, dict) else None
+    human_monitor = human_monitor_from_scillm_sources(snapshot=snapshot, raw=raw_dict)
+    if isinstance(human_monitor, dict):
+        session_id = str(human_monitor.get("session_id") or session_id or "") or None
+        workspace_path = str(human_monitor.get("workspace_path") or workspace_path or "") or None
+    payload = {
+        "schema": "pdf_lab.second_pass.opencode_child_run_handle.v1",
+        "state": state,
+        "run_id": run_id,
+        "session_id": session_id,
+        "workspace_path": workspace_path,
+        "urls": opencode_child_run_urls(
+            base_url=base_url,
+            run_id=run_id,
+            session_id=session_id,
+            workspace_path=workspace_path,
+        ),
+        "status": status or state,
+        "artifacts": artifacts,
+        "headers_required": {
+            "scillm": ["Authorization: Bearer <token>", "X-Caller-Skill: pdf-lab"],
+            "opencode_browser": {
+                "basic_auth_required": True,
+                "username": os.environ.get("OPENCODE_SERVER_USERNAME", "opencode"),
+                "password_env": "OPENCODE_SERVER_PASSWORD",
+            },
+        },
+        "note": (
+            "session_id is populated after OpenCode serve creates the session; "
+            "use scillm_run_url/events while it is pending."
+            if not session_id
+            else (
+                "Give the human human_monitor_url for live progress; "
+                "opencode_session_api_url is JSON only."
+            )
+        ),
+    }
+    if isinstance(human_monitor, dict):
+        payload["human_monitor"] = human_monitor
+        monitor_url = (
+            human_monitor.get("scillm_chat_monitor_url")
+            or human_monitor.get("human_monitor_url")
+            or human_monitor.get("opencode_workspace_url")
+        )
+        if isinstance(monitor_url, str) and monitor_url.strip():
+            payload["human_monitor_url"] = monitor_url.strip()
+        workspace_url = human_monitor.get("opencode_workspace_url")
+        if isinstance(workspace_url, str) and workspace_url.strip():
+            payload["urls"]["opencode_workspace_url"] = workspace_url.strip()
+        chat_monitor_url = human_monitor.get("scillm_chat_monitor_url")
+        if isinstance(chat_monitor_url, str) and chat_monitor_url.strip():
+            payload["urls"]["scillm_chat_monitor_url"] = chat_monitor_url.strip()
+        for key in (
+            "opencode_session_api_url",
+            "opencode_messages_api_url",
+            "opencode_diff_api_url",
+        ):
+            value = human_monitor.get(key)
+            if isinstance(value, str) and value.strip():
+                payload["urls"][key] = value.strip()
+        for key in (
+            "scillm_run_url",
+            "scillm_status_url",
+            "scillm_events_url",
+            "scillm_diff_url",
+        ):
+            value = human_monitor.get(key)
+            if isinstance(value, str) and value.strip() and run_id in value:
+                payload["urls"][key] = value.strip()
+        instruction = human_monitor.get("human_instruction")
+        if isinstance(instruction, str) and instruction.strip():
+            payload["note"] = instruction.strip()
+    write_json(case_dir / artifact_name, payload)
+    return artifact_name
+
+
+def call_opencode_patch_observable(
+    patch_request: dict[str, Any],
+    *,
+    base_url: str,
+    auth_token: str,
+    caller_skill: str,
+    timeout_s: float,
+    case_dir: Path,
+    artifact_prefix: str,
+) -> tuple[dict[str, Any], list[str]]:
+    run_id = str(patch_request.get("run_id") or "").strip()
+    if not run_id:
+        run_id = safe_opencode_child_run_id(
+            case_dir,
+            {"case_id": patch_request["scillm_metadata"].get("case_id")},
+            int(patch_request.get("attempt_index") or 1),
+        )
+        patch_request["run_id"] = run_id
+    handle_artifact = f"{artifact_prefix}opencode_child_run_handle.json"
+    workspace_path = str(patch_request.get("cwd") or "") or None
+    artifacts = [
+        write_opencode_child_run_handle(
+            case_dir,
+            artifact_name=handle_artifact,
+            base_url=base_url,
+            run_id=run_id,
+            workspace_path=workspace_path,
+            state="starting",
+        )
+    ]
+    result: dict[str, Any] = {}
+    error: dict[str, BaseException] = {}
+
+    def worker() -> None:
+        try:
+            result["receipt"] = call_opencode_patch(
+                patch_request,
+                base_url=base_url,
+                auth_token=auth_token,
+                caller_skill=caller_skill,
+                timeout_s=timeout_s,
+            )
+        except BaseException as exc:  # noqa: BLE001 - worker error is re-raised in caller thread.
+            error["exception"] = exc
+
+    thread = threading.Thread(target=worker, name=f"pdf-lab-opencode-{run_id}", daemon=True)
+    thread.start()
+    deadline = time.monotonic() + min(timeout_s, 30.0)
+    last_snapshot: dict[str, Any] | None = None
+    while thread.is_alive() and time.monotonic() < deadline:
+        time.sleep(1.0)
+        try:
+            snapshot = fetch_opencode_run_snapshot(
+                base_url=base_url,
+                auth_token=auth_token,
+                caller_skill=caller_skill,
+                run_id=run_id,
+                timeout_s=5.0,
+            )
+        except Exception:
+            snapshot = None
+        if not isinstance(snapshot, dict):
+            continue
+        last_snapshot = snapshot
+        write_opencode_child_run_handle(
+            case_dir,
+            artifact_name=handle_artifact,
+            base_url=base_url,
+            run_id=run_id,
+            snapshot=snapshot,
+            workspace_path=workspace_path,
+            state="running",
+        )
+        if snapshot.get("session_id"):
+            break
+    thread.join(timeout=max(timeout_s + 5.0, 5.0))
+    if thread.is_alive():
+        raise TimeoutError(f"OpenCode serve call did not return within timeout_s={timeout_s}")
+    if "exception" in error:
+        raise error["exception"]
+    receipt = result["receipt"]
+    write_opencode_child_run_handle(
+        case_dir,
+        artifact_name=handle_artifact,
+        base_url=base_url,
+        run_id=run_id,
+        snapshot=last_snapshot,
+        receipt=receipt,
+        workspace_path=workspace_path,
+        state="finished",
+    )
+    return receipt, artifacts
 
 
 def parse_transport_sse_response(
@@ -3899,9 +4379,18 @@ def validate_patch_scope(
     ]
     if disallowed:
         errors.append(f"patch touched disallowed files: {disallowed}")
-    test_files = [path for path in changed_files if path.startswith("tests/") and path.endswith(".py")]
+    python_test_files = [path for path in changed_files if path.startswith("tests/") and path.endswith(".py")]
+    rust_test_files = [
+        path
+        for path in changed_files
+        if path.startswith("src/") and path.endswith(".rs")
+    ]
+    test_files = python_test_files
+    if delegate_claim is not None:
+        claimed_tests_preview = sorted(str(path) for path in delegate_claim.get("tests") or [])
+        test_files = sorted(set(python_test_files) | (set(rust_test_files) & set(claimed_tests_preview)))
     if not test_files:
-        errors.append("patch must add or update at least one Python regression test under tests/")
+        errors.append("patch must add or update at least one regression test under tests/ or claimed in-file Rust unit test under src/")
     generated_artifacts = [
         path for path in changed_files
         if path.startswith("artifacts/") or path.startswith(".plan-iterate/")
@@ -3914,7 +4403,7 @@ def validate_patch_scope(
         for claim_error in validation_error_list(delegate_claim, "patch delegate claim"):
             errors.append(f"patch delegate claim invalid: {claim_error}")
         claimed_changed_files = sorted(delegate_claim.get("changed_files") or [])
-        claimed_tests = sorted(delegate_claim.get("tests") or [])
+        claimed_tests = sorted(str(path) for path in delegate_claim.get("tests") or [])
         claimed_patch_files = sorted(set(claimed_changed_files) | set(claimed_tests))
         observed_changed_files = sorted(changed_files)
         if claimed_patch_files != observed_changed_files:
@@ -3968,6 +4457,15 @@ def run_validation_commands(
         )
     bytecode_cleanup = cleanup_python_bytecode_caches(cwd)
     errors = [f"command failed: {item['command']}" for item in results if item["exit_code"] != 0]
+    zero_test_commands = [
+        item["command"]
+        for item in results
+        if item["exit_code"] == 0
+        and item["command"].strip().startswith("cargo test")
+        and re.search(r"\brunning\s+0\s+tests\b", f"{item['stdout']}\n{item['stderr']}", flags=re.IGNORECASE)
+    ]
+    if zero_test_commands:
+        errors.append(f"validation command ran zero cargo tests: {zero_test_commands}")
     if not commands:
         errors.append("no validation commands configured")
     covered_test_files = sorted(
@@ -3978,11 +4476,19 @@ def run_validation_commands(
     missing_test_file_coverage = sorted(set(required_test_files) - set(covered_test_files))
     if missing_test_file_coverage:
         errors.append(f"validation commands did not cover changed regression tests: {missing_test_file_coverage}")
+    command_test_files = sorted(
+        {
+            match.rstrip(".,)")
+            for command in commands
+            for match in re.findall(r"(?<![\w./-])((?:tests|src)/[^\s'\"#;]+?\.(?:py|rs))", command)
+        }
+    )
     return {
         "schema": "pdf_lab.second_pass.test_validation.v1",
         "ok": not errors,
         "errors": errors,
         "results": results,
+        "test_files": sorted(set(command_test_files) | set(covered_test_files)),
         "required_test_files": required_test_files,
         "covered_test_files": covered_test_files,
         "missing_test_file_coverage": missing_test_file_coverage,
@@ -4458,6 +4964,8 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
         "ok": not errors,
         "errors": errors,
         "case_id": terminal.get("case_id"),
+        "page_number": terminal.get("page_number"),
+        "terminal_status": terminal.get("terminal_status"),
         "zip_path": str(zip_path),
         "required_zip_entries": required_zip_entries,
         "zip_entry_count": len(zip_entries),
@@ -5721,8 +6229,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         "ok": not errors,
         "errors": errors,
         "case_id": terminal.get("case_id"),
+        "page_number": terminal.get("page_number"),
         "terminal_status": terminal_status,
         "declared_evidence_count": len(evidence_artifacts),
+        "duplicate_evidence_artifacts": duplicate_evidence_artifacts,
+        "unsafe_evidence_artifacts": unsafe_evidence_artifacts,
         "missing_artifacts": missing_artifacts,
     }
 
@@ -6602,6 +7113,7 @@ def run_page_case(
             attempt_prefix = f"patch_attempt_{attempt_index:02d}_"
             attempt_node_id = f"opencode_patch_attempt_{attempt_index:02d}"
             attempt_transport_artifacts: list[str] = []
+            attempt_child_handle_artifacts: list[str] = []
             attempt_diagnosis_transport_artifacts: list[str] = []
             attempt_opencode_host_artifacts: list[str] = []
             attempt_diagnosis_opencode_host_artifacts: list[str] = []
@@ -7061,6 +7573,7 @@ def run_page_case(
                         "validation_artifact": validation_artifact,
                         "prompt_contract_artifacts": attempt_prompt_contract_artifacts,
                         "transport_event_artifacts": attempt_transport_artifacts,
+                        "opencode_child_handle_artifacts": attempt_child_handle_artifacts,
                         "diagnosis_request_artifact": f"{attempt_prefix}diagnosis_request.json" if repair_strategy == "split" else None,
                         "diagnosis_receipt_artifact": (
                             f"{attempt_prefix}diagnosis_receipt.json"
@@ -7117,12 +7630,14 @@ def run_page_case(
                             timeout_s=opencode_timeout_s + 30,
                         )
                     else:
-                        patch_receipt = call_opencode_patch(
+                        patch_receipt, attempt_child_handle_artifacts = call_opencode_patch_observable(
                             patch_request,
                             base_url=scillm_base_url,
                             auth_token=scillm_auth_token,
                             caller_skill=caller_skill,
                             timeout_s=opencode_timeout_s + 30,
+                            case_dir=case_dir,
+                            artifact_prefix=attempt_prefix,
                         )
                     receipt_artifact = f"{attempt_prefix}receipt.json"
                     write_json(case_dir / receipt_artifact, patch_receipt)
@@ -7144,6 +7659,10 @@ def run_page_case(
                             patch_receipt.get("event_stream") or {},
                         )
                 except Exception as exc:  # noqa: BLE001 - external substrate failures must be ledgered.
+                    if not attempt_child_handle_artifacts:
+                        child_handle_artifact = f"{attempt_prefix}opencode_child_run_handle.json"
+                        if (case_dir / child_handle_artifact).is_file():
+                            attempt_child_handle_artifacts = [child_handle_artifact]
                     attempt_error = {
                         "schema": "pdf_lab.second_pass.substrate_error.v1",
                         "node_id": attempt_node_id,
@@ -7187,6 +7706,7 @@ def run_page_case(
                     "validation_artifact": validation_artifact,
                     "prompt_contract_artifacts": attempt_prompt_contract_artifacts,
                     "transport_event_artifacts": attempt_transport_artifacts,
+                    "opencode_child_handle_artifacts": attempt_child_handle_artifacts,
                     "transport_retry_fresh_parent": transport_retry_fresh_parent,
                     "diagnosis_request_artifact": f"{attempt_prefix}diagnosis_request.json" if repair_strategy == "split" else None,
                     "diagnosis_receipt_artifact": (
@@ -7252,6 +7772,12 @@ def run_page_case(
             + (["repair_plan_error.json"] if repair_plan_error is not None else [])
             + ["patch_attempts_ledger.json"]
             + prompt_contract_artifacts
+            + [
+                artifact
+                for attempt in patch_attempts
+                for artifact in attempt.get("opencode_child_handle_artifacts", [])
+                if isinstance(artifact, str) and artifact
+            ]
             + (["scillm_patch_preflight.json"] if patch_preflight is not None else [])
             + (["patch_receipt.json"] if patch_receipt is not None else [])
             + opencode_host_artifacts
@@ -7651,6 +8177,13 @@ def run_page_case(
             if isinstance(attempt, dict) and attempt.get("ok") is True
             for artifact_key in ["request_artifact", "receipt_artifact"]
             if attempt.get(artifact_key)
+        )
+        terminal["evidence_artifacts"].extend(
+            str(artifact)
+            for attempt in patch_attempts_ledger.get("attempts") or []
+            if isinstance(attempt, dict)
+            for artifact in attempt.get("opencode_child_handle_artifacts") or []
+            if isinstance(artifact, str) and artifact
         )
     if patch_delegate_bug_report_artifact is not None:
         terminal["evidence_artifacts"].append(patch_delegate_bug_report_artifact)
