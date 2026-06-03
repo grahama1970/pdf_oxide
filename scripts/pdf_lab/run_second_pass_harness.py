@@ -2485,6 +2485,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("review_after_validation schema mismatch")
             if review_after_validation.get("ok") is not True:
                 entry_errors.append("review_after_validation.ok is not true")
+            elif review_after_validation.get("errors") not in (None, []):
+                entry_errors.append("review_after_validation ok is true but errors are not empty")
         if review_after_response:
             if review_after_response.get("schema") != "pdf_lab.second_pass.review_response.v1":
                 entry_errors.append("review_after_response schema mismatch")
