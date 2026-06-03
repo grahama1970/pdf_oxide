@@ -2513,6 +2513,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("commit_gate schema mismatch")
             if commit_gate.get("ok") is not True:
                 entry_errors.append("commit_gate.ok is not true")
+            elif commit_gate.get("errors") not in (None, []):
+                entry_errors.append("commit_gate ok is true but errors are not empty")
             if commit_gate.get("commit_sha") != commit_sha:
                 entry_errors.append("commit_gate commit_sha does not match page result")
             if commit_gate.get("exact_file_match") is not True:
