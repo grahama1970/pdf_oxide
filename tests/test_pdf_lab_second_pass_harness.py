@@ -5033,6 +5033,28 @@ def test_live_canary_artifact_validation_rejects_opencode_ok_without_artifacts(t
     assert "opencode_completion_canary_validation.json" in json.dumps(validation)
 
 
+def test_live_canary_artifact_validation_rejects_string_canary_errors(tmp_path: Path) -> None:
+    harness = _load_module()
+
+    validation = harness.validate_live_canary_artifacts(
+        out_dir=tmp_path,
+        canary={
+            "schema": "pdf_lab.second_pass.opencode_completion_canary.v1",
+            "ok": False,
+            "errors": "OpenCode completion canary did not create sentinel file",
+        },
+        artifact_builder=harness.opencode_completion_canary_artifacts,
+        canary_schema="pdf_lab.second_pass.opencode_completion_canary.v1",
+        validation_schema="pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+        validation_artifact_name="opencode_completion_canary_validation.json",
+        cleanup_schema="pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+        cleanup_artifact_name="opencode_completion_canary_cleanup.json",
+    )
+
+    assert validation["ok"] is False
+    assert "live canary errors must be a list" in validation["errors"]
+
+
 def test_live_canary_artifact_validation_rejects_transport_ok_without_validation_artifact(tmp_path: Path) -> None:
     harness = _load_module()
 

@@ -4207,7 +4207,15 @@ def validate_live_canary_artifacts(
     elif canary.get("schema") != canary_schema:
         errors.append(f"live canary schema mismatch: {canary.get('schema')}")
     elif canary.get("ok") is not True:
-        errors.extend(list(canary.get("errors") or ["live canary did not pass"]))
+        canary_errors = canary.get("errors")
+        if canary_errors is None:
+            errors.append("live canary did not pass")
+        elif not isinstance(canary_errors, list):
+            errors.append("live canary errors must be a list")
+        elif not all(isinstance(error, str) for error in canary_errors):
+            errors.append("live canary errors must be a list of strings")
+        else:
+            errors.extend(canary_errors or ["live canary did not pass"])
     missing = sorted(name for name, path in artifacts.items() if not path.is_file())
     if missing:
         errors.append(f"live canary missing artifacts: {missing}")
