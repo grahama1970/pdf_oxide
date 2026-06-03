@@ -3862,6 +3862,8 @@ def validate_scillm_transport_readonly_canary_receipt(
     diff = raw.get("diff")
     if delivery_state != "completed":
         errors.append(f"transport read-only canary delivery_state is not completed: {delivery_state}")
+    if not saw_message_completed:
+        errors.append("transport read-only canary event stream did not include message.completed")
     if not assistant_text.strip():
         errors.append("transport read-only canary produced no assistant_text")
     if not assistant_text.strip().startswith("PDF_LAB_TRANSPORT_CANARY_OK"):
@@ -3875,6 +3877,7 @@ def validate_scillm_transport_readonly_canary_receipt(
         "ok": not errors,
         "errors": errors,
         "delivery_state": delivery_state or "unknown",
+        "saw_message_completed": saw_message_completed,
         "assistant_text_present": bool(assistant_text.strip()),
         "sentinel_present": assistant_text.strip().startswith("PDF_LAB_TRANSPORT_CANARY_OK"),
         "diff_present": diff not in (None, "", [], {}),
@@ -3965,6 +3968,8 @@ def validate_scillm_transport_write_canary_receipt(
     sentinel_text = sentinel_path.read_text(encoding="utf-8") if sentinel_path.is_file() else None
     if delivery_state != "completed":
         errors.append(f"transport write canary delivery_state is not completed: {delivery_state}")
+    if not saw_message_completed:
+        errors.append("transport write canary event stream did not include message.completed")
     if not assistant_text.strip():
         errors.append("transport write canary produced no assistant_text")
     if not assistant_text.strip().startswith("PDF_LAB_TRANSPORT_WRITE_CANARY_OK"):
@@ -3995,6 +4000,7 @@ def validate_scillm_transport_write_canary_receipt(
         "errors": errors,
         "warnings": warnings,
         "delivery_state": delivery_state or "unknown",
+        "saw_message_completed": saw_message_completed,
         "assistant_text_present": bool(assistant_text.strip()),
         "sentinel_present": assistant_text.strip().startswith("PDF_LAB_TRANSPORT_WRITE_CANARY_OK"),
         "diff_present": diff_present,

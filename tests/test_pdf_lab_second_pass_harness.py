@@ -5265,6 +5265,7 @@ def test_run_scillm_transport_readonly_canary_validates_completed_empty_diff(tmp
                 "transport_run_id": "tr-canary",
                 "event_stream": {
                     "delivery_state": "completed",
+                    "saw_message_completed": True,
                     "final_result": {
                         "delivery_state": "completed",
                         "assistant_text": "PDF_LAB_TRANSPORT_CANARY_OK workspace is visible",
@@ -5302,6 +5303,29 @@ def test_run_scillm_transport_readonly_canary_validates_completed_empty_diff(tmp
     assert captured_request["message_body"]["model"] == "gpt-5.5"
     assert (tmp_path / "out/scillm_transport_readonly_canary/scillm_transport_readonly_canary.json").is_file()
     assert (tmp_path / "out/scillm_transport_readonly_canary/scillm_transport_readonly_canary_event_stream.json").is_file()
+
+
+def test_validate_scillm_transport_readonly_canary_requires_message_completed_event() -> None:
+    harness = _load_module()
+
+    validation = harness.validate_scillm_transport_readonly_canary_receipt(
+        {
+            "message_response": {
+                "delivery_state": "completed",
+                "assistant_text": "PDF_LAB_TRANSPORT_CANARY_OK workspace is visible",
+                "diff": [],
+            },
+            "event_stream": {
+                "delivery_state": "completed",
+                "saw_message_completed": False,
+            },
+        },
+        worktree_status=[],
+    )
+
+    assert validation["ok"] is False
+    assert validation["saw_message_completed"] is False
+    assert "transport read-only canary event stream did not include message.completed" in validation["errors"]
 
 
 def test_run_scillm_transport_readonly_canary_rejects_coerced_validation_ok(tmp_path: Path, monkeypatch) -> None:
@@ -5410,6 +5434,7 @@ def test_run_scillm_transport_write_canary_validates_write_and_cleanup(tmp_path:
                 "transport_run_id": "tr-write-canary",
                 "event_stream": {
                     "delivery_state": "completed",
+                    "saw_message_completed": True,
                     "final_result": {
                         "delivery_state": "completed",
                         "assistant_text": f"PDF_LAB_TRANSPORT_WRITE_CANARY_OK wrote {relpath}",
@@ -5454,6 +5479,34 @@ def test_run_scillm_transport_write_canary_validates_write_and_cleanup(tmp_path:
     assert cleanup["ok"] is True
     assert cleanup["removed_file"] is True
     assert not (code_root / ".pdf_lab_write_canary/scillm_transport_write_canary.txt").exists()
+
+
+def test_validate_scillm_transport_write_canary_requires_message_completed_event(tmp_path: Path) -> None:
+    harness = _load_module()
+    code_root = tmp_path / "code-root"
+    sentinel = code_root / ".pdf_lab_write_canary/scillm_transport_write_canary.txt"
+    sentinel.parent.mkdir(parents=True)
+    sentinel.write_text("PDF_LAB_SCILLM_TRANSPORT_WRITE_CANARY_OK\n", encoding="utf-8")
+
+    validation = harness.validate_scillm_transport_write_canary_receipt(
+        {
+            "message_response": {
+                "delivery_state": "completed",
+                "assistant_text": "PDF_LAB_TRANSPORT_WRITE_CANARY_OK wrote `.pdf_lab_write_canary/scillm_transport_write_canary.txt`",
+                "diff": [{"file": ".pdf_lab_write_canary/scillm_transport_write_canary.txt", "status": "added"}],
+            },
+            "event_stream": {
+                "delivery_state": "completed",
+                "saw_message_completed": False,
+                "session_errors": [],
+            },
+        },
+        code_root=code_root,
+    )
+
+    assert validation["ok"] is False
+    assert validation["saw_message_completed"] is False
+    assert "transport write canary event stream did not include message.completed" in validation["errors"]
 
 
 def test_run_scillm_transport_write_canary_rejects_coerced_validation_ok(tmp_path: Path, monkeypatch) -> None:
