@@ -128,6 +128,7 @@ MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
     "page_candidates.png",
     "candidate_presets.json",
     "review_request.json",
+    "review_request_validation.json",
     "review_validation.json",
     "scillm_orchestrator_page_dag_spec.json",
     "scillm_orchestrator_page_dag_spec_validation.json",
@@ -550,6 +551,76 @@ def build_review_request(
             "candidate_findings": "one finding per candidate_id",
             "page_rationale": "non-empty page-level rationale tied to rendered and extracted evidence",
         },
+    }
+
+
+def validate_review_request_contract(case_dir: Path, review_request: dict[str, Any]) -> dict[str, Any]:
+    errors: list[str] = []
+    if review_request.get("schema") != "pdf_lab.second_pass.review_request.v1":
+        errors.append("review_request schema mismatch")
+    if review_request.get("endpoint") != "POST /v1/chat/completions":
+        errors.append("review_request endpoint mismatch")
+    if review_request.get("response_format") != {"type": "json_object"}:
+        errors.append("review_request response_format must require json_object")
+    if review_request.get("required_response_schema", {}).get("schema") != "pdf_lab.second_pass.review_response.v1":
+        errors.append("review_request required_response_schema mismatch")
+    artifacts = review_request.get("artifacts")
+    if not isinstance(artifacts, dict):
+        errors.append("review_request artifacts must be an object")
+        artifacts = {}
+    for key in ["page_json", "original_image", "annotated_image", "candidate_presets"]:
+        artifact = artifacts.get(key)
+        if not isinstance(artifact, str) or not artifact:
+            errors.append(f"review_request artifacts.{key} missing")
+        elif not (case_dir / artifact).is_file():
+            errors.append(f"review_request artifact does not exist: {artifact}")
+    payload = review_request.get("scillm_payload")
+    if not isinstance(payload, dict):
+        errors.append("review_request scillm_payload must be an object")
+        payload = {}
+    if payload.get("response_format") != {"type": "json_object"}:
+        errors.append("scillm_payload response_format must require json_object")
+    if payload.get("scillm_metadata") != review_request.get("scillm_metadata"):
+        errors.append("scillm_payload scillm_metadata must match review_request scillm_metadata")
+    metadata = payload.get("scillm_metadata")
+    if not isinstance(metadata, dict) or not metadata.get("batch_id") or not metadata.get("item_id"):
+        errors.append("scillm_payload scillm_metadata must include batch_id and item_id")
+    messages = payload.get("messages")
+    if not isinstance(messages, list) or len(messages) != 1:
+        errors.append("scillm_payload must contain exactly one user message")
+        content = []
+    else:
+        message = messages[0]
+        if not isinstance(message, dict) or message.get("role") != "user":
+            errors.append("scillm_payload message role must be user")
+            content = []
+        else:
+            content = message.get("content")
+    if not isinstance(content, list):
+        errors.append("scillm_payload user content must be a list")
+        content = []
+    text_parts = [part for part in content if isinstance(part, dict) and part.get("type") == "text"]
+    image_parts = [part for part in content if isinstance(part, dict) and part.get("type") == "image_url"]
+    if len(text_parts) != 1:
+        errors.append("scillm_payload must include exactly one text prompt part")
+    elif not str(text_parts[0].get("text") or "").strip():
+        errors.append("scillm_payload text prompt is empty")
+    if len(image_parts) != 2:
+        errors.append("scillm_payload must include exactly two image_url evidence parts")
+    else:
+        for idx, image_part in enumerate(image_parts, start=1):
+            image_url = image_part.get("image_url")
+            url = image_url.get("url") if isinstance(image_url, dict) else None
+            if not isinstance(url, str) or not url.startswith("data:image/") or ";base64," not in url:
+                errors.append(f"scillm_payload image_url part {idx} must be a base64 data URI")
+    return {
+        "schema": "pdf_lab.second_pass.review_request_validation.v1",
+        "ok": not errors,
+        "errors": errors,
+        "artifact_paths": artifacts,
+        "image_part_count": len(image_parts),
+        "text_part_count": len(text_parts),
+        "scillm_metadata": payload.get("scillm_metadata"),
     }
 
 
@@ -3940,6 +4011,8 @@ def run_page_case(
         batch_id=batch_id,
     )
     write_json(case_dir / "review_request.json", review_request)
+    review_request_validation = validate_review_request_contract(case_dir, review_request)
+    write_json(case_dir / "review_request_validation.json", review_request_validation)
     orchestrator_dag_spec = build_page_orchestrator_dag_spec(
         page_case=page_case,
         candidates=candidates,
@@ -3981,6 +4054,7 @@ def run_page_case(
         input_artifacts=["page_before.json", "page_before.png", "page_candidates.png", "candidate_presets.json"],
         output_artifacts=[
             "review_request.json",
+            "review_request_validation.json",
             "scillm_orchestrator_page_dag_spec.json",
             "scillm_orchestrator_page_dag_spec_validation.json",
             "scillm_orchestrator_page_submission.json",
@@ -3988,8 +4062,9 @@ def run_page_case(
         ],
         command_or_endpoint="run_page_second_pass_dag.build_model_ready_payload",
         validator_result={
-            "ok": orchestrator_dag_spec_validation["ok"] and page_orchestrator_submission_validation["ok"],
+            "ok": review_request_validation["ok"] and orchestrator_dag_spec_validation["ok"] and page_orchestrator_submission_validation["ok"],
             "scillm_metadata": review_request["scillm_metadata"],
+            "review_request_errors": review_request_validation["errors"],
             "orchestrator_dag_errors": orchestrator_dag_spec_validation["errors"],
             "orchestrator_submission_errors": page_orchestrator_submission_validation["errors"],
         },
@@ -4078,6 +4153,7 @@ def run_page_case(
                 "selected_candidates.json",
                 "candidate_presets.json",
                 "review_request.json",
+                "review_request_validation.json",
                 "scillm_orchestrator_page_dag_spec.json",
                 "scillm_orchestrator_page_dag_spec_validation.json",
                 "scillm_orchestrator_page_submission.json",
@@ -5162,6 +5238,7 @@ def run_page_case(
             "page_candidates.png",
             "candidate_presets.json",
             "review_request.json",
+            "review_request_validation.json",
             "scillm_orchestrator_page_dag_spec.json",
             "scillm_orchestrator_page_dag_spec_validation.json",
             "scillm_orchestrator_page_submission.json",

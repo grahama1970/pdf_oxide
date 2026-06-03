@@ -193,6 +193,7 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
     assert (case_dir / "page_candidates.png").is_file()
     assert (case_dir / "candidate_presets.json").is_file()
     assert (case_dir / "review_request.json").is_file()
+    assert (case_dir / "review_request_validation.json").is_file()
     assert (case_dir / "scillm_orchestrator_page_dag_spec.json").is_file()
     assert (case_dir / "scillm_orchestrator_page_dag_spec_validation.json").is_file()
     assert (case_dir / "scillm_orchestrator_page_submission.json").is_file()
@@ -213,6 +214,12 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
     assert "scillm_orchestrator_page_submission.json" in ledger["evidence_artifacts"]
     assert "scillm_orchestrator_page_submission_validation.json" in ledger["evidence_artifacts"]
     assert "review.html" in ledger["evidence_artifacts"]
+    assert "review_request_validation.json" in ledger["evidence_artifacts"]
+    request_validation = json.loads((case_dir / "review_request_validation.json").read_text(encoding="utf-8"))
+    assert request_validation["schema"] == "pdf_lab.second_pass.review_request_validation.v1"
+    assert request_validation["ok"] is True
+    assert request_validation["image_part_count"] == 2
+    assert request_validation["text_part_count"] == 1
     dag_spec = json.loads((case_dir / "scillm_orchestrator_page_dag_spec.json").read_text(encoding="utf-8"))
     dag_spec_validation = json.loads((case_dir / "scillm_orchestrator_page_dag_spec_validation.json").read_text(encoding="utf-8"))
     submission = json.loads((case_dir / "scillm_orchestrator_page_submission.json").read_text(encoding="utf-8"))
@@ -246,6 +253,7 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
     with zipfile.ZipFile(case_dir / "review_bundle.zip") as bundle:
         names = set(bundle.namelist())
         assert "review.html" in names
+        assert "review_request_validation.json" in names
         assert "scillm_orchestrator_page_dag_spec.json" in names
         assert "scillm_orchestrator_page_submission.json" in names
     assert (case_dir / "review_validation.json").is_file()
@@ -257,6 +265,7 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
     assert "terminal_ledger.json" in bundle_validation["required_zip_entries"]
     assert "terminal_ledger_validation.json" in bundle_validation["required_zip_entries"]
     assert "review.html" in bundle_validation["required_zip_entries"]
+    assert "review_request_validation.json" in bundle_validation["required_zip_entries"]
     assert (case_dir / "receipts/initialize_page_case.json").is_file()
     assert (case_dir / "receipts/render_page_review_artifact.json").is_file()
     package_receipt = json.loads((case_dir / "receipts/package_page_review_bundle.json").read_text(encoding="utf-8"))
@@ -4138,6 +4147,43 @@ def test_validate_page_review_bundle_rejects_missing_zip_entry(tmp_path: Path) -
     assert validation["missing_artifacts"] == []
     assert validation["missing_expected_zip_entries"] == ["review_request.json"]
     assert "required bundle artifacts are missing from zip" in "\n".join(validation["errors"])
+
+
+def test_validate_review_request_contract_rejects_missing_multimodal_evidence(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "page_before.json").write_text(json.dumps({"blocks": []}), encoding="utf-8")
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "candidate_presets.json").write_text(json.dumps({"candidates": []}), encoding="utf-8")
+    review_request = {
+        "schema": "pdf_lab.second_pass.review_request.v1",
+        "endpoint": "POST /v1/chat/completions",
+        "response_format": {"type": "json_object"},
+        "scillm_metadata": {"batch_id": "batch", "item_id": "case"},
+        "artifacts": {
+            "page_json": "page_before.json",
+            "original_image": "page_before.png",
+            "annotated_image": "missing_overlay.png",
+            "candidate_presets": "candidate_presets.json",
+        },
+        "required_response_schema": {"schema": "pdf_lab.second_pass.review_response.v1"},
+        "scillm_payload": {
+            "model": "gpt-5.5",
+            "response_format": {"type": "json_object"},
+            "scillm_metadata": {"batch_id": "batch", "item_id": "case"},
+            "messages": [{"role": "user", "content": [{"type": "text", "text": "review"}]}],
+        },
+    }
+
+    validation = dag.validate_review_request_contract(case_dir, review_request)
+
+    assert validation["schema"] == "pdf_lab.second_pass.review_request_validation.v1"
+    assert validation["ok"] is False
+    assert validation["image_part_count"] == 0
+    errors = "\n".join(validation["errors"])
+    assert "review_request artifact does not exist: missing_overlay.png" in errors
+    assert "scillm_payload must include exactly two image_url evidence parts" in errors
 
 
 def test_validate_page_review_bundle_requires_minimum_one_case_evidence(tmp_path: Path) -> None:
