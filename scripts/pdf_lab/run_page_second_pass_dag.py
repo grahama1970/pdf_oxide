@@ -4942,6 +4942,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if repair_plan_validation:
             if repair_plan_validation.get("schema") != "pdf_lab.second_pass.repair_plan_validation.v1":
                 errors.append("repair_plan_validation schema mismatch")
+            if not isinstance(repair_plan_validation.get("errors"), list):
+                errors.append("repair_plan_validation errors must be a list")
             repair_plan_page_case = repair_plan_validation.get("page_case")
             if not isinstance(repair_plan_page_case, dict):
                 errors.append("repair_plan_validation page_case must be an object")
@@ -4984,6 +4986,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if repair_diagnosis_validation:
             if repair_diagnosis_validation.get("schema") != "pdf_lab.second_pass.repair_diagnosis_validation.v1":
                 errors.append("repair_diagnosis_validation schema mismatch")
+            if not isinstance(repair_diagnosis_validation.get("errors"), list):
+                errors.append("repair_diagnosis_validation errors must be a list")
             repair_diagnosis_page_case = repair_diagnosis_validation.get("page_case")
             if not isinstance(repair_diagnosis_page_case, dict):
                 errors.append("repair_diagnosis_validation page_case must be an object")
