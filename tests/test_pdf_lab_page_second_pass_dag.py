@@ -5087,6 +5087,148 @@ def test_validate_page_terminal_ledger_rejects_dry_run_with_review_response(tmp_
     assert "dry_run_review_not_executed terminal ledger must not include review_response.json" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_review_preflight_surface(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": False,
+                "errors": ["scillm_review_call_failed"],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "scillm_review_preflight.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_preflight.v1",
+                "surface": "opencode_serve",
+                "base_url": "http://localhost:4001",
+                "caller_skill": "",
+                "checks": [],
+                "ok": False,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "blocked_substrate",
+        "reason": "scillm_review_call_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_validation.json",
+            "scillm_review_preflight.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_review_preflight.json surface does not match expected scillm surface" in errors
+    assert "scillm_review_preflight.json caller_skill must be non-empty" in errors
+    assert "scillm_review_preflight.json ok false requires non-empty errors" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_patch_preflight_surface_mismatch(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": True,
+                "errors": [],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": ["cand:p0001:0000:table"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "review_response.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_response.v1",
+                "page_status": "defect",
+                "candidate_findings": [{"candidate_id": "cand:p0001:0000:table", "status": "defect"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_request.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_orchestrator_patch_request.v1",
+                "endpoint": "POST /v1/scillm/opencode/transport/runs + children + message",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+                "ok": False,
+                "errors": ["patch_delegate_call_failed"],
+                "patch_status": "substrate_error",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "scillm_patch_preflight.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_preflight.v1",
+                "surface": "opencode_serve",
+                "base_url": "http://localhost:4001",
+                "caller_skill": "pdf-lab",
+                "checks": [],
+                "ok": True,
+                "errors": ["stale success artifact kept an old error"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "blocked_substrate",
+        "reason": "patch_delegate_call_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_validation.json",
+            "review_response.json",
+            "patch_request.json",
+            "patch_validation.json",
+            "scillm_patch_preflight.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_patch_preflight.json surface does not match expected scillm surface" in errors
+    assert "scillm_patch_preflight.json ok true requires empty errors" in errors
+
+
 def test_validate_page_review_bundle_rejects_missing_zip_entry(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

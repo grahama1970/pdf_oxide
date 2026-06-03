@@ -3659,6 +3659,50 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     )
     if missing_artifacts:
         errors.append(f"declared evidence artifacts are missing: {missing_artifacts}")
+
+    def validate_preflight_artifact(artifact: str, expected_surfaces: set[str]) -> dict[str, Any]:
+        preflight = read_required_json_artifact(artifact)
+        if not preflight:
+            return {}
+        if preflight.get("schema") != "pdf_lab.second_pass.scillm_preflight.v1":
+            errors.append(f"{artifact} schema mismatch")
+        surface = preflight.get("surface")
+        if surface not in expected_surfaces:
+            errors.append(f"{artifact} surface does not match expected scillm surface")
+        if not isinstance(preflight.get("caller_skill"), str) or not preflight.get("caller_skill", "").strip():
+            errors.append(f"{artifact} caller_skill must be non-empty")
+        if not isinstance(preflight.get("checks"), list):
+            errors.append(f"{artifact} checks must be a list")
+        preflight_errors = preflight.get("errors")
+        if not isinstance(preflight_errors, list):
+            errors.append(f"{artifact} errors must be a list")
+            preflight_errors = []
+        if preflight.get("ok") is True and preflight_errors:
+            errors.append(f"{artifact} ok true requires empty errors")
+        if preflight.get("ok") is False and not preflight_errors:
+            errors.append(f"{artifact} ok false requires non-empty errors")
+        if preflight.get("ok") not in {True, False}:
+            errors.append(f"{artifact} ok must be boolean")
+        return preflight
+
+    if "scillm_review_preflight.json" in evidence_artifacts:
+        validate_preflight_artifact("scillm_review_preflight.json", {"chat"})
+    if "scillm_patch_preflight.json" in evidence_artifacts:
+        expected_patch_surfaces = {"opencode_serve", "opencode_transport"}
+        patch_request_for_preflight = read_required_json_artifact("patch_request.json") if "patch_request.json" in evidence_artifacts else {}
+        diagnosis_request_for_preflight = (
+            read_required_json_artifact("repair_diagnosis_request.json")
+            if "repair_diagnosis_request.json" in evidence_artifacts
+            else {}
+        )
+        preflight_request = patch_request_for_preflight or diagnosis_request_for_preflight
+        endpoint = preflight_request.get("endpoint") if isinstance(preflight_request, dict) else None
+        if endpoint == "POST /v1/scillm/opencode/runs":
+            expected_patch_surfaces = {"opencode_serve"}
+        elif endpoint == "POST /v1/scillm/opencode/transport/runs + children + message":
+            expected_patch_surfaces = {"opencode_transport"}
+        validate_preflight_artifact("scillm_patch_preflight.json", expected_patch_surfaces)
+
     review_validation = read_required_json_artifact("review_validation.json") if "review_validation.json" in evidence_artifacts else {}
     review_response = read_required_json_artifact("review_response.json") if "review_response.json" in evidence_artifacts else {}
     terminal_reason = terminal.get("reason")
