@@ -5041,8 +5041,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append("targeted_tests_failed terminal ledger requires test_validation.ok false")
     if terminal_status == "patched_confirmed":
         commit_sha = terminal.get("commit_sha")
-        if not terminal.get("commit_sha"):
-            errors.append("patched_confirmed terminal ledger missing commit_sha")
+        if not isinstance(commit_sha, str) or not commit_sha:
+            errors.append("patched_confirmed terminal ledger commit_sha must be a non-empty string")
         if terminal.get("commit_gate_ok") is not True:
             errors.append("patched_confirmed terminal ledger requires commit_gate_ok true")
         if terminal.get("commit_exact_file_match") is not True:

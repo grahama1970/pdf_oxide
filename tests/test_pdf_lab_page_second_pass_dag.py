@@ -6914,10 +6914,40 @@ def test_validate_page_terminal_ledger_rejects_unproven_patched_confirmed(tmp_pa
 
     assert validation["ok"] is False
     errors = "\n".join(validation["errors"])
-    assert "patched_confirmed terminal ledger missing commit_sha" in errors
+    assert "patched_confirmed terminal ledger commit_sha must be a non-empty string" in errors
     assert "patched_confirmed terminal ledger requires commit_exact_file_match true" in errors
     assert "patched_confirmed terminal ledger missing commit_acceptance_gate.json" in errors
     assert "declared evidence artifacts are missing" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_malformed_commit_sha(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    malformed_commit_sha = ["abc123"]
+    _write_full_patched_confirmed_artifacts(case_dir, commit_sha=malformed_commit_sha)
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "patched_confirmed",
+        "reason": "patch_committed_and_after_review_clean",
+        "evidence_artifacts": [
+            "review.html",
+            *sorted(dag.REQUIRED_PATCHED_CONFIRMED_ARTIFACTS),
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": malformed_commit_sha,
+        "commit_gate_ok": True,
+        "commit_exact_file_match": True,
+        "commit_revertability_ok": True,
+        "commit_acceptance_ok": True,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "patched_confirmed terminal ledger commit_sha must be a non-empty string" in validation["errors"]
 
 
 def test_validate_page_terminal_ledger_rejects_stale_patch_attempts_ledger(tmp_path: Path) -> None:
