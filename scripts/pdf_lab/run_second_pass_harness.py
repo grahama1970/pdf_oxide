@@ -3140,6 +3140,10 @@ def build_harness_readiness_audit(
                 page_errors.append(f"{case_id}: review_bundle_validation failed")
             if result.get("review_bundle_zip_content_ok") is not True:
                 page_errors.append(f"{case_id}: review_bundle_validation zip_content_ok is not true")
+            if review_bundle_validation.get("ok") is not True:
+                page_errors.append(f"{case_id}: persisted review_bundle_validation ok is not true")
+            if review_bundle_validation.get("zip_content_ok") is not True:
+                page_errors.append(f"{case_id}: persisted review_bundle_validation zip_content_ok is not true")
             if review_bundle_validation.get("schema") != "pdf_lab.second_pass.page_review_bundle_validation.v1":
                 page_errors.append(f"{case_id}: review_bundle_validation schema mismatch")
             if review_bundle_validation.get("case_id") != case_id:
