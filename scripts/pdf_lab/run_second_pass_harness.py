@@ -4535,10 +4535,12 @@ def validate_live_canary_artifacts(
         "event_stream_artifact": "_event_stream.json",
     }
     for field, suffix in optional_artifact_suffixes.items():
-        if not isinstance(canary, dict) or canary.get(field) is None:
+        if not isinstance(canary, dict):
             continue
         artifact_name = next((name for name in sorted(artifacts) if name.endswith(suffix)), None)
         expected_path = artifacts.get(artifact_name or "") if artifact_name else None
+        if field != "request_artifact" and canary.get(field) is None:
+            continue
         if expected_path is None:
             errors.append(f"live canary {field} has no expected artifact path")
         elif canary.get(field) != str(expected_path):
