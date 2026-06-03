@@ -1317,22 +1317,23 @@ def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_pat
             {
                 "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
                 "case_id": "a",
+                "page_number": 1,
                 "terminal_status": "patched_confirmed",
                 "commit_sha": "abc123",
                 "commit_acceptance_ok": True,
                 "commit_revertability_ok": True,
                 "commit_exact_file_match": True,
-                    "evidence_artifacts": [
-                        "terminal_ledger_validation.json",
-                        "patch_scope_validation.json",
-                        "test_validation.json",
-                        "review_after_request_validation.json",
-                        "review_after_validation.json",
-                        "review_after_response.json",
-                        "commit_acceptance_gate.json",
-                        "commit_gate.json",
-                        "revertability_check.json",
-                    ],
+                "evidence_artifacts": [
+                    "terminal_ledger_validation.json",
+                    "patch_scope_validation.json",
+                    "test_validation.json",
+                    "review_after_request_validation.json",
+                    "review_after_validation.json",
+                    "review_after_response.json",
+                    "commit_acceptance_gate.json",
+                    "commit_gate.json",
+                    "revertability_check.json",
+                ],
             }
         ),
         encoding="utf-8",
@@ -1343,6 +1344,7 @@ def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_pat
                 "schema": "pdf_lab.second_pass.page_terminal_ledger_validation.v1",
                 "ok": True,
                 "case_id": "a",
+                "page_number": 1,
                 "terminal_status": "patched_confirmed",
             }
         ),
@@ -1653,6 +1655,50 @@ def test_build_patch_commit_ledger_rejects_false_acceptance_content(tmp_path: Pa
     assert "commit_gate.revertability_check.ok is not true" in errors
     assert "commit_gate.revertability_check commit_sha does not match page result" in errors
     assert "revertability_check.ok is not true" in errors
+
+
+def test_build_patch_commit_ledger_rejects_terminal_page_identity_mismatch(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="patched_confirmed",
+        commit_sha="abc123",
+        extra_evidence=PATCHED_CONFIRMED_ARTIFACTS,
+    )
+    terminal = json.loads((case_dir / "terminal_ledger.json").read_text(encoding="utf-8"))
+    terminal["page_number"] = 999
+    (case_dir / "terminal_ledger.json").write_text(json.dumps(terminal), encoding="utf-8")
+    terminal_validation = json.loads((case_dir / "terminal_ledger_validation.json").read_text(encoding="utf-8"))
+    terminal_validation["page_number"] = 999
+    (case_dir / "terminal_ledger_validation.json").write_text(json.dumps(terminal_validation), encoding="utf-8")
+
+    ledger = harness.build_patch_commit_ledger(
+        out_dir=tmp_path / "out",
+        page_results=[
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "terminal_status": "patched_confirmed",
+                "reason": "verified",
+                "case_dir": str(case_dir),
+                "commit_sha": "abc123",
+                "evidence_artifacts": [
+                    "terminal_ledger_validation.json",
+                    *PATCHED_CONFIRMED_ARTIFACTS,
+                ],
+            }
+        ],
+    )
+
+    assert ledger["ok"] is False
+    assert ledger["entries"][0]["ok"] is False
+    assert ledger["entries"][0]["terminal_ledger_page_number"] == 999
+    assert ledger["entries"][0]["terminal_ledger_validation_page_number"] == 999
+    errors = "\n".join(ledger["errors"])
+    assert "terminal_ledger page_number does not match page result" in errors
+    assert "terminal_ledger_validation page_number does not match page result" in errors
 
 
 def test_build_patch_commit_ledger_rejects_commit_files_not_matching_patch_scope(tmp_path: Path) -> None:

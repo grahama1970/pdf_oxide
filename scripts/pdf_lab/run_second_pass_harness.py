@@ -1635,6 +1635,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("terminal_ledger schema mismatch")
             if terminal_ledger.get("case_id") != result.get("case_id"):
                 entry_errors.append("terminal_ledger case_id does not match page result")
+            if terminal_ledger.get("page_number") != result.get("page_number"):
+                entry_errors.append("terminal_ledger page_number does not match page result")
             if terminal_ledger.get("terminal_status") != "patched_confirmed":
                 entry_errors.append("terminal_ledger terminal_status is not patched_confirmed")
             if terminal_ledger.get("commit_sha") != commit_sha:
@@ -1669,6 +1671,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("terminal_ledger_validation.ok is not true")
             if terminal_ledger_validation.get("case_id") != result.get("case_id"):
                 entry_errors.append("terminal_ledger_validation case_id does not match page result")
+            if terminal_ledger_validation.get("page_number") != result.get("page_number"):
+                entry_errors.append("terminal_ledger_validation page_number does not match page result")
             if terminal_ledger_validation.get("terminal_status") != result.get("terminal_status"):
                 entry_errors.append("terminal_ledger_validation terminal_status does not match page result")
         if review_bundle_validation:
@@ -1789,6 +1793,10 @@ def build_patch_commit_ledger(
                 "review_after_validation": str(review_after_validation_path),
                 "review_after_response": str(review_after_response_path),
                 "terminal_ledger_commit_sha": terminal_ledger.get("commit_sha") if terminal_ledger else None,
+                "terminal_ledger_page_number": terminal_ledger.get("page_number") if terminal_ledger else None,
+                "terminal_ledger_validation_page_number": terminal_ledger_validation.get("page_number")
+                if terminal_ledger_validation
+                else None,
                 "terminal_ledger_commit_acceptance_ok": terminal_ledger.get("commit_acceptance_ok")
                 if terminal_ledger
                 else None,
@@ -2799,6 +2807,7 @@ def validate_harness_page_terminal_ledger(case_dir: Path, terminal: dict[str, An
         "ok": not errors,
         "errors": errors,
         "case_id": terminal.get("case_id"),
+        "page_number": terminal.get("page_number"),
         "terminal_status": terminal_status,
         "declared_evidence_count": len(evidence_artifacts),
         "missing_artifacts": missing_artifacts,
