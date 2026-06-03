@@ -387,6 +387,78 @@ def test_validate_page_orchestrator_submission_rejects_stale_identity_metadata(t
     assert "orchestrator_context page_number does not match submission" in validation["errors"]
 
 
+def test_validate_page_orchestrator_run_receipt_rejects_stale_request_identity(tmp_path: Path) -> None:
+    dag = _load_module()
+    page_case = {
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "page_index": 0,
+        "candidate_ids": ["cand:p0001:0000:table"],
+    }
+    spec = dag.build_page_orchestrator_dag_spec(
+        page_case=page_case,
+        candidates=[
+            {
+                "candidate_id": "cand:p0001:0000:table",
+                "page_number": 1,
+                "preset_type": "table",
+                "bbox": [0.1, 0.2, 0.8, 0.4],
+                "features": {},
+            }
+        ],
+        review_request_artifact="review_request.json",
+        patch_backend="scillm_orchestrator",
+        patch_mode="dry_run",
+        review_mode="dry_run",
+        repair_strategy="single",
+        opencode_agent="build",
+        opencode_agent_sequence=None,
+        opencode_model=None,
+        code_root=tmp_path,
+        caller_skill="pdf-lab",
+        page_extract_timeout_s=30.0,
+        status="ready",
+    )
+    submission = dag.build_page_orchestrator_submission(
+        case_dir=tmp_path / "page_case_0001_p0001",
+        page_case=page_case,
+        dag_spec=spec,
+        dag_spec_artifact="scillm_orchestrator_page_dag_spec.json",
+        code_root=tmp_path,
+        timeout_s=60.0,
+    )
+    request = dag.build_page_orchestrator_run_request(
+        case_dir=tmp_path / "page_case_0001_p0001",
+        page_case=page_case,
+        submission=submission,
+        dag_spec_artifact="scillm_orchestrator_page_dag_spec.json",
+        code_root=tmp_path,
+        timeout_s=60.0,
+    )
+    receipt = {
+        "schema": "pdf_lab.second_pass.page_orchestrator_run_receipt.v1",
+        "endpoint": "POST /v1/scillm/opencode/transport/runs",
+        "http_status": 200,
+        "request_metadata": {
+            "graph_node": "scillm_orchestrator_page_dag",
+            "case_id": "page_case_9999_p9999",
+            "page_number": 9999,
+            "dag_spec_sha256": "stale-dag",
+        },
+        "transport_run_id": "tr-page-0001",
+        "create_response": {"transport_run_id": "tr-stale-page"},
+        "observation": {"schema": "scillm.opencode_transport.observation.v1"},
+    }
+
+    validation = dag.validate_page_orchestrator_run_receipt(receipt, mode="live", request=request)
+
+    assert validation["ok"] is False
+    assert "page orchestrator run receipt request_metadata case_id does not match request" in validation["errors"]
+    assert "page orchestrator run receipt request_metadata page_number does not match request" in validation["errors"]
+    assert "page orchestrator run receipt request_metadata dag_spec_sha256 does not match request" in validation["errors"]
+    assert "page orchestrator create_response transport_run_id does not match receipt" in validation["errors"]
+
+
 def test_extract_page_for_code_root_subprocess_timeout_is_page_timeout(tmp_path: Path, monkeypatch) -> None:
     dag = _load_module()
 

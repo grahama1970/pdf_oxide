@@ -1097,8 +1097,13 @@ def validate_page_orchestrator_run_receipt(
     receipt: dict[str, Any] | None,
     *,
     mode: str,
+    request: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     errors: list[str] = []
+    expected_metadata = request.get("scillm_metadata") if isinstance(request, dict) else None
+    expected_case_id = expected_metadata.get("case_id") if isinstance(expected_metadata, dict) else None
+    expected_page_number = expected_metadata.get("page_number") if isinstance(expected_metadata, dict) else None
+    expected_dag_spec_sha256 = expected_metadata.get("dag_spec_sha256") if isinstance(expected_metadata, dict) else None
     if mode == "dry_run":
         return {
             "schema": "pdf_lab.second_pass.page_orchestrator_run_validation.v1",
@@ -1107,14 +1112,35 @@ def validate_page_orchestrator_run_receipt(
             "mode": mode,
             "transport_run_id": None,
             "registered": False,
+            "case_id": expected_case_id,
+            "page_number": expected_page_number,
+            "dag_spec_sha256": expected_dag_spec_sha256,
         }
     if not isinstance(receipt, dict):
         errors.append("page orchestrator run receipt missing")
     elif receipt.get("schema") != "pdf_lab.second_pass.page_orchestrator_run_receipt.v1":
         errors.append("page orchestrator run receipt schema mismatch")
     else:
-        if not receipt.get("transport_run_id"):
+        transport_run_id = receipt.get("transport_run_id")
+        if not transport_run_id:
             errors.append("page orchestrator run receipt missing transport_run_id")
+        create_response = receipt.get("create_response")
+        if isinstance(create_response, dict):
+            create_transport_run_id = create_response.get("transport_run_id")
+            if create_transport_run_id and create_transport_run_id != transport_run_id:
+                errors.append("page orchestrator create_response transport_run_id does not match receipt")
+        elif create_response is not None:
+            errors.append("page orchestrator run receipt create_response must be an object")
+        request_metadata = receipt.get("request_metadata")
+        if not isinstance(request_metadata, dict):
+            errors.append("page orchestrator run receipt missing request_metadata")
+        elif isinstance(expected_metadata, dict):
+            if request_metadata.get("case_id") != expected_case_id:
+                errors.append("page orchestrator run receipt request_metadata case_id does not match request")
+            if request_metadata.get("page_number") != expected_page_number:
+                errors.append("page orchestrator run receipt request_metadata page_number does not match request")
+            if request_metadata.get("dag_spec_sha256") != expected_dag_spec_sha256:
+                errors.append("page orchestrator run receipt request_metadata dag_spec_sha256 does not match request")
         if not isinstance(receipt.get("observation"), dict):
             errors.append("page orchestrator run receipt missing observation")
     return {
@@ -1124,6 +1150,9 @@ def validate_page_orchestrator_run_receipt(
         "mode": mode,
         "transport_run_id": receipt.get("transport_run_id") if isinstance(receipt, dict) else None,
         "registered": not errors,
+        "case_id": expected_case_id,
+        "page_number": expected_page_number,
+        "dag_spec_sha256": expected_dag_spec_sha256,
     }
 
 
@@ -4164,6 +4193,7 @@ def run_page_case(
     page_orchestrator_run_validation = validate_page_orchestrator_run_receipt(
         page_orchestrator_run_receipt,
         mode=page_orchestrator_mode,
+        request=page_orchestrator_run_request,
     )
     write_json(case_dir / "scillm_page_orchestrator_run_validation.json", page_orchestrator_run_validation)
     page_transport_run_id = page_orchestrator_run_validation.get("transport_run_id")
