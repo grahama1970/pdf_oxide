@@ -235,6 +235,7 @@ def validate_harness_list_inputs(
     opencode_skills: Any,
     allowed_patch_prefixes: Any,
     validation_commands: Any,
+    prepare_isolated_code_root_include_paths: Any,
 ) -> list[str]:
     errors: list[str] = []
     for field_name, value in [
@@ -242,6 +243,7 @@ def validate_harness_list_inputs(
         ("opencode_skills", opencode_skills),
         ("allowed_patch_prefixes", allowed_patch_prefixes),
         ("validation_commands", validation_commands),
+        ("prepare_isolated_code_root_include_paths", prepare_isolated_code_root_include_paths),
     ]:
         errors.extend(validate_optional_string_list(value, field_name=field_name))
     return errors
@@ -4545,6 +4547,7 @@ def run_harness(
         opencode_skills=opencode_skills,
         allowed_patch_prefixes=allowed_patch_prefixes,
         validation_commands=validation_commands,
+        prepare_isolated_code_root_include_paths=prepare_isolated_code_root_include_paths,
     )
     if list_input_errors:
         raise ValueError("; ".join(list_input_errors))

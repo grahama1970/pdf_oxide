@@ -5626,15 +5626,16 @@ def test_harness_list_inputs_reject_coerced_values() -> None:
     harness = _load_module()
 
     errors = harness.validate_harness_list_inputs(
-        opencode_agent_sequence="build",
+        opencode_agent_sequence=None,
         opencode_skills=["scillm", 7],
         allowed_patch_prefixes=["tests/", ""],
         validation_commands=None,
+        prepare_isolated_code_root_include_paths="python",
     )
 
-    assert "opencode_agent_sequence must be a list of non-empty strings or null: 'build'" in errors
     assert "opencode_skills[1] must be a non-empty string: 7" in errors
     assert "allowed_patch_prefixes[1] must be a non-empty string: ''" in errors
+    assert "prepare_isolated_code_root_include_paths must be a list of non-empty strings or null: 'python'" in errors
 
 
 def test_run_harness_rejects_invalid_list_controls_before_output(tmp_path: Path, monkeypatch) -> None:
@@ -5667,7 +5668,7 @@ def test_run_harness_rejects_invalid_list_controls_before_output(tmp_path: Path,
             scillm_timeout_s=12.5,
             scillm_preflight_mode="dry_run",
             opencode_agent="build",
-            opencode_agent_sequence="build",
+            opencode_agent_sequence=None,
             opencode_model=None,
             opencode_timeout_s=55.0,
             opencode_cleanup_session=False,
@@ -5676,15 +5677,15 @@ def test_run_harness_rejects_invalid_list_controls_before_output(tmp_path: Path,
             validation_commands=None,
             code_root=tmp_path,
             prepare_isolated_code_root_dest=None,
-            prepare_isolated_code_root_include_paths=None,
+            prepare_isolated_code_root_include_paths="python",
             prepare_isolated_code_root_force=False,
         )
     except ValueError as exc:
         message = str(exc)
     else:
-        raise AssertionError("expected ValueError for coerced opencode_agent_sequence")
+        raise AssertionError("expected ValueError for coerced prepare_isolated_code_root_include_paths")
 
-    assert "opencode_agent_sequence must be a list of non-empty strings or null: 'build'" in message
+    assert "prepare_isolated_code_root_include_paths must be a list of non-empty strings or null: 'python'" in message
     assert not (tmp_path / "out").exists()
 
 
