@@ -4149,6 +4149,13 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             for candidate in selected_candidates
             if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
         )
+        duplicate_selected_candidate_ids = sorted(
+            candidate_id
+            for candidate_id, count in Counter(selected_candidate_ids_from_artifact).items()
+            if count > 1
+        )
+        if duplicate_selected_candidate_ids:
+            errors.append(f"selected_candidates candidate_ids contain duplicates: {duplicate_selected_candidate_ids}")
         if len(selected_candidate_ids_from_artifact) != len(selected_candidates):
             errors.append("selected_candidates candidates contain missing candidate_id")
         if selected_candidates_artifact.get("candidate_count") != len(selected_candidates):
@@ -4173,6 +4180,13 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             for candidate in preset_candidates
             if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
         )
+        duplicate_preset_candidate_ids = sorted(
+            candidate_id
+            for candidate_id, count in Counter(preset_candidate_ids).items()
+            if count > 1
+        )
+        if duplicate_preset_candidate_ids:
+            errors.append(f"candidate_presets candidate_ids contain duplicates: {duplicate_preset_candidate_ids}")
         if len(preset_candidate_ids) != len(preset_candidates):
             errors.append("candidate_presets candidates contain missing candidate_id")
         if candidate_presets_artifact.get("candidate_count") != len(preset_candidates):
@@ -4200,6 +4214,13 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             for candidate in manifest_candidates
             if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
         )
+        duplicate_manifest_candidate_ids = sorted(
+            candidate_id
+            for candidate_id, count in Counter(manifest_candidate_ids).items()
+            if count > 1
+        )
+        if duplicate_manifest_candidate_ids:
+            errors.append(f"sampled_candidate_manifest candidate_ids contain duplicates: {duplicate_manifest_candidate_ids}")
         if len(manifest_candidate_ids) != len(manifest_candidates):
             errors.append("sampled_candidate_manifest candidates contain missing candidate_id")
         if sampled_manifest.get("candidate_count") != len(manifest_candidates):
@@ -4209,8 +4230,19 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             isinstance(candidate_id, str) for candidate_id in page_case_candidate_ids
         ):
             errors.append("sampled_candidate_manifest page_case.candidate_ids must be a list of strings")
-        elif sorted(page_case_candidate_ids) != manifest_candidate_ids:
-            errors.append("sampled_candidate_manifest page_case.candidate_ids do not match candidates")
+        else:
+            duplicate_page_case_candidate_ids = sorted(
+                candidate_id
+                for candidate_id, count in Counter(page_case_candidate_ids).items()
+                if count > 1
+            )
+            if duplicate_page_case_candidate_ids:
+                errors.append(
+                    "sampled_candidate_manifest page_case.candidate_ids contain duplicates: "
+                    f"{duplicate_page_case_candidate_ids}"
+                )
+            if sorted(page_case_candidate_ids) != manifest_candidate_ids:
+                errors.append("sampled_candidate_manifest page_case.candidate_ids do not match candidates")
     if sampled_manifest and selected_candidates_artifact:
         if manifest_candidate_ids != selected_candidate_ids_from_artifact:
             errors.append("selected_candidates candidate_ids do not match sampled_candidate_manifest")

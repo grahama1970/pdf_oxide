@@ -8684,6 +8684,74 @@ def test_validate_page_terminal_ledger_rejects_sampled_manifest_schema_and_count
     assert "sampled_candidate_manifest candidate_count does not match candidates" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_duplicate_candidate_ids_in_evidence(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    duplicated_ids = ["cand:p0001:0000:table", "cand:p0001:0000:table"]
+    (case_dir / "sampled_candidate_manifest.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.sampled_candidate_manifest.v1",
+                "page_case": {
+                    "case_id": "page_case_0001_p0001",
+                    "page_number": 1,
+                    "candidate_ids": duplicated_ids,
+                },
+                "candidate_count": 2,
+                "candidates": [{"candidate_id": candidate_id} for candidate_id in duplicated_ids],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(_selected_candidates_payload(duplicated_ids)),
+        encoding="utf-8",
+    )
+    (case_dir / "candidate_presets.json").write_text(
+        json.dumps(_candidate_presets_payload(duplicated_ids)),
+        encoding="utf-8",
+    )
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": False,
+                "errors": ["dry_run_review_not_executed"],
+                "expected_candidate_ids": duplicated_ids,
+                "seen_candidate_ids": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "sampled_candidate_manifest.json",
+            "selected_candidates.json",
+            "candidate_presets.json",
+            "review.html",
+            "review_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert "selected_candidates candidate_ids contain duplicates: ['cand:p0001:0000:table']" in errors
+    assert "candidate_presets candidate_ids contain duplicates: ['cand:p0001:0000:table']" in errors
+    assert "sampled_candidate_manifest candidate_ids contain duplicates: ['cand:p0001:0000:table']" in errors
+    assert "sampled_candidate_manifest page_case.candidate_ids contain duplicates: ['cand:p0001:0000:table']" in errors
+
+
 def test_validate_page_review_bundle_rejects_missing_zip_entry(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
