@@ -1341,20 +1341,36 @@ def validate_deterministic_execution_plan(
     if not isinstance(page_case_order, list):
         errors.append("deterministic execution plan page_case_order is not a list")
         page_case_order = []
-    planned_case_ids = [case.get("case_id") for case in page_case_order if isinstance(case, dict)]
-    planned_page_numbers = [case.get("page_number") for case in page_case_order if isinstance(case, dict)]
-    if any(not case_id for case_id in planned_case_ids):
+    planned_case_ids = [
+        case.get("case_id")
+        for case in page_case_order
+        if isinstance(case, dict) and isinstance(case.get("case_id"), str) and case.get("case_id")
+    ]
+    planned_page_numbers = [
+        case.get("page_number")
+        for case in page_case_order
+        if isinstance(case, dict) and is_plain_int(case.get("page_number")) and case.get("page_number") >= 1
+    ]
+    if any(
+        not isinstance(case.get("case_id"), str) or not case.get("case_id")
+        for case in page_case_order
+        if isinstance(case, dict)
+    ):
         errors.append("deterministic execution plan page_case_order contains missing case_id")
-    if any(not isinstance(page_number, int) for page_number in planned_page_numbers):
+    if any(
+        not is_plain_int(case.get("page_number")) or case.get("page_number") < 1
+        for case in page_case_order
+        if isinstance(case, dict)
+    ):
         errors.append("deterministic execution plan page_case_order contains missing integer page_number")
     duplicate_planned_case_ids = sorted(
         case_id
-        for case_id, count in Counter(str(case_id) for case_id in planned_case_ids if case_id).items()
+        for case_id, count in Counter(planned_case_ids).items()
         if count > 1
     )
     duplicate_planned_page_numbers = sorted(
         page_number
-        for page_number, count in Counter(page_number for page_number in planned_page_numbers if isinstance(page_number, int)).items()
+        for page_number, count in Counter(planned_page_numbers).items()
         if count > 1
     )
     if duplicate_planned_case_ids:
@@ -1369,12 +1385,13 @@ def validate_deterministic_execution_plan(
         if not isinstance(case, dict):
             errors.append(f"deterministic execution plan page_case_order[{index}] is not an object")
             continue
-        case_id = str(case.get("case_id") or f"page_case_order[{index}]")
+        raw_case_id = case.get("case_id")
+        case_id = raw_case_id if isinstance(raw_case_id, str) and raw_case_id else f"page_case_order[{index}]"
         case_id_match = PAGE_CASE_ID_RE.fullmatch(case_id)
         if case_id_match is None:
             malformed_planned_case_ids.append(case_id)
         page_number = case.get("page_number")
-        if case_id_match is not None and isinstance(page_number, int) and int(case_id_match.group("page_number")) != page_number:
+        if case_id_match is not None and is_plain_int(page_number) and int(case_id_match.group("page_number")) != page_number:
             planned_case_id_page_suffix_mismatches.append(case_id)
         estimate = case.get("selection_probability_estimate")
         basis = case.get("selection_probability_basis")
@@ -1397,7 +1414,18 @@ def validate_deterministic_execution_plan(
         errors.append(f"deterministic execution plan has malformed selection probability metadata: {sorted(set(malformed_probability_case_ids))}")
     if malformed_forced_probability_case_ids:
         errors.append(f"deterministic execution plan forced pages missing forced_human_annotation probability basis: {sorted(set(malformed_forced_probability_case_ids))}")
-    actual_case_ids = [result.get("case_id") for result in page_results]
+    actual_case_ids = [
+        result.get("case_id")
+        for result in page_results
+        if isinstance(result.get("case_id"), str) and result.get("case_id")
+    ]
+    malformed_observed_case_results = [
+        f"page_results[{index}] missing case_id"
+        for index, result in enumerate(page_results)
+        if not isinstance(result.get("case_id"), str) or not result.get("case_id")
+    ]
+    if malformed_observed_case_results:
+        errors.extend(malformed_observed_case_results)
     if actual_case_ids and actual_case_ids != planned_case_ids[: len(actual_case_ids)]:
         errors.append(
             f"page result order does not match deterministic execution plan prefix: "
@@ -1418,6 +1446,7 @@ def validate_deterministic_execution_plan(
         "malformed_probability_case_ids": sorted(set(malformed_probability_case_ids)),
         "malformed_forced_probability_case_ids": sorted(set(malformed_forced_probability_case_ids)),
         "observed_case_ids": actual_case_ids,
+        "malformed_observed_case_results": malformed_observed_case_results,
     }
 
 
