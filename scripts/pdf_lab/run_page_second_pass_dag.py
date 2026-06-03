@@ -586,6 +586,15 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
     metadata = payload.get("scillm_metadata")
     if not isinstance(metadata, dict) or not metadata.get("batch_id") or not metadata.get("item_id"):
         errors.append("scillm_payload scillm_metadata must include batch_id and item_id")
+    page_case = review_request.get("page_case")
+    if not isinstance(page_case, dict):
+        errors.append("review_request page_case must be an object")
+        page_case = {}
+    case_id = page_case.get("case_id")
+    if not isinstance(case_id, str) or not case_id:
+        errors.append("review_request page_case.case_id must be non-empty")
+    elif isinstance(metadata, dict) and metadata.get("item_id") != case_id:
+        errors.append("scillm_payload scillm_metadata.item_id must match review_request page_case.case_id")
     messages = payload.get("messages")
     if not isinstance(messages, list) or len(messages) != 1:
         errors.append("scillm_payload must contain exactly one user message")
