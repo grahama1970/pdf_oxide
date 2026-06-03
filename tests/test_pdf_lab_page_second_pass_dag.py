@@ -1384,6 +1384,12 @@ def test_run_page_case_page_extraction_failure_fails_closed_with_bundle(tmp_path
     assert not (case_dir / "page_before.json").exists()
     html = (case_dir / "review.html").read_text(encoding="utf-8")
     assert "No rendered page images were produced before this case failed closed." in html
+    bundle_validation = json.loads((case_dir / "review_bundle_validation.json").read_text(encoding="utf-8"))
+    assert bundle_validation["ok"] is True
+    assert bundle_validation["missing_expected_zip_entries"] == []
+    assert "page_before.json" not in bundle_validation["required_zip_entries"]
+    assert "review_request.json" not in bundle_validation["required_zip_entries"]
+    assert "page_extraction_error.json" in bundle_validation["required_zip_entries"]
     with zipfile.ZipFile(case_dir / "review_bundle.zip") as bundle:
         names = set(bundle.namelist())
     assert {
@@ -1458,6 +1464,11 @@ def test_cli_writes_page_dag_setup_failure_artifacts_for_invalid_sampled_cases(t
     assert terminal_validation["ok"] is True
     bundle_validation = json.loads((case_dir / "review_bundle_validation.json").read_text(encoding="utf-8"))
     assert bundle_validation["schema"] == "pdf_lab.second_pass.page_review_bundle_validation.v1"
+    assert bundle_validation["ok"] is True
+    assert bundle_validation["missing_expected_zip_entries"] == []
+    assert "page_before.json" not in bundle_validation["required_zip_entries"]
+    assert "review_request.json" not in bundle_validation["required_zip_entries"]
+    assert "page_dag_setup_error.json" in bundle_validation["required_zip_entries"]
     assert (case_dir / "review_bundle.zip").is_file()
     with zipfile.ZipFile(case_dir / "review_bundle.zip") as bundle:
         names = set(bundle.namelist())

@@ -145,6 +145,30 @@ MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
     "terminal_ledger_validation.json",
     "review.html",
 }
+BLOCKED_PAGE_REVIEW_BUNDLE_ARTIFACTS_BY_REASON = {
+    "page_dag_setup_failed": {
+        "sampled_candidate_manifest.json",
+        "selected_candidates.json",
+        "candidate_presets.json",
+        "review_validation.json",
+        "page_dag_setup_error.json",
+        "terminal_ledger.json",
+        "terminal_ledger_validation.json",
+        "review.html",
+    },
+    "page_extraction_failed": {
+        "sampled_candidate_manifest.json",
+        "selected_candidates.json",
+        "candidate_presets.json",
+        "review_validation.json",
+        "scillm_orchestrator_page_dag_spec.json",
+        "scillm_orchestrator_page_dag_spec_validation.json",
+        "page_extraction_error.json",
+        "terminal_ledger.json",
+        "terminal_ledger_validation.json",
+        "review.html",
+    },
+}
 PATCH_EVIDENCE_WORKSPACE_FILES = [
     "page_before.json",
     "page_before.png",
@@ -4299,6 +4323,10 @@ def package_bundle(case_dir: Path, out: Path) -> None:
 
 def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[str, Any]) -> dict[str, Any]:
     errors: list[str] = []
+    minimum_bundle_artifacts = BLOCKED_PAGE_REVIEW_BUNDLE_ARTIFACTS_BY_REASON.get(
+        str(terminal.get("reason")),
+        MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS,
+    )
     evidence_artifacts = terminal.get("evidence_artifacts")
     invalid_evidence_artifacts: list[Any] = []
     if not isinstance(evidence_artifacts, list):
@@ -4326,7 +4354,7 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
     )
     required_zip_entries = sorted(
         {
-            *MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS,
+            *minimum_bundle_artifacts,
             *[
                 artifact
                 for artifact in evidence_artifacts
