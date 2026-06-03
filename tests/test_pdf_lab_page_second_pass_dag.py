@@ -7418,6 +7418,52 @@ def test_validate_page_review_bundle_rejects_unsafe_artifact_paths(tmp_path: Pat
     assert "unsafe zip entries" in errors
 
 
+def test_validate_page_review_bundle_rejects_duplicate_terminal_evidence(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS):
+        (case_dir / name).write_text(json.dumps({"artifact": name}), encoding="utf-8")
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "review.html",
+            "../outside.json",
+            "/tmp/outside.json",
+            "terminal_ledger_validation.json",
+        ],
+    }
+    (case_dir / "terminal_ledger.json").write_text(json.dumps(terminal), encoding="utf-8")
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "terminal_ledger_validation.json").write_text(
+        json.dumps(dag.validate_page_terminal_ledger(case_dir, terminal)),
+        encoding="utf-8",
+    )
+    zip_path = case_dir / "review_bundle.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+        for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS):
+            bundle.write(case_dir / name, name)
+
+    validation = dag.validate_page_review_bundle(case_dir, zip_path, terminal)
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert validation["duplicate_evidence_artifacts"] == ["review.html"]
+    assert validation["unsafe_evidence_artifacts"] == ["../outside.json", "/tmp/outside.json"]
+    assert "../outside.json" not in validation["required_zip_entries"]
+    assert "/tmp/outside.json" not in validation["required_zip_entries"]
+    assert validation["missing_artifacts"] == []
+    assert validation["missing_expected_zip_entries"] == []
+    errors = "\n".join(validation["errors"])
+    assert "terminal evidence_artifacts contains duplicate artifact names: ['review.html']" in errors
+    assert "terminal evidence_artifacts contains unsafe bundle paths: ['../outside.json', '/tmp/outside.json']" in errors
+
+
 def test_validate_page_review_bundle_rejects_invalid_evidence_artifacts(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

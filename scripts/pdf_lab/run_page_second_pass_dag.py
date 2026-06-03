@@ -3816,6 +3816,13 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
         for artifact in evidence_artifacts
         if isinstance(artifact, str) and artifact and (Path(artifact).is_absolute() or ".." in Path(artifact).parts)
     )
+    duplicate_evidence_artifacts = sorted(
+        artifact
+        for artifact, count in Counter(
+            artifact for artifact in evidence_artifacts if isinstance(artifact, str) and artifact
+        ).items()
+        if count > 1
+    )
     required_zip_entries = sorted(
         {
             *MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS,
@@ -3838,6 +3845,8 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
     terminal_ledger_matches_argument = False
     terminal_ledger_validation_matches_recomputed = False
     terminal_ledger_validation_ok = False
+    if duplicate_evidence_artifacts:
+        errors.append(f"terminal evidence_artifacts contains duplicate artifact names: {duplicate_evidence_artifacts}")
     terminal_ledger_path = case_dir / "terminal_ledger.json"
     if terminal_ledger_path.is_file():
         try:
@@ -3897,6 +3906,8 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
     zip_content_ok = (
         zip_path.is_file()
         and not missing_expected_zip_entries
+        and not duplicate_evidence_artifacts
+        and not unsafe_evidence_artifacts
         and not duplicate_zip_entries
         and not unsafe_zip_entries
         and not mismatched_zip_entries
@@ -3916,6 +3927,7 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
         "missing_artifacts": missing_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
+        "duplicate_evidence_artifacts": duplicate_evidence_artifacts,
         "invalid_evidence_artifacts": invalid_evidence_artifacts,
         "unsafe_evidence_artifacts": unsafe_evidence_artifacts,
         "unsafe_zip_entries": unsafe_zip_entries,
