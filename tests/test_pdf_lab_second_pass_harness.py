@@ -4154,6 +4154,37 @@ def test_validate_deterministic_execution_plan_rejects_duplicate_planned_pages()
     assert "page_case_order contains missing integer page_number" in errors
 
 
+def test_validate_deterministic_execution_plan_matches_sampled_page_cases() -> None:
+    harness = _load_module()
+    validation = harness.validate_deterministic_execution_plan(
+        {
+            "schema": "pdf_lab.second_pass.deterministic_execution_plan.v1",
+            "owner": "pdf_lab_harness_code",
+            "agent_decision_allowed": False,
+            "execution_mode": "sequential",
+            "page_case_order": [
+                {"case_id": "page_case_0001_p0001", "page_number": 1},
+            ],
+            "commit_policy": {"one_git_commit_per_verified_bug_fix": True},
+        },
+        page_results=[],
+        sampled_cases={
+            "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+            "page_cases": [
+                {"case_id": "page_case_0001_p0001", "page_number": 1},
+                {"case_id": "page_case_0002_p0002", "page_number": 2},
+            ],
+        },
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert validation["planned_case_ids"] == ["page_case_0001_p0001"]
+    assert validation["sampled_case_ids"] == ["page_case_0001_p0001", "page_case_0002_p0002"]
+    assert "deterministic execution plan case order does not match sampled_page_cases" in errors
+    assert "deterministic execution plan page order does not match sampled_page_cases" in errors
+
+
 def test_validate_deterministic_execution_plan_rejects_coerced_plan_identity() -> None:
     harness = _load_module()
     validation = harness.validate_deterministic_execution_plan(

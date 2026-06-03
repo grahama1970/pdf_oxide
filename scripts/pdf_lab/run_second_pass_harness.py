@@ -1539,6 +1539,7 @@ def validate_deterministic_execution_plan(
     plan: dict[str, Any] | None,
     *,
     page_results: list[dict[str, Any]],
+    sampled_cases: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     errors: list[str] = []
     if not isinstance(plan, dict):
@@ -1638,6 +1639,39 @@ def validate_deterministic_execution_plan(
         errors.append(f"deterministic execution plan has malformed forced_by_human_annotation flags: {sorted(set(malformed_forced_flag_case_ids))}")
     if malformed_forced_probability_case_ids:
         errors.append(f"deterministic execution plan forced pages missing forced_human_annotation probability basis: {sorted(set(malformed_forced_probability_case_ids))}")
+    sampled_case_ids: list[str] = []
+    sampled_page_numbers: list[int] = []
+    if sampled_cases is not None:
+        sampled_page_cases = sampled_cases.get("page_cases") if isinstance(sampled_cases, dict) else None
+        if not isinstance(sampled_page_cases, list):
+            errors.append("sampled page cases page_cases is not a list for deterministic execution plan validation")
+            sampled_page_cases = []
+        for index, case in enumerate(sampled_page_cases):
+            if not isinstance(case, dict):
+                errors.append(f"sampled page cases page_cases[{index}] is not an object for deterministic execution plan validation")
+                continue
+            case_id = case.get("case_id")
+            page_number = case.get("page_number")
+            if isinstance(case_id, str) and case_id:
+                sampled_case_ids.append(case_id)
+            else:
+                errors.append(f"sampled page cases page_cases[{index}] missing case_id for deterministic execution plan validation")
+            if is_plain_int(page_number) and page_number >= 1:
+                sampled_page_numbers.append(page_number)
+            else:
+                errors.append(
+                    f"sampled page cases page_cases[{index}] missing integer page_number for deterministic execution plan validation"
+                )
+        if planned_case_ids != sampled_case_ids:
+            errors.append(
+                f"deterministic execution plan case order does not match sampled_page_cases: "
+                f"planned={planned_case_ids}, sampled={sampled_case_ids}"
+            )
+        if planned_page_numbers != sampled_page_numbers:
+            errors.append(
+                f"deterministic execution plan page order does not match sampled_page_cases: "
+                f"planned={planned_page_numbers}, sampled={sampled_page_numbers}"
+            )
     actual_case_ids = [
         result.get("case_id")
         for result in page_results
@@ -1660,9 +1694,12 @@ def validate_deterministic_execution_plan(
         "ok": not errors,
         "errors": errors,
         "planned_case_count": len(planned_case_ids),
+        "sampled_case_count": len(sampled_case_ids),
         "observed_page_result_count": len(actual_case_ids),
         "planned_case_ids": planned_case_ids,
         "planned_page_numbers": planned_page_numbers,
+        "sampled_case_ids": sampled_case_ids,
+        "sampled_page_numbers": sampled_page_numbers,
         "duplicate_planned_case_ids": duplicate_planned_case_ids,
         "duplicate_planned_page_numbers": duplicate_planned_page_numbers,
         "malformed_planned_case_ids": sorted(set(malformed_planned_case_ids)),
@@ -5299,6 +5336,7 @@ def run_harness(
     deterministic_execution_plan_validation = validate_deterministic_execution_plan(
         deterministic_execution_plan,
         page_results=page_results,
+        sampled_cases=sampled_cases,
     )
     deterministic_execution_plan_validation_path = out_dir / "deterministic_execution_plan_validation.json"
     write_json(deterministic_execution_plan_validation_path, deterministic_execution_plan_validation)
