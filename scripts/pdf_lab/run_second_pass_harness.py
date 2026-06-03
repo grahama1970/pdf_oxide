@@ -4080,6 +4080,7 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
         errors.append(f"required bundle artifacts differ between case dir and zip: {sorted(mismatched_zip_entries)}")
     zip_content_ok = (
         zip_path.is_file()
+        and not missing_artifacts
         and not missing_expected_zip_entries
         and not duplicate_evidence_artifacts
         and not unsafe_evidence_artifacts
