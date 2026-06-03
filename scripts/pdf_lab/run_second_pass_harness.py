@@ -217,6 +217,36 @@ def validate_harness_boolean_inputs(
     return errors
 
 
+def validate_optional_string_list(value: Any, *, field_name: str) -> list[str]:
+    errors: list[str] = []
+    if value is None:
+        return errors
+    if not isinstance(value, list):
+        return [f"{field_name} must be a list of non-empty strings or null: {value!r}"]
+    for index, item in enumerate(value):
+        if not isinstance(item, str) or not item.strip():
+            errors.append(f"{field_name}[{index}] must be a non-empty string: {item!r}")
+    return errors
+
+
+def validate_harness_list_inputs(
+    *,
+    opencode_agent_sequence: Any,
+    opencode_skills: Any,
+    allowed_patch_prefixes: Any,
+    validation_commands: Any,
+) -> list[str]:
+    errors: list[str] = []
+    for field_name, value in [
+        ("opencode_agent_sequence", opencode_agent_sequence),
+        ("opencode_skills", opencode_skills),
+        ("allowed_patch_prefixes", allowed_patch_prefixes),
+        ("validation_commands", validation_commands),
+    ]:
+        errors.extend(validate_optional_string_list(value, field_name=field_name))
+    return errors
+
+
 def read_non_negative_int_field(
     payload: dict[str, Any],
     *,
@@ -4510,6 +4540,14 @@ def run_harness(
     )
     if boolean_input_errors:
         raise ValueError("; ".join(boolean_input_errors))
+    list_input_errors = validate_harness_list_inputs(
+        opencode_agent_sequence=opencode_agent_sequence,
+        opencode_skills=opencode_skills,
+        allowed_patch_prefixes=allowed_patch_prefixes,
+        validation_commands=validation_commands,
+    )
+    if list_input_errors:
+        raise ValueError("; ".join(list_input_errors))
     manifest_mod, sampler_mod, page_dag = _import_pdf_lab_modules()
     effective_opencode_model = page_dag.resolve_effective_opencode_model(
         patch_mode=patch_mode,

@@ -5622,6 +5622,72 @@ def test_run_harness_rejects_invalid_boolean_controls_before_output(tmp_path: Pa
     assert not (tmp_path / "out").exists()
 
 
+def test_harness_list_inputs_reject_coerced_values() -> None:
+    harness = _load_module()
+
+    errors = harness.validate_harness_list_inputs(
+        opencode_agent_sequence="build",
+        opencode_skills=["scillm", 7],
+        allowed_patch_prefixes=["tests/", ""],
+        validation_commands=None,
+    )
+
+    assert "opencode_agent_sequence must be a list of non-empty strings or null: 'build'" in errors
+    assert "opencode_skills[1] must be a non-empty string: 7" in errors
+    assert "allowed_patch_prefixes[1] must be a non-empty string: ''" in errors
+
+
+def test_run_harness_rejects_invalid_list_controls_before_output(tmp_path: Path, monkeypatch) -> None:
+    harness = _load_module()
+
+    def import_should_not_run():
+        raise AssertionError("module import should not run after invalid list controls")
+
+    monkeypatch.setattr(harness, "_import_pdf_lab_modules", import_should_not_run)
+
+    try:
+        harness.run_harness(
+            pdf_path=tmp_path / "fake.pdf",
+            out_dir=tmp_path / "out",
+            ledger_path=None,
+            apply_mode="release",
+            max_pages=1,
+            sample_size=1,
+            seed=123,
+            review_mode="dry_run",
+            patch_mode="dry_run",
+            patch_backend="opencode_serve",
+            commit_mode="dry_run",
+            model="gpt-5.5",
+            batch_id="batch",
+            review_fixture_path=None,
+            scillm_base_url="http://example.invalid:4001",
+            scillm_auth_token="token",
+            caller_skill="pdf-lab-test",
+            scillm_timeout_s=12.5,
+            scillm_preflight_mode="dry_run",
+            opencode_agent="build",
+            opencode_agent_sequence="build",
+            opencode_model=None,
+            opencode_timeout_s=55.0,
+            opencode_cleanup_session=False,
+            opencode_skills=["scillm"],
+            allowed_patch_prefixes=["tests/"],
+            validation_commands=None,
+            code_root=tmp_path,
+            prepare_isolated_code_root_dest=None,
+            prepare_isolated_code_root_include_paths=None,
+            prepare_isolated_code_root_force=False,
+        )
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for coerced opencode_agent_sequence")
+
+    assert "opencode_agent_sequence must be a list of non-empty strings or null: 'build'" in message
+    assert not (tmp_path / "out").exists()
+
+
 def test_run_harness_fails_closed_before_page_dag_when_transport_write_canary_fails(tmp_path: Path, monkeypatch) -> None:
     harness = _load_module()
     page_dag_called = False
