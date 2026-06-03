@@ -1313,6 +1313,43 @@ def test_validate_review_request_contract_rejects_stale_page_json_identity(tmp_p
     assert "review_request artifacts.page_json pdf_page_index does not match page_case.page_number" in errors
 
 
+def test_validate_review_request_contract_rejects_stale_candidate_presets_ids(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "page_before.json").write_text(json.dumps({"page": 1, "blocks": []}), encoding="utf-8")
+    (case_dir / "candidate_presets.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.candidate_presets.v1",
+                "candidates": [{"candidate_id": "cand:p0002:0000:table", "preset_type": "table"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "page_candidates.png").write_bytes(b"png")
+    request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case={
+            "case_id": "page_case_0001_p0001",
+            "page_number": 1,
+            "candidate_ids": ["cand:p0001:0000:table"],
+        },
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="batch-review",
+    )
+
+    validation = dag.validate_review_request_contract(case_dir, request)
+
+    assert validation["ok"] is False
+    assert "review_request artifacts.candidate_presets candidate_ids do not match page_case.candidate_ids" in validation["errors"]
+
+
 def test_patch_worker_prompt_uses_absolute_workspace_and_evidence_paths(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

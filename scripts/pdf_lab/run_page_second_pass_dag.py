@@ -625,6 +625,33 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
                         errors.append("review_request artifacts.page_json pdf_page_index does not match page_case.page_number")
                 else:
                     errors.append("review_request artifacts.page_json must contain a JSON object")
+    expected_candidate_ids = page_case.get("candidate_ids")
+    candidate_presets_artifact = artifacts.get("candidate_presets")
+    if isinstance(expected_candidate_ids, list) and (
+        isinstance(candidate_presets_artifact, str)
+        and candidate_presets_artifact
+        and not Path(candidate_presets_artifact).is_absolute()
+        and ".." not in Path(candidate_presets_artifact).parts
+        and (case_dir / candidate_presets_artifact).is_file()
+    ):
+        try:
+            candidate_presets_payload = json.loads((case_dir / candidate_presets_artifact).read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001 - malformed evidence is a validation failure.
+            errors.append(f"review_request artifacts.candidate_presets unreadable: {type(exc).__name__}: {exc}")
+        else:
+            preset_candidates = candidate_presets_payload.get("candidates") if isinstance(candidate_presets_payload, dict) else None
+            if not isinstance(preset_candidates, list):
+                errors.append("review_request artifacts.candidate_presets candidates must be a list")
+            else:
+                preset_candidate_ids = sorted(
+                    candidate["candidate_id"]
+                    for candidate in preset_candidates
+                    if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
+                )
+                if len(preset_candidate_ids) != len(preset_candidates):
+                    errors.append("review_request artifacts.candidate_presets candidates contain missing candidate_id")
+                if preset_candidate_ids != sorted(str(candidate_id) for candidate_id in expected_candidate_ids):
+                    errors.append("review_request artifacts.candidate_presets candidate_ids do not match page_case.candidate_ids")
     messages = payload.get("messages")
     if not isinstance(messages, list) or len(messages) != 1:
         errors.append("scillm_payload must contain exactly one user message")
