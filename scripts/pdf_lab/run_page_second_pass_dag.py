@@ -3211,6 +3211,36 @@ def validate_runtime_boolean_inputs(*, opencode_cleanup_session: Any) -> list[st
     return errors
 
 
+def validate_optional_string_list(value: Any, *, field_name: str) -> list[str]:
+    errors: list[str] = []
+    if value is None:
+        return errors
+    if not isinstance(value, list):
+        return [f"{field_name} must be a list of non-empty strings or null: {value!r}"]
+    for index, item in enumerate(value):
+        if not isinstance(item, str) or not item.strip():
+            errors.append(f"{field_name}[{index}] must be a non-empty string: {item!r}")
+    return errors
+
+
+def validate_runtime_list_inputs(
+    *,
+    opencode_agent_sequence: Any,
+    opencode_skills: Any,
+    allowed_patch_prefixes: Any,
+    validation_commands: Any,
+) -> list[str]:
+    errors: list[str] = []
+    for field_name, value in [
+        ("opencode_agent_sequence", opencode_agent_sequence),
+        ("opencode_skills", opencode_skills),
+        ("allowed_patch_prefixes", allowed_patch_prefixes),
+        ("validation_commands", validation_commands),
+    ]:
+        errors.extend(validate_optional_string_list(value, field_name=field_name))
+    return errors
+
+
 def validate_delegate_request_timeout(request: dict[str, Any] | None, errors: list[str], *, label: str) -> None:
     if not isinstance(request, dict):
         return
@@ -5765,6 +5795,14 @@ def run_page_case(
     runtime_boolean_errors = validate_runtime_boolean_inputs(opencode_cleanup_session=opencode_cleanup_session)
     if runtime_boolean_errors:
         raise ValueError("; ".join(runtime_boolean_errors))
+    runtime_list_errors = validate_runtime_list_inputs(
+        opencode_agent_sequence=opencode_agent_sequence,
+        opencode_skills=opencode_skills,
+        allowed_patch_prefixes=allowed_patch_prefixes,
+        validation_commands=validation_commands,
+    )
+    if runtime_list_errors:
+        raise ValueError("; ".join(runtime_list_errors))
     page_case = _case_by_id_or_page(sampled_cases, case_id, page_number)
     page_case_identity = validate_page_case_identity(page_case)
     if page_case_identity["ok"] is not True:
