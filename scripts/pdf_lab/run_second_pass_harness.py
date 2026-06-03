@@ -2873,6 +2873,10 @@ def package_validation_errors(
             continue
         if not all(isinstance(value, str) for value in values):
             errors.append(f"{key} must be a list of strings")
+            continue
+        duplicate_values = sorted(value for value, count in Counter(values).items() if count > 1)
+        if duplicate_values:
+            errors.append(f"{key} has duplicate entries: {duplicate_values}")
     for key in [
         "included_count",
         "zip_entry_count",

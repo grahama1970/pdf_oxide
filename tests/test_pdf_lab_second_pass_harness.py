@@ -6038,6 +6038,54 @@ def test_readiness_audit_rejects_package_validation_inconsistent_zip_entry_count
     assert "zip_entry_count 1 is less than required_zip_entries length 3" in dumped
 
 
+def test_readiness_audit_rejects_package_validation_duplicate_proof_entries(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+
+    def validation(schema: str) -> dict[str, object]:
+        return {
+            "schema": schema,
+            "ok": True,
+            "zip_content_ok": True,
+            "included_count": 3,
+            "included_artifacts": ["a.json", "a.json", "b.json"],
+            "required_zip_entries": ["a.json", "b.json", "b.json"],
+            "zip_entry_count": 3,
+        }
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[],
+        aggregate={"ok": True, "errors": [], "status_counts": {}, "unresolved_count": 0},
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": []},
+        scillm_proof_floor=None,
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation=validation(
+            "pdf_lab.second_pass.scillm_patch_delegate_bug_report_zip.v1"
+        ),
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation=validation("pdf_lab.second_pass.patch_commit_ledger_zip.v1"),
+        harness_review_bundle_validation=validation("pdf_lab.second_pass.harness_review_bundle_zip.v1"),
+    )
+
+    dumped = json.dumps(audit)
+    assert audit["ok"] is False
+    assert "scillm patch delegate bug report bundle is packageable" in audit["failed_requirements"]
+    assert "patch commit ledger bundle is packageable" in audit["failed_requirements"]
+    assert "harness review bundle is packageable" in audit["failed_requirements"]
+    assert "included_artifacts has duplicate entries: ['a.json']" in dumped
+    assert "required_zip_entries has duplicate entries: ['b.json']" in dumped
+
+
 def test_readiness_audit_requires_live_orchestrator_page_registration(tmp_path: Path) -> None:
     harness = _load_module()
     manifest_path = tmp_path / "candidate_manifest.json"
