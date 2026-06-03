@@ -4179,6 +4179,22 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if patch_attempts_ledger:
             if patch_attempts_ledger.get("schema") != "pdf_lab.second_pass.patch_attempts_ledger.v1":
                 errors.append("patch_attempts_ledger schema mismatch")
+            ledger_page_case = patch_attempts_ledger.get("page_case")
+            if not isinstance(ledger_page_case, dict):
+                errors.append("patch_attempts_ledger page_case must be an object")
+                ledger_page_case = {}
+            if ledger_page_case.get("case_id") != terminal.get("case_id"):
+                errors.append("patch_attempts_ledger page_case.case_id does not match terminal ledger")
+            if ledger_page_case.get("page_number") != terminal.get("page_number"):
+                errors.append("patch_attempts_ledger page_case.page_number does not match terminal ledger")
+            ledger_candidate_ids = patch_attempts_ledger.get("candidate_ids")
+            if not isinstance(ledger_candidate_ids, list) or not all(isinstance(candidate_id, str) for candidate_id in ledger_candidate_ids):
+                errors.append("patch_attempts_ledger candidate_ids must be a list of strings")
+                ledger_candidate_ids = []
+            if patch_attempts_ledger.get("candidate_count") != len(ledger_candidate_ids):
+                errors.append("patch_attempts_ledger candidate_count does not match candidate_ids")
+            if selected_candidate_ids_from_artifact and sorted(ledger_candidate_ids) != selected_candidate_ids_from_artifact:
+                errors.append("patch_attempts_ledger candidate_ids do not match selected_candidates")
             attempts = patch_attempts_ledger.get("attempts")
             if not isinstance(attempts, list):
                 errors.append("patch_attempts_ledger attempts is not a list")
@@ -5872,6 +5888,12 @@ def run_page_case(
                 break
         patch_attempts_ledger = {
             "schema": "pdf_lab.second_pass.patch_attempts_ledger.v1",
+            "page_case": {
+                "case_id": page_case["case_id"],
+                "page_number": page_number,
+            },
+            "candidate_count": len(candidates),
+            "candidate_ids": [candidate["candidate_id"] for candidate in candidates],
             "patch_backend": patch_backend,
             "patch_mode": patch_mode,
             "patch_prompt_profile": patch_prompt_profile,

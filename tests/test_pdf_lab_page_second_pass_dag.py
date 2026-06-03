@@ -4721,6 +4721,9 @@ def test_patch_agent_sequence_retries_until_receipt_validation_passes(tmp_path: 
 
     assert attempted_agents == ["build", "explore"]
     assert attempts["agent_sequence"] == ["build", "explore"]
+    assert attempts["page_case"] == {"case_id": "page_case_0001_p0003", "page_number": 3}
+    assert attempts["candidate_count"] == 1
+    assert attempts["candidate_ids"] == ["cand:p0003:0000:unknown_layout"]
     assert attempts["attempt_count"] == 2
     assert attempts["selected_attempt_index"] == 2
     assert attempts["attempts"][0]["ok"] is False
@@ -5612,6 +5615,9 @@ def test_validate_page_terminal_ledger_rejects_stale_patch_attempts_ledger(tmp_p
         json.dumps(
             {
                 "schema": "pdf_lab.second_pass.patch_attempts_ledger.v1",
+                "page_case": {"case_id": "stale_case", "page_number": 99},
+                "candidate_count": 1,
+                "candidate_ids": ["stale:candidate"],
                 "patch_backend": "scillm_orchestrator",
                 "patch_mode": "live",
                 "patch_prompt_profile": "plan_only",
@@ -5632,6 +5638,17 @@ def test_validate_page_terminal_ledger_rejects_stale_patch_attempts_ledger(tmp_p
         ),
         encoding="utf-8",
     )
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(
+            {
+                "schema": dag.SELECTED_CANDIDATES_SCHEMA,
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "candidates": [{"candidate_id": "cand:p0001:0000:unknown_layout"}],
+            }
+        ),
+        encoding="utf-8",
+    )
     terminal = {
         "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
         "case_id": "page_case_0001_p0001",
@@ -5640,6 +5657,7 @@ def test_validate_page_terminal_ledger_rejects_stale_patch_attempts_ledger(tmp_p
         "reason": "patch_delegate_failed",
         "evidence_artifacts": [
             "review.html",
+            "selected_candidates.json",
             "patch_validation.json",
             "patch_attempts_ledger.json",
             "patch_attempt_01_validation.json",
@@ -5652,6 +5670,9 @@ def test_validate_page_terminal_ledger_rejects_stale_patch_attempts_ledger(tmp_p
 
     assert validation["ok"] is False
     errors = "\n".join(validation["errors"])
+    assert "patch_attempts_ledger page_case.case_id does not match terminal ledger" in errors
+    assert "patch_attempts_ledger page_case.page_number does not match terminal ledger" in errors
+    assert "patch_attempts_ledger candidate_ids do not match selected_candidates" in errors
     assert "patch_attempts_ledger attempt_count does not match attempts length" in errors
     assert "patch_attempts_ledger attempts[0].ok does not match validation_artifact" in errors
     assert "patch_attempts_ledger attempts[0].errors do not match validation_artifact" in errors
