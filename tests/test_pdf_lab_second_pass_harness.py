@@ -1196,7 +1196,7 @@ def test_validate_candidate_manifest_integrity_rejects_stale_counts() -> None:
         "pages": [
             {
                 "page_number": 1,
-                "candidate_count": 2,
+                "candidate_count": True,
                 "risk_candidate_count": 2,
                 "preset_counts": {"table": 2},
             }
@@ -1211,7 +1211,7 @@ def test_validate_candidate_manifest_integrity_rejects_stale_counts() -> None:
     errors = "\n".join(stale["errors"])
     assert "candidate_count 2 does not equal candidates length 1" in errors
     assert "manifest preset_counts do not match candidates" in errors
-    assert "page 1 candidate_count does not match candidates" in errors
+    assert "page 1 candidate_count must be a non-negative integer: True" in errors
 
 
 def test_validate_candidate_manifest_integrity_requires_preset_counts() -> None:

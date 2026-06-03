@@ -903,10 +903,15 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
             continue
         page_summary_numbers.add(page_number)
         expected_count = page_candidate_counts.get(page_number, 0)
-        if page_summary.get("candidate_count") != expected_count:
+        declared_page_candidate_count = page_summary.get("candidate_count")
+        if not is_plain_int(declared_page_candidate_count) or declared_page_candidate_count < 0:
+            errors.append(
+                f"page {page_number} candidate_count must be a non-negative integer: {declared_page_candidate_count!r}"
+            )
+        elif declared_page_candidate_count != expected_count:
             errors.append(
                 f"page {page_number} candidate_count does not match candidates: "
-                f"declared={page_summary.get('candidate_count')}, expected={expected_count}"
+                f"declared={declared_page_candidate_count}, expected={expected_count}"
             )
         expected_preset_counts = dict(sorted(page_preset_counts.get(page_number, Counter()).items()))
         if page_summary.get("preset_counts") != expected_preset_counts:
