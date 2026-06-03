@@ -175,12 +175,23 @@ def validate_scillm_patch_delegate_bug_report_metadata(
     report: dict[str, Any],
     *,
     expected_reason: Any,
+    expected_case_id: Any = None,
+    expected_page_number: Any = None,
+    expected_transport_run_id: Any = None,
 ) -> list[str]:
     errors: list[str] = []
     if report.get("schema") != "pdf_lab.second_pass.scillm_patch_delegate_bug_report.v1":
         errors.append(f"scillm patch delegate bug report schema mismatch: {report.get('schema')}")
     if report.get("terminal_reason") != expected_reason:
         errors.append("scillm patch delegate bug report terminal_reason does not match page result")
+    if expected_case_id is not None and report.get("case_id") != expected_case_id:
+        errors.append("scillm patch delegate bug report case_id does not match page result")
+    if expected_page_number is not None and report.get("page_number") != expected_page_number:
+        errors.append("scillm patch delegate bug report page_number does not match page result")
+    if expected_transport_run_id:
+        observed = report.get("observed") if isinstance(report.get("observed"), dict) else {}
+        if observed.get("transport_run_id") != expected_transport_run_id:
+            errors.append("scillm patch delegate bug report transport_run_id does not match page result")
     return errors
 
 
@@ -1839,6 +1850,10 @@ def _page_result_from_case(case: dict[str, Any], result: dict[str, Any]) -> dict
             validate_scillm_patch_delegate_bug_report_metadata(
                 bug_report,
                 expected_reason=ledger.get("reason"),
+                expected_case_id=case.get("case_id"),
+                expected_page_number=case.get("page_number"),
+                expected_transport_run_id=page_orchestrator_validation.get("transport_run_id")
+                or state.get("page_orchestrator_transport_run_id"),
             )
         )
     return {
@@ -1907,6 +1922,9 @@ def build_scillm_patch_delegate_bug_report_bundle(
                 validate_scillm_patch_delegate_bug_report_metadata(
                     report,
                     expected_reason=result.get("reason"),
+                    expected_case_id=result.get("case_id"),
+                    expected_page_number=result.get("page_number"),
+                    expected_transport_run_id=result.get("page_orchestrator_transport_run_id"),
                 )
             )
         reports.append(
