@@ -1427,6 +1427,33 @@ def test_validate_review_response_rejects_duplicate_findings_and_bad_fix_surface
     assert "suggested_fix_surface must be none for clean findings" in errors
 
 
+def test_validate_review_response_rejects_malformed_expected_candidate_ids() -> None:
+    dag = _load_module()
+    validation = dag.validate_review_response(
+        {
+            "schema": "pdf_lab.second_pass.review_response.v1",
+            "page_status": "clean",
+            "page_rationale": "visual and JSON agree",
+            "candidate_findings": [
+                {
+                    "candidate_id": "cand:p0003:0000:table",
+                    "status": "clean",
+                    "evidence": "bbox matches rendered table",
+                    "rationale": "visual and JSON agree",
+                    "suggested_fix_surface": "none",
+                }
+            ],
+        },
+        ["cand:p0003:0000:table", "", 17, "cand:p0003:0000:table"],
+    )
+
+    assert validation["ok"] is False
+    assert "expected_candidate_ids must be non-empty strings: ['', 17]" in validation["errors"]
+    assert "expected_candidate_ids contain duplicates: ['cand:p0003:0000:table']" in validation["errors"]
+    assert validation["candidate_count"] == 2
+    assert validation["expected_candidate_ids"] == ["cand:p0003:0000:table", "cand:p0003:0000:table"]
+
+
 def test_run_page_case_live_review_routes_clean_without_patch(tmp_path: Path, monkeypatch) -> None:
     dag = _load_module()
 

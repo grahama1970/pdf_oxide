@@ -1501,7 +1501,34 @@ def validate_review_response(
     if not isinstance(findings, list):
         errors.append("candidate_findings must be a list")
         findings = []
-    expected = set(expected_candidate_ids)
+    if not isinstance(expected_candidate_ids, list):
+        errors.append("expected_candidate_ids must be a list")
+        normalized_expected_candidate_ids: list[str] = []
+    else:
+        invalid_expected_candidate_ids = [
+            candidate_id
+            for candidate_id in expected_candidate_ids
+            if not isinstance(candidate_id, str) or not candidate_id
+        ]
+        if invalid_expected_candidate_ids:
+            errors.append(f"expected_candidate_ids must be non-empty strings: {invalid_expected_candidate_ids}")
+        duplicate_expected_candidate_ids = sorted(
+            candidate_id
+            for candidate_id, count in Counter(
+                candidate_id
+                for candidate_id in expected_candidate_ids
+                if isinstance(candidate_id, str) and candidate_id
+            ).items()
+            if count > 1
+        )
+        if duplicate_expected_candidate_ids:
+            errors.append(f"expected_candidate_ids contain duplicates: {duplicate_expected_candidate_ids}")
+        normalized_expected_candidate_ids = [
+            candidate_id
+            for candidate_id in expected_candidate_ids
+            if isinstance(candidate_id, str) and candidate_id
+        ]
+    expected = set(normalized_expected_candidate_ids)
     seen: set[str] = set()
     finding_statuses: list[str] = []
     for index, finding in enumerate(findings):
@@ -1559,8 +1586,8 @@ def validate_review_response(
             "case_id": validation_page_case.get("case_id") if isinstance(validation_page_case, dict) else None,
             "page_number": validation_page_case.get("page_number") if isinstance(validation_page_case, dict) else None,
         },
-        "candidate_count": len(expected),
-        "expected_candidate_ids": sorted(expected),
+        "candidate_count": len(normalized_expected_candidate_ids),
+        "expected_candidate_ids": sorted(normalized_expected_candidate_ids),
         "seen_candidate_ids": sorted(seen),
     }
 
