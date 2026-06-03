@@ -1282,6 +1282,37 @@ def test_validate_review_request_contract_rejects_stale_prompt_evidence(tmp_path
     assert "scillm_payload text prompt does not include current artifacts.candidate_presets" in errors
 
 
+def test_validate_review_request_contract_rejects_stale_page_json_identity(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "page_before.json").write_text(
+        json.dumps({"page": 99, "page_number": 99, "pdf_page_index": 98, "blocks": []}),
+        encoding="utf-8",
+    )
+    (case_dir / "candidate_presets.json").write_text(json.dumps({"candidates": []}), encoding="utf-8")
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "page_candidates.png").write_bytes(b"png")
+    request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1},
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="batch-review",
+    )
+
+    validation = dag.validate_review_request_contract(case_dir, request)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "review_request artifacts.page_json page does not match page_case.page_number" in errors
+    assert "review_request artifacts.page_json page_number does not match page_case.page_number" in errors
+    assert "review_request artifacts.page_json pdf_page_index does not match page_case.page_number" in errors
+
+
 def test_patch_worker_prompt_uses_absolute_workspace_and_evidence_paths(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

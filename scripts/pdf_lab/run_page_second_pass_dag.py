@@ -602,6 +602,29 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
         errors.append("review_request page_case.case_id must be non-empty")
     elif isinstance(metadata, dict) and metadata.get("item_id") != case_id:
         errors.append("scillm_payload scillm_metadata.item_id must match review_request page_case.case_id")
+    page_case_number = page_case.get("page_number")
+    if isinstance(page_case_number, int):
+        page_json_artifact = artifacts.get("page_json")
+        if (
+            isinstance(page_json_artifact, str)
+            and page_json_artifact
+            and not Path(page_json_artifact).is_absolute()
+            and ".." not in Path(page_json_artifact).parts
+            and (case_dir / page_json_artifact).is_file()
+        ):
+            try:
+                page_json_payload = json.loads((case_dir / page_json_artifact).read_text(encoding="utf-8"))
+            except Exception as exc:  # noqa: BLE001 - malformed evidence is a validation failure.
+                errors.append(f"review_request artifacts.page_json unreadable: {type(exc).__name__}: {exc}")
+            else:
+                if isinstance(page_json_payload, dict):
+                    for key in ["page", "page_number"]:
+                        if key in page_json_payload and page_json_payload.get(key) != page_case_number:
+                            errors.append(f"review_request artifacts.page_json {key} does not match page_case.page_number")
+                    if "pdf_page_index" in page_json_payload and page_json_payload.get("pdf_page_index") != page_case_number - 1:
+                        errors.append("review_request artifacts.page_json pdf_page_index does not match page_case.page_number")
+                else:
+                    errors.append("review_request artifacts.page_json must contain a JSON object")
     messages = payload.get("messages")
     if not isinstance(messages, list) or len(messages) != 1:
         errors.append("scillm_payload must contain exactly one user message")
