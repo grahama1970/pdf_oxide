@@ -2127,6 +2127,9 @@ def validate_scillm_patch_delegate_bug_report_zip(
     zip_entries: list[str] = []
     duplicate_zip_entries: list[str] = []
     mismatched_zip_entries: list[str] = []
+    missing_expected_source_artifacts = sorted(
+        str(source) for source in expected_sources.values() if not source.is_file()
+    )
     if zip_path.is_file():
         with zipfile.ZipFile(zip_path) as bundle:
             zip_entries = bundle.namelist()
@@ -2137,7 +2140,13 @@ def validate_scillm_patch_delegate_bug_report_zip(
         entry_counts = Counter(zip_entries)
         duplicate_zip_entries = sorted(entry for entry, count in entry_counts.items() if count > 1)
     missing_expected_zip_entries = sorted(entry for entry in required_zip_entries if entry not in set(zip_entries))
-    zip_content_ok = zip_path.is_file() and not missing_expected_zip_entries and not duplicate_zip_entries and not mismatched_zip_entries
+    zip_content_ok = (
+        zip_path.is_file()
+        and not missing_expected_zip_entries
+        and not duplicate_zip_entries
+        and not mismatched_zip_entries
+        and not missing_expected_source_artifacts
+    )
     return {
         "schema": "pdf_lab.second_pass.scillm_patch_delegate_bug_report_zip.v1",
         "zip_path": str(zip_path),
@@ -2147,6 +2156,7 @@ def validate_scillm_patch_delegate_bug_report_zip(
         "required_zip_entries": required_zip_entries,
         "zip_entry_count": len(zip_entries),
         "zip_content_ok": zip_content_ok,
+        "missing_expected_source_artifacts": missing_expected_source_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
         "mismatched_zip_entries": sorted(mismatched_zip_entries),
@@ -2652,6 +2662,9 @@ def validate_patch_commit_ledger_zip(
     zip_entries: list[str] = []
     duplicate_zip_entries: list[str] = []
     mismatched_zip_entries: list[str] = []
+    missing_expected_source_artifacts = sorted(
+        str(source) for source in expected_sources.values() if not source.is_file()
+    )
     if zip_path.is_file():
         with zipfile.ZipFile(zip_path) as bundle:
             zip_entries = bundle.namelist()
@@ -2662,7 +2675,13 @@ def validate_patch_commit_ledger_zip(
         entry_counts = Counter(zip_entries)
         duplicate_zip_entries = sorted(entry for entry, count in entry_counts.items() if count > 1)
     missing_expected_zip_entries = sorted(entry for entry in required_zip_entries if entry not in set(zip_entries))
-    zip_content_ok = zip_path.is_file() and not missing_expected_zip_entries and not duplicate_zip_entries and not mismatched_zip_entries
+    zip_content_ok = (
+        zip_path.is_file()
+        and not missing_expected_zip_entries
+        and not duplicate_zip_entries
+        and not mismatched_zip_entries
+        and not missing_expected_source_artifacts
+    )
     return {
         "schema": "pdf_lab.second_pass.patch_commit_ledger_zip.v1",
         "zip_path": str(zip_path),
@@ -2672,6 +2691,7 @@ def validate_patch_commit_ledger_zip(
         "required_zip_entries": required_zip_entries,
         "zip_entry_count": len(zip_entries),
         "zip_content_ok": zip_content_ok,
+        "missing_expected_source_artifacts": missing_expected_source_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
         "mismatched_zip_entries": sorted(mismatched_zip_entries),
@@ -2751,6 +2771,9 @@ def validate_harness_review_bundle_zip(
     zip_entries: list[str] = []
     duplicate_zip_entries: list[str] = []
     mismatched_zip_entries: list[str] = []
+    missing_expected_source_artifacts = sorted(
+        str(source) for source in expected_sources.values() if not source.is_file()
+    )
     if zip_path.is_file():
         with zipfile.ZipFile(zip_path) as bundle:
             zip_entries = bundle.namelist()
@@ -2762,7 +2785,13 @@ def validate_harness_review_bundle_zip(
         entry_counts = Counter(zip_entries)
         duplicate_zip_entries = sorted(entry for entry, count in entry_counts.items() if count > 1)
     missing_expected_zip_entries = sorted(entry for entry in required_zip_entries if entry not in set(zip_entries))
-    zip_content_ok = zip_path.is_file() and not missing_expected_zip_entries and not duplicate_zip_entries and not mismatched_zip_entries
+    zip_content_ok = (
+        zip_path.is_file()
+        and not missing_expected_zip_entries
+        and not duplicate_zip_entries
+        and not mismatched_zip_entries
+        and not missing_expected_source_artifacts
+    )
     return {
         "schema": "pdf_lab.second_pass.harness_review_bundle_zip.v1",
         "zip_path": str(zip_path),
@@ -2772,6 +2801,7 @@ def validate_harness_review_bundle_zip(
         "required_zip_entries": required_zip_entries,
         "zip_entry_count": len(zip_entries),
         "zip_content_ok": zip_content_ok,
+        "missing_expected_source_artifacts": missing_expected_source_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
         "mismatched_zip_entries": sorted(mismatched_zip_entries),
@@ -2787,6 +2817,7 @@ def package_validation_errors(validation: dict[str, Any] | None) -> list[str]:
     for key in [
         "missing_artifacts",
         "missing_required_artifacts",
+        "missing_expected_source_artifacts",
         "missing_expected_zip_entries",
         "duplicate_zip_entries",
         "mismatched_zip_entries",
