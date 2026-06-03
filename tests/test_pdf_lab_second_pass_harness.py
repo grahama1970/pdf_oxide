@@ -6008,6 +6008,41 @@ def test_build_live_scillm_canary_bug_report_surfaces_failed_transport_write(tmp
     assert "Fix the live scillm/OpenCode substrate" in report["scillm_project_agent_bug_report"]
 
 
+def test_build_live_scillm_canary_bug_report_preserves_transport_delivery_state(tmp_path: Path) -> None:
+    harness = _load_module()
+    code_root = tmp_path / "code-root"
+    code_root.mkdir()
+
+    report = harness.build_live_scillm_canary_bug_report(
+        out_dir=tmp_path / "out",
+        code_root=code_root,
+        patch_mode="live",
+        patch_backend="scillm_orchestrator",
+        code_root_visibility={"schema": "visibility", "ok": True, "errors": []},
+        scillm_proof_floor={"schema": "proof", "ok": True, "errors": []},
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary={
+            "schema": "pdf_lab.second_pass.scillm_transport_readonly_canary.v1",
+            "ok": False,
+            "delivery_state": "failed",
+            "errors": ["transport read-only canary event stream did not include message.completed"],
+            "receipt_artifact": "scillm_transport_readonly_canary_receipt.json",
+            "validation_artifact": "scillm_transport_readonly_canary_validation.json",
+            "event_stream_artifact": "scillm_transport_readonly_canary_event_stream.json",
+        },
+        scillm_transport_write_canary=None,
+    )
+
+    failed_check = report["failed_checks"][0]
+    observed_check = next(
+        check for check in report["observed_checks"] if check["check_id"] == "scillm_transport_readonly_canary"
+    )
+    assert report["ok"] is False
+    assert failed_check["check_id"] == "scillm_transport_readonly_canary"
+    assert failed_check["status"] == "failed"
+    assert observed_check["status"] == "failed"
+
+
 def test_build_live_scillm_canary_bug_report_rejects_string_failed_check_errors(tmp_path: Path) -> None:
     harness = _load_module()
     code_root = tmp_path / "code-root"

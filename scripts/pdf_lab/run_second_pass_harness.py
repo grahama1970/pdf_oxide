@@ -1738,13 +1738,19 @@ def build_live_scillm_canary_bug_report(
         ("scillm_transport_readonly_canary", scillm_transport_readonly_canary),
         ("scillm_transport_write_canary", scillm_transport_write_canary),
     ]
+
+    def canary_status(payload: dict[str, Any] | None) -> Any:
+        if not isinstance(payload, dict):
+            return None
+        return payload.get("status") or payload.get("delivery_state")
+
     observed_checks = [
         {
             "check_id": check_id,
             "present": isinstance(payload, dict),
             "schema": payload.get("schema") if isinstance(payload, dict) else None,
             "ok": payload.get("ok") if isinstance(payload, dict) else None,
-            "status": payload.get("status") if isinstance(payload, dict) else None,
+            "status": canary_status(payload),
             "errors": payload.get("errors") if isinstance(payload, dict) else None,
         }
         for check_id, payload in checks
@@ -1753,7 +1759,7 @@ def build_live_scillm_canary_bug_report(
         {
             "check_id": check_id,
             "schema": payload.get("schema"),
-            "status": payload.get("status"),
+            "status": canary_status(payload),
             "errors": strict_validation_error_list(payload, check_id)[0],
             "request_artifact": payload.get("request_artifact"),
             "receipt_artifact": payload.get("receipt_artifact"),
@@ -2952,7 +2958,7 @@ def build_harness_readiness_audit(
                     "present": True,
                     "schema": payload.get("schema"),
                     "ok": payload.get("ok"),
-                    "status": payload.get("status"),
+                    "status": payload.get("status") or payload.get("delivery_state"),
                     "errors": payload.get("errors"),
                 }
                 reported_subset = {
