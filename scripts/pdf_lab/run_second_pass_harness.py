@@ -523,21 +523,25 @@ def candidate_census_failure_aggregate(reason: str) -> dict[str, Any]:
 
 def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]:
     status_counts = Counter(result.get("terminal_status") or "missing" for result in page_results)
-    case_ids = [str(result.get("case_id") or "") for result in page_results if result.get("case_id")]
+    case_ids = [
+        result.get("case_id")
+        for result in page_results
+        if isinstance(result.get("case_id"), str) and result.get("case_id")
+    ]
     page_numbers = [
         result.get("page_number")
         for result in page_results
-        if isinstance(result.get("page_number"), int)
+        if is_plain_int(result.get("page_number")) and result.get("page_number") >= 1
     ]
     missing_case_id_cases = [
         result
         for result in page_results
-        if not result.get("case_id")
+        if not isinstance(result.get("case_id"), str) or not result.get("case_id")
     ]
     missing_page_number_cases = [
         result
         for result in page_results
-        if not isinstance(result.get("page_number"), int)
+        if not is_plain_int(result.get("page_number")) or result.get("page_number") < 1
     ]
     duplicate_case_ids = sorted(
         case_id
@@ -553,15 +557,14 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
     case_id_page_suffix_mismatches: list[str] = []
     for result in page_results:
         case_id = result.get("case_id")
-        if not case_id:
+        if not isinstance(case_id, str) or not case_id:
             continue
-        case_id = str(case_id)
         case_id_match = PAGE_CASE_ID_RE.fullmatch(case_id)
         if case_id_match is None:
             malformed_case_ids.append(case_id)
             continue
         page_number = result.get("page_number")
-        if isinstance(page_number, int) and int(case_id_match.group("page_number")) != page_number:
+        if is_plain_int(page_number) and int(case_id_match.group("page_number")) != page_number:
             case_id_page_suffix_mismatches.append(case_id)
     raw_identity_mismatch_cases = [
         result
@@ -581,12 +584,15 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
     commit_shas = [
         result.get("commit_sha")
         for result in page_results
-        if result.get("terminal_status") == "patched_confirmed" and result.get("commit_sha")
+        if result.get("terminal_status") == "patched_confirmed"
+        and isinstance(result.get("commit_sha"), str)
+        and result.get("commit_sha")
     ]
     patched_without_commit = [
         result
         for result in page_results
-        if result.get("terminal_status") == "patched_confirmed" and not result.get("commit_sha")
+        if result.get("terminal_status") == "patched_confirmed"
+        and (not isinstance(result.get("commit_sha"), str) or not result.get("commit_sha"))
     ]
     patched_missing_commit_gate_artifacts = [
         result

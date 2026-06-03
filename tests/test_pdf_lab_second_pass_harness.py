@@ -574,6 +574,33 @@ def test_aggregate_requires_unique_case_id_and_page_number() -> None:
     assert "duplicate page result page_numbers" in errors
 
 
+def test_aggregate_rejects_coerced_page_result_identity_and_commit_sha() -> None:
+    harness = _load_module()
+    aggregate = harness.aggregate_page_results(
+        [
+            {
+                "case_id": 123,
+                "page_number": True,
+                "terminal_status": "patched_confirmed",
+                "commit_sha": True,
+                "evidence_artifacts": ["commit_acceptance_gate.json", "commit_gate.json", "revertability_check.json"],
+            },
+        ]
+    )
+
+    errors = "\n".join(aggregate["errors"])
+    assert aggregate["ok"] is False
+    assert aggregate["missing_case_id_count"] == 1
+    assert aggregate["missing_page_number_count"] == 1
+    assert aggregate["patched_without_commit_count"] == 1
+    assert aggregate["case_ids"] == []
+    assert aggregate["page_numbers"] == []
+    assert aggregate["commit_shas"] == []
+    assert "page results missing case_id" in errors
+    assert "page results missing integer page_number" in errors
+    assert "patched_confirmed missing commit SHA" in errors
+
+
 def test_aggregate_rejects_malformed_page_result_case_ids() -> None:
     harness = _load_module()
     aggregate = harness.aggregate_page_results(
