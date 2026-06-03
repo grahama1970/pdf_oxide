@@ -5080,6 +5080,13 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("terminal commit_exact_file_match does not match commit_gate.exact_file_match")
             if patch_scope_validation and isinstance(patch_scope_validation.get("changed_files"), list):
                 expected_changed_files = sorted(str(path) for path in patch_scope_validation.get("changed_files") or [])
+                changed_files = commit_gate.get("changed_files")
+                if not isinstance(changed_files, list):
+                    errors.append("commit_gate changed_files is not a list")
+                else:
+                    actual_changed_files = sorted(str(path) for path in changed_files)
+                    if actual_changed_files != expected_changed_files:
+                        errors.append("commit_gate changed_files do not match patch_scope_validation changed_files")
                 committed_files = commit_gate.get("committed_files")
                 if not isinstance(committed_files, list):
                     errors.append("commit_gate committed_files is not a list")

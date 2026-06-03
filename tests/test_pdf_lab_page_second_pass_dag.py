@@ -5933,6 +5933,51 @@ def test_validate_page_terminal_ledger_rejects_commit_artifact_mismatch(tmp_path
     assert "revertability_check commit_sha does not match terminal ledger" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_commit_gate_changed_files(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    _write_full_patched_confirmed_artifacts(case_dir)
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    commit_gate = json.loads((case_dir / "commit_gate.json").read_text(encoding="utf-8"))
+    commit_gate["changed_files"] = ["tests/stale_prior_fix.py"]
+    (case_dir / "commit_gate.json").write_text(json.dumps(commit_gate), encoding="utf-8")
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "patched_confirmed",
+        "reason": "patch_committed_and_after_review_clean",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "patch_delta.json",
+            "patch_scope_validation.json",
+            "test_validation.json",
+            "page_after.json",
+            "page_after.png",
+            "page_after_candidates.png",
+            "review_after_request.json",
+            "review_after_request_validation.json",
+            "review_after_response.json",
+            "review_after_validation.json",
+            "commit_acceptance_gate.json",
+            "commit_gate.json",
+            "revertability_check.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": "abc123",
+        "commit_gate_ok": True,
+        "commit_exact_file_match": True,
+        "commit_revertability_ok": True,
+        "commit_acceptance_ok": True,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "commit_gate changed_files do not match patch_scope_validation changed_files" in validation["errors"]
+
+
 def test_validate_page_terminal_ledger_rejects_stale_commit_acceptance_and_revertability(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
