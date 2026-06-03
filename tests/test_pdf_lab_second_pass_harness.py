@@ -5424,6 +5424,74 @@ def test_run_harness_fails_closed_before_page_dag_when_transport_readonly_canary
     assert "page_cases/page_case_0001_p0001/scillm_transport_readonly_canary.json" in names
 
 
+def test_harness_runtime_timeout_inputs_reject_bool_and_nonfinite_values() -> None:
+    harness = _load_module()
+
+    errors = harness.validate_harness_runtime_timeout_inputs(
+        scillm_timeout_s=True,
+        opencode_timeout_s=float("inf"),
+        candidate_census_timeout_s="0.25",
+        candidate_page_timeout_s=False,
+        page_extract_timeout_s="0.5",
+    )
+
+    assert "scillm_timeout_s must be a positive finite number: True" in errors
+    assert "opencode_timeout_s must be a positive finite number: inf" in errors
+    assert "candidate_census_timeout_s must be null or a positive finite number: '0.25'" in errors
+    assert "candidate_page_timeout_s must be null or a positive finite number: False" in errors
+    assert "page_extract_timeout_s must be null or a positive finite number: '0.5'" in errors
+
+
+def test_run_harness_rejects_invalid_runtime_timeouts_before_output(tmp_path: Path, monkeypatch) -> None:
+    harness = _load_module()
+
+    def import_should_not_run():
+        raise AssertionError("module import should not run after invalid runtime timeout inputs")
+
+    monkeypatch.setattr(harness, "_import_pdf_lab_modules", import_should_not_run)
+
+    try:
+        harness.run_harness(
+            pdf_path=tmp_path / "fake.pdf",
+            out_dir=tmp_path / "out",
+            ledger_path=None,
+            apply_mode="release",
+            max_pages=1,
+            sample_size=1,
+            seed=123,
+            review_mode="dry_run",
+            patch_mode="dry_run",
+            patch_backend="opencode_serve",
+            commit_mode="dry_run",
+            model="gpt-5.5",
+            batch_id="batch",
+            review_fixture_path=None,
+            scillm_base_url="http://example.invalid:4001",
+            scillm_auth_token="token",
+            caller_skill="pdf-lab-test",
+            scillm_timeout_s=True,
+            scillm_preflight_mode="dry_run",
+            opencode_agent="build",
+            opencode_model=None,
+            opencode_timeout_s=55.0,
+            opencode_cleanup_session=False,
+            opencode_skills=["scillm"],
+            allowed_patch_prefixes=["tests/"],
+            validation_commands=None,
+            code_root=tmp_path,
+            prepare_isolated_code_root_dest=None,
+            prepare_isolated_code_root_include_paths=None,
+            prepare_isolated_code_root_force=False,
+        )
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for boolean scillm_timeout_s")
+
+    assert "scillm_timeout_s must be a positive finite number: True" in message
+    assert not (tmp_path / "out").exists()
+
+
 def test_run_harness_fails_closed_before_page_dag_when_transport_write_canary_fails(tmp_path: Path, monkeypatch) -> None:
     harness = _load_module()
     page_dag_called = False

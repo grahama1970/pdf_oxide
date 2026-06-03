@@ -145,6 +145,33 @@ def is_plain_number(value: Any) -> bool:
     return isinstance(value, int | float) and not isinstance(value, bool)
 
 
+def timeout_value_is_positive_finite(value: Any) -> bool:
+    return is_plain_number(value) and math.isfinite(float(value)) and float(value) > 0
+
+
+def validate_harness_runtime_timeout_inputs(
+    *,
+    scillm_timeout_s: Any,
+    opencode_timeout_s: Any,
+    candidate_census_timeout_s: Any,
+    candidate_page_timeout_s: Any,
+    page_extract_timeout_s: Any,
+) -> list[str]:
+    errors: list[str] = []
+    if not timeout_value_is_positive_finite(scillm_timeout_s):
+        errors.append(f"scillm_timeout_s must be a positive finite number: {scillm_timeout_s!r}")
+    if not timeout_value_is_positive_finite(opencode_timeout_s):
+        errors.append(f"opencode_timeout_s must be a positive finite number: {opencode_timeout_s!r}")
+    for field_name, value in [
+        ("candidate_census_timeout_s", candidate_census_timeout_s),
+        ("candidate_page_timeout_s", candidate_page_timeout_s),
+        ("page_extract_timeout_s", page_extract_timeout_s),
+    ]:
+        if value is not None and not timeout_value_is_positive_finite(value):
+            errors.append(f"{field_name} must be null or a positive finite number: {value!r}")
+    return errors
+
+
 def read_non_negative_int_field(
     payload: dict[str, Any],
     *,
@@ -4414,6 +4441,15 @@ def run_harness(
     scillm_mounted_workspace_prefixes: list[Path] | None = None,
     stop_on_nonterminal: bool = False,
 ) -> dict[str, Any]:
+    runtime_timeout_errors = validate_harness_runtime_timeout_inputs(
+        scillm_timeout_s=scillm_timeout_s,
+        opencode_timeout_s=opencode_timeout_s,
+        candidate_census_timeout_s=candidate_census_timeout_s,
+        candidate_page_timeout_s=candidate_page_timeout_s,
+        page_extract_timeout_s=page_extract_timeout_s,
+    )
+    if runtime_timeout_errors:
+        raise ValueError("; ".join(runtime_timeout_errors))
     manifest_mod, sampler_mod, page_dag = _import_pdf_lab_modules()
     effective_opencode_model = page_dag.resolve_effective_opencode_model(
         patch_mode=patch_mode,
