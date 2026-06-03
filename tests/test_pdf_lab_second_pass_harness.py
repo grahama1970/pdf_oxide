@@ -2740,6 +2740,60 @@ def test_build_patch_commit_ledger_rejects_changed_files_not_matching_patch_scop
     assert "commit_gate changed_files do not match patch_scope_validation changed_files" in "\n".join(ledger["errors"])
 
 
+def test_build_patch_commit_ledger_rejects_malformed_scope_and_test_file_lists(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="patched_confirmed",
+        commit_sha="abc123",
+        extra_evidence=PATCHED_CONFIRMED_ARTIFACTS,
+    )
+    patch_scope = json.loads((case_dir / "patch_scope_validation.json").read_text(encoding="utf-8"))
+    patch_scope["ok"] = True
+    patch_scope["changed_files"] = [123]
+    patch_scope["test_files"] = [456]
+    (case_dir / "patch_scope_validation.json").write_text(json.dumps(patch_scope), encoding="utf-8")
+    commit_gate = json.loads((case_dir / "commit_gate.json").read_text(encoding="utf-8"))
+    commit_gate["changed_files"] = ["123"]
+    commit_gate["committed_files"] = ["123"]
+    commit_gate["exact_file_match"] = True
+    (case_dir / "commit_gate.json").write_text(json.dumps(commit_gate), encoding="utf-8")
+    commit_acceptance = harness.validate_commit_gate_acceptance(commit_gate)
+    (case_dir / "commit_acceptance_gate.json").write_text(json.dumps(commit_acceptance), encoding="utf-8")
+    test_validation = json.loads((case_dir / "test_validation.json").read_text(encoding="utf-8"))
+    test_validation["ok"] = True
+    test_validation["required_test_files"] = ["456"]
+    test_validation["covered_test_files"] = ["456"]
+    test_validation["missing_test_file_coverage"] = []
+    (case_dir / "test_validation.json").write_text(json.dumps(test_validation), encoding="utf-8")
+
+    ledger = harness.build_patch_commit_ledger(
+        out_dir=tmp_path / "out",
+        page_results=[
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "terminal_status": "patched_confirmed",
+                "reason": "verified",
+                "case_dir": str(case_dir),
+                "commit_sha": "abc123",
+                "evidence_artifacts": [
+                    "terminal_ledger_validation.json",
+                    *PATCHED_CONFIRMED_ARTIFACTS,
+                ],
+            }
+        ],
+    )
+
+    assert ledger["ok"] is False
+    assert ledger["entries"][0]["ok"] is False
+    errors = "\n".join(ledger["errors"])
+    assert "patch_scope_validation changed_files must be a list of non-empty strings" in errors
+    assert "patch_scope_validation test_files must be a list of non-empty strings" in errors
+
+
 def test_commit_acceptance_gate_requires_matching_file_sets() -> None:
     harness = _load_module()
 

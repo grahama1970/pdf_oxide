@@ -2167,6 +2167,8 @@ def build_patch_commit_ledger(
         review_after_request_validation: dict[str, Any] = {}
         review_after_validation: dict[str, Any] = {}
         review_after_response: dict[str, Any] = {}
+        patch_scope_changed_files: set[str] | None = None
+        patch_scope_test_files: set[str] | None = None
         if not isinstance(commit_sha, str) or not commit_sha:
             entry_errors.append("missing commit_sha")
         if "commit_gate.json" not in evidence_artifacts:
@@ -2288,20 +2290,54 @@ def build_patch_commit_ledger(
                 entry_errors.append("patch_scope_validation schema mismatch")
             if patch_scope_validation.get("ok") is not True:
                 entry_errors.append("patch_scope_validation.ok is not true")
-            if not isinstance(patch_scope_validation.get("changed_files"), list):
-                entry_errors.append("patch_scope_validation changed_files is not a list")
-            if not isinstance(patch_scope_validation.get("test_files"), list):
-                entry_errors.append("patch_scope_validation test_files is not a list")
+            patch_scope_changed_files = read_string_set_field(
+                patch_scope_validation,
+                field_name="changed_files",
+                artifact_label="patch_scope_validation",
+                errors=entry_errors,
+                required=True,
+            )
+            patch_scope_test_files = read_string_set_field(
+                patch_scope_validation,
+                field_name="test_files",
+                artifact_label="patch_scope_validation",
+                errors=entry_errors,
+                required=True,
+            )
         if test_validation:
             if test_validation.get("schema") != "pdf_lab.second_pass.test_validation.v1":
                 entry_errors.append("test_validation schema mismatch")
             if test_validation.get("ok") is not True:
                 entry_errors.append("test_validation.ok is not true")
-            if patch_scope_validation and isinstance(patch_scope_validation.get("test_files"), list):
-                required_tests = sorted(str(path) for path in patch_scope_validation.get("test_files") or [])
-                validation_required_tests = sorted(str(path) for path in test_validation.get("required_test_files") or [])
-                validation_covered_tests = sorted(str(path) for path in test_validation.get("covered_test_files") or [])
-                validation_missing_tests = sorted(str(path) for path in test_validation.get("missing_test_file_coverage") or [])
+            if patch_scope_test_files is not None:
+                required_tests = sorted(patch_scope_test_files)
+                validation_required_tests = sorted(
+                    read_string_set_field(
+                        test_validation,
+                        field_name="required_test_files",
+                        artifact_label="test_validation",
+                        errors=entry_errors,
+                        required=True,
+                    )
+                )
+                validation_covered_tests = sorted(
+                    read_string_set_field(
+                        test_validation,
+                        field_name="covered_test_files",
+                        artifact_label="test_validation",
+                        errors=entry_errors,
+                        required=True,
+                    )
+                )
+                validation_missing_tests = sorted(
+                    read_string_set_field(
+                        test_validation,
+                        field_name="missing_test_file_coverage",
+                        artifact_label="test_validation",
+                        errors=entry_errors,
+                        required=True,
+                    )
+                )
                 if validation_required_tests and validation_required_tests != required_tests:
                     entry_errors.append("test_validation required_test_files do not match patch_scope_validation test_files")
                 if validation_covered_tests != required_tests:
@@ -2348,8 +2384,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("commit_gate commit_sha does not match page result")
             if commit_gate.get("exact_file_match") is not True:
                 entry_errors.append("commit_gate.exact_file_match is not true")
-            if patch_scope_validation and isinstance(patch_scope_validation.get("changed_files"), list):
-                verified_changed_files = sorted(str(path) for path in patch_scope_validation.get("changed_files") or [])
+            if patch_scope_changed_files is not None:
+                verified_changed_files = sorted(patch_scope_changed_files)
                 changed_files = commit_gate.get("changed_files")
                 if not isinstance(changed_files, list):
                     entry_errors.append("commit_gate changed_files missing or not a list")
