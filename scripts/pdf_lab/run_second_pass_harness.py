@@ -137,6 +137,19 @@ def read_json_object_if_exists(path: Path) -> tuple[dict[str, Any], list[str]]:
     return payload, []
 
 
+def validate_scillm_patch_delegate_bug_report_metadata(
+    report: dict[str, Any],
+    *,
+    expected_reason: Any,
+) -> list[str]:
+    errors: list[str] = []
+    if report.get("schema") != "pdf_lab.second_pass.scillm_patch_delegate_bug_report.v1":
+        errors.append(f"scillm patch delegate bug report schema mismatch: {report.get('schema')}")
+    if report.get("terminal_reason") != expected_reason:
+        errors.append("scillm patch delegate bug report terminal_reason does not match page result")
+    return errors
+
+
 def is_plain_int(value: Any) -> bool:
     return isinstance(value, int) and not isinstance(value, bool)
 
@@ -1757,6 +1770,13 @@ def _page_result_from_case(case: dict[str, Any], result: dict[str, Any]) -> dict
     terminal_validation, terminal_validation_read_errors = read_json_object_if_exists(terminal_validation_path)
     review_bundle_validation_path = case_dir / "review_bundle_validation.json"
     review_bundle_validation, review_bundle_validation_read_errors = read_json_object_if_exists(review_bundle_validation_path)
+    if bug_report_path.exists() and not bug_report_read_errors:
+        bug_report_read_errors.extend(
+            validate_scillm_patch_delegate_bug_report_metadata(
+                bug_report,
+                expected_reason=ledger.get("reason"),
+            )
+        )
     return {
         "case_id": case["case_id"],
         "page_number": case["page_number"],
@@ -1819,10 +1839,12 @@ def build_scillm_patch_delegate_bug_report_bundle(
         report, read_errors = read_json_object_if_exists(path)
         report_errors = list(read_errors or result.get("scillm_patch_delegate_bug_report_read_errors") or [])
         if not report_errors:
-            if report.get("schema") != "pdf_lab.second_pass.scillm_patch_delegate_bug_report.v1":
-                report_errors.append(f"scillm patch delegate bug report schema mismatch: {report.get('schema')}")
-            if report.get("terminal_reason") != result.get("reason"):
-                report_errors.append("scillm patch delegate bug report terminal_reason does not match page result")
+            report_errors.extend(
+                validate_scillm_patch_delegate_bug_report_metadata(
+                    report,
+                    expected_reason=result.get("reason"),
+                )
+            )
         reports.append(
             {
                 "case_id": result.get("case_id"),

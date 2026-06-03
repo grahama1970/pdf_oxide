@@ -1731,6 +1731,44 @@ def test_page_result_records_malformed_scillm_patch_delegate_bug_report(tmp_path
     assert "scillm_patch_delegate_bug_report.json unreadable" in page_result["scillm_patch_delegate_bug_report_read_errors"][0]
 
 
+def test_page_result_rejects_scillm_patch_delegate_bug_report_wrong_schema_or_reason(tmp_path: Path) -> None:
+    harness = _load_module()
+    case = {"case_id": "page_case_0001_p0002", "page_number": 2}
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "terminal_ledger.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+                "terminal_status": "blocked_substrate",
+                "reason": "patch_delegate_substrate_error",
+                "commit_sha": None,
+                "evidence_artifacts": [
+                    "terminal_ledger.json",
+                    "scillm_patch_delegate_bug_report.json",
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "scillm_patch_delegate_bug_report.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.other_report.v1",
+                "terminal_reason": "unrelated_reason",
+                "observed": {"transport_run_id": "otr-bug"},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    page_result = harness._page_result_from_case(case, {"case_dir": str(case_dir), "terminal_status": "blocked_substrate"})
+
+    errors = "\n".join(page_result["scillm_patch_delegate_bug_report_read_errors"])
+    assert "scillm patch delegate bug report schema mismatch" in errors
+    assert "scillm patch delegate bug report terminal_reason does not match page result" in errors
+
+
 def test_page_result_records_malformed_terminal_ledger_without_crashing(tmp_path: Path) -> None:
     harness = _load_module()
     case = {"case_id": "page_case_0001_p0002", "page_number": 2}
