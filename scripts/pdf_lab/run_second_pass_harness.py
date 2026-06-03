@@ -4995,6 +4995,18 @@ def validate_live_canary_artifacts(
             errors.append(f"live canary {field} has no expected artifact path")
         elif canary.get(field) != str(expected_path):
             errors.append(f"live canary {field} does not match expected artifact path")
+        elif field == "event_stream_artifact" and field in required_green_artifact_fields:
+            try:
+                event_stream_payload = json.loads(expected_path.read_text(encoding="utf-8"))
+            except Exception as exc:  # noqa: BLE001 - event stream evidence must fail closed.
+                errors.append(f"live canary event_stream_artifact unreadable: {type(exc).__name__}: {exc}")
+            else:
+                if not isinstance(event_stream_payload, dict):
+                    errors.append("live canary event_stream_artifact is not a JSON object")
+                elif event_stream_payload.get("saw_message_completed") is not True:
+                    errors.append("live canary event_stream_artifact did not prove message.completed")
+                elif event_stream_payload.get("delivery_state") not in (None, "completed"):
+                    errors.append("live canary event_stream_artifact delivery_state is not completed")
 
     validation_payload: dict[str, Any] = {}
     validation_path = artifacts.get(validation_artifact_name)
