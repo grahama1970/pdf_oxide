@@ -2002,6 +2002,90 @@ def test_package_harness_review_bundle_includes_run_and_page_artifacts(tmp_path:
     assert "page_cases/page_case_0001_p0001/scillm_orchestrator_page_dag_spec.json" in names
 
 
+def test_package_harness_review_bundle_requires_resolved_page_dag_artifacts(tmp_path: Path) -> None:
+    harness = _load_module()
+    out_dir = tmp_path / "out"
+    out_dir.mkdir()
+    top_artifact = out_dir / "candidate_manifest.json"
+    top_artifact.write_text(json.dumps({"artifact": "candidate_manifest.json"}), encoding="utf-8")
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(case_dir, case_id="page_case_0001_p0001", terminal_status="reviewed_clean")
+    missing_artifact = case_dir / "review_request.json"
+    missing_artifact.unlink()
+
+    page_results = [
+        {
+            "case_id": "page_case_0001_p0001",
+            "case_dir": str(case_dir),
+            "terminal_status": "reviewed_clean",
+        }
+    ]
+    validation = harness.package_harness_review_bundle(
+        out_dir=out_dir,
+        zip_path=out_dir / "harness_review_bundle.zip",
+        top_level_artifacts=[top_artifact],
+        page_results=page_results,
+    )
+    input_validation = harness.validate_harness_review_bundle_inputs(
+        zip_path=out_dir / "harness_review_bundle.zip",
+        top_level_artifacts=[top_artifact],
+        page_results=page_results,
+    )
+
+    missing_arcname = "page_cases/page_case_0001_p0001/review_request.json"
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert str(missing_artifact) in validation["missing_required_artifacts"]
+    assert missing_arcname in validation["missing_expected_zip_entries"]
+    assert input_validation["ok"] is False
+    assert str(missing_artifact) in input_validation["missing_required_artifacts"]
+
+
+def test_package_harness_review_bundle_requires_patched_confirmed_artifacts(tmp_path: Path) -> None:
+    harness = _load_module()
+    out_dir = tmp_path / "out"
+    out_dir.mkdir()
+    top_artifact = out_dir / "candidate_manifest.json"
+    top_artifact.write_text(json.dumps({"artifact": "candidate_manifest.json"}), encoding="utf-8")
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="patched_confirmed",
+        commit_sha="abc123",
+        extra_evidence=PATCHED_CONFIRMED_ARTIFACTS,
+    )
+    missing_artifact = case_dir / "review_after_response.json"
+    missing_artifact.unlink()
+
+    page_results = [
+        {
+            "case_id": "page_case_0001_p0001",
+            "case_dir": str(case_dir),
+            "terminal_status": "patched_confirmed",
+        }
+    ]
+    validation = harness.package_harness_review_bundle(
+        out_dir=out_dir,
+        zip_path=out_dir / "harness_review_bundle.zip",
+        top_level_artifacts=[top_artifact],
+        page_results=page_results,
+    )
+    input_validation = harness.validate_harness_review_bundle_inputs(
+        zip_path=out_dir / "harness_review_bundle.zip",
+        top_level_artifacts=[top_artifact],
+        page_results=page_results,
+    )
+
+    missing_arcname = "page_cases/page_case_0001_p0001/review_after_response.json"
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert str(missing_artifact) in validation["missing_required_artifacts"]
+    assert missing_arcname in validation["missing_expected_zip_entries"]
+    assert input_validation["ok"] is False
+    assert str(missing_artifact) in input_validation["missing_required_artifacts"]
+
+
 def test_build_harness_readiness_audit_requires_page_and_gate_artifacts(tmp_path: Path) -> None:
     harness = _load_module()
     manifest_path = tmp_path / "candidate_manifest.json"

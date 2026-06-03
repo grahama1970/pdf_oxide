@@ -30,6 +30,11 @@ TERMINAL_PAGE_STATUSES = {
 }
 RESOLVED_PASS_STATUSES = {"reviewed_clean", "patched_confirmed", "rejected_with_proof"}
 DEFAULT_SCILLM_MOUNTED_WORKSPACE_PREFIXES = ["/home/graham/workspace"]
+BASE_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
+    "terminal_ledger.json",
+    "review_bundle.zip",
+    "review_bundle_validation.json",
+}
 REQUIRED_PAGE_DAG_ARTIFACTS = {
     "state.json",
     "sampled_candidate_manifest.json",
@@ -62,6 +67,46 @@ REQUIRED_PATCHED_CONFIRMED_ARTIFACTS = {
     "commit_gate.json",
     "revertability_check.json",
 }
+OPTIONAL_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
+    "scillm_patch_delegate_bug_report.json",
+    "patch_request.json",
+    "patch_receipt.json",
+    "patch_validation.json",
+    "patch_attempts_ledger.json",
+    "transport_event_stream.json",
+    "transport_events.jsonl",
+    "scillm_proof_floor.json",
+    "scillm_proof_floor_validation.json",
+    "liveliness_response.json",
+    "opencode_health_response.json",
+    "positive_chat_request.json",
+    "positive_chat_response.json",
+    "missing_caller_chat_request.json",
+    "missing_caller_chat_response.json",
+    "opencode_completion_canary.json",
+    "opencode_completion_canary_request.json",
+    "opencode_completion_canary_validation.json",
+    "opencode_completion_canary_cleanup.json",
+    "opencode_completion_canary_receipt.json",
+    "opencode_completion_canary_error.json",
+    "canary_opencode_host_status.json",
+    "canary_opencode_host_result.json",
+    "canary_opencode_host_events.jsonl",
+    "canary_opencode_host_artifacts_summary.json",
+    "scillm_transport_readonly_canary.json",
+    "scillm_transport_readonly_canary_request.json",
+    "scillm_transport_readonly_canary_validation.json",
+    "scillm_transport_readonly_canary_receipt.json",
+    "scillm_transport_readonly_canary_error.json",
+    "scillm_transport_readonly_canary_event_stream.json",
+    "scillm_transport_write_canary.json",
+    "scillm_transport_write_canary_request.json",
+    "scillm_transport_write_canary_validation.json",
+    "scillm_transport_write_canary_cleanup.json",
+    "scillm_transport_write_canary_receipt.json",
+    "scillm_transport_write_canary_error.json",
+    "scillm_transport_write_canary_event_stream.json",
+}
 
 
 class CandidateCensusTimeout(TimeoutError):
@@ -87,6 +132,22 @@ def read_json_object_if_exists(path: Path) -> tuple[dict[str, Any], list[str]]:
     if not isinstance(payload, dict):
         return {}, [f"{path.name} is not a JSON object"]
     return payload, []
+
+
+def required_harness_review_bundle_page_artifacts(terminal_status: str | None) -> set[str]:
+    required = set(BASE_PAGE_REVIEW_BUNDLE_ARTIFACTS)
+    if terminal_status in RESOLVED_PASS_STATUSES:
+        required.update(REQUIRED_PAGE_DAG_ARTIFACTS)
+    if terminal_status == "patched_confirmed":
+        required.update(REQUIRED_PATCHED_CONFIRMED_ARTIFACTS)
+    return required
+
+
+def optional_harness_review_bundle_page_artifacts(terminal_status: str | None) -> set[str]:
+    optional = set(REQUIRED_PAGE_DAG_ARTIFACTS)
+    optional.update(REQUIRED_PATCHED_CONFIRMED_ARTIFACTS)
+    optional.update(OPTIONAL_PAGE_REVIEW_BUNDLE_ARTIFACTS)
+    return optional - required_harness_review_bundle_page_artifacts(terminal_status)
 
 
 def parse_mounted_workspace_prefixes(raw: str | None = None) -> list[Path]:
@@ -1777,80 +1838,10 @@ def package_harness_review_bundle(
         for result in page_results:
             case_dir = Path(str(result.get("case_dir") or "")).resolve()
             case_prefix = f"page_cases/{result.get('case_id') or case_dir.name}"
-            add_required(bundle, case_dir / "terminal_ledger.json", f"{case_prefix}/terminal_ledger.json")
-            add_required(bundle, case_dir / "review_bundle.zip", f"{case_prefix}/review_bundle.zip")
-            add_required(
-                bundle,
-                case_dir / "review_bundle_validation.json",
-                f"{case_prefix}/review_bundle_validation.json",
-            )
-            for artifact in [
-                "state.json",
-                "sampled_candidate_manifest.json",
-                "page_before.json",
-                "page_before.png",
-                "page_candidates.png",
-                "candidate_presets.json",
-                "review_request.json",
-                "review_validation.json",
-                "review.html",
-                "scillm_orchestrator_page_dag_spec.json",
-                "scillm_orchestrator_page_dag_spec_validation.json",
-                "scillm_orchestrator_page_submission.json",
-                "scillm_orchestrator_page_submission_validation.json",
-                "scillm_page_orchestrator_run_request.json",
-                "scillm_page_orchestrator_run_validation.json",
-                "patch_delta.json",
-                "patch_scope_validation.json",
-                "test_validation.json",
-                "page_after.json",
-                "page_after.png",
-                "page_after_candidates.png",
-                "review_after_request.json",
-                "review_after_validation.json",
-                "commit_acceptance_gate.json",
-                "commit_gate.json",
-                "revertability_check.json",
-                "scillm_patch_delegate_bug_report.json",
-                "patch_request.json",
-                "patch_receipt.json",
-                "patch_validation.json",
-                "patch_attempts_ledger.json",
-                "transport_event_stream.json",
-                "transport_events.jsonl",
-                "terminal_ledger_validation.json",
-                "scillm_proof_floor.json",
-                "scillm_proof_floor_validation.json",
-                "liveliness_response.json",
-                "opencode_health_response.json",
-                "positive_chat_request.json",
-                "positive_chat_response.json",
-                "missing_caller_chat_request.json",
-                "missing_caller_chat_response.json",
-                "opencode_completion_canary.json",
-                "opencode_completion_canary_request.json",
-                "opencode_completion_canary_validation.json",
-                "opencode_completion_canary_cleanup.json",
-                "opencode_completion_canary_receipt.json",
-                "opencode_completion_canary_error.json",
-                "canary_opencode_host_status.json",
-                "canary_opencode_host_result.json",
-                "canary_opencode_host_events.jsonl",
-                "canary_opencode_host_artifacts_summary.json",
-                "scillm_transport_readonly_canary.json",
-                "scillm_transport_readonly_canary_request.json",
-                "scillm_transport_readonly_canary_validation.json",
-                "scillm_transport_readonly_canary_receipt.json",
-                "scillm_transport_readonly_canary_error.json",
-                "scillm_transport_readonly_canary_event_stream.json",
-                "scillm_transport_write_canary.json",
-                "scillm_transport_write_canary_request.json",
-                "scillm_transport_write_canary_validation.json",
-                "scillm_transport_write_canary_cleanup.json",
-                "scillm_transport_write_canary_receipt.json",
-                "scillm_transport_write_canary_error.json",
-                "scillm_transport_write_canary_event_stream.json",
-            ]:
+            terminal_status = str(result.get("terminal_status") or "")
+            for artifact in sorted(required_harness_review_bundle_page_artifacts(terminal_status)):
+                add_required(bundle, case_dir / artifact, f"{case_prefix}/{artifact}")
+            for artifact in sorted(optional_harness_review_bundle_page_artifacts(terminal_status)):
                 add_optional(bundle, case_dir / artifact, f"{case_prefix}/{artifact}")
     if validation_artifact_path is not None:
         validation_arcname = validation_artifact_path.name
@@ -2059,79 +2050,14 @@ def validate_harness_review_bundle_inputs(
     for result in page_results:
         case_dir = Path(str(result.get("case_dir") or "")).resolve()
         case_prefix = f"page_cases/{result.get('case_id') or case_dir.name}"
-        for artifact in ["terminal_ledger.json", "review_bundle.zip", "review_bundle_validation.json"]:
+        terminal_status = str(result.get("terminal_status") or "")
+        for artifact in sorted(required_harness_review_bundle_page_artifacts(terminal_status)):
             source = case_dir / artifact
             if source.is_file():
                 included.append(f"{case_prefix}/{artifact}")
             else:
                 missing_required.append(str(source))
-        for artifact in [
-            "state.json",
-            "sampled_candidate_manifest.json",
-            "page_before.json",
-            "page_before.png",
-            "page_candidates.png",
-            "candidate_presets.json",
-            "review_request.json",
-            "review_validation.json",
-            "review.html",
-            "scillm_orchestrator_page_dag_spec.json",
-            "scillm_orchestrator_page_dag_spec_validation.json",
-            "scillm_orchestrator_page_submission.json",
-            "scillm_orchestrator_page_submission_validation.json",
-            "scillm_page_orchestrator_run_request.json",
-            "scillm_page_orchestrator_run_validation.json",
-            "patch_delta.json",
-            "patch_scope_validation.json",
-            "test_validation.json",
-            "page_after.json",
-            "page_after.png",
-            "page_after_candidates.png",
-            "review_after_request.json",
-            "review_after_validation.json",
-            "commit_acceptance_gate.json",
-            "commit_gate.json",
-            "revertability_check.json",
-            "scillm_patch_delegate_bug_report.json",
-            "patch_request.json",
-            "patch_receipt.json",
-            "patch_validation.json",
-            "patch_attempts_ledger.json",
-            "transport_event_stream.json",
-            "transport_events.jsonl",
-            "terminal_ledger_validation.json",
-            "scillm_proof_floor.json",
-            "scillm_proof_floor_validation.json",
-            "liveliness_response.json",
-            "opencode_health_response.json",
-            "positive_chat_request.json",
-            "positive_chat_response.json",
-            "missing_caller_chat_request.json",
-            "missing_caller_chat_response.json",
-            "opencode_completion_canary.json",
-            "opencode_completion_canary_request.json",
-            "opencode_completion_canary_validation.json",
-            "opencode_completion_canary_cleanup.json",
-            "opencode_completion_canary_receipt.json",
-            "opencode_completion_canary_error.json",
-            "canary_opencode_host_status.json",
-            "canary_opencode_host_result.json",
-            "canary_opencode_host_events.jsonl",
-            "canary_opencode_host_artifacts_summary.json",
-            "scillm_transport_readonly_canary.json",
-            "scillm_transport_readonly_canary_request.json",
-            "scillm_transport_readonly_canary_validation.json",
-            "scillm_transport_readonly_canary_receipt.json",
-            "scillm_transport_readonly_canary_error.json",
-            "scillm_transport_readonly_canary_event_stream.json",
-            "scillm_transport_write_canary.json",
-            "scillm_transport_write_canary_request.json",
-            "scillm_transport_write_canary_validation.json",
-            "scillm_transport_write_canary_cleanup.json",
-            "scillm_transport_write_canary_receipt.json",
-            "scillm_transport_write_canary_error.json",
-            "scillm_transport_write_canary_event_stream.json",
-        ]:
+        for artifact in sorted(optional_harness_review_bundle_page_artifacts(terminal_status)):
             source = case_dir / artifact
             if source.is_file():
                 included.append(f"{case_prefix}/{artifact}")
