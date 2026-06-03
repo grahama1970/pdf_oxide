@@ -747,8 +747,12 @@ def validate_sampling_gate(
         and statistical_basis.get("recommended_min_sample_size") != audit.get("recommended_min_sample_size")
     ):
         errors.append("sampling_audit statistical_significance_basis recommended_min_sample_size mismatch")
-    if candidate_count > 0 and audit.get("selected_count") is not None and audit.get("selected_count") != selected_count:
-        errors.append("sampling_audit selected_count does not match sampled_page_cases selected_count")
+    audit_selected_count = audit.get("selected_count")
+    if candidate_count > 0 and audit_selected_count is not None:
+        if not is_plain_int(audit_selected_count) or audit_selected_count < 0:
+            errors.append(f"sampling_audit selected_count must be a non-negative integer: {audit_selected_count!r}")
+        elif audit_selected_count != selected_count:
+            errors.append("sampling_audit selected_count does not match sampled_page_cases selected_count")
     if candidate_count > 0 and accepted_forced_pages:
         if audit.get("forced_pages_are_additive") is not True:
             errors.append("sampling_audit forced_pages_are_additive is not true")

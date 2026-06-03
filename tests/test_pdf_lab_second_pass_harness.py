@@ -704,7 +704,7 @@ def test_validate_sampling_gate_rejects_malformed_statistical_audit() -> None:
             "sampling_audit": {
                 "schema": "wrong.schema",
                 "seed": 778,
-                "selected_count": 3,
+                "selected_count": True,
                 "adequate_sample_size": True,
                 "adequate_for_priority_strata": True,
                 "recommended_min_sample_size": 4,
@@ -728,7 +728,7 @@ def test_validate_sampling_gate_rejects_malformed_statistical_audit() -> None:
     assert "sampling_audit seed does not match sampled_page_cases seed" in errors
     assert "sampling_audit statistical_significance_basis seed does not match sampled_page_cases seed" in errors
     assert "sampling_audit statistical_significance_basis recommended_min_sample_size mismatch" in errors
-    assert "sampling_audit selected_count does not match sampled_page_cases selected_count" in errors
+    assert "sampling_audit selected_count must be a non-negative integer: True" in errors
 
 
 def test_validate_sampling_gate_rejects_coerced_declared_counts() -> None:
