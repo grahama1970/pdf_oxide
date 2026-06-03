@@ -1160,6 +1160,11 @@ def test_live_review_failure_writes_blocked_substrate_bundle(tmp_path: Path, mon
     assert ledger["reason"] == "scillm_review_call_failed"
     assert "scillm_review_error.json" in ledger["evidence_artifacts"]
     assert validation["errors"] == ["scillm_review_call_failed"]
+    assert error["schema"] == "pdf_lab.second_pass.substrate_error.v1"
+    assert error["node_id"] == "scillm_one_shot_page_review"
+    assert error["endpoint"] == "POST /v1/chat/completions"
+    assert error["case_id"] == "page_case_0001_p0003"
+    assert error["page_number"] == 3
     assert error["error_type"] == "RuntimeError"
     assert (case_dir / "review.html").is_file()
     with zipfile.ZipFile(case_dir / "review_bundle.zip") as bundle:
@@ -3030,6 +3035,9 @@ def test_live_patch_delegate_failure_writes_blocked_substrate_bundle(tmp_path: P
     assert "scillm_patch_preflight.json" in ledger["evidence_artifacts"]
     assert "patch_error.json" in ledger["evidence_artifacts"]
     assert patch_validation["errors"] == ["patch_delegate_call_failed"]
+    assert patch_error["schema"] == "pdf_lab.second_pass.substrate_error.v1"
+    assert patch_error["case_id"] == "page_case_0001_p0003"
+    assert patch_error["page_number"] == 3
     assert patch_error["error_type"] == "RuntimeError"
     assert patch_error["preflight_artifact"] == "scillm_patch_preflight.json"
     with zipfile.ZipFile(case_dir / "review_bundle.zip") as bundle:
@@ -6294,6 +6302,59 @@ def test_validate_page_terminal_ledger_rejects_stale_page_extraction_error(tmp_p
     errors = "\n".join(validation["errors"])
     assert "page_extraction_error case_id does not match terminal ledger" in errors
     assert "page_extraction_error page_number does not match terminal ledger" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_stale_scillm_review_error(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": False,
+                "errors": ["scillm_review_call_failed"],
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "scillm_review_error.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.substrate_error.v1",
+                "node_id": "scillm_one_shot_page_review",
+                "endpoint": "POST /v1/chat/completions",
+                "case_id": "page_case_9999_p9999",
+                "page_number": 99,
+                "error_type": "RuntimeError",
+                "error": "copied stale review failure",
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "blocked_substrate",
+        "reason": "scillm_review_call_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_validation.json",
+            "scillm_review_error.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_review_error case_id does not match terminal ledger" in errors
+    assert "scillm_review_error page_number does not match terminal ledger" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_stale_orchestrator_spec_validations(tmp_path: Path) -> None:

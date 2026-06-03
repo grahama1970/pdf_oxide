@@ -4259,36 +4259,83 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         elif patch_evidence_workspace_artifact and embedded_workspace != patch_evidence_workspace_artifact:
             errors.append("patch_baseline patch_evidence_workspace does not match patch_evidence_workspace artifact")
 
-    page_extraction_error_artifact = (
-        read_required_json_artifact("page_extraction_error.json")
-        if "page_extraction_error.json" in evidence_artifacts
-        else {}
+    def validate_substrate_error_artifact(
+        artifact: str,
+        *,
+        expected_node_ids: set[str] | None = None,
+        expected_endpoints: set[str] | None = None,
+    ) -> dict[str, Any]:
+        payload = read_required_json_artifact(artifact) if artifact in evidence_artifacts else {}
+        if not payload:
+            return {}
+        label = artifact.removesuffix(".json")
+        if payload.get("schema") != "pdf_lab.second_pass.substrate_error.v1":
+            errors.append(f"{label} schema mismatch")
+        if expected_node_ids is not None and payload.get("node_id") not in expected_node_ids:
+            errors.append(f"{label} node_id mismatch")
+        if expected_endpoints is not None and payload.get("endpoint") not in expected_endpoints:
+            errors.append(f"{label} endpoint mismatch")
+        if payload.get("case_id") != terminal.get("case_id"):
+            errors.append(f"{label} case_id does not match terminal ledger")
+        if payload.get("page_number") != terminal.get("page_number"):
+            errors.append(f"{label} page_number does not match terminal ledger")
+        if (
+            not isinstance(payload.get("error_type"), str)
+            or not payload.get("error_type", "").strip()
+        ):
+            errors.append(f"{label} error_type must be non-empty")
+        if (
+            not isinstance(payload.get("error"), str)
+            or not payload.get("error", "").strip()
+        ):
+            errors.append(f"{label} error must be non-empty")
+        return payload
+
+    page_extraction_error_artifact = validate_substrate_error_artifact(
+        "page_extraction_error.json",
+        expected_node_ids={"extract_page_json"},
+        expected_endpoints={"snapshot_current_extraction._extract_page"},
     )
     if page_extraction_error_artifact:
-        if page_extraction_error_artifact.get("schema") != "pdf_lab.second_pass.substrate_error.v1":
-            errors.append("page_extraction_error schema mismatch")
-        if page_extraction_error_artifact.get("node_id") != "extract_page_json":
-            errors.append("page_extraction_error node_id must be extract_page_json")
-        if page_extraction_error_artifact.get("endpoint") != "snapshot_current_extraction._extract_page":
-            errors.append("page_extraction_error endpoint mismatch")
-        if page_extraction_error_artifact.get("case_id") != terminal.get("case_id"):
-            errors.append("page_extraction_error case_id does not match terminal ledger")
-        if page_extraction_error_artifact.get("page_number") != terminal.get("page_number"):
-            errors.append("page_extraction_error page_number does not match terminal ledger")
-        if (
-            not isinstance(page_extraction_error_artifact.get("error_type"), str)
-            or not page_extraction_error_artifact.get("error_type", "").strip()
-        ):
-            errors.append("page_extraction_error error_type must be non-empty")
-        if (
-            not isinstance(page_extraction_error_artifact.get("error"), str)
-            or not page_extraction_error_artifact.get("error", "").strip()
-        ):
-            errors.append("page_extraction_error error must be non-empty")
         if terminal_reason == "page_extraction_failed" and terminal_status != "blocked_substrate":
             errors.append("page_extraction_failed terminal ledger must be blocked_substrate")
     elif terminal_reason == "page_extraction_failed":
         errors.append("page_extraction_failed terminal ledger requires page_extraction_error.json")
+
+    scillm_review_error_artifact = validate_substrate_error_artifact(
+        "scillm_review_error.json",
+        expected_node_ids={"scillm_one_shot_page_review"},
+        expected_endpoints={"POST /v1/chat/completions", "fixture:review_response"},
+    )
+    if terminal_reason == "scillm_review_call_failed" and not scillm_review_error_artifact:
+        errors.append("scillm_review_call_failed terminal ledger requires scillm_review_error.json")
+    if terminal_reason == "review_fixture_load_failed" and not scillm_review_error_artifact:
+        errors.append("review_fixture_load_failed terminal ledger requires scillm_review_error.json")
+
+    repair_plan_error_artifact = validate_substrate_error_artifact(
+        "repair_plan_error.json",
+        expected_endpoints={"prepare:POST /v1/chat/completions", "POST /v1/chat/completions"},
+    )
+    if terminal_reason == "repair_plan_call_failed" and not repair_plan_error_artifact:
+        errors.append("repair_plan_call_failed terminal ledger requires repair_plan_error.json")
+    if terminal_reason == "repair_plan_failed" and not repair_plan_error_artifact:
+        errors.append("repair_plan_failed terminal ledger requires repair_plan_error.json")
+
+    repair_diagnosis_error_artifact = validate_substrate_error_artifact("repair_diagnosis_error.json")
+    if terminal_reason == "repair_diagnosis_call_failed" and not repair_diagnosis_error_artifact:
+        errors.append("repair_diagnosis_call_failed terminal ledger requires repair_diagnosis_error.json")
+
+    patch_error_artifact = validate_substrate_error_artifact("patch_error.json")
+    if terminal_reason == "patch_delegate_call_failed" and not patch_error_artifact:
+        errors.append("patch_delegate_call_failed terminal ledger requires patch_error.json")
+
+    after_review_error_artifact = validate_substrate_error_artifact(
+        "scillm_after_review_error.json",
+        expected_node_ids={"rerun_page_review_after_patch"},
+        expected_endpoints={"POST /v1/chat/completions", "fixture:review_after_response"},
+    )
+    if terminal_reason == "after_review_call_failed" and not after_review_error_artifact:
+        errors.append("after_review_call_failed terminal ledger requires scillm_after_review_error.json")
 
     review_request = read_required_json_artifact("review_request.json") if "review_request.json" in evidence_artifacts else {}
     review_request_validation = (
@@ -5532,6 +5579,8 @@ def run_page_case(
                 "schema": "pdf_lab.second_pass.substrate_error.v1",
                 "node_id": "scillm_one_shot_page_review",
                 "endpoint": "POST /v1/chat/completions",
+                "case_id": page_case["case_id"],
+                "page_number": page_number,
                 "preflight_artifact": "scillm_review_preflight.json" if review_preflight is not None else None,
                 "error_type": type(exc).__name__,
                 "error": str(exc),
@@ -5572,6 +5621,8 @@ def run_page_case(
                 "schema": "pdf_lab.second_pass.substrate_error.v1",
                 "node_id": "scillm_one_shot_page_review",
                 "endpoint": "fixture:review_response",
+                "case_id": page_case["case_id"],
+                "page_number": page_number,
                 "preflight_artifact": None,
                 "error_type": type(exc).__name__,
                 "error": str(exc),
@@ -5741,6 +5792,8 @@ def run_page_case(
                         "schema": "pdf_lab.second_pass.substrate_error.v1",
                         "node_id": f"scillm_repair_plan_attempt_{attempt_index:02d}",
                         "endpoint": "prepare:POST /v1/chat/completions",
+                        "case_id": page_case["case_id"],
+                        "page_number": page_number,
                         "attempt_index": attempt_index,
                         "error_type": "RepairPlanRequestValidationFailed",
                         "error": "; ".join(repair_plan_request_validation["errors"]),
@@ -5764,6 +5817,8 @@ def run_page_case(
                             "schema": "pdf_lab.second_pass.substrate_error.v1",
                             "node_id": f"scillm_repair_plan_attempt_{attempt_index:02d}",
                             "endpoint": "POST /v1/chat/completions",
+                            "case_id": page_case["case_id"],
+                            "page_number": page_number,
                             "attempt_index": attempt_index,
                             "error_type": type(exc).__name__,
                             "error": str(exc),
@@ -5965,6 +6020,8 @@ def run_page_case(
                             "schema": "pdf_lab.second_pass.substrate_error.v1",
                             "node_id": f"repair_diagnosis_attempt_{attempt_index:02d}",
                             "endpoint": diagnosis_request["endpoint"],
+                            "case_id": page_case["case_id"],
+                            "page_number": page_number,
                             "patch_backend": patch_backend,
                             "agent": attempt_agent,
                             "attempt_index": attempt_index,
@@ -6218,6 +6275,8 @@ def run_page_case(
                         "schema": "pdf_lab.second_pass.substrate_error.v1",
                         "node_id": attempt_node_id,
                         "endpoint": patch_request["endpoint"],
+                        "case_id": page_case["case_id"],
+                        "page_number": page_number,
                         "patch_backend": patch_backend,
                         "agent": attempt_agent,
                         "attempt_index": attempt_index,
@@ -6434,6 +6493,8 @@ def run_page_case(
                                 "schema": "pdf_lab.second_pass.substrate_error.v1",
                                 "node_id": "rerun_page_review_after_patch",
                                 "endpoint": "fixture:review_after_response",
+                                "case_id": page_case["case_id"],
+                                "page_number": page_number,
                                 "error_type": type(exc).__name__,
                                 "error": str(exc),
                             }
@@ -6455,6 +6516,8 @@ def run_page_case(
                                 "schema": "pdf_lab.second_pass.substrate_error.v1",
                                 "node_id": "rerun_page_review_after_patch",
                                 "endpoint": "POST /v1/chat/completions",
+                                "case_id": page_case["case_id"],
+                                "page_number": page_number,
                                 "error_type": type(exc).__name__,
                                 "error": str(exc),
                             }
