@@ -3046,6 +3046,38 @@ def patch_delegate_stopped_after_tool_call(raw: dict[str, Any]) -> bool:
     return saw_tool and not has_nonempty_patch_artifact(raw.get("diff")) and not has_nonempty_patch_artifact(raw.get("artifacts"))
 
 
+def timeout_value_is_positive_finite(value: Any) -> bool:
+    return (
+        not isinstance(value, bool)
+        and isinstance(value, int | float)
+        and math.isfinite(float(value))
+        and float(value) > 0
+    )
+
+
+def validate_delegate_request_timeout(request: dict[str, Any] | None, errors: list[str], *, label: str) -> None:
+    if not isinstance(request, dict):
+        return
+    validates_full_request = request.get("schema") is not None or "timeout_s" in request or "message_body" in request
+    if not validates_full_request:
+        return
+    request_timeout_s = request.get("timeout_s")
+    request_timeout_ok = timeout_value_is_positive_finite(request_timeout_s)
+    if not request_timeout_ok:
+        errors.append(f"{label} request timeout_s must be a positive finite number")
+    if "message_body" not in request:
+        return
+    message_body = request.get("message_body")
+    if not isinstance(message_body, dict):
+        errors.append(f"{label} request message_body must be an object")
+        return
+    message_timeout_s = message_body.get("timeout_s")
+    if not timeout_value_is_positive_finite(message_timeout_s):
+        errors.append(f"{label} request message_body.timeout_s must be a positive finite number")
+    elif request_timeout_ok and float(message_timeout_s) != float(request_timeout_s):
+        errors.append(f"{label} request message_body.timeout_s must match request.timeout_s")
+
+
 def validate_patch_delegate_receipt(
     receipt: dict[str, Any] | None,
     *,
@@ -3061,6 +3093,7 @@ def validate_patch_delegate_receipt(
             "patch_status": "not_attempted",
         }
     errors: list[str] = []
+    validate_delegate_request_timeout(request, errors, label="patch delegate")
     assistant_text = ""
     if not isinstance(receipt, dict):
         errors.append("patch receipt missing")
@@ -3217,6 +3250,7 @@ def validate_repair_diagnosis_delegate_receipt(
             "expected_candidate_ids": expected_candidate_ids,
         }
     errors: list[str] = []
+    validate_delegate_request_timeout(request, errors, label="repair diagnosis delegate")
     assistant_text = ""
     status = "missing"
     if not isinstance(receipt, dict):
