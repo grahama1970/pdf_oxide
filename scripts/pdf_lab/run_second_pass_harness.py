@@ -200,6 +200,23 @@ def validate_harness_page_selection_inputs(
     return errors
 
 
+def validate_harness_boolean_inputs(
+    *,
+    opencode_cleanup_session: Any,
+    prepare_isolated_code_root_force: Any,
+    stop_on_nonterminal: Any,
+) -> list[str]:
+    errors: list[str] = []
+    for field_name, value in [
+        ("opencode_cleanup_session", opencode_cleanup_session),
+        ("prepare_isolated_code_root_force", prepare_isolated_code_root_force),
+        ("stop_on_nonterminal", stop_on_nonterminal),
+    ]:
+        if type(value) is not bool:
+            errors.append(f"{field_name} must be a boolean: {value!r}")
+    return errors
+
+
 def read_non_negative_int_field(
     payload: dict[str, Any],
     *,
@@ -4486,6 +4503,13 @@ def run_harness(
     )
     if page_selection_errors:
         raise ValueError("; ".join(page_selection_errors))
+    boolean_input_errors = validate_harness_boolean_inputs(
+        opencode_cleanup_session=opencode_cleanup_session,
+        prepare_isolated_code_root_force=prepare_isolated_code_root_force,
+        stop_on_nonterminal=stop_on_nonterminal,
+    )
+    if boolean_input_errors:
+        raise ValueError("; ".join(boolean_input_errors))
     manifest_mod, sampler_mod, page_dag = _import_pdf_lab_modules()
     effective_opencode_model = page_dag.resolve_effective_opencode_model(
         patch_mode=patch_mode,

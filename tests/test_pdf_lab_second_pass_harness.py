@@ -5558,6 +5558,70 @@ def test_run_harness_rejects_invalid_page_selection_before_output(tmp_path: Path
     assert not (tmp_path / "out").exists()
 
 
+def test_harness_boolean_inputs_reject_coerced_values() -> None:
+    harness = _load_module()
+
+    errors = harness.validate_harness_boolean_inputs(
+        opencode_cleanup_session=1,
+        prepare_isolated_code_root_force="false",
+        stop_on_nonterminal=None,
+    )
+
+    assert "opencode_cleanup_session must be a boolean: 1" in errors
+    assert "prepare_isolated_code_root_force must be a boolean: 'false'" in errors
+    assert "stop_on_nonterminal must be a boolean: None" in errors
+
+
+def test_run_harness_rejects_invalid_boolean_controls_before_output(tmp_path: Path, monkeypatch) -> None:
+    harness = _load_module()
+
+    def import_should_not_run():
+        raise AssertionError("module import should not run after invalid boolean controls")
+
+    monkeypatch.setattr(harness, "_import_pdf_lab_modules", import_should_not_run)
+
+    try:
+        harness.run_harness(
+            pdf_path=tmp_path / "fake.pdf",
+            out_dir=tmp_path / "out",
+            ledger_path=None,
+            apply_mode="release",
+            max_pages=1,
+            sample_size=1,
+            seed=123,
+            review_mode="dry_run",
+            patch_mode="dry_run",
+            patch_backend="opencode_serve",
+            commit_mode="dry_run",
+            model="gpt-5.5",
+            batch_id="batch",
+            review_fixture_path=None,
+            scillm_base_url="http://example.invalid:4001",
+            scillm_auth_token="token",
+            caller_skill="pdf-lab-test",
+            scillm_timeout_s=12.5,
+            scillm_preflight_mode="dry_run",
+            opencode_agent="build",
+            opencode_model=None,
+            opencode_timeout_s=55.0,
+            opencode_cleanup_session=1,
+            opencode_skills=["scillm"],
+            allowed_patch_prefixes=["tests/"],
+            validation_commands=None,
+            code_root=tmp_path,
+            prepare_isolated_code_root_dest=None,
+            prepare_isolated_code_root_include_paths=None,
+            prepare_isolated_code_root_force=False,
+        )
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for coerced opencode_cleanup_session")
+
+    assert "opencode_cleanup_session must be a boolean: 1" in message
+    assert not (tmp_path / "out").exists()
+
+
 def test_run_harness_fails_closed_before_page_dag_when_transport_write_canary_fails(tmp_path: Path, monkeypatch) -> None:
     harness = _load_module()
     page_dag_called = False
