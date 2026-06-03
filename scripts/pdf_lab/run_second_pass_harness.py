@@ -4875,7 +4875,9 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
         except Exception as exc:  # noqa: BLE001 - malformed proof-floor evidence must fail closed.
             errors.append(f"scillm proof floor artifact unreadable: {type(exc).__name__}: {exc}")
         else:
-            if loaded == proof_floor:
+            if not isinstance(loaded, dict):
+                errors.append("scillm proof floor artifact is not a JSON object")
+            elif loaded == proof_floor:
                 proof_floor_artifact_matches_argument = True
             else:
                 errors.append("scillm proof floor artifact does not match proof floor argument")
@@ -4890,9 +4892,13 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
     if validation_path and validation_path.is_file():
         try:
             loaded = json.loads(validation_path.read_text(encoding="utf-8"))
-            validation_payload = loaded if isinstance(loaded, dict) else {}
         except Exception as exc:  # noqa: BLE001 - artifact validation must fail closed on unreadable JSON.
             errors.append(f"scillm proof floor validation artifact unreadable: {type(exc).__name__}: {exc}")
+        else:
+            if isinstance(loaded, dict):
+                validation_payload = loaded
+            else:
+                errors.append("scillm proof floor validation artifact is not a JSON object")
     elif proof_floor:
         errors.append("scillm proof floor validation artifact missing")
     if validation_payload:

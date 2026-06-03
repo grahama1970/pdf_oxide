@@ -5844,6 +5844,32 @@ def test_validate_scillm_proof_floor_artifacts_rejects_stale_proof_floor_artifac
     assert "scillm proof floor artifact does not match proof floor argument" in validation["errors"]
 
 
+def test_validate_scillm_proof_floor_artifacts_rejects_non_object_artifacts(tmp_path: Path) -> None:
+    harness = _load_module()
+    proof_dir = tmp_path / "scillm_proof_floor"
+    proof_dir.mkdir()
+    proof_floor = {
+        "schema": "pdf_lab.second_pass.scillm_proof_floor.v1",
+        "ok": True,
+        "errors": [],
+        "validation_artifact": str(proof_dir / "scillm_proof_floor_validation.json"),
+    }
+    for name in harness.scillm_proof_floor_artifacts(tmp_path, proof_floor).keys():
+        (proof_dir / name).write_text("{}", encoding="utf-8")
+    (proof_dir / "scillm_proof_floor.json").write_text(json.dumps(["not-object"]), encoding="utf-8")
+    (proof_dir / "scillm_proof_floor_validation.json").write_text(
+        json.dumps(["not-object"]),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_scillm_proof_floor_artifacts(tmp_path, proof_floor)
+
+    assert validation["ok"] is False
+    assert validation["proof_floor_artifact_matches_argument"] is False
+    assert "scillm proof floor artifact is not a JSON object" in validation["errors"]
+    assert "scillm proof floor validation artifact is not a JSON object" in validation["errors"]
+
+
 def test_validate_scillm_proof_floor_artifacts_requires_validation_artifact_path(tmp_path: Path) -> None:
     harness = _load_module()
     proof_dir = tmp_path / "scillm_proof_floor"
