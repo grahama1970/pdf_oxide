@@ -4231,6 +4231,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     errors.append("patch_validation ok does not match selected/final patch attempt validation")
                 if list(patch_validation.get("errors") or []) != list(selected_or_final_validation.get("errors") or []):
                     errors.append("patch_validation errors do not match selected/final patch attempt validation")
+                if patch_validation != selected_or_final_validation:
+                    errors.append("patch_validation does not match selected/final patch attempt validation")
     if terminal_status == "patched_confirmed":
         commit_sha = terminal.get("commit_sha")
         if not terminal.get("commit_sha"):

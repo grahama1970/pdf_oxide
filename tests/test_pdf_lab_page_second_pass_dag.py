@@ -5658,6 +5658,81 @@ def test_validate_page_terminal_ledger_rejects_stale_patch_attempts_ledger(tmp_p
     assert "patch_validation errors do not match selected/final patch attempt validation" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_root_patch_validation_fields(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "patch_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+                "ok": False,
+                "errors": ["patch_delegate_failed"],
+                "patch_status": "stale_status",
+                "artifacts_present": True,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_attempt_01_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+                "ok": False,
+                "errors": ["patch_delegate_failed"],
+                "patch_status": "failed",
+                "artifacts_present": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_attempts_ledger.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_attempts_ledger.v1",
+                "patch_backend": "scillm_orchestrator",
+                "patch_mode": "live",
+                "patch_prompt_profile": "plan_only",
+                "repair_strategy": "direct",
+                "agent_sequence": ["build"],
+                "attempt_count": 1,
+                "selected_attempt_index": None,
+                "attempts": [
+                    {
+                        "attempt_index": 1,
+                        "agent": "build",
+                        "validation_artifact": "patch_attempt_01_validation.json",
+                        "ok": False,
+                        "errors": ["patch_delegate_failed"],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "patch_delegate_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "patch_validation.json",
+            "patch_attempts_ledger.json",
+            "patch_attempt_01_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "patch_validation does not match selected/final patch attempt validation" in validation["errors"]
+
+
 def test_validate_page_terminal_ledger_rejects_reviewed_clean_with_defect_response(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
