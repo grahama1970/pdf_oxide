@@ -24,7 +24,7 @@ import zipfile
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 
 REPO = Path(__file__).resolve().parents[2]
@@ -4239,14 +4239,30 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append(f"{artifact} ok must be boolean")
         checks = preflight.get("checks") if isinstance(preflight.get("checks"), list) else []
         if preflight.get("ok") is True:
-            def successful_check_matches(path: str, *, method: str | None = None) -> bool:
+            def successful_check_matches(
+                path: str,
+                *,
+                method: str | None = None,
+                payload_matches: Callable[[dict[str, Any]], bool] | None = None,
+            ) -> bool:
                 return any(
                     isinstance(check, dict)
                     and check.get("path") == path
                     and (method is None or check.get("method") == method)
                     and check.get("http_status") == 200
                     and isinstance(check.get("payload"), dict)
+                    and (payload_matches is None or payload_matches(check["payload"]))
                     for check in checks
+                )
+
+            def opencode_health_payload_matches(payload: dict[str, Any]) -> bool:
+                return payload.get("status") in {"ok", "healthy", "enabled"} or payload.get("opencode_serve") is True
+
+            def transport_capabilities_payload_matches(payload: dict[str, Any]) -> bool:
+                return (
+                    payload.get("transport_api") is True
+                    and payload.get("event_stream") == "sse_with_reasoning"
+                    and payload.get("child_sessions") is True
                 )
 
             if not any(
@@ -4268,11 +4284,20 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 for check in checks
             ):
                 errors.append(f"{artifact} ok true requires missing-caller caller_skill_required check")
-            if surface == "chat" and not successful_check_matches("/v1/scillm/health"):
+            if surface == "chat" and not successful_check_matches(
+                "/v1/scillm/health",
+                payload_matches=lambda payload: payload.get("status") == "ok",
+            ):
                 errors.append(f"{artifact} ok true requires /v1/scillm/health check")
-            if surface == "opencode_serve" and not successful_check_matches("/v1/scillm/opencode/health"):
+            if surface == "opencode_serve" and not successful_check_matches(
+                "/v1/scillm/opencode/health",
+                payload_matches=opencode_health_payload_matches,
+            ):
                 errors.append(f"{artifact} ok true requires /v1/scillm/opencode/health check")
-            if surface == "opencode_transport" and not successful_check_matches("/v1/scillm/opencode/transport/capabilities"):
+            if surface == "opencode_transport" and not successful_check_matches(
+                "/v1/scillm/opencode/transport/capabilities",
+                payload_matches=transport_capabilities_payload_matches,
+            ):
                 errors.append(f"{artifact} ok true requires /v1/scillm/opencode/transport/capabilities check")
         return preflight
 

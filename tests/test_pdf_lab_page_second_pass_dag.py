@@ -8186,6 +8186,74 @@ def test_validate_page_terminal_ledger_rejects_patch_preflight_surface_mismatch(
     assert "scillm_patch_preflight.json ok true requires empty errors" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_transport_preflight_without_capabilities(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "patch_request.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_orchestrator_patch_request.v1",
+                "endpoint": "POST /v1/scillm/opencode/transport/runs + children + message",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
+                "ok": False,
+                "errors": ["patch_delegate_call_failed"],
+                "patch_status": "substrate_error",
+            }
+        ),
+        encoding="utf-8",
+    )
+    stale_transport_checks = _successful_preflight_checks("opencode_transport")
+    stale_transport_checks[-1] = {
+        "path": "/v1/scillm/opencode/transport/capabilities",
+        "http_status": 200,
+        "payload": {"transport_api": False, "event_stream": "plain_sse", "child_sessions": False},
+    }
+    (case_dir / "scillm_patch_preflight.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_preflight.v1",
+                "surface": "opencode_transport",
+                "base_url": "http://localhost:4001",
+                "caller_skill": "pdf-lab",
+                "checks": stale_transport_checks,
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "blocked_substrate",
+        "reason": "patch_delegate_call_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "patch_request.json",
+            "patch_validation.json",
+            "scillm_patch_preflight.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_patch_preflight.json ok true requires /v1/scillm/opencode/transport/capabilities check" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_duplicate_and_unsafe_evidence_artifacts(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
