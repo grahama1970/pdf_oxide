@@ -512,6 +512,20 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
         for page_number, count in Counter(page_numbers).items()
         if count > 1
     )
+    malformed_case_ids: list[str] = []
+    case_id_page_suffix_mismatches: list[str] = []
+    for result in page_results:
+        case_id = result.get("case_id")
+        if not case_id:
+            continue
+        case_id = str(case_id)
+        case_id_match = PAGE_CASE_ID_RE.fullmatch(case_id)
+        if case_id_match is None:
+            malformed_case_ids.append(case_id)
+            continue
+        page_number = result.get("page_number")
+        if isinstance(page_number, int) and int(case_id_match.group("page_number")) != page_number:
+            case_id_page_suffix_mismatches.append(case_id)
     raw_identity_mismatch_cases = [
         result
         for result in page_results
@@ -579,6 +593,13 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
         errors.append(f"duplicate page result case_ids: {duplicate_case_ids}")
     if duplicate_page_numbers:
         errors.append(f"duplicate page result page_numbers: {duplicate_page_numbers}")
+    if malformed_case_ids:
+        errors.append(f"malformed page result case_ids: {sorted(malformed_case_ids)}")
+    if case_id_page_suffix_mismatches:
+        errors.append(
+            "page result case_id page suffixes do not match page_number: "
+            f"{sorted(case_id_page_suffix_mismatches)}"
+        )
     if raw_identity_mismatch_cases:
         errors.append(
             "raw page result identity mismatches: "
@@ -594,6 +615,8 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
         "missing_page_number_cases": missing_page_number_cases,
         "duplicate_case_ids": duplicate_case_ids,
         "duplicate_page_numbers": duplicate_page_numbers,
+        "malformed_case_ids": sorted(malformed_case_ids),
+        "case_id_page_suffix_mismatches": sorted(case_id_page_suffix_mismatches),
         "raw_identity_mismatch_count": len(raw_identity_mismatch_cases),
         "raw_identity_mismatch_cases": raw_identity_mismatch_cases,
         "nonterminal_count": len(nonterminal),

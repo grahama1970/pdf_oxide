@@ -549,6 +549,23 @@ def test_aggregate_requires_unique_case_id_and_page_number() -> None:
     assert "duplicate page result page_numbers" in errors
 
 
+def test_aggregate_rejects_malformed_page_result_case_ids() -> None:
+    harness = _load_module()
+    aggregate = harness.aggregate_page_results(
+        [
+            {"case_id": "../escape", "page_number": 1, "terminal_status": "reviewed_clean"},
+            {"case_id": "page_case_0002_p0001", "page_number": 2, "terminal_status": "reviewed_clean"},
+        ]
+    )
+
+    errors = "\n".join(aggregate["errors"])
+    assert aggregate["ok"] is False
+    assert aggregate["malformed_case_ids"] == ["../escape"]
+    assert aggregate["case_id_page_suffix_mismatches"] == ["page_case_0002_p0001"]
+    assert "malformed page result case_ids: ['../escape']" in errors
+    assert "page result case_id page suffixes do not match page_number: ['page_case_0002_p0001']" in errors
+
+
 def test_aggregate_rejects_raw_page_result_identity_mismatch() -> None:
     harness = _load_module()
     aggregate = harness.aggregate_page_results(
