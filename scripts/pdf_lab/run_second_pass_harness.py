@@ -2671,11 +2671,19 @@ def build_harness_readiness_audit(
         bool(sampled_cases_path and sampled_cases_path.is_file()),
         str(sampled_cases_path) if sampled_cases_path else None,
     )
+    candidate_sample_linkage_errors, candidate_sample_linkage_errors_malformed = validation_error_list(
+        candidate_sample_linkage_validation,
+        "candidate_sample_linkage_validation",
+    )
     add_check(
         "candidate manifest and sampled cases are linked",
-        bool(candidate_sample_linkage_validation and candidate_sample_linkage_validation.get("ok") is True),
+        bool(
+            candidate_sample_linkage_validation
+            and candidate_sample_linkage_validation.get("ok") is True
+            and not candidate_sample_linkage_errors_malformed
+        ),
         candidate_sample_linkage_validation,
-        list((candidate_sample_linkage_validation or {}).get("errors") or []),
+        candidate_sample_linkage_errors,
     )
     sampling_gate_errors, sampling_gate_errors_malformed = validation_error_list(sampling_gate, "sampling_gate")
     add_check(
