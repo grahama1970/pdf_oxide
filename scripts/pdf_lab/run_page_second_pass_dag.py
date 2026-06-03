@@ -37,6 +37,7 @@ TERMINAL_STATUSES = {
     "still_open",
 }
 SAMPLED_CANDIDATE_MANIFEST_SCHEMA = "pdf_lab.second_pass.sampled_candidate_manifest.v1"
+SELECTED_CANDIDATES_SCHEMA = "pdf_lab.second_pass.selected_candidates.v1"
 REVIEW_STATUSES = {"clean", "defect", "unsure", "substrate_blocked"}
 DEFAULT_OPENCODE_SKILLS = ["memory", "debugger", "scillm"]
 DEFAULT_TRANSPORT_CHILD_MODE = "apply_patches"
@@ -327,6 +328,18 @@ def build_sampled_candidate_manifest(page_case: dict[str, Any], candidates: list
     return {
         "schema": SAMPLED_CANDIDATE_MANIFEST_SCHEMA,
         "page_case": page_case,
+        "candidate_count": len(candidates),
+        "candidates": candidates,
+    }
+
+
+def build_selected_candidates(page_case: dict[str, Any], candidates: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "schema": SELECTED_CANDIDATES_SCHEMA,
+        "page_case": {
+            "case_id": page_case.get("case_id"),
+            "page_number": page_case.get("page_number"),
+        },
         "candidate_count": len(candidates),
         "candidates": candidates,
     }
@@ -3898,6 +3911,16 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     )
     selected_candidate_ids_from_artifact: list[str] = []
     if selected_candidates_artifact:
+        if selected_candidates_artifact.get("schema") != SELECTED_CANDIDATES_SCHEMA:
+            errors.append("selected_candidates schema mismatch")
+        selected_page_case = selected_candidates_artifact.get("page_case")
+        if not isinstance(selected_page_case, dict):
+            errors.append("selected_candidates page_case must be an object")
+            selected_page_case = {}
+        if selected_page_case.get("case_id") != terminal.get("case_id"):
+            errors.append("selected_candidates page_case.case_id does not match terminal ledger")
+        if selected_page_case.get("page_number") != terminal.get("page_number"):
+            errors.append("selected_candidates page_case.page_number does not match terminal ledger")
         selected_candidates = selected_candidates_artifact.get("candidates")
         if not isinstance(selected_candidates, list):
             errors.append("selected_candidates candidates is not a list")
@@ -3909,6 +3932,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         )
         if len(selected_candidate_ids_from_artifact) != len(selected_candidates):
             errors.append("selected_candidates candidates contain missing candidate_id")
+        if selected_candidates_artifact.get("candidate_count") != len(selected_candidates):
+            errors.append("selected_candidates candidate_count does not match candidates")
     if candidate_presets_artifact:
         preset_candidates = candidate_presets_artifact.get("candidates")
         if not isinstance(preset_candidates, list):
@@ -4201,6 +4226,16 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             if review_after_validation.get("ok") is not True:
                 errors.append("review_after_validation.ok is not true")
             if selected_candidates:
+                if selected_candidates.get("schema") != SELECTED_CANDIDATES_SCHEMA:
+                    errors.append("selected_candidates schema mismatch")
+                selected_page_case = selected_candidates.get("page_case")
+                if not isinstance(selected_page_case, dict):
+                    errors.append("selected_candidates page_case must be an object")
+                    selected_page_case = {}
+                if selected_page_case.get("case_id") != terminal.get("case_id"):
+                    errors.append("selected_candidates page_case.case_id does not match terminal ledger")
+                if selected_page_case.get("page_number") != terminal.get("page_number"):
+                    errors.append("selected_candidates page_case.page_number does not match terminal ledger")
                 candidates = selected_candidates.get("candidates")
                 if not isinstance(candidates, list):
                     errors.append("selected_candidates candidates is not a list")
@@ -4212,6 +4247,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     )
                     if len(selected_candidate_ids) != len(candidates):
                         errors.append("selected_candidates candidates contain missing candidate_id")
+                    if selected_candidates.get("candidate_count") != len(candidates):
+                        errors.append("selected_candidates candidate_count does not match candidates")
             if selected_candidate_ids:
                 expected_after_ids = sorted(str(candidate_id) for candidate_id in review_after_validation.get("expected_candidate_ids") or [])
                 seen_after_ids = sorted(str(candidate_id) for candidate_id in review_after_validation.get("seen_candidate_ids") or [])
@@ -4655,7 +4692,7 @@ def run_page_case(
             "page_extract_timeout_s": page_extract_timeout_s,
         }
         write_json(case_dir / "page_extraction_error.json", extraction_error)
-        write_json(case_dir / "selected_candidates.json", {"candidates": candidates})
+        write_json(case_dir / "selected_candidates.json", build_selected_candidates(page_case, candidates))
         write_json(case_dir / "candidate_presets.json", build_candidate_presets(candidates))
         orchestrator_dag_spec = build_page_orchestrator_dag_spec(
             page_case=page_case,
@@ -4734,7 +4771,7 @@ def run_page_case(
         next_allowed_nodes=["render_annotated_candidates"],
     )
 
-    write_json(case_dir / "selected_candidates.json", {"candidates": candidates})
+    write_json(case_dir / "selected_candidates.json", build_selected_candidates(page_case, candidates))
     receipts.write(
         "select_page_candidates",
         input_artifacts=["sampled_candidate_manifest.json", "page_before.json"],
