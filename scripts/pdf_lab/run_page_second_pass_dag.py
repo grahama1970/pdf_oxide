@@ -13,6 +13,7 @@ import base64
 import hashlib
 import html as html_lib
 import json
+import math
 import os
 import re
 import shutil
@@ -1323,6 +1324,14 @@ def validate_page_orchestrator_run_receipt(
             errors.append("page orchestrator run request schema mismatch")
         if request.get("endpoint") != "POST /v1/scillm/opencode/transport/runs":
             errors.append("page orchestrator run request endpoint mismatch")
+        request_timeout_s = request.get("timeout_s")
+        if (
+            isinstance(request_timeout_s, bool)
+            or not isinstance(request_timeout_s, int | float)
+            or not math.isfinite(float(request_timeout_s))
+            or float(request_timeout_s) <= 0
+        ):
+            errors.append("page orchestrator run request timeout_s must be a positive finite number")
         if not isinstance(expected_metadata, dict):
             errors.append("page orchestrator run request missing scillm_metadata")
         else:
