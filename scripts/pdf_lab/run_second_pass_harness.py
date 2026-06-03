@@ -2821,10 +2821,24 @@ def validate_harness_page_terminal_ledger(case_dir: Path, terminal: dict[str, An
     if not isinstance(evidence_artifacts, list) or not all(isinstance(item, str) and item for item in evidence_artifacts):
         errors.append("evidence_artifacts must be a list of artifact names")
         evidence_artifacts = []
+    duplicate_evidence_artifacts = sorted(
+        artifact for artifact, count in Counter(evidence_artifacts).items() if count > 1
+    )
+    if duplicate_evidence_artifacts:
+        errors.append(f"evidence_artifacts contains duplicate artifact names: {duplicate_evidence_artifacts}")
+    unsafe_evidence_artifacts = sorted(
+        artifact
+        for artifact in evidence_artifacts
+        if Path(artifact).is_absolute() or ".." in Path(artifact).parts
+    )
+    if unsafe_evidence_artifacts:
+        errors.append(f"evidence_artifacts contains unsafe artifact paths: {unsafe_evidence_artifacts}")
     missing_artifacts = sorted(
         artifact
         for artifact in evidence_artifacts
-        if artifact != "terminal_ledger_validation.json" and not (case_dir / artifact).is_file()
+        if artifact != "terminal_ledger_validation.json"
+        and artifact not in unsafe_evidence_artifacts
+        and not (case_dir / artifact).is_file()
     )
     if missing_artifacts:
         errors.append(f"declared evidence artifacts are missing: {missing_artifacts}")
@@ -2855,6 +2869,8 @@ def validate_harness_page_terminal_ledger(case_dir: Path, terminal: dict[str, An
         "page_number": terminal.get("page_number"),
         "terminal_status": terminal_status,
         "declared_evidence_count": len(evidence_artifacts),
+        "duplicate_evidence_artifacts": duplicate_evidence_artifacts,
+        "unsafe_evidence_artifacts": unsafe_evidence_artifacts,
         "missing_artifacts": missing_artifacts,
     }
 
