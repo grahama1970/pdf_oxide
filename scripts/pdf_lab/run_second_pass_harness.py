@@ -2062,9 +2062,8 @@ def validate_scillm_patch_delegate_bug_report_zip(
     if zip_path.is_file():
         with zipfile.ZipFile(zip_path) as bundle:
             zip_entries = bundle.namelist()
-            for arcname in included_artifacts:
-                source = expected_sources.get(arcname)
-                if source is not None and arcname in zip_entries and source.is_file():
+            for arcname, source in expected_sources.items():
+                if arcname in zip_entries and source.is_file():
                     if bundle.read(arcname) != source.read_bytes():
                         mismatched_zip_entries.append(arcname)
         entry_counts = Counter(zip_entries)
@@ -2588,9 +2587,8 @@ def validate_patch_commit_ledger_zip(
     if zip_path.is_file():
         with zipfile.ZipFile(zip_path) as bundle:
             zip_entries = bundle.namelist()
-            for arcname in included_artifacts:
-                source = expected_sources.get(arcname)
-                if source is not None and arcname in zip_entries and source.is_file():
+            for arcname, source in expected_sources.items():
+                if arcname in zip_entries and source.is_file():
                     if bundle.read(arcname) != source.read_bytes():
                         mismatched_zip_entries.append(arcname)
         entry_counts = Counter(zip_entries)
@@ -2688,9 +2686,8 @@ def validate_harness_review_bundle_zip(
     if zip_path.is_file():
         with zipfile.ZipFile(zip_path) as bundle:
             zip_entries = bundle.namelist()
-            for arcname in included_artifacts:
-                source = expected_sources.get(arcname)
-                if source is not None and arcname in zip_entries and source.is_file():
+            for arcname, source in expected_sources.items():
+                if arcname in zip_entries and source.is_file():
                     if bundle.read(arcname) != source.read_bytes():
                         mismatched_zip_entries.append(arcname)
         zip_entries = [*zip_entries, *(virtual_zip_entries or [])]

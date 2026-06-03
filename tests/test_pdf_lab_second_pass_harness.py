@@ -2071,6 +2071,27 @@ def test_validate_scillm_patch_delegate_bug_report_zip_rejects_stale_entry(tmp_p
     assert validation["mismatched_zip_entries"] == ["scillm_patch_delegate_bug_reports.json"]
 
 
+def test_validate_scillm_patch_delegate_bug_report_zip_checks_all_expected_sources(tmp_path: Path) -> None:
+    harness = _load_module()
+    source = tmp_path / "scillm_patch_delegate_bug_reports.json"
+    source.write_text(json.dumps({"artifact": "fresh"}), encoding="utf-8")
+    zip_path = tmp_path / "scillm_patch_delegate_bug_reports.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr("scillm_patch_delegate_bug_reports.json", json.dumps({"artifact": "stale"}))
+
+    validation = harness.validate_scillm_patch_delegate_bug_report_zip(
+        zip_path=zip_path,
+        included_artifacts=[],
+        missing_artifacts=[],
+        required_zip_entries=["scillm_patch_delegate_bug_reports.json"],
+        expected_sources={"scillm_patch_delegate_bug_reports.json": source},
+    )
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert validation["mismatched_zip_entries"] == ["scillm_patch_delegate_bug_reports.json"]
+
+
 def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_path: Path) -> None:
     harness = _load_module()
     case_a = tmp_path / "case-a"
@@ -3265,6 +3286,27 @@ def test_validate_patch_commit_ledger_zip_rejects_stale_entry(tmp_path: Path) ->
         "mismatched_zip_entries: page_cases/page_case_0001_p0002/commit_gate.json"
         in harness.package_validation_errors(stale_validation)
     )
+
+
+def test_validate_patch_commit_ledger_zip_checks_all_expected_sources(tmp_path: Path) -> None:
+    harness = _load_module()
+    source = tmp_path / "patch_commit_ledger.json"
+    source.write_text(json.dumps({"artifact": "fresh"}), encoding="utf-8")
+    zip_path = tmp_path / "patch_commit_ledger.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr("patch_commit_ledger.json", json.dumps({"artifact": "stale"}))
+
+    validation = harness.validate_patch_commit_ledger_zip(
+        zip_path=zip_path,
+        included_artifacts=[],
+        missing_artifacts=[],
+        required_zip_entries=["patch_commit_ledger.json"],
+        expected_sources={"patch_commit_ledger.json": source},
+    )
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert validation["mismatched_zip_entries"] == ["patch_commit_ledger.json"]
 
 
 def test_package_patch_commit_ledger_rejects_directory_artifact(tmp_path: Path) -> None:
@@ -7569,6 +7611,28 @@ def test_validate_harness_review_bundle_zip_rejects_stale_entry(tmp_path: Path) 
     validation = harness.validate_harness_review_bundle_zip(
         zip_path=zip_path,
         included_artifacts=["candidate_manifest.json"],
+        missing_required_artifacts=[],
+        required_zip_entries=["candidate_manifest.json"],
+        expected_sources={"candidate_manifest.json": source},
+        page_case_count=0,
+    )
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert validation["mismatched_zip_entries"] == ["candidate_manifest.json"]
+
+
+def test_validate_harness_review_bundle_zip_checks_all_expected_sources(tmp_path: Path) -> None:
+    harness = _load_module()
+    source = tmp_path / "candidate_manifest.json"
+    source.write_text(json.dumps({"artifact": "fresh"}), encoding="utf-8")
+    zip_path = tmp_path / "harness_review_bundle.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr("candidate_manifest.json", json.dumps({"artifact": "stale"}))
+
+    validation = harness.validate_harness_review_bundle_zip(
+        zip_path=zip_path,
+        included_artifacts=[],
         missing_required_artifacts=[],
         required_zip_entries=["candidate_manifest.json"],
         expected_sources={"candidate_manifest.json": source},
