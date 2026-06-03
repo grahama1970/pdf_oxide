@@ -3740,7 +3740,7 @@ def validate_patch_scope(
     if delegate_claim is not None:
         if delegate_claim.get("schema") != "pdf_lab.second_pass.patch_applied_claim.v1":
             errors.append("patch delegate claim schema is invalid")
-        for claim_error in delegate_claim.get("errors") or []:
+        for claim_error in validation_error_list(delegate_claim, "patch delegate claim"):
             errors.append(f"patch delegate claim invalid: {claim_error}")
         claimed_changed_files = sorted(delegate_claim.get("changed_files") or [])
         claimed_tests = sorted(delegate_claim.get("tests") or [])

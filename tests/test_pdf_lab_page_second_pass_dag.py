@@ -6466,6 +6466,31 @@ def test_validate_patch_scope_accepts_regression_test_declared_in_tests_field() 
     assert validation["test_files"] == ["tests/test_fix.py"]
 
 
+def test_validate_patch_scope_rejects_string_delegate_claim_errors_without_character_scanning() -> None:
+    dag = _load_module()
+
+    validation = dag.validate_patch_scope(
+        ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+        ["python/pdf_oxide/", "tests/"],
+        {
+            "schema": "pdf_lab.second_pass.patch_applied_claim.v1",
+            "status": "applied",
+            "raw_line": (
+                "PATCH_APPLIED changed_files=python/pdf_oxide/extract_for_pdflab.py,tests/test_fix.py "
+                "tests=tests/test_fix.py commands=pytest tests/test_fix.py -q"
+            ),
+            "changed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+            "tests": ["tests/test_fix.py"],
+            "commands": "pytest tests/test_fix.py -q",
+            "errors": "claim parser failed",
+        },
+    )
+
+    assert validation["ok"] is False
+    assert "patch delegate claim invalid: patch delegate claim errors must be a list" in validation["errors"]
+    assert "patch delegate claim invalid: c" not in validation["errors"]
+
+
 def test_git_changed_files_includes_staged_additions(tmp_path: Path) -> None:
     dag = _load_module()
     repo = tmp_path / "repo"
