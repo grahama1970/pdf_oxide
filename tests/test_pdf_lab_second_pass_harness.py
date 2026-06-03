@@ -2385,6 +2385,29 @@ def test_validate_scillm_patch_delegate_bug_report_zip_rejects_missing_expected_
     assert f"missing_expected_source_artifacts: {source}" in harness.package_validation_errors(validation)
 
 
+def test_validate_scillm_patch_delegate_bug_report_zip_rejects_undeclared_entry(tmp_path: Path) -> None:
+    harness = _load_module()
+    source = tmp_path / "scillm_patch_delegate_bug_reports.json"
+    source.write_text(json.dumps({"artifact": "fresh"}), encoding="utf-8")
+    zip_path = tmp_path / "scillm_patch_delegate_bug_reports.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.write(source, "scillm_patch_delegate_bug_reports.json")
+        archive.writestr("undeclared.json", "{}")
+
+    validation = harness.validate_scillm_patch_delegate_bug_report_zip(
+        zip_path=zip_path,
+        included_artifacts=["scillm_patch_delegate_bug_reports.json"],
+        missing_artifacts=[],
+        required_zip_entries=["scillm_patch_delegate_bug_reports.json"],
+        expected_sources={"scillm_patch_delegate_bug_reports.json": source},
+    )
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert validation["undeclared_zip_entries"] == ["undeclared.json"]
+    assert "undeclared_zip_entries: undeclared.json" in harness.package_validation_errors(validation)
+
+
 def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_path: Path) -> None:
     harness = _load_module()
     case_a = tmp_path / "case-a"
