@@ -7138,7 +7138,7 @@ def test_validate_page_terminal_ledger_rejects_boolean_patch_attempt_identity(tm
             {
                 "schema": "pdf_lab.second_pass.patch_attempts_ledger.v1",
                 "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
-                "candidate_count": 1,
+                "candidate_count": True,
                 "candidate_ids": ["cand:p0001:0000:unknown_layout"],
                 "patch_backend": "scillm_orchestrator",
                 "patch_mode": "live",
@@ -7192,6 +7192,7 @@ def test_validate_page_terminal_ledger_rejects_boolean_patch_attempt_identity(tm
 
     assert validation["ok"] is False
     errors = "\n".join(validation["errors"])
+    assert "patch_attempts_ledger candidate_count must be a non-negative integer" in errors
     assert "patch_attempts_ledger attempt_count must be a non-negative integer" in errors
     assert "patch_attempts_ledger selected_attempt_index must be null or a positive integer" in errors
     assert "patch_attempts_ledger selected_attempt_index does not match first ok attempt" in errors
@@ -7607,7 +7608,7 @@ def test_validate_page_terminal_ledger_rejects_stale_repair_plan_validation(tmp_
                 "ok": False,
                 "errors": ["repair_plan_dry_run"],
                 "page_case": {"case_id": "page_case_9999_p9999", "page_number": 99},
-                "candidate_count": 1,
+                "candidate_count": True,
                 "expected_candidate_ids": ["stale:candidate"],
             }
         ),
@@ -7634,6 +7635,7 @@ def test_validate_page_terminal_ledger_rejects_stale_repair_plan_validation(tmp_
     errors = "\n".join(validation["errors"])
     assert "repair_plan_validation page_case.case_id does not match terminal ledger" in errors
     assert "repair_plan_validation page_case.page_number does not match terminal ledger" in errors
+    assert "repair_plan_validation candidate_count must be a non-negative integer" in errors
     assert "repair_plan_validation expected_candidate_ids do not match selected_candidates" in errors
 
 
@@ -7714,7 +7716,7 @@ def test_validate_page_terminal_ledger_rejects_stale_repair_diagnosis_validation
                 "diagnosis_status": "not_attempted",
                 "assistant_text_present": False,
                 "page_case": {"case_id": "page_case_9999_p9999", "page_number": 99},
-                "candidate_count": 1,
+                "candidate_count": True,
                 "expected_candidate_ids": ["stale:candidate"],
             }
         ),
@@ -7741,6 +7743,7 @@ def test_validate_page_terminal_ledger_rejects_stale_repair_diagnosis_validation
     errors = "\n".join(validation["errors"])
     assert "repair_diagnosis_validation page_case.case_id does not match terminal ledger" in errors
     assert "repair_diagnosis_validation page_case.page_number does not match terminal ledger" in errors
+    assert "repair_diagnosis_validation candidate_count must be a non-negative integer" in errors
     assert "repair_diagnosis_validation expected_candidate_ids do not match selected_candidates" in errors
 
 

@@ -4821,8 +4821,12 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("repair_plan_validation page_case.page_number does not match terminal ledger")
             if selected_candidate_ids_from_artifact:
                 expected_repair_plan_ids = sorted(str(candidate_id) for candidate_id in repair_plan_validation.get("expected_candidate_ids") or [])
-                if repair_plan_validation.get("candidate_count") != len(selected_candidate_ids_from_artifact):
-                    errors.append("repair_plan_validation candidate_count does not match selected_candidates")
+                validate_candidate_count(
+                    repair_plan_validation,
+                    len(selected_candidate_ids_from_artifact),
+                    "repair_plan_validation",
+                    expected_label="selected_candidates",
+                )
                 if expected_repair_plan_ids != selected_candidate_ids_from_artifact:
                     errors.append("repair_plan_validation expected_candidate_ids do not match selected_candidates")
             if repair_plan_validation.get("ok") is True:
@@ -4861,8 +4865,12 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 expected_repair_diagnosis_ids = sorted(
                     str(candidate_id) for candidate_id in repair_diagnosis_validation.get("expected_candidate_ids") or []
                 )
-                if repair_diagnosis_validation.get("candidate_count") != len(selected_candidate_ids_from_artifact):
-                    errors.append("repair_diagnosis_validation candidate_count does not match selected_candidates")
+                validate_candidate_count(
+                    repair_diagnosis_validation,
+                    len(selected_candidate_ids_from_artifact),
+                    "repair_diagnosis_validation",
+                    expected_label="selected_candidates",
+                )
                 if expected_repair_diagnosis_ids != selected_candidate_ids_from_artifact:
                     errors.append("repair_diagnosis_validation expected_candidate_ids do not match selected_candidates")
             if repair_diagnosis_validation.get("ok") is True:
@@ -4902,8 +4910,12 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             if not isinstance(ledger_candidate_ids, list) or not all(isinstance(candidate_id, str) for candidate_id in ledger_candidate_ids):
                 errors.append("patch_attempts_ledger candidate_ids must be a list of strings")
                 ledger_candidate_ids = []
-            if patch_attempts_ledger.get("candidate_count") != len(ledger_candidate_ids):
-                errors.append("patch_attempts_ledger candidate_count does not match candidate_ids")
+            validate_candidate_count(
+                patch_attempts_ledger,
+                len(ledger_candidate_ids),
+                "patch_attempts_ledger",
+                expected_label="candidate_ids",
+            )
             if selected_candidate_ids_from_artifact and sorted(ledger_candidate_ids) != selected_candidate_ids_from_artifact:
                 errors.append("patch_attempts_ledger candidate_ids do not match selected_candidates")
             attempts = patch_attempts_ledger.get("attempts")
