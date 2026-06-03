@@ -89,7 +89,13 @@ def _candidate_manifest(candidates: list[dict], **extra: object) -> dict:
 def _mark_isolated_code_root(code_root: Path) -> None:
     code_root.mkdir(parents=True, exist_ok=True)
     (code_root / ".pdf_lab_isolated_code_root.json").write_text(
-        json.dumps({"schema": "pdf_lab.second_pass.isolated_code_root.v1"}),
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.isolated_code_root.v1",
+                "dest_root": str(code_root.resolve()),
+                "clean": True,
+            }
+        ),
         encoding="utf-8",
     )
 
@@ -115,6 +121,19 @@ def test_live_code_root_visibility_requires_mounted_isolated_root(tmp_path: Path
     assert "must be an isolated pdf-lab code root" in "\n".join(validation["errors"])
 
     (code_root / ".pdf_lab_isolated_code_root.json").write_text("{}", encoding="utf-8")
+    malformed = harness.validate_scillm_live_code_root(
+        code_root=code_root,
+        patch_mode="live",
+        patch_backend="scillm_orchestrator",
+        mounted_prefixes=[mounted],
+        isolated_code_root_manifest=None,
+    )
+
+    assert malformed["ok"] is False
+    assert malformed["isolated_marker_present"] is True
+    assert "isolated code root marker schema mismatch" in malformed["errors"]
+
+    _mark_isolated_code_root(code_root)
     accepted = harness.validate_scillm_live_code_root(
         code_root=code_root,
         patch_mode="live",
@@ -125,6 +144,40 @@ def test_live_code_root_visibility_requires_mounted_isolated_root(tmp_path: Path
 
     assert accepted["ok"] is True
     assert accepted["isolated_marker_present"] is True
+    assert accepted["isolated_marker_schema"] == "pdf_lab.second_pass.isolated_code_root.v1"
+    assert accepted["isolated_marker_dest_root"] == str(code_root.resolve())
+
+
+def test_live_code_root_visibility_rejects_marker_dest_root_mismatch(tmp_path: Path) -> None:
+    harness = _load_module()
+    mounted = tmp_path / "mounted"
+    code_root = mounted / "code-root"
+    code_root.mkdir(parents=True)
+    (code_root / ".pdf_lab_isolated_code_root.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.isolated_code_root.v1",
+                "dest_root": str((mounted / "other-root").resolve()),
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_scillm_live_code_root(
+        code_root=code_root,
+        patch_mode="live",
+        patch_backend="opencode_serve",
+        mounted_prefixes=[mounted],
+        isolated_code_root_manifest={
+            "schema": "pdf_lab.second_pass.isolated_code_root.v1",
+            "dest_root": str((mounted / "third-root").resolve()),
+        },
+    )
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "marker dest_root does not match code_root" in errors
+    assert "manifest dest_root does not match code_root" in errors
 
 
 def test_dry_code_root_visibility_does_not_require_isolated_marker(tmp_path: Path) -> None:

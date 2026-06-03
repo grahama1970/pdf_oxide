@@ -112,7 +112,24 @@ def validate_scillm_live_code_root(
     under_mounted_prefix = any(code_root == prefix or code_root.is_relative_to(prefix) for prefix in mounted_prefixes)
     isolated_marker = code_root / ".pdf_lab_isolated_code_root.json"
     isolated_marker_present = isolated_marker.is_file()
+    isolated_marker_schema: str | None = None
+    isolated_marker_dest_root: str | None = None
+    isolated_marker_clean: bool | None = None
     errors: list[str] = []
+    if isolated_marker_present:
+        try:
+            loaded_marker = json.loads(isolated_marker.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"isolated code root marker is unreadable JSON: {type(exc).__name__}: {exc}")
+        else:
+            if not isinstance(loaded_marker, dict):
+                errors.append("isolated code root marker must be a JSON object")
+            else:
+                isolated_marker_schema = loaded_marker.get("schema") if isinstance(loaded_marker.get("schema"), str) else None
+                dest_root_value = loaded_marker.get("dest_root")
+                isolated_marker_dest_root = dest_root_value if isinstance(dest_root_value, str) else None
+                clean_value = loaded_marker.get("clean")
+                isolated_marker_clean = clean_value if isinstance(clean_value, bool) else None
     if live_patch_required and not under_mounted_prefix:
         errors.append(
             f"live scillm/OpenCode patch code_root must be under a mounted workspace prefix: {code_root}"
@@ -121,6 +138,18 @@ def validate_scillm_live_code_root(
         errors.append(
             f"live scillm/OpenCode patch code_root must be an isolated pdf-lab code root with marker: {isolated_marker}"
         )
+    if live_patch_required and isolated_marker_present:
+        if isolated_marker_schema != "pdf_lab.second_pass.isolated_code_root.v1":
+            errors.append("isolated code root marker schema mismatch")
+        if isolated_marker_dest_root is not None and Path(isolated_marker_dest_root).expanduser().resolve() != code_root:
+            errors.append(f"isolated code root marker dest_root does not match code_root: {isolated_marker_dest_root}")
+        if isolated_code_root_manifest is not None:
+            manifest_dest_root = isolated_code_root_manifest.get("dest_root")
+            if isinstance(manifest_dest_root, str) and Path(manifest_dest_root).expanduser().resolve() != code_root:
+                errors.append(f"isolated code root manifest dest_root does not match code_root: {manifest_dest_root}")
+            manifest_schema = isolated_code_root_manifest.get("schema")
+            if manifest_schema != "pdf_lab.second_pass.isolated_code_root.v1":
+                errors.append("isolated code root manifest schema mismatch")
     return {
         "schema": "pdf_lab.second_pass.scillm_code_root_visibility.v1",
         "code_root": str(code_root),
@@ -131,6 +160,9 @@ def validate_scillm_live_code_root(
         "under_mounted_prefix": under_mounted_prefix,
         "isolated_code_root_required": live_patch_required,
         "isolated_marker_present": isolated_marker_present,
+        "isolated_marker_schema": isolated_marker_schema,
+        "isolated_marker_dest_root": isolated_marker_dest_root,
+        "isolated_marker_clean": isolated_marker_clean,
         "isolated_code_root_manifest_present": isolated_code_root_manifest is not None,
         "ok": not errors,
         "errors": errors,
