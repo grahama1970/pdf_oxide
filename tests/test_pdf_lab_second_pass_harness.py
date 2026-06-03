@@ -55,6 +55,31 @@ def _manifest_candidate(candidate_id: str, page_number: int, preset_type: str, b
     }
 
 
+def _sampled_page_case(
+    *,
+    candidate_id: str,
+    page_number: int,
+    preset_type: str = "table",
+    case_index: int = 1,
+    forced: bool = False,
+) -> dict:
+    case_id = f"page_case_{case_index:04d}_p{page_number:04d}"
+    return {
+        "case_id": case_id,
+        "page_number": page_number,
+        "candidate_ids": [candidate_id],
+        "preset_counts": {preset_type: 1},
+        "strata": [f"preset:{preset_type}", "risk:high"],
+        "forced_by_human_annotation": forced,
+        "selection_probability_estimate": 1.0 if forced else 0.5,
+        "selection_probability_basis": {
+            "method": "forced_human_annotation" if forced else "max(weighted_page_score_inclusion_estimate,candidate_share_estimate)",
+            "forced_page": forced,
+        },
+        "selection_reason": ["human_annotated_page"] if forced else ["high_risk_preset"],
+    }
+
+
 def _candidate_manifest(candidates: list[dict], **extra: object) -> dict:
     preset_counts: dict[str, int] = {}
     page_counts: dict[int, int] = {}
@@ -918,24 +943,9 @@ def test_validate_candidate_sample_linkage_accepts_forced_page_partition() -> No
             "forced_pages": {"requested": [1], "accepted": [1], "rejected": []},
             "probabilistic_selected_pages": [2, 3],
             "page_cases": [
-                {
-                    "case_id": "page_case_0001_p0001",
-                    "page_number": 1,
-                    "candidate_ids": ["cand:p0001:0000:table"],
-                    "forced_by_human_annotation": True,
-                },
-                {
-                    "case_id": "page_case_0002_p0002",
-                    "page_number": 2,
-                    "candidate_ids": ["cand:p0002:0000:equation"],
-                    "forced_by_human_annotation": False,
-                },
-                {
-                    "case_id": "page_case_0003_p0003",
-                    "page_number": 3,
-                    "candidate_ids": ["cand:p0003:0000:figure"],
-                    "forced_by_human_annotation": False,
-                },
+                _sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1, preset_type="table", case_index=1, forced=True),
+                _sampled_page_case(candidate_id="cand:p0002:0000:equation", page_number=2, preset_type="equation", case_index=2),
+                _sampled_page_case(candidate_id="cand:p0003:0000:figure", page_number=3, preset_type="figure", case_index=3),
             ],
         },
     )
@@ -1005,6 +1015,44 @@ def test_validate_candidate_sample_linkage_rejects_malformed_candidate_ids() -> 
     assert validation["ok"] is False
     assert "page_case_0001_p0001 candidate_ids must be a list of non-empty strings" in errors
     assert "page_case_0001_p0001 candidate_ids contains duplicates: ['cand:p0001:0000:table']" in errors
+
+
+def test_validate_candidate_sample_linkage_requires_sampling_metadata() -> None:
+    harness = _load_module()
+    validation = harness.validate_candidate_sample_linkage(
+        manifest={
+            "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+            "candidate_count": 1,
+            "candidates": [_manifest_candidate("cand:p0001:0000:table", 1, "table")],
+        },
+        sampled_cases={
+            "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+            "selected_count": 1,
+            "selected_pages": [1],
+            "forced_pages": {"requested": [1], "accepted": [1], "rejected": []},
+            "probabilistic_selected_pages": [],
+            "page_cases": [
+                {
+                    "case_id": "page_case_0001_p0001",
+                    "page_number": 1,
+                    "candidate_ids": ["cand:p0001:0000:table"],
+                    "preset_counts": "stale",
+                    "strata": [],
+                    "selection_reason": [],
+                    "forced_by_human_annotation": True,
+                    "selection_probability_estimate": 0.5,
+                    "selection_probability_basis": {"method": "weighted", "forced_page": False},
+                },
+            ],
+        },
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert validation["malformed_sampling_metadata_case_ids"] == ["page_case_0001_p0001"]
+    assert validation["malformed_forced_probability_case_ids"] == ["page_case_0001_p0001"]
+    assert "sampled page cases have malformed sampling metadata: ['page_case_0001_p0001']" in errors
+    assert "forced sampled page cases missing forced_human_annotation probability basis: ['page_case_0001_p0001']" in errors
 
 
 def test_validate_candidate_sample_linkage_rejects_malformed_page_case_ids() -> None:
@@ -4778,13 +4826,7 @@ def test_run_harness_fails_closed_before_page_dag_when_transport_readonly_canary
                 "selected_pages": [1],
                 "seed": seed,
                 "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=seed),
-                "page_cases": [
-                    {
-                        "case_id": "page_case_0001_p0001",
-                        "page_number": 1,
-                        "candidate_ids": ["cand:p0001:0000:table"],
-                    }
-                ],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
             }
 
     class FakePageDag:
@@ -4905,13 +4947,7 @@ def test_run_harness_fails_closed_before_page_dag_when_transport_write_canary_fa
                 "selected_pages": [1],
                 "seed": seed,
                 "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=seed),
-                "page_cases": [
-                    {
-                        "case_id": "page_case_0001_p0001",
-                        "page_number": 1,
-                        "candidate_ids": ["cand:p0001:0000:table"],
-                    }
-                ],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
             }
 
     class FakePageDag:
@@ -5046,13 +5082,7 @@ def test_run_harness_fails_closed_before_page_dag_when_scillm_proof_floor_fails(
                 "selected_pages": [1],
                 "seed": seed,
                 "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=seed),
-                "page_cases": [
-                    {
-                        "case_id": "page_case_0001_p0001",
-                        "page_number": 1,
-                        "candidate_ids": ["cand:p0001:0000:table"],
-                    }
-                ],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
             }
 
     class FakePageDag:
@@ -5219,20 +5249,7 @@ def test_run_harness_writes_manifest_sample_and_report(tmp_path: Path, monkeypat
                         "forced_pages_are_additive": True,
                     },
                 },
-                "page_cases": [
-                    {
-                        "case_id": "page_case_0001_p0001",
-                        "page_number": 1,
-                        "page_index": 0,
-                        "candidate_ids": ["cand:p0001:0000:table"],
-                        "forced_by_human_annotation": True,
-                        "selection_probability_estimate": 1.0,
-                        "selection_probability_basis": {
-                            "method": "forced_human_annotation",
-                            "forced_page": True,
-                        },
-                    }
-                ],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1, forced=True)],
             }
 
     class FakePageDag:
@@ -5315,8 +5332,8 @@ def test_run_harness_writes_manifest_sample_and_report(tmp_path: Path, monkeypat
             "case_id": "page_case_0001_p0001",
             "page_number": 1,
             "candidate_ids": ["cand:p0001:0000:table"],
-            "preset_counts": {},
-            "strata": [],
+            "preset_counts": {"table": 1},
+            "strata": ["preset:table", "risk:high"],
             "forced_by_human_annotation": True,
             "selection_probability_estimate": 1.0,
             "selection_probability_basis": {
@@ -5461,14 +5478,7 @@ def test_run_harness_final_status_uses_actual_bundle_package_validation(tmp_path
                 "selected_pages": [1],
                 "seed": seed,
                 "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=seed),
-                "page_cases": [
-                    {
-                        "case_id": "page_case_0001_p0001",
-                        "page_number": 1,
-                        "page_index": 0,
-                        "candidate_ids": ["cand:p0001:0000:table"],
-                    }
-                ],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
             }
 
     class FakePageDag:
@@ -5605,7 +5615,7 @@ def test_run_harness_fails_closed_when_sampling_gate_is_inadequate(tmp_path: Pat
                     "missed_priority_strata": ["preset:equation", "preset:footnote", "preset:reference"],
                     "warnings": ["priority strata not represented in selected pages"],
                 },
-                "page_cases": [{"case_id": "page_case_0001_p0001", "page_number": 1, "candidate_ids": ["cand:p0001:0000:table"]}],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
             }
 
     class FakePageDag:
@@ -5696,13 +5706,7 @@ def test_run_harness_fails_closed_before_page_dag_when_sample_candidate_is_unkno
                 "selected_pages": [1],
                 "seed": seed,
                 "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=seed),
-                "page_cases": [
-                    {
-                        "case_id": "page_case_0001_p0001",
-                        "page_number": 1,
-                        "candidate_ids": ["cand:p0001:9999:table"],
-                    }
-                ],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0001:9999:table", page_number=1)],
             }
 
     class FakePageDag:
@@ -5797,18 +5801,8 @@ def test_run_harness_passes_two_patched_pages_with_unique_commit_evidence(tmp_pa
                 "seed": seed,
                 "sampling_audit": _passing_sampling_audit(candidate_count=2, selected_count=2, seed=seed),
                 "page_cases": [
-                    {
-                        "case_id": "page_case_0001_p0001",
-                        "page_number": 1,
-                        "page_index": 0,
-                        "candidate_ids": ["cand:p0001:0000:table"],
-                    },
-                    {
-                        "case_id": "page_case_0002_p0002",
-                        "page_number": 2,
-                        "page_index": 1,
-                        "candidate_ids": ["cand:p0002:0000:equation"],
-                    },
+                    _sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1, preset_type="table", case_index=1),
+                    _sampled_page_case(candidate_id="cand:p0002:0000:equation", page_number=2, preset_type="equation", case_index=2),
                 ],
             }
 
@@ -6060,7 +6054,7 @@ def test_run_harness_records_page_census_failures_and_continues_sampling(tmp_pat
                 "selected_pages": [2],
                 "seed": seed,
                 "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=seed),
-                "page_cases": [{"case_id": "page_case_0001_p0002", "page_number": 2, "candidate_ids": ["cand:p0002:0000:table"]}],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0002:0000:table", page_number=2)],
             }
 
     class FakePageDag:
@@ -6156,7 +6150,7 @@ def test_run_harness_can_prepare_isolated_code_root(tmp_path: Path, monkeypatch)
                 "selected_pages": [1],
                 "seed": seed,
                 "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=seed),
-                "page_cases": [{"case_id": "page_case_0001_p0001", "page_number": 1, "candidate_ids": ["cand:p0001:0000:table"]}],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
             }
 
     class FakePageDag:
@@ -6255,7 +6249,7 @@ def test_live_patch_fails_closed_when_code_root_is_not_mounted(tmp_path: Path, m
                 "selected_pages": [1],
                 "seed": seed,
                 "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=seed),
-                "page_cases": [{"case_id": "page_case_0001_p0001", "page_number": 1, "candidate_ids": ["cand:p0001:0000:table"]}],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
             }
 
     class FakePageDag:
@@ -6348,7 +6342,7 @@ def test_live_opencode_serve_completion_canary_blocks_page_dag_when_executor_is_
                 "selected_pages": [1],
                 "seed": seed,
                 "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=seed),
-                "page_cases": [{"case_id": "page_case_0001_p0001", "page_number": 1, "candidate_ids": ["cand:p0001:0000:table"]}],
+                "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
             }
 
     class FakePageDag:

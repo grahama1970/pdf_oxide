@@ -985,6 +985,8 @@ def validate_candidate_sample_linkage(
     page_case_ids: set[str] = set()
     duplicate_page_case_ids: list[str] = []
     forced_page_case_pages: set[int] = set()
+    malformed_sampling_metadata_case_ids: list[str] = []
+    malformed_forced_probability_case_ids: list[str] = []
     sampled_candidate_ids: set[str] = set()
     unknown_sampled_candidate_ids: list[str] = []
     page_mismatch_candidate_ids: list[str] = []
@@ -1029,6 +1031,33 @@ def validate_candidate_sample_linkage(
         if duplicate_case_candidate_ids:
             errors.append(f"{case_id} candidate_ids contains duplicates: {duplicate_case_candidate_ids}")
         case_candidate_id_set = {str(candidate_id) for candidate_id in case_candidate_ids}
+        preset_counts = case.get("preset_counts")
+        strata = case.get("strata")
+        selection_reason = case.get("selection_reason")
+        selection_probability_estimate = case.get("selection_probability_estimate")
+        selection_probability_basis = case.get("selection_probability_basis")
+        forced_by_human_annotation = case.get("forced_by_human_annotation")
+        if not isinstance(preset_counts, dict):
+            malformed_sampling_metadata_case_ids.append(case_id)
+        if not isinstance(strata, list) or not strata or not all(isinstance(stratum, str) and stratum for stratum in strata):
+            malformed_sampling_metadata_case_ids.append(case_id)
+        if not isinstance(selection_reason, list) or not selection_reason or not all(
+            isinstance(reason, str) and reason for reason in selection_reason
+        ):
+            malformed_sampling_metadata_case_ids.append(case_id)
+        if forced_by_human_annotation not in {True, False}:
+            malformed_sampling_metadata_case_ids.append(case_id)
+        if not isinstance(selection_probability_estimate, int | float) or not 0 <= float(selection_probability_estimate) <= 1:
+            malformed_sampling_metadata_case_ids.append(case_id)
+        if not isinstance(selection_probability_basis, dict):
+            malformed_sampling_metadata_case_ids.append(case_id)
+        if forced_by_human_annotation is True and (
+            selection_probability_estimate != 1.0
+            or not isinstance(selection_probability_basis, dict)
+            or selection_probability_basis.get("method") != "forced_human_annotation"
+            or selection_probability_basis.get("forced_page") is not True
+        ):
+            malformed_forced_probability_case_ids.append(case_id)
         for candidate_id in case_candidate_ids:
             candidate_id = str(candidate_id)
             sampled_candidate_ids.add(candidate_id)
@@ -1096,6 +1125,13 @@ def validate_candidate_sample_linkage(
         errors.append(f"sampled candidate_ids missing from manifest: {sorted(set(unknown_sampled_candidate_ids))}")
     if page_mismatch_candidate_ids:
         errors.append(f"sampled candidate_ids do not belong to their page_case page_number: {sorted(set(page_mismatch_candidate_ids))}")
+    if malformed_sampling_metadata_case_ids:
+        errors.append(f"sampled page cases have malformed sampling metadata: {sorted(set(malformed_sampling_metadata_case_ids))}")
+    if malformed_forced_probability_case_ids:
+        errors.append(
+            "forced sampled page cases missing forced_human_annotation probability basis: "
+            f"{sorted(set(malformed_forced_probability_case_ids))}"
+        )
 
     unsampled_manifest_pages = sorted(manifest_pages - selected_page_set)
     if declared_candidate_count > 0 and not sampled_candidate_ids:
@@ -1117,6 +1153,8 @@ def validate_candidate_sample_linkage(
         "selected_pages": sorted(selected_page_set),
         "accepted_forced_pages": accepted_forced_pages,
         "probabilistic_selected_pages": probabilistic_selected_pages,
+        "malformed_sampling_metadata_case_ids": sorted(set(malformed_sampling_metadata_case_ids)),
+        "malformed_forced_probability_case_ids": sorted(set(malformed_forced_probability_case_ids)),
         "manifest_preset_counts": dict(sorted(manifest_preset_counts.items())),
         "warnings": warnings,
         "ok": not errors,
