@@ -135,6 +135,115 @@ def read_json_object_if_exists(path: Path) -> tuple[dict[str, Any], list[str]]:
     return payload, []
 
 
+def validate_page_results_match_sampled_cases(
+    *,
+    sampled_cases_path: Path | None,
+    page_results: list[dict[str, Any]],
+    aggregate: dict[str, Any],
+) -> dict[str, Any]:
+    errors: list[str] = []
+    sampled_cases: dict[str, Any] = {}
+    read_errors: list[str] = []
+    if sampled_cases_path is None:
+        errors.append("sampled_page_cases path missing")
+    elif not sampled_cases_path.is_file():
+        errors.append("sampled_page_cases artifact missing")
+    else:
+        sampled_cases, read_errors = read_json_object_if_exists(sampled_cases_path)
+        errors.extend(read_errors)
+
+    page_cases = sampled_cases.get("page_cases") if sampled_cases else []
+    if sampled_cases and not isinstance(page_cases, list):
+        errors.append("sampled_page_cases page_cases is not a list")
+        page_cases = []
+
+    expected_sequence: list[dict[str, Any]] = []
+    malformed_sampled_cases: list[str] = []
+    for index, case in enumerate(page_cases or []):
+        if not isinstance(case, dict):
+            malformed_sampled_cases.append(f"page_cases[{index}] is not an object")
+            continue
+        case_id = case.get("case_id")
+        page_number = case.get("page_number")
+        if not case_id or not isinstance(page_number, int):
+            malformed_sampled_cases.append(f"page_cases[{index}] missing case_id or integer page_number")
+            continue
+        expected_sequence.append({"case_id": str(case_id), "page_number": page_number})
+    if malformed_sampled_cases:
+        errors.extend(malformed_sampled_cases)
+
+    observed_sequence = [
+        {
+            "case_id": str(result.get("case_id") or ""),
+            "page_number": result.get("page_number"),
+        }
+        for result in page_results
+    ]
+    observed_case_ids = [item["case_id"] for item in observed_sequence if item["case_id"]]
+    duplicate_observed_case_ids = sorted(
+        case_id
+        for case_id, count in Counter(observed_case_ids).items()
+        if count > 1
+    )
+    if duplicate_observed_case_ids:
+        errors.append(f"duplicate observed page result case_ids: {duplicate_observed_case_ids}")
+
+    expected_by_case_id = {item["case_id"]: item["page_number"] for item in expected_sequence}
+    observed_by_case_id = {
+        item["case_id"]: item["page_number"]
+        for item in observed_sequence
+        if item["case_id"]
+    }
+    extra_observed_case_ids = sorted(set(observed_by_case_id) - set(expected_by_case_id))
+    if extra_observed_case_ids:
+        errors.append(f"page results include cases not present in sampled_page_cases: {extra_observed_case_ids}")
+    page_number_mismatches = sorted(
+        {
+            case_id: {
+                "expected": expected_by_case_id[case_id],
+                "observed": observed_by_case_id[case_id],
+            }
+            for case_id in set(observed_by_case_id) & set(expected_by_case_id)
+            if observed_by_case_id[case_id] != expected_by_case_id[case_id]
+        }.items()
+    )
+    if page_number_mismatches:
+        errors.append(f"page result page_numbers do not match sampled_page_cases: {page_number_mismatches}")
+
+    observed_prefix = observed_sequence[: len(expected_sequence)]
+    expected_prefix = expected_sequence[: len(observed_prefix)]
+    if observed_prefix != expected_prefix:
+        errors.append(
+            "page result sequence does not match sampled_page_cases prefix: "
+            f"observed={observed_prefix}, expected_prefix={expected_prefix}"
+        )
+
+    missing_sampled_case_ids = [
+        item["case_id"]
+        for item in expected_sequence[len(observed_sequence):]
+    ]
+    if missing_sampled_case_ids and aggregate.get("ok") is True:
+        errors.append(
+            "green page aggregate cannot omit sampled page cases: "
+            f"{missing_sampled_case_ids}"
+        )
+
+    return {
+        "schema": "pdf_lab.second_pass.page_result_sample_match_validation.v1",
+        "ok": not errors,
+        "errors": errors,
+        "sampled_cases_path": str(sampled_cases_path) if sampled_cases_path else None,
+        "expected_case_count": len(expected_sequence),
+        "observed_case_count": len(page_results),
+        "expected_sequence": expected_sequence,
+        "observed_sequence": observed_sequence,
+        "missing_sampled_case_ids": missing_sampled_case_ids,
+        "extra_observed_case_ids": extra_observed_case_ids,
+        "duplicate_observed_case_ids": duplicate_observed_case_ids,
+        "aggregate_ok": aggregate.get("ok") is True,
+    }
+
+
 def required_harness_review_bundle_page_artifacts(terminal_status: str | None) -> set[str]:
     required = set(BASE_PAGE_REVIEW_BUNDLE_ARTIFACTS)
     if terminal_status in RESOLVED_PASS_STATUSES:
@@ -2185,6 +2294,17 @@ def build_harness_readiness_audit(
             "unresolved_count": aggregate.get("unresolved_count"),
         },
         list(aggregate.get("errors") or []),
+    )
+    page_result_sample_match_validation = validate_page_results_match_sampled_cases(
+        sampled_cases_path=sampled_cases_path,
+        page_results=page_results,
+        aggregate=aggregate,
+    )
+    add_check(
+        "page results match sampled page cases",
+        bool(page_result_sample_match_validation.get("ok") is True),
+        page_result_sample_match_validation,
+        list(page_result_sample_match_validation.get("errors") or []),
     )
     live_patch_required = patch_mode == "live" and patch_backend in {"opencode_serve", "scillm_orchestrator"}
     live_opencode_serve_required = patch_mode == "live" and patch_backend == "opencode_serve"
