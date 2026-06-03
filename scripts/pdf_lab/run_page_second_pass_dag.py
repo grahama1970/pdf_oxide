@@ -618,10 +618,37 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
         content = []
     text_parts = [part for part in content if isinstance(part, dict) and part.get("type") == "text"]
     image_parts = [part for part in content if isinstance(part, dict) and part.get("type") == "image_url"]
+    prompt_text = ""
     if len(text_parts) != 1:
         errors.append("scillm_payload must include exactly one text prompt part")
-    elif not str(text_parts[0].get("text") or "").strip():
-        errors.append("scillm_payload text prompt is empty")
+    else:
+        prompt_text = str(text_parts[0].get("text") or "")
+        if not prompt_text.strip():
+            errors.append("scillm_payload text prompt is empty")
+    if prompt_text:
+        expected_page_case_text = f"Page case:\n{json.dumps(page_case, indent=2, sort_keys=True)}"
+        if expected_page_case_text not in prompt_text:
+            errors.append("scillm_payload text prompt does not include current review_request page_case")
+        for artifact_key, heading in [
+            ("candidate_presets", "Candidate presets"),
+            ("page_json", "Extracted page JSON"),
+        ]:
+            artifact_name = artifacts.get(artifact_key)
+            if (
+                isinstance(artifact_name, str)
+                and artifact_name
+                and not Path(artifact_name).is_absolute()
+                and ".." not in Path(artifact_name).parts
+                and (case_dir / artifact_name).is_file()
+            ):
+                try:
+                    artifact_payload = json.loads((case_dir / artifact_name).read_text(encoding="utf-8"))
+                except Exception as exc:  # noqa: BLE001 - malformed evidence is a validation failure.
+                    errors.append(f"review_request artifacts.{artifact_key} unreadable: {type(exc).__name__}: {exc}")
+                    continue
+                expected_artifact_text = f"{heading}:\n{json.dumps(artifact_payload, indent=2, sort_keys=True)}"
+                if expected_artifact_text not in prompt_text:
+                    errors.append(f"scillm_payload text prompt does not include current artifacts.{artifact_key}")
     if len(image_parts) != 2:
         errors.append("scillm_payload must include exactly two image_url evidence parts")
     else:

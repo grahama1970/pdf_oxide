@@ -1242,6 +1242,46 @@ def test_validate_review_request_contract_rejects_stale_payload_model_identity(t
     assert "scillm_payload reasoning_effort must match review_request reasoning_effort" in errors
 
 
+def test_validate_review_request_contract_rejects_stale_prompt_evidence(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "page_before.json").write_text(json.dumps({"page": 1, "blocks": []}), encoding="utf-8")
+    (case_dir / "candidate_presets.json").write_text(
+        json.dumps({"schema": "pdf_lab.second_pass.candidate_presets.v1", "candidates": []}),
+        encoding="utf-8",
+    )
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "page_candidates.png").write_bytes(b"png")
+    request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1},
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="batch-review",
+    )
+    request["page_case"] = {"case_id": "page_case_0001_p0001", "page_number": 99}
+    (case_dir / "candidate_presets.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.candidate_presets.v1",
+                "candidates": [{"candidate_id": "cand:p0099:0000:table"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = dag.validate_review_request_contract(case_dir, request)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_payload text prompt does not include current review_request page_case" in errors
+    assert "scillm_payload text prompt does not include current artifacts.candidate_presets" in errors
+
+
 def test_patch_worker_prompt_uses_absolute_workspace_and_evidence_paths(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
