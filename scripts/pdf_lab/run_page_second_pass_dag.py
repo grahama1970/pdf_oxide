@@ -4093,6 +4093,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append(f"{artifact} surface does not match expected scillm surface")
         if not isinstance(preflight.get("caller_skill"), str) or not preflight.get("caller_skill", "").strip():
             errors.append(f"{artifact} caller_skill must be non-empty")
+        elif preflight.get("caller_skill") != "pdf-lab":
+            errors.append(f"{artifact} caller_skill must be pdf-lab")
         if not isinstance(preflight.get("checks"), list):
             errors.append(f"{artifact} checks must be a list")
         preflight_errors = preflight.get("errors")

@@ -6573,7 +6573,7 @@ def test_validate_page_terminal_ledger_rejects_stale_review_preflight_surface(tm
                 "schema": "pdf_lab.second_pass.scillm_preflight.v1",
                 "surface": "opencode_serve",
                 "base_url": "http://localhost:4001",
-                "caller_skill": "",
+                "caller_skill": "other-skill",
                 "checks": [],
                 "ok": False,
                 "errors": [],
@@ -6601,7 +6601,7 @@ def test_validate_page_terminal_ledger_rejects_stale_review_preflight_surface(tm
     assert validation["ok"] is False
     errors = "\n".join(validation["errors"])
     assert "scillm_review_preflight.json surface does not match expected scillm surface" in errors
-    assert "scillm_review_preflight.json caller_skill must be non-empty" in errors
+    assert "scillm_review_preflight.json caller_skill must be pdf-lab" in errors
     assert "scillm_review_preflight.json ok false requires non-empty errors" in errors
 
 
