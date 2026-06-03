@@ -4852,6 +4852,84 @@ def test_validate_page_terminal_ledger_rejects_invalid_after_request_validation(
     assert "review_after_request_validation.ok is not true" in validation["errors"]
 
 
+def test_validate_page_terminal_ledger_rejects_stale_after_request_validation(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    _write_full_patched_confirmed_artifacts(case_dir)
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "candidate_presets.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.candidate_presets.v1",
+                "candidates": [{"candidate_id": "cand:p0001:0000:table", "preset_type": "table"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    after_request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case={
+            "case_id": "page_case_0001_p0001:after_patch",
+            "page_number": 1,
+            "candidate_ids": ["cand:p0001:0000:table"],
+        },
+        page_json_path="page_after.json",
+        original_image_path="page_after.png",
+        annotated_image_path="page_after_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="batch-after",
+    )
+    (case_dir / "review_after_request.json").write_text(json.dumps(after_request), encoding="utf-8")
+    (case_dir / "review_after_request_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_request_validation.v1",
+                "ok": True,
+                "errors": [],
+                "artifact_paths": {"page_json": "stale.json"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "patched_confirmed",
+        "reason": "patch_committed_and_after_review_clean",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "candidate_presets.json",
+            "patch_delta.json",
+            "patch_scope_validation.json",
+            "test_validation.json",
+            "page_after.json",
+            "page_after.png",
+            "page_after_candidates.png",
+            "review_after_request.json",
+            "review_after_request_validation.json",
+            "review_after_response.json",
+            "review_after_validation.json",
+            "commit_acceptance_gate.json",
+            "commit_gate.json",
+            "revertability_check.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": "abc123",
+        "commit_gate_ok": True,
+        "commit_exact_file_match": True,
+        "commit_revertability_ok": True,
+        "commit_acceptance_ok": True,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "review_after_request_validation does not match recomputed review_after_request contract" in validation["errors"]
+
+
 def test_validate_page_terminal_ledger_rejects_stale_after_review_candidate_set(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

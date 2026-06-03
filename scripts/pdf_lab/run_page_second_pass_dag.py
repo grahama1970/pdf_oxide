@@ -4104,6 +4104,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         patch_scope_validation = read_required_json_artifact("patch_scope_validation.json")
         test_validation = read_required_json_artifact("test_validation.json")
         selected_candidates = read_required_json_artifact("selected_candidates.json")
+        review_after_request = read_required_json_artifact("review_after_request.json")
         review_after_request_validation = read_required_json_artifact("review_after_request_validation.json")
         review_after_validation = read_required_json_artifact("review_after_validation.json")
         review_after_response = read_required_json_artifact("review_after_response.json")
@@ -4141,6 +4142,10 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 errors.append("review_after_request_validation schema mismatch")
             if review_after_request_validation.get("ok") is not True:
                 errors.append("review_after_request_validation.ok is not true")
+            if review_after_request.get("schema") == "pdf_lab.second_pass.review_request.v1":
+                recomputed_after_request_validation = validate_review_request_contract(case_dir, review_after_request)
+                if review_after_request_validation != recomputed_after_request_validation:
+                    errors.append("review_after_request_validation does not match recomputed review_after_request contract")
         if review_after_validation:
             if review_after_validation.get("schema") != "pdf_lab.second_pass.review_validation.v1":
                 errors.append("review_after_validation schema mismatch")
