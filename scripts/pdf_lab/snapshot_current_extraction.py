@@ -8,6 +8,16 @@ from pathlib import Path
 from typing import Any
 
 
+def _normalize_text(text: str) -> str:
+    return " ".join(str(text or "").split())
+
+
+def _bbox_area(bbox: list[float]) -> float:
+    if len(bbox) != 4:
+        return 0.0
+    return max(0.0, bbox[2] - bbox[0]) * max(0.0, bbox[3] - bbox[1])
+
+
 def _norm_bbox_block(bbox: Any, page_w: float, page_h: float) -> list[float]:
     if not bbox or len(bbox) != 4 or page_w <= 0 or page_h <= 0:
         return [0.0, 0.0, 0.0, 0.0]
@@ -65,6 +75,158 @@ def _norm_bbox_corners(bbox: Any, page_w: float, page_h: float) -> list[float]:
         max(0.0, min(1.0, x1 / page_w)),
         max(0.0, min(1.0, y1 / page_h)),
     ]
+
+
+def _bbox_union(boxes: list[list[float]]) -> list[float]:
+    if not boxes:
+        return [0.0, 0.0, 0.0, 0.0]
+    return [
+        min(box[0] for box in boxes),
+        min(box[1] for box in boxes),
+        max(box[2] for box in boxes),
+        max(box[3] for box in boxes),
+    ]
+
+
+def _extract_fitz_text_lines(pdf_path: Path, page_index: int, page_w: float, page_h: float) -> list[dict[str, Any]]:
+    try:
+        import fitz  # noqa: PLC0415
+    except Exception:
+        return []
+
+    try:
+        with fitz.open(pdf_path) as doc:
+            page = doc[page_index]
+            raw = page.get_text("rawdict")
+    except Exception:
+        return []
+
+    lines: list[dict[str, Any]] = []
+    for block in raw.get("blocks", []):
+        if block.get("type") != 0:
+            continue
+        for line in block.get("lines", []):
+            chars: list[dict[str, Any]] = []
+            fonts: list[str] = []
+            sizes: list[float] = []
+            for span in line.get("spans", []):
+                if span.get("font"):
+                    fonts.append(str(span.get("font")))
+                if span.get("size") is not None:
+                    sizes.append(float(span.get("size")))
+                chars.extend(char for char in span.get("chars", []) if isinstance(char, dict))
+            text = "".join(str(char.get("c") or "") for char in chars)
+            if not _normalize_text(text):
+                continue
+            nonspace = [char for char in chars if str(char.get("c") or "").strip() and char.get("bbox")]
+            if not nonspace:
+                continue
+            x0 = min(float(char["bbox"][0]) for char in nonspace)
+            y0 = min(float(char["bbox"][1]) for char in nonspace)
+            x1 = max(float(char["bbox"][2]) for char in nonspace)
+            y1 = max(float(char["bbox"][3]) for char in nonspace)
+            lines.append(
+                {
+                    "text": _normalize_text(text),
+                    "bbox": _norm_bbox_corners([x0, y0, x1, y1], page_w, page_h),
+                    "raw_bbox": [x0, y0, x1, y1],
+                    "font_name": fonts[0] if fonts else None,
+                    "font_size": sizes[0] if sizes else None,
+                    "is_bold": any("bold" in font.lower() for font in fonts),
+                }
+            )
+    return lines
+
+
+def _match_text_lines(block_text: str, text_lines: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    target = _normalize_text(block_text)
+    if not target:
+        return []
+    for start in range(len(text_lines)):
+        parts: list[str] = []
+        matched: list[dict[str, Any]] = []
+        for line in text_lines[start:]:
+            parts.append(line["text"])
+            matched.append(line)
+            joined = _normalize_text(" ".join(parts))
+            if joined == target:
+                return matched
+            if len(joined) > len(target) + 8 and not target.startswith(joined):
+                break
+    return []
+
+
+def _should_split_block(block_bbox: list[float], matched_lines: list[dict[str, Any]]) -> bool:
+    if len(matched_lines) <= 1:
+        return False
+    line_boxes = [line["bbox"] for line in matched_lines]
+    union = _bbox_union(line_boxes)
+    if not _bbox_area(union):
+        return False
+    vertical_gaps = [
+        max(0.0, float(next_line["bbox"][1]) - float(prev_line["bbox"][3]))
+        for prev_line, next_line in zip(matched_lines, matched_lines[1:])
+    ]
+    return _bbox_area(block_bbox) > _bbox_area(union) * 1.35 or any(gap > 0.018 for gap in vertical_gaps)
+
+
+def _block_elements(
+    *,
+    block: dict[str, Any],
+    block_index: int,
+    page_index: int,
+    page_w: float,
+    page_h: float,
+    text_lines: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    text = str(block.get("text") or "").strip()
+    source_type = str(block.get("block_type") or "unknown")
+    original_block_bbox = _norm_bbox_block(block.get("bbox"), page_w, page_h)
+    block_bbox = original_block_bbox
+    matched_lines = _match_text_lines(text, text_lines)
+    if matched_lines:
+        block_bbox = _bbox_union([line["bbox"] for line in matched_lines])
+
+    base = {
+        "page": page_index + 1,
+        "pdf_page_index": page_index,
+        "type": "unknown_region",
+        "source_type": source_type,
+        "font_size": block.get("font_size"),
+        "font_name": block.get("font_name"),
+        "is_bold": block.get("is_bold"),
+        "raw": block,
+    }
+    if not _should_split_block(original_block_bbox, matched_lines):
+        return [
+            {
+                **base,
+                "id": f"actual:p{page_index + 1}:block:{block_index}",
+                "bbox": block_bbox,
+                "text": text,
+            }
+        ]
+
+    elements: list[dict[str, Any]] = []
+    for line_index, line in enumerate(matched_lines):
+        elements.append(
+            {
+                **base,
+                "id": f"actual:p{page_index + 1}:block:{block_index}:line:{line_index}",
+                "bbox": line["bbox"],
+                "text": line["text"],
+                "font_size": line.get("font_size", block.get("font_size")),
+                "font_name": line.get("font_name", block.get("font_name")),
+                "is_bold": line.get("is_bold", block.get("is_bold")),
+                "raw": {
+                    **block,
+                    "parent_bbox": block.get("bbox"),
+                    "line_bbox": line.get("raw_bbox"),
+                    "line_text": line["text"],
+                },
+            }
+        )
+    return elements
 
 
 def _table_bbox(table: dict[str, Any], page_w: float, page_h: float) -> list[float]:
@@ -139,6 +301,18 @@ def _raw_table_payload(table: dict[str, Any], metrics: dict[str, Any]) -> dict[s
     return raw
 
 
+def _is_tiny_empty_table_false_positive(table: dict[str, Any], metrics: dict[str, Any], bbox: list[float]) -> bool:
+    row_count = int(metrics.get("row_count") or 0)
+    column_count = int(metrics.get("column_count") or 0)
+    whitespace = float(table.get("whitespace") or 0.0)
+    if row_count > 3 or column_count > 3 or whitespace < 95.0:
+        return False
+    if _bbox_area(bbox) > 0.0025:
+        return False
+    text = _table_text(table)
+    return not text.replace("|", "").strip()
+
+
 def _extract_tables_for_snapshot(doc: Any, page_index: int) -> list[dict[str, Any]]:
     """Use the shared Camelot-style extractor, falling back to the legacy API."""
     try:
@@ -165,29 +339,28 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
 
     doc = pdf_oxide.open(str(pdf_path))
     page_w, page_h = doc.page_dimensions(page_index)
+    text_lines = _extract_fitz_text_lines(pdf_path, page_index, page_w, page_h)
     raw_elements: list[dict[str, Any]] = []
 
     for index, block in enumerate(doc.classify_blocks(page_index) or []):
         if not isinstance(block, dict):
             continue
-        raw_elements.append(
-            {
-                "id": f"actual:p{page_index + 1}:block:{index}",
-                "page": page_index + 1,
-                "pdf_page_index": page_index,
-                "type": "unknown_region",
-                "source_type": str(block.get("block_type") or "unknown"),
-                "bbox": _norm_bbox_block(block.get("bbox"), page_w, page_h),
-                "text": str(block.get("text") or "").strip(),
-                "font_size": block.get("font_size"),
-                "font_name": block.get("font_name"),
-                "is_bold": block.get("is_bold"),
-                "raw": block,
-            }
+        raw_elements.extend(
+            _block_elements(
+                block=block,
+                block_index=index,
+                page_index=page_index,
+                page_w=page_w,
+                page_h=page_h,
+                text_lines=text_lines,
+            )
         )
 
     for index, table in enumerate(_extract_tables_for_snapshot(doc, page_index)):
         metrics = _table_metrics(table)
+        bbox = _table_bbox(table, page_w, page_h)
+        if _is_tiny_empty_table_false_positive(table, metrics, bbox):
+            continue
         raw_elements.append(
             {
                 "id": f"actual:p{page_index + 1}:table:{index}",
@@ -195,7 +368,7 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
                 "pdf_page_index": page_index,
                 "type": "table",
                 "source_type": "table",
-                "bbox": _table_bbox(table, page_w, page_h),
+                "bbox": bbox,
                 "text": _table_text(table),
                 "raw": _raw_table_payload(table, metrics),
             }
