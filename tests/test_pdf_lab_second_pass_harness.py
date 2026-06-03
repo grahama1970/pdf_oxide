@@ -3290,6 +3290,45 @@ def test_build_patch_commit_ledger_rejects_green_commit_gate_errors(tmp_path: Pa
     assert "commit_gate ok is true but errors are not empty" in errors
 
 
+def test_build_patch_commit_ledger_rejects_green_commit_acceptance_errors(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="patched_confirmed",
+        commit_sha="abc123",
+        extra_evidence=PATCHED_CONFIRMED_ARTIFACTS,
+    )
+    commit_acceptance = json.loads((case_dir / "commit_acceptance_gate.json").read_text(encoding="utf-8"))
+    commit_acceptance["ok"] = True
+    commit_acceptance["errors"] = ["stale commit acceptance failure"]
+    (case_dir / "commit_acceptance_gate.json").write_text(json.dumps(commit_acceptance), encoding="utf-8")
+
+    ledger = harness.build_patch_commit_ledger(
+        out_dir=tmp_path / "out",
+        page_results=[
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "terminal_status": "patched_confirmed",
+                "reason": "verified",
+                "case_dir": str(case_dir),
+                "commit_sha": "abc123",
+                "evidence_artifacts": [
+                    "terminal_ledger_validation.json",
+                    *PATCHED_CONFIRMED_ARTIFACTS,
+                ],
+            }
+        ],
+    )
+
+    errors = "\n".join(ledger["errors"])
+    assert ledger["ok"] is False
+    assert ledger["entries"][0]["ok"] is False
+    assert "commit_acceptance_gate ok is true but errors are not empty" in errors
+
+
 def test_build_patch_commit_ledger_rejects_changed_files_not_matching_patch_scope(tmp_path: Path) -> None:
     harness = _load_module()
     case_dir = tmp_path / "case"
