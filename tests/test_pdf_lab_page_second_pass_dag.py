@@ -1556,6 +1556,39 @@ def test_scillm_repair_plan_request_and_validation_are_bounded(tmp_path: Path) -
     assert any("confidence" in error for error in bad["errors"])
 
 
+def test_validate_repair_plan_rejects_stale_receipt_metadata() -> None:
+    dag = _load_module()
+    plan = {
+        "schema": "pdf_lab.second_pass.repair_plan.v1",
+        "summary": "unknown layout should be classified more precisely",
+        "suspected_fault": "classifier misses table-like block",
+        "patch_targets": ["python/pdf_oxide/classifier.py", "tests/test_classifier.py"],
+        "test_plan": ["add focused unknown-layout regression"],
+        "patch_constraints": ["smallest safe change", "no generated artifacts"],
+        "confidence": "medium",
+    }
+    request = {
+        "scillm_metadata": {
+            "batch_id": "batch-repair",
+            "item_id": "page_case_0001_p0003:repair_plan",
+        }
+    }
+    receipt = {
+        "schema": "pdf_lab.second_pass.scillm_repair_plan_receipt.v1",
+        "scillm_metadata": {
+            "batch_id": "batch-stale",
+            "item_id": "page_case_9999_p9999:repair_plan",
+        },
+        "repair_plan": plan,
+    }
+
+    validation = dag.validate_repair_plan(plan, receipt=receipt, request=request)
+
+    assert validation["ok"] is False
+    assert "repair plan receipt scillm_metadata batch_id does not match request" in validation["errors"]
+    assert "repair plan receipt scillm_metadata item_id does not match request" in validation["errors"]
+
+
 def test_materialize_opencode_host_artifacts_copies_and_summarizes_timeout(tmp_path: Path) -> None:
     dag = _load_module()
     host_dir = tmp_path / "host"

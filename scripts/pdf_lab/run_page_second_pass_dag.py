@@ -1707,8 +1707,27 @@ def build_scillm_repair_plan_request(
     }
 
 
-def validate_repair_plan(plan: dict[str, Any] | None) -> dict[str, Any]:
+def validate_repair_plan(
+    plan: dict[str, Any] | None,
+    *,
+    receipt: dict[str, Any] | None = None,
+    request: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     errors: list[str] = []
+    expected_metadata = request.get("scillm_metadata") if isinstance(request, dict) else None
+    if receipt is not None:
+        if not isinstance(receipt, dict):
+            errors.append("repair plan receipt must be an object")
+        else:
+            if receipt.get("schema") != "pdf_lab.second_pass.scillm_repair_plan_receipt.v1":
+                errors.append("repair plan receipt schema mismatch")
+            receipt_metadata = receipt.get("scillm_metadata")
+            if not isinstance(receipt_metadata, dict):
+                errors.append("repair plan receipt missing scillm_metadata")
+            elif isinstance(expected_metadata, dict):
+                for key in ["batch_id", "item_id"]:
+                    if receipt_metadata.get(key) != expected_metadata.get(key):
+                        errors.append(f"repair plan receipt scillm_metadata {key} does not match request")
     if not isinstance(plan, dict):
         errors.append("repair plan missing or not an object")
         plan = {}
@@ -4568,7 +4587,11 @@ def run_page_case(
                         "errors": ["repair_plan_dry_run"],
                     }
                 else:
-                    attempt_repair_plan_validation = validate_repair_plan(attempt_repair_plan_receipt.get("repair_plan"))
+                    attempt_repair_plan_validation = validate_repair_plan(
+                        attempt_repair_plan_receipt.get("repair_plan"),
+                        receipt=attempt_repair_plan_receipt,
+                        request=repair_plan_request,
+                    )
                 repair_plan_validation_artifact = f"{attempt_prefix}repair_plan_validation.json"
                 write_json(case_dir / repair_plan_validation_artifact, attempt_repair_plan_validation)
                 write_json(case_dir / "repair_plan_validation.json", attempt_repair_plan_validation)
