@@ -4864,6 +4864,13 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
                 errors.append("scillm proof floor artifact does not match proof floor argument")
     validation_payload: dict[str, Any] = {}
     validation_path = artifacts.get("scillm_proof_floor_validation.json")
+    if (
+        isinstance(proof_floor, dict)
+        and validation_path
+        and proof_floor.get("validation_artifact") is not None
+        and proof_floor.get("validation_artifact") != str(validation_path)
+    ):
+        errors.append("scillm proof floor validation_artifact does not match expected artifact path")
     if validation_path and validation_path.is_file():
         try:
             loaded = json.loads(validation_path.read_text(encoding="utf-8"))
