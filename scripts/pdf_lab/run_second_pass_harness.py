@@ -855,6 +855,19 @@ def validate_sampling_gate(
         artifact_label="sampled_page_cases",
         errors=errors,
     )
+    selected_pages = sampled_cases.get("selected_pages")
+    if not isinstance(selected_pages, list) or not all(is_plain_int(page) and page >= 1 for page in selected_pages):
+        errors.append("sampled_page_cases selected_pages must be a list of page numbers")
+        selected_pages = []
+    duplicate_selected_pages = sorted(
+        page
+        for page, count in Counter(page for page in selected_pages if is_plain_int(page) and page >= 1).items()
+        if count > 1
+    )
+    if duplicate_selected_pages:
+        errors.append(f"sampled_page_cases selected_pages contains duplicates: {duplicate_selected_pages}")
+    if candidate_count > 0 and selected_count != len(selected_pages):
+        errors.append("selected_count does not equal selected_pages length")
     if isinstance(forced_pages, dict):
         accepted_forced_pages = forced_pages.get("accepted", [])
     if not isinstance(accepted_forced_pages, list) or not all(is_plain_int(page) and page >= 1 for page in accepted_forced_pages):
@@ -934,6 +947,9 @@ def validate_sampling_gate(
             )
         if set(probabilistic_selected_pages or []) & set(accepted_forced_pages):
             errors.append("probabilistic_selected_pages overlaps accepted forced pages")
+        expected_selected_pages = sorted(set(probabilistic_selected_pages or []) | set(accepted_forced_pages))
+        if sorted(selected_pages) != expected_selected_pages:
+            errors.append("selected_pages do not equal probabilistic_selected_pages plus accepted forced pages")
         probabilistic_count = len(probabilistic_selected_pages or [])
         if selected_count != probabilistic_count + len(accepted_forced_pages):
             errors.append("selected_count does not equal probabilistic_selected_pages plus accepted forced pages")
@@ -950,6 +966,8 @@ def validate_sampling_gate(
         "schema": "pdf_lab.second_pass.sampling_gate.v1",
         "candidate_count": candidate_count,
         "selected_count": selected_count,
+        "selected_pages": selected_pages,
+        "duplicate_selected_pages": duplicate_selected_pages,
         "accepted_forced_page_count": len(accepted_forced_pages),
         "duplicate_accepted_forced_pages": duplicate_accepted_forced_pages,
         "seed": sampled_seed,

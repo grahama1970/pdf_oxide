@@ -693,6 +693,7 @@ def test_validate_sampling_gate_fails_closed_on_inadequate_priority_sampling() -
         manifest={"candidate_count": 8},
         sampled_cases={
             "selected_count": 3,
+            "selected_pages": [1, 2, 3],
             "seed": 1234,
             "sampling_audit": {
                 "schema": "pdf_lab.second_pass.sampling_audit.v1",
@@ -727,6 +728,7 @@ def test_validate_sampling_gate_rejects_malformed_statistical_audit() -> None:
         manifest={"candidate_count": 8},
         sampled_cases={
             "selected_count": 4,
+            "selected_pages": [1, 2, 3, 4],
             "seed": 777,
             "sampling_audit": {
                 "schema": "wrong.schema",
@@ -764,6 +766,7 @@ def test_validate_sampling_gate_rejects_coerced_declared_counts() -> None:
         manifest={"candidate_count": "8"},
         sampled_cases={
             "selected_count": 3.0,
+            "selected_pages": [1, 2, 3],
             "seed": 1234,
             "sampling_audit": _passing_sampling_audit(candidate_count=8, selected_count=3, seed=1234),
         },
@@ -780,6 +783,7 @@ def test_validate_sampling_gate_rejects_boolean_seed() -> None:
         manifest={"candidate_count": 1},
         sampled_cases={
             "selected_count": 1,
+            "selected_pages": [1],
             "seed": True,
             "sampling_audit": _passing_sampling_audit(candidate_count=1, selected_count=1, seed=True),
         },
@@ -795,6 +799,7 @@ def test_validate_sampling_gate_requires_additive_forced_page_accounting() -> No
         manifest={"candidate_count": 8},
         sampled_cases={
             "selected_count": 4,
+            "selected_pages": [1, 2, 3, 4],
             "seed": 1234,
             "forced_pages": {"requested": [1], "accepted": [1], "rejected": []},
             "probabilistic_selected_pages": [1, 2],
@@ -833,12 +838,42 @@ def test_validate_sampling_gate_requires_additive_forced_page_accounting() -> No
     assert "sampling_audit statistical_significance_basis accepted_forced_page_count mismatch" in errors
 
 
+def test_validate_sampling_gate_rejects_malformed_selected_pages() -> None:
+    harness = _load_module()
+    malformed_gate = harness.validate_sampling_gate(
+        manifest={"candidate_count": 8},
+        sampled_cases={
+            "selected_count": 2,
+            "selected_pages": [True],
+            "seed": 1234,
+            "sampling_audit": _passing_sampling_audit(candidate_count=8, selected_count=2, seed=1234),
+        },
+    )
+    duplicate_gate = harness.validate_sampling_gate(
+        manifest={"candidate_count": 8},
+        sampled_cases={
+            "selected_count": 2,
+            "selected_pages": [1, 1],
+            "seed": 1234,
+            "sampling_audit": _passing_sampling_audit(candidate_count=8, selected_count=2, seed=1234),
+        },
+    )
+
+    assert malformed_gate["ok"] is False
+    assert "sampled_page_cases selected_pages must be a list of page numbers" in malformed_gate["errors"]
+    assert "selected_count does not equal selected_pages length" in malformed_gate["errors"]
+    assert duplicate_gate["ok"] is False
+    assert duplicate_gate["duplicate_selected_pages"] == [1]
+    assert "sampled_page_cases selected_pages contains duplicates: [1]" in duplicate_gate["errors"]
+
+
 def test_validate_sampling_gate_rejects_duplicate_forced_partition_pages() -> None:
     harness = _load_module()
     gate = harness.validate_sampling_gate(
         manifest={"candidate_count": 8},
         sampled_cases={
             "selected_count": 5,
+            "selected_pages": [1, 2, 3, 4, 5],
             "seed": 1234,
             "forced_pages": {"requested": [1], "accepted": [1, 1], "rejected": []},
             "probabilistic_selected_pages": [2, 2, 3],
@@ -880,6 +915,7 @@ def test_validate_sampling_gate_rejects_boolean_forced_page_references() -> None
         manifest={"candidate_count": 8},
         sampled_cases={
             "selected_count": 2,
+            "selected_pages": [1, 2],
             "seed": 1234,
             "forced_pages": {"requested": [True], "accepted": [True], "rejected": []},
             "probabilistic_selected_pages": [True],
@@ -900,6 +936,7 @@ def test_validate_sampling_gate_rejects_boolean_forced_page_references() -> None
         manifest={"candidate_count": 8},
         sampled_cases={
             "selected_count": 2,
+            "selected_pages": [1, 2],
             "seed": 1234,
             "forced_pages": {"requested": [1], "accepted": [1], "rejected": []},
             "probabilistic_selected_pages": [True],
@@ -931,6 +968,7 @@ def test_validate_sampling_gate_rejects_coerced_empty_forced_pages() -> None:
         manifest={"candidate_count": 8},
         sampled_cases={
             "selected_count": 2,
+            "selected_pages": [1, 2],
             "seed": 1234,
             "forced_pages": {"requested": [], "accepted": "", "rejected": []},
             "sampling_audit": _passing_sampling_audit(candidate_count=8, selected_count=2, seed=1234),
@@ -947,6 +985,7 @@ def test_validate_sampling_gate_accepts_additive_forced_page_accounting() -> Non
         manifest={"candidate_count": 8},
         sampled_cases={
             "selected_count": 4,
+            "selected_pages": [1, 2, 3, 4],
             "seed": 1234,
             "forced_pages": {"requested": [1], "accepted": [1], "rejected": []},
             "probabilistic_selected_pages": [2, 3, 4],
