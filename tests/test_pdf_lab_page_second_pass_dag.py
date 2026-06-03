@@ -1486,6 +1486,34 @@ def test_validate_review_request_contract_rejects_stale_page_case_item_id(tmp_pa
     assert "scillm_payload scillm_metadata.item_id must match review_request page_case.case_id" in validation["errors"]
 
 
+def test_validate_review_request_contract_rejects_unsafe_page_case_identity(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "page_before.json").write_text(json.dumps({"page": 1, "blocks": []}), encoding="utf-8")
+    (case_dir / "candidate_presets.json").write_text(json.dumps({"candidates": []}), encoding="utf-8")
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "page_candidates.png").write_bytes(b"png")
+    request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1},
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="batch-review",
+    )
+    request["page_case"]["case_id"] = "../escape"
+    request["scillm_metadata"]["item_id"] = "../escape"
+    request["scillm_payload"]["scillm_metadata"] = dict(request["scillm_metadata"])
+
+    validation = dag.validate_review_request_contract(case_dir, request)
+
+    assert validation["ok"] is False
+    assert "review_request ../escape case_id must match page_case_####_p####" in validation["errors"]
+
+
 def test_validate_review_request_contract_rejects_stale_payload_model_identity(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
@@ -2140,7 +2168,7 @@ def test_scillm_repair_plan_request_and_validation_are_bounded(tmp_path: Path) -
 
     request = dag.build_scillm_repair_plan_request(
         case_dir=case_dir,
-        page_case={"case_id": "case-1", "page_number": 1, "candidate_ids": ["cand:p0001:0000:unknown_layout"]},
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1, "candidate_ids": ["cand:p0001:0000:unknown_layout"]},
         candidates=[
             {
                 "candidate_id": "cand:p0001:0000:unknown_layout",
@@ -2166,7 +2194,7 @@ def test_scillm_repair_plan_request_and_validation_are_bounded(tmp_path: Path) -
 
     prompt = request["scillm_payload"]["messages"][0]["content"]
     assert request["schema"] == "pdf_lab.second_pass.scillm_repair_plan_request.v1"
-    assert request["scillm_metadata"]["item_id"] == "case-1:repair_plan"
+    assert request["scillm_metadata"]["item_id"] == "page_case_0001_p0001:repair_plan"
     assert "Return JSON only" in prompt
     assert "broken table-like content" in prompt
     assert "plan this defect" in prompt
@@ -2187,7 +2215,7 @@ def test_scillm_repair_plan_request_and_validation_are_bounded(tmp_path: Path) -
         request=request,
     )
     assert validation["ok"] is True
-    assert validation["page_case"] == {"case_id": "case-1", "page_number": 1}
+    assert validation["page_case"] == {"case_id": "page_case_0001_p0001", "page_number": 1}
     assert validation["candidate_count"] == 1
     assert validation["expected_candidate_ids"] == ["cand:p0001:0000:unknown_layout"]
 
@@ -2225,6 +2253,41 @@ def test_validate_repair_plan_request_rejects_stale_page_case_item_id(tmp_path: 
 
     assert validation["ok"] is False
     assert "repair_plan_request scillm_metadata.item_id must match page_case.case_id repair-plan suffix" in validation["errors"]
+
+
+def test_validate_repair_plan_request_rejects_stale_page_case_identity(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    request = dag.build_scillm_repair_plan_request(
+        case_dir=case_dir,
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1},
+        candidates=[{"candidate_id": "cand:p0001:0000:unknown_layout", "preset_type": "unknown_layout"}],
+        review_response={
+            "schema": "pdf_lab.second_pass.review_response.v1",
+            "page_status": "defect",
+            "candidate_findings": [
+                {
+                    "candidate_id": "cand:p0001:0000:unknown_layout",
+                    "status": "defect",
+                    "rationale": "plan this defect",
+                }
+            ],
+        },
+        model="gpt-5.5",
+        batch_id="batch-plan",
+    )
+    request["page_case"]["case_id"] = "page_case_0001_p0002"
+    request["scillm_metadata"]["item_id"] = "page_case_0001_p0002:repair_plan"
+    request["scillm_payload"]["scillm_metadata"] = dict(request["scillm_metadata"])
+
+    validation = dag.validate_repair_plan_request_contract(request)
+
+    assert validation["ok"] is False
+    assert (
+        "repair_plan_request page_case_0001_p0002 case_id page suffix does not match page_number 1"
+        in validation["errors"]
+    )
 
 
 def test_validate_repair_plan_rejects_stale_receipt_metadata() -> None:

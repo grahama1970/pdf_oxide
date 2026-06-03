@@ -303,14 +303,17 @@ def _case_by_id_or_page(sampled_cases: dict[str, Any], case_id: str | None, page
     raise ValueError("page case not found")
 
 
-def validate_page_case_identity(page_case: dict[str, Any]) -> dict[str, Any]:
+def validate_page_case_identity(page_case: dict[str, Any], *, allow_after_patch: bool = False) -> dict[str, Any]:
     errors: list[str] = []
     case_id = page_case.get("case_id")
     page_number = page_case.get("page_number")
     if not isinstance(case_id, str) or not case_id:
         errors.append("page_case case_id must be non-empty")
     else:
-        case_id_match = PAGE_CASE_ID_RE.fullmatch(case_id)
+        base_case_id = case_id
+        if allow_after_patch and case_id.endswith(":after_patch"):
+            base_case_id = case_id.removesuffix(":after_patch")
+        case_id_match = PAGE_CASE_ID_RE.fullmatch(base_case_id)
         if case_id_match is None:
             errors.append(f"{case_id} case_id must match page_case_####_p####")
         elif isinstance(page_number, int) and int(case_id_match.group("page_number")) != page_number:
@@ -658,6 +661,9 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
     if not isinstance(page_case, dict):
         errors.append("review_request page_case must be an object")
         page_case = {}
+    page_case_identity = validate_page_case_identity(page_case, allow_after_patch=True)
+    if page_case_identity["ok"] is not True:
+        errors.extend(f"review_request {error}" for error in page_case_identity["errors"])
     case_id = page_case.get("case_id")
     if not isinstance(case_id, str) or not case_id:
         errors.append("review_request page_case.case_id must be non-empty")
@@ -1955,6 +1961,9 @@ def validate_repair_plan_request_contract(repair_plan_request: dict[str, Any]) -
     if not isinstance(page_case, dict):
         errors.append("repair_plan_request page_case must be an object")
         page_case = {}
+    page_case_identity = validate_page_case_identity(page_case)
+    if page_case_identity["ok"] is not True:
+        errors.extend(f"repair_plan_request {error}" for error in page_case_identity["errors"])
     case_id = page_case.get("case_id")
     if not isinstance(case_id, str) or not case_id:
         errors.append("repair_plan_request page_case.case_id must be non-empty")
