@@ -2635,6 +2635,18 @@ def build_harness_readiness_audit(
             }
         )
 
+    def validation_error_list(payload: dict[str, Any] | None, label: str) -> tuple[list[str], bool]:
+        if not isinstance(payload, dict):
+            return [], False
+        raw_errors = payload.get("errors", [])
+        if raw_errors is None:
+            return [], False
+        if not isinstance(raw_errors, list):
+            return [f"{label} errors must be a list"], True
+        if not all(isinstance(error, str) for error in raw_errors):
+            return [f"{label} errors must be a list of strings"], True
+        return raw_errors, False
+
     add_check(
         "candidate manifest exists",
         bool(candidate_manifest_path and candidate_manifest_path.is_file()),
@@ -2657,11 +2669,12 @@ def build_harness_readiness_audit(
         candidate_sample_linkage_validation,
         list((candidate_sample_linkage_validation or {}).get("errors") or []),
     )
+    sampling_gate_errors, sampling_gate_errors_malformed = validation_error_list(sampling_gate, "sampling_gate")
     add_check(
         "sampling gate passed",
-        bool(sampling_gate and sampling_gate.get("ok") is True),
+        bool(sampling_gate and sampling_gate.get("ok") is True and not sampling_gate_errors_malformed),
         sampling_gate,
-        list((sampling_gate or {}).get("errors") or []),
+        sampling_gate_errors,
     )
     add_check(
         "deterministic execution plan is code-owned and sequential",
