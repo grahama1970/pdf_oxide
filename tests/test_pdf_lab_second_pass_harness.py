@@ -3678,6 +3678,34 @@ def test_validate_deterministic_execution_plan_rejects_malformed_probability_met
     assert "forced pages missing forced_human_annotation probability basis" in errors
 
 
+def test_validate_deterministic_execution_plan_rejects_coerced_forced_flag() -> None:
+    harness = _load_module()
+    validation = harness.validate_deterministic_execution_plan(
+        {
+            "schema": "pdf_lab.second_pass.deterministic_execution_plan.v1",
+            "owner": "pdf_lab_harness_code",
+            "agent_decision_allowed": False,
+            "execution_mode": "sequential",
+            "page_case_order": [
+                {
+                    "case_id": "page_case_0001_p0001",
+                    "page_number": 1,
+                    "forced_by_human_annotation": 1,
+                    "selection_probability_estimate": 1.0,
+                    "selection_probability_basis": {"method": "forced_human_annotation"},
+                },
+            ],
+            "commit_policy": {"one_git_commit_per_verified_bug_fix": True},
+        },
+        page_results=[],
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert validation["malformed_forced_flag_case_ids"] == ["page_case_0001_p0001"]
+    assert "deterministic execution plan has malformed forced_by_human_annotation flags: ['page_case_0001_p0001']" in errors
+
+
 def test_validate_page_results_match_sampled_cases_rejects_green_missing_pages(tmp_path: Path) -> None:
     harness = _load_module()
     sampled_path = tmp_path / "sampled_page_cases.json"

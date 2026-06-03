@@ -1510,6 +1510,7 @@ def validate_deterministic_execution_plan(
     malformed_planned_case_ids: list[str] = []
     planned_case_id_page_suffix_mismatches: list[str] = []
     malformed_probability_case_ids: list[str] = []
+    malformed_forced_flag_case_ids: list[str] = []
     malformed_forced_probability_case_ids: list[str] = []
     for index, case in enumerate(page_case_order):
         if not isinstance(case, dict):
@@ -1530,7 +1531,10 @@ def validate_deterministic_execution_plan(
                 malformed_probability_case_ids.append(case_id)
         if basis is not None and not isinstance(basis, dict):
             malformed_probability_case_ids.append(case_id)
-        if case.get("forced_by_human_annotation") is True:
+        forced_by_human_annotation = case.get("forced_by_human_annotation")
+        if forced_by_human_annotation is not None and type(forced_by_human_annotation) is not bool:
+            malformed_forced_flag_case_ids.append(case_id)
+        if forced_by_human_annotation is True:
             if estimate != 1.0 or not isinstance(basis, dict) or basis.get("method") != "forced_human_annotation":
                 malformed_forced_probability_case_ids.append(case_id)
     if malformed_planned_case_ids:
@@ -1542,6 +1546,8 @@ def validate_deterministic_execution_plan(
         )
     if malformed_probability_case_ids:
         errors.append(f"deterministic execution plan has malformed selection probability metadata: {sorted(set(malformed_probability_case_ids))}")
+    if malformed_forced_flag_case_ids:
+        errors.append(f"deterministic execution plan has malformed forced_by_human_annotation flags: {sorted(set(malformed_forced_flag_case_ids))}")
     if malformed_forced_probability_case_ids:
         errors.append(f"deterministic execution plan forced pages missing forced_human_annotation probability basis: {sorted(set(malformed_forced_probability_case_ids))}")
     actual_case_ids = [
@@ -1574,6 +1580,7 @@ def validate_deterministic_execution_plan(
         "malformed_planned_case_ids": sorted(set(malformed_planned_case_ids)),
         "planned_case_id_page_suffix_mismatches": sorted(set(planned_case_id_page_suffix_mismatches)),
         "malformed_probability_case_ids": sorted(set(malformed_probability_case_ids)),
+        "malformed_forced_flag_case_ids": sorted(set(malformed_forced_flag_case_ids)),
         "malformed_forced_probability_case_ids": sorted(set(malformed_forced_probability_case_ids)),
         "observed_case_ids": actual_case_ids,
         "malformed_observed_case_results": malformed_observed_case_results,
