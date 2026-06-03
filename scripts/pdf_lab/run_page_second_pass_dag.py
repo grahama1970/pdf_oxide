@@ -1584,9 +1584,12 @@ def preflight_scillm_surface(
 
     def get_json(path: str) -> dict[str, Any]:
         response = httpx.get(f"{root}{path}", headers=headers, timeout=timeout_s)
-        response.raise_for_status()
-        payload = response.json()
+        try:
+            payload: Any = response.json()
+        except Exception:  # noqa: BLE001 - response text is still useful preflight evidence.
+            payload = {"text": getattr(response, "text", "")}
         checks.append({"path": path, "http_status": response.status_code, "payload": payload})
+        response.raise_for_status()
         return payload
 
     def post_json(path: str, payload: dict[str, Any], *, include_caller_skill: bool = True) -> dict[str, Any]:

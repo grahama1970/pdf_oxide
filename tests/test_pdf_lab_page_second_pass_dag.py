@@ -1712,6 +1712,47 @@ def test_preflight_scillm_surface_rejects_missing_caller_contract_regression(mon
     assert "missing-caller chat contract did not return caller_skill_required" in preflight["errors"]
 
 
+def test_preflight_scillm_surface_ledgers_failed_get_response(monkeypatch) -> None:
+    dag = _load_module()
+
+    class FakeResponse:
+        status_code = 503
+        text = '{"status":"down"}'
+
+        def json(self):
+            return {"status": "down"}
+
+        def raise_for_status(self):
+            raise RuntimeError("HTTP 503")
+
+    class FakeHttpx:
+        @staticmethod
+        def get(url, headers, timeout):
+            assert url.endswith("/health/liveliness")
+            assert headers["X-Caller-Skill"] == "pdf-lab"
+            return FakeResponse()
+
+        @staticmethod
+        def post(url, headers, json, timeout):
+            raise AssertionError("preflight should stop after failed liveliness GET")
+
+    monkeypatch.setitem(sys.modules, "httpx", FakeHttpx)
+
+    preflight = dag.preflight_scillm_surface(
+        base_url="http://localhost:4001",
+        auth_token="token",
+        caller_skill="pdf-lab",
+        surface="chat",
+        timeout_s=1.0,
+    )
+
+    assert preflight["ok"] is False
+    assert preflight["checks"] == [
+        {"path": "/health/liveliness", "http_status": 503, "payload": {"status": "down"}}
+    ]
+    assert "scillm preflight failed: RuntimeError: HTTP 503" in preflight["errors"]
+
+
 def test_opencode_agent_profile_rejects_chat_model_id() -> None:
     dag = _load_module()
 
