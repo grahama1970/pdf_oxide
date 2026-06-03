@@ -165,6 +165,10 @@ def is_plain_int(value: Any) -> bool:
     return isinstance(value, int) and not isinstance(value, bool)
 
 
+def is_plain_bool(value: Any) -> bool:
+    return type(value) is bool
+
+
 def transport_raw_line_count(stream: dict[str, Any], *, label: str, parse_errors: list[dict[str, Any]]) -> int:
     value = stream.get("raw_line_count", 0)
     if not is_plain_int(value) or value < 0:
@@ -4510,7 +4514,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append(f"{artifact} ok true requires empty errors")
         if preflight.get("ok") is False and not preflight_errors:
             errors.append(f"{artifact} ok false requires non-empty errors")
-        if preflight.get("ok") not in {True, False}:
+        if not is_plain_bool(preflight.get("ok")):
             errors.append(f"{artifact} ok must be boolean")
         checks = preflight.get("checks") if isinstance(preflight.get("checks"), list) else []
         if preflight.get("ok") is True:
@@ -4686,7 +4690,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append("patch_evidence_workspace schema mismatch")
         if patch_evidence_workspace_artifact.get("case_id") != terminal.get("case_id"):
             errors.append("patch_evidence_workspace case_id does not match terminal ledger")
-        if patch_evidence_workspace_artifact.get("ok") not in {True, False}:
+        if not is_plain_bool(patch_evidence_workspace_artifact.get("ok")):
             errors.append("patch_evidence_workspace ok must be boolean")
         copied = patch_evidence_workspace_artifact.get("copied")
         missing = patch_evidence_workspace_artifact.get("missing")
@@ -5164,7 +5168,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     if patch_delta_artifact:
         if patch_delta_artifact.get("schema") != "pdf_lab.second_pass.patch_delta.v1":
             errors.append("patch_delta schema mismatch")
-        if patch_delta_artifact.get("ok") not in {True, False}:
+        if not is_plain_bool(patch_delta_artifact.get("ok")):
             errors.append("patch_delta ok must be boolean")
         if not isinstance(patch_delta_artifact.get("patch_changed_files"), list):
             errors.append("patch_delta patch_changed_files is not a list")
@@ -5173,7 +5177,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     if patch_scope_validation_artifact:
         if patch_scope_validation_artifact.get("schema") != "pdf_lab.second_pass.patch_scope_validation.v1":
             errors.append("patch_scope_validation schema mismatch")
-        if patch_scope_validation_artifact.get("ok") not in {True, False}:
+        if not is_plain_bool(patch_scope_validation_artifact.get("ok")):
             errors.append("patch_scope_validation ok must be boolean")
         changed_files = patch_scope_validation_artifact.get("changed_files")
         if not isinstance(changed_files, list) or not all(isinstance(path, str) for path in changed_files):
@@ -5207,7 +5211,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     if test_validation_artifact:
         if test_validation_artifact.get("schema") != "pdf_lab.second_pass.test_validation.v1":
             errors.append("test_validation schema mismatch")
-        if test_validation_artifact.get("ok") not in {True, False}:
+        if not is_plain_bool(test_validation_artifact.get("ok")):
             errors.append("test_validation ok must be boolean")
         if not isinstance(test_validation_artifact.get("errors"), list):
             errors.append("test_validation errors is not a list")

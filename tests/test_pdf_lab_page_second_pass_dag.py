@@ -9087,6 +9087,114 @@ def test_validate_page_terminal_ledger_rejects_successful_preflight_without_proo
     assert "scillm_review_preflight.json ok true requires /v1/scillm/health check" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_coerced_artifact_ok_fields(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "scillm_review_preflight.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_preflight.v1",
+                "surface": "chat",
+                "base_url": "http://localhost:4001",
+                "caller_skill": "pdf-lab",
+                "checks": [],
+                "ok": 1,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_evidence_workspace.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_evidence_workspace.v1",
+                "case_id": "page_case_0001_p0001",
+                "code_root": str(tmp_path / "workspace"),
+                "workspace_case_dir": str(tmp_path / "workspace/.pdf_lab_runtime/page_cases/page_case_0001_p0001"),
+                "git_info_exclude_pattern": ".pdf_lab_runtime/",
+                "copied": [
+                    {"artifact": artifact, "source": f"case/{artifact}", "workspace_path": f"workspace/{artifact}"}
+                    for artifact in dag.PATCH_EVIDENCE_WORKSPACE_FILES
+                ],
+                "missing": [],
+                "ok": 1,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_delta.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_delta.v1",
+                "baseline_changed_files": [],
+                "after_changed_files": ["tests/test_fix.py"],
+                "patch_changed_files": ["tests/test_fix.py"],
+                "ignored_generated_files": [],
+                "ok": 1,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_scope_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_scope_validation.v1",
+                "ok": 1,
+                "errors": [],
+                "changed_files": ["tests/test_fix.py"],
+                "allowed_prefixes": ["tests/"],
+                "test_files": ["tests/test_fix.py"],
+                "delegate_claim": None,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "test_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.test_validation.v1",
+                "ok": 1,
+                "errors": [],
+                "results": [],
+                "required_test_files": ["tests/test_fix.py"],
+                "covered_test_files": ["tests/test_fix.py"],
+                "missing_test_file_coverage": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "patch_delegate_dry_run",
+        "evidence_artifacts": [
+            "review.html",
+            "scillm_review_preflight.json",
+            "patch_evidence_workspace.json",
+            "patch_delta.json",
+            "patch_scope_validation.json",
+            "test_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_review_preflight.json ok must be boolean" in errors
+    assert "patch_evidence_workspace ok must be boolean" in errors
+    assert "patch_delta ok must be boolean" in errors
+    assert "patch_scope_validation ok must be boolean" in errors
+    assert "test_validation ok must be boolean" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_successful_preflight_failed_surface_check(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
