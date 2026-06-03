@@ -2829,6 +2829,9 @@ def test_write_blocked_case_result_includes_terminal_ledger_validation(tmp_path:
     assert bundle_validation["schema"] == "pdf_lab.second_pass.page_review_bundle_validation.v1"
     assert bundle_validation["ok"] is True
     assert bundle_validation["zip_content_ok"] is True
+    assert bundle_validation["terminal_ledger_matches_argument"] is True
+    assert bundle_validation["terminal_ledger_validation_matches_recomputed"] is True
+    assert bundle_validation["terminal_ledger_validation_ok"] is True
     assert bundle_validation["missing_expected_zip_entries"] == []
     assert "terminal_ledger_validation.json" in result["evidence_artifacts"]
     assert "terminal_ledger_validation.json" in ledger["evidence_artifacts"]
@@ -2838,23 +2841,52 @@ def test_write_blocked_case_result_includes_terminal_ledger_validation(tmp_path:
     assert set(bundle_validation["required_zip_entries"]).issubset(names)
 
 
+def test_harness_page_review_bundle_rejects_stale_terminal_validation(tmp_path: Path) -> None:
+    harness = _load_module()
+    result = harness._write_blocked_case_result(
+        out_dir=tmp_path / "out",
+        case={"case_id": "page_case_0001_p0001", "page_number": 1},
+        reason="scillm_proof_floor_failed",
+        visibility={"ok": True, "errors": []},
+    )
+    case_dir = Path(result["case_dir"])
+    terminal = json.loads((case_dir / "terminal_ledger.json").read_text(encoding="utf-8"))
+    stale_validation = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger_validation.v1",
+        "ok": True,
+        "errors": [],
+        "case_id": "page_case_9999_p9999",
+        "page_number": 9999,
+        "terminal_status": "reviewed_clean",
+        "declared_evidence_count": 1,
+        "missing_artifacts": [],
+    }
+    (case_dir / "terminal_ledger_validation.json").write_text(json.dumps(stale_validation), encoding="utf-8")
+    with zipfile.ZipFile(result["review_bundle"], "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+        for artifact in sorted({
+            "terminal_ledger.json",
+            "terminal_ledger_validation.json",
+            "review.html",
+            *terminal["evidence_artifacts"],
+        }):
+            path = case_dir / artifact
+            if path.is_file():
+                bundle.write(path, artifact)
+
+    validation = harness.validate_harness_page_review_bundle(case_dir, Path(result["review_bundle"]), terminal)
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is True
+    assert validation["terminal_ledger_matches_argument"] is True
+    assert validation["terminal_ledger_validation_matches_recomputed"] is False
+    assert validation["terminal_ledger_validation_ok"] is False
+    assert "terminal_ledger_validation.json does not match recomputed terminal validation" in validation["errors"]
+
+
 def test_harness_page_review_bundle_rejects_stale_zip_entry(tmp_path: Path) -> None:
     harness = _load_module()
     case_dir = tmp_path / "case"
     case_dir.mkdir()
-    for name in [
-        "terminal_ledger.json",
-        "terminal_ledger_validation.json",
-        "review.html",
-        "review_request.json",
-    ]:
-        (case_dir / name).write_text(json.dumps({"artifact": name, "version": "current"}), encoding="utf-8")
-    zip_path = case_dir / "review_bundle.zip"
-    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
-        bundle.write(case_dir / "terminal_ledger.json", "terminal_ledger.json")
-        bundle.write(case_dir / "terminal_ledger_validation.json", "terminal_ledger_validation.json")
-        bundle.write(case_dir / "review.html", "review.html")
-        bundle.writestr("review_request.json", json.dumps({"artifact": "review_request.json", "version": "stale"}))
     terminal = {
         "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
         "case_id": "page_case_0001_p0001",
@@ -2867,7 +2899,19 @@ def test_harness_page_review_bundle_rejects_stale_zip_entry(tmp_path: Path) -> N
             "terminal_ledger_validation.json",
         ],
     }
-
+    (case_dir / "terminal_ledger.json").write_text(json.dumps(terminal), encoding="utf-8")
+    (case_dir / "review.html").write_text(json.dumps({"artifact": "review.html", "version": "current"}), encoding="utf-8")
+    (case_dir / "review_request.json").write_text(json.dumps({"artifact": "review_request.json", "version": "current"}), encoding="utf-8")
+    (case_dir / "terminal_ledger_validation.json").write_text(
+        json.dumps(harness.validate_harness_page_terminal_ledger(case_dir, terminal)),
+        encoding="utf-8",
+    )
+    zip_path = case_dir / "review_bundle.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+        bundle.write(case_dir / "terminal_ledger.json", "terminal_ledger.json")
+        bundle.write(case_dir / "terminal_ledger_validation.json", "terminal_ledger_validation.json")
+        bundle.write(case_dir / "review.html", "review.html")
+        bundle.writestr("review_request.json", json.dumps({"artifact": "review_request.json", "version": "stale"}))
     validation = harness.validate_harness_page_review_bundle(case_dir, zip_path, terminal)
 
     assert validation["ok"] is False

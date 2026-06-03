@@ -2878,6 +2878,35 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
     duplicate_zip_entries: list[str] = []
     mismatched_zip_entries: list[str] = []
     errors: list[str] = []
+    terminal_ledger_matches_argument = False
+    terminal_ledger_validation_matches_recomputed = False
+    terminal_ledger_validation_ok = False
+    terminal_ledger_path = case_dir / "terminal_ledger.json"
+    if terminal_ledger_path.is_file():
+        try:
+            terminal_ledger_payload = json.loads(terminal_ledger_path.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001 - malformed evidence is a validation failure.
+            errors.append(f"terminal_ledger.json unreadable: {type(exc).__name__}: {exc}")
+        else:
+            if terminal_ledger_payload == terminal:
+                terminal_ledger_matches_argument = True
+            else:
+                errors.append("terminal_ledger.json does not match terminal argument")
+    terminal_ledger_validation_path = case_dir / "terminal_ledger_validation.json"
+    if terminal_ledger_matches_argument and terminal_ledger_validation_path.is_file():
+        try:
+            terminal_ledger_validation_payload = json.loads(terminal_ledger_validation_path.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001 - malformed evidence is a validation failure.
+            errors.append(f"terminal_ledger_validation.json unreadable: {type(exc).__name__}: {exc}")
+        else:
+            recomputed_terminal_validation = validate_harness_page_terminal_ledger(case_dir, terminal)
+            if terminal_ledger_validation_payload == recomputed_terminal_validation:
+                terminal_ledger_validation_matches_recomputed = True
+                terminal_ledger_validation_ok = recomputed_terminal_validation.get("ok") is True
+            else:
+                errors.append("terminal_ledger_validation.json does not match recomputed terminal validation")
+            if recomputed_terminal_validation.get("ok") is not True:
+                errors.append("terminal_ledger_validation ok is not true")
     if not zip_path.is_file():
         errors.append("review bundle zip is missing")
     else:
@@ -2915,6 +2944,9 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
         "required_zip_entries": required_zip_entries,
         "zip_entry_count": len(zip_entries),
         "zip_content_ok": zip_content_ok,
+        "terminal_ledger_matches_argument": terminal_ledger_matches_argument,
+        "terminal_ledger_validation_matches_recomputed": terminal_ledger_validation_matches_recomputed,
+        "terminal_ledger_validation_ok": terminal_ledger_validation_ok,
         "missing_artifacts": missing_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
