@@ -2497,6 +2497,9 @@ def test_split_repair_strategy_writes_diagnosis_node_before_patch_dry_run(tmp_pa
     assert diagnosis_request["schema"] == "pdf_lab.second_pass.opencode_repair_diagnosis_request.v1"
     assert "Do not edit files" in diagnosis_request["prompt"]
     assert diagnosis_validation["errors"] == ["repair_diagnosis_dry_run"]
+    assert diagnosis_validation["page_case"] == {"case_id": "page_case_0001_p0003", "page_number": 3}
+    assert diagnosis_validation["candidate_count"] == 1
+    assert diagnosis_validation["expected_candidate_ids"] == ["cand:p0003:0000:unknown_layout"]
     assert attempts["repair_strategy"] == "split"
     assert attempts["attempts"][0]["diagnosis_request_artifact"] == "patch_attempt_01_diagnosis_request.json"
     assert ledger["reason"] == "repair_diagnosis_dry_run"
@@ -5813,6 +5816,61 @@ def test_validate_page_terminal_ledger_rejects_stale_repair_plan_validation(tmp_
     assert "repair_plan_validation page_case.case_id does not match terminal ledger" in errors
     assert "repair_plan_validation page_case.page_number does not match terminal ledger" in errors
     assert "repair_plan_validation expected_candidate_ids do not match selected_candidates" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_stale_repair_diagnosis_validation(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(
+            {
+                "schema": dag.SELECTED_CANDIDATES_SCHEMA,
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "candidates": [{"candidate_id": "cand:p0001:0000:unknown_layout"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "repair_diagnosis_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.repair_diagnosis_validation.v1",
+                "ok": False,
+                "errors": ["repair_diagnosis_dry_run"],
+                "diagnosis_status": "not_attempted",
+                "assistant_text_present": False,
+                "page_case": {"case_id": "page_case_9999_p9999", "page_number": 99},
+                "candidate_count": 1,
+                "expected_candidate_ids": ["stale:candidate"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "repair_diagnosis_dry_run",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "repair_diagnosis_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "repair_diagnosis_validation page_case.case_id does not match terminal ledger" in errors
+    assert "repair_diagnosis_validation page_case.page_number does not match terminal ledger" in errors
+    assert "repair_diagnosis_validation expected_candidate_ids do not match selected_candidates" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_reviewed_clean_with_defect_response(tmp_path: Path) -> None:

@@ -2307,6 +2307,13 @@ def build_opencode_repair_diagnosis_request(
         "cwd": str(cwd.resolve()),
         "prompt_profile": prompt_profile,
         "prompt": prompt,
+        "page_case": {
+            "case_id": page_case["case_id"],
+            "page_number": page_case["page_number"],
+            "candidate_ids": page_case.get("candidate_ids"),
+        },
+        "candidate_count": len(candidates),
+        "candidate_ids": [candidate["candidate_id"] for candidate in candidates],
         "scillm_metadata": {
             "graph_node": "opencode_repair_diagnosis_attempt",
             "case_id": page_case["case_id"],
@@ -2768,6 +2775,13 @@ def build_scillm_orchestrator_repair_diagnosis_request(
             "case_id": page_case["case_id"],
             "page_number": page_case["page_number"],
         },
+        "page_case": {
+            "case_id": page_case["case_id"],
+            "page_number": page_case["page_number"],
+            "candidate_ids": page_case.get("candidate_ids"),
+        },
+        "candidate_count": len(candidates),
+        "candidate_ids": [candidate["candidate_id"] for candidate in candidates],
     }
     if opencode_model:
         request["message_body"]["model"] = opencode_model
@@ -3064,6 +3078,17 @@ def validate_repair_diagnosis_delegate_receipt(
     request: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     expected_metadata = request.get("scillm_metadata") if isinstance(request, dict) else None
+    request_page_case = request.get("page_case") if isinstance(request, dict) else None
+    if isinstance(request_page_case, dict):
+        page_case = {
+            "case_id": request_page_case.get("case_id"),
+            "page_number": request_page_case.get("page_number"),
+        }
+        candidate_ids = request_page_case.get("candidate_ids")
+        expected_candidate_ids = sorted(candidate_ids) if isinstance(candidate_ids, list) and all(isinstance(item, str) for item in candidate_ids) else []
+    else:
+        page_case = None
+        expected_candidate_ids = []
     if patch_mode == "dry_run":
         return {
             "schema": "pdf_lab.second_pass.repair_diagnosis_validation.v1",
@@ -3071,6 +3096,9 @@ def validate_repair_diagnosis_delegate_receipt(
             "errors": ["repair_diagnosis_dry_run"],
             "diagnosis_status": "not_attempted",
             "assistant_text_present": False,
+            "page_case": page_case,
+            "candidate_count": len(expected_candidate_ids),
+            "expected_candidate_ids": expected_candidate_ids,
         }
     errors: list[str] = []
     assistant_text = ""
@@ -3139,6 +3167,9 @@ def validate_repair_diagnosis_delegate_receipt(
         "errors": errors,
         "diagnosis_status": status,
         "assistant_text_present": bool(assistant_text.strip()),
+        "page_case": page_case,
+        "candidate_count": len(expected_candidate_ids),
+        "expected_candidate_ids": expected_candidate_ids,
     }
 
 
@@ -4220,6 +4251,47 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                 )
                 if repair_plan_validation != recomputed_repair_plan_validation:
                     errors.append("repair_plan_validation does not match recomputed repair_plan contract")
+    if "repair_diagnosis_validation.json" in evidence_artifacts:
+        repair_diagnosis_validation = read_required_json_artifact("repair_diagnosis_validation.json")
+        repair_diagnosis_request = read_required_json_artifact("repair_diagnosis_request.json")
+        repair_diagnosis_receipt = (
+            read_required_json_artifact("repair_diagnosis_receipt.json")
+            if "repair_diagnosis_receipt.json" in evidence_artifacts or (case_dir / "repair_diagnosis_receipt.json").is_file()
+            else {}
+        )
+        if repair_diagnosis_validation:
+            if repair_diagnosis_validation.get("schema") != "pdf_lab.second_pass.repair_diagnosis_validation.v1":
+                errors.append("repair_diagnosis_validation schema mismatch")
+            repair_diagnosis_page_case = repair_diagnosis_validation.get("page_case")
+            if not isinstance(repair_diagnosis_page_case, dict):
+                errors.append("repair_diagnosis_validation page_case must be an object")
+                repair_diagnosis_page_case = {}
+            if repair_diagnosis_page_case.get("case_id") != terminal.get("case_id"):
+                errors.append("repair_diagnosis_validation page_case.case_id does not match terminal ledger")
+            if repair_diagnosis_page_case.get("page_number") != terminal.get("page_number"):
+                errors.append("repair_diagnosis_validation page_case.page_number does not match terminal ledger")
+            if selected_candidate_ids_from_artifact:
+                expected_repair_diagnosis_ids = sorted(
+                    str(candidate_id) for candidate_id in repair_diagnosis_validation.get("expected_candidate_ids") or []
+                )
+                if repair_diagnosis_validation.get("candidate_count") != len(selected_candidate_ids_from_artifact):
+                    errors.append("repair_diagnosis_validation candidate_count does not match selected_candidates")
+                if expected_repair_diagnosis_ids != selected_candidate_ids_from_artifact:
+                    errors.append("repair_diagnosis_validation expected_candidate_ids do not match selected_candidates")
+            if repair_diagnosis_receipt:
+                recomputed_repair_diagnosis_validation = validate_repair_diagnosis_delegate_receipt(
+                    repair_diagnosis_receipt,
+                    patch_mode="live",
+                    request=repair_diagnosis_request
+                    if repair_diagnosis_request.get("schema")
+                    in {
+                        "pdf_lab.second_pass.opencode_repair_diagnosis_request.v1",
+                        "pdf_lab.second_pass.scillm_orchestrator_repair_diagnosis_request.v1",
+                    }
+                    else None,
+                )
+                if repair_diagnosis_validation != recomputed_repair_diagnosis_validation:
+                    errors.append("repair_diagnosis_validation does not match recomputed repair_diagnosis contract")
     if "patch_attempts_ledger.json" in evidence_artifacts:
         patch_attempts_ledger = read_required_json_artifact("patch_attempts_ledger.json")
         patch_validation = read_required_json_artifact("patch_validation.json")
@@ -5503,6 +5575,9 @@ def run_page_case(
                     "diagnosis_status": "completed",
                     "assistant_text_present": True,
                     "source": "scillm_repair_plan",
+                    "page_case": {"case_id": page_case["case_id"], "page_number": page_number},
+                    "candidate_count": len(candidates),
+                    "expected_candidate_ids": sorted(candidate["candidate_id"] for candidate in candidates),
                 }
             if repair_strategy == "split":
                 if patch_backend == "scillm_orchestrator":
@@ -5639,6 +5714,9 @@ def run_page_case(
                         "errors": ["repair_diagnosis_call_failed"],
                         "diagnosis_status": "substrate_error",
                         "assistant_text_present": False,
+                        "page_case": {"case_id": page_case["case_id"], "page_number": page_number},
+                        "candidate_count": len(candidates),
+                        "expected_candidate_ids": sorted(candidate["candidate_id"] for candidate in candidates),
                     }
                 else:
                     attempt_repair_diagnosis_validation = validate_repair_diagnosis_delegate_receipt(
