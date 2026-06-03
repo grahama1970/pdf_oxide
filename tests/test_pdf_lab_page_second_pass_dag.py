@@ -5302,6 +5302,71 @@ def test_validate_page_terminal_ledger_rejects_stale_candidate_presets(tmp_path:
     assert "candidate_presets candidate_ids do not match selected_candidates" in validation["errors"]
 
 
+def test_validate_page_terminal_ledger_rejects_stale_review_request_validation(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_request.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_request.v1",
+                "endpoint": "POST /v1/chat/completions",
+                "response_format": {"type": "json_object"},
+                "required_response_schema": {"schema": "pdf_lab.second_pass.review_response.v1"},
+                "model": "gpt-5.5",
+                "reasoning_effort": "high",
+                "scillm_metadata": {"batch_id": "batch-a", "item_id": "page_case_0001_p0001"},
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "artifacts": {
+                    "page_json": "missing_page.json",
+                    "original_image": "missing_before.png",
+                    "annotated_image": "missing_candidates.png",
+                    "candidate_presets": "missing_presets.json",
+                },
+                "scillm_payload": {
+                    "model": "gpt-5.5",
+                    "reasoning_effort": "high",
+                    "response_format": {"type": "json_object"},
+                    "scillm_metadata": {"batch_id": "batch-a", "item_id": "page_case_0001_p0001"},
+                    "messages": [{"role": "user", "content": []}],
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "review_request_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_request_validation.v1",
+                "ok": True,
+                "errors": [],
+                "artifact_paths": {},
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "review_validation_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_request.json",
+            "review_request_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "review_request_validation does not match recomputed review_request contract" in validation["errors"]
+
+
 def test_validate_page_terminal_ledger_rejects_dry_run_with_review_response(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

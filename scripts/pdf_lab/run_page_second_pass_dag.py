@@ -3953,6 +3953,19 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             expected_patch_surfaces = {"opencode_transport"}
         validate_preflight_artifact("scillm_patch_preflight.json", expected_patch_surfaces)
 
+    review_request = read_required_json_artifact("review_request.json") if "review_request.json" in evidence_artifacts else {}
+    review_request_validation = (
+        read_required_json_artifact("review_request_validation.json")
+        if "review_request_validation.json" in evidence_artifacts
+        else {}
+    )
+    if review_request_validation:
+        if review_request_validation.get("schema") != "pdf_lab.second_pass.review_request_validation.v1":
+            errors.append("review_request_validation schema mismatch")
+        if review_request:
+            recomputed_review_request_validation = validate_review_request_contract(case_dir, review_request)
+            if review_request_validation != recomputed_review_request_validation:
+                errors.append("review_request_validation does not match recomputed review_request contract")
     review_validation = read_required_json_artifact("review_validation.json") if "review_validation.json" in evidence_artifacts else {}
     review_response = read_required_json_artifact("review_response.json") if "review_response.json" in evidence_artifacts else {}
     terminal_reason = terminal.get("reason")
