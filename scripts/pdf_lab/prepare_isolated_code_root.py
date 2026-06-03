@@ -94,9 +94,6 @@ def copy_selected_paths(source_root: Path, dest_root: Path, include_paths: list[
             skipped.append(include)
             continue
         if source.is_file():
-            if should_skip(Path(include)):
-                skipped.append(include)
-                continue
             target = dest_root / include
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, target)

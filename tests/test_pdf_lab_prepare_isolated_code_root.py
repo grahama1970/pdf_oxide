@@ -59,6 +59,27 @@ def test_prepare_isolated_code_root_creates_clean_git_baseline(tmp_path: Path) -
     assert subprocess.check_output(["git", "-C", str(dest), "rev-list", "--count", "HEAD"], text=True).strip() == "1"
 
 
+def test_prepare_isolated_code_root_honors_explicit_binary_file_include(tmp_path: Path) -> None:
+    mod = _load_module()
+    source = tmp_path / "source"
+    dest = tmp_path / "dest"
+    extension_path = source / "python/pdf_oxide/pdf_oxide.abi3.so"
+    extension_path.parent.mkdir(parents=True)
+    extension_path.write_bytes(b"binary extension")
+
+    manifest = mod.prepare_isolated_code_root(
+        source_root=source,
+        dest_root=dest,
+        include_paths=["python/pdf_oxide/pdf_oxide.abi3.so"],
+    )
+
+    copied_extension = dest / "python/pdf_oxide/pdf_oxide.abi3.so"
+    assert copied_extension.read_bytes() == b"binary extension"
+    assert manifest["copied_files"] == ["python/pdf_oxide/pdf_oxide.abi3.so"]
+    assert manifest["skipped_paths"] == []
+    assert manifest["clean"] is True
+
+
 def test_prepare_isolated_code_root_refuses_existing_destination_without_force(tmp_path: Path) -> None:
     mod = _load_module()
     source = tmp_path / "source"
