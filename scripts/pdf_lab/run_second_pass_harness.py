@@ -1017,8 +1017,17 @@ def validate_candidate_sample_linkage(
         if not isinstance(case_candidate_ids, list):
             errors.append(f"{case_id} candidate_ids is not a list")
             case_candidate_ids = []
+        elif not all(isinstance(candidate_id, str) and candidate_id for candidate_id in case_candidate_ids):
+            errors.append(f"{case_id} candidate_ids must be a list of non-empty strings")
         if not case_candidate_ids:
             empty_page_cases.append(case_id)
+        duplicate_case_candidate_ids = sorted(
+            candidate_id
+            for candidate_id, count in Counter(candidate_id for candidate_id in case_candidate_ids if isinstance(candidate_id, str)).items()
+            if count > 1
+        )
+        if duplicate_case_candidate_ids:
+            errors.append(f"{case_id} candidate_ids contains duplicates: {duplicate_case_candidate_ids}")
         case_candidate_id_set = {str(candidate_id) for candidate_id in case_candidate_ids}
         for candidate_id in case_candidate_ids:
             candidate_id = str(candidate_id)

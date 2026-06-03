@@ -979,6 +979,34 @@ def test_validate_candidate_sample_linkage_rejects_duplicate_sampled_pages() -> 
     assert "page_cases contains duplicate page_numbers: [1]" in errors
 
 
+def test_validate_candidate_sample_linkage_rejects_malformed_candidate_ids() -> None:
+    harness = _load_module()
+    validation = harness.validate_candidate_sample_linkage(
+        manifest={
+            "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+            "candidate_count": 1,
+            "candidates": [_manifest_candidate("cand:p0001:0000:table", 1, "table")],
+        },
+        sampled_cases={
+            "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+            "selected_count": 1,
+            "selected_pages": [1],
+            "page_cases": [
+                {
+                    "case_id": "page_case_0001_p0001",
+                    "page_number": 1,
+                    "candidate_ids": ["cand:p0001:0000:table", "cand:p0001:0000:table", None],
+                },
+            ],
+        },
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert "page_case_0001_p0001 candidate_ids must be a list of non-empty strings" in errors
+    assert "page_case_0001_p0001 candidate_ids contains duplicates: ['cand:p0001:0000:table']" in errors
+
+
 def test_validate_candidate_sample_linkage_rejects_malformed_page_case_ids() -> None:
     harness = _load_module()
     validation = harness.validate_candidate_sample_linkage(
