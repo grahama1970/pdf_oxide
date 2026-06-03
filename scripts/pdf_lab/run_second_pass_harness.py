@@ -3148,6 +3148,8 @@ def build_harness_readiness_audit(
             read_errors = result.get(read_error_key) or []
             if read_errors:
                 page_errors.append(f"{case_id}: {read_error_key}: {read_errors}")
+        terminal: dict[str, Any] = {}
+        terminal_validation: dict[str, Any] = {}
         if not terminal_ledger.is_file():
             page_errors.append(f"{case_id}: missing terminal_ledger artifact")
         else:
@@ -3188,6 +3190,15 @@ def build_harness_readiness_audit(
                 page_errors.append(f"{case_id}: terminal_ledger_validation page_number does not match page result")
             if terminal_validation.get("terminal_status") != result.get("terminal_status"):
                 page_errors.append(f"{case_id}: terminal_ledger_validation terminal_status does not match page result")
+        if terminal and terminal_validation:
+            recomputed_terminal_validation = validate_harness_page_terminal_ledger(case_dir, terminal)
+            if terminal_validation != recomputed_terminal_validation:
+                page_errors.append(f"{case_id}: terminal_ledger_validation does not match recomputed terminal validation")
+            if recomputed_terminal_validation.get("ok") is not True:
+                page_errors.append(
+                    f"{case_id}: recomputed terminal_ledger_validation failed: "
+                    f"{recomputed_terminal_validation.get('errors')}"
+                )
         if "terminal_ledger_validation.json" not in evidence_artifacts:
             page_errors.append(f"{case_id}: terminal evidence missing terminal_ledger_validation.json")
         if not review_bundle.is_file():
