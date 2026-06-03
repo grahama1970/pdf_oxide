@@ -50,6 +50,8 @@ def test_sampler_is_deterministic_for_fixed_seed() -> None:
     second = sampler.select_page_cases(_manifest(), sample_size=6, seed=1234)
 
     assert first["schema"] == "pdf_lab.second_pass.sampled_page_cases.v1"
+    assert first["manifest_validation"]["schema"] == "pdf_lab.second_pass.candidate_manifest_validation.v1"
+    assert first["manifest_validation"]["ok"] is True
     assert first["selected_pages"] == second["selected_pages"]
     assert first["page_cases"] == second["page_cases"]
 
@@ -70,6 +72,33 @@ def test_sampler_rejects_invalid_sampling_parameters() -> None:
             assert expected_error in str(exc)
         else:
             raise AssertionError(f"expected ValueError for {kwargs}")
+
+
+def test_sampler_rejects_invalid_candidate_manifest_contract() -> None:
+    sampler = _load_module()
+    manifest = {
+        "schema": "wrong",
+        "page_count": 2,
+        "candidate_count": 3,
+        "candidates": [
+            {"candidate_id": "dup", "page_number": 1, "preset_type": "table"},
+            {"candidate_id": "dup", "page_number": 3, "preset_type": "table"},
+            {"page_number": 1, "preset_type": ""},
+        ],
+    }
+
+    try:
+        sampler.select_page_cases(manifest, sample_size=1, seed=1)
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for invalid candidate manifest")
+
+    assert "manifest schema must be pdf_lab.second_pass.candidate_manifest.v1" in message
+    assert "manifest candidates[1].page_number exceeds manifest page_count" in message
+    assert "manifest candidates[2].candidate_id must be non-empty" in message
+    assert "manifest candidates[2].preset_type must be non-empty" in message
+    assert "manifest candidate_id values must be unique: ['dup']" in message
 
 
 def test_sampler_preserves_high_risk_and_position_strata() -> None:

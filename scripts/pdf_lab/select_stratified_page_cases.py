@@ -86,6 +86,60 @@ def _candidate_weight(candidate: dict[str, Any]) -> float:
     return weight
 
 
+def validate_candidate_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
+    errors: list[str] = []
+    if not isinstance(manifest, dict):
+        errors.append("manifest must be a JSON object")
+        manifest = {}
+    if manifest.get("schema") != "pdf_lab.second_pass.candidate_manifest.v1":
+        errors.append("manifest schema must be pdf_lab.second_pass.candidate_manifest.v1")
+    candidates = manifest.get("candidates")
+    if not isinstance(candidates, list):
+        errors.append("manifest candidates must be a list")
+        candidates = []
+    declared_candidate_count = manifest.get("candidate_count")
+    if not isinstance(declared_candidate_count, int) or declared_candidate_count < 0:
+        errors.append("manifest candidate_count must be a non-negative integer")
+    elif declared_candidate_count != len(candidates):
+        errors.append("manifest candidate_count does not match candidates length")
+    page_count = manifest.get("page_count")
+    if page_count is not None and (not isinstance(page_count, int) or page_count < 1):
+        errors.append("manifest page_count must be null or a positive integer")
+        page_count = None
+    seen_candidate_ids: list[str] = []
+    for index, candidate in enumerate(candidates):
+        if not isinstance(candidate, dict):
+            errors.append(f"manifest candidates[{index}] must be an object")
+            continue
+        candidate_id = candidate.get("candidate_id")
+        if not isinstance(candidate_id, str) or not candidate_id:
+            errors.append(f"manifest candidates[{index}].candidate_id must be non-empty")
+        else:
+            seen_candidate_ids.append(candidate_id)
+        page_number = candidate.get("page_number")
+        if not isinstance(page_number, int) or page_number < 1:
+            errors.append(f"manifest candidates[{index}].page_number must be a positive integer")
+        elif isinstance(page_count, int) and page_number > page_count:
+            errors.append(f"manifest candidates[{index}].page_number exceeds manifest page_count")
+        preset_type = candidate.get("preset_type")
+        if not isinstance(preset_type, str) or not preset_type:
+            errors.append(f"manifest candidates[{index}].preset_type must be non-empty")
+    duplicate_candidate_ids = sorted(
+        candidate_id
+        for candidate_id, count in Counter(seen_candidate_ids).items()
+        if count > 1
+    )
+    if duplicate_candidate_ids:
+        errors.append(f"manifest candidate_id values must be unique: {duplicate_candidate_ids}")
+    return {
+        "schema": "pdf_lab.second_pass.candidate_manifest_validation.v1",
+        "ok": not errors,
+        "errors": errors,
+        "candidate_count": len(candidates),
+        "declared_candidate_count": declared_candidate_count,
+    }
+
+
 def page_features(manifest: dict[str, Any]) -> dict[int, dict[str, Any]]:
     features: dict[int, dict[str, Any]] = defaultdict(
         lambda: {
@@ -312,6 +366,9 @@ def select_page_cases(
         raise ValueError("min_per_stratum must be >= 1")
     if not 0 <= random_reserve_fraction < 1:
         raise ValueError("random_reserve_fraction must be >= 0 and < 1")
+    manifest_validation = validate_candidate_manifest(manifest)
+    if not manifest_validation["ok"]:
+        raise ValueError("invalid candidate manifest: " + "; ".join(manifest_validation["errors"]))
     rng = random.Random(seed)
     features = page_features(manifest)
     strata = stratify_candidates(manifest)
@@ -453,6 +510,7 @@ def select_page_cases(
         "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
         "created_at": utc_now(),
         "manifest_schema": manifest.get("schema"),
+        "manifest_validation": manifest_validation,
         "pdf_id": manifest.get("pdf_id"),
         "pdf_path": manifest.get("pdf_path"),
         "page_count": manifest.get("page_count"),
