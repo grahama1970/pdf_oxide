@@ -964,6 +964,58 @@ def test_validate_page_orchestrator_run_receipt_rejects_unbounded_dry_run_timeou
     assert "page orchestrator run request timeout_s must be a positive finite number" in validation["errors"]
 
 
+def test_runtime_timeout_inputs_reject_bool_and_nonfinite_values() -> None:
+    dag = _load_module()
+
+    errors = dag.validate_runtime_timeout_inputs(
+        scillm_timeout_s=True,
+        opencode_timeout_s=float("inf"),
+        page_extract_timeout_s="0.5",
+    )
+
+    assert "scillm_timeout_s must be a positive finite number: True" in errors
+    assert "opencode_timeout_s must be a positive finite number: inf" in errors
+    assert "page_extract_timeout_s must be null or a positive finite number: '0.5'" in errors
+
+
+def test_run_page_case_rejects_invalid_runtime_timeouts_before_extraction(tmp_path: Path) -> None:
+    dag = _load_module()
+    sampled_cases = {
+        "page_cases": [
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "candidate_ids": ["cand:p0001:0000:table"],
+            }
+        ]
+    }
+
+    try:
+        dag.run_page_case(
+            pdf_path=tmp_path / "missing.pdf",
+            manifest={"candidates": []},
+            sampled_cases=sampled_cases,
+            out_dir=tmp_path / "out",
+            case_id="page_case_0001_p0001",
+            page_number=None,
+            ledger_path=None,
+            apply_mode="auto",
+            dpi=72,
+            model="test-model",
+            batch_id="batch",
+            scillm_timeout_s=True,
+            opencode_timeout_s=60.0,
+            page_extract_timeout_s=0.5,
+        )
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for boolean scillm_timeout_s")
+
+    assert "scillm_timeout_s must be a positive finite number: True" in message
+    assert not (tmp_path / "out/page_case_0001_p0001").exists()
+
+
 def test_validate_page_orchestrator_run_receipt_rejects_stale_nested_transport_evidence(tmp_path: Path) -> None:
     dag = _load_module()
     page_case = {

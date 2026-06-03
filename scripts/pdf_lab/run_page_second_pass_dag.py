@@ -3167,6 +3167,22 @@ def timeout_value_is_positive_finite(value: Any) -> bool:
     )
 
 
+def validate_runtime_timeout_inputs(
+    *,
+    scillm_timeout_s: Any,
+    opencode_timeout_s: Any,
+    page_extract_timeout_s: Any,
+) -> list[str]:
+    errors: list[str] = []
+    if not timeout_value_is_positive_finite(scillm_timeout_s):
+        errors.append(f"scillm_timeout_s must be a positive finite number: {scillm_timeout_s!r}")
+    if not timeout_value_is_positive_finite(opencode_timeout_s):
+        errors.append(f"opencode_timeout_s must be a positive finite number: {opencode_timeout_s!r}")
+    if page_extract_timeout_s is not None and not timeout_value_is_positive_finite(page_extract_timeout_s):
+        errors.append(f"page_extract_timeout_s must be null or a positive finite number: {page_extract_timeout_s!r}")
+    return errors
+
+
 def validate_delegate_request_timeout(request: dict[str, Any] | None, errors: list[str], *, label: str) -> None:
     if not isinstance(request, dict):
         return
@@ -5711,6 +5727,13 @@ def run_page_case(
         raise ValueError(f"unknown repair strategy: {repair_strategy}")
     if page_orchestrator_mode not in PAGE_ORCHESTRATOR_MODES:
         raise ValueError(f"unknown page orchestrator mode: {page_orchestrator_mode}")
+    runtime_timeout_errors = validate_runtime_timeout_inputs(
+        scillm_timeout_s=scillm_timeout_s,
+        opencode_timeout_s=opencode_timeout_s,
+        page_extract_timeout_s=page_extract_timeout_s,
+    )
+    if runtime_timeout_errors:
+        raise ValueError("; ".join(runtime_timeout_errors))
     page_case = _case_by_id_or_page(sampled_cases, case_id, page_number)
     page_case_identity = validate_page_case_identity(page_case)
     if page_case_identity["ok"] is not True:
