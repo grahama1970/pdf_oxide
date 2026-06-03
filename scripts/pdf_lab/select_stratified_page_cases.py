@@ -76,7 +76,8 @@ def _candidate_weight(candidate: dict[str, Any]) -> float:
     weight = 1.0
     if preset in HIGH_RISK_TYPES:
         weight += 3.0
-    reasons = set(candidate.get("detection_reason") or [])
+    detection_reason = candidate.get("detection_reason")
+    reasons = set(detection_reason if isinstance(detection_reason, list) else [])
     if "boundary_geometry" in reasons:
         weight += 1.0
     if "large_region" in reasons:
@@ -124,6 +125,12 @@ def validate_candidate_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
         preset_type = candidate.get("preset_type")
         if not isinstance(preset_type, str) or not preset_type:
             errors.append(f"manifest candidates[{index}].preset_type must be non-empty")
+        detection_reason = candidate.get("detection_reason")
+        if detection_reason is not None and (
+            not isinstance(detection_reason, list)
+            or not all(isinstance(reason, str) and reason for reason in detection_reason)
+        ):
+            errors.append(f"manifest candidates[{index}].detection_reason must be a list of non-empty strings")
     duplicate_candidate_ids = sorted(
         candidate_id
         for candidate_id, count in Counter(seen_candidate_ids).items()
@@ -157,7 +164,8 @@ def page_features(manifest: dict[str, Any]) -> dict[int, dict[str, Any]]:
         features[page]["candidate_ids"].append(candidate["candidate_id"])
         features[page]["preset_counts"][preset] += 1
         features[page]["score"] += _candidate_weight(candidate)
-        for reason in candidate.get("detection_reason") or []:
+        detection_reason = candidate.get("detection_reason")
+        for reason in detection_reason if isinstance(detection_reason, list) else []:
             features[page]["reasons"].add(str(reason))
     out: dict[int, dict[str, Any]] = {}
     for page, value in features.items():
@@ -183,7 +191,8 @@ def stratify_candidates(manifest: dict[str, Any]) -> dict[str, set[int]]:
         strata[f"preset:{preset}"].add(page)
         if preset in HIGH_RISK_TYPES:
             strata["risk:high"].add(page)
-        reasons = set(candidate.get("detection_reason") or [])
+        detection_reason = candidate.get("detection_reason")
+        reasons = set(detection_reason if isinstance(detection_reason, list) else [])
         if "boundary_geometry" in reasons:
             strata["geometry:boundary"].add(page)
         if "frontmatter_or_early_page" in reasons:

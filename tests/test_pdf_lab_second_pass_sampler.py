@@ -101,6 +101,32 @@ def test_sampler_rejects_invalid_candidate_manifest_contract() -> None:
     assert "manifest candidate_id values must be unique: ['dup']" in message
 
 
+def test_sampler_rejects_malformed_detection_reason_contract() -> None:
+    sampler = _load_module()
+    manifest = {
+        "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "page_count": 5,
+        "candidate_count": 1,
+        "candidates": [
+            {
+                "candidate_id": "cand:p0001:0000:table",
+                "page_number": 1,
+                "preset_type": "table",
+                "detection_reason": "boundary_geometry",
+            },
+        ],
+    }
+
+    try:
+        sampler.select_page_cases(manifest, sample_size=1, seed=1)
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for malformed detection_reason")
+
+    assert "manifest candidates[0].detection_reason must be a list of non-empty strings" in message
+
+
 def test_sampler_preserves_high_risk_and_position_strata() -> None:
     sampler = _load_module()
     result = sampler.select_page_cases(_manifest(), sample_size=9, seed=7)
