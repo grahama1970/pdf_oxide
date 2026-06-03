@@ -1684,6 +1684,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("review_bundle_validation.zip_content_ok is not true")
             if review_bundle_validation.get("case_id") not in (None, result.get("case_id")):
                 entry_errors.append("review_bundle_validation case_id does not match page result")
+            if review_bundle_validation.get("page_number") != result.get("page_number"):
+                entry_errors.append("review_bundle_validation page_number does not match page result")
         if patch_scope_validation:
             if patch_scope_validation.get("schema") != "pdf_lab.second_pass.patch_scope_validation.v1":
                 entry_errors.append("patch_scope_validation schema mismatch")
@@ -1811,6 +1813,9 @@ def build_patch_commit_ledger(
                 if terminal_ledger_validation
                 else None,
                 "review_bundle_validation_ok": review_bundle_validation.get("ok")
+                if review_bundle_validation
+                else None,
+                "review_bundle_validation_page_number": review_bundle_validation.get("page_number")
                 if review_bundle_validation
                 else None,
                 "review_bundle_zip_content_ok": review_bundle_validation.get("zip_content_ok")
@@ -2625,10 +2630,22 @@ def build_harness_readiness_audit(
         )
         if not review_bundle_validation_path.is_file():
             page_errors.append(f"{case_id}: missing review_bundle_validation artifact")
-        elif result.get("review_bundle_validation_ok") is not True:
-            page_errors.append(f"{case_id}: review_bundle_validation failed")
-        elif result.get("review_bundle_zip_content_ok") is not True:
-            page_errors.append(f"{case_id}: review_bundle_validation zip_content_ok is not true")
+        else:
+            try:
+                review_bundle_validation = json.loads(review_bundle_validation_path.read_text(encoding="utf-8"))
+            except Exception as exc:  # noqa: BLE001 - invalid JSON is explicit evidence failure.
+                review_bundle_validation = {"ok": False, "errors": [f"review_bundle_validation unreadable: {type(exc).__name__}: {exc}"]}
+                page_errors.append(f"{case_id}: review_bundle_validation unreadable: {type(exc).__name__}: {exc}")
+            if result.get("review_bundle_validation_ok") is not True:
+                page_errors.append(f"{case_id}: review_bundle_validation failed")
+            if result.get("review_bundle_zip_content_ok") is not True:
+                page_errors.append(f"{case_id}: review_bundle_validation zip_content_ok is not true")
+            if review_bundle_validation.get("schema") != "pdf_lab.second_pass.page_review_bundle_validation.v1":
+                page_errors.append(f"{case_id}: review_bundle_validation schema mismatch")
+            if review_bundle_validation.get("case_id") not in (None, case_id):
+                page_errors.append(f"{case_id}: review_bundle_validation case_id does not match page result")
+            if review_bundle_validation.get("page_number") != result.get("page_number"):
+                page_errors.append(f"{case_id}: review_bundle_validation page_number does not match page result")
         if result.get("terminal_status") in RESOLVED_PASS_STATUSES:
             missing_declared = sorted(REQUIRED_PAGE_DAG_ARTIFACTS - evidence_artifacts)
             missing_files = sorted(
@@ -2873,6 +2890,7 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
         "ok": not errors,
         "errors": errors,
         "case_id": terminal.get("case_id"),
+        "page_number": terminal.get("page_number"),
         "zip_path": str(zip_path),
         "required_zip_entries": required_zip_entries,
         "zip_entry_count": len(zip_entries),
