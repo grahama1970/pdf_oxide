@@ -54,6 +54,10 @@ def is_plain_int(value: Any) -> bool:
     return isinstance(value, int) and not isinstance(value, bool)
 
 
+def is_plain_number(value: Any) -> bool:
+    return isinstance(value, int | float) and not isinstance(value, bool)
+
+
 def load_forced_pages(path: Path | None) -> list[int]:
     if path is None:
         return []
@@ -383,11 +387,17 @@ def select_page_cases(
     random_reserve_fraction: float = 0.20,
     forced_pages: list[int] | None = None,
 ) -> dict[str, Any]:
-    if sample_size < 1:
+    if not is_plain_int(sample_size) or sample_size < 1:
         raise ValueError("sample_size must be >= 1")
-    if min_per_stratum < 1:
+    if not is_plain_int(seed):
+        raise ValueError(f"seed must be an integer: {seed!r}")
+    if not is_plain_int(min_per_stratum) or min_per_stratum < 1:
         raise ValueError("min_per_stratum must be >= 1")
-    if not 0 <= random_reserve_fraction < 1:
+    if (
+        not is_plain_number(random_reserve_fraction)
+        or not math.isfinite(float(random_reserve_fraction))
+        or not 0 <= float(random_reserve_fraction) < 1
+    ):
         raise ValueError("random_reserve_fraction must be >= 0 and < 1")
     manifest_validation = validate_candidate_manifest(manifest)
     if not manifest_validation["ok"]:

@@ -60,9 +60,17 @@ def test_sampler_rejects_invalid_sampling_parameters() -> None:
     sampler = _load_module()
     cases = [
         ({"sample_size": 0, "seed": 1}, "sample_size must be >= 1"),
+        ({"sample_size": True, "seed": 1}, "sample_size must be >= 1"),
+        ({"sample_size": "1", "seed": 1}, "sample_size must be >= 1"),
+        ({"sample_size": 1, "seed": True}, "seed must be an integer: True"),
+        ({"sample_size": 1, "seed": "1"}, "seed must be an integer: '1'"),
         ({"sample_size": 1, "seed": 1, "min_per_stratum": 0}, "min_per_stratum must be >= 1"),
+        ({"sample_size": 1, "seed": 1, "min_per_stratum": True}, "min_per_stratum must be >= 1"),
+        ({"sample_size": 1, "seed": 1, "min_per_stratum": "1"}, "min_per_stratum must be >= 1"),
         ({"sample_size": 1, "seed": 1, "random_reserve_fraction": -0.1}, "random_reserve_fraction must be >= 0 and < 1"),
         ({"sample_size": 1, "seed": 1, "random_reserve_fraction": 1.0}, "random_reserve_fraction must be >= 0 and < 1"),
+        ({"sample_size": 1, "seed": 1, "random_reserve_fraction": True}, "random_reserve_fraction must be >= 0 and < 1"),
+        ({"sample_size": 1, "seed": 1, "random_reserve_fraction": "0.2"}, "random_reserve_fraction must be >= 0 and < 1"),
     ]
 
     for kwargs, expected_error in cases:
