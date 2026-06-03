@@ -1063,6 +1063,11 @@ def validate_page_orchestrator_dag_spec(spec: dict[str, Any]) -> dict[str, Any]:
         "schema": "pdf_lab.second_pass.page_orchestrator_dag_spec_validation.v1",
         "ok": not errors,
         "errors": errors,
+        "case_id": spec.get("case_id"),
+        "page_number": spec.get("page_number"),
+        "dag_spec_sha256": stable_json_sha256(spec),
+        "candidate_count": len(spec.get("candidate_ids") or []),
+        "candidate_ids": sorted(str(candidate_id) for candidate_id in spec.get("candidate_ids") or []),
         "node_count": len(spec.get("nodes") or []),
         "target_dag_state_owner": spec.get("target_dag_state_owner"),
     }
@@ -4119,6 +4124,53 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         elif endpoint == "POST /v1/scillm/opencode/transport/runs + children + message":
             expected_patch_surfaces = {"opencode_transport"}
         validate_preflight_artifact("scillm_patch_preflight.json", expected_patch_surfaces)
+
+    page_orchestrator_dag_spec = (
+        read_required_json_artifact("scillm_orchestrator_page_dag_spec.json")
+        if "scillm_orchestrator_page_dag_spec.json" in evidence_artifacts
+        else {}
+    )
+    page_orchestrator_dag_spec_validation = (
+        read_required_json_artifact("scillm_orchestrator_page_dag_spec_validation.json")
+        if "scillm_orchestrator_page_dag_spec_validation.json" in evidence_artifacts
+        else {}
+    )
+    if page_orchestrator_dag_spec_validation:
+        if page_orchestrator_dag_spec_validation.get("schema") != "pdf_lab.second_pass.page_orchestrator_dag_spec_validation.v1":
+            errors.append("scillm_orchestrator_page_dag_spec_validation schema mismatch")
+        if page_orchestrator_dag_spec_validation.get("case_id") != terminal.get("case_id"):
+            errors.append("scillm_orchestrator_page_dag_spec_validation case_id does not match terminal ledger")
+        if page_orchestrator_dag_spec_validation.get("page_number") != terminal.get("page_number"):
+            errors.append("scillm_orchestrator_page_dag_spec_validation page_number does not match terminal ledger")
+        if page_orchestrator_dag_spec:
+            recomputed_page_orchestrator_dag_spec_validation = validate_page_orchestrator_dag_spec(page_orchestrator_dag_spec)
+            if page_orchestrator_dag_spec_validation != recomputed_page_orchestrator_dag_spec_validation:
+                errors.append("scillm_orchestrator_page_dag_spec_validation does not match recomputed page_orchestrator_dag_spec contract")
+
+    page_orchestrator_submission = (
+        read_required_json_artifact("scillm_orchestrator_page_submission.json")
+        if "scillm_orchestrator_page_submission.json" in evidence_artifacts
+        else {}
+    )
+    page_orchestrator_submission_validation = (
+        read_required_json_artifact("scillm_orchestrator_page_submission_validation.json")
+        if "scillm_orchestrator_page_submission_validation.json" in evidence_artifacts
+        else {}
+    )
+    if page_orchestrator_submission_validation:
+        if page_orchestrator_submission_validation.get("schema") != "pdf_lab.second_pass.scillm_orchestrator_page_submission_validation.v1":
+            errors.append("scillm_orchestrator_page_submission_validation schema mismatch")
+        if page_orchestrator_submission_validation.get("case_id") != terminal.get("case_id"):
+            errors.append("scillm_orchestrator_page_submission_validation case_id does not match terminal ledger")
+        if page_orchestrator_submission_validation.get("page_number") != terminal.get("page_number"):
+            errors.append("scillm_orchestrator_page_submission_validation page_number does not match terminal ledger")
+        if page_orchestrator_submission and page_orchestrator_dag_spec:
+            recomputed_page_orchestrator_submission_validation = validate_page_orchestrator_submission(
+                page_orchestrator_submission,
+                dag_spec=page_orchestrator_dag_spec,
+            )
+            if page_orchestrator_submission_validation != recomputed_page_orchestrator_submission_validation:
+                errors.append("scillm_orchestrator_page_submission_validation does not match recomputed page_orchestrator_submission contract")
 
     page_orchestrator_run_request = (
         read_required_json_artifact("scillm_page_orchestrator_run_request.json")

@@ -337,6 +337,10 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
     assert all(node["state_owner"] == "scillm_orchestrator" for node in dag_spec["nodes"])
     assert dag_spec["current_planner_role"] == "pdf_lab_project_agent_final_reviewer_only"
     assert dag_spec_validation["ok"] is True
+    assert dag_spec_validation["case_id"] == "page_case_0001_p0003"
+    assert dag_spec_validation["page_number"] == 3
+    assert dag_spec_validation["candidate_count"] == 1
+    assert dag_spec_validation["candidate_ids"] == ["cand:p0003:0000:table"]
     node_ids = {node["node_id"] for node in dag_spec["nodes"]}
     assert "reextract_page_after_patch" in node_ids
     assert "deterministic_page_closure_gate" in node_ids
@@ -739,6 +743,8 @@ def test_run_page_case_page_extraction_failure_fails_closed_with_bundle(tmp_path
     dag_spec_validation = json.loads((case_dir / "scillm_orchestrator_page_dag_spec_validation.json").read_text(encoding="utf-8"))
     assert dag_spec["status"] == "blocked_before_model_nodes"
     assert dag_spec_validation["ok"] is True
+    assert dag_spec_validation["case_id"] == "page_case_0001_p0003"
+    assert dag_spec_validation["page_number"] == 3
     assert not (case_dir / "page_before.json").exists()
     html = (case_dir / "review.html").read_text(encoding="utf-8")
     assert "No rendered page images were produced before this case failed closed." in html
@@ -5929,6 +5935,124 @@ def test_validate_page_terminal_ledger_rejects_stale_page_orchestrator_run_valid
     assert "scillm_page_orchestrator_run_validation case_id does not match terminal ledger" in errors
     assert "scillm_page_orchestrator_run_validation page_number does not match terminal ledger" in errors
     assert "scillm_page_orchestrator_run_validation does not match recomputed page_orchestrator_run contract" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_stale_orchestrator_spec_validations(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    dag_spec = {
+        "schema": "pdf_lab.second_pass.page_orchestrator_dag_spec.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "status": "still_open",
+        "target_dag_state_owner": "scillm_orchestrator",
+        "orchestration_contract": {"mode": "scillm_transport_parent_owns_page_dag_state"},
+        "current_planner_role": "pdf_lab_project_agent_final_reviewer_only",
+        "candidate_ids": ["cand:p0001:0000:unknown_layout"],
+        "patch_backend": "opencode_serve",
+        "nodes": [
+            {"node_id": "extract_page_json", "state_owner": "scillm_orchestrator", "runtime_owner": "pdf_lab_deterministic_harness"},
+            {
+                "node_id": "scillm_one_shot_page_review",
+                "state_owner": "scillm_orchestrator",
+                "runtime_owner": "scillm_chat",
+                "endpoint": "POST /v1/chat/completions",
+                "required_headers": ["X-Caller-Skill"],
+            },
+            {"node_id": "validate_review_response", "state_owner": "scillm_orchestrator", "runtime_owner": "pdf_lab_deterministic_harness"},
+            {
+                "node_id": "patch_delegate_attempts",
+                "state_owner": "scillm_orchestrator",
+                "runtime_owner": "scillm_opencode_serve",
+                "endpoint": "POST /v1/scillm/opencode/runs",
+                "required_headers": ["X-Caller-Skill"],
+            },
+            {"node_id": "reextract_page_after_patch", "state_owner": "scillm_orchestrator", "runtime_owner": "pdf_lab_deterministic_harness"},
+            {
+                "node_id": "rerun_page_review_after_patch",
+                "state_owner": "scillm_orchestrator",
+                "runtime_owner": "scillm_chat",
+                "endpoint": "POST /v1/chat/completions",
+                "required_headers": ["X-Caller-Skill"],
+            },
+            {"node_id": "deterministic_page_closure_gate", "state_owner": "scillm_orchestrator", "runtime_owner": "pdf_lab_deterministic_harness"},
+            {"node_id": "commit_page_bug_fix", "state_owner": "scillm_orchestrator", "runtime_owner": "pdf_lab_git_gate"},
+        ],
+        "terminal_requirements": {
+            "patched_confirmed_requires": [*sorted(dag.REQUIRED_PATCHED_CONFIRMED_ARTIFACTS), "commit_sha"],
+            "one_git_commit_per_verified_bug_fix": True,
+        },
+    }
+    submission = dag.build_page_orchestrator_submission(
+        case_dir=case_dir,
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1},
+        dag_spec=dag_spec,
+        dag_spec_artifact="scillm_orchestrator_page_dag_spec.json",
+        code_root=tmp_path,
+        timeout_s=45,
+    )
+    (case_dir / "scillm_orchestrator_page_dag_spec.json").write_text(json.dumps(dag_spec), encoding="utf-8")
+    (case_dir / "scillm_orchestrator_page_submission.json").write_text(json.dumps(submission), encoding="utf-8")
+    (case_dir / "scillm_orchestrator_page_dag_spec_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.page_orchestrator_dag_spec_validation.v1",
+                "ok": True,
+                "errors": [],
+                "case_id": "page_case_9999_p9999",
+                "page_number": 99,
+                "dag_spec_sha256": "stale-dag",
+                "candidate_count": 1,
+                "candidate_ids": ["stale:candidate"],
+                "node_count": 8,
+                "target_dag_state_owner": "scillm_orchestrator",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "scillm_orchestrator_page_submission_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_orchestrator_page_submission_validation.v1",
+                "ok": True,
+                "errors": [],
+                "dag_spec_sha256": "stale-dag",
+                "target_dag_state_owner": "scillm_orchestrator",
+                "case_id": "page_case_9999_p9999",
+                "page_number": 99,
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "scillm_orchestrator_page_dag_spec.json",
+            "scillm_orchestrator_page_dag_spec_validation.json",
+            "scillm_orchestrator_page_submission.json",
+            "scillm_orchestrator_page_submission_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_orchestrator_page_dag_spec_validation case_id does not match terminal ledger" in errors
+    assert "scillm_orchestrator_page_dag_spec_validation page_number does not match terminal ledger" in errors
+    assert "scillm_orchestrator_page_dag_spec_validation does not match recomputed page_orchestrator_dag_spec contract" in errors
+    assert "scillm_orchestrator_page_submission_validation case_id does not match terminal ledger" in errors
+    assert "scillm_orchestrator_page_submission_validation page_number does not match terminal ledger" in errors
+    assert "scillm_orchestrator_page_submission_validation does not match recomputed page_orchestrator_submission contract" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_reviewed_clean_with_defect_response(tmp_path: Path) -> None:
