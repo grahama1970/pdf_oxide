@@ -615,14 +615,14 @@ def test_validate_page_orchestrator_dag_spec_rejects_malformed_candidate_ids(tmp
         status="ready",
     )
     spec["candidate_ids"] = ["cand:p0001:0000:table", "", 17, "cand:p0001:0000:table"]
-    spec["candidate_count"] = 99
+    spec["candidate_count"] = True
 
     validation = dag.validate_page_orchestrator_dag_spec(spec)
 
     assert validation["ok"] is False
     assert "orchestrator DAG candidate_ids must be non-empty strings: ['', 17]" in validation["errors"]
     assert "orchestrator DAG candidate_ids contain duplicates: ['cand:p0001:0000:table']" in validation["errors"]
-    assert "orchestrator DAG candidate_count does not match candidate_ids" in validation["errors"]
+    assert "orchestrator DAG candidate_count must be a non-negative integer" in validation["errors"]
     assert validation["candidate_ids"] == ["cand:p0001:0000:table", "cand:p0001:0000:table"]
     assert validation["candidate_count"] == 2
 

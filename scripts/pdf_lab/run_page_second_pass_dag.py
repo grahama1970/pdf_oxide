@@ -1081,7 +1081,10 @@ def validate_page_orchestrator_dag_spec(spec: dict[str, Any]) -> dict[str, Any]:
         normalized_candidate_ids = [
             candidate_id for candidate_id in candidate_ids if isinstance(candidate_id, str) and candidate_id
         ]
-        if spec.get("candidate_count") != len(candidate_ids):
+        candidate_count = spec.get("candidate_count")
+        if type(candidate_count) is not int or candidate_count < 0:
+            errors.append("orchestrator DAG candidate_count must be a non-negative integer")
+        elif candidate_count != len(candidate_ids):
             errors.append("orchestrator DAG candidate_count does not match candidate_ids")
     node_ids = [node.get("node_id") for node in spec.get("nodes") or [] if isinstance(node, dict)]
     for required in [
