@@ -4846,6 +4846,18 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
     missing = sorted(name for name, path in artifacts.items() if not path.is_file())
     if missing:
         errors.append(f"scillm proof floor missing artifacts: {missing}")
+    proof_floor_artifact_matches_argument = False
+    proof_floor_artifact_path = artifacts.get("scillm_proof_floor.json")
+    if proof_floor_artifact_path and proof_floor_artifact_path.is_file():
+        try:
+            loaded = json.loads(proof_floor_artifact_path.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001 - malformed proof-floor evidence must fail closed.
+            errors.append(f"scillm proof floor artifact unreadable: {type(exc).__name__}: {exc}")
+        else:
+            if loaded == proof_floor:
+                proof_floor_artifact_matches_argument = True
+            else:
+                errors.append("scillm proof floor artifact does not match proof floor argument")
     validation_payload: dict[str, Any] = {}
     validation_path = artifacts.get("scillm_proof_floor_validation.json")
     if validation_path and validation_path.is_file():
@@ -4877,6 +4889,8 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
         "ok": not errors,
         "errors": errors,
         "artifact_paths": {name: str(path) for name, path in artifacts.items()},
+        "proof_floor_artifact": str(proof_floor_artifact_path) if proof_floor_artifact_path else None,
+        "proof_floor_artifact_matches_argument": proof_floor_artifact_matches_argument,
         "validation_artifact": str(validation_path) if validation_path else None,
     }
 
