@@ -4019,6 +4019,7 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
     zip_entries: list[str] = []
     duplicate_zip_entries: list[str] = []
     mismatched_zip_entries: list[str] = []
+    undeclared_zip_entries: list[str] = []
     errors: list[str] = []
     if duplicate_evidence_artifacts:
         errors.append(f"terminal evidence_artifacts contains duplicate artifact names: {duplicate_evidence_artifacts}")
@@ -4065,6 +4066,9 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
         duplicate_zip_entries = sorted(entry for entry, count in entry_counts.items() if count > 1)
         if duplicate_zip_entries:
             errors.append(f"duplicate zip entries: {duplicate_zip_entries}")
+        undeclared_zip_entries = sorted(set(zip_entries) - set(required_zip_entries))
+        if undeclared_zip_entries:
+            errors.append(f"review bundle zip has undeclared entries: {undeclared_zip_entries}")
     missing_expected_zip_entries = sorted(entry for entry in required_zip_entries if entry not in set(zip_entries))
     if missing_artifacts:
         errors.append(f"required bundle artifacts are missing from case dir: {missing_artifacts}")
@@ -4078,6 +4082,7 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
         and not duplicate_evidence_artifacts
         and not unsafe_evidence_artifacts
         and not duplicate_zip_entries
+        and not undeclared_zip_entries
         and not mismatched_zip_entries
     )
     return {
@@ -4090,6 +4095,7 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
         "required_zip_entries": required_zip_entries,
         "zip_entry_count": len(zip_entries),
         "zip_content_ok": zip_content_ok,
+        "undeclared_zip_entries": undeclared_zip_entries,
         "terminal_ledger_matches_argument": terminal_ledger_matches_argument,
         "terminal_ledger_validation_matches_recomputed": terminal_ledger_validation_matches_recomputed,
         "terminal_ledger_validation_ok": terminal_ledger_validation_ok,

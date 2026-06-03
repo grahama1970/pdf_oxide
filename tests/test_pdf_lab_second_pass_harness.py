@@ -4827,6 +4827,45 @@ def test_harness_page_review_bundle_rejects_stale_zip_entry(tmp_path: Path) -> N
     assert "required bundle artifacts differ between case dir and zip" in "\n".join(validation["errors"])
 
 
+def test_harness_page_review_bundle_rejects_undeclared_zip_entry(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_request.json",
+            "terminal_ledger_validation.json",
+        ],
+    }
+    (case_dir / "terminal_ledger.json").write_text(json.dumps(terminal), encoding="utf-8")
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_request.json").write_text(json.dumps({"artifact": "review_request.json"}), encoding="utf-8")
+    (case_dir / "terminal_ledger_validation.json").write_text(
+        json.dumps(harness.validate_harness_page_terminal_ledger(case_dir, terminal)),
+        encoding="utf-8",
+    )
+    zip_path = case_dir / "review_bundle.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+        bundle.write(case_dir / "terminal_ledger.json", "terminal_ledger.json")
+        bundle.write(case_dir / "terminal_ledger_validation.json", "terminal_ledger_validation.json")
+        bundle.write(case_dir / "review.html", "review.html")
+        bundle.write(case_dir / "review_request.json", "review_request.json")
+        bundle.writestr("undeclared.json", "{}")
+
+    validation = harness.validate_harness_page_review_bundle(case_dir, zip_path, terminal)
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert validation["undeclared_zip_entries"] == ["undeclared.json"]
+    assert "review bundle zip has undeclared entries: ['undeclared.json']" in "\n".join(validation["errors"])
+
+
 def test_validate_deterministic_execution_plan_rejects_agent_or_reordered_pages() -> None:
     harness = _load_module()
     valid = harness.validate_deterministic_execution_plan(
