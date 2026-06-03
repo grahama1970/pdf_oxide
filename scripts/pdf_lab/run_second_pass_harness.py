@@ -2652,11 +2652,19 @@ def build_harness_readiness_audit(
         bool(candidate_manifest_path and candidate_manifest_path.is_file()),
         str(candidate_manifest_path) if candidate_manifest_path else None,
     )
+    candidate_manifest_integrity_errors, candidate_manifest_integrity_errors_malformed = validation_error_list(
+        candidate_manifest_integrity_validation,
+        "candidate_manifest_integrity_validation",
+    )
     add_check(
         "candidate manifest integrity passed",
-        bool(candidate_manifest_integrity_validation and candidate_manifest_integrity_validation.get("ok") is True),
+        bool(
+            candidate_manifest_integrity_validation
+            and candidate_manifest_integrity_validation.get("ok") is True
+            and not candidate_manifest_integrity_errors_malformed
+        ),
         candidate_manifest_integrity_validation,
-        list((candidate_manifest_integrity_validation or {}).get("errors") or []),
+        candidate_manifest_integrity_errors,
     )
     add_check(
         "sampled page cases exist",

@@ -2958,6 +2958,37 @@ def test_readiness_audit_rejects_string_sampling_gate_errors(tmp_path: Path) -> 
     assert "sampling_gate errors must be a list" in json.dumps(audit)
 
 
+def test_readiness_audit_rejects_string_candidate_manifest_integrity_errors(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[],
+        aggregate={"ok": True, "errors": [], "status_counts": {}, "patched_confirmed_count": 0, "unresolved_count": 0},
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": []},
+        scillm_proof_floor=None,
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation={"ok": True, "missing_artifacts": []},
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation={"ok": True, "missing_artifacts": []},
+        candidate_manifest_integrity_validation={"ok": True, "errors": "stale manifest"},
+    )
+
+    assert audit["ok"] is False
+    assert "candidate manifest integrity passed" in audit["failed_requirements"]
+    assert "candidate_manifest_integrity_validation errors must be a list" in json.dumps(audit)
+
+
 def test_readiness_audit_rejects_terminal_ledger_that_does_not_match_page_result(tmp_path: Path) -> None:
     harness = _load_module()
     manifest_path = tmp_path / "candidate_manifest.json"
