@@ -6041,6 +6041,19 @@ def test_commit_acceptance_gate_requires_revertability() -> None:
             "revertability_check": {"schema": "wrong", "ok": True, "commit_sha": "abc123"},
         }
     )
+    malformed_commit_sha = dag.validate_commit_gate_acceptance(
+        {
+            "schema": "pdf_lab.second_pass.commit_gate.v1",
+            "ok": True,
+            "commit_sha": ["abc123"],
+            "exact_file_match": True,
+            "revertability_check": {
+                "schema": "pdf_lab.second_pass.revertability_check.v1",
+                "ok": True,
+                "commit_sha": ["abc123"],
+            },
+        }
+    )
 
     assert accepted["ok"] is True
     assert missing_revertability["ok"] is False
@@ -6051,6 +6064,8 @@ def test_commit_acceptance_gate_requires_revertability() -> None:
     assert "commit_gate schema mismatch" in mismatched_commit_schema["errors"]
     assert mismatched_revertability_schema["ok"] is False
     assert "commit_gate revertability_check schema mismatch" in mismatched_revertability_schema["errors"]
+    assert malformed_commit_sha["ok"] is False
+    assert "commit_gate commit_sha must be a non-empty string" in malformed_commit_sha["errors"]
 
 
 def test_validate_page_terminal_ledger_accepts_committed_verified_patch(tmp_path: Path) -> None:

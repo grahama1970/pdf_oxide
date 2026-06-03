@@ -3811,8 +3811,9 @@ def validate_commit_gate_acceptance(commit_gate: dict[str, Any] | None) -> dict[
         errors.append("commit_gate schema mismatch")
     if commit_gate.get("ok") is not True:
         errors.append("commit_gate ok is not true")
-    if not commit_gate.get("commit_sha"):
-        errors.append("commit_gate missing commit_sha")
+    commit_sha = commit_gate.get("commit_sha")
+    if not isinstance(commit_sha, str) or not commit_sha:
+        errors.append("commit_gate commit_sha must be a non-empty string")
     if commit_gate.get("exact_file_match") is not True:
         errors.append("commit_gate exact_file_match is not true")
     if not isinstance(revertability, dict) or revertability.get("ok") is not True:
