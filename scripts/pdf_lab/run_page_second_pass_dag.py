@@ -6522,10 +6522,14 @@ def run_page_case(
                 repair_plan_receipt = attempt_repair_plan_receipt
                 repair_plan_validation = attempt_repair_plan_validation
                 if not attempt_repair_plan_validation["ok"]:
+                    patch_validation_errors = validation_error_list(
+                        attempt_repair_plan_validation,
+                        "repair_plan_validation",
+                    ) or ["repair_plan_failed"]
                     patch_validation = {
                         "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
                         "ok": False,
-                        "errors": attempt_repair_plan_validation.get("errors") or ["repair_plan_failed"],
+                        "errors": patch_validation_errors,
                         "patch_status": "repair_plan_failed",
                         "artifacts_present": False,
                     }
@@ -6546,7 +6550,7 @@ def run_page_case(
                             "repair_plan_error_artifact": f"{attempt_prefix}repair_plan_error.json" if repair_plan_error is not None else None,
                             "repair_plan_validation_artifact": repair_plan_validation_artifact,
                             "ok": False,
-                            "errors": patch_validation.get("errors") or [],
+                            "errors": validation_error_list(patch_validation, "patch_validation"),
                         }
                     )
                     if patch_mode == "dry_run" or repair_plan_error is not None:
@@ -6717,10 +6721,14 @@ def run_page_case(
                 repair_diagnosis_receipt = attempt_repair_diagnosis_receipt
                 repair_diagnosis_validation = attempt_repair_diagnosis_validation
                 if not attempt_repair_diagnosis_validation["ok"]:
+                    patch_validation_errors = validation_error_list(
+                        attempt_repair_diagnosis_validation,
+                        "repair_diagnosis_validation",
+                    ) or ["repair_diagnosis_failed"]
                     patch_validation = {
                         "schema": "pdf_lab.second_pass.patch_delegate_validation.v1",
                         "ok": False,
-                        "errors": attempt_repair_diagnosis_validation.get("errors") or ["repair_diagnosis_failed"],
+                        "errors": patch_validation_errors,
                         "patch_status": attempt_repair_diagnosis_validation.get("diagnosis_status") or "diagnosis_failed",
                         "artifacts_present": False,
                     }
@@ -6742,7 +6750,7 @@ def run_page_case(
                             "transport_event_artifacts": attempt_diagnosis_transport_artifacts,
                             "opencode_host_artifacts": attempt_diagnosis_opencode_host_artifacts,
                             "ok": False,
-                            "errors": patch_validation.get("errors") or [],
+                            "errors": validation_error_list(patch_validation, "patch_validation"),
                         }
                     )
                     if patch_mode == "dry_run" or attempt_diagnosis_error is not None:
@@ -6867,7 +6875,7 @@ def run_page_case(
                         "repair_plan_validation_artifact": f"{attempt_prefix}repair_plan_validation.json" if attempt_repair_plan_validation is not None else None,
                         "opencode_host_artifacts": attempt_opencode_host_artifacts,
                         "ok": False,
-                        "errors": patch_validation.get("errors") or [],
+                        "errors": validation_error_list(patch_validation, "patch_validation"),
                     }
                 )
                 break
@@ -6995,7 +7003,7 @@ def run_page_case(
                     "repair_plan_receipt_artifact": f"{attempt_prefix}repair_plan_receipt.json" if attempt_repair_plan_receipt is not None else None,
                     "repair_plan_validation_artifact": f"{attempt_prefix}repair_plan_validation.json" if attempt_repair_plan_validation is not None else None,
                     "ok": patch_validation["ok"],
-                    "errors": patch_validation.get("errors") or [],
+                    "errors": validation_error_list(patch_validation, "patch_validation"),
                 }
             )
             if patch_validation["ok"] or patch_mode == "dry_run" or attempt_error is not None and patch_preflight is not None and not patch_preflight.get("ok"):

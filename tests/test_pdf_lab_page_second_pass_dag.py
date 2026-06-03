@@ -3436,6 +3436,131 @@ def test_split_repair_strategy_writes_diagnosis_node_before_patch_dry_run(tmp_pa
     assert "patch_request.json" not in ledger["evidence_artifacts"]
 
 
+def test_split_repair_strategy_normalizes_malformed_diagnosis_errors_in_attempts(tmp_path: Path, monkeypatch) -> None:
+    dag = _load_module()
+
+    def fake_extract_page(pdf_path, page_number, ledger_path, apply_mode):
+        return {
+            "page": page_number,
+            "pdf_page_index": page_number - 1,
+            "blocks": [{"id": "actual:p3:block:0", "type": "unknown_region", "bbox": [0.1, 0.2, 0.8, 0.4]}],
+        }
+
+    def fake_render_original(pdf_path, page_number, out, dpi):
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_bytes(b"png")
+
+    def fake_render_overlay(pdf_path, page_number, candidates, out, dpi):
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_bytes(b"overlay")
+
+    def fake_repair_diagnosis(diagnosis_request, **kwargs):
+        return {
+            "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
+            "endpoint": "POST /v1/scillm/opencode/runs",
+            "http_status": 200,
+            "request_metadata": diagnosis_request["scillm_metadata"],
+            "raw_response": {"status": "completed", "assistant_text": "diagnosis", "diff": []},
+        }
+
+    def malformed_repair_diagnosis_validation(*args, **kwargs):
+        return {
+            "schema": "pdf_lab.second_pass.repair_diagnosis_validation.v1",
+            "ok": False,
+            "errors": "repair_diagnosis_failed",
+            "diagnosis_status": "failed",
+            "assistant_text_present": False,
+            "page_case": {"case_id": "page_case_0001_p0003", "page_number": 3},
+            "candidate_count": 1,
+            "expected_candidate_ids": ["cand:p0003:0000:unknown_layout"],
+        }
+
+    def fail_patch_delegate(*args, **kwargs):
+        raise AssertionError("malformed repair diagnosis validation must stop before patch delegate")
+
+    monkeypatch.setattr(dag, "extract_page", fake_extract_page)
+    monkeypatch.setattr(dag, "render_original_page", fake_render_original)
+    monkeypatch.setattr(dag, "render_candidate_overlay", fake_render_overlay)
+    monkeypatch.setattr(dag, "call_opencode_patch", fake_repair_diagnosis)
+    monkeypatch.setattr(dag, "validate_repair_diagnosis_delegate_receipt", malformed_repair_diagnosis_validation)
+    monkeypatch.setattr(dag, "build_opencode_patch_request", fail_patch_delegate)
+    monkeypatch.setattr(dag, "git_changed_files", lambda repo=dag.REPO: [])
+
+    fixture_path = tmp_path / "review_fixture.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_response.v1",
+                "page_status": "defect",
+                "page_rationale": "fixture opens the patch branch",
+                "candidate_findings": [
+                    {
+                        "candidate_id": "cand:p0003:0000:unknown_layout",
+                        "status": "defect",
+                        "evidence": "fixture evidence",
+                        "rationale": "fixture rationale",
+                        "suggested_fix_surface": "python/pdf_oxide classifier",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    manifest = {
+        "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "candidates": [
+            {
+                "candidate_id": "cand:p0003:0000:unknown_layout",
+                "page_number": 3,
+                "preset_type": "unknown_layout",
+                "bbox": [0.1, 0.2, 0.8, 0.4],
+                "features": {"block_type": "unknown_region"},
+            }
+        ],
+    }
+    sampled_cases = {
+        "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+        "page_cases": [
+            {
+                "case_id": "page_case_0001_p0003",
+                "page_number": 3,
+                "page_index": 2,
+                "candidate_ids": ["cand:p0003:0000:unknown_layout"],
+                "strata": ["preset:unknown_layout"],
+                "selection_probability_estimate": 0.5,
+                "selection_reason": ["high_risk_preset"],
+            }
+        ],
+    }
+
+    result = dag.run_page_case(
+        pdf_path=tmp_path / "fake.pdf",
+        manifest=manifest,
+        sampled_cases=sampled_cases,
+        out_dir=tmp_path / "out",
+        case_id="page_case_0001_p0003",
+        page_number=None,
+        ledger_path=None,
+        apply_mode="release",
+        dpi=72,
+        model="gpt-5.5",
+        batch_id="batch-split-malformed",
+        review_mode="fixture",
+        review_fixture_path=fixture_path,
+        patch_mode="live",
+        repair_strategy="split",
+    )
+
+    case_dir = Path(result["case_dir"])
+    patch_validation = json.loads((case_dir / "patch_validation.json").read_text(encoding="utf-8"))
+    attempts = json.loads((case_dir / "patch_attempts_ledger.json").read_text(encoding="utf-8"))
+    terminal_validation = json.loads((case_dir / "terminal_ledger_validation.json").read_text(encoding="utf-8"))
+
+    assert patch_validation["errors"] == ["repair_diagnosis_validation errors must be a list"]
+    assert attempts["attempts"][0]["errors"] == ["repair_diagnosis_validation errors must be a list"]
+    assert "repair_diagnosis_validation errors must be a list" in terminal_validation["errors"]
+
+
 def test_chat_plan_split_feeds_repair_plan_into_patch_prompt(tmp_path: Path, monkeypatch) -> None:
     dag = _load_module()
     captured_patch_request: dict = {}
@@ -3607,6 +3732,130 @@ def test_chat_plan_split_feeds_repair_plan_into_patch_prompt(tmp_path: Path, mon
     assert attempts["attempts"][0]["repair_plan_receipt_artifact"] == "patch_attempt_01_repair_plan_receipt.json"
     assert "classify table-like unknown layout" in captured_patch_request["prompt"]
     assert "unknown layout classifier misses table-like content" in captured_patch_request["prompt"]
+
+
+def test_chat_plan_split_normalizes_malformed_repair_plan_errors_in_attempts(tmp_path: Path, monkeypatch) -> None:
+    dag = _load_module()
+
+    def fake_extract_page(pdf_path, page_number, ledger_path, apply_mode):
+        return {
+            "page": page_number,
+            "pdf_page_index": page_number - 1,
+            "blocks": [{"id": "actual:p3:block:0", "type": "unknown_region", "bbox": [0.1, 0.2, 0.8, 0.4]}],
+        }
+
+    def fake_render_original(pdf_path, page_number, out, dpi):
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_bytes(b"png")
+
+    def fake_render_overlay(pdf_path, page_number, candidates, out, dpi):
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_bytes(b"overlay")
+
+    def fake_repair_plan(repair_plan_request, **kwargs):
+        return {
+            "schema": "pdf_lab.second_pass.scillm_repair_plan_receipt.v1",
+            "endpoint": "POST /v1/chat/completions",
+            "http_status": 200,
+            "scillm_metadata": repair_plan_request["scillm_metadata"],
+            "raw_response": {"choices": [{"message": {"content": "{}"}}]},
+            "repair_plan": {},
+        }
+
+    def malformed_repair_plan_validation(*args, **kwargs):
+        return {
+            "schema": "pdf_lab.second_pass.repair_plan_validation.v1",
+            "ok": False,
+            "errors": "repair_plan_failed",
+            "page_case": {"case_id": "page_case_0001_p0003", "page_number": 3},
+            "candidate_count": 1,
+            "expected_candidate_ids": ["cand:p0003:0000:unknown_layout"],
+        }
+
+    def fail_opencode_patch(*args, **kwargs):
+        raise AssertionError("malformed repair plan validation must stop before patch delegate")
+
+    monkeypatch.setattr(dag, "extract_page", fake_extract_page)
+    monkeypatch.setattr(dag, "render_original_page", fake_render_original)
+    monkeypatch.setattr(dag, "render_candidate_overlay", fake_render_overlay)
+    monkeypatch.setattr(dag, "call_scillm_repair_plan", fake_repair_plan)
+    monkeypatch.setattr(dag, "validate_repair_plan", malformed_repair_plan_validation)
+    monkeypatch.setattr(dag, "call_opencode_patch", fail_opencode_patch)
+    monkeypatch.setattr(dag, "git_changed_files", lambda repo=dag.REPO: [])
+
+    fixture_path = tmp_path / "review_fixture.json"
+    fixture_path.write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_response.v1",
+                "page_status": "defect",
+                "page_rationale": "fixture opens the patch branch",
+                "candidate_findings": [
+                    {
+                        "candidate_id": "cand:p0003:0000:unknown_layout",
+                        "status": "defect",
+                        "evidence": "fixture evidence",
+                        "rationale": "fixture rationale",
+                        "suggested_fix_surface": "python/pdf_oxide classifier",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    manifest = {
+        "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "candidates": [
+            {
+                "candidate_id": "cand:p0003:0000:unknown_layout",
+                "page_number": 3,
+                "preset_type": "unknown_layout",
+                "bbox": [0.1, 0.2, 0.8, 0.4],
+                "features": {"block_type": "unknown_region"},
+            }
+        ],
+    }
+    sampled_cases = {
+        "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+        "page_cases": [
+            {
+                "case_id": "page_case_0001_p0003",
+                "page_number": 3,
+                "page_index": 2,
+                "candidate_ids": ["cand:p0003:0000:unknown_layout"],
+                "strata": ["preset:unknown_layout"],
+                "selection_probability_estimate": 0.5,
+                "selection_reason": ["high_risk_preset"],
+            }
+        ],
+    }
+
+    result = dag.run_page_case(
+        pdf_path=tmp_path / "fake.pdf",
+        manifest=manifest,
+        sampled_cases=sampled_cases,
+        out_dir=tmp_path / "out",
+        case_id="page_case_0001_p0003",
+        page_number=None,
+        ledger_path=None,
+        apply_mode="release",
+        dpi=72,
+        model="gpt-5.5",
+        batch_id="batch-chat-plan-malformed",
+        review_mode="fixture",
+        review_fixture_path=fixture_path,
+        patch_mode="live",
+        repair_strategy="chat_plan_split",
+    )
+
+    case_dir = Path(result["case_dir"])
+    patch_validation = json.loads((case_dir / "patch_validation.json").read_text(encoding="utf-8"))
+    attempts = json.loads((case_dir / "patch_attempts_ledger.json").read_text(encoding="utf-8"))
+    terminal_validation = json.loads((case_dir / "terminal_ledger_validation.json").read_text(encoding="utf-8"))
+
+    assert patch_validation["errors"] == ["repair_plan_validation errors must be a list"]
+    assert attempts["attempts"][0]["errors"] == ["repair_plan_validation errors must be a list"]
+    assert "repair_plan_validation errors must be a list" in terminal_validation["errors"]
 
 
 def test_fixture_review_can_drive_defect_patch_branch_without_live_review(tmp_path: Path, monkeypatch) -> None:
