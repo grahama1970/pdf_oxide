@@ -393,6 +393,8 @@ def select_page_cases(
         raise ValueError(f"seed must be an integer: {seed!r}")
     if not is_plain_int(min_per_stratum) or min_per_stratum < 1:
         raise ValueError("min_per_stratum must be >= 1")
+    if forced_pages is not None and not isinstance(forced_pages, list):
+        raise ValueError(f"forced_pages must be null or a list of positive integers: {forced_pages!r}")
     if (
         not is_plain_number(random_reserve_fraction)
         or not math.isfinite(float(random_reserve_fraction))
@@ -407,7 +409,7 @@ def select_page_cases(
     strata = stratify_candidates(manifest)
     all_pages = sorted(features)
     requested_forced_pages: list[int] = []
-    for index, page in enumerate(forced_pages or []):
+    for index, page in enumerate(forced_pages if forced_pages is not None else []):
         if not is_plain_int(page):
             raise ValueError(f"forced page at index {index} is not an integer: {page!r}")
         if page < 1:

@@ -472,3 +472,16 @@ def test_select_page_cases_rejects_direct_bool_forced_pages() -> None:
         raise AssertionError("expected ValueError for direct boolean forced page")
 
     assert "forced page at index 0 is not an integer: True" in message
+
+
+def test_select_page_cases_rejects_coerced_empty_forced_pages() -> None:
+    sampler = _load_module()
+
+    try:
+        sampler.select_page_cases(_manifest(), sample_size=1, seed=1, forced_pages="")
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for coerced empty forced_pages")
+
+    assert "forced_pages must be null or a list of positive integers: ''" in message
