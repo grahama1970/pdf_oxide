@@ -9,6 +9,7 @@ import inspect
 import json
 import math
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -20,6 +21,7 @@ from typing import Any
 
 
 REPO = Path(__file__).resolve().parents[2]
+PAGE_CASE_ID_RE = re.compile(r"^page_case_\d{4}_p(?P<page_number>\d{4})$")
 TERMINAL_PAGE_STATUSES = {
     "reviewed_clean",
     "patched_confirmed",
@@ -969,6 +971,9 @@ def validate_candidate_sample_linkage(
             errors.append(f"page_case at index {index} is not an object")
             continue
         case_id = str(case.get("case_id") or f"page_case[{index}]")
+        case_id_match = PAGE_CASE_ID_RE.fullmatch(case_id)
+        if case_id_match is None:
+            errors.append(f"{case_id} case_id must match page_case_####_p####")
         if case_id in page_case_ids:
             duplicate_page_case_ids.append(case_id)
         else:
@@ -981,6 +986,8 @@ def validate_candidate_sample_linkage(
             page_case_page_counts[page_number] += 1
             if page_number not in selected_page_set:
                 errors.append(f"{case_id} page_number {page_number} is not in selected_pages")
+            if case_id_match is not None and int(case_id_match.group("page_number")) != page_number:
+                errors.append(f"{case_id} case_id page suffix does not match page_number {page_number}")
             if case.get("forced_by_human_annotation") is True:
                 forced_page_case_pages.add(page_number)
         case_candidate_ids = case.get("candidate_ids")

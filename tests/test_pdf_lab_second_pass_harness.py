@@ -962,6 +962,42 @@ def test_validate_candidate_sample_linkage_rejects_duplicate_sampled_pages() -> 
     assert "page_cases contains duplicate page_numbers: [1]" in errors
 
 
+def test_validate_candidate_sample_linkage_rejects_malformed_page_case_ids() -> None:
+    harness = _load_module()
+    validation = harness.validate_candidate_sample_linkage(
+        manifest={
+            "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+            "candidate_count": 2,
+            "candidates": [
+                _manifest_candidate("cand:p0001:0000:table", 1, "table"),
+                _manifest_candidate("cand:p0002:0000:table", 2, "table"),
+            ],
+        },
+        sampled_cases={
+            "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+            "selected_count": 2,
+            "selected_pages": [1, 2],
+            "page_cases": [
+                {
+                    "case_id": "../escape",
+                    "page_number": 1,
+                    "candidate_ids": ["cand:p0001:0000:table"],
+                },
+                {
+                    "case_id": "page_case_0002_p0001",
+                    "page_number": 2,
+                    "candidate_ids": ["cand:p0002:0000:table"],
+                },
+            ],
+        },
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert "../escape case_id must match page_case_####_p####" in errors
+    assert "page_case_0002_p0001 case_id page suffix does not match page_number 2" in errors
+
+
 def test_validate_candidate_manifest_integrity_rejects_stale_counts() -> None:
     harness = _load_module()
     valid_manifest = {
