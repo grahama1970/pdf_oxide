@@ -3548,6 +3548,51 @@ def test_terminal_ledger_validation_rejects_unproven_commit_flags(tmp_path: Path
     assert "patched_confirmed terminal ledger requires commit_revertability_ok true" in errors
 
 
+def test_terminal_ledger_validation_rejects_malformed_identity_and_commit_sha(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="patched_confirmed",
+        commit_sha="abc123",
+        extra_evidence=PATCHED_CONFIRMED_ARTIFACTS,
+    )
+    terminal = json.loads((case_dir / "terminal_ledger.json").read_text(encoding="utf-8"))
+    terminal["case_id"] = 123
+    terminal["page_number"] = True
+    terminal["commit_sha"] = True
+
+    validation = harness.validate_harness_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "missing case_id" in errors
+    assert "missing integer page_number" in errors
+    assert "patched_confirmed terminal ledger missing commit_sha" in errors
+
+
+def test_terminal_ledger_validation_rejects_commit_sha_on_unpatched_status(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "reviewed_clean",
+        "reason": "clean",
+        "evidence_artifacts": ["review.html", "terminal_ledger_validation.json"],
+        "commit_sha": "",
+    }
+
+    validation = harness.validate_harness_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    assert "reviewed_clean terminal ledger must not carry commit_sha" in validation["errors"]
+
+
 def test_harness_terminal_ledger_rejects_duplicate_and_unsafe_evidence(tmp_path: Path) -> None:
     harness = _load_module()
     case_dir = tmp_path / "case"

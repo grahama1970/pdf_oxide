@@ -137,6 +137,10 @@ def read_json_object_if_exists(path: Path) -> tuple[dict[str, Any], list[str]]:
     return payload, []
 
 
+def is_plain_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
 def read_non_negative_int_field(
     payload: dict[str, Any],
     *,
@@ -145,7 +149,7 @@ def read_non_negative_int_field(
     errors: list[str],
 ) -> int:
     value = payload.get(field_name)
-    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+    if not is_plain_int(value) or value < 0:
         errors.append(f"{artifact_label} {field_name} must be a non-negative integer: {value!r}")
         return 0
     return value
@@ -2992,9 +2996,11 @@ def validate_harness_page_terminal_ledger(case_dir: Path, terminal: dict[str, An
     terminal_status = terminal.get("terminal_status")
     if terminal_status not in TERMINAL_PAGE_STATUSES:
         errors.append(f"invalid terminal_status: {terminal_status}")
-    if not terminal.get("case_id"):
+    case_id = terminal.get("case_id")
+    if not isinstance(case_id, str) or not case_id:
         errors.append("missing case_id")
-    if not isinstance(terminal.get("page_number"), int):
+    page_number = terminal.get("page_number")
+    if not is_plain_int(page_number) or page_number < 1:
         errors.append("missing integer page_number")
     if not isinstance(terminal.get("reason"), str) or not terminal.get("reason", "").strip():
         errors.append("missing terminal reason")
@@ -3024,7 +3030,8 @@ def validate_harness_page_terminal_ledger(case_dir: Path, terminal: dict[str, An
     if missing_artifacts:
         errors.append(f"declared evidence artifacts are missing: {missing_artifacts}")
     if terminal_status == "patched_confirmed":
-        if not terminal.get("commit_sha"):
+        commit_sha = terminal.get("commit_sha")
+        if not isinstance(commit_sha, str) or not commit_sha:
             errors.append("patched_confirmed terminal ledger missing commit_sha")
         if terminal.get("commit_gate_ok") is not True:
             errors.append("patched_confirmed terminal ledger requires commit_gate_ok true")
@@ -3040,7 +3047,7 @@ def validate_harness_page_terminal_ledger(case_dir: Path, terminal: dict[str, An
             elif not (case_dir / artifact).is_file():
                 errors.append(f"patched_confirmed terminal ledger artifact missing on disk: {artifact}")
     else:
-        if terminal.get("commit_sha"):
+        if terminal.get("commit_sha") is not None:
             errors.append(f"{terminal_status} terminal ledger must not carry commit_sha")
     return {
         "schema": "pdf_lab.second_pass.page_terminal_ledger_validation.v1",
