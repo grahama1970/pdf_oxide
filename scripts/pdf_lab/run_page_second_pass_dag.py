@@ -38,6 +38,7 @@ TERMINAL_STATUSES = {
 }
 SAMPLED_CANDIDATE_MANIFEST_SCHEMA = "pdf_lab.second_pass.sampled_candidate_manifest.v1"
 SELECTED_CANDIDATES_SCHEMA = "pdf_lab.second_pass.selected_candidates.v1"
+CANDIDATE_PRESETS_SCHEMA = "pdf_lab.second_pass.candidate_presets.v1"
 REVIEW_STATUSES = {"clean", "defect", "unsure", "substrate_blocked"}
 DEFAULT_OPENCODE_SKILLS = ["memory", "debugger", "scillm"]
 DEFAULT_TRANSPORT_CHILD_MODE = "apply_patches"
@@ -345,6 +346,14 @@ def build_selected_candidates(page_case: dict[str, Any], candidates: list[dict[s
     }
 
 
+def candidate_presets_case_id_matches_review_page_case(preset_case_id: Any, review_case_id: Any) -> bool:
+    if preset_case_id == review_case_id:
+        return True
+    if isinstance(preset_case_id, str) and isinstance(review_case_id, str) and review_case_id.endswith(":after_patch"):
+        return preset_case_id == review_case_id.removesuffix(":after_patch")
+    return False
+
+
 def extract_page(
     pdf_path: Path,
     page_number: int,
@@ -485,9 +494,14 @@ def render_candidate_overlay(pdf_path: Path, page_number: int, candidates: list[
         doc.close()
 
 
-def build_candidate_presets(candidates: list[dict[str, Any]]) -> dict[str, Any]:
+def build_candidate_presets(page_case: dict[str, Any], candidates: list[dict[str, Any]]) -> dict[str, Any]:
     return {
-        "schema": "pdf_lab.second_pass.candidate_presets.v1",
+        "schema": CANDIDATE_PRESETS_SCHEMA,
+        "page_case": {
+            "case_id": page_case.get("case_id"),
+            "page_number": page_case.get("page_number"),
+        },
+        "candidate_count": len(candidates),
         "candidates": [
             {
                 "candidate_id": candidate["candidate_id"],
@@ -662,6 +676,19 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
         except Exception as exc:  # noqa: BLE001 - malformed evidence is a validation failure.
             errors.append(f"review_request artifacts.candidate_presets unreadable: {type(exc).__name__}: {exc}")
         else:
+            if not isinstance(candidate_presets_payload, dict):
+                errors.append("review_request artifacts.candidate_presets must contain a JSON object")
+                candidate_presets_payload = {}
+            if candidate_presets_payload.get("schema") != CANDIDATE_PRESETS_SCHEMA:
+                errors.append("review_request artifacts.candidate_presets schema mismatch")
+            preset_page_case = candidate_presets_payload.get("page_case")
+            if not isinstance(preset_page_case, dict):
+                errors.append("review_request artifacts.candidate_presets page_case must be an object")
+                preset_page_case = {}
+            if not candidate_presets_case_id_matches_review_page_case(preset_page_case.get("case_id"), case_id):
+                errors.append("review_request artifacts.candidate_presets page_case.case_id does not match page_case.case_id")
+            if preset_page_case.get("page_number") != page_case_number:
+                errors.append("review_request artifacts.candidate_presets page_case.page_number does not match page_case.page_number")
             preset_candidates = candidate_presets_payload.get("candidates") if isinstance(candidate_presets_payload, dict) else None
             if not isinstance(preset_candidates, list):
                 errors.append("review_request artifacts.candidate_presets candidates must be a list")
@@ -673,6 +700,8 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
                 )
                 if len(preset_candidate_ids) != len(preset_candidates):
                     errors.append("review_request artifacts.candidate_presets candidates contain missing candidate_id")
+                if candidate_presets_payload.get("candidate_count") != len(preset_candidates):
+                    errors.append("review_request artifacts.candidate_presets candidate_count does not match candidates")
                 if preset_candidate_ids != sorted(str(candidate_id) for candidate_id in expected_candidate_ids):
                     errors.append("review_request artifacts.candidate_presets candidate_ids do not match page_case.candidate_ids")
     messages = payload.get("messages")
@@ -3935,6 +3964,16 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if selected_candidates_artifact.get("candidate_count") != len(selected_candidates):
             errors.append("selected_candidates candidate_count does not match candidates")
     if candidate_presets_artifact:
+        if candidate_presets_artifact.get("schema") != CANDIDATE_PRESETS_SCHEMA:
+            errors.append("candidate_presets schema mismatch")
+        preset_page_case = candidate_presets_artifact.get("page_case")
+        if not isinstance(preset_page_case, dict):
+            errors.append("candidate_presets page_case must be an object")
+            preset_page_case = {}
+        if preset_page_case.get("case_id") != terminal.get("case_id"):
+            errors.append("candidate_presets page_case.case_id does not match terminal ledger")
+        if preset_page_case.get("page_number") != terminal.get("page_number"):
+            errors.append("candidate_presets page_case.page_number does not match terminal ledger")
         preset_candidates = candidate_presets_artifact.get("candidates")
         if not isinstance(preset_candidates, list):
             errors.append("candidate_presets candidates is not a list")
@@ -3946,6 +3985,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         )
         if len(preset_candidate_ids) != len(preset_candidates):
             errors.append("candidate_presets candidates contain missing candidate_id")
+        if candidate_presets_artifact.get("candidate_count") != len(preset_candidates):
+            errors.append("candidate_presets candidate_count does not match candidates")
         if selected_candidate_ids_from_artifact and preset_candidate_ids != selected_candidate_ids_from_artifact:
             errors.append("candidate_presets candidate_ids do not match selected_candidates")
     manifest_candidate_ids: list[str] = []
@@ -4693,7 +4734,7 @@ def run_page_case(
         }
         write_json(case_dir / "page_extraction_error.json", extraction_error)
         write_json(case_dir / "selected_candidates.json", build_selected_candidates(page_case, candidates))
-        write_json(case_dir / "candidate_presets.json", build_candidate_presets(candidates))
+        write_json(case_dir / "candidate_presets.json", build_candidate_presets(page_case, candidates))
         orchestrator_dag_spec = build_page_orchestrator_dag_spec(
             page_case=page_case,
             candidates=candidates,
@@ -4791,7 +4832,7 @@ def run_page_case(
         next_allowed_nodes=["build_model_ready_payload"],
     )
 
-    candidate_presets = build_candidate_presets(candidates)
+    candidate_presets = build_candidate_presets(page_case, candidates)
     write_json(case_dir / "candidate_presets.json", candidate_presets)
     receipts.write(
         "inject_candidate_presets",

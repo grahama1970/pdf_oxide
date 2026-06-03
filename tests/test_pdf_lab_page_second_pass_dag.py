@@ -33,6 +33,32 @@ def _selected_candidates_payload(
     }
 
 
+def _candidate_presets_payload(
+    candidate_ids: list[str],
+    *,
+    case_id: str = "page_case_0001_p0001",
+    page_number: int = 1,
+    candidate_count: int | None = None,
+) -> dict:
+    candidates = [
+        {
+            "candidate_id": candidate_id,
+            "preset_type": "table",
+            "bbox": [0.1, 0.2, 0.8, 0.4],
+            "features": {},
+            "question": "Does the rendered page evidence agree with this extracted candidate?",
+            "allowed_review_statuses": ["clean", "defect", "unsure", "substrate_blocked"],
+        }
+        for candidate_id in candidate_ids
+    ]
+    return {
+        "schema": "pdf_lab.second_pass.candidate_presets.v1",
+        "page_case": {"case_id": case_id, "page_number": page_number},
+        "candidate_count": len(candidates) if candidate_count is None else candidate_count,
+        "candidates": candidates,
+    }
+
+
 def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "abc123") -> None:
     case_dir.mkdir(parents=True, exist_ok=True)
     for image_name in ["page_after.png", "page_after_candidates.png"]:
@@ -254,6 +280,11 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
     assert selected_candidates["page_case"] == {"case_id": "page_case_0001_p0003", "page_number": 3}
     assert selected_candidates["candidate_count"] == 1
     assert [candidate["candidate_id"] for candidate in selected_candidates["candidates"]] == ["cand:p0003:0000:table"]
+    candidate_presets = json.loads((case_dir / "candidate_presets.json").read_text(encoding="utf-8"))
+    assert candidate_presets["schema"] == "pdf_lab.second_pass.candidate_presets.v1"
+    assert candidate_presets["page_case"] == {"case_id": "page_case_0001_p0003", "page_number": 3}
+    assert candidate_presets["candidate_count"] == 1
+    assert [candidate["candidate_id"] for candidate in candidate_presets["candidates"]] == ["cand:p0003:0000:table"]
     request = json.loads((case_dir / "review_request.json").read_text(encoding="utf-8"))
     assert request["endpoint"] == "POST /v1/chat/completions"
     assert request["scillm_metadata"] == {"batch_id": "batch-a", "item_id": "page_case_0001_p0003"}
@@ -1447,12 +1478,7 @@ def test_validate_review_request_contract_rejects_stale_candidate_presets_ids(tm
     case_dir.mkdir()
     (case_dir / "page_before.json").write_text(json.dumps({"page": 1, "blocks": []}), encoding="utf-8")
     (case_dir / "candidate_presets.json").write_text(
-        json.dumps(
-            {
-                "schema": "pdf_lab.second_pass.candidate_presets.v1",
-                "candidates": [{"candidate_id": "cand:p0002:0000:table", "preset_type": "table"}],
-            }
-        ),
+        json.dumps(_candidate_presets_payload(["cand:p0002:0000:table"])),
         encoding="utf-8",
     )
     (case_dir / "page_before.png").write_bytes(b"png")
@@ -1476,6 +1502,46 @@ def test_validate_review_request_contract_rejects_stale_candidate_presets_ids(tm
 
     assert validation["ok"] is False
     assert "review_request artifacts.candidate_presets candidate_ids do not match page_case.candidate_ids" in validation["errors"]
+
+
+def test_validate_review_request_contract_rejects_stale_candidate_presets_contract(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "page_before.json").write_text(json.dumps({"page": 1, "blocks": []}), encoding="utf-8")
+    preset_payload = _candidate_presets_payload(
+        ["cand:p0001:0000:table"],
+        case_id="page_case_9999_p9999",
+        page_number=9999,
+        candidate_count=2,
+    )
+    preset_payload["schema"] = "pdf_lab.second_pass.candidate_presets.v0"
+    (case_dir / "candidate_presets.json").write_text(json.dumps(preset_payload), encoding="utf-8")
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "page_candidates.png").write_bytes(b"png")
+    request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case={
+            "case_id": "page_case_0001_p0001",
+            "page_number": 1,
+            "candidate_ids": ["cand:p0001:0000:table"],
+        },
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="batch-review",
+    )
+
+    validation = dag.validate_review_request_contract(case_dir, request)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "review_request artifacts.candidate_presets schema mismatch" in errors
+    assert "review_request artifacts.candidate_presets page_case.case_id does not match page_case.case_id" in errors
+    assert "review_request artifacts.candidate_presets page_case.page_number does not match page_case.page_number" in errors
+    assert "review_request artifacts.candidate_presets candidate_count does not match candidates" in errors
 
 
 def test_patch_worker_prompt_uses_absolute_workspace_and_evidence_paths(tmp_path: Path) -> None:
@@ -5168,12 +5234,7 @@ def test_validate_page_terminal_ledger_rejects_stale_after_request_validation(tm
     _write_full_patched_confirmed_artifacts(case_dir)
     (case_dir / "review.html").write_text("review", encoding="utf-8")
     (case_dir / "candidate_presets.json").write_text(
-        json.dumps(
-            {
-                "schema": "pdf_lab.second_pass.candidate_presets.v1",
-                "candidates": [{"candidate_id": "cand:p0001:0000:table", "preset_type": "table"}],
-            }
-        ),
+        json.dumps(_candidate_presets_payload(["cand:p0001:0000:table"])),
         encoding="utf-8",
     )
     after_request = dag.build_review_request(
@@ -5627,12 +5688,7 @@ def test_validate_page_terminal_ledger_rejects_stale_candidate_presets(tmp_path:
         encoding="utf-8",
     )
     (case_dir / "candidate_presets.json").write_text(
-        json.dumps(
-            {
-                "schema": "pdf_lab.second_pass.candidate_presets.v1",
-                "candidates": [{"candidate_id": "cand:p0002:0000:table", "preset_type": "table"}],
-            }
-        ),
+        json.dumps(_candidate_presets_payload(["cand:p0002:0000:table"])),
         encoding="utf-8",
     )
     (case_dir / "review_validation.json").write_text(
@@ -5678,6 +5734,61 @@ def test_validate_page_terminal_ledger_rejects_stale_candidate_presets(tmp_path:
 
     assert validation["ok"] is False
     assert "candidate_presets candidate_ids do not match selected_candidates" in validation["errors"]
+
+
+def test_validate_page_terminal_ledger_rejects_stale_candidate_presets_contract(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(_selected_candidates_payload(["cand:p0001:0000:table"])),
+        encoding="utf-8",
+    )
+    preset_payload = _candidate_presets_payload(
+        ["cand:p0001:0000:table"],
+        case_id="page_case_9999_p9999",
+        page_number=9999,
+        candidate_count=2,
+    )
+    preset_payload["schema"] = "pdf_lab.second_pass.candidate_presets.v0"
+    (case_dir / "candidate_presets.json").write_text(json.dumps(preset_payload), encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": False,
+                "errors": ["dry_run_review_not_executed"],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "candidate_presets.json",
+            "review_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "candidate_presets schema mismatch" in errors
+    assert "candidate_presets page_case.case_id does not match terminal ledger" in errors
+    assert "candidate_presets page_case.page_number does not match terminal ledger" in errors
+    assert "candidate_presets candidate_count does not match candidates" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_stale_selected_candidates_contract(tmp_path: Path) -> None:
