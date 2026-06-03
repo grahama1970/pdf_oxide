@@ -1176,9 +1176,10 @@ def validate_candidate_sample_linkage(
             if candidate is None:
                 unknown_sampled_candidate_ids.append(candidate_id)
                 continue
-            if isinstance(page_number, int) and candidate.get("page_number") != page_number:
+            candidate_page_number = candidate.get("page_number")
+            if is_plain_int(page_number) and (not is_plain_int(candidate_page_number) or candidate_page_number != page_number):
                 page_mismatch_candidate_ids.append(candidate_id)
-        if isinstance(page_number, int) and page_number >= 1:
+        if is_plain_int(page_number) and page_number >= 1:
             expected_candidate_ids = candidate_ids_by_page.get(page_number, set())
             missing_page_candidate_ids = sorted(expected_candidate_ids - case_candidate_id_set)
             extra_page_candidate_ids = sorted(case_candidate_id_set - expected_candidate_ids)
