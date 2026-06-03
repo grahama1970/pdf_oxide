@@ -6735,6 +6735,8 @@ def test_commit_acceptance_gate_requires_revertability() -> None:
             "ok": True,
             "commit_sha": "abc123",
             "exact_file_match": True,
+            "changed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+            "committed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
             "revertability_check": {
                 "schema": "pdf_lab.second_pass.revertability_check.v1",
                 "ok": True,
@@ -6750,7 +6752,37 @@ def test_commit_acceptance_gate_requires_revertability() -> None:
             "exact_file_match": True,
         }
     )
+    mismatched_file_sets = dag.validate_commit_gate_acceptance(
+        {
+            "schema": "pdf_lab.second_pass.commit_gate.v1",
+            "ok": True,
+            "commit_sha": "abc123",
+            "exact_file_match": True,
+            "changed_files": ["python/pdf_oxide/extract_for_pdflab.py"],
+            "committed_files": ["tests/test_fix.py"],
+            "revertability_check": {
+                "schema": "pdf_lab.second_pass.revertability_check.v1",
+                "ok": True,
+                "commit_sha": "abc123",
+            },
+        }
+    )
     mismatched_revertability = dag.validate_commit_gate_acceptance(
+        {
+            "schema": "pdf_lab.second_pass.commit_gate.v1",
+            "ok": True,
+            "commit_sha": "abc123",
+            "exact_file_match": True,
+            "changed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+            "committed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+            "revertability_check": {
+                "schema": "pdf_lab.second_pass.revertability_check.v1",
+                "ok": True,
+                "commit_sha": "other",
+            },
+        }
+    )
+    missing_file_sets = dag.validate_commit_gate_acceptance(
         {
             "schema": "pdf_lab.second_pass.commit_gate.v1",
             "ok": True,
@@ -6759,7 +6791,7 @@ def test_commit_acceptance_gate_requires_revertability() -> None:
             "revertability_check": {
                 "schema": "pdf_lab.second_pass.revertability_check.v1",
                 "ok": True,
-                "commit_sha": "other",
+                "commit_sha": "abc123",
             },
         }
     )
@@ -6800,6 +6832,11 @@ def test_commit_acceptance_gate_requires_revertability() -> None:
     )
 
     assert accepted["ok"] is True
+    assert mismatched_file_sets["ok"] is False
+    assert "commit_gate changed_files do not match committed_files" in mismatched_file_sets["errors"]
+    assert missing_file_sets["ok"] is False
+    assert "commit_gate changed_files must be a non-empty list of strings" in missing_file_sets["errors"]
+    assert "commit_gate committed_files must be a non-empty list of strings" in missing_file_sets["errors"]
     assert missing_revertability["ok"] is False
     assert "commit_gate revertability_check ok is not true" in missing_revertability["errors"]
     assert mismatched_revertability["ok"] is False

@@ -2740,6 +2740,61 @@ def test_build_patch_commit_ledger_rejects_changed_files_not_matching_patch_scop
     assert "commit_gate changed_files do not match patch_scope_validation changed_files" in "\n".join(ledger["errors"])
 
 
+def test_commit_acceptance_gate_requires_matching_file_sets() -> None:
+    harness = _load_module()
+
+    accepted = harness.validate_commit_gate_acceptance(
+        {
+            "schema": "pdf_lab.second_pass.commit_gate.v1",
+            "ok": True,
+            "commit_sha": "abc123",
+            "exact_file_match": True,
+            "changed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+            "committed_files": ["tests/test_fix.py", "python/pdf_oxide/extract_for_pdflab.py"],
+            "revertability_check": {
+                "schema": "pdf_lab.second_pass.revertability_check.v1",
+                "ok": True,
+                "commit_sha": "abc123",
+            },
+        }
+    )
+    missing_file_sets = harness.validate_commit_gate_acceptance(
+        {
+            "schema": "pdf_lab.second_pass.commit_gate.v1",
+            "ok": True,
+            "commit_sha": "abc123",
+            "exact_file_match": True,
+            "revertability_check": {
+                "schema": "pdf_lab.second_pass.revertability_check.v1",
+                "ok": True,
+                "commit_sha": "abc123",
+            },
+        }
+    )
+    mismatched_file_sets = harness.validate_commit_gate_acceptance(
+        {
+            "schema": "pdf_lab.second_pass.commit_gate.v1",
+            "ok": True,
+            "commit_sha": "abc123",
+            "exact_file_match": True,
+            "changed_files": ["python/pdf_oxide/extract_for_pdflab.py"],
+            "committed_files": ["tests/test_fix.py"],
+            "revertability_check": {
+                "schema": "pdf_lab.second_pass.revertability_check.v1",
+                "ok": True,
+                "commit_sha": "abc123",
+            },
+        }
+    )
+
+    assert accepted["ok"] is True
+    assert missing_file_sets["ok"] is False
+    assert "commit_gate changed_files must be a non-empty list of strings" in missing_file_sets["errors"]
+    assert "commit_gate committed_files must be a non-empty list of strings" in missing_file_sets["errors"]
+    assert mismatched_file_sets["ok"] is False
+    assert "commit_gate changed_files do not match committed_files" in mismatched_file_sets["errors"]
+
+
 def test_build_patch_commit_ledger_rejects_after_review_not_clean(tmp_path: Path) -> None:
     harness = _load_module()
     case_dir = tmp_path / "case"

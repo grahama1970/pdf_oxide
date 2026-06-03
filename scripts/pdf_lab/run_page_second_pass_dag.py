@@ -4163,6 +4163,16 @@ def validate_commit_gate_acceptance(commit_gate: dict[str, Any] | None) -> dict[
         errors.append("commit_gate commit_sha must be a non-empty string")
     if commit_gate.get("exact_file_match") is not True:
         errors.append("commit_gate exact_file_match is not true")
+    changed_files = commit_gate.get("changed_files")
+    committed_files = commit_gate.get("committed_files")
+    if not isinstance(changed_files, list) or not all(isinstance(path, str) and path for path in changed_files):
+        errors.append("commit_gate changed_files must be a non-empty list of strings")
+        changed_files = []
+    if not isinstance(committed_files, list) or not all(isinstance(path, str) and path for path in committed_files):
+        errors.append("commit_gate committed_files must be a non-empty list of strings")
+        committed_files = []
+    if changed_files and committed_files and sorted(changed_files) != sorted(committed_files):
+        errors.append("commit_gate changed_files do not match committed_files")
     if not isinstance(revertability, dict) or revertability.get("ok") is not True:
         errors.append("commit_gate revertability_check ok is not true")
     elif revertability.get("schema") != "pdf_lab.second_pass.revertability_check.v1":
