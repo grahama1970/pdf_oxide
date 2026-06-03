@@ -1394,6 +1394,82 @@ def test_run_page_case_page_extraction_failure_fails_closed_with_bundle(tmp_path
     }.issubset(names)
 
 
+def test_cli_writes_page_dag_setup_failure_artifacts_for_invalid_sampled_cases(tmp_path: Path) -> None:
+    script = Path(__file__).resolve().parents[1] / "scripts/pdf_lab/run_page_second_pass_dag.py"
+    manifest_path = tmp_path / "manifest.json"
+    sampled_cases_path = tmp_path / "sampled_cases.json"
+    out_dir = tmp_path / "out"
+    manifest_path.write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+                "candidates": [],
+            },
+        ),
+        encoding="utf-8",
+    )
+    sampled_cases_path.write_text("{not json", encoding="utf-8")
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--pdf",
+            str(tmp_path / "fake.pdf"),
+            "--manifest",
+            str(manifest_path),
+            "--sampled-cases",
+            str(sampled_cases_path),
+            "--out",
+            str(out_dir),
+            "--case-id",
+            "page_case_0001_p0003",
+        ],
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
+    assert completed.returncode == 2
+    assert completed.stderr == ""
+    result = json.loads(completed.stdout)
+    assert result["terminal_status"] == "blocked_substrate"
+    case_dir = out_dir / "page_case_0001_p0003"
+    assert Path(result["case_dir"]) == case_dir
+    terminal = json.loads((case_dir / "terminal_ledger.json").read_text(encoding="utf-8"))
+    assert terminal["reason"] == "page_dag_setup_failed"
+    assert terminal["terminal_status"] == "blocked_substrate"
+    assert terminal["page_number"] == 3
+    assert "page_dag_setup_error.json" in terminal["evidence_artifacts"]
+    setup_error = json.loads((case_dir / "page_dag_setup_error.json").read_text(encoding="utf-8"))
+    assert setup_error["schema"] == "pdf_lab.second_pass.substrate_error.v1"
+    assert setup_error["node_id"] == "load_cli_inputs"
+    assert setup_error["endpoint"] == "run_page_second_pass_dag.main"
+    assert setup_error["case_id"] == "page_case_0001_p0003"
+    assert setup_error["page_number"] == 3
+    assert setup_error["error_type"] == "JSONDecodeError"
+    sampled_manifest = json.loads((case_dir / "sampled_candidate_manifest.json").read_text(encoding="utf-8"))
+    assert sampled_manifest["candidate_count"] == 0
+    assert sampled_manifest["page_case"]["candidate_ids"] == []
+    review_validation = json.loads((case_dir / "review_validation.json").read_text(encoding="utf-8"))
+    assert review_validation["errors"] == ["page_dag_setup_failed"]
+    terminal_validation = json.loads((case_dir / "terminal_ledger_validation.json").read_text(encoding="utf-8"))
+    assert terminal_validation["ok"] is True
+    bundle_validation = json.loads((case_dir / "review_bundle_validation.json").read_text(encoding="utf-8"))
+    assert bundle_validation["schema"] == "pdf_lab.second_pass.page_review_bundle_validation.v1"
+    assert (case_dir / "review_bundle.zip").is_file()
+    with zipfile.ZipFile(case_dir / "review_bundle.zip") as bundle:
+        names = set(bundle.namelist())
+        assert "page_dag_setup_error.json" in names
+        assert "terminal_ledger.json" in names
+        assert "terminal_ledger_validation.json" in names
+        assert "review.html" in names
+    load_receipt = json.loads((case_dir / "receipts/load_cli_inputs.json").read_text(encoding="utf-8"))
+    assert load_receipt["validator_result"]["ok"] is False
+    assert load_receipt["exit_code"] == 1
+
+
 def test_validate_review_response_rejects_terminal_claims() -> None:
     dag = _load_module()
     validation = dag.validate_review_response(

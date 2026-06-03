@@ -252,6 +252,143 @@ def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def cli_setup_failure_page_case(case_id: str | None, page_number: int | None) -> dict[str, Any]:
+    derived_page_number = page_number
+    if derived_page_number is None and case_id:
+        match = PAGE_CASE_ID_RE.fullmatch(case_id)
+        if match is not None:
+            derived_page_number = int(match.group("page_number"))
+    if type(derived_page_number) is not int or derived_page_number < 1:
+        derived_page_number = 1
+
+    derived_case_id = case_id
+    if derived_case_id:
+        identity = validate_page_case_identity(
+            {"case_id": derived_case_id, "page_number": derived_page_number},
+        )
+        if identity["ok"] is not True:
+            derived_case_id = None
+    if not derived_case_id:
+        derived_case_id = f"page_case_0000_p{derived_page_number:04d}"
+
+    return {
+        "case_id": derived_case_id,
+        "page_number": derived_page_number,
+        "page_index": derived_page_number - 1,
+        "candidate_ids": [],
+        "strata": ["setup_failure"],
+        "selection_probability_estimate": 0.0,
+        "selection_reason": ["page_dag_setup_failed"],
+    }
+
+
+def write_page_dag_setup_failure_artifacts(
+    *,
+    out_dir: Path,
+    pdf_path: Path,
+    case_id: str | None,
+    page_number: int | None,
+    code_root: Path,
+    opencode_model: str | None,
+    patch_prompt_profile: str,
+    repair_strategy: str,
+    page_extract_timeout_s: float | None,
+    page_orchestrator_mode: str,
+    error: Exception,
+) -> dict[str, Any]:
+    page_case = cli_setup_failure_page_case(case_id, page_number)
+    case_dir = out_dir / str(page_case["case_id"])
+    case_dir.mkdir(parents=True, exist_ok=True)
+    receipts = ReceiptWriter(case_dir)
+    state = {
+        "schema": "pdf_lab.second_pass.page_state.v1",
+        "case_id": page_case["case_id"],
+        "page_number": page_case["page_number"],
+        "pdf_path": str(pdf_path),
+        "code_root": str(code_root.resolve()),
+        "opencode_model": opencode_model,
+        "requested_opencode_model": opencode_model,
+        "patch_prompt_profile": patch_prompt_profile,
+        "repair_strategy": repair_strategy,
+        "page_extract_timeout_s": page_extract_timeout_s,
+        "page_orchestrator_mode": page_orchestrator_mode,
+        "page_orchestrator_transport_run_id": None,
+        "terminal_status": None,
+        "created_at": utc_now(),
+    }
+    write_json(case_dir / "state.json", state)
+    receipts.write(
+        "initialize_page_case",
+        input_artifacts=[],
+        output_artifacts=["state.json"],
+        command_or_endpoint="run_page_second_pass_dag.initialize_page_case",
+        validator_result={"ok": True},
+        next_allowed_nodes=["load_cli_inputs"],
+    )
+
+    setup_error = {
+        "schema": "pdf_lab.second_pass.substrate_error.v1",
+        "node_id": "load_cli_inputs",
+        "endpoint": "run_page_second_pass_dag.main",
+        "case_id": page_case["case_id"],
+        "page_number": page_case["page_number"],
+        "error_type": type(error).__name__,
+        "error": str(error),
+    }
+    write_json(case_dir / "page_dag_setup_error.json", setup_error)
+    write_json(case_dir / "sampled_candidate_manifest.json", build_sampled_candidate_manifest(page_case, []))
+    write_json(case_dir / "selected_candidates.json", build_selected_candidates(page_case, []))
+    write_json(case_dir / "candidate_presets.json", build_candidate_presets(page_case, []))
+    review_validation = {
+        "schema": "pdf_lab.second_pass.review_validation.v1",
+        "ok": False,
+        "errors": ["page_dag_setup_failed"],
+        "page_case": {"case_id": page_case["case_id"], "page_number": page_case["page_number"]},
+        "candidate_count": 0,
+        "expected_candidate_ids": [],
+        "seen_candidate_ids": [],
+    }
+    write_json(case_dir / "review_validation.json", review_validation)
+    receipts.write(
+        "load_cli_inputs",
+        input_artifacts=[],
+        output_artifacts=[
+            "page_dag_setup_error.json",
+            "sampled_candidate_manifest.json",
+            "selected_candidates.json",
+            "candidate_presets.json",
+            "review_validation.json",
+        ],
+        command_or_endpoint="run_page_second_pass_dag.main",
+        validator_result={
+            "ok": False,
+            "errors": ["page_dag_setup_failed"],
+            "error_type": type(error).__name__,
+        },
+        next_allowed_nodes=["write_page_terminal_ledger"],
+        exit_code=1,
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": page_case["case_id"],
+        "page_number": page_case["page_number"],
+        "terminal_status": "blocked_substrate",
+        "reason": "page_dag_setup_failed",
+        "allowed_terminal_statuses": sorted(TERMINAL_STATUSES),
+        "evidence_artifacts": [
+            "state.json",
+            "sampled_candidate_manifest.json",
+            "selected_candidates.json",
+            "candidate_presets.json",
+            "page_dag_setup_error.json",
+            "review_validation.json",
+            "review.html",
+        ],
+        "commit_sha": None,
+    }
+    return finalize_page_case(case_dir=case_dir, receipts=receipts, state=state, terminal=terminal)
+
+
 def read_required_json_object(path: Path, artifact_name: str) -> tuple[dict[str, Any], list[str]]:
     try:
         payload = load_json(path)
@@ -4800,6 +4937,17 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     elif terminal_reason == "page_extraction_failed":
         errors.append("page_extraction_failed terminal ledger requires page_extraction_error.json")
 
+    page_dag_setup_error_artifact = validate_substrate_error_artifact(
+        "page_dag_setup_error.json",
+        expected_node_ids={"load_cli_inputs"},
+        expected_endpoints={"run_page_second_pass_dag.main"},
+    )
+    if page_dag_setup_error_artifact:
+        if terminal_reason == "page_dag_setup_failed" and terminal_status != "blocked_substrate":
+            errors.append("page_dag_setup_failed terminal ledger must be blocked_substrate")
+    elif terminal_reason == "page_dag_setup_failed":
+        errors.append("page_dag_setup_failed terminal ledger requires page_dag_setup_error.json")
+
     scillm_review_error_artifact = validate_substrate_error_artifact(
         "scillm_review_error.json",
         expected_node_ids={"scillm_one_shot_page_review"},
@@ -7612,43 +7760,60 @@ def main() -> int:
     if not args.case_id and args.page is None:
         print("one of --case-id or --page is required", file=sys.stderr)
         return 2
-    result = run_page_case(
-        pdf_path=args.pdf,
-        manifest=load_json(args.manifest),
-        sampled_cases=load_json(args.sampled_cases),
-        out_dir=args.out,
-        case_id=args.case_id,
-        page_number=args.page,
-        ledger_path=args.ledger,
-        apply_mode=args.apply_mode,
-        dpi=args.dpi,
-        model=args.model,
-        batch_id=args.batch_id,
-        review_mode=args.review_mode,
-        review_fixture_path=args.review_fixture_path,
-        review_after_fixture_path=args.review_after_fixture_path,
-        scillm_base_url=args.scillm_base_url,
-        scillm_auth_token=args.scillm_auth_token,
-        caller_skill=args.caller_skill,
-        scillm_timeout_s=args.scillm_timeout_s,
-        scillm_preflight_mode=args.scillm_preflight_mode,
-        patch_mode=args.patch_mode,
-        patch_backend=args.patch_backend,
-        opencode_agent=args.opencode_agent,
-        opencode_agent_sequence=args.opencode_agent_sequence,
-        opencode_model=args.opencode_model,
-        patch_prompt_profile=args.patch_prompt_profile,
-        repair_strategy=args.repair_strategy,
-        opencode_timeout_s=args.opencode_timeout_s,
-        opencode_cleanup_session=not args.opencode_keep_session,
-        opencode_skills=args.opencode_skills,
-        allowed_patch_prefixes=args.allowed_patch_prefixes,
-        validation_commands=args.validation_commands,
-        commit_mode=args.commit_mode,
-        code_root=args.code_root,
-        page_extract_timeout_s=args.page_extract_timeout_s,
-        page_orchestrator_mode=args.page_orchestrator_mode,
-    )
+    try:
+        result = run_page_case(
+            pdf_path=args.pdf,
+            manifest=load_json(args.manifest),
+            sampled_cases=load_json(args.sampled_cases),
+            out_dir=args.out,
+            case_id=args.case_id,
+            page_number=args.page,
+            ledger_path=args.ledger,
+            apply_mode=args.apply_mode,
+            dpi=args.dpi,
+            model=args.model,
+            batch_id=args.batch_id,
+            review_mode=args.review_mode,
+            review_fixture_path=args.review_fixture_path,
+            review_after_fixture_path=args.review_after_fixture_path,
+            scillm_base_url=args.scillm_base_url,
+            scillm_auth_token=args.scillm_auth_token,
+            caller_skill=args.caller_skill,
+            scillm_timeout_s=args.scillm_timeout_s,
+            scillm_preflight_mode=args.scillm_preflight_mode,
+            patch_mode=args.patch_mode,
+            patch_backend=args.patch_backend,
+            opencode_agent=args.opencode_agent,
+            opencode_agent_sequence=args.opencode_agent_sequence,
+            opencode_model=args.opencode_model,
+            patch_prompt_profile=args.patch_prompt_profile,
+            repair_strategy=args.repair_strategy,
+            opencode_timeout_s=args.opencode_timeout_s,
+            opencode_cleanup_session=not args.opencode_keep_session,
+            opencode_skills=args.opencode_skills,
+            allowed_patch_prefixes=args.allowed_patch_prefixes,
+            validation_commands=args.validation_commands,
+            commit_mode=args.commit_mode,
+            code_root=args.code_root,
+            page_extract_timeout_s=args.page_extract_timeout_s,
+            page_orchestrator_mode=args.page_orchestrator_mode,
+        )
+    except Exception as exc:  # noqa: BLE001 - CLI setup failures must leave copyable page evidence.
+        result = write_page_dag_setup_failure_artifacts(
+            out_dir=args.out,
+            pdf_path=args.pdf,
+            case_id=args.case_id,
+            page_number=args.page,
+            code_root=args.code_root,
+            opencode_model=args.opencode_model,
+            patch_prompt_profile=args.patch_prompt_profile,
+            repair_strategy=args.repair_strategy,
+            page_extract_timeout_s=args.page_extract_timeout_s,
+            page_orchestrator_mode=args.page_orchestrator_mode,
+            error=exc,
+        )
+        print(json.dumps(result, sort_keys=True))
+        return 2
     print(json.dumps(result, sort_keys=True))
     return 0
 
