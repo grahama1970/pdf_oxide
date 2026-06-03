@@ -3938,6 +3938,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     if terminal.get("schema") != "pdf_lab.second_pass.page_terminal_ledger.v1":
         errors.append("terminal ledger schema mismatch")
     terminal_status = terminal.get("terminal_status")
+    terminal_reason = terminal.get("reason")
     if terminal_status not in TERMINAL_STATUSES:
         errors.append(f"invalid terminal_status: {terminal_status}")
     if not terminal.get("case_id"):
@@ -4258,6 +4259,37 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         elif patch_evidence_workspace_artifact and embedded_workspace != patch_evidence_workspace_artifact:
             errors.append("patch_baseline patch_evidence_workspace does not match patch_evidence_workspace artifact")
 
+    page_extraction_error_artifact = (
+        read_required_json_artifact("page_extraction_error.json")
+        if "page_extraction_error.json" in evidence_artifacts
+        else {}
+    )
+    if page_extraction_error_artifact:
+        if page_extraction_error_artifact.get("schema") != "pdf_lab.second_pass.substrate_error.v1":
+            errors.append("page_extraction_error schema mismatch")
+        if page_extraction_error_artifact.get("node_id") != "extract_page_json":
+            errors.append("page_extraction_error node_id must be extract_page_json")
+        if page_extraction_error_artifact.get("endpoint") != "snapshot_current_extraction._extract_page":
+            errors.append("page_extraction_error endpoint mismatch")
+        if page_extraction_error_artifact.get("case_id") != terminal.get("case_id"):
+            errors.append("page_extraction_error case_id does not match terminal ledger")
+        if page_extraction_error_artifact.get("page_number") != terminal.get("page_number"):
+            errors.append("page_extraction_error page_number does not match terminal ledger")
+        if (
+            not isinstance(page_extraction_error_artifact.get("error_type"), str)
+            or not page_extraction_error_artifact.get("error_type", "").strip()
+        ):
+            errors.append("page_extraction_error error_type must be non-empty")
+        if (
+            not isinstance(page_extraction_error_artifact.get("error"), str)
+            or not page_extraction_error_artifact.get("error", "").strip()
+        ):
+            errors.append("page_extraction_error error must be non-empty")
+        if terminal_reason == "page_extraction_failed" and terminal_status != "blocked_substrate":
+            errors.append("page_extraction_failed terminal ledger must be blocked_substrate")
+    elif terminal_reason == "page_extraction_failed":
+        errors.append("page_extraction_failed terminal ledger requires page_extraction_error.json")
+
     review_request = read_required_json_artifact("review_request.json") if "review_request.json" in evidence_artifacts else {}
     review_request_validation = (
         read_required_json_artifact("review_request_validation.json")
@@ -4278,7 +4310,6 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
         if "scillm_review_receipt.json" in evidence_artifacts or (case_dir / "scillm_review_receipt.json").is_file()
         else {}
     )
-    terminal_reason = terminal.get("reason")
     if review_validation:
         if review_validation.get("schema") != "pdf_lab.second_pass.review_validation.v1":
             errors.append("review_validation schema mismatch")
@@ -5161,6 +5192,8 @@ def run_page_case(
             "schema": "pdf_lab.second_pass.substrate_error.v1",
             "node_id": "extract_page_json",
             "endpoint": "snapshot_current_extraction._extract_page",
+            "case_id": page_case["case_id"],
+            "page_number": page_number,
             "error_type": type(exc).__name__,
             "error": str(exc),
             "page_extract_timeout_s": page_extract_timeout_s,

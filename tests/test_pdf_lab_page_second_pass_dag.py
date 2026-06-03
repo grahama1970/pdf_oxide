@@ -746,6 +746,13 @@ def test_run_page_case_page_extraction_failure_fails_closed_with_bundle(tmp_path
     assert "scillm_orchestrator_page_dag_spec_validation.json" in ledger["evidence_artifacts"]
     assert "review.html" in ledger["evidence_artifacts"]
     assert (case_dir / "page_extraction_error.json").is_file()
+    extraction_error = json.loads((case_dir / "page_extraction_error.json").read_text(encoding="utf-8"))
+    assert extraction_error["schema"] == "pdf_lab.second_pass.substrate_error.v1"
+    assert extraction_error["node_id"] == "extract_page_json"
+    assert extraction_error["endpoint"] == "snapshot_current_extraction._extract_page"
+    assert extraction_error["case_id"] == "page_case_0001_p0003"
+    assert extraction_error["page_number"] == 3
+    assert extraction_error["error_type"] == "PageExtractionTimeout"
     dag_spec = json.loads((case_dir / "scillm_orchestrator_page_dag_spec.json").read_text(encoding="utf-8"))
     dag_spec_validation = json.loads((case_dir / "scillm_orchestrator_page_dag_spec_validation.json").read_text(encoding="utf-8"))
     assert dag_spec["status"] == "blocked_before_model_nodes"
@@ -6246,6 +6253,47 @@ def test_validate_page_terminal_ledger_rejects_stale_patch_evidence_workspace(tm
     assert "patch_evidence_workspace copied and missing artifacts do not match required workspace files" in errors
     assert "patch_baseline dirty does not match changed_files" in errors
     assert "patch_baseline patch_evidence_workspace does not match patch_evidence_workspace artifact" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_stale_page_extraction_error(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "page_extraction_error.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.substrate_error.v1",
+                "node_id": "extract_page_json",
+                "endpoint": "snapshot_current_extraction._extract_page",
+                "case_id": "page_case_9999_p9999",
+                "page_number": 99,
+                "error_type": "TimeoutError",
+                "error": "page extraction exceeded 0.1s",
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "blocked_substrate",
+        "reason": "page_extraction_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "page_extraction_error.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "page_extraction_error case_id does not match terminal ledger" in errors
+    assert "page_extraction_error page_number does not match terminal ledger" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_stale_orchestrator_spec_validations(tmp_path: Path) -> None:
