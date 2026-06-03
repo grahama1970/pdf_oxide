@@ -4528,6 +4528,22 @@ def validate_live_canary_artifacts(
             else:
                 errors.append(f"live canary artifact {canary_artifact_name} does not match canary argument")
 
+    optional_artifact_suffixes = {
+        "request_artifact": "_request.json",
+        "receipt_artifact": "_receipt.json",
+        "error_artifact": "_error.json",
+        "event_stream_artifact": "_event_stream.json",
+    }
+    for field, suffix in optional_artifact_suffixes.items():
+        if not isinstance(canary, dict) or canary.get(field) is None:
+            continue
+        artifact_name = next((name for name in sorted(artifacts) if name.endswith(suffix)), None)
+        expected_path = artifacts.get(artifact_name or "") if artifact_name else None
+        if expected_path is None:
+            errors.append(f"live canary {field} has no expected artifact path")
+        elif canary.get(field) != str(expected_path):
+            errors.append(f"live canary {field} does not match expected artifact path")
+
     validation_payload: dict[str, Any] = {}
     validation_path = artifacts.get(validation_artifact_name)
     if isinstance(canary, dict) and validation_path and canary.get("validation_artifact") != str(validation_path):
