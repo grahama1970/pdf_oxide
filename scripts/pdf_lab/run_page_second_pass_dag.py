@@ -1882,6 +1882,7 @@ def validate_patch_prompt_contract(
     patch_request: dict[str, Any],
     *,
     live_patch_required: bool,
+    expected_page_case: dict[str, Any] | None = None,
     max_chars: int = PATCH_PROMPT_MAX_CHARS,
 ) -> dict[str, Any]:
     prompt = prompt_text_from_patch_request(patch_request)
@@ -1906,6 +1907,48 @@ def validate_patch_prompt_contract(
         errors.append("patch prompt must name the workspace root")
     if "review_response" not in prompt or "review_validation" not in prompt:
         errors.append("patch prompt must cite review_response and review_validation evidence fields")
+    metadata = patch_request.get("scillm_metadata")
+    if not isinstance(metadata, dict):
+        errors.append("patch request missing scillm_metadata")
+        metadata = {}
+    schema = patch_request.get("schema")
+    endpoint = patch_request.get("endpoint")
+    if schema == "pdf_lab.second_pass.opencode_patch_request.v1":
+        if endpoint != "POST /v1/scillm/opencode/runs":
+            errors.append("opencode patch request endpoint mismatch")
+    elif schema == "pdf_lab.second_pass.scillm_orchestrator_patch_request.v1":
+        expected_endpoint = "POST /v1/scillm/opencode/transport/runs + children + message"
+        if endpoint != expected_endpoint:
+            errors.append("scillm orchestrator patch request endpoint mismatch")
+        expected_dag_node_id = None
+        case_id = metadata.get("case_id")
+        if isinstance(case_id, str) and case_id:
+            expected_dag_node_id = f"pdf_lab_second_pass_patch:{case_id}"
+        if expected_dag_node_id is not None:
+            if patch_request.get("dag_node_id") != expected_dag_node_id:
+                errors.append("scillm orchestrator patch request dag_node_id must match scillm_metadata.case_id")
+            create_run_body = patch_request.get("create_run_body")
+            if not isinstance(create_run_body, dict) or create_run_body.get("dag_node_id") != expected_dag_node_id:
+                errors.append("scillm orchestrator patch request create_run_body.dag_node_id must match scillm_metadata.case_id")
+    else:
+        errors.append("patch request schema mismatch")
+    if expected_page_case is not None:
+        expected_case_id = expected_page_case.get("case_id")
+        if metadata.get("case_id") != expected_case_id:
+            errors.append("patch request scillm_metadata.case_id must match page_case.case_id")
+        expected_page_number = expected_page_case.get("page_number")
+        if metadata.get("page_number") != expected_page_number:
+            errors.append("patch request scillm_metadata.page_number must match page_case.page_number")
+    top_level_agent = patch_request.get("agent")
+    if "agent" in metadata and metadata.get("agent") != top_level_agent:
+        errors.append("patch request scillm_metadata.agent must match patch_request.agent")
+    for field in ["attempt_index", "attempt_count", "transport_retry_fresh_parent"]:
+        top_has = field in patch_request
+        metadata_has = field in metadata
+        if top_has != metadata_has:
+            errors.append(f"patch request {field} must be present in both request and scillm_metadata")
+        elif top_has and patch_request.get(field) != metadata.get(field):
+            errors.append(f"patch request scillm_metadata.{field} must match patch_request.{field}")
     return {
         "schema": "pdf_lab.second_pass.patch_prompt_contract.v1",
         "ok": not errors,
@@ -1973,10 +2016,12 @@ def write_patch_prompt_contract_artifacts(
     *,
     artifact_prefix: str,
     live_patch_required: bool,
+    expected_page_case: dict[str, Any] | None = None,
 ) -> tuple[dict[str, Any], list[str]]:
     prompt_contract = validate_patch_prompt_contract(
         patch_request,
         live_patch_required=live_patch_required,
+        expected_page_case=expected_page_case,
     )
     contract_name = f"{artifact_prefix}prompt_contract.json"
     review_payload_name = f"{artifact_prefix}prompt_review_payload.txt"
@@ -4963,6 +5008,7 @@ def run_page_case(
                 patch_request,
                 artifact_prefix=attempt_prefix,
                 live_patch_required=patch_mode == "live",
+                expected_page_case=page_case,
             )
             prompt_contract_artifacts.extend(attempt_prompt_contract_artifacts)
             receipts.write(

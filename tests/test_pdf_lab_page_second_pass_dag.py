@@ -1383,6 +1383,109 @@ def test_patch_prompt_contract_accepts_plan_only_prompt_and_writes_review_payloa
     assert "PATCH_APPLIED" in review_payload
 
 
+def test_patch_prompt_contract_rejects_stale_request_identity(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    workspace = tmp_path / "workspace"
+    page_case = {
+        "case_id": "case-1",
+        "page_number": 1,
+        "candidate_ids": ["cand:p0001:0000:unknown_layout"],
+    }
+    case_dir.mkdir()
+    workspace.mkdir()
+    patch_request = dag.build_scillm_orchestrator_patch_request(
+        case_dir=case_dir,
+        page_case=page_case,
+        candidates=[{"candidate_id": "cand:p0001:0000:unknown_layout", "preset_type": "unknown_layout"}],
+        review_response={
+            "schema": "pdf_lab.second_pass.review_response.v1",
+            "candidate_findings": [{"candidate_id": "cand:p0001:0000:unknown_layout", "status": "defect"}],
+        },
+        agent="build",
+        opencode_model=None,
+        skills=["scillm"],
+        timeout_s=30,
+        cwd=workspace,
+        prompt_profile="plan_only",
+    )
+    patch_request["attempt_index"] = 1
+    patch_request["attempt_count"] = 2
+    patch_request["transport_retry_fresh_parent"] = False
+    patch_request["scillm_metadata"]["attempt_index"] = 1
+    patch_request["scillm_metadata"]["attempt_count"] = 2
+    patch_request["scillm_metadata"]["agent"] = "build"
+    patch_request["scillm_metadata"]["transport_retry_fresh_parent"] = False
+
+    contract = dag.validate_patch_prompt_contract(
+        patch_request,
+        live_patch_required=True,
+        expected_page_case=page_case,
+    )
+    assert contract["ok"] is True
+
+    stale_case = json.loads(json.dumps(patch_request))
+    stale_case["scillm_metadata"]["case_id"] = "case-2"
+    stale_case_contract = dag.validate_patch_prompt_contract(
+        stale_case,
+        live_patch_required=True,
+        expected_page_case=page_case,
+    )
+    assert stale_case_contract["ok"] is False
+    assert "patch request scillm_metadata.case_id must match page_case.case_id" in stale_case_contract["errors"]
+    assert "scillm orchestrator patch request dag_node_id must match scillm_metadata.case_id" in stale_case_contract["errors"]
+    assert (
+        "scillm orchestrator patch request create_run_body.dag_node_id must match scillm_metadata.case_id"
+        in stale_case_contract["errors"]
+    )
+
+    stale_page = json.loads(json.dumps(patch_request))
+    stale_page["scillm_metadata"]["page_number"] = 99
+    stale_page_contract = dag.validate_patch_prompt_contract(
+        stale_page,
+        live_patch_required=True,
+        expected_page_case=page_case,
+    )
+    assert stale_page_contract["ok"] is False
+    assert "patch request scillm_metadata.page_number must match page_case.page_number" in stale_page_contract["errors"]
+
+    stale_agent = json.loads(json.dumps(patch_request))
+    stale_agent["scillm_metadata"]["agent"] = "implement"
+    stale_agent_contract = dag.validate_patch_prompt_contract(
+        stale_agent,
+        live_patch_required=True,
+        expected_page_case=page_case,
+    )
+    assert stale_agent_contract["ok"] is False
+    assert "patch request scillm_metadata.agent must match patch_request.agent" in stale_agent_contract["errors"]
+
+    stale_attempt = json.loads(json.dumps(patch_request))
+    stale_attempt["scillm_metadata"]["attempt_index"] = 2
+    stale_attempt_contract = dag.validate_patch_prompt_contract(
+        stale_attempt,
+        live_patch_required=True,
+        expected_page_case=page_case,
+    )
+    assert stale_attempt_contract["ok"] is False
+    assert (
+        "patch request scillm_metadata.attempt_index must match patch_request.attempt_index"
+        in stale_attempt_contract["errors"]
+    )
+
+    missing_retry_metadata = json.loads(json.dumps(patch_request))
+    del missing_retry_metadata["scillm_metadata"]["transport_retry_fresh_parent"]
+    missing_retry_contract = dag.validate_patch_prompt_contract(
+        missing_retry_metadata,
+        live_patch_required=True,
+        expected_page_case=page_case,
+    )
+    assert missing_retry_contract["ok"] is False
+    assert (
+        "patch request transport_retry_fresh_parent must be present in both request and scillm_metadata"
+        in missing_retry_contract["errors"]
+    )
+
+
 def test_plan_only_patch_prompt_sanitizes_dynamic_review_weasel_words(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
