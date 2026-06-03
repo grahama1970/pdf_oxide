@@ -713,8 +713,8 @@ def validate_sampling_gate(
     )
     if isinstance(forced_pages, dict):
         accepted_forced_pages = forced_pages.get("accepted") or []
-    if not isinstance(accepted_forced_pages, list):
-        errors.append("sampled_page_cases forced_pages.accepted must be a list")
+    if not isinstance(accepted_forced_pages, list) or not all(is_plain_int(page) and page >= 1 for page in accepted_forced_pages):
+        errors.append("sampled_page_cases forced_pages.accepted must be a list of page numbers")
         accepted_forced_pages = []
     probabilistic_selected_pages = sampled_cases.get("probabilistic_selected_pages")
     if not isinstance(audit, dict):
@@ -764,7 +764,9 @@ def validate_sampling_gate(
             errors.append("sampling_audit forced_pages_are_additive is not true")
         if statistical_basis.get("forced_pages_are_additive") is not True:
             errors.append("sampling_audit statistical_significance_basis forced_pages_are_additive is not true")
-        if not isinstance(probabilistic_selected_pages, list) or not all(isinstance(page, int) for page in probabilistic_selected_pages):
+        if not isinstance(probabilistic_selected_pages, list) or not all(
+            is_plain_int(page) and page >= 1 for page in probabilistic_selected_pages
+        ):
             errors.append("sampled_page_cases probabilistic_selected_pages must be a list of page numbers when forced pages are accepted")
             probabilistic_selected_pages = []
         if set(probabilistic_selected_pages or []) & set(accepted_forced_pages):

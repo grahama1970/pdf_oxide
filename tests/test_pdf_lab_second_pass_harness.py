@@ -806,6 +806,57 @@ def test_validate_sampling_gate_requires_additive_forced_page_accounting() -> No
     assert "sampling_audit statistical_significance_basis accepted_forced_page_count mismatch" in errors
 
 
+def test_validate_sampling_gate_rejects_boolean_forced_page_references() -> None:
+    harness = _load_module()
+    invalid_forced_gate = harness.validate_sampling_gate(
+        manifest={"candidate_count": 8},
+        sampled_cases={
+            "selected_count": 2,
+            "seed": 1234,
+            "forced_pages": {"requested": [True], "accepted": [True], "rejected": []},
+            "probabilistic_selected_pages": [True],
+            "sampling_audit": {
+                **_passing_sampling_audit(candidate_count=8, selected_count=2, seed=1234),
+                "probabilistic_selected_count": 1,
+                "forced_pages_are_additive": True,
+                "statistical_significance_basis": {
+                    **_passing_sampling_audit(candidate_count=8, selected_count=2, seed=1234)["statistical_significance_basis"],
+                    "probabilistic_selected_page_count": 1,
+                    "accepted_forced_page_count": 1,
+                    "forced_pages_are_additive": True,
+                },
+            },
+        },
+    )
+    invalid_probabilistic_gate = harness.validate_sampling_gate(
+        manifest={"candidate_count": 8},
+        sampled_cases={
+            "selected_count": 2,
+            "seed": 1234,
+            "forced_pages": {"requested": [1], "accepted": [1], "rejected": []},
+            "probabilistic_selected_pages": [True],
+            "sampling_audit": {
+                **_passing_sampling_audit(candidate_count=8, selected_count=2, seed=1234),
+                "probabilistic_selected_count": 1,
+                "forced_pages_are_additive": True,
+                "statistical_significance_basis": {
+                    **_passing_sampling_audit(candidate_count=8, selected_count=2, seed=1234)["statistical_significance_basis"],
+                    "probabilistic_selected_page_count": 1,
+                    "accepted_forced_page_count": 1,
+                    "forced_pages_are_additive": True,
+                },
+            },
+        },
+    )
+
+    assert invalid_forced_gate["ok"] is False
+    assert invalid_probabilistic_gate["ok"] is False
+    forced_errors = "\n".join(invalid_forced_gate["errors"])
+    probabilistic_errors = "\n".join(invalid_probabilistic_gate["errors"])
+    assert "sampled_page_cases forced_pages.accepted must be a list of page numbers" in forced_errors
+    assert "sampled_page_cases probabilistic_selected_pages must be a list of page numbers when forced pages are accepted" in probabilistic_errors
+
+
 def test_validate_sampling_gate_accepts_additive_forced_page_accounting() -> None:
     harness = _load_module()
     gate = harness.validate_sampling_gate(
