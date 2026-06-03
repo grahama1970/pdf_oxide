@@ -2580,6 +2580,8 @@ def build_harness_readiness_audit(
                 page_errors.append(f"{case_id}: terminal_ledger schema mismatch")
             if terminal.get("case_id") != case_id:
                 page_errors.append(f"{case_id}: terminal_ledger case_id does not match page result")
+            if terminal.get("page_number") != result.get("page_number"):
+                page_errors.append(f"{case_id}: terminal_ledger page_number does not match page result")
             if terminal.get("terminal_status") != result.get("terminal_status"):
                 page_errors.append(f"{case_id}: terminal_ledger terminal_status does not match page result")
             if terminal.get("commit_sha") != result.get("commit_sha"):
