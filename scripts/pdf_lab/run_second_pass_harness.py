@@ -61,6 +61,7 @@ REQUIRED_PATCHED_CONFIRMED_ARTIFACTS = {
     "page_after.png",
     "page_after_candidates.png",
     "review_after_request.json",
+    "review_after_request_validation.json",
     "review_after_response.json",
     "review_after_validation.json",
     "commit_acceptance_gate.json",
@@ -1406,6 +1407,7 @@ def build_patch_commit_ledger(
         review_bundle_validation_path = case_dir / "review_bundle_validation.json"
         patch_scope_validation_path = case_dir / "patch_scope_validation.json"
         test_validation_path = case_dir / "test_validation.json"
+        review_after_request_validation_path = case_dir / "review_after_request_validation.json"
         review_after_validation_path = case_dir / "review_after_validation.json"
         review_after_response_path = case_dir / "review_after_response.json"
         entry_errors: list[str] = []
@@ -1417,6 +1419,7 @@ def build_patch_commit_ledger(
         review_bundle_validation: dict[str, Any] = {}
         patch_scope_validation: dict[str, Any] = {}
         test_validation: dict[str, Any] = {}
+        review_after_request_validation: dict[str, Any] = {}
         review_after_validation: dict[str, Any] = {}
         review_after_response: dict[str, Any] = {}
         if not commit_sha:
@@ -1433,6 +1436,8 @@ def build_patch_commit_ledger(
             entry_errors.append("terminal evidence missing patch_scope_validation.json")
         if "test_validation.json" not in evidence_artifacts:
             entry_errors.append("terminal evidence missing test_validation.json")
+        if "review_after_request_validation.json" not in evidence_artifacts:
+            entry_errors.append("terminal evidence missing review_after_request_validation.json")
         if "review_after_validation.json" not in evidence_artifacts:
             entry_errors.append("terminal evidence missing review_after_validation.json")
         if "review_after_response.json" not in evidence_artifacts:
@@ -1495,6 +1500,13 @@ def build_patch_commit_ledger(
                 test_validation = json.loads(test_validation_path.read_text(encoding="utf-8"))
             except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
                 entry_errors.append(f"test_validation.json unreadable: {type(exc).__name__}: {exc}")
+        if not review_after_request_validation_path.is_file():
+            entry_errors.append("missing review_after_request_validation.json artifact")
+        else:
+            try:
+                review_after_request_validation = json.loads(review_after_request_validation_path.read_text(encoding="utf-8"))
+            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
+                entry_errors.append(f"review_after_request_validation.json unreadable: {type(exc).__name__}: {exc}")
         if not review_after_validation_path.is_file():
             entry_errors.append("missing review_after_validation.json artifact")
         else:
@@ -1532,6 +1544,7 @@ def build_patch_commit_ledger(
                     "terminal_ledger_validation.json",
                     "patch_scope_validation.json",
                     "test_validation.json",
+                    "review_after_request_validation.json",
                     "review_after_validation.json",
                     "review_after_response.json",
                     "commit_acceptance_gate.json",
@@ -1570,6 +1583,11 @@ def build_patch_commit_ledger(
                 entry_errors.append("test_validation schema mismatch")
             if test_validation.get("ok") is not True:
                 entry_errors.append("test_validation.ok is not true")
+        if review_after_request_validation:
+            if review_after_request_validation.get("schema") != "pdf_lab.second_pass.review_request_validation.v1":
+                entry_errors.append("review_after_request_validation schema mismatch")
+            if review_after_request_validation.get("ok") is not True:
+                entry_errors.append("review_after_request_validation.ok is not true")
         if review_after_validation:
             if review_after_validation.get("schema") != "pdf_lab.second_pass.review_validation.v1":
                 entry_errors.append("review_after_validation schema mismatch")
@@ -1645,6 +1663,7 @@ def build_patch_commit_ledger(
                 "review_bundle_validation": str(review_bundle_validation_path),
                 "patch_scope_validation": str(patch_scope_validation_path),
                 "test_validation": str(test_validation_path),
+                "review_after_request_validation": str(review_after_request_validation_path),
                 "review_after_validation": str(review_after_validation_path),
                 "review_after_response": str(review_after_response_path),
                 "terminal_ledger_commit_sha": terminal_ledger.get("commit_sha") if terminal_ledger else None,
@@ -1674,6 +1693,9 @@ def build_patch_commit_ledger(
                 if patch_scope_validation
                 else None,
                 "test_validation_ok": test_validation.get("ok") if test_validation else None,
+                "review_after_request_validation_ok": review_after_request_validation.get("ok")
+                if review_after_request_validation
+                else None,
                 "review_after_validation_ok": review_after_validation.get("ok")
                 if review_after_validation
                 else None,

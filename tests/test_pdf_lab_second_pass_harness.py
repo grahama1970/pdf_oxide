@@ -225,6 +225,7 @@ PATCHED_CONFIRMED_ARTIFACTS = [
     "page_after.png",
     "page_after_candidates.png",
     "review_after_request.json",
+    "review_after_request_validation.json",
     "review_after_response.json",
     "review_after_validation.json",
     "commit_acceptance_gate.json",
@@ -298,6 +299,17 @@ def _write_page_dag_case(
                         "ok": True,
                         "errors": [],
                         "results": [{"command": "pytest tests/test_fix.py -q", "exit_code": 0}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+        elif name == "review_after_request_validation.json":
+            path.write_text(
+                json.dumps(
+                    {
+                        "schema": "pdf_lab.second_pass.review_request_validation.v1",
+                        "ok": True,
+                        "errors": [],
                     }
                 ),
                 encoding="utf-8",
@@ -1285,6 +1297,7 @@ def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_pat
                         "terminal_ledger_validation.json",
                         "patch_scope_validation.json",
                         "test_validation.json",
+                        "review_after_request_validation.json",
                         "review_after_validation.json",
                         "review_after_response.json",
                         "commit_acceptance_gate.json",
@@ -1352,6 +1365,16 @@ def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_pat
                 "ok": True,
                 "errors": [],
                 "results": [{"command": "pytest tests/test_fix.py -q", "exit_code": 0}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_a / "review_after_request_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_request_validation.v1",
+                "ok": True,
+                "errors": [],
             }
         ),
         encoding="utf-8",
@@ -1429,6 +1452,7 @@ def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_pat
                     "terminal_ledger_validation.json",
                     "patch_scope_validation.json",
                     "test_validation.json",
+                    "review_after_request_validation.json",
                     "review_after_validation.json",
                     "review_after_response.json",
                     "commit_acceptance_gate.json",
@@ -1681,6 +1705,46 @@ def test_build_patch_commit_ledger_rejects_after_review_not_clean(tmp_path: Path
     errors = "\n".join(ledger["errors"])
     assert "review_after_response page_status is not clean" in errors
     assert "review_after_response candidate_findings are not all clean" in errors
+
+
+def test_build_patch_commit_ledger_rejects_after_review_request_validation_failure(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="patched_confirmed",
+        commit_sha="abc123",
+        extra_evidence=PATCHED_CONFIRMED_ARTIFACTS,
+    )
+    after_request_validation = json.loads((case_dir / "review_after_request_validation.json").read_text(encoding="utf-8"))
+    after_request_validation["ok"] = False
+    after_request_validation["errors"] = ["review_request missing annotated_image"]
+    (case_dir / "review_after_request_validation.json").write_text(json.dumps(after_request_validation), encoding="utf-8")
+
+    ledger = harness.build_patch_commit_ledger(
+        out_dir=tmp_path / "out",
+        page_results=[
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "terminal_status": "patched_confirmed",
+                "reason": "verified",
+                "case_dir": str(case_dir),
+                "commit_sha": "abc123",
+                "evidence_artifacts": [
+                    "terminal_ledger_validation.json",
+                    *PATCHED_CONFIRMED_ARTIFACTS,
+                ],
+            }
+        ],
+    )
+
+    assert ledger["ok"] is False
+    assert ledger["entries"][0]["ok"] is False
+    assert ledger["entries"][0]["review_after_request_validation_ok"] is False
+    errors = "\n".join(ledger["errors"])
+    assert "review_after_request_validation.ok is not true" in errors
 
 
 def test_build_patch_commit_ledger_rejects_revertability_schema_and_sha_mismatch(tmp_path: Path) -> None:
@@ -2553,6 +2617,7 @@ def test_terminal_ledger_validation_requires_full_patched_confirmed_evidence(tmp
     assert validation["ok"] is False
     errors = "\n".join(validation["errors"])
     assert "patched_confirmed terminal ledger missing test_validation.json" in errors
+    assert "patched_confirmed terminal ledger missing review_after_request_validation.json" in errors
     assert "patched_confirmed terminal ledger missing review_after_response.json" in errors
 
 
