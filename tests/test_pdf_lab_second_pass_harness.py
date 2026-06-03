@@ -3744,6 +3744,52 @@ def test_readiness_audit_rejects_raw_page_result_identity_mismatch(tmp_path: Pat
     assert "raw page result page_number" in audit_json
 
 
+def test_readiness_audit_rejects_non_object_terminal_ledger_without_crashing(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="reviewed_clean",
+    )
+    (case_dir / "terminal_ledger.json").write_text(json.dumps(["not-object"]), encoding="utf-8")
+    page_result = harness._page_result_from_case(
+        {"case_id": "page_case_0001_p0001", "page_number": 1},
+        {"case_dir": str(case_dir), "terminal_status": "reviewed_clean"},
+    )
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[page_result],
+        aggregate={"ok": True, "errors": [], "status_counts": {"reviewed_clean": 1}, "unresolved_count": 0},
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": []},
+        scillm_proof_floor=None,
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation={"ok": True, "missing_artifacts": []},
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation={"ok": True, "missing_artifacts": []},
+        harness_review_bundle_validation={"ok": True, "missing_artifacts": []},
+        candidate_sample_linkage_validation={"ok": True, "errors": []},
+        candidate_manifest_integrity_validation={"ok": True, "errors": []},
+        deterministic_execution_plan_validation={"ok": True, "errors": []},
+    )
+
+    audit_json = json.dumps(audit)
+    assert audit["ok"] is False
+    assert "each resolved page case has self-contained DAG evidence" in audit["failed_requirements"]
+    assert "terminal_ledger is not a JSON object" in audit_json
+
+
 def test_readiness_audit_rejects_page_result_read_errors(tmp_path: Path) -> None:
     harness = _load_module()
     manifest_path = tmp_path / "candidate_manifest.json"

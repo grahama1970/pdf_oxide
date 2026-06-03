@@ -3266,14 +3266,9 @@ def build_harness_readiness_audit(
                 page_errors.append(f"{case_id}: {read_error_key}: {read_errors}")
         terminal: dict[str, Any] = {}
         terminal_validation: dict[str, Any] = {}
-        if not terminal_ledger.is_file():
-            page_errors.append(f"{case_id}: missing terminal_ledger artifact")
-        else:
-            try:
-                terminal = json.loads(terminal_ledger.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - invalid JSON is explicit evidence failure.
-                terminal = {"errors": [f"terminal_ledger unreadable: {type(exc).__name__}: {exc}"]}
-                page_errors.append(f"{case_id}: terminal_ledger unreadable: {type(exc).__name__}: {exc}")
+        terminal, read_errors = read_required_json_object(terminal_ledger, "terminal_ledger")
+        page_errors.extend(f"{case_id}: {error}" for error in read_errors)
+        if terminal:
             if terminal.get("schema") != "pdf_lab.second_pass.page_terminal_ledger.v1":
                 page_errors.append(f"{case_id}: terminal_ledger schema mismatch")
             if terminal.get("case_id") != case_id:
@@ -3289,13 +3284,11 @@ def build_harness_readiness_audit(
                 page_errors.append(f"{case_id}: terminal_ledger evidence_artifacts is not a list")
             elif set(terminal_evidence) != evidence_artifacts:
                 page_errors.append(f"{case_id}: terminal_ledger evidence_artifacts do not match page result")
-        if not terminal_ledger_validation.is_file():
-            page_errors.append(f"{case_id}: missing terminal_ledger_validation artifact")
-        else:
-            try:
-                terminal_validation = json.loads(terminal_ledger_validation.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - invalid JSON is explicit evidence failure.
-                terminal_validation = {"ok": False, "errors": [f"terminal_ledger_validation unreadable: {type(exc).__name__}: {exc}"]}
+        terminal_validation, read_errors = read_required_json_object(
+            terminal_ledger_validation, "terminal_ledger_validation"
+        )
+        page_errors.extend(f"{case_id}: {error}" for error in read_errors)
+        if terminal_validation:
             if terminal_validation.get("ok") is not True:
                 page_errors.append(f"{case_id}: terminal_ledger_validation failed: {terminal_validation.get('errors')}")
             if terminal_validation.get("schema") != "pdf_lab.second_pass.page_terminal_ledger_validation.v1":
@@ -3323,11 +3316,10 @@ def build_harness_readiness_audit(
         if not review_bundle_validation_path.is_file():
             page_errors.append(f"{case_id}: missing review_bundle_validation artifact")
         else:
-            try:
-                review_bundle_validation = json.loads(review_bundle_validation_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - invalid JSON is explicit evidence failure.
-                review_bundle_validation = {"ok": False, "errors": [f"review_bundle_validation unreadable: {type(exc).__name__}: {exc}"]}
-                page_errors.append(f"{case_id}: review_bundle_validation unreadable: {type(exc).__name__}: {exc}")
+            review_bundle_validation, read_errors = read_required_json_object(
+                review_bundle_validation_path, "review_bundle_validation"
+            )
+            page_errors.extend(f"{case_id}: {error}" for error in read_errors)
             if result.get("review_bundle_validation_ok") is not True:
                 page_errors.append(f"{case_id}: review_bundle_validation failed")
             if result.get("review_bundle_zip_content_ok") is not True:
