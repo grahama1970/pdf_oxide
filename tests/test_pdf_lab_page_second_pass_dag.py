@@ -4322,6 +4322,53 @@ def test_validate_patch_delegate_receipt_rejects_wrong_transport_surface_and_sta
     assert "transport patch receipt http_status must be 200" in validation["errors"]
 
 
+def test_validate_patch_delegate_receipt_rejects_stale_transport_final_result() -> None:
+    dag = _load_module()
+    request = {
+        "scillm_metadata": {
+            "graph_node": "scillm_orchestrator_patch_attempt",
+            "case_id": "page_case_0001_p0003",
+            "page_number": 3,
+            "attempt_index": 1,
+            "attempt_count": 1,
+            "agent": "build",
+            "transport_retry_fresh_parent": False,
+        }
+    }
+    validation = dag.validate_patch_delegate_receipt(
+        {
+            "schema": "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1",
+            "endpoint": "POST /v1/scillm/opencode/transport/runs + children + message",
+            "http_status": 200,
+            "request_metadata": request["scillm_metadata"],
+            "message_response": {
+                "delivery_state": "completed",
+                "assistant_text": "PATCH_APPLIED changed_files=tests/test_fix.py tests=tests/test_fix.py commands=pytest",
+                "diff": "diff --git a/tests/test_fix.py b/tests/test_fix.py",
+            },
+            "event_stream": {
+                "schema": "pdf_lab.second_pass.scillm_transport_event_stream.v1",
+                "event_count": 1,
+                "saw_message_completed": True,
+                "parse_errors": [],
+                "session_errors": [],
+                "tool_errors": [],
+                "permission_requests": [],
+                "final_result": {
+                    "delivery_state": "completed",
+                    "assistant_text": "PATCH_APPLIED changed_files=tests/stale.py tests=tests/stale.py commands=pytest",
+                    "diff": "diff --git a/tests/stale.py b/tests/stale.py",
+                },
+            },
+        },
+        patch_mode="live",
+        request=request,
+    )
+
+    assert validation["ok"] is False
+    assert "transport patch event_stream.final_result does not match message_response" in validation["errors"]
+
+
 def test_validate_repair_diagnosis_receipt_rejects_stale_opencode_request_metadata() -> None:
     dag = _load_module()
     request = {
@@ -4478,6 +4525,49 @@ def test_validate_repair_diagnosis_receipt_rejects_wrong_transport_surface_and_s
     assert validation["ok"] is False
     assert "transport diagnosis receipt endpoint mismatch" in validation["errors"]
     assert "transport diagnosis receipt http_status must be 200" in validation["errors"]
+
+
+def test_validate_repair_diagnosis_receipt_rejects_stale_transport_final_result() -> None:
+    dag = _load_module()
+    request = {
+        "scillm_metadata": {
+            "graph_node": "scillm_orchestrator_repair_diagnosis_attempt",
+            "case_id": "page_case_0001_p0003",
+            "page_number": 3,
+            "attempt_index": 1,
+            "attempt_count": 1,
+            "agent": "build",
+        }
+    }
+    validation = dag.validate_repair_diagnosis_delegate_receipt(
+        {
+            "schema": "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1",
+            "endpoint": "POST /v1/scillm/opencode/transport/runs + children + message",
+            "http_status": 200,
+            "request_metadata": request["scillm_metadata"],
+            "message_response": {
+                "delivery_state": "completed",
+                "assistant_text": "Diagnosis: current page case needs a read-only repair plan.",
+            },
+            "event_stream": {
+                "schema": "pdf_lab.second_pass.scillm_transport_event_stream.v1",
+                "event_count": 1,
+                "saw_message_completed": True,
+                "parse_errors": [],
+                "session_errors": [],
+                "tool_errors": [],
+                "final_result": {
+                    "delivery_state": "completed",
+                    "assistant_text": "Diagnosis: stale page case repair plan.",
+                },
+            },
+        },
+        patch_mode="live",
+        request=request,
+    )
+
+    assert validation["ok"] is False
+    assert "transport diagnosis event_stream.final_result does not match message_response" in validation["errors"]
 
 
 def test_parse_transport_sse_response_records_message_failed_as_session_error() -> None:

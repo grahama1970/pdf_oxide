@@ -3102,6 +3102,8 @@ def validate_patch_delegate_receipt(
             errors.append("transport stream contained failed tool_call events")
         if event_stream.get("permission_requests"):
             errors.append("transport stream requested permission and did not complete unattended")
+        if isinstance(event_stream.get("final_result"), dict) and event_stream.get("final_result") != raw:
+            errors.append("transport patch event_stream.final_result does not match message_response")
         if raw.get("error"):
             errors.append("transport message returned error")
         assistant_text = str(raw.get("assistant_text") or "")
@@ -3237,6 +3239,8 @@ def validate_repair_diagnosis_delegate_receipt(
             errors.append("transport diagnosis stream contained session_error events")
         if event_stream.get("tool_errors"):
             errors.append("transport diagnosis stream contained failed tool_call events")
+        if isinstance(event_stream.get("final_result"), dict) and event_stream.get("final_result") != raw:
+            errors.append("transport diagnosis event_stream.final_result does not match message_response")
         assistant_text = str(raw.get("assistant_text") or "")
         if has_nonempty_patch_artifact(raw.get("diff")):
             errors.append("repair diagnosis delegate must not produce a patch diff")
