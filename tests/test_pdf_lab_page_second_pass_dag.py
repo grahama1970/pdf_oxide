@@ -59,6 +59,27 @@ def _candidate_presets_payload(
     }
 
 
+def _review_validation_payload(
+    candidate_ids: list[str],
+    *,
+    case_id: str = "page_case_0001_p0001",
+    page_number: int = 1,
+    ok: bool = False,
+    errors: list[str] | None = None,
+    seen_candidate_ids: list[str] | None = None,
+    candidate_count: int | None = None,
+) -> dict:
+    return {
+        "schema": "pdf_lab.second_pass.review_validation.v1",
+        "ok": ok,
+        "errors": ["dry_run_review_not_executed"] if errors is None else errors,
+        "page_case": {"case_id": case_id, "page_number": page_number},
+        "candidate_count": len(candidate_ids) if candidate_count is None else candidate_count,
+        "expected_candidate_ids": candidate_ids,
+        "seen_candidate_ids": [] if seen_candidate_ids is None else seen_candidate_ids,
+    }
+
+
 def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "abc123") -> None:
     case_dir.mkdir(parents=True, exist_ok=True)
     for image_name in ["page_after.png", "page_after_candidates.png"]:
@@ -342,6 +363,10 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
         assert "scillm_orchestrator_page_dag_spec.json" in names
         assert "scillm_orchestrator_page_submission.json" in names
     assert (case_dir / "review_validation.json").is_file()
+    review_validation = json.loads((case_dir / "review_validation.json").read_text(encoding="utf-8"))
+    assert review_validation["page_case"] == {"case_id": "page_case_0001_p0003", "page_number": 3}
+    assert review_validation["candidate_count"] == 1
+    assert review_validation["expected_candidate_ids"] == ["cand:p0003:0000:table"]
     bundle_validation = json.loads((case_dir / "review_bundle_validation.json").read_text(encoding="utf-8"))
     assert bundle_validation["schema"] == "pdf_lab.second_pass.page_review_bundle_validation.v1"
     assert bundle_validation["ok"] is True
@@ -5839,6 +5864,50 @@ def test_validate_page_terminal_ledger_rejects_stale_selected_candidates_contrac
     assert "selected_candidates page_case.case_id does not match terminal ledger" in errors
     assert "selected_candidates page_case.page_number does not match terminal ledger" in errors
     assert "selected_candidates candidate_count does not match candidates" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_stale_review_validation_contract(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(_selected_candidates_payload(["cand:p0001:0000:table"])),
+        encoding="utf-8",
+    )
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            _review_validation_payload(
+                ["cand:p0001:0000:table"],
+                case_id="page_case_9999_p9999",
+                page_number=9999,
+                candidate_count=2,
+            )
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "review_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "review_validation page_case.case_id does not match terminal ledger" in errors
+    assert "review_validation page_case.page_number does not match terminal ledger" in errors
+    assert "review_validation candidate_count does not match selected_candidates" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_stale_review_request_validation(tmp_path: Path) -> None:

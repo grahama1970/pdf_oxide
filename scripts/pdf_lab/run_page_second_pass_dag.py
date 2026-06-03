@@ -1337,9 +1337,11 @@ def validate_review_response(
     *,
     receipt: dict[str, Any] | None = None,
     request: dict[str, Any] | None = None,
+    page_case: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     errors: list[str] = []
     expected_metadata = request.get("scillm_metadata") if isinstance(request, dict) else None
+    validation_page_case = page_case if isinstance(page_case, dict) else request.get("page_case") if isinstance(request, dict) else None
     if receipt is not None:
         if not isinstance(receipt, dict):
             errors.append("review receipt must be an object")
@@ -1424,6 +1426,11 @@ def validate_review_response(
         "schema": "pdf_lab.second_pass.review_validation.v1",
         "ok": not errors,
         "errors": errors,
+        "page_case": {
+            "case_id": validation_page_case.get("case_id") if isinstance(validation_page_case, dict) else None,
+            "page_number": validation_page_case.get("page_number") if isinstance(validation_page_case, dict) else None,
+        },
+        "candidate_count": len(expected),
         "expected_candidate_ids": sorted(expected),
         "seen_candidate_ids": sorted(seen),
     }
@@ -4087,10 +4094,20 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     if review_validation:
         if review_validation.get("schema") != "pdf_lab.second_pass.review_validation.v1":
             errors.append("review_validation schema mismatch")
+        validation_page_case = review_validation.get("page_case")
+        if not isinstance(validation_page_case, dict):
+            errors.append("review_validation page_case must be an object")
+            validation_page_case = {}
+        if validation_page_case.get("case_id") != terminal.get("case_id"):
+            errors.append("review_validation page_case.case_id does not match terminal ledger")
+        if validation_page_case.get("page_number") != terminal.get("page_number"):
+            errors.append("review_validation page_case.page_number does not match terminal ledger")
         review_errors = list(review_validation.get("errors") or [])
         if selected_candidate_ids_from_artifact:
             expected_ids = sorted(str(candidate_id) for candidate_id in review_validation.get("expected_candidate_ids") or [])
             seen_ids = sorted(str(candidate_id) for candidate_id in review_validation.get("seen_candidate_ids") or [])
+            if review_validation.get("candidate_count") != len(selected_candidate_ids_from_artifact):
+                errors.append("review_validation candidate_count does not match selected_candidates")
             if expected_ids != selected_candidate_ids_from_artifact:
                 errors.append("review_validation expected_candidate_ids do not match selected_candidates")
             if seen_ids != selected_candidate_ids_from_artifact:
@@ -4758,6 +4775,8 @@ def run_page_case(
             "schema": "pdf_lab.second_pass.review_validation.v1",
             "ok": False,
             "errors": ["page_extraction_failed"],
+            "page_case": {"case_id": page_case["case_id"], "page_number": page_number},
+            "candidate_count": len(candidates),
             "expected_candidate_ids": [candidate["candidate_id"] for candidate in candidates],
             "seen_candidate_ids": [],
         }
@@ -4977,6 +4996,8 @@ def run_page_case(
             "schema": "pdf_lab.second_pass.review_validation.v1",
             "ok": False,
             "errors": ["page_orchestrator_registration_failed"],
+            "page_case": {"case_id": page_case["case_id"], "page_number": page_number},
+            "candidate_count": len(candidates),
             "expected_candidate_ids": [candidate["candidate_id"] for candidate in candidates],
             "seen_candidate_ids": [],
         }
@@ -5132,6 +5153,7 @@ def run_page_case(
             [candidate["candidate_id"] for candidate in candidates],
             receipt=review_receipt,
             request=review_request,
+            page_case=page_case,
         )
     else:
         review_validation = {
@@ -5144,6 +5166,8 @@ def run_page_case(
                 if review_error is not None
                 else ["dry_run_review_not_executed"]
             ),
+            "page_case": {"case_id": page_case["case_id"], "page_number": page_number},
+            "candidate_count": len(candidates),
             "expected_candidate_ids": [candidate["candidate_id"] for candidate in candidates],
             "seen_candidate_ids": [],
         }
@@ -5973,10 +5997,13 @@ def run_page_case(
                         [candidate["candidate_id"] for candidate in candidates],
                         receipt=after_review_receipt,
                         request=after_review_request,
+                        page_case=after_case,
                     ) if after_review_response is not None else {
                         "schema": "pdf_lab.second_pass.review_validation.v1",
                         "ok": False,
                         "errors": ["after_review_call_failed"] if after_review_error is not None else ["after_review_not_executed"],
+                        "page_case": {"case_id": after_case["case_id"], "page_number": after_case["page_number"]},
+                        "candidate_count": len(candidates),
                         "expected_candidate_ids": [candidate["candidate_id"] for candidate in candidates],
                         "seen_candidate_ids": [],
                     }
