@@ -2172,6 +2172,8 @@ def build_patch_commit_ledger(
                     entry_errors.append("commit_gate.revertability_check.ok is not true")
                 if commit_gate_revertability.get("commit_sha") != commit_sha:
                     entry_errors.append("commit_gate.revertability_check commit_sha does not match page result")
+                if revertability and commit_gate_revertability != revertability:
+                    entry_errors.append("commit_gate.revertability_check does not match revertability_check.json")
         if revertability:
             if revertability.get("schema") != "pdf_lab.second_pass.revertability_check.v1":
                 entry_errors.append("revertability_check schema mismatch")
