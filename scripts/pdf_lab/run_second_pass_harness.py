@@ -2852,6 +2852,18 @@ def package_validation_errors(validation: dict[str, Any] | None) -> list[str]:
         return []
     errors: list[str] = []
     for key in [
+        "included_artifacts",
+        "required_zip_entries",
+    ]:
+        values = validation.get(key)
+        if values in (None, []):
+            continue
+        if not isinstance(values, list):
+            errors.append(f"{key} must be a list")
+            continue
+        if not all(isinstance(value, str) for value in values):
+            errors.append(f"{key} must be a list of strings")
+    for key in [
         "missing_artifacts",
         "missing_required_artifacts",
         "missing_expected_source_artifacts",

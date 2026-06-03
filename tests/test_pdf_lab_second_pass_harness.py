@@ -5907,12 +5907,14 @@ def test_readiness_audit_rejects_malformed_package_validation_lists(tmp_path: Pa
         scillm_bug_report_zip_validation={
             "ok": True,
             "zip_content_ok": True,
+            "included_artifacts": "scillm_patch_delegate_bug_reports.json",
             "missing_expected_zip_entries": "page_cases/a/scillm_patch_delegate_bug_report.json",
         },
         patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
         patch_commit_ledger_zip_validation={
             "ok": True,
             "zip_content_ok": True,
+            "required_zip_entries": ["patch_commit_ledger.json", 123],
             "duplicate_zip_entries": ["patch_commit_ledger.json", 123],
         },
         harness_review_bundle_validation={
@@ -5928,6 +5930,8 @@ def test_readiness_audit_rejects_malformed_package_validation_lists(tmp_path: Pa
     assert "patch commit ledger bundle is packageable" in audit["failed_requirements"]
     assert "harness review bundle is packageable" in audit["failed_requirements"]
     assert "missing_expected_zip_entries must be a list" in dumped
+    assert "included_artifacts must be a list" in dumped
+    assert "required_zip_entries must be a list of strings" in dumped
     assert "duplicate_zip_entries must be a list of strings" in dumped
     assert "missing_required_artifacts must be a list" in dumped
 
