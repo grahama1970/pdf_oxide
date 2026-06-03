@@ -86,6 +86,66 @@ def _candidate_manifest(candidates: list[dict], **extra: object) -> dict:
     return manifest
 
 
+def _mark_isolated_code_root(code_root: Path) -> None:
+    code_root.mkdir(parents=True, exist_ok=True)
+    (code_root / ".pdf_lab_isolated_code_root.json").write_text(
+        json.dumps({"schema": "pdf_lab.second_pass.isolated_code_root.v1"}),
+        encoding="utf-8",
+    )
+
+
+def test_live_code_root_visibility_requires_mounted_isolated_root(tmp_path: Path) -> None:
+    harness = _load_module()
+    mounted = tmp_path / "mounted"
+    code_root = mounted / "code-root"
+    code_root.mkdir(parents=True)
+
+    validation = harness.validate_scillm_live_code_root(
+        code_root=code_root,
+        patch_mode="live",
+        patch_backend="opencode_serve",
+        mounted_prefixes=[mounted],
+        isolated_code_root_manifest=None,
+    )
+
+    assert validation["ok"] is False
+    assert validation["under_mounted_prefix"] is True
+    assert validation["isolated_code_root_required"] is True
+    assert validation["isolated_marker_present"] is False
+    assert "must be an isolated pdf-lab code root" in "\n".join(validation["errors"])
+
+    (code_root / ".pdf_lab_isolated_code_root.json").write_text("{}", encoding="utf-8")
+    accepted = harness.validate_scillm_live_code_root(
+        code_root=code_root,
+        patch_mode="live",
+        patch_backend="scillm_orchestrator",
+        mounted_prefixes=[mounted],
+        isolated_code_root_manifest=None,
+    )
+
+    assert accepted["ok"] is True
+    assert accepted["isolated_marker_present"] is True
+
+
+def test_dry_code_root_visibility_does_not_require_isolated_marker(tmp_path: Path) -> None:
+    harness = _load_module()
+    code_root = tmp_path / "plain-code-root"
+    code_root.mkdir()
+
+    validation = harness.validate_scillm_live_code_root(
+        code_root=code_root,
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        mounted_prefixes=[tmp_path / "other-mounted-prefix"],
+        isolated_code_root_manifest=None,
+    )
+
+    assert validation["ok"] is True
+    assert validation["live_patch_required"] is False
+    assert validation["isolated_code_root_required"] is False
+    assert validation["under_mounted_prefix"] is False
+
+
 PAGE_DAG_ARTIFACTS = [
     "state.json",
     "sampled_candidate_manifest.json",
@@ -3617,7 +3677,7 @@ def test_run_harness_fails_closed_before_page_dag_when_transport_readonly_canary
     harness = _load_module()
     page_dag_called = False
     code_root = tmp_path / "mounted" / "code-root"
-    code_root.mkdir(parents=True)
+    _mark_isolated_code_root(code_root)
 
     class FakeManifestMod:
         @staticmethod
@@ -3744,7 +3804,7 @@ def test_run_harness_fails_closed_before_page_dag_when_transport_write_canary_fa
     harness = _load_module()
     page_dag_called = False
     code_root = tmp_path / "mounted" / "code-root"
-    code_root.mkdir(parents=True)
+    _mark_isolated_code_root(code_root)
 
     class FakeManifestMod:
         @staticmethod
@@ -3952,6 +4012,8 @@ def test_run_harness_fails_closed_before_page_dag_when_scillm_proof_floor_fails(
     monkeypatch.setattr(harness, "_import_pdf_lab_modules", lambda: (FakeManifestMod, FakeSamplerMod, FakePageDag))
     monkeypatch.setattr(harness, "run_scillm_proof_floor", fake_run_scillm_proof_floor)
     monkeypatch.setattr(harness, "run_opencode_completion_canary", fail_opencode_canary)
+    code_root = tmp_path / "code-root"
+    _mark_isolated_code_root(code_root)
 
     report = harness.run_harness(
         pdf_path=tmp_path / "fake.pdf",
@@ -3980,7 +4042,7 @@ def test_run_harness_fails_closed_before_page_dag_when_scillm_proof_floor_fails(
         opencode_skills=["scillm"],
         allowed_patch_prefixes=["tests/"],
         validation_commands=None,
-        code_root=tmp_path / "code-root",
+        code_root=code_root,
         prepare_isolated_code_root_dest=None,
         prepare_isolated_code_root_include_paths=None,
         prepare_isolated_code_root_force=False,
@@ -5186,7 +5248,7 @@ def test_live_patch_fails_closed_when_code_root_is_not_mounted(tmp_path: Path, m
     assert report["requested_opencode_model"] is None
     assert report["opencode_model_defaulted"] is True
     assert report["aggregate"]["status_counts"] == {"blocked_substrate": 1}
-    assert report["page_results"][0]["reason"] == "scillm_code_root_not_mounted"
+    assert report["page_results"][0]["reason"] == "scillm_code_root_visibility_failed"
     assert "live scillm code root visibility passed" in report["harness_readiness_audit_validation"]["failed_requirements"]
     assert Path(report["page_results"][0]["terminal_ledger"]).is_file()
     assert Path(report["page_results"][0]["review_bundle"]).is_file()
@@ -5196,7 +5258,7 @@ def test_live_opencode_serve_completion_canary_blocks_page_dag_when_executor_is_
     harness = _load_module()
     page_dag_called = False
     code_root = tmp_path / "mounted" / "code-root"
-    code_root.mkdir(parents=True)
+    _mark_isolated_code_root(code_root)
 
     class FakeManifestMod:
         @staticmethod

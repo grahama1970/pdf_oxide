@@ -117,6 +117,10 @@ def validate_scillm_live_code_root(
         errors.append(
             f"live scillm/OpenCode patch code_root must be under a mounted workspace prefix: {code_root}"
         )
+    if live_patch_required and not isolated_marker_present:
+        errors.append(
+            f"live scillm/OpenCode patch code_root must be an isolated pdf-lab code root with marker: {isolated_marker}"
+        )
     return {
         "schema": "pdf_lab.second_pass.scillm_code_root_visibility.v1",
         "code_root": str(code_root),
@@ -125,6 +129,7 @@ def validate_scillm_live_code_root(
         "live_patch_required": live_patch_required,
         "mounted_workspace_prefixes": [str(prefix) for prefix in mounted_prefixes],
         "under_mounted_prefix": under_mounted_prefix,
+        "isolated_code_root_required": live_patch_required,
         "isolated_marker_present": isolated_marker_present,
         "isolated_code_root_manifest_present": isolated_code_root_manifest is not None,
         "ok": not errors,
@@ -4124,7 +4129,7 @@ def run_harness(
             _write_blocked_case_result(
                 out_dir=out_dir,
                 case=case,
-                reason="scillm_code_root_not_mounted",
+                reason="scillm_code_root_visibility_failed",
                 visibility=code_root_visibility,
             )
             for case in sampled_cases.get("page_cases") or []
