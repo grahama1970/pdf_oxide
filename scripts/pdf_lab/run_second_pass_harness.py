@@ -4514,6 +4514,20 @@ def validate_live_canary_artifacts(
     if missing:
         errors.append(f"live canary missing artifacts: {missing}")
 
+    canary_artifact_name = next((name for name in sorted(artifacts) if name.endswith("_canary.json")), None)
+    canary_artifact_matches_argument = False
+    canary_artifact_path = artifacts.get(canary_artifact_name or "") if canary_artifact_name else None
+    if canary_artifact_path and canary_artifact_path.is_file():
+        try:
+            loaded = json.loads(canary_artifact_path.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001 - malformed canary evidence must fail closed.
+            errors.append(f"live canary artifact unreadable: {type(exc).__name__}: {exc}")
+        else:
+            if loaded == canary:
+                canary_artifact_matches_argument = True
+            else:
+                errors.append(f"live canary artifact {canary_artifact_name} does not match canary argument")
+
     validation_payload: dict[str, Any] = {}
     validation_path = artifacts.get(validation_artifact_name)
     if validation_path and validation_path.is_file():
@@ -4576,6 +4590,8 @@ def validate_live_canary_artifacts(
         "canary_schema": canary_schema,
         "validation_schema": validation_schema,
         "artifact_paths": {name: str(path) for name, path in artifacts.items()},
+        "canary_artifact": str(canary_artifact_path) if canary_artifact_path else None,
+        "canary_artifact_matches_argument": canary_artifact_matches_argument,
         "validation_artifact": str(validation_path) if validation_path else None,
         "cleanup_artifact": str(cleanup_path) if cleanup_path else None,
     }
