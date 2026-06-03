@@ -4860,6 +4860,81 @@ def test_readiness_audit_rejects_string_code_root_visibility_errors(tmp_path: Pa
     assert "code_root_visibility errors must be a list" in json.dumps(audit)
 
 
+def test_readiness_audit_rejects_string_patch_commit_ledger_errors(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[],
+        aggregate={"ok": True, "errors": [], "status_counts": {}, "unresolved_count": 0},
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        code_root_visibility=None,
+        scillm_proof_floor=None,
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation={"ok": True, "missing_artifacts": []},
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": "commit ledger failed"},
+        patch_commit_ledger_zip_validation={"ok": True, "missing_artifacts": []},
+        candidate_manifest_integrity_validation={"ok": True, "errors": []},
+        candidate_sample_linkage_validation={"ok": True, "errors": []},
+        deterministic_execution_plan_validation={"ok": True, "errors": []},
+    )
+
+    assert audit["ok"] is False
+    assert "patch commit ledger passed" in audit["failed_requirements"]
+    assert "patch_commit_ledger errors must be a list" in json.dumps(audit)
+
+
+def test_readiness_audit_rejects_string_live_artifact_validation_errors(tmp_path: Path, monkeypatch) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+
+    def malformed_proof_floor_artifacts(*args, **kwargs):
+        return {
+            "schema": "pdf_lab.second_pass.scillm_proof_floor_artifact_validation.v1",
+            "ok": True,
+            "errors": "proof floor validation was malformed",
+        }
+
+    monkeypatch.setattr(harness, "validate_scillm_proof_floor_artifacts", malformed_proof_floor_artifacts)
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[],
+        aggregate={"ok": True, "errors": [], "status_counts": {}, "unresolved_count": 0},
+        patch_mode="live",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": []},
+        scillm_proof_floor={"schema": "pdf_lab.second_pass.scillm_proof_floor.v1", "ok": True, "errors": []},
+        opencode_completion_canary={"schema": "pdf_lab.second_pass.opencode_completion_canary.v1", "ok": True, "errors": []},
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation={"ok": True, "missing_artifacts": []},
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation={"ok": True, "missing_artifacts": []},
+        candidate_manifest_integrity_validation={"ok": True, "errors": []},
+        candidate_sample_linkage_validation={"ok": True, "errors": []},
+        deterministic_execution_plan_validation={"ok": True, "errors": []},
+    )
+
+    assert audit["ok"] is False
+    assert "live scillm proof floor passed" in audit["failed_requirements"]
+    assert "scillm_proof_floor_artifact_validation errors must be a list" in json.dumps(audit)
+
+
 def test_run_scillm_proof_floor_requires_positive_and_negative_chat_contracts(tmp_path: Path, monkeypatch) -> None:
     harness = _load_module()
     calls: list[tuple[str, str, bool]] = []
@@ -5744,6 +5819,34 @@ def test_build_live_scillm_canary_bug_report_surfaces_failed_transport_write(tmp
     assert report["failed_checks"][0]["check_id"] == "scillm_transport_write_canary"
     assert report["failed_checks"][0]["errors"] == ["scillm_transport_write_canary_call_failed"]
     assert "Fix the live scillm/OpenCode substrate" in report["scillm_project_agent_bug_report"]
+
+
+def test_build_live_scillm_canary_bug_report_rejects_string_failed_check_errors(tmp_path: Path) -> None:
+    harness = _load_module()
+    code_root = tmp_path / "code-root"
+    code_root.mkdir()
+
+    report = harness.build_live_scillm_canary_bug_report(
+        out_dir=tmp_path / "out",
+        code_root=code_root,
+        patch_mode="live",
+        patch_backend="scillm_orchestrator",
+        code_root_visibility={"schema": "visibility", "ok": True, "errors": []},
+        scillm_proof_floor={"schema": "proof", "ok": True, "errors": []},
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary={"schema": "readonly", "ok": True, "errors": []},
+        scillm_transport_write_canary={
+            "schema": "pdf_lab.second_pass.scillm_transport_write_canary.v1",
+            "ok": False,
+            "errors": "scillm_transport_write_canary_call_failed",
+            "error_artifact": "scillm_transport_write_canary_error.json",
+            "validation_artifact": "scillm_transport_write_canary_validation.json",
+        },
+    )
+
+    assert report["ok"] is False
+    assert report["failed_checks"][0]["check_id"] == "scillm_transport_write_canary"
+    assert report["failed_checks"][0]["errors"] == ["scillm_transport_write_canary errors must be a list"]
 
 
 def test_transport_canary_success_artifacts_do_not_require_error_artifact(tmp_path: Path) -> None:

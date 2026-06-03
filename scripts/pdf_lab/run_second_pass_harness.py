@@ -1754,7 +1754,7 @@ def build_live_scillm_canary_bug_report(
             "check_id": check_id,
             "schema": payload.get("schema"),
             "status": payload.get("status"),
-            "errors": payload.get("errors") or [],
+            "errors": strict_validation_error_list(payload, check_id)[0],
             "request_artifact": payload.get("request_artifact"),
             "receipt_artifact": payload.get("receipt_artifact"),
             "error_artifact": payload.get("error_artifact"),
@@ -2452,6 +2452,19 @@ def package_validation_errors(validation: dict[str, Any] | None) -> list[str]:
     return errors
 
 
+def strict_validation_error_list(payload: dict[str, Any] | None, label: str) -> tuple[list[str], bool]:
+    if not isinstance(payload, dict):
+        return [], False
+    raw_errors = payload.get("errors", [])
+    if raw_errors is None:
+        return [], False
+    if not isinstance(raw_errors, list):
+        return [f"{label} errors must be a list"], True
+    if not all(isinstance(error, str) for error in raw_errors):
+        return [f"{label} errors must be a list of strings"], True
+    return raw_errors, False
+
+
 def _without_bundle_consistency_field(payload: Any) -> Any:
     if isinstance(payload, dict):
         return {
@@ -2636,16 +2649,7 @@ def build_harness_readiness_audit(
         )
 
     def validation_error_list(payload: dict[str, Any] | None, label: str) -> tuple[list[str], bool]:
-        if not isinstance(payload, dict):
-            return [], False
-        raw_errors = payload.get("errors", [])
-        if raw_errors is None:
-            return [], False
-        if not isinstance(raw_errors, list):
-            return [f"{label} errors must be a list"], True
-        if not all(isinstance(error, str) for error in raw_errors):
-            return [f"{label} errors must be a list of strings"], True
-        return raw_errors, False
+        return strict_validation_error_list(payload, label)
 
     add_check(
         "candidate manifest exists",
@@ -2721,11 +2725,15 @@ def build_harness_readiness_audit(
         page_results=page_results,
         aggregate=aggregate,
     )
+    page_result_sample_match_errors, page_result_sample_match_errors_malformed = validation_error_list(
+        page_result_sample_match_validation,
+        "page_result_sample_match_validation",
+    )
     add_check(
         "page results match sampled page cases",
-        bool(page_result_sample_match_validation.get("ok") is True),
+        bool(page_result_sample_match_validation.get("ok") is True and not page_result_sample_match_errors_malformed),
         page_result_sample_match_validation,
-        list(page_result_sample_match_validation.get("errors") or []),
+        page_result_sample_match_errors,
     )
     live_patch_required = patch_mode == "live" and patch_backend in {"opencode_serve", "scillm_orchestrator"}
     live_opencode_serve_required = patch_mode == "live" and patch_backend == "opencode_serve"
@@ -2763,6 +2771,25 @@ def build_harness_readiness_audit(
         code_root_visibility,
         "code_root_visibility",
     )
+    scillm_proof_floor_artifact_errors, scillm_proof_floor_artifact_errors_malformed = validation_error_list(
+        scillm_proof_floor_artifact_validation,
+        "scillm_proof_floor_artifact_validation",
+    )
+    opencode_completion_canary_artifact_errors, opencode_completion_canary_artifact_errors_malformed = validation_error_list(
+        opencode_completion_canary_artifact_validation,
+        "opencode_completion_canary_artifact_validation",
+    )
+    (
+        scillm_transport_readonly_canary_artifact_errors,
+        scillm_transport_readonly_canary_artifact_errors_malformed,
+    ) = validation_error_list(
+        scillm_transport_readonly_canary_artifact_validation,
+        "scillm_transport_readonly_canary_artifact_validation",
+    )
+    scillm_transport_write_canary_artifact_errors, scillm_transport_write_canary_artifact_errors_malformed = validation_error_list(
+        scillm_transport_write_canary_artifact_validation,
+        "scillm_transport_write_canary_artifact_validation",
+    )
     add_check(
         "live scillm code root visibility passed",
         (not live_patch_required)
@@ -2777,7 +2804,8 @@ def build_harness_readiness_audit(
     )
     add_check(
         "live scillm proof floor passed",
-        (not live_patch_required) or bool(scillm_proof_floor_artifact_validation.get("ok") is True),
+        (not live_patch_required)
+        or bool(scillm_proof_floor_artifact_validation.get("ok") is True and not scillm_proof_floor_artifact_errors_malformed),
         {
             "required": live_patch_required,
             "patch_mode": patch_mode,
@@ -2785,12 +2813,15 @@ def build_harness_readiness_audit(
             "proof_floor": scillm_proof_floor,
             "artifact_validation": scillm_proof_floor_artifact_validation,
         },
-        list(scillm_proof_floor_artifact_validation.get("errors") or []),
+        scillm_proof_floor_artifact_errors,
     )
     add_check(
         "live opencode serve write-capability canary passed",
         (not live_opencode_serve_required)
-        or bool(opencode_completion_canary_artifact_validation.get("ok") is True),
+        or bool(
+            opencode_completion_canary_artifact_validation.get("ok") is True
+            and not opencode_completion_canary_artifact_errors_malformed
+        ),
         {
             "required": live_opencode_serve_required,
             "patch_mode": patch_mode,
@@ -2800,12 +2831,15 @@ def build_harness_readiness_audit(
             "validation_artifact": (opencode_completion_canary or {}).get("validation_artifact"),
             "cleanup_artifact": (opencode_completion_canary or {}).get("cleanup_artifact"),
         },
-        list(opencode_completion_canary_artifact_validation.get("errors") or []),
+        opencode_completion_canary_artifact_errors,
     )
     add_check(
         "live scillm transport read-only canary passed",
         (not live_scillm_orchestrator_required)
-        or bool(scillm_transport_readonly_canary_artifact_validation.get("ok") is True),
+        or bool(
+            scillm_transport_readonly_canary_artifact_validation.get("ok") is True
+            and not scillm_transport_readonly_canary_artifact_errors_malformed
+        ),
         {
             "required": live_scillm_orchestrator_required,
             "patch_mode": patch_mode,
@@ -2813,12 +2847,15 @@ def build_harness_readiness_audit(
             "canary": scillm_transport_readonly_canary,
             "artifact_validation": scillm_transport_readonly_canary_artifact_validation,
         },
-        list(scillm_transport_readonly_canary_artifact_validation.get("errors") or []),
+        scillm_transport_readonly_canary_artifact_errors,
     )
     add_check(
         "live scillm transport write-capability canary passed",
         (not live_scillm_orchestrator_required)
-        or bool(scillm_transport_write_canary_artifact_validation.get("ok") is True),
+        or bool(
+            scillm_transport_write_canary_artifact_validation.get("ok") is True
+            and not scillm_transport_write_canary_artifact_errors_malformed
+        ),
         {
             "required": live_scillm_orchestrator_required,
             "patch_mode": patch_mode,
@@ -2828,7 +2865,7 @@ def build_harness_readiness_audit(
             "validation_artifact": (scillm_transport_write_canary or {}).get("validation_artifact"),
             "cleanup_artifact": (scillm_transport_write_canary or {}).get("cleanup_artifact"),
         },
-        list(scillm_transport_write_canary_artifact_validation.get("errors") or []),
+        scillm_transport_write_canary_artifact_errors,
     )
     live_canary_bug_report_errors: list[str] = []
     if live_patch_required:
@@ -3113,12 +3150,16 @@ def build_harness_readiness_audit(
     )
     add_check(
         "patch commit ledger passed",
-        bool(patch_commit_ledger and patch_commit_ledger.get("ok") is True),
+        bool(
+            patch_commit_ledger
+            and patch_commit_ledger.get("ok") is True
+            and not validation_error_list(patch_commit_ledger, "patch_commit_ledger")[1]
+        ),
         {
             "commit_count": (patch_commit_ledger or {}).get("commit_count"),
             "commit_shas": (patch_commit_ledger or {}).get("commit_shas"),
         },
-        list((patch_commit_ledger or {}).get("errors") or []),
+        validation_error_list(patch_commit_ledger, "patch_commit_ledger")[0],
     )
     raw_patched_confirmed_count = aggregate.get("patched_confirmed_count")
     if raw_patched_confirmed_count is not None:
