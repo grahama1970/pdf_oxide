@@ -857,6 +857,22 @@ def test_validate_sampling_gate_rejects_boolean_forced_page_references() -> None
     assert "sampled_page_cases probabilistic_selected_pages must be a list of page numbers when forced pages are accepted" in probabilistic_errors
 
 
+def test_validate_sampling_gate_rejects_coerced_empty_forced_pages() -> None:
+    harness = _load_module()
+    gate = harness.validate_sampling_gate(
+        manifest={"candidate_count": 8},
+        sampled_cases={
+            "selected_count": 2,
+            "seed": 1234,
+            "forced_pages": {"requested": [], "accepted": "", "rejected": []},
+            "sampling_audit": _passing_sampling_audit(candidate_count=8, selected_count=2, seed=1234),
+        },
+    )
+
+    assert gate["ok"] is False
+    assert "sampled_page_cases forced_pages.accepted must be a list of page numbers" in gate["errors"]
+
+
 def test_validate_sampling_gate_accepts_additive_forced_page_accounting() -> None:
     harness = _load_module()
     gate = harness.validate_sampling_gate(

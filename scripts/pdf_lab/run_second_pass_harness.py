@@ -820,7 +820,7 @@ def validate_sampling_gate(
         errors=errors,
     )
     if isinstance(forced_pages, dict):
-        accepted_forced_pages = forced_pages.get("accepted") or []
+        accepted_forced_pages = forced_pages.get("accepted", [])
     if not isinstance(accepted_forced_pages, list) or not all(is_plain_int(page) and page >= 1 for page in accepted_forced_pages):
         errors.append("sampled_page_cases forced_pages.accepted must be a list of page numbers")
         accepted_forced_pages = []
