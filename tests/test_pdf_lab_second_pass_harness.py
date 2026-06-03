@@ -1848,6 +1848,7 @@ def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_pat
                 "page_number": 1,
                 "terminal_status": "patched_confirmed",
                 "commit_sha": "abc123",
+                "commit_gate_ok": True,
                 "commit_acceptance_ok": True,
                 "commit_revertability_ok": True,
                 "commit_exact_file_match": True,
@@ -2046,6 +2047,7 @@ def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_pat
     assert ledger["entries"][0]["ok"] is True
     assert ledger["entries"][0]["terminal_ledger_commit_sha"] == "abc123"
     assert ledger["entries"][0]["terminal_ledger_commit_acceptance_ok"] is True
+    assert ledger["entries"][0]["terminal_ledger_commit_gate_ok"] is True
     assert ledger["entries"][0]["terminal_ledger_commit_revertability_ok"] is True
     assert ledger["entries"][0]["terminal_ledger_validation_ok"] is True
     assert ledger["entries"][0]["review_bundle_validation_ok"] is True
@@ -2199,6 +2201,7 @@ def test_build_patch_commit_ledger_rejects_false_acceptance_content(tmp_path: Pa
     assert ledger["entries"][0]["ok"] is False
     assert ledger["entries"][0]["terminal_ledger_commit_sha"] == "other-sha"
     assert ledger["entries"][0]["terminal_ledger_commit_acceptance_ok"] is False
+    assert ledger["entries"][0]["terminal_ledger_commit_gate_ok"] is None
     assert ledger["entries"][0]["terminal_ledger_commit_revertability_ok"] is False
     assert ledger["entries"][0]["terminal_ledger_validation_ok"] is False
     assert ledger["entries"][0]["review_bundle_validation_ok"] is False
@@ -2224,6 +2227,44 @@ def test_build_patch_commit_ledger_rejects_false_acceptance_content(tmp_path: Pa
     assert "commit_gate.revertability_check.ok is not true" in errors
     assert "commit_gate.revertability_check commit_sha does not match page result" in errors
     assert "revertability_check.ok is not true" in errors
+
+
+def test_build_patch_commit_ledger_rejects_terminal_commit_gate_flag_false(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="patched_confirmed",
+        commit_sha="abc123",
+        extra_evidence=PATCHED_CONFIRMED_ARTIFACTS,
+    )
+    terminal = json.loads((case_dir / "terminal_ledger.json").read_text(encoding="utf-8"))
+    terminal["commit_gate_ok"] = False
+    (case_dir / "terminal_ledger.json").write_text(json.dumps(terminal), encoding="utf-8")
+
+    ledger = harness.build_patch_commit_ledger(
+        out_dir=tmp_path / "out",
+        page_results=[
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "terminal_status": "patched_confirmed",
+                "reason": "verified",
+                "case_dir": str(case_dir),
+                "commit_sha": "abc123",
+                "evidence_artifacts": [
+                    "terminal_ledger_validation.json",
+                    *PATCHED_CONFIRMED_ARTIFACTS,
+                ],
+            }
+        ],
+    )
+
+    assert ledger["ok"] is False
+    assert ledger["entries"][0]["ok"] is False
+    assert ledger["entries"][0]["terminal_ledger_commit_gate_ok"] is False
+    assert "terminal_ledger commit_gate_ok is not true" in "\n".join(ledger["errors"])
 
 
 def test_build_patch_commit_ledger_rejects_terminal_page_identity_mismatch(tmp_path: Path) -> None:

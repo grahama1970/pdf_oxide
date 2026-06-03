@@ -2076,6 +2076,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("terminal_ledger terminal_status is not patched_confirmed")
             if terminal_ledger.get("commit_sha") != commit_sha:
                 entry_errors.append("terminal_ledger commit_sha does not match page result")
+            if terminal_ledger.get("commit_gate_ok") is not True:
+                entry_errors.append("terminal_ledger commit_gate_ok is not true")
             if terminal_ledger.get("commit_acceptance_ok") is not True:
                 entry_errors.append("terminal_ledger commit_acceptance_ok is not true")
             if terminal_ledger.get("commit_revertability_ok") is not True:
@@ -2241,6 +2243,9 @@ def build_patch_commit_ledger(
                 if terminal_ledger_validation
                 else None,
                 "terminal_ledger_commit_acceptance_ok": terminal_ledger.get("commit_acceptance_ok")
+                if terminal_ledger
+                else None,
+                "terminal_ledger_commit_gate_ok": terminal_ledger.get("commit_gate_ok")
                 if terminal_ledger
                 else None,
                 "terminal_ledger_commit_revertability_ok": terminal_ledger.get("commit_revertability_ok")
