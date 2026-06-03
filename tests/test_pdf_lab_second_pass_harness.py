@@ -7194,6 +7194,40 @@ def test_validate_harness_review_bundle_consistency_checks_final_gate(tmp_path: 
     assert "harness_final_gate.json in harness review bundle does not match persisted artifact" in validation["errors"]
 
 
+def test_validate_harness_review_bundle_consistency_rejects_non_object_top_level_artifact(tmp_path: Path) -> None:
+    harness = _load_module()
+    out_dir = tmp_path / "out"
+    out_dir.mkdir()
+    report_path = out_dir / "harness_report.json"
+    readiness_audit_path = out_dir / "harness_readiness_audit.json"
+    bundle_validation_path = out_dir / "harness_review_bundle_zip.json"
+    final_gate_path = out_dir / "harness_final_gate.json"
+    zip_path = out_dir / "harness_review_bundle.zip"
+
+    report_path.write_text(json.dumps({"schema": "report", "final_gate": {"ok": True}}), encoding="utf-8")
+    readiness_audit_path.write_text(json.dumps({"schema": "audit", "ok": True}), encoding="utf-8")
+    bundle_validation_path.write_text(json.dumps({"schema": "bundle", "ok": True}), encoding="utf-8")
+    final_gate_path.write_text(json.dumps(["not-object"]), encoding="utf-8")
+
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.write(report_path, arcname=report_path.name)
+        archive.write(readiness_audit_path, arcname=readiness_audit_path.name)
+        archive.write(bundle_validation_path, arcname=bundle_validation_path.name)
+        archive.write(final_gate_path, arcname=final_gate_path.name)
+
+    validation = harness.validate_harness_review_bundle_consistency(
+        zip_path=zip_path,
+        report_path=report_path,
+        readiness_audit_path=readiness_audit_path,
+        bundle_validation_path=bundle_validation_path,
+        final_gate_path=final_gate_path,
+    )
+
+    assert validation["ok"] is False
+    assert validation["comparisons"]["harness_final_gate.json"] is False
+    assert "harness_final_gate.json in harness review bundle is not a JSON object" in validation["errors"]
+
+
 def test_build_harness_final_gate_passes_only_when_readiness_and_bundle_consistency_pass() -> None:
     harness = _load_module()
 

@@ -2737,6 +2737,14 @@ def validate_harness_review_bundle_consistency(
                     errors.append(f"{arcname} consistency read failed: {type(exc).__name__}: {exc}")
                     comparisons[arcname] = False
                     continue
+                if not isinstance(zipped_payload, dict):
+                    errors.append(f"{arcname} in harness review bundle is not a JSON object")
+                    comparisons[arcname] = False
+                    continue
+                if not isinstance(persisted_payload, dict):
+                    errors.append(f"{arcname} persisted artifact is not a JSON object")
+                    comparisons[arcname] = False
+                    continue
                 if arcname == report_path.name:
                     zipped_payload = _without_bundle_consistency_field(zipped_payload)
                     persisted_payload = _without_bundle_consistency_field(persisted_payload)
