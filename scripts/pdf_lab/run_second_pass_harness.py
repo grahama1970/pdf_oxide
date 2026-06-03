@@ -1896,6 +1896,38 @@ def validate_scillm_patch_delegate_bug_report_zip(
     }
 
 
+def validate_commit_gate_acceptance(commit_gate: dict[str, Any] | None) -> dict[str, Any]:
+    errors: list[str] = []
+    if not isinstance(commit_gate, dict):
+        errors.append("missing commit_gate")
+        commit_gate = {}
+    revertability = commit_gate.get("revertability_check")
+    if commit_gate.get("schema") != "pdf_lab.second_pass.commit_gate.v1":
+        errors.append("commit_gate schema mismatch")
+    if commit_gate.get("ok") is not True:
+        errors.append("commit_gate ok is not true")
+    commit_sha = commit_gate.get("commit_sha")
+    if not isinstance(commit_sha, str) or not commit_sha:
+        errors.append("commit_gate commit_sha must be a non-empty string")
+    if commit_gate.get("exact_file_match") is not True:
+        errors.append("commit_gate exact_file_match is not true")
+    if not isinstance(revertability, dict) or revertability.get("ok") is not True:
+        errors.append("commit_gate revertability_check ok is not true")
+    elif revertability.get("schema") != "pdf_lab.second_pass.revertability_check.v1":
+        errors.append("commit_gate revertability_check schema mismatch")
+    elif revertability.get("commit_sha") != commit_gate.get("commit_sha"):
+        errors.append("commit_gate revertability_check commit_sha does not match commit_gate commit_sha")
+    return {
+        "schema": "pdf_lab.second_pass.commit_acceptance_gate.v1",
+        "ok": not errors,
+        "errors": errors,
+        "commit_sha": commit_gate.get("commit_sha"),
+        "commit_gate_ok": commit_gate.get("ok"),
+        "exact_file_match": commit_gate.get("exact_file_match"),
+        "revertability_ok": revertability.get("ok") if isinstance(revertability, dict) else None,
+    }
+
+
 def build_patch_commit_ledger(
     *,
     out_dir: Path,
@@ -2141,6 +2173,10 @@ def build_patch_commit_ledger(
                 entry_errors.append("commit_acceptance_gate.ok is not true")
             if commit_acceptance.get("commit_sha") != commit_sha:
                 entry_errors.append("commit_acceptance_gate commit_sha does not match page result")
+            if commit_gate:
+                recomputed_commit_acceptance = validate_commit_gate_acceptance(commit_gate)
+                if commit_acceptance != recomputed_commit_acceptance:
+                    entry_errors.append("commit_acceptance_gate does not match recomputed commit_gate acceptance")
         if commit_gate:
             if commit_gate.get("schema") != "pdf_lab.second_pass.commit_gate.v1":
                 entry_errors.append("commit_gate schema mismatch")

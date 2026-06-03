@@ -289,7 +289,11 @@ def _write_page_dag_case(
                     {
                         "schema": "pdf_lab.second_pass.commit_acceptance_gate.v1",
                         "ok": True,
+                        "errors": [],
                         "commit_sha": commit_sha,
+                        "commit_gate_ok": True,
+                        "exact_file_match": True,
+                        "revertability_ok": True,
                     }
                 ),
                 encoding="utf-8",
@@ -1879,7 +1883,11 @@ def test_build_patch_commit_ledger_requires_artifacts_and_unique_commits(tmp_pat
             {
                 "schema": "pdf_lab.second_pass.commit_acceptance_gate.v1",
                 "ok": True,
+                "errors": [],
                 "commit_sha": "abc123",
+                "commit_gate_ok": True,
+                "exact_file_match": True,
+                "revertability_ok": True,
             }
         ),
         encoding="utf-8",
@@ -2651,6 +2659,43 @@ def test_build_patch_commit_ledger_rejects_stale_nested_revertability_check(tmp_
     assert ledger["ok"] is False
     assert ledger["entries"][0]["ok"] is False
     assert "commit_gate.revertability_check does not match revertability_check.json" in "\n".join(ledger["errors"])
+
+
+def test_build_patch_commit_ledger_rejects_stale_commit_acceptance_gate(tmp_path: Path) -> None:
+    harness = _load_module()
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="patched_confirmed",
+        commit_sha="abc123",
+        extra_evidence=PATCHED_CONFIRMED_ARTIFACTS,
+    )
+    commit_acceptance = json.loads((case_dir / "commit_acceptance_gate.json").read_text(encoding="utf-8"))
+    commit_acceptance["exact_file_match"] = False
+    (case_dir / "commit_acceptance_gate.json").write_text(json.dumps(commit_acceptance), encoding="utf-8")
+
+    ledger = harness.build_patch_commit_ledger(
+        out_dir=tmp_path / "out",
+        page_results=[
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "terminal_status": "patched_confirmed",
+                "reason": "verified",
+                "case_dir": str(case_dir),
+                "commit_sha": "abc123",
+                "evidence_artifacts": [
+                    "terminal_ledger_validation.json",
+                    *PATCHED_CONFIRMED_ARTIFACTS,
+                ],
+            }
+        ],
+    )
+
+    assert ledger["ok"] is False
+    assert ledger["entries"][0]["ok"] is False
+    assert "commit_acceptance_gate does not match recomputed commit_gate acceptance" in "\n".join(ledger["errors"])
 
 
 def test_package_patch_commit_ledger(tmp_path: Path) -> None:
