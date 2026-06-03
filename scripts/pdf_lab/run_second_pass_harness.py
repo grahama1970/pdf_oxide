@@ -192,6 +192,13 @@ def validate_scillm_patch_delegate_bug_report_metadata(
         observed = report.get("observed") if isinstance(report.get("observed"), dict) else {}
         if observed.get("transport_run_id") != expected_transport_run_id:
             errors.append("scillm patch delegate bug report transport_run_id does not match page result")
+    observed = report.get("observed")
+    if not isinstance(observed, dict):
+        errors.append("scillm patch delegate bug report observed is not an object")
+    else:
+        validation_errors = observed.get("validation_errors", [])
+        if not isinstance(validation_errors, list) or not all(isinstance(error, str) for error in validation_errors):
+            errors.append("scillm patch delegate bug report observed.validation_errors must be a list of strings")
     return errors
 
 
