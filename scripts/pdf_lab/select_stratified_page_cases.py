@@ -609,15 +609,37 @@ def main() -> int:
     if args.sample_size < 1:
         print("--sample-size must be >= 1", file=sys.stderr)
         return 2
-    manifest = load_json(args.manifest)
-    result = select_page_cases(
-        manifest,
-        sample_size=args.sample_size,
-        seed=args.seed,
-        min_per_stratum=args.min_per_stratum,
-        random_reserve_fraction=args.random_reserve_fraction,
-        forced_pages=load_forced_pages(args.forced_pages_json),
-    )
+    try:
+        manifest = load_json(args.manifest)
+        result = select_page_cases(
+            manifest,
+            sample_size=args.sample_size,
+            seed=args.seed,
+            min_per_stratum=args.min_per_stratum,
+            random_reserve_fraction=args.random_reserve_fraction,
+            forced_pages=load_forced_pages(args.forced_pages_json),
+        )
+    except Exception as exc:  # noqa: BLE001 - sampler CLI must leave deterministic failure evidence.
+        result = {
+            "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+            "ok": False,
+            "errors": [f"stratified page sampling failed: {type(exc).__name__}: {exc}"],
+            "created_at": utc_now(),
+            "manifest_path": str(args.manifest),
+            "sample_size": args.sample_size,
+            "seed": args.seed,
+            "selected_count": 0,
+            "selected_pages": [],
+            "page_cases": [],
+            "sampling_audit": {
+                "schema": "pdf_lab.second_pass.sampling_audit.v1",
+                "ok": False,
+                "errors": [f"stratified page sampling failed: {type(exc).__name__}: {exc}"],
+            },
+        }
+        write_json(args.out, result)
+        print(json.dumps({"out": str(args.out), "selected_pages": [], "ok": False}), file=sys.stderr)
+        return 2
     write_json(args.out, result)
     print(json.dumps({"out": str(args.out), "selected_pages": result["selected_pages"]}))
     return 0

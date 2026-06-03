@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import sys
 from pathlib import Path
 
 
@@ -107,6 +109,40 @@ def test_sampler_rejects_invalid_candidate_manifest_contract() -> None:
     assert "manifest candidates[2].candidate_id must be non-empty" in message
     assert "manifest candidates[2].preset_type must be non-empty" in message
     assert "manifest candidate_id values must be unique: ['dup']" in message
+
+
+def test_sampler_cli_writes_failure_artifact_for_invalid_manifest(tmp_path: Path, monkeypatch) -> None:
+    sampler = _load_module()
+    manifest_path = tmp_path / "manifest.json"
+    out_path = tmp_path / "sampled_page_cases.json"
+    manifest_path.write_text(json.dumps(["not-object"]), encoding="utf-8")
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "select_stratified_page_cases.py",
+            "--manifest",
+            str(manifest_path),
+            "--out",
+            str(out_path),
+            "--sample-size",
+            "1",
+            "--seed",
+            "1",
+        ],
+    )
+
+    exit_code = sampler.main()
+
+    payload = json.loads(out_path.read_text(encoding="utf-8"))
+    assert exit_code == 2
+    assert payload["schema"] == "pdf_lab.second_pass.sampled_page_cases.v1"
+    assert payload["ok"] is False
+    assert payload["selected_count"] == 0
+    assert payload["selected_pages"] == []
+    assert payload["page_cases"] == []
+    assert "manifest must be a JSON object" in payload["errors"][0]
+    assert payload["sampling_audit"]["ok"] is False
 
 
 def test_sampler_rejects_boolean_integer_fields_in_manifest_contract() -> None:
