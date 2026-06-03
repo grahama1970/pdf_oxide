@@ -4749,6 +4749,17 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     attempt_errors = list(attempt.get("errors") or [])
                     if validation_errors != attempt_errors:
                         errors.append(f"patch_attempts_ledger attempts[{index}].errors do not match validation_artifact")
+                if attempt.get("ok") is True:
+                    for artifact_key in ["request_artifact", "receipt_artifact"]:
+                        attempt_artifact = attempt.get(artifact_key)
+                        if not isinstance(attempt_artifact, str) or not attempt_artifact:
+                            errors.append(f"patch_attempts_ledger attempts[{index}].{artifact_key} must be non-empty for ok attempt")
+                            continue
+                        if attempt_artifact not in evidence_artifacts:
+                            errors.append(
+                                f"patch_attempts_ledger attempts[{index}].{artifact_key} is not declared terminal evidence"
+                            )
+                        read_required_json_artifact(attempt_artifact)
                 if attempt.get("ok") is True or index == len(attempts) - 1:
                     selected_or_final_validation = attempt_validation
             if patch_validation and selected_or_final_validation:
@@ -6956,6 +6967,13 @@ def run_page_case(
             str(attempt["validation_artifact"])
             for attempt in patch_attempts_ledger.get("attempts") or []
             if isinstance(attempt, dict) and attempt.get("validation_artifact")
+        )
+        terminal["evidence_artifacts"].extend(
+            str(attempt[artifact_key])
+            for attempt in patch_attempts_ledger.get("attempts") or []
+            if isinstance(attempt, dict) and attempt.get("ok") is True
+            for artifact_key in ["request_artifact", "receipt_artifact"]
+            if attempt.get(artifact_key)
         )
     if patch_delegate_bug_report_artifact is not None:
         terminal["evidence_artifacts"].append(patch_delegate_bug_report_artifact)
