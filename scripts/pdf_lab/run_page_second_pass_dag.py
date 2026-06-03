@@ -1736,6 +1736,42 @@ def build_scillm_repair_plan_request(
     }
 
 
+def validate_repair_plan_request_contract(repair_plan_request: dict[str, Any]) -> dict[str, Any]:
+    errors: list[str] = []
+    if repair_plan_request.get("schema") != "pdf_lab.second_pass.scillm_repair_plan_request.v1":
+        errors.append("repair_plan_request schema mismatch")
+    if repair_plan_request.get("endpoint") != "POST /v1/chat/completions":
+        errors.append("repair_plan_request endpoint mismatch")
+    if repair_plan_request.get("required_response_schema") != "pdf_lab.second_pass.repair_plan.v1":
+        errors.append("repair_plan_request required_response_schema mismatch")
+    payload = repair_plan_request.get("scillm_payload")
+    if not isinstance(payload, dict):
+        errors.append("repair_plan_request scillm_payload must be an object")
+        payload = {}
+    if payload.get("response_format") != {"type": "json_object"}:
+        errors.append("repair_plan_request response_format must require json_object")
+    if payload.get("scillm_metadata") != repair_plan_request.get("scillm_metadata"):
+        errors.append("repair_plan_request scillm_payload metadata must match top-level metadata")
+    metadata = payload.get("scillm_metadata")
+    if not isinstance(metadata, dict) or not metadata.get("batch_id") or not metadata.get("item_id"):
+        errors.append("repair_plan_request scillm_metadata must include batch_id and item_id")
+    page_case = repair_plan_request.get("page_case")
+    if not isinstance(page_case, dict):
+        errors.append("repair_plan_request page_case must be an object")
+        page_case = {}
+    case_id = page_case.get("case_id")
+    if not isinstance(case_id, str) or not case_id:
+        errors.append("repair_plan_request page_case.case_id must be non-empty")
+    elif isinstance(metadata, dict) and metadata.get("item_id") != f"{case_id}:repair_plan":
+        errors.append("repair_plan_request scillm_metadata.item_id must match page_case.case_id repair-plan suffix")
+    return {
+        "schema": "pdf_lab.second_pass.repair_plan_request_validation.v1",
+        "ok": not errors,
+        "errors": errors,
+        "scillm_metadata": metadata if isinstance(metadata, dict) else None,
+    }
+
+
 def validate_repair_plan(
     plan: dict[str, Any] | None,
     *,
@@ -4569,21 +4605,43 @@ def run_page_case(
                 repair_plan_request_artifact = f"{attempt_prefix}repair_plan_request.json"
                 write_json(case_dir / repair_plan_request_artifact, repair_plan_request)
                 write_json(case_dir / "repair_plan_request.json", repair_plan_request)
+                repair_plan_request_validation = validate_repair_plan_request_contract(repair_plan_request)
+                repair_plan_request_validation_artifact = f"{attempt_prefix}repair_plan_request_validation.json"
+                write_json(case_dir / repair_plan_request_validation_artifact, repair_plan_request_validation)
+                write_json(case_dir / "repair_plan_request_validation.json", repair_plan_request_validation)
                 receipts.write(
                     f"scillm_repair_plan_attempt_{attempt_index:02d}",
                     input_artifacts=["review_response.json", "review_validation.json", "patch_baseline.json"],
-                    output_artifacts=[repair_plan_request_artifact, "repair_plan_request.json"],
+                    output_artifacts=[
+                        repair_plan_request_artifact,
+                        "repair_plan_request.json",
+                        repair_plan_request_validation_artifact,
+                        "repair_plan_request_validation.json",
+                    ],
                     command_or_endpoint="prepare:POST /v1/chat/completions",
                     validator_result={
-                        "ok": True,
+                        "ok": repair_plan_request_validation["ok"],
+                        "errors": repair_plan_request_validation["errors"],
                         "patch_mode": patch_mode,
                         "agent": attempt_agent,
                         "attempt_index": attempt_index,
                         "repair_strategy": repair_strategy,
                     },
-                    next_allowed_nodes=[attempt_node_id],
+                    next_allowed_nodes=[attempt_node_id] if repair_plan_request_validation["ok"] else ["write_page_terminal_ledger"],
+                    exit_code=0 if repair_plan_request_validation["ok"] else 1,
                 )
-                if patch_mode == "live":
+                if patch_mode == "live" and not repair_plan_request_validation["ok"]:
+                    repair_plan_error = {
+                        "schema": "pdf_lab.second_pass.substrate_error.v1",
+                        "node_id": f"scillm_repair_plan_attempt_{attempt_index:02d}",
+                        "endpoint": "prepare:POST /v1/chat/completions",
+                        "attempt_index": attempt_index,
+                        "error_type": "RepairPlanRequestValidationFailed",
+                        "error": "; ".join(repair_plan_request_validation["errors"]),
+                    }
+                    write_json(case_dir / f"{attempt_prefix}repair_plan_error.json", repair_plan_error)
+                    write_json(case_dir / "repair_plan_error.json", repair_plan_error)
+                elif patch_mode == "live":
                     try:
                         attempt_repair_plan_receipt = call_scillm_repair_plan(
                             repair_plan_request,
@@ -4607,10 +4665,15 @@ def run_page_case(
                         write_json(case_dir / f"{attempt_prefix}repair_plan_error.json", repair_plan_error)
                         write_json(case_dir / "repair_plan_error.json", repair_plan_error)
                 if repair_plan_error is not None:
+                    repair_plan_validation_errors = (
+                        ["repair_plan_request_validation_failed", *repair_plan_request_validation["errors"]]
+                        if repair_plan_error.get("error_type") == "RepairPlanRequestValidationFailed"
+                        else ["repair_plan_call_failed"]
+                    )
                     attempt_repair_plan_validation = {
                         "schema": "pdf_lab.second_pass.repair_plan_validation.v1",
                         "ok": False,
-                        "errors": ["repair_plan_call_failed"],
+                        "errors": repair_plan_validation_errors,
                     }
                 elif attempt_repair_plan_receipt is None:
                     attempt_repair_plan_validation = {
@@ -4649,6 +4712,7 @@ def run_page_case(
                             "error_artifact": None,
                             "validation_artifact": validation_artifact,
                             "repair_plan_request_artifact": repair_plan_request_artifact,
+                            "repair_plan_request_validation_artifact": repair_plan_request_validation_artifact,
                             "repair_plan_receipt_artifact": f"{attempt_prefix}repair_plan_receipt.json" if attempt_repair_plan_receipt is not None else None,
                             "repair_plan_error_artifact": f"{attempt_prefix}repair_plan_error.json" if repair_plan_error is not None else None,
                             "repair_plan_validation_artifact": repair_plan_validation_artifact,
@@ -4957,6 +5021,9 @@ def run_page_case(
                         "diagnosis_error_artifact": f"{attempt_prefix}diagnosis_error.json" if attempt_diagnosis_error is not None else None,
                         "diagnosis_validation_artifact": f"{attempt_prefix}diagnosis_validation.json" if attempt_repair_diagnosis_validation is not None else None,
                         "repair_plan_request_artifact": f"{attempt_prefix}repair_plan_request.json" if repair_strategy == "chat_plan_split" else None,
+                        "repair_plan_request_validation_artifact": (
+                            f"{attempt_prefix}repair_plan_request_validation.json" if repair_strategy == "chat_plan_split" else None
+                        ),
                         "repair_plan_receipt_artifact": f"{attempt_prefix}repair_plan_receipt.json" if attempt_repair_plan_receipt is not None else None,
                         "repair_plan_error_artifact": f"{attempt_prefix}repair_plan_error.json" if repair_plan_error is not None else None,
                         "repair_plan_validation_artifact": f"{attempt_prefix}repair_plan_validation.json" if attempt_repair_plan_validation is not None else None,
@@ -5082,6 +5149,9 @@ def run_page_case(
                     "opencode_host_artifacts": attempt_opencode_host_artifacts,
                     "diagnosis_opencode_host_artifacts": attempt_diagnosis_opencode_host_artifacts,
                     "repair_plan_request_artifact": f"{attempt_prefix}repair_plan_request.json" if repair_strategy == "chat_plan_split" else None,
+                    "repair_plan_request_validation_artifact": (
+                        f"{attempt_prefix}repair_plan_request_validation.json" if repair_strategy == "chat_plan_split" else None
+                    ),
                     "repair_plan_receipt_artifact": f"{attempt_prefix}repair_plan_receipt.json" if attempt_repair_plan_receipt is not None else None,
                     "repair_plan_validation_artifact": f"{attempt_prefix}repair_plan_validation.json" if attempt_repair_plan_validation is not None else None,
                     "ok": patch_validation["ok"],
@@ -5116,7 +5186,11 @@ def run_page_case(
             + (["repair_diagnosis_request.json", "repair_diagnosis_validation.json"] if repair_diagnosis_validation is not None else [])
             + (["repair_diagnosis_receipt.json"] if repair_diagnosis_receipt is not None else [])
             + (["repair_diagnosis_error.json"] if repair_diagnosis_error is not None else [])
-            + (["repair_plan_request.json", "repair_plan_validation.json"] if repair_plan_validation is not None else [])
+            + (
+                ["repair_plan_request.json", "repair_plan_request_validation.json", "repair_plan_validation.json"]
+                if repair_plan_validation is not None
+                else []
+            )
             + (["repair_plan_receipt.json"] if repair_plan_receipt is not None else [])
             + (["repair_plan_error.json"] if repair_plan_error is not None else [])
             + ["patch_attempts_ledger.json"]
@@ -5484,7 +5558,7 @@ def run_page_case(
     if repair_diagnosis_error is not None:
         terminal["evidence_artifacts"].append("repair_diagnosis_error.json")
     if repair_plan_validation is not None:
-        terminal["evidence_artifacts"].extend(["repair_plan_request.json", "repair_plan_validation.json"])
+        terminal["evidence_artifacts"].extend(["repair_plan_request.json", "repair_plan_request_validation.json", "repair_plan_validation.json"])
     if repair_plan_receipt is not None:
         terminal["evidence_artifacts"].append("repair_plan_receipt.json")
     if repair_plan_error is not None:

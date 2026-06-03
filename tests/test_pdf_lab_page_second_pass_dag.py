@@ -1607,6 +1607,8 @@ def test_scillm_repair_plan_request_and_validation_are_bounded(tmp_path: Path) -
     assert "broken table-like content" in prompt
     assert "plan this defect" in prompt
     assert "must_not_be_in_repair_plan_prompt" not in prompt
+    request_validation = dag.validate_repair_plan_request_contract(request)
+    assert request_validation["ok"] is True
 
     validation = dag.validate_repair_plan(
         {
@@ -1624,6 +1626,37 @@ def test_scillm_repair_plan_request_and_validation_are_bounded(tmp_path: Path) -
     bad = dag.validate_repair_plan({"schema": "pdf_lab.second_pass.repair_plan.v1", "confidence": "certain"})
     assert bad["ok"] is False
     assert any("confidence" in error for error in bad["errors"])
+
+
+def test_validate_repair_plan_request_rejects_stale_page_case_item_id(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    request = dag.build_scillm_repair_plan_request(
+        case_dir=case_dir,
+        page_case={"case_id": "page_case_0001_p0003", "page_number": 3},
+        candidates=[{"candidate_id": "cand:p0003:0000:unknown_layout", "preset_type": "unknown_layout"}],
+        review_response={
+            "schema": "pdf_lab.second_pass.review_response.v1",
+            "page_status": "defect",
+            "candidate_findings": [
+                {
+                    "candidate_id": "cand:p0003:0000:unknown_layout",
+                    "status": "defect",
+                    "rationale": "plan this defect",
+                }
+            ],
+        },
+        model="gpt-5.5",
+        batch_id="batch-plan",
+    )
+    request["scillm_metadata"]["item_id"] = "page_case_9999_p9999:repair_plan"
+    request["scillm_payload"]["scillm_metadata"] = dict(request["scillm_metadata"])
+
+    validation = dag.validate_repair_plan_request_contract(request)
+
+    assert validation["ok"] is False
+    assert "repair_plan_request scillm_metadata.item_id must match page_case.case_id repair-plan suffix" in validation["errors"]
 
 
 def test_validate_repair_plan_rejects_stale_receipt_metadata() -> None:
@@ -2112,10 +2145,13 @@ def test_chat_plan_split_feeds_repair_plan_into_patch_prompt(tmp_path: Path, mon
     assert bug_report["observed"]["validation_errors"]
     assert bug_report["artifacts"]["request"] == "patch_request.json"
     assert (case_dir / "repair_plan_request.json").is_file()
+    assert (case_dir / "repair_plan_request_validation.json").is_file()
     assert (case_dir / "repair_plan_receipt.json").is_file()
     assert (case_dir / "repair_plan_validation.json").is_file()
+    assert "repair_plan_request_validation.json" in ledger["evidence_artifacts"]
     assert "repair_plan_receipt.json" in ledger["evidence_artifacts"]
     assert attempts["repair_strategy"] == "chat_plan_split"
+    assert attempts["attempts"][0]["repair_plan_request_validation_artifact"] == "patch_attempt_01_repair_plan_request_validation.json"
     assert attempts["attempts"][0]["repair_plan_receipt_artifact"] == "patch_attempt_01_repair_plan_receipt.json"
     assert "classify table-like unknown layout" in captured_patch_request["prompt"]
     assert "unknown layout classifier misses table-like content" in captured_patch_request["prompt"]
