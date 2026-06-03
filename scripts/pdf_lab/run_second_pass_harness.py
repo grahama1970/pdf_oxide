@@ -3450,6 +3450,14 @@ def validate_harness_page_terminal_ledger(case_dir: Path, terminal: dict[str, An
     else:
         if terminal.get("commit_sha") is not None:
             errors.append(f"{terminal_status} terminal ledger must not carry commit_sha")
+        for field in (
+            "commit_gate_ok",
+            "commit_exact_file_match",
+            "commit_revertability_ok",
+            "commit_acceptance_ok",
+        ):
+            if terminal.get(field) is not None:
+                errors.append(f"{terminal_status} terminal ledger must not carry {field}")
     return {
         "schema": "pdf_lab.second_pass.page_terminal_ledger_validation.v1",
         "ok": not errors,
