@@ -8309,6 +8309,42 @@ def test_build_harness_final_gate_rejects_stale_report_terminal_status() -> None
     assert "report terminal_status 'passed' does not match final gate terminal_status 'failed_closed'" in errors
 
 
+def test_build_harness_final_gate_rejects_malformed_readiness_failed_requirements() -> None:
+    harness = _load_module()
+
+    final_gate = harness.build_harness_final_gate(
+        harness_readiness_audit={"ok": True, "failed_requirements": "candidate census completed"},
+        harness_review_bundle_consistency_validation={"ok": True, "errors": []},
+        report_terminal_status="passed",
+    )
+
+    assert final_gate["ok"] is False
+    assert final_gate["readiness_ok"] is False
+    assert final_gate["bundle_consistency_ok"] is True
+    assert final_gate["terminal_status"] == "failed_closed"
+    errors = "\n".join(final_gate["errors"])
+    assert "readiness failed_requirements must be a list" in errors
+    assert "readiness failed: harness readiness audit ok is not true" in errors
+
+
+def test_build_harness_final_gate_rejects_malformed_bundle_consistency_errors() -> None:
+    harness = _load_module()
+
+    final_gate = harness.build_harness_final_gate(
+        harness_readiness_audit={"ok": True, "failed_requirements": []},
+        harness_review_bundle_consistency_validation={"ok": True, "errors": "bundle zip is stale"},
+        report_terminal_status="passed",
+    )
+
+    assert final_gate["ok"] is False
+    assert final_gate["readiness_ok"] is True
+    assert final_gate["bundle_consistency_ok"] is False
+    assert final_gate["terminal_status"] == "failed_closed"
+    errors = "\n".join(final_gate["errors"])
+    assert "bundle consistency errors must be a list" in errors
+    assert "bundle consistency failed: validation ok is not true" in errors
+
+
 def test_run_harness_fails_closed_before_page_dag_when_transport_readonly_canary_fails(tmp_path: Path, monkeypatch) -> None:
     harness = _load_module()
     page_dag_called = False

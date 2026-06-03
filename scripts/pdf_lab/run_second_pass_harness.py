@@ -2915,19 +2915,47 @@ def build_harness_final_gate(
     final_gate_errors: list[str] = []
     readiness_ok = harness_readiness_audit.get("ok") is True
     bundle_consistency_ok = harness_review_bundle_consistency_validation.get("ok") is True
+    raw_failed_requirements = harness_readiness_audit.get("failed_requirements", [])
+    if raw_failed_requirements is None:
+        readiness_failed_requirements: list[str] = []
+    elif not isinstance(raw_failed_requirements, list):
+        readiness_failed_requirements = []
+        final_gate_errors.append("readiness failed_requirements must be a list")
+        readiness_ok = False
+    elif not all(isinstance(requirement, str) for requirement in raw_failed_requirements):
+        readiness_failed_requirements = [
+            requirement for requirement in raw_failed_requirements if isinstance(requirement, str)
+        ]
+        final_gate_errors.append("readiness failed_requirements must be a list of strings")
+        readiness_ok = False
+    else:
+        readiness_failed_requirements = raw_failed_requirements
+    raw_bundle_consistency_errors = harness_review_bundle_consistency_validation.get("errors", [])
+    if raw_bundle_consistency_errors is None:
+        bundle_consistency_errors: list[str] = []
+    elif not isinstance(raw_bundle_consistency_errors, list):
+        bundle_consistency_errors = []
+        final_gate_errors.append("bundle consistency errors must be a list")
+        bundle_consistency_ok = False
+    elif not all(isinstance(error, str) for error in raw_bundle_consistency_errors):
+        bundle_consistency_errors = [error for error in raw_bundle_consistency_errors if isinstance(error, str)]
+        final_gate_errors.append("bundle consistency errors must be a list of strings")
+        bundle_consistency_ok = False
+    else:
+        bundle_consistency_errors = raw_bundle_consistency_errors
     if not readiness_ok:
         final_gate_errors.extend(
             f"readiness failed: {requirement}"
-            for requirement in harness_readiness_audit.get("failed_requirements", [])
+            for requirement in readiness_failed_requirements
         )
-        if not harness_readiness_audit.get("failed_requirements"):
+        if not readiness_failed_requirements:
             final_gate_errors.append("readiness failed: harness readiness audit ok is not true")
     if not bundle_consistency_ok:
         final_gate_errors.extend(
             f"bundle consistency failed: {error}"
-            for error in harness_review_bundle_consistency_validation.get("errors", [])
+            for error in bundle_consistency_errors
         )
-        if not harness_review_bundle_consistency_validation.get("errors"):
+        if not bundle_consistency_errors:
             final_gate_errors.append("bundle consistency failed: validation ok is not true")
     terminal_status = "passed" if not final_gate_errors else "failed_closed"
     if report_terminal_status is not None and report_terminal_status != terminal_status:
