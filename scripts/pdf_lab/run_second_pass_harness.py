@@ -2707,10 +2707,11 @@ def validate_patch_commit_ledger_zip(
     duplicate_zip_entries: list[str] = []
     mismatched_zip_entries: list[str] = []
     undeclared_zip_entries: list[str] = []
+    invalid_zip = zip_path.is_file() and not zipfile.is_zipfile(zip_path)
     missing_expected_source_artifacts = sorted(
         str(source) for source in expected_sources.values() if not source.is_file()
     )
-    if zip_path.is_file():
+    if zip_path.is_file() and not invalid_zip:
         with zipfile.ZipFile(zip_path) as bundle:
             zip_entries = bundle.namelist()
             for arcname, source in expected_sources.items():
@@ -2723,6 +2724,7 @@ def validate_patch_commit_ledger_zip(
     missing_expected_zip_entries = sorted(entry for entry in required_zip_entries if entry not in set(zip_entries))
     zip_content_ok = (
         zip_path.is_file()
+        and not invalid_zip
         and not missing_expected_zip_entries
         and not duplicate_zip_entries
         and not undeclared_zip_entries
@@ -2738,6 +2740,7 @@ def validate_patch_commit_ledger_zip(
         "required_zip_entries": required_zip_entries,
         "zip_entry_count": len(zip_entries),
         "zip_content_ok": zip_content_ok,
+        "invalid_zip": invalid_zip,
         "missing_expected_source_artifacts": missing_expected_source_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,

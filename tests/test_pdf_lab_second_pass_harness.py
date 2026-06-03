@@ -3746,6 +3746,28 @@ def test_validate_patch_commit_ledger_zip_rejects_undeclared_entry(tmp_path: Pat
     assert "undeclared_zip_entries: undeclared.json" in harness.package_validation_errors(validation)
 
 
+def test_validate_patch_commit_ledger_zip_rejects_invalid_zip(tmp_path: Path) -> None:
+    harness = _load_module()
+    source = tmp_path / "patch_commit_ledger.json"
+    source.write_text(json.dumps({"artifact": "fresh"}), encoding="utf-8")
+    zip_path = tmp_path / "patch_commit_ledger.zip"
+    zip_path.write_text("not a zip archive", encoding="utf-8")
+
+    validation = harness.validate_patch_commit_ledger_zip(
+        zip_path=zip_path,
+        included_artifacts=["patch_commit_ledger.json"],
+        missing_artifacts=[],
+        required_zip_entries=["patch_commit_ledger.json"],
+        expected_sources={"patch_commit_ledger.json": source},
+    )
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert validation["invalid_zip"] is True
+    assert validation["zip_entry_count"] == 0
+    assert "invalid_zip is true" in harness.package_validation_errors(validation)
+
+
 def test_package_patch_commit_ledger_rejects_directory_artifact(tmp_path: Path) -> None:
     harness = _load_module()
     out_dir = tmp_path / "out"
