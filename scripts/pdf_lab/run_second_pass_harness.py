@@ -2691,8 +2691,15 @@ def package_validation_errors(validation: dict[str, Any] | None) -> list[str]:
         "mismatched_zip_entries",
     ]:
         values = validation.get(key)
-        if values:
-            errors.extend(f"{key}: {value}" for value in values)
+        if values in (None, []):
+            continue
+        if not isinstance(values, list):
+            errors.append(f"{key} must be a list")
+            continue
+        if not all(isinstance(value, str) for value in values):
+            errors.append(f"{key} must be a list of strings")
+            values = [value for value in values if isinstance(value, str)]
+        errors.extend(f"{key}: {value}" for value in values)
     if validation.get("zip_content_ok") is False and not errors:
         errors.append("zip_content_ok is false")
     return errors

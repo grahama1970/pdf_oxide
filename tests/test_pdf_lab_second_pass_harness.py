@@ -5419,6 +5419,54 @@ def test_readiness_audit_rejects_package_validation_ok_with_bad_zip_content(tmp_
     assert "zip_content_ok is not true" in dumped
 
 
+def test_readiness_audit_rejects_malformed_package_validation_lists(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[],
+        aggregate={"ok": True, "errors": [], "status_counts": {}, "unresolved_count": 0},
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": []},
+        scillm_proof_floor=None,
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation={
+            "ok": True,
+            "zip_content_ok": True,
+            "missing_expected_zip_entries": "page_cases/a/scillm_patch_delegate_bug_report.json",
+        },
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation={
+            "ok": True,
+            "zip_content_ok": True,
+            "duplicate_zip_entries": ["patch_commit_ledger.json", 123],
+        },
+        harness_review_bundle_validation={
+            "ok": True,
+            "zip_content_ok": True,
+            "missing_required_artifacts": "harness_report.json",
+        },
+    )
+
+    assert audit["ok"] is False
+    dumped = json.dumps(audit)
+    assert "scillm patch delegate bug report bundle is packageable" in audit["failed_requirements"]
+    assert "patch commit ledger bundle is packageable" in audit["failed_requirements"]
+    assert "harness review bundle is packageable" in audit["failed_requirements"]
+    assert "missing_expected_zip_entries must be a list" in dumped
+    assert "duplicate_zip_entries must be a list of strings" in dumped
+    assert "missing_required_artifacts must be a list" in dumped
+
+
 def test_readiness_audit_requires_live_orchestrator_page_registration(tmp_path: Path) -> None:
     harness = _load_module()
     manifest_path = tmp_path / "candidate_manifest.json"
