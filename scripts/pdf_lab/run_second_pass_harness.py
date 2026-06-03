@@ -151,6 +151,25 @@ def read_non_negative_int_field(
     return value
 
 
+def read_string_set_field(
+    payload: dict[str, Any],
+    *,
+    field_name: str,
+    artifact_label: str,
+    errors: list[str],
+    required: bool,
+) -> set[str]:
+    value = payload.get(field_name)
+    if value is None:
+        if required:
+            errors.append(f"{artifact_label} {field_name} must be a list of non-empty strings")
+        return set()
+    if not isinstance(value, list) or not all(isinstance(item, str) and item for item in value):
+        errors.append(f"{artifact_label} {field_name} must be a list of non-empty strings: {value!r}")
+        return set()
+    return set(value)
+
+
 def validate_page_results_match_sampled_cases(
     *,
     sampled_cases_path: Path | None,
@@ -785,7 +804,13 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
         errors.append(f"candidate manifest page_count must be a positive integer when present: {declared_page_count!r}")
     if declared_candidate_count != len(candidates):
         errors.append(f"candidate_count {declared_candidate_count} does not equal candidates length {len(candidates)}")
-    preset_types = set(manifest.get("preset_types") or [])
+    preset_types = read_string_set_field(
+        manifest,
+        field_name="preset_types",
+        artifact_label="candidate manifest",
+        errors=errors,
+        required=True,
+    )
     if not preset_types:
         errors.append("candidate manifest preset_types is empty")
     candidate_ids: set[str] = set()
@@ -926,7 +951,13 @@ def validate_candidate_sample_linkage(
     if declared_selected_count != len(page_cases):
         errors.append(f"selected_count {declared_selected_count} does not equal page_cases length {len(page_cases)}")
 
-    preset_types = set(manifest.get("preset_types") or [])
+    preset_types = read_string_set_field(
+        manifest,
+        field_name="preset_types",
+        artifact_label="candidate manifest",
+        errors=errors,
+        required=False,
+    )
     if not preset_types:
         preset_types = {
             "appendix",

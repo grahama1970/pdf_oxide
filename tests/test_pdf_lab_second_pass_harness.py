@@ -850,6 +850,24 @@ def test_validate_candidate_sample_linkage_rejects_coerced_declared_counts() -> 
     assert "sampled_page_cases selected_count must be a non-negative integer: '1'" in errors
 
 
+def test_validate_candidate_sample_linkage_rejects_malformed_preset_types() -> None:
+    harness = _load_module()
+    candidate = _manifest_candidate("cand:p0001:0000:table", 1, "table")
+    manifest = _candidate_manifest([candidate])
+    manifest["preset_types"] = 123
+    sampled_cases = {
+        "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+        "selected_count": 1,
+        "selected_pages": [1],
+        "page_cases": [_sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1)],
+    }
+
+    validation = harness.validate_candidate_sample_linkage(manifest=manifest, sampled_cases=sampled_cases)
+
+    assert validation["ok"] is False
+    assert "candidate manifest preset_types must be a list of non-empty strings: 123" in "\n".join(validation["errors"])
+
+
 def test_validate_candidate_sample_linkage_requires_all_candidates_for_selected_page() -> None:
     harness = _load_module()
     validation = harness.validate_candidate_sample_linkage(
@@ -1178,6 +1196,23 @@ def test_validate_candidate_manifest_integrity_requires_preset_counts() -> None:
 
     assert validation["ok"] is False
     assert "candidate manifest preset_counts is not an object" in "\n".join(validation["errors"])
+
+
+def test_validate_candidate_manifest_integrity_rejects_malformed_preset_types() -> None:
+    harness = _load_module()
+    string_preset_types = _candidate_manifest([_manifest_candidate("cand:p0001:0000:table", 1, "table")])
+    string_preset_types["preset_types"] = "table"
+    numeric_preset_types = _candidate_manifest([_manifest_candidate("cand:p0001:0000:table", 1, "table")])
+    numeric_preset_types["preset_types"] = 123
+
+    string_validation = harness.validate_candidate_manifest_integrity(string_preset_types)
+    numeric_validation = harness.validate_candidate_manifest_integrity(numeric_preset_types)
+
+    assert string_validation["ok"] is False
+    assert numeric_validation["ok"] is False
+    assert "candidate manifest preset_types must be a list of non-empty strings: 'table'" in string_validation["errors"]
+    assert "candidate manifest preset_types is empty" in string_validation["errors"]
+    assert "candidate manifest preset_types must be a list of non-empty strings: 123" in numeric_validation["errors"]
 
 
 def test_validate_candidate_manifest_integrity_rejects_coerced_candidate_count() -> None:
