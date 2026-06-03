@@ -5540,6 +5540,75 @@ def test_validate_page_terminal_ledger_rejects_uncovered_changed_tests(tmp_path:
     assert "test_validation missing_test_file_coverage is not empty" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_stale_targeted_test_validation(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "patch_delta.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_delta.v1",
+                "ok": True,
+                "patch_changed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_scope_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_scope_validation.v1",
+                "ok": True,
+                "errors": [],
+                "changed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+                "allowed_prefixes": ["python/pdf_oxide/", "tests/"],
+                "test_files": ["tests/test_fix.py"],
+                "delegate_claim": None,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "test_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.test_validation.v1",
+                "ok": True,
+                "errors": [],
+                "results": [{"command": "python -m py_compile tests/unrelated.py", "exit_code": 0}],
+                "required_test_files": ["tests/old_test.py"],
+                "covered_test_files": ["tests/old_test.py"],
+                "missing_test_file_coverage": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "targeted_tests_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "patch_delta.json",
+            "patch_scope_validation.json",
+            "test_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "test_validation required_test_files do not match patch_scope_validation test_files" in errors
+    assert "test_validation covered_test_files do not match patch_scope_validation test_files" in errors
+    assert "targeted_tests_failed terminal ledger requires test_validation.ok false" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_missing_patched_confirmed_evidence(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

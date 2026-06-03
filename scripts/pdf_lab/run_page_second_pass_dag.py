@@ -4504,6 +4504,40 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     errors.append("patch_scope_validation does not match recomputed patch scope contract")
         if terminal_reason == "patch_scope_validation_failed" and patch_scope_validation_artifact.get("ok") is not False:
             errors.append("patch_scope_validation_failed terminal ledger requires patch_scope_validation.ok false")
+    test_validation_artifact = read_required_json_artifact("test_validation.json") if "test_validation.json" in evidence_artifacts else {}
+    if test_validation_artifact:
+        if test_validation_artifact.get("schema") != "pdf_lab.second_pass.test_validation.v1":
+            errors.append("test_validation schema mismatch")
+        if test_validation_artifact.get("ok") not in {True, False}:
+            errors.append("test_validation ok must be boolean")
+        if not isinstance(test_validation_artifact.get("errors"), list):
+            errors.append("test_validation errors is not a list")
+        elif test_validation_artifact.get("ok") is True and test_validation_artifact.get("errors"):
+            errors.append("test_validation ok true requires empty errors")
+        elif test_validation_artifact.get("ok") is False and not test_validation_artifact.get("errors"):
+            errors.append("test_validation ok false requires non-empty errors")
+        required_test_files = test_validation_artifact.get("required_test_files")
+        covered_test_files = test_validation_artifact.get("covered_test_files")
+        missing_test_file_coverage = test_validation_artifact.get("missing_test_file_coverage")
+        if not isinstance(required_test_files, list):
+            errors.append("test_validation required_test_files is not a list")
+            required_test_files = []
+        if not isinstance(covered_test_files, list):
+            errors.append("test_validation covered_test_files is not a list")
+            covered_test_files = []
+        if not isinstance(missing_test_file_coverage, list):
+            errors.append("test_validation missing_test_file_coverage is not a list")
+            missing_test_file_coverage = []
+        if patch_scope_validation_artifact and isinstance(patch_scope_validation_artifact.get("test_files"), list):
+            expected_test_files = sorted(str(path) for path in patch_scope_validation_artifact.get("test_files") or [])
+            if sorted(str(path) for path in required_test_files) != expected_test_files:
+                errors.append("test_validation required_test_files do not match patch_scope_validation test_files")
+            if sorted(str(path) for path in covered_test_files) != expected_test_files:
+                errors.append("test_validation covered_test_files do not match patch_scope_validation test_files")
+            if missing_test_file_coverage:
+                errors.append("test_validation missing_test_file_coverage is not empty")
+        if terminal_reason == "targeted_tests_failed" and test_validation_artifact.get("ok") is not False:
+            errors.append("targeted_tests_failed terminal ledger requires test_validation.ok false")
     if terminal_status == "patched_confirmed":
         commit_sha = terminal.get("commit_sha")
         if not terminal.get("commit_sha"):
