@@ -2816,6 +2816,7 @@ def validate_harness_review_bundle_zip(
     zip_entries: list[str] = []
     duplicate_zip_entries: list[str] = []
     mismatched_zip_entries: list[str] = []
+    undeclared_zip_entries: list[str] = []
     missing_expected_source_artifacts = sorted(
         str(source) for source in expected_sources.values() if not source.is_file()
     )
@@ -2829,11 +2830,13 @@ def validate_harness_review_bundle_zip(
         zip_entries = [*zip_entries, *(virtual_zip_entries or [])]
         entry_counts = Counter(zip_entries)
         duplicate_zip_entries = sorted(entry for entry, count in entry_counts.items() if count > 1)
+        undeclared_zip_entries = sorted(set(zip_entries) - set(required_zip_entries))
     missing_expected_zip_entries = sorted(entry for entry in required_zip_entries if entry not in set(zip_entries))
     zip_content_ok = (
         zip_path.is_file()
         and not missing_expected_zip_entries
         and not duplicate_zip_entries
+        and not undeclared_zip_entries
         and not mismatched_zip_entries
         and not missing_expected_source_artifacts
     )
@@ -2849,6 +2852,7 @@ def validate_harness_review_bundle_zip(
         "missing_expected_source_artifacts": missing_expected_source_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
+        "undeclared_zip_entries": undeclared_zip_entries,
         "mismatched_zip_entries": sorted(mismatched_zip_entries),
         "page_case_count": page_case_count,
         "ok": not missing_required_artifacts and zip_content_ok,

@@ -9139,6 +9139,30 @@ def test_validate_harness_review_bundle_zip_rejects_missing_expected_source(tmp_
     assert f"missing_expected_source_artifacts: {source}" in harness.package_validation_errors(validation)
 
 
+def test_validate_harness_review_bundle_zip_rejects_undeclared_entry(tmp_path: Path) -> None:
+    harness = _load_module()
+    source = tmp_path / "candidate_manifest.json"
+    source.write_text(json.dumps({"artifact": "fresh"}), encoding="utf-8")
+    zip_path = tmp_path / "harness_review_bundle.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.write(source, "candidate_manifest.json")
+        archive.writestr("undeclared.json", "{}")
+
+    validation = harness.validate_harness_review_bundle_zip(
+        zip_path=zip_path,
+        included_artifacts=["candidate_manifest.json"],
+        missing_required_artifacts=[],
+        required_zip_entries=["candidate_manifest.json"],
+        expected_sources={"candidate_manifest.json": source},
+        page_case_count=0,
+    )
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert validation["undeclared_zip_entries"] == ["undeclared.json"]
+    assert "undeclared_zip_entries: undeclared.json" in harness.package_validation_errors(validation)
+
+
 def test_validate_harness_review_bundle_consistency_checks_final_gate(tmp_path: Path) -> None:
     harness = _load_module()
     out_dir = tmp_path / "out"
