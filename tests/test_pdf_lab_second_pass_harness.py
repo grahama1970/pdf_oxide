@@ -1374,6 +1374,7 @@ def test_validate_candidate_manifest_integrity_rejects_boolean_page_identity() -
     assert "cand:p0001:0000:table missing valid page_number" in errors
     assert "cand:p0001:0000:table page_index does not match page_number - 1" in errors
     assert "cand:p0001:0000:table missing valid block_index" in errors
+    assert "page summary at index 0 missing valid page_number" in errors
 
 
 def test_validate_candidate_manifest_integrity_rejects_malformed_geometry_and_page_refs() -> None:

@@ -910,7 +910,7 @@ def validate_candidate_manifest_integrity(manifest: dict[str, Any]) -> dict[str,
             errors.append(f"page summary at index {index} is not an object")
             continue
         page_number = page_summary.get("page_number")
-        if not isinstance(page_number, int) or page_number < 1:
+        if not is_plain_int(page_number) or page_number < 1:
             errors.append(f"page summary at index {index} missing valid page_number")
             continue
         page_summary_numbers.add(page_number)
