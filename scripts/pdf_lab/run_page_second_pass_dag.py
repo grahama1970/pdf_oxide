@@ -5089,6 +5089,8 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     errors.append(f"patch_attempts_ledger attempts[{index}].attempt_index must be positive integer")
                 if index < len(agent_sequence) and attempt.get("agent") != agent_sequence[index]:
                     errors.append(f"patch_attempts_ledger attempts[{index}].agent does not match agent_sequence")
+                if not is_plain_bool(attempt.get("ok")):
+                    errors.append(f"patch_attempts_ledger attempts[{index}].ok must be boolean")
                 validation_artifact = attempt.get("validation_artifact")
                 if not isinstance(validation_artifact, str) or not validation_artifact:
                     errors.append(f"patch_attempts_ledger attempts[{index}].validation_artifact must be non-empty")
