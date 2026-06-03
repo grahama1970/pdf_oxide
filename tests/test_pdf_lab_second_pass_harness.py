@@ -535,6 +535,28 @@ def test_aggregate_requires_commit_gate_and_revertability_evidence_for_patched_c
     assert "missing commit_acceptance_gate.json" in "\n".join(aggregate["errors"])
 
 
+def test_aggregate_rejects_string_evidence_artifacts_for_patched_confirmed() -> None:
+    harness = _load_module()
+    aggregate = harness.aggregate_page_results(
+        [
+            {
+                "case_id": "a",
+                "page_number": 1,
+                "terminal_status": "patched_confirmed",
+                "commit_sha": "abc123",
+                "evidence_artifacts": "commit_acceptance_gate.json commit_gate.json revertability_check.json",
+            },
+        ]
+    )
+
+    errors = "\n".join(aggregate["errors"])
+    assert aggregate["ok"] is False
+    assert aggregate["patched_missing_commit_gate_artifacts_count"] == 1
+    assert aggregate["malformed_evidence_artifacts_count"] == 1
+    assert aggregate["malformed_evidence_artifacts_cases"][0]["case_id"] == "a"
+    assert "page results have malformed evidence_artifacts" in errors
+
+
 def test_aggregate_requires_unique_commit_sha_per_patched_page() -> None:
     harness = _load_module()
     aggregate = harness.aggregate_page_results(

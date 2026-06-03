@@ -814,9 +814,19 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
         for result in page_results
         if result.get("terminal_status") == "patched_confirmed"
         and (
-            "commit_acceptance_gate.json" not in (result.get("evidence_artifacts") or [])
-            or "commit_gate.json" not in (result.get("evidence_artifacts") or [])
-            or "revertability_check.json" not in (result.get("evidence_artifacts") or [])
+            not isinstance(result.get("evidence_artifacts"), list)
+            or "commit_acceptance_gate.json" not in result.get("evidence_artifacts", [])
+            or "commit_gate.json" not in result.get("evidence_artifacts", [])
+            or "revertability_check.json" not in result.get("evidence_artifacts", [])
+        )
+    ]
+    malformed_evidence_artifact_cases = [
+        result
+        for result in page_results
+        if result.get("evidence_artifacts") is not None
+        and (
+            not isinstance(result.get("evidence_artifacts"), list)
+            or not all(isinstance(artifact, str) and artifact for artifact in result.get("evidence_artifacts", []))
         )
     ]
     duplicate_commit_shas = sorted(
@@ -840,6 +850,11 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
         errors.append(
             "patched_confirmed missing commit_acceptance_gate.json, commit_gate.json, or revertability_check.json evidence: "
             f"{[item.get('case_id') for item in patched_missing_commit_gate_artifacts]}"
+        )
+    if malformed_evidence_artifact_cases:
+        errors.append(
+            "page results have malformed evidence_artifacts: "
+            f"{[item.get('case_id') for item in malformed_evidence_artifact_cases]}"
         )
     if duplicate_commit_shas:
         errors.append(f"patched_confirmed commit SHAs are not one-commit-per-page unique: {duplicate_commit_shas}")
@@ -900,6 +915,8 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
         "patched_without_commit_count": len(patched_without_commit),
         "patched_missing_commit_gate_artifacts_count": len(patched_missing_commit_gate_artifacts),
         "patched_missing_commit_gate_artifacts_cases": patched_missing_commit_gate_artifacts,
+        "malformed_evidence_artifacts_count": len(malformed_evidence_artifact_cases),
+        "malformed_evidence_artifacts_cases": malformed_evidence_artifact_cases,
         "duplicate_commit_shas": duplicate_commit_shas,
         "scillm_patch_delegate_bug_report_count": len(scillm_patch_delegate_bug_reports),
         "scillm_patch_delegate_bug_report_cases": scillm_patch_delegate_bug_reports,
