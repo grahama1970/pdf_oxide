@@ -2706,14 +2706,15 @@ def build_harness_readiness_audit(
         deterministic_execution_plan_validation,
         deterministic_execution_plan_errors,
     )
+    aggregate_errors, aggregate_errors_malformed = validation_error_list(aggregate, "aggregate")
     add_check(
         "page aggregate resolved",
-        bool(aggregate.get("ok") is True),
+        bool(aggregate.get("ok") is True and not aggregate_errors_malformed),
         {
             "status_counts": aggregate.get("status_counts"),
             "unresolved_count": aggregate.get("unresolved_count"),
         },
-        list(aggregate.get("errors") or []),
+        aggregate_errors,
     )
     page_result_sample_match_validation = validate_page_results_match_sampled_cases(
         sampled_cases_path=sampled_cases_path,
