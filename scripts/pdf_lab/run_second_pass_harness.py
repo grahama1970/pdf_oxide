@@ -147,6 +147,18 @@ def read_json_object_if_exists(path: Path) -> tuple[dict[str, Any], list[str]]:
     return payload, []
 
 
+def read_required_json_object(path: Path, artifact_name: str) -> tuple[dict[str, Any], list[str]]:
+    if not path.is_file():
+        return {}, [f"missing {artifact_name} artifact"]
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001 - malformed proof is validation evidence.
+        return {}, [f"{artifact_name} unreadable: {type(exc).__name__}: {exc}"]
+    if not isinstance(payload, dict):
+        return {}, [f"{artifact_name} is not a JSON object"]
+    return payload, []
+
+
 def validate_scillm_patch_delegate_bug_report_metadata(
     report: dict[str, Any],
     *,
@@ -2153,85 +2165,44 @@ def build_patch_commit_ledger(
             entry_errors.append("terminal evidence missing review_after_validation.json")
         if "review_after_response.json" not in evidence_artifacts:
             entry_errors.append("terminal evidence missing review_after_response.json")
-        if not commit_acceptance_path.is_file():
-            entry_errors.append("missing commit_acceptance_gate.json artifact")
-        else:
-            try:
-                commit_acceptance = json.loads(commit_acceptance_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"commit_acceptance_gate.json unreadable: {type(exc).__name__}: {exc}")
-        if not commit_gate_path.is_file():
-            entry_errors.append("missing commit_gate.json artifact")
-        else:
-            try:
-                commit_gate = json.loads(commit_gate_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"commit_gate.json unreadable: {type(exc).__name__}: {exc}")
-        if not revertability_path.is_file():
-            entry_errors.append("missing revertability_check.json artifact")
-        else:
-            try:
-                revertability = json.loads(revertability_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"revertability_check.json unreadable: {type(exc).__name__}: {exc}")
-        if not terminal_ledger_path.is_file():
-            entry_errors.append("missing terminal_ledger.json artifact")
-        else:
-            try:
-                terminal_ledger = json.loads(terminal_ledger_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"terminal_ledger.json unreadable: {type(exc).__name__}: {exc}")
-        if not terminal_ledger_validation_path.is_file():
-            entry_errors.append("missing terminal_ledger_validation.json artifact")
-        else:
-            try:
-                terminal_ledger_validation = json.loads(terminal_ledger_validation_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"terminal_ledger_validation.json unreadable: {type(exc).__name__}: {exc}")
+        commit_acceptance, read_errors = read_required_json_object(
+            commit_acceptance_path, "commit_acceptance_gate.json"
+        )
+        entry_errors.extend(read_errors)
+        commit_gate, read_errors = read_required_json_object(commit_gate_path, "commit_gate.json")
+        entry_errors.extend(read_errors)
+        revertability, read_errors = read_required_json_object(revertability_path, "revertability_check.json")
+        entry_errors.extend(read_errors)
+        terminal_ledger, read_errors = read_required_json_object(terminal_ledger_path, "terminal_ledger.json")
+        entry_errors.extend(read_errors)
+        terminal_ledger_validation, read_errors = read_required_json_object(
+            terminal_ledger_validation_path, "terminal_ledger_validation.json"
+        )
+        entry_errors.extend(read_errors)
         if not review_bundle_path.is_file():
             entry_errors.append("missing review_bundle.zip artifact")
-        if not review_bundle_validation_path.is_file():
-            entry_errors.append("missing review_bundle_validation.json artifact")
-        else:
-            try:
-                review_bundle_validation = json.loads(review_bundle_validation_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"review_bundle_validation.json unreadable: {type(exc).__name__}: {exc}")
-        if not patch_scope_validation_path.is_file():
-            entry_errors.append("missing patch_scope_validation.json artifact")
-        else:
-            try:
-                patch_scope_validation = json.loads(patch_scope_validation_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"patch_scope_validation.json unreadable: {type(exc).__name__}: {exc}")
-        if not test_validation_path.is_file():
-            entry_errors.append("missing test_validation.json artifact")
-        else:
-            try:
-                test_validation = json.loads(test_validation_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"test_validation.json unreadable: {type(exc).__name__}: {exc}")
-        if not review_after_request_validation_path.is_file():
-            entry_errors.append("missing review_after_request_validation.json artifact")
-        else:
-            try:
-                review_after_request_validation = json.loads(review_after_request_validation_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"review_after_request_validation.json unreadable: {type(exc).__name__}: {exc}")
-        if not review_after_validation_path.is_file():
-            entry_errors.append("missing review_after_validation.json artifact")
-        else:
-            try:
-                review_after_validation = json.loads(review_after_validation_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"review_after_validation.json unreadable: {type(exc).__name__}: {exc}")
-        if not review_after_response_path.is_file():
-            entry_errors.append("missing review_after_response.json artifact")
-        else:
-            try:
-                review_after_response = json.loads(review_after_response_path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001 - malformed proof is a ledger failure.
-                entry_errors.append(f"review_after_response.json unreadable: {type(exc).__name__}: {exc}")
+        review_bundle_validation, read_errors = read_required_json_object(
+            review_bundle_validation_path, "review_bundle_validation.json"
+        )
+        entry_errors.extend(read_errors)
+        patch_scope_validation, read_errors = read_required_json_object(
+            patch_scope_validation_path, "patch_scope_validation.json"
+        )
+        entry_errors.extend(read_errors)
+        test_validation, read_errors = read_required_json_object(test_validation_path, "test_validation.json")
+        entry_errors.extend(read_errors)
+        review_after_request_validation, read_errors = read_required_json_object(
+            review_after_request_validation_path, "review_after_request_validation.json"
+        )
+        entry_errors.extend(read_errors)
+        review_after_validation, read_errors = read_required_json_object(
+            review_after_validation_path, "review_after_validation.json"
+        )
+        entry_errors.extend(read_errors)
+        review_after_response, read_errors = read_required_json_object(
+            review_after_response_path, "review_after_response.json"
+        )
+        entry_errors.extend(read_errors)
         if terminal_ledger:
             if terminal_ledger.get("schema") != "pdf_lab.second_pass.page_terminal_ledger.v1":
                 entry_errors.append("terminal_ledger schema mismatch")
