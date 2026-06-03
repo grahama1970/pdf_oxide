@@ -5357,6 +5357,9 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
     if missing:
         errors.append(f"scillm proof floor missing artifacts: {missing}")
     proof_floor_artifact_matches_argument = False
+    proof_floor_missing_check_ids: list[str] = []
+    proof_floor_duplicate_check_ids: list[str] = []
+    proof_floor_malformed_check_entries = False
     proof_floor_artifact_path = artifacts.get("scillm_proof_floor.json")
     if proof_floor_artifact_path and proof_floor_artifact_path.is_file():
         try:
@@ -5369,6 +5372,38 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
             elif loaded == proof_floor:
                 loaded_proof_floor = loaded
                 proof_floor_artifact_matches_argument = True
+                checks = loaded_proof_floor.get("checks")
+                required_check_ids = [
+                    "liveliness",
+                    "opencode_health",
+                    "positive_chat",
+                    "missing_caller_chat",
+                ]
+                if not isinstance(checks, list):
+                    errors.append("scillm proof floor checks must be a list")
+                    proof_floor_malformed_check_entries = True
+                    proof_floor_missing_check_ids = required_check_ids
+                else:
+                    check_ids: list[str] = []
+                    for check in checks:
+                        if not isinstance(check, dict) or not isinstance(check.get("check_id"), str):
+                            proof_floor_malformed_check_entries = True
+                            continue
+                        check_ids.append(check["check_id"])
+                    if proof_floor_malformed_check_entries:
+                        errors.append("scillm proof floor checks must be objects with string check_id")
+                    proof_floor_missing_check_ids = sorted(set(required_check_ids) - set(check_ids))
+                    proof_floor_duplicate_check_ids = sorted(
+                        check_id for check_id, count in Counter(check_ids).items() if count > 1
+                    )
+                    if proof_floor_missing_check_ids:
+                        errors.append(
+                            f"scillm proof floor checks missing required check ids: {proof_floor_missing_check_ids}"
+                        )
+                    if proof_floor_duplicate_check_ids:
+                        errors.append(
+                            f"scillm proof floor checks contain duplicate check ids: {proof_floor_duplicate_check_ids}"
+                        )
             else:
                 errors.append("scillm proof floor artifact does not match proof floor argument")
     validation_payload: dict[str, Any] = {}
@@ -5488,6 +5523,9 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
         "proof_floor_artifact_matches_argument": proof_floor_artifact_matches_argument,
         "validation_artifact": str(validation_path) if validation_path else None,
         "proof_floor_response_contract_checked": proof_floor_response_contract_checked,
+        "proof_floor_missing_check_ids": proof_floor_missing_check_ids,
+        "proof_floor_duplicate_check_ids": proof_floor_duplicate_check_ids,
+        "proof_floor_malformed_check_entries": proof_floor_malformed_check_entries,
     }
 
 

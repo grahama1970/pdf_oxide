@@ -7524,6 +7524,102 @@ def test_validate_scillm_proof_floor_artifacts_recomputes_chat_contracts(tmp_pat
     assert "missing_caller_chat_response did not prove caller_skill_required" in validation["errors"]
 
 
+def test_validate_scillm_proof_floor_artifacts_requires_required_check_ledger(tmp_path: Path) -> None:
+    harness = _load_module()
+    proof_dir = tmp_path / "scillm_proof_floor"
+    proof_dir.mkdir()
+    proof_floor = {
+        "schema": "pdf_lab.second_pass.scillm_proof_floor.v1",
+        "ok": True,
+        "errors": [],
+        "validation_artifact": str(proof_dir / "scillm_proof_floor_validation.json"),
+        "checks": [{"check_id": "liveliness"}],
+    }
+    (proof_dir / "scillm_proof_floor.json").write_text(json.dumps(proof_floor), encoding="utf-8")
+    (proof_dir / "scillm_proof_floor_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.scillm_proof_floor_validation.v1",
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (proof_dir / "positive_chat_request.json").write_text(
+        json.dumps(harness.build_scillm_proof_floor_chat_payload(model="gpt-5.5")),
+        encoding="utf-8",
+    )
+    (proof_dir / "missing_caller_chat_request.json").write_text(
+        json.dumps(harness.build_scillm_proof_floor_negative_chat_payload()),
+        encoding="utf-8",
+    )
+    (proof_dir / "liveliness_response.json").write_text(
+        json.dumps(
+            {
+                "check_id": "liveliness",
+                "method": "GET",
+                "path": "/health/liveliness",
+                "include_caller_skill": True,
+                "http_status": 200,
+                "payload": {"status": "ok"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    (proof_dir / "opencode_health_response.json").write_text(
+        json.dumps(
+            {
+                "check_id": "opencode_health",
+                "method": "GET",
+                "path": "/v1/scillm/opencode/health",
+                "include_caller_skill": True,
+                "http_status": 200,
+                "payload": {"status": "ok", "opencode_serve": True},
+            }
+        ),
+        encoding="utf-8",
+    )
+    (proof_dir / "positive_chat_response.json").write_text(
+        json.dumps(
+            {
+                "check_id": "positive_chat",
+                "method": "POST",
+                "path": "/v1/chat/completions",
+                "include_caller_skill": True,
+                "http_status": 200,
+                "payload": {"choices": [{"message": {"content": "PDF_LAB_SCILLM_PREFLIGHT_OK"}}]},
+            }
+        ),
+        encoding="utf-8",
+    )
+    (proof_dir / "missing_caller_chat_response.json").write_text(
+        json.dumps(
+            {
+                "check_id": "missing_caller_chat",
+                "method": "POST",
+                "path": "/v1/chat/completions",
+                "include_caller_skill": False,
+                "http_status": 400,
+                "payload": {"error": {"code": "caller_skill_required"}},
+                "response_text": json.dumps({"error": {"code": "caller_skill_required"}}),
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_scillm_proof_floor_artifacts(tmp_path, proof_floor)
+
+    assert validation["ok"] is False
+    assert validation["proof_floor_response_contract_checked"] is True
+    assert validation["proof_floor_missing_check_ids"] == [
+        "missing_caller_chat",
+        "opencode_health",
+        "positive_chat",
+    ]
+    assert "scillm proof floor checks missing required check ids" in "\n".join(validation["errors"])
+
+
 def test_validate_scillm_proof_floor_artifacts_rejects_non_object_artifacts(tmp_path: Path) -> None:
     harness = _load_module()
     proof_dir = tmp_path / "scillm_proof_floor"
