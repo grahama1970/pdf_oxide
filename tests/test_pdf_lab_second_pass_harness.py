@@ -4964,6 +4964,22 @@ def test_readiness_audit_rejects_proof_floor_ok_without_validation_artifacts(tmp
     assert "scillm proof floor missing artifacts" in json.dumps(audit)
 
 
+def test_validate_scillm_proof_floor_artifacts_rejects_string_errors(tmp_path: Path) -> None:
+    harness = _load_module()
+
+    validation = harness.validate_scillm_proof_floor_artifacts(
+        tmp_path,
+        {
+            "schema": "pdf_lab.second_pass.scillm_proof_floor.v1",
+            "ok": False,
+            "errors": "caller_skill_required",
+        },
+    )
+
+    assert validation["ok"] is False
+    assert "scillm proof floor errors must be a list" in validation["errors"]
+
+
 def test_live_canary_artifact_validation_rejects_opencode_ok_without_artifacts(tmp_path: Path) -> None:
     harness = _load_module()
 

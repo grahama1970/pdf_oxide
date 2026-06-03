@@ -4500,7 +4500,15 @@ def validate_scillm_proof_floor_artifacts(out_dir: Path, proof_floor: dict[str, 
     elif proof_floor.get("schema") != "pdf_lab.second_pass.scillm_proof_floor.v1":
         errors.append("scillm proof floor schema mismatch")
     elif proof_floor.get("ok") is not True:
-        errors.extend(list(proof_floor.get("errors") or ["scillm proof floor did not pass"]))
+        proof_floor_errors = proof_floor.get("errors")
+        if proof_floor_errors is None:
+            errors.append("scillm proof floor did not pass")
+        elif not isinstance(proof_floor_errors, list):
+            errors.append("scillm proof floor errors must be a list")
+        elif not all(isinstance(error, str) for error in proof_floor_errors):
+            errors.append("scillm proof floor errors must be a list of strings")
+        else:
+            errors.extend(proof_floor_errors or ["scillm proof floor did not pass"])
     missing = sorted(name for name, path in artifacts.items() if not path.is_file())
     if missing:
         errors.append(f"scillm proof floor missing artifacts: {missing}")
