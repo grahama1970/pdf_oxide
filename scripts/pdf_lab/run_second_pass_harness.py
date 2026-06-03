@@ -2692,11 +2692,19 @@ def build_harness_readiness_audit(
         sampling_gate,
         sampling_gate_errors,
     )
+    deterministic_execution_plan_errors, deterministic_execution_plan_errors_malformed = validation_error_list(
+        deterministic_execution_plan_validation,
+        "deterministic_execution_plan_validation",
+    )
     add_check(
         "deterministic execution plan is code-owned and sequential",
-        bool(deterministic_execution_plan_validation and deterministic_execution_plan_validation.get("ok") is True),
+        bool(
+            deterministic_execution_plan_validation
+            and deterministic_execution_plan_validation.get("ok") is True
+            and not deterministic_execution_plan_errors_malformed
+        ),
         deterministic_execution_plan_validation,
-        list((deterministic_execution_plan_validation or {}).get("errors") or []),
+        deterministic_execution_plan_errors,
     )
     add_check(
         "page aggregate resolved",
