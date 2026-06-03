@@ -3659,6 +3659,64 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     )
     if missing_artifacts:
         errors.append(f"declared evidence artifacts are missing: {missing_artifacts}")
+    if "patch_attempts_ledger.json" in evidence_artifacts:
+        patch_attempts_ledger = read_required_json_artifact("patch_attempts_ledger.json")
+        patch_validation = read_required_json_artifact("patch_validation.json")
+        if patch_attempts_ledger:
+            if patch_attempts_ledger.get("schema") != "pdf_lab.second_pass.patch_attempts_ledger.v1":
+                errors.append("patch_attempts_ledger schema mismatch")
+            attempts = patch_attempts_ledger.get("attempts")
+            if not isinstance(attempts, list):
+                errors.append("patch_attempts_ledger attempts is not a list")
+                attempts = []
+            if patch_attempts_ledger.get("attempt_count") != len(attempts):
+                errors.append("patch_attempts_ledger attempt_count does not match attempts length")
+            agent_sequence = patch_attempts_ledger.get("agent_sequence")
+            if not isinstance(agent_sequence, list):
+                errors.append("patch_attempts_ledger agent_sequence is not a list")
+                agent_sequence = []
+            expected_selected_attempt = next(
+                (attempt.get("attempt_index") for attempt in attempts if isinstance(attempt, dict) and attempt.get("ok") is True),
+                None,
+            )
+            if patch_attempts_ledger.get("selected_attempt_index") != expected_selected_attempt:
+                errors.append("patch_attempts_ledger selected_attempt_index does not match first ok attempt")
+            selected_or_final_validation: dict[str, Any] | None = None
+            for index, attempt in enumerate(attempts):
+                if not isinstance(attempt, dict):
+                    errors.append(f"patch_attempts_ledger attempts[{index}] is not an object")
+                    continue
+                attempt_index = attempt.get("attempt_index")
+                if not isinstance(attempt_index, int) or attempt_index < 1:
+                    errors.append(f"patch_attempts_ledger attempts[{index}].attempt_index must be positive integer")
+                if index < len(agent_sequence) and attempt.get("agent") != agent_sequence[index]:
+                    errors.append(f"patch_attempts_ledger attempts[{index}].agent does not match agent_sequence")
+                validation_artifact = attempt.get("validation_artifact")
+                if not isinstance(validation_artifact, str) or not validation_artifact:
+                    errors.append(f"patch_attempts_ledger attempts[{index}].validation_artifact must be non-empty")
+                    attempt_validation = {}
+                else:
+                    attempt_validation = read_required_json_artifact(validation_artifact)
+                    if validation_artifact not in evidence_artifacts:
+                        errors.append(f"patch_attempts_ledger attempts[{index}].validation_artifact is not declared terminal evidence")
+                if attempt_validation:
+                    if attempt_validation.get("schema") != "pdf_lab.second_pass.patch_delegate_validation.v1":
+                        errors.append(f"patch_attempts_ledger attempts[{index}].validation_artifact schema mismatch")
+                    if attempt_validation.get("ok") != attempt.get("ok"):
+                        errors.append(f"patch_attempts_ledger attempts[{index}].ok does not match validation_artifact")
+                    validation_errors = list(attempt_validation.get("errors") or [])
+                    attempt_errors = list(attempt.get("errors") or [])
+                    if validation_errors != attempt_errors:
+                        errors.append(f"patch_attempts_ledger attempts[{index}].errors do not match validation_artifact")
+                if attempt.get("ok") is True or index == len(attempts) - 1:
+                    selected_or_final_validation = attempt_validation
+            if patch_validation and selected_or_final_validation:
+                if patch_validation.get("schema") != selected_or_final_validation.get("schema"):
+                    errors.append("patch_validation schema does not match selected/final patch attempt validation")
+                if patch_validation.get("ok") != selected_or_final_validation.get("ok"):
+                    errors.append("patch_validation ok does not match selected/final patch attempt validation")
+                if list(patch_validation.get("errors") or []) != list(selected_or_final_validation.get("errors") or []):
+                    errors.append("patch_validation errors do not match selected/final patch attempt validation")
     if terminal_status == "patched_confirmed":
         commit_sha = terminal.get("commit_sha")
         if not terminal.get("commit_sha"):
@@ -5647,6 +5705,11 @@ def run_page_case(
         terminal["evidence_artifacts"].append("patch_validation.json")
     if patch_attempts_ledger is not None:
         terminal["evidence_artifacts"].append("patch_attempts_ledger.json")
+        terminal["evidence_artifacts"].extend(
+            str(attempt["validation_artifact"])
+            for attempt in patch_attempts_ledger.get("attempts") or []
+            if isinstance(attempt, dict) and attempt.get("validation_artifact")
+        )
     if patch_delegate_bug_report_artifact is not None:
         terminal["evidence_artifacts"].append(patch_delegate_bug_report_artifact)
     if prompt_contract_artifacts:
