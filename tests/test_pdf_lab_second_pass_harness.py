@@ -3285,6 +3285,36 @@ def test_run_scillm_transport_write_canary_validates_write_and_cleanup(tmp_path:
     assert not (code_root / ".pdf_lab_write_canary/scillm_transport_write_canary.txt").exists()
 
 
+def test_validate_scillm_transport_write_canary_requires_patch_diff(tmp_path: Path) -> None:
+    harness = _load_module()
+    code_root = tmp_path / "code-root"
+    sentinel = code_root / ".pdf_lab_write_canary/scillm_transport_write_canary.txt"
+    sentinel.parent.mkdir(parents=True)
+    sentinel.write_text("PDF_LAB_SCILLM_TRANSPORT_WRITE_CANARY_OK\n", encoding="utf-8")
+
+    validation = harness.validate_scillm_transport_write_canary_receipt(
+        {
+            "message_response": {
+                "delivery_state": "completed",
+                "assistant_text": "PDF_LAB_TRANSPORT_WRITE_CANARY_OK wrote `.pdf_lab_write_canary/scillm_transport_write_canary.txt`",
+                "diff": [],
+            },
+            "event_stream": {
+                "delivery_state": "completed",
+                "saw_message_completed": True,
+                "session_errors": [],
+            },
+        },
+        code_root=code_root,
+    )
+
+    assert validation["ok"] is False
+    assert validation["write_sentinel_present"] is True
+    assert validation["write_sentinel_content_ok"] is True
+    assert validation["diff_present"] is False
+    assert "transport write canary produced no patch diff evidence" in validation["errors"]
+
+
 def test_validate_scillm_transport_write_canary_surfaces_transport_event_errors(tmp_path: Path) -> None:
     harness = _load_module()
     code_root = tmp_path / "code-root"
@@ -3438,6 +3468,31 @@ def test_opencode_completion_canary_accepts_sentinel_without_trailing_newline(tm
 
     assert validation["ok"] is True
     assert validation["write_sentinel_content_ok"] is True
+
+
+def test_validate_opencode_completion_canary_requires_patch_diff(tmp_path: Path) -> None:
+    harness = _load_module()
+    code_root = tmp_path / "code-root"
+    sentinel = code_root / ".pdf_lab_write_canary/opencode_write_canary.txt"
+    sentinel.parent.mkdir(parents=True)
+    sentinel.write_text("PDF_LAB_OPENCODE_WRITE_CANARY_OK\n", encoding="utf-8")
+
+    validation = harness.validate_opencode_completion_canary_receipt(
+        {
+            "raw_response": {
+                "status": "completed",
+                "assistant_text": "PDF_LAB_CANARY_OK wrote .pdf_lab_write_canary/opencode_write_canary.txt",
+                "diff": [],
+            }
+        },
+        code_root=code_root,
+    )
+
+    assert validation["ok"] is False
+    assert validation["write_sentinel_present"] is True
+    assert validation["write_sentinel_content_ok"] is True
+    assert validation["diff_present"] is False
+    assert "OpenCode completion canary produced no patch diff evidence" in validation["errors"]
 
 
 def test_run_opencode_completion_canary_call_failure_uses_canary_validation_schema(tmp_path: Path, monkeypatch) -> None:
