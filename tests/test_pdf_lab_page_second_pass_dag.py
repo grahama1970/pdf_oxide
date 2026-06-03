@@ -4981,6 +4981,112 @@ def test_validate_page_terminal_ledger_rejects_stale_patch_attempts_ledger(tmp_p
     assert "patch_validation errors do not match selected/final patch attempt validation" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_reviewed_clean_with_defect_response(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": True,
+                "errors": [],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": ["cand:p0001:0000:table"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "review_response.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_response.v1",
+                "page_status": "defect",
+                "candidate_findings": [
+                    {
+                        "candidate_id": "cand:p0001:0000:table",
+                        "status": "defect",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "reviewed_clean",
+        "reason": "scillm_review_validated_clean",
+        "evidence_artifacts": [
+            "review.html",
+            "review_validation.json",
+            "review_response.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "reviewed_clean terminal ledger requires review_response page_status clean" in errors
+    assert "reviewed_clean terminal ledger requires all review_response candidate_findings clean" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_dry_run_with_review_response(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": True,
+                "errors": [],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": ["cand:p0001:0000:table"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "review_response.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_response.v1",
+                "page_status": "clean",
+                "candidate_findings": [{"candidate_id": "cand:p0001:0000:table", "status": "clean"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "review_validation.json",
+            "review_response.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "dry_run_review_not_executed terminal ledger requires review_validation.ok false" in errors
+    assert "dry_run_review_not_executed terminal ledger requires matching review_validation error" in errors
+    assert "dry_run_review_not_executed terminal ledger must not include review_response.json" in errors
+
+
 def test_validate_page_review_bundle_rejects_missing_zip_entry(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

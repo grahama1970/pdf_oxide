@@ -3659,6 +3659,51 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
     )
     if missing_artifacts:
         errors.append(f"declared evidence artifacts are missing: {missing_artifacts}")
+    review_validation = read_required_json_artifact("review_validation.json") if "review_validation.json" in evidence_artifacts else {}
+    review_response = read_required_json_artifact("review_response.json") if "review_response.json" in evidence_artifacts else {}
+    terminal_reason = terminal.get("reason")
+    if review_validation:
+        if review_validation.get("schema") != "pdf_lab.second_pass.review_validation.v1":
+            errors.append("review_validation schema mismatch")
+        review_errors = list(review_validation.get("errors") or [])
+        if terminal_status == "reviewed_clean":
+            if review_validation.get("ok") is not True:
+                errors.append("reviewed_clean terminal ledger requires review_validation.ok true")
+            if not review_response:
+                errors.append("reviewed_clean terminal ledger requires review_response.json")
+        elif terminal_reason == "defect_patch_not_implemented" and review_validation.get("ok") is not True:
+            errors.append("defect_patch_not_implemented terminal ledger requires review_validation.ok true")
+        elif terminal_reason == "review_validation_failed" and review_validation.get("ok") is not False:
+            errors.append("review_validation_failed terminal ledger requires review_validation.ok false")
+        elif terminal_reason == "dry_run_review_not_executed":
+            if review_validation.get("ok") is not False:
+                errors.append("dry_run_review_not_executed terminal ledger requires review_validation.ok false")
+            if "dry_run_review_not_executed" not in review_errors:
+                errors.append("dry_run_review_not_executed terminal ledger requires matching review_validation error")
+            if review_response:
+                errors.append("dry_run_review_not_executed terminal ledger must not include review_response.json")
+        elif terminal_reason == "scillm_review_call_failed" and "scillm_review_call_failed" not in review_errors:
+            errors.append("scillm_review_call_failed terminal ledger requires matching review_validation error")
+        elif terminal_reason == "review_fixture_load_failed" and "review_fixture_load_failed" not in review_errors:
+            errors.append("review_fixture_load_failed terminal ledger requires matching review_validation error")
+    if review_response:
+        if review_response.get("schema") != "pdf_lab.second_pass.review_response.v1":
+            errors.append("review_response schema mismatch")
+        page_status = review_response.get("page_status")
+        findings = review_response.get("candidate_findings")
+        if terminal_status == "reviewed_clean" and page_status != "clean":
+            errors.append("reviewed_clean terminal ledger requires review_response page_status clean")
+        if terminal_reason == "defect_patch_not_implemented" and page_status != "defect":
+            errors.append("defect_patch_not_implemented terminal ledger requires review_response page_status defect")
+        if terminal_reason == "scillm_review_validated_substrate_blocked" and page_status != "substrate_blocked":
+            errors.append("scillm_review_validated_substrate_blocked terminal ledger requires review_response page_status substrate_blocked")
+        if terminal_reason == "scillm_review_validated_unsure" and page_status != "unsure":
+            errors.append("scillm_review_validated_unsure terminal ledger requires review_response page_status unsure")
+        if terminal_status == "reviewed_clean":
+            if not isinstance(findings, list):
+                errors.append("reviewed_clean terminal ledger requires review_response candidate_findings list")
+            elif any(not isinstance(finding, dict) or finding.get("status") != "clean" for finding in findings):
+                errors.append("reviewed_clean terminal ledger requires all review_response candidate_findings clean")
     if "patch_attempts_ledger.json" in evidence_artifacts:
         patch_attempts_ledger = read_required_json_artifact("patch_attempts_ledger.json")
         patch_validation = read_required_json_artifact("patch_validation.json")
