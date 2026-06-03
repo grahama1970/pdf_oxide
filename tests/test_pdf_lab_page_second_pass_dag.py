@@ -487,6 +487,57 @@ def test_run_page_case_rejects_unsafe_case_id_before_writing_case_dir(tmp_path: 
     assert not (tmp_path / "out").exists()
 
 
+def test_run_page_case_lookup_rejects_coerced_page_number(tmp_path: Path) -> None:
+    dag = _load_module()
+    manifest = {
+        "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "candidates": [
+            {
+                "candidate_id": "cand:p0001:0000:table",
+                "page_number": 1,
+                "preset_type": "table",
+                "bbox": [0.1, 0.2, 0.8, 0.4],
+            }
+        ],
+    }
+    sampled_cases = {
+        "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+        "page_cases": [
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": True,
+                "candidate_ids": ["cand:p0001:0000:table"],
+            },
+            {
+                "case_id": "page_case_0002_p0001",
+                "page_number": "1",
+                "candidate_ids": ["cand:p0001:0000:table"],
+            },
+        ],
+    }
+
+    try:
+        dag.run_page_case(
+            pdf_path=tmp_path / "fake.pdf",
+            manifest=manifest,
+            sampled_cases=sampled_cases,
+            out_dir=tmp_path / "out",
+            case_id=None,
+            page_number=1,
+            ledger_path=None,
+            apply_mode="release",
+            dpi=72,
+            model="gpt-5.5",
+            batch_id="batch-a",
+        )
+    except ValueError as exc:
+        assert str(exc) == "page case not found"
+    else:
+        raise AssertionError("coerced page_number lookup was accepted")
+
+    assert not (tmp_path / "out").exists()
+
+
 def test_validate_page_orchestrator_dag_spec_rejects_stale_patched_confirmed_contract(tmp_path: Path) -> None:
     dag = _load_module()
     spec = dag.build_page_orchestrator_dag_spec(

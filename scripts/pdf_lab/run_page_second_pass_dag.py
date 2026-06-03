@@ -299,7 +299,8 @@ def _case_by_id_or_page(sampled_cases: dict[str, Any], case_id: str | None, page
     for case in cases:
         if case_id and case.get("case_id") == case_id:
             return case
-        if page_number is not None and int(case.get("page_number", -1)) == page_number:
+        case_page_number = case.get("page_number")
+        if page_number is not None and type(case_page_number) is int and case_page_number == page_number:
             return case
     raise ValueError("page case not found")
 
