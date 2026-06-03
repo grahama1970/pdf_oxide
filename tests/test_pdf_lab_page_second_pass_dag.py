@@ -5440,6 +5440,45 @@ def test_validate_page_review_bundle_rejects_missing_zip_entry(tmp_path: Path) -
     assert "required bundle artifacts are missing from zip" in "\n".join(validation["errors"])
 
 
+def test_validate_page_review_bundle_rejects_unsafe_artifact_paths(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS):
+        (case_dir / name).write_text(json.dumps({"artifact": name}), encoding="utf-8")
+    zip_path = case_dir / "review_bundle.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+        for name in sorted(dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS):
+            bundle.write(case_dir / name, name)
+        bundle.writestr("../escape.json", "{}")
+        bundle.writestr("/tmp/escape.json", "{}")
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "../outside.json",
+            "/tmp/outside.json",
+            "terminal_ledger_validation.json",
+        ],
+    }
+
+    validation = dag.validate_page_review_bundle(case_dir, zip_path, terminal)
+
+    assert validation["ok"] is False
+    assert validation["zip_content_ok"] is False
+    assert "../outside.json" not in validation["required_zip_entries"]
+    assert "/tmp/outside.json" not in validation["required_zip_entries"]
+    assert validation["unsafe_evidence_artifacts"] == ["../outside.json", "/tmp/outside.json"]
+    assert validation["unsafe_zip_entries"] == ["../escape.json", "/tmp/escape.json"]
+    errors = "\n".join(validation["errors"])
+    assert "terminal evidence_artifacts contains unsafe bundle paths" in errors
+    assert "unsafe zip entries" in errors
+
+
 def test_validate_review_request_contract_rejects_missing_multimodal_evidence(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

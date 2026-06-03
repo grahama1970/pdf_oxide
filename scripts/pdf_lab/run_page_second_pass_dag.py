@@ -3564,10 +3564,19 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
     evidence_artifacts = terminal.get("evidence_artifacts")
     if not isinstance(evidence_artifacts, list):
         evidence_artifacts = []
+    unsafe_evidence_artifacts = sorted(
+        artifact
+        for artifact in evidence_artifacts
+        if isinstance(artifact, str) and artifact and (Path(artifact).is_absolute() or ".." in Path(artifact).parts)
+    )
     required_zip_entries = sorted(
         {
             *MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS,
-            *[artifact for artifact in evidence_artifacts if isinstance(artifact, str) and artifact],
+            *[
+                artifact
+                for artifact in evidence_artifacts
+                if isinstance(artifact, str) and artifact and artifact not in unsafe_evidence_artifacts
+            ],
         }
     )
     missing_artifacts = sorted(
@@ -3576,12 +3585,20 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
     zip_entries: list[str] = []
     duplicate_zip_entries: list[str] = []
     mismatched_zip_entries: list[str] = []
+    unsafe_zip_entries: list[str] = []
     errors: list[str] = []
+    if unsafe_evidence_artifacts:
+        errors.append(f"terminal evidence_artifacts contains unsafe bundle paths: {unsafe_evidence_artifacts}")
     if not zip_path.is_file():
         errors.append("review bundle zip is missing")
     else:
         with zipfile.ZipFile(zip_path) as bundle:
             zip_entries = bundle.namelist()
+            unsafe_zip_entries = sorted(
+                entry
+                for entry in zip_entries
+                if Path(entry).is_absolute() or ".." in Path(entry).parts
+            )
             for artifact in required_zip_entries:
                 source = case_dir / artifact
                 if artifact in zip_entries and source.is_file():
@@ -3591,6 +3608,8 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
         duplicate_zip_entries = sorted(entry for entry, count in entry_counts.items() if count > 1)
         if duplicate_zip_entries:
             errors.append(f"duplicate zip entries: {duplicate_zip_entries}")
+        if unsafe_zip_entries:
+            errors.append(f"unsafe zip entries: {unsafe_zip_entries}")
     missing_expected_zip_entries = sorted(entry for entry in required_zip_entries if entry not in set(zip_entries))
     if missing_artifacts:
         errors.append(f"required bundle artifacts are missing from case dir: {missing_artifacts}")
@@ -3602,6 +3621,7 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
         zip_path.is_file()
         and not missing_expected_zip_entries
         and not duplicate_zip_entries
+        and not unsafe_zip_entries
         and not mismatched_zip_entries
     )
     return {
@@ -3616,6 +3636,8 @@ def validate_page_review_bundle(case_dir: Path, zip_path: Path, terminal: dict[s
         "missing_artifacts": missing_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
         "duplicate_zip_entries": duplicate_zip_entries,
+        "unsafe_evidence_artifacts": unsafe_evidence_artifacts,
+        "unsafe_zip_entries": unsafe_zip_entries,
         "mismatched_zip_entries": sorted(mismatched_zip_entries),
     }
 
