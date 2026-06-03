@@ -4845,7 +4845,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             errors.append("review_validation page_case.case_id does not match terminal ledger")
         if validation_page_case.get("page_number") != terminal.get("page_number"):
             errors.append("review_validation page_case.page_number does not match terminal ledger")
-        review_errors = list(review_validation.get("errors") or [])
+        if not isinstance(review_validation.get("errors"), list):
+            errors.append("review_validation errors must be a list")
+            review_errors = []
+        else:
+            review_errors = review_validation.get("errors")
         if selected_candidate_ids_from_artifact:
             expected_ids = sorted(str(candidate_id) for candidate_id in review_validation.get("expected_candidate_ids") or [])
             seen_ids = sorted(str(candidate_id) for candidate_id in review_validation.get("seen_candidate_ids") or [])
