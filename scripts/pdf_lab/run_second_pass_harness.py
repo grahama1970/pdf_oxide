@@ -3736,7 +3736,7 @@ def run_opencode_completion_canary(
         "error_artifact": str(canary_dir / "opencode_completion_canary_error.json") if error is not None else None,
         "validation_artifact": str(canary_dir / "opencode_completion_canary_validation.json"),
         "cleanup_artifact": str(canary_dir / "opencode_completion_canary_cleanup.json"),
-        "errors": validation.get("errors") or [],
+        "errors": strict_validation_error_list(validation, "opencode_completion_canary_validation")[0],
         "status": validation.get("status"),
     }
     write_json(canary_dir / "opencode_completion_canary.json", canary)
@@ -4094,7 +4094,7 @@ def run_scillm_transport_write_canary(
         "event_stream_artifact": str(canary_dir / "scillm_transport_write_canary_event_stream.json")
         if (canary_dir / "scillm_transport_write_canary_event_stream.json").is_file()
         else None,
-        "errors": validation.get("errors") or [],
+        "errors": strict_validation_error_list(validation, "scillm_transport_write_canary_validation")[0],
         "status": validation.get("delivery_state"),
     }
     write_json(canary_dir / "scillm_transport_write_canary.json", canary)
@@ -4202,7 +4202,7 @@ def run_scillm_transport_readonly_canary(
         if (canary_dir / "scillm_transport_readonly_canary_event_stream.json").is_file()
         else None,
         "transport_run_id": receipt.get("transport_run_id") if isinstance(receipt, dict) else None,
-        "errors": validation.get("errors") or [],
+        "errors": strict_validation_error_list(validation, "scillm_transport_readonly_canary_validation")[0],
         "delivery_state": validation.get("delivery_state"),
     }
     write_json(canary_dir / "scillm_transport_readonly_canary.json", canary)
