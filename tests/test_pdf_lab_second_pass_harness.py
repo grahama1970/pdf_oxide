@@ -2707,6 +2707,50 @@ def test_readiness_audit_rejects_failed_page_review_bundle_validation(tmp_path: 
     assert "review_bundle_validation failed" in json.dumps(audit)
 
 
+def test_readiness_audit_rejects_external_page_artifact_paths(tmp_path: Path) -> None:
+    harness = _load_module()
+    manifest_path = tmp_path / "candidate_manifest.json"
+    manifest_path.write_text(json.dumps({"schema": "manifest"}), encoding="utf-8")
+    sampled_path = tmp_path / "sampled_page_cases.json"
+    sampled_path.write_text(json.dumps({"schema": "sample"}), encoding="utf-8")
+    case_dir = tmp_path / "case"
+    _write_page_dag_case(
+        case_dir,
+        case_id="page_case_0001_p0001",
+        terminal_status="reviewed_clean",
+    )
+    external_terminal_ledger = tmp_path / "external" / "terminal_ledger.json"
+    external_terminal_ledger.parent.mkdir()
+    external_terminal_ledger.write_text((case_dir / "terminal_ledger.json").read_text(encoding="utf-8"), encoding="utf-8")
+    page_result = harness._page_result_from_case(
+        {"case_id": "page_case_0001_p0001", "page_number": 1},
+        {"case_dir": str(case_dir), "terminal_status": "reviewed_clean"},
+    )
+    page_result["terminal_ledger"] = str(external_terminal_ledger)
+
+    audit = harness.build_harness_readiness_audit(
+        out_dir=tmp_path,
+        candidate_manifest_path=manifest_path,
+        sampled_cases_path=sampled_path,
+        sampling_gate={"ok": True, "errors": []},
+        page_results=[page_result],
+        aggregate={"ok": True, "errors": [], "status_counts": {"reviewed_clean": 1}, "unresolved_count": 0},
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        code_root_visibility={"ok": True, "errors": []},
+        scillm_proof_floor=None,
+        opencode_completion_canary=None,
+        scillm_transport_readonly_canary=None,
+        scillm_bug_report_zip_validation={"ok": True, "missing_artifacts": []},
+        patch_commit_ledger={"ok": True, "commit_count": 0, "commit_shas": [], "errors": []},
+        patch_commit_ledger_zip_validation={"ok": True, "missing_artifacts": []},
+    )
+
+    assert audit["ok"] is False
+    assert "each resolved page case has self-contained DAG evidence" in audit["failed_requirements"]
+    assert "terminal_ledger path is not case-local" in json.dumps(audit)
+
+
 def test_readiness_audit_rejects_review_bundle_validation_identity_mismatch(tmp_path: Path) -> None:
     harness = _load_module()
     manifest_path = tmp_path / "candidate_manifest.json"

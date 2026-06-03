@@ -2584,6 +2584,25 @@ def build_harness_readiness_audit(
         review_bundle = Path(str(result.get("review_bundle") or ""))
         evidence_artifacts = set(result.get("evidence_artifacts") or [])
         identity_mismatch_errors = result.get("raw_result_identity_mismatch_errors") or []
+        expected_case_artifacts = {
+            "terminal_ledger": case_dir / "terminal_ledger.json",
+            "terminal_ledger_validation": case_dir / "terminal_ledger_validation.json",
+            "review_bundle": case_dir / "review_bundle.zip",
+            "review_bundle_validation": case_dir / "review_bundle_validation.json",
+        }
+        actual_case_artifacts = {
+            "terminal_ledger": terminal_ledger,
+            "terminal_ledger_validation": terminal_ledger_validation,
+            "review_bundle": review_bundle,
+            "review_bundle_validation": Path(
+                str(result.get("review_bundle_validation") or expected_case_artifacts["review_bundle_validation"])
+            ),
+        }
+        for artifact_key, expected_artifact_path in expected_case_artifacts.items():
+            if actual_case_artifacts[artifact_key] != expected_artifact_path:
+                page_errors.append(
+                    f"{case_id}: {artifact_key} path is not case-local: {actual_case_artifacts[artifact_key]}"
+                )
         if identity_mismatch_errors:
             page_errors.append(f"{case_id}: raw page result identity mismatch: {identity_mismatch_errors}")
         if result.get("terminal_status") not in TERMINAL_PAGE_STATUSES:
@@ -2645,9 +2664,7 @@ def build_harness_readiness_audit(
             page_errors.append(f"{case_id}: terminal evidence missing terminal_ledger_validation.json")
         if not review_bundle.is_file():
             page_errors.append(f"{case_id}: missing review_bundle artifact")
-        review_bundle_validation_path = Path(
-            str(result.get("review_bundle_validation") or case_dir / "review_bundle_validation.json")
-        )
+        review_bundle_validation_path = actual_case_artifacts["review_bundle_validation"]
         if not review_bundle_validation_path.is_file():
             page_errors.append(f"{case_id}: missing review_bundle_validation artifact")
         else:
