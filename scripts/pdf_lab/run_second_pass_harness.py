@@ -4544,9 +4544,13 @@ def validate_live_canary_artifacts(
     if validation_path and validation_path.is_file():
         try:
             loaded = json.loads(validation_path.read_text(encoding="utf-8"))
-            validation_payload = loaded if isinstance(loaded, dict) else {}
         except Exception as exc:  # noqa: BLE001 - artifact validation must fail closed on unreadable JSON.
             errors.append(f"live canary validation artifact unreadable: {type(exc).__name__}: {exc}")
+        else:
+            if isinstance(loaded, dict):
+                validation_payload = loaded
+            else:
+                errors.append("live canary validation artifact is not a JSON object")
     elif canary:
         errors.append(f"live canary validation artifact missing: {validation_artifact_name}")
     if validation_payload:
@@ -4574,9 +4578,13 @@ def validate_live_canary_artifacts(
         if cleanup_path and cleanup_path.is_file():
             try:
                 loaded = json.loads(cleanup_path.read_text(encoding="utf-8"))
-                cleanup_payload = loaded if isinstance(loaded, dict) else {}
             except Exception as exc:  # noqa: BLE001 - cleanup evidence is part of fail-closed proof.
                 errors.append(f"live canary cleanup artifact unreadable: {type(exc).__name__}: {exc}")
+            else:
+                if isinstance(loaded, dict):
+                    cleanup_payload = loaded
+                else:
+                    errors.append("live canary cleanup artifact is not a JSON object")
         elif canary:
             errors.append(f"live canary cleanup artifact missing: {cleanup_artifact_name}")
         if cleanup_payload:
