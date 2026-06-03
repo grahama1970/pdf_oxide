@@ -50,6 +50,10 @@ def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def is_plain_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
 def load_forced_pages(path: Path | None) -> list[int]:
     if path is None:
         return []
@@ -59,7 +63,7 @@ def load_forced_pages(path: Path | None) -> list[int]:
         raise ValueError("forced pages input must be a JSON list or an object with a pages list")
     pages: list[int] = []
     for index, page in enumerate(raw_pages):
-        if not isinstance(page, int):
+        if not is_plain_int(page):
             raise ValueError(f"forced page at index {index} is not an integer: {page!r}")
         if page < 1:
             raise ValueError(f"forced page at index {index} must be >= 1: {page!r}")
@@ -99,12 +103,12 @@ def validate_candidate_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
         errors.append("manifest candidates must be a list")
         candidates = []
     declared_candidate_count = manifest.get("candidate_count")
-    if not isinstance(declared_candidate_count, int) or declared_candidate_count < 0:
+    if not is_plain_int(declared_candidate_count) or declared_candidate_count < 0:
         errors.append("manifest candidate_count must be a non-negative integer")
     elif declared_candidate_count != len(candidates):
         errors.append("manifest candidate_count does not match candidates length")
     page_count = manifest.get("page_count")
-    if page_count is not None and (not isinstance(page_count, int) or page_count < 1):
+    if page_count is not None and (not is_plain_int(page_count) or page_count < 1):
         errors.append("manifest page_count must be null or a positive integer")
         page_count = None
     seen_candidate_ids: list[str] = []
@@ -118,9 +122,9 @@ def validate_candidate_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
         else:
             seen_candidate_ids.append(candidate_id)
         page_number = candidate.get("page_number")
-        if not isinstance(page_number, int) or page_number < 1:
+        if not is_plain_int(page_number) or page_number < 1:
             errors.append(f"manifest candidates[{index}].page_number must be a positive integer")
-        elif isinstance(page_count, int) and page_number > page_count:
+        elif is_plain_int(page_count) and page_number > page_count:
             errors.append(f"manifest candidates[{index}].page_number exceeds manifest page_count")
         preset_type = candidate.get("preset_type")
         if not isinstance(preset_type, str) or not preset_type:

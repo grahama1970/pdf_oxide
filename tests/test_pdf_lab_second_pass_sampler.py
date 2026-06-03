@@ -101,6 +101,29 @@ def test_sampler_rejects_invalid_candidate_manifest_contract() -> None:
     assert "manifest candidate_id values must be unique: ['dup']" in message
 
 
+def test_sampler_rejects_boolean_integer_fields_in_manifest_contract() -> None:
+    sampler = _load_module()
+    manifest = {
+        "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "page_count": True,
+        "candidate_count": True,
+        "candidates": [
+            {"candidate_id": "cand:p0001:0000:table", "page_number": True, "preset_type": "table"},
+        ],
+    }
+
+    try:
+        sampler.select_page_cases(manifest, sample_size=1, seed=1)
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for boolean integer fields")
+
+    assert "manifest candidate_count must be a non-negative integer" in message
+    assert "manifest page_count must be null or a positive integer" in message
+    assert "manifest candidates[0].page_number must be a positive integer" in message
+
+
 def test_sampler_rejects_malformed_detection_reason_contract() -> None:
     sampler = _load_module()
     manifest = {
@@ -350,3 +373,18 @@ def test_load_forced_pages_accepts_list_or_pages_object(tmp_path: Path) -> None:
 
     assert sampler.load_forced_pages(list_path) == [1, 25]
     assert sampler.load_forced_pages(object_path) == [300, 399]
+
+
+def test_load_forced_pages_rejects_bool_page_numbers(tmp_path: Path) -> None:
+    sampler = _load_module()
+    forced_path = tmp_path / "forced-bool.json"
+    forced_path.write_text("[true]\n", encoding="utf-8")
+
+    try:
+        sampler.load_forced_pages(forced_path)
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for boolean forced page")
+
+    assert "forced page at index 0 is not an integer: True" in message
