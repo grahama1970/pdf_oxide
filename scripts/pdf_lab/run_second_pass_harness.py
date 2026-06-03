@@ -2560,6 +2560,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("revertability_check schema mismatch")
             if revertability.get("ok") is not True:
                 entry_errors.append("revertability_check.ok is not true")
+            elif revertability.get("errors") not in (None, []):
+                entry_errors.append("revertability_check ok is true but errors are not empty")
             if revertability.get("commit_sha") != commit_sha:
                 entry_errors.append("revertability_check commit_sha does not match page result")
         if isinstance(commit_sha, str) and commit_sha:
