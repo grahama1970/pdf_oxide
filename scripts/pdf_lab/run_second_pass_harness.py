@@ -2966,15 +2966,37 @@ def build_harness_readiness_audit(
         },
         list((patch_commit_ledger or {}).get("errors") or []),
     )
-    expected_patch_commit_count = int(
-        aggregate.get("patched_confirmed_count")
-        if aggregate.get("patched_confirmed_count") is not None
-        else (aggregate.get("status_counts") or {}).get("patched_confirmed", 0)
-    )
+    raw_patched_confirmed_count = aggregate.get("patched_confirmed_count")
+    if raw_patched_confirmed_count is not None:
+        if not is_plain_int(raw_patched_confirmed_count) or raw_patched_confirmed_count < 0:
+            expected_patch_commit_count = 0
+            patch_commit_errors: list[str] = [
+                f"aggregate patched_confirmed_count must be a non-negative integer: {raw_patched_confirmed_count!r}"
+            ]
+        else:
+            expected_patch_commit_count = raw_patched_confirmed_count
+            patch_commit_errors = []
+    else:
+        status_counts = aggregate.get("status_counts")
+        if not isinstance(status_counts, dict):
+            expected_patch_commit_count = 0
+            patch_commit_errors = ["aggregate status_counts missing or not an object"]
+        else:
+            raw_status_patched_confirmed = status_counts.get("patched_confirmed", 0)
+            if not is_plain_int(raw_status_patched_confirmed) or raw_status_patched_confirmed < 0:
+                expected_patch_commit_count = 0
+                patch_commit_errors = [
+                    "aggregate status_counts.patched_confirmed must be a non-negative integer: "
+                    f"{raw_status_patched_confirmed!r}"
+                ]
+            else:
+                expected_patch_commit_count = raw_status_patched_confirmed
+                patch_commit_errors = []
     patch_commit_count = (patch_commit_ledger or {}).get("commit_count")
     patch_commit_shas = list((patch_commit_ledger or {}).get("commit_shas") or [])
-    patch_commit_errors: list[str] = []
-    if patch_commit_count != expected_patch_commit_count:
+    if not is_plain_int(patch_commit_count) or patch_commit_count < 0:
+        patch_commit_errors.append(f"patch commit ledger commit_count must be a non-negative integer: {patch_commit_count!r}")
+    elif patch_commit_count != expected_patch_commit_count:
         patch_commit_errors.append(
             f"patch commit ledger count {patch_commit_count} does not match patched_confirmed count {expected_patch_commit_count}"
         )
