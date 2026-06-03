@@ -6707,6 +6707,58 @@ def test_validate_page_terminal_ledger_rejects_stale_repair_plan_validation(tmp_
     assert "repair_plan_validation expected_candidate_ids do not match selected_candidates" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_successful_repair_plan_without_receipt(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(
+            {
+                "schema": dag.SELECTED_CANDIDATES_SCHEMA,
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "candidates": [{"candidate_id": "cand:p0001:0000:unknown_layout"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "repair_plan_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.repair_plan_validation.v1",
+                "ok": True,
+                "errors": [],
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "expected_candidate_ids": ["cand:p0001:0000:unknown_layout"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "repair_plan_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "repair_plan_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "repair_plan_validation ok true requires repair_plan_request.json evidence" in errors
+    assert "repair_plan_validation ok true requires repair_plan_receipt.json evidence" in errors
+
+
 def test_validate_page_terminal_ledger_rejects_stale_repair_diagnosis_validation(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
@@ -6760,6 +6812,60 @@ def test_validate_page_terminal_ledger_rejects_stale_repair_diagnosis_validation
     assert "repair_diagnosis_validation page_case.case_id does not match terminal ledger" in errors
     assert "repair_diagnosis_validation page_case.page_number does not match terminal ledger" in errors
     assert "repair_diagnosis_validation expected_candidate_ids do not match selected_candidates" in errors
+
+
+def test_validate_page_terminal_ledger_rejects_successful_repair_diagnosis_without_receipt(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "selected_candidates.json").write_text(
+        json.dumps(
+            {
+                "schema": dag.SELECTED_CANDIDATES_SCHEMA,
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "candidates": [{"candidate_id": "cand:p0001:0000:unknown_layout"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "repair_diagnosis_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.repair_diagnosis_validation.v1",
+                "ok": True,
+                "errors": [],
+                "diagnosis_status": "completed",
+                "assistant_text_present": True,
+                "page_case": {"case_id": "page_case_0001_p0001", "page_number": 1},
+                "candidate_count": 1,
+                "expected_candidate_ids": ["cand:p0001:0000:unknown_layout"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "repair_diagnosis_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "selected_candidates.json",
+            "repair_diagnosis_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "repair_diagnosis_validation ok true requires repair_diagnosis_request.json evidence" in errors
+    assert "repair_diagnosis_validation ok true requires repair_diagnosis_receipt.json evidence" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_stale_page_orchestrator_run_validation(tmp_path: Path) -> None:

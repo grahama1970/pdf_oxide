@@ -4590,6 +4590,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     errors.append("repair_plan_validation candidate_count does not match selected_candidates")
                 if expected_repair_plan_ids != selected_candidate_ids_from_artifact:
                     errors.append("repair_plan_validation expected_candidate_ids do not match selected_candidates")
+            if repair_plan_validation.get("ok") is True:
+                if "repair_plan_request.json" not in evidence_artifacts or not repair_plan_request:
+                    errors.append("repair_plan_validation ok true requires repair_plan_request.json evidence")
+                if "repair_plan_receipt.json" not in evidence_artifacts or not repair_plan_receipt:
+                    errors.append("repair_plan_validation ok true requires repair_plan_receipt.json evidence")
             if repair_plan_receipt:
                 recomputed_repair_plan_validation = validate_repair_plan(
                     repair_plan_receipt.get("repair_plan"),
@@ -4625,6 +4630,11 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     errors.append("repair_diagnosis_validation candidate_count does not match selected_candidates")
                 if expected_repair_diagnosis_ids != selected_candidate_ids_from_artifact:
                     errors.append("repair_diagnosis_validation expected_candidate_ids do not match selected_candidates")
+            if repair_diagnosis_validation.get("ok") is True:
+                if "repair_diagnosis_request.json" not in evidence_artifacts or not repair_diagnosis_request:
+                    errors.append("repair_diagnosis_validation ok true requires repair_diagnosis_request.json evidence")
+                if "repair_diagnosis_receipt.json" not in evidence_artifacts or not repair_diagnosis_receipt:
+                    errors.append("repair_diagnosis_validation ok true requires repair_diagnosis_receipt.json evidence")
             if repair_diagnosis_receipt:
                 recomputed_repair_diagnosis_validation = validate_repair_diagnosis_delegate_receipt(
                     repair_diagnosis_receipt,
