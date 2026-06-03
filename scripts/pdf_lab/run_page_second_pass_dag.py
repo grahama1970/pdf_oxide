@@ -500,6 +500,22 @@ def render_original_page(pdf_path: Path, page_number: int, out: Path, dpi: int) 
         doc.close()
 
 
+def normalized_candidate_bbox(candidate: dict[str, Any], index: int) -> tuple[float, float, float, float]:
+    bbox = candidate.get("bbox")
+    if (
+        not isinstance(bbox, list)
+        or len(bbox) != 4
+        or not all(type(value) in {int, float} and math.isfinite(float(value)) for value in bbox)
+    ):
+        raise ValueError(f"candidate[{index}] bbox must be four finite numbers")
+    x0, y0, x1, y1 = [float(value) for value in bbox]
+    if any(value < 0.0 or value > 1.0 for value in [x0, y0, x1, y1]):
+        raise ValueError(f"candidate[{index}] bbox values must be normalized to [0, 1]")
+    if x0 > x1 or y0 > y1:
+        raise ValueError(f"candidate[{index}] bbox coordinates are not ordered [x0, y0, x1, y1]")
+    return x0, y0, x1, y1
+
+
 def render_candidate_overlay(pdf_path: Path, page_number: int, candidates: list[dict[str, Any]], out: Path, dpi: int) -> None:
     import fitz  # noqa: PLC0415
 
@@ -509,8 +525,7 @@ def render_candidate_overlay(pdf_path: Path, page_number: int, candidates: list[
         width = float(page.rect.width)
         height = float(page.rect.height)
         for idx, candidate in enumerate(candidates):
-            bbox = candidate.get("bbox") or [0.0, 0.0, 0.0, 0.0]
-            x0, y0, x1, y1 = [float(value) for value in bbox]
+            x0, y0, x1, y1 = normalized_candidate_bbox(candidate, idx)
             rect = fitz.Rect(x0 * width, y0 * height, x1 * width, y1 * height)
             color = (1, 0, 0) if candidate.get("preset_type") in {"unknown_layout", "side_chrome"} else (0, 0.35, 1)
             page.draw_rect(rect, color=color, width=1.5)

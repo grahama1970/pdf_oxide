@@ -440,6 +440,24 @@ def test_validate_page_case_identity_rejects_unsafe_or_stale_case_ids() -> None:
     assert "page_case page_number must be a positive integer" in bool_page["errors"]
 
 
+def test_normalized_candidate_bbox_rejects_boolean_and_malformed_coordinates() -> None:
+    dag = _load_module()
+
+    assert dag.normalized_candidate_bbox({"bbox": [0, 0.2, 0.8, 1.0]}, 0) == (0.0, 0.2, 0.8, 1.0)
+
+    for index, candidate, expected in [
+        (1, {"bbox": [False, 0.2, 0.8, True]}, "candidate[1] bbox must be four finite numbers"),
+        (2, {"bbox": [-0.1, 0.2, 0.8, 0.4]}, "candidate[2] bbox values must be normalized to [0, 1]"),
+        (3, {"bbox": [0.8, 0.2, 0.1, 0.4]}, "candidate[3] bbox coordinates are not ordered [x0, y0, x1, y1]"),
+    ]:
+        try:
+            dag.normalized_candidate_bbox(candidate, index)
+        except ValueError as exc:
+            assert str(exc) == expected
+        else:
+            raise AssertionError(f"invalid bbox was accepted: {candidate}")
+
+
 def test_run_page_case_rejects_unsafe_case_id_before_writing_case_dir(tmp_path: Path) -> None:
     dag = _load_module()
     manifest = {
