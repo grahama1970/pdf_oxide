@@ -582,6 +582,10 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
     if not isinstance(payload, dict):
         errors.append("review_request scillm_payload must be an object")
         payload = {}
+    if payload.get("model") != review_request.get("model"):
+        errors.append("scillm_payload model must match review_request model")
+    if payload.get("reasoning_effort") != review_request.get("reasoning_effort"):
+        errors.append("scillm_payload reasoning_effort must match review_request reasoning_effort")
     if payload.get("response_format") != {"type": "json_object"}:
         errors.append("scillm_payload response_format must require json_object")
     if payload.get("scillm_metadata") != review_request.get("scillm_metadata"):

@@ -1213,6 +1213,35 @@ def test_validate_review_request_contract_rejects_stale_page_case_item_id(tmp_pa
     assert "scillm_payload scillm_metadata.item_id must match review_request page_case.case_id" in validation["errors"]
 
 
+def test_validate_review_request_contract_rejects_stale_payload_model_identity(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "page_before.json").write_text(json.dumps({"page": 1, "blocks": []}), encoding="utf-8")
+    (case_dir / "candidate_presets.json").write_text(json.dumps({"candidates": []}), encoding="utf-8")
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "page_candidates.png").write_bytes(b"png")
+    request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1},
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="batch-review",
+    )
+    request["scillm_payload"]["model"] = "gpt-4.1"
+    request["scillm_payload"]["reasoning_effort"] = "low"
+
+    validation = dag.validate_review_request_contract(case_dir, request)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "scillm_payload model must match review_request model" in errors
+    assert "scillm_payload reasoning_effort must match review_request reasoning_effort" in errors
+
+
 def test_patch_worker_prompt_uses_absolute_workspace_and_evidence_paths(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
