@@ -5197,6 +5197,8 @@ def validate_live_canary_artifacts(
                         errors.append("live canary cleanup git_status_after_cleanup is not a list")
                     elif cleanup_status:
                         errors.append(f"live canary cleanup git_status_after_cleanup is not clean: {cleanup_status}")
+                if validation_payload.get("write_sentinel_present") is True and cleanup_payload.get("removed_file") is not True:
+                    errors.append("live canary cleanup removed_file did not prove sentinel removal")
 
     return {
         "schema": "pdf_lab.second_pass.live_canary_artifact_validation.v1",

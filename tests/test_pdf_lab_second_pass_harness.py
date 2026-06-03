@@ -8544,6 +8544,79 @@ def test_live_canary_artifact_validation_checks_cleanup_git_status(tmp_path: Pat
     assert "live canary cleanup git_status_after_cleanup is not clean" in errors
 
 
+def test_live_canary_artifact_validation_checks_cleanup_removed_file(tmp_path: Path) -> None:
+    harness = _load_module()
+    canary_dir = tmp_path / "opencode_completion_canary"
+    canary_dir.mkdir()
+    canary = {
+        "schema": "pdf_lab.second_pass.opencode_completion_canary.v1",
+        "ok": True,
+        "errors": [],
+        "request_artifact": str(canary_dir / "opencode_completion_canary_request.json"),
+        "receipt_artifact": str(canary_dir / "opencode_completion_canary_receipt.json"),
+        "validation_artifact": str(canary_dir / "opencode_completion_canary_validation.json"),
+        "cleanup_artifact": str(canary_dir / "opencode_completion_canary_cleanup.json"),
+    }
+    (canary_dir / "opencode_completion_canary.json").write_text(json.dumps(canary), encoding="utf-8")
+    (canary_dir / "opencode_completion_canary_request.json").write_text(json.dumps({"prompt": "sentinel"}), encoding="utf-8")
+    (canary_dir / "opencode_completion_canary_receipt.json").write_text(
+        json.dumps(
+            {
+                "raw_response": {
+                    "status": "completed",
+                    "assistant_text": "PDF_LAB_CANARY_OK wrote .pdf_lab_write_canary/opencode_write_canary.txt",
+                    "diff": [{"path": ".pdf_lab_write_canary/opencode_write_canary.txt", "status": "added"}],
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    (canary_dir / "opencode_completion_canary_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+                "ok": True,
+                "errors": [],
+                "status": "completed",
+                "assistant_text_present": True,
+                "sentinel_present": True,
+                "write_sentinel_present": True,
+                "write_sentinel_content_ok": True,
+                "diff_present": True,
+                "diff_references_canary_path": True,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (canary_dir / "opencode_completion_canary_cleanup.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+                "ok": True,
+                "errors": [],
+                "removed_file": False,
+                "git_status_after_cleanup": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    validation = harness.validate_live_canary_artifacts(
+        out_dir=tmp_path,
+        canary=canary,
+        artifact_builder=harness.opencode_completion_canary_artifacts,
+        canary_schema="pdf_lab.second_pass.opencode_completion_canary.v1",
+        validation_schema="pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+        validation_artifact_name="opencode_completion_canary_validation.json",
+        cleanup_schema="pdf_lab.second_pass.opencode_completion_canary_cleanup.v1",
+        cleanup_artifact_name="opencode_completion_canary_cleanup.json",
+    )
+
+    errors = "\n".join(validation["errors"])
+    assert validation["ok"] is False
+    assert "live canary cleanup removed_file did not prove sentinel removal" in errors
+
+
 def test_live_canary_artifact_validation_rejects_transport_ok_without_validation_artifact(tmp_path: Path) -> None:
     harness = _load_module()
 
