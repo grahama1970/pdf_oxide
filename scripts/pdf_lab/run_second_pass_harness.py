@@ -1578,11 +1578,24 @@ def build_patch_commit_ledger(
                 entry_errors.append("patch_scope_validation.ok is not true")
             if not isinstance(patch_scope_validation.get("changed_files"), list):
                 entry_errors.append("patch_scope_validation changed_files is not a list")
+            if not isinstance(patch_scope_validation.get("test_files"), list):
+                entry_errors.append("patch_scope_validation test_files is not a list")
         if test_validation:
             if test_validation.get("schema") != "pdf_lab.second_pass.test_validation.v1":
                 entry_errors.append("test_validation schema mismatch")
             if test_validation.get("ok") is not True:
                 entry_errors.append("test_validation.ok is not true")
+            if patch_scope_validation and isinstance(patch_scope_validation.get("test_files"), list):
+                required_tests = sorted(str(path) for path in patch_scope_validation.get("test_files") or [])
+                validation_required_tests = sorted(str(path) for path in test_validation.get("required_test_files") or [])
+                validation_covered_tests = sorted(str(path) for path in test_validation.get("covered_test_files") or [])
+                validation_missing_tests = sorted(str(path) for path in test_validation.get("missing_test_file_coverage") or [])
+                if validation_required_tests and validation_required_tests != required_tests:
+                    entry_errors.append("test_validation required_test_files do not match patch_scope_validation test_files")
+                if validation_covered_tests != required_tests:
+                    entry_errors.append("test_validation covered_test_files do not match patch_scope_validation test_files")
+                if validation_missing_tests:
+                    entry_errors.append("test_validation missing_test_file_coverage is not empty")
         if review_after_request_validation:
             if review_after_request_validation.get("schema") != "pdf_lab.second_pass.review_request_validation.v1":
                 entry_errors.append("review_after_request_validation schema mismatch")
