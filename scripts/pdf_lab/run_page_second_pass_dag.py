@@ -1294,6 +1294,10 @@ def validate_review_response(
         else:
             if receipt.get("schema") != "pdf_lab.second_pass.scillm_review_receipt.v1":
                 errors.append("review receipt schema mismatch")
+            if receipt.get("endpoint") != "POST /v1/chat/completions":
+                errors.append("review receipt endpoint mismatch")
+            if receipt.get("http_status") != 200:
+                errors.append("review receipt http_status must be 200")
             receipt_metadata = receipt.get("scillm_metadata")
             if not isinstance(receipt_metadata, dict):
                 errors.append("review receipt missing scillm_metadata")
@@ -1890,6 +1894,10 @@ def validate_repair_plan(
         else:
             if receipt.get("schema") != "pdf_lab.second_pass.scillm_repair_plan_receipt.v1":
                 errors.append("repair plan receipt schema mismatch")
+            if receipt.get("endpoint") != "POST /v1/chat/completions":
+                errors.append("repair plan receipt endpoint mismatch")
+            if receipt.get("http_status") != 200:
+                errors.append("repair plan receipt http_status must be 200")
             receipt_metadata = receipt.get("scillm_metadata")
             if not isinstance(receipt_metadata, dict):
                 errors.append("repair plan receipt missing scillm_metadata")

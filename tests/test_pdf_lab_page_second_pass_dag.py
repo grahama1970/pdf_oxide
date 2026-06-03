@@ -758,6 +758,48 @@ def test_validate_review_response_rejects_stale_receipt_metadata() -> None:
     assert "review receipt scillm_metadata item_id does not match request" in validation["errors"]
 
 
+def test_validate_review_response_rejects_wrong_receipt_surface_and_status() -> None:
+    dag = _load_module()
+    review = {
+        "schema": "pdf_lab.second_pass.review_response.v1",
+        "page_status": "defect",
+        "page_rationale": "visual and JSON disagree",
+        "candidate_findings": [
+            {
+                "candidate_id": "cand:p0003:0000:table",
+                "status": "defect",
+                "evidence": "bbox misses the rendered table",
+                "rationale": "table-like evidence is not represented",
+                "suggested_fix_surface": "python/pdf_oxide classifier",
+            }
+        ],
+    }
+    request = {
+        "scillm_metadata": {
+            "batch_id": "batch-review",
+            "item_id": "page_case_0001_p0003",
+        }
+    }
+    receipt = {
+        "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+        "endpoint": "POST /v1/scillm/opencode/runs",
+        "http_status": 202,
+        "scillm_metadata": request["scillm_metadata"],
+        "review_response": review,
+    }
+
+    validation = dag.validate_review_response(
+        review,
+        ["cand:p0003:0000:table"],
+        receipt=receipt,
+        request=request,
+    )
+
+    assert validation["ok"] is False
+    assert "review receipt endpoint mismatch" in validation["errors"]
+    assert "review receipt http_status must be 200" in validation["errors"]
+
+
 def test_validate_review_response_rejects_inconsistent_page_and_candidate_statuses() -> None:
     dag = _load_module()
     clean_with_defect = dag.validate_review_response(
@@ -2011,6 +2053,38 @@ def test_validate_repair_plan_rejects_stale_receipt_metadata() -> None:
     assert validation["ok"] is False
     assert "repair plan receipt scillm_metadata batch_id does not match request" in validation["errors"]
     assert "repair plan receipt scillm_metadata item_id does not match request" in validation["errors"]
+
+
+def test_validate_repair_plan_rejects_wrong_receipt_surface_and_status() -> None:
+    dag = _load_module()
+    plan = {
+        "schema": "pdf_lab.second_pass.repair_plan.v1",
+        "summary": "unknown layout should be classified more precisely",
+        "suspected_fault": "classifier misses table-like block",
+        "patch_targets": ["python/pdf_oxide/classifier.py", "tests/test_classifier.py"],
+        "test_plan": ["add focused unknown-layout regression"],
+        "patch_constraints": ["smallest safe change", "no generated artifacts"],
+        "confidence": "medium",
+    }
+    request = {
+        "scillm_metadata": {
+            "batch_id": "batch-repair",
+            "item_id": "page_case_0001_p0003:repair_plan",
+        }
+    }
+    receipt = {
+        "schema": "pdf_lab.second_pass.scillm_repair_plan_receipt.v1",
+        "endpoint": "POST /v1/scillm/opencode/runs",
+        "http_status": 202,
+        "scillm_metadata": request["scillm_metadata"],
+        "repair_plan": plan,
+    }
+
+    validation = dag.validate_repair_plan(plan, receipt=receipt, request=request)
+
+    assert validation["ok"] is False
+    assert "repair plan receipt endpoint mismatch" in validation["errors"]
+    assert "repair plan receipt http_status must be 200" in validation["errors"]
 
 
 def test_materialize_opencode_host_artifacts_copies_and_summarizes_timeout(tmp_path: Path) -> None:
