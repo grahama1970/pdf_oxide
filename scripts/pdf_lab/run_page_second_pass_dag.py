@@ -28,6 +28,7 @@ from typing import Any
 
 
 REPO = Path(__file__).resolve().parents[2]
+PAGE_CASE_ID_RE = re.compile(r"^page_case_\d{4}_p(?P<page_number>\d{4})$")
 TERMINAL_STATUSES = {
     "reviewed_clean",
     "patched_confirmed",
@@ -300,6 +301,29 @@ def _case_by_id_or_page(sampled_cases: dict[str, Any], case_id: str | None, page
         if page_number is not None and int(case.get("page_number", -1)) == page_number:
             return case
     raise ValueError("page case not found")
+
+
+def validate_page_case_identity(page_case: dict[str, Any]) -> dict[str, Any]:
+    errors: list[str] = []
+    case_id = page_case.get("case_id")
+    page_number = page_case.get("page_number")
+    if not isinstance(case_id, str) or not case_id:
+        errors.append("page_case case_id must be non-empty")
+    else:
+        case_id_match = PAGE_CASE_ID_RE.fullmatch(case_id)
+        if case_id_match is None:
+            errors.append(f"{case_id} case_id must match page_case_####_p####")
+        elif isinstance(page_number, int) and int(case_id_match.group("page_number")) != page_number:
+            errors.append(f"{case_id} case_id page suffix does not match page_number {page_number}")
+    if not isinstance(page_number, int) or page_number < 1:
+        errors.append("page_case page_number must be a positive integer")
+    return {
+        "schema": "pdf_lab.second_pass.page_case_identity_validation.v1",
+        "ok": not errors,
+        "errors": errors,
+        "case_id": case_id,
+        "page_number": page_number,
+    }
 
 
 def _candidate_map(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -5202,6 +5226,9 @@ def run_page_case(
     if page_orchestrator_mode not in PAGE_ORCHESTRATOR_MODES:
         raise ValueError(f"unknown page orchestrator mode: {page_orchestrator_mode}")
     page_case = _case_by_id_or_page(sampled_cases, case_id, page_number)
+    page_case_identity = validate_page_case_identity(page_case)
+    if page_case_identity["ok"] is not True:
+        raise ValueError("; ".join(page_case_identity["errors"]))
     page_number = int(page_case["page_number"])
     case_dir = out_dir / str(page_case["case_id"])
     case_dir.mkdir(parents=True, exist_ok=True)
