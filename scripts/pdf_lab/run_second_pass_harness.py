@@ -4755,6 +4755,45 @@ def run_harness(
         census_failure_path = out_dir / "candidate_census_failure.json"
         write_json(census_failure_path, census_failure)
         aggregate = candidate_census_failure_aggregate(f"candidate census failed: {census_failure['status']}")
+        harness_readiness_audit_path = out_dir / "harness_readiness_audit.json"
+        harness_review_bundle_consistency_validation_path = out_dir / "harness_review_bundle_consistency_validation.json"
+        harness_final_gate_path = out_dir / "harness_final_gate.json"
+        harness_readiness_audit = {
+            "schema": "pdf_lab.second_pass.harness_readiness_audit.v1",
+            "created_at": utc_now(),
+            "out_dir": str(out_dir),
+            "ok": False,
+            "failed_count": 1,
+            "failed_requirements": ["candidate census completed"],
+            "checks": [
+                {
+                    "requirement": "candidate census completed",
+                    "ok": False,
+                    "evidence": census_failure,
+                    "errors": [f"candidate census failed: {census_failure['status']}"],
+                }
+            ],
+        }
+        write_json(harness_readiness_audit_path, harness_readiness_audit)
+        harness_review_bundle_consistency_validation = {
+            "schema": "pdf_lab.second_pass.harness_review_bundle_consistency_validation.v1",
+            "ok": False,
+            "errors": ["harness review bundle not produced because candidate census failed"],
+            "zip_path": None,
+            "report_path": str(out_dir / "harness_report.json"),
+            "readiness_audit_path": str(harness_readiness_audit_path),
+            "bundle_validation_path": None,
+            "final_gate_path": str(harness_final_gate_path),
+            "zip_entry_count": 0,
+            "comparisons": {},
+        }
+        write_json(harness_review_bundle_consistency_validation_path, harness_review_bundle_consistency_validation)
+        final_gate = build_harness_final_gate(
+            harness_readiness_audit=harness_readiness_audit,
+            harness_review_bundle_consistency_validation=harness_review_bundle_consistency_validation,
+            report_terminal_status="failed_closed",
+        )
+        write_json(harness_final_gate_path, final_gate)
         report = {
             "schema": "pdf_lab.second_pass.harness_report.v1",
             "created_at": utc_now(),
@@ -4804,9 +4843,16 @@ def run_harness(
             "scillm_transport_readonly_canary": None,
             "scillm_transport_write_canary": None,
             "isolated_code_root_manifest": isolated_code_root_manifest,
+            "harness_review_bundle": None,
+            "harness_review_bundle_consistency_validation": str(harness_review_bundle_consistency_validation_path),
+            "harness_review_bundle_consistency_validation_result": harness_review_bundle_consistency_validation,
+            "harness_readiness_audit": str(harness_readiness_audit_path),
+            "harness_readiness_audit_validation": harness_readiness_audit,
+            "harness_final_gate": str(harness_final_gate_path),
+            "final_gate": final_gate,
             "page_results": [],
             "aggregate": aggregate,
-            "terminal_status": "failed_closed",
+            "terminal_status": final_gate["terminal_status"],
         }
         write_json(out_dir / "harness_report.json", report)
         return report

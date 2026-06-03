@@ -7641,6 +7641,11 @@ def test_run_harness_fails_closed_on_candidate_census_timeout(tmp_path: Path, mo
 
     failure = json.loads((tmp_path / "out/candidate_census_failure.json").read_text(encoding="utf-8"))
     persisted_report = json.loads((tmp_path / "out/harness_report.json").read_text(encoding="utf-8"))
+    readiness = json.loads((tmp_path / "out/harness_readiness_audit.json").read_text(encoding="utf-8"))
+    consistency = json.loads(
+        (tmp_path / "out/harness_review_bundle_consistency_validation.json").read_text(encoding="utf-8")
+    )
+    final_gate = json.loads((tmp_path / "out/harness_final_gate.json").read_text(encoding="utf-8"))
     assert sampler_called is False
     assert page_dag_called is False
     assert failure["status"] == "timeout"
@@ -7653,6 +7658,20 @@ def test_run_harness_fails_closed_on_candidate_census_timeout(tmp_path: Path, mo
     assert report["page_results"] == []
     assert report["aggregate"]["ok"] is False
     assert "candidate census failed: timeout" in report["aggregate"]["errors"]
+    assert readiness == report["harness_readiness_audit_validation"]
+    assert readiness["ok"] is False
+    assert readiness["failed_requirements"] == ["candidate census completed"]
+    assert consistency == report["harness_review_bundle_consistency_validation_result"]
+    assert consistency["ok"] is False
+    assert consistency["errors"] == ["harness review bundle not produced because candidate census failed"]
+    assert final_gate == report["final_gate"]
+    assert final_gate["ok"] is False
+    assert final_gate["terminal_status"] == "failed_closed"
+    assert "readiness failed: candidate census completed" in final_gate["errors"]
+    assert (
+        "bundle consistency failed: harness review bundle not produced because candidate census failed"
+        in final_gate["errors"]
+    )
 
 
 def test_run_harness_records_page_census_failures_and_continues_sampling(tmp_path: Path, monkeypatch) -> None:
