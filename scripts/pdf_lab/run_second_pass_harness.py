@@ -2879,12 +2879,24 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
     evidence_artifacts = terminal.get("evidence_artifacts")
     if not isinstance(evidence_artifacts, list):
         evidence_artifacts = []
+    evidence_artifacts = [artifact for artifact in evidence_artifacts if isinstance(artifact, str) and artifact]
+    duplicate_evidence_artifacts = sorted(
+        artifact for artifact, count in Counter(evidence_artifacts).items() if count > 1
+    )
+    unsafe_evidence_artifacts = sorted(
+        artifact
+        for artifact in evidence_artifacts
+        if Path(artifact).is_absolute() or ".." in Path(artifact).parts
+    )
+    safe_evidence_artifacts = [
+        artifact for artifact in evidence_artifacts if artifact not in unsafe_evidence_artifacts
+    ]
     required_zip_entries = sorted(
         {
             "terminal_ledger.json",
             "terminal_ledger_validation.json",
             "review.html",
-            *[artifact for artifact in evidence_artifacts if isinstance(artifact, str) and artifact],
+            *safe_evidence_artifacts,
         }
     )
     missing_artifacts = sorted(
@@ -2894,6 +2906,10 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
     duplicate_zip_entries: list[str] = []
     mismatched_zip_entries: list[str] = []
     errors: list[str] = []
+    if duplicate_evidence_artifacts:
+        errors.append(f"terminal evidence_artifacts contains duplicate artifact names: {duplicate_evidence_artifacts}")
+    if unsafe_evidence_artifacts:
+        errors.append(f"terminal evidence_artifacts contains unsafe artifact paths: {unsafe_evidence_artifacts}")
     terminal_ledger_matches_argument = False
     terminal_ledger_validation_matches_recomputed = False
     terminal_ledger_validation_ok = False
@@ -2947,6 +2963,8 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
     zip_content_ok = (
         zip_path.is_file()
         and not missing_expected_zip_entries
+        and not duplicate_evidence_artifacts
+        and not unsafe_evidence_artifacts
         and not duplicate_zip_entries
         and not mismatched_zip_entries
     )
@@ -2965,6 +2983,8 @@ def validate_harness_page_review_bundle(case_dir: Path, zip_path: Path, terminal
         "terminal_ledger_validation_ok": terminal_ledger_validation_ok,
         "missing_artifacts": missing_artifacts,
         "missing_expected_zip_entries": missing_expected_zip_entries,
+        "duplicate_evidence_artifacts": duplicate_evidence_artifacts,
+        "unsafe_evidence_artifacts": unsafe_evidence_artifacts,
         "duplicate_zip_entries": duplicate_zip_entries,
         "mismatched_zip_entries": sorted(mismatched_zip_entries),
     }
