@@ -621,11 +621,27 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
     if len(image_parts) != 2:
         errors.append("scillm_payload must include exactly two image_url evidence parts")
     else:
+        expected_image_artifacts = [
+            ("original_image", artifacts.get("original_image")),
+            ("annotated_image", artifacts.get("annotated_image")),
+        ]
         for idx, image_part in enumerate(image_parts, start=1):
             image_url = image_part.get("image_url")
             url = image_url.get("url") if isinstance(image_url, dict) else None
             if not isinstance(url, str) or not url.startswith("data:image/") or ";base64," not in url:
                 errors.append(f"scillm_payload image_url part {idx} must be a base64 data URI")
+                continue
+            artifact_key, artifact_name = expected_image_artifacts[idx - 1]
+            if isinstance(artifact_name, str) and artifact_name and not Path(artifact_name).is_absolute() and ".." not in Path(artifact_name).parts:
+                artifact_path = case_dir / artifact_name
+                if artifact_path.is_file():
+                    try:
+                        payload_bytes = base64.b64decode(url.split(";base64,", 1)[1], validate=True)
+                    except Exception as exc:  # noqa: BLE001 - malformed base64 is a validation failure.
+                        errors.append(f"scillm_payload image_url part {idx} base64 decode failed: {type(exc).__name__}: {exc}")
+                    else:
+                        if payload_bytes != artifact_path.read_bytes():
+                            errors.append(f"scillm_payload image_url part {idx} does not match artifacts.{artifact_key}")
     return {
         "schema": "pdf_lab.second_pass.review_request_validation.v1",
         "ok": not errors,

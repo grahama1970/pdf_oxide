@@ -5697,6 +5697,32 @@ def test_validate_review_request_contract_rejects_unsafe_artifact_paths(tmp_path
     assert "review_request artifacts.candidate_presets unsafe path: ../candidate_presets.json" in errors
 
 
+def test_validate_review_request_contract_rejects_stale_payload_image_bytes(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "page_before.json").write_text(json.dumps({"blocks": []}), encoding="utf-8")
+    (case_dir / "candidate_presets.json").write_text(json.dumps({"candidates": []}), encoding="utf-8")
+    (case_dir / "page_before.png").write_bytes(b"before-current")
+    (case_dir / "page_candidates.png").write_bytes(b"annotated-current")
+    request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1},
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="batch-review",
+    )
+    request["scillm_payload"]["messages"][0]["content"][2]["image_url"]["url"] = "data:image/png;base64,c3RhbGU="
+
+    validation = dag.validate_review_request_contract(case_dir, request)
+
+    assert validation["ok"] is False
+    assert "scillm_payload image_url part 2 does not match artifacts.annotated_image" in validation["errors"]
+
+
 def test_validate_page_review_bundle_requires_minimum_one_case_evidence(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
