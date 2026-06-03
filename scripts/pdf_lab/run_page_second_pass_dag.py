@@ -4869,17 +4869,30 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
             if not isinstance(attempts, list):
                 errors.append("patch_attempts_ledger attempts is not a list")
                 attempts = []
-            if patch_attempts_ledger.get("attempt_count") != len(attempts):
+            attempt_count = patch_attempts_ledger.get("attempt_count")
+            if type(attempt_count) is not int or attempt_count < 0:
+                errors.append("patch_attempts_ledger attempt_count must be a non-negative integer")
+            elif attempt_count != len(attempts):
                 errors.append("patch_attempts_ledger attempt_count does not match attempts length")
             agent_sequence = patch_attempts_ledger.get("agent_sequence")
             if not isinstance(agent_sequence, list):
                 errors.append("patch_attempts_ledger agent_sequence is not a list")
                 agent_sequence = []
+            selected_attempt_index = patch_attempts_ledger.get("selected_attempt_index")
+            if selected_attempt_index is not None and (type(selected_attempt_index) is not int or selected_attempt_index < 1):
+                errors.append("patch_attempts_ledger selected_attempt_index must be null or a positive integer")
             expected_selected_attempt = next(
-                (attempt.get("attempt_index") for attempt in attempts if isinstance(attempt, dict) and attempt.get("ok") is True),
+                (
+                    attempt.get("attempt_index")
+                    for attempt in attempts
+                    if isinstance(attempt, dict)
+                    and attempt.get("ok") is True
+                    and type(attempt.get("attempt_index")) is int
+                    and attempt.get("attempt_index") >= 1
+                ),
                 None,
             )
-            if patch_attempts_ledger.get("selected_attempt_index") != expected_selected_attempt:
+            if selected_attempt_index != expected_selected_attempt:
                 errors.append("patch_attempts_ledger selected_attempt_index does not match first ok attempt")
             selected_or_final_validation: dict[str, Any] | None = None
 
@@ -4892,7 +4905,7 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     errors.append(f"patch_attempts_ledger attempts[{index}] is not an object")
                     continue
                 attempt_index = attempt.get("attempt_index")
-                if not isinstance(attempt_index, int) or attempt_index < 1:
+                if type(attempt_index) is not int or attempt_index < 1:
                     errors.append(f"patch_attempts_ledger attempts[{index}].attempt_index must be positive integer")
                 if index < len(agent_sequence) and attempt.get("agent") != agent_sequence[index]:
                     errors.append(f"patch_attempts_ledger attempts[{index}].agent does not match agent_sequence")
