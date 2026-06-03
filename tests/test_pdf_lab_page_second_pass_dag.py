@@ -5229,6 +5229,48 @@ def test_validate_page_terminal_ledger_rejects_patch_preflight_surface_mismatch(
     assert "scillm_patch_preflight.json ok true requires empty errors" in errors
 
 
+def test_validate_page_terminal_ledger_rejects_duplicate_and_unsafe_evidence_artifacts(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "review_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_validation.v1",
+                "ok": False,
+                "errors": ["dry_run_review_not_executed"],
+                "expected_candidate_ids": ["cand:p0001:0000:table"],
+                "seen_candidate_ids": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "review.html",
+            "review_validation.json",
+            "../outside.json",
+            "/tmp/outside.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "evidence_artifacts contains duplicate artifact names: ['review.html']" in errors
+    assert "evidence_artifacts contains unsafe artifact paths: ['../outside.json', '/tmp/outside.json']" in errors
+
+
 def test_validate_page_review_bundle_rejects_missing_zip_entry(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
