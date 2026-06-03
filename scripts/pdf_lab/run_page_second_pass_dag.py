@@ -3183,6 +3183,13 @@ def validate_runtime_timeout_inputs(
     return errors
 
 
+def validate_runtime_boolean_inputs(*, opencode_cleanup_session: Any) -> list[str]:
+    errors: list[str] = []
+    if type(opencode_cleanup_session) is not bool:
+        errors.append(f"opencode_cleanup_session must be a boolean: {opencode_cleanup_session!r}")
+    return errors
+
+
 def validate_delegate_request_timeout(request: dict[str, Any] | None, errors: list[str], *, label: str) -> None:
     if not isinstance(request, dict):
         return
@@ -5734,6 +5741,9 @@ def run_page_case(
     )
     if runtime_timeout_errors:
         raise ValueError("; ".join(runtime_timeout_errors))
+    runtime_boolean_errors = validate_runtime_boolean_inputs(opencode_cleanup_session=opencode_cleanup_session)
+    if runtime_boolean_errors:
+        raise ValueError("; ".join(runtime_boolean_errors))
     page_case = _case_by_id_or_page(sampled_cases, case_id, page_number)
     page_case_identity = validate_page_case_identity(page_case)
     if page_case_identity["ok"] is not True:

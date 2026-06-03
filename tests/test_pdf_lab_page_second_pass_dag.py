@@ -1016,6 +1016,53 @@ def test_run_page_case_rejects_invalid_runtime_timeouts_before_extraction(tmp_pa
     assert not (tmp_path / "out/page_case_0001_p0001").exists()
 
 
+def test_runtime_boolean_inputs_reject_coerced_values() -> None:
+    dag = _load_module()
+
+    errors = dag.validate_runtime_boolean_inputs(opencode_cleanup_session="false")
+
+    assert "opencode_cleanup_session must be a boolean: 'false'" in errors
+
+
+def test_run_page_case_rejects_invalid_boolean_controls_before_extraction(tmp_path: Path) -> None:
+    dag = _load_module()
+    sampled_cases = {
+        "page_cases": [
+            {
+                "case_id": "page_case_0001_p0001",
+                "page_number": 1,
+                "candidate_ids": ["cand:p0001:0000:table"],
+            }
+        ]
+    }
+
+    try:
+        dag.run_page_case(
+            pdf_path=tmp_path / "missing.pdf",
+            manifest={"candidates": []},
+            sampled_cases=sampled_cases,
+            out_dir=tmp_path / "out",
+            case_id="page_case_0001_p0001",
+            page_number=None,
+            ledger_path=None,
+            apply_mode="auto",
+            dpi=72,
+            model="test-model",
+            batch_id="batch",
+            scillm_timeout_s=60.0,
+            opencode_timeout_s=60.0,
+            page_extract_timeout_s=0.5,
+            opencode_cleanup_session="false",
+        )
+    except ValueError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected ValueError for coerced opencode_cleanup_session")
+
+    assert "opencode_cleanup_session must be a boolean: 'false'" in message
+    assert not (tmp_path / "out/page_case_0001_p0001").exists()
+
+
 def test_validate_page_orchestrator_run_receipt_rejects_stale_nested_transport_evidence(tmp_path: Path) -> None:
     dag = _load_module()
     page_case = {
