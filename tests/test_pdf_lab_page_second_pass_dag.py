@@ -2407,6 +2407,23 @@ def test_patch_prompt_contract_rejects_stale_request_identity(tmp_path: Path) ->
         in missing_retry_contract["errors"]
     )
 
+    malformed_attempt_identity = json.loads(json.dumps(patch_request))
+    malformed_attempt_identity["attempt_index"] = True
+    malformed_attempt_identity["attempt_count"] = True
+    malformed_attempt_identity["transport_retry_fresh_parent"] = "false"
+    malformed_attempt_identity["scillm_metadata"]["attempt_index"] = True
+    malformed_attempt_identity["scillm_metadata"]["attempt_count"] = True
+    malformed_attempt_identity["scillm_metadata"]["transport_retry_fresh_parent"] = "false"
+    malformed_attempt_contract = dag.validate_patch_prompt_contract(
+        malformed_attempt_identity,
+        live_patch_required=True,
+        expected_page_case=page_case,
+    )
+    assert malformed_attempt_contract["ok"] is False
+    assert "patch request attempt_index must be a positive integer" in malformed_attempt_contract["errors"]
+    assert "patch request attempt_count must be a positive integer" in malformed_attempt_contract["errors"]
+    assert "patch request transport_retry_fresh_parent must be boolean" in malformed_attempt_contract["errors"]
+
 
 def test_patch_prompt_contract_rejects_unsafe_page_case_identity(tmp_path: Path) -> None:
     dag = _load_module()

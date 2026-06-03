@@ -2272,8 +2272,18 @@ def validate_patch_prompt_contract(
         metadata_has = field in metadata
         if top_has != metadata_has:
             errors.append(f"patch request {field} must be present in both request and scillm_metadata")
-        elif top_has and patch_request.get(field) != metadata.get(field):
+            continue
+        if not top_has:
+            continue
+        top_value = patch_request.get(field)
+        metadata_value = metadata.get(field)
+        if top_value != metadata_value:
             errors.append(f"patch request scillm_metadata.{field} must match patch_request.{field}")
+        if field in {"attempt_index", "attempt_count"}:
+            if type(top_value) is not int or top_value < 1:
+                errors.append(f"patch request {field} must be a positive integer")
+        elif type(top_value) is not bool:
+            errors.append("patch request transport_retry_fresh_parent must be boolean")
     return {
         "schema": "pdf_lab.second_pass.patch_prompt_contract.v1",
         "ok": not errors,
