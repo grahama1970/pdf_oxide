@@ -2434,6 +2434,8 @@ def build_patch_commit_ledger(
                 entry_errors.append("test_validation schema mismatch")
             if test_validation.get("ok") is not True:
                 entry_errors.append("test_validation.ok is not true")
+            elif test_validation.get("errors") not in (None, []):
+                entry_errors.append("test_validation ok is true but errors are not empty")
             if patch_scope_test_files is not None:
                 required_tests = sorted(patch_scope_test_files)
                 validation_required_tests = sorted(
