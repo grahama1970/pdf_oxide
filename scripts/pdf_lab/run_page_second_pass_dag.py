@@ -1166,8 +1166,28 @@ def parse_scillm_review_content(content: str) -> dict[str, Any]:
     return value
 
 
-def validate_review_response(review: dict[str, Any], expected_candidate_ids: list[str]) -> dict[str, Any]:
+def validate_review_response(
+    review: dict[str, Any],
+    expected_candidate_ids: list[str],
+    *,
+    receipt: dict[str, Any] | None = None,
+    request: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     errors: list[str] = []
+    expected_metadata = request.get("scillm_metadata") if isinstance(request, dict) else None
+    if receipt is not None:
+        if not isinstance(receipt, dict):
+            errors.append("review receipt must be an object")
+        else:
+            if receipt.get("schema") != "pdf_lab.second_pass.scillm_review_receipt.v1":
+                errors.append("review receipt schema mismatch")
+            receipt_metadata = receipt.get("scillm_metadata")
+            if not isinstance(receipt_metadata, dict):
+                errors.append("review receipt missing scillm_metadata")
+            elif isinstance(expected_metadata, dict):
+                for key in ["batch_id", "item_id"]:
+                    if receipt_metadata.get(key) != expected_metadata.get(key):
+                        errors.append(f"review receipt scillm_metadata {key} does not match request")
     if review.get("schema") != "pdf_lab.second_pass.review_response.v1":
         errors.append("schema must be pdf_lab.second_pass.review_response.v1")
     if review.get("page_status") not in REVIEW_STATUSES:
@@ -4315,6 +4335,7 @@ def run_page_case(
         return finalize_page_case(case_dir=case_dir, receipts=receipts, state=state, terminal=terminal)
 
     review_response: dict[str, Any] | None = None
+    review_receipt: dict[str, Any] | None = None
     review_error: dict[str, Any] | None = None
     review_preflight: dict[str, Any] | None = None
     review_fixture_artifact: str | None = None
@@ -4431,6 +4452,8 @@ def run_page_case(
         review_validation = validate_review_response(
             review_response,
             [candidate["candidate_id"] for candidate in candidates],
+            receipt=review_receipt,
+            request=review_request,
         )
     else:
         review_validation = {
@@ -5186,6 +5209,7 @@ def run_page_case(
                     write_json(case_dir / "review_after_request.json", after_review_request)
                     after_review_request_validation = validate_review_request_contract(case_dir, after_review_request)
                     write_json(case_dir / "review_after_request_validation.json", after_review_request_validation)
+                    after_review_receipt: dict[str, Any] | None = None
                     if review_after_fixture_path is not None:
                         try:
                             after_review_fixture = {
@@ -5230,6 +5254,8 @@ def run_page_case(
                     after_review_validation = validate_review_response(
                         after_review_response,
                         [candidate["candidate_id"] for candidate in candidates],
+                        receipt=after_review_receipt,
+                        request=after_review_request,
                     ) if after_review_response is not None else {
                         "schema": "pdf_lab.second_pass.review_validation.v1",
                         "ok": False,
