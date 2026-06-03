@@ -3628,7 +3628,7 @@ def run_opencode_completion_canary(
         write_json(canary_dir / "opencode_completion_canary_validation.json", validation)
     canary = {
         "schema": "pdf_lab.second_pass.opencode_completion_canary.v1",
-        "ok": bool(validation.get("ok")),
+        "ok": validation.get("ok") is True,
         "code_root": str(code_root.resolve()),
         "patch_mode": patch_mode,
         "patch_backend": patch_backend,
@@ -3983,7 +3983,7 @@ def run_scillm_transport_write_canary(
         write_json(canary_dir / "scillm_transport_write_canary_validation.json", validation)
     canary = {
         "schema": "pdf_lab.second_pass.scillm_transport_write_canary.v1",
-        "ok": bool(validation.get("ok")),
+        "ok": validation.get("ok") is True,
         "code_root": str(code_root.resolve()),
         "patch_mode": patch_mode,
         "patch_backend": patch_backend,
@@ -4091,7 +4091,7 @@ def run_scillm_transport_readonly_canary(
     write_json(canary_dir / "scillm_transport_readonly_canary_validation.json", validation)
     canary = {
         "schema": "pdf_lab.second_pass.scillm_transport_readonly_canary.v1",
-        "ok": bool(validation.get("ok")),
+        "ok": validation.get("ok") is True,
         "code_root": str(code_root.resolve()),
         "patch_mode": patch_mode,
         "patch_backend": patch_backend,

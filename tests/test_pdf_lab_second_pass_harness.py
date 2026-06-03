@@ -4766,6 +4766,48 @@ def test_run_scillm_transport_readonly_canary_validates_completed_empty_diff(tmp
     assert (tmp_path / "out/scillm_transport_readonly_canary/scillm_transport_readonly_canary_event_stream.json").is_file()
 
 
+def test_run_scillm_transport_readonly_canary_rejects_coerced_validation_ok(tmp_path: Path, monkeypatch) -> None:
+    harness = _load_module()
+    code_root = tmp_path / "code-root"
+    code_root.mkdir()
+
+    class FakePageDag:
+        DEFAULT_OPENCODE_SKILLS = ["scillm"]
+
+        @staticmethod
+        def call_scillm_orchestrator_patch(request, **kwargs):  # noqa: ARG004
+            return {"transport_run_id": "tr-canary", "message_response": {}, "event_stream": {}}
+
+    monkeypatch.setattr(harness, "git_status_short", lambda repo: [])  # noqa: ARG005
+    monkeypatch.setattr(
+        harness,
+        "validate_scillm_transport_readonly_canary_receipt",
+        lambda receipt, *, worktree_status: {  # noqa: ARG005
+            "schema": "pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1",
+            "ok": "false",
+            "errors": [],
+            "delivery_state": "completed",
+        },
+    )
+
+    canary = harness.run_scillm_transport_readonly_canary(
+        out_dir=tmp_path / "out",
+        page_dag=FakePageDag,
+        code_root=code_root,
+        patch_mode="live",
+        patch_backend="scillm_orchestrator",
+        scillm_base_url="http://localhost:4001",
+        scillm_auth_token="token",
+        caller_skill="pdf-lab",
+        agent="build",
+        skills=None,
+        timeout_s=1.0,
+        model="gpt-5.5",
+    )
+
+    assert canary["ok"] is False
+
+
 def test_run_scillm_transport_write_canary_validates_write_and_cleanup(tmp_path: Path, monkeypatch) -> None:
     harness = _load_module()
     code_root = tmp_path / "code-root"
@@ -4831,6 +4873,48 @@ def test_run_scillm_transport_write_canary_validates_write_and_cleanup(tmp_path:
     assert cleanup["ok"] is True
     assert cleanup["removed_file"] is True
     assert not (code_root / ".pdf_lab_write_canary/scillm_transport_write_canary.txt").exists()
+
+
+def test_run_scillm_transport_write_canary_rejects_coerced_validation_ok(tmp_path: Path, monkeypatch) -> None:
+    harness = _load_module()
+    code_root = tmp_path / "code-root"
+    code_root.mkdir()
+
+    class FakePageDag:
+        DEFAULT_OPENCODE_SKILLS = ["scillm"]
+
+        @staticmethod
+        def call_scillm_orchestrator_patch(request, **kwargs):  # noqa: ARG004
+            return {"message_response": {}, "event_stream": {}}
+
+    monkeypatch.setattr(harness, "git_status_short", lambda repo: [])  # noqa: ARG005
+    monkeypatch.setattr(
+        harness,
+        "validate_scillm_transport_write_canary_receipt",
+        lambda receipt, *, code_root, canary_relpath: {  # noqa: ARG005
+            "schema": "pdf_lab.second_pass.scillm_transport_write_canary_validation.v1",
+            "ok": "false",
+            "errors": [],
+            "delivery_state": "completed",
+        },
+    )
+
+    canary = harness.run_scillm_transport_write_canary(
+        out_dir=tmp_path / "out",
+        page_dag=FakePageDag,
+        code_root=code_root,
+        patch_mode="live",
+        patch_backend="scillm_orchestrator",
+        scillm_base_url="http://localhost:4001",
+        scillm_auth_token="token",
+        caller_skill="pdf-lab",
+        agent="build",
+        skills=None,
+        timeout_s=1.0,
+        model="gpt-5.5",
+    )
+
+    assert canary["ok"] is False
 
 
 def test_validate_scillm_transport_write_canary_requires_patch_diff(tmp_path: Path) -> None:
@@ -4994,6 +5078,53 @@ def test_run_opencode_completion_canary_validates_write_and_cleanup(tmp_path: Pa
     assert cleanup["ok"] is True
     assert cleanup["removed_file"] is True
     assert not (code_root / ".pdf_lab_write_canary/opencode_write_canary.txt").exists()
+
+
+def test_run_opencode_completion_canary_rejects_coerced_validation_ok(tmp_path: Path, monkeypatch) -> None:
+    harness = _load_module()
+    code_root = tmp_path / "code-root"
+    code_root.mkdir()
+
+    class FakePageDag:
+        DEFAULT_OPENCODE_SKILLS = ["scillm"]
+
+        @staticmethod
+        def call_opencode_patch(request, **kwargs):  # noqa: ARG004
+            return {"schema": "pdf_lab.second_pass.opencode_patch_receipt.v1", "raw_response": {}}
+
+        @staticmethod
+        def materialize_opencode_host_artifacts(case_dir, receipt, *, prefix=""):  # noqa: ARG004
+            return []
+
+    monkeypatch.setattr(harness, "git_status_short", lambda repo: [])  # noqa: ARG005
+    monkeypatch.setattr(
+        harness,
+        "validate_opencode_completion_canary_receipt",
+        lambda receipt, *, code_root: {  # noqa: ARG005
+            "schema": "pdf_lab.second_pass.opencode_completion_canary_validation.v1",
+            "ok": "false",
+            "errors": [],
+            "status": "completed",
+        },
+    )
+
+    canary = harness.run_opencode_completion_canary(
+        out_dir=tmp_path / "out",
+        page_dag=FakePageDag,
+        code_root=code_root,
+        patch_mode="live",
+        patch_backend="opencode_serve",
+        scillm_base_url="http://localhost:4001",
+        scillm_auth_token="token",
+        caller_skill="pdf-lab",
+        agent="build",
+        skills=None,
+        timeout_s=1.0,
+        cleanup_session=False,
+        model="gpt-5.5",
+    )
+
+    assert canary["ok"] is False
 
 
 def test_opencode_completion_canary_accepts_sentinel_without_trailing_newline(tmp_path: Path) -> None:
