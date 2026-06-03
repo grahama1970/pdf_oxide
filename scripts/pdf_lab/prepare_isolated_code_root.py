@@ -7,6 +7,7 @@ import argparse
 import json
 import shutil
 import subprocess
+import tomllib
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -81,6 +82,91 @@ def validate_include_paths(include_paths: list[str]) -> list[str]:
     return validated
 
 
+def _path_is_covered(path: str, include_paths: list[str]) -> bool:
+    candidate = Path(path)
+    for include in include_paths:
+        include_path = Path(include)
+        if candidate == include_path:
+            return True
+        try:
+            candidate.relative_to(include_path)
+        except ValueError:
+            continue
+        return True
+    return False
+
+
+def _append_auto_include(
+    *,
+    source_root: Path,
+    include_paths: list[str],
+    auto_included: list[str],
+    path: str,
+) -> None:
+    include_path = Path(path)
+    if include_path.is_absolute() or any(part == ".." for part in include_path.parts):
+        return
+    normalized = include_path.as_posix()
+    if _path_is_covered(normalized, include_paths):
+        return
+    if not (source_root / normalized).exists():
+        return
+    include_paths.append(normalized)
+    auto_included.append(normalized)
+
+
+def expand_include_paths_for_cargo_manifest(source_root: Path, include_paths: list[str]) -> tuple[list[str], list[str], list[str]]:
+    """Include declared Cargo workspace members and targets when Cargo.toml is copied."""
+    if not any(include == "Cargo.toml" for include in include_paths):
+        return include_paths, [], []
+    cargo_toml = source_root / "Cargo.toml"
+    if not cargo_toml.is_file():
+        return include_paths, [], []
+    try:
+        manifest = tomllib.loads(cargo_toml.read_text(encoding="utf-8"))
+    except tomllib.TOMLDecodeError:
+        return include_paths, [], []
+
+    expanded = list(include_paths)
+    auto_included_workspace_members: list[str] = []
+    workspace = manifest.get("workspace")
+    if isinstance(workspace, dict):
+        members = workspace.get("members")
+        if isinstance(members, list):
+            for member in members:
+                if not isinstance(member, str) or member in {"", "."} or "*" in member:
+                    continue
+                _append_auto_include(
+                    source_root=source_root,
+                    include_paths=expanded,
+                    auto_included=auto_included_workspace_members,
+                    path=member,
+                )
+
+    auto_included_cargo_targets: list[str] = []
+    benches = manifest.get("bench")
+    if isinstance(benches, list):
+        for bench in benches:
+            if not isinstance(bench, dict):
+                continue
+            raw_path = bench.get("path")
+            if isinstance(raw_path, str) and raw_path.strip():
+                target_path = Path(raw_path)
+            else:
+                name = bench.get("name")
+                if not isinstance(name, str) or not name.strip():
+                    continue
+                target_path = Path("benches") / f"{name}.rs"
+            include_target = target_path.parent if target_path.parent != Path(".") else target_path
+            _append_auto_include(
+                source_root=source_root,
+                include_paths=expanded,
+                auto_included=auto_included_cargo_targets,
+                path=include_target.as_posix(),
+            )
+    return expanded, auto_included_workspace_members, auto_included_cargo_targets
+
+
 def copy_selected_paths(source_root: Path, dest_root: Path, include_paths: list[str]) -> tuple[list[str], list[str], list[str]]:
     copied: list[str] = []
     missing: list[str] = []
@@ -131,6 +217,9 @@ def prepare_isolated_code_root(
     source_root = source_root.resolve()
     dest_root = dest_root.resolve()
     include_paths = validate_include_paths(include_paths)
+    include_paths, auto_included_workspace_members, auto_included_cargo_targets = expand_include_paths_for_cargo_manifest(
+        source_root, include_paths
+    )
     if source_root == dest_root:
         raise ValueError("destination must not be the source root")
     if dest_root.exists():
@@ -164,6 +253,8 @@ def prepare_isolated_code_root(
         "source_root": str(source_root),
         "dest_root": str(dest_root),
         "include_paths": include_paths,
+        "auto_included_workspace_members": auto_included_workspace_members,
+        "auto_included_cargo_targets": auto_included_cargo_targets,
         "copied_files": copied,
         "copied_count": len(copied),
         "missing_include_paths": missing,

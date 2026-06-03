@@ -80,6 +80,77 @@ def test_prepare_isolated_code_root_honors_explicit_binary_file_include(tmp_path
     assert manifest["clean"] is True
 
 
+def test_prepare_isolated_code_root_auto_includes_cargo_workspace_members(tmp_path: Path) -> None:
+    mod = _load_module()
+    source = tmp_path / "source"
+    dest = tmp_path / "dest"
+    (source / "src").mkdir(parents=True)
+    (source / "benches").mkdir(parents=True)
+    (source / "pdf_oxide_mcp/src").mkdir(parents=True)
+    (source / "pdf_oxide_cli/src").mkdir(parents=True)
+    (source / "Cargo.toml").write_text(
+        "\n".join(
+            [
+                "[workspace]",
+                'members = [".", "pdf_oxide_mcp", "pdf_oxide_cli"]',
+                "",
+                "[package]",
+                'name = "root_crate"',
+                'version = "0.1.0"',
+                'edition = "2021"',
+                "",
+                "[lib]",
+                'path = "src/lib.rs"',
+                "",
+                "[[bench]]",
+                'name = "loadable_bench"',
+                "harness = false",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (source / "src/lib.rs").write_text("pub fn root() {}\n", encoding="utf-8")
+    (source / "benches/loadable_bench.rs").write_text("fn main() {}\n", encoding="utf-8")
+    for member in ("pdf_oxide_mcp", "pdf_oxide_cli"):
+        (source / member / "Cargo.toml").write_text(
+            "\n".join(
+                [
+                    "[package]",
+                    f'name = "{member}"',
+                    'version = "0.1.0"',
+                    'edition = "2021"',
+                    "",
+                    "[lib]",
+                    'path = "src/lib.rs"',
+                    "",
+                ]
+            ),
+            encoding="utf-8",
+        )
+        (source / member / "src/lib.rs").write_text(f"pub fn {member}() {{}}\n", encoding="utf-8")
+
+    manifest = mod.prepare_isolated_code_root(
+        source_root=source,
+        dest_root=dest,
+        include_paths=["Cargo.toml", "src"],
+    )
+
+    assert manifest["auto_included_workspace_members"] == ["pdf_oxide_mcp", "pdf_oxide_cli"]
+    assert manifest["auto_included_cargo_targets"] == ["benches"]
+    assert (dest / "pdf_oxide_mcp/Cargo.toml").is_file()
+    assert (dest / "pdf_oxide_cli/Cargo.toml").is_file()
+    assert (dest / "benches/loadable_bench.rs").is_file()
+    metadata = subprocess.run(
+        ["cargo", "metadata", "--no-deps", "--format-version", "1"],
+        cwd=dest,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    assert metadata.returncode == 0, metadata.stderr
+
+
 def test_prepare_isolated_code_root_refuses_existing_destination_without_force(tmp_path: Path) -> None:
     mod = _load_module()
     source = tmp_path / "source"
