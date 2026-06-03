@@ -172,6 +172,34 @@ def validate_harness_runtime_timeout_inputs(
     return errors
 
 
+def validate_harness_page_selection_inputs(
+    *,
+    max_pages: Any,
+    sample_size: Any,
+    seed: Any,
+    candidate_census_pages: Any,
+) -> list[str]:
+    errors: list[str] = []
+    if max_pages is not None and (not is_plain_int(max_pages) or max_pages < 1):
+        errors.append(f"max_pages must be null or a positive integer: {max_pages!r}")
+    if not is_plain_int(sample_size) or sample_size < 1:
+        errors.append(f"sample_size must be a positive integer: {sample_size!r}")
+    if not is_plain_int(seed):
+        errors.append(f"seed must be an integer: {seed!r}")
+    if candidate_census_pages is not None:
+        if not isinstance(candidate_census_pages, list):
+            errors.append("candidate_census_pages must be null or a list of positive integers")
+        else:
+            invalid_pages = [
+                page
+                for page in candidate_census_pages
+                if not is_plain_int(page) or page < 1
+            ]
+            if invalid_pages:
+                errors.append(f"candidate_census_pages must contain only positive integers: {invalid_pages!r}")
+    return errors
+
+
 def read_non_negative_int_field(
     payload: dict[str, Any],
     *,
@@ -4450,6 +4478,14 @@ def run_harness(
     )
     if runtime_timeout_errors:
         raise ValueError("; ".join(runtime_timeout_errors))
+    page_selection_errors = validate_harness_page_selection_inputs(
+        max_pages=max_pages,
+        sample_size=sample_size,
+        seed=seed,
+        candidate_census_pages=candidate_census_pages,
+    )
+    if page_selection_errors:
+        raise ValueError("; ".join(page_selection_errors))
     manifest_mod, sampler_mod, page_dag = _import_pdf_lab_modules()
     effective_opencode_model = page_dag.resolve_effective_opencode_model(
         patch_mode=patch_mode,
