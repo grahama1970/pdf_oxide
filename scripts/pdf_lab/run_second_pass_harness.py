@@ -2872,6 +2872,16 @@ def package_validation_errors(
         elif not zipfile.is_zipfile(zip_path):
             error_label = label or "package validation"
             errors.append(f"{error_label} zip_path is not a valid ZIP archive: {zip_path}")
+        else:
+            with zipfile.ZipFile(zip_path) as archive:
+                actual_zip_entry_count = len(archive.namelist())
+            reported_zip_entry_count = validation.get("zip_entry_count")
+            if is_plain_int(reported_zip_entry_count) and reported_zip_entry_count != actual_zip_entry_count:
+                error_label = label or "package validation"
+                errors.append(
+                    f"{error_label} zip_entry_count {reported_zip_entry_count} "
+                    f"does not match actual ZIP entry count {actual_zip_entry_count}"
+                )
     for key in [
         "included_artifacts",
         "required_zip_entries",
