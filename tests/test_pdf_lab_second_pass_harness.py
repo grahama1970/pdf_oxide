@@ -4538,6 +4538,9 @@ def test_run_harness_final_status_uses_actual_bundle_package_validation(tmp_path
 def test_run_harness_fails_closed_when_sampling_gate_is_inadequate(tmp_path: Path, monkeypatch) -> None:
     harness = _load_module()
     page_dag_called = False
+    proof_floor_called = False
+    code_root = tmp_path / "mounted" / "code-root"
+    _mark_isolated_code_root(code_root)
 
     class FakeManifestMod:
         @staticmethod
@@ -4588,29 +4591,13 @@ def test_run_harness_fails_closed_when_sampling_gate_is_inadequate(tmp_path: Pat
             page_dag_called = True
             raise AssertionError("page DAG should not run when sampling gate is inadequate")
 
-    def passing_proof_floor(**kwargs):
-        proof_dir = kwargs["out_dir"] / "scillm_proof_floor"
-        proof_dir.mkdir(parents=True, exist_ok=True)
-        for name in [
-            "scillm_proof_floor.json",
-            "scillm_proof_floor_validation.json",
-            "liveliness_response.json",
-            "opencode_health_response.json",
-            "positive_chat_request.json",
-            "positive_chat_response.json",
-            "missing_caller_chat_request.json",
-            "missing_caller_chat_response.json",
-        ]:
-            (proof_dir / name).write_text(json.dumps({"artifact": name}), encoding="utf-8")
-        return {
-            "schema": "pdf_lab.second_pass.scillm_proof_floor.v1",
-            "ok": True,
-            "errors": [],
-            "artifact_dir": str(proof_dir),
-        }
+    def fail_if_proof_floor_runs(**kwargs):
+        nonlocal proof_floor_called
+        proof_floor_called = True
+        raise AssertionError("scillm proof floor should not run when sampling gate is inadequate")
 
     monkeypatch.setattr(harness, "_import_pdf_lab_modules", lambda: (FakeManifestMod, FakeSamplerMod, FakePageDag))
-    monkeypatch.setattr(harness, "run_scillm_proof_floor", passing_proof_floor)
+    monkeypatch.setattr(harness, "run_scillm_proof_floor", fail_if_proof_floor_runs)
 
     report = harness.run_harness(
         pdf_path=tmp_path / "fake.pdf",
@@ -4621,7 +4608,7 @@ def test_run_harness_fails_closed_when_sampling_gate_is_inadequate(tmp_path: Pat
         sample_size=1,
         seed=123,
         review_mode="dry_run",
-        patch_mode="dry_run",
+        patch_mode="live",
         patch_backend="opencode_serve",
         commit_mode="dry_run",
         model="gpt-5.5",
@@ -4639,10 +4626,11 @@ def test_run_harness_fails_closed_when_sampling_gate_is_inadequate(tmp_path: Pat
         opencode_skills=["scillm"],
         allowed_patch_prefixes=["tests/"],
         validation_commands=None,
-        code_root=tmp_path / "code-root",
+        code_root=code_root,
         prepare_isolated_code_root_dest=None,
         prepare_isolated_code_root_include_paths=None,
         prepare_isolated_code_root_force=False,
+        scillm_mounted_workspace_prefixes=[tmp_path / "mounted"],
     )
 
     persisted_gate = json.loads((tmp_path / "out/sampling_gate.json").read_text(encoding="utf-8"))
@@ -4650,6 +4638,7 @@ def test_run_harness_fails_closed_when_sampling_gate_is_inadequate(tmp_path: Pat
     assert report["sampling_gate_validation"]["ok"] is False
     assert report["page_results"] == []
     assert page_dag_called is False
+    assert proof_floor_called is False
     assert "sampling_gate.ok" in report["deterministic_execution_plan_result"]["pre_page_gates"]
     assert report["harness_readiness_audit_validation"]["ok"] is False
     assert "sampling gate passed" in report["harness_readiness_audit_validation"]["failed_requirements"]

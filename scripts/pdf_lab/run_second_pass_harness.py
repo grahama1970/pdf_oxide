@@ -4096,7 +4096,13 @@ def run_harness(
     opencode_completion_canary = None
     scillm_transport_readonly_canary = None
     scillm_transport_write_canary = None
-    if code_root_visibility["ok"] and candidate_manifest_integrity_validation["ok"] and candidate_sample_linkage_validation["ok"]:
+    substrate_pre_page_gates_ok = (
+        code_root_visibility["ok"]
+        and candidate_manifest_integrity_validation["ok"]
+        and candidate_sample_linkage_validation["ok"]
+        and sampling_gate["ok"]
+    )
+    if substrate_pre_page_gates_ok:
         scillm_proof_floor = run_scillm_proof_floor(
             out_dir=out_dir,
             patch_mode=patch_mode,
@@ -4107,9 +4113,7 @@ def run_harness(
             model=model,
             timeout_s=min(scillm_timeout_s, 30.0),
         )
-    if code_root_visibility["ok"] and candidate_manifest_integrity_validation["ok"] and candidate_sample_linkage_validation["ok"] and (
-        scillm_proof_floor is None or scillm_proof_floor.get("ok") is True
-    ):
+    if substrate_pre_page_gates_ok and (scillm_proof_floor is None or scillm_proof_floor.get("ok") is True):
         opencode_completion_canary = run_opencode_completion_canary(
             out_dir=out_dir,
             page_dag=page_dag,
