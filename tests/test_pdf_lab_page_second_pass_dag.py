@@ -91,6 +91,7 @@ def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "a
                 "schema": "pdf_lab.second_pass.patch_delta.v1",
                 "ok": True,
                 "patch_changed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+                "errors": [],
             }
         ),
         encoding="utf-8",
@@ -101,7 +102,9 @@ def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "a
                 "schema": "pdf_lab.second_pass.patch_scope_validation.v1",
                 "ok": True,
                 "changed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+                "allowed_prefixes": ["python/pdf_oxide/", "tests/"],
                 "test_files": ["tests/test_fix.py"],
+                "delegate_claim": None,
                 "errors": [],
             }
         ),
@@ -5769,6 +5772,64 @@ def test_validate_page_terminal_ledger_rejects_stale_root_patch_validation_field
 
     assert validation["ok"] is False
     assert "patch_validation does not match selected/final patch attempt validation" in validation["errors"]
+
+
+def test_validate_page_terminal_ledger_rejects_stale_patch_scope_validation(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "review.html").write_text("review", encoding="utf-8")
+    (case_dir / "patch_delta.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_delta.v1",
+                "baseline_changed_files": [],
+                "after_changed_files": ["docs/generated.json", "tests/test_fix.py"],
+                "patch_changed_files": ["docs/generated.json", "tests/test_fix.py"],
+                "ignored_generated_files": [],
+                "preexisting_dirty_files_still_dirty": [],
+                "ok": True,
+                "errors": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "patch_scope_validation.json").write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.patch_scope_validation.v1",
+                "ok": True,
+                "errors": [],
+                "changed_files": ["python/pdf_oxide/extract_for_pdflab.py", "tests/test_fix.py"],
+                "allowed_prefixes": ["python/pdf_oxide/", "tests/"],
+                "test_files": ["tests/test_fix.py"],
+                "delegate_claim": None,
+            }
+        ),
+        encoding="utf-8",
+    )
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0001",
+        "page_number": 1,
+        "terminal_status": "still_open",
+        "reason": "patch_scope_validation_failed",
+        "evidence_artifacts": [
+            "review.html",
+            "patch_delta.json",
+            "patch_scope_validation.json",
+            "terminal_ledger_validation.json",
+        ],
+        "commit_sha": None,
+    }
+
+    validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+
+    assert validation["ok"] is False
+    errors = "\n".join(validation["errors"])
+    assert "patch_scope_validation changed_files do not match patch_delta patch_changed_files" in errors
+    assert "patch_scope_validation does not match recomputed patch scope contract" in errors
+    assert "patch_scope_validation_failed terminal ledger requires patch_scope_validation.ok false" in errors
 
 
 def test_validate_page_terminal_ledger_rejects_stale_repair_plan_validation(tmp_path: Path) -> None:

@@ -4456,6 +4456,54 @@ def validate_page_terminal_ledger(case_dir: Path, terminal: dict[str, Any]) -> d
                     errors.append("patch_validation errors do not match selected/final patch attempt validation")
                 if patch_validation != selected_or_final_validation:
                     errors.append("patch_validation does not match selected/final patch attempt validation")
+    patch_delta_artifact = read_required_json_artifact("patch_delta.json") if "patch_delta.json" in evidence_artifacts else {}
+    patch_scope_validation_artifact = (
+        read_required_json_artifact("patch_scope_validation.json")
+        if "patch_scope_validation.json" in evidence_artifacts
+        else {}
+    )
+    if patch_delta_artifact:
+        if patch_delta_artifact.get("schema") != "pdf_lab.second_pass.patch_delta.v1":
+            errors.append("patch_delta schema mismatch")
+        if patch_delta_artifact.get("ok") not in {True, False}:
+            errors.append("patch_delta ok must be boolean")
+        if not isinstance(patch_delta_artifact.get("patch_changed_files"), list):
+            errors.append("patch_delta patch_changed_files is not a list")
+        if not isinstance(patch_delta_artifact.get("errors"), list):
+            errors.append("patch_delta errors is not a list")
+    if patch_scope_validation_artifact:
+        if patch_scope_validation_artifact.get("schema") != "pdf_lab.second_pass.patch_scope_validation.v1":
+            errors.append("patch_scope_validation schema mismatch")
+        if patch_scope_validation_artifact.get("ok") not in {True, False}:
+            errors.append("patch_scope_validation ok must be boolean")
+        changed_files = patch_scope_validation_artifact.get("changed_files")
+        if not isinstance(changed_files, list) or not all(isinstance(path, str) for path in changed_files):
+            errors.append("patch_scope_validation changed_files is not a list of strings")
+            changed_files = []
+        allowed_prefixes = patch_scope_validation_artifact.get("allowed_prefixes")
+        if not isinstance(allowed_prefixes, list) or not all(isinstance(prefix, str) for prefix in allowed_prefixes):
+            errors.append("patch_scope_validation allowed_prefixes is not a list of strings")
+            allowed_prefixes = []
+        if not isinstance(patch_scope_validation_artifact.get("test_files"), list):
+            errors.append("patch_scope_validation test_files is not a list")
+        if not isinstance(patch_scope_validation_artifact.get("errors"), list):
+            errors.append("patch_scope_validation errors is not a list")
+        if patch_delta_artifact and isinstance(patch_delta_artifact.get("patch_changed_files"), list):
+            delta_changed_files = sorted(str(path) for path in patch_delta_artifact.get("patch_changed_files") or [])
+            if sorted(changed_files) != delta_changed_files:
+                errors.append("patch_scope_validation changed_files do not match patch_delta patch_changed_files")
+            if patch_delta_artifact.get("ok") is True and allowed_prefixes:
+                recomputed_patch_scope_validation = validate_patch_scope(
+                    delta_changed_files,
+                    allowed_prefixes,
+                    patch_scope_validation_artifact.get("delegate_claim")
+                    if isinstance(patch_scope_validation_artifact.get("delegate_claim"), dict)
+                    else None,
+                )
+                if patch_scope_validation_artifact != recomputed_patch_scope_validation:
+                    errors.append("patch_scope_validation does not match recomputed patch scope contract")
+        if terminal_reason == "patch_scope_validation_failed" and patch_scope_validation_artifact.get("ok") is not False:
+            errors.append("patch_scope_validation_failed terminal ledger requires patch_scope_validation.ok false")
     if terminal_status == "patched_confirmed":
         commit_sha = terminal.get("commit_sha")
         if not terminal.get("commit_sha"):
