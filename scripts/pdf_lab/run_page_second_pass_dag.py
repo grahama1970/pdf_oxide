@@ -4457,13 +4457,20 @@ def run_validation_commands(
         )
     bytecode_cleanup = cleanup_python_bytecode_caches(cwd)
     errors = [f"command failed: {item['command']}" for item in results if item["exit_code"] != 0]
-    zero_test_commands = [
-        item["command"]
-        for item in results
-        if item["exit_code"] == 0
-        and item["command"].strip().startswith("cargo test")
-        and re.search(r"\brunning\s+0\s+tests\b", f"{item['stdout']}\n{item['stderr']}", flags=re.IGNORECASE)
-    ]
+    zero_test_commands = []
+    for item in results:
+        if item["exit_code"] != 0 or not item["command"].strip().startswith("cargo test"):
+            continue
+        test_counts = [
+            int(match.group(1))
+            for match in re.finditer(
+                r"\brunning\s+(\d+)\s+tests?\b",
+                f"{item['stdout']}\n{item['stderr']}",
+                flags=re.IGNORECASE,
+            )
+        ]
+        if test_counts and max(test_counts) == 0:
+            zero_test_commands.append(item["command"])
     if zero_test_commands:
         errors.append(f"validation command ran zero cargo tests: {zero_test_commands}")
     if not commands:
