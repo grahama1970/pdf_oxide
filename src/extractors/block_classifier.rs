@@ -409,6 +409,27 @@ impl BlockClassifier {
             }
         }
 
+        // Some standards bodies use bold/larger running headers and thin
+        // separator rules. Route those top-band page-chrome lines before the
+        // general section-heading path can promote them.
+        if y_ratio < 0.08
+            && trimmed.len() < 200
+            && !is_content_exception(trimmed)
+            && (is_top_running_header_chrome(trimmed) || is_decorative_rule_text(trimmed))
+        {
+            return self.make_block(
+                BlockType::Header,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.85,
+                None,
+                None,
+            );
+        }
+
         // Caption detection (Figure/Table prefix)
         if is_caption(trimmed, size_ratio) {
             return self.make_block(
@@ -1555,6 +1576,23 @@ fn is_boilerplate(text: &str) -> bool {
     false
 }
 
+fn is_top_running_header_chrome(text: &str) -> bool {
+    let lower = text.trim().to_lowercase();
+    lower.contains("nist sp 800-53") && lower.contains("security and privacy controls")
+}
+
+fn is_decorative_rule_text(text: &str) -> bool {
+    let trimmed = text.trim();
+    if trimmed.len() < 8 {
+        return false;
+    }
+    let rule_chars = trimmed
+        .chars()
+        .filter(|c| matches!(c, '_' | '-' | '─' | '—' | '━'))
+        .count();
+    rule_chars as f32 / trimmed.chars().count() as f32 >= 0.8
+}
+
 /// Check if text is a section header exception that should NOT be filtered
 /// even when in the header/footer region.
 fn is_content_exception(text: &str) -> bool {
@@ -2449,5 +2487,48 @@ mod tests {
             assert_ne!(row.block_type, BlockType::Footer, "QID row should not be footer: {row:?}");
             assert_ne!(row.block_type, BlockType::Reference, "QID row should not be reference: {row:?}");
         }
+    }
+
+    #[test]
+    fn test_nist_top_running_header_and_rule_are_page_chrome_not_section_headings() {
+        let spans = vec![
+            make_span(
+                "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+                90.0,
+                746.0,
+                12.0,
+                true,
+            ),
+            make_span(
+                "_________________________________________________________________________________________________",
+                90.0,
+                735.0,
+                12.0,
+                true,
+            ),
+            make_span(
+                "This is ordinary body text that establishes the median font size for the page.",
+                90.0,
+                650.0,
+                10.0,
+                false,
+            ),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        let running_header = blocks
+            .iter()
+            .find(|b| b.text.contains("NIST SP 800-53"))
+            .expect("expected NIST running header block");
+        assert_eq!(running_header.block_type, BlockType::Header, "{running_header:?}");
+        assert!(running_header.header_level.is_none());
+
+        let rule = blocks
+            .iter()
+            .find(|b| b.text.starts_with("___"))
+            .expect("expected decorative rule block");
+        assert_eq!(rule.block_type, BlockType::Header, "{rule:?}");
+        assert!(rule.header_level.is_none());
     }
 }
