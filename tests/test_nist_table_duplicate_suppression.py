@@ -97,6 +97,47 @@ def test_off_page_table_bbox_preserves_text_and_marks_clipped_geometry(monkeypat
     assert "[QID_NOTE]Annual review" in table["text"]
 
 
+def test_table_text_suppresses_trailing_all_empty_decorative_row():
+    script_path = str(REPO / "scripts/pdf_lab")
+    sys.path.insert(0, script_path)
+    try:
+        import snapshot_current_extraction as snapshot
+
+        table = {
+            "data": [
+                ["DATE", "TYPE", "REVISION", "PAGE"],
+                ["12-10-2020", "Editorial", "Table C-17 update", "454"],
+                ["", "", "", ""],
+            ]
+        }
+
+        assert snapshot._table_text(table) == (
+            "DATE | TYPE | REVISION | PAGE\n"
+            "12-10-2020 | Editorial | Table C-17 update | 454"
+        )
+        assert snapshot._raw_table_payload(table, snapshot._table_metrics(table))["rows"] == [
+            {
+                "cells": [
+                    {"text": "DATE"},
+                    {"text": "TYPE"},
+                    {"text": "REVISION"},
+                    {"text": "PAGE"},
+                ]
+            },
+            {
+                "cells": [
+                    {"text": "12-10-2020"},
+                    {"text": "Editorial"},
+                    {"text": "Table C-17 update"},
+                    {"text": "454"},
+                ]
+            },
+        ]
+    finally:
+        with contextlib.suppress(ValueError):
+            sys.path.remove(script_path)
+
+
 def test_nist_style_page_1_real_extraction_suppresses_qid_table_row_duplicates():
     page = _extract_fixture_page_1_without_ledger()
     blocks = page.get("blocks") or []

@@ -525,7 +525,7 @@ def _table_data(table: dict[str, Any]) -> list[list[str]]:
         for row in data:
             if isinstance(row, (list, tuple)):
                 rows.append([_clean_table_cell(cell) for cell in row])
-        return rows
+        return _drop_trailing_empty_table_rows(rows)
 
     rows = table.get("rows")
     if not isinstance(rows, list):
@@ -540,7 +540,14 @@ def _table_data(table: dict[str, Any]) -> list[list[str]]:
             text = cell.get("text") if isinstance(cell, dict) else cell
             values.append(_clean_table_cell(text))
         out.append(values)
-    return out
+    return _drop_trailing_empty_table_rows(out)
+
+
+def _drop_trailing_empty_table_rows(rows: list[list[str]]) -> list[list[str]]:
+    trimmed = list(rows)
+    while trimmed and not any(cell.strip() for cell in trimmed[-1]):
+        trimmed.pop()
+    return trimmed
 
 
 def _table_text(table: dict[str, Any]) -> str:
