@@ -689,20 +689,8 @@ def extract_page_for_code_root(
     page_extract_timeout_s: float | None = None,
 ) -> dict[str, Any]:
     repo = REPO if code_root.resolve() == REPO.resolve() else code_root
-    if repo.resolve() != REPO.resolve():
-        return extract_page_subprocess(
-            pdf_path,
-            page_number,
-            ledger_path,
-            apply_mode,
-            repo,
-            page_extract_timeout_s if page_extract_timeout_s is not None and page_extract_timeout_s > 0 else 300.0,
-        )
-    if page_extract_timeout_s is not None and page_extract_timeout_s > 0:
-        return extract_page_subprocess(pdf_path, page_number, ledger_path, apply_mode, repo, page_extract_timeout_s)
-    if repo.resolve() == REPO.resolve():
-        return extract_page(pdf_path, page_number, ledger_path, apply_mode)
-    return extract_page(pdf_path, page_number, ledger_path, apply_mode, repo=repo)
+    timeout_s = page_extract_timeout_s if page_extract_timeout_s is not None and page_extract_timeout_s > 0 else 300.0
+    return extract_page_subprocess(pdf_path, page_number, ledger_path, apply_mode, repo, timeout_s)
 
 
 def run_extract_page_for_code_root(
@@ -803,6 +791,8 @@ def build_candidate_presets(page_case: dict[str, Any], candidates: list[dict[str
                 "preset_type": candidate["preset_type"],
                 "bbox": candidate.get("bbox"),
                 "features": candidate.get("features") or {},
+                "json_pointer": candidate.get("json_pointer"),
+                "text_excerpt": candidate.get("text_excerpt"),
                 "question": candidate_question(candidate),
                 "allowed_review_statuses": ["clean", "defect", "unsure", "substrate_blocked"],
             }
@@ -822,15 +812,25 @@ def build_review_request(
     model: str,
     batch_id: str,
 ) -> dict[str, Any]:
-    item_id = str(page_case["case_id"])
     page_json = load_json(case_dir / page_json_path)
     candidate_presets = load_json(case_dir / candidate_presets_path)
+    required_candidate_ids = [
+        str(candidate["candidate_id"])
+        for candidate in candidate_presets.get("candidates", [])
+        if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
+    ]
     prompt_text = (
         "You are reviewing PDF Oxide extraction evidence for one page. "
         "Compare the original rendered page, the annotated candidate image, "
         "the extracted JSON, and the candidate preset questions. Return JSON only. "
         "You may classify candidates as clean, defect, unsure, or substrate_blocked. "
         "Do not claim that a bug is fixed, patched, resolved, committed, or closed.\n\n"
+        "Candidate ID discipline:\n"
+        "- candidate_findings[].candidate_id MUST be copied verbatim from the required_candidate_ids list below.\n"
+        "- Return exactly one finding for each required_candidate_ids entry and no other candidate_id values.\n"
+        "- Do not infer, rewrite, or repair candidate_id suffixes from preset_type, extracted JSON type, visual class, or rationale.\n"
+        "- If the visual/extracted evidence suggests a different semantic type, describe that only in status/rationale/suggested_fix_surface; keep candidate_id unchanged.\n\n"
+        f"required_candidate_ids:\n{json.dumps(required_candidate_ids, indent=2)}\n\n"
         "Required response schema:\n"
         "{\n"
         '  "schema": "pdf_lab.second_pass.review_response.v1",\n'
@@ -845,11 +845,19 @@ def build_review_request(
         f"Candidate presets:\n{json.dumps(candidate_presets, indent=2, sort_keys=True)}\n\n"
         f"Extracted page JSON:\n{json.dumps(page_json, indent=2, sort_keys=True)}"
     )
+    request_sha256 = hashlib.sha256(prompt_text.encode("utf-8")).hexdigest()
+    item_id = f"{page_case['case_id']}:{request_sha256[:16]}"
+    scillm_metadata = {
+        "batch_id": batch_id,
+        "case_id": str(page_case["case_id"]),
+        "item_id": item_id,
+        "request_sha256": request_sha256,
+    }
     scillm_payload = {
         "model": model,
         "reasoning_effort": "high",
         "response_format": {"type": "json_object"},
-        "scillm_metadata": {"batch_id": batch_id, "item_id": item_id},
+        "scillm_metadata": scillm_metadata,
         "messages": [
             {
                 "role": "user",
@@ -867,7 +875,7 @@ def build_review_request(
         "model": model,
         "reasoning_effort": "high",
         "response_format": {"type": "json_object"},
-        "scillm_metadata": {"batch_id": batch_id, "item_id": item_id},
+        "scillm_metadata": scillm_metadata,
         "page_case": page_case,
         "artifacts": {
             "page_json": page_json_path,
@@ -932,8 +940,15 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
     case_id = page_case.get("case_id")
     if not isinstance(case_id, str) or not case_id:
         errors.append("review_request page_case.case_id must be non-empty")
-    elif isinstance(metadata, dict) and metadata.get("item_id") != case_id:
-        errors.append("scillm_payload scillm_metadata.item_id must match review_request page_case.case_id")
+    elif isinstance(metadata, dict):
+        item_id = metadata.get("item_id")
+        if not isinstance(item_id, str) or not (item_id == case_id or item_id.startswith(f"{case_id}:")):
+            errors.append("scillm_payload scillm_metadata.item_id must be the case_id or content-addressed under the case_id")
+        if metadata.get("case_id") != case_id:
+            errors.append("scillm_payload scillm_metadata.case_id must match review_request page_case.case_id")
+        request_sha256 = metadata.get("request_sha256")
+        if not isinstance(request_sha256, str) or not re.fullmatch(r"[0-9a-f]{64}", request_sha256):
+            errors.append("scillm_payload scillm_metadata.request_sha256 must be a 64-character lowercase hex digest")
     page_case_number = page_case.get("page_number")
     if type(page_case_number) is int:
         page_json_artifact = artifacts.get("page_json")

@@ -242,10 +242,75 @@ def _write_full_patched_confirmed_artifacts(case_dir: Path, commit_sha: str = "a
     )
 
 
+def test_review_request_requires_verbatim_candidate_ids_and_preserves_candidate_evidence(
+    tmp_path: Path,
+) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    page_case = {
+        "case_id": "page_case_0001_p0027",
+        "page_number": 27,
+        "candidate_ids": [
+            "cand:p0027:0000:side_chrome",
+            "cand:p0027:0001:side_chrome",
+        ],
+    }
+    candidates = [
+        {
+            "candidate_id": "cand:p0027:0000:side_chrome",
+            "preset_type": "side_chrome",
+            "bbox": [0.147, 0.044, 0.851, 0.058],
+            "features": {"source_type": "Header"},
+            "json_pointer": "/pages/26/blocks/0",
+            "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS",
+        },
+        {
+            "candidate_id": "cand:p0027:0001:side_chrome",
+            "preset_type": "side_chrome",
+            "bbox": [0.147, 0.056, 0.852, 0.071],
+            "features": {"source_type": "Header"},
+            "json_pointer": "/pages/26/blocks/1",
+            "text_excerpt": "________________________________________________________________",
+        },
+    ]
+
+    candidate_presets = dag.build_candidate_presets(page_case, candidates)
+    (case_dir / "candidate_presets.json").write_text(json.dumps(candidate_presets), encoding="utf-8")
+    (case_dir / "page_before.json").write_text(json.dumps({"page": 27, "blocks": []}), encoding="utf-8")
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "page_candidates.png").write_bytes(b"png")
+
+    review_request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case=page_case,
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="pdf-lab-test",
+    )
+
+    prompt_text = review_request["scillm_payload"]["messages"][0]["content"][0]["text"]
+    metadata = review_request["scillm_payload"]["scillm_metadata"]
+    assert "required_candidate_ids" in prompt_text
+    assert "candidate_findings[].candidate_id MUST be copied verbatim" in prompt_text
+    assert "Do not infer, rewrite, or repair candidate_id suffixes" in prompt_text
+    assert "cand:p0027:0000:side_chrome" in prompt_text
+    assert "cand:p0027:0001:side_chrome" in prompt_text
+    assert "cand:p0027:0000:section_heading" not in prompt_text
+    assert metadata["case_id"] == "page_case_0001_p0027"
+    assert metadata["item_id"].startswith("page_case_0001_p0027:")
+    assert len(metadata["request_sha256"]) == 64
+    assert candidate_presets["candidates"][0]["json_pointer"] == "/pages/26/blocks/0"
+    assert "NIST SP 800-53" in candidate_presets["candidates"][0]["text_excerpt"]
+
+
 def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, monkeypatch) -> None:
     dag = _load_module()
 
-    def fake_extract_page(pdf_path, page_number, ledger_path, apply_mode):
+    def fake_extract_page_for_code_root(pdf_path, page_number, ledger_path, apply_mode, code_root, page_extract_timeout_s=None):
         return {
             "page": page_number,
             "pdf_page_index": page_number - 1,
@@ -267,7 +332,7 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_bytes(b"overlay")
 
-    monkeypatch.setattr(dag, "extract_page", fake_extract_page)
+    monkeypatch.setattr(dag, "extract_page_for_code_root", fake_extract_page_for_code_root)
     monkeypatch.setattr(dag, "render_original_page", fake_render_original)
     monkeypatch.setattr(dag, "render_candidate_overlay", fake_render_overlay)
 
@@ -347,7 +412,10 @@ def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, m
     assert [candidate["candidate_id"] for candidate in candidate_presets["candidates"]] == ["cand:p0003:0000:table"]
     request = json.loads((case_dir / "review_request.json").read_text(encoding="utf-8"))
     assert request["endpoint"] == "POST /v1/chat/completions"
-    assert request["scillm_metadata"] == {"batch_id": "batch-a", "item_id": "page_case_0001_p0003"}
+    assert request["scillm_metadata"]["batch_id"] == "batch-a"
+    assert request["scillm_metadata"]["case_id"] == "page_case_0001_p0003"
+    assert request["scillm_metadata"]["item_id"].startswith("page_case_0001_p0003:")
+    assert len(request["scillm_metadata"]["request_sha256"]) == 64
     ledger = json.loads((case_dir / "terminal_ledger.json").read_text(encoding="utf-8"))
     assert ledger["terminal_status"] == "still_open"
     assert ledger["reason"] == "dry_run_review_not_executed"
@@ -2257,7 +2325,7 @@ def test_validate_review_request_contract_rejects_stale_page_case_item_id(tmp_pa
     validation = dag.validate_review_request_contract(case_dir, request)
 
     assert validation["ok"] is False
-    assert "scillm_payload scillm_metadata.item_id must match review_request page_case.case_id" in validation["errors"]
+    assert "scillm_payload scillm_metadata.item_id must be the case_id or content-addressed under the case_id" in validation["errors"]
 
 
 def test_validate_review_request_contract_rejects_unsafe_page_case_identity(tmp_path: Path) -> None:
