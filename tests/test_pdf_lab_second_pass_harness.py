@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import math
+import subprocess
 import sys
 import zipfile
 from pathlib import Path
@@ -11954,6 +11955,136 @@ def test_run_harness_can_prepare_isolated_code_root(tmp_path: Path, monkeypatch)
     assert report["code_root"] == str(prepared_dest)
     assert report["opencode_model"] == "gpt-5.5"
     assert report["isolated_code_root_manifest"]["clean"] is True
+
+
+def test_run_harness_cleans_rejected_page_patch_before_next_page(tmp_path: Path, monkeypatch) -> None:
+    harness = _load_module()
+    prepared_dest = tmp_path / "prepared-code-root"
+    prepared_dest.mkdir()
+    (prepared_dest / "tracked.txt").write_text("baseline\n", encoding="utf-8")
+    subprocess.run(["git", "init"], cwd=prepared_dest, check=True, stdout=subprocess.PIPE)
+    subprocess.run(["git", "config", "user.name", "PDF Lab Test"], cwd=prepared_dest, check=True)
+    subprocess.run(["git", "config", "user.email", "pdf-lab-test@example.invalid"], cwd=prepared_dest, check=True)
+    subprocess.run(["git", "add", "."], cwd=prepared_dest, check=True)
+    subprocess.run(["git", "commit", "-m", "baseline"], cwd=prepared_dest, check=True, stdout=subprocess.PIPE)
+    baseline_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=prepared_dest, text=True).strip()
+    call_order: list[str] = []
+
+    class FakeManifestMod:
+        @staticmethod
+        def extract_pages(pdf_path, ledger_path, apply_mode, max_pages):
+            return ([{"page": 1, "blocks": []}, {"page": 2, "blocks": []}], 2)
+
+        @staticmethod
+        def build_manifest_from_pages(**kwargs):
+            return _candidate_manifest(
+                [
+                    _manifest_candidate("cand:p0001:0000:table", 1, "table"),
+                    _manifest_candidate("cand:p0002:0000:table", 2, "table"),
+                ]
+            )
+
+    class FakeSamplerMod:
+        @staticmethod
+        def select_page_cases(manifest, sample_size, seed):
+            return {
+                "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+                "selected_count": 2,
+                "selected_pages": [1, 2],
+                "seed": seed,
+                "sampling_audit": _passing_sampling_audit(candidate_count=2, selected_count=2, seed=seed),
+                "page_cases": [
+                    _sampled_page_case(candidate_id="cand:p0001:0000:table", page_number=1, case_index=1),
+                    _sampled_page_case(candidate_id="cand:p0002:0000:table", page_number=2, case_index=2),
+                ],
+            }
+
+    class FakePageDag:
+        @staticmethod
+        def resolve_effective_opencode_model(*, patch_mode, patch_backend, opencode_model):
+            return opencode_model
+
+        @staticmethod
+        def run_page_case(**kwargs):
+            call_order.append(kwargs["case_id"])
+            code_root = kwargs["code_root"]
+            case_dir = kwargs["out_dir"] / kwargs["case_id"]
+            if kwargs["case_id"] == "page_case_0001_p0001":
+                (code_root / "tracked.txt").write_text("dirty rejected patch\n", encoding="utf-8")
+                (code_root / "untracked.txt").write_text("delegate scratch\n", encoding="utf-8")
+                _write_page_dag_case(case_dir, case_id=kwargs["case_id"], terminal_status="still_open")
+            else:
+                assert (code_root / "tracked.txt").read_text(encoding="utf-8") == "baseline\n"
+                assert not (code_root / "untracked.txt").exists()
+                _write_page_dag_case(case_dir, case_id=kwargs["case_id"], terminal_status="reviewed_clean")
+            return {
+                "case_dir": str(case_dir),
+                "case_id": kwargs["case_id"],
+                "terminal_status": "still_open" if kwargs["case_id"] == "page_case_0001_p0001" else "reviewed_clean",
+                "page_number": 1 if kwargs["case_id"] == "page_case_0001_p0001" else 2,
+            }
+
+    monkeypatch.setattr(harness, "_import_pdf_lab_modules", lambda: (FakeManifestMod, FakeSamplerMod, FakePageDag))
+    monkeypatch.setattr(
+        harness,
+        "prepare_code_root_if_requested",
+        lambda **kwargs: {
+            "schema": "pdf_lab.second_pass.isolated_code_root.v1",
+            "dest_root": str(prepared_dest),
+            "clean": True,
+            "baseline_commit": baseline_commit,
+        },
+    )
+
+    report = harness.run_harness(
+        pdf_path=tmp_path / "fake.pdf",
+        out_dir=tmp_path / "out",
+        ledger_path=None,
+        apply_mode="release",
+        max_pages=2,
+        sample_size=2,
+        seed=123,
+        review_mode="dry_run",
+        patch_mode="dry_run",
+        patch_backend="opencode_serve",
+        commit_mode="dry_run",
+        model="gpt-5.5",
+        batch_id="batch",
+        review_fixture_path=None,
+        scillm_base_url="http://example.invalid:4001",
+        scillm_auth_token="token",
+        caller_skill="pdf-lab-test",
+        scillm_timeout_s=12.5,
+        scillm_preflight_mode="dry_run",
+        opencode_agent="build",
+        opencode_model="gpt-5.5",
+        opencode_timeout_s=55.0,
+        opencode_cleanup_session=False,
+        opencode_skills=["scillm"],
+        allowed_patch_prefixes=["tests/"],
+        validation_commands=None,
+        code_root=tmp_path / "ignored-code-root",
+        prepare_isolated_code_root_dest=prepared_dest,
+        prepare_isolated_code_root_include_paths=["src"],
+        prepare_isolated_code_root_force=True,
+    )
+
+    assert call_order == ["page_case_0001_p0001", "page_case_0002_p0002"]
+    assert (prepared_dest / "tracked.txt").read_text(encoding="utf-8") == "baseline\n"
+    assert not (prepared_dest / "untracked.txt").exists()
+    cleanup = json.loads(
+        (tmp_path / "out/page_cases/page_case_0001_p0001/code_root_cleanup.json").read_text(encoding="utf-8")
+    )
+    assert cleanup["cleanup_required"] is True
+    assert cleanup["ok"] is True
+    assert " M tracked.txt" in cleanup["before_status"]
+    assert "?? untracked.txt" in cleanup["before_status"]
+    assert cleanup["after_status"] == []
+    first_result = report["page_results"][0]
+    assert first_result["code_root_cleanup_ok"] is True
+    assert first_result["code_root_cleanup_required"] is True
+    bundle_validation = json.loads((tmp_path / "out/harness_review_bundle_zip.json").read_text(encoding="utf-8"))
+    assert "page_cases/page_case_0001_p0001/code_root_cleanup.json" in bundle_validation["included_artifacts"]
 
 
 def test_live_patch_fails_closed_when_code_root_is_not_mounted(tmp_path: Path, monkeypatch) -> None:

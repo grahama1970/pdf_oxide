@@ -40,6 +40,7 @@ PAGE_RESULT_READ_ERROR_KEYS = (
     "state_read_errors",
     "scillm_patch_delegate_bug_report_read_errors",
     "review_bundle_validation_read_errors",
+    "code_root_cleanup_read_errors",
 )
 DEFAULT_SCILLM_MOUNTED_WORKSPACE_PREFIXES = ["/home/graham/workspace"]
 BASE_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
@@ -131,6 +132,7 @@ OPTIONAL_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
     "scillm_transport_write_canary_receipt.json",
     "scillm_transport_write_canary_error.json",
     "scillm_transport_write_canary_event_stream.json",
+    "code_root_cleanup.json",
 }
 
 
@@ -839,6 +841,11 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
         for result in page_results
         if result.get("scillm_patch_delegate_bug_report")
     ]
+    failed_code_root_cleanups = [
+        result
+        for result in page_results
+        if result.get("code_root_cleanup_required") is True and result.get("code_root_cleanup_ok") is not True
+    ]
     errors = []
     if nonterminal:
         errors.append(f"invalid or missing terminal page statuses: {[item.get('case_id') for item in nonterminal]}")
@@ -888,6 +895,11 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
             "page result evidence read errors: "
             f"{[(item.get('case_id'), {key: item.get(key) for key in PAGE_RESULT_READ_ERROR_KEYS if item.get(key)}) for item in page_result_read_error_cases]}"
         )
+    if failed_code_root_cleanups:
+        errors.append(
+            "isolated code root cleanup failed after page cases: "
+            f"{[(item.get('case_id'), item.get('code_root_cleanup')) for item in failed_code_root_cleanups]}"
+        )
     return {
         "status_counts": dict(sorted(status_counts.items())),
         "case_ids": case_ids,
@@ -920,6 +932,8 @@ def aggregate_page_results(page_results: list[dict[str, Any]]) -> dict[str, Any]
         "duplicate_commit_shas": duplicate_commit_shas,
         "scillm_patch_delegate_bug_report_count": len(scillm_patch_delegate_bug_reports),
         "scillm_patch_delegate_bug_report_cases": scillm_patch_delegate_bug_reports,
+        "failed_code_root_cleanup_count": len(failed_code_root_cleanups),
+        "failed_code_root_cleanup_cases": failed_code_root_cleanups,
         "ok": not errors,
         "errors": errors,
     }
@@ -1871,6 +1885,8 @@ def _page_result_from_case(case: dict[str, Any], result: dict[str, Any]) -> dict
     state, state_read_errors = read_json_object_if_exists(state_path)
     bug_report_path = case_dir / "scillm_patch_delegate_bug_report.json"
     bug_report, bug_report_read_errors = read_json_object_if_exists(bug_report_path)
+    code_root_cleanup_path = case_dir / "code_root_cleanup.json"
+    code_root_cleanup, code_root_cleanup_read_errors = read_json_object_if_exists(code_root_cleanup_path)
     terminal_validation_path = case_dir / "terminal_ledger_validation.json"
     terminal_validation, terminal_validation_read_errors = read_json_object_if_exists(terminal_validation_path)
     review_bundle_validation_path = case_dir / "review_bundle_validation.json"
@@ -1931,6 +1947,12 @@ def _page_result_from_case(case: dict[str, Any], result: dict[str, Any]) -> dict
         "scillm_patch_delegate_bug_report_transport_run_id": (bug_report.get("observed") or {}).get("transport_run_id")
         if isinstance(bug_report.get("observed"), dict)
         else None,
+        "code_root_cleanup": str(code_root_cleanup_path) if code_root_cleanup_path.exists() else None,
+        "code_root_cleanup_ok": code_root_cleanup.get("ok") if code_root_cleanup_path.exists() else None,
+        "code_root_cleanup_required": code_root_cleanup.get("cleanup_required") if code_root_cleanup_path.exists() else None,
+        "code_root_cleanup_before_status": code_root_cleanup.get("before_status") if code_root_cleanup_path.exists() else None,
+        "code_root_cleanup_after_status": code_root_cleanup.get("after_status") if code_root_cleanup_path.exists() else None,
+        "code_root_cleanup_read_errors": code_root_cleanup_read_errors,
     }
 
 
@@ -2794,6 +2816,7 @@ def package_harness_review_bundle(
 
     def add_optional(bundle: zipfile.ZipFile, source: Path, arcname: str) -> None:
         if source.is_file():
+            required_zip_entries.append(arcname)
             expected_sources[arcname] = source
             bundle.write(source, arcname=arcname)
             included.append(arcname)
@@ -4539,6 +4562,83 @@ def git_status_short(repo: Path) -> list[str]:
     return [line for line in status.stdout.splitlines() if line.strip()]
 
 
+def git_rev_parse(repo: Path, ref: str = "HEAD") -> tuple[str | None, list[str]]:
+    result = subprocess.run(
+        ["git", "-C", str(repo), "rev-parse", ref],
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if result.returncode != 0:
+        return None, [f"git rev-parse {ref} failed: {result.stderr.strip() or result.stdout.strip()}"]
+    return result.stdout.strip(), []
+
+
+def run_git_cleanup_command(repo: Path, args: list[str]) -> dict[str, Any]:
+    result = subprocess.run(
+        ["git", "-C", str(repo), *args],
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    return {
+        "command": ["git", "-C", str(repo), *args],
+        "exit_code": result.returncode,
+        "stdout": result.stdout,
+        "stderr": result.stderr,
+    }
+
+
+def restore_isolated_code_root_after_page(
+    *,
+    code_root: Path,
+    case_dir: Path,
+    case_id: str,
+    terminal_status: str | None,
+    pre_page_head: str | None,
+    pre_page_head_errors: list[str],
+    isolated_code_root_manifest: dict[str, Any] | None,
+) -> dict[str, Any]:
+    cleanup_path = case_dir / "code_root_cleanup.json"
+    cleanup_required = isolated_code_root_manifest is not None and terminal_status != "patched_confirmed"
+    before_status = git_status_short(code_root) if isolated_code_root_manifest is not None else []
+    errors = list(pre_page_head_errors)
+    commands: list[dict[str, Any]] = []
+    if cleanup_required:
+        if pre_page_head:
+            commands.append(run_git_cleanup_command(code_root, ["reset", "--hard", pre_page_head]))
+        else:
+            errors.append("missing pre-page HEAD for isolated code root cleanup")
+        commands.append(run_git_cleanup_command(code_root, ["clean", "-fd"]))
+        for command in commands:
+            if command["exit_code"] != 0:
+                errors.append(
+                    "cleanup command failed: "
+                    f"{' '.join(str(part) for part in command['command'])}: "
+                    f"{command['stderr'].strip() or command['stdout'].strip()}"
+                )
+    after_status = git_status_short(code_root) if isolated_code_root_manifest is not None else []
+    if cleanup_required and after_status:
+        errors.append(f"isolated code root still dirty after cleanup: {after_status}")
+    cleanup = {
+        "schema": "pdf_lab.second_pass.code_root_cleanup.v1",
+        "case_id": case_id,
+        "code_root": str(code_root.resolve()),
+        "terminal_status": terminal_status,
+        "cleanup_required": cleanup_required,
+        "pre_page_head": pre_page_head,
+        "before_status": before_status,
+        "after_status": after_status,
+        "commands": commands,
+        "ok": not errors,
+        "errors": errors,
+    }
+    write_json(cleanup_path, cleanup)
+    return cleanup
+
+
 def validate_scillm_transport_readonly_canary_receipt(
     receipt: dict[str, Any] | None,
     *,
@@ -6093,6 +6193,10 @@ def run_harness(
         or (scillm_transport_readonly_canary is not None and not scillm_transport_readonly_canary.get("ok"))
         or (scillm_transport_write_canary is not None and not scillm_transport_write_canary.get("ok"))
     ) else sampled_cases.get("page_cases") or []:
+        if isolated_code_root_manifest is not None:
+            pre_page_head, pre_page_head_errors = git_rev_parse(effective_code_root)
+        else:
+            pre_page_head, pre_page_head_errors = None, []
         result = page_dag.run_page_case(
             pdf_path=pdf_path,
             manifest=manifest,
@@ -6129,6 +6233,16 @@ def run_harness(
             code_root=effective_code_root,
             page_extract_timeout_s=page_extract_timeout_s,
             page_orchestrator_mode=page_orchestrator_mode,
+        )
+        page_result = _page_result_from_case(case, result)
+        restore_isolated_code_root_after_page(
+            code_root=effective_code_root,
+            case_dir=Path(result["case_dir"]),
+            case_id=case["case_id"],
+            terminal_status=page_result.get("terminal_status"),
+            pre_page_head=pre_page_head,
+            pre_page_head_errors=pre_page_head_errors,
+            isolated_code_root_manifest=isolated_code_root_manifest,
         )
         page_result = _page_result_from_case(case, result)
         page_results.append(page_result)
