@@ -3448,6 +3448,77 @@
       "status": "closed"
     },
     {
+      "added_at": "2026-06-04T00:00:00Z",
+      "added_by": "agent:codex (page 27 focused extraction proof)",
+      "applied_at": "2026-06-04T00:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route top-band NIST running header text and decorative underscore rules emitted as Header blocks to header_footer_noise after the broad Header to section_heading type remap.",
+      "closed_at": "2026-06-04T00:00:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_top_header_chrome_preset.py and page 27 local extraction proof)",
+      "entry_id": "nist-top-header-chrome-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p27:block:0",
+          "actual:p27:block:1"
+        ],
+        "risk_reasons_observed": [
+          "top_band_page_chrome",
+          "source_type_header",
+          "type_section_heading_after_broad_remap"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A genuine section heading in the top band matching the exact NIST running-header text or an underscore-only rule.",
+          "A NIST Header block below y_min 0.08 that should remain a section heading."
+        ],
+        "candidates_that_prove": [
+          "Page 27 block 0 is the repeated NIST running header, not document content.",
+          "Page 27 block 1 is the decorative horizontal underscore rule beneath the running header."
+        ],
+        "deterministic_rule": "If a NIST Header block has already been broadly mapped to section_heading, is in the top page band, and matches either the NIST running-header line or an underscore-only rule, set type=header_footer_noise and semantic_role=page_chrome."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "bbox y_min >= 0.08",
+          "source_type is not Header",
+          "type is not section_heading",
+          "text does not match the NIST running header or underscore-only decorative rule"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overwrites the generic Header to section_heading mapping only for the repeated top-page NIST running header and decorative underscore rule.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "y_min_lt": 0.08
+          },
+          "source_type": "Header",
+          "type": "section_heading"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "page_chrome",
+              "type": "header_footer_noise"
+            },
+            "regex": "^\\s*NIST\\s+SP\\s+800-53\\b.*SECURITY\\s+AND\\s+PRIVACY\\s+CONTROLS.*$"
+          },
+          {
+            "fields": {
+              "semantic_role": "page_chrome",
+              "type": "header_footer_noise"
+            },
+            "regex": "^\\s*_{8,}\\s*$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
       "added_at": "2026-06-01T14:12:00Z",
       "added_by": "agent:codex (PDF Lab next-30 visual review)",
       "applied_at": "2026-06-01T14:12:00Z",
