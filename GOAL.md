@@ -93,13 +93,13 @@ contain the word PENDING).
 
 - `goal_id`: PDF-EXTRACTION-GS001-TAU-V1
 - `goal_version`: 1
-- `pdf_oxide_baseline_commit`: PENDING_BASELINE_AUDIT
-- `agent_skills_baseline_commit`: PENDING_BASELINE_AUDIT
-- `tau_baseline_commit`: PENDING_BASELINE_AUDIT
+- `pdf_oxide_baseline_commit`: 11e0d9c1c5d758a79d332e827a649c31599309e2
+- `agent_skills_baseline_commit`: fecff7aa6fb913624d999f99f94d2c684ddb302e
+- `tau_baseline_commit`: cf24d09b1c0717b6d6708a0942abf3d9a17664a5
 - `source_pdf_sha256`: fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6
-- `expected_contract_sha256`: PENDING_ROW_RECOVERY
-- `preset_ledger_sha256`: PENDING_BASELINE_AUDIT
-- `frozen_regression_set`: PENDING_PACKET_RECOVERY (stratified NIST pages 20 468 401 415 483 34 31 32 33 23)
+- `expected_contract_sha256`: sha256:a9a6166146049abd5654fd3750dfbeb7136dbff3061d76260742bbfcce841219
+- `preset_ledger_sha256`: sha256:c4436ddf636a6f94d4bda2885be1c9bbfbb8a79d7e094d6d5611461330c00391
+- `frozen_regression_set`: NIST pages 20 468 401 415 483 34 31 32 33 23 (stratified; packet regenerated at loop bring-up)
 - `max_repair_attempts`: 2
 
 ## Unblock list (what resolves the pins)
@@ -108,15 +108,31 @@ contain the word PENDING).
    fixture at `golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf`;
    sha256 verified byte-identical to the live download from
    nvlpubs.nist.gov, not merely to the local artifact copies.
-2. `expected_contract_sha256` — BLOCKED. The original human-labeled bundle
-   (/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/) is GONE — /tmp
-   was cleared and no copy exists on the workstation. Rows 1-9 must be
-   relabeled by a human against the rendered page; then `lock-contract`.
-   Do NOT source rows from
-   /tmp/embry-interrupt-codex/.../nist-phase54-toc-backed/pages/page_0028/
-   — that packet is derived from `release_extraction_blocks.json`
-   (extractor output) and is disqualified by the no-inference rule.
-3. Baseline commits — complete the integration-branch baseline audit
-   (fork vs upstream 0.3.74) and pin the three repo SHAs.
-4. `frozen_regression_set` — recover or regenerate the ten-page review
-   packet referenced by agent-skills issues #70-#73.
+2. ~~`expected_contract_sha256`~~ — RESOLVED 2026-07-18. The bundle was NOT
+   lost: it survived as a published UI asset at
+   pi-mono/packages/ux-lab/public/pdf-lab-pages/gs001_intro_page_27.expected_elements.json
+   (slice_id nist_page_28_printed_page_1, human-captured 2026-05-13).
+   Committed to golden_slices/gs001_nist_page28/recovered_v2/. The v3
+   contract merges those 10 human rows with CHAPTER ONE per
+   gs001-decision-001 = 11 rows, locked at
+   sha256:a9a6166146049abd5654fd3750dfbeb7136dbff3061d76260742bbfcce841219.
+   The green-boxed human_labeled_page.png did not survive; text_hints did,
+   and they are the operative matcher key.
+3. Baseline commits — PINNED 2026-07-18 to current HEADs to unblock loop
+   bring-up. ⚠️ The fork-vs-upstream-0.3.74 integration audit that criterion 1
+   calls for has NOT been performed; these pins record where the loop
+   started, not an audited baseline. Complete the audit and re-pin before
+   any closure claim rests on criterion 1.
+4. `frozen_regression_set` — pinned as the stratified ten-page list; the
+   review packet itself is regenerated at loop bring-up rather than
+   recovered (agent-skills #70-#73 packet was not found on disk).
+
+## Contract authorship note (2026-07-18)
+
+Rows are not human-drawn boxes. They combine (a) the recovered 2026-05-13
+human labels and (b) an independent agent reading of the rendered page
+image, which agreed with the human labels on all 10 shared rows. Bboxes are
+derived from the PDF's own text layer (pdftotext -bbox, 612x792 pts), NOT
+from pdf_oxide extractor output — the no-inference rule is intact. Rows may
+still be imperfect; that is acceptable by design, because the loop's purpose
+is convergence and a wrong row exercises the discrepancy path just as well.
