@@ -6,7 +6,9 @@
   "contract_version": 3,
   "source_pdf": {
     "name": "NIST_SP_800-53r5.pdf",
-    "sha256": "PENDING_SOURCE_PDF_SHA256",
+    "sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+    "local_path": "golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf",
+    "sha256_verified_against_official_source": "2026-07-18",
     "page_index": 27,
     "printed_page": "PAGE 1",
     "official_source": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf"

@@ -96,7 +96,7 @@ contain the word PENDING).
 - `pdf_oxide_baseline_commit`: PENDING_BASELINE_AUDIT
 - `agent_skills_baseline_commit`: PENDING_BASELINE_AUDIT
 - `tau_baseline_commit`: PENDING_BASELINE_AUDIT
-- `source_pdf_sha256`: PENDING_SOURCE_PDF
+- `source_pdf_sha256`: fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6
 - `expected_contract_sha256`: PENDING_ROW_RECOVERY
 - `preset_ledger_sha256`: PENDING_BASELINE_AUDIT
 - `frozen_regression_set`: PENDING_PACKET_RECOVERY (stratified NIST pages 20 468 401 415 483 34 31 32 33 23)
@@ -104,12 +104,18 @@ contain the word PENDING).
 
 ## Unblock list (what resolves the pins)
 
-1. `source_pdf_sha256` — provide NIST_SP_800-53r5.pdf (commit as corpus
-   fixture, allow nvlpubs.nist.gov in the environment network policy, or
-   push from the workstation).
-2. `expected_contract_sha256` — push the original human-labeled bundle
-   (/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/) or relabel
-   rows 1-9; then `lock-contract`.
+1. ~~`source_pdf_sha256`~~ — RESOLVED 2026-07-18. Committed as corpus
+   fixture at `golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf`;
+   sha256 verified byte-identical to the live download from
+   nvlpubs.nist.gov, not merely to the local artifact copies.
+2. `expected_contract_sha256` — BLOCKED. The original human-labeled bundle
+   (/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/) is GONE — /tmp
+   was cleared and no copy exists on the workstation. Rows 1-9 must be
+   relabeled by a human against the rendered page; then `lock-contract`.
+   Do NOT source rows from
+   /tmp/embry-interrupt-codex/.../nist-phase54-toc-backed/pages/page_0028/
+   — that packet is derived from `release_extraction_blocks.json`
+   (extractor output) and is disqualified by the no-inference rule.
 3. Baseline commits — complete the integration-branch baseline audit
    (fork vs upstream 0.3.74) and pin the three repo SHAs.
 4. `frozen_regression_set` — recover or regenerate the ten-page review
