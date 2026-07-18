@@ -1,0 +1,5004 @@
+{
+  "schema_version": "pdf_lab.cross_page_regression.v1",
+  "baseline": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/full-extraction-baseline.json",
+  "candidate": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/full-extraction-patched2.json",
+  "baseline_block_count": 12648,
+  "candidate_block_count": 12648,
+  "blocks_only_in_baseline": 0,
+  "blocks_only_in_candidate": 0,
+  "structural_change": false,
+  "type_changes": 375,
+  "pages_touched": 375,
+  "transitions": {
+    "Body -> Header": 214,
+    "Title -> Header": 161
+  },
+  "frozen_page_changes": {
+    "20": 0,
+    "468": 1,
+    "401": 0,
+    "415": 0,
+    "483": 1,
+    "34": 1,
+    "31": 1,
+    "32": 1,
+    "33": 1,
+    "23": 0
+  },
+  "frozen_page_detail": {
+    "20": [],
+    "468": [
+      {
+        "page": 468,
+        "block_id": "66bdcbed37dd7144a7553e4de6c79ad5",
+        "from": "Title",
+        "to": "Header",
+        "text": "APPENDIX C PAGE 442",
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ]
+      }
+    ],
+    "401": [],
+    "415": [],
+    "483": [
+      {
+        "page": 483,
+        "block_id": "e089b5e5a62642bb9b6875045abad39d",
+        "from": "Body",
+        "to": "Header",
+        "text": "APPENDIX C PAGE 457",
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ]
+      }
+    ],
+    "34": [
+      {
+        "page": 34,
+        "block_id": "7b07365f271099f5f2d2141fb666a6d7",
+        "from": "Title",
+        "to": "Header",
+        "text": "CHAPTER TWO PAGE 8",
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          433.8087158203125,
+          7.979999542236328
+        ]
+      }
+    ],
+    "31": [
+      {
+        "page": 31,
+        "block_id": "3bc9f37b87323dc94d25bcd41aaa8821",
+        "from": "Title",
+        "to": "Header",
+        "text": "CHAPTER ONE PAGE 5",
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ]
+      }
+    ],
+    "32": [
+      {
+        "page": 32,
+        "block_id": "383ea8c2fde3122a80b72cf5c2f9983a",
+        "from": "Body",
+        "to": "Header",
+        "text": "CHAPTER ONE PAGE 6",
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ]
+      }
+    ],
+    "33": [
+      {
+        "page": 33,
+        "block_id": "9b554cc17f010e92d8766adad6f44405",
+        "from": "Title",
+        "to": "Header",
+        "text": "CHAPTER TWO PAGE 7",
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          433.8087158203125,
+          7.979999542236328
+        ]
+      }
+    ],
+    "23": []
+  },
+  "off_pattern_changes": 0,
+  "off_pattern_sample": [],
+  "changes": [
+    {
+      "page": 244,
+      "block_id": "5bbc6fa946fe000895160df11ba3877a",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 218",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 173,
+      "block_id": "615fd719fe972933a0b53f40a497e0a7",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 147",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 294,
+      "block_id": "37d23b373f32c5ccdd6e590a62937b84",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 268",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 148,
+      "block_id": "737c546d5a02b8e5c4e993fcd76f6256",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 122",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 395,
+      "block_id": "6e72e69213c75182492e779d1b52f3b7",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 369",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 328,
+      "block_id": "f37869c770452616f66a8ebef1316ff2",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 302",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 295,
+      "block_id": "dea382ce5069077fe1d6e7c90b7949e4",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 269",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 361,
+      "block_id": "3134da6a8a6ca30cfa73fc94547ad9a8",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 335",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 251,
+      "block_id": "5d9656fc506a7db7a54f6dcbbd996223",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 225",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 237,
+      "block_id": "637e01db41a232ff7a249d64a7da31d7",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 211",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 209,
+      "block_id": "03871d331bc7cfe7e177c598340c7a43",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 183",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 452,
+      "block_id": "9a5c13fcb5cf5b2a30f106bb161e6a23",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX B PAGE 426",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 324,
+      "block_id": "0399a7d6313053f09deb204ed9bb9317",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 298",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 479,
+      "block_id": "b5a13ab24bebee0c710629fbe7a76cf1",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 453",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 257,
+      "block_id": "51e6a60051d78cc5c13f4f08c31f84ab",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 231",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 317,
+      "block_id": "2f867e1fbee4dadfb36ff7082986d142",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 291",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 290,
+      "block_id": "77fcfa6b40b96a63a33f3bfe1d695dbc",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 264",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 202,
+      "block_id": "76af03fffb7213574a41eb9f8c7ba22b",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 176",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 140,
+      "block_id": "fdd4c0a7d7202824669275d6b504c6ef",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 114",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 445,
+      "block_id": "2b625702032a5f744f65def4aa8a9a5d",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 419",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 129,
+      "block_id": "7fb6029ed96ac6047b7e4792c05d8edd",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 103",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 341,
+      "block_id": "f409c3148248483a9fb313e9a9e2837c",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 315",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 435,
+      "block_id": "a1e3df0bfacb6abdacdc0cfb0d75bb44",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 409",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 139,
+      "block_id": "058a1e2beedc96288cba801886c4f431",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 113",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 115,
+      "block_id": "e1e78fe34e81ba4606761369b079dc8c",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE 89PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 260,
+      "block_id": "89aa03bc999eb286a3c52854d2e34495",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 234",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 469,
+      "block_id": "3f2739207325176b5d7b54d92f504fda",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 443",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 27,
+      "block_id": "40b9cd90a3ddb8bd27a2b2d307915649",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER ONE PAGE 1",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 434,
+      "block_id": "7984bb3473d2dcea12035e0726f1e43e",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 408",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 117,
+      "block_id": "87d4ee7a54a80e55c3a57dfe0a28891b",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE 91PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 238,
+      "block_id": "52ab514ecc89b2f9f4e2537adc656002",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 212",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 384,
+      "block_id": "bbf6db1d5df8b4c59ad922cc00e25865",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 358",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 319,
+      "block_id": "4e980241c2cc0bee86d26183abd0e101",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 293",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 303,
+      "block_id": "183b0fa784935897c1bd3f6573e4a896",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 277",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 438,
+      "block_id": "34f5dd7cedf9603b2b88d498e9dc839f",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 412",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 118,
+      "block_id": "bdb4fe896cb5a57508f3936f66c70bd6",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE 92PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 386,
+      "block_id": "d0c6078cb7d93037d65885c29eec2d62",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 360",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 302,
+      "block_id": "f41ffcdb1fae4cdaff41449bcda03ae5",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 276",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 331,
+      "block_id": "86d330d9e21d26bab7bca9b1acf2e771",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 305",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 138,
+      "block_id": "58868388060937178cae52705bcb25b6",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 112",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 314,
+      "block_id": "b6e22d654a95d9a5f6e5f1e8c25a6b97",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 288",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 350,
+      "block_id": "5c6858f9820b73940186e539ebb82d89",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 324",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 477,
+      "block_id": "72787510116d1c7fe19020505e7e87c4",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 451",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 230,
+      "block_id": "d9fc1a287b0fc02f6a683ab025d5ff37",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 204",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 258,
+      "block_id": "bdf0a07ae3723215f13d08a5b965e677",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 232",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 157,
+      "block_id": "f97dbf5468da05fa12f86617879dfd1c",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 131",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 391,
+      "block_id": "405ca0940404f5fba2d5770a51638413",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 365",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 337,
+      "block_id": "ec5d51e8d941f92d8b251198a50afc52",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 311",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 364,
+      "block_id": "eaa108ce7ccacc68c23a925efb43d797",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 338",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 283,
+      "block_id": "5bb9165115e749ed6689dbe2b7d8781d",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 257",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 425,
+      "block_id": "a47a1b4a8a9732895f5a1587ccbf4d15",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 399",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 446,
+      "block_id": "e241c14eb54d36316fca1fbd6f9e0248",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 420",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 454,
+      "block_id": "9f4cab9c84b959c86fbec69284bf83b9",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 428",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 462,
+      "block_id": "57c06dc040c80b91e6625f685d0f5083",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 436",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 375,
+      "block_id": "d12bb39885c4caa57bfc964cfd4a200f",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 349",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 252,
+      "block_id": "048ce2e7265c10053a1835e192a049e2",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 226",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 192,
+      "block_id": "1a4c091855ebbcef5d858e9a981c60c7",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 166",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 262,
+      "block_id": "d3b37063f11a638e1fa1c4a1e4a8bf18",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 236",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 267,
+      "block_id": "c386dd66f15ba1c23d8c90dd74579e48",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 241",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 296,
+      "block_id": "4970010d2397b05525ccef1e021e2b08",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 270",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 306,
+      "block_id": "e6dd602566e1f23e6a4fef94737c1da1",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 280",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 208,
+      "block_id": "72655a8a2981bbad0e3390a915445e5b",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 182",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 33,
+      "block_id": "9b554cc17f010e92d8766adad6f44405",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER TWO PAGE 7",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        433.8087158203125,
+        7.979999542236328
+      ]
+    },
+    {
+      "page": 275,
+      "block_id": "898a90297c8e7dd9e5423d60fb1da8c3",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 249",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 347,
+      "block_id": "b825050fd59ce2edfe2985fd5a20a808",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 321",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 220,
+      "block_id": "e96ea8d3a540ff0acc7effe546d37a9e",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 194",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 448,
+      "block_id": "09ed199c3870f7b3afdfc5a7f1950c76",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 422",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 161,
+      "block_id": "fdd7c33a066fd51253d4591e6fe83b20",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 135",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 235,
+      "block_id": "803feb804a5f12ee79d5783fecb94737",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 209",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 397,
+      "block_id": "0ffc1ef8602983ccd95177a3f4c22e51",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 371",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 310,
+      "block_id": "3b830302bd374d1f3c5507c39459cdb4",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 284",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 277,
+      "block_id": "96b9b23e442ffe59efdd6a904d37f6b2",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 251",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 478,
+      "block_id": "5fd6eb783cc351d64da78d84f97bb35e",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 452",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 162,
+      "block_id": "bc9f4397ff01430afdedaeb98e5b5376",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 136",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 423,
+      "block_id": "df4b3beac80cd0f40b9c367edb4b1717",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 397",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 247,
+      "block_id": "1512ac1ffaabc40590b060a1425a439a",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 221",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 271,
+      "block_id": "86833e1b9cb26658fbb6e0d87448dd98",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 245",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 188,
+      "block_id": "9e2e170c33ba1f77169824108b79903e",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 162",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 228,
+      "block_id": "63e467c0e6f7e27db105d7407cebdd2f",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 202",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 263,
+      "block_id": "7467b5aaaa81fb4d324164ee1d509094",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 237",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 159,
+      "block_id": "962294855f0d685a21e59bc552d29b54",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 133",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 315,
+      "block_id": "e26e7dada3d203adb1d368ee86179d44",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 289",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 392,
+      "block_id": "45f80a928a870b9f7e8286bfe6707c1e",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 366",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 490,
+      "block_id": "07fc8106a6154d546933166d1cd2fa6d",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 464",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 207,
+      "block_id": "bfd27d7777ae7534997cc2528df4b763",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 181",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 340,
+      "block_id": "304d21732985939441807e2ca1068d72",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 314",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 266,
+      "block_id": "e33de1b4beb59e97e15b372347bacd4b",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 240",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 379,
+      "block_id": "f0e70f341d91900d31a4c27b622b00c5",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 353",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 329,
+      "block_id": "dbd5d68bc7fc57d617c68def6d984b94",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 303",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 367,
+      "block_id": "e714983b5e411ca0493a03b566811c8a",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 341",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 255,
+      "block_id": "4e1745953e5f24ccce6677e955905252",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 229",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 428,
+      "block_id": "ce29bf4a7f1e601ab05c2bef4ac57016",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 402",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 231,
+      "block_id": "b42bce5f835fed990c4c8fa5bc682132",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 205",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 274,
+      "block_id": "fe7c83ee6abb330ba1e2e145b9156be0",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 248",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 135,
+      "block_id": "e7e365d01abbe5288b1e3768c125c4cd",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 109",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 181,
+      "block_id": "c4b0bdbf021589791d967f7b8cf5595f",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 155",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 487,
+      "block_id": "76995e460930cab77a0c9fa66c217710",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 461",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 185,
+      "block_id": "3d2bdec51093482121abde761229ecbf",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 159",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 146,
+      "block_id": "db9e6a70d691132f1ef97dfc55e78f3b",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 120",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 183,
+      "block_id": "86b2b5d88b66c383107b9d43198ff665",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 157",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 170,
+      "block_id": "e62ba5819ae53b0e56c063a5c0dd8ad3",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 144",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 166,
+      "block_id": "51fe1d7136ebd22ef6a28b0d298140fd",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 140",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 467,
+      "block_id": "edbf4bce3c7bbcc9b58c823dc847ff74",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 441",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 336,
+      "block_id": "c4185803fbddc01a4c534f32e6e7f907",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 310",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 285,
+      "block_id": "9389920c0767e58b141c48241b76d2d5",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 259",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 211,
+      "block_id": "df1f69283c04c25097d6f56badcedaeb",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 185",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 398,
+      "block_id": "9c4fffbaf5cd700ddc5bbf60a00cfb8d",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 372",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 345,
+      "block_id": "f0f2b45371740d81531203045a6eb2b9",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 319",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 343,
+      "block_id": "25e3d0bff0e77005b88349bdc03cc165",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 317",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 223,
+      "block_id": "b6d74f6413997fbf84304d580fe91158",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 197",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 349,
+      "block_id": "a407cc803f8a4deedcd5e940cd7cace3",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 323",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 142,
+      "block_id": "90b649d000202c963e25bbeec180a6ab",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 116",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 292,
+      "block_id": "43ef70351457572b9f6a2c4cacee96ee",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 266",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 431,
+      "block_id": "d171378895fd3f1df1c89aba4e2f57ce",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 405",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 334,
+      "block_id": "dfab26ff8aecb0df0caaeb73d856db16",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 308",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 433,
+      "block_id": "0b4848d85b61f39b7f08a40a208cc42e",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 407",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 131,
+      "block_id": "352774424644a1552d345322ea5d5aca",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 105",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 299,
+      "block_id": "c173435e03e9c80dc9bdfda11e503d17",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 273",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 149,
+      "block_id": "c49843b7a9848777f8de9bf9cd2fb0ad",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 123",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 227,
+      "block_id": "837e83fe945d0592559c2c23c49a7196",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 201",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 485,
+      "block_id": "ec5fbd36c44cdc0b741e787530987a74",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 459",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 320,
+      "block_id": "ca7ce41b52851fc3781541e618dd17b6",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 294",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 287,
+      "block_id": "c0855b464fd604c78bbdcca7a06d0ec2",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 261",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 482,
+      "block_id": "769f0aedfdde82f9cac98f80c5e900cb",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 456",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 439,
+      "block_id": "2c981e39bc0649724d12c8ef6e08496c",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 413",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 453,
+      "block_id": "29485c7c5da5828326ef30647cef120f",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX B PAGE 427",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 394,
+      "block_id": "f4c82370953e925c0b4a45524d1d940f",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 368",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 35,
+      "block_id": "a4410d206b831184e47f855def4bc375",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER TWO PAGE 9",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        433.8087158203125,
+        7.979999542236328
+      ]
+    },
+    {
+      "page": 29,
+      "block_id": "51de2a288b2e80d0e9d7ce1d85c1b697",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER ONE PAGE 3",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 153,
+      "block_id": "9b00e01e0f0aa52a9712865f8c035980",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 127",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 459,
+      "block_id": "5913882bbd1c9d3f028ba6a95a7dc333",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 433",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 242,
+      "block_id": "5b2c38faa1573866fd58e60db7e42cdb",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 216",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 344,
+      "block_id": "a640b5f2c01cbf205219ed19a3e92216",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 318",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 261,
+      "block_id": "0f9b4f41b2eb6cfd519b7fe51fea82ec",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 235",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 219,
+      "block_id": "78834353cc5f2fbc578df22b81d28652",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 193",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 199,
+      "block_id": "8dbc40135c54da3f18502aabe715d3c7",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 173",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 427,
+      "block_id": "8a9fc5b554538a56d8a39b704d57f5d8",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 401",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 318,
+      "block_id": "39295a7ac9135a9291f378a7156c2ac2",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 292",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 465,
+      "block_id": "4c9d0f25fab4aa7d575ccfa557220d58",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 439",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 154,
+      "block_id": "4824b5b87e382f1b255d0b57e51f484f",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 128",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 125,
+      "block_id": "9304bc7a3bf5f2174168598702ce8f5b",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE 99PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 214,
+      "block_id": "b35cb3ec079213e04a0a86f9d49d2f76",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 188",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 368,
+      "block_id": "6851c7155c1b8a4207e40a565d7262ed",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 342",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 36,
+      "block_id": "f95e6e85e1950dd4004ebfe8959dda91",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER TWO PAGE 10",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        433.8087158203125,
+        7.979999542236328
+      ]
+    },
+    {
+      "page": 259,
+      "block_id": "6d9cbd7972556e37e7662e451b553b0f",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 233",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 114,
+      "block_id": "e1364e24566f210f5dcd5ea244d6e488",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE 88PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 264,
+      "block_id": "312f2b84811bb80694369f507cd4e67b",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 238",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 249,
+      "block_id": "15656476741a40427261ecd9da4ee4df",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 223",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 176,
+      "block_id": "1a431f07e787c881d33faab0be8ba814",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 150",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 190,
+      "block_id": "e1997c1ef6c00acd984569f886cc97b5",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 164",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 168,
+      "block_id": "2d1027411da6637789d41d7ffe10e0ef",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 142",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 158,
+      "block_id": "083b35e7b59848213923f21a7d080ca7",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 132",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 234,
+      "block_id": "a332a1e5b7478679846f234ec3d04133",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 208",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 179,
+      "block_id": "57c5e5438a03dad1c9fa87343efd931b",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 153",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 164,
+      "block_id": "5f9e47f3948a515ba1d71f1833a38f3c",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 138",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 137,
+      "block_id": "8f8974dade57f343a92a7ffa56087e33",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 111",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 276,
+      "block_id": "cc2b21ac8ab7c6f9784239121234e6cd",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 250",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 40,
+      "block_id": "141fb8498f9db67305cc0a389f71802b",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER TWO PAGE 14",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        433.8087158203125,
+        7.979999542236328
+      ]
+    },
+    {
+      "page": 420,
+      "block_id": "6f60d31a01b72156067970ac845c7d4e",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 394",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 123,
+      "block_id": "05615fa771bd7ae88dcd44f0476fd917",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE 97PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 356,
+      "block_id": "bc6de1f78a690970f87d7f016f8b3677",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 330",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 232,
+      "block_id": "0b781ed19ac8649db1fa57e7fd1baba7",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 206",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 476,
+      "block_id": "2251c41a99c6f730fbe917a7f22d3364",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 450",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 280,
+      "block_id": "dbc4887eb654df493b8708797a930e09",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 254",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 127,
+      "block_id": "b8683322e061fbaa3d4bb3ee607d4892",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 101",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 34,
+      "block_id": "7b07365f271099f5f2d2141fb666a6d7",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER TWO PAGE 8",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        433.8087158203125,
+        7.979999542236328
+      ]
+    },
+    {
+      "page": 184,
+      "block_id": "b1ed77412489185fa6e5dedd51c957d7",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 158",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 437,
+      "block_id": "b3227b6f4954292e13dd013c3443a1b4",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 411",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 272,
+      "block_id": "62b1faa5f607f118ba720622ff5987cc",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 246",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 365,
+      "block_id": "9b97f751c705d9521e866e0de2664db4",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 339",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 304,
+      "block_id": "db5a4e2269e0ec4fa942063aed57d686",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 278",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 471,
+      "block_id": "384c01e84f3b463c6b78e59506b07cf3",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 445",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 444,
+      "block_id": "46334a10782d3ca49e25074815240702",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 418",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 313,
+      "block_id": "0bb059c2e855161fb53a2b579bf04bf8",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 287",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 489,
+      "block_id": "5614097a497e901db74348f368a89799",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 463",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 322,
+      "block_id": "f33e67c0a5292a79f32010a51c534681",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 296",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 366,
+      "block_id": "fd093c7509ac88a74dcc0ba78f6fd374",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 340",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 195,
+      "block_id": "4775d04fec03c2775a5421c8d0ec9c4f",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 169",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 189,
+      "block_id": "4a3d9068ee09fea26ed392d3ab9e2b12",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 163",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 116,
+      "block_id": "6b3d5878e58d379fdca0368ddac1e983",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE 90PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 309,
+      "block_id": "b03af90bb32acbd1f45ba48fc1d8e93a",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 283",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 31,
+      "block_id": "3bc9f37b87323dc94d25bcd41aaa8821",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER ONE PAGE 5",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 460,
+      "block_id": "a9bee20c92895c27e6039f5cb0219d93",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 434",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 335,
+      "block_id": "9e530b5e8205cd073eb685b54ec0a49a",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 309",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 393,
+      "block_id": "5f40a6ccb728b983c3b4d5cc7759d5ff",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 367",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 122,
+      "block_id": "b51c73b42f6db4dcdab512c62626b344",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE 96PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 396,
+      "block_id": "2f95b7c795e6dd7c7197949a0d20d633",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 370",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 204,
+      "block_id": "b936372c74b0786222558d6423dc22e9",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 178",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 240,
+      "block_id": "3b273f12dd68a74c6463fac97ac17e6c",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 214",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 174,
+      "block_id": "f30d6c24e9f9ba522c8752c629424cf4",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 148",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 440,
+      "block_id": "cf211b42002c8ec544737363bd4af653",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 414",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 186,
+      "block_id": "26232e2cdedc33c69352434cccbe735d",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 160",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 279,
+      "block_id": "cbabab90741b2d4d3c11a102d0f30bc8",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 253",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 254,
+      "block_id": "2dfda7dd4d34df5fe8906f3151a2ac06",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 228",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 132,
+      "block_id": "427bd7f1657a87484134bc7eac686c6b",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 106",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 151,
+      "block_id": "02441c25f2e9c87d4480881cb29da43f",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 125",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 432,
+      "block_id": "19df40a98c004ed732f26a5e777546a5",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 406",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 421,
+      "block_id": "b1427f56fe74ba0cc737d2b0b99e76be",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 395",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 112,
+      "block_id": "f9ab4eb233f0c25096620880726061c8",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE 86PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 291,
+      "block_id": "44f7f9444f404acc90b56f41a9586378",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 265",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 363,
+      "block_id": "fcc112ac9b8a2bdd36c0e23c99972ee7",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 337",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 369,
+      "block_id": "ed19722b15822998f251789427772360",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 343",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 305,
+      "block_id": "55626d0eba0347e3808382f08d961139",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 279",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 171,
+      "block_id": "146e297a43d786a9c78eec4d0a30cbe5",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 145",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 374,
+      "block_id": "0b046e9575f580b46bb4b65bd7994746",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 348",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 165,
+      "block_id": "daa761eb0ff042d401ab4076b4f6a02f",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 139",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 194,
+      "block_id": "219b21cf4a2e6ab3a50a0504b50e9dd7",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 168",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 372,
+      "block_id": "998f79ecf0eff0323689a5f52208ddda",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 346",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 155,
+      "block_id": "03b1b32e60d60b38ef6d896432503c5e",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 129",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 373,
+      "block_id": "07fb1fedfd64135388ff33132081d480",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 347",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 241,
+      "block_id": "64893d3cb8c8cb2515006261cd779175",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 215",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 352,
+      "block_id": "d43adce9208f5f0a676db6878c477a42",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 326",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 281,
+      "block_id": "42d6f466702b85e787d67fbc483990ab",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 255",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 390,
+      "block_id": "0c43c48d871d6f1b959cf85f7a5675ad",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 364",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 288,
+      "block_id": "e211afff4d9ccf6c93a33ebd79711c27",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 262",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 200,
+      "block_id": "5f7bcd878c42c144b3a0d7abda8094de",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 174",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 38,
+      "block_id": "f64bcf0867fc6aefb926a15d55bb23c3",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER TWO PAGE 12",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        433.8087158203125,
+        7.979999542236328
+      ]
+    },
+    {
+      "page": 206,
+      "block_id": "e2b01629269673407e3f24b89967d3a4",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 180",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 248,
+      "block_id": "4ae3cc2dd50b8e2f561cc823ca136301",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 222",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 177,
+      "block_id": "7ce770b1e5ef9e00e8f22928fc19e906",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 151",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 250,
+      "block_id": "ae6755a9312e698524dcf4ea46a531ce",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 224",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 389,
+      "block_id": "1d3f8d37f824b9f779799658fb4ad7f0",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 363",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 359,
+      "block_id": "91d963aa8ed1c42502aa688321528f2d",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 333",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 282,
+      "block_id": "3289fa429f0aea3132fc418a5128edc8",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 256",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 332,
+      "block_id": "ad8a8686e02dbb937b6efab162e81b1c",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 306",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 360,
+      "block_id": "08fb21865e1cb00efbab05462d465458",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 334",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 426,
+      "block_id": "eaa010118b9c379f8c6cee6a0f1a927e",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 400",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 316,
+      "block_id": "1f8ee5def0abfb34cf62f373589bd85f",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 290",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 378,
+      "block_id": "5e7e3976b46a53ff0bbb0ac19f13cd0e",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 352",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 473,
+      "block_id": "6cd0ba6ff14cdf4eb770a95ec48370e7",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 447",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 226,
+      "block_id": "e60274d1d0298fffa6d08b6741fac1cd",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 200",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 233,
+      "block_id": "9d66bb37b91f3aa0491155a2b2eaa210",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 207",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 348,
+      "block_id": "377b9876d3ec546d5ada32488bd35a36",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 322",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 239,
+      "block_id": "090600bbd81dffb336d99109a138b65f",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 213",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 357,
+      "block_id": "183456b57e36e39f17ec085a0d6fd1c2",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 331",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 109,
+      "block_id": "4c3207b049cc9a3b83b9d3c8da1ac137",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE 83PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 134,
+      "block_id": "91ba7375796cda26a8ee32e13e1d64df",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 108",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 256,
+      "block_id": "d75894ff7f92e34fd00ebf2edb568bbc",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 230",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 141,
+      "block_id": "8287b43fcbe9b284b805f9aab1051d58",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 115",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 180,
+      "block_id": "a97770ce36cf5284202749029016edca",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 154",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 224,
+      "block_id": "e3656a03f9a103bcef73d4f88eb801d1",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 198",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 246,
+      "block_id": "2bb1d240d1f3b9363c6c8394108685ab",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 220",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 491,
+      "block_id": "8b86b6ed8f4d73c3c53fba4decd87be7",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 465",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 326,
+      "block_id": "1a8bd1c8cf837cc57cecd30f6b4b5d4d",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 300",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 399,
+      "block_id": "831a479fb689494edbd4959535e24d08",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 373",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 441,
+      "block_id": "83dec5bf467446ae8ed9dbce10128445",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 415",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 41,
+      "block_id": "0076af7c1fcab4807e67511c9796389b",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER TWO PAGE 15",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        433.8087158203125,
+        7.979999542236328
+      ]
+    },
+    {
+      "page": 172,
+      "block_id": "617be398840a0b406d01d3b745cb910e",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 146",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 321,
+      "block_id": "ff294eec7f6720e7f20bdda260caf632",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 295",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 301,
+      "block_id": "42baefb78dbfd3b9714d6f26c3e0970d",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 275",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 126,
+      "block_id": "eaed4ea0919ecb236a55b2cb49c345b5",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 100",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 382,
+      "block_id": "202a400e65cfbca2d8038b0f9e739e20",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 356",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 436,
+      "block_id": "8309c821c136b1f5a0de03682feec4b1",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 410",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 205,
+      "block_id": "e1cef07ab9836067220252cfb42a228e",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 179",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 268,
+      "block_id": "88785898fdf8141fa164f0ba505a7cdd",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 242",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 383,
+      "block_id": "39e9199df6b8544706e1ebc16cdb2b27",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 357",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 210,
+      "block_id": "4e6df86db565214254c579f6195a4bd1",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 184",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 325,
+      "block_id": "fb3898016fa5b46400f2492ebdfd3b98",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 299",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 333,
+      "block_id": "06af4cc1537f36d023e1952677471316",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 307",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 300,
+      "block_id": "c1333d4b6899f90acb02e9e947b97c1e",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 274",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 216,
+      "block_id": "ea2b3a19441d33a27c9fe324150c8669",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 190",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 488,
+      "block_id": "3afdf25270ad741001a07349badfc713",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 462",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 483,
+      "block_id": "e089b5e5a62642bb9b6875045abad39d",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 457",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 475,
+      "block_id": "7d825691cd6ee5d2c85f5339e2aaa584",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 449",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 311,
+      "block_id": "5bc9ac3eee89ed85b7e1b214851b943c",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 285",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 196,
+      "block_id": "8cf1a9fd51b9f45fa84e51c758eb6334",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 170",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 265,
+      "block_id": "3e35e290f5b472b5cbfa42fd2dd00d09",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 239",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 217,
+      "block_id": "7c69f7e43ef2dcb56d58cbf4eb6bbbd3",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 191",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 121,
+      "block_id": "9ab30c12f5b27b394489ac5320ea5b57",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE 95PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 355,
+      "block_id": "7431602a255bdea3609d39b9e3fe88e3",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 329",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 424,
+      "block_id": "104621fa60371937d02e7d4425d757dc",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 398",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 175,
+      "block_id": "f79605c15fd9d7103398683e871e8835",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 149",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 213,
+      "block_id": "c390316dc38983ae5041b9e9e2008d4d",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 187",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 370,
+      "block_id": "6d856b443dc29493cd3f1dd4968815d3",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 344",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 133,
+      "block_id": "137bcee0d0199e1190c7f28b338e6407",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 107",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 346,
+      "block_id": "d7b0b3a3b57a049c9b2075e2577d7ccf",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 320",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 167,
+      "block_id": "ad2ebba53f8940be7f6a4a8037b0ccf8",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 141",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 229,
+      "block_id": "58ab8b577180c9f43a764807a681fc71",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 203",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 191,
+      "block_id": "d61341057dbbd4e2127cf26e0255514e",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 165",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 358,
+      "block_id": "8cf938398e4c5af99b2697df381b05c9",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 332",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 152,
+      "block_id": "931ea08e470f697e5417f4d6f119bf57",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 126",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 297,
+      "block_id": "a3762c0bde5af926191f4d192ed63315",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 271",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 198,
+      "block_id": "f6ad1f1065996380e3fbf0b3e8cf3346",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 172",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 289,
+      "block_id": "d516ca5ffb088c9531af987561cea260",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 263",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 464,
+      "block_id": "a8846a0be353bcce91129fdde4e84cc0",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 438",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 245,
+      "block_id": "f4f8620717a98a28d900b9ec7542ac61",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 219",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 32,
+      "block_id": "383ea8c2fde3122a80b72cf5c2f9983a",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER ONE PAGE 6",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 163,
+      "block_id": "aa314da3a1bb602f21711d0ff172688d",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 137",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 169,
+      "block_id": "ffbcb378efdabb944bed793a19fab254",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 143",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 243,
+      "block_id": "6bc67320e321924281ff22a05b3304b8",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 217",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 429,
+      "block_id": "7d8262144d0aa54535730f4b0904a2b0",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 403",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 387,
+      "block_id": "b7569bc5fba2f10c3fd475779d0a9f75",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 361",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 236,
+      "block_id": "6e72d3fd492bc36e1a94400d34c7df6a",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 210",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 110,
+      "block_id": "9defb69eba2fdce28064801745a85a44",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE 84PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 447,
+      "block_id": "53c6822d6e6682b6fd9a65e3b818466e",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 421",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 253,
+      "block_id": "6d4d47cdb16a23d1e58797495470fbc1",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 227",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 273,
+      "block_id": "4610c5f78e6411fcf389ea1c085cf238",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 247",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 269,
+      "block_id": "938d4b965df4f825bb8d131b39d65a5b",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 243",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 380,
+      "block_id": "737ef2a2a1fbd76176b47818787ce00c",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 354",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 351,
+      "block_id": "0383492fa1e83ecc09e890c5d91be580",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 325",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 120,
+      "block_id": "54feae2aaab90ce532e40f4cf03fbbe1",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE 94PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 430,
+      "block_id": "9207528273c11b9f66dae97e98bd8f24",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 404",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 457,
+      "block_id": "e83a0e289b39cf6a58813e0ee7ac1d57",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 431",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 145,
+      "block_id": "3d90d58c81b466452a8390fed60c7b9d",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 119",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 284,
+      "block_id": "b6ec11e370c0987179d185411413788e",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 258",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 442,
+      "block_id": "f8742ecf89ba7a7023bc557c0250ff18",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 416",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 197,
+      "block_id": "637b4b570829bbc42b5e3c661d00d24a",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 171",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 456,
+      "block_id": "2cc7e6410bef2fe3df83a6340f8eb77f",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 430",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 327,
+      "block_id": "ef31d158c2e9ec11e91017702d53e44e",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 301",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 330,
+      "block_id": "bb0ee1cfcacbe2513d96c2353832441f",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 304",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 293,
+      "block_id": "adcf015a6d68cd7bdc9ddec352a963df",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 267",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 39,
+      "block_id": "f85ce7ea0b87789a146aea2c51fa33f6",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER TWO PAGE 13",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        433.8087158203125,
+        7.979999542236328
+      ]
+    },
+    {
+      "page": 481,
+      "block_id": "10a4fffe2bbaa90f1e8467d14a865df3",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 455",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 150,
+      "block_id": "632598f39065252777dd0505b462b2df",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 124",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 308,
+      "block_id": "f05e14bda38b58a5a01d1e2f7941c823",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 282",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 486,
+      "block_id": "d377b1d9299e085fb6ee6374627a0f26",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 460",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 381,
+      "block_id": "a26f78efacab047f2a7592cfbcf99007",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 355",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 455,
+      "block_id": "4fccb72d8ffc6899957a76bd681edb1e",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 429",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 458,
+      "block_id": "accad159f83a7ffe64f4ce36689e8871",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 432",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 113,
+      "block_id": "d155d7d3ac5cc44081e23710521cd779",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE 87PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 143,
+      "block_id": "e60b1b86ea5882500b2c8ab0ff88c870",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 117",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 307,
+      "block_id": "0f044696c47bb38697df43b642faae39",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 281",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 362,
+      "block_id": "1d1f2df914cb748f19867f421acc07ac",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 336",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 339,
+      "block_id": "652ba7d2e6ad86d322ec527ef0903257",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 313",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 376,
+      "block_id": "d87510320b5cde15915702e8d668e2fc",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 350",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 468,
+      "block_id": "66bdcbed37dd7144a7553e4de6c79ad5",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 442",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 323,
+      "block_id": "b9b0c536c458059d778577fe9e978e20",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 297",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 377,
+      "block_id": "c601f91c29731cf0eaddb18dffac0ccb",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 351",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 30,
+      "block_id": "b623fdc0ce2ad77d2137425a84bd04a6",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER ONE PAGE 4",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 212,
+      "block_id": "583c0c0da5ff49f03131b0087c3a1635",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 186",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 354,
+      "block_id": "84ba14a419705a3eb4f586e632f23138",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 328",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 474,
+      "block_id": "a2c1b0d3dc32b806d773815268307109",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 448",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 451,
+      "block_id": "bb290e700700e4075528fd27dfa03252",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX B PAGE 425",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 298,
+      "block_id": "f24f2f43a3f31c6f346f56c701a772d3",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 272",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 461,
+      "block_id": "4b3362cfbc234ee160942b78c6e3b2b3",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 435",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 466,
+      "block_id": "0ab51170729868bc890998665da8b6fd",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 440",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 463,
+      "block_id": "4c8492355c5c075939a61147528485cc",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 437",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 353,
+      "block_id": "d397469131515f8910cd91a4ce3c2b18",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 327",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 484,
+      "block_id": "0d56949ce23eade90662388b76d554de",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 458",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 225,
+      "block_id": "ef5e6c23efbdeb7a4d1ed98dd59837c2",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 199",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 286,
+      "block_id": "0924545df90917f5eda682efaa7f3df3",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 260",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 388,
+      "block_id": "91e294d59cc0334c231719bcecebaa03",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 362",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 385,
+      "block_id": "222954a6fc04751780a8eb7b23d44cd0",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 359",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 130,
+      "block_id": "c7e531b291044a2f3c69ce0320365c64",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 104",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 111,
+      "block_id": "99b854b44bf26678c7aad72b4b4d319b",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE 85PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 28,
+      "block_id": "40ac362c035703486d5dbc3bf5a7a736",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER ONE PAGE 2",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 203,
+      "block_id": "aeff86241545d0350f32601062cf669b",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 177",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 144,
+      "block_id": "23ad4b5961a2ecfb75c5b6270092345e",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 118",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 128,
+      "block_id": "e96aa09e47bc4b329149c42b7eea6da1",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 102",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 37,
+      "block_id": "4f76b51019c3a14127569e1daf6b34a9",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER TWO PAGE 11",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        433.8087158203125,
+        7.979999542236328
+      ]
+    },
+    {
+      "page": 371,
+      "block_id": "e1975f4e81f75343917e09b7ad9e2cf0",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 345",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 124,
+      "block_id": "d6b39727aed726b5915f4f4e3c5df01b",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE 98PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 193,
+      "block_id": "3c53703be943363554d675e18ed30ddd",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 167",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 278,
+      "block_id": "454bcc84706a9664763573104261f8b1",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 252",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 312,
+      "block_id": "915aa4636c5007c7ec87d1446fdc154c",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 286",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 218,
+      "block_id": "d000d62c8cf71da1bbeea89183c407b6",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 192",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 422,
+      "block_id": "d67c9fa16a12a54dee388f3c7e7fdbae",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 396",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 443,
+      "block_id": "f852d3962d1bf9e1bd11f0ba2df5a648",
+      "from": "Title",
+      "to": "Header",
+      "text": "APPENDIX A PAGE 417",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 119,
+      "block_id": "e226309acca68afac1fb9c7188585b3b",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE 93PAGE",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 182,
+      "block_id": "a5ec71e45ed2758dcff30f3171a52237",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 156",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 215,
+      "block_id": "85699979dfc508f7c28ee9d316f79ec3",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 189",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 201,
+      "block_id": "6f59b8824880a35161e653395d61c5cb",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 175",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 472,
+      "block_id": "cc1bd104989519e0d3a2c9fc7223fd27",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 446",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 147,
+      "block_id": "0af75644ff821095315b250b789909de",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 121",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 480,
+      "block_id": "07cee695cc1687c87cbe7cc11fe1261c",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX C PAGE 454",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 222,
+      "block_id": "e920a62c6bfc8a11dec85db1250f4e61",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 196",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 160,
+      "block_id": "15b7bbd4e0acd2e8ac9641c3ebc92b2f",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 134",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 221,
+      "block_id": "f2285449b4aa1ff44f1a7efe3bd9430b",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 195",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 342,
+      "block_id": "7f632814978530fe197c4a741ce20718",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 316",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 450,
+      "block_id": "c0ca50555815569039764309667e419b",
+      "from": "Body",
+      "to": "Header",
+      "text": "APPENDIX B PAGE 424",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 270,
+      "block_id": "30f1142cbf0282564db21736985299bb",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 244",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 178,
+      "block_id": "4287c2757d009bf086aaee17ed9a47ae",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 152",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 187,
+      "block_id": "4eca4cc524fd093c6f4e5d3f0c74d8fe",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 161",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 338,
+      "block_id": "a17a78bba8cd4fcf826b4e760f38441f",
+      "from": "Title",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 312",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    },
+    {
+      "page": 136,
+      "block_id": "5709f9197cfc851a35ab50e4e5967335",
+      "from": "Body",
+      "to": "Header",
+      "text": "CHAPTER THREE PAGE 110",
+      "bbox": [
+        90.0,
+        38.15999984741211,
+        434.03399658203125,
+        9.0
+      ]
+    }
+  ],
+  "note": "A single-block change is a memorization smell; a whole-class change across many pages is the signature of a structural fix. Neither is promotion evidence on its own -- read it alongside the page-scoped regression verdict."
+}

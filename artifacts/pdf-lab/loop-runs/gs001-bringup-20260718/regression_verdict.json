@@ -18,9 +18,35 @@
   "lost": [],
   "targeted_class_strictly_decreased": true,
   "nothing_worsened": true,
-  "verdict": "PASS",
+  "verdict": "PASS (page-scoped and document-wide)",
   "build_control": "baseline and candidate wheels built from the same worktree with identical flags; only the patch differs",
   "attempt_id": "bbf1d9aae5ae",
   "commit_sha": "c6340c1dd5fe99b5730d26fb9c987dca064ffb6b",
-  "promotion": "NOT_PERFORMED (tau apply gate decides)"
+  "promotion": "NOT_PERFORMED (tau apply gate decides)",
+  "scope_correction": "The page-scoped verdict below was measured on page 28 only (11 rows). A classifier change has a document-wide blast radius, so it was NOT sufficient evidence on its own.",
+  "document_wide": {
+    "blocks_baseline": 12648,
+    "blocks_candidate": 12648,
+    "structural_change": false,
+    "type_changes": 375,
+    "pages_touched": 375,
+    "transitions": {
+      "Body -> Header": 214,
+      "Title -> Header": 161
+    },
+    "off_pattern_changes": 0,
+    "frozen_page_changes": {
+      "20": 0,
+      "468": 1,
+      "401": 0,
+      "415": 0,
+      "483": 1,
+      "34": 1,
+      "31": 1,
+      "32": 1,
+      "33": 1,
+      "23": 0
+    },
+    "interpretation": "All 375 changes are bottom-of-page footers carrying a page marker; 0 blocks added or removed; 0 changes fall outside the expected pattern. The same defect class was corrected on 375 pages, which is the anti-overfit signal: a memorized fix would have moved exactly one block."
+  }
 }
