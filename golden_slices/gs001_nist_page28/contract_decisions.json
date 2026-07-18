@@ -1,0 +1,29 @@
+{
+  "schema_version": "pdf_lab.contract_decisions.v1",
+  "slice_id": "GS001",
+  "decisions": [
+    {
+      "decision_id": "gs001-decision-001",
+      "question": "Is 'CHAPTER ONE' (extraction block:6, emitted as section_heading) an expected element, waived page chrome, or part of the INTRODUCTION heading?",
+      "decision": "expected_element",
+      "resolution": "Add to the expected contract as its own row with type chapter_label. It is real, visible document structure; extracting it is correct extractor behavior.",
+      "decided_by": "graham@grahama.co",
+      "decided_at": "2026-07-18",
+      "decided_via": "Claude Code session AskUserQuestion (GS001 human-decision boundary, PR grahama1970/pdf_oxide#1)",
+      "consequence": "Expected contract grows from 9 to 11 rows (with gs001-decision-002); the R8 'extras' count drops by one."
+    },
+    {
+      "decision_id": "gs001-decision-002",
+      "question": "Is the subtitle 'THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS' (extraction block:8, emitted as paragraph_block) an expected element, part of the title, or a waived extra?",
+      "decision": "expected_element",
+      "resolution": "Add to the expected contract as its own row with type section_subtitle. The R11 ledger entry nist-subtitle-001 already promotes this block to section_subtitle; the contract now demands that typing.",
+      "decided_by": "graham@grahama.co",
+      "decided_at": "2026-07-18",
+      "decided_via": "Claude Code session AskUserQuestion (GS001 human-decision boundary, PR grahama1970/pdf_oxide#1)",
+      "consequence": "Expected contract grows from 9 to 11 rows; extractor must emit type section_subtitle for this block (ledger nist-subtitle-001 provides the promotion rule)."
+    }
+  ],
+  "non_claims": [
+    "These decisions do not claim the remaining 9 rows of the v2 contract; those must be recovered from the original human-labeled bundle or relabeled."
+  ]
+}

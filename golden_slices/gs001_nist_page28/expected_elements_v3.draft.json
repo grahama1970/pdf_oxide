@@ -1,0 +1,77 @@
+{
+  "schema_version": "pdf_lab.golden_slice_expected.v3",
+  "slice_id": "GS001",
+  "title": "NIST SP 800-53r5 page 28 (printed PAGE 1, CHAPTER ONE / INTRODUCTION)",
+  "contract_status": "draft_pending_row_recovery",
+  "contract_version": 3,
+  "source_pdf": {
+    "name": "NIST_SP_800-53r5.pdf",
+    "sha256": "PENDING_SOURCE_PDF_SHA256",
+    "page_index": 27,
+    "printed_page": "PAGE 1",
+    "official_source": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf"
+  },
+  "provenance": {
+    "prior_contract": "expected_elements_v2.json (9 rows, human-labeled; existed only at /tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/ on the author's machine and was never committed)",
+    "recovery_required": "Rows 1-9 must be recovered from the original human-labeled bundle or relabeled by a human against the rendered page. They are deliberately NOT reconstructed from extractor output (review-extraction hard rule: never infer expected elements from extracted elements).",
+    "decision_record": "contract_decisions.json in this directory"
+  },
+  "human_decisions_applied": [
+    "gs001-decision-001: CHAPTER ONE is an expected element (chapter_label)",
+    "gs001-decision-002: THE NEED TO PROTECT ... subtitle is an expected element (section_subtitle)"
+  ],
+  "expected_elements": [
+    { "id": "gs001:row:1", "pending_recovery": true },
+    { "id": "gs001:row:2", "pending_recovery": true },
+    { "id": "gs001:row:3", "pending_recovery": true, "recovery_hint": "INTRODUCTION section_heading (regression test asserts exact normalized text 'INTRODUCTION', extraction block:7, fs=16.02 bold)" },
+    { "id": "gs001:row:4", "pending_recovery": true, "recovery_hint": "first body paragraph_block starting 'Modern information systems' (regression test gate)" },
+    { "id": "gs001:row:5", "pending_recovery": true },
+    { "id": "gs001:row:6", "pending_recovery": true },
+    { "id": "gs001:row:7", "pending_recovery": true },
+    { "id": "gs001:row:8", "pending_recovery": true },
+    { "id": "gs001:row:9", "pending_recovery": true },
+    {
+      "id": "gs001:row:10",
+      "page": 27,
+      "type": "chapter_label",
+      "text": "CHAPTER ONE",
+      "bbox": null,
+      "bbox_status": "PENDING_VERIFICATION_AGAINST_SOURCE_PDF",
+      "added_by_decision": "gs001-decision-001",
+      "evidence": "Emitted as extraction block:6 section_heading (GS001 R6/R8 comparison); PR grahama1970/pdf_oxide#1 extras table."
+    },
+    {
+      "id": "gs001:row:11",
+      "page": 27,
+      "type": "section_subtitle",
+      "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
+      "bbox": null,
+      "bbox_status": "PENDING_VERIFICATION_AGAINST_SOURCE_PDF",
+      "added_by_decision": "gs001-decision-002",
+      "evidence": "Ledger entry nist-subtitle-001: extraction block:8, font_size=10.02, TT0, not bold, bbox.x_min=0.147, directly under section_heading INTRODUCTION (block:7, fs=16.02 bold)."
+    }
+  ],
+  "waivers": [
+    {
+      "waiver_id": "gs001-waiver-001",
+      "text_contains": "This publication is available free of charge",
+      "type": "header_footer_noise",
+      "decision": "accepted_page_chrome_noise",
+      "reason": "Side DOI watermark (extraction blocks 4-5); rotated page chrome, not content.",
+      "signed_by": "graham@grahama.co",
+      "signed_via": "GS001 R8 extras triage, PR grahama1970/pdf_oxide#1"
+    },
+    {
+      "waiver_id": "gs001-waiver-002",
+      "actual_id": "actual:p27:block:1",
+      "type": "header_footer_noise",
+      "decision": "accepted_page_chrome_noise",
+      "reason": "Horizontal separator rule (extraction block:1); page furniture.",
+      "signed_by": "graham@grahama.co",
+      "signed_via": "GS001 R8 extras triage, PR grahama1970/pdf_oxide#1"
+    }
+  ],
+  "match_policy_overrides": {
+    "ambiguity_margin": 0.05
+  }
+}
