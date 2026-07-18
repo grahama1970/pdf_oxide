@@ -169,16 +169,38 @@ fn suppress_overlaps(blocks: &[ClassifiedBlock]) -> Vec<ClassifiedBlock> {
 }
 
 /// Merge consecutive Body blocks separated by <1.5x font_size into paragraphs.
+/// Block types that participate in vertical run merging.
+///
+/// Body and Footnote flow together: a footnote's continuation lines are
+/// classified Body (no leading marker), so restricting merging to Body alone
+/// leaves footnote runs fragmented once footnotes are typed correctly.
+fn is_flowable(block_type: BlockType) -> bool {
+    matches!(block_type, BlockType::Body | BlockType::Footnote)
+}
+
 fn merge_paragraphs(blocks: &[ClassifiedBlock]) -> Vec<MergedBlock> {
     let mut result: Vec<MergedBlock> = Vec::new();
     let mut paragraph_id: usize = 0;
 
     for block in blocks {
-        if block.block_type == BlockType::Body {
+        if is_flowable(block.block_type) {
             // Check if we can merge with the previous block
             if let Some(prev) = result.last_mut() {
-                if prev.block_type == BlockType::Body {
-                    let vertical_gap = vertical_distance(&prev.bbox, &block.bbox);
+                if is_flowable(prev.block_type) {
+                    // Footnote runs need the true inter-line gap. Body paragraph
+                    // merging keeps its legacy measure deliberately: with the true
+                    // gap, this document's paragraph breaks (min 5.37pt) and
+                    // intra-paragraph line gaps (max 4.91pt) are too close to
+                    // separate with any fixed multiple of font size, and picking one
+                    // that happens to split them here would be tuning to this file.
+                    // Widening body merging is a separate, adaptive-threshold change.
+                    let footnote_run = prev.block_type == BlockType::Footnote
+                        || block.block_type == BlockType::Footnote;
+                    let vertical_gap = if footnote_run {
+                        vertical_gap_true(&prev.bbox, &block.bbox)
+                    } else {
+                        vertical_distance(&prev.bbox, &block.bbox)
+                    };
                     let threshold = prev.font_size.max(block.font_size) * 1.5;
 
                     if vertical_gap < threshold {
@@ -186,6 +208,14 @@ fn merge_paragraphs(blocks: &[ClassifiedBlock]) -> Vec<MergedBlock> {
                         prev.text.push(' ');
                         prev.text.push_str(&block.text);
                         prev.bbox = prev.bbox.union(&block.bbox);
+                        // A run that contains any footnote line IS a footnote block:
+                        // continuation lines of a footnote classify as Body because
+                        // they carry no leading marker, and the first footnote can
+                        // fall just outside the footnote band. Merging them back
+                        // into one block is what makes the run addressable.
+                        if block.block_type == BlockType::Footnote {
+                            prev.block_type = BlockType::Footnote;
+                        }
                         continue;
                     }
                 }
@@ -206,8 +236,21 @@ fn merge_paragraphs(blocks: &[ClassifiedBlock]) -> Vec<MergedBlock> {
 fn vertical_distance(a: &Rect, b: &Rect) -> f32 {
     let a_bottom = a.y + a.height;
     let b_top = b.y;
-    // In PDF coordinates, Y increases downward in our Rect
     (b_top - a_bottom).abs()
+}
+
+/// True separation between two vertical spans, origin-agnostic.
+///
+/// `vertical_distance` above adds span height to the separation because Rect.y
+/// is the BOTTOM edge in a bottom-origin page space; it reports 20-47pt for
+/// lines 2-4pt apart. Correct for footnote runs, where real inter-line gaps
+/// must be compared against the merge threshold.
+fn vertical_gap_true(a: &Rect, b: &Rect) -> f32 {
+    let a_lo = a.y;
+    let a_hi = a.y + a.height;
+    let b_lo = b.y;
+    let b_hi = b.y + b.height;
+    (a_lo.max(b_lo) - a_hi.min(b_hi)).max(0.0)
 }
 
 #[cfg(test)]

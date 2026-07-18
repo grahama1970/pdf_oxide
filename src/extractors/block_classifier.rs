@@ -376,8 +376,10 @@ impl BlockClassifier {
 
         // Running footer (bottom 8% of page, short text)
         if y_ratio > 0.92 && trimmed.len() < 200 {
-            // But check if it's actually a section header that happens to be at the bottom
-            if !is_content_exception(trimmed) {
+            // But check if it's actually a section header that happens to be at the bottom.
+            // A running footer may restate the chapter/section name beside a page
+            // marker ("<Chapter name>   PAGE 12"); structural page chrome wins.
+            if !is_content_exception(trimmed) || has_page_marker(trimmed) {
                 return self.make_block(
                     BlockType::Footer,
                     text,
@@ -1559,6 +1561,40 @@ fn is_content_exception(text: &str) -> bool {
         return true;
     }
     false
+}
+
+/// True when the text carries a running page marker, e.g. "PAGE 12", "p. 12",
+/// or a bare trailing page number.
+///
+/// Positional/typographic only: no document-specific phrase, no page index,
+/// no control identifier.
+fn has_page_marker(text: &str) -> bool {
+    let trimmed = text.trim();
+    let lower = trimmed.to_lowercase();
+    let mut words = lower.split_whitespace().peekable();
+    while let Some(word) = words.next() {
+        let word = word.trim_matches(|c: char| !c.is_alphanumeric());
+        if matches!(word, "page" | "pg" | "p") {
+            if let Some(next) = words.peek() {
+                if next
+                    .trim_matches(|c: char| !c.is_ascii_digit())
+                    .parse::<u32>()
+                    .is_ok()
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    trimmed
+        .split_whitespace()
+        .last()
+        .map(|last: &str| {
+            last.trim_matches(|c: char| !c.is_ascii_digit())
+                .parse::<u32>()
+                .is_ok()
+        })
+        .unwrap_or(false)
 }
 
 fn is_list_item(text: &str) -> bool {
