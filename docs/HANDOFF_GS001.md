@@ -24,8 +24,24 @@ git checkout claude/pdf-oxide-project-state-nl6oef
 cd ~/workspace/experiments/tau
 git fetch origin claude/pdf-oxide-project-state-nl6oef
 git checkout claude/pdf-oxide-project-state-nl6oef
-uv run pytest tests/test_gs001_closure_audit_workflow.py  # first thing: needs Python 3.14, unexecuted in the cloud session
+uv run pytest tests/test_gs001_closure_audit_workflow.py
 ```
+
+**Workstation session 2026-07-18 executed all of the above.** Results and
+corrections to this section:
+
+- All three repos are checked out as sibling worktrees
+  (`pdf_oxide-gs001`, `agent-skills-gs001`, `tau-gs001`) so the primary
+  pdf_oxide tree — which carries ~458 uncommitted entries — stays untouched.
+- **tau remotes were misnamed and are now fixed.** `origin` pointed at
+  `alejandro-ao/tau` (the upstream this fork will never merge back into),
+  so `git fetch origin` above silently fetched the wrong repository. As of
+  2026-07-18: `origin` = `grahama1970/tau`, `upstream` = `alejandro-ao/tau`.
+  The command as written now works.
+- Test gates all green: Rust `block_classifier` 44/44 · GS001 Python 18/18 ·
+  pdf-lab 47/47 · tau 3/3. Two beat this doc's predictions — tau's suite
+  runs fine on local Python 3.14, and pdf-lab reports 47 passed / 0 skipped
+  (not 38/9), since the NIST extraction artifact is already discoverable.
 
 What changed where (key files):
 
@@ -79,17 +95,44 @@ Companion pieces on the same branch elsewhere:
 
 ## Immediate next steps (in order)
 
-1. **Recover the expected contract rows 1-9.** Source: the original
-   human-labeled bundle at
-   `/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/` on the
-   operator workstation (`expected_elements_v2.json` + labeled PNG), or
-   relabel against the rendered page. Fill them into
+1. **Recover the expected contract rows 1-9.** ⚠️ **The named source is
+   GONE.** `/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/` no
+   longer exists — /tmp was cleared, and a filesystem search on 2026-07-18
+   found no `expected_elements_v2*.json` anywhere on the workstation. The
+   human labels are lost; **relabeling is now the only lawful path.**
+
+   Do NOT substitute
+   `/tmp/embry-interrupt-codex/packages/ux-lab/public/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0028/expected_elements.json`.
+   It is the only surviving page-28 expected-row file and is therefore
+   tempting, but its own `source` field reads "phase-54 TOC-backed
+   candidate packet release_extraction_blocks.json" — it is derived from
+   extractor output, which the no-inference rule disqualifies. Its
+   `page.png` / `bbox_overlay.png` / `annotation_prompt.md` ARE usable as
+   the rendering scaffold for a fresh human relabel.
+
+   LESSON (policy, not just this row set): ground truth must be committed
+   under `golden_slices/`, never left in scratch space. The source PDF was
+   moved in-repo on 2026-07-18 for exactly this reason.
+
+   Fill the relabeled rows into
    `golden_slices/gs001_nist_page28/expected_elements_v3.draft.json`,
    resolve the two `bbox_status: PENDING` fields on rows 10-11, set
    `contract_status: "locked"`, then:
    `python3 scripts/gs001_lock.py lock-contract --contract golden_slices/gs001_nist_page28/expected_elements_v3.draft.json`
-2. **Pin the source PDF**: place `NIST_SP_800-53r5.pdf`, record its
-   sha256 in the contract's `source_pdf.sha256` and GOAL.md pins.
+2. ~~**Pin the source PDF**~~ — **DONE 2026-07-18** (commit `e4ee603e`).
+   Committed at `golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf`,
+   sha256 `fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6`,
+   recorded in both the contract and GOAL.md. The hash was verified against
+   a fresh download from nvlpubs.nist.gov — not merely against the four
+   local copies under `artifacts/` — so it pins the authentic publication.
+   (Note: `tests/fixtures/real/*.pdf` is gitignored at `.gitignore:137`;
+   that is why the PDF lives under `golden_slices/`.)
+
+   Remaining pins: 6. `lock-goal` still fails closed, exit code 1.
+   The three `*_baseline_commit` pins are deliberately NOT filled with the
+   current worktree HEADs — the unblock list requires the fork-vs-upstream
+   0.3.74 baseline audit first, and writing HEADs there would satisfy the
+   string check while faking the audit the fail-closed design exists to force.
 3. **Resolve remaining GOAL.md pins** (baseline commits, frozen packet),
    then `python3 scripts/gs001_lock.py lock-goal --goal GOAL.md` and copy
    the emitted `goal_hash` into `.tau/gs001-execution-dag.json`.
