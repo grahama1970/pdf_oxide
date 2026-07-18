@@ -1,0 +1,19 @@
+diff --git a/src/extractors/block_classifier.rs b/src/extractors/block_classifier.rs
+index 56d8e6e4..f7e0740b 100644
+--- a/src/extractors/block_classifier.rs
++++ b/src/extractors/block_classifier.rs
+@@ -392,8 +392,13 @@ impl BlockClassifier {
+         }
+ 
+         // Running header (top 8% of page, short text, not larger than median)
++        // NOTE: bbox.y is bottom-origin, so this branch actually matches the
++        // BOTTOM of the page and the y_ratio > 0.92 branch above matches the TOP.
++        // A running header/footer may restate the chapter or section name next to
++        // a page marker ("<Chapter name>   PAGE 12"); structural page chrome wins
++        // over the content-exception heuristic in that case.
+         if y_ratio < 0.08 && trimmed.len() < 200 && avg_font_size <= self.median_font_size {
+-            if !is_content_exception(trimmed) {
++            if !is_content_exception(trimmed) || has_page_marker(trimmed) {
+                 return self.make_block(
+                     BlockType::Header,
+                     text,

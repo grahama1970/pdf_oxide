@@ -1,0 +1,187 @@
+{
+  "schema_version": "pdf-lab.actual.v1",
+  "elements": [
+    {
+      "id": "actual:p27:cf71642d944762cc5915042b23b79bb1",
+      "page": 27,
+      "type": "header_footer_noise",
+      "raw_type": "Footer",
+      "bbox": [
+        90.0,
+        35.64,
+        636.48,
+        43.62
+      ],
+      "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "id": "actual:p27:bbd8c581f38aa38452e93bc8e0a72c8a",
+      "page": 27,
+      "type": "header_footer_noise",
+      "raw_type": "Footer",
+      "bbox": [
+        90.0,
+        45.3,
+        523.8,
+        53.28
+      ],
+      "text": "_________________________________________________________________________________________________"
+    },
+    {
+      "id": "actual:p27:40b9cd90a3ddb8bd27a2b2d307915649",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        90.0,
+        744.84,
+        524.03,
+        753.84
+      ],
+      "text": "CHAPTER ONE PAGE 1"
+    },
+    {
+      "id": "actual:p27:aeea1b33243dc53004f4692e143344a2",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        21.06,
+        218.94,
+        214.09,
+        227.94
+      ],
+      "text": "This publication is available free of charge from:"
+    },
+    {
+      "id": "actual:p27:29c1c4dc0532f4be228195962617c43d",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        21.06,
+        412.02,
+        165.56,
+        421.02
+      ],
+      "text": "https://doi.org/10.6028/NIST.SP.800"
+    },
+    {
+      "id": "actual:p27:440fd88e9159be7ccf7aa724471fc278",
+      "page": 27,
+      "type": "list",
+      "raw_type": "List",
+      "bbox": [
+        21.06,
+        556.56,
+        39.05,
+        568.56
+      ],
+      "text": "-53r5"
+    },
+    {
+      "id": "actual:p27:4aad3ab87dada435e0e3dc439e15cc29",
+      "page": 27,
+      "type": "section_heading",
+      "raw_type": "Title",
+      "bbox": [
+        90.0,
+        71.22,
+        170.24,
+        87.24
+      ],
+      "text": "CHAPTER ONE"
+    },
+    {
+      "id": "actual:p27:58afc2c7cd7ea368026d31f126629584",
+      "page": 27,
+      "type": "section_heading",
+      "raw_type": "Title",
+      "bbox": [
+        90.0,
+        102.78,
+        198.68,
+        118.8
+      ],
+      "text": "INTRODUCTION"
+    },
+    {
+      "id": "actual:p27:5b53b3a04d9fbdac6d7bf9b16e5df1d7",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        90.0,
+        125.58,
+        442.31,
+        135.6
+      ],
+      "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS"
+    },
+    {
+      "id": "actual:p27:b01e7a6f7b31de1b98bbb0f7024ae457",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        89.95,
+        149.7,
+        520.81,
+        241.32
+      ],
+      "text": "Modern information systems1 can include a variety of computing platforms (e.g., industrial control systems, general purpose computing systems, cyber-physical systems, super computers, weapons systems, communications systems, environmental control systems, medical devices, embedded devices, sensors, and mobile devices such as smart phones and tablets). These platforms all share a common foundation\u2014computers with complex hardware, software and firmware providing a capability that supports the essential mission and business functions of organizations.2"
+    },
+    {
+      "id": "actual:p27:ef2ca0a4e44d017739ea4bd64a64985b",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        89.99,
+        255.78,
+        519.68,
+        387.6
+      ],
+      "text": "Security controls are the safeguards or countermeasures employed within a system or an organization to protect the confidentiality, integrity, and availability of the system and its information and to manage information security3 risk. Privacy controls are the administrative, technical, and physical safeguards employed within a system or an organization to manage privacy risks and to ensure compliance with applicable privacy requirements.4 Security and privacy controls are selected and implemented to satisfy security and privacy requirements levied on a system or organization. Security and privacy requirements are derived from applicable laws, executive orders, directives, regulations, policies, standards, and mission needs to ensure the confidentiality, integrity, and availability of information processed, stored, or transmitted and to manage risks to individual privacy."
+    },
+    {
+      "id": "actual:p27:9c2ab01026400d482034cac741b30bff",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        90.0,
+        402.0,
+        518.34,
+        453.3
+      ],
+      "text": "The selection, design, and implementation of security and privacy controls5 are important tasks that have significant implications for the operations6 and assets of organizations as well as the welfare of individuals and the Nation. Organizations should answer several key questions when addressing information security and privacy controls:"
+    },
+    {
+      "id": "actual:p27:ff297232954831084e523b9e2423c02a",
+      "page": 27,
+      "type": "list",
+      "raw_type": "List",
+      "bbox": [
+        90.02,
+        462.36,
+        516.28,
+        540.19
+      ],
+      "text": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals? \u2022 Have the selected controls been implemented or is there a plan in place to do so? \u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective?7"
+    },
+    {
+      "id": "actual:p27:f1503c5b0897f9658f34ca038d99919e",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        89.99,
+        561.6,
+        516.37,
+        717.6
+      ],
+      "text": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A]."
+    }
+  ]
+}

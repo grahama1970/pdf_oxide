@@ -1,0 +1,26 @@
+{
+  "schema_version": "pdf_lab.regression_verdict.v1",
+  "defect_key": "gs001:p27:footer:type_mismatch",
+  "target_class": "type_mismatch",
+  "baseline": {
+    "matched": 5,
+    "accuracy": 0.45454545454545453,
+    "type_mismatch_count": 5
+  },
+  "candidate": {
+    "matched": 6,
+    "accuracy": 0.5454545454545454,
+    "type_mismatch_count": 4
+  },
+  "gained": [
+    "gs001:row:11"
+  ],
+  "lost": [],
+  "targeted_class_strictly_decreased": true,
+  "nothing_worsened": true,
+  "verdict": "PASS",
+  "build_control": "baseline and candidate wheels built from the same worktree with identical flags; only the patch differs",
+  "attempt_id": "bbf1d9aae5ae",
+  "commit_sha": "c6340c1dd5fe99b5730d26fb9c987dca064ffb6b",
+  "promotion": "NOT_PERFORMED (tau apply gate decides)"
+}

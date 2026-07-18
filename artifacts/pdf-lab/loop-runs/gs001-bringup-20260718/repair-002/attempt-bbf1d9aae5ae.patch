@@ -1,0 +1,75 @@
+diff --git a/src/extractors/block_classifier.rs b/src/extractors/block_classifier.rs
+index 5640c464..f7e0740b 100644
+--- a/src/extractors/block_classifier.rs
++++ b/src/extractors/block_classifier.rs
+@@ -372,8 +372,11 @@ impl BlockClassifier {
+ 
+         // Running footer (bottom 8% of page, short text)
+         if y_ratio > 0.92 && trimmed.len() < 200 {
+-            // But check if it's actually a section header that happens to be at the bottom
+-            if !is_content_exception(trimmed) {
++            // But check if it's actually a section header that happens to be at the bottom.
++            // A running footer may legitimately restate the chapter/section name
++            // alongside a page marker ("<Chapter name>   PAGE 12"); structural page
++            // chrome wins over the content-exception heuristic in that case.
++            if !is_content_exception(trimmed) || has_page_marker(trimmed) {
+                 return self.make_block(
+                     BlockType::Footer,
+                     text,
+@@ -389,8 +392,13 @@ impl BlockClassifier {
+         }
+ 
+         // Running header (top 8% of page, short text, not larger than median)
++        // NOTE: bbox.y is bottom-origin, so this branch actually matches the
++        // BOTTOM of the page and the y_ratio > 0.92 branch above matches the TOP.
++        // A running header/footer may restate the chapter or section name next to
++        // a page marker ("<Chapter name>   PAGE 12"); structural page chrome wins
++        // over the content-exception heuristic in that case.
+         if y_ratio < 0.08 && trimmed.len() < 200 && avg_font_size <= self.median_font_size {
+-            if !is_content_exception(trimmed) {
++            if !is_content_exception(trimmed) || has_page_marker(trimmed) {
+                 return self.make_block(
+                     BlockType::Header,
+                     text,
+@@ -1557,6 +1565,41 @@ fn is_content_exception(text: &str) -> bool {
+     false
+ }
+ 
++/// True when the text carries a running page marker, e.g. "PAGE 12",
++/// "p. 12", or a bare trailing page number.
++///
++/// Positional/typographic only: no document-specific phrase, no page-index
++/// condition, no control identifier. Used to keep running footers that also
++/// restate a chapter or section name from being classified as body content.
++fn has_page_marker(text: &str) -> bool {
++    let trimmed = text.trim();
++    let lower = trimmed.to_lowercase();
++    let mut words = lower.split_whitespace().peekable();
++    while let Some(word) = words.next() {
++        let word = word.trim_matches(|c: char| !c.is_alphanumeric());
++        if matches!(word, "page" | "pg" | "p") {
++            if let Some(next) = words.peek() {
++                if next
++                    .trim_matches(|c: char| !c.is_ascii_digit())
++                    .parse::<u32>()
++                    .is_ok()
++                {
++                    return true;
++                }
++            }
++        }
++    }
++    trimmed
++        .split_whitespace()
++        .last()
++        .map(|last: &str| {
++            last.trim_matches(|c: char| !c.is_ascii_digit())
++                .parse::<u32>()
++                .is_ok()
++        })
++        .unwrap_or(false)
++}
++
+ fn is_list_item(text: &str) -> bool {
+     let trimmed = text.trim();
+     // Bullet points

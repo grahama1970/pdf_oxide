@@ -344,3 +344,4 @@ verifications/
 
 # Loop run artifacts: full-extraction.json is a 492-page dump, regenerable
 artifacts/pdf-lab/loop-runs/*/full-extraction.json
+artifacts/pdf-lab/loop-runs/*/full-extraction-*.json

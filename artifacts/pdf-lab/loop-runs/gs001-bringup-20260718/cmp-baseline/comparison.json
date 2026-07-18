@@ -1,0 +1,332 @@
+{
+  "schema_version": "pdf-lab.comparison.v1",
+  "created_at": "2026-07-18T14:44:17Z",
+  "target": 0.95,
+  "passed": false,
+  "accuracy": 0.45454545454545453,
+  "matched_expected_elements": 5,
+  "total_expected_elements": 11,
+  "unmatched_expected_elements": 6,
+  "unmatched_actual_elements": 9,
+  "policy": {
+    "accuracy_formula": "matched_expected_elements / total_expected_elements",
+    "text_similarity_threshold": 0.8,
+    "bbox_iou_thresholds": {
+      "default": 0.5,
+      "running_header": 0.35,
+      "running_footer": 0.35,
+      "caption": 0.45,
+      "table_candidate": 0.4
+    },
+    "type_aliases": {
+      "paragraph": [
+        "paragraph",
+        "table_candidate",
+        "requirement"
+      ],
+      "table_candidate": [
+        "table_candidate",
+        "table",
+        "paragraph"
+      ],
+      "requirement": [
+        "requirement",
+        "paragraph",
+        "table_candidate"
+      ]
+    }
+  },
+  "subscores": {
+    "mean_iou": 0.9008,
+    "mean_text_similarity": 0.9886,
+    "type_accuracy_on_matches": 1.0
+  },
+  "matches": [
+    {
+      "expected_id": "gs001:row:4",
+      "actual_id": "actual:p27:58afc2c7cd7ea368026d31f126629584",
+      "page": 27,
+      "score": 0.8664,
+      "iou": 0.7031,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:6",
+      "actual_id": "actual:p27:b01e7a6f7b31de1b98bbb0f7024ae457",
+      "page": 27,
+      "score": 0.9795,
+      "iou": 0.9562,
+      "text_similarity": 0.9982,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:7",
+      "actual_id": "actual:p27:ef2ca0a4e44d017739ea4bd64a64985b",
+      "page": 27,
+      "score": 0.9847,
+      "iou": 0.9671,
+      "text_similarity": 0.9989,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:8",
+      "actual_id": "actual:p27:9c2ab01026400d482034cac741b30bff",
+      "page": 27,
+      "score": 0.945,
+      "iou": 0.9283,
+      "text_similarity": 0.9495,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:9",
+      "actual_id": "actual:p27:ff297232954831084e523b9e2423c02a",
+      "page": 27,
+      "score": 0.9754,
+      "iou": 0.9491,
+      "text_similarity": 0.9962,
+      "type_compatible": true
+    }
+  ],
+  "misses": [
+    {
+      "expected_id": "gs001:row:1",
+      "page": 27,
+      "type": "header_footer_noise",
+      "bbox": [
+        90.0,
+        35.43,
+        521.26,
+        55.87
+      ],
+      "text": "NIST SP 800-53, R EV . 5 S ECURITY AND P RIVACY C ONTROLS FOR I NFORMATION S YSTEMS AND O RGANIZATIONS _________________________________________________________________________________________________",
+      "best_candidate": {
+        "score": 0.5692,
+        "iou": 0.3895,
+        "text_similarity": 0.6532,
+        "type_compatible": true,
+        "matched": false
+      },
+      "reason": "bbox_iou_below_threshold"
+    },
+    {
+      "expected_id": "gs001:row:2",
+      "page": 27,
+      "type": "header_footer_noise",
+      "bbox": [
+        18.14,
+        227.94,
+        30.42,
+        586.58
+      ],
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "best_candidate": {
+        "score": 0.3191,
+        "iou": 0.0,
+        "text_similarity": 0.7092,
+        "type_compatible": false,
+        "matched": false
+      },
+      "reason": "type_mismatch"
+    },
+    {
+      "expected_id": "gs001:row:3",
+      "page": 27,
+      "type": "chapter_label",
+      "bbox": [
+        90.0,
+        73.71,
+        166.67,
+        91.78
+      ],
+      "text": "CHAPTER ONE",
+      "best_candidate": {
+        "score": 0.7358,
+        "iou": 0.635,
+        "text_similarity": 1.0,
+        "type_compatible": false,
+        "matched": false
+      },
+      "reason": "type_mismatch"
+    },
+    {
+      "expected_id": "gs001:row:5",
+      "page": 27,
+      "type": "section_subtitle",
+      "bbox": [
+        90.0,
+        125.32,
+        440.1,
+        138.73
+      ],
+      "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
+      "best_candidate": {
+        "score": 0.7847,
+        "iou": 0.7437,
+        "text_similarity": 1.0,
+        "type_compatible": false,
+        "matched": false
+      },
+      "reason": "type_mismatch"
+    },
+    {
+      "expected_id": "gs001:row:10",
+      "page": 27,
+      "type": "footnote",
+      "bbox": [
+        89.99,
+        575.53,
+        514.3,
+        720.41
+      ],
+      "text": "An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [SP 800-53A].",
+      "best_candidate": {
+        "score": 0.8498,
+        "iou": 0.8903,
+        "text_similarity": 0.9981,
+        "type_compatible": false,
+        "matched": false
+      },
+      "reason": "type_mismatch"
+    },
+    {
+      "expected_id": "gs001:row:11",
+      "page": 27,
+      "type": "header_footer_noise",
+      "bbox": [
+        90.0,
+        745.65,
+        521.97,
+        756.33
+      ],
+      "text": "CHAPTER ONE PAGE 1",
+      "best_candidate": {
+        "score": 0.7696,
+        "iou": 0.7101,
+        "text_similarity": 1.0,
+        "type_compatible": false,
+        "matched": false
+      },
+      "reason": "type_mismatch"
+    }
+  ],
+  "unmatched_actual_sample": [
+    {
+      "id": "actual:p27:cf71642d944762cc5915042b23b79bb1",
+      "page": 27,
+      "type": "header_footer_noise",
+      "raw_type": "Footer",
+      "bbox": [
+        90.0,
+        35.64,
+        636.48,
+        43.62
+      ],
+      "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "id": "actual:p27:bbd8c581f38aa38452e93bc8e0a72c8a",
+      "page": 27,
+      "type": "header_footer_noise",
+      "raw_type": "Footer",
+      "bbox": [
+        90.0,
+        45.3,
+        523.8,
+        53.28
+      ],
+      "text": "_________________________________________________________________________________________________"
+    },
+    {
+      "id": "actual:p27:40b9cd90a3ddb8bd27a2b2d307915649",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        90.0,
+        744.84,
+        524.03,
+        753.84
+      ],
+      "text": "CHAPTER ONE PAGE 1"
+    },
+    {
+      "id": "actual:p27:aeea1b33243dc53004f4692e143344a2",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        21.06,
+        218.94,
+        214.09,
+        227.94
+      ],
+      "text": "This publication is available free of charge from:"
+    },
+    {
+      "id": "actual:p27:29c1c4dc0532f4be228195962617c43d",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        21.06,
+        412.02,
+        165.56,
+        421.02
+      ],
+      "text": "https://doi.org/10.6028/NIST.SP.800"
+    },
+    {
+      "id": "actual:p27:440fd88e9159be7ccf7aa724471fc278",
+      "page": 27,
+      "type": "list",
+      "raw_type": "List",
+      "bbox": [
+        21.06,
+        556.56,
+        39.05,
+        568.56
+      ],
+      "text": "-53r5"
+    },
+    {
+      "id": "actual:p27:4aad3ab87dada435e0e3dc439e15cc29",
+      "page": 27,
+      "type": "section_heading",
+      "raw_type": "Title",
+      "bbox": [
+        90.0,
+        71.22,
+        170.24,
+        87.24
+      ],
+      "text": "CHAPTER ONE"
+    },
+    {
+      "id": "actual:p27:5b53b3a04d9fbdac6d7bf9b16e5df1d7",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        90.0,
+        125.58,
+        442.31,
+        135.6
+      ],
+      "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS"
+    },
+    {
+      "id": "actual:p27:f1503c5b0897f9658f34ca038d99919e",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        89.99,
+        561.6,
+        516.37,
+        717.6
+      ],
+      "text": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A]."
+    }
+  ]
+}
