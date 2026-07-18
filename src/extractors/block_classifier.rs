@@ -333,7 +333,11 @@ impl BlockClassifier {
             .any(|s| s.font_weight == crate::layout::text_block::FontWeight::Bold);
         let font_name = spans[0].font_name.clone();
 
-        let y_ratio = bbox.y / self.page_height;
+        // bbox.y is the BOTTOM edge in a bottom-origin page space, but every
+        // threshold below is written in top-origin terms ("top 8%", "bottom 8%",
+        // "bottom of page"). Normalise to the distance-from-top of the block's
+        // top edge so the rules mean what their comments say.
+        let y_ratio = (self.page_height - bbox.y - bbox.height) / self.page_height;
         let x_center = bbox.x + bbox.width / 2.0;
         let page_center = self.page_width / 2.0;
         let is_centered = (x_center - page_center).abs() < self.page_width * 0.1;
