@@ -971,6 +971,7 @@ mod tests {
         use crate::extractors::block_classifier::NumberingType;
 
         let header = ClassifiedBlock {
+            lines: Vec::new(),
             block_type: BlockType::Title,
             text: "1.2 Methods".to_string(),
             bbox: Rect::new(10.0, 100.0, 200.0, 18.0),
@@ -982,6 +983,7 @@ mod tests {
             header_validation: None,
         };
         let body1 = ClassifiedBlock {
+            lines: Vec::new(),
             block_type: BlockType::Body,
             text: "We used standard methods.".to_string(),
             bbox: Rect::new(10.0, 130.0, 400.0, 12.0),
@@ -993,6 +995,7 @@ mod tests {
             header_validation: None,
         };
         let body2 = ClassifiedBlock {
+            lines: Vec::new(),
             block_type: BlockType::Body,
             text: "Data was collected over 3 months.".to_string(),
             bbox: Rect::new(10.0, 145.0, 400.0, 12.0),
@@ -1020,6 +1023,7 @@ mod tests {
     #[test]
     fn test_flat_sections_parent_assignment() {
         let h1 = ClassifiedBlock {
+            lines: Vec::new(),
             block_type: BlockType::Title,
             text: "1 Introduction".to_string(),
             bbox: Rect::new(10.0, 100.0, 200.0, 18.0),
@@ -1031,6 +1035,7 @@ mod tests {
             header_validation: None,
         };
         let h2 = ClassifiedBlock {
+            lines: Vec::new(),
             block_type: BlockType::Title,
             text: "1.1 Background".to_string(),
             bbox: Rect::new(10.0, 200.0, 200.0, 16.0),
@@ -1053,6 +1058,7 @@ mod tests {
     #[test]
     fn test_continuation_merge() {
         let h1 = ClassifiedBlock {
+            lines: Vec::new(),
             block_type: BlockType::Title,
             text: "3 Results".to_string(),
             bbox: Rect::new(10.0, 100.0, 200.0, 18.0),
@@ -1064,6 +1070,7 @@ mod tests {
             header_validation: None,
         };
         let body = ClassifiedBlock {
+            lines: Vec::new(),
             block_type: BlockType::Body,
             text: "First result paragraph.".to_string(),
             bbox: Rect::new(10.0, 130.0, 400.0, 12.0),
@@ -1075,6 +1082,7 @@ mod tests {
             header_validation: None,
         };
         let cont = ClassifiedBlock {
+            lines: Vec::new(),
             block_type: BlockType::Title,
             text: "3 Results (continued)".to_string(),
             bbox: Rect::new(10.0, 100.0, 200.0, 18.0),
@@ -1086,6 +1094,7 @@ mod tests {
             header_validation: None,
         };
         let body2 = ClassifiedBlock {
+            lines: Vec::new(),
             block_type: BlockType::Body,
             text: "Second result paragraph.".to_string(),
             bbox: Rect::new(10.0, 130.0, 400.0, 12.0),

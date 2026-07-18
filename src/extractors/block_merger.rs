@@ -223,6 +223,7 @@ mod tests {
         block_type: BlockType,
     ) -> ClassifiedBlock {
         ClassifiedBlock {
+            lines: Vec::new(),
             block_type,
             text: text.to_string(),
             bbox: Rect::new(x, y, w, h),
