@@ -139,3 +139,44 @@
   max-height: 240px;
   overflow-y: auto;
 }
+
+.tau-loop-page-frame {
+  position: relative;
+  margin-top: 8px;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.tau-loop-page-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.tau-loop-bbox {
+  position: absolute;
+  border: 2px solid #f85149;
+  background: rgba(248, 81, 73, 0.12);
+  pointer-events: none;
+}
+
+.tau-loop-bbox-label {
+  position: absolute;
+  top: -16px;
+  left: 0;
+  font-size: 10px;
+  background: #f85149;
+  color: #0d1117;
+  padding: 0 4px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.tau-loop-diff-add {
+  color: #3fb950;
+}
+
+.tau-loop-diff-del {
+  color: #f85149;
+}

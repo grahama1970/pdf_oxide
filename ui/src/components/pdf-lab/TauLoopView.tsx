@@ -29,7 +29,13 @@ interface LoopRunPayload {
     run_summary?: JsonRecord | null
   }
   terminal_ledgers: Record<string, JsonRecord | null>
+  repair_receipts: Record<string, JsonRecord | null>
+  page_images: Record<string, string[]>
   page_dirs: string[]
+}
+
+function runFileUrl(runId: string, relative: string): string {
+  return `/api/pdf-lab/loop-runs/${encodeURIComponent(runId)}/file?path=${encodeURIComponent(relative)}`
 }
 
 function useLoopRuns(): { runs: string[]; error: string | null } {
@@ -88,6 +94,68 @@ function useLoopRun(runId: string | null): { payload: LoopRunPayload | null; err
     return () => window.clearInterval(timer)
   }, [runId, load])
   return { payload, error }
+}
+
+function normalizedBbox(value: unknown): [number, number, number, number] | null {
+  if (!Array.isArray(value) || value.length !== 4) return null
+  const [x0, y0, x1, y1] = value.map(Number)
+  if ([x0, y0, x1, y1].some(Number.isNaN)) return null
+  if (x1 <= x0 || y1 <= y0 || x1 > 1.5 || y1 > 1.5) return null
+  return [x0, y0, x1, y1]
+}
+
+function PagePanel({ runId, payload }: { runId: string; payload: LoopRunPayload }) {
+  const pagesWithImages = payload.page_dirs.filter((dir) => (payload.page_images[dir] ?? []).length > 0)
+  const [selectedPage, setSelectedPage] = useState<string | null>(null)
+  const page = selectedPage ?? pagesWithImages[0] ?? null
+  if (!page) return <div className="tau-loop-empty">no page renders in this run yet</div>
+
+  const images = payload.page_images[page] ?? []
+  const pageNumber = Number(page.replace('page_', ''))
+  const backlogEntries = ((payload.artifacts.backlog?.entries ?? []) as JsonRecord[]).filter(
+    (entry) => Number(entry.page) === pageNumber,
+  )
+  const overlays = backlogEntries
+    .map((entry) => ({ bbox: normalizedBbox(entry.target_bbox), label: String(entry.kind ?? '') }))
+    .filter((item): item is { bbox: [number, number, number, number]; label: string } => item.bbox !== null)
+
+  return (
+    <div>
+      <div className="tau-loop-meta">
+        {pagesWithImages.map((dir) => (
+          <button
+            key={dir}
+            className={dir === page ? 'tau-loop-run tau-loop-run-active' : 'tau-loop-run'}
+            onClick={() => setSelectedPage(dir)}
+          >
+            {dir}
+          </button>
+        ))}
+      </div>
+      <div className="tau-loop-page-frame">
+        <img src={runFileUrl(runId, images[0])} alt={page} className="tau-loop-page-image" />
+        {overlays.map((overlay, index) => (
+          <div
+            key={index}
+            className="tau-loop-bbox"
+            title={overlay.label}
+            style={{
+              left: `${overlay.bbox[0] * 100}%`,
+              top: `${overlay.bbox[1] * 100}%`,
+              width: `${(overlay.bbox[2] - overlay.bbox[0]) * 100}%`,
+              height: `${(overlay.bbox[3] - overlay.bbox[1]) * 100}%`,
+            }}
+          >
+            <span className="tau-loop-bbox-label">{overlay.label}</span>
+          </div>
+        ))}
+      </div>
+      {images.length > 1 && (
+        <div className="tau-loop-meta">{images.length} renders (annotated variants available in the run directory)</div>
+      )}
+      {overlays.length === 0 && <div className="tau-loop-meta">no backlog bboxes on this page</div>}
+    </div>
+  )
 }
 
 function DefectVectorTable({ comparison }: { comparison: JsonRecord }) {
@@ -161,7 +229,85 @@ function TicketsPanel({ projection }: { projection: JsonRecord }) {
   )
 }
 
-function RepairPanel({ ledgers, verdict }: { ledgers: Record<string, JsonRecord | null>; verdict: JsonRecord | null | undefined }) {
+function RepairReceiptCard({ runId, pageDir, receipt }: { runId: string; pageDir: string; receipt: JsonRecord }) {
+  const status = String(receipt.status ?? '')
+  const rolledBack = status.startsWith('rolled_back') || status.startsWith('rejected')
+  const patchPath = typeof receipt.patch_path === 'string' ? receipt.patch_path.split('/').pop() : null
+  const verify = (receipt.verify ?? null) as JsonRecord | null
+  return (
+    <div className="tau-loop-card">
+      <div className="tau-loop-card-title">
+        repair {String(receipt.attempt_id ?? '')}
+        <span className="tau-loop-fingerprint">{String(receipt.defect_key ?? '').slice(0, 19)}</span>
+      </div>
+      <div className={rolledBack ? 'tau-loop-fail' : 'tau-loop-pass'}>{status}</div>
+      <div className="tau-loop-meta">preimage: {String(receipt.preimage_sha ?? '').slice(0, 12)}</div>
+      {typeof receipt.commit_sha === 'string' && receipt.commit_sha && (
+        <div className="tau-loop-meta">
+          verified commit {receipt.commit_sha.slice(0, 12)} on {String(receipt.attempt_branch)} · {String(receipt.promotion ?? '')}
+        </div>
+      )}
+      {verify && (
+        <div className="tau-loop-meta">
+          verify exit={String(verify.exit_code)} · {((receipt.verify_command ?? []) as string[]).join(' ')}
+        </div>
+      )}
+      {receipt.rollback != null && (
+        <div className="tau-loop-meta">rollback: {((receipt.rollback as JsonRecord).actions as string[] | undefined)?.join(', ')}</div>
+      )}
+      {patchPath && (
+        <details>
+          <summary>patch diff</summary>
+          <PatchDiff url={runFileUrl(runId, `${pageDir}/${patchPath}`)} />
+        </details>
+      )}
+    </div>
+  )
+}
+
+function PatchDiff({ url }: { url: string }) {
+  const [text, setText] = useState<string | null>(null)
+  useEffect(() => {
+    let cancelled = false
+    fetch(url)
+      .then((resp) => resp.text())
+      .then((body) => {
+        if (!cancelled) setText(body)
+      })
+      .catch(() => {
+        if (!cancelled) setText('(patch unavailable)')
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [url])
+  if (text === null) return <div className="tau-loop-empty">loading…</div>
+  return (
+    <pre className="tau-loop-pre">
+      {text.split('\n').map((line, index) => (
+        <span
+          key={index}
+          className={line.startsWith('+') ? 'tau-loop-diff-add' : line.startsWith('-') ? 'tau-loop-diff-del' : undefined}
+        >
+          {line}
+          {'\n'}
+        </span>
+      ))}
+    </pre>
+  )
+}
+
+function RepairPanel({
+  runId,
+  ledgers,
+  receipts,
+  verdict,
+}: {
+  runId: string
+  ledgers: Record<string, JsonRecord | null>
+  receipts: Record<string, JsonRecord | null>
+  verdict: JsonRecord | null | undefined
+}) {
   const entries = Object.entries(ledgers)
   return (
     <div>
@@ -180,6 +326,7 @@ function RepairPanel({ ledgers, verdict }: { ledgers: Record<string, JsonRecord 
           ) : (
             <div className="tau-loop-empty">ledger unreadable</div>
           )}
+          {receipts[pageDir] && <RepairReceiptCard runId={runId} pageDir={pageDir} receipt={receipts[pageDir] as JsonRecord} />}
         </div>
       ))}
       {entries.length === 0 && <div className="tau-loop-empty">no repair attempts recorded</div>}
@@ -222,6 +369,11 @@ export function TauLoopView() {
   const stages = useMemo(
     () => [
       {
+        key: 'page',
+        title: '0 · Original Page + Findings',
+        body: payload && runId ? <PagePanel runId={runId} payload={payload} /> : null,
+      },
+      {
         key: 'comparison',
         title: '1 · Extraction vs Expected',
         body: artifacts?.comparison ? <DefectVectorTable comparison={artifacts.comparison} /> : null,
@@ -238,8 +390,16 @@ export function TauLoopView() {
       },
       {
         key: 'repair',
-        title: '4 · Repair Attempts',
-        body: payload ? <RepairPanel ledgers={payload.terminal_ledgers} verdict={artifacts?.regression_verdict} /> : null,
+        title: '4 · Repair Attempts (receipts + diffs)',
+        body:
+          payload && runId ? (
+            <RepairPanel
+              runId={runId}
+              ledgers={payload.terminal_ledgers}
+              receipts={payload.repair_receipts ?? {}}
+              verdict={artifacts?.regression_verdict}
+            />
+          ) : null,
       },
       {
         key: 'closure',
@@ -247,7 +407,7 @@ export function TauLoopView() {
         body: artifacts?.closure_report ? <ClosurePanel report={artifacts.closure_report} /> : null,
       },
     ],
-    [artifacts, payload],
+    [artifacts, payload, runId],
   )
 
   return (
