@@ -97,7 +97,7 @@ contain the word PENDING).
 - `agent_skills_baseline_commit`: fecff7aa6fb913624d999f99f94d2c684ddb302e
 - `tau_baseline_commit`: cf24d09b1c0717b6d6708a0942abf3d9a17664a5
 - `source_pdf_sha256`: fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6
-- `expected_contract_sha256`: sha256:a9a6166146049abd5654fd3750dfbeb7136dbff3061d76260742bbfcce841219
+- `expected_contract_sha256`: sha256:3813cb652ee89fb0ace070311f93f523898c7f9e5a559fb8bc8eb71ec32a0533
 - `preset_ledger_sha256`: sha256:c4436ddf636a6f94d4bda2885be1c9bbfbb8a79d7e094d6d5611461330c00391
 - `frozen_regression_set`: NIST pages 20 468 401 415 483 34 31 32 33 23 (stratified; packet regenerated at loop bring-up)
 - `max_repair_attempts`: 2

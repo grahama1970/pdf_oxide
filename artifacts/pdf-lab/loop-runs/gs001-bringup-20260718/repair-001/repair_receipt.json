@@ -1,0 +1,31 @@
+{
+  "schema_version": "pdf_lab.repair_transaction_receipt.v1",
+  "attempt_id": "bf7ebcb9f71c",
+  "defect_key": "gs001:p27:footer:type_mismatch",
+  "repo_root": "/home/graham/workspace/experiments/pdf_oxide-gs001",
+  "preimage_sha": "f02657c1ef9eaccae89d52be29cf76d7725ccd91",
+  "attempt_branch": "pdf-lab-repair/bf7ebcb9f71c",
+  "patch_sha256": "sha256:d96d21d22743f81ab4d31b86810906bb2cc6669338b98d99e70ef7df50736086",
+  "patch_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/repair-001/attempt-bf7ebcb9f71c.patch",
+  "allowed_paths": [
+    "src/extractors/block_classifier.rs"
+  ],
+  "patched_paths": [
+    "src/extractors/block_classifier.rs"
+  ],
+  "verify_command": [
+    "cargo",
+    "test",
+    "block_classifier"
+  ],
+  "status": "verified_awaiting_promotion",
+  "rollback": null,
+  "verify": {
+    "exit_code": 0,
+    "stdout_tail": "failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 60 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 14 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 54 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+    "stderr_tail": "(target/debug/deps/test_table_extraction-2b03836ec33b747e)\n     Running tests/test_tables.rs (target/debug/deps/test_tables-b97538578255597e)\n     Running tests/test_text_extractor.rs (target/debug/deps/test_text_extractor-4822d1245f811f7b)\n     Running tests/test_text_justification_alignment.rs (target/debug/deps/test_text_justification_alignment-d5c85e0b1ddd2255)\n     Running tests/test_textchar_transformation.rs (target/debug/deps/test_textchar_transformation-2a99501971555457)\n     Running tests/test_type0_agl_fallback.rs (target/debug/deps/test_type0_agl_fallback-5a74688d24cc99b4)\n     Running tests/test_unicode_font_embedding.rs (target/debug/deps/test_unicode_font_embedding-d1838d16d5853318)\n     Running tests/test_whitespace_normalization.rs (target/debug/deps/test_whitespace_normalization-e3ea31b385563001)\n     Running tests/test_word_boundary_character_tracking.rs (target/debug/deps/test_word_boundary_character_tracking-46c60e138219dda1)\n     Running tests/test_word_boundary_detection.rs (target/debug/deps/test_word_boundary_detection-1a633d17f9c819d1)\n     Running tests/test_word_boundary_integration.rs (target/debug/deps/test_word_boundary_integration-d36a6bd62fa89cb7)\n     Running tests/test_word_boundary_mode_branching.rs (target/debug/deps/test_word_boundary_mode_branching-677512beba681a49)\n     Running tests/test_word_boundary_mode_config.rs (target/debug/deps/test_word_boundary_mode_config-4991d8323a01ea49)\n     Running tests/test_word_boundary_performance.rs (target/debug/deps/test_word_boundary_performance-11781b1eb76e752a)\n     Running tests/test_writer_coverage.rs (target/debug/deps/test_writer_coverage-04dfdab956023599)\n     Running tests/test_xobject_path_extraction.rs (target/debug/deps/test_xobject_path_extraction-7757a9fe470e9312)\n     Running tests/test_zero_byte_font_handling.rs (target/debug/deps/test_zero_byte_font_handling-9783889b3535db73)\n     Running tests/wasm_bindgen_tests.rs (target/debug/deps/wasm_bindgen_tests-9c24cce1f1a79782)\n"
+  },
+  "commit_sha": "2a6ebb68ee9a8d81e9c6d00e6aed2ed206e6aecc",
+  "promotion": "NOT_PERFORMED (tau apply gate decides)",
+  "semantic_truth": "NOT_CLAIMED"
+}

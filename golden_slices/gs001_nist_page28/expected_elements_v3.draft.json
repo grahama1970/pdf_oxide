@@ -3,7 +3,7 @@
   "slice_id": "GS001",
   "title": "NIST SP 800-53r5 page 28 (printed PAGE 1, CHAPTER ONE / INTRODUCTION)",
   "contract_status": "locked",
-  "contract_version": 2,
+  "contract_version": 3,
   "source_pdf": {
     "name": "NIST_SP_800-53r5.pdf",
     "sha256": "sha256:fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
@@ -18,7 +18,8 @@
     "agent_read": "independent enumeration from rendered page28_clean.png, 2026-07-18; agreed with human v2 on 10/10 shared rows",
     "delta": "row 3 CHAPTER ONE added per gs001-decision-001; agent image-read and July human decision concur, May labeling omitted it",
     "note": "Provisional contract for tau-loop bring-up. Rows may be imperfect by design -- the loop's job is convergence, and a wrong row still exercises the discrepancy path.",
-    "matcher_precedence": "text_hint \u2192 bbox_hint (IoU>=0.5) \u2192 allowed_types \u2192 type-synonym fallback"
+    "matcher_precedence": "text_hint \u2192 bbox_hint (IoU>=0.5) \u2192 allowed_types \u2192 type-synonym fallback",
+    "text_fields": "populated 2026-07-18 from the PDF text layer (pdftotext -bbox word stream), independent of pdf_oxide extractor output; supersedes the v2 short text_hint which caused false text_similarity_below_threshold findings"
   },
   "human_decisions_applied": [
     "gs001-decision-001: CHAPTER ONE is an expected element (chapter_label)",
@@ -44,7 +45,7 @@
       "bbox_status": "NOT_REQUIRED_TEXT_HINT_PRECEDENCE",
       "provenance": "recovered_human_v2_2026-05-13",
       "type": "header_footer_noise",
-      "text": "NIST SP 800-53, REV. 5",
+      "text": "NIST SP 800-53, R EV . 5 S ECURITY AND P RIVACY C ONTROLS FOR I NFORMATION S YSTEMS AND O RGANIZATIONS _________________________________________________________________________________________________",
       "bbox_source": "pdf_text_layer_geometric_top_band_y<60"
     },
     {
@@ -66,7 +67,7 @@
       "bbox_status": "NOT_REQUIRED_TEXT_HINT_PRECEDENCE",
       "provenance": "recovered_human_v2_2026-05-13",
       "type": "header_footer_noise",
-      "text": "This publication is available free of charge from",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
       "bbox_source": "pdf_text_layer_geometric_left_band_x<45"
     },
     {
@@ -133,7 +134,7 @@
       "bbox_status": "NOT_REQUIRED_TEXT_HINT_PRECEDENCE",
       "provenance": "recovered_human_v2_2026-05-13",
       "type": "section_subtitle",
-      "text": "THE NEED TO PROTECT INFORMATION",
+      "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
       "bbox_source": "pdf_text_layer_pdftotext_bbox_pts_612x792"
     },
     {
@@ -155,7 +156,7 @@
       "bbox_status": "NOT_REQUIRED_TEXT_HINT_PRECEDENCE",
       "provenance": "recovered_human_v2_2026-05-13",
       "type": "paragraph_block",
-      "text": "Modern information systems",
+      "text": "Modern information systems 1 can include a variety of computing platforms (e.g., industrial control systems, general purpose computing systems, cyber-physical systems, super computers, weapons systems, communications systems, environmental control systems, medical devices, embedded devices, sensors, and mobile devices such as smart phones and tablets). These platforms all share a common foundation\u2014computers with complex hardware, software and firmware providing a capability that supports the essential mission and business functions of organizations.",
       "bbox_source": "pdf_text_layer_pdftotext_bbox_pts_612x792"
     },
     {
@@ -177,7 +178,7 @@
       "bbox_status": "NOT_REQUIRED_TEXT_HINT_PRECEDENCE",
       "provenance": "recovered_human_v2_2026-05-13",
       "type": "paragraph_block",
-      "text": "Security controls are the safeguards",
+      "text": "Security controls are the safeguards or countermeasures employed within a system or an organization to protect the confidentiality, integrity, and availability of the system and its information and to manage information security 3 risk. Privacy controls are the administrative, technical, and physical safeguards employed within a system or an organization to manage privacy risks and to ensure compliance with applicable privacy requirements. 4 Security and privacy controls are selected and implemented to satisfy security and privacy requirements levied on a system or organization. Security and privacy requirements are derived from applicable laws, executive orders, directives, regulations, policies, standards, and mission needs to ensure the confidentiality, integrity, and availability of information processed, stored, or transmitted and to manage risks to individual privacy.",
       "bbox_source": "pdf_text_layer_pdftotext_bbox_pts_612x792"
     },
     {
@@ -199,7 +200,7 @@
       "bbox_status": "NOT_REQUIRED_TEXT_HINT_PRECEDENCE",
       "provenance": "recovered_human_v2_2026-05-13",
       "type": "paragraph_block",
-      "text": "The selection, design, and implementation",
+      "text": "The selection, design, and implementation of security and privacy controls 5 are important tasks that have significant implications for the operations 6 and assets of organizations as well as the welfare of individuals and the Nation. Organizations should answer several key questions when addressing information",
       "bbox_source": "pdf_text_layer_pdftotext_bbox_pts_612x792"
     },
     {
@@ -221,7 +222,7 @@
       "bbox_status": "NOT_REQUIRED_TEXT_HINT_PRECEDENCE",
       "provenance": "recovered_human_v2_2026-05-13",
       "type": "list",
-      "text": "What security and privacy controls are needed",
+      "text": "What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals? \u2022 Have the selected controls been implemented or is there a plan in place to do so? \u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective?",
       "bbox_source": "pdf_text_layer_pdftotext_bbox_pts_612x792"
     },
     {
@@ -244,7 +245,7 @@
       "bbox_status": "NOT_REQUIRED_TEXT_HINT_PRECEDENCE",
       "provenance": "recovered_human_v2_2026-05-13",
       "type": "footnote",
-      "text": "An information system is a discrete set",
+      "text": "An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [SP 800-53A].",
       "bbox_source": "pdf_text_layer_pdftotext_bbox_pts_612x792"
     },
     {
@@ -267,7 +268,7 @@
       "bbox_status": "NOT_REQUIRED_TEXT_HINT_PRECEDENCE",
       "provenance": "recovered_human_v2_2026-05-13",
       "type": "header_footer_noise",
-      "text": "CHAPTER ONE  PAGE 1",
+      "text": "CHAPTER ONE PAGE 1",
       "bbox_source": "pdf_text_layer_pdftotext_bbox_pts_612x792"
     }
   ],

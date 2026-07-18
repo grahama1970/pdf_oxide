@@ -1,0 +1,38 @@
+{
+  "schema_version": "pdf_lab.repair_transaction_receipt.v1",
+  "attempt_id": "747442ec1076",
+  "defect_key": "gs001:p27:footer:type_mismatch",
+  "repo_root": "/home/graham/workspace/experiments/pdf_oxide-gs001",
+  "preimage_sha": "f02657c1ef9eaccae89d52be29cf76d7725ccd91",
+  "attempt_branch": "pdf-lab-repair/747442ec1076",
+  "patch_sha256": "sha256:dc0ddae97d017397d9c1ba8fe8b41a3c2bd5090ba03bf3cb099ac2de6568bcfb",
+  "patch_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/repair-001/attempt-747442ec1076.patch",
+  "allowed_paths": [
+    "src/extractors/block_classifier.rs"
+  ],
+  "patched_paths": [
+    "src/extractors/block_classifier.rs"
+  ],
+  "verify_command": [
+    "cargo",
+    "test",
+    "block_classifier"
+  ],
+  "status": "rolled_back_verification_failed",
+  "rollback": {
+    "performed": true,
+    "actions": [
+      "worktree_removed",
+      "attempt_branch_deleted"
+    ],
+    "note": "preimage untouched; this is an actual rollback, not a status label"
+  },
+  "verify": {
+    "exit_code": 101,
+    "stdout_tail": "",
+    "stderr_tail": "\n543 |     page_width: f32,\n    |     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_page_width`\n\nwarning: variable does not need to be mutable\n   --> src/extractors/section_hierarchy.rs:180:13\n    |\n180 |         let mut sec = FlatSection {\n    |             ----^^^\n    |             |\n    |             help: remove this `mut`\n\nwarning: unused variable: `sections`\n   --> src/extractors/section_hierarchy.rs:161:5\n    |\n161 |     sections: &mut Vec<FlatSection>,\n    |     ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_sections`\n\nwarning: variable does not need to be mutable\n   --> src/extractors/section_hierarchy.rs:244:21\n    |\n244 |                 let mut prev = merged.pop().unwrap();\n    |                     ----^^^^\n    |                     |\n    |                     help: remove this `mut`\n\nwarning: unused variable: `page_blocks`\n   --> src/extractors/section_hierarchy.rs:431:5\n    |\n431 |     page_blocks: &[(usize, Vec<ClassifiedBlock>)],\n    |     ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_page_blocks`\n\nwarning: unused variable: `page_width`\n   --> src/tables/lattice.rs:926:5\n    |\n926 |     page_width: f64,\n    |     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_page_width`\n\nwarning: unused variable: `page_height`\n   --> src/tables/lattice.rs:927:5\n    |\n927 |     page_height: f64,\n    |     ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_page_height`\n\nSome errors have detailed explanations: E0282, E0599.\nFor more information about an error, try `rustc --explain E0282`.\nwarning: `pdf_oxide` (lib) generated 18 warnings\nerror: could not compile `pdf_oxide` (lib) due to 2 previous errors; 18 warnings emitted\nwarning: build failed, waiting for other jobs to finish...\nwarning: `pdf_oxide` (lib test) generated 13 warnings (9 duplicates)\nerror: could not compile `pdf_oxide` (lib test) due to 2 previous errors; 13 warnings emitted\n"
+  },
+  "commit_sha": null,
+  "promotion": "NOT_PERFORMED (tau apply gate decides)",
+  "semantic_truth": "NOT_CLAIMED"
+}

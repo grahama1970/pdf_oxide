@@ -1,0 +1,36 @@
+{
+  "schema_version": "pdf_lab.repair_transaction_receipt.v1",
+  "attempt_id": "afcd9bf24db0",
+  "defect_key": "gs001:p27:footer:type_mismatch",
+  "repo_root": "/home/graham/workspace/experiments/pdf_oxide-gs001",
+  "preimage_sha": "f02657c1ef9eaccae89d52be29cf76d7725ccd91",
+  "attempt_branch": "pdf-lab-repair/afcd9bf24db0",
+  "patch_sha256": "sha256:71784fcc2cc2fa8b1406d96847d8c9fa85382ceebf9ec57eb311e24667884635",
+  "patch_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/repair-001/attempt-afcd9bf24db0.patch",
+  "allowed_paths": [
+    "src/extractors/block_classifier.rs"
+  ],
+  "patched_paths": [
+    "src/extractors/block_classifier.rs",
+    "src/extractors/block_classifier.rs"
+  ],
+  "verify_command": [
+    "cargo",
+    "test",
+    "block_classifier"
+  ],
+  "status": "rolled_back_patch_apply_failed",
+  "rollback": {
+    "performed": true,
+    "actions": [
+      "worktree_removed",
+      "attempt_branch_deleted"
+    ],
+    "note": "preimage untouched; this is an actual rollback, not a status label"
+  },
+  "verify": null,
+  "commit_sha": null,
+  "promotion": "NOT_PERFORMED (tau apply gate decides)",
+  "semantic_truth": "NOT_CLAIMED",
+  "apply_error": "error: corrupt patch at line 17"
+}
