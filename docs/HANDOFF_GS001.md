@@ -3,6 +3,58 @@
 Updated: 2026-07-18. Branch: `claude/pdf-oxide-project-state-nl6oef`
 (pdf_oxide, agent-skills, tau — all three carry this branch).
 
+## Pull this work (do this first)
+
+All three repos, same branch name. From your existing checkouts:
+
+```bash
+# 1. pdf_oxide — the primary repo (engine, goal, contract, runner, fixer, UI)
+cd ~/workspace/experiments/pdf_oxide
+git fetch origin claude/pdf-oxide-project-state-nl6oef
+git checkout claude/pdf-oxide-project-state-nl6oef
+# NOTE: this branch already CONTAINS the GS001 R3-R11 branch
+# (pdf-oxide/gs001-r3-runner-tests) via fast-forward — do not re-merge it.
+
+# 2. agent-skills — pdf-lab skill hardening (comparator, backlog, auth, referee)
+cd ~/workspace/experiments/agent-skills
+git fetch origin claude/pdf-oxide-project-state-nl6oef
+git checkout claude/pdf-oxide-project-state-nl6oef
+
+# 3. tau — the gs001-closure-audit packaged workflow
+cd ~/workspace/experiments/tau
+git fetch origin claude/pdf-oxide-project-state-nl6oef
+git checkout claude/pdf-oxide-project-state-nl6oef
+uv run pytest tests/test_gs001_closure_audit_workflow.py  # first thing: needs Python 3.14, unexecuted in the cloud session
+```
+
+What changed where (key files):
+
+- **pdf_oxide** (base `cd4a6e4` + GS001 merge + 5 commits): `GOAL.md`,
+  `golden_slices/gs001_nist_page28/{expected_elements_v3.draft.json,contract_decisions.json}`,
+  `scripts/gs001_lock.py`,
+  `scripts/pdf_lab/{terminal_ledger.py,run_page_second_pass_dag.py,repair_transaction.py}`,
+  `.tau/gs001-execution-dag.json`, `ui/` (whole app, moved from
+  agent-skills), `docs/HANDOFF_GS001.md`,
+  `tests/{test_gs001_lock,test_terminal_ledger,test_repair_transaction}.py`,
+  compile fixes in `src/extractors/{block_merger,figure_detector,section_hierarchy}.rs`.
+- **agent-skills** (8 commits under `skills/pdf-lab/`):
+  `lib/agentic_parts/part1-6.py` (fail-closed auth, comparator v2,
+  backlog wiring, restored `TABLE_CLASS_*` constants),
+  `lib/{discrepancy,regression,coverage_loop}.py`, `cli_parts/part2.py`
+  (`regression-check`), `tests/` (5 new files), `ui/` reduced to a thin
+  launcher (`README.md`, `run.sh`) — the app itself now lives in pdf_oxide.
+- **tau** (1 commit): `src/tau_coding/workflows/{definitions,templates}/gs001-closure-audit.json`,
+  `workflows/nodes/gs001_closure_audit.py`, materializer/runner/CLI
+  registration in `workflows/{materialize,runner}.py` + `cli.py`,
+  `tests/test_gs001_closure_audit_workflow.py`.
+
+Environment setup after pulling: `cd pdf_oxide/ui && npm install` for the
+viewer; a Python venv with `pdf_oxide pillow python-dotenv httpx pytest
+typer loguru pyyaml reportlab` covers the pdf-lab and pdf_oxide Python
+test suites (`pytest skills/pdf-lab/tests` should report 38 passed and,
+once the NIST extraction artifact path is set via
+`PDF_LAB_NIST_EXTRACTION`, 47 passed / 0 skipped).
+
 ## What this repo now contains (self-contained)
 
 | Piece | Where | Status |
