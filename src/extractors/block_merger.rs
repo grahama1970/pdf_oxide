@@ -169,6 +169,23 @@ fn suppress_overlaps(blocks: &[ClassifiedBlock]) -> Vec<ClassifiedBlock> {
 }
 
 /// Merge consecutive Body blocks separated by <1.5x font_size into paragraphs.
+/// True for a short all-caps line that could be a standfirst under a title.
+///
+/// Deliberately does NOT decide on its own: the caller must also confirm the
+/// preceding block is a Title. Typography alone cannot separate a standfirst
+/// from a body-size all-caps heading.
+fn is_standfirst_candidate(text: &str) -> bool {
+    let trimmed = text.trim();
+    if trimmed.len() > 200 {
+        return false;
+    }
+    let letters: Vec<char> = trimmed.chars().filter(|c| c.is_alphabetic()).collect();
+    if letters.len() < 8 {
+        return false;
+    }
+    letters.iter().all(|c| c.is_uppercase())
+}
+
 /// Block types that participate in vertical run merging.
 ///
 /// Body and Footnote flow together: a footnote's continuation lines are
@@ -222,11 +239,36 @@ fn merge_paragraphs(blocks: &[ClassifiedBlock]) -> Vec<MergedBlock> {
             }
         }
 
+        // Context-aware subtitle. A standfirst is defined by POSITION -- it
+        // directly follows a title -- not by typography. NIST sets many real
+        // headings ("ACCOUNTS", "CREDENTIALS") at body size in all caps, so a
+        // per-block typographic rule cannot tell them apart and eats 56 of them
+        // document-wide. Here the preceding block is known, so the test is exact.
+        let mut block_type = block.block_type;
+        if block_type == BlockType::Body && is_standfirst_candidate(&block.text) {
+            if let Some(prev) = result.last() {
+                match prev.block_type {
+                    // Standfirst: directly under a title.
+                    BlockType::Title => block_type = BlockType::Subtitle,
+                    // Chapter title: the line a chapter/appendix label introduces.
+                    // "INTRODUCTION" after "CHAPTER ONE" is caught by the bold
+                    // heading rule, but "THE FUNDAMENTALS" and "GLOSSARY" are set
+                    // unbolded and would fall through to body. Position decides.
+                    BlockType::ChapterLabel if block.font_size > prev.font_size * 0.8 => {
+                        block_type = BlockType::Title
+                    }
+                    _ => {}
+                }
+            }
+        }
+
         // New block / new paragraph
-        if block.block_type == BlockType::Body {
+        if block_type == BlockType::Body {
             paragraph_id += 1;
         }
-        result.push(MergedBlock::from_classified(block, paragraph_id));
+        let mut merged = MergedBlock::from_classified(block, paragraph_id);
+        merged.block_type = block_type;
+        result.push(merged);
     }
 
     result
