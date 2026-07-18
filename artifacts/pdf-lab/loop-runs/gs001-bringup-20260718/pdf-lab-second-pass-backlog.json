@@ -1,0 +1,206 @@
+{
+  "schema_version": "pdf_lab.second_pass_backlog.v1",
+  "run_id": "gs001-bringup-20260718",
+  "entries": [
+    {
+      "defect_key": "gs001:p27:running_header:bbox_iou_below_threshold",
+      "expected_id": "gs001:row:1",
+      "family": "running_header",
+      "expected_type": "header_footer_noise",
+      "reason": "bbox_iou_below_threshold",
+      "iou": 0.3535,
+      "text_similarity": 0.3793,
+      "type_compatible": true,
+      "kind": "contract_text_hint_artifact",
+      "page": 27,
+      "proposed_owner_layer": "pdf_lab_contract",
+      "observation_count": 1,
+      "target_bbox": [
+        90.0,
+        35.43,
+        521.26,
+        55.87
+      ]
+    },
+    {
+      "defect_key": "gs001:p27:side_watermark_or_page_chrome_noise:type_mismatch",
+      "expected_id": "gs001:row:2",
+      "family": "side_watermark_or_page_chrome_noise",
+      "expected_type": "header_footer_noise",
+      "reason": "type_mismatch",
+      "iou": 0.0,
+      "text_similarity": 0.9899,
+      "type_compatible": false,
+      "kind": "misclassification",
+      "page": 27,
+      "proposed_owner_layer": "pdf_oxide_block_classifier",
+      "observation_count": 1,
+      "target_bbox": [
+        18.14,
+        227.94,
+        30.42,
+        586.58
+      ]
+    },
+    {
+      "defect_key": "gs001:p27:chapter_label:type_mismatch",
+      "expected_id": "gs001:row:3",
+      "family": "chapter_label",
+      "expected_type": "chapter_label",
+      "reason": "type_mismatch",
+      "iou": 0.635,
+      "text_similarity": 1.0,
+      "type_compatible": false,
+      "kind": "misclassification",
+      "page": 27,
+      "proposed_owner_layer": "pdf_oxide_block_classifier",
+      "observation_count": 1,
+      "target_bbox": [
+        90.0,
+        73.71,
+        166.67,
+        91.78
+      ]
+    },
+    {
+      "defect_key": "gs001:p27:section_subtitle:type_mismatch",
+      "expected_id": "gs001:row:5",
+      "family": "section_subtitle",
+      "expected_type": "section_subtitle",
+      "reason": "type_mismatch",
+      "iou": 0.7437,
+      "text_similarity": 0.6019,
+      "type_compatible": false,
+      "kind": "misclassification",
+      "page": 27,
+      "proposed_owner_layer": "pdf_oxide_block_classifier",
+      "observation_count": 1,
+      "target_bbox": [
+        90.0,
+        125.32,
+        440.1,
+        138.73
+      ]
+    },
+    {
+      "defect_key": "gs001:p27:paragraph_block:text_similarity_below_threshold",
+      "expected_id": "gs001:row:6",
+      "family": "paragraph_block",
+      "expected_type": "paragraph_block",
+      "reason": "text_similarity_below_threshold",
+      "iou": 0.9562,
+      "text_similarity": 0.0895,
+      "type_compatible": true,
+      "kind": "contract_text_hint_artifact",
+      "page": 27,
+      "proposed_owner_layer": "pdf_lab_contract",
+      "observation_count": 1,
+      "target_bbox": [
+        89.95,
+        149.47,
+        518.32,
+        244.75
+      ]
+    },
+    {
+      "defect_key": "gs001:p27:paragraph_block:text_similarity_below_threshold",
+      "expected_id": "gs001:row:7",
+      "family": "paragraph_block",
+      "expected_type": "paragraph_block",
+      "reason": "text_similarity_below_threshold",
+      "iou": 0.9671,
+      "text_similarity": 0.0783,
+      "type_compatible": true,
+      "kind": "contract_text_hint_artifact",
+      "page": 27,
+      "proposed_owner_layer": "pdf_lab_contract",
+      "observation_count": 1,
+      "target_bbox": [
+        89.99,
+        255.5,
+        517.19,
+        391.03
+      ]
+    },
+    {
+      "defect_key": "gs001:p27:paragraph_block:text_similarity_below_threshold",
+      "expected_id": "gs001:row:8",
+      "family": "paragraph_block",
+      "expected_type": "paragraph_block",
+      "reason": "text_similarity_below_threshold",
+      "iou": 0.9283,
+      "text_similarity": 0.2147,
+      "type_compatible": true,
+      "kind": "contract_text_hint_artifact",
+      "page": 27,
+      "proposed_owner_layer": "pdf_lab_contract",
+      "observation_count": 1,
+      "target_bbox": [
+        90.0,
+        401.77,
+        515.85,
+        456.73
+      ]
+    },
+    {
+      "defect_key": "gs001:p27:bullet_list:text_similarity_below_threshold",
+      "expected_id": "gs001:row:9",
+      "family": "bullet_list",
+      "expected_type": "list",
+      "reason": "text_similarity_below_threshold",
+      "iou": 0.9491,
+      "text_similarity": 0.2045,
+      "type_compatible": true,
+      "kind": "contract_text_hint_artifact",
+      "page": 27,
+      "proposed_owner_layer": "pdf_lab_contract",
+      "observation_count": 1,
+      "target_bbox": [
+        90.02,
+        462.08,
+        513.72,
+        543.61
+      ]
+    },
+    {
+      "defect_key": "gs001:p27:footnote_block:bbox_iou_below_threshold",
+      "expected_id": "gs001:row:10",
+      "family": "footnote_block",
+      "expected_type": "footnote",
+      "reason": "bbox_iou_below_threshold",
+      "iou": 0.0569,
+      "text_similarity": 0.5306,
+      "type_compatible": true,
+      "kind": "fragmentation_or_span",
+      "page": 27,
+      "proposed_owner_layer": "pdf_oxide_block_merger",
+      "observation_count": 1,
+      "target_bbox": [
+        89.99,
+        575.53,
+        514.3,
+        720.41
+      ]
+    },
+    {
+      "defect_key": "gs001:p27:footer:type_mismatch",
+      "expected_id": "gs001:row:11",
+      "family": "footer",
+      "expected_type": "header_footer_noise",
+      "reason": "type_mismatch",
+      "iou": 0.7101,
+      "text_similarity": 1.0,
+      "type_compatible": false,
+      "kind": "misclassification",
+      "page": 27,
+      "proposed_owner_layer": "pdf_oxide_block_classifier",
+      "observation_count": 1,
+      "target_bbox": [
+        90.0,
+        745.65,
+        521.97,
+        756.33
+      ]
+    }
+  ]
+}

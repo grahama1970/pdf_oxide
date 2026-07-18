@@ -1,0 +1,558 @@
+{
+  "schema_version": "pdf-lab.comparison.v1",
+  "created_at": "2026-07-18T14:05:43Z",
+  "target": 0.95,
+  "passed": false,
+  "accuracy": 0.09090909090909091,
+  "matched_expected_elements": 1,
+  "total_expected_elements": 11,
+  "unmatched_expected_elements": 10,
+  "unmatched_actual_elements": 23,
+  "policy": {
+    "accuracy_formula": "matched_expected_elements / total_expected_elements",
+    "text_similarity_threshold": 0.8,
+    "bbox_iou_thresholds": {
+      "default": 0.5,
+      "running_header": 0.35,
+      "running_footer": 0.35,
+      "caption": 0.45,
+      "table_candidate": 0.4
+    },
+    "type_aliases": {
+      "paragraph": [
+        "paragraph",
+        "table_candidate",
+        "requirement"
+      ],
+      "table_candidate": [
+        "table_candidate",
+        "table",
+        "paragraph"
+      ],
+      "requirement": [
+        "requirement",
+        "paragraph",
+        "table_candidate"
+      ]
+    }
+  },
+  "subscores": {
+    "mean_iou": 0.7031,
+    "mean_text_similarity": 1.0,
+    "type_accuracy_on_matches": 1.0
+  },
+  "matches": [
+    {
+      "expected_id": "gs001:row:4",
+      "actual_id": "actual:p27:58afc2c7cd7ea368026d31f126629584",
+      "page": 27,
+      "score": 0.8664,
+      "iou": 0.7031,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    }
+  ],
+  "misses": [
+    {
+      "expected_id": "gs001:row:1",
+      "page": 27,
+      "type": "header_footer_noise",
+      "bbox": [
+        90.0,
+        35.43,
+        521.26,
+        55.87
+      ],
+      "text": "NIST SP 800-53, REV. 5",
+      "best_candidate": {
+        "score": 0.4298,
+        "iou": 0.3535,
+        "text_similarity": 0.3793,
+        "type_compatible": true,
+        "matched": false
+      },
+      "reason": "bbox_iou_below_threshold"
+    },
+    {
+      "expected_id": "gs001:row:2",
+      "page": 27,
+      "type": "header_footer_noise",
+      "bbox": [
+        18.14,
+        227.94,
+        30.42,
+        586.58
+      ],
+      "text": "This publication is available free of charge from",
+      "best_candidate": {
+        "score": 0.4455,
+        "iou": 0.0,
+        "text_similarity": 0.9899,
+        "type_compatible": false,
+        "matched": false
+      },
+      "reason": "type_mismatch"
+    },
+    {
+      "expected_id": "gs001:row:3",
+      "page": 27,
+      "type": "chapter_label",
+      "bbox": [
+        90.0,
+        73.71,
+        166.67,
+        91.78
+      ],
+      "text": "CHAPTER ONE",
+      "best_candidate": {
+        "score": 0.7358,
+        "iou": 0.635,
+        "text_similarity": 1.0,
+        "type_compatible": false,
+        "matched": false
+      },
+      "reason": "type_mismatch"
+    },
+    {
+      "expected_id": "gs001:row:5",
+      "page": 27,
+      "type": "section_subtitle",
+      "bbox": [
+        90.0,
+        125.32,
+        440.1,
+        138.73
+      ],
+      "text": "THE NEED TO PROTECT INFORMATION",
+      "best_candidate": {
+        "score": 0.6055,
+        "iou": 0.7437,
+        "text_similarity": 0.6019,
+        "type_compatible": false,
+        "matched": false
+      },
+      "reason": "type_mismatch"
+    },
+    {
+      "expected_id": "gs001:row:6",
+      "page": 27,
+      "type": "paragraph_block",
+      "bbox": [
+        89.95,
+        149.47,
+        518.32,
+        244.75
+      ],
+      "text": "Modern information systems",
+      "best_candidate": {
+        "score": 0.5706,
+        "iou": 0.9562,
+        "text_similarity": 0.0895,
+        "type_compatible": true,
+        "matched": false
+      },
+      "reason": "text_similarity_below_threshold"
+    },
+    {
+      "expected_id": "gs001:row:7",
+      "page": 27,
+      "type": "paragraph_block",
+      "bbox": [
+        89.99,
+        255.5,
+        517.19,
+        391.03
+      ],
+      "text": "Security controls are the safeguards",
+      "best_candidate": {
+        "score": 0.5704,
+        "iou": 0.9671,
+        "text_similarity": 0.0783,
+        "type_compatible": true,
+        "matched": false
+      },
+      "reason": "text_similarity_below_threshold"
+    },
+    {
+      "expected_id": "gs001:row:8",
+      "page": 27,
+      "type": "paragraph_block",
+      "bbox": [
+        90.0,
+        401.77,
+        515.85,
+        456.73
+      ],
+      "text": "The selection, design, and implementation",
+      "best_candidate": {
+        "score": 0.6143,
+        "iou": 0.9283,
+        "text_similarity": 0.2147,
+        "type_compatible": true,
+        "matched": false
+      },
+      "reason": "text_similarity_below_threshold"
+    },
+    {
+      "expected_id": "gs001:row:9",
+      "page": 27,
+      "type": "list",
+      "bbox": [
+        90.02,
+        462.08,
+        513.72,
+        543.61
+      ],
+      "text": "What security and privacy controls are needed",
+      "best_candidate": {
+        "score": 0.6192,
+        "iou": 0.9491,
+        "text_similarity": 0.2045,
+        "type_compatible": true,
+        "matched": false
+      },
+      "reason": "text_similarity_below_threshold"
+    },
+    {
+      "expected_id": "gs001:row:10",
+      "page": 27,
+      "type": "footnote",
+      "bbox": [
+        89.99,
+        575.53,
+        514.3,
+        720.41
+      ],
+      "text": "An information system is a discrete set",
+      "best_candidate": {
+        "score": 0.3644,
+        "iou": 0.0569,
+        "text_similarity": 0.5306,
+        "type_compatible": true,
+        "matched": false
+      },
+      "reason": "bbox_iou_below_threshold"
+    },
+    {
+      "expected_id": "gs001:row:11",
+      "page": 27,
+      "type": "header_footer_noise",
+      "bbox": [
+        90.0,
+        745.65,
+        521.97,
+        756.33
+      ],
+      "text": "CHAPTER ONE  PAGE 1",
+      "best_candidate": {
+        "score": 0.7696,
+        "iou": 0.7101,
+        "text_similarity": 1.0,
+        "type_compatible": false,
+        "matched": false
+      },
+      "reason": "type_mismatch"
+    }
+  ],
+  "unmatched_actual_sample": [
+    {
+      "id": "actual:p27:cf71642d944762cc5915042b23b79bb1",
+      "page": 27,
+      "type": "header_footer_noise",
+      "raw_type": "Header",
+      "bbox": [
+        90.0,
+        35.64,
+        636.48,
+        43.62
+      ],
+      "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "id": "actual:p27:bbd8c581f38aa38452e93bc8e0a72c8a",
+      "page": 27,
+      "type": "header_footer_noise",
+      "raw_type": "Header",
+      "bbox": [
+        90.0,
+        45.3,
+        523.8,
+        53.28
+      ],
+      "text": "_________________________________________________________________________________________________"
+    },
+    {
+      "id": "actual:p27:40b9cd90a3ddb8bd27a2b2d307915649",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        90.0,
+        744.84,
+        524.03,
+        753.84
+      ],
+      "text": "CHAPTER ONE PAGE 1"
+    },
+    {
+      "id": "actual:p27:aeea1b33243dc53004f4692e143344a2",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        21.06,
+        218.94,
+        214.09,
+        227.94
+      ],
+      "text": "This publication is available free of charge from:"
+    },
+    {
+      "id": "actual:p27:29c1c4dc0532f4be228195962617c43d",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        21.06,
+        412.02,
+        165.56,
+        421.02
+      ],
+      "text": "https://doi.org/10.6028/NIST.SP.800"
+    },
+    {
+      "id": "actual:p27:440fd88e9159be7ccf7aa724471fc278",
+      "page": 27,
+      "type": "list",
+      "raw_type": "List",
+      "bbox": [
+        21.06,
+        556.56,
+        39.05,
+        568.56
+      ],
+      "text": "-53r5"
+    },
+    {
+      "id": "actual:p27:4aad3ab87dada435e0e3dc439e15cc29",
+      "page": 27,
+      "type": "section_heading",
+      "raw_type": "Title",
+      "bbox": [
+        90.0,
+        71.22,
+        170.24,
+        87.24
+      ],
+      "text": "CHAPTER ONE"
+    },
+    {
+      "id": "actual:p27:5b53b3a04d9fbdac6d7bf9b16e5df1d7",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        90.0,
+        125.58,
+        442.31,
+        135.6
+      ],
+      "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS"
+    },
+    {
+      "id": "actual:p27:b01e7a6f7b31de1b98bbb0f7024ae457",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        89.95,
+        149.7,
+        520.81,
+        241.32
+      ],
+      "text": "Modern information systems1 can include a variety of computing platforms (e.g., industrial control systems, general purpose computing systems, cyber-physical systems, super computers, weapons systems, communications systems, environmental control systems, medical devices, embedded devices, sensors, and mobile devices such as smart phones and tablets). These platforms all share a common foundation—computers with complex hardware, software and firmware providing a capability that supports the essential mission and business functions of organizations.2"
+    },
+    {
+      "id": "actual:p27:ef2ca0a4e44d017739ea4bd64a64985b",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        89.99,
+        255.78,
+        519.68,
+        387.6
+      ],
+      "text": "Security controls are the safeguards or countermeasures employed within a system or an organization to protect the confidentiality, integrity, and availability of the system and its information and to manage information security3 risk. Privacy controls are the administrative, technical, and physical safeguards employed within a system or an organization to manage privacy risks and to ensure compliance with applicable privacy requirements.4 Security and privacy controls are selected and implemented to satisfy security and privacy requirements levied on a system or organization. Security and privacy requirements are derived from applicable laws, executive orders, directives, regulations, policies, standards, and mission needs to ensure the confidentiality, integrity, and availability of information processed, stored, or transmitted and to manage risks to individual privacy."
+    },
+    {
+      "id": "actual:p27:9c2ab01026400d482034cac741b30bff",
+      "page": 27,
+      "type": "paragraph_block",
+      "raw_type": "Body",
+      "bbox": [
+        90.0,
+        402.0,
+        518.34,
+        453.3
+      ],
+      "text": "The selection, design, and implementation of security and privacy controls5 are important tasks that have significant implications for the operations6 and assets of organizations as well as the welfare of individuals and the Nation. Organizations should answer several key questions when addressing information security and privacy controls:"
+    },
+    {
+      "id": "actual:p27:ff297232954831084e523b9e2423c02a",
+      "page": 27,
+      "type": "list",
+      "raw_type": "List",
+      "bbox": [
+        90.02,
+        462.36,
+        516.28,
+        540.19
+      ],
+      "text": "• What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals? • Have the selected controls been implemented or is there a plan in place to do so? • What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective?7"
+    },
+    {
+      "id": "actual:p27:6671de5a49bddbfba3a44cada32d1369",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        90.0,
+        575.76,
+        478.85,
+        584.76
+      ],
+      "text": "1 An information system is a discrete set of information resources organized for the collection, processing,"
+    },
+    {
+      "id": "actual:p27:d2bb74ac9c08ff4732d2320eb2029916",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        90.0,
+        586.74,
+        404.57,
+        595.74
+      ],
+      "text": "maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]."
+    },
+    {
+      "id": "actual:p27:3cc0a575ff6c79cf268f79fa3915b4bf",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        90.0,
+        599.7,
+        515.01,
+        608.7
+      ],
+      "text": "2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure"
+    },
+    {
+      "id": "actual:p27:06c53ede48ec2b917cb68fed84e2e070",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        90.01,
+        610.68,
+        362.65,
+        619.68
+      ],
+      "text": "(e.g., a federal agency or, as appropriate, any of its operational elements)."
+    },
+    {
+      "id": "actual:p27:b616c5e75c796160a4b343f0e79b9a9a",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        90.0,
+        623.7,
+        429.36,
+        632.7
+      ],
+      "text": "3 The two terms information security and security are used synonymously in this publication."
+    },
+    {
+      "id": "actual:p27:62ae08be372b06327df69cf7d672fab0",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        90.0,
+        636.66,
+        283.68,
+        645.66
+      ],
+      "text": "4 [OMB A-130] defines security and privacy controls."
+    },
+    {
+      "id": "actual:p27:701db9a766bb40226e536ae806289039",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        90.0,
+        649.68,
+        516.37,
+        658.68
+      ],
+      "text": "5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce"
+    },
+    {
+      "id": "actual:p27:c40a715c882dfc2947bac6f45ed2e53e",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        89.99,
+        660.66,
+        259.18,
+        669.66
+      ],
+      "text": "risk during the system development life cycle."
+    },
+    {
+      "id": "actual:p27:904e1ba11e629b51ff73747be5474753",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        90.0,
+        673.62,
+        376.61,
+        682.62
+      ],
+      "text": "6 Organizational operations include mission, functions, image, and reputation."
+    },
+    {
+      "id": "actual:p27:60182432b6d5591f3fd72b0ca6045124",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        90.0,
+        686.64,
+        508.66,
+        695.64
+      ],
+      "text": "7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly,"
+    },
+    {
+      "id": "actual:p27:bb5a6dd55c55c4673d07423c2b8c30a0",
+      "page": 27,
+      "type": "footnote",
+      "raw_type": "Footnote",
+      "bbox": [
+        90.0,
+        697.62,
+        500.31,
+        717.6
+      ],
+      "text": "operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A]."
+    }
+  ]
+}

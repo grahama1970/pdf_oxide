@@ -341,3 +341,6 @@ docs/planning/
 # Local working PDFs and verification results
 workdir_pdfs/
 verifications/
+
+# Loop run artifacts: full-extraction.json is a 492-page dump, regenerable
+artifacts/pdf-lab/loop-runs/*/full-extraction.json

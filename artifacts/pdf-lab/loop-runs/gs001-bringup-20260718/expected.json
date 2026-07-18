@@ -1,0 +1,185 @@
+{
+  "schema_version": "pdf-lab.expected.v1",
+  "match_policy": null,
+  "elements": [
+    {
+      "id": "gs001:row:1",
+      "page": 27,
+      "type": "header_footer_noise",
+      "bbox": [
+        90.0,
+        35.43,
+        521.26,
+        55.87
+      ],
+      "text": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "family": "running_header"
+    },
+    {
+      "id": "gs001:row:2",
+      "page": 27,
+      "type": "header_footer_noise",
+      "bbox": [
+        18.14,
+        227.94,
+        30.42,
+        586.58
+      ],
+      "text": "This publication is available free of charge from",
+      "allowed_types": [
+        "header_footer_noise"
+      ],
+      "family": "side_watermark_or_page_chrome_noise"
+    },
+    {
+      "id": "gs001:row:3",
+      "page": 27,
+      "type": "chapter_label",
+      "bbox": [
+        90.0,
+        73.71,
+        166.67,
+        91.78
+      ],
+      "text": "CHAPTER ONE",
+      "allowed_types": [
+        "chapter_label",
+        "section_heading"
+      ],
+      "family": "chapter_label"
+    },
+    {
+      "id": "gs001:row:4",
+      "page": 27,
+      "type": "section_heading",
+      "bbox": [
+        90.0,
+        102.15,
+        195.11,
+        124.39
+      ],
+      "text": "INTRODUCTION",
+      "allowed_types": [
+        "section_heading"
+      ],
+      "family": "section_heading"
+    },
+    {
+      "id": "gs001:row:5",
+      "page": 27,
+      "type": "section_subtitle",
+      "bbox": [
+        90.0,
+        125.32,
+        440.1,
+        138.73
+      ],
+      "text": "THE NEED TO PROTECT INFORMATION",
+      "allowed_types": [
+        "section_subtitle"
+      ],
+      "family": "section_subtitle"
+    },
+    {
+      "id": "gs001:row:6",
+      "page": 27,
+      "type": "paragraph_block",
+      "bbox": [
+        89.95,
+        149.47,
+        518.32,
+        244.75
+      ],
+      "text": "Modern information systems",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "family": "paragraph_block"
+    },
+    {
+      "id": "gs001:row:7",
+      "page": 27,
+      "type": "paragraph_block",
+      "bbox": [
+        89.99,
+        255.5,
+        517.19,
+        391.03
+      ],
+      "text": "Security controls are the safeguards",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "family": "paragraph_block"
+    },
+    {
+      "id": "gs001:row:8",
+      "page": 27,
+      "type": "paragraph_block",
+      "bbox": [
+        90.0,
+        401.77,
+        515.85,
+        456.73
+      ],
+      "text": "The selection, design, and implementation",
+      "allowed_types": [
+        "paragraph_block"
+      ],
+      "family": "paragraph_block"
+    },
+    {
+      "id": "gs001:row:9",
+      "page": 27,
+      "type": "list",
+      "bbox": [
+        90.02,
+        462.08,
+        513.72,
+        543.61
+      ],
+      "text": "What security and privacy controls are needed",
+      "allowed_types": [
+        "list"
+      ],
+      "family": "bullet_list"
+    },
+    {
+      "id": "gs001:row:10",
+      "page": 27,
+      "type": "footnote",
+      "bbox": [
+        89.99,
+        575.53,
+        514.3,
+        720.41
+      ],
+      "text": "An information system is a discrete set",
+      "allowed_types": [
+        "footnote",
+        "paragraph_block"
+      ],
+      "family": "footnote_block"
+    },
+    {
+      "id": "gs001:row:11",
+      "page": 27,
+      "type": "header_footer_noise",
+      "bbox": [
+        90.0,
+        745.65,
+        521.97,
+        756.33
+      ],
+      "text": "CHAPTER ONE  PAGE 1",
+      "allowed_types": [
+        "header_footer_noise",
+        "paragraph_block"
+      ],
+      "family": "footer"
+    }
+  ]
+}

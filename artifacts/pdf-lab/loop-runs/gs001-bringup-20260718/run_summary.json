@@ -1,0 +1,25 @@
+{
+  "schema_version": "pdf_lab.run_summary.v1",
+  "run_id": "gs001-bringup-20260718",
+  "goal_hash": "sha256:61f37abdd24d3c17679c713d058491fd80c3a69a3442fd33341ed6c13db319e7",
+  "contract_sha256": "sha256:a9a6166146049abd5654fd3750dfbeb7136dbff3061d76260742bbfcce841219",
+  "source_pdf_sha256": "sha256:fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "page_index": 27,
+  "printed_page": "PAGE 1",
+  "expected_rows": 11,
+  "matched": 1,
+  "accuracy": 0.09090909090909091,
+  "passed": false,
+  "extracted_blocks": 24,
+  "unmatched_actual": 23,
+  "findings_total": 10,
+  "findings_extractor_owned": 5,
+  "terminal_reason": "NOT_CLOSED_DISCREPANCIES_OPEN",
+  "second_pass_model": null,
+  "note": "Offline-deterministic bring-up run. Loop is exercised end-to-end: extract -> compare -> typed findings.",
+  "page_images": {
+    "page_27": [
+      "page_27/page.png"
+    ]
+  }
+}
