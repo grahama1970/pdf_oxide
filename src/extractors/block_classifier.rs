@@ -573,29 +573,6 @@ impl BlockClassifier {
             );
         }
 
-        // Subtitle: a short all-caps line in the upper page, set at or above body
-        // size but below title size -- the standfirst under a section title.
-        // Typographic (case, length, size band, position), not lexical.
-        if y_ratio < 0.4
-            && trimmed.len() < 200
-            && !is_bold
-            && size_ratio >= 0.9
-            && size_ratio <= 1.3
-            && is_all_caps_text(trimmed)
-        {
-            return self.make_block(
-                BlockType::Subtitle,
-                text,
-                bbox,
-                avg_font_size,
-                font_name,
-                is_bold,
-                0.8,
-                Some(1),
-                None,
-            );
-        }
-
         // Title detection (document title: large font, centered, near top)
         if size_ratio > 1.8 && is_centered && y_ratio < 0.4 && trimmed.len() < 200 {
             return self.make_block(
