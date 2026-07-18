@@ -10,6 +10,7 @@ pub enum BlockType {
     List,
     Caption,
     Footnote,
+    ChapterLabel,
     Title,
     Subtitle,
     TableOfContents,
@@ -29,6 +30,7 @@ impl BlockType {
             BlockType::List => "list",
             BlockType::Caption => "caption",
             BlockType::Footnote => "footnote",
+            BlockType::ChapterLabel => "chapter_label",
             BlockType::Title => "title",
             BlockType::Subtitle => "subtitle",
             BlockType::TableOfContents => "toc",
@@ -512,6 +514,86 @@ impl BlockClassifier {
                     );
                 }
             }
+        }
+
+        // Rotated margin chrome (DOI watermark, spine text): a span far taller
+        // than it is wide, hugging a page edge, is furniture rather than content.
+        // Purely geometric -- no text, no page index.
+        // Rotated text is stored in text-flow orientation, so margin furniture is
+        // not detectable by aspect ratio. What distinguishes it is that it starts
+        // outside the body text column, hard against a page edge, at below-body
+        // size. Positional/typographic only.
+        if size_ratio < 0.95
+            && (bbox.x < self.page_width * 0.06
+                || bbox.x + bbox.width > self.page_width * 0.94)
+        {
+            return self.make_block(
+                BlockType::Boilerplate,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.8,
+                None,
+                None,
+            );
+        }
+
+        // Chapter/part/appendix label: a short standalone divider line naming a
+        // structural unit, set above the section title it introduces.
+        if y_ratio < 0.4 && trimmed.len() < 60 && is_structural_label(trimmed) {
+            return self.make_block(
+                BlockType::ChapterLabel,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.85,
+                Some(0),
+                None,
+            );
+        }
+
+        // Section heading: short, bold, set noticeably above body size. Left-aligned
+        // headings are the norm in technical documents, so centring must not be
+        // required. Typographic only.
+        if is_bold && size_ratio > 1.25 && trimmed.len() < 200 {
+            return self.make_block(
+                BlockType::Title,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.85,
+                Some(1),
+                None,
+            );
+        }
+
+        // Subtitle: a short all-caps line in the upper page, set at or above body
+        // size but below title size -- the standfirst under a section title.
+        // Typographic (case, length, size band, position), not lexical.
+        if y_ratio < 0.4
+            && trimmed.len() < 200
+            && !is_bold
+            && size_ratio >= 0.9
+            && size_ratio <= 1.3
+            && is_all_caps_text(trimmed)
+        {
+            return self.make_block(
+                BlockType::Subtitle,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.8,
+                Some(1),
+                None,
+            );
         }
 
         // Title detection (document title: large font, centered, near top)
@@ -1595,6 +1677,38 @@ fn has_page_marker(text: &str) -> bool {
                 .is_ok()
         })
         .unwrap_or(false)
+}
+
+/// True for a short standalone structural divider such as "CHAPTER ONE",
+/// "PART II", "APPENDIX C". Structural vocabulary only -- no document-specific
+/// phrase, no page index, no identifier from the source corpus.
+fn is_structural_label(text: &str) -> bool {
+    let trimmed = text.trim();
+    let lower = trimmed.to_lowercase();
+    let mut words = lower.split_whitespace();
+    let head = match words.next() {
+        Some(w) => w.trim_matches(|c: char| !c.is_alphanumeric()).to_string(),
+        None => return false,
+    };
+    if !matches!(head.as_str(), "chapter" | "part" | "appendix" | "section" | "annex") {
+        return false;
+    }
+    // exactly one trailing token: a numeral, roman numeral, letter, or number word
+    let rest: Vec<&str> = words.collect();
+    if rest.len() != 1 {
+        return false;
+    }
+    let tail = rest[0].trim_matches(|c: char| !c.is_alphanumeric());
+    !tail.is_empty() && tail.len() <= 8
+}
+
+/// True when the alphabetic content of the text is entirely upper case.
+fn is_all_caps_text(text: &str) -> bool {
+    let letters: Vec<char> = text.chars().filter(|c| c.is_alphabetic()).collect();
+    if letters.len() < 8 {
+        return false;
+    }
+    letters.iter().all(|c| c.is_uppercase())
 }
 
 fn is_list_item(text: &str) -> bool {
