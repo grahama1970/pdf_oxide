@@ -495,7 +495,33 @@ impl BlockClassifier {
 
         // List item detection (but not if bold/large — those are likely numbered headers)
         // Must come after caption check since "Table 1." could match list pattern
-        if is_list_item(trimmed) && !is_bold && size_ratio <= 1.15 {
+        // Rotated text is stored in text-flow orientation, so margin furniture is
+        // not detectable by aspect ratio. What distinguishes it is that it starts
+        // outside the body text column, hard against a page edge, at below-body
+        // size. Positional/typographic only.
+        if size_ratio < 0.95
+            && (bbox.x < self.page_width * 0.06
+                || bbox.x + bbox.width > self.page_width * 0.94)
+        {
+            return self.make_block(
+                BlockType::Boilerplate,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.8,
+                None,
+                None,
+            );
+        }
+
+        // A list marker is structural; bold is styling. NIST sets control
+        // requirements ("a. Define and document...") in bold, so excluding bold
+        // dropped them to body and the bold-heading rule then promoted some to
+        // Title. size_ratio <= 1.15 already excludes real headings, which is
+        // what the !is_bold guard was actually protecting against.
+        if is_list_item(trimmed) && size_ratio <= 1.15 {
             // Extra check: don't classify numbered headers as list items
             let numbering = analyze_section_numbering(trimmed);
             if !numbering.has_numbering || numbering.depth_level <= 1 {
@@ -519,27 +545,6 @@ impl BlockClassifier {
         // Rotated margin chrome (DOI watermark, spine text): a span far taller
         // than it is wide, hugging a page edge, is furniture rather than content.
         // Purely geometric -- no text, no page index.
-        // Rotated text is stored in text-flow orientation, so margin furniture is
-        // not detectable by aspect ratio. What distinguishes it is that it starts
-        // outside the body text column, hard against a page edge, at below-body
-        // size. Positional/typographic only.
-        if size_ratio < 0.95
-            && (bbox.x < self.page_width * 0.06
-                || bbox.x + bbox.width > self.page_width * 0.94)
-        {
-            return self.make_block(
-                BlockType::Boilerplate,
-                text,
-                bbox,
-                avg_font_size,
-                font_name,
-                is_bold,
-                0.8,
-                None,
-                None,
-            );
-        }
-
         // Chapter/part/appendix label: a short standalone divider line naming a
         // structural unit, set above the section title it introduces.
         if y_ratio < 0.4 && trimmed.len() < 60 && is_structural_label(trimmed) {
