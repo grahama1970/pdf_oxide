@@ -1,0 +1,116 @@
+{
+  "schema": "pdf_lab.issue_regression.before_after.v1",
+  "issue": "https://github.com/grahama1970/pdf_oxide/issues/4",
+  "defect_key": "sha256:033d7b46aad99599b8bbb90ac8bbf421110bb2f967e0ac560f297374024feead",
+  "target": "gs001:row:1 page 27 NIST running header fragments",
+  "mocked": false,
+  "live": false,
+  "baseline_commit": "ab39df230cf11cb18db1f2e7a02f45f5e6a9a5fd",
+  "repair_commit": "eb24e7122bfe4082fb7864ba1a565d20e450088d",
+  "command": "PYTHONPATH=python uv run --with reportlab python <before_after_issue4_regression_receipt>",
+  "before": {
+    "label": "before_HEAD_parent",
+    "output": [
+      {
+        "id": "actual:p27:running_header:merged:0",
+        "page": 27,
+        "type": "running_header",
+        "source_type": "synthetic",
+        "bbox": [
+          0.145,
+          0.043,
+          0.855,
+          0.057
+        ],
+        "text": "NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+        "child_ids": [
+          "actual:p27:line:0",
+          "actual:p27:line:68+actual:p27:line:111"
+        ],
+        "semantic_role": "page_chrome"
+      },
+      {
+        "id": "actual:p27:table:0",
+        "page": 27,
+        "source_type": "table",
+        "type": "table",
+        "bbox": [
+          0.146,
+          0.092,
+          0.853,
+          0.725
+        ],
+        "text": "DATE | TYPE | REVISION | PAGE"
+      }
+    ],
+    "counts": {
+      "running_header": 1,
+      "header_footer_noise": 0,
+      "table": 1
+    },
+    "issue_signature_present": true,
+    "repaired_signature_present": false,
+    "table_preserved": true
+  },
+  "after": {
+    "label": "after_HEAD",
+    "output": [
+      {
+        "id": "actual:p27:header_footer_noise:merged:0",
+        "page": 27,
+        "type": "header_footer_noise",
+        "source_type": "synthetic",
+        "bbox": [
+          0.145,
+          0.043,
+          0.855,
+          0.057
+        ],
+        "text": "NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+        "child_ids": [
+          "actual:p27:line:0",
+          "actual:p27:line:68+actual:p27:line:111"
+        ],
+        "semantic_role": "page_chrome"
+      },
+      {
+        "id": "actual:p27:table:0",
+        "page": 27,
+        "source_type": "table",
+        "type": "table",
+        "bbox": [
+          0.146,
+          0.092,
+          0.853,
+          0.725
+        ],
+        "text": "DATE | TYPE | REVISION | PAGE"
+      }
+    ],
+    "counts": {
+      "running_header": 0,
+      "header_footer_noise": 1,
+      "table": 1
+    },
+    "issue_signature_present": false,
+    "repaired_signature_present": true,
+    "table_preserved": true
+  },
+  "gate": {
+    "status": "PASS",
+    "issue_signature_decreased": true,
+    "blocking_class_increased": false,
+    "header_footer_noise_increased": true,
+    "table_preserved": true
+  },
+  "proves": [
+    "At HEAD~1 the representative issue #4 fragments produced a merged running_header output.",
+    "At HEAD the same input produces a merged header_footer_noise page_chrome output.",
+    "The representative table element remains present after repair."
+  ],
+  "does_not_prove": [
+    "All GS001 candidate classes are improved.",
+    "A live second-pass model rerun.",
+    "A new GitHub issue mutation."
+  ]
+}

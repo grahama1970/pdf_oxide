@@ -21,7 +21,8 @@
     "PYTHONPATH=python uv run --with reportlab --with pymupdf python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/issue4_running_header_noise_20260720/page27_snapshot.json --apply-mode release --max-pages 27 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
     "PYTHONPATH=python uv run --with reportlab python <direct ledger proof script>",
     "uv run --with ruff ruff check tests/test_nist_running_header_merge.py",
-    "python3 -m json.tool artifacts/pdf_lab/issue4_running_header_noise_20260720/*.json >/dev/null (expanded per file)"
+    "python3 -m json.tool artifacts/pdf_lab/issue4_running_header_noise_20260720/*.json >/dev/null (expanded per file)",
+    "PYTHONPATH=python uv run --with reportlab python <before_after_issue4_regression_receipt>"
   ],
   "checks": {
     "no_running_header_outputs": true,
@@ -48,6 +49,16 @@
       "top_header_semantic_role_page_chrome": true,
       "top_header_not_running_header": true,
       "table_actual_p27_table_0_preserved": true
+    }
+  },
+  "before_after_regression": {
+    "artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+    "gate": {
+      "status": "PASS",
+      "issue_signature_decreased": true,
+      "blocking_class_increased": false,
+      "header_footer_noise_increased": true,
+      "table_preserved": true
     }
   }
 }
