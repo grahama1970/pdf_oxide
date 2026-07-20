@@ -2243,7 +2243,7 @@
       "applied_at": "2026-05-31T19:36:00Z",
       "applier_rule_kind": "same_band_merge_rule",
       "category": "structural_grouping",
-      "checklist_item": "Merge same-band NIST top running-header fragments into one page-chrome running_header element and suppress the child fragments, matching the compact PDF Lab candidate contract.",
+      "checklist_item": "Merge same-band NIST top running-header fragments into one page-chrome header_footer_noise element and suppress the child fragments, matching the compact PDF Lab candidate contract.",
       "closed_at": "2026-05-31T19:36:00Z",
       "closed_by": "agent:codex (validated by tests/test_nist_running_header_merge.py)",
       "entry_id": "nist-running-header-merge-001",
@@ -2278,7 +2278,7 @@
         "synthesize": {
           "semantic_role": "page_chrome",
           "source_type": "synthetic",
-          "type": "running_header"
+          "type": "header_footer_noise"
         }
       },
       "status": "closed"

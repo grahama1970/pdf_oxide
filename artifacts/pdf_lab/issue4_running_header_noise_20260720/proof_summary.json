@@ -1,0 +1,53 @@
+{
+  "artifact": "issue4_running_header_noise_20260720",
+  "issue": "https://github.com/grahama1970/pdf_oxide/issues/4",
+  "target": "gs001:row:1 page 27 NIST running header fragments",
+  "mocked": false,
+  "live": false,
+  "exercise": "Deterministic local application of nist-running-header-merge-001 ledger rule to representative page 27 extracted elements.",
+  "proves": [
+    "The representative issue #4 extracted-JSON shape is repaired: same-band running_header fragments merge into one header_footer_noise page_chrome element.",
+    "The current real NIST page 27 snapshot routes the top header to header_footer_noise and preserves actual:p27:table:0.",
+    "The touched Python regression file passes ruff."
+  ],
+  "does_not_prove": [
+    "Full GS001 PDF extraction quality across all pages.",
+    "Live second-pass model behavior.",
+    "Criterion 6 live GitHub mutation behavior.",
+    "That reportlab should remain an undeclared import dependency."
+  ],
+  "commands": [
+    "PYTHONPATH=python uv run --with reportlab --with pymupdf pytest -q tests/test_nist_running_header_merge.py",
+    "PYTHONPATH=python uv run --with reportlab --with pymupdf python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/issue4_running_header_noise_20260720/page27_snapshot.json --apply-mode release --max-pages 27 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+    "PYTHONPATH=python uv run --with reportlab python <direct ledger proof script>",
+    "uv run --with ruff ruff check tests/test_nist_running_header_merge.py",
+    "python3 -m json.tool artifacts/pdf_lab/issue4_running_header_noise_20260720/*.json >/dev/null (expanded per file)"
+  ],
+  "checks": {
+    "no_running_header_outputs": true,
+    "one_header_footer_noise_output": true,
+    "table_preserved": true,
+    "merged_child_ids_preserved": true,
+    "semantic_role_page_chrome": true
+  },
+  "status": "pass",
+  "test_result": {
+    "command": "PYTHONPATH=python uv run --with reportlab --with pymupdf pytest -q tests/test_nist_running_header_merge.py",
+    "stdout": "..                                                                       [100%]\n2 passed in 0.31s",
+    "exit_code": 0
+  },
+  "lint_result": {
+    "command": "uv run --with ruff ruff check tests/test_nist_running_header_merge.py",
+    "stdout": "All checks passed!",
+    "exit_code": 0
+  },
+  "snapshot_result": {
+    "artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/page27_snapshot.json",
+    "checks": {
+      "top_header_is_header_footer_noise": true,
+      "top_header_semantic_role_page_chrome": true,
+      "top_header_not_running_header": true,
+      "table_actual_p27_table_0_preserved": true
+    }
+  }
+}
