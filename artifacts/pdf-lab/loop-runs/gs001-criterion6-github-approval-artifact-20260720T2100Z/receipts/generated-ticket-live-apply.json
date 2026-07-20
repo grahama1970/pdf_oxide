@@ -1,0 +1,54 @@
+{
+  "applied": false,
+  "command_results": [
+    {
+      "command": [
+        "gh",
+        "issue",
+        "create",
+        "--repo",
+        "grahama1970/pdf_oxide",
+        "--title",
+        "[pdf-lab] bbox_iou_below_threshold on page 27 (sha256:033d7b46aad9)",
+        "--body-file",
+        "-",
+        "--label",
+        "agent-work,next:coder,executor:local"
+      ],
+      "exit_code": 1,
+      "stderr": "could not add label: 'agent-work' not found\n",
+      "stdout": ""
+    }
+  ],
+  "commands": [
+    [
+      "gh",
+      "issue",
+      "create",
+      "--repo",
+      "grahama1970/pdf_oxide",
+      "--title",
+      "[pdf-lab] bbox_iou_below_threshold on page 27 (sha256:033d7b46aad9)",
+      "--body-file",
+      "-",
+      "--label",
+      "agent-work,next:coder,executor:local"
+    ]
+  ],
+  "dry_run": false,
+  "errors": [
+    "GitHub command failed: gh issue create --repo grahama1970/pdf_oxide --title [pdf-lab] bbox_iou_below_threshold on page 27 (sha256:033d7b46aad9) --body-file - --label agent-work,next:coder,executor:local: could not add label: 'agent-work' not found"
+  ],
+  "live": false,
+  "mocked": false,
+  "ok": false,
+  "preflight_results": [],
+  "provider_live": false,
+  "receipt_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/generated-ticket-live-apply.json",
+  "schema": "tau.github_generated_ticket_transport_receipt.v1",
+  "status": "BLOCKED",
+  "target": {
+    "repo": "grahama1970/pdf_oxide",
+    "target": "new"
+  }
+}

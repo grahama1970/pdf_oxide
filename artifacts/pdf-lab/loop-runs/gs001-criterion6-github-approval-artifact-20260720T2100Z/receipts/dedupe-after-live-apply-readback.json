@@ -1,0 +1,48 @@
+{
+  "comment": {
+    "body": "## Repeated generated-ticket observation\n\n- defect_key: `sha256:033d7b46aad99599b8bbb90ac8bbf421110bb2f967e0ac560f297374024feead`\n- title: [pdf-lab] bbox_iou_below_threshold on page 27 (sha256:033d7b46aad9)\n- requested_work: Repair the bounded GS001 extraction discrepancy only after Tau proves dedupe, apply gate, accepted commit, and clean rerun evidence.\n\n<!-- tau-generated-ticket-dedupe:v1 -->\n```text\n## Discrepancy\n- defect_key: `sha256:033d7b46aad99599b8bbb90ac8bbf421110bb2f967e0ac560f297374024feead`\n- observation_id: `sha256:a17864a978dee265688e1c0edc92cd67463971c4d6f73fdf7c27f92861d50b17`\n- page: 27\n- kind: bbox_iou_below_threshold\n- classification: bbox_iou_below_threshold\n- target: gs001:row:1\n- proposed owner layer: pdf_oxide_core_bug\n\n## Evidence\nbbox_iou_below_threshold\n\n## Recommended engine fix\nclassifier: running_header must classify as header_footer_noise\n\n## Closure requirement\nDeterministic proof only: pdf-lab regression-check PASS with this\ndefect class strictly decreased and no blocking class increased.\n\n## Tau Recovery Binding\n- Source projection: `/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-ticket-lifecycle-run2/intermediate/gs001-ticket-projection.json`\n- Criterion: `6`\n- Parent goal hash: `sha256:9d2bd5e1992e0e9875d1e14d78cc7ffb8cce4c087ab58a41447f999ae7118580`\n\n\n```\n"
+  },
+  "decision": "update_existing_issue",
+  "defect_key": "sha256:033d7b46aad99599b8bbb90ac8bbf421110bb2f967e0ac560f297374024feead",
+  "errors": [],
+  "github_create": null,
+  "labels": [
+    "agent-work",
+    "next:coder",
+    "executor:local"
+  ],
+  "matched_issue": {
+    "id": "issue#4",
+    "kind": "issue",
+    "number": 4,
+    "title": "[pdf-lab] bbox_iou_below_threshold on page 27 (sha256:033d7b46aad9)",
+    "url": "https://github.com/grahama1970/pdf_oxide/issues/4"
+  },
+  "ok": true,
+  "receipt_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/dedupe-after-live-apply-readback.json",
+  "schema": "tau.generated_ticket_dedupe_projection.v1",
+  "searched_issues": [
+    {
+      "body_contains_defect_key": true,
+      "id": "issue#4",
+      "number": 4,
+      "title": "[pdf-lab] bbox_iou_below_threshold on page 27 (sha256:033d7b46aad9)"
+    },
+    {
+      "body_contains_defect_key": false,
+      "id": "issue#3",
+      "number": 3,
+      "title": "[PDF Lab] nist_phase54_page_0046: nested list segmentation under AC-2 h"
+    },
+    {
+      "body_contains_defect_key": false,
+      "id": "issue#2",
+      "number": 2,
+      "title": "[PDF Lab] nist_phase54_page_0045: page-level annotation bugs"
+    }
+  ],
+  "target": {
+    "repo": "grahama1970/pdf_oxide",
+    "target": "issue#4"
+  }
+}

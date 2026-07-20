@@ -1,0 +1,96 @@
+{
+  "checks": [
+    {
+      "code": "approval_gate_pass",
+      "ok": true
+    },
+    {
+      "code": "github_apply_policy_pass",
+      "ok": true
+    },
+    {
+      "code": "first_apply_failed_before_issue_create",
+      "ok": true
+    },
+    {
+      "code": "label_precondition_repair_pass",
+      "ok": true
+    },
+    {
+      "code": "live_apply_retry_pass",
+      "ok": true
+    },
+    {
+      "code": "issue_4_readback_present",
+      "ok": true
+    },
+    {
+      "code": "issue_4_open",
+      "ok": true
+    },
+    {
+      "code": "defect_key_present_once_in_fetched_source",
+      "ok": true
+    },
+    {
+      "code": "expected_labels_present",
+      "ok": true
+    },
+    {
+      "code": "repeat_dedupe_targets_issue_4",
+      "ok": true
+    }
+  ],
+  "command_results": {
+    "label_create_exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "live_apply_issue_create_exit_code": 0,
+    "live_apply_issue_create_stdout": "https://github.com/grahama1970/pdf_oxide/issues/4\n"
+  },
+  "does_not_prove": [
+    "Does not prove the pdf_oxide core bug is repaired; issue #4 is a work item for that repair.",
+    "Does not prove broad GS001 convergence.",
+    "Does not authorize closing, merging, or releasing."
+  ],
+  "issue": {
+    "body": "## Discrepancy\n- defect_key: `sha256:033d7b46aad99599b8bbb90ac8bbf421110bb2f967e0ac560f297374024feead`\n- observation_id: `sha256:a17864a978dee265688e1c0edc92cd67463971c4d6f73fdf7c27f92861d50b17`\n- page: 27\n- kind: bbox_iou_below_threshold\n- classification: bbox_iou_below_threshold\n- target: gs001:row:1\n- proposed owner layer: pdf_oxide_core_bug\n\n## Evidence\nbbox_iou_below_threshold\n\n## Recommended engine fix\nclassifier: running_header must classify as header_footer_noise\n\n## Closure requirement\nDeterministic proof only: pdf-lab regression-check PASS with this\ndefect class strictly decreased and no blocking class increased.\n\n## Tau Recovery Binding\n- Source projection: `/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-ticket-lifecycle-run2/intermediate/gs001-ticket-projection.json`\n- Criterion: `6`\n- Parent goal hash: `sha256:9d2bd5e1992e0e9875d1e14d78cc7ffb8cce4c087ab58a41447f999ae7118580`\n",
+    "id": "issue#4",
+    "kind": "issue",
+    "labels": [
+      "agent-work",
+      "next:coder",
+      "executor:local"
+    ],
+    "number": 4,
+    "status": "open",
+    "title": "[pdf-lab] bbox_iou_below_threshold on page 27 (sha256:033d7b46aad9)",
+    "url": "https://github.com/grahama1970/pdf_oxide/issues/4"
+  },
+  "issue_url": "https://github.com/grahama1970/pdf_oxide/issues/4",
+  "live": true,
+  "mocked": false,
+  "receipts": {
+    "approval_gate_pass": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/approval-gate-github-apply-approved.json",
+    "dedupe_after_live_apply_readback": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/dedupe-after-live-apply-readback.json",
+    "first_apply_blocked_missing_label": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/generated-ticket-live-apply.json",
+    "github_apply_policy_pass": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/github-apply-policy-with-approved-approval.json",
+    "label_precondition_repair": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/github-label-precondition-repair.json",
+    "live_apply_retry_after_labels": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/generated-ticket-live-apply-retry-after-labels.json",
+    "ticket_source_fetch_after_apply": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/github-ticket-source-fetch-after-apply.json"
+  },
+  "schema": "pdf_oxide.criterion6_live_github_apply_summary.v1",
+  "sha256": {
+    "approval_gate_pass": "f0c6d00cc20fd4d14d2438e9f1a60066eaffbdbd9e9760b0c8c825cfbdeecc2a",
+    "dedupe_after_live_apply_readback": "a73cb34c0c4709874ce76bb05a32776f6b6c0798f1790c2759563985295520f8",
+    "first_apply_blocked_missing_label": "89bf74dfd9886c193c9df47308c9107036d8f15b06385df213431de348b1f746",
+    "github_apply_policy_pass": "16c1f97d87b7d846eb4604cfc5c2ac4a965e0a10689222a6d30e5c951045f12b",
+    "label_precondition_repair": "8d7726e1cd1c0286fb3091d23fd1fd131e88543f472acbeb3f280c9f299b2bce",
+    "live_apply_retry_after_labels": "09cb83b945b3cf1e27c592bf9d1b05f125f1cf407b52d98b30d4d7a568007331",
+    "ticket_source_fetch_after_apply": "e15c71a3d6b5f033f7681b48a4a14abbb30555bf4bbf353e9703d24420c43315"
+  },
+  "status": "PASS",
+  "tau_receipt_note": "generated-ticket transport receipt records live:false/provider_live:false even when --apply executed gh; this summary treats the gh command_result and readback receipt as live mutation/readback evidence."
+}

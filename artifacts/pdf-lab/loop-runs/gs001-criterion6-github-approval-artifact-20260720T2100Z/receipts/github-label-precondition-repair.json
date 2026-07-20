@@ -1,0 +1,86 @@
+{
+  "authorized_scope": "Create only the three labels required by the already approved generated-ticket create_issue command.",
+  "command_results": [
+    {
+      "command": [
+        "gh",
+        "label",
+        "create",
+        "agent-work",
+        "--repo",
+        "grahama1970/pdf_oxide",
+        "--color",
+        "0e8a16",
+        "--description",
+        "Work item generated or managed by an agent workflow"
+      ],
+      "elapsed_s": 0.428,
+      "exit_code": 0,
+      "ok": true,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": [
+        "gh",
+        "label",
+        "create",
+        "next:coder",
+        "--repo",
+        "grahama1970/pdf_oxide",
+        "--color",
+        "1d76db",
+        "--description",
+        "Next action is a local coder repair"
+      ],
+      "elapsed_s": 0.73,
+      "exit_code": 0,
+      "ok": true,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": [
+        "gh",
+        "label",
+        "create",
+        "executor:local",
+        "--repo",
+        "grahama1970/pdf_oxide",
+        "--color",
+        "5319e7",
+        "--description",
+        "Work is intended for a local executor"
+      ],
+      "elapsed_s": 0.366,
+      "exit_code": 0,
+      "ok": true,
+      "stderr": "",
+      "stdout": ""
+    }
+  ],
+  "labels": [
+    {
+      "color": "0e8a16",
+      "description": "Work item generated or managed by an agent workflow",
+      "name": "agent-work"
+    },
+    {
+      "color": "1d76db",
+      "description": "Next action is a local coder repair",
+      "name": "next:coder"
+    },
+    {
+      "color": "5319e7",
+      "description": "Work is intended for a local executor",
+      "name": "executor:local"
+    }
+  ],
+  "live": true,
+  "mocked": false,
+  "ok": true,
+  "reason": "Criterion 6 generated-ticket live issue create failed because required labels were absent before issue creation.",
+  "repo": "grahama1970/pdf_oxide",
+  "schema": "pdf_oxide.github_label_precondition_repair_receipt.v1",
+  "status": "PASS"
+}
