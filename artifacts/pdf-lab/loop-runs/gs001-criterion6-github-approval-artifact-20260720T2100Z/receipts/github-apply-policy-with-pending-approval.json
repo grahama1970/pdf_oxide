@@ -1,0 +1,78 @@
+{
+  "actions": [
+    "create_issue"
+  ],
+  "approval_receipt": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/approval-gate-github-apply-pending.json",
+  "approval_receipt_sha256": "128d4b65c8008dd8045ad9a8eac0c08c7c30d5a289c222fc08572b9a4edc46d3",
+  "checks": [
+    {
+      "code": "repo_allowlist",
+      "ok": true,
+      "repo": "grahama1970/pdf_oxide"
+    },
+    {
+      "code": "action_denylist",
+      "denied_hits": [],
+      "ok": true
+    },
+    {
+      "allowed_misses": [],
+      "code": "action_allowlist",
+      "ok": true
+    },
+    {
+      "code": "preflight_required",
+      "ok": true,
+      "required": true
+    },
+    {
+      "code": "redaction_receipt",
+      "ok": true
+    },
+    {
+      "code": "approval_receipt",
+      "expected_target_id": "grahama1970/pdf_oxide:new",
+      "ok": false,
+      "target_id": "grahama1970/pdf_oxide:new"
+    }
+  ],
+  "errors": [
+    "approval receipt is not a passing github_apply approval receipt"
+  ],
+  "live": false,
+  "mocked": false,
+  "ok": false,
+  "policy": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/intermediate/github-apply-policy-create-new.json",
+  "policy_sha256": "b804aa75cb6e50ea3a2e81aa9f98e211bc88add35c5a502c10502e13cbaee30b",
+  "preflight_ready": true,
+  "projection": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/intermediate/generated-ticket-create-new-apply-projection.json",
+  "projection_sha256": "73708b4c8bd8621686a1bf9de8f67ab20e59dc3880f95e5d1ae8c0a7b4d8f26b",
+  "proof_scope": {
+    "does_not_prove": [
+      "Live GitHub mutation.",
+      "GitHub auth actually succeeds.",
+      "Semantic safety of the projected public comment.",
+      "Human acceptance of the projection content."
+    ],
+    "proves": [
+      "A GitHub projection and apply policy were inspected deterministically.",
+      "Repo/action allowlists and denial checks were evaluated before apply.",
+      "Required approval, redaction, and preflight gates fail closed when missing."
+    ]
+  },
+  "provider_live": false,
+  "receipt_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/github-apply-policy-with-pending-approval.json",
+  "redaction_receipt": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/receipts/github-redaction-create-new.json",
+  "redaction_receipt_sha256": "0692873e239bf4ae7d2210c4e9bc5221f8f850ef65c0e3c6480fde20e15865fa",
+  "requirements": {
+    "approval_packet": true,
+    "preflight": true,
+    "redaction": true
+  },
+  "schema": "tau.github_apply_policy_receipt.v1",
+  "status": "BLOCKED",
+  "target": {
+    "repo": "grahama1970/pdf_oxide",
+    "target": "new"
+  }
+}

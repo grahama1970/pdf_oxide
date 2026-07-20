@@ -1,0 +1,105 @@
+{
+  "agent_role": "After a PASS approval receipt exists, rerun GitHub apply policy, execute the one apply command once, then verify by read-only GitHub fetch.",
+  "created_at": "2026-07-20T21:00:00Z",
+  "default_agent_action_after_valid_approval": {
+    "apply_command": "cd /home/graham/workspace/experiments/tau && uv run tau generated-ticket-github-create --ticket /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-tau-recovery-20260720T1430Z/intermediate/gs001-canonical-generated-ticket-001.json --repo grahama1970/pdf_oxide --apply --dedupe-preflight /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/receipts/dedupe-create-new-live-source.json --approval-receipt <PASS_APPROVAL_GATE_RECEIPT> --github-apply-policy-receipt <PASS_GITHUB_APPLY_POLICY_RECEIPT> --receipt /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/generated-ticket-live-apply.json",
+    "fallback_if_apply_fails": "write generated-ticket-live-apply-failed.json with GitHub/Tau error; do not retry mutation more than once without a new dedupe preflight and approval packet",
+    "preconditions": [
+      "approval gate receipt schema tau.approval_gate_receipt.v1 has ok:true, status:PASS, approved:true",
+      "approval packet_summary.target_id equals grahama1970/pdf_oxide:new",
+      "github apply-policy receipt schema tau.github_apply_policy_receipt.v1 has ok:true, status:PASS",
+      "projection redaction receipt remains PASS and redacted projection hash matches current redacted artifact",
+      "dedupe preflight still selects create_new or a concrete existing issue target before apply"
+    ],
+    "rollback_contract": "No automatic destructive rollback is authorized by this packet. If the apply creates the wrong issue, create a separate github_apply or github_ticket_closure approval packet targeting the concrete issue number before any close/comment rollback action.",
+    "verification_command": "rerun read-only GitHub ticket-source fetch for grahama1970/pdf_oxide and assert the defect_key sha256:033d7b46aad99599b8bbb90ac8bbf421110bb2f967e0ac560f297374024feead appears exactly once in an open issue body/title with expected labels"
+  },
+  "does_not_authorize": [
+    "close",
+    "merge",
+    "release",
+    "arbitrary comments",
+    "mutation of another repo",
+    "mutation of another issue target"
+  ],
+  "evidence": [
+    {
+      "label": "dedupe_live_source_receipt",
+      "path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/receipts/dedupe-create-new-live-source.json",
+      "sha256": "ee27f9feeb2edfe7da288cdb46f18c5d15b2e6979f51a828e63ab8e3c68ebf49"
+    },
+    {
+      "label": "github_apply_projection",
+      "path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/intermediate/generated-ticket-create-new-apply-projection.json",
+      "sha256": "73708b4c8bd8621686a1bf9de8f67ab20e59dc3880f95e5d1ae8c0a7b4d8f26b"
+    },
+    {
+      "label": "github_apply_projection_redacted",
+      "path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/intermediate/generated-ticket-create-new-apply-projection.redacted.json",
+      "sha256": "a5ef792e02712614ef998ff70251ba6969fd9f66518244a9bcbc57e57402b4c9"
+    },
+    {
+      "label": "github_redaction_receipt",
+      "path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/receipts/github-redaction-create-new.json",
+      "sha256": "0692873e239bf4ae7d2210c4e9bc5221f8f850ef65c0e3c6480fde20e15865fa"
+    },
+    {
+      "label": "github_apply_policy",
+      "path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/intermediate/github-apply-policy-create-new.json",
+      "sha256": "b804aa75cb6e50ea3a2e81aa9f98e211bc88add35c5a502c10502e13cbaee30b"
+    },
+    {
+      "label": "generated_ticket_transport_dry_run",
+      "path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/receipts/generated-ticket-transport-create-new-dry-run.json",
+      "sha256": "8f1d9fbe20f12ec8388119517711661f69cdf1d86848ba2102c8456beca37e08"
+    }
+  ],
+  "human_role": "Approve or reject this exact target-bound github_apply mutation packet. Approval means create a PASS approval packet for target_id grahama1970/pdf_oxide:new; it does not approve close, merge, release, or unrelated issue mutation.",
+  "live": "read_only_preflight_and_policy; no GitHub mutation in this artifact",
+  "mocked": false,
+  "policy_summary": {
+    "allowed_actions": [
+      "create_issue",
+      "comment",
+      "label"
+    ],
+    "allowed_repos": [
+      "grahama1970/pdf_oxide"
+    ],
+    "denied_actions": [
+      "close",
+      "merge",
+      "release"
+    ],
+    "requires_approval_packet": true,
+    "requires_preflight": true,
+    "requires_redaction": true,
+    "schema": "tau.github_apply_policy.v1"
+  },
+  "projection_summary": {
+    "actions": [
+      "create_issue"
+    ],
+    "decision": "create_new",
+    "defect_key": "sha256:033d7b46aad99599b8bbb90ac8bbf421110bb2f967e0ac560f297374024feead",
+    "labels": [
+      "agent-work",
+      "next:coder",
+      "executor:local"
+    ],
+    "title": "[pdf-lab] bbox_iou_below_threshold on page 27 (sha256:033d7b46aad9)"
+  },
+  "requested_approval": {
+    "approval_gate_receipt": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/approval-gate-github-apply-pending.json",
+    "approval_packet_template": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/intermediate/approval-packet-github-apply.pending.json",
+    "approval_schema": "tau.human_approval_packet.v1",
+    "expires_at": "2026-07-21T08:52:49Z",
+    "policy_receipt_after_packet": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/github-apply-policy-with-pending-approval.json",
+    "repo": "grahama1970/pdf_oxide",
+    "requested_action": "github_apply",
+    "target": "new",
+    "target_id": "grahama1970/pdf_oxide:new"
+  },
+  "schema": "pdf_oxide.criterion6_github_apply_approval_request.v1",
+  "status": "AWAITING_TARGET_BOUND_APPROVAL"
+}

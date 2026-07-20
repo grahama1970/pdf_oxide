@@ -1,0 +1,27 @@
+{
+  "action": "github_apply",
+  "actor": {
+    "auth_method": "manual",
+    "id": "human:graham"
+  },
+  "approval_request": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/criterion6-github-apply-approval-request.json",
+  "approved": false,
+  "evidence": [
+    "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/receipts/dedupe-create-new-live-source.json",
+    "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/intermediate/generated-ticket-create-new-apply-projection.json",
+    "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/intermediate/generated-ticket-create-new-apply-projection.redacted.json",
+    "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/receipts/github-redaction-create-new.json",
+    "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/intermediate/github-apply-policy-create-new.json",
+    "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-local-tau-20260720T122047/receipts/generated-ticket-transport-create-new-dry-run.json"
+  ],
+  "expires_at": "2026-07-21T08:52:49Z",
+  "nonce": "gs001-criterion6-github-apply-approval-20260720T2100Z",
+  "reason": "PENDING: approve exactly one Criterion 6 GitHub create_issue mutation for GS001 generated-ticket projection sha256:73708b4c8bd8621686a1bf9de8f67ab20e59dc3880f95e5d1ae8c0a7b4d8f26b. Flip approved to true and add a non-empty signature only if this exact target/action is authorized.",
+  "schema": "tau.human_approval_packet.v1",
+  "signature": "",
+  "target": {
+    "id": "grahama1970/pdf_oxide:new",
+    "repo": "grahama1970/pdf_oxide",
+    "target": "new"
+  }
+}

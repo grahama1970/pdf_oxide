@@ -1,0 +1,44 @@
+{
+  "approval_packet": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/intermediate/approval-packet-github-apply.pending.json",
+  "approval_packet_sha256": "98c68620745407054face09445f771e87250dab7d553d2acc5e974be9ce155ca",
+  "approved": false,
+  "errors": [
+    "approved must be true",
+    "signature must be a non-empty string"
+  ],
+  "expected_target": null,
+  "live": false,
+  "mocked": false,
+  "ok": false,
+  "packet_summary": {
+    "action": "github_apply",
+    "actor_auth_method": "manual",
+    "actor_id": "human:graham",
+    "approved": false,
+    "evidence_count": 6,
+    "expires_at": "2026-07-21T08:52:49Z",
+    "human_id": "human:graham",
+    "nonce": "gs001-criterion6-github-apply-approval-20260720T2100Z",
+    "schema": "tau.human_approval_packet.v1",
+    "signature_present": false,
+    "target_id": "grahama1970/pdf_oxide:new"
+  },
+  "proof_scope": {
+    "does_not_prove": [
+      "the gated mutation was executed",
+      "GitHub ticket closure",
+      "production repository mutation",
+      "cryptographic signature validity beyond requiring a signature field"
+    ],
+    "proves": [
+      "Tau can fail closed before mutation or closure without a valid human approval packet",
+      "Tau can validate explicit human approval for a requested gated action",
+      "Tau writes a durable approval-gate receipt before any gated mutation command"
+    ]
+  },
+  "requested_action": "github_apply",
+  "run_dir": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z",
+  "schema": "tau.approval_gate_receipt.v1",
+  "status": "BLOCKED",
+  "timestamp": "2026-07-20T20:52:50Z"
+}
