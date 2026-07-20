@@ -1,0 +1,25 @@
+{
+  "schema_version": "pdf_lab.scillm_readonly_health.v1",
+  "mocked": false,
+  "live": true,
+  "receipts": [
+    {
+      "endpoint": "http://localhost:4001/health/liveliness",
+      "exception": "TimeoutError",
+      "error": "timed out",
+      "elapsed_s": 15.037
+    },
+    {
+      "endpoint": "http://localhost:4001/v1/scillm/health",
+      "exception": "TimeoutError",
+      "error": "timed out",
+      "elapsed_s": 15.015
+    },
+    {
+      "endpoint": "http://localhost:4001/v1/scillm/models",
+      "exception": "TimeoutError",
+      "error": "timed out",
+      "elapsed_s": 15.015
+    }
+  ]
+}

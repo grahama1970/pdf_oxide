@@ -1,0 +1,42 @@
+{
+  "schema_version": "pdf_lab.live_second_pass_transport_repair_summary.v1",
+  "status": "blocked_by_scillm_transport_timeout",
+  "phase": "fix live second-pass model transport/prompt path",
+  "mocked": false,
+  "live": true,
+  "counts": {
+    "passed": 0,
+    "failed": 5,
+    "blocked_by_systemic_failure": 1,
+    "not_run": 0
+  },
+  "attempts": [
+    {
+      "artifact": "minimal-probe-response.json",
+      "model": "gemini-flash",
+      "mode": "minimal multimodal one-case request",
+      "result": "ReadTimeout at 75.155s"
+    },
+    {
+      "artifact": "minimal-text-probe-response.json",
+      "model": "deepseek-direct",
+      "mode": "minimal text-only one-case request",
+      "result": "ReadTimeout at 60.134s"
+    },
+    {
+      "artifact": "local-text-probe-response.json",
+      "model": "local-text",
+      "mode": "trivial text-only JSON probe",
+      "result": "ReadTimeout at 30.096s"
+    },
+    {
+      "artifact": "scillm-readonly-health-after-timeouts.json",
+      "model": null,
+      "mode": "GET /health/liveliness, /v1/scillm/health, /v1/scillm/models",
+      "result": "all three read-only endpoints timed out at 15s"
+    }
+  ],
+  "latest_failure_signature": "SciLLM localhost:4001 read-only and chat-completions endpoints timed out; pdf-lab prompt/request changes cannot prove a live second-pass while the transport is unresponsive.",
+  "stop_condition": "Stop live model retry family until SciLLM localhost:4001 returns health/models and a trivial local-text chat completion under 30s.",
+  "next_required_check": "After SciLLM transport repair: rerun exactly one GS001 case and require validation_result.status != blocked."
+}

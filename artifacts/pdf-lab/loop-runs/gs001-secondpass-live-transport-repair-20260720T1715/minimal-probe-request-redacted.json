@@ -1,0 +1,12 @@
+{
+  "model": "gemini-flash",
+  "temperature": 0,
+  "timeout": 60,
+  "messages": "redacted_base64_in_local_script",
+  "scillm_metadata": {
+    "caller": "pdf-lab.transport-probe",
+    "case_id": "review:comparison_miss:gs001_row_10",
+    "batch_id": "gs001-minimal-probe",
+    "item_id": "gs001-minimal-probe-gemini"
+  }
+}
