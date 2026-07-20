@@ -1,0 +1,31 @@
+{
+  "name": "local-text-probe",
+  "url": "http://localhost:4001/v1/chat/completions",
+  "model": "local-text",
+  "status": 200,
+  "elapsed_s": 1.674,
+  "ok": true,
+  "body_preview": "{\"id\":\"chatcmpl-439\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"ok\\\":true,\\\"schema_version\\\":\\\"probe.v1\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":null,\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1784579797,\"model\":\"qwen2.5:0.5b\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":null,\"system_fingerprint\":\"fp_ollama\",\"usage\":{\"completion_tokens\":13,\"prompt_tokens\":30,\"total_tokens\":43,\"completion_tokens_details\":null,\"prompt_tokens_details\":null},\"_hidden_params\":{\"additional_headers\":{\"x-scillm-queue-wait-ms\":\"0\",\"x-scillm-queue-depth\":\"0\",\"x-scillm-backoff-active\":\"false\"}},\"scillm_metadata\":{\"caller\":\"pdf-lab.post-118-preflight\",\"batch_id\":\"post-118\",\"item_id\":\"local-text-probe\"}}",
+  "request": {
+    "model": "local-text",
+    "temperature": 0,
+    "timeout": 20,
+    "messages": [
+      {
+        "role": "system",
+        "content": "Return JSON only."
+      },
+      {
+        "role": "user",
+        "content": "Return {\"ok\":true,\"schema_version\":\"probe.v1\"}"
+      }
+    ],
+    "scillm_metadata": {
+      "caller": "pdf-lab.post-118-preflight",
+      "batch_id": "post-118",
+      "item_id": "local-text-probe"
+    }
+  },
+  "auth_source": "env_file:/home/graham/workspace/experiments/scillm/.env",
+  "token_recorded": false
+}

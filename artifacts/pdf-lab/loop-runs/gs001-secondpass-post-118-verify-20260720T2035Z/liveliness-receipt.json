@@ -1,0 +1,10 @@
+{
+  "name": "liveliness",
+  "url": "http://localhost:4001/health/liveliness",
+  "status": 200,
+  "elapsed_s": 0.023,
+  "ok": true,
+  "body_preview": "{\"status\":\"ok\"}",
+  "auth_source": "env_file:/home/graham/workspace/experiments/scillm/.env",
+  "token_recorded": false
+}

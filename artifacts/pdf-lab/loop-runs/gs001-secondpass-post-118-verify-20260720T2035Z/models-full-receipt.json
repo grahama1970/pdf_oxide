@@ -1,0 +1,1055 @@
+{
+  "schema_version": "pdf_lab.scillm_models_receipt.v1",
+  "mocked": false,
+  "live": true,
+  "auth_source": "env_file:/home/graham/workspace/experiments/scillm/.env",
+  "token_recorded": false,
+  "url": "http://localhost:4001/v1/scillm/models",
+  "status": 200,
+  "elapsed_s": 0.067,
+  "ok": true,
+  "body": {
+    "groups": {
+      "deepseek-direct": {
+        "deployments": 1,
+        "models": [
+          "deepseek-chat"
+        ]
+      },
+      "gemini-flash-oauth": {
+        "deployments": 1,
+        "models": [
+          "gemini-2.5-flash"
+        ]
+      },
+      "claude-sonnet": {
+        "deployments": 1,
+        "models": [
+          "claude-sonnet-4-6"
+        ]
+      },
+      "claude-sonnet-high": {
+        "deployments": 1,
+        "models": [
+          "claude-sonnet-4-6"
+        ]
+      },
+      "claude-sonnet-5": {
+        "deployments": 1,
+        "models": [
+          "claude-sonnet-5"
+        ]
+      },
+      "claude-fable": {
+        "deployments": 1,
+        "models": [
+          "claude-fable-5"
+        ]
+      },
+      "claude-opus": {
+        "deployments": 1,
+        "models": [
+          "claude-opus-4-6"
+        ]
+      },
+      "claude-opus-high": {
+        "deployments": 1,
+        "models": [
+          "claude-opus-4-8"
+        ]
+      },
+      "claude-haiku": {
+        "deployments": 1,
+        "models": [
+          "claude-haiku-4-5-20251001"
+        ]
+      },
+      "gemini-flash": {
+        "deployments": 1,
+        "models": [
+          "gemini-2.5-flash"
+        ]
+      },
+      "gemini-flash-free2": {
+        "deployments": 1,
+        "models": [
+          "gemini-2.5-flash"
+        ]
+      },
+      "gemini-flash-paid": {
+        "deployments": 1,
+        "models": [
+          "gemini-2.5-flash"
+        ]
+      },
+      "gemini-flash-high": {
+        "deployments": 1,
+        "models": [
+          "gemini-3-flash-preview"
+        ]
+      },
+      "gemini-flash-high-free2": {
+        "deployments": 1,
+        "models": [
+          "gemini-3-flash-preview"
+        ]
+      },
+      "gemini-flash-high-paid": {
+        "deployments": 1,
+        "models": [
+          "gemini-3-flash-preview"
+        ]
+      },
+      "vlm": {
+        "deployments": 1,
+        "models": [
+          "gemini-2.5-flash"
+        ]
+      },
+      "vlm-free2": {
+        "deployments": 1,
+        "models": [
+          "gemini-2.5-flash"
+        ]
+      },
+      "vlm-paid": {
+        "deployments": 1,
+        "models": [
+          "gemini-2.5-flash"
+        ]
+      },
+      "codex-vision": {
+        "deployments": 1,
+        "models": [
+          "gpt-5.5"
+        ]
+      },
+      "gpt-5.5": {
+        "deployments": 1,
+        "models": [
+          "gpt-5.5"
+        ]
+      },
+      "vlm-openrouter": {
+        "deployments": 1,
+        "models": [
+          "anthropic/claude-sonnet-4"
+        ]
+      },
+      "local-text": {
+        "deployments": 1,
+        "models": [
+          "qwen2.5:0.5b"
+        ]
+      },
+      "zai-glm": {
+        "deployments": 1,
+        "models": [
+          "glm-5.1"
+        ]
+      },
+      "zai-glm-4": {
+        "deployments": 1,
+        "models": [
+          "glm-4.7"
+        ]
+      },
+      "moonshot-text": {
+        "deployments": 1,
+        "models": [
+          "kimi-k2.6"
+        ]
+      },
+      "embedding": {
+        "deployments": 1,
+        "models": [
+          "all-MiniLM-L6-v2"
+        ],
+        "endpoint": "http://127.0.0.1:8602"
+      }
+    },
+    "aliases": {
+      "Qwen/Qwen3-VL-235B-A22B-Instruct": "vlm",
+      "Qwen/Qwen2.5-VL-72B-Instruct": "vlm",
+      "Qwen/Qwen2.5-VL-32B-Instruct": "vlm",
+      "gpt-4o": "local-text",
+      "oc-kimi": "opencode-go/kimi-k2.6",
+      "oc-glm": "opencode-go/glm-5.1",
+      "oc-qwen": "opencode-go/qwen3.6-plus",
+      "oc-deepseek": "opencode-go/deepseek-v4-flash",
+      "claude": "claude-sonnet",
+      "sonnet": "claude-sonnet",
+      "fable": "claude-fable",
+      "opus": "claude-opus",
+      "haiku": "claude-haiku",
+      "claude-sonnet-5": "claude-sonnet-5",
+      "claude-fable-5": "claude-fable",
+      "claude-sonnet-4-6": "claude-sonnet",
+      "claude-opus-4-5": "claude-opus",
+      "claude-opus-4-6": "claude-opus",
+      "claude-opus-4-8": "claude-opus-high",
+      "claude-haiku-4-5-20251001": "claude-haiku",
+      "gemini": "gemini-flash",
+      "gemini-3": "gemini-flash-high"
+    },
+    "models": {
+      "Qwen/Qwen2.5-VL-32B-Instruct": {
+        "kind": "alias",
+        "selectable": false,
+        "review_fanout_default": false,
+        "target": "vlm",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "Qwen/Qwen2.5-VL-72B-Instruct": {
+        "kind": "alias",
+        "selectable": false,
+        "review_fanout_default": false,
+        "target": "vlm",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "Qwen/Qwen3-VL-235B-A22B-Instruct": {
+        "kind": "alias",
+        "selectable": false,
+        "review_fanout_default": false,
+        "target": "vlm",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-sonnet",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-fable": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-fable-5": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-fable",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-haiku": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-haiku-4-5-20251001": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-haiku",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-opus": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-opus-4-5": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-opus",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-opus-4-6": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-opus",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-opus-4-8": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-opus-high",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-opus-high": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-sonnet": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-sonnet-4-6": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-sonnet",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-sonnet-5": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "claude-sonnet-high": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "codex-vision": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "deepseek-direct": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "fable": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-fable",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gemini": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "gemini-flash",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gemini-3": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "gemini-flash-high",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gemini-flash": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gemini-flash-free2": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gemini-flash-high": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gemini-flash-high-free2": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gemini-flash-high-paid": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gemini-flash-oauth": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gemini-flash-paid": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gpt-4o": {
+        "kind": "alias",
+        "selectable": false,
+        "review_fanout_default": false,
+        "target": "local-text",
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "gpt-5.5": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": true,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": true,
+          "image_generation": true,
+          "streaming": false,
+          "tools": false
+        }
+      },
+      "gpt-image-1": {
+        "kind": "image_generation",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "gpt-image-1",
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": true,
+          "image_generation": true,
+          "streaming": false,
+          "tools": false
+        }
+      },
+      "gpt-image-1-mini": {
+        "kind": "image_generation",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "gpt-image-1-mini",
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": true,
+          "image_generation": true,
+          "streaming": false,
+          "tools": false
+        }
+      },
+      "gpt-image-1.5": {
+        "kind": "image_generation",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "gpt-image-1.5",
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": true,
+          "image_generation": true,
+          "streaming": false,
+          "tools": false
+        }
+      },
+      "gpt-image-2": {
+        "kind": "image_generation",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "gpt-image-2",
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": true,
+          "image_generation": true,
+          "streaming": false,
+          "tools": false
+        }
+      },
+      "haiku": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-haiku",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "local-text": {
+        "kind": "group",
+        "selectable": false,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "moonshot-text": {
+        "kind": "group",
+        "selectable": false,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "oc-deepseek": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": true,
+        "target": "opencode-go/deepseek-v4-flash",
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "oc-glm": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": true,
+        "target": "opencode-go/glm-5.1",
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "oc-kimi": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": true,
+        "target": "opencode-go/kimi-k2.6",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "oc-qwen": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": true,
+        "target": "opencode-go/qwen3.6-plus",
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "opus": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-opus",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "sonnet": {
+        "kind": "alias",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "claude-sonnet",
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "vlm": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "vlm-free2": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "vlm-openrouter": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "vlm-paid": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": true,
+          "pdf_input": true,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "z-image-turbo": {
+        "kind": "image_generation",
+        "selectable": true,
+        "review_fanout_default": false,
+        "target": "chutes-z-image-turbo",
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": true,
+          "image_generation": true,
+          "streaming": false,
+          "tools": false
+        }
+      },
+      "zai-glm": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      },
+      "zai-glm-4": {
+        "kind": "group",
+        "selectable": true,
+        "review_fanout_default": false,
+        "deployments": 1,
+        "capabilities": {
+          "text_input": true,
+          "image_input": false,
+          "pdf_input": false,
+          "image_output": false,
+          "image_generation": false,
+          "streaming": true,
+          "tools": true
+        }
+      }
+    },
+    "selectable_models": [
+      "claude",
+      "claude-fable",
+      "claude-fable-5",
+      "claude-haiku",
+      "claude-haiku-4-5-20251001",
+      "claude-opus",
+      "claude-opus-4-5",
+      "claude-opus-4-6",
+      "claude-opus-4-8",
+      "claude-opus-high",
+      "claude-sonnet",
+      "claude-sonnet-4-6",
+      "claude-sonnet-5",
+      "claude-sonnet-high",
+      "codex-vision",
+      "deepseek-direct",
+      "fable",
+      "gemini",
+      "gemini-3",
+      "gemini-flash",
+      "gemini-flash-free2",
+      "gemini-flash-high",
+      "gemini-flash-high-free2",
+      "gemini-flash-high-paid",
+      "gemini-flash-oauth",
+      "gemini-flash-paid",
+      "gpt-5.5",
+      "gpt-image-1",
+      "gpt-image-1-mini",
+      "gpt-image-1.5",
+      "gpt-image-2",
+      "haiku",
+      "oc-deepseek",
+      "oc-glm",
+      "oc-kimi",
+      "oc-qwen",
+      "opus",
+      "sonnet",
+      "vlm",
+      "vlm-free2",
+      "vlm-openrouter",
+      "vlm-paid",
+      "z-image-turbo",
+      "zai-glm",
+      "zai-glm-4"
+    ],
+    "review_fanout_models": [
+      "gpt-5.5",
+      "oc-kimi",
+      "oc-glm",
+      "oc-deepseek",
+      "oc-qwen"
+    ],
+    "retired_model_prefixes": [
+      "text-"
+    ],
+    "models_dev": {
+      "included": false,
+      "advisory_only": true,
+      "source": "https://models.dev/api.json",
+      "error": null
+    },
+    "selection_contract": {
+      "review_fanout": "Use review_fanout_models for default scoped review nodes. Do not offer retired text-* aliases for review, prompt, or production DAG fanout nodes.",
+      "fallbacks": "Fallbacks must stay within the same provider family unless explicitly configured otherwise."
+    },
+    "auto_providers": {
+      "codex": {
+        "model_prefixes": [
+          "gpt-",
+          "codex-",
+          "o1",
+          "o3",
+          "o4"
+        ],
+        "examples": [
+          "gpt-5.5"
+        ],
+        "key_configured": true
+      },
+      "opencode-go": {
+        "model_prefix": "opencode-go/",
+        "models_endpoint": "/v1/scillm/opencode-go/models",
+        "key_configured": true
+      }
+    }
+  }
+}

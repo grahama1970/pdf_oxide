@@ -1,0 +1,37 @@
+{
+  "schema_version": "pdf_lab.cdp_visual_receipt.v1",
+  "mocked": false,
+  "live": true,
+  "url": "file:///home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-post-118-verify-20260720T2035Z/direct-final-pass-onecase-gemini/second_pass_cases/candidate_report.html",
+  "report_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-post-118-verify-20260720T2035Z/direct-final-pass-onecase-gemini/second_pass_cases/candidate_report.html",
+  "screenshot_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-post-118-verify-20260720T2035Z/direct-final-pass-onecase-gemini/receipts/candidate-report-playwright.png",
+  "metrics": {
+    "validation": "pass",
+    "badge": "human_triage",
+    "imgComplete": true,
+    "imageNaturalWidth": 612,
+    "imageNaturalHeight": 792,
+    "imageRect": {
+      "x": 42,
+      "y": 401.84375,
+      "width": 559.765625,
+      "height": 724.390625
+    },
+    "bboxRect": {
+      "x": 124.3125,
+      "y": 983.546875,
+      "width": 307.65625,
+      "height": 74.625
+    },
+    "articleRect": {
+      "x": 24,
+      "y": 320.359375,
+      "width": 1392,
+      "height": 1402.96875
+    },
+    "bodyTextIncludesActualJson": true,
+    "bodyTextIncludesHumanQuestion": true,
+    "scrollHeight": 1763
+  },
+  "ok": true
+}

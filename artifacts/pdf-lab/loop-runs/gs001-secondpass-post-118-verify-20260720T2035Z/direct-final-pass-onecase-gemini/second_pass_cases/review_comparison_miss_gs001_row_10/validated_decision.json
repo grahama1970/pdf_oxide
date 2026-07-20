@@ -1,0 +1,109 @@
+{
+  "schema_version": "pdf_lab.second_pass_decision.v1",
+  "case_id": "review:comparison_miss:gs001_row_10",
+  "preset_id": "pdf.unknown_region.v1",
+  "decision": "human_triage",
+  "human_triage_required": true,
+  "classification": "Expected element definition requires reclassification or correction.",
+  "confidence": "high",
+  "reason": "The `expected_json` defines `gs001:row:10` as an unknown region (type: null, text: null) at a specific bounding box `[89.99, 575.53, 514.3, 720.41]`. The `actual_json` extracts a 'Body' element at a completely different bounding box `[89.99398803710938, 74.39999389648438, 426.3714294433594, 156.0]` with distinct text. This represents a fundamental spatial and type mismatch. Crucially, the `candidate_corrected_json` explicitly recommends `RECLASSIFY` for the expected element `gs001:row:10`, indicating that the ground truth definition itself is under review. Furthermore, the provided annotated page image only shows the region of the expected bbox and does not include the region of the actual extracted content, preventing full visual verification of the actual extraction. This combination of conflicting evidence and a direct request for reclassification of the expected element necessitates human triage.",
+  "target_evidence_used": [
+    {
+      "field_path": "expected_json.bbox",
+      "fact": "Expected element `gs001:row:10` has bbox `[89.99, 575.53, 514.3, 720.41]`."
+    },
+    {
+      "field_path": "expected_json.type",
+      "fact": "Expected element `gs001:row:10` has type `null` (unknown region)."
+    },
+    {
+      "field_path": "expected_json.text",
+      "fact": "Expected element `gs001:row:10` has text `null`."
+    },
+    {
+      "field_path": "actual_json.bbox",
+      "fact": "Actual extracted element has bbox `[89.99398803710938, 74.39999389648438, 426.3714294433594, 156.0]`."
+    },
+    {
+      "field_path": "actual_json.type",
+      "fact": "Actual extracted element has type `Body`."
+    },
+    {
+      "field_path": "actual_json.text",
+      "fact": "Actual extracted element contains a long text string."
+    },
+    {
+      "field_path": "actual_json.similarity_to_comparison_text",
+      "fact": "Actual extracted text has low similarity (0.2961) to comparison text (if any was used for comparison, which is not explicitly stated for the expected null text)."
+    },
+    {
+      "field_path": "candidate_corrected_json.resolution",
+      "fact": "Candidate corrected JSON explicitly recommends `RECLASSIFY` for `gs001:row:10`."
+    },
+    {
+      "field_path": "annotated_page_image_path",
+      "fact": "Annotated page image shows the expected bbox but does not include the region of the actual extracted content."
+    }
+  ],
+  "missing_evidence": [
+    "Visual evidence for the content extracted by `actual_json` (the `actual_json.bbox` is outside the visible area of the `annotated_page_image_path`)."
+  ],
+  "validators": [
+    {
+      "validator_id": "preset_id_present",
+      "status": "pass",
+      "fact": "pdf.unknown_region.v1"
+    },
+    {
+      "validator_id": "page_present",
+      "status": "pass",
+      "fact": "page=27"
+    },
+    {
+      "validator_id": "extraction_evidence_present",
+      "status": "pass",
+      "fact": "actual_json or actual_candidates is present"
+    },
+    {
+      "validator_id": "human_triage_boundary",
+      "status": "pass",
+      "fact": "agent_resolved records do not create human work; human_triage records preserve the explicit question."
+    },
+    {
+      "validator_id": "model_decision_vocabulary",
+      "status": "pass",
+      "fact": "human_triage"
+    },
+    {
+      "validator_id": "decision_boundary_consistency",
+      "status": "pass",
+      "fact": "human_triage_required=True"
+    }
+  ],
+  "table_merge_review": {
+    "merge_decision": "not_applicable",
+    "primary_table_metrics": null,
+    "adjacent_table_metrics_considered": [],
+    "visual_evidence_used": [],
+    "reason": "This case does not involve table merge, split, or continuation questions."
+  },
+  "human_question": "The `expected_json` defines `gs001:row:10` as an unknown region (type: null, text: null) at a specific bbox. However, the extractor found a 'Body' element at a completely different location. The `candidate_corrected_json` explicitly suggests `RECLASSIFY` for `gs001:row:10`. What should `gs001:row:10` represent (e.g., a specific element type, a different bbox, or should it be removed)? Additionally, please provide an annotated page image that includes the region of the actual extracted content for full verification.",
+  "recommended_engine_fix": null,
+  "proposed_json_delta": {
+    "before": {
+      "id": "gs001:row:10",
+      "reviewStatus": "unresolved",
+      "reason": "type_mismatch"
+    },
+    "after": {
+      "id": "gs001:row:10",
+      "reviewStatus": "verified",
+      "resolution": "RECLASSIFY"
+    }
+  },
+  "fixture_candidate": {
+    "enabled": false,
+    "fixture_family": null,
+    "reason": "Cannot create a fixture until the correct definition and classification of the expected element `gs001:row:10` are determined by human review."
+  }
+}
