@@ -1,0 +1,9 @@
+{
+  "schema_version": "pdf_lab.tau_scillm_auth_discovery.v1",
+  "status": "pass",
+  "token_found": true,
+  "source": "env_file:/home/graham/workspace/experiments/scillm/.env",
+  "mocked": false,
+  "live": false,
+  "token_value_recorded": false
+}

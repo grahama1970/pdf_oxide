@@ -1,0 +1,9 @@
+{
+  "delegate_artifact_dir": null,
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/full-extraction-baseline.json",
+  "notes": "Replay after pdf-lab actual_json fallback repair; live model may still block on SciLLM auth.",
+  "output_root": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/second-pass-onecase",
+  "pdf_lab_dir": "/home/graham/workspace/experiments/agent-skills/skills/pdf-lab",
+  "schema_version": "pdf_lab.runtime_manifest.v1",
+  "second_pass_model": "gpt-4.1"
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "case_id": "review:comparison_miss:gs001_row_10",
+    "source_kind": "human_triage",
+    "preset_id": "pdf.unknown_region.v1",
+    "decision": "blocker",
+    "human_triage_required": true,
+    "artifact_dir": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10",
+    "input_payload": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/input_payload.json",
+    "system_prompt": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/system_prompt.txt",
+    "user_prompt": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/user_prompt.txt",
+    "full_prompt": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/full_prompt.txt",
+    "full_prompt_payload": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/full_prompt_payload.json",
+    "model_response": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/model_response.json",
+    "validated_decision": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/validated_decision.json",
+    "validation_result": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/validation_result.json",
+    "prompt_bundle_zip": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/prompt_payload_bundle.zip"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "schema_version": "pdf_lab.second_pass_model_response.v1",
+  "transport": "scillm_chat_completions",
+  "model": "claude-haiku",
+  "endpoint": "http://localhost:4001/v1/chat/completions",
+  "error": "",
+  "parsed_json": null
+}

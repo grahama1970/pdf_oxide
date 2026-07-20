@@ -1,0 +1,40 @@
+{
+  "schema_version": "pdf_lab.second_pass_candidate_evidence_audit.v1",
+  "created_at": "2026-07-20T16:41:47Z",
+  "source_pdf": "golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf",
+  "summary": {
+    "case_count": 1,
+    "expected_json_present": 1,
+    "actual_json_present": 1,
+    "actual_candidate_present": 1,
+    "extraction_evidence_present": 1,
+    "bbox_present": 1,
+    "page_image_rendered": 1,
+    "annotated_in_report": 1,
+    "prompt_files_present": 1,
+    "human_triage_required": 1,
+    "table_metrics_present": 0,
+    "table_merge_candidates": 0
+  },
+  "cases": [
+    {
+      "case_id": "review:comparison_miss:gs001_row_10",
+      "page": 27,
+      "preset_id": "pdf.unknown_region.v1",
+      "decision": "blocker",
+      "human_triage_required": true,
+      "expected_json_present": true,
+      "actual_json_present": true,
+      "actual_candidate_count": 1,
+      "actual_element_id": "f1503c5b0897f9658f34ca038d99919e",
+      "bbox_present": true,
+      "bbox_normalized": true,
+      "page_image_rendered": true,
+      "annotated_in_report": true,
+      "prompt_files_present": true,
+      "validation_status": "blocked",
+      "table_metrics_present": false,
+      "table_merge_candidate_count": 0
+    }
+  ]
+}

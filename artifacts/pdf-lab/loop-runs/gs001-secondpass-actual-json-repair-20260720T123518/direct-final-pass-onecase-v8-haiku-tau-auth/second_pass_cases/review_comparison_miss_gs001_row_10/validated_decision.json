@@ -1,0 +1,76 @@
+{
+  "schema_version": "pdf_lab.second_pass_decision.v1",
+  "case_id": "review:comparison_miss:gs001_row_10",
+  "preset_id": "pdf.unknown_region.v1",
+  "decision": "blocker",
+  "human_triage_required": true,
+  "classification": "second_pass_model_failure",
+  "confidence": "low",
+  "reason": "Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.",
+  "target_evidence_used": [
+    {
+      "field_path": "actual_json.id",
+      "fact": "Actual element ID is f1503c5b0897f9658f34ca038d99919e."
+    },
+    {
+      "field_path": "actual_json.type",
+      "fact": "Actual element type is Body."
+    },
+    {
+      "field_path": "actual_json.bbox",
+      "fact": "Actual element includes a bbox."
+    },
+    {
+      "field_path": "known_visual_facts",
+      "fact": "Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False."
+    }
+  ],
+  "missing_evidence": [],
+  "validators": [
+    {
+      "validator_id": "preset_id_present",
+      "status": "pass",
+      "fact": "pdf.unknown_region.v1"
+    },
+    {
+      "validator_id": "page_present",
+      "status": "pass",
+      "fact": "page=27"
+    },
+    {
+      "validator_id": "extraction_evidence_present",
+      "status": "pass",
+      "fact": "actual_json or actual_candidates is present"
+    },
+    {
+      "validator_id": "human_triage_boundary",
+      "status": "pass",
+      "fact": "agent_resolved records do not create human work; human_triage records preserve the explicit question."
+    },
+    {
+      "validator_id": "model_json_parse",
+      "status": "blocked",
+      "fact": "model did not return parseable JSON object"
+    }
+  ],
+  "table_merge_review": null,
+  "human_question": "Second-pass model response was unavailable or invalid; inspect prompt payload and deterministic extraction evidence.",
+  "recommended_engine_fix": null,
+  "proposed_json_delta": {
+    "before": {
+      "id": "gs001:row:10",
+      "reviewStatus": "unresolved",
+      "reason": "type_mismatch"
+    },
+    "after": {
+      "id": "gs001:row:10",
+      "reviewStatus": "verified",
+      "resolution": "RECLASSIFY"
+    }
+  },
+  "fixture_candidate": {
+    "enabled": false,
+    "fixture_family": null,
+    "reason": null
+  }
+}

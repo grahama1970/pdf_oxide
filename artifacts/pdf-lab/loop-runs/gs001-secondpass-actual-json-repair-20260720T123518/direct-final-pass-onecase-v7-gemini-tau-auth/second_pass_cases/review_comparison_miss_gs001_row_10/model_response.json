@@ -1,0 +1,9 @@
+{
+  "schema_version": "pdf_lab.second_pass_model_response.v1",
+  "transport": "scillm_chat_completions",
+  "model": "gemini-flash",
+  "endpoint": "http://localhost:4001/v1/chat/completions",
+  "error": "HTTP 504",
+  "error_body": "{\"error\":{\"message\":\"Request timed out after 120.0s\",\"type\":\"timeout_error\",\"code\":504,\"advice\":\"Request timed out. Use timeout=60-120s for LLM calls. If batch processing, reduce concurrency with CHUNK_SIZE=4.\",\"skill\":\"/best-practices-scillm\",\"details\":{\"caller\":\"pdf-lab\",\"item_id\":\"review:comparison_miss:gs001_row_10\",\"batch_id\":\"pdf-lab-second-pass\",\"provider\":\"gemini\",\"model\":\"vlm\",\"elapsed_ms\":119999,\"timeout_s\":120.0,\"cascade_attempts\":0,\"final_provider_error\":\"\"}}}",
+  "parsed_json": null
+}

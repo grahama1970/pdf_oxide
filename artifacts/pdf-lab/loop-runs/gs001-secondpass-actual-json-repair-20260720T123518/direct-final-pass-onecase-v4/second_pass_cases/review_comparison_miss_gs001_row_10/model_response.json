@@ -1,0 +1,9 @@
+{
+  "schema_version": "pdf_lab.second_pass_model_response.v1",
+  "transport": "scillm_chat_completions",
+  "model": "gpt-4.1",
+  "endpoint": "http://localhost:4001/v1/chat/completions",
+  "error": "HTTP 401",
+  "error_body": "{\"error\":{\"message\":\"Invalid API key\",\"type\":\"authentication_error\",\"code\":401,\"advice\":\"Auth failed. Use 'Authorization: Bearer sk-dev-proxy-123' header. Check that the scillm proxy is running on :4001.\",\"skill\":\"/best-practices-scillm\"}}",
+  "parsed_json": null
+}

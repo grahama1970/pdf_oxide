@@ -1,0 +1,127 @@
+{
+  "schema_version": "pdf_lab.second_pass_full_prompt_payload.v1",
+  "case_id": "review:comparison_miss:gs001_row_10",
+  "preset_id": "pdf.unknown_region.v1",
+  "system_prompt": "# RATIONALE (not sent to LLM)\n# Purpose: Classify one PDF extraction evidence case into agent_resolved, human_triage, fixture_candidate, or blocker.\n# Consumer: pdf-lab final-pass writes agent_resolved_findings, pdf_element_notes, human_triage_queue, and fixture candidates.\n# Why this matters: Bad output creates unnecessary human triage cards or hides real extractor defects.\n# Input: One JSON payload with case_id, preset_id, page evidence paths, expected_json, actual_json or actual_candidates, candidate_corrected_json, and provenance.\n# Output: One JSON object matching the schema in second_pass/global_user.txt.\n# Last reviewed: 2026-05-07 by project agent.\n\nYou are the PDF Lab second-pass evidence gate.\n\nTask: Decide whether one PDF extraction case is resolved by artifacts, requires human triage, should become a fixture candidate, or is blocked by missing evidence.\n\nSafety and evidence boundary:\n- Use only the supplied payload fields and referenced artifact paths.\n- Do not invent text, cells, rows, captions, page numbers, bbox coordinates, file paths, or relationships.\n- Do not ask a human to decide facts already proven by target evidence.\n- Do not create human work from raw `pdf_oxide.extract_tables` output alone.\n- If required target evidence is missing, return `decision: \"blocker\"`.\n\nTarget evidence means:\n- original page image path\n- annotated page image path or crop image path\n- actual deterministic extraction JSON, or actual candidate extractions linked from the deterministic output for expected-side comparison misses\n- candidate corrected JSON when present\n- bbox, page, element ID, and provenance paths supplied in the payload\n\nTechnique evidence means generic knowledge about PDFs, tables, charts, captions, equations, or extraction heuristics. Technique evidence may explain validation rules, but it may not justify a human triage card by itself.\n\nClosed decision vocabulary:\n- `agent_resolved`\n- `human_triage`\n- `fixture_candidate`\n- `blocker`\n\nHuman triage rule:\nReturn `human_triage` only when the supplied artifacts contain a concrete unresolved conflict that cannot be resolved by the selected preset validators.\n\nExpected-side comparison miss rule:\nIf `actual_json` is null but `actual_candidates[]` is non-empty, treat `actual_candidates[]` as deterministic extraction evidence. Do not return blocker solely because `actual_json` is null in that case.\n\nTable-specific hard rule:\nIf the visible evidence shows a table header plus one data row and the actual JSON captures that visible table object, do not ask whether it is a real table. Return `agent_resolved` unless the payload proves visible content is cut off or candidate corrected JSON conflicts with actual JSON.\n\nTable-merge hard rule:\nFor table merge, continuation, rowspan, colspan, or split-table questions, use the attached annotated page images and `table_merge_review` metrics together. Do not ask a human whether two table regions should merge unless:\n- both relevant page/table images are supplied or explicitly unavailable,\n- extracted shape/data-quality metrics are supplied for the primary and adjacent table candidates,\n- the selected table preset validators cannot determine whether this is one logical table, separate tables, or an extractor/preset backlog item.\nIf metrics and images are sufficient, return `agent_resolved` or `fixture_candidate` with a deterministic engine/preset recommendation.\n\nOutput rule:\nReturn only one JSON object. Do not return markdown, commentary, headings, or prose outside JSON.\n",
+  "user_prompt": "# RATIONALE (not sent to LLM)\n# Purpose: User-message template for one PDF Lab second-pass evidence case.\n# Consumer: scillm or equivalent model call invoked by pdf-lab final-pass/prompt review harness.\n# Why this matters: The payload must be stable enough to review, replay, and turn into fixtures.\n# Input: CASE_PAYLOAD JSON inserted below.\n# Output: JSON matching the exact schema at the end of this file.\n# Last reviewed: 2026-05-07 by project agent.\n\nGiven `CASE_PAYLOAD`, apply the selected element preset and return the second-pass decision.\n\nEvidence classification:\n1. Target evidence: supplied artifact paths, expected JSON, actual JSON, actual candidate extractions, candidate corrected JSON, bbox, page, element ID, and provenance.\n2. Technique evidence: element-type rules from the selected preset.\n3. Missing evidence: required preset inputs absent from `CASE_PAYLOAD`.\n\nRules:\n- Recommend human triage only when target evidence contains an unresolved conflict.\n- Do not cite the selected preset as target evidence.\n- Do not infer missing rows, cells, values, captions, or section relationships.\n- Do not ask bbox-expansion questions unless visible content is cut off or candidate corrected JSON proves a mismatch.\n- For table merge/split/continuation questions, use `table_merge_review.primary_table_metrics`, `table_merge_review.adjacent_table_candidates[]`, and all supplied annotated page images before deciding. Do not escalate to a human if the metrics and images support a deterministic separate/merge/backlog classification.\n- If `actual_json` is null but `actual_candidates[]` is non-empty, evaluate the candidate extraction evidence instead of returning blocker for missing `actual_json`.\n- Use real JSON types: booleans as true/false, integers as numbers, arrays as arrays, null as null.\n\nCASE_PAYLOAD:\n```json\n{\n  \"schema_version\": \"pdf_lab.second_pass_case_payload.v1\",\n  \"case_id\": \"review:comparison_miss:gs001_row_10\",\n  \"source_kind\": \"human_triage\",\n  \"preset_id\": \"pdf.unknown_region.v1\",\n  \"page\": 27,\n  \"element_id\": \"gs001:row:10\",\n  \"original_page_image_path\": \"/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v8-haiku-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/page_27.png\",\n  \"annotated_page_image_path\": \"/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v8-haiku-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/page_27_annotated.png\",\n  \"expected_json\": {\n    \"id\": \"gs001:row:10\",\n    \"page\": 27,\n    \"type\": null,\n    \"bbox\": [\n      89.99,\n      575.53,\n      514.3,\n      720.41\n    ],\n    \"text\": null,\n    \"source\": \"agentic_expected_oracle\"\n  },\n  \"actual_json\": {\n    \"id\": \"f1503c5b0897f9658f34ca038d99919e\",\n    \"page\": 27,\n    \"type\": \"Body\",\n    \"bbox\": [\n      89.99398803710938,\n      74.39999389648438,\n      426.3714294433594,\n      156.0\n    ],\n    \"text\": \"1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].\",\n    \"source\": \"pdf_lab.candidate_text_match\",\n    \"similarity_to_comparison_text\": 0.2961,\n    \"raw\": null,\n    \"selection_reason\": \"best_text_match_for_second_pass_case\"\n  },\n  \"actual_candidates\": [\n    {\n      \"id\": \"f1503c5b0897f9658f34ca038d99919e\",\n      \"page\": 27,\n      \"type\": \"Body\",\n      \"bbox\": [\n        89.99398803710938,\n        74.39999389648438,\n        426.3714294433594,\n        156.0\n      ],\n      \"text\": \"1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].\",\n      \"source\": null,\n      \"similarity_to_comparison_text\": 0.2961,\n      \"raw\": null\n    }\n  ],\n  \"candidate_corrected_json\": {\n    \"id\": \"gs001:row:10\",\n    \"reviewStatus\": \"verified\",\n    \"resolution\": \"RECLASSIFY\"\n  },\n  \"known_visual_facts\": [\n    \"Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.\",\n    \"This record is escalated to human triage after deterministic filters did not resolve it.\"\n  ],\n  \"provenance\": {\n    \"source_pdf\": \"golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf\",\n    \"source_extraction\": null,\n    \"created_by\": \"pdf-lab.final-agent-pass\",\n    \"deterministic_record\": \"review:comparison_miss:gs001_row_10\"\n  }\n}\n```\n\nReturn this exact JSON shape:\n```json\n{\n  \"schema_version\": \"pdf_lab.second_pass_decision.v1\",\n  \"case_id\": \"string\",\n  \"preset_id\": \"string\",\n  \"decision\": \"agent_resolved|human_triage|fixture_candidate|blocker\",\n  \"human_triage_required\": true,\n  \"classification\": \"string\",\n  \"confidence\": \"low|medium|high\",\n  \"reason\": \"string\",\n  \"target_evidence_used\": [\n    {\n      \"field_path\": \"string\",\n      \"fact\": \"string\"\n    }\n  ],\n  \"missing_evidence\": [\"string\"],\n  \"validators\": [\n    {\n      \"validator_id\": \"string\",\n      \"status\": \"pass|fail|blocked\",\n      \"fact\": \"string\"\n    }\n  ],\n  \"table_merge_review\": {\n    \"merge_decision\": \"merge|separate|not_applicable|blocked|null\",\n    \"primary_table_metrics\": \"object|null\",\n    \"adjacent_table_metrics_considered\": [],\n    \"visual_evidence_used\": [],\n    \"reason\": \"string|null\"\n  },\n  \"human_question\": null,\n  \"recommended_engine_fix\": null,\n  \"proposed_json_delta\": null,\n  \"fixture_candidate\": {\n    \"enabled\": false,\n    \"fixture_family\": null,\n    \"reason\": null\n  }\n}\n```\n",
+  "element_preset": {
+    "schema_version": "pdf_lab.element_preset.v1",
+    "required_inputs": [
+      "case_id",
+      "page",
+      "element_id",
+      "original_page_image_path",
+      "annotated_page_image_path",
+      "actual_json_or_actual_candidates",
+      "provenance"
+    ],
+    "common_validators": [
+      "artifact_paths_exist",
+      "extraction_evidence_present",
+      "no_invented_text",
+      "page_matches_element_page"
+    ],
+    "decision_outputs": [
+      "agent_resolved",
+      "human_triage",
+      "fixture_candidate",
+      "blocker"
+    ],
+    "preset_id": "pdf.unknown_region.v1",
+    "element_type": "unknown_region",
+    "required_outputs": [
+      "region_id",
+      "page",
+      "bbox",
+      "possible_element_types",
+      "why_unknown",
+      "blocked_outputs",
+      "safe_next_action",
+      "evidence"
+    ],
+    "validators": [
+      "no_structured_extraction_when_unknown",
+      "possible_types_from_closed_vocabulary",
+      "blocking_evidence_listed"
+    ],
+    "human_triage_gate": "Escalate with one narrow question only after artifact blockers are listed.",
+    "rendering_contract": [
+      "show_original_page",
+      "show_annotated_page_or_crop",
+      "show_actual_json_or_actual_candidates",
+      "show_candidate_corrected_json_or_null",
+      "show_validator_results"
+    ]
+  },
+  "case_payload": {
+    "schema_version": "pdf_lab.second_pass_case_payload.v1",
+    "case_id": "review:comparison_miss:gs001_row_10",
+    "source_kind": "human_triage",
+    "preset_id": "pdf.unknown_region.v1",
+    "page": 27,
+    "element_id": "gs001:row:10",
+    "original_page_image_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v8-haiku-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/page_27.png",
+    "annotated_page_image_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v8-haiku-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/page_27_annotated.png",
+    "expected_json": {
+      "id": "gs001:row:10",
+      "page": 27,
+      "type": null,
+      "bbox": [
+        89.99,
+        575.53,
+        514.3,
+        720.41
+      ],
+      "text": null,
+      "source": "agentic_expected_oracle"
+    },
+    "actual_json": {
+      "id": "f1503c5b0897f9658f34ca038d99919e",
+      "page": 27,
+      "type": "Body",
+      "bbox": [
+        89.99398803710938,
+        74.39999389648438,
+        426.3714294433594,
+        156.0
+      ],
+      "text": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].",
+      "source": "pdf_lab.candidate_text_match",
+      "similarity_to_comparison_text": 0.2961,
+      "raw": null,
+      "selection_reason": "best_text_match_for_second_pass_case"
+    },
+    "actual_candidates": [
+      {
+        "id": "f1503c5b0897f9658f34ca038d99919e",
+        "page": 27,
+        "type": "Body",
+        "bbox": [
+          89.99398803710938,
+          74.39999389648438,
+          426.3714294433594,
+          156.0
+        ],
+        "text": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].",
+        "source": null,
+        "similarity_to_comparison_text": 0.2961,
+        "raw": null
+      }
+    ],
+    "candidate_corrected_json": {
+      "id": "gs001:row:10",
+      "reviewStatus": "verified",
+      "resolution": "RECLASSIFY"
+    },
+    "known_visual_facts": [
+      "Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.",
+      "This record is escalated to human triage after deterministic filters did not resolve it."
+    ],
+    "provenance": {
+      "source_pdf": "golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf",
+      "source_extraction": null,
+      "created_by": "pdf-lab.final-agent-pass",
+      "deterministic_record": "review:comparison_miss:gs001_row_10"
+    }
+  }
+}

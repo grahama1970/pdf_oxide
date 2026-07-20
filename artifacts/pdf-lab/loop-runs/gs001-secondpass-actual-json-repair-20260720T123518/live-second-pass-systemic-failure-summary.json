@@ -1,0 +1,119 @@
+{
+  "schema_version": "pdf_lab.live_second_pass_systemic_failure.v1",
+  "status": "blocked_by_systemic_failure",
+  "mocked": false,
+  "live": true,
+  "family": "GS001 one-case live model-backed second-pass",
+  "common_gate": "model_json_parse",
+  "latest_failure_signature": "live scillm chat completion returned no parseable second-pass JSON",
+  "counts": {
+    "passed": 0,
+    "failed": 3,
+    "blocked_by_systemic_failure": 1,
+    "not_run": 0
+  },
+  "what_passed_before_model": {
+    "expected_json_present": true,
+    "actual_json_present": true,
+    "actual_candidate_present": true,
+    "extraction_evidence_present": true,
+    "bbox_normalized": true,
+    "page_image_rendered": true,
+    "annotated_in_report": true,
+    "prompt_bundle_zip_present": true,
+    "tau_auth_discovery_used": true
+  },
+  "representative_attempts": [
+    {
+      "attempt": "v6-gpt41-tau-auth",
+      "artifact_dir": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v6-tau-auth",
+      "model": "gpt-4.1",
+      "validation_status": "blocked",
+      "blocked_checks": [
+        {
+          "validator_id": "model_json_parse",
+          "status": "blocked",
+          "fact": "HTTP 504"
+        }
+      ],
+      "model_error": "HTTP 504",
+      "model_error_body": "{\"error\":{\"message\":\"Request timed out after 120.0s\",\"type\":\"timeout_error\",\"code\":504,\"advice\":\"Request timed out. Use timeout=60-120s for LLM calls. If batch processing, reduce concurrency with CHUNK_SIZE=4.\",\"skill\":\"/best-practices-scillm\",\"details\":{\"caller\":\"pdf-lab\",\"item_id\":\"review:comparison_miss:gs001_row_10\",\"batch_id\":\"pdf-lab-second-pass\",\"provider\":\"default\",\"model\":\"gpt-4.1\",\"elapsed_ms\":120000,\"timeout_s\":120.0,\"cascade_attempts\":0,\"final_provider_error\":\"\"}}}",
+      "parsed_json_present": false,
+      "evidence_summary": {
+        "case_count": 1,
+        "expected_json_present": 1,
+        "actual_json_present": 1,
+        "actual_candidate_present": 1,
+        "extraction_evidence_present": 1,
+        "bbox_present": 1,
+        "page_image_rendered": 1,
+        "annotated_in_report": 1,
+        "prompt_files_present": 1,
+        "human_triage_required": 1,
+        "table_metrics_present": 0,
+        "table_merge_candidates": 0
+      }
+    },
+    {
+      "attempt": "v7-gemini-tau-auth",
+      "artifact_dir": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth",
+      "model": "gemini-flash",
+      "validation_status": "blocked",
+      "blocked_checks": [
+        {
+          "validator_id": "model_json_parse",
+          "status": "blocked",
+          "fact": "HTTP 504"
+        }
+      ],
+      "model_error": "HTTP 504",
+      "model_error_body": "{\"error\":{\"message\":\"Request timed out after 120.0s\",\"type\":\"timeout_error\",\"code\":504,\"advice\":\"Request timed out. Use timeout=60-120s for LLM calls. If batch processing, reduce concurrency with CHUNK_SIZE=4.\",\"skill\":\"/best-practices-scillm\",\"details\":{\"caller\":\"pdf-lab\",\"item_id\":\"review:comparison_miss:gs001_row_10\",\"batch_id\":\"pdf-lab-second-pass\",\"provider\":\"gemini\",\"model\":\"vlm\",\"elapsed_ms\":119999,\"timeout_s\":120.0,\"cascade_attempts\":0,\"final_provider_error\":\"\"}}}",
+      "parsed_json_present": false,
+      "evidence_summary": {
+        "case_count": 1,
+        "expected_json_present": 1,
+        "actual_json_present": 1,
+        "actual_candidate_present": 1,
+        "extraction_evidence_present": 1,
+        "bbox_present": 1,
+        "page_image_rendered": 1,
+        "annotated_in_report": 1,
+        "prompt_files_present": 1,
+        "human_triage_required": 1,
+        "table_metrics_present": 0,
+        "table_merge_candidates": 0
+      }
+    },
+    {
+      "attempt": "v8-haiku-tau-auth",
+      "artifact_dir": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v8-haiku-tau-auth",
+      "model": "claude-haiku",
+      "validation_status": "blocked",
+      "blocked_checks": [
+        {
+          "validator_id": "model_json_parse",
+          "status": "blocked",
+          "fact": "model did not return parseable JSON object"
+        }
+      ],
+      "model_error": "",
+      "model_error_body": null,
+      "parsed_json_present": false,
+      "evidence_summary": {
+        "case_count": 1,
+        "expected_json_present": 1,
+        "actual_json_present": 1,
+        "actual_candidate_present": 1,
+        "extraction_evidence_present": 1,
+        "bbox_present": 1,
+        "page_image_rendered": 1,
+        "annotated_in_report": 1,
+        "prompt_files_present": 1,
+        "human_triage_required": 1,
+        "table_metrics_present": 0,
+        "table_merge_candidates": 0
+      }
+    }
+  ],
+  "stop_rule": "Stopped after three representative live model-backed attempts failed the same second-pass model_json_parse gate family."
+}

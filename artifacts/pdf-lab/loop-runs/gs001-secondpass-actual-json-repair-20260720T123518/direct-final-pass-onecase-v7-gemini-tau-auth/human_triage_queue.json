@@ -1,0 +1,408 @@
+{
+  "schema_version": "pdf-lab.human-triage-queue.v1",
+  "source_pdf": "golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf",
+  "source_extraction": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/full-extraction-baseline.json",
+  "source_comparison": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/cmp-baseline/comparison.json",
+  "created_at": "2026-07-20T16:54:37Z",
+  "engine": "pdf-lab.final-agent-pass",
+  "document_family_preset": null,
+  "page_count": 492,
+  "task_count": 6,
+  "summary": {
+    "tasks_by_kind": {
+      "comparison_miss": 5,
+      "second_pass_model_failure": 1
+    },
+    "tasks_by_severity": {
+      "high": 6
+    },
+    "pages_with_tasks": 1
+  },
+  "agent_resolved_findings": [],
+  "agent_resolved_summary": {
+    "finding_count": 0,
+    "findings_by_kind": {},
+    "findings_by_severity": {}
+  },
+  "second_pass_prompt_cases": [
+    {
+      "case_id": "review:comparison_miss:gs001_row_10",
+      "source_kind": "human_triage",
+      "preset_id": "pdf.unknown_region.v1",
+      "decision": "blocker",
+      "human_triage_required": true,
+      "artifact_dir": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10",
+      "input_payload": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/input_payload.json",
+      "system_prompt": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/system_prompt.txt",
+      "user_prompt": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/user_prompt.txt",
+      "full_prompt": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/full_prompt.txt",
+      "full_prompt_payload": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/full_prompt_payload.json",
+      "model_response": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/model_response.json",
+      "validated_decision": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/validated_decision.json",
+      "validation_result": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/validation_result.json",
+      "prompt_bundle_zip": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10/prompt_payload_bundle.zip"
+    }
+  ],
+  "pdf_element_notes": [
+    {
+      "note_id": "note:review_comparison_miss_gs001_row_10:gs001_row_10",
+      "record_type": "pdf_element_note",
+      "finding_id": "review:comparison_miss:gs001_row_10",
+      "element_id": "gs001:row:10",
+      "issue_type": "comparison_miss",
+      "action": "escalated_to_human",
+      "rationale": "Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.",
+      "evidence_metrics": {
+        "severity": "high",
+        "suggested_action": "RECLASSIFY"
+      },
+      "confidence": 0.0,
+      "similar_element_propagation": "blocked",
+      "page": 27,
+      "bbox": [
+        89.99,
+        575.53,
+        514.3,
+        720.41
+      ],
+      "created_by": "pdf-lab.final-agent-pass"
+    },
+    {
+      "note_id": "note:review_comparison_miss_gs001_row_11:gs001_row_11",
+      "record_type": "pdf_element_note",
+      "finding_id": "review:comparison_miss:gs001_row_11",
+      "element_id": "gs001:row:11",
+      "issue_type": "comparison_miss",
+      "action": "escalated_to_human",
+      "rationale": "Representative-page JSON comparison missed `gs001:row:11` because `type_mismatch`. IoU=0.7101, text_similarity=1.0, type_compatible=False.",
+      "evidence_metrics": {
+        "severity": "high",
+        "suggested_action": "RECLASSIFY"
+      },
+      "confidence": 0.0,
+      "similar_element_propagation": "blocked",
+      "page": 27,
+      "bbox": [
+        90.0,
+        745.65,
+        521.97,
+        756.33
+      ],
+      "created_by": "pdf-lab.final-agent-pass"
+    },
+    {
+      "note_id": "note:review_comparison_miss_gs001_row_2:gs001_row_2",
+      "record_type": "pdf_element_note",
+      "finding_id": "review:comparison_miss:gs001_row_2",
+      "element_id": "gs001:row:2",
+      "issue_type": "comparison_miss",
+      "action": "escalated_to_human",
+      "rationale": "Representative-page JSON comparison missed `gs001:row:2` because `type_mismatch`. IoU=0.0, text_similarity=1.0, type_compatible=False.",
+      "evidence_metrics": {
+        "severity": "high",
+        "suggested_action": "RECLASSIFY"
+      },
+      "confidence": 0.0,
+      "similar_element_propagation": "blocked",
+      "page": 27,
+      "bbox": [
+        18.14,
+        227.94,
+        30.42,
+        586.58
+      ],
+      "created_by": "pdf-lab.final-agent-pass"
+    },
+    {
+      "note_id": "note:review_comparison_miss_gs001_row_3:gs001_row_3",
+      "record_type": "pdf_element_note",
+      "finding_id": "review:comparison_miss:gs001_row_3",
+      "element_id": "gs001:row:3",
+      "issue_type": "comparison_miss",
+      "action": "escalated_to_human",
+      "rationale": "Representative-page JSON comparison missed `gs001:row:3` because `type_mismatch`. IoU=0.635, text_similarity=1.0, type_compatible=False.",
+      "evidence_metrics": {
+        "severity": "high",
+        "suggested_action": "RECLASSIFY"
+      },
+      "confidence": 0.0,
+      "similar_element_propagation": "blocked",
+      "page": 27,
+      "bbox": [
+        90.0,
+        73.71,
+        166.67,
+        91.78
+      ],
+      "created_by": "pdf-lab.final-agent-pass"
+    },
+    {
+      "note_id": "note:review_comparison_miss_gs001_row_5:gs001_row_5",
+      "record_type": "pdf_element_note",
+      "finding_id": "review:comparison_miss:gs001_row_5",
+      "element_id": "gs001:row:5",
+      "issue_type": "comparison_miss",
+      "action": "escalated_to_human",
+      "rationale": "Representative-page JSON comparison missed `gs001:row:5` because `type_mismatch`. IoU=0.7437, text_similarity=1.0, type_compatible=False.",
+      "evidence_metrics": {
+        "severity": "high",
+        "suggested_action": "RECLASSIFY"
+      },
+      "confidence": 0.0,
+      "similar_element_propagation": "blocked",
+      "page": 27,
+      "bbox": [
+        90.0,
+        125.32,
+        440.1,
+        138.73
+      ],
+      "created_by": "pdf-lab.final-agent-pass"
+    },
+    {
+      "note_id": "note:second_pass_model_review_comparison_miss_gs001_row_10:gs001_row_10",
+      "record_type": "pdf_element_note",
+      "finding_id": "second_pass_model:review_comparison_miss_gs001_row_10",
+      "element_id": "gs001:row:10",
+      "issue_type": "second_pass_model_failure",
+      "action": "escalated_to_human",
+      "rationale": "Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.",
+      "evidence_metrics": {
+        "severity": "high",
+        "suggested_action": null
+      },
+      "confidence": 0.0,
+      "similar_element_propagation": "blocked",
+      "page": 27,
+      "bbox": [
+        89.99398803710938,
+        74.39999389648438,
+        426.3714294433594,
+        156.0
+      ],
+      "created_by": "pdf-lab.final-agent-pass"
+    }
+  ],
+  "page_groups": [
+    {
+      "page": 27,
+      "task_count": 6,
+      "tasks": [
+        "review:comparison_miss:gs001_row_10",
+        "review:comparison_miss:gs001_row_11",
+        "review:comparison_miss:gs001_row_2",
+        "review:comparison_miss:gs001_row_3",
+        "review:comparison_miss:gs001_row_5",
+        "second_pass_model:review_comparison_miss_gs001_row_10"
+      ]
+    }
+  ],
+  "human_triage_queue": [
+    {
+      "task_id": "review:comparison_miss:gs001_row_10",
+      "page": 27,
+      "kind": "comparison_miss",
+      "severity": "high",
+      "target_id": "gs001:row:10",
+      "target_bbox": [
+        89.99,
+        575.53,
+        514.3,
+        720.41
+      ],
+      "human_question": "Is this element classified correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.",
+      "preview": {
+        "type": "footnote",
+        "text": "An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information […"
+      },
+      "suggested_fix": {
+        "action": "RECLASSIFY",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "gs001:row:10",
+          "reviewStatus": "unresolved",
+          "reason": "type_mismatch"
+        },
+        "after": {
+          "id": "gs001:row:10",
+          "reviewStatus": "verified",
+          "resolution": "RECLASSIFY"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:gs001_row_11",
+      "page": 27,
+      "kind": "comparison_miss",
+      "severity": "high",
+      "target_id": "gs001:row:11",
+      "target_bbox": [
+        90.0,
+        745.65,
+        521.97,
+        756.33
+      ],
+      "human_question": "Is this element classified correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `gs001:row:11` because `type_mismatch`. IoU=0.7101, text_similarity=1.0, type_compatible=False.",
+      "preview": {
+        "type": "header_footer_noise",
+        "text": "CHAPTER ONE PAGE 1"
+      },
+      "suggested_fix": {
+        "action": "RECLASSIFY",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "gs001:row:11",
+          "reviewStatus": "unresolved",
+          "reason": "type_mismatch"
+        },
+        "after": {
+          "id": "gs001:row:11",
+          "reviewStatus": "verified",
+          "resolution": "RECLASSIFY"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:gs001_row_2",
+      "page": 27,
+      "kind": "comparison_miss",
+      "severity": "high",
+      "target_id": "gs001:row:2",
+      "target_bbox": [
+        18.14,
+        227.94,
+        30.42,
+        586.58
+      ],
+      "human_question": "Is this element classified correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `gs001:row:2` because `type_mismatch`. IoU=0.0, text_similarity=1.0, type_compatible=False.",
+      "preview": {
+        "type": "header_footer_noise",
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5"
+      },
+      "suggested_fix": {
+        "action": "RECLASSIFY",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "gs001:row:2",
+          "reviewStatus": "unresolved",
+          "reason": "type_mismatch"
+        },
+        "after": {
+          "id": "gs001:row:2",
+          "reviewStatus": "verified",
+          "resolution": "RECLASSIFY"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:gs001_row_3",
+      "page": 27,
+      "kind": "comparison_miss",
+      "severity": "high",
+      "target_id": "gs001:row:3",
+      "target_bbox": [
+        90.0,
+        73.71,
+        166.67,
+        91.78
+      ],
+      "human_question": "Is this element classified correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `gs001:row:3` because `type_mismatch`. IoU=0.635, text_similarity=1.0, type_compatible=False.",
+      "preview": {
+        "type": "chapter_label",
+        "text": "CHAPTER ONE"
+      },
+      "suggested_fix": {
+        "action": "RECLASSIFY",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "gs001:row:3",
+          "reviewStatus": "unresolved",
+          "reason": "type_mismatch"
+        },
+        "after": {
+          "id": "gs001:row:3",
+          "reviewStatus": "verified",
+          "resolution": "RECLASSIFY"
+        }
+      }
+    },
+    {
+      "task_id": "review:comparison_miss:gs001_row_5",
+      "page": 27,
+      "kind": "comparison_miss",
+      "severity": "high",
+      "target_id": "gs001:row:5",
+      "target_bbox": [
+        90.0,
+        125.32,
+        440.1,
+        138.73
+      ],
+      "human_question": "Is this element classified correctly?",
+      "agent_reasoning": "Representative-page JSON comparison missed `gs001:row:5` because `type_mismatch`. IoU=0.7437, text_similarity=1.0, type_compatible=False.",
+      "preview": {
+        "type": "section_subtitle",
+        "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS"
+      },
+      "suggested_fix": {
+        "action": "RECLASSIFY",
+        "reviewStatus": "pending_human_review"
+      },
+      "proposed_json_delta": {
+        "before": {
+          "id": "gs001:row:5",
+          "reviewStatus": "unresolved",
+          "reason": "type_mismatch"
+        },
+        "after": {
+          "id": "gs001:row:5",
+          "reviewStatus": "verified",
+          "resolution": "RECLASSIFY"
+        }
+      }
+    },
+    {
+      "task_id": "second_pass_model:review_comparison_miss_gs001_row_10",
+      "kind": "second_pass_model_failure",
+      "severity": "high",
+      "page": 27,
+      "target_id": "gs001:row:10",
+      "target_bbox": [
+        89.99398803710938,
+        74.39999389648438,
+        426.3714294433594,
+        156.0
+      ],
+      "human_question": "Second-pass model response was unavailable or invalid; inspect prompt payload and deterministic extraction evidence.",
+      "agent_reasoning": "Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.",
+      "suggested_fix": null,
+      "proposed_json_delta": {
+        "before": {
+          "id": "gs001:row:10",
+          "reviewStatus": "unresolved",
+          "reason": "type_mismatch"
+        },
+        "after": {
+          "id": "gs001:row:10",
+          "reviewStatus": "verified",
+          "resolution": "RECLASSIFY"
+        }
+      },
+      "source": "second_pass_model",
+      "second_pass_case_id": "review:comparison_miss:gs001_row_10",
+      "second_pass_artifact_dir": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v7-gemini-tau-auth/second_pass_cases/review_comparison_miss_gs001_row_10"
+    }
+  ]
+}

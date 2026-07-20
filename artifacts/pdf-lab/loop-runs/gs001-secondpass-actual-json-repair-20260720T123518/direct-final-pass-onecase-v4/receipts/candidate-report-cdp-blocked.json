@@ -1,0 +1,36 @@
+{
+  "schema_version": "pdf_lab.cdp_report_receipt.v1",
+  "status": "blocked",
+  "mocked": false,
+  "live": false,
+  "report": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v4/second_pass_cases/candidate_report.html",
+  "attempts": [
+    {
+      "command": "Playwright chromium full-page screenshot",
+      "result": "hung until interrupted",
+      "exit_code": 130
+    },
+    {
+      "command": "Playwright chromium viewport screenshot",
+      "result": "hung until interrupted",
+      "exit_code": 130
+    },
+    {
+      "command": "Playwright chromium blank-page isolation",
+      "result": "hung until terminated",
+      "exit_code": 143
+    }
+  ],
+  "blocker": "Local Playwright/Chromium launch did not complete even for a blank page; HTML report CDP screenshot remains unverified in this environment.",
+  "deterministic_visual_evidence_available": {
+    "candidate_report_html_contains_overlay": true,
+    "annotated_png_rgb_diff_bbox": [
+      86,
+      633,
+      430,
+      721
+    ],
+    "annotated_png_orange_pixels": 4896,
+    "annotated_png_purple_pixels": 1712
+  }
+}

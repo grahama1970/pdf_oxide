@@ -1,0 +1,71 @@
+{
+  "schema_version": "pdf_lab.second_pass_case_payload.v1",
+  "case_id": "review:comparison_miss:gs001_row_10",
+  "source_kind": "human_triage",
+  "preset_id": "pdf.unknown_region.v1",
+  "page": 27,
+  "element_id": "gs001:row:10",
+  "original_page_image_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v4/second_pass_cases/review_comparison_miss_gs001_row_10/page_27.png",
+  "annotated_page_image_path": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v4/second_pass_cases/review_comparison_miss_gs001_row_10/page_27_annotated.png",
+  "expected_json": {
+    "id": "gs001:row:10",
+    "page": 27,
+    "type": null,
+    "bbox": [
+      89.99,
+      575.53,
+      514.3,
+      720.41
+    ],
+    "text": null,
+    "source": "agentic_expected_oracle"
+  },
+  "actual_json": {
+    "id": "f1503c5b0897f9658f34ca038d99919e",
+    "page": 27,
+    "type": "Body",
+    "bbox": [
+      89.99398803710938,
+      74.39999389648438,
+      426.3714294433594,
+      156.0
+    ],
+    "text": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].",
+    "source": "pdf_lab.candidate_text_match",
+    "similarity_to_comparison_text": 0.2961,
+    "raw": null,
+    "selection_reason": "best_text_match_for_second_pass_case"
+  },
+  "actual_candidates": [
+    {
+      "id": "f1503c5b0897f9658f34ca038d99919e",
+      "page": 27,
+      "type": "Body",
+      "bbox": [
+        89.99398803710938,
+        74.39999389648438,
+        426.3714294433594,
+        156.0
+      ],
+      "text": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].",
+      "source": null,
+      "similarity_to_comparison_text": 0.2961,
+      "raw": null
+    }
+  ],
+  "candidate_corrected_json": {
+    "id": "gs001:row:10",
+    "reviewStatus": "verified",
+    "resolution": "RECLASSIFY"
+  },
+  "known_visual_facts": [
+    "Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.",
+    "This record is escalated to human triage after deterministic filters did not resolve it."
+  ],
+  "provenance": {
+    "source_pdf": "golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf",
+    "source_extraction": null,
+    "created_by": "pdf-lab.final-agent-pass",
+    "deterministic_record": "review:comparison_miss:gs001_row_10"
+  }
+}

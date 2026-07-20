@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDF Lab Second-Pass Candidate Report</title>
+  <style>
+    :root { color-scheme: dark; --bg:#07101d; --panel:#101a2a; --line:#26364e; --text:#f4f7fb; --muted:#9eb0c7; --green:#22c55e; --amber:#f59e0b; --purple:#a78bfa; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 Inter, ui-sans-serif, system-ui, sans-serif; }
+    main { max-width: 1800px; margin: 0 auto; padding: 24px; }
+    .hero, .case { border:1px solid var(--line); border-radius:18px; background:linear-gradient(180deg,#121d2e,#0c1422); box-shadow:0 18px 60px rgba(0,0,0,.3); }
+    .hero { padding:20px; margin-bottom:16px; }
+    h1, h2 { margin:0; letter-spacing:-.03em; }
+    h1 { font-size:28px; }
+    h2 { font-size:18px; word-break: break-word; }
+    .summary { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+    .metric { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#0a1322; color:var(--muted); }
+    .metric strong { display:block; color:var(--text); font-size:22px; }
+    .case { padding:16px; margin:16px 0; }
+    .case header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px; }
+    .eyebrow { color:var(--purple); font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px; }
+    .badge { border:1px solid var(--line); border-radius:999px; padding:6px 10px; font-weight:800; }
+    .badge.resolved { color:#bbf7d0; border-color:rgba(34,197,94,.45); background:rgba(34,197,94,.12); }
+    .badge.human { color:#fde68a; border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.12); }
+    .grid { display:grid; grid-template-columns:minmax(280px, .72fr) minmax(420px, 1fr); gap:16px; align-items:start; }
+    .page-proof { position:relative; background:#fff; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.2); }
+    .page-proof img { display:block; width:100%; height:auto; }
+    .merge-gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin:10px 12px 12px; }
+    .merge-proof { margin:0; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#07101d; }
+    .merge-proof img { display:block; width:100%; height:auto; }
+    .merge-proof figcaption { padding:8px 10px; color:var(--muted); font-size:12px; }
+    .bundle-actions { display:flex; flex-wrap:wrap; gap:10px; margin:12px 0; }
+    .bundle-link, .bundle-actions button { display:inline-flex; align-items:center; min-height:36px; border:1px solid var(--line); border-radius:10px; background:#13233a; color:var(--text); padding:0 12px; font-weight:800; text-decoration:none; cursor:pointer; }
+    .bundle-actions button { font:inherit; }
+    .payload-copy { display:block; width:100%; min-height:360px; resize:vertical; border:0; border-top:1px solid var(--line); padding:12px; color:#d8b4fe; background:#050914; font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre; }
+    .bbox { position:absolute; border:3px solid var(--amber); box-shadow:0 0 0 2px rgba(167,139,250,.95), 0 0 0 9999px rgba(15,23,42,.10); pointer-events:none; }
+    .facts { min-width:0; }
+    dl { display:grid; grid-template-columns:140px minmax(0,1fr); gap:8px 12px; margin:0 0 12px; }
+    dt { color:var(--muted); font-weight:800; text-transform:uppercase; font-size:11px; letter-spacing:.05em; }
+    dd { margin:0; overflow-wrap:anywhere; }
+    details { border:1px solid var(--line); border-radius:12px; background:#0a1322; margin:8px 0; overflow:hidden; }
+    summary { cursor:pointer; padding:10px 12px; font-weight:800; }
+    pre { margin:0; padding:12px; overflow:auto; max-height:420px; color:#d8b4fe; background:#050914; font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .missing { border:1px dashed var(--line); border-radius:12px; padding:20px; color:var(--muted); }
+    @media (max-width: 1100px) { .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">PDF Lab · second-pass candidate report</div>
+      <h1>Every candidate with prompt payload, preset, extraction JSON, decision, and annotation status</h1>
+      <div class="summary">
+        <div class="metric"><strong>1</strong> candidates</div>
+        <div class="metric"><strong>1</strong> with expected JSON</div>
+        <div class="metric"><strong>1</strong> with actual JSON</div>
+        <div class="metric"><strong>1</strong> with actual candidates</div>
+        <div class="metric"><strong>1</strong> with extraction evidence</div>
+        <div class="metric"><strong>1</strong> with bbox</div>
+        <div class="metric"><strong>1</strong> rendered page images</div>
+        <div class="metric"><strong>1</strong> annotated overlays</div>
+        <div class="metric"><strong>0</strong> with table metrics</div>
+        <div class="metric"><strong>0</strong> merge candidates</div>
+        <div class="metric"><strong>1</strong> human required</div>
+      </div>
+    </section>
+    
+      <article class="case">
+        <header>
+          <div>
+            <div class="eyebrow">pdf.unknown_region.v1 · page 27</div>
+            <h2>review:comparison_miss:gs001_row_10</h2>
+          </div>
+          <span class="badge human">blocker</span>
+        </header>
+        <div class="grid">
+          <div class="page-proof"><img src="pages/page_27.png" alt="Rendered page 27"><span class="bbox" style="left:14.705%;top:80.303%;width:54.964%;height:10.303%;"></span></div>
+          <div class="facts">
+            <dl>
+              <dt>Element</dt><dd>gs001:row:10</dd>
+              <dt>Conclusion</dt><dd>Table preset evaluation result; inspect metrics and visual evidence.</dd>
+              <dt>Classification</dt><dd>second_pass_model_failure</dd>
+              <dt>Expected type</dt><dd>None</dd>
+              <dt>Extractor emitted</dt><dd>Body</dd>
+              <dt>Annotation bbox</dt><dd>[0.14704900006063623, 0.803030303030303, 0.6966853422277114, 0.9060606137670651]</dd>
+              <dt>Actual candidates</dt><dd>1</dd>
+              <dt>Validation</dt><dd>blocked</dd>
+              <dt>Human question</dt><dd>Second-pass model response was unavailable or invalid; inspect prompt payload and deterministic extraction evidence.</dd>
+            </dl>
+            <div class="bundle-actions"><a class="bundle-link" href="review_comparison_miss_gs001_row_10/prompt_payload_bundle.zip" download>Download full prompt payload ZIP</a><button type="button" data-copy="review_comparison_miss_gs001_row_10/prompt_payload_bundle.zip" onclick="copyBundlePath(this)">Copy ZIP path</button><button type="button" data-copy-target="payload-review_comparison_miss_gs001_row_10" onclick="copyPayloadText(this)">Copy full prompt payload JSON</button></div>
+            <details open><summary>Known visual facts</summary><pre>[
+  &quot;Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.&quot;,
+  &quot;This record is escalated to human triage after deterministic filters did not resolve it.&quot;
+]</pre></details>
+            <details open><summary>Extractor table candidate metrics</summary><pre>{}</pre></details>
+            <details><summary>Adjacent table images</summary><div class="merge-gallery"><div class="missing">No adjacent table page images supplied.</div></div></details>
+            <details><summary>Expected JSON</summary><pre>{
+  &quot;id&quot;: &quot;gs001:row:10&quot;,
+  &quot;page&quot;: 27,
+  &quot;type&quot;: null,
+  &quot;bbox&quot;: [
+    89.99,
+    575.53,
+    514.3,
+    720.41
+  ],
+  &quot;text&quot;: null,
+  &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+}</pre></details>
+            <details><summary>Actual pdf_oxide JSON</summary><pre>{
+  &quot;id&quot;: &quot;f1503c5b0897f9658f34ca038d99919e&quot;,
+  &quot;page&quot;: 27,
+  &quot;type&quot;: &quot;Body&quot;,
+  &quot;bbox&quot;: [
+    89.99398803710938,
+    74.39999389648438,
+    426.3714294433594,
+    156.0
+  ],
+  &quot;text&quot;: &quot;1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].&quot;,
+  &quot;source&quot;: &quot;pdf_lab.candidate_text_match&quot;,
+  &quot;similarity_to_comparison_text&quot;: 0.2961,
+  &quot;raw&quot;: null,
+  &quot;selection_reason&quot;: &quot;best_text_match_for_second_pass_case&quot;
+}</pre></details>
+            <details><summary>Actual candidate extractions</summary><pre>[
+  {
+    &quot;id&quot;: &quot;f1503c5b0897f9658f34ca038d99919e&quot;,
+    &quot;page&quot;: 27,
+    &quot;type&quot;: &quot;Body&quot;,
+    &quot;bbox&quot;: [
+      89.99398803710938,
+      74.39999389648438,
+      426.3714294433594,
+      156.0
+    ],
+    &quot;text&quot;: &quot;1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].&quot;,
+    &quot;source&quot;: null,
+    &quot;similarity_to_comparison_text&quot;: 0.2961,
+    &quot;raw&quot;: null
+  }
+]</pre></details>
+            <details><summary>Validated decision</summary><pre>{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_decision.v1&quot;,
+  &quot;case_id&quot;: &quot;review:comparison_miss:gs001_row_10&quot;,
+  &quot;preset_id&quot;: &quot;pdf.unknown_region.v1&quot;,
+  &quot;decision&quot;: &quot;blocker&quot;,
+  &quot;human_triage_required&quot;: true,
+  &quot;classification&quot;: &quot;second_pass_model_failure&quot;,
+  &quot;confidence&quot;: &quot;low&quot;,
+  &quot;reason&quot;: &quot;Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.&quot;,
+  &quot;target_evidence_used&quot;: [
+    {
+      &quot;field_path&quot;: &quot;actual_json.id&quot;,
+      &quot;fact&quot;: &quot;Actual element ID is f1503c5b0897f9658f34ca038d99919e.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_json.type&quot;,
+      &quot;fact&quot;: &quot;Actual element type is Body.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_json.bbox&quot;,
+      &quot;fact&quot;: &quot;Actual element includes a bbox.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;known_visual_facts&quot;,
+      &quot;fact&quot;: &quot;Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.&quot;
+    }
+  ],
+  &quot;missing_evidence&quot;: [],
+  &quot;validators&quot;: [
+    {
+      &quot;validator_id&quot;: &quot;preset_id_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;pdf.unknown_region.v1&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;page_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;page=27&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;extraction_evidence_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;actual_json or actual_candidates is present&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;human_triage_boundary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved records do not create human work; human_triage records preserve the explicit question.&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;model_json_parse&quot;,
+      &quot;status&quot;: &quot;blocked&quot;,
+      &quot;fact&quot;: &quot;HTTP 401&quot;
+    }
+  ],
+  &quot;table_merge_review&quot;: null,
+  &quot;human_question&quot;: &quot;Second-pass model response was unavailable or invalid; inspect prompt payload and deterministic extraction evidence.&quot;,
+  &quot;recommended_engine_fix&quot;: null,
+  &quot;proposed_json_delta&quot;: {
+    &quot;before&quot;: {
+      &quot;id&quot;: &quot;gs001:row:10&quot;,
+      &quot;reviewStatus&quot;: &quot;unresolved&quot;,
+      &quot;reason&quot;: &quot;type_mismatch&quot;
+    },
+    &quot;after&quot;: {
+      &quot;id&quot;: &quot;gs001:row:10&quot;,
+      &quot;reviewStatus&quot;: &quot;verified&quot;,
+      &quot;resolution&quot;: &quot;RECLASSIFY&quot;
+    }
+  },
+  &quot;fixture_candidate&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;fixture_family&quot;: null,
+    &quot;reason&quot;: null
+  }
+}</pre></details>
+            <details open><summary>Full prompt payload JSON</summary><textarea id="payload-review_comparison_miss_gs001_row_10" class="payload-copy" spellcheck="false">{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_full_prompt_payload.v1&quot;,
+  &quot;case_id&quot;: &quot;review:comparison_miss:gs001_row_10&quot;,
+  &quot;preset_id&quot;: &quot;pdf.unknown_region.v1&quot;,
+  &quot;system_prompt&quot;: &quot;# RATIONALE (not sent to LLM)\n# Purpose: Classify one PDF extraction evidence case into agent_resolved, human_triage, fixture_candidate, or blocker.\n# Consumer: pdf-lab final-pass writes agent_resolved_findings, pdf_element_notes, human_triage_queue, and fixture candidates.\n# Why this matters: Bad output creates unnecessary human triage cards or hides real extractor defects.\n# Input: One JSON payload with case_id, preset_id, page evidence paths, expected_json, actual_json or actual_candidates, candidate_corrected_json, and provenance.\n# Output: One JSON object matching the schema in second_pass/global_user.txt.\n# Last reviewed: 2026-05-07 by project agent.\n\nYou are the PDF Lab second-pass evidence gate.\n\nTask: Decide whether one PDF extraction case is resolved by artifacts, requires human triage, should become a fixture candidate, or is blocked by missing evidence.\n\nSafety and evidence boundary:\n- Use only the supplied payload fields and referenced artifact paths.\n- Do not invent text, cells, rows, captions, page numbers, bbox coordinates, file paths, or relationships.\n- Do not ask a human to decide facts already proven by target evidence.\n- Do not create human work from raw `pdf_oxide.extract_tables` output alone.\n- If required target evidence is missing, return `decision: \&quot;blocker\&quot;`.\n\nTarget evidence means:\n- original page image path\n- annotated page image path or crop image path\n- actual deterministic extraction JSON, or actual candidate extractions linked from the deterministic output for expected-side comparison misses\n- candidate corrected JSON when present\n- bbox, page, element ID, and provenance paths supplied in the payload\n\nTechnique evidence means generic knowledge about PDFs, tables, charts, captions, equations, or extraction heuristics. Technique evidence may explain validation rules, but it may not justify a human triage card by itself.\n\nClosed decision vocabulary:\n- `agent_resolved`\n- `human_triage`\n- `fixture_candidate`\n- `blocker`\n\nHuman triage rule:\nReturn `human_triage` only when the supplied artifacts contain a concrete unresolved conflict that cannot be resolved by the selected preset validators.\n\nExpected-side comparison miss rule:\nIf `actual_json` is null but `actual_candidates[]` is non-empty, treat `actual_candidates[]` as deterministic extraction evidence. Do not return blocker solely because `actual_json` is null in that case.\n\nTable-specific hard rule:\nIf the visible evidence shows a table header plus one data row and the actual JSON captures that visible table object, do not ask whether it is a real table. Return `agent_resolved` unless the payload proves visible content is cut off or candidate corrected JSON conflicts with actual JSON.\n\nTable-merge hard rule:\nFor table merge, continuation, rowspan, colspan, or split-table questions, use the attached annotated page images and `table_merge_review` metrics together. Do not ask a human whether two table regions should merge unless:\n- both relevant page/table images are supplied or explicitly unavailable,\n- extracted shape/data-quality metrics are supplied for the primary and adjacent table candidates,\n- the selected table preset validators cannot determine whether this is one logical table, separate tables, or an extractor/preset backlog item.\nIf metrics and images are sufficient, return `agent_resolved` or `fixture_candidate` with a deterministic engine/preset recommendation.\n\nOutput rule:\nReturn only one JSON object. Do not return markdown, commentary, headings, or prose outside JSON.\n&quot;,
+  &quot;user_prompt&quot;: &quot;# RATIONALE (not sent to LLM)\n# Purpose: User-message template for one PDF Lab second-pass evidence case.\n# Consumer: scillm or equivalent model call invoked by pdf-lab final-pass/prompt review harness.\n# Why this matters: The payload must be stable enough to review, replay, and turn into fixtures.\n# Input: CASE_PAYLOAD JSON inserted below.\n# Output: JSON matching the exact schema at the end of this file.\n# Last reviewed: 2026-05-07 by project agent.\n\nGiven `CASE_PAYLOAD`, apply the selected element preset and return the second-pass decision.\n\nEvidence classification:\n1. Target evidence: supplied artifact paths, expected JSON, actual JSON, actual candidate extractions, candidate corrected JSON, bbox, page, element ID, and provenance.\n2. Technique evidence: element-type rules from the selected preset.\n3. Missing evidence: required preset inputs absent from `CASE_PAYLOAD`.\n\nRules:\n- Recommend human triage only when target evidence contains an unresolved conflict.\n- Do not cite the selected preset as target evidence.\n- Do not infer missing rows, cells, values, captions, or section relationships.\n- Do not ask bbox-expansion questions unless visible content is cut off or candidate corrected JSON proves a mismatch.\n- For table merge/split/continuation questions, use `table_merge_review.primary_table_metrics`, `table_merge_review.adjacent_table_candidates[]`, and all supplied annotated page images before deciding. Do not escalate to a human if the metrics and images support a deterministic separate/merge/backlog classification.\n- If `actual_json` is null but `actual_candidates[]` is non-empty, evaluate the candidate extraction evidence instead of returning blocker for missing `actual_json`.\n- Use real JSON types: booleans as true/false, integers as numbers, arrays as arrays, null as null.\n\nCASE_PAYLOAD:\n```json\n{\n  \&quot;schema_version\&quot;: \&quot;pdf_lab.second_pass_case_payload.v1\&quot;,\n  \&quot;case_id\&quot;: \&quot;review:comparison_miss:gs001_row_10\&quot;,\n  \&quot;source_kind\&quot;: \&quot;human_triage\&quot;,\n  \&quot;preset_id\&quot;: \&quot;pdf.unknown_region.v1\&quot;,\n  \&quot;page\&quot;: 27,\n  \&quot;element_id\&quot;: \&quot;gs001:row:10\&quot;,\n  \&quot;original_page_image_path\&quot;: \&quot;/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v4/second_pass_cases/review_comparison_miss_gs001_row_10/page_27.png\&quot;,\n  \&quot;annotated_page_image_path\&quot;: \&quot;/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v4/second_pass_cases/review_comparison_miss_gs001_row_10/page_27_annotated.png\&quot;,\n  \&quot;expected_json\&quot;: {\n    \&quot;id\&quot;: \&quot;gs001:row:10\&quot;,\n    \&quot;page\&quot;: 27,\n    \&quot;type\&quot;: null,\n    \&quot;bbox\&quot;: [\n      89.99,\n      575.53,\n      514.3,\n      720.41\n    ],\n    \&quot;text\&quot;: null,\n    \&quot;source\&quot;: \&quot;agentic_expected_oracle\&quot;\n  },\n  \&quot;actual_json\&quot;: {\n    \&quot;id\&quot;: \&quot;f1503c5b0897f9658f34ca038d99919e\&quot;,\n    \&quot;page\&quot;: 27,\n    \&quot;type\&quot;: \&quot;Body\&quot;,\n    \&quot;bbox\&quot;: [\n      89.99398803710938,\n      74.39999389648438,\n      426.3714294433594,\n      156.0\n    ],\n    \&quot;text\&quot;: \&quot;1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].\&quot;,\n    \&quot;source\&quot;: \&quot;pdf_lab.candidate_text_match\&quot;,\n    \&quot;similarity_to_comparison_text\&quot;: 0.2961,\n    \&quot;raw\&quot;: null,\n    \&quot;selection_reason\&quot;: \&quot;best_text_match_for_second_pass_case\&quot;\n  },\n  \&quot;actual_candidates\&quot;: [\n    {\n      \&quot;id\&quot;: \&quot;f1503c5b0897f9658f34ca038d99919e\&quot;,\n      \&quot;page\&quot;: 27,\n      \&quot;type\&quot;: \&quot;Body\&quot;,\n      \&quot;bbox\&quot;: [\n        89.99398803710938,\n        74.39999389648438,\n        426.3714294433594,\n        156.0\n      ],\n      \&quot;text\&quot;: \&quot;1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].\&quot;,\n      \&quot;source\&quot;: null,\n      \&quot;similarity_to_comparison_text\&quot;: 0.2961,\n      \&quot;raw\&quot;: null\n    }\n  ],\n  \&quot;candidate_corrected_json\&quot;: {\n    \&quot;id\&quot;: \&quot;gs001:row:10\&quot;,\n    \&quot;reviewStatus\&quot;: \&quot;verified\&quot;,\n    \&quot;resolution\&quot;: \&quot;RECLASSIFY\&quot;\n  },\n  \&quot;known_visual_facts\&quot;: [\n    \&quot;Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.\&quot;,\n    \&quot;This record is escalated to human triage after deterministic filters did not resolve it.\&quot;\n  ],\n  \&quot;provenance\&quot;: {\n    \&quot;source_pdf\&quot;: \&quot;golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf\&quot;,\n    \&quot;source_extraction\&quot;: null,\n    \&quot;created_by\&quot;: \&quot;pdf-lab.final-agent-pass\&quot;,\n    \&quot;deterministic_record\&quot;: \&quot;review:comparison_miss:gs001_row_10\&quot;\n  }\n}\n```\n\nReturn this exact JSON shape:\n```json\n{\n  \&quot;schema_version\&quot;: \&quot;pdf_lab.second_pass_decision.v1\&quot;,\n  \&quot;case_id\&quot;: \&quot;string\&quot;,\n  \&quot;preset_id\&quot;: \&quot;string\&quot;,\n  \&quot;decision\&quot;: \&quot;agent_resolved|human_triage|fixture_candidate|blocker\&quot;,\n  \&quot;human_triage_required\&quot;: true,\n  \&quot;classification\&quot;: \&quot;string\&quot;,\n  \&quot;confidence\&quot;: \&quot;low|medium|high\&quot;,\n  \&quot;reason\&quot;: \&quot;string\&quot;,\n  \&quot;target_evidence_used\&quot;: [\n    {\n      \&quot;field_path\&quot;: \&quot;string\&quot;,\n      \&quot;fact\&quot;: \&quot;string\&quot;\n    }\n  ],\n  \&quot;missing_evidence\&quot;: [\&quot;string\&quot;],\n  \&quot;validators\&quot;: [\n    {\n      \&quot;validator_id\&quot;: \&quot;string\&quot;,\n      \&quot;status\&quot;: \&quot;pass|fail|blocked\&quot;,\n      \&quot;fact\&quot;: \&quot;string\&quot;\n    }\n  ],\n  \&quot;table_merge_review\&quot;: {\n    \&quot;merge_decision\&quot;: \&quot;merge|separate|not_applicable|blocked|null\&quot;,\n    \&quot;primary_table_metrics\&quot;: \&quot;object|null\&quot;,\n    \&quot;adjacent_table_metrics_considered\&quot;: [],\n    \&quot;visual_evidence_used\&quot;: [],\n    \&quot;reason\&quot;: \&quot;string|null\&quot;\n  },\n  \&quot;human_question\&quot;: null,\n  \&quot;recommended_engine_fix\&quot;: null,\n  \&quot;proposed_json_delta\&quot;: null,\n  \&quot;fixture_candidate\&quot;: {\n    \&quot;enabled\&quot;: false,\n    \&quot;fixture_family\&quot;: null,\n    \&quot;reason\&quot;: null\n  }\n}\n```\n&quot;,
+  &quot;element_preset&quot;: {
+    &quot;schema_version&quot;: &quot;pdf_lab.element_preset.v1&quot;,
+    &quot;required_inputs&quot;: [
+      &quot;case_id&quot;,
+      &quot;page&quot;,
+      &quot;element_id&quot;,
+      &quot;original_page_image_path&quot;,
+      &quot;annotated_page_image_path&quot;,
+      &quot;actual_json_or_actual_candidates&quot;,
+      &quot;provenance&quot;
+    ],
+    &quot;common_validators&quot;: [
+      &quot;artifact_paths_exist&quot;,
+      &quot;extraction_evidence_present&quot;,
+      &quot;no_invented_text&quot;,
+      &quot;page_matches_element_page&quot;
+    ],
+    &quot;decision_outputs&quot;: [
+      &quot;agent_resolved&quot;,
+      &quot;human_triage&quot;,
+      &quot;fixture_candidate&quot;,
+      &quot;blocker&quot;
+    ],
+    &quot;preset_id&quot;: &quot;pdf.unknown_region.v1&quot;,
+    &quot;element_type&quot;: &quot;unknown_region&quot;,
+    &quot;required_outputs&quot;: [
+      &quot;region_id&quot;,
+      &quot;page&quot;,
+      &quot;bbox&quot;,
+      &quot;possible_element_types&quot;,
+      &quot;why_unknown&quot;,
+      &quot;blocked_outputs&quot;,
+      &quot;safe_next_action&quot;,
+      &quot;evidence&quot;
+    ],
+    &quot;validators&quot;: [
+      &quot;no_structured_extraction_when_unknown&quot;,
+      &quot;possible_types_from_closed_vocabulary&quot;,
+      &quot;blocking_evidence_listed&quot;
+    ],
+    &quot;human_triage_gate&quot;: &quot;Escalate with one narrow question only after artifact blockers are listed.&quot;,
+    &quot;rendering_contract&quot;: [
+      &quot;show_original_page&quot;,
+      &quot;show_annotated_page_or_crop&quot;,
+      &quot;show_actual_json_or_actual_candidates&quot;,
+      &quot;show_candidate_corrected_json_or_null&quot;,
+      &quot;show_validator_results&quot;
+    ]
+  },
+  &quot;case_payload&quot;: {
+    &quot;schema_version&quot;: &quot;pdf_lab.second_pass_case_payload.v1&quot;,
+    &quot;case_id&quot;: &quot;review:comparison_miss:gs001_row_10&quot;,
+    &quot;source_kind&quot;: &quot;human_triage&quot;,
+    &quot;preset_id&quot;: &quot;pdf.unknown_region.v1&quot;,
+    &quot;page&quot;: 27,
+    &quot;element_id&quot;: &quot;gs001:row:10&quot;,
+    &quot;original_page_image_path&quot;: &quot;/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v4/second_pass_cases/review_comparison_miss_gs001_row_10/page_27.png&quot;,
+    &quot;annotated_page_image_path&quot;: &quot;/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-secondpass-actual-json-repair-20260720T123518/direct-final-pass-onecase-v4/second_pass_cases/review_comparison_miss_gs001_row_10/page_27_annotated.png&quot;,
+    &quot;expected_json&quot;: {
+      &quot;id&quot;: &quot;gs001:row:10&quot;,
+      &quot;page&quot;: 27,
+      &quot;type&quot;: null,
+      &quot;bbox&quot;: [
+        89.99,
+        575.53,
+        514.3,
+        720.41
+      ],
+      &quot;text&quot;: null,
+      &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+    },
+    &quot;actual_json&quot;: {
+      &quot;id&quot;: &quot;f1503c5b0897f9658f34ca038d99919e&quot;,
+      &quot;page&quot;: 27,
+      &quot;type&quot;: &quot;Body&quot;,
+      &quot;bbox&quot;: [
+        89.99398803710938,
+        74.39999389648438,
+        426.3714294433594,
+        156.0
+      ],
+      &quot;text&quot;: &quot;1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].&quot;,
+      &quot;source&quot;: &quot;pdf_lab.candidate_text_match&quot;,
+      &quot;similarity_to_comparison_text&quot;: 0.2961,
+      &quot;raw&quot;: null,
+      &quot;selection_reason&quot;: &quot;best_text_match_for_second_pass_case&quot;
+    },
+    &quot;actual_candidates&quot;: [
+      {
+        &quot;id&quot;: &quot;f1503c5b0897f9658f34ca038d99919e&quot;,
+        &quot;page&quot;: 27,
+        &quot;type&quot;: &quot;Body&quot;,
+        &quot;bbox&quot;: [
+          89.99398803710938,
+          74.39999389648438,
+          426.3714294433594,
+          156.0
+        ],
+        &quot;text&quot;: &quot;1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]. 2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements). 3 The two terms information security and security are used synonymously in this publication. 4 [OMB A-130] defines security and privacy controls. 5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle. 6 Organizational operations include mission, functions, image, and reputation. 7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [-SP 80053A].&quot;,
+        &quot;source&quot;: null,
+        &quot;similarity_to_comparison_text&quot;: 0.2961,
+        &quot;raw&quot;: null
+      }
+    ],
+    &quot;candidate_corrected_json&quot;: {
+      &quot;id&quot;: &quot;gs001:row:10&quot;,
+      &quot;reviewStatus&quot;: &quot;verified&quot;,
+      &quot;resolution&quot;: &quot;RECLASSIFY&quot;
+    },
+    &quot;known_visual_facts&quot;: [
+      &quot;Representative-page JSON comparison missed `gs001:row:10` because `type_mismatch`. IoU=0.8903, text_similarity=1.0, type_compatible=False.&quot;,
+      &quot;This record is escalated to human triage after deterministic filters did not resolve it.&quot;
+    ],
+    &quot;provenance&quot;: {
+      &quot;source_pdf&quot;: &quot;golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf&quot;,
+      &quot;source_extraction&quot;: null,
+      &quot;created_by&quot;: &quot;pdf-lab.final-agent-pass&quot;,
+      &quot;deterministic_record&quot;: &quot;review:comparison_miss:gs001_row_10&quot;
+    }
+  }
+}</textarea></details>
+          </div>
+        </div>
+      </article>
+    
+  </main>
+  <script>
+    function copyBundlePath(button) {
+      const value = button.getAttribute('data-copy') || '';
+      navigator.clipboard.writeText(value).then(() => {
+        button.textContent = 'Copied ZIP path';
+      }).catch(() => {
+        button.textContent = value;
+      });
+    }
+    function copyPayloadText(button) {
+      const id = button.getAttribute('data-copy-target') || '';
+      const field = document.getElementById(id);
+      const value = field ? field.value : '';
+      navigator.clipboard.writeText(value).then(() => {
+        button.textContent = 'Copied full prompt payload JSON';
+      }).catch(() => {
+        if (field) {
+          field.focus();
+          field.select();
+        }
+        button.textContent = 'Select payload text below';
+      });
+    }
+  </script>
+</body>
+</html>
