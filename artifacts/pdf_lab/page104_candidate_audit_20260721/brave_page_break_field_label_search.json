@@ -1,0 +1,32 @@
+{
+  "query": "PDF extraction page break standalone field label Control: list items next page",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "How to Extract Pages from a PDF: The 2026 Guide | pdfFiller Blog",
+      "description": "Easily extract any pages from your PDF, whether they\u2019re consecutive or not. <strong>Choose the Page range mode.</strong> Type in the number of a single sheet in the Page range field.",
+      "url": "https://blog.pdffiller.com/extract-pages-from-pdf/"
+    },
+    {
+      "title": "PDF Page Breaks Control Source Code and Documentation",
+      "description": "HiQPdf Next is a PDF library for .NET that can be integrated into your applications to create, edit and merge PDF documents, convert HTML to PDF or images, convert Word, Excel, RTF and Markdown to PDF, extract and search text, convert PDF pages to images and extract images from PDFs.",
+      "url": "https://www.hiqpdf.com/documentation/pdf-page-breaks-control.aspx"
+    },
+    {
+      "title": "Issue with extracting fields across multi-page PDF (partial data split across pages) - Microsoft Q&A",
+      "description": "<strong>It either truncates the value or ignores the continuation on the next page</strong>. ... Whether cross-page extraction is supported in Custom Generative Extraction. Any recommended approach or workaround for handling fields that span multiple pages.",
+      "url": "https://learn.microsoft.com/en-za/answers/questions/5565049/issue-with-extracting-fields-across-multi-page-pdf"
+    },
+    {
+      "title": "Split PDF - Separate PDF Pages with pdfFiller",
+      "description": "Extracting pages into multiple files can be done efficiently with pdfFiller. You can select specific pages or ranges of pages to be separated into individual PDFs. This process allows enhanced flexibility and control over document management.",
+      "url": "https://split-pdf-pages.pdffiller.com/"
+    },
+    {
+      "title": "Extract PDF pages for free with a PDF page extractor | Acrobat",
+      "description": "<strong>Launch Acrobat Pro and upload the PDF file you want to extract pages from.</strong> Click All tools &gt; Organize pages. Select PDF pages to save by holding Control (Windows) or Command (Mac) and clicking on the pages you want to extract.",
+      "url": "https://www.adobe.com/acrobat/online/extract-pdf-pages.html"
+    }
+  ]
+}

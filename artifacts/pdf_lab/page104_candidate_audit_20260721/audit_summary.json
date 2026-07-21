@@ -1,0 +1,44 @@
+{
+  "brave_search": "artifacts/pdf_lab/page104_candidate_audit_20260721/brave_page_break_field_label_search.json",
+  "candidate": "au12_page_break_control_label",
+  "control_label": {
+    "bbox": [
+      0.20588235294117646,
+      0.8697468150745739,
+      0.25978078405841504,
+      0.886674514924637
+    ],
+    "id": "actual:p104:block:25",
+    "semantic_role": "nist_field_label",
+    "source_type": "Body",
+    "text": "Control:",
+    "type": "paragraph_block"
+  },
+  "page": 104,
+  "page104_block_count": 26,
+  "page104_type_counts": {
+    "header_footer_noise": 4,
+    "list": 2,
+    "paragraph_block": 12,
+    "reference": 2,
+    "section_heading": 6
+  },
+  "page105_au12_list_item_count": 3,
+  "page105_au12_list_item_types": [
+    "list",
+    "list",
+    "list"
+  ],
+  "rationale": "The visible page104 AU-12 Control: page-break label is correctly retained as paragraph_block with semantic_role=nist_field_label by existing ledger rule nist-field-label-001; the page105 AU-12 control body items are list blocks. No code patch is justified for this selected checklist item.",
+  "schema": "pdf_lab.page104_au12_page_break_label_audit.v1",
+  "selection_basis": [
+    "artifacts/pdf_lab/page104_candidate_audit_20260721/baseline_page104_snapshot.json",
+    "artifacts/pdf_lab/page104_candidate_audit_20260721/baseline_page105_snapshot.json",
+    "artifacts/pdf_lab/page104_candidate_audit_20260721/page104_original.png",
+    "artifacts/pdf_lab/page104_candidate_audit_20260721/page104_au12_control_label_overlay.png"
+  ],
+  "status": "passing_current_contract",
+  "test_log": "test_logs/test_page104_au12_page_break_label.log",
+  "webgpt_preflight": "test_logs/webgpt_page104_assess_preflight.log",
+  "webgpt_status": "blocked_tab_identity_missing"
+}
