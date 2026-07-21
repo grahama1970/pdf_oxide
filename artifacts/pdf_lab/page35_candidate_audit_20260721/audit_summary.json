@@ -1,0 +1,60 @@
+{
+  "block_count": 11,
+  "candidate": "control_families_table_caption_footnote",
+  "caption": {
+    "bbox": [
+      0.32862744300194036,
+      0.4375634626908736,
+      0.671234878839231,
+      0.45417743259006077
+    ],
+    "id": "actual:p35:block:7",
+    "semantic_role": "table_caption",
+    "text": "TABLE 1: SECURITY AND PRIVACY CONTROL FAMILIES",
+    "type": "caption"
+  },
+  "footnote": {
+    "bbox": [
+      0.14705877366408804,
+      0.852810638119476,
+      0.8412553375842524,
+      0.9096060088186553
+    ],
+    "id": "actual:p35:block:18",
+    "semantic_role": "footnote_group",
+    "text": "25 Of the 20 control families in NIST SP 800-53, 17 are aligned with the minimum security requirements in [FIPS 200]. The Program Management (PM), PII Processing and Transparency (PT), and Supply Chain Risk Management (SR) families address enterprise-level program management, privacy, and supply chain risk considerations pertaining to federal mandates emergent since [FIPS 200].",
+    "type": "footnote"
+  },
+  "page": 35,
+  "rationale": "The visible Table 1 region materializes as one table, its caption remains a caption with table_caption semantic role, footnote 25 remains a footnote_group, and selected table cells do not leak as standalone body blocks.",
+  "schema": "pdf_lab.page35_control_families_table_audit.v1",
+  "selection_basis": [
+    "artifacts/pdf_lab/page35_candidate_audit_20260721/baseline_page35_snapshot.json",
+    "artifacts/pdf_lab/page35_candidate_audit_20260721/page35_original.png",
+    "artifacts/pdf_lab/page35_candidate_audit_20260721/page35_table_caption_footnote_overlay.png"
+  ],
+  "standalone_table_cell_leak_count": 0,
+  "standalone_table_cell_leaks": [],
+  "status": "passing_current_contract",
+  "table": {
+    "bbox": [
+      0.14666667015723933,
+      0.46143938315035116,
+      0.8525490355647467,
+      0.6751515166928069
+    ],
+    "id": "actual:p35:table:0",
+    "source_type": "table",
+    "type": "table"
+  },
+  "table_count": 1,
+  "test_log": "test_logs/test_page35_control_families_table.log",
+  "type_counts": {
+    "caption": 1,
+    "footnote": 1,
+    "header_footer_noise": 4,
+    "paragraph_block": 3,
+    "section_heading": 1,
+    "table": 1
+  }
+}

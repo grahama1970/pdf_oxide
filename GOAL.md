@@ -27,6 +27,7 @@ Current completed page evidence:
 | `page_0045` | AC-1 lower-alpha list markers | `artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/audit_summary.json` | `origin/main` at `4f6e35b3447191ff9c6ec485d4f4eeb72158381c` |
 | `page_0421` | glossary term-definition materialization | `artifacts/pdf_lab/page421_glossary_term_audit_20260721/audit_summary.json` | `origin/main` after page421 push |
 | `page_0104` | AU-12 page-break field label | `artifacts/pdf_lab/page104_candidate_audit_20260721/audit_summary.json` | `origin/main` after page104 push |
+| `page_0035` | control families table/caption/footnote | `artifacts/pdf_lab/page35_candidate_audit_20260721/audit_summary.json` | `origin/main` after page35 push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -60,19 +61,19 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after page104 is page35, based on the GS001 handoff's
-independent reviewer measurement:
+The next candidate after page35 is another page45 checklist item, based on the
+GS001 handoff's independent reviewer measurement:
 
 | Field | Value |
 |-------|-------|
-| Page | `page_0035` / NIST SP 800-53r5 page 35 |
+| Page | `page_0045` / NIST SP 800-53r5 page 45 |
 | Defect class | to be selected from the remaining independent reviewer findings |
-| Observed failure | GS001 handoff reports page35 reduced from 17 findings to 13 remaining findings |
+| Observed failure | GS001 handoff reports page45 reduced from 29 findings to 20 remaining findings; only the AC-1 lower-alpha marker checklist item has a focused receipt so far |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
-| Candidate artifacts to inspect first | current `artifacts/pdf_lab/` page35 receipts, release snapshot, model-review receipts, and live current extraction |
+| Candidate artifacts to inspect first | current `artifacts/pdf_lab/` page45 receipts, release snapshot, model-review receipts, and live current extraction |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |
 
-Before patching page35, produce a selection receipt that names the exact page
+Before patching page45, produce a selection receipt that names the exact page
 image/current extraction/model-review artifacts used and the focused regression
 that will prove the single selected checklist item.
 
