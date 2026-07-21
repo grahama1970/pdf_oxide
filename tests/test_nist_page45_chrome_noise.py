@@ -44,7 +44,7 @@ def test_nist_page_45_chrome_text_is_typed_as_noise_not_body_content():
     assert len(chrome_blocks) == 4
     assert {block.get("source_type") for block in chrome_blocks} == {
         "Header",
-        "Body",
+        "Footer",
         "Boilerplate",
     }
 

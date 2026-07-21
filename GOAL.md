@@ -77,6 +77,7 @@ Current completed page evidence:
 | `page_0027` | live second-pass VLM-backed review with page-orchestrator registration, five candidate findings validated clean | `artifacts/pdf_lab/page27_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `a5fc2f5c96974dd328f28af29935b0fa90b32fdd` |
 | `page_0028` | live second-pass review explicitly blocked at Tau/SciLLM orchestration boundary after authenticated `vlm-free2` ReadTimeout; pdf_oxide-side chunking drift rolled back; Tau issue filed | `artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/page_cases/page_case_0001_p0028/scillm_review_error.json`, `artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/tau-receipts/dag-receipt.json`, `https://github.com/grahama1970/tau/issues/120` | `origin/main` at `e68942f185c3a9ffaa9097a6f0a26155541631a8` |
 | `page_0456` | GS001 detected-lattice table/block reconciliation integrated onto current main; residuals remain the separate DOI-chrome/fail-open classes | `artifacts/pdf_lab/gs001_reconciler_main_integration_20260721/integration_receipt.json` | `origin/main` at `042126b10fff3de1832ed64b4236443018148b04` |
+| `all_pages` | DOI/publication side-chrome census after GS001 integration and normal `uv run` PyMuPDF dev dependency repair | `artifacts/pdf_lab/doi_chrome_census_20260721/audit_summary.json` | `origin/main` after DOI-chrome census push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -118,7 +119,7 @@ fresh current-extraction reviewer/candidate selection pass:
 |-------|-------|
 | Page | fresh reviewer-selected page |
 | Defect class | to be selected from fresh current-extraction/model-review evidence |
-| Observed failure | Current broad NIST deterministic suite passes after page45 rotated DOI bbox, NIST table duplicate suppression, and page28 fixture/dependency repairs; stale handoff rows for page456/page34/page45 have focused receipts or no-patch reconciliations |
+| Observed failure | Current broad NIST deterministic suite passes after page45 rotated DOI bbox, NIST table duplicate suppression, page28 fixture/dependency repairs, GS001 table/block reconciliation, page34/page45 focused rechecks, and full-document DOI/publication side-chrome census |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
 | Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts, release snapshots, model-review receipts, and a fresh current-extraction reviewer pass |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |

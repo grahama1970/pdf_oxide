@@ -1,0 +1,47 @@
+{
+  "apply_mode": "release",
+  "candidate_count": 0,
+  "candidates": [],
+  "census_failure_count": 1,
+  "census_failures": [
+    {
+      "error": "No module named 'fitz'",
+      "error_type": "ModuleNotFoundError",
+      "page_index": null,
+      "page_number": null,
+      "page_timeout_s": null,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    }
+  ],
+  "command": "scripts/pdf_lab/build_pdf_element_candidate_manifest.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_first60.json --max-pages 60 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --page-timeout-s 30 --debug-log artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_first60_debug.log --progress-path artifacts/pdf_lab/doi_chrome_census_20260721/candidate_census_progress.json",
+  "created_at": "2026-07-21T13:33:37.371696+00:00",
+  "errors": [
+    "candidate census failed: ModuleNotFoundError: No module named 'fitz'"
+  ],
+  "extracted_page_count": 0,
+  "git_head": "d5b1454728fc011d02078ab982f3d884f64a99ac",
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "ok": false,
+  "page_count": null,
+  "page_count_with_candidates": 0,
+  "pages": [],
+  "pdf_id": "NIST_SP_800-53r5",
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "preset_counts": {},
+  "preset_types": [
+    "appendix",
+    "equation",
+    "figure",
+    "footnote",
+    "list",
+    "reference",
+    "section_heading",
+    "side_chrome",
+    "table",
+    "text",
+    "toc",
+    "unknown_layout"
+  ],
+  "schema": "pdf_lab.second_pass.candidate_manifest.v1"
+}

@@ -1,0 +1,229 @@
+{
+  "block_type_counts_for_anchor_records": {
+    "header_footer_noise": 64
+  },
+  "candidate_count": 802,
+  "doi_publication_anchor_pages": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60
+  ],
+  "doi_publication_anchor_records": 64,
+  "extracted_page_count": 60,
+  "first_10_anchor_records": [
+    {
+      "bbox": [
+        0.5349019368489584,
+        0.5145195469711766,
+        0.8529021817874285,
+        0.5314472853535354
+      ],
+      "block_type": "header_footer_noise",
+      "candidate_id": "cand:p0001:0005:side_chrome",
+      "page_number": 1,
+      "preset_type": "side_chrome",
+      "semantic_role": null,
+      "source_type": "Boilerplate",
+      "text_excerpt": "This publication is available free of charge from:"
+    },
+    {
+      "bbox": [
+        0.573230020361009,
+        0.5299037971881905,
+        0.8530090930415135,
+        0.5468315355705492
+      ],
+      "block_type": "header_footer_noise",
+      "candidate_id": "cand:p0001:0006:side_chrome",
+      "page_number": 1,
+      "preset_type": "side_chrome",
+      "semantic_role": null,
+      "source_type": "Boilerplate",
+      "text_excerpt": "https://doi.org/10.6028/NIST.SP.800-53r5"
+    },
+    {
+      "bbox": [
+        0.5349019368489584,
+        0.47664075909238873,
+        0.8529021817874285,
+        0.49356849747474746
+      ],
+      "block_type": "header_footer_noise",
+      "candidate_id": "cand:p0002:0005:side_chrome",
+      "page_number": 2,
+      "preset_type": "side_chrome",
+      "semantic_role": null,
+      "source_type": "Boilerplate",
+      "text_excerpt": "This publication is available free of charge from:"
+    },
+    {
+      "bbox": [
+        0.573230020361009,
+        0.49202500930940263,
+        0.8530090930415135,
+        0.5089527476917614
+      ],
+      "block_type": "header_footer_noise",
+      "candidate_id": "cand:p0002:0006:side_chrome",
+      "page_number": 2,
+      "preset_type": "side_chrome",
+      "semantic_role": null,
+      "source_type": "Boilerplate",
+      "text_excerpt": "https://doi.org/10.6028/NIST.SP.800-53r5"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_type": "header_footer_noise",
+      "candidate_id": "cand:p0003:0003:side_chrome",
+      "page_number": 3,
+      "preset_type": "side_chrome",
+      "semantic_role": null,
+      "source_type": "Boilerplate",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "bbox": [
+        0.34100985059551164,
+        0.45344951899364744,
+        0.659010245129953,
+        0.47037725737600616
+      ],
+      "block_type": "header_footer_noise",
+      "candidate_id": "cand:p0003:0009:side_chrome",
+      "page_number": 3,
+      "preset_type": "side_chrome",
+      "semantic_role": null,
+      "source_type": "Boilerplate",
+      "text_excerpt": "This publication is available free of charge from:"
+    },
+    {
+      "bbox": [
+        0.36013300278607535,
+        0.4689096778330177,
+        0.6399120754665799,
+        0.4858374162153764
+      ],
+      "block_type": "header_footer_noise",
+      "candidate_id": "cand:p0003:0010:side_chrome",
+      "page_number": 3,
+      "preset_type": "side_chrome",
+      "semantic_role": null,
+      "source_type": "Boilerplate",
+      "text_excerpt": "https://doi.org/10.6028/NIST.SP.800-53r5"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_type": "header_footer_noise",
+      "candidate_id": "cand:p0004:0003:side_chrome",
+      "page_number": 4,
+      "preset_type": "side_chrome",
+      "semantic_role": null,
+      "source_type": "Boilerplate",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_type": "header_footer_noise",
+      "candidate_id": "cand:p0005:0003:side_chrome",
+      "page_number": 5,
+      "preset_type": "side_chrome",
+      "semantic_role": null,
+      "source_type": "Boilerplate",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_type": "header_footer_noise",
+      "candidate_id": "cand:p0006:0003:side_chrome",
+      "page_number": 6,
+      "preset_type": "side_chrome",
+      "semantic_role": null,
+      "source_type": "Boilerplate",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    }
+  ],
+  "first_10_non_side_chrome": [],
+  "manifest": "artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_first60_with_pymupdf.json",
+  "non_side_chrome_count": 0,
+  "non_side_chrome_pages": [],
+  "preset_counts_for_anchor_records": {
+    "side_chrome": 64
+  }
+}

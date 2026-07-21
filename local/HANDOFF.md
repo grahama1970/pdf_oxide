@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T13:50:00Z
+**Timestamp**: 2026-07-21T13:55:00Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -13,7 +13,7 @@
 
 - Main repo URL: `https://github.com/grahama1970/pdf_oxide`
 - Remote main verification command: `git ls-remote origin refs/heads/main`
-- Verified remote main: `042126b10fff3de1832ed64b4236443018148b04`
+- Verified remote main before DOI-chrome census commit: `d5b1454728fc011d02078ab982f3d884f64a99ac`
 - Clean integration worktree: `/tmp/pdf_oxide_integrate_gs001_20260721`
 - Integration branch: `codex/integrate-gs001-reconciler-20260721`
 - Do not continue from the dirty detached checkout at `/home/graham/workspace/experiments/pdf_oxide` unless intentionally reconciling worktrees.
@@ -22,6 +22,8 @@
 
 - `44410852` cherry-picks source repair `61050fc5`.
 - `042126b1` records the current-main integration proof and updates `GOAL.md` so model/executor work is Tau-owned only.
+- `25808d30` rechecks page34 body-lines-as-headings after GS001 integration.
+- `d5b14547` rechecks page45 AC-1 list-threshold markers after GS001 integration.
 - Repair scope:
   - `src/extractors/table_block_reconciler.rs`
   - `src/extractors/document_extractor.rs`
@@ -43,6 +45,16 @@
   - This matches the pinned pre-existing TOC failure class, though the observed pass count is `4543`, not Claude's reported `4530`.
 - Integration receipt:
   - `artifacts/pdf_lab/gs001_reconciler_main_integration_20260721/integration_receipt.json`
+- Post-GS001 page34/page45/DOI checks:
+  - `uv run pytest -q tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page_28_regression.py`
+  - Result: `11 passed in 7.13s`
+  - `artifacts/pdf_lab/page34_recheck_after_gs001_20260721/audit_summary.json`
+  - `artifacts/pdf_lab/page45_list_threshold_recheck_after_gs001_20260721/audit_summary.json`
+  - `artifacts/pdf_lab/doi_chrome_census_20260721/audit_summary.json`
+- Full DOI/publication side-chrome census:
+  - Command: `uv run python scripts/pdf_lab/build_pdf_element_candidate_manifest.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_full_plain_uv_after_dev_pymupdf.json --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --page-timeout-s 30 --debug-log artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_full_plain_uv_after_dev_pymupdf_debug.log --progress-path artifacts/pdf_lab/doi_chrome_census_20260721/candidate_census_progress_full_plain_uv_after_dev_pymupdf.json`
+  - Result: `candidate_count=9333`, `page_count=492`, `extracted_page_count=492`, `census_failure_count=0`
+  - DOI/publication anchor analysis: `576` anchor records on `492` pages, `0` non-side-chrome records, `0` combined rotated DOI records outside the left-margin bbox contract.
 
 ## 5. Important Correction To Claude Report
 
@@ -65,8 +77,8 @@
 
 Use the same one-candidate proof ladder, without direct SciLLM calls from `pdf_oxide`:
 
-1. Page 34 body-lines-as-headings.
-2. Page 45 list threshold.
-3. DOI-chrome leftovers.
+1. Fresh reviewer-selected current-extraction candidate.
+2. Any candidate whose model/executor review is required must go through Tau DAG contracts, not direct SciLLM/OpenCode calls from this repo.
+3. Criterion 6 live GitHub apply remains blocked until a valid approval receipt for mutation exists.
 
 Before patching the next item, produce a selection receipt with source page image/current extraction/model-review artifacts and the focused regression that will prove that one checklist item.
