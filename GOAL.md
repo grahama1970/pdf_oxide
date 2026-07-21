@@ -110,23 +110,23 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after page29 must be selected with deterministic PDF Lab
-current-extraction evidence only. Do not invoke SciLLM, OpenCode, or a
+The current candidate after page29 is page30, selected with deterministic PDF
+Lab current-extraction evidence only. Do not invoke SciLLM, OpenCode, or a
 pdf_oxide-owned model transport wrapper while Tau issue #120 remains unresolved
 or lacks an accepted Tau-native PDF Lab work-order contract:
 
 | Field | Value |
 |-------|-------|
-| Page | fresh deterministic reviewer-selected page after page29 |
-| Defect class | to be selected from current extraction/manifest evidence without live model transport |
-| Observed failure | Page29 is selected but model review is blocked at the ownership boundary: pdf_oxide must not call SciLLM directly or via a local Tau wrapper; Tau issue #120 must provide the native route |
+| Page | `page_0030` / `page_case_0001_p0030` |
+| Defect class | current extraction candidate mix: side chrome, text, section headings, lists, footnotes |
+| Observed failure | No page30 live model review has been run. Page29 proved the ownership boundary: pdf_oxide must not call SciLLM directly or via a local Tau wrapper; Tau issue #120 must provide the native route |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
-| Candidate artifacts to inspect first | current deterministic `artifacts/pdf_lab/` receipts, release snapshots, candidate manifests, and visual/current-extraction evidence |
+| Candidate artifacts to inspect first | `artifacts/pdf_lab/next_candidate_selection_page30_20260721T1235Z/selection_receipt.json`, `candidate_manifest.json`, `sampled_page_cases.json` |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching; no pdf_oxide-side SciLLM/model transport attempts until Tau owns the route |
 
-Before patching the next item, produce a selection receipt that names the
-exact page image/current extraction/model-review artifacts used and the focused
-regression that will prove the single selected checklist item.
+Before patching page30, wait for Tau issue #120 to provide the accepted
+Tau-native PDF Lab model transport contract, or continue only deterministic
+non-model evidence preparation that cannot be mistaken for live review proof.
 
 ## Blockers And Boundaries
 
