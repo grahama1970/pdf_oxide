@@ -1,0 +1,42 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0025:0000:side_chrome",
+      "evidence": "Extracted JSON block 0 text: 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'. Bbox: [0.147, 0.045, 0.851, 0.058]. Preset type: 'side_chrome'.",
+      "rationale": "The extracted text, bounding box, and `side_chrome` preset type accurately represent the header information visible on the rendered page. The `semantic_role` and `source_type` are also correctly identified as 'page_chrome' and 'Header' respectively.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0025:0001:side_chrome",
+      "evidence": "Extracted JSON block 1 text: '_________________________________________________________________________________________________'. Bbox: [0.147, 0.057, 0.852, 0.071]. Preset type: 'side_chrome'.",
+      "rationale": "The extracted text (horizontal rule), bounding box, and `side_chrome` preset type accurately represent the visual element below the header on the rendered page. The `semantic_role` and `source_type` are also correctly identified as 'page_chrome' and 'Header' respectively.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0025:0002:side_chrome",
+      "evidence": "Extracted JSON block 2 text: 'xxiii'. Bbox: [0.489, 0.940, 0.511, 0.955]. Preset type: 'side_chrome'.",
+      "rationale": "The extracted page number 'xxiii', its bounding box, and the `side_chrome` preset type accurately represent the footer information visible on the rendered page. The `source_type` is correctly identified as 'PageNumber'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0025:0003:side_chrome",
+      "evidence": "Extracted JSON block 3 text: 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5'. Bbox: [0.030, 0.288, 0.050, 0.741]. Preset type: 'side_chrome'.",
+      "rationale": "The extracted vertical boilerplate text on the left margin, its bounding box, and the `side_chrome` preset type accurately represent the marginal text visible on the rendered page. The `source_type` is correctly identified as 'Boilerplate'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0025:0004:table",
+      "evidence": "Extracted JSON table 0 text begins with 'DATE | TYPE | REVISION | PAGE 12-10-2020 | Editorial | Control SR-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 363'. Bbox: [0.147, 0.092, 0.853, 0.834]. Preset type: 'table'.",
+      "rationale": "The extracted table content, its bounding box, and the `table` preset type accurately capture the primary content block on the rendered page. The text content appears to preserve the structure and data, and the `source_type` is correct.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    }
+  ],
+  "page_rationale": "All identified candidates on page 25 (header text, horizontal rule, page number, boilerplate text, and the main table) are accurately extracted, their bounding boxes are correct, and they are assigned the appropriate preset types ('side_chrome' for all chrome elements and 'table' for the table). No defects were found.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

@@ -1,0 +1,26 @@
+{
+  "command_or_endpoint": "POST /v1/scillm/opencode/transport/runs",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T10:53:42.537291+00:00",
+  "input_artifacts": [
+    "scillm_orchestrator_page_dag_spec.json",
+    "scillm_orchestrator_page_dag_spec_validation.json",
+    "scillm_orchestrator_page_submission.json",
+    "scillm_orchestrator_page_submission_validation.json"
+  ],
+  "next_allowed_nodes": [
+    "scillm_one_shot_page_review"
+  ],
+  "node_id": "register_page_orchestrator_run",
+  "output_artifacts": [
+    "scillm_page_orchestrator_run_request.json",
+    "scillm_page_orchestrator_run_receipt.json",
+    "scillm_page_orchestrator_run_validation.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T10:53:42.537280+00:00",
+  "validator_result": {
+    "errors": [],
+    "ok": true
+  }
+}
