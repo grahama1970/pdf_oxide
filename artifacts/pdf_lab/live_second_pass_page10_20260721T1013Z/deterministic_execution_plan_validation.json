@@ -1,0 +1,31 @@
+{
+  "duplicate_planned_case_ids": [],
+  "duplicate_planned_page_numbers": [],
+  "errors": [],
+  "malformed_forced_flag_case_ids": [],
+  "malformed_forced_probability_case_ids": [],
+  "malformed_observed_case_results": [],
+  "malformed_planned_case_ids": [],
+  "malformed_probability_case_ids": [],
+  "observed_case_ids": [
+    "page_case_0001_p0010"
+  ],
+  "observed_page_result_count": 1,
+  "ok": true,
+  "planned_case_count": 1,
+  "planned_case_id_page_suffix_mismatches": [],
+  "planned_case_ids": [
+    "page_case_0001_p0010"
+  ],
+  "planned_page_numbers": [
+    10
+  ],
+  "sampled_case_count": 1,
+  "sampled_case_ids": [
+    "page_case_0001_p0010"
+  ],
+  "sampled_page_numbers": [
+    10
+  ],
+  "schema": "pdf_lab.second_pass.deterministic_execution_plan_validation.v1"
+}

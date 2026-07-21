@@ -1,0 +1,36 @@
+{
+  "campaign_status": {
+    "active_family": "NIST SP 800-53r5 current-extraction page candidates",
+    "active_page": 10,
+    "blocked_by_systemic_failure": 0,
+    "failed": 0,
+    "latest_failure_signature": "none for page10 live second-pass review",
+    "not_run": "remaining active candidate queue after page 10",
+    "passed": 1
+  },
+  "candidate": "frontmatter text/side-chrome page",
+  "evidence": {
+    "live_final_gate": "artifacts/pdf_lab/live_second_pass_page10_20260721T1013Z/harness_final_gate.json",
+    "live_model_response": "artifacts/pdf_lab/live_second_pass_page10_20260721T1013Z/page_cases/page_case_0001_p0010/review_response.json",
+    "live_review_validation": "artifacts/pdf_lab/live_second_pass_page10_20260721T1013Z/page_cases/page_case_0001_p0010/review_validation.json",
+    "live_terminal_ledger": "artifacts/pdf_lab/live_second_pass_page10_20260721T1013Z/page_cases/page_case_0001_p0010/terminal_ledger.json",
+    "review_bundle": "artifacts/pdf_lab/live_second_pass_page10_20260721T1013Z/page_cases/page_case_0001_p0010/review_bundle.zip"
+  },
+  "live": "yes",
+  "mocked": "no",
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "verified": {
+    "candidate_count": 6,
+    "defect_count": 0,
+    "harness_final_gate_ok": true,
+    "review_response_page_status": "clean",
+    "review_validation_ok": true,
+    "terminal_status": "reviewed_clean"
+  },
+  "what_remains_unverified": [
+    "remaining active page candidates beyond page 10",
+    "Criterion 6 live GitHub apply mutation, still requiring approval receipt",
+    "WebGPT exact-tab availability"
+  ],
+  "what_was_exercised": "A live page10 second-pass review used the running SciLLM proxy on localhost:4001 and the page orchestrator live transport path against the release ledger."
+}
