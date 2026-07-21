@@ -13,7 +13,7 @@ CHROME_ANCHORS = (
     "NIST SP 800-53, REV. 5",
     "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
     "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
-    "CHAPTER THREE 18 PAGE",
+    "CHAPTER THREE PAGE 18",
 )
 
 

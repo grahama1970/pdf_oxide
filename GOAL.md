@@ -34,6 +34,7 @@ Current completed page evidence:
 | `page_0045` | AC-1 body/list TOC lineage | `artifacts/pdf_lab/page45_toc_lineage_20260721/audit_summary.json` | `origin/main` after page45 TOC-lineage push |
 | `page_0045` | running header/footer/rotated DOI chrome noise | `artifacts/pdf_lab/page45_chrome_noise_20260721/audit_summary.json` | `origin/main` after page45 chrome-noise push |
 | `page_0045` | Related Controls semantic role | `artifacts/pdf_lab/page45_related_controls_20260721/audit_summary.json` | `origin/main` after page45 related-controls push |
+| `page_0045` | Discussion text line-order repair | `artifacts/pdf_lab/page45_discussion_text_20260721/audit_summary.json` | `origin/main` after page45 discussion-text push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -67,7 +68,7 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after the page45 related-controls item must be selected from
+The next candidate after the page45 Discussion text item must be selected from
 the remaining residual findings, based on the GS001 handoff's independent
 reviewer measurement:
 
@@ -75,7 +76,7 @@ reviewer measurement:
 |-------|-------|
 | Page | `page_0104`, `page_0035`, `page_0421`, or remaining `page_0045` residual |
 | Defect class | to be selected from the remaining independent reviewer findings |
-| Observed failure | GS001 handoff reports residual findings after prior fixes: page104 has 3, page35 has 13, page421 has 4, and page45 had 20 before the focused page45 receipt pass; the AC-1 lower-alpha marker, Control Enhancements None, quick-link, AC-1 heading, TOC-lineage, chrome-noise, and Related Controls checklist items now have focused receipts |
+| Observed failure | GS001 handoff reports residual findings after prior fixes: page104 has 3, page35 has 13, page421 has 4, and page45 had 20 before the focused page45 receipt pass; the AC-1 lower-alpha marker, Control Enhancements None, quick-link, AC-1 heading, TOC-lineage, chrome-noise, Related Controls, and Discussion text line-order checklist items now have focused receipts |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
 | Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts for page104, page35, page421, and page45; release snapshots; model-review receipts; and live current extraction |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |

@@ -1,0 +1,81 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T04:21:01Z",
+  "status": "passing_current_contract_after_patch",
+  "mocked": "no",
+  "live": "yes",
+  "page_id": "nist_phase54_page_0045",
+  "page_number": 45,
+  "pdf_page_index": 44,
+  "candidate": {
+    "defect_class": "Discussion block raw text has line-order character corruption at line wrap",
+    "owner": "snapshot_current_extraction",
+    "selected_from": [
+      "artifacts/pdf_lab/page45_related_controls_20260721/current_page45_snapshot.json",
+      "artifacts/pdf_lab/page45_human_reannotation_20260604/in_progress_entry.json"
+    ]
+  },
+  "current_extraction": {
+    "snapshot": "artifacts/pdf_lab/page45_discussion_text_20260721/current_page45_snapshot.json",
+    "snapshot_sha256": "571f6c8f395f68a1c2828a9191b462b6b231add50bf41a2f940d0c2933ffcfcb",
+    "block_count": 21,
+    "type_counts": {
+      "header_footer_noise": 4,
+      "section_heading": 2,
+      "section_link": 1,
+      "paragraph_block": 3,
+      "list": 9,
+      "labeled_enhancements": 1,
+      "reference": 1
+    },
+    "candidate_block": {
+      "id": "actual:p45:block:17",
+      "type": "paragraph_block",
+      "semantic_role": null,
+      "source_type": "Body",
+      "text": "Discussion: Access control policy and procedures address the controls in the AC family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of access control policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies reflecting the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to access control policy and procedures include assessment or audit findings, security incidents or breaches, or changes in laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.",
+      "bbox": [
+        0.20586599711499182,
+        0.544064993810172,
+        0.8519990210439644,
+        0.7922823356859612
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ],
+      "breadcrumb": [
+        "CHAPTER THREE THE CONTROLS",
+        "3.1 ACCESS CONTROL"
+      ]
+    }
+  },
+  "patch": {
+    "file": "scripts/pdf_lab/snapshot_current_extraction.py",
+    "rule_effect": "Body blocks that fail exact rendered-line matching fall back to overlapping horizontal PyMuPDF text lines before ledger application; rotated side-margin lines are excluded from Body fallback repairs."
+  },
+  "proof": {
+    "commands": [
+      "python red baseline probe using HEAD:scripts/pdf_lab/snapshot_current_extraction.py",
+      "pytest -q tests/test_nist_page45_discussion_text.py",
+      "pytest -q tests/test_nist_page45_discussion_text.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py",
+      "pytest -q tests/test_nist_page45_discussion_text.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page35_control_families_table.py tests/test_nist_page104_au12_page_break_label.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page46_nested_list_segmentation.py",
+      "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page45_discussion_text_20260721/current_page45_snapshot.json --max-pages 45 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release"
+    ],
+    "logs": [
+      "artifacts/pdf_lab/page45_discussion_text_20260721/test_logs/red_probe_page45_discussion_text.log",
+      "artifacts/pdf_lab/page45_discussion_text_20260721/test_logs/pytest_page45_discussion_text.log",
+      "artifacts/pdf_lab/page45_discussion_text_20260721/test_logs/pytest_page45_focused.log",
+      "artifacts/pdf_lab/page45_discussion_text_20260721/test_logs/pytest_broad_nist_regression.log",
+      "artifacts/pdf_lab/page45_discussion_text_20260721/test_logs/snapshot_page45.log"
+    ],
+    "diagnostic_logs": [
+      "artifacts/pdf_lab/page45_discussion_text_20260721/test_logs/pytest_page45_focused_initial_fail.log"
+    ],
+    "red_result": "pre-patch snapshot path contained corrupt phrase aPnd procedures. olicies and failed assertion",
+    "focused_result": "11 passed, 5 warnings in 256.75s",
+    "broad_result": "17 passed, 5 warnings in 382.77s",
+    "does_not_prove": "remaining independent-review findings or all-candidates goal completion"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page45_discussion_text_20260721/visual_receipt.json"
+}

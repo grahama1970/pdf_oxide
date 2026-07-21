@@ -266,6 +266,47 @@ def _footnote_text_from_lines(block_text: str, block_bbox: list[float], text_lin
     return repaired or block_text, overlapping
 
 
+def _main_column_body_lines(lines: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        line
+        for line in lines
+        if not _is_vertical_margin_line(line)
+        and isinstance(line.get("bbox"), list)
+        and len(line["bbox"]) == 4
+        and float(line["bbox"][0]) >= 0.10
+    ]
+
+
+def _body_text_from_lines(
+    block_text: str,
+    block_bbox: list[float],
+    text_lines: list[dict[str, Any]],
+) -> tuple[str, list[dict[str, Any]]]:
+    matched_lines = _match_text_lines(block_text, text_lines, block_bbox)
+    if matched_lines:
+        if len(block_bbox) == 4 and float(block_bbox[0]) < 0.10:
+            matched_lines = _main_column_body_lines(matched_lines)
+            repaired = _normalize_text(" ".join(str(line.get("text") or "") for line in matched_lines))
+            return repaired or block_text, matched_lines
+        return block_text, matched_lines
+
+    if len(block_bbox) != 4:
+        return block_text, []
+
+    overlapping = [
+        line
+        for line in _overlapping_text_lines(block_bbox, text_lines)
+        if not _is_vertical_margin_line(line)
+    ]
+    if float(block_bbox[0]) < 0.10:
+        overlapping = _main_column_body_lines(overlapping)
+    if not overlapping:
+        return block_text, []
+
+    repaired = _normalize_text(" ".join(str(line.get("text") or "") for line in overlapping))
+    return repaired or block_text, overlapping
+
+
 def _should_split_block(block_bbox: list[float], matched_lines: list[dict[str, Any]]) -> bool:
     if len(matched_lines) <= 1:
         return False
@@ -295,6 +336,9 @@ def _block_elements(
     block_bbox = original_block_bbox
     if source_type == "Footnote":
         text, matched_lines = _footnote_text_from_lines(text, original_block_bbox, text_lines)
+        text = _normalize_bracketed_citation_wraps(text)
+    elif source_type == "Body":
+        text, matched_lines = _body_text_from_lines(text, original_block_bbox, text_lines)
         text = _normalize_bracketed_citation_wraps(text)
     else:
         matched_lines = _match_text_lines(text, text_lines, original_block_bbox)
