@@ -1,0 +1,71 @@
+{
+  "schema": "pdf_lab.second_pass.visual_verification_receipt.v1",
+  "created_at": "2026-07-21T13:15:00Z",
+  "mocked": false,
+  "live": false,
+  "model_transport_invoked": false,
+  "page_case": {
+    "case_id": "page_case_0001_p0031",
+    "page_number": 31
+  },
+  "artifacts": {
+    "review_html": "review.html",
+    "review_html_screenshot": "review_html_screenshot.png",
+    "original_image": "page_before.png",
+    "annotated_image": "page_candidates.png",
+    "page_json": "page_before.json",
+    "candidate_presets": "candidate_presets.json",
+    "review_bundle_zip": "review_bundle.zip",
+    "review_bundle_validation": "review_bundle_validation.json",
+    "terminal_ledger": "terminal_ledger.json",
+    "terminal_ledger_validation": "terminal_ledger_validation.json",
+    "review_request_validation": "review_request_validation.json",
+    "page_orchestrator_run_validation": "scillm_page_orchestrator_run_validation.json"
+  },
+  "commands": {
+    "case_dry_run": ".venv/bin/python scripts/pdf_lab/run_page_second_pass_dag.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --manifest artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/candidate_manifest.json --sampled-cases artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/sampled_page_cases.json --out artifacts/pdf_lab/page31_deterministic_evidence_20260721T1315Z --case-id page_case_0001_p0031 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --dpi 150 --model local-text --batch-id page31-deterministic-20260721 --review-mode dry_run --scillm-preflight-mode dry_run --patch-mode dry_run --commit-mode dry_run --page-orchestrator-mode dry_run --page-extract-timeout-s 90",
+    "html_screenshot": "playwright screenshot --full-page file:///tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/page31_deterministic_evidence_20260721T1315Z/page_case_0001_p0031/review.html artifacts/pdf_lab/page31_deterministic_evidence_20260721T1315Z/page_case_0001_p0031/review_html_screenshot.png"
+  },
+  "validation_results": {
+    "run_terminal_status": "still_open",
+    "run_terminal_reason": "dry_run_review_not_executed",
+    "review_request_validation_ok": true,
+    "terminal_ledger_validation_ok": true,
+    "review_bundle_validation_ok": true,
+    "page_orchestrator_mode": "dry_run",
+    "page_orchestrator_registered": false,
+    "page_orchestrator_transport_run_id": null,
+    "html_screenshot_dimensions": {
+      "width": 1280,
+      "height": 10517
+    },
+    "review_html_screenshot_sha256": "a83db4371aa078bb378385d850cf19edf1ea09b4ebb8d6fd7268e111c212cb60"
+  },
+  "visual_inspection": {
+    "ok": true,
+    "observations": [
+      "The rendered HTML review artifact shows the original page image and annotated candidate image in the before-evidence section.",
+      "The annotated image shows page31 candidate boxes, including side-chrome regions, body text/list regions, footnotes, and a table-region candidate.",
+      "The rendered artifact shows selected candidate JSON blocks for all 15 page31 candidates.",
+      "The review validation section visibly reports dry_run_review_not_executed, and the artifact links section is visible at the bottom of the rendered page."
+    ]
+  },
+  "proof_scope": {
+    "proves": [
+      "Page31 deterministic evidence materialization produced original image, annotated image, extracted page JSON, candidate presets, review request, HTML, and ZIP artifacts.",
+      "The generated review bundle is package-valid and terminal-ledger-valid for a dry-run still_open page case.",
+      "The HTML review artifact was rendered in a browser and captured as a 1280 x 10517 PNG screenshot."
+    ],
+    "does_not_prove": [
+      "Any live model-backed second-pass review.",
+      "Any Tau-native PDF Lab model transport contract execution.",
+      "Any semantic extraction correctness for page31.",
+      "Closure of the active all-candidates hardening goal."
+    ]
+  },
+  "current_blocker": {
+    "owner": "tau",
+    "issue": "https://github.com/grahama1970/tau/issues/120",
+    "reason": "A live model-backed second pass for page31 must run through a Tau-owned route; pdf_oxide must not call SciLLM directly or through local wrapper code."
+  }
+}

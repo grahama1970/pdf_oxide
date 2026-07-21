@@ -1,0 +1,19 @@
+{
+  "artifact_paths": {
+    "annotated_image": "page_candidates.png",
+    "candidate_presets": "candidate_presets.json",
+    "original_image": "page_before.png",
+    "page_json": "page_before.json"
+  },
+  "errors": [],
+  "image_part_count": 0,
+  "ok": true,
+  "schema": "pdf_lab.second_pass.review_request_validation.v1",
+  "scillm_metadata": {
+    "batch_id": "page31-deterministic-20260721",
+    "case_id": "page_case_0001_p0031",
+    "item_id": "page_case_0001_p0031:9b663f8ee90b8714",
+    "request_sha256": "9b663f8ee90b8714cfe0642643154890c4757814eab637d81898b6d8cf3fafc8"
+  },
+  "text_part_count": 1
+}

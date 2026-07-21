@@ -1,0 +1,114 @@
+{
+  "schema": "pdf_lab.next_candidate_selection_receipt.v1",
+  "created_at": "2026-07-21T13:15:00Z",
+  "mocked": false,
+  "live": false,
+  "model_transport_invoked": false,
+  "proof_scope": {
+    "proves": [
+      "The next one-page PDF Lab candidate after the page30 Tau-boundary block was selected from deterministic current-extraction manifest evidence.",
+      "The page31 candidate manifest and sampled page case schema validated deterministically.",
+      "The selected page case has complete candidate ids and priority strata coverage for the local manifest subset."
+    ],
+    "does_not_prove": [
+      "Any model-backed second-pass response.",
+      "Any semantic extraction correctness for page31.",
+      "Any Tau-native SciLLM/model transport execution.",
+      "Closure of the active all-candidates hardening goal."
+    ]
+  },
+  "repo": {
+    "path": "/tmp/pdf_oxide_next_page_20260721",
+    "branch": "codex/pdf-lab-next-page-20260721",
+    "base_remote_ref": "origin/codex/pdf-lab-next-page-20260721",
+    "base_commit": "b9866347d87f903120d86c2418ea9638554aa43d"
+  },
+  "selection": {
+    "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+    "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+    "page_case_id": "page_case_0001_p0031",
+    "page_number": 31,
+    "page_index": 30,
+    "candidate_count": 15,
+    "candidate_ids": [
+      "cand:p0031:0000:side_chrome",
+      "cand:p0031:0001:side_chrome",
+      "cand:p0031:0002:side_chrome",
+      "cand:p0031:0003:side_chrome",
+      "cand:p0031:0004:list",
+      "cand:p0031:0005:text",
+      "cand:p0031:0006:text",
+      "cand:p0031:0007:text",
+      "cand:p0031:0008:footnote",
+      "cand:p0031:0009:footnote",
+      "cand:p0031:0010:footnote",
+      "cand:p0031:0011:footnote",
+      "cand:p0031:0012:footnote",
+      "cand:p0031:0013:footnote",
+      "cand:p0031:0014:table"
+    ],
+    "preset_counts": {
+      "footnote": 6,
+      "list": 1,
+      "side_chrome": 4,
+      "table": 1,
+      "text": 3
+    },
+    "selection_reason": [
+      "high_risk_preset",
+      "high_risk_candidate",
+      "boundary_geometry",
+      "high_candidate_score"
+    ],
+    "selection_score": 58.0,
+    "selection_probability_estimate": 1.0,
+    "strata": [
+      "geometry:boundary",
+      "preset:footnote",
+      "preset:list",
+      "preset:side_chrome",
+      "preset:table",
+      "preset:text",
+      "risk:high"
+    ]
+  },
+  "inputs": {
+    "candidate_manifest": "artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/candidate_manifest.json",
+    "sampled_page_cases": "artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/sampled_page_cases.json",
+    "candidate_census_progress": "artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/candidate_census_progress.json",
+    "candidate_manifest_debug": "artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/candidate_manifest_debug.log"
+  },
+  "input_hashes": {
+    "candidate_manifest_sha256": "3236fcac11ecd3ff410f53884b3c2410518b2ec3966f306eadccd3f7b65748e9",
+    "sampled_page_cases_sha256": "67396481cff163aac58fc292df399bd6b09386090cebb94d9cb7e2ef08fd2672",
+    "candidate_census_progress_sha256": "f677364a1046d28abe87dd1102c6eb158f4a6c21e9cc9cc73f7f80854c501e0e"
+  },
+  "command_receipts": {
+    "manifest": {
+      "command": ".venv/bin/python scripts/pdf_lab/build_pdf_element_candidate_manifest.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --page 31 --out artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/candidate_manifest.json --page-timeout-s 90 --debug-log artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/candidate_manifest_debug.log --progress-path artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/candidate_census_progress.json",
+      "result": {
+        "candidate_count": 15,
+        "page_count": 492,
+        "failed_pages": 0
+      }
+    },
+    "sampler": {
+      "command": ".venv/bin/python scripts/pdf_lab/select_stratified_page_cases.py --manifest artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/candidate_manifest.json --out artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/sampled_page_cases.json --sample-size 1 --seed 31",
+      "result": {
+        "selected_count": 1,
+        "selected_pages": [
+          31
+        ]
+      }
+    }
+  },
+  "current_blocker": {
+    "owner": "tau",
+    "issue": "https://github.com/grahama1970/tau/issues/120",
+    "reason": "Live model-backed second-pass review must wait for a Tau-native PDF Lab model transport contract; pdf_oxide must not call SciLLM directly or via a local wrapper."
+  },
+  "next_action": {
+    "status": "deterministic_evidence_prepared",
+    "action": "Use the page31 deterministic evidence bundle as the next Tau-owned model review input after Tau provides the native work-order route."
+  }
+}

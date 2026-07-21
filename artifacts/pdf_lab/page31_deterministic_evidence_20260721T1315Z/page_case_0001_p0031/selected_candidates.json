@@ -1,0 +1,500 @@
+{
+  "candidate_count": 15,
+  "candidates": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "block_id": "actual:p31:block:0",
+      "block_index": 0,
+      "candidate_id": "cand:p0031:0000:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/30/blocks/0",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "block_id": "actual:p31:block:1",
+      "block_index": 1,
+      "candidate_id": "cand:p0031:0001:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/30/blocks/1",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528853273080066,
+        0.9549618345318418
+      ],
+      "block_id": "actual:p31:block:2",
+      "block_index": 2,
+      "candidate_id": "cand:p0031:0002:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009516,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Footer",
+        "text_length": 18
+      },
+      "json_pointer": "/pages/30/blocks/2",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "CHAPTER ONE PAGE 4"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_id": "actual:p31:block:3",
+      "block_index": 3,
+      "candidate_id": "cand:p0031:0003:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/30/blocks/3",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "bbox": [
+        0.14704088447919858,
+        0.0907001206369111,
+        0.8428372651143791,
+        0.26979055308332345
+      ],
+      "block_id": "actual:p31:block:4",
+      "block_index": 4,
+      "candidate_id": "cand:p0031:0004:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest",
+        "long_text_region"
+      ],
+      "features": {
+        "bbox_area": 0.12461,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 670
+      },
+      "json_pointer": "/pages/30/blocks/4",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "\u2022 Rigorous security and privacy planning and system development life cycle management; \u2022 The application of system security and privacy engineering principles and practices to securely develop and integrate system components into information systems; \u2022 The employment of security and privacy practices that are properly documented and integrated into and supportive of the institutional and operational processes of organizations; and \u2022 Continuous monitoring of information systems and organizations "
+    },
+    {
+      "bbox": [
+        0.14702307009229473,
+        0.28336307255908694,
+        0.8518314735562194,
+        0.4206127205280342
+      ],
+      "block_id": "actual:p31:block:5",
+      "block_index": 5,
+      "candidate_id": "cand:p0031:0005:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "long_text_region"
+      ],
+      "features": {
+        "bbox_area": 0.096735,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 710
+      },
+      "json_pointer": "/pages/30/blocks/5",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Organizations continuously assess the security and privacy risks to organizational operations and assets, individuals, other organizations, and the Nation. Security and privacy risks arise from the planning and execution of organizational mission and business functions, placing information systems into operation, or continuing system operations. Realistic assessments of risk require a thorough understanding of the susceptibility to threats based on the specific vulnerabilities in information sys"
+    },
+    {
+      "bbox": [
+        0.14704516043070875,
+        0.43410268456044826,
+        0.8405111474928513,
+        0.537505409934304
+      ],
+      "block_id": "actual:p31:block:6",
+      "block_index": 6,
+      "candidate_id": "cand:p0031:0006:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text"
+      ],
+      "features": {
+        "bbox_area": 0.071706,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 523
+      },
+      "json_pointer": "/pages/30/blocks/6",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "To address the organization\u2019s concerns about assessment and determination of risk, security and privacy requirements are satisfied with the knowledge and understanding of the organizational risk management strategy.17 The risk management strategy considers the cost, schedule, performance, and supply chain issues associated with the design, development, acquisition, deployment, operation, sustainment, and disposal of organizational systems. A risk management process is then applied to manage risk"
+    },
+    {
+      "bbox": [
+        0.14706395965775634,
+        0.5509966070001776,
+        0.8489892498340482,
+        0.7391027585424558
+      ],
+      "block_id": "actual:p31:block:7",
+      "block_index": 7,
+      "candidate_id": "cand:p0031:0007:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "long_text_region"
+      ],
+      "features": {
+        "bbox_area": 0.132036,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 985
+      },
+      "json_pointer": "/pages/30/blocks/7",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "The catalog of security and privacy controls can be effectively used to protect organizations, individuals, and information systems from traditional and advanced persistent threats and privacy risks arising from the processing of personally identifiable information (PII) in varied operational, environmental, and technical scenarios. The controls can be used to demonstrate compliance with a variety of governmental, organizational, or institutional security and privacy requirements. Organizations "
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7909924285580413,
+        0.5325689378127553,
+        0.8061969641483191
+      ],
+      "block_id": "actual:p31:block:8",
+      "block_index": 8,
+      "candidate_id": "cand:p0031:0008:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.005862,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 64
+      },
+      "json_pointer": "/pages/30/blocks/8",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "15 [SP 800-30] provides guidance on the risk assessment process."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8073560926649306,
+        0.4122558793211295,
+        0.8225606282552084
+      ],
+      "block_id": "actual:p31:block:9",
+      "block_index": 9,
+      "candidate_id": "cand:p0031:0009:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.004032,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 46
+      },
+      "json_pointer": "/pages/30/blocks/9",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "16 [IR 8062] introduces privacy risk concepts."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8237196797072285,
+        0.6203676111557904,
+        0.8389242152975063
+      ],
+      "block_id": "actual:p31:block:10",
+      "block_index": 10,
+      "candidate_id": "cand:p0031:0010:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.007196,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 77
+      },
+      "json_pointer": "/pages/30/blocks/10",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "17 [SP 800-39] provides guidance on risk management processes and strategies."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8401590983072916,
+        0.5489235173643024,
+        0.8553636338975694
+      ],
+      "block_id": "actual:p31:block:11",
+      "block_index": 11,
+      "candidate_id": "cand:p0031:0011:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.00611,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 64
+      },
+      "json_pointer": "/pages/30/blocks/11",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "18 [SP 800-37] provides a comprehensive risk management process."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8565226853495896,
+        0.6034264159358405,
+        0.8717272209398674
+      ],
+      "block_id": "actual:p31:block:12",
+      "block_index": 12,
+      "candidate_id": "cand:p0031:0012:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.006939,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 77
+      },
+      "json_pointer": "/pages/30/blocks/12",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "19 [SP 800-53A] provides guidance on assessing the effectiveness of controls."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8729621039496528,
+        0.8346454395967371,
+        0.9020302512428977
+      ],
+      "block_id": "actual:p31:block:13",
+      "block_index": 13,
+      "candidate_id": "cand:p0031:0013:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.019987,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 213
+      },
+      "json_pointer": "/pages/30/blocks/13",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "20 [SP 800-53B] provides guidance for tailoring security and privacy control baselines and for developing overlays to support the specific protection needs and requirements of stakeholders and their organizations."
+    },
+    {
+      "bbox": [
+        0.0,
+        0.7912878749346492,
+        1.0,
+        0.9543434345360958
+      ],
+      "block_id": "actual:p31:table:0",
+      "block_index": 14,
+      "candidate_id": "cand:p0031:0014:table",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:table",
+        "preset_type:table",
+        "hardening_interest",
+        "boundary_geometry",
+        "long_text_region"
+      ],
+      "features": {
+        "bbox_area": 0.163056,
+        "block_type": "table",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "table",
+        "table_bbox_clipped_to_page": false,
+        "table_full_normalized_bbox": [
+          0.0,
+          0.7912878749346492,
+          1.0,
+          0.9543434345360958
+        ],
+        "table_off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "table_visible_bbox": [
+          0.0,
+          0.7912878749346492,
+          1.0,
+          0.9543434345360958
+        ],
+        "text_length": 610
+      },
+      "json_pointer": "/pages/30/blocks/14",
+      "page_index": 30,
+      "page_number": 31,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "table",
+      "text_excerpt": "15 [- SP | 800-30] pr | ovides guidance on the risk assessment process. 16 [IR | 8062] intro | duces privacy risk concepts. 17 [- SP | 800-39] pr | ovides guidance on risk management processes and strategies. 18 [- SP | 800-37] pr | ovides a comprehensive risk management process. 19 [- SP | 800-53A] | provides guidance n assessing the effectiveness of controls. 20 [- SP | 800-53B] | provides guidance or tailoring security and privacy control baselines and for developing overlays to suppo | rt th"
+    }
+  ],
+  "page_case": {
+    "case_id": "page_case_0001_p0031",
+    "page_number": 31
+  },
+  "schema": "pdf_lab.second_pass.selected_candidates.v1"
+}

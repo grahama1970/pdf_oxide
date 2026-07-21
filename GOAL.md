@@ -110,22 +110,21 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The current candidate after page29 is page30, selected with deterministic PDF
+The current candidate after page30 is page31, selected with deterministic PDF
 Lab current-extraction evidence only. Do not invoke SciLLM, OpenCode, or a
 pdf_oxide-owned model transport wrapper while Tau issue #120 remains unresolved
 or lacks an accepted Tau-native PDF Lab work-order contract:
 
 | Field | Value |
 |-------|-------|
-| Page | `page_0030` / `page_case_0001_p0030` |
-| Defect class | current extraction candidate mix: side chrome, text, section headings, lists, footnotes |
-| Observed failure | No page30 live model review has been run. Page29 proved the ownership boundary: pdf_oxide must not call SciLLM directly or via a local Tau wrapper; Tau issue #120 must provide the native route |
+| Page | `page_0031` / `page_case_0001_p0031` |
+| Defect class | current extraction candidate mix: side chrome, text, list, footnotes, table |
+| Observed failure | No page31 live model review has been run. Page29/page30 proved the ownership boundary: pdf_oxide must not call SciLLM directly or via a local Tau wrapper; Tau issue #120 must provide the native route |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
-| Candidate artifacts to inspect first | `artifacts/pdf_lab/next_candidate_selection_page30_20260721T1235Z/selection_receipt.json`, `candidate_manifest.json`, `sampled_page_cases.json` |
-| Deterministic evidence bundle | `artifacts/pdf_lab/page30_deterministic_evidence_20260721T1245Z/page_case_0001_p0030/review_bundle.zip`, `review.html`, `review_html_screenshot.png`, `visual_verification_receipt.json` |
-| Current deterministic status | `terminal_status=blocked_substrate`, `reason=page_orchestrator_registration_failed`, `registered=false`, `transport_run_id=null` |
-| Boundary guard evidence | `artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/boundary_guard_receipt.json`, `page_case_0001_p0030/scillm_page_orchestrator_run_error.json`, `terminal_ledger.json`, `review_bundle.zip` |
-| Tau contract request | `artifacts/pdf_lab/page30_tau_dag_contract_request_20260721T1310Z/tau_pdf_lab_page30_second_pass_dag_contract.json`, validated by `tau_dag_contract_validation_receipt.json` |
+| Candidate artifacts to inspect first | `artifacts/pdf_lab/next_candidate_selection_page31_20260721T1315Z/selection_receipt.json`, `candidate_manifest.json`, `sampled_page_cases.json` |
+| Deterministic evidence bundle | `artifacts/pdf_lab/page31_deterministic_evidence_20260721T1315Z/page_case_0001_p0031/review_bundle.zip`, `review.html`, `review_html_screenshot.png`, `visual_verification_receipt.json` |
+| Current deterministic status | `terminal_status=still_open`, `reason=dry_run_review_not_executed`, `page_orchestrator_mode=dry_run`, `registered=false`, `transport_run_id=null` |
+| Prior blocked candidate | `page_case_0001_p0030` blocked by Tau-native route absence; boundary guard evidence in `artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/`; Tau contract request in `artifacts/pdf_lab/page30_tau_dag_contract_request_20260721T1310Z/` |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching; pdf_oxide live model transport must fail closed unless a Tau-owned receipt explicitly authorizes the route |
 
 Before patching page30, wait for Tau issue #120 to provide the accepted
@@ -137,6 +136,8 @@ variable is ignored; only a Tau-owned work-order/transport receipt may enable
 model-backed second-pass review. The page30 evidence has been converted into a
 schema-valid `tau.dag_contract.v1` request artifact so Tau can own the next
 model-backed review route without pdf_oxide invoking SciLLM/OpenCode directly.
+Page31 deterministic evidence is now prepared as the next current candidate but
+also remains pending the same Tau-owned model transport route.
 
 ## Blockers And Boundaries
 

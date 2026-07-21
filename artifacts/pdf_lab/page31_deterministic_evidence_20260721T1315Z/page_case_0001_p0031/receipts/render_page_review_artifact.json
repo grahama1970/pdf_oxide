@@ -1,0 +1,24 @@
+{
+  "command_or_endpoint": "run_page_second_pass_dag.render_review_html",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T13:15:23.252460+00:00",
+  "input_artifacts": [
+    "terminal_ledger.json",
+    "page_before.png",
+    "page_candidates.png",
+    "selected_candidates.json",
+    "review_validation.json"
+  ],
+  "next_allowed_nodes": [
+    "validate_page_terminal_ledger"
+  ],
+  "node_id": "render_page_review_artifact",
+  "output_artifacts": [
+    "review.html"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T13:15:23.252456+00:00",
+  "validator_result": {
+    "ok": true
+  }
+}

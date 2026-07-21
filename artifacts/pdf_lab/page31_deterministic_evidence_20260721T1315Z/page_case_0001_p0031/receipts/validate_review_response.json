@@ -1,0 +1,23 @@
+{
+  "command_or_endpoint": "run_page_second_pass_dag.validate_review_response",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T13:15:23.251432+00:00",
+  "input_artifacts": [
+    "review_request.json"
+  ],
+  "next_allowed_nodes": [
+    "route_page_result"
+  ],
+  "node_id": "validate_review_response",
+  "output_artifacts": [
+    "review_validation.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T13:15:23.251429+00:00",
+  "validator_result": {
+    "errors": [
+      "dry_run_review_not_executed"
+    ],
+    "ok": false
+  }
+}

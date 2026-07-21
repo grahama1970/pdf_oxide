@@ -1,0 +1,740 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p31:block:0",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p31:block:1",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528853273080066,
+        0.9549618345318418
+      ],
+      "font_name": "TT0",
+      "font_size": 8.271428108215332,
+      "id": "actual:p31:block:2",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 8.271428108215332,
+        "header_level": null,
+        "is_bold": false,
+        "text": "CHAPTER ONE  PAGE 4"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Footer",
+      "text": "CHAPTER ONE  PAGE 4",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p31:block:3",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14704088447919858,
+        0.0907001206369111,
+        0.8428372651143791,
+        0.26979055308332345
+      ],
+      "font_name": "C2_0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p31:block:4",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          89.98902130126953,
+          581.7516479492188,
+          428.3353271484375,
+          138.12835693359375
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "C2_0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "\u2022 Rigorous security and privacy planning and system development life cycle management; \u2022 The application of system security and privacy engineering principles and practices to securely develop and integrate system components into information systems; \u2022 The employment of security and privacy practices that are properly documented and integrated into and supportive of the institutional and operational processes of organizations; and \u2022 Continuous monitoring of information systems and organizations to determine the ongoing effectiveness of controls, changes in information systems and environments of operation, and the state of security and privacy organization-wide."
+      },
+      "source_type": "List",
+      "text": "\u2022 Rigorous security and privacy planning and system development life cycle management; \u2022 The application of system security and privacy engineering principles and practices to securely develop and integrate system components into information systems; \u2022 The employment of security and privacy practices that are properly documented and integrated into and supportive of the institutional and operational processes of organizations; and \u2022 Continuous monitoring of information systems and organizations to determine the ongoing effectiveness of controls, changes in information systems and environments of operation, and the state of security and privacy organization-wide.",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.14702307009229473,
+        0.28336307255908694,
+        0.8518314735562194,
+        0.4206127205280342
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p31:block:5",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          89.97811889648438,
+          462.29998779296875,
+          433.7978210449219,
+          104.990966796875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Organizations continuously assess the security and privacy risks to organizational operations and assets, individuals, other organizations, and the Nation. Security and privacy risks arise from the planning and execution of organizational mission and business functions, placing information systems into operation, or continuing system operations. Realistic assessments of risk require a thorough understanding of the susceptibility to threats based on the specific vulnerabilities in information systems and organizations and the likelihood and potential adverse impacts of successful exploitations of such vulnerabilities by those threats.15 Risk assessments also require an understanding of privacy risks.16"
+      },
+      "source_type": "Body",
+      "text": "Organizations continuously assess the security and privacy risks to organizational operations and assets, individuals, other organizations, and the Nation. Security and privacy risks arise from the planning and execution of organizational mission and business functions, placing information systems into operation, or continuing system operations. Realistic assessments of risk require a thorough understanding of the susceptibility to threats based on the specific vulnerabilities in information systems and organizations and the likelihood and potential adverse impacts of successful exploitations of such vulnerabilities by those threats.15 Risk assessments also require an understanding of privacy risks.16",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14704516043070875,
+        0.43410268456044826,
+        0.8405111474928513,
+        0.537505409934304
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p31:block:6",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          89.99163818359375,
+          369.7200012207031,
+          426.84527587890625,
+          78.18521118164062
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "To address the organization\u2019s concerns about assessment and determination of risk, security and privacy requirements are satisfied with the knowledge and understanding of the organizational risk management strategy.17 The risk management strategy considers the cost, schedule, performance, and supply chain issues associated with the design, development, acquisition, deployment, operation, sustainment, and disposal of organizational systems. A risk management process is then applied to manage risk on an ongoing basis.18"
+      },
+      "source_type": "Body",
+      "text": "To address the organization\u2019s concerns about assessment and determination of risk, security and privacy requirements are satisfied with the knowledge and understanding of the organizational risk management strategy.17 The risk management strategy considers the cost, schedule, performance, and supply chain issues associated with the design, development, acquisition, deployment, operation, sustainment, and disposal of organizational systems. A risk management process is then applied to manage risk on an ongoing basis.18",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14706395965775634,
+        0.5509966070001776,
+        0.8489892498340482,
+        0.7391027585424558
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p31:block:7",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          90.00314331054688,
+          210.05636596679688,
+          432.0465393066406,
+          145.26885986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "The catalog of security and privacy controls can be effectively used to protect organizations, individuals, and information systems from traditional and advanced persistent threats and privacy risks arising from the processing of personally identifiable information (PII) in varied operational, environmental, and technical scenarios. The controls can be used to demonstrate compliance with a variety of governmental, organizational, or institutional security and privacy requirements. Organizations have the responsibility to select the appropriate security and privacy controls, to implement the controls correctly, and to demonstrate the effectiveness of the controls in satisfying security and privacy requirements.19 Security and privacy controls can also be used in developing specialized baselines or overlays for unique or specialized missions or business applications, information systems, threat concerns, operational environments, technologies, or communities of interest.20"
+      },
+      "source_type": "Body",
+      "text": "The catalog of security and privacy controls can be effectively used to protect organizations, individuals, and information systems from traditional and advanced persistent threats and privacy risks arising from the processing of personally identifiable information (PII) in varied operational, environmental, and technical scenarios. The controls can be used to demonstrate compliance with a variety of governmental, organizational, or institutional security and privacy requirements. Organizations have the responsibility to select the appropriate security and privacy controls, to implement the controls correctly, and to demonstrate the effectiveness of the controls in satisfying security and privacy requirements.19 Security and privacy controls can also be used in developing specialized baselines or overlays for unique or specialized missions or business applications, information systems, threat concerns, operational environments, technologies, or communities of interest.20",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7909924285580413,
+        0.5325689378127553,
+        0.8061969641483191
+      ],
+      "font_name": "TT0",
+      "font_size": 8.571428298950195,
+      "id": "actual:p31:block:8",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          90.0,
+          156.3000030517578,
+          237.89700317382812,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.571428298950195,
+        "header_level": null,
+        "is_bold": false,
+        "text": "15 [-SP 80030] provides guidance on the risk assessment process."
+      },
+      "source_type": "Footnote",
+      "text": "15 [SP 800-30] provides guidance on the risk assessment process.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8073560926649306,
+        0.4122558793211295,
+        0.8225606282552084
+      ],
+      "font_name": "TT0",
+      "font_size": 8.5,
+      "id": "actual:p31:block:9",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          90.0,
+          143.33999633789062,
+          164.33099365234375,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.5,
+        "header_level": null,
+        "is_bold": false,
+        "text": "16 [IR 8062] introduces privacy risk concepts."
+      },
+      "source_type": "Footnote",
+      "text": "16 [IR 8062] introduces privacy risk concepts.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8237196797072285,
+        0.6203676111557904,
+        0.8389242152975063
+      ],
+      "font_name": "TT0",
+      "font_size": 8.727272987365723,
+      "id": "actual:p31:block:10",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          90.0,
+          130.3800048828125,
+          295.73095703125,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.727272987365723,
+        "header_level": null,
+        "is_bold": false,
+        "text": "17 [-SP 80039] provides guidance on risk management processes and strategies."
+      },
+      "source_type": "Footnote",
+      "text": "17 [SP 800-39] provides guidance on risk management processes and strategies.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8401590983072916,
+        0.5489235173643024,
+        0.8553636338975694
+      ],
+      "font_name": "TT0",
+      "font_size": 8.699999809265137,
+      "id": "actual:p31:block:11",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          90.0,
+          117.36000061035156,
+          249.96597290039062,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.699999809265137,
+        "header_level": null,
+        "is_bold": false,
+        "text": "18 [-SP 80037] provides a comprehensive risk management process."
+      },
+      "source_type": "Footnote",
+      "text": "18 [SP 800-37] provides a comprehensive risk management process.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8565226853495896,
+        0.6034264159358405,
+        0.8717272209398674
+      ],
+      "font_name": "TT0",
+      "font_size": 8.625,
+      "id": "actual:p31:block:12",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          90.0,
+          104.4000015258789,
+          281.39398193359375,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.625,
+        "header_level": null,
+        "is_bold": false,
+        "text": "19 [-SP 80053A] provides guidance on assessing the effectiveness of controls."
+      },
+      "source_type": "Footnote",
+      "text": "19 [SP 800-53A] provides guidance on assessing the effectiveness of controls.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8729621039496528,
+        0.8346454395967371,
+        0.9020302512428977
+      ],
+      "font_name": "TT0",
+      "font_size": 8.571428298950195,
+      "id": "actual:p31:block:13",
+      "is_bold": false,
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "bbox": [
+          90.0,
+          91.37999725341797,
+          422.8421630859375,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "continuation_ids": [
+          "actual:p31:block:14"
+        ],
+        "font_name": "TT0",
+        "font_size": 8.571428298950195,
+        "header_level": null,
+        "is_bold": false,
+        "text": "20 [-SP 80053B] provides guidance for tailoring security and privacy control baselines and for developing overlays to"
+      },
+      "source_type": "Footnote",
+      "text": "20 [SP 800-53B] provides guidance for tailoring security and privacy control baselines and for developing overlays to support the specific protection needs and requirements of stakeholders and their organizations.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.0,
+        0.7912878749346492,
+        1.0,
+        0.9543434345360958
+      ],
+      "id": "actual:p31:table:0",
+      "page": 31,
+      "pdf_page_index": 30,
+      "raw": {
+        "accuracy": 98.8893971357317,
+        "bbox": [
+          0.0,
+          626.6999969482422,
+          612.0,
+          755.8400001525879
+        ],
+        "cols": 3,
+        "column_count": 3,
+        "data": [
+          [
+            "15\n[-\nSP",
+            "800-30] pr",
+            "ovides guidance on the risk assessment process."
+          ],
+          [
+            "16\n[IR",
+            "8062] intro",
+            "duces privacy risk concepts."
+          ],
+          [
+            "17\n[-\nSP",
+            "800-39] pr",
+            "ovides guidance on risk management processes and strategies."
+          ],
+          [
+            "18\n[-\nSP",
+            "800-37] pr",
+            "ovides a comprehensive risk management process."
+          ],
+          [
+            "19\n[-\nSP",
+            "800-53A]",
+            "provides guidance n assessing the effectiveness of controls."
+          ],
+          [
+            "20\n[-\nSP",
+            "800-53B]",
+            "provides guidance or tailoring security and privacy control baselines and for developing overlays to"
+          ],
+          [
+            "suppo",
+            "rt the spe",
+            "cific protection needs and requirements of takeholders and their organizations."
+          ],
+          [
+            "CHAPT",
+            "ER NE",
+            "PAGE 4"
+          ]
+        ],
+        "df_data": [
+          {
+            "0": "15\n[-\nSP",
+            "1": "800-30] pr",
+            "2": "ovides guidance on the risk assessment process."
+          },
+          {
+            "0": "16\n[IR",
+            "1": "8062] intro",
+            "2": "duces privacy risk concepts."
+          },
+          {
+            "0": "17\n[-\nSP",
+            "1": "800-39] pr",
+            "2": "ovides guidance on risk management processes and strategies."
+          },
+          {
+            "0": "18\n[-\nSP",
+            "1": "800-37] pr",
+            "2": "ovides a comprehensive risk management process."
+          },
+          {
+            "0": "19\n[-\nSP",
+            "1": "800-53A]",
+            "2": "provides guidance n assessing the effectiveness of controls."
+          },
+          {
+            "0": "20\n[-\nSP",
+            "1": "800-53B]",
+            "2": "provides guidance or tailoring security and privacy control baselines and for developing overlays to"
+          },
+          {
+            "0": "suppo",
+            "1": "rt the spe",
+            "2": "cific protection needs and requirements of takeholders and their organizations."
+          },
+          {
+            "0": "CHAPT",
+            "1": "ER NE",
+            "2": "PAGE 4"
+          }
+        ],
+        "flavor": "Stream",
+        "order": 0,
+        "page": 30,
+        "row_count": 8,
+        "rows": [
+          {
+            "cells": [
+              {
+                "text": "15 [- SP"
+              },
+              {
+                "text": "800-30] pr"
+              },
+              {
+                "text": "ovides guidance on the risk assessment process."
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "16 [IR"
+              },
+              {
+                "text": "8062] intro"
+              },
+              {
+                "text": "duces privacy risk concepts."
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "17 [- SP"
+              },
+              {
+                "text": "800-39] pr"
+              },
+              {
+                "text": "ovides guidance on risk management processes and strategies."
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "18 [- SP"
+              },
+              {
+                "text": "800-37] pr"
+              },
+              {
+                "text": "ovides a comprehensive risk management process."
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "19 [- SP"
+              },
+              {
+                "text": "800-53A]"
+              },
+              {
+                "text": "provides guidance n assessing the effectiveness of controls."
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "20 [- SP"
+              },
+              {
+                "text": "800-53B]"
+              },
+              {
+                "text": "provides guidance or tailoring security and privacy control baselines and for developing overlays to"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "suppo"
+              },
+              {
+                "text": "rt the spe"
+              },
+              {
+                "text": "cific protection needs and requirements of takeholders and their organizations."
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "CHAPT"
+              },
+              {
+                "text": "ER NE"
+              },
+              {
+                "text": "PAGE 4"
+              }
+            ]
+          }
+        ],
+        "table_geometry": {
+          "bbox_clipped_to_page": false,
+          "full_normalized_bbox": [
+            0.0,
+            0.7912878749346492,
+            1.0,
+            0.9543434345360958
+          ],
+          "off_page_extent": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0
+          },
+          "raw_bbox": [
+            0.0,
+            626.6999969482422,
+            612.0,
+            755.8400001525879
+          ],
+          "visible_bbox": [
+            0.0,
+            0.7912878749346492,
+            1.0,
+            0.9543434345360958
+          ]
+        },
+        "whitespace": 0.0
+      },
+      "source_type": "table",
+      "table_geometry": {
+        "bbox_clipped_to_page": false,
+        "full_normalized_bbox": [
+          0.0,
+          0.7912878749346492,
+          1.0,
+          0.9543434345360958
+        ],
+        "off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "raw_bbox": [
+          0.0,
+          626.6999969482422,
+          612.0,
+          755.8400001525879
+        ],
+        "visible_bbox": [
+          0.0,
+          0.7912878749346492,
+          1.0,
+          0.9543434345360958
+        ]
+      },
+      "text": "15 [- SP | 800-30] pr | ovides guidance on the risk assessment process.\n16 [IR | 8062] intro | duces privacy risk concepts.\n17 [- SP | 800-39] pr | ovides guidance on risk management processes and strategies.\n18 [- SP | 800-37] pr | ovides a comprehensive risk management process.\n19 [- SP | 800-53A] | provides guidance n assessing the effectiveness of controls.\n20 [- SP | 800-53B] | provides guidance or tailoring security and privacy control baselines and for developing overlays to\nsuppo | rt the spe | cific protection needs and requirements of takeholders and their organizations.\nCHAPT | ER NE | PAGE 4",
+      "type": "table"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 31,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 30
+}
