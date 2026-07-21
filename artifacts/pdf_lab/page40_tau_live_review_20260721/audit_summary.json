@@ -1,0 +1,45 @@
+{
+  "campaign_status": {
+    "active_family": "PDF Lab live second-pass model review through Tau",
+    "blocked_by_systemic_failure": 0,
+    "failed": 0,
+    "latest_failure_signature": null,
+    "not_run": 450,
+    "passed": 1
+  },
+  "created_at": "2026-07-21T14:33:52.739263Z",
+  "direct_scillm_called_from_pdf_oxide": false,
+  "html_review": "artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/review.html",
+  "live": true,
+  "mocked": false,
+  "provider_live": true,
+  "review_bundle_zip": "artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/review_bundle.zip",
+  "review_response": "artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/review_response.json",
+  "review_result": {
+    "candidate_count": 11,
+    "candidate_status_counts": {
+      "clean": 11
+    },
+    "page_status": "clean",
+    "validation_errors": [],
+    "validation_ok": true
+  },
+  "review_validation": "artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/review_validation.json",
+  "schema": "pdf_lab.page40_tau_live_review_audit.v1",
+  "status": "reviewed_clean",
+  "tau_commit": "b48d815c34ee603e79f4c6f64edcfc92ccf3d8d4",
+  "tau_issue": "https://github.com/grahama1970/tau/issues/122",
+  "tau_live_result": {
+    "duration_seconds": 52.409736,
+    "http_status": 200,
+    "ok": true,
+    "parsed_candidate_finding_count": 11,
+    "parsed_page_status": "clean",
+    "parsed_response_schema": "pdf_lab.second_pass.review_response.v1",
+    "status": "PASS"
+  },
+  "tau_raw_response": "artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/tau_scillm_chat_review_raw_response.json",
+  "tau_receipt": "artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/tau_scillm_chat_review_receipt.json",
+  "terminal_ledger": "artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/terminal_ledger.json",
+  "terminal_ledger_validation": "artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/terminal_ledger_validation.json"
+}

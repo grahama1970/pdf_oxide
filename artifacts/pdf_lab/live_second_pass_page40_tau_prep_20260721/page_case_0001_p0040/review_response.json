@@ -1,0 +1,84 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0040:0000:side_chrome",
+      "evidence": "Extracted JSON bbox [0.14705882352941177, 0.04473802296802251, 0.8507378272760927, 0.05821938948197798] and text match the header content and location on the rendered page.",
+      "rationale": "The header text is correctly identified as side chrome with accurate bounding box and text content.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0040:0001:side_chrome",
+      "evidence": "Extracted JSON bbox [0.14705882352941177, 0.05679397390346334, 0.8517353332120609, 0.07054738324097913] and text accurately capture the horizontal line below the header.",
+      "rationale": "The horizontal line, part of the page chrome, is correctly extracted with accurate bounding box and text.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0040:0002:side_chrome",
+      "evidence": "Extracted JSON bbox [0.14705882352941177, 0.9414804632013495, 0.8528974944469976, 0.9549618345318418] and text match the footer content and location on the rendered page.",
+      "rationale": "The footer text is correctly identified as side chrome with accurate bounding box and text content.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0040:0003:side_chrome",
+      "evidence": "Extracted JSON bbox [0.0296323533151664, 0.28780303338561397, 0.049705879361021756, 0.7406287915778883] and text accurately capture the vertical boilerplate text on the left margin.",
+      "rationale": "The vertical boilerplate text is correctly identified as side chrome with accurate bounding box and text content.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0040:0004:text",
+      "evidence": "Extracted JSON bbox [0.14704087201286764, 0.08994257570517183, 0.8465639002182904, 0.159330088682849] and text match the first paragraph on the page.",
+      "rationale": "The paragraph is correctly extracted as a text block with accurate bounding box and content. The extracted subtype 'paragraph_block' is clean-compatible with 'preset_type' 'text'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0040:0005:text",
+      "evidence": "Extracted JSON bbox [0.14704092187819137, 0.1729026177916864, 0.8518099317363664, 0.32712782272184737] and text match the second paragraph on the page.",
+      "rationale": "The paragraph is correctly extracted as a text block with accurate bounding box and content. The extracted subtype 'paragraph_block' is clean-compatible with 'preset_type' 'text'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0040:0006:section_heading",
+      "evidence": "Extracted JSON bbox [0.14705882352941177, 0.3400691639293324, 0.520607792474086, 0.3645694617069129] and text match the section heading '2.4 SECURITY AND PRIVACY CONTROLS'.",
+      "rationale": "The section heading is correctly extracted with accurate bounding box and text content.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0040:0007:text",
+      "evidence": "Extracted JSON bbox [0.14704079721488206, 0.3697910886822325, 0.8488242953431373, 0.6426621639367306] and text match the paragraph following the section heading.",
+      "rationale": "The paragraph is correctly extracted as a text block with accurate bounding box and content. The extracted subtype 'paragraph_block' is clean-compatible with 'preset_type' 'text'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0040:0008:text",
+      "evidence": "Extracted JSON bbox [0.14704870086869384, 0.6562346641463462, 0.8513655319712521, 0.7595603249289773] and text match the paragraph on the rendered page.",
+      "rationale": "The paragraph is correctly extracted as a text block with accurate bounding box and content. The extracted subtype 'paragraph_block' is clean-compatible with 'preset_type' 'text'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0040:0009:text",
+      "evidence": "Extracted JSON bbox [0.14704870086869384, 0.7730486320726799, 0.8375248129850899, 0.8085679333619397] and text match the paragraph on the rendered page.",
+      "rationale": "The paragraph is correctly extracted as a text block with accurate bounding box and content. The extracted subtype 'paragraph_block' is clean-compatible with 'preset_type' 'text'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0040:0010:footnote",
+      "evidence": "Extracted JSON bbox [0.14705882352941177, 0.8388711948587437, 0.8317108154296875, 0.9096098620482166] and text match the footnote content and location on the rendered page.",
+      "rationale": "The footnote is correctly extracted with accurate bounding box and text content.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    }
+  ],
+  "page_rationale": "All candidates on page 40 are accurately extracted with correct bounding boxes, text content, and appropriate preset types or clean-compatible subtypes. The page chrome, section heading, paragraphs, and footnote are all correctly identified.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}
