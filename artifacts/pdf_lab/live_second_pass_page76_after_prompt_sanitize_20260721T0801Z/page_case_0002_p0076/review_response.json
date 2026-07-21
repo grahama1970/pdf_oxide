@@ -1,0 +1,217 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0076:0000:side_chrome",
+      "evidence": "The extracted candidate correctly captures the header text, its bounding box, and is classified as side_chrome.",
+      "rationale": "The text and bounding box match the visual evidence for the top header.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0001:side_chrome",
+      "evidence": "The extracted candidate correctly captures the horizontal line below the header, its bounding box, and is classified as side_chrome.",
+      "rationale": "The text and bounding box match the visual evidence for the header separator line.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0002:side_chrome",
+      "evidence": "The extracted candidate correctly captures the footer text, its bounding box, and is classified as side_chrome.",
+      "rationale": "The text and bounding box match the visual evidence for the footer.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0003:side_chrome",
+      "evidence": "The extracted candidate correctly captures the vertical boilerplate text, its bounding box, and is classified as side_chrome.",
+      "rationale": "The text and bounding box match the visual evidence for the side boilerplate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0004:text",
+      "evidence": "The extracted candidate correctly captures the paragraph text, its bounding box, and is classified as text.",
+      "rationale": "The text and bounding box match the visual evidence for the paragraph.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0005:text",
+      "evidence": "The extracted candidate correctly captures the 'Related Controls' text, its bounding box, and is classified as text with the semantic role 'related_controls'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0006:section_heading",
+      "evidence": "The extracted candidate correctly captures the section heading, its bounding box, and is classified as section_heading with the semantic role 'nist_control_heading'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0007:text",
+      "evidence": "The extracted candidate correctly captures the paragraph text, its bounding box, and is classified as text.",
+      "rationale": "The text and bounding box match the visual evidence for the paragraph.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0008:text",
+      "evidence": "The extracted candidate correctly captures the discussion paragraph, its bounding box, and is classified as text with the semantic role 'discussion'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0009:text",
+      "evidence": "The extracted candidate correctly captures the 'Related Controls' text, its bounding box, and is classified as text with the semantic role 'related_controls'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0010:section_heading",
+      "evidence": "The extracted candidate correctly captures the section heading, its bounding box, and is classified as section_heading with the semantic role 'nist_control_heading'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0011:text",
+      "evidence": "The extracted candidate correctly captures the paragraph text, its bounding box, and is classified as text.",
+      "rationale": "The text and bounding box match the visual evidence for the paragraph.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0012:text",
+      "evidence": "The extracted candidate correctly captures the discussion paragraph, its bounding box, and is classified as text with the semantic role 'discussion'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0013:text",
+      "evidence": "The extracted candidate correctly captures the 'Related Controls' text, its bounding box, and is classified as text with the semantic role 'related_controls'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0014:section_heading",
+      "evidence": "The extracted candidate correctly captures the section heading, its bounding box, and is classified as section_heading with the semantic role 'nist_control_heading'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0015:list",
+      "evidence": "The extracted candidate correctly captures the list item text, its bounding box, and is classified as list with the semantic role 'nist_list_item'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence for the first list item.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0016:list",
+      "evidence": "The extracted candidate correctly captures the list item text, its bounding box, and is classified as list with the semantic role 'nist_list_item'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence for the second list item.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0017:text",
+      "evidence": "The extracted candidate correctly captures the discussion paragraph, its bounding box, and is classified as text with the semantic role 'discussion'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0018:text",
+      "evidence": "The extracted candidate correctly captures the 'Related Controls' text, its bounding box, and is classified as text with the semantic role 'related_controls'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0019:section_heading",
+      "evidence": "The extracted candidate correctly captures the section heading, its bounding box, and is classified as section_heading with the semantic role 'nist_control_heading'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0020:text",
+      "evidence": "The extracted candidate correctly captures the withdrawn note text, its bounding box, and is classified as text with the semantic role 'nist_withdrawn_note'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0021:section_heading",
+      "evidence": "The extracted candidate correctly captures the section heading, its bounding box, and is classified as section_heading with the semantic role 'nist_control_heading'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0022:text",
+      "evidence": "The extracted candidate correctly captures the paragraph text, its bounding box, and is classified as text.",
+      "rationale": "The text and bounding box match the visual evidence for the paragraph.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0023:text",
+      "evidence": "The extracted candidate correctly captures the discussion paragraph, its bounding box, and is classified as text with the semantic role 'discussion'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0024:text",
+      "evidence": "The extracted candidate correctly captures the 'Related Controls' text, its bounding box, and is classified as text with the semantic role 'related_controls'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0025:section_heading",
+      "evidence": "The extracted candidate correctly captures the section heading, its bounding box, and is classified as section_heading with the semantic role 'nist_control_heading'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0026:text",
+      "evidence": "The extracted candidate correctly captures the withdrawn note text, its bounding box, and is classified as text with the semantic role 'nist_withdrawn_note'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0027:section_heading",
+      "evidence": "The extracted candidate correctly captures the section heading, its bounding box, and is classified as section_heading with the semantic role 'nist_control_heading'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0028:text",
+      "evidence": "The extracted candidate correctly captures the withdrawn note text, its bounding box, and is classified as text with the semantic role 'nist_withdrawn_note'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0076:0029:section_heading",
+      "evidence": "The extracted candidate correctly captures the section heading, its bounding box, and is classified as section_heading with the semantic role 'nist_control_heading'.",
+      "rationale": "The text, bounding box, and semantic role match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    }
+  ],
+  "page_rationale": "All candidates on this page are cleanly extracted with correct text, bounding boxes, and preset types/semantic roles.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

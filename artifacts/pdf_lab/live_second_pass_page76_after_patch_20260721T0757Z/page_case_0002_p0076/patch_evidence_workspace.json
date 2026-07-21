@@ -1,0 +1,51 @@
+{
+  "case_id": "page_case_0002_p0076",
+  "code_root": "/tmp/pdf_oxide_page45b_1784600709",
+  "copied": [
+    {
+      "artifact": "page_before.json",
+      "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/page_case_0002_p0076/page_before.json",
+      "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0002_p0076/page_before.json"
+    },
+    {
+      "artifact": "page_before.png",
+      "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/page_case_0002_p0076/page_before.png",
+      "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0002_p0076/page_before.png"
+    },
+    {
+      "artifact": "page_candidates.png",
+      "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/page_case_0002_p0076/page_candidates.png",
+      "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0002_p0076/page_candidates.png"
+    },
+    {
+      "artifact": "candidate_presets.json",
+      "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/page_case_0002_p0076/candidate_presets.json",
+      "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0002_p0076/candidate_presets.json"
+    },
+    {
+      "artifact": "review_response.json",
+      "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/page_case_0002_p0076/review_response.json",
+      "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0002_p0076/review_response.json"
+    },
+    {
+      "artifact": "review_validation.json",
+      "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/page_case_0002_p0076/review_validation.json",
+      "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0002_p0076/review_validation.json"
+    },
+    {
+      "artifact": "selected_candidates.json",
+      "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/page_case_0002_p0076/selected_candidates.json",
+      "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0002_p0076/selected_candidates.json"
+    },
+    {
+      "artifact": "sampled_candidate_manifest.json",
+      "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/page_case_0002_p0076/sampled_candidate_manifest.json",
+      "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0002_p0076/sampled_candidate_manifest.json"
+    }
+  ],
+  "git_info_exclude_pattern": ".pdf_lab_runtime/",
+  "missing": [],
+  "ok": true,
+  "schema": "pdf_lab.second_pass.patch_evidence_workspace.v1",
+  "workspace_case_dir": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0002_p0076"
+}

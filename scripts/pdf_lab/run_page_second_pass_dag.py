@@ -801,6 +801,19 @@ def build_candidate_presets(page_case: dict[str, Any], candidates: list[dict[str
     }
 
 
+def sanitize_page_json_for_model_review(value: Any) -> Any:
+    """Keep consumer extraction evidence, but drop raw/debug fields that invite false review targets."""
+    if isinstance(value, dict):
+        return {
+            key: sanitize_page_json_for_model_review(item)
+            for key, item in value.items()
+            if key not in {"raw", "is_bold"}
+        }
+    if isinstance(value, list):
+        return [sanitize_page_json_for_model_review(item) for item in value]
+    return value
+
+
 def build_review_request(
     *,
     case_dir: Path,
@@ -813,6 +826,7 @@ def build_review_request(
     batch_id: str,
 ) -> dict[str, Any]:
     page_json = load_json(case_dir / page_json_path)
+    model_page_json = sanitize_page_json_for_model_review(page_json)
     candidate_presets = load_json(case_dir / candidate_presets_path)
     required_candidate_ids = [
         str(candidate["candidate_id"])
@@ -843,7 +857,7 @@ def build_review_request(
         "}\n\n"
         f"Page case:\n{json.dumps(page_case, indent=2, sort_keys=True)}\n\n"
         f"Candidate presets:\n{json.dumps(candidate_presets, indent=2, sort_keys=True)}\n\n"
-        f"Extracted page JSON:\n{json.dumps(page_json, indent=2, sort_keys=True)}"
+        f"Extracted page JSON:\n{json.dumps(model_page_json, indent=2, sort_keys=True)}"
     )
     request_sha256 = hashlib.sha256(prompt_text.encode("utf-8")).hexdigest()
     item_id = f"{page_case['case_id']}:{request_sha256[:16]}"
@@ -882,6 +896,10 @@ def build_review_request(
             "original_image": original_image_path,
             "annotated_image": annotated_image_path,
             "candidate_presets": candidate_presets_path,
+        },
+        "model_evidence": {
+            "page_json_sanitized": True,
+            "page_json_omitted_fields": ["is_bold", "raw"],
         },
         "scillm_payload": scillm_payload,
         "required_response_schema": {
@@ -927,6 +945,14 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
         errors.append("scillm_payload response_format must require json_object")
     if payload.get("scillm_metadata") != review_request.get("scillm_metadata"):
         errors.append("scillm_payload scillm_metadata must match review_request scillm_metadata")
+    model_evidence = review_request.get("model_evidence")
+    if not isinstance(model_evidence, dict):
+        errors.append("review_request model_evidence must be an object")
+        model_evidence = {}
+    if model_evidence.get("page_json_sanitized") is not True:
+        errors.append("review_request model_evidence.page_json_sanitized must be true")
+    if model_evidence.get("page_json_omitted_fields") != ["is_bold", "raw"]:
+        errors.append("review_request model_evidence.page_json_omitted_fields mismatch")
     metadata = payload.get("scillm_metadata")
     if not isinstance(metadata, dict) or not metadata.get("batch_id") or not metadata.get("item_id"):
         errors.append("scillm_payload scillm_metadata must include batch_id and item_id")
@@ -1061,6 +1087,8 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
                 except Exception as exc:  # noqa: BLE001 - malformed evidence is a validation failure.
                     errors.append(f"review_request artifacts.{artifact_key} unreadable: {type(exc).__name__}: {exc}")
                     continue
+                if artifact_key == "page_json":
+                    artifact_payload = sanitize_page_json_for_model_review(artifact_payload)
                 expected_artifact_text = f"{heading}:\n{json.dumps(artifact_payload, indent=2, sort_keys=True)}"
                 if expected_artifact_text not in prompt_text:
                     errors.append(f"scillm_payload text prompt does not include current artifacts.{artifact_key}")

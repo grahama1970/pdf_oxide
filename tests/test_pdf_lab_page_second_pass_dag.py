@@ -2425,6 +2425,53 @@ def test_validate_review_request_contract_rejects_stale_prompt_evidence(tmp_path
     assert "scillm_payload text prompt does not include current artifacts.candidate_presets" in errors
 
 
+def test_review_request_prompt_uses_sanitized_page_json_without_raw_metadata(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    (case_dir / "page_before.json").write_text(
+        json.dumps(
+            {
+                "page": 76,
+                "pdf_page_index": 75,
+                "blocks": [
+                    {
+                        "id": "actual:p76:block:2",
+                        "text": "CHAPTER THREE PAGE 49",
+                        "raw": {"text": "CHAPTER THREE   49 PAGE", "is_bold": True},
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "candidate_presets.json").write_text(
+        json.dumps({"schema": "pdf_lab.second_pass.candidate_presets.v1", "candidates": []}),
+        encoding="utf-8",
+    )
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "page_candidates.png").write_bytes(b"png")
+
+    request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case={"case_id": "page_case_0001_p0076", "page_number": 76},
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="batch-review",
+    )
+
+    prompt_text = request["scillm_payload"]["messages"][0]["content"][0]["text"]
+    assert "CHAPTER THREE PAGE 49" in prompt_text
+    assert "CHAPTER THREE   49 PAGE" not in prompt_text
+    assert '"raw"' not in prompt_text
+    assert '"is_bold"' not in prompt_text
+    assert request["model_evidence"]["page_json_sanitized"] is True
+    assert dag.validate_review_request_contract(case_dir, request)["ok"] is True
+
+
 def test_validate_review_request_contract_rejects_stale_page_json_identity(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"

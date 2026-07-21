@@ -1,0 +1,32 @@
+{
+  "query": "PDF text extraction raw text normalized text model review should use normalized output not raw metadata",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Extract Text from a PDF \u2014 pypdf 6.14.2 documentation",
+      "description": "from pypdf import PdfReader reader = PdfReader(&quot;GeoBase_NHNC1_Data_Model_UML_EN.pdf&quot;) page = reader.pages[3] parts = [] def visitor_body(text, cm, tm, font_dict, font_size): y = tm[5] if 50 &lt; y &lt; 720 or y == 0: parts.append(text) page.extract_text(visitor_text=visitor_body) text_body = &quot;&quot;.join(parts) print(text_body)",
+      "url": "https://pypdf.readthedocs.io/en/stable/user/extract-text.html"
+    },
+    {
+      "title": "What Is Normalize Documents For LLM?",
+      "description": "Document normalization is a foundational requirement for any LLM pipeline that processes real-world documents. Raw documents introduce noise, structural inconsistency, and format-specific extraction challenges that directly degrade model comprehension, search accuracy, and output reliability. Addressing these issues requires a sequenced approach\u2014text cleaning, formatting standardization, chunking, and metadata tagging\u2014applied through format-aware processing paths that account for the distinct characteristics of PDFs, HTML, Word files, scanned images, and domain-specific content.",
+      "url": "https://www.llamaindex.ai/glossary/normalize-documents-for-llm"
+    },
+    {
+      "title": "Best API For PDF Data Extraction (2026) | Parseur\u00ae",
+      "description": "Can I use ChatGPT or other LLMs directly for PDF extraction? Not reliably. Large language models can misinterpret layouts or hallucinate fields if used as a raw OCR replacement. The best pattern is to combine an OCR/document API (for ground-truth text and layout) with an LLM for normalization, for example, turning \u201cVENDOR: ACME Ltd.\u201d into a canonical supplier ID, or ensuring all totals follow the same schema.",
+      "url": "https://parseur.com/blog/best-api-data-extraction"
+    },
+    {
+      "title": "How to Extract Text from PDF in Python (2026) - DEV Community",
+      "description": "Modern tools try to reconstruct structure rather than just reading raw text streams, which is why the choice of extraction method matters. Most PDF extraction pipelines follow the same high-level process. First, the document is parsed page by page. Then text blocks are detected and assembled into a readable order. If the document contains scanned pages instead of selectable text, OCR is applied. Finally, the output is normalized so it can be indexed, searched, or passed to downstream systems.",
+      "url": "https://dev.to/kreuzberg/how-to-extract-text-from-pdf-in-python-2026-3a97"
+    },
+    {
+      "title": "Solving direct text extraction from PDFs | Sensible Blog",
+      "description": "We suggest an approach that maximizes information retention \u2014 you retain the spatial layout, sizing, and raw pixel data from the document as you transform it into structured data. A simple representation of the lines in a document \u00b7 Your document representation is therefore an array of pages, each of which has an array of lines of text. Each line is a string with a bounding box (strictly, a bounding polygon) in 2D space on the page. In addition, you can render each page to get its pixel data if necessary, and store additional metadata like the font family.",
+      "url": "https://www.sensible.so/blog/solving-direct-text-extraction-from-pdfs"
+    }
+  ]
+}

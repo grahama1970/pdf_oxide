@@ -3505,7 +3505,7 @@
         "applies_when": {
           "bbox_constraints": {
             "x_min_gt": 0.2,
-            "x_min_lt": 0.22,
+            "x_min_lt": 0.25,
             "y_max_lt": 0.9
           },
           "font_properties": {
@@ -3576,7 +3576,7 @@
         "applies_when": {
           "bbox_constraints": {
             "x_min_gt": 0.2,
-            "x_min_lt": 0.22,
+            "x_min_lt": 0.25,
             "y_max_lt": 0.9
           },
           "source_type": "Body",
@@ -3589,9 +3589,10 @@
           {
             "fields": {
               "semantic_role": "related_controls",
+              "text": "Related Controls: ${body}",
               "type": "paragraph_block"
             },
-            "regex": "^\\s*Related\\s+Controls:\\s+\\S.+$"
+            "regex": "^\\s*Related\\s+Controls:\\s+(?P<body>\\S.+)$"
           }
         ]
       },
@@ -3646,7 +3647,7 @@
         "applies_when": {
           "bbox_constraints": {
             "x_min_gt": 0.2,
-            "x_min_lt": 0.22,
+            "x_min_lt": 0.25,
             "y_max_lt": 0.9
           },
           "source_type": "Body",
@@ -3659,9 +3660,10 @@
           {
             "fields": {
               "semantic_role": "discussion",
+              "text": "Discussion: ${body}",
               "type": "paragraph_block"
             },
-            "regex": "^\\s*Discussion:\\s+\\S.+$"
+            "regex": "^\\s*Discussion:\\s+(?P<body>\\S.+)$"
           }
         ]
       },
@@ -4117,7 +4119,7 @@
               "semantic_role": "page_chrome",
               "type": "header_footer_noise"
             },
-            "regex": "^\\s*(?:CHAPTER\\s+\\w+\\s+\\d*\\s*PAGE|REFERENCES\\s+PAGE\\s+\\d+)\\s*$"
+            "regex": "^\\s*(?:CHAPTER\\s+\\w+\\s+(?:\\d+\\s+PAGE|PAGE\\s+\\d+)|REFERENCES\\s+PAGE\\s+\\d+)\\s*$"
           }
         ]
       },

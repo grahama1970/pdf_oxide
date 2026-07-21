@@ -1,0 +1,1595 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p76:block:0",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p76:block:1",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528988906760621,
+        0.9549618345318418
+      ],
+      "font_name": "TT0",
+      "font_size": 7.9800004959106445,
+      "id": "actual:p76:block:2",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          423.8504638671875,
+          7.979999542236328
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 7.9800004959106445,
+        "header_level": null,
+        "is_bold": false,
+        "text": "CHAPTER THREE   49 PAGE"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Body",
+      "text": "CHAPTER THREE PAGE 49",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p76:block:3",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.23529401791641136,
+        0.08989831173058713,
+        0.8199332742130055,
+        0.12228619931924223
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:4",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          143.99993896484375,
+          698.2755737304688,
+          360.07373046875,
+          22.26446533203125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "notebook computers, workstations, smart phones, and tablets. Audit logging for remote access is enforced by AU-2. Audit events are defined in AU-2a."
+      },
+      "source_type": "Body",
+      "text": "notebook computers, workstations, smart phones, and tablets. Audit logging for remote access is enforced by AU-2. Audit events are defined in AU-2a.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.12459533383147885,
+        0.5344200383603962,
+        0.1415230625807637
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020002365112305,
+      "id": "actual:p76:block:5",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          683.0399780273438,
+          185.26947021484375,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.10000000149011612,
+        "font_name": "TT0",
+        "font_size": 10.020002365112305,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.10000000149011612,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.020002365112305,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.000000238418579,
+            "text_len": 44,
+            "title_case_ratio": 1.0,
+            "word_count": 6
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "sentence_negative"
+          ],
+          "title_text": "Related Controls:  AU-2, AU-6, AU-12, AU-14."
+        },
+        "is_bold": true,
+        "text": "Related Controls:  AU-2, AU-6, AU-12, AU-14."
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls: AU-2, AU-6, AU-12, AU-14.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.14751830245509293,
+        0.7769657708460989,
+        0.16615777063851406
+      ],
+      "font_name": "TT2",
+      "font_size": 9.997499465942383,
+      "id": "actual:p76:block:6",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          126.0,
+          663.9000244140625,
+          354.4410095214844,
+          10.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.997499465942383,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.997499465942383,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9977543950080872,
+            "text_len": 80,
+            "title_case_ratio": 0.8181818127632141,
+            "word_count": 11
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(2) REMOTE ACCESS | PROTECTION OF CONFIDENTIALITY AND INTEGRITY USING ENCRYPTION"
+        },
+        "is_bold": true,
+        "text": "(2) REMOTE ACCESS | PROTECTION OF CONFIDENTIALITY AND INTEGRITY USING ENCRYPTION"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(2) REMOTE ACCESS | PROTECTION OF CONFIDENTIALITY AND INTEGRITY USING ENCRYPTION",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.16806721928143742,
+        0.8037800508386949,
+        0.20116359055644334
+      ],
+      "font_name": "TT2",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:7",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          636.1754150390625,
+          350.20806884765625,
+          22.3245849609375
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 82,
+            "title_case_ratio": 0.10000000149011612,
+            "word_count": 10
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Implement cryptographic mechanisms to protect the confidentiality and integrity of"
+        },
+        "is_bold": true,
+        "text": "Implement cryptographic mechanisms to protect the confidentiality and integrity of remote access sessions."
+      },
+      "source_type": "Body",
+      "text": "Implement cryptographic mechanisms to protect the confidentiality and integrity of remote access sessions.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.2028528849283854,
+        0.8436374040990094,
+        0.26607970035437384
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:8",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          584.39111328125,
+          374.61077880859375,
+          46.68890380859375
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 94,
+            "title_case_ratio": 0.1538461595773697,
+            "word_count": 13
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Discussion:  Virtual private networks can be used to protect the confidentiality and integrity"
+        },
+        "is_bold": true,
+        "text": "Discussion:  Virtual private networks can be used to protect the confidentiality and integrity of remote access sessions. Transport Layer Security (TLS) is an example of a cryptographic protocol that provides end-to-end communications security over networks and is used for Internet communications and online transactions."
+      },
+      "semantic_role": "discussion",
+      "source_type": "Body",
+      "text": "Discussion: Virtual private networks can be used to protect the confidentiality and integrity of remote access sessions. Transport Layer Security (TLS) is an example of a cryptographic protocol that provides end-to-end communications security over networks and is used for Internet communications and online transactions.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.2683832187845249,
+        0.48226315367455574,
+        0.28531093790073586
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020002365112305,
+      "id": "actual:p76:block:9",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          569.1599731445312,
+          153.34945678710938,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020002365112305,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Related Controls:  SC-8, SC-12, SC-13."
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls: SC-8, SC-12, SC-13.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.2913061970412129,
+        0.5723613664215687,
+        0.3099456555915601
+      ],
+      "font_name": "TT2",
+      "font_size": 9.997499465942383,
+      "id": "actual:p76:block:10",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          126.0,
+          550.02001953125,
+          229.22100830078125,
+          10.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.997499465942383,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.997499465942383,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9977543950080872,
+            "text_len": 49,
+            "title_case_ratio": 0.75,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(3) REMOTE ACCESS | MANAGED ACCESS CONTROL POINTS"
+        },
+        "is_bold": true,
+        "text": "(3) REMOTE ACCESS | MANAGED ACCESS CONTROL POINTS"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(3) REMOTE ACCESS | MANAGED ACCESS CONTROL POINTS",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.3119308587276574,
+        0.8325973710203483,
+        0.3294911625409367
+      ],
+      "font_name": "TT2",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:11",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          534.5399780273438,
+          367.78411865234375,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 83,
+            "title_case_ratio": 0.09090909361839294,
+            "word_count": 11
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "sentence_negative"
+          ],
+          "title_text": "Route remote accesses through authorized and managed network access control points."
+        },
+        "is_bold": true,
+        "text": "Route remote accesses through authorized and managed network access control points."
+      },
+      "source_type": "Body",
+      "text": "Route remote accesses through authorized and managed network access control points.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.33126199125039457,
+        0.824968774334278,
+        0.3790230413880011
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:12",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          494.94000244140625,
+          363.16644287109375,
+          34.44000244140625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Discussion:  Organizations consider the Trusted Internet Connections (TIC) initiative [DHS TIC] requirements for external network connections since limiting the number of access control points for remote access reduces attack surfaces."
+      },
+      "semantic_role": "discussion",
+      "source_type": "Body",
+      "text": "Discussion: Organizations consider the Trusted Internet Connections (TIC) initiative [DHS TIC] requirements for external network connections since limiting the number of access control points for remote access reduces attack surfaces.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.381337714917732,
+        0.3910866780997881,
+        0.3982654533000908
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:13",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          479.70001220703125,
+          97.54945373535156,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Related Controls:  SC-7."
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls: SC-7.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.4042607702390112,
+        0.5788023206922743,
+        0.4229002287893584
+      ],
+      "font_name": "TT2",
+      "font_size": 9.857142448425293,
+      "id": "actual:p76:block:14",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          126.0,
+          460.55999755859375,
+          230.72146606445312,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.857142448425293,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.857142448425293,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9837467074394226,
+            "text_len": 50,
+            "title_case_ratio": 0.75,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(4) REMOTE ACCESS | PRIVILEGED COMMANDS AND ACCESS"
+        },
+        "is_bold": true,
+        "text": "(4) REMOTE ACCESS | PRIVILEGED COMMANDS AND ACCESS"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(4) REMOTE ACCESS | PRIVILEGED COMMANDS AND ACCESS",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.4248096196338384,
+        0.8446132684844772,
+        0.47329022185971037
+      ],
+      "font_name": "TT2",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:15",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          420.651123046875,
+          375.12774658203125,
+          34.508880615234375
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 82,
+            "title_case_ratio": 0.09090909361839294,
+            "word_count": 11
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "parentheses_negative"
+          ],
+          "title_text": "(a) Authorize the execution of privileged commands and access to security-relevant"
+        },
+        "is_bold": true,
+        "text": "(a) Authorize the execution of privileged commands and access to security-relevant information via remote access only in a format that provides assessable evidence and for the following needs: [Assignment: organization-defined needs]; and"
+      },
+      "semantic_role": "nist_list_item",
+      "source_type": "Body",
+      "text": "(a) Authorize the execution of privileged commands and access to security-relevant information via remote access only in a format that provides assessable evidence and for the following needs: [Assignment: organization-defined needs]; and",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.2353268292994281,
+        0.47489698005445075,
+        0.7899319019192964,
+        0.49245726460158223
+      ],
+      "font_name": "TT2",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:16",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.02001953125,
+          405.4708251953125,
+          341.64190673828125,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 81,
+            "title_case_ratio": 0.0714285746216774,
+            "word_count": 14
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "sentence_negative",
+            "parentheses_negative"
+          ],
+          "title_text": "(b) Document the rationale for remote access in the security plan for the system."
+        },
+        "is_bold": true,
+        "text": "(b) Document the rationale for remote access in the security plan for the system."
+      },
+      "semantic_role": "nist_list_item",
+      "source_type": "Body",
+      "text": "(b) Document the rationale for remote access in the security plan for the system.",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.4942165336223564,
+        0.845989950342116,
+        0.5574433683144926
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:17",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          353.631103515625,
+          376.01055908203125,
+          46.688873291015625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Discussion:  Remote access to systems represents a significant potential vulnerability that can be exploited by adversaries. As such, restricting the execution of privileged commands and access to security-relevant information via remote access reduces the exposure of the organization and the susceptibility to threats by adversaries to the remote access capability."
+      },
+      "semantic_role": "discussion",
+      "source_type": "Body",
+      "text": "Discussion: Remote access to systems represents a significant potential vulnerability that can be exploited by adversaries. As such, restricting the execution of privileged commands and access to security-relevant information via remote access reduces the exposure of the organization and the susceptibility to threats by adversaries to the remote access capability.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.5597468289462003,
+        0.48422395793441075,
+        0.576674567328559
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020002365112305,
+      "id": "actual:p76:block:18",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          338.3999938964844,
+          154.54946899414062,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.10000000149011612,
+        "font_name": "TT0",
+        "font_size": 10.020002365112305,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.10000000149011612,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.020002365112305,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.000000238418579,
+            "text_len": 38,
+            "title_case_ratio": 1.0,
+            "word_count": 5
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "sentence_negative"
+          ],
+          "title_text": "Related Controls:  AC-6, SC-12, SC-13."
+        },
+        "is_bold": true,
+        "text": "Related Controls:  AC-6, SC-12, SC-13."
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls: AC-6, SC-12, SC-13.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5826698457351839,
+        0.6536257376078687,
+        0.6013093042855311
+      ],
+      "font_name": "TT2",
+      "font_size": 9.886666297912598,
+      "id": "actual:p76:block:19",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          126.0,
+          319.260009765625,
+          278.96099853515625,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.886666297912598,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.886666297912598,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9866932034492493,
+            "text_len": 59,
+            "title_case_ratio": 0.75,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(5) REMOTE ACCESS | MONITORING FOR UNAUTHORIZED CONNECTIONS"
+        },
+        "is_bold": true,
+        "text": "(5) REMOTE ACCESS | MONITORING FOR UNAUTHORIZED CONNECTIONS"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(5) REMOTE ACCESS | MONITORING FOR UNAUTHORIZED CONNECTIONS",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.6034589439931543,
+        0.4777633068608303,
+        0.620386682375513
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:20",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          303.7799987792969,
+          150.64566040039062,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 36,
+            "title_case_ratio": 0.5,
+            "word_count": 4
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "[Withdrawn: Incorporated into SI-4.]"
+        },
+        "is_bold": true,
+        "text": "[Withdrawn: Incorporated into SI-4.]"
+      },
+      "semantic_role": "nist_withdrawn_note",
+      "source_type": "Body",
+      "text": "[Withdrawn: Incorporated into SI-4.]",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.6263819607821378,
+        0.6209789600247652,
+        0.645021419332485
+      ],
+      "font_name": "TT2",
+      "font_size": 9.664999961853027,
+      "id": "actual:p76:block:21",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          126.0,
+          284.6400146484375,
+          259.046875,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.664999961853027,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.664999961853027,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9645708203315735,
+            "text_len": 55,
+            "title_case_ratio": 0.75,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(6) REMOTE ACCESS | PROTECTION OF MECHANISM INFORMATION"
+        },
+        "is_bold": true,
+        "text": "(6) REMOTE ACCESS | PROTECTION OF MECHANISM INFORMATION"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(6) REMOTE ACCESS | PROTECTION OF MECHANISM INFORMATION",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.6469308872415562,
+        0.7898485270980137,
+        0.6800272777827099
+      ],
+      "font_name": "TT2",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:22",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          256.9154357910156,
+          341.6319274902344,
+          22.324554443359375
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 76,
+            "title_case_ratio": 0.10000000149011612,
+            "word_count": 10
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Protect information about remote access mechanisms from unauthorized use and"
+        },
+        "is_bold": true,
+        "text": "Protect information about remote access mechanisms from unauthorized use and disclosure."
+      },
+      "source_type": "Body",
+      "text": "Protect information about remote access mechanisms from unauthorized use and disclosure.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.2352940677817351,
+        0.6817165336223564,
+        0.8522201238893995,
+        0.7604033344923847
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:23",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          143.99996948242188,
+          192.88677978515625,
+          379.8331604003906,
+          58.9332275390625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Discussion:  Remote access to organizational information by non-organizational entities can increase the risk of unauthorized use and disclosure about remote access mechanisms. The organization considers including remote access requirements in the information exchange agreements with other organizations, as applicable. Remote access requirements can also be included in rules of behavior (see PL-4) and access agreements (see PS-6)."
+      },
+      "semantic_role": "discussion",
+      "source_type": "Body",
+      "text": "Discussion: Remote access to organizational information by non-organizational entities can increase the risk of unauthorized use and disclosure about remote access mechanisms. The organization considers including remote access requirements in the information exchange agreements with other organizations, as applicable. Remote access requirements can also be included in rules of behavior (see PL-4) and access agreements (see PS-6).",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.7626256461095329,
+        0.4677533417745353,
+        0.7795533459595959
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020002365112305,
+      "id": "actual:p76:block:24",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          177.72000122070312,
+          144.46945190429688,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.10000000149011612,
+        "font_name": "TT0",
+        "font_size": 10.020002365112305,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.10000000149011612,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.020002365112305,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.000000238418579,
+            "text_len": 36,
+            "title_case_ratio": 1.0,
+            "word_count": 5
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "sentence_negative"
+          ],
+          "title_text": "Related Controls:  AT-2, AT-3, PS-6."
+        },
+        "is_bold": true,
+        "text": "Related Controls:  AT-2, AT-3, PS-6."
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls: AT-2, AT-3, PS-6.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.7856243403270992,
+        0.7098026150971456,
+        0.8042638759420375
+      ],
+      "font_name": "TT2",
+      "font_size": 9.857142448425293,
+      "id": "actual:p76:block:25",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          126.0,
+          158.52000427246094,
+          310.8814697265625,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.857142448425293,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.857142448425293,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9837467074394226,
+            "text_len": 70,
+            "title_case_ratio": 0.800000011920929,
+            "word_count": 10
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(7) REMOTE ACCESS | ADDITIONAL PROTECTION FOR SECURITY FUNCTION ACCESS"
+        },
+        "is_bold": true,
+        "text": "(7) REMOTE ACCESS | ADDITIONAL PROTECTION FOR SECURITY FUNCTION ACCESS"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(7) REMOTE ACCESS | ADDITIONAL PROTECTION FOR SECURITY FUNCTION ACCESS",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.8064135156496607,
+        0.5108025245417177,
+        0.8233412154997238
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:26",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          143.0399932861328,
+          170.8055419921875,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[Withdrawn: Incorporated into AC-3(10).]"
+      },
+      "semantic_role": "nist_withdrawn_note",
+      "source_type": "Body",
+      "text": "[Withdrawn: Incorporated into AC-3(10).]",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.829336455374053,
+        0.6196037242615146,
+        0.8479759909889915
+      ],
+      "font_name": "TT2",
+      "font_size": 9.997499465942383,
+      "id": "actual:p76:block:27",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          126.0,
+          123.9000015258789,
+          258.2668762207031,
+          10.980003356933594
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.997499465942383,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.997499465942383,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9977543950080872,
+            "text_len": 55,
+            "title_case_ratio": 0.75,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(8) REMOTE ACCESS | DISABLE NONSECURE NETWORK PROTOCOLS"
+        },
+        "is_bold": true,
+        "text": "(8) REMOTE ACCESS | DISABLE NONSECURE NETWORK PROTOCOLS"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(8) REMOTE ACCESS | DISABLE NONSECURE NETWORK PROTOCOLS",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.8501256306966146,
+        0.48884173623876637,
+        0.8670533305466778
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p76:block:28",
+      "is_bold": false,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          144.0,
+          108.41999816894531,
+          157.36553955078125,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[Withdrawn: Incorporated into CM-7.]"
+      },
+      "semantic_role": "nist_withdrawn_note",
+      "source_type": "Body",
+      "text": "[Withdrawn: Incorporated into CM-7.]",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.8730485704210069,
+        0.550396688623366,
+        0.8916881060359454
+      ],
+      "font_name": "TT2",
+      "font_size": 9.997499465942383,
+      "id": "actual:p76:block:29",
+      "is_bold": true,
+      "page": 76,
+      "pdf_page_index": 75,
+      "raw": {
+        "bbox": [
+          126.0,
+          89.27999877929688,
+          215.84686279296875,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.997499465942383,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.997499465942383,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9977543950080872,
+            "text_len": 48,
+            "title_case_ratio": 0.75,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(9) REMOTE ACCESS | DISCONNECT OR DISABLE ACCESS"
+        },
+        "is_bold": true,
+        "text": "(9) REMOTE ACCESS | DISCONNECT OR DISABLE ACCESS"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(9) REMOTE ACCESS | DISCONNECT OR DISABLE ACCESS",
+      "type": "section_heading"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 76,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 75
+}
