@@ -1,0 +1,227 @@
+{
+  "apply_mode": "release",
+  "candidate_count": 5,
+  "candidates": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "block_id": "actual:p26:block:0",
+      "block_index": 0,
+      "candidate_id": "cand:p0026:0000:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/25/blocks/0",
+      "page_index": 25,
+      "page_number": 26,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "block_id": "actual:p26:block:1",
+      "block_index": 1,
+      "candidate_id": "cand:p0026:0001:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/25/blocks/1",
+      "page_index": 25,
+      "page_number": 26,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "bbox": [
+        0.4886274649426828,
+        0.939856018682923,
+        0.5113421670751634,
+        0.9550605542732008
+      ],
+      "block_id": "actual:p26:block:2",
+      "block_index": 2,
+      "candidate_id": "cand:p0026:0002:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.000345,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "PageNumber",
+        "text_length": 4
+      },
+      "json_pointer": "/pages/25/blocks/2",
+      "page_index": 25,
+      "page_number": 26,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "xxiv"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_id": "actual:p26:block:3",
+      "block_index": 3,
+      "candidate_id": "cand:p0026:0003:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/25/blocks/3",
+      "page_index": 25,
+      "page_number": 26,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490355647467,
+        0.8976515182340988
+      ],
+      "block_id": "actual:p26:table:0",
+      "block_index": 4,
+      "candidate_id": "cand:p0026:0004:table",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:table",
+        "preset_type:table",
+        "hardening_interest",
+        "long_text_region",
+        "large_region"
+      ],
+      "features": {
+        "bbox_area": 0.569037,
+        "block_type": "table",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "table",
+        "table_bbox_clipped_to_page": false,
+        "table_full_normalized_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8976515182340988
+        ],
+        "table_off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "table_visible_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8976515182340988
+        ],
+        "text_length": 3448
+      },
+      "json_pointer": "/pages/25/blocks/4",
+      "page_index": 25,
+      "page_number": 26,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "table",
+      "text_excerpt": "DATE | TYPE | REVISION | PAGE 12-10-2020 | Editorial | References [SP 800-181]: Change \u201cNewhouse WD, Witte GA, Scribner B, Keith S (2017) National Initiative for Cybersecurity Education (NICE) Cybersecurity Workforce Framework. (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800-181. Smith MC, Wetzel KA, Witte G (2020) Workforce Framework for Cybersecurity (NICE Framework). (National Institute of Standards and Technology, Gaithersburg, MD), NIST "
+    }
+  ],
+  "census_failure_count": 0,
+  "census_failures": [],
+  "command": "scripts/pdf_lab/run_second_pass_harness.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --out artifacts/pdf_lab/live_second_pass_page26_vlm_free2_repaired_orchestrator_live_20260721T1115Z --candidate-census-page 26 --sample-size 1 --seed 26 --review-mode live --patch-mode dry_run --patch-backend opencode_serve --commit-mode dry_run --model vlm-free2 --scillm-base-url http://localhost:4001 --caller-skill pdf-lab --scillm-timeout-s 120 --dpi 72 --page-orchestrator-mode live --patch-prompt-profile plan_only --repair-strategy single --candidate-census-timeout-s 120 --candidate-page-timeout-s 90 --page-extract-timeout-s 90 --human-annotated-pages-json artifacts/pdf_lab/live_second_pass_page26_vlm_free2_repaired_orchestrator_live_20260721T1115Z/human_forced_pages.json --stop-on-nonterminal",
+  "created_at": "2026-07-21T11:10:53.764010+00:00",
+  "extracted_page_count": 1,
+  "git_head": "12a5954f83af26d6d6156c492005e3a902778669",
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page_count": 492,
+  "page_count_with_candidates": 1,
+  "pages": [
+    {
+      "candidate_count": 5,
+      "page_number": 26,
+      "preset_counts": {
+        "side_chrome": 4,
+        "table": 1
+      },
+      "risk_candidate_count": 5
+    }
+  ],
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "preset_counts": {
+    "side_chrome": 4,
+    "table": 1
+  },
+  "preset_types": [
+    "appendix",
+    "equation",
+    "figure",
+    "footnote",
+    "list",
+    "reference",
+    "section_heading",
+    "side_chrome",
+    "table",
+    "text",
+    "toc",
+    "unknown_layout"
+  ],
+  "schema": "pdf_lab.second_pass.candidate_manifest.v1"
+}

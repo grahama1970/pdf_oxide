@@ -1,0 +1,1082 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p26:block:0",
+      "is_bold": false,
+      "page": 26,
+      "pdf_page_index": 25,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p26:block:1",
+      "is_bold": false,
+      "page": 26,
+      "pdf_page_index": 25,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.4886274649426828,
+        0.939856018682923,
+        0.5113421670751634,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p26:block:2",
+      "is_bold": false,
+      "page": 26,
+      "pdf_page_index": 25,
+      "raw": {
+        "bbox": [
+          299.0400085449219,
+          38.400001525878906,
+          15.957000732421875,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "xxiv"
+      },
+      "source_type": "PageNumber",
+      "text": "xxiv",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p26:block:3",
+      "is_bold": false,
+      "page": 26,
+      "pdf_page_index": 25,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490355647467,
+        0.8976515182340988
+      ],
+      "id": "actual:p26:table:0",
+      "page": 26,
+      "pdf_page_index": 25,
+      "raw": {
+        "accuracy": 100.0,
+        "bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          710.9400024414062
+        ],
+        "cols": 4,
+        "column_count": 4,
+        "data": [
+          [
+            "DATE",
+            "TYPE",
+            "REVISION",
+            "PAGE"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References [SP 800-181]: Change \u201cNewhouse WD, Witte GA, Scribner B, Keith S (2017) National Initiative for Cybersecurity Education (NICE) Cybersecurity Workforce Framework. (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800-181. Smith MC, Wetzel KA, Witte G (2020) Workforce Framework for Cybersecurity (NICE Framework). (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800-181, Rev. 1. https://doi.org/10.6028/NIST.SP.800-181\u201d to \u201cPetersen R, Santos D, https://doi.org/10.6028/NIST.SP.800-181r1\u201d",
+            "388"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References [DODTERMS]: Change \u201chttp://www.dtic.mil/dtic/tr/fulltext/u2/a485800.pdf\u201d to \u201chttps://www.jcs.mil/Portals/36/Documents/Doctrine/pubs/diction ary.pdf\u201d",
+            "391"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix A Glossary (counterfeit): Change \u201c[SP 800-161-1]\u201d to [SP 800-161]\u201d",
+            "400"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix A Glossary (supplier): Delete \u201c[SP 800-161-1]\u201d",
+            "419"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix A Glossary (supply chain): Delete \u201c[SP 800-161-1]\u201d",
+            "419"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix A Glossary (supply chain risk): Delete \u201c[SP 800-161-1]\u201d",
+            "420"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix A Glossary (supply chain risk assessment): Delete \u201c[SP 800-161-1]\u201d",
+            "420"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix A Glossary (supply chain risk management): Delete \u201c[SP 800-161-1]\u201d",
+            "420"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cBGP Border Gateway Protocol\u201d",
+            "424"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cCAC Common Access Card\u201d",
+            "424"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cCONOPS Concept of Operations\u201d",
+            "424"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cDSB Defense Science Board\u201d",
+            "424"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cFICAM Federal Identity, Credential, and Access Management\u201d",
+            "425"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cIEEE Institute of Electrical and Electronics Engineers\u201d",
+            "425"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cISAC Information Sharing and Analysis Centers\u201d",
+            "425"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cISAO Information Sharing and Analysis Organizations\u201d",
+            "425"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cITL Information Technology Laboratory\u201d",
+            "425"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cMLS Multilevel Secure\u201d",
+            "425"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cNDA Non-Disclosure Agreement\u201d",
+            "426"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cODNI Office of the Director of National Intelligence\u201d",
+            "426"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cOPM Office of Personnel Management\u201d",
+            "426"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cPDS Position Designation System\u201d",
+            "426"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cRPKI Resource Public Key Infrastructure\u201d",
+            "426"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cSCRM Supply Chain Risk Management\u201d",
+            "426"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cSDLC System Development Life Cycle\u201d",
+            "426"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cSIEM Security Information and Event Management\u201d",
+            "426"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cSWID Software Identification\u201d",
+            "427"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cTIC Trusted Internet Connections\u201d",
+            "427"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cUEFI Unified Extensible Firmware Interface\u201d",
+            "427"
+          ]
+        ],
+        "df_data": [
+          {
+            "0": "DATE",
+            "1": "TYPE",
+            "2": "REVISION",
+            "3": "PAGE"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References [SP 800-181]: Change \u201cNewhouse WD, Witte GA, Scribner B, Keith S (2017) National Initiative for Cybersecurity Education (NICE) Cybersecurity Workforce Framework. (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800-181. Smith MC, Wetzel KA, Witte G (2020) Workforce Framework for Cybersecurity (NICE Framework). (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800-181, Rev. 1. https://doi.org/10.6028/NIST.SP.800-181\u201d to \u201cPetersen R, Santos D, https://doi.org/10.6028/NIST.SP.800-181r1\u201d",
+            "3": "388"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References [DODTERMS]: Change\n\u201chttp://www.dtic.mil/dtic/tr/fulltext/u2/a485800.pdf\u201d to\n\u201chttps://www.jcs.mil/Portals/36/Documents/Doctrine/pubs/diction\nary.pdf\u201d",
+            "3": "391"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix A Glossary (counterfeit): Change \u201c[SP 800-161-1]\u201d to [SP\n800-161]\u201d",
+            "3": "400"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix A Glossary (supplier): Delete \u201c[SP 800-161-1]\u201d",
+            "3": "419"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix A Glossary (supply chain): Delete \u201c[SP 800-161-1]\u201d",
+            "3": "419"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix A Glossary (supply chain risk): Delete \u201c[SP 800-161-1]\u201d",
+            "3": "420"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix A Glossary (supply chain risk assessment): Delete \u201c[SP\n800-161-1]\u201d",
+            "3": "420"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix A Glossary (supply chain risk management): Delete \u201c[SP\n800-161-1]\u201d",
+            "3": "420"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cBGP Border Gateway Protocol\u201d",
+            "3": "424"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cCAC Common Access Card\u201d",
+            "3": "424"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cCONOPS Concept of Operations\u201d",
+            "3": "424"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cDSB Defense Science Board\u201d",
+            "3": "424"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cFICAM Federal Identity, Credential, and\nAccess Management\u201d",
+            "3": "425"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cIEEE Institute of Electrical and\nElectronics Engineers\u201d",
+            "3": "425"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cISAC Information Sharing and Analysis\nCenters\u201d",
+            "3": "425"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cISAO Information Sharing and Analysis\nOrganizations\u201d",
+            "3": "425"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cITL Information Technology\nLaboratory\u201d",
+            "3": "425"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cMLS Multilevel Secure\u201d",
+            "3": "425"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cNDA Non-Disclosure Agreement\u201d",
+            "3": "426"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cODNI Office of the Director of National\nIntelligence\u201d",
+            "3": "426"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cOPM Office of Personnel Management\u201d",
+            "3": "426"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cPDS Position Designation System\u201d",
+            "3": "426"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cRPKI Resource Public Key\nInfrastructure\u201d",
+            "3": "426"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cSCRM Supply Chain Risk Management\u201d",
+            "3": "426"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cSDLC System Development Life Cycle\u201d",
+            "3": "426"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cSIEM Security Information and Event\nManagement\u201d",
+            "3": "426"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cSWID Software Identification\u201d",
+            "3": "427"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cTIC Trusted Internet Connections\u201d",
+            "3": "427"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cUEFI Unified Extensible Firmware\nInterface\u201d",
+            "3": "427"
+          }
+        ],
+        "flavor": "Lattice",
+        "order": 0,
+        "page": 25,
+        "raw": {
+          "table_contained_fragment_ids": [
+            "actual:p26:block:7",
+            "actual:p26:block:9"
+          ]
+        },
+        "row_count": 30,
+        "rows": [
+          {
+            "cells": [
+              {
+                "text": "DATE"
+              },
+              {
+                "text": "TYPE"
+              },
+              {
+                "text": "REVISION"
+              },
+              {
+                "text": "PAGE"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References [SP 800-181]: Change \u201cNewhouse WD, Witte GA, Scribner B, Keith S (2017) National Initiative for Cybersecurity Education (NICE) Cybersecurity Workforce Framework. (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800-181. Smith MC, Wetzel KA, Witte G (2020) Workforce Framework for Cybersecurity (NICE Framework). (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800-181, Rev. 1. https://doi.org/10.6028/NIST.SP.800-181\u201d to \u201cPetersen R, Santos D, https://doi.org/10.6028/NIST.SP.800-181r1\u201d"
+              },
+              {
+                "text": "388"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References [DODTERMS]: Change \u201chttp://www.dtic.mil/dtic/tr/fulltext/u2/a485800.pdf\u201d to \u201chttps://www.jcs.mil/Portals/36/Documents/Doctrine/pubs/diction ary.pdf\u201d"
+              },
+              {
+                "text": "391"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix A Glossary (counterfeit): Change \u201c[SP 800-161-1]\u201d to [SP 800-161]\u201d"
+              },
+              {
+                "text": "400"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix A Glossary (supplier): Delete \u201c[SP 800-161-1]\u201d"
+              },
+              {
+                "text": "419"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix A Glossary (supply chain): Delete \u201c[SP 800-161-1]\u201d"
+              },
+              {
+                "text": "419"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix A Glossary (supply chain risk): Delete \u201c[SP 800-161-1]\u201d"
+              },
+              {
+                "text": "420"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix A Glossary (supply chain risk assessment): Delete \u201c[SP 800-161-1]\u201d"
+              },
+              {
+                "text": "420"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix A Glossary (supply chain risk management): Delete \u201c[SP 800-161-1]\u201d"
+              },
+              {
+                "text": "420"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cBGP Border Gateway Protocol\u201d"
+              },
+              {
+                "text": "424"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cCAC Common Access Card\u201d"
+              },
+              {
+                "text": "424"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cCONOPS Concept of Operations\u201d"
+              },
+              {
+                "text": "424"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cDSB Defense Science Board\u201d"
+              },
+              {
+                "text": "424"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cFICAM Federal Identity, Credential, and Access Management\u201d"
+              },
+              {
+                "text": "425"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cIEEE Institute of Electrical and Electronics Engineers\u201d"
+              },
+              {
+                "text": "425"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cISAC Information Sharing and Analysis Centers\u201d"
+              },
+              {
+                "text": "425"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cISAO Information Sharing and Analysis Organizations\u201d"
+              },
+              {
+                "text": "425"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cITL Information Technology Laboratory\u201d"
+              },
+              {
+                "text": "425"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cMLS Multilevel Secure\u201d"
+              },
+              {
+                "text": "425"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cNDA Non-Disclosure Agreement\u201d"
+              },
+              {
+                "text": "426"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cODNI Office of the Director of National Intelligence\u201d"
+              },
+              {
+                "text": "426"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cOPM Office of Personnel Management\u201d"
+              },
+              {
+                "text": "426"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cPDS Position Designation System\u201d"
+              },
+              {
+                "text": "426"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cRPKI Resource Public Key Infrastructure\u201d"
+              },
+              {
+                "text": "426"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cSCRM Supply Chain Risk Management\u201d"
+              },
+              {
+                "text": "426"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cSDLC System Development Life Cycle\u201d"
+              },
+              {
+                "text": "426"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cSIEM Security Information and Event Management\u201d"
+              },
+              {
+                "text": "426"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cSWID Software Identification\u201d"
+              },
+              {
+                "text": "427"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cTIC Trusted Internet Connections\u201d"
+              },
+              {
+                "text": "427"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cUEFI Unified Extensible Firmware Interface\u201d"
+              },
+              {
+                "text": "427"
+              }
+            ]
+          }
+        ],
+        "table_contained_fragment_ids": [
+          "actual:p26:block:7",
+          "actual:p26:block:9"
+        ],
+        "table_geometry": {
+          "bbox_clipped_to_page": false,
+          "full_normalized_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8976515182340988
+          ],
+          "off_page_extent": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0
+          },
+          "raw_bbox": [
+            89.76000213623047,
+            72.47998046875,
+            521.760009765625,
+            710.9400024414062
+          ],
+          "visible_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8976515182340988
+          ]
+        },
+        "whitespace": 0.0
+      },
+      "source_type": "table",
+      "table_geometry": {
+        "bbox_clipped_to_page": false,
+        "full_normalized_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8976515182340988
+        ],
+        "off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "raw_bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          710.9400024414062
+        ],
+        "visible_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8976515182340988
+        ]
+      },
+      "text": "DATE | TYPE | REVISION | PAGE\n12-10-2020 | Editorial | References [SP 800-181]: Change \u201cNewhouse WD, Witte GA, Scribner B, Keith S (2017) National Initiative for Cybersecurity Education (NICE) Cybersecurity Workforce Framework. (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800-181. Smith MC, Wetzel KA, Witte G (2020) Workforce Framework for Cybersecurity (NICE Framework). (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800-181, Rev. 1. https://doi.org/10.6028/NIST.SP.800-181\u201d to \u201cPetersen R, Santos D, https://doi.org/10.6028/NIST.SP.800-181r1\u201d | 388\n12-10-2020 | Editorial | References [DODTERMS]: Change \u201chttp://www.dtic.mil/dtic/tr/fulltext/u2/a485800.pdf\u201d to \u201chttps://www.jcs.mil/Portals/36/Documents/Doctrine/pubs/diction ary.pdf\u201d | 391\n12-10-2020 | Editorial | Appendix A Glossary (counterfeit): Change \u201c[SP 800-161-1]\u201d to [SP 800-161]\u201d | 400\n12-10-2020 | Editorial | Appendix A Glossary (supplier): Delete \u201c[SP 800-161-1]\u201d | 419\n12-10-2020 | Editorial | Appendix A Glossary (supply chain): Delete \u201c[SP 800-161-1]\u201d | 419\n12-10-2020 | Editorial | Appendix A Glossary (supply chain risk): Delete \u201c[SP 800-161-1]\u201d | 420\n12-10-2020 | Editorial | Appendix A Glossary (supply chain risk assessment): Delete \u201c[SP 800-161-1]\u201d | 420\n12-10-2020 | Editorial | Appendix A Glossary (supply chain risk management): Delete \u201c[SP 800-161-1]\u201d | 420\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cBGP Border Gateway Protocol\u201d | 424\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cCAC Common Access Card\u201d | 424\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cCONOPS Concept of Operations\u201d | 424\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cDSB Defense Science Board\u201d | 424\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cFICAM Federal Identity, Credential, and Access Management\u201d | 425\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cIEEE Institute of Electrical and Electronics Engineers\u201d | 425\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cISAC Information Sharing and Analysis Centers\u201d | 425\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cISAO Information Sharing and Analysis Organizations\u201d | 425\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cITL Information Technology Laboratory\u201d | 425\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cMLS Multilevel Secure\u201d | 425\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cNDA Non-Disclosure Agreement\u201d | 426\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cODNI Office of the Director of National Intelligence\u201d | 426\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cOPM Office of Personnel Management\u201d | 426\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cPDS Position Designation System\u201d | 426\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cRPKI Resource Public Key Infrastructure\u201d | 426\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cSCRM Supply Chain Risk Management\u201d | 426\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cSDLC System Development Life Cycle\u201d | 426\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cSIEM Security Information and Event Management\u201d | 426\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cSWID Software Identification\u201d | 427\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cTIC Trusted Internet Connections\u201d | 427\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cUEFI Unified Extensible Firmware Interface\u201d | 427",
+      "type": "table"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 26,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 25
+}

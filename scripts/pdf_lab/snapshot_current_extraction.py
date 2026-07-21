@@ -692,6 +692,211 @@ def _repair_table_with_qid_rows(
     return repaired
 
 
+def _table_row_visual_weight(row: list[str]) -> int:
+    return max((len(str(cell or "").splitlines()) for cell in row), default=1) or 1
+
+
+def _table_rows_for_visual_weight(table: dict[str, Any]) -> list[list[str]]:
+    data = table.get("data")
+    if isinstance(data, list):
+        return [
+            [str(cell or "") for cell in row]
+            for row in data
+            if isinstance(row, (list, tuple))
+        ]
+    rows = table.get("rows")
+    if not isinstance(rows, list):
+        return []
+    out: list[list[str]] = []
+    for row in rows:
+        cells = row.get("cells") if isinstance(row, dict) else row
+        if not isinstance(cells, list):
+            continue
+        out.append([str((cell.get("text") if isinstance(cell, dict) else cell) or "") for cell in cells])
+    return out
+
+
+def _table_row_index_for_bbox(table: dict[str, Any], table_bbox: list[float], bbox: list[float]) -> int | None:
+    rows = _table_data(table)
+    if not rows or len(table_bbox) != 4 or len(bbox) != 4:
+        return None
+    table_height = max(0.0, float(table_bbox[3]) - float(table_bbox[1]))
+    if table_height <= 0.0:
+        return None
+    visual_rows = _table_rows_for_visual_weight(table)
+    weights = [
+        _table_row_visual_weight(visual_rows[index] if index < len(visual_rows) else row)
+        for index, row in enumerate(rows)
+    ]
+    if len(weights) > 1:
+        weights[0] = min(weights[0], 0.5)
+    total = sum(weights)
+    if total <= 0:
+        return None
+    y_center = (float(bbox[1]) + float(bbox[3])) / 2.0
+    position = max(0.0, min(1.0, (y_center - float(table_bbox[1])) / table_height)) * total
+    cumulative = 0.0
+    for index, weight in enumerate(weights):
+        previous = cumulative
+        cumulative += weight
+        if position <= cumulative:
+            if index > 0 and weights[index - 1] > weight:
+                tolerance = max(1.5, weights[index - 1] * 0.25)
+                if position <= previous + tolerance:
+                    return index - 1
+            return index
+    return len(rows) - 1
+
+
+def _table_column_index_for_bbox(table: dict[str, Any], table_bbox: list[float], bbox: list[float]) -> int | None:
+    metrics = _table_metrics(table)
+    column_count = int(metrics.get("column_count") or 0)
+    if column_count <= 0 or len(table_bbox) != 4 or len(bbox) != 4:
+        return None
+    table_width = max(0.0, float(table_bbox[2]) - float(table_bbox[0]))
+    if table_width <= 0.0:
+        return None
+    rows = _table_data(table)
+    column_weights: list[float] = []
+    for column_index in range(column_count):
+        max_len = max(
+            (len(_normalize_text(row[column_index])) for row in rows if column_index < len(row)),
+            default=1,
+        )
+        column_weights.append(max(4.0, min(80.0, float(max_len))))
+    total = sum(column_weights)
+    if total <= 0.0:
+        return None
+    x_center = (float(bbox[0]) + float(bbox[2])) / 2.0
+    position = max(0.0, min(0.999999, (x_center - float(table_bbox[0])) / table_width)) * total
+    cumulative = 0.0
+    for index, weight in enumerate(column_weights):
+        cumulative += weight
+        if position <= cumulative:
+            return index
+    return column_count - 1
+
+
+def _table_contained_text_fragments(
+    raw_elements: list[dict[str, Any]],
+    table_bbox: list[float],
+    page_number: int,
+) -> list[dict[str, Any]]:
+    fragments: list[dict[str, Any]] = []
+    for element in raw_elements:
+        if element.get("type") == "table" or element.get("page") != page_number:
+            continue
+        bbox = element.get("bbox")
+        text = _normalize_text(str(element.get("text") or ""))
+        if not text or not isinstance(bbox, list) or len(bbox) != 4:
+            continue
+        width = max(0.0, float(bbox[2]) - float(bbox[0]))
+        height = max(0.0, float(bbox[3]) - float(bbox[1]))
+        if height <= 0.0 or width < height * 2.0:
+            continue
+        contained = _bbox_coverage(bbox, table_bbox) >= 0.95
+        if not contained:
+            continue
+        if element.get("type") != "header_footer_noise" and element.get("source_type") != "Boilerplate":
+            continue
+        fragments.append(element)
+    fragments.sort(key=lambda item: ((item.get("bbox") or [0, 0, 0, 0])[1], (item.get("bbox") or [0, 0, 0, 0])[0]))
+    return fragments
+
+
+def _append_text_to_table_cell(table: dict[str, Any], row_index: int, column_index: int, text: str) -> dict[str, Any]:
+    rows = _table_data(table)
+    if row_index < 0 or row_index >= len(rows) or column_index < 0:
+        return table
+    if column_index >= len(rows[row_index]):
+        return table
+    if _compact_text(text) in _compact_text(rows[row_index][column_index]):
+        return table
+
+    repaired = dict(table)
+    data = [list(row) for row in rows]
+    data[row_index][column_index] = _normalize_text(f"{data[row_index][column_index]} {text}")
+    repaired["data"] = data
+
+    original_rows = repaired.get("rows")
+    if isinstance(original_rows, list):
+        updated_rows: list[Any] = []
+        for index, row in enumerate(original_rows):
+            if index != row_index:
+                updated_rows.append(row)
+                continue
+            if isinstance(row, dict) and isinstance(row.get("cells"), list):
+                row_copy = dict(row)
+                cells = list(row_copy["cells"])
+                if column_index < len(cells):
+                    cell = cells[column_index]
+                    cells[column_index] = {**cell, "text": data[row_index][column_index]} if isinstance(cell, dict) else data[row_index][column_index]
+                row_copy["cells"] = cells
+                updated_rows.append(row_copy)
+            elif isinstance(row, (list, tuple)):
+                row_copy = list(row)
+                if column_index < len(row_copy):
+                    row_copy[column_index] = data[row_index][column_index]
+                updated_rows.append(row_copy)
+            else:
+                updated_rows.append(row)
+        repaired["rows"] = updated_rows
+
+    df_data = repaired.get("df_data")
+    if isinstance(df_data, list) and row_index < len(df_data):
+        updated_df_data = list(df_data)
+        row = updated_df_data[row_index]
+        if isinstance(row, dict):
+            row_copy = dict(row)
+            row_copy[str(column_index)] = data[row_index][column_index]
+            updated_df_data[row_index] = row_copy
+            repaired["df_data"] = updated_df_data
+    return repaired
+
+
+def _repair_table_with_contained_text(
+    table: dict[str, Any],
+    raw_elements: list[dict[str, Any]],
+    table_bbox: list[float],
+    page_number: int,
+) -> dict[str, Any]:
+    repaired = table
+    fragment_ids: list[str] = []
+    for fragment in _table_contained_text_fragments(raw_elements, table_bbox, page_number):
+        bbox = fragment.get("bbox")
+        if not isinstance(bbox, list):
+            continue
+        row_index = _table_row_index_for_bbox(table, table_bbox, bbox)
+        column_index = _table_column_index_for_bbox(table, table_bbox, bbox)
+        if row_index is None or column_index is None:
+            continue
+        before = _table_text(repaired)
+        repaired = _append_text_to_table_cell(repaired, row_index, column_index, str(fragment.get("text") or ""))
+        if _table_text(repaired) != before:
+            fragment_ids.append(str(fragment.get("id") or ""))
+    if fragment_ids:
+        repaired = dict(repaired)
+        raw = dict(repaired.get("raw") or {})
+        raw["table_contained_fragment_ids"] = fragment_ids
+        repaired["raw"] = raw
+        repaired["table_contained_fragment_ids"] = fragment_ids
+    return repaired
+
+
+def _suppress_table_contained_text_duplicates(elements: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    duplicate_ids: set[str] = set()
+    for element in elements:
+        if element.get("type") != "table":
+            continue
+        raw = element.get("raw") or {}
+        if not isinstance(raw, dict):
+            continue
+        duplicate_ids.update(str(item) for item in raw.get("table_contained_fragment_ids") or [] if item)
+    if not duplicate_ids:
+        return elements
+    return [element for element in elements if str(element.get("id") or "") not in duplicate_ids]
+
+
 def _suppress_qid_table_row_duplicates(elements: list[dict[str, Any]]) -> list[dict[str, Any]]:
     tables = [
         element
@@ -1261,6 +1466,7 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
         if _is_tiny_empty_table_false_positive(table, metrics, bbox):
             continue
         table = _repair_table_with_qid_rows(table, raw_elements, bbox, page_index + 1)
+        table = _repair_table_with_contained_text(table, raw_elements, bbox, page_index + 1)
         metrics = _table_metrics(table)
         if _is_page46_ac2_control_table(table, page_index, bbox):
             merged_h_elements = [
@@ -1291,6 +1497,7 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
         )
 
     raw_elements = _suppress_qid_table_row_duplicates(raw_elements)
+    raw_elements = _suppress_table_contained_text_duplicates(raw_elements)
 
     if ledger_path and ledger_path.exists():
         from pdf_oxide.presets.applier import ApplierConfig, apply_ledger  # noqa: PLC0415

@@ -256,6 +256,111 @@ def test_tiny_empty_lattice_table_false_positive_is_suppressed() -> None:
     assert mod._is_tiny_empty_table_false_positive(table_with_text, metrics, [0.1, 0.1, 0.4, 0.2]) is False
 
 
+def test_page26_table_contained_boilerplate_fragments_merge_into_table_revision_cell() -> None:
+    mod = _load_module()
+    table_bbox = [0.146, 0.091, 0.853, 0.898]
+    table = {
+        "data": [
+            ["DATE", "TYPE", "REVISION", "PAGE"],
+            [
+                "12-10-2020",
+                "Editorial",
+                (
+                    "References [SP 800-181]: Change Newhouse WD, Witte GA,\n"
+                    "Scribner B, Keith S (2017) National Initiative for Cybersecurity\n"
+                    "Education (NICE) Cybersecurity Workforce Framework.\n"
+                    "Smith MC, Wetzel KA, Witte G (2020) Workforce Framework for\n"
+                    "Cybersecurity (NICE Framework)."
+                ),
+                "388",
+            ],
+            ["12-10-2020", "Editorial", "References [DODTERMS]: Change dictionary.pdf", "391"],
+        ],
+        "rows": [
+            {"cells": [{"text": "DATE"}, {"text": "TYPE"}, {"text": "REVISION"}, {"text": "PAGE"}]},
+            {
+                "cells": [
+                    {"text": "12-10-2020"},
+                    {"text": "Editorial"},
+                    {"text": "References [SP 800-181]: Change Newhouse WD, Witte GA"},
+                    {"text": "388"},
+                ]
+            },
+            {
+                "cells": [
+                    {"text": "12-10-2020"},
+                    {"text": "Editorial"},
+                    {"text": "References [DODTERMS]: Change dictionary.pdf"},
+                    {"text": "391"},
+                ]
+            },
+        ],
+        "df_data": [
+            {"0": "DATE", "1": "TYPE", "2": "REVISION", "3": "PAGE"},
+            {
+                "0": "12-10-2020",
+                "1": "Editorial",
+                "2": "References [SP 800-181]: Change Newhouse WD, Witte GA",
+                "3": "388",
+            },
+        ],
+    }
+    raw_elements = [
+        {
+            "id": "actual:p26:block:7",
+            "page": 26,
+            "type": "header_footer_noise",
+            "source_type": "Boilerplate",
+            "bbox": [0.362, 0.186, 0.767, 0.201],
+            "text": "https://doi.org/10.6028/NIST.SP.800-181 to Petersen R, Santos D,",
+        },
+        {
+            "id": "actual:p26:block:9",
+            "page": 26,
+            "type": "header_footer_noise",
+            "source_type": "Boilerplate",
+            "bbox": [0.362, 0.250, 0.627, 0.265],
+            "text": "https://doi.org/10.6028/NIST.SP.800-181r1",
+        },
+    ]
+
+    repaired = mod._repair_table_with_contained_text(table, raw_elements, table_bbox, 26)
+
+    assert "NIST.SP.800-181 to Petersen" in repaired["data"][1][2]
+    assert "NIST.SP.800-181r1" in repaired["data"][1][2]
+    assert repaired["rows"][1]["cells"][2]["text"] == repaired["data"][1][2]
+    assert repaired["df_data"][1]["2"] == repaired["data"][1][2]
+    assert repaired["raw"]["table_contained_fragment_ids"] == [
+        "actual:p26:block:7",
+        "actual:p26:block:9",
+    ]
+
+
+def test_page26_table_contained_fragment_duplicates_are_suppressed_after_merge() -> None:
+    mod = _load_module()
+    elements = [
+        {
+            "id": "actual:p26:block:7",
+            "page": 26,
+            "type": "header_footer_noise",
+            "bbox": [0.362, 0.186, 0.767, 0.201],
+            "text": "https://doi.org/10.6028/NIST.SP.800-181 to Petersen R, Santos D,",
+        },
+        {
+            "id": "actual:p26:table:0",
+            "page": 26,
+            "type": "table",
+            "bbox": [0.146, 0.091, 0.853, 0.898],
+            "text": "References [SP 800-181] https://doi.org/10.6028/NIST.SP.800-181",
+            "raw": {"table_contained_fragment_ids": ["actual:p26:block:7"]},
+        },
+    ]
+
+    result = mod._suppress_table_contained_text_duplicates(elements)
+
+    assert [element["id"] for element in result] == ["actual:p26:table:0"]
+
+
 def test_nist_page45_snapshot_adds_toc_lineage() -> None:
     mod = _load_module()
     blocks = [

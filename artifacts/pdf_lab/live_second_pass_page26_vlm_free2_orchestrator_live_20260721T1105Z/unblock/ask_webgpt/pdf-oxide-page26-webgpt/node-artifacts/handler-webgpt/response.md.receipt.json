@@ -1,0 +1,17 @@
+{
+  "schema": "surf.webgpt_submit_receipt.v1",
+  "status": "submitted_to_chatgpt",
+  "submitted_to_chatgpt": true,
+  "prepared_prompt_is_transport_proof": false,
+  "input": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page26_vlm_free2_orchestrator_live_20260721T1105Z/unblock/ask_webgpt/pdf-oxide-page26-webgpt/node-artifacts/handler-webgpt/prompt.md",
+  "submitted_output": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page26_vlm_free2_orchestrator_live_20260721T1105Z/unblock/ask_webgpt/pdf-oxide-page26-webgpt/node-artifacts/handler-webgpt/response.md.submitted.md",
+  "output": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page26_vlm_free2_orchestrator_live_20260721T1105Z/unblock/ask_webgpt/pdf-oxide-page26-webgpt/node-artifacts/handler-webgpt/response.md",
+  "raw_output": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page26_vlm_free2_orchestrator_live_20260721T1105Z/unblock/ask_webgpt/pdf-oxide-page26-webgpt/node-artifacts/handler-webgpt/response.raw.md",
+  "meta_output": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page26_vlm_free2_orchestrator_live_20260721T1105Z/unblock/ask_webgpt/pdf-oxide-page26-webgpt/node-artifacts/handler-webgpt/response.meta.json",
+  "sentinel": "<<<WEBGPT_DONE:20260721T105742Z:9a2f95b5>>>",
+  "requested_tab_id": "837360471",
+  "requested_url": null,
+  "requested_model": null,
+  "requested_reasoning": "Pro",
+  "receipt_at": "2026-07-21T10:57:46Z"
+}
