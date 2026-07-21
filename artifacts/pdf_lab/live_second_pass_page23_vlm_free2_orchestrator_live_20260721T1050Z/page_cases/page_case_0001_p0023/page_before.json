@@ -1,0 +1,1044 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p23:block:0",
+      "is_bold": false,
+      "page": 23,
+      "pdf_page_index": 22,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p23:block:1",
+      "is_bold": false,
+      "page": 23,
+      "pdf_page_index": 22,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.49196076237298303,
+        0.939856018682923,
+        0.5080637215009702,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p23:block:2",
+      "is_bold": false,
+      "page": 23,
+      "pdf_page_index": 22,
+      "raw": {
+        "bbox": [
+          301.0799865722656,
+          38.400001525878906,
+          11.871002197265625,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "xxi"
+      },
+      "source_type": "PageNumber",
+      "text": "xxi",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p23:block:3",
+      "is_bold": false,
+      "page": 23,
+      "pdf_page_index": 22,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490355647467,
+        0.8793181795062441
+      ],
+      "id": "actual:p23:table:0",
+      "page": 23,
+      "pdf_page_index": 22,
+      "raw": {
+        "accuracy": 100.0,
+        "bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          696.4199981689453
+        ],
+        "cols": 4,
+        "column_count": 4,
+        "data": [
+          [
+            "DATE",
+            "TYPE",
+            "REVISION",
+            "PAGE"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement PT-2(1): Change \u201cpermissible\u201d to\n\u201cauthorized\u201d",
+            "230"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PT-2 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "231"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PT-3a.: Change \u201c[Assignment organization-defined\npurpose(s)]\u201d to \u201c[Assignment: organization-defined purpose(s)]\u201d",
+            "231"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PT-3 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "232"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PT-5 Related Controls: Add \u201cSC-42,\u201d",
+            "234"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement PT-6(2): Change \u201c[Assignment: organization-\ndefined frequency]\u201d to \u201c[Assignment: organization-defined\nfrequency]\u201d",
+            "235"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PT-7 References: Add \u201c, [NARA CUI]\u201d",
+            "236"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PT-8 References: Add \u201c[CMPPA],\u201d",
+            "237"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control RA-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "238"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control RA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "238"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control RA-2 References: Add \u201c, [NARA CUI]\u201d",
+            "240"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control RA-3 Related Controls: Add \u201cPT-2,\u201d",
+            "240"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control RA-8 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "247"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control RA-9 Related Controls: Add \u201cPM-11,\u201d",
+            "247"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SA-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "249"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "249"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SA-2 References: Add \u201c[SP 800-37], \u201d",
+            "250"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SA-4 References: Add \u201c[ISO 29148], \u201d",
+            "255"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement SA-9(5) Discussion: Change \u201csecurity or\nprivacy incidents\u201d to \u201csecurity incidents or breaches\u201d",
+            "273"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement SA-10(2) Title: Change \u201cALTERNATIVE\nCONFIGURATION MANAGEMENT\u201d to \u201cALTERNATIVE\nCONFIGURATION MANAGEMENT PROCESSES\u201d",
+            "274"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SA-11a.: Change \u201cassessments\u201d to \u201ccontrol assessments\u201d",
+            "276"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement SA-12(13): Change \u201cMA-6, RA-9\u201d to \u201cMA-6\nand RA-9\u201d",
+            "280"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement SA-12(14): Change \u201cSR-4(1), SR-4(2)\u201d to \u201cSR-\n4(1) and SR-4(2)\u201d",
+            "280"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement SA-17(4)(b): Change \u201cinformal\ndemonstration,\u201d to \u201cinformal demonstration;\u201d",
+            "286"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SA-23: Change \u201c design modification, augmentation,\nreconfiguration\u201d to \u201cdesign; modification; augmentation;\nreconfiguration\u201d",
+            "291"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SC-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "292"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SC-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "292"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SC-6: Change \u201cSelection (one or more);\u201d to \u201cSelection (one\nor more):\u201d",
+            "297"
+          ]
+        ],
+        "df_data": [
+          {
+            "0": "DATE",
+            "1": "TYPE",
+            "2": "REVISION",
+            "3": "PAGE"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement PT-2(1): Change \u201cpermissible\u201d to\n\u201cauthorized\u201d",
+            "3": "230"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PT-2 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "3": "231"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PT-3a.: Change \u201c[Assignment organization-defined\npurpose(s)]\u201d to \u201c[Assignment: organization-defined purpose(s)]\u201d",
+            "3": "231"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PT-3 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "3": "232"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PT-5 Related Controls: Add \u201cSC-42,\u201d",
+            "3": "234"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement PT-6(2): Change \u201c[Assignment: organization-\ndefined frequency]\u201d to \u201c[Assignment: organization-defined\nfrequency]\u201d",
+            "3": "235"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PT-7 References: Add \u201c, [NARA CUI]\u201d",
+            "3": "236"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PT-8 References: Add \u201c[CMPPA],\u201d",
+            "3": "237"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control RA-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "238"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control RA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "238"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control RA-2 References: Add \u201c, [NARA CUI]\u201d",
+            "3": "240"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control RA-3 Related Controls: Add \u201cPT-2,\u201d",
+            "3": "240"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control RA-8 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "3": "247"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control RA-9 Related Controls: Add \u201cPM-11,\u201d",
+            "3": "247"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SA-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "249"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "249"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SA-2 References: Add \u201c[SP 800-37], \u201d",
+            "3": "250"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SA-4 References: Add \u201c[ISO 29148], \u201d",
+            "3": "255"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement SA-9(5) Discussion: Change \u201csecurity or\nprivacy incidents\u201d to \u201csecurity incidents or breaches\u201d",
+            "3": "273"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement SA-10(2) Title: Change \u201cALTERNATIVE\nCONFIGURATION MANAGEMENT\u201d to \u201cALTERNATIVE\nCONFIGURATION MANAGEMENT PROCESSES\u201d",
+            "3": "274"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SA-11a.: Change \u201cassessments\u201d to \u201ccontrol assessments\u201d",
+            "3": "276"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement SA-12(13): Change \u201cMA-6, RA-9\u201d to \u201cMA-6\nand RA-9\u201d",
+            "3": "280"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement SA-12(14): Change \u201cSR-4(1), SR-4(2)\u201d to \u201cSR-\n4(1) and SR-4(2)\u201d",
+            "3": "280"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement SA-17(4)(b): Change \u201cinformal\ndemonstration,\u201d to \u201cinformal demonstration;\u201d",
+            "3": "286"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SA-23: Change \u201c design modification, augmentation,\nreconfiguration\u201d to \u201cdesign; modification; augmentation;\nreconfiguration\u201d",
+            "3": "291"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SC-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "292"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SC-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "292"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SC-6: Change \u201cSelection (one or more);\u201d to \u201cSelection (one\nor more):\u201d",
+            "3": "297"
+          }
+        ],
+        "flavor": "Lattice",
+        "order": 0,
+        "page": 22,
+        "row_count": 29,
+        "rows": [
+          {
+            "cells": [
+              {
+                "text": "DATE"
+              },
+              {
+                "text": "TYPE"
+              },
+              {
+                "text": "REVISION"
+              },
+              {
+                "text": "PAGE"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement PT-2(1): Change \u201cpermissible\u201d to \u201cauthorized\u201d"
+              },
+              {
+                "text": "230"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PT-2 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d"
+              },
+              {
+                "text": "231"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PT-3a.: Change \u201c[Assignment organization-defined purpose(s)]\u201d to \u201c[Assignment: organization-defined purpose(s)]\u201d"
+              },
+              {
+                "text": "231"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PT-3 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d"
+              },
+              {
+                "text": "232"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PT-5 Related Controls: Add \u201cSC-42,\u201d"
+              },
+              {
+                "text": "234"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement PT-6(2): Change \u201c[Assignment: organization- defined frequency]\u201d to \u201c[Assignment: organization-defined frequency]\u201d"
+              },
+              {
+                "text": "235"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PT-7 References: Add \u201c, [NARA CUI]\u201d"
+              },
+              {
+                "text": "236"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PT-8 References: Add \u201c[CMPPA],\u201d"
+              },
+              {
+                "text": "237"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control RA-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "238"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control RA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "238"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control RA-2 References: Add \u201c, [NARA CUI]\u201d"
+              },
+              {
+                "text": "240"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control RA-3 Related Controls: Add \u201cPT-2,\u201d"
+              },
+              {
+                "text": "240"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control RA-8 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d"
+              },
+              {
+                "text": "247"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control RA-9 Related Controls: Add \u201cPM-11,\u201d"
+              },
+              {
+                "text": "247"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SA-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "249"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "249"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SA-2 References: Add \u201c[SP 800-37], \u201d"
+              },
+              {
+                "text": "250"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SA-4 References: Add \u201c[ISO 29148], \u201d"
+              },
+              {
+                "text": "255"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement SA-9(5) Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "273"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement SA-10(2) Title: Change \u201cALTERNATIVE CONFIGURATION MANAGEMENT\u201d to \u201cALTERNATIVE CONFIGURATION MANAGEMENT PROCESSES\u201d"
+              },
+              {
+                "text": "274"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SA-11a.: Change \u201cassessments\u201d to \u201ccontrol assessments\u201d"
+              },
+              {
+                "text": "276"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement SA-12(13): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA-9\u201d"
+              },
+              {
+                "text": "280"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement SA-12(14): Change \u201cSR-4(1), SR-4(2)\u201d to \u201cSR- 4(1) and SR-4(2)\u201d"
+              },
+              {
+                "text": "280"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement SA-17(4)(b): Change \u201cinformal demonstration,\u201d to \u201cinformal demonstration;\u201d"
+              },
+              {
+                "text": "286"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SA-23: Change \u201c design modification, augmentation, reconfiguration\u201d to \u201cdesign; modification; augmentation; reconfiguration\u201d"
+              },
+              {
+                "text": "291"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SC-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "292"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SC-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "292"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SC-6: Change \u201cSelection (one or more);\u201d to \u201cSelection (one or more):\u201d"
+              },
+              {
+                "text": "297"
+              }
+            ]
+          }
+        ],
+        "table_geometry": {
+          "bbox_clipped_to_page": false,
+          "full_normalized_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8793181795062441
+          ],
+          "off_page_extent": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0
+          },
+          "raw_bbox": [
+            89.76000213623047,
+            72.47998046875,
+            521.760009765625,
+            696.4199981689453
+          ],
+          "visible_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8793181795062441
+          ]
+        },
+        "whitespace": 0.0
+      },
+      "source_type": "table",
+      "table_geometry": {
+        "bbox_clipped_to_page": false,
+        "full_normalized_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8793181795062441
+        ],
+        "off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "raw_bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          696.4199981689453
+        ],
+        "visible_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8793181795062441
+        ]
+      },
+      "text": "DATE | TYPE | REVISION | PAGE\n12-10-2020 | Editorial | Control Enhancement PT-2(1): Change \u201cpermissible\u201d to \u201cauthorized\u201d | 230\n12-10-2020 | Editorial | Control PT-2 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 231\n12-10-2020 | Editorial | Control PT-3a.: Change \u201c[Assignment organization-defined purpose(s)]\u201d to \u201c[Assignment: organization-defined purpose(s)]\u201d | 231\n12-10-2020 | Editorial | Control PT-3 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 232\n12-10-2020 | Editorial | Control PT-5 Related Controls: Add \u201cSC-42,\u201d | 234\n12-10-2020 | Editorial | Control Enhancement PT-6(2): Change \u201c[Assignment: organization- defined frequency]\u201d to \u201c[Assignment: organization-defined frequency]\u201d | 235\n12-10-2020 | Editorial | Control PT-7 References: Add \u201c, [NARA CUI]\u201d | 236\n12-10-2020 | Editorial | Control PT-8 References: Add \u201c[CMPPA],\u201d | 237\n12-10-2020 | Editorial | Control RA-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 238\n12-10-2020 | Editorial | Control RA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 238\n12-10-2020 | Editorial | Control RA-2 References: Add \u201c, [NARA CUI]\u201d | 240\n12-10-2020 | Editorial | Control RA-3 Related Controls: Add \u201cPT-2,\u201d | 240\n12-10-2020 | Editorial | Control RA-8 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 247\n12-10-2020 | Editorial | Control RA-9 Related Controls: Add \u201cPM-11,\u201d | 247\n12-10-2020 | Editorial | Control SA-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 249\n12-10-2020 | Editorial | Control SA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 249\n12-10-2020 | Editorial | Control SA-2 References: Add \u201c[SP 800-37], \u201d | 250\n12-10-2020 | Editorial | Control SA-4 References: Add \u201c[ISO 29148], \u201d | 255\n12-10-2020 | Editorial | Control Enhancement SA-9(5) Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 273\n12-10-2020 | Editorial | Control Enhancement SA-10(2) Title: Change \u201cALTERNATIVE CONFIGURATION MANAGEMENT\u201d to \u201cALTERNATIVE CONFIGURATION MANAGEMENT PROCESSES\u201d | 274\n12-10-2020 | Editorial | Control SA-11a.: Change \u201cassessments\u201d to \u201ccontrol assessments\u201d | 276\n12-10-2020 | Editorial | Control Enhancement SA-12(13): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA-9\u201d | 280\n12-10-2020 | Editorial | Control Enhancement SA-12(14): Change \u201cSR-4(1), SR-4(2)\u201d to \u201cSR- 4(1) and SR-4(2)\u201d | 280\n12-10-2020 | Editorial | Control Enhancement SA-17(4)(b): Change \u201cinformal demonstration,\u201d to \u201cinformal demonstration;\u201d | 286\n12-10-2020 | Editorial | Control SA-23: Change \u201c design modification, augmentation, reconfiguration\u201d to \u201cdesign; modification; augmentation; reconfiguration\u201d | 291\n12-10-2020 | Editorial | Control SC-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 292\n12-10-2020 | Editorial | Control SC-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 292\n12-10-2020 | Editorial | Control SC-6: Change \u201cSelection (one or more);\u201d to \u201cSelection (one or more):\u201d | 297",
+      "type": "table"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 23,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 22
+}

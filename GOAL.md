@@ -70,6 +70,7 @@ Current completed page evidence:
 | `page_0020` | live second-pass VLM-backed review with page-orchestrator registration, five candidate findings validated clean | `artifacts/pdf_lab/page20_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `c67907e3f430a26aec65d3d0c17ff2b80b035f04` |
 | `page_0021` | live second-pass VLM-backed review with page-orchestrator registration, five candidate findings validated clean | `artifacts/pdf_lab/page21_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `4e2316f5732d86267b38973df24b02b1b5d4b635` |
 | `page_0022` | live second-pass VLM-backed review with page-orchestrator registration, five candidate findings validated clean | `artifacts/pdf_lab/page22_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `3349f61ea547e50a3845c2206e8561570f7484ae` |
+| `page_0023` | live second-pass VLM-backed review with page-orchestrator registration, five candidate findings validated clean | `artifacts/pdf_lab/page23_vlm_free2_clean_20260721/audit_summary.json` | pending push of VLM-backed page23 receipt |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old

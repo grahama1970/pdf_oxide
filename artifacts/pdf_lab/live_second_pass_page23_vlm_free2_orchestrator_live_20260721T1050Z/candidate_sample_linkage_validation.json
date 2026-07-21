@@ -1,0 +1,30 @@
+{
+  "accepted_forced_pages": [
+    23
+  ],
+  "actual_candidate_count": 5,
+  "actual_page_case_count": 1,
+  "candidate_count": 5,
+  "errors": [],
+  "malformed_forced_probability_case_ids": [],
+  "malformed_sampling_metadata_case_ids": [],
+  "manifest_candidate_id_count": 5,
+  "manifest_pages": [
+    23
+  ],
+  "manifest_preset_counts": {
+    "side_chrome": 4,
+    "table": 1
+  },
+  "manifest_schema": "pdf_lab.second_pass.candidate_manifest.v1",
+  "ok": true,
+  "probabilistic_selected_pages": [],
+  "sampled_candidate_id_count": 5,
+  "sampled_cases_schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+  "schema": "pdf_lab.second_pass.candidate_sample_linkage_validation.v1",
+  "selected_count": 1,
+  "selected_pages": [
+    23
+  ],
+  "warnings": []
+}
