@@ -1,0 +1,19 @@
+{
+  "command_or_endpoint": "run_page_second_pass_dag.route_review_result",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T10:50:09.260382+00:00",
+  "input_artifacts": [
+    "review_validation.json"
+  ],
+  "next_allowed_nodes": [
+    "write_page_terminal_ledger"
+  ],
+  "node_id": "route_page_result",
+  "output_artifacts": [],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T10:50:09.260379+00:00",
+  "validator_result": {
+    "ok": true,
+    "terminal_status": "reviewed_clean"
+  }
+}

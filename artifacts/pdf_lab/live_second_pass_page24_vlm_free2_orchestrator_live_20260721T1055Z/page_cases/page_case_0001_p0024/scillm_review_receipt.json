@@ -1,0 +1,115 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0024:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"Extracted JSON block 0 shows an accurate bounding box and text for the top header: 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'.\",\n      \"rationale\": \"The extracted block accurately captures the header text, and the bounding box correctly encompasses its visual presentation. The classification as 'side_chrome' and 'source_type: Header' is appropriate.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0024:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"Extracted JSON block 1 shows an accurate bounding box and text for the horizontal line below the header. The text is '_________________________________________________________________________________________________'.\",\n      \"rationale\": \"The extracted block correctly identifies the horizontal separator line, part of the header area. The bounding box and text match the rendered page. Classification as 'side_chrome' and 'source_type: Header' is acceptable.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0024:0002:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"Extracted JSON block 2 shows an accurate bounding box and text for the page number 'xxii' at the bottom center of the page.\",\n      \"rationale\": \"The extracted block correctly identifies the page number with accurate bounding box and text. The classification as 'side_chrome' and 'source_type: PageNumber' is appropriate.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0024:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"Extracted JSON block 3 shows an accurate bounding box and text for the vertical boilerplate text on the left margin of the page.\",\n      \"rationale\": \"The extracted block correctly identifies the vertical boilerplate text with accurate bounding box and text. The classification as 'side_chrome' and 'source_type: Boilerplate' is appropriate.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0024:0004:table\",\n      \"status\": \"clean\",\n      \"evidence\": \"Extracted JSON block 4 provides a bounding box that perfectly encloses the large table on the page. The 'text' field correctly serializes the table content using pipe delimiters for columns and newlines for rows.\",\n      \"rationale\": \"The extraction correctly identifies the main table on the page. The bounding box is accurate, and the text serialization effectively represents the table's content and structure.\",\n      \"suggested_fix_surface\": \"none\"\n    }\n  ],\n  \"page_rationale\": \"All candidates on page 24 are accurately extracted regarding their bounding boxes, text content, and classification (preset type and source type). The page header, separator line, page number, boilerplate text, and the central table are all correctly identified and represented in the extracted JSON.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784631009,
+    "id": "0k5favGhN_yY-8YPg7mH-Q4",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0024",
+      "item_id": "page_case_0001_p0024:35e4089c26f253c7",
+      "request_sha256": "35e4089c26f253c70a00c99dabac214b6bf985584664bbd35f3aec0f9d85183d"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm-free2",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 798,
+      "completion_tokens_details": null,
+      "prompt_tokens": 7402,
+      "prompt_tokens_details": null,
+      "total_tokens": 10738
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0024:0000:side_chrome",
+        "evidence": "Extracted JSON block 0 shows an accurate bounding box and text for the top header: 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'.",
+        "rationale": "The extracted block accurately captures the header text, and the bounding box correctly encompasses its visual presentation. The classification as 'side_chrome' and 'source_type: Header' is appropriate.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0024:0001:side_chrome",
+        "evidence": "Extracted JSON block 1 shows an accurate bounding box and text for the horizontal line below the header. The text is '_________________________________________________________________________________________________'.",
+        "rationale": "The extracted block correctly identifies the horizontal separator line, part of the header area. The bounding box and text match the rendered page. Classification as 'side_chrome' and 'source_type: Header' is acceptable.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0024:0002:side_chrome",
+        "evidence": "Extracted JSON block 2 shows an accurate bounding box and text for the page number 'xxii' at the bottom center of the page.",
+        "rationale": "The extracted block correctly identifies the page number with accurate bounding box and text. The classification as 'side_chrome' and 'source_type: PageNumber' is appropriate.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0024:0003:side_chrome",
+        "evidence": "Extracted JSON block 3 shows an accurate bounding box and text for the vertical boilerplate text on the left margin of the page.",
+        "rationale": "The extracted block correctly identifies the vertical boilerplate text with accurate bounding box and text. The classification as 'side_chrome' and 'source_type: Boilerplate' is appropriate.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0024:0004:table",
+        "evidence": "Extracted JSON block 4 provides a bounding box that perfectly encloses the large table on the page. The 'text' field correctly serializes the table content using pipe delimiters for columns and newlines for rows.",
+        "rationale": "The extraction correctly identifies the main table on the page. The bounding box is accurate, and the text serialization effectively represents the table's content and structure.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      }
+    ],
+    "page_rationale": "All candidates on page 24 are accurately extracted regarding their bounding boxes, text content, and classification (preset type and source type). The page header, separator line, page number, boilerplate text, and the central table are all correctly identified and represented in the extracted JSON.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0024",
+    "item_id": "page_case_0001_p0024:35e4089c26f253c7",
+    "request_sha256": "35e4089c26f253c70a00c99dabac214b6bf985584664bbd35f3aec0f9d85183d"
+  }
+}
