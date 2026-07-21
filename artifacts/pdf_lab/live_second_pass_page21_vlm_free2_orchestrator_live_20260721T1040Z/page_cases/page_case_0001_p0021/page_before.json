@@ -1,0 +1,988 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p21:block:0",
+      "is_bold": false,
+      "page": 21,
+      "pdf_page_index": 20,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p21:block:1",
+      "is_bold": false,
+      "page": 21,
+      "pdf_page_index": 20,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.49196076237298303,
+        0.939856018682923,
+        0.5080342510946436,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p21:block:2",
+      "is_bold": false,
+      "page": 21,
+      "pdf_page_index": 20,
+      "raw": {
+        "bbox": [
+          301.0799865722656,
+          38.400001525878906,
+          11.871002197265625,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "xix"
+      },
+      "source_type": "PageNumber",
+      "text": "xix",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p21:block:3",
+      "is_bold": false,
+      "page": 21,
+      "pdf_page_index": 20,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490355647467,
+        0.8856060625326754
+      ],
+      "id": "actual:p21:table:0",
+      "page": 21,
+      "pdf_page_index": 20,
+      "raw": {
+        "accuracy": 100.0,
+        "bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          701.4000015258789
+        ],
+        "cols": 4,
+        "column_count": 4,
+        "data": [
+          [
+            "DATE",
+            "TYPE",
+            "REVISION",
+            "PAGE"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement CM-7(5) Title: Change \u201cAUTHORIZED\nSOFTWARE\u201d to \u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d",
+            "106"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control CM-8 Related Controls: Add \u201cCP-9,\u201d",
+            "108"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control CP-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "115"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control CP-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "115"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control CP-3 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "119"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement CP-9(7) Title: Change \u201cDUAL\nAUTHORIZATION\u201d to \u201cDUAL AUTHORIZATION FOR DELETION OR\nDESTRUCTION\u201d",
+            "127"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement CP-10(3): Change \u201ctailoring procedures\u201d to\n\u201ctailoring\u201d",
+            "128"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control IA-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "131"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control IA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "131"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement IA-2(1) Discussion: Change \u201cCommon Access\nCard\u201d to \u201cCommon Access Card (CAC)\u201d",
+            "132"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement IA-2(7) Title: Change \u201cACCESS\u201d to \u201cNETWORK\nACCESS\u201d",
+            "134"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement IA-8(5) Discussion: Change \u201cPersonal Identity\nVerification (PIV)\u201d to \u201cPIV\u201d",
+            "145"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control IR-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "149"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control IR-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "149"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement IR-2(1) Discussion: Delete \u201cIncident response\ntraining includes tabletop exercises that simulate a breach. See IR-\n2(3).\u201d",
+            "150"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control IR-4 Related Controls: Add \u201cIR-5,\u201d",
+            "152"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control IR-5 Related Controls: Add \u201cIR-4, IR-6,\u201d",
+            "156"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement IR-5(1) Related Controls: Change \u201cAU-7, IR-4\u201d\nto \u201cNone\u201d",
+            "156"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control IR-10: Change \u201cIncident Analysis\u201d to \u201cIntegrated\nInformation Security Analysis Team\u201d",
+            "161"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control IR-10: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d",
+            "161"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control MA-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "162"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control MA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "162"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement MA-4(2): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and\nMA-4\u201d",
+            "166"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control MP-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "171"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control MP-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "171"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control MP-3 References: Add \u201c[EO 13556],\u201d",
+            "172"
+          ]
+        ],
+        "df_data": [
+          {
+            "0": "DATE",
+            "1": "TYPE",
+            "2": "REVISION",
+            "3": "PAGE"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement CM-7(5) Title: Change \u201cAUTHORIZED\nSOFTWARE\u201d to \u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d",
+            "3": "106"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control CM-8 Related Controls: Add \u201cCP-9,\u201d",
+            "3": "108"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control CP-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "115"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control CP-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "115"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control CP-3 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "119"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement CP-9(7) Title: Change \u201cDUAL\nAUTHORIZATION\u201d to \u201cDUAL AUTHORIZATION FOR DELETION OR\nDESTRUCTION\u201d",
+            "3": "127"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement CP-10(3): Change \u201ctailoring procedures\u201d to\n\u201ctailoring\u201d",
+            "3": "128"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control IA-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "131"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control IA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "131"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement IA-2(1) Discussion: Change \u201cCommon Access\nCard\u201d to \u201cCommon Access Card (CAC)\u201d",
+            "3": "132"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement IA-2(7) Title: Change \u201cACCESS\u201d to \u201cNETWORK\nACCESS\u201d",
+            "3": "134"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement IA-8(5) Discussion: Change \u201cPersonal Identity\nVerification (PIV)\u201d to \u201cPIV\u201d",
+            "3": "145"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control IR-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "149"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control IR-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "149"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement IR-2(1) Discussion: Delete \u201cIncident response\ntraining includes tabletop exercises that simulate a breach. See IR-\n2(3).\u201d",
+            "3": "150"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control IR-4 Related Controls: Add \u201cIR-5,\u201d",
+            "3": "152"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control IR-5 Related Controls: Add \u201cIR-4, IR-6,\u201d",
+            "3": "156"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement IR-5(1) Related Controls: Change \u201cAU-7, IR-4\u201d\nto \u201cNone\u201d",
+            "3": "156"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control IR-10: Change \u201cIncident Analysis\u201d to \u201cIntegrated\nInformation Security Analysis Team\u201d",
+            "3": "161"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control IR-10: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d",
+            "3": "161"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control MA-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "162"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control MA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "162"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement MA-4(2): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and\nMA-4\u201d",
+            "3": "166"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control MP-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "171"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control MP-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "171"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control MP-3 References: Add \u201c[EO 13556],\u201d",
+            "3": "172"
+          }
+        ],
+        "flavor": "Lattice",
+        "order": 0,
+        "page": 20,
+        "row_count": 27,
+        "rows": [
+          {
+            "cells": [
+              {
+                "text": "DATE"
+              },
+              {
+                "text": "TYPE"
+              },
+              {
+                "text": "REVISION"
+              },
+              {
+                "text": "PAGE"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement CM-7(5) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to \u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d"
+              },
+              {
+                "text": "106"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control CM-8 Related Controls: Add \u201cCP-9,\u201d"
+              },
+              {
+                "text": "108"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control CP-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "115"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control CP-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "115"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control CP-3 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "119"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement CP-9(7) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL AUTHORIZATION FOR DELETION OR DESTRUCTION\u201d"
+              },
+              {
+                "text": "127"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement CP-10(3): Change \u201ctailoring procedures\u201d to \u201ctailoring\u201d"
+              },
+              {
+                "text": "128"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control IA-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "131"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control IA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "131"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement IA-2(1) Discussion: Change \u201cCommon Access Card\u201d to \u201cCommon Access Card (CAC)\u201d"
+              },
+              {
+                "text": "132"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement IA-2(7) Title: Change \u201cACCESS\u201d to \u201cNETWORK ACCESS\u201d"
+              },
+              {
+                "text": "134"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement IA-8(5) Discussion: Change \u201cPersonal Identity Verification (PIV)\u201d to \u201cPIV\u201d"
+              },
+              {
+                "text": "145"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control IR-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "149"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control IR-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "149"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement IR-2(1) Discussion: Delete \u201cIncident response training includes tabletop exercises that simulate a breach. See IR- 2(3).\u201d"
+              },
+              {
+                "text": "150"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control IR-4 Related Controls: Add \u201cIR-5,\u201d"
+              },
+              {
+                "text": "152"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control IR-5 Related Controls: Add \u201cIR-4, IR-6,\u201d"
+              },
+              {
+                "text": "156"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement IR-5(1) Related Controls: Change \u201cAU-7, IR-4\u201d to \u201cNone\u201d"
+              },
+              {
+                "text": "156"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control IR-10: Change \u201cIncident Analysis\u201d to \u201cIntegrated Information Security Analysis Team\u201d"
+              },
+              {
+                "text": "161"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control IR-10: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d"
+              },
+              {
+                "text": "161"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control MA-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "162"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control MA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "162"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement MA-4(2): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA-4\u201d"
+              },
+              {
+                "text": "166"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control MP-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "171"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control MP-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "171"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control MP-3 References: Add \u201c[EO 13556],\u201d"
+              },
+              {
+                "text": "172"
+              }
+            ]
+          }
+        ],
+        "table_geometry": {
+          "bbox_clipped_to_page": false,
+          "full_normalized_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8856060625326754
+          ],
+          "off_page_extent": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0
+          },
+          "raw_bbox": [
+            89.76000213623047,
+            72.47998046875,
+            521.760009765625,
+            701.4000015258789
+          ],
+          "visible_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8856060625326754
+          ]
+        },
+        "whitespace": 0.0
+      },
+      "source_type": "table",
+      "table_geometry": {
+        "bbox_clipped_to_page": false,
+        "full_normalized_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8856060625326754
+        ],
+        "off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "raw_bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          701.4000015258789
+        ],
+        "visible_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8856060625326754
+        ]
+      },
+      "text": "DATE | TYPE | REVISION | PAGE\n12-10-2020 | Editorial | Control Enhancement CM-7(5) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to \u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d | 106\n12-10-2020 | Editorial | Control CM-8 Related Controls: Add \u201cCP-9,\u201d | 108\n12-10-2020 | Editorial | Control CP-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 115\n12-10-2020 | Editorial | Control CP-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 115\n12-10-2020 | Editorial | Control CP-3 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 119\n12-10-2020 | Editorial | Control Enhancement CP-9(7) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL AUTHORIZATION FOR DELETION OR DESTRUCTION\u201d | 127\n12-10-2020 | Editorial | Control Enhancement CP-10(3): Change \u201ctailoring procedures\u201d to \u201ctailoring\u201d | 128\n12-10-2020 | Editorial | Control IA-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 131\n12-10-2020 | Editorial | Control IA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 131\n12-10-2020 | Editorial | Control Enhancement IA-2(1) Discussion: Change \u201cCommon Access Card\u201d to \u201cCommon Access Card (CAC)\u201d | 132\n12-10-2020 | Editorial | Control Enhancement IA-2(7) Title: Change \u201cACCESS\u201d to \u201cNETWORK ACCESS\u201d | 134\n12-10-2020 | Editorial | Control Enhancement IA-8(5) Discussion: Change \u201cPersonal Identity Verification (PIV)\u201d to \u201cPIV\u201d | 145\n12-10-2020 | Editorial | Control IR-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 149\n12-10-2020 | Editorial | Control IR-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 149\n12-10-2020 | Editorial | Control Enhancement IR-2(1) Discussion: Delete \u201cIncident response training includes tabletop exercises that simulate a breach. See IR- 2(3).\u201d | 150\n12-10-2020 | Editorial | Control IR-4 Related Controls: Add \u201cIR-5,\u201d | 152\n12-10-2020 | Editorial | Control IR-5 Related Controls: Add \u201cIR-4, IR-6,\u201d | 156\n12-10-2020 | Editorial | Control Enhancement IR-5(1) Related Controls: Change \u201cAU-7, IR-4\u201d to \u201cNone\u201d | 156\n12-10-2020 | Editorial | Control IR-10: Change \u201cIncident Analysis\u201d to \u201cIntegrated Information Security Analysis Team\u201d | 161\n12-10-2020 | Editorial | Control IR-10: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d | 161\n12-10-2020 | Editorial | Control MA-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 162\n12-10-2020 | Editorial | Control MA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 162\n12-10-2020 | Editorial | Control Enhancement MA-4(2): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA-4\u201d | 166\n12-10-2020 | Editorial | Control MP-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 171\n12-10-2020 | Editorial | Control MP-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 171\n12-10-2020 | Editorial | Control MP-3 References: Add \u201c[EO 13556],\u201d | 172",
+      "type": "table"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 21,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 20
+}

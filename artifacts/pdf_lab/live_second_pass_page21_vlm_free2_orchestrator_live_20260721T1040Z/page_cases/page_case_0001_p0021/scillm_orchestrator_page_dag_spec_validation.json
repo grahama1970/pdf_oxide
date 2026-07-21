@@ -1,0 +1,18 @@
+{
+  "candidate_count": 5,
+  "candidate_ids": [
+    "cand:p0021:0000:side_chrome",
+    "cand:p0021:0001:side_chrome",
+    "cand:p0021:0002:side_chrome",
+    "cand:p0021:0003:side_chrome",
+    "cand:p0021:0004:table"
+  ],
+  "case_id": "page_case_0001_p0021",
+  "dag_spec_sha256": "8e30e4949379f575e756b2972cb92c78bbc688dcd60824b8f08f0056f17c8d11",
+  "errors": [],
+  "node_count": 12,
+  "ok": true,
+  "page_number": 21,
+  "schema": "pdf_lab.second_pass.page_orchestrator_dag_spec_validation.v1",
+  "target_dag_state_owner": "scillm_orchestrator"
+}

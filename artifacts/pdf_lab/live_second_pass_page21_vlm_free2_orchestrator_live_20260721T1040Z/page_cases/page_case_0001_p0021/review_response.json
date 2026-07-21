@@ -1,0 +1,42 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0021:0000:side_chrome",
+      "evidence": "Extracted JSON block 0 shows the header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' with an accurate bounding box and source_type 'Header'.",
+      "rationale": "The header text at the top of the page is correctly identified as side_chrome (header) with an accurate bounding box and text.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0021:0001:side_chrome",
+      "evidence": "Extracted JSON block 1 shows the underline text '_________________________________________________________________________________________________' with an accurate bounding box and source_type 'Header'.",
+      "rationale": "The underline beneath the main header is correctly identified as side_chrome with an accurate bounding box and text.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0021:0002:side_chrome",
+      "evidence": "Extracted JSON block 2 shows the page number 'xix' with an accurate bounding box and source_type 'PageNumber'.",
+      "rationale": "The page number at the bottom of the page is correctly identified as side_chrome (page number) with an accurate bounding box and text.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0021:0003:side_chrome",
+      "evidence": "Extracted JSON block 3 shows the vertical boilerplate text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' with an accurate bounding box and source_type 'Boilerplate'.",
+      "rationale": "The vertical boilerplate text on the left side of the page is correctly identified as side_chrome with an accurate bounding box and text.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0021:0004:table",
+      "evidence": "Extracted JSON block 4 correctly identifies the main content as 'type': 'table' with a matching bounding box and text content represented with pipe delimiters.",
+      "rationale": "The large table occupying the majority of the page is correctly extracted as a table, including its bounding box, type, and content formatted with pipe delimiters.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    }
+  ],
+  "page_rationale": "All identified candidates on the page, including headers, page number, boilerplate, and the central table, are accurately extracted with correct types, bounding boxes, and text content.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}
