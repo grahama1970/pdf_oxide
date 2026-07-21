@@ -22,7 +22,7 @@ Current completed page evidence:
 | Page | Issue | Receipt | Remote proof |
 |------|-------|---------|--------------|
 | `nist_phase54_page_0046` | `grahama1970/pdf_oxide#3` | `artifacts/pdf_lab/restart_recovery_20260721T0100Z/page46_final_audit_summary.json` | `origin/main` at `9c80e780f6716b5284d89bac196dffbc261342b7` |
-| `page_0456` | control-table column headers | `artifacts/pdf_lab/page456_control_table_headers_20260721/audit_summary.json` | `origin/main` at `007d572acade8a962b1c033a742eae35648d1a26` |
+| `page_0456` | control-table column headers | `artifacts/pdf_lab/page456_control_table_headers_20260721/selection_receipt.json` | `origin/main` at `007d572acade8a962b1c033a742eae35648d1a26` |
 | `page_0034` | sidebar chrome contamination | `artifacts/pdf_lab/page34_candidate_audit_20260721/audit_summary.json` | `origin/main` at `2f04e0582722f380bbf01da416d68b0c0418100d` |
 | `page_0034` | body lines as headings | `artifacts/pdf_lab/page34_candidate_audit_20260721/audit_summary.json` | `origin/main` after page34 body-heading audit push |
 | `page_0045` | AC-1 lower-alpha list markers | `artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/audit_summary.json` | `origin/main` at `4f6e35b3447191ff9c6ec485d4f4eeb72158381c` |
