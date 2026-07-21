@@ -40,6 +40,10 @@ class PipelineConfig:
     # Extraction
     table_flavor: str = "auto"
     line_scale: int = 15
+    # Engine-side table/block reconciliation: blocks contained in a detected
+    # lattice table are consumed into it (cell text rebuilt from intact span
+    # text) instead of being emitted twice. Fail-open per block.
+    reconcile_tables: bool = True
     sync_to_arango: bool = bool(os.getenv("SYNC_TO_ARANGO", "1"))
 
     # Output

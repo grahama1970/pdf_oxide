@@ -37,6 +37,13 @@ pub struct ExtractionResult {
     pub recommended_strategy: String,
     /// Total page count
     pub page_count: usize,
+    /// Detected tables with reconciled cell text (only populated when
+    /// `ExtractionConfig::reconcile_tables` is set).
+    #[serde(skip)]
+    pub tables: Vec<crate::tables::Table>,
+    /// Provenance for blocks consumed into tables, keyed by page.
+    #[serde(skip)]
+    pub consumed_blocks: Vec<(usize, crate::extractors::table_block_reconciler::ConsumedBlock)>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -125,6 +132,12 @@ pub struct ExtractionConfig {
     /// Override the header-to-body font ratio threshold (default: 1.2).
     /// Fonts >= body_size * this ratio are considered potential headers.
     pub header_ratio_override: Option<f32>,
+    /// Reconcile detected lattice tables with the block stream (default:
+    /// false). When enabled, blocks geometrically contained in an accepted
+    /// lattice table are consumed into it (cell text rebuilt from intact
+    /// span text) and removed from the standalone block stream. Ambiguous
+    /// cases fail open. See `table_block_reconciler`.
+    pub reconcile_tables: bool,
 }
 
 impl Default for ExtractionConfig {
@@ -137,6 +150,7 @@ impl Default for ExtractionConfig {
             max_pages: 0,
             body_font_size_override: None,
             header_ratio_override: None,
+            reconcile_tables: false,
         }
     }
 }
@@ -170,6 +184,11 @@ pub fn extract_document_with_config(
     let mut all_dims: Vec<(f32, f32)> = Vec::with_capacity(max_pages);
     let mut all_page_blocks: Vec<Vec<MergedBlock>> = Vec::new();
     let mut pages: Vec<PageResult> = Vec::new();
+    let mut result_tables: Vec<crate::tables::Table> = Vec::new();
+    let mut result_consumed_blocks: Vec<(
+        usize,
+        crate::extractors::table_block_reconciler::ConsumedBlock,
+    )> = Vec::new();
 
     for pg in 0..max_pages {
         let spans = doc.extract_spans_unsorted(pg).unwrap_or_default();
@@ -200,7 +219,53 @@ pub fn extract_document_with_config(
             config.header_ratio_override,
         );
         let classified = classifier.classify_spans(&spans);
-        let merged = merge_blocks(&classified, height);
+        let mut merged = merge_blocks(&classified, height);
+
+        // Reconcile the merged block stream with detected lattice tables
+        // BEFORE normalization: character accounting compares raw block
+        // text against the raw span text that built it.
+        if config.reconcile_tables {
+            let mut table_config = crate::tables::ExtractConfig::default();
+            table_config.pages = Some(vec![pg]);
+            table_config.flavor = crate::tables::Flavor::Lattice;
+            if let Ok(mut page_tables) = crate::tables::extract_tables(doc, &table_config) {
+                if !page_tables.is_empty() {
+                    let views: Vec<crate::extractors::table_block_reconciler::BlockView> =
+                        merged
+                            .iter()
+                            .map(|b| crate::extractors::table_block_reconciler::BlockView {
+                                bbox: (b.bbox.x, b.bbox.y, b.bbox.width, b.bbox.height),
+                                text: &b.text,
+                                type_label: format!("{:?}", b.block_type),
+                            })
+                            .collect();
+                    let reconciliation =
+                        crate::extractors::table_block_reconciler::reconcile_views(
+                            &views,
+                            &mut page_tables,
+                            &spans,
+                            height as f64,
+                        );
+                    let mut consumed: Vec<usize> = reconciliation
+                        .consumed
+                        .iter()
+                        .map(|c| c.block_index)
+                        .collect();
+                    consumed.sort_unstable_by(|a, b| b.cmp(a));
+                    for index in consumed {
+                        merged.remove(index);
+                    }
+                    for record in reconciliation.consumed {
+                        result_consumed_blocks.push((pg, record));
+                    }
+                    for (order, mut table) in page_tables.into_iter().enumerate() {
+                        table.page = pg;
+                        table.order = order;
+                        result_tables.push(table);
+                    }
+                }
+            }
+        }
 
         // Build page text from merged blocks
         let page_text: String = merged
@@ -401,6 +466,8 @@ pub fn extract_document_with_config(
         figures,
         sections,
         engineering,
+        tables: result_tables,
+        consumed_blocks: result_consumed_blocks,
         running_headers,
         running_footers,
         recommended_strategy,
