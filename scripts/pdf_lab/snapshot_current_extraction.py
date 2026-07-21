@@ -651,8 +651,16 @@ def _row_blocks_inside_table(
         bbox = element.get("bbox")
         if not isinstance(bbox, list) or len(bbox) != 4:
             continue
-        text = str(element.get("text") or "")
-        cells = _qid_cells_from_row_text(text, expected_columns)
+        text_candidates = [str(element.get("text") or "")]
+        raw = element.get("raw") or {}
+        raw_text = str(raw.get("text") or "") if isinstance(raw, dict) else ""
+        if raw_text and raw_text not in text_candidates:
+            text_candidates.append(raw_text)
+        cells: list[str] = []
+        for text in text_candidates:
+            cells = _qid_cells_from_row_text(text, expected_columns)
+            if cells:
+                break
         if not cells:
             continue
         covered = _bbox_coverage(bbox, table_bbox) >= 0.9 or (

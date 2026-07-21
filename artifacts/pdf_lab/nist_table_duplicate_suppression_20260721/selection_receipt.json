@@ -1,0 +1,58 @@
+{
+  "schema": "pdf_lab.page_candidate_selection_receipt.v1",
+  "generated_at": "2026-07-21T06:59:00Z",
+  "goal": "all PDF Lab page candidates, one page/checklist item at a time",
+  "candidate": {
+    "page_id": "nist_style_fixture_page_0001_and_nist_page_0157",
+    "defect_class": "NIST table duplicate suppression and false-positive table handling",
+    "owner": "nist_preset/export suppression",
+    "selection_source": "current broad test_nist_* regression attempt after page45 rotated DOI bbox repair",
+    "representative_failures": [
+      "tests/test_nist_table_duplicate_suppression.py::test_nist_style_page_1_real_extraction_suppresses_qid_table_row_duplicates",
+      "tests/test_nist_table_duplicate_suppression.py::test_nist_table_suppression_removes_full_width_qid_rows_inside_table",
+      "tests/test_nist_table_duplicate_suppression.py::test_nist_false_positive_table_is_removed_before_body_suppression"
+    ]
+  },
+  "campaign_status": {
+    "passed": [],
+    "failed": [
+      "nist_table_duplicate_suppression"
+    ],
+    "blocked_by_systemic_failure": [],
+    "not_run": [
+      "page28_missing_golden_slice_fixture",
+      "remaining_fresh_reviewer_findings"
+    ],
+    "active_family": "nist_table_duplicate_suppression",
+    "latest_failure_signature": "3 table-suppression failures reproduce on clean origin/main; treat as one systemic family before rerunning the broad NIST set"
+  },
+  "source_artifacts": [
+    {
+      "path": "tests/test_nist_table_duplicate_suppression.py",
+      "exists": true
+    },
+    {
+      "path": "tests/fixtures/generated/nist_style_fixtures.pdf",
+      "exists": true
+    },
+    {
+      "path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "exists": true
+    },
+    {
+      "path": "artifacts/pdf_lab/page45_rotated_doi_bbox_20260721/audit_summary.json",
+      "exists": true
+    }
+  ],
+  "proof": {
+    "mocked": "no",
+    "live": "no",
+    "red_commands": [
+      "pytest -q tests/test_nist_table_duplicate_suppression.py::test_nist_table_suppression_removes_full_width_qid_rows_inside_table tests/test_nist_table_duplicate_suppression.py::test_nist_false_positive_table_is_removed_before_body_suppression",
+      "pytest -q tests/test_nist_table_duplicate_suppression.py::test_nist_style_page_1_real_extraction_suppresses_qid_table_row_duplicates tests/test_nist_table_duplicate_suppression.py::test_nist_table_suppression_removes_full_width_qid_rows_inside_table tests/test_nist_table_duplicate_suppression.py::test_nist_false_positive_table_is_removed_before_body_suppression"
+    ],
+    "baseline_reproduction": "The same three table failures reproduce in clean worktree /tmp/pdf_oxide_baseline_a02fede1 at origin/main a02fede1 after uv run maturin develop.",
+    "does_not_prove": "page28 golden-slice fixture availability, Criterion 6 live GitHub apply, or all remaining PDF Lab candidates"
+  },
+  "next_action": "Patch the existing table repair/suppression logic only, then rerun the three representative tests before broadening."
+}

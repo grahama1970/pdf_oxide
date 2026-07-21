@@ -382,7 +382,7 @@ def test_nist_false_positive_table_is_removed_before_body_suppression():
         "actual:p157:block:7",
     ]
     assert [element["type"] for element in result] == [
-        "section_heading",
+        "header_footer_noise",
         "paragraph_block",
         "paragraph_block",
     ]

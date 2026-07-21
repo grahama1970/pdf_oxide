@@ -452,6 +452,26 @@ def _bbox_coverage(inner: list[float], outer: list[float]) -> float:
     return intersection / inner_area
 
 
+def _bbox_axis_coverage(inner: list[float], outer: list[float], start: int, end: int) -> float:
+    if len(inner) != 4 or len(outer) != 4:
+        return 0.0
+    inner_span = max(0.0, float(inner[end]) - float(inner[start]))
+    if inner_span <= 0.0:
+        return 0.0
+    overlap = max(
+        0.0,
+        min(float(inner[end]), float(outer[end])) - max(float(inner[start]), float(outer[start])),
+    )
+    return overlap / inner_span
+
+
+def _table_covers_element_bbox(element_bbox: list[float], table_bbox: list[float], min_coverage: float) -> bool:
+    return _bbox_coverage(element_bbox, table_bbox) >= min_coverage or (
+        _bbox_axis_coverage(element_bbox, table_bbox, 1, 3) >= min_coverage
+        and _bbox_axis_coverage(table_bbox, element_bbox, 0, 2) >= min_coverage
+    )
+
+
 def _bbox_y_center(bbox: list[float]) -> float:
     return (float(bbox[1]) + float(bbox[3])) / 2.0
 
@@ -902,7 +922,7 @@ def _apply_table_contained_suppression_rule(
         page = el.get("page")
         covered = any(
             table.get("page") == page
-            and _bbox_coverage(bbox, table.get("bbox") or []) >= min_coverage
+            and _table_covers_element_bbox(bbox, table.get("bbox") or [], min_coverage)
             for table in tables
         )
         if covered:

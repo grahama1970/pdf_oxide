@@ -44,6 +44,7 @@ Current completed page evidence:
 | `page_0036` | Figure 1 remaining diagram-region content typed as figure content | `artifacts/pdf_lab/page36_figure_region_content_20260721/audit_summary.json` | `origin/main` after page36 figure-region push |
 | `page_0045` | GS001 stale AC-2 page residual reconciliation | `artifacts/pdf_lab/page45_residual_current_20260721/audit_summary.json` | `origin/main` after page45 residual reconciliation push |
 | `page_0045` | live second-pass rotated DOI side-chrome bbox narrowing | `artifacts/pdf_lab/page45_rotated_doi_bbox_20260721/audit_summary.json` | `origin/main` after page45 rotated DOI bbox push |
+| `nist_style_fixture_page_0001_and_nist_page_0157` | table duplicate suppression and false-positive table handling | `artifacts/pdf_lab/nist_table_duplicate_suppression_20260721/audit_summary.json` | `origin/main` after NIST table duplicate suppression push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -77,18 +78,18 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after the page45 rotated DOI bbox item must be selected from
-the remaining residual findings, based on current extraction evidence and fresh
-reviewer measurement:
+The next candidate after the NIST table duplicate suppression item is the page28
+golden-slice fixture availability blocker surfaced by the current broad NIST
+regression attempt:
 
 | Field | Value |
 |-------|-------|
-| Page | next newly surfaced current-extraction residual |
-| Defect class | to be selected from the remaining independent reviewer findings |
-| Observed failure | GS001 handoff residual pages inspected in this loop now have focused receipts or no-patch reconciliations: page104 had 3, page35/page36 Figure 1 diagram-region content now has focused receipts, page421 had 4, page45 had stale AC-2 page residuals reconciled against current extraction, and the live second-pass page45 rotated DOI bbox defect now has focused/live receipts; continue only from a newly surfaced current-extraction residual or a fresh reviewer finding |
+| Page | `page_0028` / `tests/test_nist_page_28_regression.py` |
+| Defect class | missing golden-slice expected-elements fixture |
+| Observed failure | `tests/test_nist_page_28_regression.py` setup fails because `/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/expected_elements_v2.json` is absent; the same failure reproduces on clean `origin/main` worktree `a02fede1` |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
-| Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts for page104, page35, page421, and page45; release snapshots; model-review receipts; and live current extraction |
-| Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |
+| Candidate artifacts to inspect first | `golden_slices/gs001_nist_page28/recovered_v2/`, `/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/`, `tests/test_nist_page_28_regression.py`, and GS001 handoff section 2 drift note |
+| Constraint | recover or repoint the fixture path without editing expected labels to chase current output |
 
 Before patching the next item, produce a selection receipt that names the
 exact page image/current extraction/model-review artifacts used and the focused
