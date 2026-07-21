@@ -1,0 +1,424 @@
+EEEEEEE                                                                  [100%]
+==================================== ERRORS ====================================
+_______ ERROR at setup of test_no_element_text_contains_derMon_artifact ________
+
+    @pytest.fixture(scope="module")
+    def release_json():
+        """Run the /review-extraction runner once; reuse the release JSON."""
+        if not PDF_PATH.exists():
+            pytest.fail(f"source PDF not present: {PDF_PATH}")
+        if not RUNNER.exists():
+            pytest.fail(f"runner not installed at {RUNNER}")
+        if not LEDGER_PATH.exists():
+            pytest.fail(f"ledger not present: {LEDGER_PATH}")
+        expected_path = _existing_path(EXPECTED, EXPECTED_FALLBACK)
+        if not expected_path.exists():
+            pytest.fail(f"expected_elements not present: {EXPECTED} or {EXPECTED_FALLBACK}")
+        human_label_path = _existing_path(HUMAN_LABEL, HUMAN_LABEL_FALLBACK)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_dir = Path(tmpdir) / "nist_page_28_regression"
+            cmd = [
+                "uv", "--project", str(Path(__file__).resolve().parent.parent), "run", "python",
+                str(RUNNER),
+                "--pdf", str(PDF_PATH),
+                "--page-index", str(PAGE_INDEX),
+                "--expected-elements", str(expected_path),
+                "--ledger", str(LEDGER_PATH),
+                "--slice-id", "nist_page_28_regression_under_test",
+                "--out", str(out_dir),
+            ]
+            if human_label_path.exists():
+                cmd += ["--human-labeled-page", str(human_label_path)]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            if result.returncode != 0:
+>               pytest.fail(
+                    f"runner failed (returncode={result.returncode})\n"
+                    f"stdout: {result.stdout[-2000:]}\n"
+                    f"stderr: {result.stderr[-2000:]}"
+                )
+E               Failed: runner failed (returncode=1)
+E               stdout:
+E               stderr: 2026-07-21 03:02:01.071 | INFO     | __main__:main:1803 - building golden slice bundle: slice_id=nist_page_28_regression_under_test page_index=27 out=/tmp/tmpd6vzx86o/nist_page_28_regression
+E               Traceback (most recent call last):
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 2067, in <module>
+E                   raise SystemExit(main())
+E                                    ~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 1807, in main
+E                   apply_ledger, ApplierConfig, snap = _import_pdf_oxide_helpers()
+E                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 127, in _import_pdf_oxide_helpers
+E                   from pdf_oxide.presets.applier import apply_ledger, ApplierConfig  # noqa: E402
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/__init__.py", line 36, in <module>
+E                   from pdf_oxide.presets.tables import (
+E                   ...<76 lines>...
+E                   )
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/tables.py", line 8, in <module>
+E                   from reportlab.lib import colors
+E               ModuleNotFoundError: No module named 'reportlab'
+
+tests/test_nist_page_28_regression.py:87: Failed
+_ ERROR at setup of test_section_subtitle_THE_NEED_TO_PROTECT_is_typed_section_subtitle _
+
+    @pytest.fixture(scope="module")
+    def release_json():
+        """Run the /review-extraction runner once; reuse the release JSON."""
+        if not PDF_PATH.exists():
+            pytest.fail(f"source PDF not present: {PDF_PATH}")
+        if not RUNNER.exists():
+            pytest.fail(f"runner not installed at {RUNNER}")
+        if not LEDGER_PATH.exists():
+            pytest.fail(f"ledger not present: {LEDGER_PATH}")
+        expected_path = _existing_path(EXPECTED, EXPECTED_FALLBACK)
+        if not expected_path.exists():
+            pytest.fail(f"expected_elements not present: {EXPECTED} or {EXPECTED_FALLBACK}")
+        human_label_path = _existing_path(HUMAN_LABEL, HUMAN_LABEL_FALLBACK)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_dir = Path(tmpdir) / "nist_page_28_regression"
+            cmd = [
+                "uv", "--project", str(Path(__file__).resolve().parent.parent), "run", "python",
+                str(RUNNER),
+                "--pdf", str(PDF_PATH),
+                "--page-index", str(PAGE_INDEX),
+                "--expected-elements", str(expected_path),
+                "--ledger", str(LEDGER_PATH),
+                "--slice-id", "nist_page_28_regression_under_test",
+                "--out", str(out_dir),
+            ]
+            if human_label_path.exists():
+                cmd += ["--human-labeled-page", str(human_label_path)]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            if result.returncode != 0:
+>               pytest.fail(
+                    f"runner failed (returncode={result.returncode})\n"
+                    f"stdout: {result.stdout[-2000:]}\n"
+                    f"stderr: {result.stderr[-2000:]}"
+                )
+E               Failed: runner failed (returncode=1)
+E               stdout:
+E               stderr: 2026-07-21 03:02:01.071 | INFO     | __main__:main:1803 - building golden slice bundle: slice_id=nist_page_28_regression_under_test page_index=27 out=/tmp/tmpd6vzx86o/nist_page_28_regression
+E               Traceback (most recent call last):
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 2067, in <module>
+E                   raise SystemExit(main())
+E                                    ~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 1807, in main
+E                   apply_ledger, ApplierConfig, snap = _import_pdf_oxide_helpers()
+E                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 127, in _import_pdf_oxide_helpers
+E                   from pdf_oxide.presets.applier import apply_ledger, ApplierConfig  # noqa: E402
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/__init__.py", line 36, in <module>
+E                   from pdf_oxide.presets.tables import (
+E                   ...<76 lines>...
+E                   )
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/tables.py", line 8, in <module>
+E                   from reportlab.lib import colors
+E               ModuleNotFoundError: No module named 'reportlab'
+
+tests/test_nist_page_28_regression.py:87: Failed
+_________ ERROR at setup of test_section_heading_INTRODUCTION_is_exact _________
+
+    @pytest.fixture(scope="module")
+    def release_json():
+        """Run the /review-extraction runner once; reuse the release JSON."""
+        if not PDF_PATH.exists():
+            pytest.fail(f"source PDF not present: {PDF_PATH}")
+        if not RUNNER.exists():
+            pytest.fail(f"runner not installed at {RUNNER}")
+        if not LEDGER_PATH.exists():
+            pytest.fail(f"ledger not present: {LEDGER_PATH}")
+        expected_path = _existing_path(EXPECTED, EXPECTED_FALLBACK)
+        if not expected_path.exists():
+            pytest.fail(f"expected_elements not present: {EXPECTED} or {EXPECTED_FALLBACK}")
+        human_label_path = _existing_path(HUMAN_LABEL, HUMAN_LABEL_FALLBACK)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_dir = Path(tmpdir) / "nist_page_28_regression"
+            cmd = [
+                "uv", "--project", str(Path(__file__).resolve().parent.parent), "run", "python",
+                str(RUNNER),
+                "--pdf", str(PDF_PATH),
+                "--page-index", str(PAGE_INDEX),
+                "--expected-elements", str(expected_path),
+                "--ledger", str(LEDGER_PATH),
+                "--slice-id", "nist_page_28_regression_under_test",
+                "--out", str(out_dir),
+            ]
+            if human_label_path.exists():
+                cmd += ["--human-labeled-page", str(human_label_path)]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            if result.returncode != 0:
+>               pytest.fail(
+                    f"runner failed (returncode={result.returncode})\n"
+                    f"stdout: {result.stdout[-2000:]}\n"
+                    f"stderr: {result.stderr[-2000:]}"
+                )
+E               Failed: runner failed (returncode=1)
+E               stdout:
+E               stderr: 2026-07-21 03:02:01.071 | INFO     | __main__:main:1803 - building golden slice bundle: slice_id=nist_page_28_regression_under_test page_index=27 out=/tmp/tmpd6vzx86o/nist_page_28_regression
+E               Traceback (most recent call last):
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 2067, in <module>
+E                   raise SystemExit(main())
+E                                    ~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 1807, in main
+E                   apply_ledger, ApplierConfig, snap = _import_pdf_oxide_helpers()
+E                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 127, in _import_pdf_oxide_helpers
+E                   from pdf_oxide.presets.applier import apply_ledger, ApplierConfig  # noqa: E402
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/__init__.py", line 36, in <module>
+E                   from pdf_oxide.presets.tables import (
+E                   ...<76 lines>...
+E                   )
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/tables.py", line 8, in <module>
+E                   from reportlab.lib import colors
+E               ModuleNotFoundError: No module named 'reportlab'
+
+tests/test_nist_page_28_regression.py:87: Failed
+_ ERROR at setup of test_first_body_paragraph_starts_with_Modern_information_systems _
+
+    @pytest.fixture(scope="module")
+    def release_json():
+        """Run the /review-extraction runner once; reuse the release JSON."""
+        if not PDF_PATH.exists():
+            pytest.fail(f"source PDF not present: {PDF_PATH}")
+        if not RUNNER.exists():
+            pytest.fail(f"runner not installed at {RUNNER}")
+        if not LEDGER_PATH.exists():
+            pytest.fail(f"ledger not present: {LEDGER_PATH}")
+        expected_path = _existing_path(EXPECTED, EXPECTED_FALLBACK)
+        if not expected_path.exists():
+            pytest.fail(f"expected_elements not present: {EXPECTED} or {EXPECTED_FALLBACK}")
+        human_label_path = _existing_path(HUMAN_LABEL, HUMAN_LABEL_FALLBACK)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_dir = Path(tmpdir) / "nist_page_28_regression"
+            cmd = [
+                "uv", "--project", str(Path(__file__).resolve().parent.parent), "run", "python",
+                str(RUNNER),
+                "--pdf", str(PDF_PATH),
+                "--page-index", str(PAGE_INDEX),
+                "--expected-elements", str(expected_path),
+                "--ledger", str(LEDGER_PATH),
+                "--slice-id", "nist_page_28_regression_under_test",
+                "--out", str(out_dir),
+            ]
+            if human_label_path.exists():
+                cmd += ["--human-labeled-page", str(human_label_path)]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            if result.returncode != 0:
+>               pytest.fail(
+                    f"runner failed (returncode={result.returncode})\n"
+                    f"stdout: {result.stdout[-2000:]}\n"
+                    f"stderr: {result.stderr[-2000:]}"
+                )
+E               Failed: runner failed (returncode=1)
+E               stdout:
+E               stderr: 2026-07-21 03:02:01.071 | INFO     | __main__:main:1803 - building golden slice bundle: slice_id=nist_page_28_regression_under_test page_index=27 out=/tmp/tmpd6vzx86o/nist_page_28_regression
+E               Traceback (most recent call last):
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 2067, in <module>
+E                   raise SystemExit(main())
+E                                    ~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 1807, in main
+E                   apply_ledger, ApplierConfig, snap = _import_pdf_oxide_helpers()
+E                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 127, in _import_pdf_oxide_helpers
+E                   from pdf_oxide.presets.applier import apply_ledger, ApplierConfig  # noqa: E402
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/__init__.py", line 36, in <module>
+E                   from pdf_oxide.presets.tables import (
+E                   ...<76 lines>...
+E                   )
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/tables.py", line 8, in <module>
+E                   from reportlab.lib import colors
+E               ModuleNotFoundError: No module named 'reportlab'
+
+tests/test_nist_page_28_regression.py:87: Failed
+___________ ERROR at setup of test_no_release_element_has_empty_text ___________
+
+    @pytest.fixture(scope="module")
+    def release_json():
+        """Run the /review-extraction runner once; reuse the release JSON."""
+        if not PDF_PATH.exists():
+            pytest.fail(f"source PDF not present: {PDF_PATH}")
+        if not RUNNER.exists():
+            pytest.fail(f"runner not installed at {RUNNER}")
+        if not LEDGER_PATH.exists():
+            pytest.fail(f"ledger not present: {LEDGER_PATH}")
+        expected_path = _existing_path(EXPECTED, EXPECTED_FALLBACK)
+        if not expected_path.exists():
+            pytest.fail(f"expected_elements not present: {EXPECTED} or {EXPECTED_FALLBACK}")
+        human_label_path = _existing_path(HUMAN_LABEL, HUMAN_LABEL_FALLBACK)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_dir = Path(tmpdir) / "nist_page_28_regression"
+            cmd = [
+                "uv", "--project", str(Path(__file__).resolve().parent.parent), "run", "python",
+                str(RUNNER),
+                "--pdf", str(PDF_PATH),
+                "--page-index", str(PAGE_INDEX),
+                "--expected-elements", str(expected_path),
+                "--ledger", str(LEDGER_PATH),
+                "--slice-id", "nist_page_28_regression_under_test",
+                "--out", str(out_dir),
+            ]
+            if human_label_path.exists():
+                cmd += ["--human-labeled-page", str(human_label_path)]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            if result.returncode != 0:
+>               pytest.fail(
+                    f"runner failed (returncode={result.returncode})\n"
+                    f"stdout: {result.stdout[-2000:]}\n"
+                    f"stderr: {result.stderr[-2000:]}"
+                )
+E               Failed: runner failed (returncode=1)
+E               stdout:
+E               stderr: 2026-07-21 03:02:01.071 | INFO     | __main__:main:1803 - building golden slice bundle: slice_id=nist_page_28_regression_under_test page_index=27 out=/tmp/tmpd6vzx86o/nist_page_28_regression
+E               Traceback (most recent call last):
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 2067, in <module>
+E                   raise SystemExit(main())
+E                                    ~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 1807, in main
+E                   apply_ledger, ApplierConfig, snap = _import_pdf_oxide_helpers()
+E                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 127, in _import_pdf_oxide_helpers
+E                   from pdf_oxide.presets.applier import apply_ledger, ApplierConfig  # noqa: E402
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/__init__.py", line 36, in <module>
+E                   from pdf_oxide.presets.tables import (
+E                   ...<76 lines>...
+E                   )
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/tables.py", line 8, in <module>
+E                   from reportlab.lib import colors
+E               ModuleNotFoundError: No module named 'reportlab'
+
+tests/test_nist_page_28_regression.py:87: Failed
+_____ ERROR at setup of test_bullet_list_region_emits_as_one_logical_list ______
+
+    @pytest.fixture(scope="module")
+    def release_json():
+        """Run the /review-extraction runner once; reuse the release JSON."""
+        if not PDF_PATH.exists():
+            pytest.fail(f"source PDF not present: {PDF_PATH}")
+        if not RUNNER.exists():
+            pytest.fail(f"runner not installed at {RUNNER}")
+        if not LEDGER_PATH.exists():
+            pytest.fail(f"ledger not present: {LEDGER_PATH}")
+        expected_path = _existing_path(EXPECTED, EXPECTED_FALLBACK)
+        if not expected_path.exists():
+            pytest.fail(f"expected_elements not present: {EXPECTED} or {EXPECTED_FALLBACK}")
+        human_label_path = _existing_path(HUMAN_LABEL, HUMAN_LABEL_FALLBACK)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_dir = Path(tmpdir) / "nist_page_28_regression"
+            cmd = [
+                "uv", "--project", str(Path(__file__).resolve().parent.parent), "run", "python",
+                str(RUNNER),
+                "--pdf", str(PDF_PATH),
+                "--page-index", str(PAGE_INDEX),
+                "--expected-elements", str(expected_path),
+                "--ledger", str(LEDGER_PATH),
+                "--slice-id", "nist_page_28_regression_under_test",
+                "--out", str(out_dir),
+            ]
+            if human_label_path.exists():
+                cmd += ["--human-labeled-page", str(human_label_path)]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            if result.returncode != 0:
+>               pytest.fail(
+                    f"runner failed (returncode={result.returncode})\n"
+                    f"stdout: {result.stdout[-2000:]}\n"
+                    f"stderr: {result.stderr[-2000:]}"
+                )
+E               Failed: runner failed (returncode=1)
+E               stdout:
+E               stderr: 2026-07-21 03:02:01.071 | INFO     | __main__:main:1803 - building golden slice bundle: slice_id=nist_page_28_regression_under_test page_index=27 out=/tmp/tmpd6vzx86o/nist_page_28_regression
+E               Traceback (most recent call last):
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 2067, in <module>
+E                   raise SystemExit(main())
+E                                    ~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 1807, in main
+E                   apply_ledger, ApplierConfig, snap = _import_pdf_oxide_helpers()
+E                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 127, in _import_pdf_oxide_helpers
+E                   from pdf_oxide.presets.applier import apply_ledger, ApplierConfig  # noqa: E402
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/__init__.py", line 36, in <module>
+E                   from pdf_oxide.presets.tables import (
+E                   ...<76 lines>...
+E                   )
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/tables.py", line 8, in <module>
+E                   from reportlab.lib import colors
+E               ModuleNotFoundError: No module named 'reportlab'
+
+tests/test_nist_page_28_regression.py:87: Failed
+_____ ERROR at setup of test_side_doi_chrome_routed_to_header_footer_noise _____
+
+    @pytest.fixture(scope="module")
+    def release_json():
+        """Run the /review-extraction runner once; reuse the release JSON."""
+        if not PDF_PATH.exists():
+            pytest.fail(f"source PDF not present: {PDF_PATH}")
+        if not RUNNER.exists():
+            pytest.fail(f"runner not installed at {RUNNER}")
+        if not LEDGER_PATH.exists():
+            pytest.fail(f"ledger not present: {LEDGER_PATH}")
+        expected_path = _existing_path(EXPECTED, EXPECTED_FALLBACK)
+        if not expected_path.exists():
+            pytest.fail(f"expected_elements not present: {EXPECTED} or {EXPECTED_FALLBACK}")
+        human_label_path = _existing_path(HUMAN_LABEL, HUMAN_LABEL_FALLBACK)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_dir = Path(tmpdir) / "nist_page_28_regression"
+            cmd = [
+                "uv", "--project", str(Path(__file__).resolve().parent.parent), "run", "python",
+                str(RUNNER),
+                "--pdf", str(PDF_PATH),
+                "--page-index", str(PAGE_INDEX),
+                "--expected-elements", str(expected_path),
+                "--ledger", str(LEDGER_PATH),
+                "--slice-id", "nist_page_28_regression_under_test",
+                "--out", str(out_dir),
+            ]
+            if human_label_path.exists():
+                cmd += ["--human-labeled-page", str(human_label_path)]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            if result.returncode != 0:
+>               pytest.fail(
+                    f"runner failed (returncode={result.returncode})\n"
+                    f"stdout: {result.stdout[-2000:]}\n"
+                    f"stderr: {result.stderr[-2000:]}"
+                )
+E               Failed: runner failed (returncode=1)
+E               stdout:
+E               stderr: 2026-07-21 03:02:01.071 | INFO     | __main__:main:1803 - building golden slice bundle: slice_id=nist_page_28_regression_under_test page_index=27 out=/tmp/tmpd6vzx86o/nist_page_28_regression
+E               Traceback (most recent call last):
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 2067, in <module>
+E                   raise SystemExit(main())
+E                                    ~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 1807, in main
+E                   apply_ledger, ApplierConfig, snap = _import_pdf_oxide_helpers()
+E                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+E                 File "/home/graham/.claude/skills/review-extraction/scripts/build_golden_slice_bundle.py", line 127, in _import_pdf_oxide_helpers
+E                   from pdf_oxide.presets.applier import apply_ledger, ApplierConfig  # noqa: E402
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/__init__.py", line 36, in <module>
+E                   from pdf_oxide.presets.tables import (
+E                   ...<76 lines>...
+E                   )
+E                 File "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/tables.py", line 8, in <module>
+E                   from reportlab.lib import colors
+E               ModuleNotFoundError: No module named 'reportlab'
+
+tests/test_nist_page_28_regression.py:87: Failed
+=========================== short test summary info ============================
+ERROR tests/test_nist_page_28_regression.py::test_no_element_text_contains_derMon_artifact
+ERROR tests/test_nist_page_28_regression.py::test_section_subtitle_THE_NEED_TO_PROTECT_is_typed_section_subtitle
+ERROR tests/test_nist_page_28_regression.py::test_section_heading_INTRODUCTION_is_exact
+ERROR tests/test_nist_page_28_regression.py::test_first_body_paragraph_starts_with_Modern_information_systems
+ERROR tests/test_nist_page_28_regression.py::test_no_release_element_has_empty_text
+ERROR tests/test_nist_page_28_regression.py::test_bullet_list_region_emits_as_one_logical_list
+ERROR tests/test_nist_page_28_regression.py::test_side_doi_chrome_routed_to_header_footer_noise
+7 errors in 0.24s

@@ -45,6 +45,7 @@ Current completed page evidence:
 | `page_0045` | GS001 stale AC-2 page residual reconciliation | `artifacts/pdf_lab/page45_residual_current_20260721/audit_summary.json` | `origin/main` after page45 residual reconciliation push |
 | `page_0045` | live second-pass rotated DOI side-chrome bbox narrowing | `artifacts/pdf_lab/page45_rotated_doi_bbox_20260721/audit_summary.json` | `origin/main` after page45 rotated DOI bbox push |
 | `nist_style_fixture_page_0001_and_nist_page_0157` | table duplicate suppression and false-positive table handling | `artifacts/pdf_lab/nist_table_duplicate_suppression_20260721/audit_summary.json` | `origin/main` after NIST table duplicate suppression push |
+| `page_0028` | golden-slice recovered fixture path and review-runner dependencies | `artifacts/pdf_lab/page28_golden_slice_fixture_20260721/audit_summary.json` | `origin/main` after page28 fixture/dependency push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -78,18 +79,17 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after the NIST table duplicate suppression item is the page28
-golden-slice fixture availability blocker surfaced by the current broad NIST
-regression attempt:
+The next candidate after the page28 fixture/dependency item must come from a
+fresh current-extraction reviewer/candidate selection pass:
 
 | Field | Value |
 |-------|-------|
-| Page | `page_0028` / `tests/test_nist_page_28_regression.py` |
-| Defect class | missing golden-slice expected-elements fixture |
-| Observed failure | `tests/test_nist_page_28_regression.py` setup fails because `/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/expected_elements_v2.json` is absent; the same failure reproduces on clean `origin/main` worktree `a02fede1` |
+| Page | fresh reviewer-selected page |
+| Defect class | to be selected from fresh current-extraction/model-review evidence |
+| Observed failure | Current broad NIST deterministic suite passes after page45 rotated DOI bbox, NIST table duplicate suppression, and page28 fixture/dependency repairs; stale handoff rows for page456/page34/page45 have focused receipts or no-patch reconciliations |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
-| Candidate artifacts to inspect first | `golden_slices/gs001_nist_page28/recovered_v2/`, `/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/`, `tests/test_nist_page_28_regression.py`, and GS001 handoff section 2 drift note |
-| Constraint | recover or repoint the fixture path without editing expected labels to chase current output |
+| Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts, release snapshots, model-review receipts, and a fresh current-extraction reviewer pass |
+| Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |
 
 Before patching the next item, produce a selection receipt that names the
 exact page image/current extraction/model-review artifacts used and the focused

@@ -1,0 +1,89 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "nist_page_28_printed_page_1",
+  "source_pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
+  "human_page_claim": "PDF page 28",
+  "printed_page_label": "PAGE 1",
+  "captured_at": "2026-05-13",
+  "captured_by": "human (user) — green-boxed regions on /tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/human_labeled_page.png; text_hints added 2026-05-13 R3 per WebGPT directive",
+  "label_methodology": "Only green-boxed regions on the labeled image count as expected_elements. Unboxed visible text ('CHAPTER ONE' decorative gray, 'THE NEED TO PROTECT...' subtitle line) is NOT in this list — the human elected not to box those.",
+  "matcher_precedence": "text_hint → bbox_hint (IoU>=0.5) → allowed_types → type-synonym fallback",
+  "expected_elements": [
+    {
+      "family": "running_header",
+      "label": "top running header",
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "allowed_types": ["header_footer_noise"],
+      "match_strategy": "text_contains"
+    },
+    {
+      "family": "side_watermark_or_page_chrome_noise",
+      "label": "left vertical DOI watermark",
+      "text_hint": "This publication is available free of charge from",
+      "allowed_types": ["header_footer_noise"],
+      "match_strategy": "text_contains_or_bbox_region"
+    },
+    {
+      "family": "section_heading",
+      "label": "INTRODUCTION",
+      "text_hint": "INTRODUCTION",
+      "allowed_types": ["section_heading"],
+      "match_strategy": "text_exact"
+    },
+    {
+      "family": "section_subtitle",
+      "label": "section subtitle directly under INTRODUCTION",
+      "text_hint": "THE NEED TO PROTECT INFORMATION",
+      "allowed_types": ["section_subtitle"],
+      "match_strategy": "text_contains"
+    },
+    {
+      "family": "paragraph_block",
+      "label": "first body paragraph",
+      "text_hint": "Modern information systems",
+      "allowed_types": ["paragraph_block"],
+      "match_strategy": "text_contains"
+    },
+    {
+      "family": "paragraph_block",
+      "label": "second body paragraph",
+      "text_hint": "Security controls are the safeguards",
+      "allowed_types": ["paragraph_block"],
+      "match_strategy": "text_contains"
+    },
+    {
+      "family": "paragraph_block",
+      "label": "lead-in paragraph before bullet list",
+      "text_hint": "The selection, design, and implementation",
+      "allowed_types": ["paragraph_block"],
+      "match_strategy": "text_contains"
+    },
+    {
+      "family": "bullet_list",
+      "label": "three bullet questions",
+      "text_hint": "What security and privacy controls are needed",
+      "allowed_types": ["list"],
+      "match_strategy": "text_contains"
+    },
+    {
+      "family": "footnote_block",
+      "label": "numbered footnotes 1-7",
+      "text_hint": "An information system is a discrete set",
+      "allowed_types": ["footnote", "paragraph_block"],
+      "match_strategy": "text_contains"
+    },
+    {
+      "family": "footer",
+      "label": "CHAPTER ONE / PAGE 1",
+      "text_hint": "CHAPTER ONE  PAGE 1",
+      "allowed_types": ["header_footer_noise", "paragraph_block"],
+      "match_strategy": "text_contains"
+    }
+  ],
+  "novel_family_suggestions": [
+    {
+      "family": "side_watermark_or_page_chrome_noise",
+      "rationale": "Vertical DOI/page-chrome on the page edge; not yet a first-class taxonomy member. Route under header_footer_noise if chrome; flag as taxonomy-expansion candidate if content."
+    }
+  ]
+}
