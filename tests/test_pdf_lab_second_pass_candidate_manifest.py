@@ -51,6 +51,24 @@ def test_header_footer_noise_takes_precedence_over_dash_list_syntax() -> None:
     )
 
 
+def test_header_footer_noise_boilerplate_uses_chrome_preset_away_from_boundary() -> None:
+    manifest = _load_module()
+
+    assert (
+        manifest.infer_preset_type(
+            {
+                "type": "header_footer_noise",
+                "source_type": "Boilerplate",
+                "bbox": [0.755, 0.110, 0.853, 0.136],
+                "text": "Revision 5",
+            },
+            2,
+            492,
+        )
+        == "side_chrome"
+    )
+
+
 def test_build_manifest_from_pages_records_candidate_schema(tmp_path: Path) -> None:
     manifest = _load_module()
     pdf_path = tmp_path / "sample.pdf"

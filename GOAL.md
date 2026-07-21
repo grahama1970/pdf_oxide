@@ -50,6 +50,7 @@ Current completed page evidence:
 | `page_0015` | live second-pass frontmatter reference/TOC/side-chrome review | `artifacts/pdf_lab/page15_frontmatter_review_20260721/audit_summary.json` | `origin/main` after page15 reviewed-clean evidence push |
 | `page_0076` | live second-pass field-label spacing/roles and prompt raw-metadata isolation | `artifacts/pdf_lab/page76_label_spacing_prompt_20260721/audit_summary.json` | `origin/main` after page76 label-spacing/prompt push |
 | `page_0001` | live second-pass frontmatter title/DOI chrome review | `artifacts/pdf_lab/page1_frontmatter_title_review_20260721/audit_summary.json` | `origin/main` after page1 reviewed-clean evidence push |
+| `page_0002` | live second-pass frontmatter attribution/list and boilerplate preset review | `artifacts/pdf_lab/page2_frontmatter_attribution_20260721/audit_summary.json` | `origin/main` after page2 frontmatter-attribution push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old

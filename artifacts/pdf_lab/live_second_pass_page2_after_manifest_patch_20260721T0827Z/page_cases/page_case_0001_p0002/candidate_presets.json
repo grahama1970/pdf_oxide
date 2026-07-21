@@ -1,0 +1,307 @@
+{
+  "candidate_count": 11,
+  "candidates": [
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.5555882173426011,
+        0.08938735422461924,
+        0.8528550091911765,
+        0.11388766163527364
+      ],
+      "candidate_id": "cand:p0002:0000:section_heading",
+      "features": {
+        "bbox_area": 0.007283,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Title",
+        "text_length": 31
+      },
+      "json_pointer": "/pages/1/blocks/0",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "NIST Special Publication 800-53"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.7559681811363869,
+        0.11097514990604285,
+        0.8528322706035539,
+        0.13547545731669725
+      ],
+      "candidate_id": "cand:p0002:0001:side_chrome",
+      "features": {
+        "bbox_area": 0.002373,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 10
+      },
+      "json_pointer": "/pages/1/blocks/1",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Revision 5"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2788095910564747,
+        0.1878873266354956,
+        0.8528316722196692,
+        0.23341793484157985
+      ],
+      "candidate_id": "cand:p0002:0002:section_heading",
+      "features": {
+        "bbox_area": 0.026136,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Title",
+        "text_length": 33
+      },
+      "json_pointer": "/pages/1/blocks/2",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Security and Privacy Controls for"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15723000320733763,
+        0.22797262789023043,
+        0.8528572032654208,
+        0.2735032360963147
+      ],
+      "candidate_id": "cand:p0002:0003:section_heading",
+      "features": {
+        "bbox_area": 0.031672,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Title",
+        "text_length": 37
+      },
+      "json_pointer": "/pages/1/blocks/3",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Information Systems and Organizations"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.7016666886074091,
+        0.34350000246606693,
+        0.8530021118961908,
+        0.3645302743622751
+      ],
+      "candidate_id": "cand:p0002:0004:text",
+      "features": {
+        "bbox_area": 0.003183,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 16
+      },
+      "json_pointer": "/pages/1/blocks/4",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "JOINT TASK FORCE"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.5349019368489584,
+        0.47664075909238873,
+        0.8529021817874285,
+        0.49356849747474746
+      ],
+      "candidate_id": "cand:p0002:0005:side_chrome",
+      "features": {
+        "bbox_area": 0.005383,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 50
+      },
+      "json_pointer": "/pages/1/blocks/5",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "This publication is available free of charge from:"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.573230020361009,
+        0.49202500930940263,
+        0.8530090930415135,
+        0.5089527476917614
+      ],
+      "candidate_id": "cand:p0002:0006:side_chrome",
+      "features": {
+        "bbox_area": 0.004736,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 40
+      },
+      "json_pointer": "/pages/1/blocks/6",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "https://doi.org/10.6028/NIST.SP.800-53r5"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.7191176570318882,
+        0.5780455078741517,
+        0.8528823353885825,
+        0.5990757797703599
+      ],
+      "candidate_id": "cand:p0002:0007:text",
+      "features": {
+        "bbox_area": 0.002813,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 14
+      },
+      "json_pointer": "/pages/1/blocks/7",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "September 2020"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.5321568507774204,
+        0.5969122684363163,
+        0.853028839709712,
+        0.6154617926087043
+      ],
+      "candidate_id": "cand:p0002:0008:text",
+      "features": {
+        "bbox_area": 0.005952,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 48
+      },
+      "json_pointer": "/pages/1/blocks/8",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "INCLUDES UPDATES AS OF 12-10-2020; SEE PAGE XVII"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.6077451020284416,
+        0.8100605974293719,
+        0.8529001871744791,
+        0.8303333629261364
+      ],
+      "candidate_id": "cand:p0002:0009:text",
+      "features": {
+        "bbox_area": 0.00497,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": "frontmatter_attribution",
+        "source_type": "Body",
+        "text_length": 27
+      },
+      "json_pointer": "/pages/1/blocks/9",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "U.S. Department of Commerce"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.17136916615604575,
+        0.8287304194286617,
+        0.8529198341120302,
+        0.897614218971946
+      ],
+      "candidate_id": "cand:p0002:0010:text",
+      "features": {
+        "bbox_area": 0.046948,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 166
+      },
+      "json_pointer": "/pages/1/blocks/10",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Wilbur L. Ross, Jr., Secretary National Institute of Standards and Technology Walter Copan, NIST Director and Under Secretary of Commerce for Standards and Technology"
+    }
+  ],
+  "page_case": {
+    "case_id": "page_case_0001_p0002",
+    "page_number": 2
+  },
+  "schema": "pdf_lab.second_pass.candidate_presets.v1"
+}

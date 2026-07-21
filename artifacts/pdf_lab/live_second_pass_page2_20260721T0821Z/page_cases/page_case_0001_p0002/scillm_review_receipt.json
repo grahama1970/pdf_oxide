@@ -1,0 +1,157 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"defect\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0002:0000:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text, bounding box, and section_heading type match the rendered page and its semantic role as a top-level heading.\",\n      \"rationale\": \"The candidate accurately captures the 'NIST Special Publication 800-53' text as a section heading.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0001:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'header_footer_noise'.\",\n      \"rationale\": \"The candidate correctly extracts 'Revision 5'. While extracted as 'header_footer_noise', 'text' is a semantically acceptable broader classification.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0002:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text, bounding box, and section_heading type match the rendered page and its semantic role as a main document title part.\",\n      \"rationale\": \"The candidate accurately captures 'Security and Privacy Controls for' as part of the main title heading.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0003:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text, bounding box, and section_heading type match the rendered page and its semantic role as a main document title part.\",\n      \"rationale\": \"The candidate accurately captures 'Information Systems and Organizations' as part of the main title heading.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0004:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'paragraph_block'.\",\n      \"rationale\": \"The candidate correctly extracts 'JOINT TASK FORCE'. While extracted as 'paragraph_block', 'text' is a semantically acceptable broader classification for this element which is visually a single line of text.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0005:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'header_footer_noise'.\",\n      \"rationale\": \"The candidate correctly extracts the boilerplate text. While extracted as 'header_footer_noise', 'text' is a semantically acceptable broader classification.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0006:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'header_footer_noise'.\",\n      \"rationale\": \"The candidate correctly extracts the URL. While extracted as 'header_footer_noise', 'text' is a semantically acceptable broader classification.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0007:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'paragraph_block'.\",\n      \"rationale\": \"The candidate correctly extracts the date. While extracted as 'paragraph_block', 'text' is a semantically acceptable broader classification.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0008:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'paragraph_block'.\",\n      \"rationale\": \"The candidate correctly extracts the update notice. While extracted as 'paragraph_block', 'text' is a semantically acceptable broader classification.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0009:list\",\n      \"status\": \"defect\",\n      \"evidence\": \"The text 'U.S. Department of Commerce' is correctly extracted with the correct bounding box, but it is incorrectly classified as 'list'. It is a single line of organizational attribution, not part of a list.\",\n      \"rationale\": \"The semantic type 'list' is incorrect. This text is a single line, following an emblem, indicating the issuing organization. It does not possess any visual or semantic characteristics of a list item.\",\n      \"suggested_fix_surface\": \"preset definition or model inference for list items, especially on title/frontmatter pages where boilerplate text might be misclassified.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0010:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'paragraph_block'.\",\n      \"rationale\": \"The candidate correctly extracts the names and titles of officials. While extracted as 'paragraph_block', 'text' is a semantically acceptable broader classification.\",\n      \"suggested_fix_surface\": null\n    }\n  ],\n  \"page_rationale\": \"One candidate ('cand:p0002:0009:list') is incorrectly classified as a 'list'. It is a single line of organizational attribution and should be classified as 'text' or 'paragraph_block'. All other candidates are correctly extracted and classified.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784622119,
+    "id": "Dyxfava3B4ab_uMP5pax-AY",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0002",
+      "item_id": "page_case_0001_p0002:b41d4bba5309542c",
+      "request_sha256": "b41d4bba5309542c3e6bc1b29b01a3136a257cbc3fc247b9ff22eb71716ba2af"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 1498,
+      "completion_tokens_details": null,
+      "prompt_tokens": 7572,
+      "prompt_tokens_details": null,
+      "total_tokens": 13428
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0002:0000:section_heading",
+        "evidence": "The extracted text, bounding box, and section_heading type match the rendered page and its semantic role as a top-level heading.",
+        "rationale": "The candidate accurately captures the 'NIST Special Publication 800-53' text as a section heading.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0001:text",
+        "evidence": "The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'header_footer_noise'.",
+        "rationale": "The candidate correctly extracts 'Revision 5'. While extracted as 'header_footer_noise', 'text' is a semantically acceptable broader classification.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0002:section_heading",
+        "evidence": "The extracted text, bounding box, and section_heading type match the rendered page and its semantic role as a main document title part.",
+        "rationale": "The candidate accurately captures 'Security and Privacy Controls for' as part of the main title heading.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0003:section_heading",
+        "evidence": "The extracted text, bounding box, and section_heading type match the rendered page and its semantic role as a main document title part.",
+        "rationale": "The candidate accurately captures 'Information Systems and Organizations' as part of the main title heading.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0004:text",
+        "evidence": "The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'paragraph_block'.",
+        "rationale": "The candidate correctly extracts 'JOINT TASK FORCE'. While extracted as 'paragraph_block', 'text' is a semantically acceptable broader classification for this element which is visually a single line of text.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0005:text",
+        "evidence": "The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'header_footer_noise'.",
+        "rationale": "The candidate correctly extracts the boilerplate text. While extracted as 'header_footer_noise', 'text' is a semantically acceptable broader classification.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0006:text",
+        "evidence": "The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'header_footer_noise'.",
+        "rationale": "The candidate correctly extracts the URL. While extracted as 'header_footer_noise', 'text' is a semantically acceptable broader classification.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0007:text",
+        "evidence": "The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'paragraph_block'.",
+        "rationale": "The candidate correctly extracts the date. While extracted as 'paragraph_block', 'text' is a semantically acceptable broader classification.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0008:text",
+        "evidence": "The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'paragraph_block'.",
+        "rationale": "The candidate correctly extracts the update notice. While extracted as 'paragraph_block', 'text' is a semantically acceptable broader classification.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0009:list",
+        "evidence": "The text 'U.S. Department of Commerce' is correctly extracted with the correct bounding box, but it is incorrectly classified as 'list'. It is a single line of organizational attribution, not part of a list.",
+        "rationale": "The semantic type 'list' is incorrect. This text is a single line, following an emblem, indicating the issuing organization. It does not possess any visual or semantic characteristics of a list item.",
+        "status": "defect",
+        "suggested_fix_surface": "preset definition or model inference for list items, especially on title/frontmatter pages where boilerplate text might be misclassified."
+      },
+      {
+        "candidate_id": "cand:p0002:0010:text",
+        "evidence": "The extracted text and bounding box match the rendered page. The preset type 'text' is a valid generic classification, even though the extracted type is 'paragraph_block'.",
+        "rationale": "The candidate correctly extracts the names and titles of officials. While extracted as 'paragraph_block', 'text' is a semantically acceptable broader classification.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      }
+    ],
+    "page_rationale": "One candidate ('cand:p0002:0009:list') is incorrectly classified as a 'list'. It is a single line of organizational attribution and should be classified as 'text' or 'paragraph_block'. All other candidates are correctly extracted and classified.",
+    "page_status": "defect",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0002",
+    "item_id": "page_case_0001_p0002:b41d4bba5309542c",
+    "request_sha256": "b41d4bba5309542c3e6bc1b29b01a3136a257cbc3fc247b9ff22eb71716ba2af"
+  }
+}

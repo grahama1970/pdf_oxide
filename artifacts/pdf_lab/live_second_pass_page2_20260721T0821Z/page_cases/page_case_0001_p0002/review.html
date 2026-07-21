@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PDF Lab Second-Pass Review page_case_0001_p0002</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c2430;
+      --muted: #5b6572;
+      --line: #c9d2dc;
+      --panel: #f7f9fb;
+      --accent: #0b5cad;
+    }
+    body {
+      margin: 0;
+      font: 14px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #ffffff;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+    }
+    h1, h2 {
+      margin: 0 0 10px;
+      letter-spacing: 0;
+    }
+    h1 {
+      font-size: 22px;
+    }
+    h2 {
+      font-size: 17px;
+    }
+    section {
+      margin: 22px 0;
+    }
+    .meta, .candidate, pre {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+      padding: 12px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .value {
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    figure {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    figcaption {
+      padding: 8px 10px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+    .candidate {
+      margin: 10px 0;
+      padding: 10px;
+    }
+    .candidate code {
+      color: var(--accent);
+    }
+    pre {
+      overflow: auto;
+      padding: 12px;
+      max-height: 420px;
+      white-space: pre-wrap;
+    }
+    a {
+      color: var(--accent);
+    }
+    ul {
+      columns: 2;
+      padding-left: 18px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>PDF Lab Second-Pass Page Review</h1>
+    <div class="meta">
+      <div><div class="label">Case</div><div class="value">page_case_0001_p0002</div></div>
+      <div><div class="label">Page</div><div class="value">2</div></div>
+      <div><div class="label">Status</div><div class="value">still_open</div></div>
+      <div><div class="label">Reason</div><div class="value">patch_delegate_dry_run</div></div>
+      <div><div class="label">Commit</div><div class="value">none</div></div>
+    </div>
+  </header>
+
+	  <section>
+	    <h2>Before Evidence</h2>
+	    <div class="image-grid"><figure><img src="page_before.png" alt="Rendered page before review"><figcaption>Rendered page before review</figcaption></figure><figure><img src="page_candidates.png" alt="Annotated candidate bounding boxes"><figcaption>Annotated candidate bounding boxes</figcaption></figure></div>
+	  </section>
+
+  <section>
+    <h2>Selected Candidates</h2>
+    <div class="candidate"><code>cand:p0002:0000:section_heading</code><div>section_heading</div><pre>{
+  "bbox": [
+    0.5555882173426011,
+    0.08938735422461924,
+    0.8528550091911765,
+    0.11388766163527364
+  ],
+  "block_id": "actual:p2:block:0",
+  "block_index": 0,
+  "candidate_id": "cand:p0002:0000:section_heading",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:section_heading",
+    "preset_type:section_heading",
+    "hardening_interest",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.007283,
+    "block_type": "section_heading",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Title",
+    "text_length": 31
+  },
+  "json_pointer": "/pages/1/blocks/0",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "section_heading",
+  "text_excerpt": "NIST Special Publication 800-53"
+}</pre></div><div class="candidate"><code>cand:p0002:0001:text</code><div>text</div><pre>{
+  "bbox": [
+    0.7559681811363869,
+    0.11097514990604285,
+    0.8528322706035539,
+    0.13547545731669725
+  ],
+  "block_id": "actual:p2:block:1",
+  "block_index": 1,
+  "candidate_id": "cand:p0002:0001:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:text",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.002373,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Boilerplate",
+    "text_length": 10
+  },
+  "json_pointer": "/pages/1/blocks/1",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "Revision 5"
+}</pre></div><div class="candidate"><code>cand:p0002:0002:section_heading</code><div>section_heading</div><pre>{
+  "bbox": [
+    0.2788095910564747,
+    0.1878873266354956,
+    0.8528316722196692,
+    0.23341793484157985
+  ],
+  "block_id": "actual:p2:block:2",
+  "block_index": 2,
+  "candidate_id": "cand:p0002:0002:section_heading",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:section_heading",
+    "preset_type:section_heading",
+    "hardening_interest",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.026136,
+    "block_type": "section_heading",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Title",
+    "text_length": 33
+  },
+  "json_pointer": "/pages/1/blocks/2",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "section_heading",
+  "text_excerpt": "Security and Privacy Controls for"
+}</pre></div><div class="candidate"><code>cand:p0002:0003:section_heading</code><div>section_heading</div><pre>{
+  "bbox": [
+    0.15723000320733763,
+    0.22797262789023043,
+    0.8528572032654208,
+    0.2735032360963147
+  ],
+  "block_id": "actual:p2:block:3",
+  "block_index": 3,
+  "candidate_id": "cand:p0002:0003:section_heading",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:section_heading",
+    "preset_type:section_heading",
+    "hardening_interest",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.031672,
+    "block_type": "section_heading",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Title",
+    "text_length": 37
+  },
+  "json_pointer": "/pages/1/blocks/3",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "section_heading",
+  "text_excerpt": "Information Systems and Organizations"
+}</pre></div><div class="candidate"><code>cand:p0002:0004:text</code><div>text</div><pre>{
+  "bbox": [
+    0.7016666886074091,
+    0.34350000246606693,
+    0.8530021118961908,
+    0.3645302743622751
+  ],
+  "block_id": "actual:p2:block:4",
+  "block_index": 4,
+  "candidate_id": "cand:p0002:0004:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.003183,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 16
+  },
+  "json_pointer": "/pages/1/blocks/4",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "JOINT TASK FORCE"
+}</pre></div><div class="candidate"><code>cand:p0002:0005:text</code><div>text</div><pre>{
+  "bbox": [
+    0.5349019368489584,
+    0.47664075909238873,
+    0.8529021817874285,
+    0.49356849747474746
+  ],
+  "block_id": "actual:p2:block:5",
+  "block_index": 5,
+  "candidate_id": "cand:p0002:0005:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:text",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.005383,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Boilerplate",
+    "text_length": 50
+  },
+  "json_pointer": "/pages/1/blocks/5",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "This publication is available free of charge from:"
+}</pre></div><div class="candidate"><code>cand:p0002:0006:text</code><div>text</div><pre>{
+  "bbox": [
+    0.573230020361009,
+    0.49202500930940263,
+    0.8530090930415135,
+    0.5089527476917614
+  ],
+  "block_id": "actual:p2:block:6",
+  "block_index": 6,
+  "candidate_id": "cand:p0002:0006:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:text",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.004736,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Boilerplate",
+    "text_length": 40
+  },
+  "json_pointer": "/pages/1/blocks/6",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "https://doi.org/10.6028/NIST.SP.800-53r5"
+}</pre></div><div class="candidate"><code>cand:p0002:0007:text</code><div>text</div><pre>{
+  "bbox": [
+    0.7191176570318882,
+    0.5780455078741517,
+    0.8528823353885825,
+    0.5990757797703599
+  ],
+  "block_id": "actual:p2:block:7",
+  "block_index": 7,
+  "candidate_id": "cand:p0002:0007:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.002813,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 14
+  },
+  "json_pointer": "/pages/1/blocks/7",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "September 2020"
+}</pre></div><div class="candidate"><code>cand:p0002:0008:text</code><div>text</div><pre>{
+  "bbox": [
+    0.5321568507774204,
+    0.5969122684363163,
+    0.853028839709712,
+    0.6154617926087043
+  ],
+  "block_id": "actual:p2:block:8",
+  "block_index": 8,
+  "candidate_id": "cand:p0002:0008:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.005952,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 48
+  },
+  "json_pointer": "/pages/1/blocks/8",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "INCLUDES UPDATES AS OF 12-10-2020; SEE PAGE XVII"
+}</pre></div><div class="candidate"><code>cand:p0002:0009:list</code><div>list</div><pre>{
+  "bbox": [
+    0.6077451020284416,
+    0.8100605974293719,
+    0.8529001871744791,
+    0.8303333629261364
+  ],
+  "block_id": "actual:p2:block:9",
+  "block_index": 9,
+  "candidate_id": "cand:p0002:0009:list",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:list",
+    "preset_type:list",
+    "hardening_interest",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.00497,
+    "block_type": "list",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "List",
+    "text_length": 27
+  },
+  "json_pointer": "/pages/1/blocks/9",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "list",
+  "text_excerpt": "U.S. Department of Commerce"
+}</pre></div><div class="candidate"><code>cand:p0002:0010:text</code><div>text</div><pre>{
+  "bbox": [
+    0.17136916615604575,
+    0.8287304194286617,
+    0.8529198341120302,
+    0.897614218971946
+  ],
+  "block_id": "actual:p2:block:10",
+  "block_index": 10,
+  "candidate_id": "cand:p0002:0010:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text",
+    "frontmatter_or_early_page"
+  ],
+  "features": {
+    "bbox_area": 0.046948,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 166
+  },
+  "json_pointer": "/pages/1/blocks/10",
+  "page_index": 1,
+  "page_number": 2,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "Wilbur L. Ross, Jr., Secretary National Institute of Standards and Technology Walter Copan, NIST Director and Under Secretary of Commerce for Standards and Technology"
+}</pre></div>
+  </section>
+
+  <section>
+    <h2>Review Validation</h2>
+    <pre>{
+  "candidate_count": 11,
+  "errors": [],
+  "expected_candidate_ids": [
+    "cand:p0002:0000:section_heading",
+    "cand:p0002:0001:text",
+    "cand:p0002:0002:section_heading",
+    "cand:p0002:0003:section_heading",
+    "cand:p0002:0004:text",
+    "cand:p0002:0005:text",
+    "cand:p0002:0006:text",
+    "cand:p0002:0007:text",
+    "cand:p0002:0008:text",
+    "cand:p0002:0009:list",
+    "cand:p0002:0010:text"
+  ],
+  "ok": true,
+  "page_case": {
+    "case_id": "page_case_0001_p0002",
+    "page_number": 2
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": [
+    "cand:p0002:0000:section_heading",
+    "cand:p0002:0001:text",
+    "cand:p0002:0002:section_heading",
+    "cand:p0002:0003:section_heading",
+    "cand:p0002:0004:text",
+    "cand:p0002:0005:text",
+    "cand:p0002:0006:text",
+    "cand:p0002:0007:text",
+    "cand:p0002:0008:text",
+    "cand:p0002:0009:list",
+    "cand:p0002:0010:text"
+  ]
+}</pre>
+  </section>
+
+  <section>
+    <h2>Page Case</h2>
+    <pre>{
+  "candidate_ids": [
+    "cand:p0002:0000:section_heading",
+    "cand:p0002:0001:text",
+    "cand:p0002:0002:section_heading",
+    "cand:p0002:0003:section_heading",
+    "cand:p0002:0004:text",
+    "cand:p0002:0005:text",
+    "cand:p0002:0006:text",
+    "cand:p0002:0007:text",
+    "cand:p0002:0008:text",
+    "cand:p0002:0009:list",
+    "cand:p0002:0010:text"
+  ],
+  "case_id": "page_case_0001_p0002",
+  "forced_by_human_annotation": true,
+  "page_index": 1,
+  "page_number": 2,
+  "preset_counts": {
+    "list": 1,
+    "section_heading": 3,
+    "text": 7
+  },
+  "selection_probability_basis": {
+    "candidate_count_on_page": 11,
+    "candidate_share_estimate": 1.0,
+    "forced_page": true,
+    "method": "forced_human_annotation",
+    "page_score": 23.0,
+    "total_candidate_count": 11,
+    "total_page_score": 23.0,
+    "weighted_page_score_inclusion_estimate": 1.0
+  },
+  "selection_probability_estimate": 1.0,
+  "selection_reason": [
+    "human_annotated_page",
+    "high_risk_preset",
+    "high_risk_candidate",
+    "document_position_stratum",
+    "high_candidate_score"
+  ],
+  "selection_score": 23.0,
+  "strata": [
+    "position:first_20",
+    "position:frontmatter",
+    "preset:list",
+    "preset:section_heading",
+    "preset:text",
+    "risk:high"
+  ]
+}</pre>
+  </section>
+
+  <section>
+    <h2>Artifacts</h2>
+    <ul><li><a href="state.json">state.json</a></li><li><a href="sampled_candidate_manifest.json">sampled_candidate_manifest.json</a></li><li><a href="page_before.json">page_before.json</a></li><li><a href="page_before.png">page_before.png</a></li><li><a href="page_candidates.png">page_candidates.png</a></li><li><a href="selected_candidates.json">selected_candidates.json</a></li><li><a href="candidate_presets.json">candidate_presets.json</a></li><li><a href="review_request.json">review_request.json</a></li><li><a href="review_request_validation.json">review_request_validation.json</a></li><li><a href="scillm_orchestrator_page_dag_spec.json">scillm_orchestrator_page_dag_spec.json</a></li><li><a href="scillm_orchestrator_page_dag_spec_validation.json">scillm_orchestrator_page_dag_spec_validation.json</a></li><li><a href="scillm_orchestrator_page_submission.json">scillm_orchestrator_page_submission.json</a></li><li><a href="scillm_orchestrator_page_submission_validation.json">scillm_orchestrator_page_submission_validation.json</a></li><li><a href="review_validation.json">review_validation.json</a></li><li><a href="scillm_review_preflight.json">scillm_review_preflight.json</a></li><li><a href="scillm_review_receipt.json">scillm_review_receipt.json</a></li><li><a href="review_response.json">review_response.json</a></li><li><a href="scillm_page_orchestrator_run_request.json">scillm_page_orchestrator_run_request.json</a></li><li><a href="scillm_page_orchestrator_run_validation.json">scillm_page_orchestrator_run_validation.json</a></li><li><a href="scillm_page_orchestrator_run_receipt.json">scillm_page_orchestrator_run_receipt.json</a></li><li><a href="patch_baseline.json">patch_baseline.json</a></li><li><a href="patch_evidence_workspace.json">patch_evidence_workspace.json</a></li><li><a href="patch_request.json">patch_request.json</a></li><li><a href="patch_validation.json">patch_validation.json</a></li><li><a href="patch_attempts_ledger.json">patch_attempts_ledger.json</a></li><li><a href="patch_attempt_01_validation.json">patch_attempt_01_validation.json</a></li><li><a href="patch_attempt_01_prompt_contract.json">patch_attempt_01_prompt_contract.json</a></li><li><a href="patch_attempt_01_prompt_review_payload.txt">patch_attempt_01_prompt_review_payload.txt</a></li></ul>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "command_or_endpoint": "run_page_second_pass_dag.validate_page_terminal_ledger",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T08:26:16.274642+00:00",
+  "input_artifacts": [
+    "terminal_ledger.json",
+    "review.html"
+  ],
+  "next_allowed_nodes": [
+    "package_page_review_bundle"
+  ],
+  "node_id": "validate_page_terminal_ledger",
+  "output_artifacts": [
+    "terminal_ledger_validation.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T08:26:16.274624+00:00",
+  "validator_result": {
+    "errors": [],
+    "ok": true
+  }
+}

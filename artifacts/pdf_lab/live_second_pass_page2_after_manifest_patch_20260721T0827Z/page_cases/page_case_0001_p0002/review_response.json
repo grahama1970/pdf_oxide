@@ -1,0 +1,84 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0002:0000:section_heading",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'NIST Special Publication 800-53', which is correctly classified as a section_heading.",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0001:side_chrome",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'Revision 5', which is correctly classified as side_chrome (header/footer noise).",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0002:section_heading",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'Security and Privacy Controls for', which is correctly classified as a section_heading.",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0003:section_heading",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'Information Systems and Organizations', which is correctly classified as a section_heading.",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0004:text",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'JOINT TASK FORCE', which is correctly classified as general text.",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0005:side_chrome",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'This publication is available free of charge from:', which is correctly classified as side_chrome (boilerplate).",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0006:side_chrome",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'https://doi.org/10.6028/NIST.SP.800-53r5', which is correctly classified as side_chrome (boilerplate).",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0007:text",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'September 2020', which is correctly classified as general text.",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0008:text",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'INCLUDES UPDATES AS OF 12-10-2020; SEE PAGE XVII', which is correctly classified as general text.",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0009:text",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'U.S. Department of Commerce', which is correctly classified as general text with a semantic role of 'frontmatter_attribution'.",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0010:text",
+      "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the multi-line text 'Wilbur L. Ross, Jr., Secretary National Institute of Standards and Technology Walter Copan, NIST Director and Under Secretary of Commerce for Standards and Technology', which is correctly classified as general text.",
+      "rationale": "The text, bounding box, and classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    }
+  ],
+  "page_rationale": "All candidates on page 2 are accurately extracted and correctly classified according to the provided preset types and visual evidence. No defects were found.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

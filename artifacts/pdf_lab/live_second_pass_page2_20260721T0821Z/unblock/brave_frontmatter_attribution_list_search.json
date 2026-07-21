@@ -1,0 +1,32 @@
+{
+  "query": "PDF extraction frontmatter organization attribution U.S. Department of Commerce misclassified as list item",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Commerce Control List Classification",
+      "description": "Read Part 738 of the EAR for specific instructions on how to use the CCL. You can also access our Introduction to Commerce Department Export Controls, which is an easy-to-follow guide that walks you through the classification process step-by-step.",
+      "url": "https://www.bis.doc.gov/index.php/forms-documents/doc_view/100-commodity-classification-information"
+    },
+    {
+      "title": "HANDBOOK OF CLASSIFICATION March 2005",
+      "description": "HANDBOOK OF CLASSIFICATION \u00b7 Seal of U.S. Department of Commerce, Patent nad Trademark Office",
+      "url": "https://www.uspto.gov/sites/default/files/web/offices/opc/documents/handbook.pdf"
+    },
+    {
+      "title": "Entity List | U.S. Department of Commerce",
+      "description": "Official websites use .gov A .gov website belongs to an official government organization in the United States.",
+      "url": "https://www.commerce.gov/tags/entity-list"
+    },
+    {
+      "title": "(PDF) Frontmatter, Table of Contents, Preface, Organization.",
+      "description": "Access 160+ million publication pages and connect with 25+ million researchers. Join for free and gain visibility by uploading your research.",
+      "url": "https://www.researchgate.net/publication/220825745_Frontmatter_Table_of_Contents_Preface_Organization"
+    },
+    {
+      "title": "Organization Charts | U.S. Department of Commerce",
+      "description": "View the Department of Commerce&#x27;s Organization Charts. DOO 1-1 Mission and Organization of the Department",
+      "url": "https://www.commerce.gov/opog/organization-charts"
+    }
+  ]
+}

@@ -568,6 +568,83 @@
       "verification_scope": "ledger_only_single_extract"
     },
     {
+      "added_at": "2026-07-21T00:00:00Z",
+      "added_by": "agent:codex (pdf-lab page2 all-candidates hardening)",
+      "applied_at": "2026-07-21T00:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route the NIST page 2 issuing-organization attribution line to body/frontmatter text instead of list.",
+      "closed_at": "2026-07-21T00:00:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page2_frontmatter_attribution.py)",
+      "entry_id": "nist-frontmatter-commerce-attribution-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p2:block:9"
+        ],
+        "risk_reasons_observed": [
+          "frontmatter_attribution_as_list"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/live_second_pass_page2_20260721T0821Z/page_cases/page_case_0001_p0002/review_response.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Real list items elsewhere in the document; rejected by page, exact text, bbox, and font guards.",
+          "Other frontmatter publisher or author lines; rejected by exact text until separately reviewed.",
+          "Any later occurrence of 'U.S. Department of Commerce' in running prose; rejected by page and bbox guards."
+        ],
+        "candidates_that_prove": [
+          "Page 2 emits 'U.S. Department of Commerce' as actual:p2:block:9 with source_type=List/type=list, but the line is issuing-organization attribution on the title/frontmatter page."
+        ],
+        "deterministic_rule": "If the NIST page 2 List element in the lower title-page attribution band exactly equals 'U.S. Department of Commerce', set type=paragraph_block, source_type=Body, and semantic_role=frontmatter_attribution."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "page is not 2",
+          "source_type is not List",
+          "type is not list",
+          "bbox is outside the observed page 2 attribution band",
+          "font_size is not 12pt",
+          "text is not exactly 'U.S. Department of Commerce'"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This exact observed counterexample intentionally overrides the broad baseline_adapter List->list rule for one NIST title-page attribution line.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.60,
+            "x_min_lt": 0.62,
+            "y_min_gt": 0.80,
+            "y_min_lt": 0.82,
+            "y_max_gt": 0.82,
+            "y_max_lt": 0.84
+          },
+          "font_properties": {
+            "font_size_eq": 12.0,
+            "is_bold": false
+          },
+          "page": 2,
+          "source_type": "List",
+          "type": "list"
+        },
+        "extract": [
+          {
+            "equals_ci": "U.S. Department of Commerce",
+            "fields": {
+              "semantic_role": "frontmatter_attribution",
+              "source_type": "Body",
+              "type": "paragraph_block"
+            }
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
       "added_at": "2026-05-11T18:30:00Z",
       "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
       "applied_at": "2026-05-11T18:30:00Z",

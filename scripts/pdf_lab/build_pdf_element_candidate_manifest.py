@@ -165,8 +165,7 @@ def infer_preset_type(block: dict[str, Any], page_number: int, page_count: int |
     if "table" in raw_type:
         return "table"
     if raw_type in {"boilerplate", "header_footer_noise", "page_chrome"}:
-        if bbox[0] <= 0.10 or bbox[1] <= 0.08 or bbox[3] >= 0.92:
-            return "side_chrome"
+        return "side_chrome"
     if raw_type in {"list", "list_item"} or text.startswith(("•", "-", "–", "—")):
         return "list"
     if raw_type in {"reference", "references"} or re.match(r"^\[\s*[A-Za-z0-9][^\]]{0,24}\s*\]", text):

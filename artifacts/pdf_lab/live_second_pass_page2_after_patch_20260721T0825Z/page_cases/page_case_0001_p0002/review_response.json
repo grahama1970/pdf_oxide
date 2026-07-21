@@ -1,0 +1,84 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0002:0000:section_heading",
+      "evidence": "The extracted text, bounding box, and type 'section_heading' perfectly match the visual evidence of the main title on the rendered page.",
+      "rationale": "The candidate's preset type 'section_heading' and extracted data align perfectly with the visual representation of a section heading.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0001:text",
+      "evidence": "The extracted text and bounding box are correct. However, the candidate's preset type is 'text' while the extracted JSON type is 'header_footer_noise'. Visually, 'Revision 5' acts as a subtitle/version and is boilerplate information, making 'header_footer_noise' a more accurate semantic classification.",
+      "rationale": "The preset type 'text' is too general. The extracted JSON correctly identifies this as 'header_footer_noise', which is a more semantically appropriate classification for this boilerplate text.",
+      "status": "defect",
+      "suggested_fix_surface": "Change the candidate's preset type from 'text' to 'header_footer_noise'."
+    },
+    {
+      "candidate_id": "cand:p0002:0002:section_heading",
+      "evidence": "The extracted text, bounding box, and type 'section_heading' perfectly match the visual evidence of the main title on the rendered page.",
+      "rationale": "The candidate's preset type 'section_heading' and extracted data align perfectly with the visual representation of a section heading.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0003:section_heading",
+      "evidence": "The extracted text, bounding box, and type 'section_heading' perfectly match the visual evidence of the main title on the rendered page.",
+      "rationale": "The candidate's preset type 'section_heading' and extracted data align perfectly with the visual representation of a section heading.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0004:text",
+      "evidence": "The extracted text 'JOINT TASK FORCE' and its bounding box are accurate. The preset type 'text' is consistent with the extracted type 'paragraph_block', although a more specific semantic role could be considered for this attribution.",
+      "rationale": "The candidate's preset type 'text' is consistent with the extracted 'paragraph_block', and the text and bbox are correct.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0005:text",
+      "evidence": "The extracted text and bounding box are correct. However, the candidate's preset type is 'text' while the extracted JSON type is 'header_footer_noise'. Visually, this is boilerplate information, making 'header_footer_noise' a more accurate semantic classification.",
+      "rationale": "The preset type 'text' is too general. The extracted JSON correctly identifies this as 'header_footer_noise', which is a more semantically appropriate classification for this boilerplate text.",
+      "status": "defect",
+      "suggested_fix_surface": "Change the candidate's preset type from 'text' to 'header_footer_noise'."
+    },
+    {
+      "candidate_id": "cand:p0002:0006:text",
+      "evidence": "The extracted text and bounding box are correct. However, the candidate's preset type is 'text' while the extracted JSON type is 'header_footer_noise'. Visually, this is boilerplate information (a URL), making 'header_footer_noise' a more accurate semantic classification.",
+      "rationale": "The preset type 'text' is too general. The extracted JSON correctly identifies this as 'header_footer_noise', which is a more semantically appropriate classification for this boilerplate text.",
+      "status": "defect",
+      "suggested_fix_surface": "Change the candidate's preset type from 'text' to 'header_footer_noise'."
+    },
+    {
+      "candidate_id": "cand:p0002:0007:text",
+      "evidence": "The extracted text 'September 2020' and its bounding box are accurate. The preset type 'text' is consistent with the extracted type 'paragraph_block', although a more specific semantic role like 'date_block' might be considered.",
+      "rationale": "The candidate's preset type 'text' is consistent with the extracted 'paragraph_block', and the text and bbox are correct.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0008:text",
+      "evidence": "The extracted text and bounding box are accurate. The preset type 'text' is consistent with the extracted type 'paragraph_block'. The text itself is a note about updates.",
+      "rationale": "The candidate's preset type 'text' is consistent with the extracted 'paragraph_block', and the text and bbox are correct.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0009:text",
+      "evidence": "The extracted text and bounding box are accurate. The preset type 'text' is consistent with the extracted type 'paragraph_block', and the extracted JSON also assigns the correct 'frontmatter_attribution' semantic role.",
+      "rationale": "The candidate's preset type 'text' is consistent with the extracted 'paragraph_block', and the semantic role is correctly identified.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0002:0010:text",
+      "evidence": "The extracted text and bounding box are accurate, capturing all the relevant lines of attribution. The preset type 'text' is consistent with the extracted type 'paragraph_block', although a 'frontmatter_attribution' semantic role would be more specific.",
+      "rationale": "The candidate's preset type 'text' is consistent with the extracted 'paragraph_block', and the text and bbox are correct.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    }
+  ],
+  "page_rationale": "Several candidates with a 'text' preset type were extracted as 'header_footer_noise' in the JSON, which is a more semantically accurate classification for the boilerplate content they represent. This indicates a discrepancy between the preset's intended classification and the more precise extraction logic.",
+  "page_status": "defect",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}
