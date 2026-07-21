@@ -1,0 +1,11 @@
+{
+  "bundle_consistency_ok": true,
+  "errors": [
+    "readiness failed: sampling gate passed",
+    "readiness failed: page results match sampled page cases"
+  ],
+  "ok": false,
+  "readiness_ok": false,
+  "schema": "pdf_lab.second_pass.harness_final_gate.v1",
+  "terminal_status": "failed_closed"
+}

@@ -1,0 +1,1604 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p15:block:0",
+      "is_bold": false,
+      "page": 15,
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p15:block:1",
+      "is_bold": false,
+      "page": 15,
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.4917646919200623,
+        0.939856018682923,
+        0.508171979118796,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p15:block:2",
+      "is_bold": false,
+      "page": 15,
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          300.9599914550781,
+          38.400001525878906,
+          12.113983154296875,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "xiii"
+      },
+      "source_type": "PageNumber",
+      "text": "xiii",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p15:block:3",
+      "is_bold": false,
+      "page": 15,
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.4162745008281633,
+        0.08938735422461924,
+        0.5834657756331699,
+        0.11388766163527364
+      ],
+      "font_name": "TT2",
+      "font_size": 13.979999542236328,
+      "id": "actual:p15:block:4",
+      "is_bold": true,
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          254.75999450683594,
+          706.6799926757812,
+          105.57698059082031,
+          13.97998046875
+        ],
+        "block_type": "Caption",
+        "confidence": 0.800000011920929,
+        "font_name": "TT2",
+        "font_size": 13.979999542236328,
+        "header_level": null,
+        "is_bold": true,
+        "text": "Table of Contents"
+      },
+      "semantic_role": "toc_heading",
+      "source_type": "Caption",
+      "text": "Table of Contents",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.12650474394210662,
+        0.8522527358111214,
+        0.7593838470150726
+      ],
+      "entry_count": 38,
+      "heading": {
+        "element_id": "actual:p15:block:4",
+        "label": "Table of Contents"
+      },
+      "id": "actual:p15:toc:0",
+      "page": 15,
+      "page_range": [
+        15,
+        15
+      ],
+      "semantic_role": "toc",
+      "source_type": "TableOfContents",
+      "type": "toc"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.12650474394210662,
+        0.8521344552632251,
+        0.14574746411256115
+      ],
+      "dot_leader": true,
+      "font_name": "TT2",
+      "font_size": 10.685998916625977,
+      "id": "actual:p15:block:5",
+      "is_bold": true,
+      "label": "CHAPTER ONE   INTRODUCTION",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          90.0,
+          680.4000244140625,
+          434.23199462890625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT2",
+        "font_size": 10.685998916625977,
+        "header_level": null,
+        "is_bold": true,
+        "text": "CHAPTER ONE   INTRODUCTION ...................................................................................................... 1"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 1,
+      "text": "CHAPTER ONE   INTRODUCTION ...................................................................................................... 1",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.14722123772206933,
+        0.8521093231400633,
+        0.16449055527195786
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.744002342224121,
+      "id": "actual:p15:block:6",
+      "is_bold": false,
+      "label": "1.1   PURPOSE AND APPLICABILITY",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          664.97998046875,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.744002342224121,
+        "header_level": null,
+        "is_bold": false,
+        "text": "1.1   PURPOSE AND APPLICABILITY ................................................................................................... 2"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 2,
+      "text": "1.1   PURPOSE AND APPLICABILITY ................................................................................................... 2",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.16260000672003236,
+        0.8521296681921466,
+        0.17986933390299478
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.870001792907715,
+      "id": "actual:p15:block:7",
+      "is_bold": false,
+      "label": "1.2   TARGET AUDIENCE",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          652.7999877929688,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.870001792907715,
+        "header_level": null,
+        "is_bold": false,
+        "text": "1.2   TARGET AUDIENCE .................................................................................................................. 3"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 3,
+      "text": "1.2   TARGET AUDIENCE .................................................................................................................. 3",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.17805453984424321,
+        0.8521238838145936,
+        0.19532386702720564
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.829092025756836,
+      "id": "actual:p15:block:8",
+      "is_bold": false,
+      "label": "1.3   ORGANIZATIONAL RESPONSIBILITIES",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          640.5599975585938,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.829092025756836,
+        "header_level": null,
+        "is_bold": false,
+        "text": "1.3   ORGANIZATIONAL RESPONSIBILITIES......................................................................................... 3"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 3,
+      "text": "1.3   ORGANIZATIONAL RESPONSIBILITIES......................................................................................... 3",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.19343331847528014,
+        0.8521292692695568,
+        0.2107026456582426
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.63375186920166,
+      "id": "actual:p15:block:9",
+      "is_bold": false,
+      "label": "1.4   RELATIONSHIP TO OTHER PUBLICATIONS",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          628.3800048828125,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.63375186920166,
+        "header_level": null,
+        "is_bold": false,
+        "text": "1.4   RELATIONSHIP TO OTHER PUBLICATIONS ................................................................................... 5"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 5,
+      "text": "1.4   RELATIONSHIP TO OTHER PUBLICATIONS ................................................................................... 5",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.20881209710631707,
+        0.8521255792356005,
+        0.22608142428927952
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.744002342224121,
+      "id": "actual:p15:block:10",
+      "is_bold": false,
+      "label": "1.5   REVISIONS AND EXTENSIONS",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          616.2000122070312,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.744002342224121,
+        "header_level": null,
+        "is_bold": false,
+        "text": "1.5   REVISIONS AND EXTENSIONS .................................................................................................... 5"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 5,
+      "text": "1.5   REVISIONS AND EXTENSIONS .................................................................................................... 5",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.22426663023052792,
+        0.852119495666105,
+        0.24153595741349038
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.724287986755371,
+      "id": "actual:p15:block:11",
+      "is_bold": false,
+      "label": "1.6   PUBLICATION ORGANIZATION",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          603.9600219726562,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.724287986755371,
+        "header_level": null,
+        "is_bold": false,
+        "text": "1.6   PUBLICATION ORGANIZATION .................................................................................................. 5"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 5,
+      "text": "1.6   PUBLICATION ORGANIZATION .................................................................................................. 5",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.24347445940730547,
+        0.8521473205167484,
+        0.26271717957776003
+      ],
+      "dot_leader": true,
+      "font_name": "TT2",
+      "font_size": 10.569998741149902,
+      "id": "actual:p15:block:12",
+      "is_bold": true,
+      "label": "CHAPTER TWO   THE FUNDAMENTALS",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          90.0,
+          587.760009765625,
+          434.23199462890625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT2",
+        "font_size": 10.569998741149902,
+        "header_level": null,
+        "is_bold": true,
+        "text": "CHAPTER TWO   THE FUNDAMENTALS ............................................................................................ 7"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 7,
+      "text": "CHAPTER TWO   THE FUNDAMENTALS ............................................................................................ 7",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.26419086648960305,
+        0.852117999706393,
+        0.2814601936725655
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.724287986755371,
+      "id": "actual:p15:block:13",
+      "is_bold": false,
+      "label": "2.1   REQUIREMENTS AND CONTROLS",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          572.3400268554688,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.724287986755371,
+        "header_level": null,
+        "is_bold": false,
+        "text": "2.1   REQUIREMENTS AND CONTROLS .............................................................................................. 7"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 7,
+      "text": "2.1   REQUIREMENTS AND CONTROLS .............................................................................................. 7",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.27964547667840517,
+        0.8521215900097018,
+        0.2969148038613676
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.656472206115723,
+      "id": "actual:p15:block:14",
+      "is_bold": false,
+      "label": "2.2   CONTROL STRUCTURE AND ORGANIZATION",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          560.0999755859375,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.656472206115723,
+        "header_level": null,
+        "is_bold": false,
+        "text": "2.2   CONTROL STRUCTURE AND ORGANIZATION .............................................................................. 8"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 8,
+      "text": "2.2   CONTROL STRUCTURE AND ORGANIZATION .............................................................................. 8",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.2950242553094421,
+        0.8522270053040748,
+        0.3122935824924045
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.724287986755371,
+      "id": "actual:p15:block:15",
+      "is_bold": false,
+      "label": "2.3   CONTROL IMPLEMENTATION APPROACHES",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          547.9199829101562,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.724287986755371,
+        "header_level": null,
+        "is_bold": false,
+        "text": "2.3   CONTROL IMPLEMENTATION APPROACHES ............................................................................. 11"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 11,
+      "text": "2.3   CONTROL IMPLEMENTATION APPROACHES ............................................................................. 11",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.310403033940479,
+        0.8522169325086806,
+        0.32767236112344145
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.63375186920166,
+      "id": "actual:p15:block:16",
+      "is_bold": false,
+      "label": "2.4   SECURITY AND PRIVACY CONTROLS",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          535.739990234375,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.63375186920166,
+        "header_level": null,
+        "is_bold": false,
+        "text": "2.4   SECURITY AND PRIVACY CONTROLS ......................................................................................... 13"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 13,
+      "text": "2.4   SECURITY AND PRIVACY CONTROLS ......................................................................................... 13",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.3258575670646899,
+        0.8522145389731414,
+        0.3431268942476523
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.724287986755371,
+      "id": "actual:p15:block:17",
+      "is_bold": false,
+      "label": "2.5   TRUSTWORTHINESS AND ASSURANCE",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          523.5,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.724287986755371,
+        "header_level": null,
+        "is_bold": false,
+        "text": "2.5   TRUSTWORTHINESS AND ASSURANCE ..................................................................................... 14"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 14,
+      "text": "2.5   TRUSTWORTHINESS AND ASSURANCE ..................................................................................... 14",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.3450653769753196,
+        0.8521418353311376,
+        0.36430813567806974
+      ],
+      "dot_leader": true,
+      "font_name": "TT2",
+      "font_size": 10.628569602966309,
+      "id": "actual:p15:block:18",
+      "is_bold": true,
+      "label": "CHAPTER THREE   THE CONTROLS",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          90.0,
+          507.29998779296875,
+          434.23199462890625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT2",
+        "font_size": 10.628569602966309,
+        "header_level": null,
+        "is_bold": true,
+        "text": "CHAPTER THREE   THE CONTROLS ................................................................................................. 16"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 16,
+      "text": "CHAPTER THREE   THE CONTROLS ................................................................................................. 16",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.365781803323765,
+        0.8522169325086806,
+        0.38305113050672746
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.858463287353516,
+      "id": "actual:p15:block:19",
+      "is_bold": false,
+      "label": "3.1   ACCESS CONTROL",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          491.8800048828125,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.858463287353516,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.1   ACCESS CONTROL .................................................................................................................. 18"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 18,
+      "text": "3.1   ACCESS CONTROL .................................................................................................................. 18",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.38123633644797583,
+        0.8522139405892566,
+        0.3985056636309383
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.761252403259277,
+      "id": "actual:p15:block:20",
+      "is_bold": false,
+      "label": "3.2   AWARENESS AND TRAINING",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          479.6400146484375,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.761252403259277,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.2   AWARENESS AND TRAINING ................................................................................................... 59"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 59,
+      "text": "3.2   AWARENESS AND TRAINING ................................................................................................... 59",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.3966151536113084,
+        0.8521173015918607,
+        0.4138844807942708
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.63375186920166,
+      "id": "actual:p15:block:21",
+      "is_bold": false,
+      "label": "3.3   AUDIT AND ACCOUNTABILITY",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          467.4599914550781,
+          425.0159912109375,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.63375186920166,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.3   AUDIT AND ACCOUNTABILITY ................................................................................................. 65"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 65,
+      "text": "3.3   AUDIT AND ACCOUNTABILITY ................................................................................................. 65",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.41206968673551925,
+        0.8522207222732843,
+        0.42933901391848167
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.63375186920166,
+      "id": "actual:p15:block:22",
+      "is_bold": false,
+      "label": "3.4   ASSESSMENT, AUTHORIZATION, AND MONITORING",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          455.2200012207031,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.63375186920166,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.4   ASSESSMENT, AUTHORIZATION, AND MONITORING ................................................................. 83"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 83,
+      "text": "3.4   ASSESSMENT, AUTHORIZATION, AND MONITORING ................................................................. 83",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.4274484653665562,
+        0.852235382678462,
+        0.4447177925495186
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.845001220703125,
+      "id": "actual:p15:block:23",
+      "is_bold": false,
+      "label": "3.5   CONFIGURATION MANAGEMENT",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          443.0400085449219,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.845001220703125,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.5   CONFIGURATION MANAGEMENT ........................................................................................... 96"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 96,
+      "text": "3.5   CONFIGURATION MANAGEMENT ........................................................................................... 96",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.44282728252988873,
+        0.8522347842945772,
+        0.46009660971285116
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.858463287353516,
+      "id": "actual:p15:block:24",
+      "is_bold": false,
+      "label": "3.6   CONTINGENCY PLANNING",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          430.8599853515625,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.858463287353516,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.6   CONTINGENCY PLANNING .................................................................................................... 115"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 115,
+      "text": "3.6   CONTINGENCY PLANNING .................................................................................................... 115",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.4582818156540996,
+        0.8522473503561581,
+        0.475551142837062
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.724287986755371,
+      "id": "actual:p15:block:25",
+      "is_bold": false,
+      "label": "3.7   IDENTIFICATION AND AUTHENTICATION",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          418.6199951171875,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.724287986755371,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.7   IDENTIFICATION AND AUTHENTICATION ............................................................................... 131"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 131,
+      "text": "3.7   IDENTIFICATION AND AUTHENTICATION ............................................................................... 131",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.4736605942851365,
+        0.8522214203878166,
+        0.49092992146809894
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.858463287353516,
+      "id": "actual:p15:block:26",
+      "is_bold": false,
+      "label": "3.8   INCIDENT RESPONSE",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          406.44000244140625,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.858463287353516,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.8   INCIDENT RESPONSE ............................................................................................................ 149"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 149,
+      "text": "3.8   INCIDENT RESPONSE ............................................................................................................ 149",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.48911512740934737,
+        0.8522406684027778,
+        0.5063844545923099
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 10.014547348022461,
+      "id": "actual:p15:block:27",
+      "is_bold": false,
+      "label": "3.9   MAINTENANCE",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          394.20001220703125,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 10.014547348022461,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.9   MAINTENANCE .................................................................................................................... 162"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 162,
+      "text": "3.9   MAINTENANCE .................................................................................................................... 162",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.5044939445726799,
+        0.8522252101524204,
+        0.5217632717556424
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.858463287353516,
+      "id": "actual:p15:block:28",
+      "is_bold": false,
+      "label": "3.10   MEDIA PROTECTION",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          382.0199890136719,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.858463287353516,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.10   MEDIA PROTECTION .......................................................................................................... 171"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 171,
+      "text": "3.10   MEDIA PROTECTION .......................................................................................................... 171",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.5199484776968908,
+        0.8522239136540033,
+        0.5372178048798533
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.656472206115723,
+      "id": "actual:p15:block:29",
+      "is_bold": false,
+      "label": "3.11   PHYSICAL AND ENVIRONMENTAL PROTECTION",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          369.7799987792969,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.656472206115723,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.11   PHYSICAL AND ENVIRONMENTAL PROTECTION .................................................................... 179"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 179,
+      "text": "3.11   PHYSICAL AND ENVIRONMENTAL PROTECTION .................................................................... 179",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.5353272563279278,
+        0.8522242128459456,
+        0.5525965835108901
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 10.014547348022461,
+      "id": "actual:p15:block:30",
+      "is_bold": false,
+      "label": "3.12   PLANNING",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          357.6000061035156,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 10.014547348022461,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.12   PLANNING ........................................................................................................................ 194"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 194,
+      "text": "3.12   PLANNING ........................................................................................................................ 194",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.5507818279844342,
+        0.8522404689414829,
+        0.5680511551673966
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.858463287353516,
+      "id": "actual:p15:block:31",
+      "is_bold": false,
+      "label": "3.13   PROGRAM MANAGEMENT",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          345.3599853515625,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.858463287353516,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.13   PROGRAM MANAGEMENT ................................................................................................. 203"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 203,
+      "text": "3.13   PROGRAM MANAGEMENT ................................................................................................. 203",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.5661606066154711,
+        0.8522391724430658,
+        0.5834299337984336
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.858463287353516,
+      "id": "actual:p15:block:32",
+      "is_bold": false,
+      "label": "3.14   PERSONNEL SECURITY",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          333.17999267578125,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.858463287353516,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.14   PERSONNEL SECURITY ........................................................................................................ 222"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 222,
+      "text": "3.14   PERSONNEL SECURITY ........................................................................................................ 222",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.5815393852465081,
+        0.8522527358111214,
+        0.5988087124294705
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.450000762939453,
+      "id": "actual:p15:block:33",
+      "is_bold": false,
+      "label": "3.15   PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          321.0,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.450000762939453,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.15   PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY ....................... 229"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 229,
+      "text": "3.15   PERSONALLY IDENTIFIABLE INFORMATION PROCESSING AND TRANSPARENCY ....................... 229",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.5969939183707189,
+        0.8522258085363051,
+        0.6142632455536814
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.858463287353516,
+      "id": "actual:p15:block:34",
+      "is_bold": false,
+      "label": "3.16   RISK ASSESSMENT",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          308.760009765625,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.858463287353516,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.16   RISK ASSESSMENT .............................................................................................................. 238"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 238,
+      "text": "3.16   RISK ASSESSMENT .............................................................................................................. 238",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.6123727355340515,
+        0.8522442587060866,
+        0.6296420627170138
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.656472206115723,
+      "id": "actual:p15:block:35",
+      "is_bold": false,
+      "label": "3.17   SYSTEM AND SERVICES ACQUISITION",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          296.5799865722656,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.656472206115723,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.17   SYSTEM AND SERVICES ACQUISITION .................................................................................. 249"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 249,
+      "text": "3.17   SYSTEM AND SERVICES ACQUISITION .................................................................................. 249",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.6278272686582623,
+        0.8522025712954453,
+        0.6450965958412247
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.63375186920166,
+      "id": "actual:p15:block:36",
+      "is_bold": false,
+      "label": "3.18   SYSTEM AND COMMUNICATIONS PROTECTION",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          284.3399963378906,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.63375186920166,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.18   SYSTEM AND COMMUNICATIONS PROTECTION ................................................................... 292"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 292,
+      "text": "3.18   SYSTEM AND COMMUNICATIONS PROTECTION ................................................................... 292",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.6432060087570036,
+        0.8522196252361621,
+        0.6604752974076704
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.63375186920166,
+      "id": "actual:p15:block:37",
+      "is_bold": false,
+      "label": "3.19   SYSTEM AND INFORMATION INTEGRITY",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          272.1600036621094,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.63375186920166,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.19   SYSTEM AND INFORMATION INTEGRITY .............................................................................. 332"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 332,
+      "text": "3.19   SYSTEM AND INFORMATION INTEGRITY .............................................................................. 332",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16666666666666666,
+        0.65866058041351,
+        0.8522413665173101,
+        0.6759298305318813
+      ],
+      "dot_leader": true,
+      "font_name": "TT0",
+      "font_size": 9.63375186920166,
+      "id": "actual:p15:block:38",
+      "is_bold": false,
+      "label": "3.20   SUPPLY CHAIN RISK MANAGEMENT",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          102.0,
+          259.9200134277344,
+          422.85601806640625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 9.63375186920166,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3.20   SUPPLY CHAIN RISK MANAGEMENT ..................................................................................... 363"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 363,
+      "text": "3.20   SUPPLY CHAIN RISK MANAGEMENT ..................................................................................... 363",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.6778684673887311,
+        0.8521290698082619,
+        0.6971111875591856
+      ],
+      "dot_leader": true,
+      "font_name": "TT2",
+      "font_size": 11.149998664855957,
+      "id": "actual:p15:block:39",
+      "is_bold": true,
+      "label": "REFERENCES",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          90.0,
+          243.72000122070312,
+          434.23199462890625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT2",
+        "font_size": 11.149998664855957,
+        "header_level": null,
+        "is_bold": true,
+        "text": "REFERENCES ................................................................................................................................ 374"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 374,
+      "text": "REFERENCES ................................................................................................................................ 374",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.6986259691642992,
+        0.852110320446538,
+        0.7178686893347538
+      ],
+      "dot_leader": true,
+      "font_name": "TT2",
+      "font_size": 10.685998916625977,
+      "id": "actual:p15:block:40",
+      "is_bold": true,
+      "label": "APPENDIX A   GLOSSARY",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          90.0,
+          227.27999877929688,
+          434.23199462890625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT2",
+        "font_size": 10.685998916625977,
+        "header_level": null,
+        "is_bold": true,
+        "text": "APPENDIX A   GLOSSARY .............................................................................................................. 394"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 394,
+      "text": "APPENDIX A   GLOSSARY .............................................................................................................. 394",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7193836250690498,
+        0.8521249808517157,
+        0.7386263452395044
+      ],
+      "dot_leader": true,
+      "font_name": "TT2",
+      "font_size": 10.685998916625977,
+      "id": "actual:p15:block:41",
+      "is_bold": true,
+      "label": "APPENDIX B   ACRONYMS",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          90.0,
+          210.83999633789062,
+          434.23199462890625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT2",
+        "font_size": 10.685998916625977,
+        "header_level": null,
+        "is_bold": true,
+        "text": "APPENDIX B   ACRONYMS ............................................................................................................ 424"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 424,
+      "text": "APPENDIX B   ACRONYMS ............................................................................................................ 424",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7401411268446181,
+        0.852130166845384,
+        0.7593838470150726
+      ],
+      "dot_leader": true,
+      "font_name": "TT2",
+      "font_size": 10.569998741149902,
+      "id": "actual:p15:block:42",
+      "is_bold": true,
+      "label": "APPENDIX C   CONTROL SUMMARIES",
+      "page": 15,
+      "parent_id": "actual:p15:toc:0",
+      "pdf_page_index": 14,
+      "raw": {
+        "bbox": [
+          90.0,
+          194.39999389648438,
+          434.23199462890625,
+          12.0
+        ],
+        "block_type": "TableOfContents",
+        "confidence": 0.800000011920929,
+        "font_name": "TT2",
+        "font_size": 10.569998741149902,
+        "header_level": null,
+        "is_bold": true,
+        "text": "APPENDIX C   CONTROL SUMMARIES .......................................................................................... 428"
+      },
+      "semantic_role": "toc_entry",
+      "source_type": "TableOfContents",
+      "target_page": 428,
+      "text": "APPENDIX C   CONTROL SUMMARIES .......................................................................................... 428",
+      "type": "reference"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 15,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 14
+}

@@ -1,0 +1,700 @@
+{
+  "checks": [
+    {
+      "errors": [],
+      "evidence": "artifacts/pdf_lab/live_second_pass_next_after_page42_20260721T0745Z/candidate_manifest.json",
+      "ok": true,
+      "requirement": "candidate manifest exists"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "actual_candidate_count": 1274,
+        "candidate_count": 1274,
+        "errors": [],
+        "ok": true,
+        "page_count_with_candidates": 80,
+        "preset_counts": {
+          "figure": 22,
+          "footnote": 33,
+          "list": 125,
+          "reference": 57,
+          "section_heading": 165,
+          "side_chrome": 312,
+          "table": 15,
+          "text": 544,
+          "toc": 1
+        },
+        "schema": "pdf_lab.second_pass.candidate_manifest_integrity_validation.v1",
+        "unique_candidate_id_count": 1274
+      },
+      "ok": true,
+      "requirement": "candidate manifest integrity passed"
+    },
+    {
+      "errors": [],
+      "evidence": "artifacts/pdf_lab/live_second_pass_next_after_page42_20260721T0745Z/sampled_page_cases.json",
+      "ok": true,
+      "requirement": "sampled page cases exist"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "accepted_forced_pages": [],
+        "actual_candidate_count": 1274,
+        "actual_page_case_count": 1,
+        "candidate_count": 1274,
+        "errors": [],
+        "malformed_forced_probability_case_ids": [],
+        "malformed_sampling_metadata_case_ids": [],
+        "manifest_candidate_id_count": 1274,
+        "manifest_pages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80
+        ],
+        "manifest_preset_counts": {
+          "figure": 22,
+          "footnote": 33,
+          "list": 125,
+          "reference": 57,
+          "section_heading": 165,
+          "side_chrome": 312,
+          "table": 15,
+          "text": 544,
+          "toc": 1
+        },
+        "manifest_schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "ok": true,
+        "probabilistic_selected_pages": [
+          15
+        ],
+        "sampled_candidate_id_count": 44,
+        "sampled_cases_schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+        "schema": "pdf_lab.second_pass.candidate_sample_linkage_validation.v1",
+        "selected_count": 1,
+        "selected_pages": [
+          15
+        ],
+        "warnings": [
+          "manifest candidate pages not selected by sample: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]"
+        ]
+      },
+      "ok": true,
+      "requirement": "candidate manifest and sampled cases are linked"
+    },
+    {
+      "errors": [
+        "sampling_audit adequate_sample_size is not true",
+        "sampling_audit adequate_for_priority_strata is not true",
+        "sampling_audit statistical_significance_basis.adequate is not true",
+        "sampling_audit missed priority strata: ['preset:figure', 'preset:footnote', 'preset:list', 'preset:table', 'preset:text']"
+      ],
+      "evidence": {
+        "accepted_forced_page_count": 0,
+        "adequate_for_priority_strata": false,
+        "adequate_sample_size": false,
+        "candidate_count": 1274,
+        "covered_priority_strata": [
+          "geometry:boundary",
+          "position:first_20",
+          "position:frontmatter",
+          "preset:reference",
+          "preset:section_heading",
+          "preset:side_chrome",
+          "preset:toc",
+          "risk:high"
+        ],
+        "duplicate_accepted_forced_pages": [],
+        "duplicate_probabilistic_selected_pages": [],
+        "duplicate_selected_pages": [],
+        "errors": [
+          "sampling_audit adequate_sample_size is not true",
+          "sampling_audit adequate_for_priority_strata is not true",
+          "sampling_audit statistical_significance_basis.adequate is not true",
+          "sampling_audit missed priority strata: ['preset:figure', 'preset:footnote', 'preset:list', 'preset:table', 'preset:text']"
+        ],
+        "forced_pages_are_additive": true,
+        "missed_priority_strata": [
+          "preset:figure",
+          "preset:footnote",
+          "preset:list",
+          "preset:table",
+          "preset:text"
+        ],
+        "ok": false,
+        "probabilistic_selected_count": 1,
+        "recommended_min_sample_size": 16,
+        "sampling_audit_schema": "pdf_lab.second_pass.sampling_audit.v1",
+        "sampling_audit_seed": 47,
+        "schema": "pdf_lab.second_pass.sampling_gate.v1",
+        "seed": 47,
+        "selected_count": 1,
+        "selected_pages": [
+          15
+        ],
+        "statistical_significance_adequate": false,
+        "statistical_significance_basis": {
+          "accepted_forced_page_count": 0,
+          "adequacy_rule": "adequate_sample_size && adequate_for_priority_strata && selected_count >= recommended_min_sample_size",
+          "adequate": false,
+          "candidate_page_population": 80,
+          "finite_population_fraction": 0.0125,
+          "forced_pages_are_additive": true,
+          "large_document_floor": 12,
+          "method": "stratified_priority_coverage_plus_weighted_random_reserve",
+          "priority_stratum_count": 13,
+          "probabilistic_selected_page_count": 1,
+          "random_reserve_fraction": 0.2,
+          "random_reserve_record_count": 0,
+          "recommended_min_sample_size": 16,
+          "seed": 47,
+          "selected_page_count": 1,
+          "sqrt_population_floor": 9
+        },
+        "statistical_significance_seed": 47,
+        "warnings": [
+          "requested sample_size 1 is below recommended minimum 16 for 80 candidate pages and 13 priority strata",
+          "priority strata not represented in selected pages: ['preset:figure', 'preset:footnote', 'preset:list', 'preset:table', 'preset:text']",
+          "weighted random reserve did not select an additional page"
+        ]
+      },
+      "ok": false,
+      "requirement": "sampling gate passed"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "duplicate_planned_case_ids": [],
+        "duplicate_planned_page_numbers": [],
+        "errors": [],
+        "malformed_forced_flag_case_ids": [],
+        "malformed_forced_probability_case_ids": [],
+        "malformed_observed_case_results": [],
+        "malformed_planned_case_ids": [],
+        "malformed_probability_case_ids": [],
+        "observed_case_ids": [],
+        "observed_page_result_count": 0,
+        "ok": true,
+        "planned_case_count": 1,
+        "planned_case_id_page_suffix_mismatches": [],
+        "planned_case_ids": [
+          "page_case_0001_p0015"
+        ],
+        "planned_page_numbers": [
+          15
+        ],
+        "sampled_case_count": 1,
+        "sampled_case_ids": [
+          "page_case_0001_p0015"
+        ],
+        "sampled_page_numbers": [
+          15
+        ],
+        "schema": "pdf_lab.second_pass.deterministic_execution_plan_validation.v1"
+      },
+      "ok": true,
+      "requirement": "deterministic execution plan is code-owned and sequential"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "status_counts": {},
+        "unresolved_count": 0
+      },
+      "ok": true,
+      "requirement": "page aggregate resolved"
+    },
+    {
+      "errors": [
+        "green page aggregate cannot omit sampled page cases: ['page_case_0001_p0015']"
+      ],
+      "evidence": {
+        "aggregate_ok": true,
+        "duplicate_observed_case_ids": [],
+        "errors": [
+          "green page aggregate cannot omit sampled page cases: ['page_case_0001_p0015']"
+        ],
+        "expected_case_count": 1,
+        "expected_sequence": [
+          {
+            "case_id": "page_case_0001_p0015",
+            "page_number": 15
+          }
+        ],
+        "extra_observed_case_ids": [],
+        "last_observed_terminal_status": null,
+        "malformed_observed_results": [],
+        "malformed_sampled_cases": [],
+        "missing_sampled_case_ids": [
+          "page_case_0001_p0015"
+        ],
+        "observed_case_count": 0,
+        "observed_sequence": [],
+        "ok": false,
+        "sampled_cases_path": "artifacts/pdf_lab/live_second_pass_next_after_page42_20260721T0745Z/sampled_page_cases.json",
+        "schema": "pdf_lab.second_pass.page_result_sample_match_validation.v1"
+      },
+      "ok": false,
+      "requirement": "page results match sampled page cases"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "patch_backend": "opencode_serve",
+        "patch_mode": "dry_run",
+        "required": false,
+        "visibility": {
+          "code_root": "/tmp/pdf_oxide_page45b_1784600709",
+          "errors": [],
+          "isolated_code_root_manifest_present": false,
+          "isolated_code_root_required": false,
+          "isolated_marker_clean": null,
+          "isolated_marker_dest_root": null,
+          "isolated_marker_present": false,
+          "isolated_marker_schema": null,
+          "live_patch_required": false,
+          "mounted_workspace_prefixes": [
+            "/home/graham/workspace"
+          ],
+          "ok": true,
+          "patch_backend": "opencode_serve",
+          "patch_mode": "dry_run",
+          "schema": "pdf_lab.second_pass.scillm_code_root_visibility.v1",
+          "under_mounted_prefix": false
+        }
+      },
+      "ok": true,
+      "requirement": "live scillm code root visibility passed"
+    },
+    {
+      "errors": [
+        "scillm proof floor missing"
+      ],
+      "evidence": {
+        "artifact_validation": {
+          "artifact_paths": {},
+          "errors": [
+            "scillm proof floor missing"
+          ],
+          "ok": false,
+          "proof_floor_artifact": null,
+          "proof_floor_artifact_matches_argument": false,
+          "proof_floor_duplicate_check_ids": [],
+          "proof_floor_malformed_check_entries": false,
+          "proof_floor_missing_check_ids": [],
+          "proof_floor_response_contract_checked": false,
+          "schema": "pdf_lab.second_pass.scillm_proof_floor_artifact_validation.v1",
+          "validation_artifact": null
+        },
+        "patch_backend": "opencode_serve",
+        "patch_mode": "dry_run",
+        "proof_floor": null,
+        "required": false
+      },
+      "ok": true,
+      "requirement": "live scillm proof floor passed"
+    },
+    {
+      "errors": [
+        "live canary missing"
+      ],
+      "evidence": {
+        "artifact_validation": {
+          "artifact_paths": {},
+          "canary_artifact": null,
+          "canary_artifact_matches_argument": false,
+          "canary_schema": "pdf_lab.second_pass.opencode_completion_canary.v1",
+          "cleanup_artifact": null,
+          "errors": [
+            "live canary missing"
+          ],
+          "ok": false,
+          "schema": "pdf_lab.second_pass.live_canary_artifact_validation.v1",
+          "validation_artifact": null,
+          "validation_schema": "pdf_lab.second_pass.opencode_completion_canary_validation.v1"
+        },
+        "canary": null,
+        "cleanup_artifact": null,
+        "patch_backend": "opencode_serve",
+        "patch_mode": "dry_run",
+        "required": false,
+        "validation_artifact": null
+      },
+      "ok": true,
+      "requirement": "live opencode serve write-capability canary passed"
+    },
+    {
+      "errors": [
+        "live canary missing"
+      ],
+      "evidence": {
+        "artifact_validation": {
+          "artifact_paths": {},
+          "canary_artifact": null,
+          "canary_artifact_matches_argument": false,
+          "canary_schema": "pdf_lab.second_pass.scillm_transport_readonly_canary.v1",
+          "cleanup_artifact": null,
+          "errors": [
+            "live canary missing"
+          ],
+          "ok": false,
+          "schema": "pdf_lab.second_pass.live_canary_artifact_validation.v1",
+          "validation_artifact": null,
+          "validation_schema": "pdf_lab.second_pass.scillm_transport_readonly_canary_validation.v1"
+        },
+        "canary": null,
+        "patch_backend": "opencode_serve",
+        "patch_mode": "dry_run",
+        "required": false
+      },
+      "ok": true,
+      "requirement": "live scillm transport read-only canary passed"
+    },
+    {
+      "errors": [
+        "live canary missing"
+      ],
+      "evidence": {
+        "artifact_validation": {
+          "artifact_paths": {},
+          "canary_artifact": null,
+          "canary_artifact_matches_argument": false,
+          "canary_schema": "pdf_lab.second_pass.scillm_transport_write_canary.v1",
+          "cleanup_artifact": null,
+          "errors": [
+            "live canary missing"
+          ],
+          "ok": false,
+          "schema": "pdf_lab.second_pass.live_canary_artifact_validation.v1",
+          "validation_artifact": null,
+          "validation_schema": "pdf_lab.second_pass.scillm_transport_write_canary_validation.v1"
+        },
+        "canary": null,
+        "cleanup_artifact": null,
+        "patch_backend": "opencode_serve",
+        "patch_mode": "dry_run",
+        "required": false,
+        "validation_artifact": null
+      },
+      "ok": true,
+      "requirement": "live scillm transport write-capability canary passed"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "bug_report": {
+          "code_root": "/tmp/pdf_oxide_page45b_1784600709",
+          "created_at": "2026-07-21T07:47:54.786818+00:00",
+          "errors": [],
+          "failed_checks": [],
+          "lane_required": false,
+          "missing_required_checks": [],
+          "observed_checks": [
+            {
+              "check_id": "code_root_visibility",
+              "errors": [],
+              "ok": true,
+              "present": true,
+              "schema": "pdf_lab.second_pass.scillm_code_root_visibility.v1",
+              "status": null
+            },
+            {
+              "check_id": "scillm_proof_floor",
+              "errors": null,
+              "ok": null,
+              "present": false,
+              "schema": null,
+              "status": null
+            },
+            {
+              "check_id": "opencode_completion_canary",
+              "errors": null,
+              "ok": null,
+              "present": false,
+              "schema": null,
+              "status": null
+            },
+            {
+              "check_id": "scillm_transport_readonly_canary",
+              "errors": null,
+              "ok": null,
+              "present": false,
+              "schema": null,
+              "status": null
+            },
+            {
+              "check_id": "scillm_transport_write_canary",
+              "errors": null,
+              "ok": null,
+              "present": false,
+              "schema": null,
+              "status": null
+            }
+          ],
+          "ok": true,
+          "out_dir": "artifacts/pdf_lab/live_second_pass_next_after_page42_20260721T0745Z",
+          "patch_backend": "opencode_serve",
+          "patch_mode": "dry_run",
+          "schema": "pdf_lab.second_pass.live_scillm_canary_bug_report.v1",
+          "scillm_project_agent_bug_report": null
+        },
+        "patch_backend": "opencode_serve",
+        "patch_mode": "dry_run",
+        "required": false
+      },
+      "ok": true,
+      "requirement": "live scillm canary bug report is deterministic"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "page_count": 0,
+        "patch_backend": "opencode_serve",
+        "patch_mode": "dry_run",
+        "registered_count": 0,
+        "required": false
+      },
+      "ok": true,
+      "requirement": "live scillm orchestrator page registration passed"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "page_case_count": 0
+      },
+      "ok": true,
+      "requirement": "each resolved page case has self-contained DAG evidence"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "duplicate_zip_entries": [],
+        "included_artifacts": [
+          "scillm_patch_delegate_bug_reports.json"
+        ],
+        "included_count": 1,
+        "invalid_zip": false,
+        "mismatched_zip_entries": [],
+        "missing_artifacts": [],
+        "missing_expected_source_artifacts": [],
+        "missing_expected_zip_entries": [],
+        "ok": true,
+        "required_zip_entries": [
+          "scillm_patch_delegate_bug_reports.json"
+        ],
+        "schema": "pdf_lab.second_pass.scillm_patch_delegate_bug_report_zip.v1",
+        "undeclared_zip_entries": [],
+        "zip_content_ok": true,
+        "zip_entry_count": 1,
+        "zip_path": "artifacts/pdf_lab/live_second_pass_next_after_page42_20260721T0745Z/scillm_patch_delegate_bug_reports.zip"
+      },
+      "ok": true,
+      "requirement": "scillm patch delegate bug report bundle is packageable"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "commit_count": 0,
+        "commit_shas": []
+      },
+      "ok": true,
+      "requirement": "patch commit ledger passed"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "commit_count": 0,
+        "commit_shas": [],
+        "duplicate_commit_shas": [],
+        "duplicate_ledger_case_ids": [],
+        "ledger_commit_by_case_id": {},
+        "patched_confirmed_count": 0,
+        "patched_page_commit_by_case_id": {}
+      },
+      "ok": true,
+      "requirement": "patch commit ledger matches patched-confirmed page count"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "duplicate_zip_entries": [],
+        "included_artifacts": [
+          "patch_commit_ledger.json"
+        ],
+        "included_count": 1,
+        "invalid_zip": false,
+        "mismatched_zip_entries": [],
+        "missing_artifacts": [],
+        "missing_expected_source_artifacts": [],
+        "missing_expected_zip_entries": [],
+        "ok": true,
+        "required_zip_entries": [
+          "patch_commit_ledger.json"
+        ],
+        "schema": "pdf_lab.second_pass.patch_commit_ledger_zip.v1",
+        "undeclared_zip_entries": [],
+        "zip_content_ok": true,
+        "zip_entry_count": 1,
+        "zip_path": "artifacts/pdf_lab/live_second_pass_next_after_page42_20260721T0745Z/patch_commit_ledger.zip"
+      },
+      "ok": true,
+      "requirement": "patch commit ledger bundle is packageable"
+    },
+    {
+      "errors": [],
+      "evidence": {
+        "duplicate_zip_entries": [],
+        "included_artifacts": [
+          "candidate_manifest.json",
+          "candidate_census_progress.json",
+          "candidate_census_events.jsonl",
+          "candidate_manifest_integrity_validation.json",
+          "sampled_page_cases.json",
+          "forced_pages_input.json",
+          "sampling_gate.json",
+          "candidate_sample_linkage_validation.json",
+          "deterministic_execution_plan.json",
+          "deterministic_execution_plan_validation.json",
+          "scillm_code_root_visibility.json",
+          "scillm_patch_delegate_bug_reports.json",
+          "scillm_patch_delegate_bug_reports_zip.json",
+          "scillm_patch_delegate_bug_reports.zip",
+          "patch_commit_ledger.json",
+          "patch_commit_ledger_zip.json",
+          "patch_commit_ledger.zip",
+          "live_scillm_canary_bug_report.json",
+          "harness_readiness_audit.json",
+          "harness_final_gate.json",
+          "harness_report.json",
+          "harness_review_bundle_zip.json"
+        ],
+        "included_count": 22,
+        "invalid_zip": false,
+        "mismatched_zip_entries": [],
+        "missing_expected_source_artifacts": [],
+        "missing_expected_zip_entries": [],
+        "missing_required_artifacts": [],
+        "ok": true,
+        "page_case_count": 0,
+        "required_zip_entries": [
+          "candidate_manifest.json",
+          "candidate_census_progress.json",
+          "candidate_census_events.jsonl",
+          "candidate_manifest_integrity_validation.json",
+          "sampled_page_cases.json",
+          "forced_pages_input.json",
+          "sampling_gate.json",
+          "candidate_sample_linkage_validation.json",
+          "deterministic_execution_plan.json",
+          "deterministic_execution_plan_validation.json",
+          "scillm_code_root_visibility.json",
+          "scillm_patch_delegate_bug_reports.json",
+          "scillm_patch_delegate_bug_reports_zip.json",
+          "scillm_patch_delegate_bug_reports.zip",
+          "patch_commit_ledger.json",
+          "patch_commit_ledger_zip.json",
+          "patch_commit_ledger.zip",
+          "live_scillm_canary_bug_report.json",
+          "harness_readiness_audit.json",
+          "harness_final_gate.json",
+          "harness_report.json",
+          "harness_review_bundle_zip.json"
+        ],
+        "schema": "pdf_lab.second_pass.harness_review_bundle_zip.v1",
+        "undeclared_zip_entries": [],
+        "zip_content_ok": true,
+        "zip_entry_count": 22,
+        "zip_path": "artifacts/pdf_lab/live_second_pass_next_after_page42_20260721T0745Z/harness_review_bundle.zip"
+      },
+      "ok": true,
+      "requirement": "harness review bundle is packageable"
+    }
+  ],
+  "created_at": "2026-07-21T07:47:54.829934+00:00",
+  "failed_count": 2,
+  "failed_requirements": [
+    "sampling gate passed",
+    "page results match sampled page cases"
+  ],
+  "ok": false,
+  "out_dir": "artifacts/pdf_lab/live_second_pass_next_after_page42_20260721T0745Z",
+  "schema": "pdf_lab.second_pass.harness_readiness_audit.v1"
+}
