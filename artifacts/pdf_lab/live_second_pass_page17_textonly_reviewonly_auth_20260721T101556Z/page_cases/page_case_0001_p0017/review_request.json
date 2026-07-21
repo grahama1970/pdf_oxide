@@ -1,0 +1,117 @@
+{
+  "artifacts": {
+    "annotated_image": "page_candidates.png",
+    "candidate_presets": "candidate_presets.json",
+    "original_image": "page_before.png",
+    "page_json": "page_before.json"
+  },
+  "endpoint": "POST /v1/chat/completions",
+  "model": "local-text",
+  "model_evidence": {
+    "image_evidence_in_payload": false,
+    "model_supports_images": false,
+    "page_json_omitted_fields": [
+      "is_bold",
+      "raw"
+    ],
+    "page_json_sanitized": true
+  },
+  "page_case": {
+    "candidate_ids": [
+      "cand:p0017:0000:side_chrome",
+      "cand:p0017:0001:side_chrome",
+      "cand:p0017:0002:side_chrome",
+      "cand:p0017:0003:side_chrome",
+      "cand:p0017:0004:list",
+      "cand:p0017:0005:text"
+    ],
+    "case_id": "page_case_0001_p0017",
+    "forced_by_human_annotation": true,
+    "page_index": 16,
+    "page_number": 17,
+    "preset_counts": {
+      "list": 1,
+      "side_chrome": 4,
+      "text": 1
+    },
+    "selection_probability_basis": {
+      "candidate_count_on_page": 6,
+      "candidate_share_estimate": 1.0,
+      "forced_page": true,
+      "method": "forced_human_annotation",
+      "page_score": 25.5,
+      "total_candidate_count": 6,
+      "total_page_score": 25.5,
+      "weighted_page_score_inclusion_estimate": 1.0
+    },
+    "selection_probability_estimate": 1.0,
+    "selection_reason": [
+      "human_annotated_page",
+      "high_risk_preset",
+      "high_risk_candidate",
+      "document_position_stratum",
+      "boundary_geometry",
+      "high_candidate_score"
+    ],
+    "selection_score": 25.5,
+    "strata": [
+      "geometry:boundary",
+      "position:first_20",
+      "position:frontmatter",
+      "preset:list",
+      "preset:side_chrome",
+      "preset:text",
+      "risk:high"
+    ]
+  },
+  "reasoning_effort": "high",
+  "required_response_schema": {
+    "candidate_findings": "one finding per candidate_id",
+    "page_rationale": "non-empty page-level rationale tied to rendered and extracted evidence",
+    "page_status": [
+      "clean",
+      "defect",
+      "unsure",
+      "substrate_blocked"
+    ],
+    "schema": "pdf_lab.second_pass.review_response.v1",
+    "suggested_fix_surface": {
+      "clean": "must be null, empty string, or 'none'",
+      "defect": "must identify the concrete fix surface"
+    }
+  },
+  "response_format": {
+    "type": "json_object"
+  },
+  "schema": "pdf_lab.second_pass.review_request.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0017",
+    "item_id": "page_case_0001_p0017:4766d2c4ed833872",
+    "request_sha256": "4766d2c4ed8338726884a9a87207fcc0734275a8283c243f1c83f91c504d6d57"
+  },
+  "scillm_payload": {
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are reviewing PDF Oxide extraction evidence for one page. Review the extracted JSON and the candidate preset questions. The original rendered page and annotated candidate image are preserved in the review bundle artifacts, but this text-only model payload does not embed image bytes. Return JSON only. You may classify candidates as clean, defect, unsure, or substrate_blocked. Do not claim that a bug is fixed, patched, resolved, committed, or closed.\n\nCandidate ID discipline:\n- candidate_findings[].candidate_id MUST be copied verbatim from the required_candidate_ids list below.\n- Return exactly one finding for each required_candidate_ids entry and no other candidate_id values.\n- Do not infer, rewrite, or repair candidate_id suffixes from preset_type, extracted JSON type, visual class, or rationale.\n- If the visual/extracted evidence suggests a different semantic type, describe that only in status/rationale/suggested_fix_surface; keep candidate_id unchanged.\n\nSuggested fix surface discipline:\n- For status clean, suggested_fix_surface MUST be null, an empty string, or the literal string \"none\".\n- For status defect, suggested_fix_surface MUST identify the concrete fix surface, such as pdf_oxide_core, nist_preset, export/schema, UI, or external harness.\n- Do not include optional improvement advice in suggested_fix_surface for a clean finding; put clean rationale in rationale only.\n\nrequired_candidate_ids:\n[\n  \"cand:p0017:0000:side_chrome\",\n  \"cand:p0017:0001:side_chrome\",\n  \"cand:p0017:0002:side_chrome\",\n  \"cand:p0017:0003:side_chrome\",\n  \"cand:p0017:0004:list\",\n  \"cand:p0017:0005:text\"\n]\n\nRequired response schema:\n{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean|defect|unsure|substrate_blocked\",\n  \"candidate_findings\": [\n    {\"candidate_id\": \"...\", \"status\": \"clean|defect|unsure|substrate_blocked\", \"evidence\": \"...\", \"rationale\": \"...\", \"suggested_fix_surface\": null|\"none\"|\"concrete fix surface\"}\n  ],\n  \"page_rationale\": \"...\"\n}\n\nPage case:\n{\n  \"candidate_ids\": [\n    \"cand:p0017:0000:side_chrome\",\n    \"cand:p0017:0001:side_chrome\",\n    \"cand:p0017:0002:side_chrome\",\n    \"cand:p0017:0003:side_chrome\",\n    \"cand:p0017:0004:list\",\n    \"cand:p0017:0005:text\"\n  ],\n  \"case_id\": \"page_case_0001_p0017\",\n  \"forced_by_human_annotation\": true,\n  \"page_index\": 16,\n  \"page_number\": 17,\n  \"preset_counts\": {\n    \"list\": 1,\n    \"side_chrome\": 4,\n    \"text\": 1\n  },\n  \"selection_probability_basis\": {\n    \"candidate_count_on_page\": 6,\n    \"candidate_share_estimate\": 1.0,\n    \"forced_page\": true,\n    \"method\": \"forced_human_annotation\",\n    \"page_score\": 25.5,\n    \"total_candidate_count\": 6,\n    \"total_page_score\": 25.5,\n    \"weighted_page_score_inclusion_estimate\": 1.0\n  },\n  \"selection_probability_estimate\": 1.0,\n  \"selection_reason\": [\n    \"human_annotated_page\",\n    \"high_risk_preset\",\n    \"high_risk_candidate\",\n    \"document_position_stratum\",\n    \"boundary_geometry\",\n    \"high_candidate_score\"\n  ],\n  \"selection_score\": 25.5,\n  \"strata\": [\n    \"geometry:boundary\",\n    \"position:first_20\",\n    \"position:frontmatter\",\n    \"preset:list\",\n    \"preset:side_chrome\",\n    \"preset:text\",\n    \"risk:high\"\n  ]\n}\n\nCandidate presets:\n{\n  \"candidate_count\": 6,\n  \"candidates\": [\n    {\n      \"allowed_review_statuses\": [\n        \"clean\",\n        \"defect\",\n        \"unsure\",\n        \"substrate_blocked\"\n      ],\n      \"bbox\": [\n        0.14705882352941177,\n        0.04473802296802251,\n        0.8507378272760927,\n        0.05821938948197798\n      ],\n      \"candidate_id\": \"cand:p0017:0000:side_chrome\",\n      \"features\": {\n        \"bbox_area\": 0.009487,\n        \"block_type\": \"header_footer_noise\",\n        \"has_toc_entries\": false,\n        \"semantic_role\": \"page_chrome\",\n        \"source_type\": \"Header\",\n        \"text_length\": 94\n      },\n      \"json_pointer\": \"/pages/16/blocks/0\",\n      \"preset_type\": \"side_chrome\",\n      \"question\": \"Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?\",\n      \"text_excerpt\": \"NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS\"\n    },\n    {\n      \"allowed_review_statuses\": [\n        \"clean\",\n        \"defect\",\n        \"unsure\",\n        \"substrate_blocked\"\n      ],\n      \"bbox\": [\n        0.14705882352941177,\n        0.05679397390346334,\n        0.8517353332120609,\n        0.07054738324097913\n      ],\n      \"candidate_id\": \"cand:p0017:0001:side_chrome\",\n      \"features\": {\n        \"bbox_area\": 0.009692,\n        \"block_type\": \"header_footer_noise\",\n        \"has_toc_entries\": false,\n        \"semantic_role\": \"page_chrome\",\n        \"source_type\": \"Header\",\n        \"text_length\": 97\n      },\n      \"json_pointer\": \"/pages/16/blocks/1\",\n      \"preset_type\": \"side_chrome\",\n      \"question\": \"Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?\",\n      \"text_excerpt\": \"_________________________________________________________________________________________________\"\n    },\n    {\n      \"allowed_review_statuses\": [\n        \"clean\",\n        \"defect\",\n        \"unsure\",\n        \"substrate_blocked\"\n      ],\n      \"bbox\": [\n        0.49343139050053614,\n        0.939856018682923,\n        0.5064460903990502,\n        0.9550605542732008\n      ],\n      \"candidate_id\": \"cand:p0017:0002:side_chrome\",\n      \"features\": {\n        \"bbox_area\": 0.000198,\n        \"block_type\": \"header_footer_noise\",\n        \"has_toc_entries\": false,\n        \"semantic_role\": null,\n        \"source_type\": \"PageNumber\",\n        \"text_length\": 2\n      },\n      \"json_pointer\": \"/pages/16/blocks/2\",\n      \"preset_type\": \"side_chrome\",\n      \"question\": \"Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?\",\n      \"text_excerpt\": \"xv\"\n    },\n    {\n      \"allowed_review_statuses\": [\n        \"clean\",\n        \"defect\",\n        \"unsure\",\n        \"substrate_blocked\"\n      ],\n      \"bbox\": [\n        0.0296323533151664,\n        0.28780303338561397,\n        0.049705879361021756,\n        0.7406287915778883\n      ],\n      \"candidate_id\": \"cand:p0017:0003:side_chrome\",\n      \"features\": {\n        \"bbox_area\": 0.00909,\n        \"block_type\": \"header_footer_noise\",\n        \"has_toc_entries\": false,\n        \"semantic_role\": null,\n        \"source_type\": \"Boilerplate\",\n        \"text_length\": 92\n      },\n      \"json_pointer\": \"/pages/16/blocks/3\",\n      \"preset_type\": \"side_chrome\",\n      \"question\": \"Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?\",\n      \"text_excerpt\": \"This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5\"\n    },\n    {\n      \"allowed_review_statuses\": [\n        \"clean\",\n        \"defect\",\n        \"unsure\",\n        \"substrate_blocked\"\n      ],\n      \"bbox\": [\n        0.14704209371329913,\n        0.0907001206369111,\n        0.8453683292164522,\n        0.2291010654333866\n      ],\n      \"candidate_id\": \"cand:p0017:0004:list\",\n      \"features\": {\n        \"bbox_area\": 0.096649,\n        \"block_type\": \"list\",\n        \"has_toc_entries\": false,\n        \"semantic_role\": null,\n        \"source_type\": \"List\",\n        \"text_length\": 568\n      },\n      \"json_pointer\": \"/pages/16/blocks/4\",\n      \"preset_type\": \"list\",\n      \"question\": \"Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?\",\n      \"text_excerpt\": \"\\u2022 Removing control baselines and tailoring guidance from the publication and transferring the content to NIST SP 800-53B, Control Baselines for Information Systems and Organizations; \\u2022 Clarifying the relationship between requirements and controls and the relationship between security and privacy controls; and \\u2022 Incorporating new, state-of-the-practice controls (e.g., controls to support cyber resiliency, support secure systems design, and strengthen security and privacy governance and accountabi\"\n    },\n    {\n      \"allowed_review_statuses\": [\n        \"clean\",\n        \"defect\",\n        \"unsure\",\n        \"substrate_blocked\"\n      ],\n      \"bbox\": [\n        0.14700621561287275,\n        0.2426735849091501,\n        0.8504042282603146,\n        0.3629683292273319\n      ],\n      \"candidate_id\": \"cand:p0017:0005:text\",\n      \"features\": {\n        \"bbox_area\": 0.084615,\n        \"block_type\": \"paragraph_block\",\n        \"has_toc_entries\": false,\n        \"semantic_role\": null,\n        \"source_type\": \"Body\",\n        \"text_length\": 603\n      },\n      \"json_pointer\": \"/pages/16/blocks/5\",\n      \"preset_type\": \"text\",\n      \"question\": \"Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?\",\n      \"text_excerpt\": \"In separating the process of control selection from the controls and removing the control baselines, a significant amount of guidance and other informative material previously contained in SP 800-53 was eliminated. That content will be moved to other NIST publications such as SP 800-37 (Risk Management Framework) and SP 800-53B during the next update cycle. In the near future, NIST also plans to offer the content of SP 800-53, SP 800-53A, and SP 800-53B to a web- based portal to provide its cust\"\n    }\n  ],\n  \"page_case\": {\n    \"case_id\": \"page_case_0001_p0017\",\n    \"page_number\": 17\n  },\n  \"schema\": \"pdf_lab.second_pass.candidate_presets.v1\"\n}\n\nExtracted page JSON:\n{\n  \"apply_mode\": \"release\",\n  \"blocks\": [\n    {\n      \"bbox\": [\n        0.14705882352941177,\n        0.04473802296802251,\n        0.8507378272760927,\n        0.05821938948197798\n      ],\n      \"font_name\": \"TT0\",\n      \"font_size\": 7.3299994468688965,\n      \"id\": \"actual:p17:block:0\",\n      \"page\": 17,\n      \"pdf_page_index\": 16,\n      \"semantic_role\": \"page_chrome\",\n      \"source_type\": \"Header\",\n      \"text\": \"NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS\",\n      \"type\": \"header_footer_noise\"\n    },\n    {\n      \"bbox\": [\n        0.14705882352941177,\n        0.05679397390346334,\n        0.8517353332120609,\n        0.07054738324097913\n      ],\n      \"font_name\": \"TT1\",\n      \"font_size\": 7.980000019073486,\n      \"id\": \"actual:p17:block:1\",\n      \"page\": 17,\n      \"pdf_page_index\": 16,\n      \"semantic_role\": \"page_chrome\",\n      \"source_type\": \"Header\",\n      \"text\": \"_________________________________________________________________________________________________\",\n      \"type\": \"header_footer_noise\"\n    },\n    {\n      \"bbox\": [\n        0.49343139050053614,\n        0.939856018682923,\n        0.5064460903990502,\n        0.9550605542732008\n      ],\n      \"font_name\": \"TT0\",\n      \"font_size\": 9.0,\n      \"id\": \"actual:p17:block:2\",\n      \"page\": 17,\n      \"pdf_page_index\": 16,\n      \"source_type\": \"PageNumber\",\n      \"text\": \"xv\",\n      \"type\": \"header_footer_noise\"\n    },\n    {\n      \"bbox\": [\n        0.0296323533151664,\n        0.28780303338561397,\n        0.049705879361021756,\n        0.7406287915778883\n      ],\n      \"font_name\": \"TT1\",\n      \"font_size\": 9.0,\n      \"id\": \"actual:p17:block:3\",\n      \"page\": 17,\n      \"pdf_page_index\": 16,\n      \"source_type\": \"Boilerplate\",\n      \"text\": \"This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5\",\n      \"type\": \"header_footer_noise\"\n    },\n    {\n      \"bbox\": [\n        0.14704209371329913,\n        0.0907001206369111,\n        0.8453683292164522,\n        0.2291010654333866\n      ],\n      \"font_name\": \"C2_0\",\n      \"font_size\": 10.979999542236328,\n      \"id\": \"actual:p17:block:4\",\n      \"page\": 17,\n      \"pdf_page_index\": 16,\n      \"source_type\": \"List\",\n      \"text\": \"\\u2022 Removing control baselines and tailoring guidance from the publication and transferring the content to NIST SP 800-53B, Control Baselines for Information Systems and Organizations; \\u2022 Clarifying the relationship between requirements and controls and the relationship between security and privacy controls; and \\u2022 Incorporating new, state-of-the-practice controls (e.g., controls to support cyber resiliency, support secure systems design, and strengthen security and privacy governance and accountability) based on the latest threat intelligence and cyber-attack data.\",\n      \"type\": \"list\"\n    },\n    {\n      \"bbox\": [\n        0.14700621561287275,\n        0.2426735849091501,\n        0.8504042282603146,\n        0.3629683292273319\n      ],\n      \"font_name\": \"TT0\",\n      \"font_size\": 10.979999542236328,\n      \"id\": \"actual:p17:block:5\",\n      \"page\": 17,\n      \"pdf_page_index\": 16,\n      \"source_type\": \"Body\",\n      \"text\": \"In separating the process of control selection from the controls and removing the control baselines, a significant amount of guidance and other informative material previously contained in SP 800-53 was eliminated. That content will be moved to other NIST publications such as SP 800-37 (Risk Management Framework) and SP 800-53B during the next update cycle. In the near future, NIST also plans to offer the content of SP 800-53, SP 800-53A, and SP 800-53B to a web- based portal to provide its customers interactive, online access to all control, control baseline, overlay, and assessment information.\",\n      \"type\": \"paragraph_block\"\n    }\n  ],\n  \"ledger_path\": \"python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n  \"page\": 17,\n  \"page_dimensions_pts\": [\n    612.0,\n    792.0\n  ],\n  \"pdf_page_index\": 16\n}",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "local-text",
+    "reasoning_effort": "high",
+    "response_format": {
+      "type": "json_object"
+    },
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0017",
+      "item_id": "page_case_0001_p0017:4766d2c4ed833872",
+      "request_sha256": "4766d2c4ed8338726884a9a87207fcc0734275a8283c243f1c83f91c504d6d57"
+    }
+  }
+}

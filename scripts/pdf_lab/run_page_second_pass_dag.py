@@ -834,6 +834,13 @@ def sanitize_page_json_for_model_review(value: Any) -> Any:
     return value
 
 
+TEXT_ONLY_REVIEW_MODELS = {"local-text"}
+
+
+def review_model_supports_images(model: str) -> bool:
+    return model not in TEXT_ONLY_REVIEW_MODELS
+
+
 def build_review_request(
     *,
     case_dir: Path,
@@ -853,10 +860,36 @@ def build_review_request(
         for candidate in candidate_presets.get("candidates", [])
         if isinstance(candidate, dict) and isinstance(candidate.get("candidate_id"), str)
     ]
+    response_template = {
+        "schema": "pdf_lab.second_pass.review_response.v1",
+        "page_status": "unsure",
+        "candidate_findings": [
+            {
+                "candidate_id": candidate_id,
+                "status": "unsure",
+                "evidence": "cite the extracted JSON or preserved visual artifact limitation for this candidate",
+                "rationale": "explain the review decision for this candidate",
+                "suggested_fix_surface": "none",
+            }
+            for candidate_id in required_candidate_ids
+        ],
+        "page_rationale": "summarize the page-level review decision",
+    }
+    supports_images = review_model_supports_images(model)
+    visual_instruction = (
+        "Compare the original rendered page, the annotated candidate image, "
+        "the extracted JSON, and the candidate preset questions."
+        if supports_images
+        else (
+            "Review the extracted JSON and the candidate preset questions. "
+            "The original rendered page and annotated candidate image are preserved "
+            "in the review bundle artifacts, but this text-only model payload does "
+            "not embed image bytes."
+        )
+    )
     prompt_text = (
         "You are reviewing PDF Oxide extraction evidence for one page. "
-        "Compare the original rendered page, the annotated candidate image, "
-        "the extracted JSON, and the candidate preset questions. Return JSON only. "
+        f"{visual_instruction} Return JSON only. "
         "You may classify candidates as clean, defect, unsure, or substrate_blocked. "
         "Do not claim that a bug is fixed, patched, resolved, committed, or closed.\n\n"
         "Candidate ID discipline:\n"
@@ -869,49 +902,51 @@ def build_review_request(
         "- For status defect, suggested_fix_surface MUST identify the concrete fix surface, such as pdf_oxide_core, nist_preset, export/schema, UI, or external harness.\n"
         "- Do not include optional improvement advice in suggested_fix_surface for a clean finding; put clean rationale in rationale only.\n\n"
         f"required_candidate_ids:\n{json.dumps(required_candidate_ids, indent=2)}\n\n"
-        "Required response schema:\n"
-        "{\n"
-        '  "schema": "pdf_lab.second_pass.review_response.v1",\n'
-        '  "page_status": "clean|defect|unsure|substrate_blocked",\n'
-        '  "candidate_findings": [\n'
-        '    {"candidate_id": "...", "status": "clean|defect|unsure|substrate_blocked", '
-        '"evidence": "...", "rationale": "...", "suggested_fix_surface": null|"none"|"concrete fix surface"}\n'
-        "  ],\n"
-        '  "page_rationale": "..."\n'
-        "}\n\n"
+        "Allowed status values: clean, defect, unsure, substrate_blocked.\n"
+        "Return a JSON object with exactly this shape. Keep every candidate_id unchanged. "
+        "Replace the evidence, rationale, and page_rationale placeholder text with non-empty review text. "
+        "Choose exactly one allowed status value for page_status and each candidate status; "
+        "do not join multiple status values with a vertical bar.\n"
+        f"{json.dumps(response_template, indent=2)}\n\n"
         f"Page case:\n{json.dumps(page_case, indent=2, sort_keys=True)}\n\n"
         f"Candidate presets:\n{json.dumps(candidate_presets, indent=2, sort_keys=True)}\n\n"
         f"Extracted page JSON:\n{json.dumps(model_page_json, indent=2, sort_keys=True)}"
     )
     request_sha256 = hashlib.sha256(prompt_text.encode("utf-8")).hexdigest()
     item_id = f"{page_case['case_id']}:{request_sha256[:16]}"
+    reasoning_effort = "high" if supports_images else None
     scillm_metadata = {
         "batch_id": batch_id,
         "case_id": str(page_case["case_id"]),
         "item_id": item_id,
         "request_sha256": request_sha256,
     }
+    content_parts: list[dict[str, Any]] = [{"type": "text", "text": prompt_text}]
+    if supports_images:
+        content_parts.extend(
+            [
+                {"type": "image_url", "image_url": {"url": _image_data_uri(case_dir / original_image_path)}},
+                {"type": "image_url", "image_url": {"url": _image_data_uri(case_dir / annotated_image_path)}},
+            ]
+        )
     scillm_payload = {
         "model": model,
-        "reasoning_effort": "high",
         "response_format": {"type": "json_object"},
         "scillm_metadata": scillm_metadata,
         "messages": [
             {
                 "role": "user",
-                "content": [
-                    {"type": "text", "text": prompt_text},
-                    {"type": "image_url", "image_url": {"url": _image_data_uri(case_dir / original_image_path)}},
-                    {"type": "image_url", "image_url": {"url": _image_data_uri(case_dir / annotated_image_path)}},
-                ],
+                "content": content_parts,
             }
         ],
     }
+    if reasoning_effort is not None:
+        scillm_payload["reasoning_effort"] = reasoning_effort
     return {
         "schema": "pdf_lab.second_pass.review_request.v1",
         "endpoint": "POST /v1/chat/completions",
         "model": model,
-        "reasoning_effort": "high",
+        "reasoning_effort": reasoning_effort,
         "response_format": {"type": "json_object"},
         "scillm_metadata": scillm_metadata,
         "page_case": page_case,
@@ -924,6 +959,8 @@ def build_review_request(
         "model_evidence": {
             "page_json_sanitized": True,
             "page_json_omitted_fields": ["is_bold", "raw"],
+            "model_supports_images": supports_images,
+            "image_evidence_in_payload": supports_images,
         },
         "scillm_payload": scillm_payload,
         "required_response_schema": {
@@ -1120,8 +1157,9 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
                 expected_artifact_text = f"{heading}:\n{json.dumps(artifact_payload, indent=2, sort_keys=True)}"
                 if expected_artifact_text not in prompt_text:
                     errors.append(f"scillm_payload text prompt does not include current artifacts.{artifact_key}")
-    if len(image_parts) != 2:
-        errors.append("scillm_payload must include exactly two image_url evidence parts")
+    expected_image_part_count = 2 if review_model_supports_images(str(review_request.get("model") or "")) else 0
+    if len(image_parts) != expected_image_part_count:
+        errors.append(f"scillm_payload must include exactly {expected_image_part_count} image_url evidence parts")
     else:
         expected_image_artifacts = [
             ("original_image", artifacts.get("original_image")),

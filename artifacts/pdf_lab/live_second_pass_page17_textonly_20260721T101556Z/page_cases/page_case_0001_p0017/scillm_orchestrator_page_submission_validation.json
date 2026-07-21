@@ -1,0 +1,9 @@
+{
+  "case_id": "page_case_0001_p0017",
+  "dag_spec_sha256": "ea727d55751903c279e36b95222233975b7d87b9e81fda4d24d2ddf656e68d23",
+  "errors": [],
+  "ok": true,
+  "page_number": 17,
+  "schema": "pdf_lab.second_pass.scillm_orchestrator_page_submission_validation.v1",
+  "target_dag_state_owner": "scillm_orchestrator"
+}

@@ -1,0 +1,18 @@
+{
+  "body": {
+    "error": {
+      "advice": "All providers failed after exhausting fallbacks. Check /v1/scillm/health for provider status. If batch processing, use CHUNK_SIZE=4 to reduce concurrent load on providers.",
+      "code": 400,
+      "details": {
+        "fallback_chain": [
+          "local-text"
+        ]
+      },
+      "message": "All groups exhausted for model='local-text' (chain=['local-text']): Error code: 400 - {'error': {'message': '\"qwen2.5:0.5b\" does not support thinking', 'type': 'api_error', 'param': None, 'code': None}}",
+      "skill": "/best-practices-scillm",
+      "type": "router_error"
+    }
+  },
+  "elapsed_s": 0.128,
+  "http_status": 400
+}

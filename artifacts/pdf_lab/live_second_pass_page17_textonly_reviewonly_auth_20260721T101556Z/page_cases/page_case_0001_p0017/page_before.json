@@ -1,0 +1,206 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p17:block:0",
+      "is_bold": false,
+      "page": 17,
+      "pdf_page_index": 16,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p17:block:1",
+      "is_bold": false,
+      "page": 17,
+      "pdf_page_index": 16,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.49343139050053614,
+        0.939856018682923,
+        0.5064460903990502,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p17:block:2",
+      "is_bold": false,
+      "page": 17,
+      "pdf_page_index": 16,
+      "raw": {
+        "bbox": [
+          301.9800109863281,
+          38.400001525878906,
+          10.016998291015625,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "xv"
+      },
+      "source_type": "PageNumber",
+      "text": "xv",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p17:block:3",
+      "is_bold": false,
+      "page": 17,
+      "pdf_page_index": 16,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14704209371329913,
+        0.0907001206369111,
+        0.8453683292164522,
+        0.2291010654333866
+      ],
+      "font_name": "C2_0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p17:block:4",
+      "is_bold": false,
+      "page": 17,
+      "pdf_page_index": 16,
+      "raw": {
+        "bbox": [
+          89.98976135253906,
+          613.9777221679688,
+          429.89117431640625,
+          105.90228271484375
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "C2_0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "\u2022 Removing control baselines and tailoring guidance from the publication and transferring the content to NIST SP 800-53B, Control Baselines for Information Systems and Organizations; \u2022 Clarifying the relationship between requirements and controls and the relationship between security and privacy controls; and \u2022 Incorporating new, state-of-the-practice controls (e.g., controls to support cyber resiliency, support secure systems design, and strengthen security and privacy governance and accountability) based on the latest threat intelligence and cyber-attack data."
+      },
+      "source_type": "List",
+      "text": "\u2022 Removing control baselines and tailoring guidance from the publication and transferring the content to NIST SP 800-53B, Control Baselines for Information Systems and Organizations; \u2022 Clarifying the relationship between requirements and controls and the relationship between security and privacy controls; and \u2022 Incorporating new, state-of-the-practice controls (e.g., controls to support cyber resiliency, support secure systems design, and strengthen security and privacy governance and accountability) based on the latest threat intelligence and cyber-attack data.",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.14700621561287275,
+        0.2426735849091501,
+        0.8504042282603146,
+        0.3629683292273319
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p17:block:5",
+      "is_bold": false,
+      "page": 17,
+      "pdf_page_index": 16,
+      "raw": {
+        "bbox": [
+          89.96780395507812,
+          507.954833984375,
+          432.9468688964844,
+          91.56219482421875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "In separating the process of control selection from the controls and removing the control baselines, a significant amount of guidance and other informative material previously contained in SP 800-SP53 was eliminated. That content will be moved to other NIST publications such as 800-SP37 (Risk Management Framework) and  800-53B during the next update cycle. In the near future, NIST also plans to offer the content of SP 800-53, SP 800-53A, and SP 800-53B to a web- based portal to provide its customers interactive, online access to all control, control baseline, overlay, and assessment information."
+      },
+      "source_type": "Body",
+      "text": "In separating the process of control selection from the controls and removing the control baselines, a significant amount of guidance and other informative material previously contained in SP 800-53 was eliminated. That content will be moved to other NIST publications such as SP 800-37 (Risk Management Framework) and SP 800-53B during the next update cycle. In the near future, NIST also plans to offer the content of SP 800-53, SP 800-53A, and SP 800-53B to a web- based portal to provide its customers interactive, online access to all control, control baseline, overlay, and assessment information.",
+      "type": "paragraph_block"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 17,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 16
+}

@@ -486,6 +486,103 @@ def _write_sampled_page_cases(path: Path, cases: list[dict]) -> None:
     )
 
 
+def _write_review_request_case(case_dir: Path, page_dag, page_case: dict) -> None:
+    case_dir.mkdir(parents=True)
+    candidate_id = page_case["candidate_ids"][0]
+    (case_dir / "page_before.json").write_text(
+        json.dumps(
+            {
+                "page_number": page_case["page_number"],
+                "pdf_page_index": page_case["page_number"] - 1,
+                "blocks": [{"id": "b1", "type": "text", "text": "example", "bbox": [0, 0, 10, 10]}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "candidate_presets.json").write_text(
+        json.dumps(
+            {
+                "schema": page_dag.CANDIDATE_PRESETS_SCHEMA,
+                "page_case": page_case,
+                "candidate_count": 1,
+                "candidates": [
+                    {
+                        "candidate_id": candidate_id,
+                        "preset_type": "text",
+                        "question": "Does the extracted text match this candidate?",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "page_before.png").write_bytes(b"original-image")
+    (case_dir / "page_candidates.png").write_bytes(b"annotated-image")
+
+
+def test_build_review_request_omits_images_for_local_text_model(tmp_path: Path) -> None:
+    harness = _load_module()
+    _, _, page_dag = harness._import_pdf_lab_modules()
+    page_case = _sampled_page_case(candidate_id="cand:p0001:0000:text", page_number=1, preset_type="text")
+    case_dir = tmp_path / "case"
+    _write_review_request_case(case_dir, page_dag, page_case)
+
+    request = page_dag.build_review_request(
+        case_dir=case_dir,
+        page_case=page_case,
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="local-text",
+        batch_id="batch-test",
+    )
+    validation = page_dag.validate_review_request_contract(case_dir, request)
+    content = request["scillm_payload"]["messages"][0]["content"]
+
+    assert validation["ok"] is True
+    assert validation["image_part_count"] == 0
+    assert [part["type"] for part in content] == ["text"]
+    assert request["artifacts"]["original_image"] == "page_before.png"
+    assert request["artifacts"]["annotated_image"] == "page_candidates.png"
+    assert request["reasoning_effort"] is None
+    assert "reasoning_effort" not in request["scillm_payload"]
+    assert request["model_evidence"]["model_supports_images"] is False
+    assert "does not embed image bytes" in content[0]["text"]
+    assert "clean|unsure" not in content[0]["text"]
+    assert "clean|defect|unsure|substrate_blocked" not in content[0]["text"]
+    assert '"candidate_id": "cand:p0001:0000:text"' in content[0]["text"]
+
+
+def test_build_review_request_keeps_images_for_vlm_model(tmp_path: Path) -> None:
+    harness = _load_module()
+    _, _, page_dag = harness._import_pdf_lab_modules()
+    page_case = _sampled_page_case(candidate_id="cand:p0001:0000:text", page_number=1, preset_type="text")
+    case_dir = tmp_path / "case"
+    _write_review_request_case(case_dir, page_dag, page_case)
+
+    request = page_dag.build_review_request(
+        case_dir=case_dir,
+        page_case=page_case,
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="batch-test",
+    )
+    validation = page_dag.validate_review_request_contract(case_dir, request)
+    content = request["scillm_payload"]["messages"][0]["content"]
+
+    assert validation["ok"] is True
+    assert validation["image_part_count"] == 2
+    assert [part["type"] for part in content] == ["text", "image_url", "image_url"]
+    assert request["reasoning_effort"] == "high"
+    assert request["scillm_payload"]["reasoning_effort"] == "high"
+    assert request["model_evidence"]["model_supports_images"] is True
+    assert all(part["image_url"]["url"].startswith("data:image/png;base64,") for part in content[1:])
+
+
 def test_aggregate_page_results_fails_closed_on_nonterminal() -> None:
     harness = _load_module()
     aggregate = harness.aggregate_page_results(

@@ -1,0 +1,49 @@
+{
+  "body": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\"schema\": \"pdf_lab.second_pass.review_response.v1\", \"page_status\": \"clean|unsure\", \"candidate_findings\": [{\"candidate_id\": \"cand:p0017:0004:list\", \"status\": \"clean|unspecified\", \"evidence\": null, \"rationale\": null}, {\"candidate_id\": \"cand:p0017:0005:text\", \"status\": \"clean|unsure\", \"evidence\": null, \"rationale\": null}], \"page_rationale\": null, \"none\": null}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784629156,
+    "id": "chatcmpl-798",
+    "model": "qwen2.5:0.5b",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0017",
+      "item_id": "page_case_0001_p0017:4766d2c4ed833872",
+      "request_sha256": "4766d2c4ed8338726884a9a87207fcc0734275a8283c243f1c83f91c504d6d57"
+    },
+    "service_tier": null,
+    "system_fingerprint": "fp_ollama",
+    "usage": {
+      "completion_tokens": 151,
+      "completion_tokens_details": null,
+      "prompt_tokens": 4498,
+      "prompt_tokens_details": null,
+      "total_tokens": 4649
+    }
+  },
+  "elapsed_s": 0.769,
+  "http_status": 200
+}

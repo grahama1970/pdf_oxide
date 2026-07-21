@@ -1,0 +1,20 @@
+{
+  "completed_pages": 1,
+  "current_page_number": null,
+  "failed_pages": 0,
+  "last_event": {
+    "completed_pages": 1,
+    "created_at": "2026-07-21T10:16:06.632555+00:00",
+    "event": "completed",
+    "failed_pages": 0,
+    "limit": 1,
+    "schema": "pdf_lab.second_pass.candidate_census_event.v1"
+  },
+  "limit": 1,
+  "page_count": 492,
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "remaining_pages": 0,
+  "schema": "pdf_lab.second_pass.candidate_census_progress.v1",
+  "status": "completed",
+  "updated_at": "2026-07-21T10:16:06.632665+00:00"
+}

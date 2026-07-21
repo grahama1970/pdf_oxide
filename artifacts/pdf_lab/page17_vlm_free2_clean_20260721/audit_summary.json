@@ -1,0 +1,60 @@
+{
+  "case_id": "page_case_0001_p0017",
+  "checks": {
+    "candidate_count": 6,
+    "candidate_findings_count": 6,
+    "harness_final_gate_ok": true,
+    "harness_terminal_status": "passed",
+    "http_status": 200,
+    "page_orchestrator_registered": true,
+    "page_orchestrator_validation_ok": true,
+    "readiness_ok": true,
+    "review_request_validation_ok": true,
+    "review_validation_ok": true,
+    "usage": {
+      "completion_tokens": 1202,
+      "completion_tokens_details": null,
+      "prompt_tokens": 6025,
+      "prompt_tokens_details": null,
+      "total_tokens": 9307
+    }
+  },
+  "created_at": "2026-07-21T10:24:06.403886+00:00",
+  "evidence": {
+    "harness_final_gate": "artifacts/pdf_lab/live_second_pass_page17_vlm_free2_orchestrator_live_20260721T101556Z/harness_final_gate.json",
+    "harness_readiness_audit": "artifacts/pdf_lab/live_second_pass_page17_vlm_free2_orchestrator_live_20260721T101556Z/harness_readiness_audit.json",
+    "page_orchestrator_run_validation": "artifacts/pdf_lab/live_second_pass_page17_vlm_free2_orchestrator_live_20260721T101556Z/page_cases/page_case_0001_p0017/scillm_page_orchestrator_run_validation.json",
+    "review_bundle": "artifacts/pdf_lab/live_second_pass_page17_vlm_free2_orchestrator_live_20260721T101556Z/page_cases/page_case_0001_p0017/review_bundle.zip",
+    "review_request_validation": "artifacts/pdf_lab/live_second_pass_page17_vlm_free2_orchestrator_live_20260721T101556Z/page_cases/page_case_0001_p0017/review_request_validation.json",
+    "review_validation": "artifacts/pdf_lab/live_second_pass_page17_vlm_free2_orchestrator_live_20260721T101556Z/page_cases/page_case_0001_p0017/review_validation.json",
+    "run_dir": "artifacts/pdf_lab/live_second_pass_page17_vlm_free2_orchestrator_live_20260721T101556Z",
+    "scillm_review_receipt": "artifacts/pdf_lab/live_second_pass_page17_vlm_free2_orchestrator_live_20260721T101556Z/page_cases/page_case_0001_p0017/scillm_review_receipt.json",
+    "terminal_ledger": "artifacts/pdf_lab/live_second_pass_page17_vlm_free2_orchestrator_live_20260721T101556Z/page_cases/page_case_0001_p0017/terminal_ledger.json"
+  },
+  "live": true,
+  "mocked": false,
+  "model": "gemini-2.5-flash",
+  "page_number": 17,
+  "prior_failures_preserved": {
+    "brave_research": "artifacts/pdf_lab/live_second_pass_page17_textonly_20260721T101556Z/unblock/brave_scillm_transport_401.json",
+    "local_text_image_timeout_run": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z",
+    "local_text_no_thinking_schema_failure_run": "artifacts/pdf_lab/live_second_pass_page17_textonly_reviewonly_no_thinking_20260721T101556Z",
+    "local_text_template_schema_failure_run": "artifacts/pdf_lab/live_second_pass_page17_textonly_template_20260721T101556Z",
+    "local_text_text_only_auth_failure_run": "artifacts/pdf_lab/live_second_pass_page17_textonly_reviewonly_20260721T101556Z"
+  },
+  "review_model_group": "vlm-free2",
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "terminal_reason": "scillm_review_validated_clean",
+  "terminal_status": "reviewed_clean",
+  "what_remains_unverified": [
+    "Criterion 6 live GitHub apply remains blocked without approval receipt",
+    "remaining candidate pages still require one-page iteration",
+    "local-text tiny model does not satisfy full review schema reliably"
+  ],
+  "what_was_exercised": [
+    "single forced GS001/NIST SP 800-53r5 page 17 candidate set",
+    "live SciLLM /v1/chat/completions review with image evidence",
+    "live SciLLM /v1/scillm/opencode/transport/runs page orchestrator registration",
+    "deterministic review response validation and harness final gate"
+  ]
+}

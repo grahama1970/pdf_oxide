@@ -1,0 +1,172 @@
+{
+  "candidate_count": 6,
+  "candidates": [
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "candidate_id": "cand:p0017:0000:side_chrome",
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/16/blocks/0",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "candidate_id": "cand:p0017:0001:side_chrome",
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/16/blocks/1",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.49343139050053614,
+        0.939856018682923,
+        0.5064460903990502,
+        0.9550605542732008
+      ],
+      "candidate_id": "cand:p0017:0002:side_chrome",
+      "features": {
+        "bbox_area": 0.000198,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "PageNumber",
+        "text_length": 2
+      },
+      "json_pointer": "/pages/16/blocks/2",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "xv"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "candidate_id": "cand:p0017:0003:side_chrome",
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/16/blocks/3",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14704209371329913,
+        0.0907001206369111,
+        0.8453683292164522,
+        0.2291010654333866
+      ],
+      "candidate_id": "cand:p0017:0004:list",
+      "features": {
+        "bbox_area": 0.096649,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 568
+      },
+      "json_pointer": "/pages/16/blocks/4",
+      "preset_type": "list",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "\u2022 Removing control baselines and tailoring guidance from the publication and transferring the content to NIST SP 800-53B, Control Baselines for Information Systems and Organizations; \u2022 Clarifying the relationship between requirements and controls and the relationship between security and privacy controls; and \u2022 Incorporating new, state-of-the-practice controls (e.g., controls to support cyber resiliency, support secure systems design, and strengthen security and privacy governance and accountabi"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14700621561287275,
+        0.2426735849091501,
+        0.8504042282603146,
+        0.3629683292273319
+      ],
+      "candidate_id": "cand:p0017:0005:text",
+      "features": {
+        "bbox_area": 0.084615,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 603
+      },
+      "json_pointer": "/pages/16/blocks/5",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "In separating the process of control selection from the controls and removing the control baselines, a significant amount of guidance and other informative material previously contained in SP 800-53 was eliminated. That content will be moved to other NIST publications such as SP 800-37 (Risk Management Framework) and SP 800-53B during the next update cycle. In the near future, NIST also plans to offer the content of SP 800-53, SP 800-53A, and SP 800-53B to a web- based portal to provide its cust"
+    }
+  ],
+  "page_case": {
+    "case_id": "page_case_0001_p0017",
+    "page_number": 17
+  },
+  "schema": "pdf_lab.second_pass.candidate_presets.v1"
+}

@@ -1,0 +1,31 @@
+{
+  "command_or_endpoint": "run_page_second_pass_dag.validate_review_response",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T10:19:16.231050+00:00",
+  "input_artifacts": [
+    "review_response.json"
+  ],
+  "next_allowed_nodes": [
+    "route_page_result"
+  ],
+  "node_id": "validate_review_response",
+  "output_artifacts": [
+    "review_validation.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T10:19:16.231043+00:00",
+  "validator_result": {
+    "errors": [
+      "page_status must be one of clean, defect, unsure, substrate_blocked",
+      "page_rationale must be non-empty",
+      "candidate_findings[0].status must be a closed vocabulary value",
+      "candidate_findings[0].evidence must be non-empty",
+      "candidate_findings[0].rationale must be non-empty",
+      "candidate_findings[1].status must be a closed vocabulary value",
+      "candidate_findings[1].evidence must be non-empty",
+      "candidate_findings[1].rationale must be non-empty",
+      "missing candidate findings: ['cand:p0017:0000:side_chrome', 'cand:p0017:0001:side_chrome', 'cand:p0017:0002:side_chrome', 'cand:p0017:0003:side_chrome']"
+    ],
+    "ok": false
+  }
+}

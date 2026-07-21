@@ -1,0 +1,99 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"decision\": \"suggestion\",\n      \"status\": \"unsure\",\n      \"candidates\": [\"cand:p0017:0000:side_chrome\", \"cand:p0017:0001:side_chrome\"],\n      \"json_reference\": \"/pages/16/blocks/0\"\n    },\n    {\n      \"decision\": \"suggestion\",\n      \"status\": \"unsure\",\n      \"candidates\": [\"cand:p0017:0002:side_chrome\", \"cand:p0017:0003:side_chrome\"],\n      \"json_reference\": \"/pages/16/blocks/1\"\n    },\n    {\n      \"decision\": \"suggestion\",\n      \"status\": \"unsure\",\n      \"candidates\": [\"cand:p0017:0004:list\", \"cand:p0017:0005:text\"],\n      \"json_reference\": \"/pages/16/blocks/3\"\n    },\n    {\n      \"decision\": \"suggestion\",\n      \"status\": \"unsure\",\n      \"candidates\": [\"cand:p0017:0004:list\", \"cand:p0017:0005:text\"],\n      \"json_reference\": \"/pages/16/blocks/2\"\n    }\n  ],\n  \"page_rationale\": \"the page-level review decision is not available in the provided JSON data. It would be helpful to see a specific review rationale that supports the candidate based on reviewed pages and metadata. Without this, the suggested fix surface is 'none'. Please provide details about the rendered page evidence.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784629247,
+    "id": "chatcmpl-707",
+    "model": "qwen2.5:0.5b",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0017",
+      "item_id": "page_case_0001_p0017:4247f9e5bb70c3d3",
+      "request_sha256": "4247f9e5bb70c3d3c185406390f0a2b85030899b1c30e313eb04c1bb867901ea"
+    },
+    "service_tier": null,
+    "system_fingerprint": "fp_ollama",
+    "usage": {
+      "completion_tokens": 384,
+      "completion_tokens_details": null,
+      "prompt_tokens": 4975,
+      "prompt_tokens_details": null,
+      "total_tokens": 5359
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidates": [
+          "cand:p0017:0000:side_chrome",
+          "cand:p0017:0001:side_chrome"
+        ],
+        "decision": "suggestion",
+        "json_reference": "/pages/16/blocks/0",
+        "status": "unsure"
+      },
+      {
+        "candidates": [
+          "cand:p0017:0002:side_chrome",
+          "cand:p0017:0003:side_chrome"
+        ],
+        "decision": "suggestion",
+        "json_reference": "/pages/16/blocks/1",
+        "status": "unsure"
+      },
+      {
+        "candidates": [
+          "cand:p0017:0004:list",
+          "cand:p0017:0005:text"
+        ],
+        "decision": "suggestion",
+        "json_reference": "/pages/16/blocks/3",
+        "status": "unsure"
+      },
+      {
+        "candidates": [
+          "cand:p0017:0004:list",
+          "cand:p0017:0005:text"
+        ],
+        "decision": "suggestion",
+        "json_reference": "/pages/16/blocks/2",
+        "status": "unsure"
+      }
+    ],
+    "page_rationale": "the page-level review decision is not available in the provided JSON data. It would be helpful to see a specific review rationale that supports the candidate based on reviewed pages and metadata. Without this, the suggested fix surface is 'none'. Please provide details about the rendered page evidence.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0017",
+    "item_id": "page_case_0001_p0017:4247f9e5bb70c3d3",
+    "request_sha256": "4247f9e5bb70c3d3c185406390f0a2b85030899b1c30e313eb04c1bb867901ea"
+  }
+}
