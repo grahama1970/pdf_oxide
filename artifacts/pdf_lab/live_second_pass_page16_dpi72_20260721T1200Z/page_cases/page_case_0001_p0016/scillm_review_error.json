@@ -1,0 +1,10 @@
+{
+  "case_id": "page_case_0001_p0016",
+  "endpoint": "POST /v1/chat/completions",
+  "error": "timed out",
+  "error_type": "ReadTimeout",
+  "node_id": "scillm_one_shot_page_review",
+  "page_number": 16,
+  "preflight_artifact": "scillm_review_preflight.json",
+  "schema": "pdf_lab.second_pass.substrate_error.v1"
+}

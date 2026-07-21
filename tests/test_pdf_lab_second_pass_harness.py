@@ -11011,6 +11011,7 @@ def test_run_harness_writes_manifest_sample_and_report(tmp_path: Path, monkeypat
         batch_id="batch",
         review_fixture_path=None,
         human_annotated_pages_json=human_pages_path,
+        dpi=96,
         scillm_base_url="http://example.invalid:4001",
         scillm_auth_token="token",
         caller_skill="pdf-lab-test",
@@ -11066,6 +11067,7 @@ def test_run_harness_writes_manifest_sample_and_report(tmp_path: Path, monkeypat
     assert report["deterministic_execution_plan_result"]["commit_policy"]["one_git_commit_per_verified_bug_fix"] is True
     assert report["deterministic_execution_plan_validation_result"]["ok"] is True
     assert captured_page_kwargs["scillm_base_url"] == "http://example.invalid:4001"
+    assert captured_page_kwargs["dpi"] == 96
     assert captured_page_kwargs["review_fixture_path"] is None
     assert captured_page_kwargs["scillm_auth_token"] == "token"
     assert captured_page_kwargs["caller_skill"] == "pdf-lab-test"

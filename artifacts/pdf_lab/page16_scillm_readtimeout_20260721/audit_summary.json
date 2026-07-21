@@ -1,0 +1,105 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "candidate": "page16 Planning Note live second-pass review",
+  "mocked": "mixed",
+  "live": "yes",
+  "campaign_status": {
+    "active_family": "NIST SP 800-53r5 current-extraction page candidates",
+    "active_page": 16,
+    "passed": 0,
+    "failed": 0,
+    "blocked_by_systemic_failure": 1,
+    "not_run": "remaining active candidate queue after page 16",
+    "latest_failure_signature": "Page14 and page16 live local-text reviews repeatedly timed out at POST /v1/chat/completions after successful SciLLM health preflight; page16 still timed out after DPI/payload reduction from 963742 to 309838 request JSON characters"
+  },
+  "evidence": {
+    "initial_live_run": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/harness_final_gate.json",
+    "initial_terminal_ledger": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/page_cases/page_case_0001_p0016/terminal_ledger.json",
+    "initial_substrate_error": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/page_cases/page_case_0001_p0016/scillm_review_error.json",
+    "dpi96_live_run": "artifacts/pdf_lab/live_second_pass_page16_dpi96_20260721T1145Z/harness_final_gate.json",
+    "dpi96_terminal_ledger": "artifacts/pdf_lab/live_second_pass_page16_dpi96_20260721T1145Z/page_cases/page_case_0001_p0016/terminal_ledger.json",
+    "dpi96_substrate_error": "artifacts/pdf_lab/live_second_pass_page16_dpi96_20260721T1145Z/page_cases/page_case_0001_p0016/scillm_review_error.json",
+    "dpi72_live_run": "artifacts/pdf_lab/live_second_pass_page16_dpi72_20260721T1200Z/harness_final_gate.json",
+    "dpi72_terminal_ledger": "artifacts/pdf_lab/live_second_pass_page16_dpi72_20260721T1200Z/page_cases/page_case_0001_p0016/terminal_ledger.json",
+    "dpi72_substrate_error": "artifacts/pdf_lab/live_second_pass_page16_dpi72_20260721T1200Z/page_cases/page_case_0001_p0016/scillm_review_error.json",
+    "dpi72_review_request": "artifacts/pdf_lab/live_second_pass_page16_dpi72_20260721T1200Z/page_cases/page_case_0001_p0016/review_request.json",
+    "dpi72_review_bundle": "artifacts/pdf_lab/live_second_pass_page16_dpi72_20260721T1200Z/page_cases/page_case_0001_p0016/review_bundle.zip",
+    "dpi72_page_image": "artifacts/pdf_lab/live_second_pass_page16_dpi72_20260721T1200Z/page_cases/page_case_0001_p0016/page_before.png",
+    "dpi72_candidate_overlay": "artifacts/pdf_lab/live_second_pass_page16_dpi72_20260721T1200Z/page_cases/page_case_0001_p0016/page_candidates.png",
+    "brave_search_receipt": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/brave_large_payload_readtimeout.json",
+    "webgpt_bundle": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle.md",
+    "webgpt_stderr": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_submit.stderr"
+  },
+  "patch": {
+    "files": [
+      "scripts/pdf_lab/run_second_pass_harness.py",
+      "tests/test_pdf_lab_second_pass_harness.py"
+    ],
+    "summary": [
+      "Expose the existing page-DAG DPI parameter through run_second_pass_harness.py as --dpi with default 150.",
+      "Pass the requested DPI through to page_dag.run_page_case instead of hard-coding 150.",
+      "Extend the harness unit test to assert that dpi=96 reaches the page DAG."
+    ]
+  },
+  "proof": {
+    "focused_harness_test": "python -m py_compile scripts/pdf_lab/run_second_pass_harness.py && pytest -q tests/test_pdf_lab_second_pass_harness.py::test_run_harness_writes_manifest_sample_and_report --tb=short => 1 passed in 0.12s",
+    "test_log": "artifacts/pdf_lab/page16_scillm_readtimeout_20260721/test_logs/pytest_harness_dpi_passthrough.log",
+    "payload_size_diagnostic": {
+      "dpi150_request_json_chars": 963742,
+      "dpi150_base64_chars": 930760,
+      "dpi96_request_json_chars": 568782,
+      "dpi96_base64_chars": 535800,
+      "dpi72_request_json_chars": 309838,
+      "dpi72_base64_chars": 276856
+    },
+    "live_attempts": [
+      {
+        "dpi": 150,
+        "terminal_status": "blocked_substrate",
+        "error_type": "ReadTimeout",
+        "endpoint": "POST /v1/chat/completions"
+      },
+      {
+        "dpi": 96,
+        "terminal_status": "blocked_substrate",
+        "error_type": "ReadTimeout",
+        "endpoint": "POST /v1/chat/completions"
+      },
+      {
+        "dpi": 72,
+        "terminal_status": "blocked_substrate",
+        "error_type": "ReadTimeout",
+        "endpoint": "POST /v1/chat/completions"
+      }
+    ]
+  },
+  "unblock_attempts": {
+    "brave_search": [
+      {
+        "query": "OpenAI compatible chat completions ReadTimeout local LLM large prompt image payload timeout mitigation",
+        "receipt": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/brave_large_payload_readtimeout.json"
+      }
+    ],
+    "webgpt": [
+      {
+        "bundle": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle.md",
+        "result": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+      }
+    ]
+  },
+  "terminal_status": "blocked_substrate",
+  "blocker": {
+    "type": "live_model_transport_timeout_family",
+    "owner": "scillm_or_transport_runtime",
+    "reason": "The same live local-text SciLLM chat completion timeout reproduced on page14 and page16. Page16 continued to time out after the pdf_oxide harness reduced image payload size with the existing DPI render control. This evidence does not prove an extraction defect; it proves the current live model transport/payload path cannot satisfy the under-120s page16 gate."
+  },
+  "what_was_exercised": "Three live page16 second-pass review attempts used the running SciLLM proxy on localhost:4001, local-text model route, model-ready payload construction, original/annotated image evidence, request validation, bundle packaging, fail-closed review validation, and terminal ledger creation. The harness DPI passthrough was also exercised by a focused unit test.",
+  "what_remains_unverified": [
+    "page16 semantic review result, because no model response was returned",
+    "whether an explicitly authorized non-local paid model route can complete page16 under 120 seconds",
+    "whether scillm transport internals can stream or otherwise complete this request family",
+    "remaining active page candidates beyond page16",
+    "Criterion 6 live GitHub apply mutation, still requiring approval receipt",
+    "WebGPT exact-tab availability"
+  ]
+}

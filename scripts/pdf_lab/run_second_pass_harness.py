@@ -5798,6 +5798,7 @@ def run_harness(
     review_fixture_path: Path | None,
     review_after_fixture_path: Path | None = None,
     human_annotated_pages_json: Path | None = None,
+    dpi: int = 150,
     scillm_base_url: str,
     scillm_auth_token: str,
     caller_skill: str,
@@ -6226,7 +6227,7 @@ def run_harness(
             page_number=None,
             ledger_path=ledger_path,
             apply_mode=apply_mode,
-            dpi=150,
+            dpi=dpi,
             model=model,
             batch_id=batch_id,
             review_mode=review_mode,
@@ -6636,6 +6637,7 @@ def main() -> int:
     parser.add_argument("--review-fixture", type=Path, dest="review_fixture_path")
     parser.add_argument("--review-after-fixture", type=Path, dest="review_after_fixture_path")
     parser.add_argument("--human-annotated-pages-json", type=Path, dest="human_annotated_pages_json")
+    parser.add_argument("--dpi", type=int, default=150)
     parser.add_argument("--patch-mode", choices=["dry_run", "live"], default="dry_run")
     parser.add_argument("--patch-backend", choices=["opencode_serve", "scillm_orchestrator"], default="opencode_serve")
     parser.add_argument("--commit-mode", choices=["dry_run", "live"], default="dry_run")
@@ -6686,6 +6688,7 @@ def main() -> int:
         review_fixture_path=args.review_fixture_path,
         review_after_fixture_path=args.review_after_fixture_path,
         human_annotated_pages_json=args.human_annotated_pages_json,
+        dpi=args.dpi,
         scillm_base_url=args.scillm_base_url,
         scillm_auth_token=args.scillm_auth_token,
         caller_skill=args.caller_skill,
