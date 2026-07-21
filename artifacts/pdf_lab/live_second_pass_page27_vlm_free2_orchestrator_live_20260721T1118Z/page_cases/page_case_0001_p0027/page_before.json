@@ -1,0 +1,1140 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p27:block:0",
+      "is_bold": false,
+      "page": 27,
+      "pdf_page_index": 26,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p27:block:1",
+      "is_bold": false,
+      "page": 27,
+      "pdf_page_index": 26,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.49029411365783293,
+        0.939856018682923,
+        0.5096764658011642,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p27:block:2",
+      "is_bold": false,
+      "page": 27,
+      "pdf_page_index": 26,
+      "raw": {
+        "bbox": [
+          300.05999755859375,
+          38.400001525878906,
+          13.91400146484375,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "xxv"
+      },
+      "source_type": "PageNumber",
+      "text": "xxv",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p27:block:3",
+      "is_bold": false,
+      "page": 27,
+      "pdf_page_index": 26,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490355647467,
+        0.743409089367799
+      ],
+      "id": "actual:p27:table:0",
+      "page": 27,
+      "pdf_page_index": 26,
+      "raw": {
+        "accuracy": 99.9999975428681,
+        "bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          588.7799987792969
+        ],
+        "cols": 4,
+        "column_count": 4,
+        "data": [
+          [
+            "DATE",
+            "TYPE",
+            "REVISION",
+            "PAGE"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix B Acronyms: Add \u201cUPS Uninterruptible Power Supply\u201d",
+            "427"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Appendix C Control Summaries: Change \u201cw\u201d to \u201cW\u201d",
+            "428"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-1 (AC-3(1)) Title: Change \u201cFUNCTION\u201d to \u201cFUNCTIONS\u201d",
+            "429"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-1 (AC-3(6)): Change \u201cMP-4, SC-28\u201d to \u201cMP-4 and SC-28\u201d",
+            "429"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-1 (AC-13): Change \u201cAC-2, AU-6\u201d to \u201cAC-2 and AU-6\u201d",
+            "431"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-3 (AU-7(2)) Title: Change \u201cSEARCH AND SORT\u201d to \u201cSORT\nAND SEARCH\u201d",
+            "434"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-3 AU-15: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d",
+            "435"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-4 (CA-3(1)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM\nCONNECTIONS\u201d",
+            "436"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-5 (CM-7(4)) Title: Change \u201cUNAUTHORIZED SOFTWARE\u201d to\n\u201cUNAUTHORIZED SOFTWARE \u2013 DENY-BY-EXCEPTION\u201d",
+            "437"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-5 (CM-7(5)) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to\n\u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d",
+            "437"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-5: Delete duplicate row CM-8(5).",
+            "438"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-6 (CP-9(7)) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL\nAUTHORIZATION FOR DELETION OR DESTRUCTION\u201d",
+            "440"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-7 (IA-5(11)): Change \u201cIA-2(1)(2)\u201d to \u201cIA-2(1) and IA-2(2)\u201d",
+            "441"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-8 (IR-10) Title: Change \u201cIntegrated Information Security\nAnalysis\u201d to \u201cIntegrated Information Security Analysis Team\u201d",
+            "444"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-9 (MA-4(2)): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA-4\u201d",
+            "445"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-11 (PE-7): Change \u201cPE-2, PE-3\u201d to \u201cPE-2 and PE-3\u201d",
+            "447"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-11 (PE-19(1)) Title: Delete \u201dAND TEMPEST\u201d",
+            "448"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-14 (PS-3(1)) Title: Change \u201cINFORMATION\u201d to \u201cINFORMATION\u201d",
+            "451"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-14 (PS-3(3)) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d",
+            "451"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-17 (SA-6): Change \u201cCM-10, SI-7\u201d to \u201cCM-10 and SI-7\u201d",
+            "454"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-17 (SA-7): Change \u201cCM-11, SI-7\u201d to \u201cCM-11 and SI-7\u201d",
+            "454"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-17 (SA-12(13)): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA-9\u201d",
+            "456"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-17 (SA-12(14)): Change \u201cSR-4(1)(2)\u201d to \u201cSR-4(1) and SR-4(2)\n\u201d",
+            "456"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-17 (SA-12(15)) Title: Change \u201cPROCESS\u201d to \u201cPROCESSES\u201d",
+            "456"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-18 (SC-7(25)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM\nCONNECTIONS\u201d",
+            "459"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-18 (SC-12(4)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d",
+            "459"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-18 (SC-12(5)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d",
+            "459"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-18 (SC-14): Change \u201cSI-7,\u201d to \u201cSI-7, and\u201d",
+            "459"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-18 (SC-19): Change \u201caddressed by other controls for\nprotocols\u201d to \u201caddressed as any other technology or protocol.\u201d",
+            "460"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-19 (SI-9): Change \u201cAC-5,\u201d to \u201cAC-5, and\u201d",
+            "463"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Table C-19 (SI-19(7)) Title: Change \u201cSOFTWARE\u201d to \u201cAND\nSOFTWARE\u201d",
+            "464"
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ]
+        ],
+        "df_data": [
+          {
+            "0": "DATE",
+            "1": "TYPE",
+            "2": "REVISION",
+            "3": "PAGE"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix B Acronyms: Add \u201cUPS Uninterruptible Power Supply\u201d",
+            "3": "427"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Appendix C Control Summaries: Change \u201cw\u201d to \u201cW\u201d",
+            "3": "428"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-1 (AC-3(1)) Title: Change \u201cFUNCTION\u201d to \u201cFUNCTIONS\u201d",
+            "3": "429"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-1 (AC-3(6)): Change \u201cMP-4, SC-28\u201d to \u201cMP-4 and SC-28\u201d",
+            "3": "429"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-1 (AC-13): Change \u201cAC-2, AU-6\u201d to \u201cAC-2 and AU-6\u201d",
+            "3": "431"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-3 (AU-7(2)) Title: Change \u201cSEARCH AND SORT\u201d to \u201cSORT\nAND SEARCH\u201d",
+            "3": "434"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-3 AU-15: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d",
+            "3": "435"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-4 (CA-3(1)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM\nCONNECTIONS\u201d",
+            "3": "436"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-5 (CM-7(4)) Title: Change \u201cUNAUTHORIZED SOFTWARE\u201d to\n\u201cUNAUTHORIZED SOFTWARE \u2013 DENY-BY-EXCEPTION\u201d",
+            "3": "437"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-5 (CM-7(5)) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to\n\u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d",
+            "3": "437"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-5: Delete duplicate row CM-8(5).",
+            "3": "438"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-6 (CP-9(7)) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL\nAUTHORIZATION FOR DELETION OR DESTRUCTION\u201d",
+            "3": "440"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-7 (IA-5(11)): Change \u201cIA-2(1)(2)\u201d to \u201cIA-2(1) and IA-2(2)\u201d",
+            "3": "441"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-8 (IR-10) Title: Change \u201cIntegrated Information Security\nAnalysis\u201d to \u201cIntegrated Information Security Analysis Team\u201d",
+            "3": "444"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-9 (MA-4(2)): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA-4\u201d",
+            "3": "445"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-11 (PE-7): Change \u201cPE-2, PE-3\u201d to \u201cPE-2 and PE-3\u201d",
+            "3": "447"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-11 (PE-19(1)) Title: Delete \u201dAND TEMPEST\u201d",
+            "3": "448"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-14 (PS-3(1)) Title: Change \u201cINFORMATION\u201d to \u201cINFORMATION\u201d",
+            "3": "451"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-14 (PS-3(3)) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d",
+            "3": "451"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-17 (SA-6): Change \u201cCM-10, SI-7\u201d to \u201cCM-10 and SI-7\u201d",
+            "3": "454"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-17 (SA-7): Change \u201cCM-11, SI-7\u201d to \u201cCM-11 and SI-7\u201d",
+            "3": "454"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-17 (SA-12(13)): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA-9\u201d",
+            "3": "456"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-17 (SA-12(14)): Change \u201cSR-4(1)(2)\u201d to \u201cSR-4(1) and SR-4(2)\n\u201d",
+            "3": "456"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-17 (SA-12(15)) Title: Change \u201cPROCESS\u201d to \u201cPROCESSES\u201d",
+            "3": "456"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-18 (SC-7(25)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM\nCONNECTIONS\u201d",
+            "3": "459"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-18 (SC-12(4)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d",
+            "3": "459"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-18 (SC-12(5)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d",
+            "3": "459"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-18 (SC-14): Change \u201cSI-7,\u201d to \u201cSI-7, and\u201d",
+            "3": "459"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-18 (SC-19): Change \u201caddressed by other controls for\nprotocols\u201d to \u201caddressed as any other technology or protocol.\u201d",
+            "3": "460"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-19 (SI-9): Change \u201cAC-5,\u201d to \u201cAC-5, and\u201d",
+            "3": "463"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Table C-19 (SI-19(7)) Title: Change \u201cSOFTWARE\u201d to \u201cAND\nSOFTWARE\u201d",
+            "3": "464"
+          },
+          {
+            "0": "",
+            "1": "",
+            "2": "",
+            "3": ""
+          }
+        ],
+        "flavor": "Lattice",
+        "order": 0,
+        "page": 26,
+        "row_count": 33,
+        "rows": [
+          {
+            "cells": [
+              {
+                "text": "DATE"
+              },
+              {
+                "text": "TYPE"
+              },
+              {
+                "text": "REVISION"
+              },
+              {
+                "text": "PAGE"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix B Acronyms: Add \u201cUPS Uninterruptible Power Supply\u201d"
+              },
+              {
+                "text": "427"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Appendix C Control Summaries: Change \u201cw\u201d to \u201cW\u201d"
+              },
+              {
+                "text": "428"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-1 (AC-3(1)) Title: Change \u201cFUNCTION\u201d to \u201cFUNCTIONS\u201d"
+              },
+              {
+                "text": "429"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-1 (AC-3(6)): Change \u201cMP-4, SC-28\u201d to \u201cMP-4 and SC-28\u201d"
+              },
+              {
+                "text": "429"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-1 (AC-13): Change \u201cAC-2, AU-6\u201d to \u201cAC-2 and AU-6\u201d"
+              },
+              {
+                "text": "431"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-3 (AU-7(2)) Title: Change \u201cSEARCH AND SORT\u201d to \u201cSORT AND SEARCH\u201d"
+              },
+              {
+                "text": "434"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-3 AU-15: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d"
+              },
+              {
+                "text": "435"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-4 (CA-3(1)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM CONNECTIONS\u201d"
+              },
+              {
+                "text": "436"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-5 (CM-7(4)) Title: Change \u201cUNAUTHORIZED SOFTWARE\u201d to \u201cUNAUTHORIZED SOFTWARE \u2013 DENY-BY-EXCEPTION\u201d"
+              },
+              {
+                "text": "437"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-5 (CM-7(5)) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to \u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d"
+              },
+              {
+                "text": "437"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-5: Delete duplicate row CM-8(5)."
+              },
+              {
+                "text": "438"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-6 (CP-9(7)) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL AUTHORIZATION FOR DELETION OR DESTRUCTION\u201d"
+              },
+              {
+                "text": "440"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-7 (IA-5(11)): Change \u201cIA-2(1)(2)\u201d to \u201cIA-2(1) and IA-2(2)\u201d"
+              },
+              {
+                "text": "441"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-8 (IR-10) Title: Change \u201cIntegrated Information Security Analysis\u201d to \u201cIntegrated Information Security Analysis Team\u201d"
+              },
+              {
+                "text": "444"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-9 (MA-4(2)): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA-4\u201d"
+              },
+              {
+                "text": "445"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-11 (PE-7): Change \u201cPE-2, PE-3\u201d to \u201cPE-2 and PE-3\u201d"
+              },
+              {
+                "text": "447"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-11 (PE-19(1)) Title: Delete \u201dAND TEMPEST\u201d"
+              },
+              {
+                "text": "448"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-14 (PS-3(1)) Title: Change \u201cINFORMATION\u201d to \u201cINFORMATION\u201d"
+              },
+              {
+                "text": "451"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-14 (PS-3(3)) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d"
+              },
+              {
+                "text": "451"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-17 (SA-6): Change \u201cCM-10, SI-7\u201d to \u201cCM-10 and SI-7\u201d"
+              },
+              {
+                "text": "454"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-17 (SA-7): Change \u201cCM-11, SI-7\u201d to \u201cCM-11 and SI-7\u201d"
+              },
+              {
+                "text": "454"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-17 (SA-12(13)): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA-9\u201d"
+              },
+              {
+                "text": "456"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-17 (SA-12(14)): Change \u201cSR-4(1)(2)\u201d to \u201cSR-4(1) and SR-4(2) \u201d"
+              },
+              {
+                "text": "456"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-17 (SA-12(15)) Title: Change \u201cPROCESS\u201d to \u201cPROCESSES\u201d"
+              },
+              {
+                "text": "456"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-18 (SC-7(25)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM CONNECTIONS\u201d"
+              },
+              {
+                "text": "459"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-18 (SC-12(4)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d"
+              },
+              {
+                "text": "459"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-18 (SC-12(5)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d"
+              },
+              {
+                "text": "459"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-18 (SC-14): Change \u201cSI-7,\u201d to \u201cSI-7, and\u201d"
+              },
+              {
+                "text": "459"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-18 (SC-19): Change \u201caddressed by other controls for protocols\u201d to \u201caddressed as any other technology or protocol.\u201d"
+              },
+              {
+                "text": "460"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-19 (SI-9): Change \u201cAC-5,\u201d to \u201cAC-5, and\u201d"
+              },
+              {
+                "text": "463"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Table C-19 (SI-19(7)) Title: Change \u201cSOFTWARE\u201d to \u201cAND SOFTWARE\u201d"
+              },
+              {
+                "text": "464"
+              }
+            ]
+          }
+        ],
+        "table_geometry": {
+          "bbox_clipped_to_page": false,
+          "full_normalized_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.743409089367799
+          ],
+          "off_page_extent": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0
+          },
+          "raw_bbox": [
+            89.76000213623047,
+            72.47998046875,
+            521.760009765625,
+            588.7799987792969
+          ],
+          "visible_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.743409089367799
+          ]
+        },
+        "whitespace": 3.0303030303030303
+      },
+      "source_type": "table",
+      "table_geometry": {
+        "bbox_clipped_to_page": false,
+        "full_normalized_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.743409089367799
+        ],
+        "off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "raw_bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          588.7799987792969
+        ],
+        "visible_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.743409089367799
+        ]
+      },
+      "text": "DATE | TYPE | REVISION | PAGE\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cUPS Uninterruptible Power Supply\u201d | 427\n12-10-2020 | Editorial | Appendix C Control Summaries: Change \u201cw\u201d to \u201cW\u201d | 428\n12-10-2020 | Editorial | Table C-1 (AC-3(1)) Title: Change \u201cFUNCTION\u201d to \u201cFUNCTIONS\u201d | 429\n12-10-2020 | Editorial | Table C-1 (AC-3(6)): Change \u201cMP-4, SC-28\u201d to \u201cMP-4 and SC-28\u201d | 429\n12-10-2020 | Editorial | Table C-1 (AC-13): Change \u201cAC-2, AU-6\u201d to \u201cAC-2 and AU-6\u201d | 431\n12-10-2020 | Editorial | Table C-3 (AU-7(2)) Title: Change \u201cSEARCH AND SORT\u201d to \u201cSORT AND SEARCH\u201d | 434\n12-10-2020 | Editorial | Table C-3 AU-15: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d | 435\n12-10-2020 | Editorial | Table C-4 (CA-3(1)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM CONNECTIONS\u201d | 436\n12-10-2020 | Editorial | Table C-5 (CM-7(4)) Title: Change \u201cUNAUTHORIZED SOFTWARE\u201d to \u201cUNAUTHORIZED SOFTWARE \u2013 DENY-BY-EXCEPTION\u201d | 437\n12-10-2020 | Editorial | Table C-5 (CM-7(5)) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to \u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d | 437\n12-10-2020 | Editorial | Table C-5: Delete duplicate row CM-8(5). | 438\n12-10-2020 | Editorial | Table C-6 (CP-9(7)) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL AUTHORIZATION FOR DELETION OR DESTRUCTION\u201d | 440\n12-10-2020 | Editorial | Table C-7 (IA-5(11)): Change \u201cIA-2(1)(2)\u201d to \u201cIA-2(1) and IA-2(2)\u201d | 441\n12-10-2020 | Editorial | Table C-8 (IR-10) Title: Change \u201cIntegrated Information Security Analysis\u201d to \u201cIntegrated Information Security Analysis Team\u201d | 444\n12-10-2020 | Editorial | Table C-9 (MA-4(2)): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA-4\u201d | 445\n12-10-2020 | Editorial | Table C-11 (PE-7): Change \u201cPE-2, PE-3\u201d to \u201cPE-2 and PE-3\u201d | 447\n12-10-2020 | Editorial | Table C-11 (PE-19(1)) Title: Delete \u201dAND TEMPEST\u201d | 448\n12-10-2020 | Editorial | Table C-14 (PS-3(1)) Title: Change \u201cINFORMATION\u201d to \u201cINFORMATION\u201d | 451\n12-10-2020 | Editorial | Table C-14 (PS-3(3)) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d | 451\n12-10-2020 | Editorial | Table C-17 (SA-6): Change \u201cCM-10, SI-7\u201d to \u201cCM-10 and SI-7\u201d | 454\n12-10-2020 | Editorial | Table C-17 (SA-7): Change \u201cCM-11, SI-7\u201d to \u201cCM-11 and SI-7\u201d | 454\n12-10-2020 | Editorial | Table C-17 (SA-12(13)): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA-9\u201d | 456\n12-10-2020 | Editorial | Table C-17 (SA-12(14)): Change \u201cSR-4(1)(2)\u201d to \u201cSR-4(1) and SR-4(2) \u201d | 456\n12-10-2020 | Editorial | Table C-17 (SA-12(15)) Title: Change \u201cPROCESS\u201d to \u201cPROCESSES\u201d | 456\n12-10-2020 | Editorial | Table C-18 (SC-7(25)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM CONNECTIONS\u201d | 459\n12-10-2020 | Editorial | Table C-18 (SC-12(4)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d | 459\n12-10-2020 | Editorial | Table C-18 (SC-12(5)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d | 459\n12-10-2020 | Editorial | Table C-18 (SC-14): Change \u201cSI-7,\u201d to \u201cSI-7, and\u201d | 459\n12-10-2020 | Editorial | Table C-18 (SC-19): Change \u201caddressed by other controls for protocols\u201d to \u201caddressed as any other technology or protocol.\u201d | 460\n12-10-2020 | Editorial | Table C-19 (SI-9): Change \u201cAC-5,\u201d to \u201cAC-5, and\u201d | 463\n12-10-2020 | Editorial | Table C-19 (SI-19(7)) Title: Change \u201cSOFTWARE\u201d to \u201cAND SOFTWARE\u201d | 464",
+      "type": "table"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 27,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 26
+}

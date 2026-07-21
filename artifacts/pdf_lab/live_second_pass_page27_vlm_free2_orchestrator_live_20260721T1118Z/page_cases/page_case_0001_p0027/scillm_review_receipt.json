@@ -1,0 +1,115 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0027:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block 0 contains the text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' with source_type 'Header' and semantic_role 'page_chrome'. The bounding box [0.147, 0.044, 0.850, 0.058] accurately encompasses the header text visible in the rendered page and annotated image.\",\n      \"rationale\": \"The header text is correctly identified, extracted, and classified as 'side_chrome' with an accurate bounding box and text content.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0027:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block 1 contains the text '_________________________________________________________________________________________________' with source_type 'Header' and semantic_role 'page_chrome'. The bounding box [0.147, 0.056, 0.851, 0.070] accurately encompasses the horizontal line below the header, visible in the rendered page and annotated image.\",\n      \"rationale\": \"The horizontal rule, acting as a separator below the header, is correctly identified, extracted, and classified as 'side_chrome' with an accurate bounding box and text content.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0027:0002:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block 2 contains the text 'xxv' with source_type 'PageNumber'. The bounding box [0.490, 0.939, 0.509, 0.955] accurately encompasses the page number 'xxv' at the bottom center of the page, visible in the rendered page and annotated image.\",\n      \"rationale\": \"The page number is correctly identified, extracted, and classified as 'side_chrome' with an accurate bounding box and text content.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0027:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block 3 contains the text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' with source_type 'Boilerplate'. The bounding box [0.029, 0.287, 0.049, 0.740] accurately encompasses the vertically oriented boilerplate text on the left side of the page, visible in the rendered page and annotated image.\",\n      \"rationale\": \"The boilerplate text, despite its vertical orientation on the page, is correctly identified as 'side_chrome' and extracted with an accurate bounding box and text content.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0027:0004:table\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON table 0 provides the table content 'DATE | TYPE | REVISION | PAGE\\\\n12-10-2020 | Editorial | Appendix B Acronyms: Add \\u201cUPS Uninterruptible Power Supply\\u201d | 427\\\\n...' with source_type 'table'. The bounding box [0.146, 0.091, 0.852, 0.743] accurately encompasses the entire table visible in the rendered page and annotated image.\",\n      \"rationale\": \"The table of revisions is correctly identified, extracted, and classified as 'table' with an accurate bounding box and properly structured content.\",\n      \"suggested_fix_surface\": \"none\"\n    }\n  ],\n  \"page_rationale\": \"All identified candidates on page 27, including headers, page number, a vertically oriented boilerplate text, and a large revision table, are accurately extracted and classified by PDF Oxide. The bounding boxes and text content align perfectly with the rendered page and annotated images.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784632724,
+    "id": "iFVfareNHaea-8YP-L2u0A0",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0027",
+      "item_id": "page_case_0001_p0027:20ee2a09644ced44",
+      "request_sha256": "20ee2a09644ced440b9c86d8fefe13853151c78c49090e1ee9b54bc0441e31a4"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm-free2",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 1065,
+      "completion_tokens_details": null,
+      "prompt_tokens": 7809,
+      "prompt_tokens_details": null,
+      "total_tokens": 10307
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0027:0000:side_chrome",
+        "evidence": "The extracted JSON block 0 contains the text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' with source_type 'Header' and semantic_role 'page_chrome'. The bounding box [0.147, 0.044, 0.850, 0.058] accurately encompasses the header text visible in the rendered page and annotated image.",
+        "rationale": "The header text is correctly identified, extracted, and classified as 'side_chrome' with an accurate bounding box and text content.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0027:0001:side_chrome",
+        "evidence": "The extracted JSON block 1 contains the text '_________________________________________________________________________________________________' with source_type 'Header' and semantic_role 'page_chrome'. The bounding box [0.147, 0.056, 0.851, 0.070] accurately encompasses the horizontal line below the header, visible in the rendered page and annotated image.",
+        "rationale": "The horizontal rule, acting as a separator below the header, is correctly identified, extracted, and classified as 'side_chrome' with an accurate bounding box and text content.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0027:0002:side_chrome",
+        "evidence": "The extracted JSON block 2 contains the text 'xxv' with source_type 'PageNumber'. The bounding box [0.490, 0.939, 0.509, 0.955] accurately encompasses the page number 'xxv' at the bottom center of the page, visible in the rendered page and annotated image.",
+        "rationale": "The page number is correctly identified, extracted, and classified as 'side_chrome' with an accurate bounding box and text content.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0027:0003:side_chrome",
+        "evidence": "The extracted JSON block 3 contains the text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' with source_type 'Boilerplate'. The bounding box [0.029, 0.287, 0.049, 0.740] accurately encompasses the vertically oriented boilerplate text on the left side of the page, visible in the rendered page and annotated image.",
+        "rationale": "The boilerplate text, despite its vertical orientation on the page, is correctly identified as 'side_chrome' and extracted with an accurate bounding box and text content.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0027:0004:table",
+        "evidence": "The extracted JSON table 0 provides the table content 'DATE | TYPE | REVISION | PAGE\\n12-10-2020 | Editorial | Appendix B Acronyms: Add \u201cUPS Uninterruptible Power Supply\u201d | 427\\n...' with source_type 'table'. The bounding box [0.146, 0.091, 0.852, 0.743] accurately encompasses the entire table visible in the rendered page and annotated image.",
+        "rationale": "The table of revisions is correctly identified, extracted, and classified as 'table' with an accurate bounding box and properly structured content.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      }
+    ],
+    "page_rationale": "All identified candidates on page 27, including headers, page number, a vertically oriented boilerplate text, and a large revision table, are accurately extracted and classified by PDF Oxide. The bounding boxes and text content align perfectly with the rendered page and annotated images.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0027",
+    "item_id": "page_case_0001_p0027:20ee2a09644ced44",
+    "request_sha256": "20ee2a09644ced440b9c86d8fefe13853151c78c49090e1ee9b54bc0441e31a4"
+  }
+}
