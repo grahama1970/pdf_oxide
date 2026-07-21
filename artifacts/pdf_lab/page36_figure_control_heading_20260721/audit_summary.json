@@ -1,0 +1,105 @@
+{
+  "candidate": "Figure 1 embedded AU-4 heading",
+  "candidate_block": {
+    "bbox": [
+      0.15960784363590813,
+      0.37824719361584597,
+      0.41836433161317915,
+      0.39748995231859613
+    ],
+    "font_name": "TT3",
+    "font_size": 10.979999542236328,
+    "id": "actual:p36:block:10",
+    "is_bold": true,
+    "page": 36,
+    "pdf_page_index": 35,
+    "raw": {
+      "bbox": [
+        97.68000030517578,
+        481.0199890136719,
+        160.818603515625,
+        10.980010986328125
+      ],
+      "block_type": "Body",
+      "confidence": 0.44999998807907104,
+      "font_name": "TT3",
+      "font_size": 10.979999542236328,
+      "header_level": null,
+      "header_validation": {
+        "confidence": 0.44999998807907104,
+        "depth_level": 0,
+        "disposition": "Escalate",
+        "features": {
+          "ends_with_colon": false,
+          "ends_with_other_punct": false,
+          "ends_with_period": false,
+          "font_size": 10.979999542236328,
+          "has_bullet_char": false,
+          "has_formal_prefix": false,
+          "has_number_prefix": false,
+          "has_parentheses": false,
+          "is_all_caps": true,
+          "is_bold": true,
+          "is_caption_pattern": false,
+          "is_multi_sentence": false,
+          "is_too_long": false,
+          "numbering_depth": 0,
+          "size_ratio": 1.0958082675933838,
+          "text_len": 27,
+          "title_case_ratio": 1.0,
+          "word_count": 4
+        },
+        "has_numbering": false,
+        "is_header": false,
+        "level": null,
+        "number_text": "",
+        "reasons": [
+          "title_case_like"
+        ],
+        "title_text": "AU-4 AUDIT STORAGE CAPACITY"
+      },
+      "is_bold": true,
+      "text": "AU-4 AUDIT STORAGE CAPACITY"
+    },
+    "semantic_role": "figure_content",
+    "source_type": "Body",
+    "text": "AU-4 AUDIT STORAGE CAPACITY",
+    "type": "figure"
+  },
+  "current_snapshot": "artifacts/pdf_lab/page36_figure_control_heading_20260721/current_page36_snapshot.json",
+  "live": false,
+  "mocked": false,
+  "page": 36,
+  "proof_commands": {
+    "broad_nist_regression": "pytest -q tests/test_nist_page36_figure_control_heading.py tests/test_nist_page36_figure_intro_sentence.py tests/test_nist_page104_control_enhancements_subtitle.py tests/test_nist_page104_au12_page_break_label.py tests/test_nist_page45_discussion_role.py tests/test_nist_page45_discussion_text.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page35_control_families_table.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page46_nested_list_segmentation.py",
+    "focused_page36": "pytest -q tests/test_nist_page36_figure_control_heading.py tests/test_nist_page36_figure_intro_sentence.py",
+    "green": "pytest -q tests/test_nist_page36_figure_control_heading.py",
+    "json_schema": "python -m json.tool python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+    "red": "pytest -q tests/test_nist_page36_figure_control_heading.py"
+  },
+  "proof_results": {
+    "broad_nist_regression": "21 passed, 5 warnings in 471.40s",
+    "focused_page36": "2 passed, 5 warnings in 18.16s",
+    "green": "1 passed, 5 warnings in 10.29s",
+    "red": "1 failed, 5 warnings in 2.64s; type was section_heading before patch"
+  },
+  "schema": "pdf_lab.page36_figure_control_heading_audit.v1",
+  "selection_receipt": "artifacts/pdf_lab/page36_figure_control_heading_20260721/selection_receipt.json",
+  "sha256": {
+    "current_page36_snapshot": "c41237097b5dc8f024220eea74e1b676536263a6b0b8992e13f1790cb248d6dd",
+    "selection_receipt": "7ed5a018c2481a8a5366e73c9b49556ab43f1e5df64eb3e23b85c89635da096d",
+    "visual_receipt": "3a34995e6927a8f2b34956e00c1785c6503ee3427b5da38fdac176263f201a5b"
+  },
+  "source_reviewer_page_label": "page35 row 12",
+  "status": "passing_current_contract",
+  "test_logs": {
+    "broad_nist_regression": "artifacts/pdf_lab/page36_figure_control_heading_20260721/test_logs/pytest_broad_nist_regression.log",
+    "focused_page36": "artifacts/pdf_lab/page36_figure_control_heading_20260721/test_logs/pytest_page36_focused.log",
+    "green": "artifacts/pdf_lab/page36_figure_control_heading_20260721/test_logs/green_test_page36_figure_control_heading.log",
+    "red": "artifacts/pdf_lab/page36_figure_control_heading_20260721/test_logs/red_test_page36_figure_control_heading.log",
+    "snapshot": "artifacts/pdf_lab/page36_figure_control_heading_20260721/test_logs/current_snapshot_page36.log"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page36_figure_control_heading_20260721/visual_receipt.json",
+  "what_remains_unverified": "remaining Figure 1 diagram-region blocks, live model-backed second-pass repair lifecycle, and Criterion 6 live GitHub apply",
+  "what_was_exercised": "deterministic local extraction of NIST SP 800-53r5 page 36 with release promotion ledger"
+}

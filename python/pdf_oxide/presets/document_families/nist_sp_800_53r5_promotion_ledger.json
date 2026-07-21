@@ -204,6 +204,82 @@
       "status": "closed"
     },
     {
+      "added_at": "2026-07-21T00:00:00Z",
+      "added_by": "agent:codex (pdf-lab page36 all-candidates hardening)",
+      "applied_at": "2026-07-21T00:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route the AU-4 heading embedded in NIST Figure 1 to figure content instead of a real control heading.",
+      "closed_at": "2026-07-21T00:00:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page36_figure_control_heading.py)",
+      "entry_id": "nist-figure-au4-heading-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p36:block:10"
+        ],
+        "risk_reasons_observed": [
+          "figure_embedded_control_heading_as_real_section_heading"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/page36_figure_control_heading_20260721/current_page36_snapshot.json",
+          "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/multipage/v2_response_p35.md.raw.md"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Real AU-4 control headings outside Figure 1; rejected by the Figure 1 bbox band.",
+          "Other controls with the same title in normal document flow; rejected by bbox and exact observed figure-region coordinates.",
+          "Figure callout labels such as Base Control or Control Enhancement; rejected because this rule only matches the AU-4 heading text."
+        ],
+        "candidates_that_prove": [
+          "Page 36 emits 'AU-4 AUDIT STORAGE CAPACITY' as actual:p36:block:10 inside the blue Figure 1 diagram, but it is illustrative figure content rather than a real section heading."
+        ],
+        "deterministic_rule": "If a NIST Body block in the Figure 1 diagram title band exactly equals 'AU-4 AUDIT STORAGE CAPACITY', set type=figure and semantic_role=figure_content."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block or section_heading",
+          "bbox is outside the observed Figure 1 AU-4 heading band",
+          "font_size is outside the observed 10.8-11.1pt diagram-heading band",
+          "text is not exactly 'AU-4 AUDIT STORAGE CAPACITY'"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This exact Figure 1 diagram-region rule intentionally overrides the broader NIST control-heading promotion rule only for the illustrative AU-4 heading embedded in the diagram.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.15,
+            "x_min_lt": 0.17,
+            "y_min_gt": 0.37,
+            "y_max_lt": 0.41
+          },
+          "font_properties": {
+            "font_size_gt": 10.8,
+            "font_size_lt": 11.1
+          },
+          "source_type": "Body",
+          "type": [
+            "paragraph_block",
+            "section_heading"
+          ]
+        },
+        "extract": [
+          {
+            "equals_ci": "AU-4 AUDIT STORAGE CAPACITY",
+            "fields": {
+              "semantic_role": "figure_content",
+              "type": "figure"
+            }
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
       "added_at": "2026-05-11T18:30:00Z",
       "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
       "applied_at": "2026-05-11T18:30:00Z",
