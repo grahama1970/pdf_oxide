@@ -1,0 +1,18 @@
+{
+  "schema": "pdf_lab.visual_receipt.v1",
+  "page": 45,
+  "candidate_id": "actual:p45:block:5",
+  "original_image": "artifacts/pdf_lab/page45_quick_link_20260721/page45_original.png",
+  "overlay_image": "artifacts/pdf_lab/page45_quick_link_20260721/page45_quick_link_overlay.png",
+  "bbox": [
+    0.14705882352941177,
+    0.12650474394210662,
+    0.4737120484994128,
+    0.14574746411256115
+  ],
+  "expected_visible_text": "Quick link to Access Control Summary Table",
+  "sha256": {
+    "original_image": "a6f6b63a10eb8f9673ea4f4fe48c7f8f58f1227c6a8c6cdbbeb758c4a4887ec6",
+    "overlay_image": "a8c37bf0c4c0f62a7ac61f7cb36f7905080de3d718e31166824154e78a305bc3"
+  }
+}

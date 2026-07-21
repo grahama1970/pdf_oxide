@@ -3203,6 +3203,77 @@
       "status": "closed"
     },
     {
+      "added_at": "2026-07-21T00:00:00Z",
+      "added_by": "agent:codex (pdf-lab page45 all-candidates hardening)",
+      "applied_at": "2026-07-21T00:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route NIST quick-link summary-table lines to section_link instead of generic prose.",
+      "closed_at": "2026-07-21T00:00:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page45_quick_link.py)",
+      "entry_id": "nist-quick-link-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:5"
+        ],
+        "risk_reasons_observed": [
+          "nist_quick_link_as_paragraph_block"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/page45_issue2_item3_section_link_20260604/proof_summary.json",
+          "artifacts/pdf_lab/page45_control_enhancements_none_20260721/current_page45_snapshot.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Ordinary title-case body paragraphs; rejected by top-band main-column bbox and exact quick-link summary-table shape.",
+          "Section headings and control headings; rejected because they do not begin with the NIST quick-link wording.",
+          "TOC entries; rejected by source_type and body-column bbox guards."
+        ],
+        "candidates_that_prove": [
+          "Page 45 emits 'Quick link to Access Control Summary Table' as one Body paragraph_block immediately under the 3.1 section heading; the page45 item3 receipt expects section_link."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block in the top main body column matches the visible quick-link summary-table line shape, set type=section_link and semantic_role=nist_quick_link."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block or paragraph",
+          "bbox is outside the top main-column quick-link band",
+          "text does not match a NIST quick-link summary-table line"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overrides generic Body paragraph typing only for NIST quick-link summary-table lines.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.14,
+            "x_min_lt": 0.16,
+            "y_min_gt": 0.1,
+            "y_max_lt": 0.16
+          },
+          "source_type": "Body",
+          "type": [
+            "paragraph_block",
+            "paragraph"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "nist_quick_link",
+              "type": "section_link"
+            },
+            "regex": "^\\s*Quick\\s+link\\s+to\\s+.+\\s+Summary\\s+Table\\s*$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
       "added_at": "2026-06-01T16:27:00Z",
       "added_by": "agent:codex (next-30 full-text agentic second pass)",
       "applied_at": "2026-06-01T16:27:00Z",
