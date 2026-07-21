@@ -1,0 +1,567 @@
+{
+  "candidate_count": 16,
+  "candidates": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "block_id": "actual:p18:block:0",
+      "block_index": 0,
+      "candidate_id": "cand:p0018:0000:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/17/blocks/0",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "block_id": "actual:p18:block:1",
+      "block_index": 1,
+      "candidate_id": "cand:p0018:0001:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/17/blocks/1",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "bbox": [
+        0.4917646919200623,
+        0.939856018682923,
+        0.5081676408356312,
+        0.9550605542732008
+      ],
+      "block_id": "actual:p18:block:2",
+      "block_index": 2,
+      "candidate_id": "cand:p0018:0002:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.000249,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "PageNumber",
+        "text_length": 3
+      },
+      "json_pointer": "/pages/17/blocks/2",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "xvi"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_id": "actual:p18:block:3",
+      "block_index": 3,
+      "candidate_id": "cand:p0018:0003:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/17/blocks/3",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "bbox": [
+        0.45735293120340587,
+        0.08938735422461924,
+        0.5424779754838133,
+        0.11388766163527364
+      ],
+      "block_id": "actual:p18:block:4",
+      "block_index": 4,
+      "candidate_id": "cand:p0018:0004:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.002086,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 8
+      },
+      "json_pointer": "/pages/17/blocks/4",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Prologue"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.12668496912175958,
+        0.8388921201618669,
+        0.17860431863804055
+      ],
+      "block_id": "actual:p18:block:5",
+      "block_index": 5,
+      "candidate_id": "cand:p0018:0005:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.03592,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 280
+      },
+      "json_pointer": "/pages/17/blocks/5",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "\u201c\u2026Through the process of risk management, leaders must consider risk to US interests from adversaries using cyberspace to their advantage and from our own efforts to employ the global nature of cyberspace to achieve objectives in military, intelligence, and business operations\u2026 \u201c"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.18509246363784326,
+        0.8480188706341911,
+        0.25405016812411224
+      ],
+      "block_id": "actual:p18:block:6",
+      "block_index": 6,
+      "candidate_id": "cand:p0018:0006:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.048337,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 339
+      },
+      "json_pointer": "/pages/17/blocks/6",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "\u201c\u2026For operational plans development, the combination of threats, vulnerabilities, and impacts must be evaluated in order to identify important trends and decide where effort should be applied to eliminate or reduce threat capabilities; eliminate or reduce vulnerabilities; and assess, coordinate, and deconflict all cyberspace operations\u2026\u201d"
+    },
+    {
+      "bbox": [
+        0.1470587985967499,
+        0.26046903205640387,
+        0.8525361703112234,
+        0.2954885694715712
+      ],
+      "block_id": "actual:p18:block:7",
+      "block_index": 7,
+      "candidate_id": "cand:p0018:0007:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.024705,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 119
+      },
+      "json_pointer": "/pages/17/blocks/7",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "\u201c\u2026Leaders at all levels are accountable for ensuring readiness and security to the same degree as in any other domain\u2026\""
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.3095195269343829,
+        0.4605019762625102,
+        0.3264472653167416
+      ],
+      "block_id": "actual:p18:block:8",
+      "block_index": 8,
+      "candidate_id": "cand:p0018:0008:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.005306,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 47
+      },
+      "json_pointer": "/pages/17/blocks/8",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "THE NATIONAL STRATEGY FOR CYBERSPACE OPERATIONS"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.3250833376489504,
+        0.5550040450750613,
+        0.34028791177152384
+      ],
+      "block_id": "actual:p18:block:9",
+      "block_index": 9,
+      "candidate_id": "cand:p0018:0009:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.006203,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 73
+      },
+      "json_pointer": "/pages/17/blocks/9",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "OFFICE OF THE CHAIRMAN, JOINT CHIEFS OF STAFF, U.S. DEPARTMENT OF DEFENSE"
+    },
+    {
+      "bbox": [
+        0.43490196676815257,
+        0.3568225822063408,
+        0.565166647917305,
+        0.3838866648047861
+      ],
+      "block_id": "actual:p18:block:10",
+      "block_index": 10,
+      "candidate_id": "cand:p0018:0010:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.003525,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 10
+      },
+      "json_pointer": "/pages/17/blocks/10",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "__________"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.41562440660264754,
+        0.8512015747868158,
+        0.5015511946244673
+      ],
+      "block_id": "actual:p18:block:11",
+      "block_index": 11,
+      "candidate_id": "cand:p0018:0011:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.060505,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 456
+      },
+      "json_pointer": "/pages/17/blocks/11",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "\u201cNetworking and information technology [are] transforming life in the 21st century, changing the way people, businesses, and government interact. Vast improvements in computing, storage, and communications are creating new opportunities for enhancing our social wellbeing; improving health and health care; eliminating barriers to education and employment; and increasing efficiencies in many sectors such as manufacturing, transportation, and agriculture."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.515539612432923,
+        0.8507511911828534,
+        0.6353352479260377
+      ],
+      "block_id": "actual:p18:block:12",
+      "block_index": 12,
+      "candidate_id": "cand:p0018:0012:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page",
+        "long_text_region"
+      ],
+      "features": {
+        "bbox_area": 0.084299,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 667
+      },
+      "json_pointer": "/pages/17/blocks/12",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "The promise of these new applications often stems from their ability to create, collect, transmit, process, and archive information on a massive scale. However, the vast increase in the quantity of personal information that is being collected and retained, combined with the increased ability to analyze it and combine it with other information, is creating valid concerns about privacy and about the ability of entities to manage these unprecedented volumes of data responsibly\u2026. A key challenge of "
+    },
+    {
+      "bbox": [
+        0.14705877366408804,
+        0.6494068184284248,
+        0.8465870377285029,
+        0.7352642483181424
+      ],
+      "block_id": "actual:p18:block:13",
+      "block_index": 13,
+      "candidate_id": "cand:p0018:0013:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.06006,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 470
+      },
+      "json_pointer": "/pages/17/blocks/13",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "\u201c\u2026When systems process personal information, whether by collecting, analyzing, generating, disclosing, retaining, or otherwise using the information, they can impact privacy of individuals. System designers need to account for individuals as stakeholders in the overall development of the solution.\u2026Designing for privacy must connect individuals\u2019 privacy desires with system requirements and controls in a way that effectively bridges the aspirations with development\u2026.\u201d"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7492922387941919,
+        0.3997900470409518,
+        0.7662199386442551
+      ],
+      "block_id": "actual:p18:block:14",
+      "block_index": 14,
+      "candidate_id": "cand:p0018:0014:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.004278,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 38
+      },
+      "json_pointer": "/pages/17/blocks/14",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "THE NATIONAL PRIVACY RESEARCH STRATEGY"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7648560495087595,
+        0.8253942751416973,
+        0.7800605850990372
+      ],
+      "block_id": "actual:p18:block:15",
+      "block_index": 15,
+      "candidate_id": "cand:p0018:0015:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.010314,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 111
+      },
+      "json_pointer": "/pages/17/blocks/15",
+      "page_index": 17,
+      "page_number": 18,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "NATIONAL SCIENCE AND TECHNOLOGY COUNCIL, NETWORKING AND INFORMATION TECHNOLOGY RESEARCH AND DEVELOPMENT PROGRAM"
+    }
+  ],
+  "page_case": {
+    "candidate_ids": [
+      "cand:p0018:0000:side_chrome",
+      "cand:p0018:0001:side_chrome",
+      "cand:p0018:0002:side_chrome",
+      "cand:p0018:0003:side_chrome",
+      "cand:p0018:0004:text",
+      "cand:p0018:0005:text",
+      "cand:p0018:0006:text",
+      "cand:p0018:0007:text",
+      "cand:p0018:0008:text",
+      "cand:p0018:0009:text",
+      "cand:p0018:0010:text",
+      "cand:p0018:0011:text",
+      "cand:p0018:0012:text",
+      "cand:p0018:0013:text",
+      "cand:p0018:0014:text",
+      "cand:p0018:0015:text"
+    ],
+    "case_id": "page_case_0001_p0018",
+    "forced_by_human_annotation": true,
+    "page_index": 17,
+    "page_number": 18,
+    "preset_counts": {
+      "side_chrome": 4,
+      "text": 12
+    },
+    "selection_probability_basis": {
+      "candidate_count_on_page": 16,
+      "candidate_share_estimate": 1.0,
+      "forced_page": true,
+      "method": "forced_human_annotation",
+      "page_score": 32.5,
+      "total_candidate_count": 16,
+      "total_page_score": 32.5,
+      "weighted_page_score_inclusion_estimate": 1.0
+    },
+    "selection_probability_estimate": 1.0,
+    "selection_reason": [
+      "human_annotated_page",
+      "high_risk_preset",
+      "high_risk_candidate",
+      "document_position_stratum",
+      "boundary_geometry",
+      "high_candidate_score"
+    ],
+    "selection_score": 32.5,
+    "strata": [
+      "geometry:boundary",
+      "position:first_20",
+      "position:frontmatter",
+      "preset:side_chrome",
+      "preset:text",
+      "risk:high"
+    ]
+  },
+  "schema": "pdf_lab.second_pass.sampled_candidate_manifest.v1"
+}

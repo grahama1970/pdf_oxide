@@ -65,6 +65,7 @@ Current completed page evidence:
 | `page_0014` | live second-pass Federal Records Management frontmatter review blocked by repeated SciLLM ReadTimeout | `artifacts/pdf_lab/page14_scillm_readtimeout_20260721/audit_summary.json` | `origin/main` at `42d035760394f101830b5615e67a33b6761526f9` |
 | `page_0016` | live second-pass Planning Note review blocked by repeated SciLLM local-text ReadTimeout after DPI/payload reduction | `artifacts/pdf_lab/page16_scillm_readtimeout_20260721/audit_summary.json` | `origin/main` at `0a679d7ffb01a1e3a27c5f3d648bbcac735c3f28` |
 | `page_0017` | live second-pass VLM-backed review with page-orchestrator registration, six candidate findings validated clean | `artifacts/pdf_lab/page17_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `d49078fe96eaca152eab34428d6a15b314f66f16` |
+| `page_0018` | live second-pass VLM-backed review with page-orchestrator registration, sixteen candidate findings validated clean | `artifacts/pdf_lab/page18_vlm_free2_clean_20260721/audit_summary.json` | pending push of VLM-backed page18 receipt |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
