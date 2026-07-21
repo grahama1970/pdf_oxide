@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDF Lab Second-Pass Candidate Report</title>
+  <style>
+    :root { color-scheme: dark; --bg:#07101d; --panel:#101a2a; --line:#26364e; --text:#f4f7fb; --muted:#9eb0c7; --green:#22c55e; --amber:#f59e0b; --purple:#a78bfa; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 Inter, ui-sans-serif, system-ui, sans-serif; }
+    main { max-width: 1800px; margin: 0 auto; padding: 24px; }
+    .hero, .case { border:1px solid var(--line); border-radius:18px; background:linear-gradient(180deg,#121d2e,#0c1422); box-shadow:0 18px 60px rgba(0,0,0,.3); }
+    .hero { padding:20px; margin-bottom:16px; }
+    h1, h2 { margin:0; letter-spacing:-.03em; }
+    h1 { font-size:28px; }
+    h2 { font-size:18px; word-break: break-word; }
+    .summary { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+    .metric { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#0a1322; color:var(--muted); }
+    .metric strong { display:block; color:var(--text); font-size:22px; }
+    .case { padding:16px; margin:16px 0; }
+    .case header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px; }
+    .eyebrow { color:var(--purple); font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px; }
+    .badge { border:1px solid var(--line); border-radius:999px; padding:6px 10px; font-weight:800; }
+    .badge.resolved { color:#bbf7d0; border-color:rgba(34,197,94,.45); background:rgba(34,197,94,.12); }
+    .badge.human { color:#fde68a; border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.12); }
+    .grid { display:grid; grid-template-columns:minmax(280px, .72fr) minmax(420px, 1fr); gap:16px; align-items:start; }
+    .page-proof { position:relative; background:#fff; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.2); }
+    .page-proof img { display:block; width:100%; height:auto; }
+    .merge-gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin:10px 12px 12px; }
+    .merge-proof { margin:0; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#07101d; }
+    .merge-proof img { display:block; width:100%; height:auto; }
+    .merge-proof figcaption { padding:8px 10px; color:var(--muted); font-size:12px; }
+    .bundle-actions { display:flex; flex-wrap:wrap; gap:10px; margin:12px 0; }
+    .bundle-link, .bundle-actions button { display:inline-flex; align-items:center; min-height:36px; border:1px solid var(--line); border-radius:10px; background:#13233a; color:var(--text); padding:0 12px; font-weight:800; text-decoration:none; cursor:pointer; }
+    .bundle-actions button { font:inherit; }
+    .payload-copy { display:block; width:100%; min-height:360px; resize:vertical; border:0; border-top:1px solid var(--line); padding:12px; color:#d8b4fe; background:#050914; font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre; }
+    .bbox { position:absolute; border:3px solid var(--amber); box-shadow:0 0 0 2px rgba(167,139,250,.95), 0 0 0 9999px rgba(15,23,42,.10); pointer-events:none; }
+    .facts { min-width:0; }
+    dl { display:grid; grid-template-columns:140px minmax(0,1fr); gap:8px 12px; margin:0 0 12px; }
+    dt { color:var(--muted); font-weight:800; text-transform:uppercase; font-size:11px; letter-spacing:.05em; }
+    dd { margin:0; overflow-wrap:anywhere; }
+    details { border:1px solid var(--line); border-radius:12px; background:#0a1322; margin:8px 0; overflow:hidden; }
+    summary { cursor:pointer; padding:10px 12px; font-weight:800; }
+    pre { margin:0; padding:12px; overflow:auto; max-height:420px; color:#d8b4fe; background:#050914; font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .missing { border:1px dashed var(--line); border-radius:12px; padding:20px; color:var(--muted); }
+    @media (max-width: 1100px) { .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">PDF Lab · second-pass candidate report</div>
+      <h1>Every candidate with prompt payload, preset, extraction JSON, decision, and annotation status</h1>
+      <div class="summary">
+        <div class="metric"><strong>1</strong> candidates</div>
+        <div class="metric"><strong>1</strong> with expected JSON</div>
+        <div class="metric"><strong>1</strong> with actual JSON</div>
+        <div class="metric"><strong>1</strong> with actual candidates</div>
+        <div class="metric"><strong>1</strong> with extraction evidence</div>
+        <div class="metric"><strong>1</strong> with bbox</div>
+        <div class="metric"><strong>1</strong> rendered page images</div>
+        <div class="metric"><strong>1</strong> annotated overlays</div>
+        <div class="metric"><strong>0</strong> with table metrics</div>
+        <div class="metric"><strong>0</strong> merge candidates</div>
+        <div class="metric"><strong>0</strong> human required</div>
+      </div>
+    </section>
+    
+      <article class="case">
+        <header>
+          <div>
+            <div class="eyebrow">pdf.header_footer_noise.v1 · page 27</div>
+            <h2>review:comparison_miss:gs001_row_1_issue4_running_header</h2>
+          </div>
+          <span class="badge resolved">fixture_candidate</span>
+        </header>
+        <div class="grid">
+          <div class="page-proof"><img src="pages/page_27.png" alt="Rendered page 27"><span class="bbox" style="left:14.500%;top:4.300%;width:11.900%;height:1.400%;"></span></div>
+          <div class="facts">
+            <dl>
+              <dt>Element</dt><dd>actual:p27:line:0</dd>
+              <dt>Conclusion</dt><dd>Table preset evaluation result; inspect metrics and visual evidence.</dd>
+              <dt>Classification</dt><dd>Extractor failed to merge header fragments, but all parts are available in candidates and a corrected version is provided.</dd>
+              <dt>Expected type</dt><dd>header_footer_noise</dd>
+              <dt>Extractor emitted</dt><dd>running_header</dd>
+              <dt>Annotation bbox</dt><dd>[0.145, 0.043, 0.264, 0.057]</dd>
+              <dt>Actual candidates</dt><dd>2</dd>
+              <dt>Validation</dt><dd>pass</dd>
+              <dt>Human question</dt><dd>not required</dd>
+            </dl>
+            <div class="bundle-actions"><a class="bundle-link" href="review_comparison_miss_gs001_row_1_issue4_running_header/prompt_payload_bundle.zip" download>Download full prompt payload ZIP</a><button type="button" data-copy="review_comparison_miss_gs001_row_1_issue4_running_header/prompt_payload_bundle.zip" onclick="copyBundlePath(this)">Copy ZIP path</button><button type="button" data-copy-target="payload-review_comparison_miss_gs001_row_1_issue4_running_header" onclick="copyPayloadText(this)">Copy full prompt payload JSON</button></div>
+            <details open><summary>Known visual facts</summary><pre>[
+  &quot;Issue #4 / gs001:row:1 concerns page 27 top running-header fragments. Pre-repair pdf_oxide JSON emits two running_header fragments; the accepted repair synthesizes one header_footer_noise page_chrome element and suppresses the child fragments.&quot;,
+  &quot;This record is escalated to human triage after deterministic filters did not resolve it.&quot;
+]</pre></details>
+            <details open><summary>Extractor table candidate metrics</summary><pre>{}</pre></details>
+            <details><summary>Adjacent table images</summary><div class="merge-gallery"><div class="missing">No adjacent table page images supplied.</div></div></details>
+            <details><summary>Expected JSON</summary><pre>{
+  &quot;id&quot;: &quot;actual:p27:line:0&quot;,
+  &quot;page&quot;: 27,
+  &quot;type&quot;: &quot;header_footer_noise&quot;,
+  &quot;bbox&quot;: [
+    0.145,
+    0.043,
+    0.855,
+    0.057
+  ],
+  &quot;text&quot;: &quot;NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS&quot;,
+  &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+}</pre></details>
+            <details><summary>Actual pdf_oxide JSON</summary><pre>{
+  &quot;id&quot;: &quot;actual:p27:line:0&quot;,
+  &quot;page&quot;: 27,
+  &quot;source_type&quot;: &quot;running_header&quot;,
+  &quot;type&quot;: &quot;running_header&quot;,
+  &quot;bbox&quot;: [
+    0.145,
+    0.043,
+    0.264,
+    0.057
+  ],
+  &quot;text&quot;: &quot;NIST SP 800-53, R EV. 5&quot;,
+  &quot;source_collection&quot;: &quot;elements&quot;
+}</pre></details>
+            <details><summary>Actual candidate extractions</summary><pre>[
+  {
+    &quot;id&quot;: &quot;actual:p27:line:68+actual:p27:line:111&quot;,
+    &quot;page&quot;: 27,
+    &quot;type&quot;: &quot;running_header&quot;,
+    &quot;bbox&quot;: [
+      0.464,
+      0.043,
+      0.855,
+      0.057
+    ],
+    &quot;text&quot;: &quot;SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS&quot;,
+    &quot;source&quot;: null,
+    &quot;similarity_to_comparison_text&quot;: 0.8554,
+    &quot;raw&quot;: null
+  },
+  {
+    &quot;id&quot;: &quot;actual:p27:line:0&quot;,
+    &quot;page&quot;: 27,
+    &quot;type&quot;: &quot;running_header&quot;,
+    &quot;bbox&quot;: [
+      0.145,
+      0.043,
+      0.264,
+      0.057
+    ],
+    &quot;text&quot;: &quot;NIST SP 800-53, R EV. 5&quot;,
+    &quot;source&quot;: null,
+    &quot;similarity_to_comparison_text&quot;: 0.3898,
+    &quot;raw&quot;: null
+  }
+]</pre></details>
+            <details><summary>Validated decision</summary><pre>{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_decision.v1&quot;,
+  &quot;case_id&quot;: &quot;review:comparison_miss:gs001_row_1_issue4_running_header&quot;,
+  &quot;preset_id&quot;: &quot;pdf.header_footer_noise.v1&quot;,
+  &quot;decision&quot;: &quot;fixture_candidate&quot;,
+  &quot;human_triage_required&quot;: false,
+  &quot;classification&quot;: &quot;Extractor failed to merge header fragments, but all parts are available in candidates and a corrected version is provided.&quot;,
+  &quot;confidence&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The `actual_json` represents only a fragment of the running header. However, the `actual_candidates` contain all necessary fragments, and the `candidate_corrected_json` successfully merges these fragments to match the `expected_json`. This demonstrates that the correct output is achievable by merging existing extracted elements. The `known_visual_facts` confirm that the `candidate_corrected_json` represents the &#x27;accepted repair&#x27;. This case is suitable for a fixture to teach the system to merge such header fragments, rather than requiring human triage for an already resolved pattern.&quot;,
+  &quot;target_evidence_used&quot;: [
+    {
+      &quot;field_path&quot;: &quot;expected_json.text&quot;,
+      &quot;fact&quot;: &quot;The full, correct running header text is &#x27;NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS&#x27;.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_json.text&quot;,
+      &quot;fact&quot;: &quot;The actual extracted text is &#x27;NIST SP 800-53, R EV. 5&#x27;, which is only the first part of the running header.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_candidates[0].text&quot;,
+      &quot;fact&quot;: &quot;One candidate is &#x27;SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS&#x27;, representing the second part of the running header.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;actual_candidates[1].text&quot;,
+      &quot;fact&quot;: &quot;Another candidate is &#x27;NIST SP 800-53, R EV. 5&#x27;, matching the actual_json and representing the first part of the running header.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;candidate_corrected_json.text&quot;,
+      &quot;fact&quot;: &quot;The candidate corrected JSON successfully merges the fragments into &#x27;NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS&#x27;, matching the expected text.&quot;
+    },
+    {
+      &quot;field_path&quot;: &quot;known_visual_facts&quot;,
+      &quot;fact&quot;: &quot;The &#x27;accepted repair synthesizes one header_footer_noise page_chrome element and suppresses the child fragments&#x27;, confirming the validity of the candidate_corrected_json.&quot;
+    }
+  ],
+  &quot;missing_evidence&quot;: [],
+  &quot;validators&quot;: [
+    {
+      &quot;validator_id&quot;: &quot;preset_id_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;pdf.header_footer_noise.v1&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;page_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;page=27&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;extraction_evidence_present&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;actual_json or actual_candidates is present&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;human_triage_boundary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;agent_resolved records do not create human work; human_triage records preserve the explicit question.&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;model_decision_vocabulary&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;fixture_candidate&quot;
+    },
+    {
+      &quot;validator_id&quot;: &quot;decision_boundary_consistency&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;fact&quot;: &quot;human_triage_required=False&quot;
+    }
+  ],
+  &quot;table_merge_review&quot;: {
+    &quot;merge_decision&quot;: &quot;not_applicable&quot;,
+    &quot;primary_table_metrics&quot;: null,
+    &quot;adjacent_table_metrics_considered&quot;: [],
+    &quot;visual_evidence_used&quot;: [],
+    &quot;reason&quot;: null
+  },
+  &quot;human_question&quot;: null,
+  &quot;recommended_engine_fix&quot;: null,
+  &quot;proposed_json_delta&quot;: {
+    &quot;before&quot;: {
+      &quot;elements&quot;: [
+        {
+          &quot;id&quot;: &quot;actual:p27:line:0&quot;,
+          &quot;page&quot;: 27,
+          &quot;source_type&quot;: &quot;running_header&quot;,
+          &quot;type&quot;: &quot;running_header&quot;,
+          &quot;bbox&quot;: [
+            0.145,
+            0.043,
+            0.264,
+            0.057
+          ],
+          &quot;text&quot;: &quot;NIST SP 800-53, R EV. 5&quot;
+        },
+        {
+          &quot;id&quot;: &quot;actual:p27:line:68+actual:p27:line:111&quot;,
+          &quot;page&quot;: 27,
+          &quot;source_type&quot;: &quot;running_header&quot;,
+          &quot;type&quot;: &quot;running_header&quot;,
+          &quot;bbox&quot;: [
+            0.464,
+            0.043,
+            0.855,
+            0.057
+          ],
+          &quot;text&quot;: &quot;SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS&quot;
+        }
+      ]
+    },
+    &quot;after&quot;: {
+      &quot;id&quot;: &quot;actual:p27:header_footer_noise:merged:0&quot;,
+      &quot;page&quot;: 27,
+      &quot;type&quot;: &quot;header_footer_noise&quot;,
+      &quot;source_type&quot;: &quot;synthetic&quot;,
+      &quot;bbox&quot;: [
+        0.145,
+        0.043,
+        0.855,
+        0.057
+      ],
+      &quot;text&quot;: &quot;NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS&quot;,
+      &quot;child_ids&quot;: [
+        &quot;actual:p27:line:0&quot;,
+        &quot;actual:p27:line:68+actual:p27:line:111&quot;
+      ],
+      &quot;semantic_role&quot;: &quot;page_chrome&quot;
+    }
+  },
+  &quot;fixture_candidate&quot;: {
+    &quot;enabled&quot;: true,
+    &quot;fixture_family&quot;: &quot;header_footer_merge&quot;,
+    &quot;reason&quot;: &quot;The `candidate_corrected_json` provides the desired merged output for a running header that was initially split into multiple fragments by the extractor. This can be used to create a fixture to improve the merging logic for such elements.&quot;
+  }
+}</pre></details>
+            <details open><summary>Full prompt payload JSON</summary><textarea id="payload-review_comparison_miss_gs001_row_1_issue4_running_header" class="payload-copy" spellcheck="false">{
+  &quot;schema_version&quot;: &quot;pdf_lab.second_pass_full_prompt_payload.v1&quot;,
+  &quot;case_id&quot;: &quot;review:comparison_miss:gs001_row_1_issue4_running_header&quot;,
+  &quot;preset_id&quot;: &quot;pdf.header_footer_noise.v1&quot;,
+  &quot;system_prompt&quot;: &quot;# RATIONALE (not sent to LLM)\n# Purpose: Classify one PDF extraction evidence case into agent_resolved, human_triage, fixture_candidate, or blocker.\n# Consumer: pdf-lab final-pass writes agent_resolved_findings, pdf_element_notes, human_triage_queue, and fixture candidates.\n# Why this matters: Bad output creates unnecessary human triage cards or hides real extractor defects.\n# Input: One JSON payload with case_id, preset_id, page evidence paths, expected_json, actual_json or actual_candidates, candidate_corrected_json, and provenance.\n# Output: One JSON object matching the schema in second_pass/global_user.txt.\n# Last reviewed: 2026-05-07 by project agent.\n\nYou are the PDF Lab second-pass evidence gate.\n\nTask: Decide whether one PDF extraction case is resolved by artifacts, requires human triage, should become a fixture candidate, or is blocked by missing evidence.\n\nSafety and evidence boundary:\n- Use only the supplied payload fields and referenced artifact paths.\n- Do not invent text, cells, rows, captions, page numbers, bbox coordinates, file paths, or relationships.\n- Do not ask a human to decide facts already proven by target evidence.\n- Do not create human work from raw `pdf_oxide.extract_tables` output alone.\n- If required target evidence is missing, return `decision: \&quot;blocker\&quot;`.\n\nTarget evidence means:\n- original page image path\n- annotated page image path or crop image path\n- actual deterministic extraction JSON, or actual candidate extractions linked from the deterministic output for expected-side comparison misses\n- candidate corrected JSON when present\n- bbox, page, element ID, and provenance paths supplied in the payload\n\nTechnique evidence means generic knowledge about PDFs, tables, charts, captions, equations, or extraction heuristics. Technique evidence may explain validation rules, but it may not justify a human triage card by itself.\n\nClosed decision vocabulary:\n- `agent_resolved`\n- `human_triage`\n- `fixture_candidate`\n- `blocker`\n\nHuman triage rule:\nReturn `human_triage` only when the supplied artifacts contain a concrete unresolved conflict that cannot be resolved by the selected preset validators.\n\nExpected-side comparison miss rule:\nIf `actual_json` is null but `actual_candidates[]` is non-empty, treat `actual_candidates[]` as deterministic extraction evidence. Do not return blocker solely because `actual_json` is null in that case.\n\nTable-specific hard rule:\nIf the visible evidence shows a table header plus one data row and the actual JSON captures that visible table object, do not ask whether it is a real table. Return `agent_resolved` unless the payload proves visible content is cut off or candidate corrected JSON conflicts with actual JSON.\n\nTable-merge hard rule:\nFor table merge, continuation, rowspan, colspan, or split-table questions, use the attached annotated page images and `table_merge_review` metrics together. Do not ask a human whether two table regions should merge unless:\n- both relevant page/table images are supplied or explicitly unavailable,\n- extracted shape/data-quality metrics are supplied for the primary and adjacent table candidates,\n- the selected table preset validators cannot determine whether this is one logical table, separate tables, or an extractor/preset backlog item.\nIf metrics and images are sufficient, return `agent_resolved` or `fixture_candidate` with a deterministic engine/preset recommendation.\n\nOutput rule:\nReturn only one JSON object. Do not return markdown, commentary, headings, or prose outside JSON.\n&quot;,
+  &quot;user_prompt&quot;: &quot;# RATIONALE (not sent to LLM)\n# Purpose: User-message template for one PDF Lab second-pass evidence case.\n# Consumer: scillm or equivalent model call invoked by pdf-lab final-pass/prompt review harness.\n# Why this matters: The payload must be stable enough to review, replay, and turn into fixtures.\n# Input: CASE_PAYLOAD JSON inserted below.\n# Output: JSON matching the exact schema at the end of this file.\n# Last reviewed: 2026-05-07 by project agent.\n\nGiven `CASE_PAYLOAD`, apply the selected element preset and return the second-pass decision.\n\nEvidence classification:\n1. Target evidence: supplied artifact paths, expected JSON, actual JSON, actual candidate extractions, candidate corrected JSON, bbox, page, element ID, and provenance.\n2. Technique evidence: element-type rules from the selected preset.\n3. Missing evidence: required preset inputs absent from `CASE_PAYLOAD`.\n\nRules:\n- Recommend human triage only when target evidence contains an unresolved conflict.\n- Do not cite the selected preset as target evidence.\n- Do not infer missing rows, cells, values, captions, or section relationships.\n- Do not ask bbox-expansion questions unless visible content is cut off or candidate corrected JSON proves a mismatch.\n- For table merge/split/continuation questions, use `table_merge_review.primary_table_metrics`, `table_merge_review.adjacent_table_candidates[]`, and all supplied annotated page images before deciding. Do not escalate to a human if the metrics and images support a deterministic separate/merge/backlog classification.\n- If `actual_json` is null but `actual_candidates[]` is non-empty, evaluate the candidate extraction evidence instead of returning blocker for missing `actual_json`.\n- Use real JSON types: booleans as true/false, integers as numbers, arrays as arrays, null as null.\n\nCASE_PAYLOAD:\n```json\n{\n  \&quot;schema_version\&quot;: \&quot;pdf_lab.second_pass_case_payload.v1\&quot;,\n  \&quot;case_id\&quot;: \&quot;review:comparison_miss:gs001_row_1_issue4_running_header\&quot;,\n  \&quot;source_kind\&quot;: \&quot;human_triage\&quot;,\n  \&quot;preset_id\&quot;: \&quot;pdf.header_footer_noise.v1\&quot;,\n  \&quot;page\&quot;: 27,\n  \&quot;element_id\&quot;: \&quot;actual:p27:line:0\&quot;,\n  \&quot;original_page_image_path\&quot;: \&quot;artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/page_27.png\&quot;,\n  \&quot;annotated_page_image_path\&quot;: \&quot;artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/page_27_annotated.png\&quot;,\n  \&quot;expected_json\&quot;: {\n    \&quot;id\&quot;: \&quot;actual:p27:line:0\&quot;,\n    \&quot;page\&quot;: 27,\n    \&quot;type\&quot;: \&quot;header_footer_noise\&quot;,\n    \&quot;bbox\&quot;: [\n      0.145,\n      0.043,\n      0.855,\n      0.057\n    ],\n    \&quot;text\&quot;: \&quot;NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS\&quot;,\n    \&quot;source\&quot;: \&quot;agentic_expected_oracle\&quot;\n  },\n  \&quot;actual_json\&quot;: {\n    \&quot;id\&quot;: \&quot;actual:p27:line:0\&quot;,\n    \&quot;page\&quot;: 27,\n    \&quot;source_type\&quot;: \&quot;running_header\&quot;,\n    \&quot;type\&quot;: \&quot;running_header\&quot;,\n    \&quot;bbox\&quot;: [\n      0.145,\n      0.043,\n      0.264,\n      0.057\n    ],\n    \&quot;text\&quot;: \&quot;NIST SP 800-53, R EV. 5\&quot;,\n    \&quot;source_collection\&quot;: \&quot;elements\&quot;\n  },\n  \&quot;actual_candidates\&quot;: [\n    {\n      \&quot;id\&quot;: \&quot;actual:p27:line:68+actual:p27:line:111\&quot;,\n      \&quot;page\&quot;: 27,\n      \&quot;type\&quot;: \&quot;running_header\&quot;,\n      \&quot;bbox\&quot;: [\n        0.464,\n        0.043,\n        0.855,\n        0.057\n      ],\n      \&quot;text\&quot;: \&quot;SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS\&quot;,\n      \&quot;source\&quot;: null,\n      \&quot;similarity_to_comparison_text\&quot;: 0.8554,\n      \&quot;raw\&quot;: null\n    },\n    {\n      \&quot;id\&quot;: \&quot;actual:p27:line:0\&quot;,\n      \&quot;page\&quot;: 27,\n      \&quot;type\&quot;: \&quot;running_header\&quot;,\n      \&quot;bbox\&quot;: [\n        0.145,\n        0.043,\n        0.264,\n        0.057\n      ],\n      \&quot;text\&quot;: \&quot;NIST SP 800-53, R EV. 5\&quot;,\n      \&quot;source\&quot;: null,\n      \&quot;similarity_to_comparison_text\&quot;: 0.3898,\n      \&quot;raw\&quot;: null\n    }\n  ],\n  \&quot;candidate_corrected_json\&quot;: {\n    \&quot;id\&quot;: \&quot;actual:p27:header_footer_noise:merged:0\&quot;,\n    \&quot;page\&quot;: 27,\n    \&quot;type\&quot;: \&quot;header_footer_noise\&quot;,\n    \&quot;source_type\&quot;: \&quot;synthetic\&quot;,\n    \&quot;bbox\&quot;: [\n      0.145,\n      0.043,\n      0.855,\n      0.057\n    ],\n    \&quot;text\&quot;: \&quot;NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS\&quot;,\n    \&quot;child_ids\&quot;: [\n      \&quot;actual:p27:line:0\&quot;,\n      \&quot;actual:p27:line:68+actual:p27:line:111\&quot;\n    ],\n    \&quot;semantic_role\&quot;: \&quot;page_chrome\&quot;\n  },\n  \&quot;known_visual_facts\&quot;: [\n    \&quot;Issue #4 / gs001:row:1 concerns page 27 top running-header fragments. Pre-repair pdf_oxide JSON emits two running_header fragments; the accepted repair synthesizes one header_footer_noise page_chrome element and suppresses the child fragments.\&quot;,\n    \&quot;This record is escalated to human triage after deterministic filters did not resolve it.\&quot;\n  ],\n  \&quot;provenance\&quot;: {\n    \&quot;source_pdf\&quot;: \&quot;/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf\&quot;,\n    \&quot;source_extraction\&quot;: \&quot;/tmp/pdf_oxide-issue4-clean-fp1ZKQ/artifacts/pdf_lab/issue4_running_header_noise_20260720/page27_ledger_input.json\&quot;,\n    \&quot;created_by\&quot;: \&quot;pdf-lab.final-agent-pass\&quot;,\n    \&quot;deterministic_record\&quot;: \&quot;review:comparison_miss:gs001_row_1_issue4_running_header\&quot;\n  }\n}\n```\n\nReturn this exact JSON shape:\n```json\n{\n  \&quot;schema_version\&quot;: \&quot;pdf_lab.second_pass_decision.v1\&quot;,\n  \&quot;case_id\&quot;: \&quot;string\&quot;,\n  \&quot;preset_id\&quot;: \&quot;string\&quot;,\n  \&quot;decision\&quot;: \&quot;agent_resolved|human_triage|fixture_candidate|blocker\&quot;,\n  \&quot;human_triage_required\&quot;: true,\n  \&quot;classification\&quot;: \&quot;string\&quot;,\n  \&quot;confidence\&quot;: \&quot;low|medium|high\&quot;,\n  \&quot;reason\&quot;: \&quot;string\&quot;,\n  \&quot;target_evidence_used\&quot;: [\n    {\n      \&quot;field_path\&quot;: \&quot;string\&quot;,\n      \&quot;fact\&quot;: \&quot;string\&quot;\n    }\n  ],\n  \&quot;missing_evidence\&quot;: [\&quot;string\&quot;],\n  \&quot;validators\&quot;: [\n    {\n      \&quot;validator_id\&quot;: \&quot;string\&quot;,\n      \&quot;status\&quot;: \&quot;pass|fail|blocked\&quot;,\n      \&quot;fact\&quot;: \&quot;string\&quot;\n    }\n  ],\n  \&quot;table_merge_review\&quot;: {\n    \&quot;merge_decision\&quot;: \&quot;merge|separate|not_applicable|blocked|null\&quot;,\n    \&quot;primary_table_metrics\&quot;: \&quot;object|null\&quot;,\n    \&quot;adjacent_table_metrics_considered\&quot;: [],\n    \&quot;visual_evidence_used\&quot;: [],\n    \&quot;reason\&quot;: \&quot;string|null\&quot;\n  },\n  \&quot;human_question\&quot;: null,\n  \&quot;recommended_engine_fix\&quot;: null,\n  \&quot;proposed_json_delta\&quot;: null,\n  \&quot;fixture_candidate\&quot;: {\n    \&quot;enabled\&quot;: false,\n    \&quot;fixture_family\&quot;: null,\n    \&quot;reason\&quot;: null\n  }\n}\n```\n&quot;,
+  &quot;element_preset&quot;: {
+    &quot;schema_version&quot;: &quot;pdf_lab.element_preset.v1&quot;,
+    &quot;required_inputs&quot;: [
+      &quot;case_id&quot;,
+      &quot;page&quot;,
+      &quot;element_id&quot;,
+      &quot;original_page_image_path&quot;,
+      &quot;annotated_page_image_path&quot;,
+      &quot;actual_json&quot;,
+      &quot;provenance&quot;
+    ],
+    &quot;common_validators&quot;: [
+      &quot;artifact_paths_exist&quot;,
+      &quot;actual_json_present&quot;,
+      &quot;no_invented_text&quot;,
+      &quot;page_matches_element_page&quot;
+    ],
+    &quot;decision_outputs&quot;: [
+      &quot;agent_resolved&quot;,
+      &quot;human_triage&quot;,
+      &quot;fixture_candidate&quot;,
+      &quot;blocker&quot;
+    ],
+    &quot;preset_id&quot;: &quot;pdf.header_footer_noise.v1&quot;,
+    &quot;element_type&quot;: &quot;header_footer_noise&quot;,
+    &quot;required_outputs&quot;: [
+      &quot;noise_id&quot;,
+      &quot;page&quot;,
+      &quot;bbox&quot;,
+      &quot;text&quot;,
+      &quot;noise_type&quot;,
+      &quot;repeat_pattern&quot;,
+      &quot;action&quot;,
+      &quot;confidence&quot;,
+      &quot;evidence&quot;
+    ],
+    &quot;validators&quot;: [
+      &quot;repeat_pattern_or_margin_band_required&quot;,
+      &quot;do_not_use_as_content_evidence&quot;,
+      &quot;safe_to_suppress_requires_repetition_or_margin_role&quot;
+    ],
+    &quot;human_triage_gate&quot;: &quot;Only escalate when suppressing the region would remove unique document content.&quot;,
+    &quot;rendering_contract&quot;: [
+      &quot;show_original_page&quot;,
+      &quot;show_annotated_page_or_crop&quot;,
+      &quot;show_actual_json&quot;,
+      &quot;show_candidate_corrected_json_or_null&quot;,
+      &quot;show_validator_results&quot;
+    ]
+  },
+  &quot;case_payload&quot;: {
+    &quot;schema_version&quot;: &quot;pdf_lab.second_pass_case_payload.v1&quot;,
+    &quot;case_id&quot;: &quot;review:comparison_miss:gs001_row_1_issue4_running_header&quot;,
+    &quot;source_kind&quot;: &quot;human_triage&quot;,
+    &quot;preset_id&quot;: &quot;pdf.header_footer_noise.v1&quot;,
+    &quot;page&quot;: 27,
+    &quot;element_id&quot;: &quot;actual:p27:line:0&quot;,
+    &quot;original_page_image_path&quot;: &quot;artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/page_27.png&quot;,
+    &quot;annotated_page_image_path&quot;: &quot;artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/page_27_annotated.png&quot;,
+    &quot;expected_json&quot;: {
+      &quot;id&quot;: &quot;actual:p27:line:0&quot;,
+      &quot;page&quot;: 27,
+      &quot;type&quot;: &quot;header_footer_noise&quot;,
+      &quot;bbox&quot;: [
+        0.145,
+        0.043,
+        0.855,
+        0.057
+      ],
+      &quot;text&quot;: &quot;NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS&quot;,
+      &quot;source&quot;: &quot;agentic_expected_oracle&quot;
+    },
+    &quot;actual_json&quot;: {
+      &quot;id&quot;: &quot;actual:p27:line:0&quot;,
+      &quot;page&quot;: 27,
+      &quot;source_type&quot;: &quot;running_header&quot;,
+      &quot;type&quot;: &quot;running_header&quot;,
+      &quot;bbox&quot;: [
+        0.145,
+        0.043,
+        0.264,
+        0.057
+      ],
+      &quot;text&quot;: &quot;NIST SP 800-53, R EV. 5&quot;,
+      &quot;source_collection&quot;: &quot;elements&quot;
+    },
+    &quot;actual_candidates&quot;: [
+      {
+        &quot;id&quot;: &quot;actual:p27:line:68+actual:p27:line:111&quot;,
+        &quot;page&quot;: 27,
+        &quot;type&quot;: &quot;running_header&quot;,
+        &quot;bbox&quot;: [
+          0.464,
+          0.043,
+          0.855,
+          0.057
+        ],
+        &quot;text&quot;: &quot;SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS&quot;,
+        &quot;source&quot;: null,
+        &quot;similarity_to_comparison_text&quot;: 0.8554,
+        &quot;raw&quot;: null
+      },
+      {
+        &quot;id&quot;: &quot;actual:p27:line:0&quot;,
+        &quot;page&quot;: 27,
+        &quot;type&quot;: &quot;running_header&quot;,
+        &quot;bbox&quot;: [
+          0.145,
+          0.043,
+          0.264,
+          0.057
+        ],
+        &quot;text&quot;: &quot;NIST SP 800-53, R EV. 5&quot;,
+        &quot;source&quot;: null,
+        &quot;similarity_to_comparison_text&quot;: 0.3898,
+        &quot;raw&quot;: null
+      }
+    ],
+    &quot;candidate_corrected_json&quot;: {
+      &quot;id&quot;: &quot;actual:p27:header_footer_noise:merged:0&quot;,
+      &quot;page&quot;: 27,
+      &quot;type&quot;: &quot;header_footer_noise&quot;,
+      &quot;source_type&quot;: &quot;synthetic&quot;,
+      &quot;bbox&quot;: [
+        0.145,
+        0.043,
+        0.855,
+        0.057
+      ],
+      &quot;text&quot;: &quot;NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS&quot;,
+      &quot;child_ids&quot;: [
+        &quot;actual:p27:line:0&quot;,
+        &quot;actual:p27:line:68+actual:p27:line:111&quot;
+      ],
+      &quot;semantic_role&quot;: &quot;page_chrome&quot;
+    },
+    &quot;known_visual_facts&quot;: [
+      &quot;Issue #4 / gs001:row:1 concerns page 27 top running-header fragments. Pre-repair pdf_oxide JSON emits two running_header fragments; the accepted repair synthesizes one header_footer_noise page_chrome element and suppresses the child fragments.&quot;,
+      &quot;This record is escalated to human triage after deterministic filters did not resolve it.&quot;
+    ],
+    &quot;provenance&quot;: {
+      &quot;source_pdf&quot;: &quot;/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf&quot;,
+      &quot;source_extraction&quot;: &quot;/tmp/pdf_oxide-issue4-clean-fp1ZKQ/artifacts/pdf_lab/issue4_running_header_noise_20260720/page27_ledger_input.json&quot;,
+      &quot;created_by&quot;: &quot;pdf-lab.final-agent-pass&quot;,
+      &quot;deterministic_record&quot;: &quot;review:comparison_miss:gs001_row_1_issue4_running_header&quot;
+    }
+  }
+}</textarea></details>
+          </div>
+        </div>
+      </article>
+    
+  </main>
+  <script>
+    function copyBundlePath(button) {
+      const value = button.getAttribute('data-copy') || '';
+      navigator.clipboard.writeText(value).then(() => {
+        button.textContent = 'Copied ZIP path';
+      }).catch(() => {
+        button.textContent = value;
+      });
+    }
+    function copyPayloadText(button) {
+      const id = button.getAttribute('data-copy-target') || '';
+      const field = document.getElementById(id);
+      const value = field ? field.value : '';
+      navigator.clipboard.writeText(value).then(() => {
+        button.textContent = 'Copied full prompt payload JSON';
+      }).catch(() => {
+        if (field) {
+          field.focus();
+          field.select();
+        }
+        button.textContent = 'Select payload text below';
+      });
+    }
+  </script>
+</body>
+</html>

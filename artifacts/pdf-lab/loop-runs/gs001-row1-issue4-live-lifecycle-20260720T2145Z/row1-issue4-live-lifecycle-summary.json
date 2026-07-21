@@ -1,0 +1,196 @@
+{
+  "case_id": "review:comparison_miss:gs001_row_1_issue4_running_header",
+  "checks": [
+    {
+      "code": "same_defect_target_row1",
+      "fact": "case_id review:comparison_miss:gs001_row_1_issue4_running_header and issue #4 target gs001:row:1",
+      "ok": true
+    },
+    {
+      "code": "live_model_parseable_json",
+      "fact": "model_response.parsed_json is object",
+      "ok": true
+    },
+    {
+      "code": "validation_not_blocked",
+      "fact": "validation_result.status=pass",
+      "ok": true
+    },
+    {
+      "code": "header_footer_preset_used",
+      "fact": "preset pdf.header_footer_noise.v1 and model capability image_input true",
+      "ok": true
+    },
+    {
+      "code": "model_decision_fixture_candidate",
+      "fact": "decision=fixture_candidate",
+      "ok": true
+    },
+    {
+      "code": "visual_receipt_ok",
+      "fact": "Playwright screenshot/geometry receipt ok true",
+      "ok": true
+    },
+    {
+      "code": "criterion6_issue_closed",
+      "fact": "issue #4 closed and criterion6 remaining list empty",
+      "ok": true
+    },
+    {
+      "code": "deterministic_repair_gate_pass",
+      "fact": "before/after regression gate PASS",
+      "ok": true
+    },
+    {
+      "code": "structured_review_pass",
+      "fact": "structured code review aggregate PASS",
+      "ok": true
+    },
+    {
+      "code": "promotion_gate_pass",
+      "fact": "promotion gate PASS",
+      "ok": true
+    },
+    {
+      "code": "anti_overfit_pass",
+      "fact": "anti-overfit inspection PASS",
+      "ok": true
+    }
+  ],
+  "chronology_note": "The row-1 live model adjudication was generated after the deterministic repair/closure to fill the previously missing same-defect continuity artifact. It uses the pre-repair issue #4 extracted JSON and the accepted corrected JSON, so it proves the prompt/transport/validator can handle the exact repaired discrepancy, but it is not evidence that the original repair was selected by a model before code was changed.",
+  "criterion6": {
+    "closed_at": "2026-07-21T00:01:17Z",
+    "remaining_for_criterion6": [],
+    "status": "PASS"
+  },
+  "does_not_prove": [
+    "Criterion 1 fork-vs-upstream 0.3.74 baseline audit.",
+    "Criterion 9 truth reconciliation.",
+    "Criterion 8 final closure proof for the whole immutable goal.",
+    "Criterion 10 human acceptance/signature."
+  ],
+  "engine_repair": {
+    "anti_overfit_status": "PASS",
+    "evidence_commit": "b1cc6134d7a0f12fb53e06b3e6a14f168460bc51",
+    "latest_remote_main_commit": "31018830378062c55ceb68b5512b18e370e82d2f",
+    "promotion_evidence_commit": "31018830378062c55ceb68b5512b18e370e82d2f",
+    "promotion_verdict": "PASS",
+    "repair_commit": "eb24e7122bfe4082fb7864ba1a565d20e450088d",
+    "review_verdict": "PASS",
+    "structured_review_commit": "04e5dd814b16b4f01c67299fbe9edb87586b6306"
+  },
+  "live": true,
+  "mocked": false,
+  "next_iterative_steps": [
+    "Run Criterion 1 fork-vs-upstream 0.3.74 baseline audit using the clean GS001 branch/artifact path.",
+    "Reconcile stale GS001 statements that said Criterion 6 remained blocked now that issue #4 is closed and read back.",
+    "Then run Criterion 9 truth reconciliation before any Criterion 8 closure claim."
+  ],
+  "parent_goal_hash": "sha256:9d2bd5e1992e0e9875d1e14d78cc7ffb8cce4c087ab58a41447f999ae7118580",
+  "schema_version": "pdf_oxide.gs001.row1_issue4_live_lifecycle_summary.v1",
+  "second_pass": {
+    "artifact_contract": {
+      "actual_pdf_oxide_json": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/input_payload.json",
+      "annotated_page_image": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/page_27_annotated.png",
+      "full_prompt_payload": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/full_prompt_payload.json",
+      "html_report": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/candidate_report.html",
+      "model_response": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/model_response.json",
+      "original_page_image": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/page_27.png",
+      "preset": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/preset.json",
+      "validation_result": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/validation_result.json",
+      "visual_receipt": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/receipts/candidate-report-playwright-receipt.json",
+      "visual_screenshot": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/receipts/candidate-report-playwright.png",
+      "zip_bundle": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/prompt_payload_bundle.zip"
+    },
+    "decision": "fixture_candidate",
+    "human_triage_required": false,
+    "model": "gemini-flash",
+    "preset_id": "pdf.header_footer_noise.v1",
+    "sha256": {
+      "actual_pdf_oxide_json": "ac10f963afb28c447b43872982d8a2e3fe345675275e6b1ad5ac12fb1115efa6",
+      "annotated_page_image": "66696f0d5b5b4288498966f9302fb00ca364c54bca0586b2d543948e46652b7a",
+      "full_prompt_payload": "1ba892fa79d9d96600cff3d269f9e15a40922e2050cce85de3fc9a3caca5f49f",
+      "html_report": "73dcc1ea6395c2b9caf1a6eb4063d6e17e013b4dad46c8d1fc097b6a10108456",
+      "model_response": "e297ea3bb0a8147bf8374be61f89603755cd8bb5f77a5c8018744aa28ee955e3",
+      "original_page_image": "3ec7b12a83db3a5dec91a68281be9a6d0791e475dd7120e5dc4e35e42a9e7e05",
+      "preset": "57afdb65a86a8a4bd6a712bacc60385119df253742093cf141fc06366360ac16",
+      "validation_result": "284fbac4dfe415178aaa685c5649c685a5feeee2ce66b61bc46f05f680a17a10",
+      "visual_receipt": "f8dde33406f2211d7333702722627ee9812c24a11f13b979c81395682148ccd9",
+      "visual_screenshot": "e0dd60b79cd5055de323b149e5e7af225d0dc7018afc370e8df37ba2540518f3",
+      "zip_bundle": "e628653298db90dca9e3cf3987e2c0baefb0aa76a483774fc9ff451ae4cba825"
+    },
+    "transport": "scillm_chat_completions",
+    "validation_status": "pass"
+  },
+  "source_derived_step_model": [
+    {
+      "artifact": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-ticket-lifecycle-run2/intermediate/gs001-ticket-projection.json",
+      "behavior": "Project fingerprinted GS001 row-1 discrepancy to a ticket",
+      "state": "implemented",
+      "step": 1
+    },
+    {
+      "artifact": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/model_response.json",
+      "behavior": "Run live second-pass model on exact row-1/issue-4 extracted JSON and preset",
+      "state": "implemented",
+      "step": 2
+    },
+    {
+      "artifact": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/validation_result.json",
+      "behavior": "Validate model response against pdf-lab schema/vocabulary and non-blocked status",
+      "state": "implemented",
+      "step": 3
+    },
+    {
+      "artifact": "pdf_oxide main commit 31018830378062c55ceb68b5512b18e370e82d2f",
+      "behavior": "Apply repair in pdf_oxide so running_header fragments synthesize header_footer_noise page_chrome",
+      "state": "implemented",
+      "step": 4
+    },
+    {
+      "artifact": "/tmp/pdf_oxide-issue4-clean-fp1ZKQ/artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+      "behavior": "Prove before/after defect reduction and table preservation",
+      "state": "implemented",
+      "step": 5
+    },
+    {
+      "artifact": "/tmp/pdf_oxide-issue4-clean-fp1ZKQ/artifacts/pdf_lab/issue4_running_header_noise_20260720/review-code/structured_review_authenticated.json",
+      "behavior": "Run structured code review over accepted patch",
+      "state": "implemented",
+      "step": 6
+    },
+    {
+      "artifact": "/tmp/pdf_oxide-issue4-clean-fp1ZKQ/artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/promotion_verdict.json",
+      "behavior": "Run anti-overfit inspection and promotion gate with frozen cross-page packet",
+      "state": "implemented",
+      "step": 7
+    },
+    {
+      "artifact": "artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/criterion6-ticket-closure-summary.json",
+      "behavior": "Close the live GitHub ticket and read it back",
+      "state": "implemented",
+      "step": 8
+    },
+    {
+      "artifact": null,
+      "behavior": "Criterion 1 fork-vs-upstream baseline audit",
+      "state": "intended_next",
+      "step": 9
+    },
+    {
+      "artifact": null,
+      "behavior": "Criterion 9 truth reconciliation and Criterion 8 final closure proof",
+      "state": "missing_later",
+      "step": 10
+    }
+  ],
+  "status": "PASS",
+  "ticket": {
+    "classification": "bbox_iou_below_threshold",
+    "defect_key": "sha256:033d7b46aad99599b8bbb90ac8bbf421110bb2f967e0ac560f297374024feead",
+    "issue": 4,
+    "repo": "grahama1970/pdf_oxide",
+    "target": "gs001:row:1",
+    "url": "https://github.com/grahama1970/pdf_oxide/issues/4"
+  }
+}

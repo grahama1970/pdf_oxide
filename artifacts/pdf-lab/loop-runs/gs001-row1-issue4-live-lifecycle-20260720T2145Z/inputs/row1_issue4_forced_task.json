@@ -1,0 +1,81 @@
+{
+  "task_id": "review:comparison_miss:gs001_row_1_issue4_running_header",
+  "page": 27,
+  "kind": "running_header_comparison_miss",
+  "severity": "medium",
+  "target_id": "actual:p27:line:0",
+  "target_bbox": [
+    0.145,
+    0.043,
+    0.855,
+    0.057
+  ],
+  "human_question": "Should the highlighted same-band running_header fragments be treated as page chrome and merged into one header_footer_noise element, preserving the table below?",
+  "agent_reasoning": "Issue #4 / gs001:row:1 concerns page 27 top running-header fragments. Pre-repair pdf_oxide JSON emits two running_header fragments; the accepted repair synthesizes one header_footer_noise page_chrome element and suppresses the child fragments.",
+  "preview": {
+    "type": "running_header",
+    "text": "NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+  },
+  "type": "header_footer_noise",
+  "text": "NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+  "bbox": [
+    0.145,
+    0.043,
+    0.855,
+    0.057
+  ],
+  "suggested_fix": {
+    "action": "RECLASSIFY_AND_MERGE",
+    "reviewStatus": "pending_model_review"
+  },
+  "proposed_json_delta": {
+    "before": {
+      "elements": [
+        {
+          "id": "actual:p27:line:0",
+          "page": 27,
+          "source_type": "running_header",
+          "type": "running_header",
+          "bbox": [
+            0.145,
+            0.043,
+            0.264,
+            0.057
+          ],
+          "text": "NIST SP 800-53, R EV. 5"
+        },
+        {
+          "id": "actual:p27:line:68+actual:p27:line:111",
+          "page": 27,
+          "source_type": "running_header",
+          "type": "running_header",
+          "bbox": [
+            0.464,
+            0.043,
+            0.855,
+            0.057
+          ],
+          "text": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+        }
+      ]
+    },
+    "after": {
+      "id": "actual:p27:header_footer_noise:merged:0",
+      "page": 27,
+      "type": "header_footer_noise",
+      "source_type": "synthetic",
+      "bbox": [
+        0.145,
+        0.043,
+        0.855,
+        0.057
+      ],
+      "text": "NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "child_ids": [
+        "actual:p27:line:0",
+        "actual:p27:line:68+actual:p27:line:111"
+      ],
+      "semantic_role": "page_chrome"
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "schema_version": "pdf_lab.second_pass_decision.v1",
+  "case_id": "review:comparison_miss:gs001_row_1_issue4_running_header",
+  "preset_id": "pdf.header_footer_noise.v1",
+  "decision": "fixture_candidate",
+  "human_triage_required": false,
+  "classification": "Extractor failed to merge header fragments, but all parts are available in candidates and a corrected version is provided.",
+  "confidence": "high",
+  "reason": "The `actual_json` represents only a fragment of the running header. However, the `actual_candidates` contain all necessary fragments, and the `candidate_corrected_json` successfully merges these fragments to match the `expected_json`. This demonstrates that the correct output is achievable by merging existing extracted elements. The `known_visual_facts` confirm that the `candidate_corrected_json` represents the 'accepted repair'. This case is suitable for a fixture to teach the system to merge such header fragments, rather than requiring human triage for an already resolved pattern.",
+  "target_evidence_used": [
+    {
+      "field_path": "expected_json.text",
+      "fact": "The full, correct running header text is 'NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'."
+    },
+    {
+      "field_path": "actual_json.text",
+      "fact": "The actual extracted text is 'NIST SP 800-53, R EV. 5', which is only the first part of the running header."
+    },
+    {
+      "field_path": "actual_candidates[0].text",
+      "fact": "One candidate is 'SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS', representing the second part of the running header."
+    },
+    {
+      "field_path": "actual_candidates[1].text",
+      "fact": "Another candidate is 'NIST SP 800-53, R EV. 5', matching the actual_json and representing the first part of the running header."
+    },
+    {
+      "field_path": "candidate_corrected_json.text",
+      "fact": "The candidate corrected JSON successfully merges the fragments into 'NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS', matching the expected text."
+    },
+    {
+      "field_path": "known_visual_facts",
+      "fact": "The 'accepted repair synthesizes one header_footer_noise page_chrome element and suppresses the child fragments', confirming the validity of the candidate_corrected_json."
+    }
+  ],
+  "missing_evidence": [],
+  "validators": [
+    {
+      "validator_id": "preset_id_present",
+      "status": "pass",
+      "fact": "pdf.header_footer_noise.v1"
+    },
+    {
+      "validator_id": "page_present",
+      "status": "pass",
+      "fact": "page=27"
+    },
+    {
+      "validator_id": "extraction_evidence_present",
+      "status": "pass",
+      "fact": "actual_json or actual_candidates is present"
+    },
+    {
+      "validator_id": "human_triage_boundary",
+      "status": "pass",
+      "fact": "agent_resolved records do not create human work; human_triage records preserve the explicit question."
+    },
+    {
+      "validator_id": "model_decision_vocabulary",
+      "status": "pass",
+      "fact": "fixture_candidate"
+    },
+    {
+      "validator_id": "decision_boundary_consistency",
+      "status": "pass",
+      "fact": "human_triage_required=False"
+    }
+  ],
+  "table_merge_review": {
+    "merge_decision": "not_applicable",
+    "primary_table_metrics": null,
+    "adjacent_table_metrics_considered": [],
+    "visual_evidence_used": [],
+    "reason": null
+  },
+  "human_question": null,
+  "recommended_engine_fix": null,
+  "proposed_json_delta": {
+    "before": {
+      "elements": [
+        {
+          "id": "actual:p27:line:0",
+          "page": 27,
+          "source_type": "running_header",
+          "type": "running_header",
+          "bbox": [
+            0.145,
+            0.043,
+            0.264,
+            0.057
+          ],
+          "text": "NIST SP 800-53, R EV. 5"
+        },
+        {
+          "id": "actual:p27:line:68+actual:p27:line:111",
+          "page": 27,
+          "source_type": "running_header",
+          "type": "running_header",
+          "bbox": [
+            0.464,
+            0.043,
+            0.855,
+            0.057
+          ],
+          "text": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+        }
+      ]
+    },
+    "after": {
+      "id": "actual:p27:header_footer_noise:merged:0",
+      "page": 27,
+      "type": "header_footer_noise",
+      "source_type": "synthetic",
+      "bbox": [
+        0.145,
+        0.043,
+        0.855,
+        0.057
+      ],
+      "text": "NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "child_ids": [
+        "actual:p27:line:0",
+        "actual:p27:line:68+actual:p27:line:111"
+      ],
+      "semantic_role": "page_chrome"
+    }
+  },
+  "fixture_candidate": {
+    "enabled": true,
+    "fixture_family": "header_footer_merge",
+    "reason": "The `candidate_corrected_json` provides the desired merged output for a running header that was initially split into multiple fragments by the extractor. This can be used to create a fixture to improve the merging logic for such elements."
+  }
+}

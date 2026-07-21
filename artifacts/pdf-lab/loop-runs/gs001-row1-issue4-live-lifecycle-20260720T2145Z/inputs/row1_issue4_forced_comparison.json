@@ -1,0 +1,24 @@
+{
+  "schema_version": "pdf_lab.forced_one_record_comparison.v1",
+  "source": "issue4_ticket_projection_and_pre_repair_page27_ledger_input",
+  "misses": [
+    {
+      "expected_id": "gs001:row:1",
+      "page": 27,
+      "type": "header_footer_noise",
+      "bbox": [
+        0.145,
+        0.043,
+        0.855,
+        0.057
+      ],
+      "text": "NIST SP 800-53, R EV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "best_candidate": {
+        "matched": false,
+        "type_compatible": false,
+        "reason": "pre_repair_running_header_fragments"
+      },
+      "reason": "bbox_iou_below_threshold"
+    }
+  ]
+}

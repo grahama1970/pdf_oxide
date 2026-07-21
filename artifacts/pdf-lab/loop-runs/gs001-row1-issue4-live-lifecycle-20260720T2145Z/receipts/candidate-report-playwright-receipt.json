@@ -1,0 +1,44 @@
+{
+  "inspection_note": "Screenshot visually shows row-1 header/footer case with page image, highlighted top-header bbox, validation pass, expected header_footer_noise, emitted running_header, and fixture_candidate badge. Generic renderer conclusion label still says table preset evaluation; recorded as cosmetic issue outside this gate.",
+  "live": true,
+  "metrics": {
+    "articleRect": {
+      "height": 1321.78125,
+      "width": 1392,
+      "x": 24,
+      "y": 320.359375
+    },
+    "badge": "fixture_candidate",
+    "bboxRect": {
+      "height": 10.140625,
+      "width": 66.609375,
+      "x": 123.15625,
+      "y": 432.984375
+    },
+    "bodyTextIncludesActualJson": true,
+    "bodyTextIncludesRow1": true,
+    "bodyTextIncludesRow10": false,
+    "imageNaturalHeight": 792,
+    "imageNaturalWidth": 612,
+    "imageRect": {
+      "height": 724.390625,
+      "width": 559.765625,
+      "x": 42,
+      "y": 401.84375
+    },
+    "imgComplete": true,
+    "scrollHeight": 1682,
+    "textIncludesCorrectedJson": true,
+    "title": "PDF Lab Second-Pass Candidate Report",
+    "visibleExpectedType": true,
+    "visibleExtractorEmitted": true,
+    "visibleHeaderFooterPreset": true,
+    "visibleValidationPass": true
+  },
+  "mocked": false,
+  "ok": true,
+  "report_path": "/tmp/pdf_oxide-gs001-criterion6-closure-2gua8L/artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/candidate_report.html",
+  "schema_version": "pdf_lab.cdp_visual_receipt.v1",
+  "screenshot_path": "/tmp/pdf_oxide-gs001-criterion6-closure-2gua8L/artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/receipts/candidate-report-playwright.png",
+  "url": "file:///tmp/pdf_oxide-gs001-criterion6-closure-2gua8L/artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/candidate_report.html"
+}

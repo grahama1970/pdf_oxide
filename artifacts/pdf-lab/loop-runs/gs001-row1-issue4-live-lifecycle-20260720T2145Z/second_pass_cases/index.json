@@ -1,0 +1,44 @@
+{
+  "schema_version": "pdf_lab.second_pass_prompt_cases.v1",
+  "created_at": "2026-07-21T00:17:15Z",
+  "source_comparison": "pdf_lab.forced_one_record_comparison.v1",
+  "case_count": 1,
+  "deterministic_resolution_count": 0,
+  "deterministic_resolution_summary": {},
+  "cases": [
+    {
+      "case_id": "review:comparison_miss:gs001_row_1_issue4_running_header",
+      "source_kind": "human_triage",
+      "preset_id": "pdf.header_footer_noise.v1",
+      "decision": "fixture_candidate",
+      "human_triage_required": false,
+      "artifact_dir": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header",
+      "input_payload": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/input_payload.json",
+      "system_prompt": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/system_prompt.txt",
+      "user_prompt": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/user_prompt.txt",
+      "full_prompt": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/full_prompt.txt",
+      "full_prompt_payload": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/full_prompt_payload.json",
+      "model_response": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/model_response.json",
+      "validated_decision": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/validated_decision.json",
+      "validation_result": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/validation_result.json",
+      "prompt_bundle_zip": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/review_comparison_miss_gs001_row_1_issue4_running_header/prompt_payload_bundle.zip"
+    }
+  ],
+  "deterministic_resolutions": [],
+  "candidate_report": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/candidate_report.html",
+  "candidate_evidence_audit": "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/second_pass_cases/candidate_evidence_audit.json",
+  "evidence_summary": {
+    "case_count": 1,
+    "expected_json_present": 1,
+    "actual_json_present": 1,
+    "actual_candidate_present": 1,
+    "extraction_evidence_present": 1,
+    "bbox_present": 1,
+    "page_image_rendered": 1,
+    "annotated_in_report": 1,
+    "prompt_files_present": 1,
+    "human_triage_required": 0,
+    "table_metrics_present": 0,
+    "table_merge_candidates": 0
+  }
+}
