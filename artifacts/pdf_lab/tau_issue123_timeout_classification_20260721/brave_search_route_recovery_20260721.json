@@ -1,0 +1,32 @@
+{
+  "query": "Gemini API 429 quota RESOURCE_EXHAUSTED retry after all providers exhausted circuit breaker",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Gemini API Error Troubleshooting: Fix 429, 400, 403, and 500 Errors (2026 Guide) - Diagnose and Fix Every Gemini API Error with Working Code Examples | AI Free API",
+      "description": "Every Gemini API error maps to one of two strategies: <strong>retry with exponential backoff (for 429, 500, 503, 504) or fix and re-deploy (for 400, 403, 404).</strong> The 429 RESOURCE_EXHAUSTED error accounts for roughly 90% of developer complaints in 2026, ...",
+      "url": "https://www.aifreeapi.com/en/posts/gemini-api-error-troubleshooting-guide"
+    },
+    {
+      "title": "429 resource_exhausted - Gemini API - Google AI Developers Forum",
+      "description": "We are encountering \u201c429 Resource ... remaining within our paid tier limits. <strong>Please investigate this issue and provide a solution to restore normal API and AI Studio functionality</strong>....",
+      "url": "https://discuss.ai.google.dev/t/429-resource-exhausted/111737"
+    },
+    {
+      "title": "Quota Issue (429 RESOURCE_EXHAUSTED) when using gemini-2.0-flash-exp \u2013 Need for Quota Increase - Gemini Apps Community",
+      "description": "Skip to main content \u00b7 Gemini Apps Help \u00b7 Sign in \u00b7 Google Help \u00b7 Help Center \u00b7 Community \u00b7 Gemini Apps \u00b7 Terms of Service \u00b7 Submit feedback \u00b7 Send feedback on",
+      "url": "https://support.google.com/gemini/thread/341276377/quota-issue-429-resource-exhausted-when-using-gemini-2-0-flash-exp-%E2%80%93-need-for-quota-increase?hl=en"
+    },
+    {
+      "title": "Learn how to handle 429 resource exhaustion errors in your LLMs | Google Cloud Blog",
+      "description": "Backoff and retry mechanisms should be combined with dynamic shared quota, especially as request volume and token size increase. During our testing of the -002 model with larger video input, we encountered 429 errors in all our initial attempts. However, the test results below demonstrate that incorporating backoff and retry logic allowed all five subsequent attempts to succeed. This highlights the necessity of this strategy for the newer -002 Gemini model to be consistently successful.",
+      "url": "https://cloud.google.com/blog/products/ai-machine-learning/learn-how-to-handle-429-resource-exhaustion-errors-in-your-llms"
+    },
+    {
+      "title": "Gemini API - 429 Resource has been exhausted (e.g. check quota). - Custom ML & MLOps - Google Developer forums",
+      "description": "I have implemented a logic where I have created 15 API keys and allowed access to them. The whole process goes to GeminiPro1.0, which is Google\u2019s AI. The reason for all this is that if I use only one API key simultaneously, the entire process takes 4-5 days, as I want to stay outside the ...",
+      "url": "https://discuss.google.dev/t/gemini-api-429-resource-has-been-exhausted-e-g-check-quota/148997"
+    }
+  ]
+}

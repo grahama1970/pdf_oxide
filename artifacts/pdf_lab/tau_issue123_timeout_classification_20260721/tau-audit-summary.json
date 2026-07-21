@@ -7,7 +7,7 @@
   "live": true,
   "provider_live": false,
   "root_cause_code": "scillm_chat_review_provider_quota_exhausted",
-  "root_cause_basis": "live Tau canary eventually surfaced HTTP 429 provider quota/rate-limit exhaustion on the vlm-free2 route; shorter page39 timeout diagnosis remains preserved as service-unresponsive within its 30s diagnosis budget; a local-text canary then surfaced HTTP 502 route exhaustion",
+  "root_cause_basis": "live Tau canary eventually surfaced HTTP 429 provider quota/rate-limit exhaustion on the vlm-free2 route; shorter page39 timeout diagnosis remains preserved as service-unresponsive within its 30s diagnosis budget; a local-text canary then surfaced HTTP 502 route exhaustion; a resumed vlm-free2 canary later timed out through both primary and diagnosis canary budgets",
   "recommended_next_action": "do not retry PDF Lab page payloads against these model routes; wait for quota/cooldown recovery or switch Tau to an approved non-exhausted model route, then require a minimal Tau canary PASS",
   "changed_files": [
     "PROJECT_KNOWLEDGE.md",
@@ -22,13 +22,21 @@
     "quota_canary_error": "experiments/goal-locked-subagents/proofs/issue-123-pdf-lab-chat-review-timeout-20260721/quota-canary-receipt.error.json",
     "quota_canary_raw_response": "experiments/goal-locked-subagents/proofs/issue-123-pdf-lab-chat-review-timeout-20260721/quota-canary-receipt.raw-response.json",
     "local_text_canary": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/local-text-canary-receipt.json",
-    "webgpt_unblock_attempt": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_attempt.json"
+    "webgpt_unblock_attempt": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_attempt.json",
+    "resume_vlm_free2_canary": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/vlm-free2-resume-canary-20260721T154322Z-receipt.json",
+    "resume_vlm_free2_canary_error": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/vlm-free2-resume-canary-20260721T154322Z-receipt.error.json",
+    "brave_search_route_recovery": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/brave_search_route_recovery_20260721.json"
   },
   "external_unblock_attempts": [
     {
       "skill": "brave-search",
       "command": "python /home/graham/workspace/experiments/agent-skills/skills/brave-search/brave_search.py web \"OpenAI compatible proxy 502 all groups exhausted circuit breaker quota rate limit\" --count 5 --json",
       "result": "returned current/public rate-limit and quota-handling references; used as advisory context only"
+    },
+    {
+      "skill": "brave-search",
+      "command": "python /home/graham/workspace/experiments/agent-skills/skills/brave-search/brave_search.py web \"Gemini API 429 quota RESOURCE_EXHAUSTED retry after all providers exhausted circuit breaker\" --count 5 --json",
+      "result": "returned Gemini/API 429 RESOURCE_EXHAUSTED and backoff/retry context; used as advisory context only"
     },
     {
       "skill": "webgpt",
@@ -107,6 +115,26 @@
       },
       "proves": "Tau-owned local-text canary did not provide a usable alternate schema-JSON route; it failed closed as route exhausted",
       "does_not_prove": "that no future Tau-approved route can work after cooldown/reconfiguration"
+    },
+    {
+      "command": "uv run tau scillm-chat-review --request /tmp/tau-issue123-canary/request.json --out /tmp/tau-issue123-vlm-free2-resume-canary-20260721Tnow-receipt.json --response-out /tmp/tau-issue123-vlm-free2-resume-canary-20260721Tnow-response.json --scillm-base-url http://127.0.0.1:4001 --caller-skill pdf-lab --apply --request-timeout-s 120 --timeout-diagnosis-mode live_canary --timeout-diagnosis-timeout-s 30",
+      "result": {
+        "status": "BLOCKED",
+        "ok": false,
+        "mocked": false,
+        "live": true,
+        "provider_live": false,
+        "http_status": null,
+        "timed_out": true,
+        "root_cause_code": "scillm_chat_review_service_unresponsive",
+        "alert_codes": [
+          "scillm_chat_review_timeout",
+          "scillm_chat_review_service_unresponsive"
+        ],
+        "duration_seconds": 150.124672
+      },
+      "proves": "A resumed Tau-owned vlm-free2 canary still cannot produce schema JSON under the 120s primary plus 30s diagnosis budget",
+      "does_not_prove": "permanent provider outage or correctness of any future alternate route"
     }
   ]
 }

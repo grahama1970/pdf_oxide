@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T15:39:00Z
+**Timestamp**: 2026-07-21T15:45:00Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -172,7 +172,11 @@
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/local-text-canary-receipt.json`
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/local-text-canary-receipt.error.json`
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/local-text-canary-receipt.raw-response.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/vlm-free2-resume-canary-20260721T154322Z-receipt.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/vlm-free2-resume-canary-20260721T154322Z-receipt.error.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/brave_search_route_recovery_20260721.json`
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_attempt.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_retry_stderr.txt`
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/tau-audit-summary.json`
   - Live receipt boundary:
     - `mocked=false`
@@ -181,6 +185,8 @@
     - short page39 timeout diagnostic: `root_cause_code=scillm_chat_review_service_unresponsive`
     - longer minimal Tau canary: `http_status=429`, `root_cause_code=scillm_chat_review_provider_quota_exhausted`
     - local-text alternate canary: `http_status=502`, `root_cause_code=scillm_chat_review_route_exhausted`
+    - resumed minimal Tau `vlm-free2` canary at `2026-07-21T15:43:22Z`: `timed_out=true`, `duration_seconds=150.124672`, `root_cause_code=scillm_chat_review_service_unresponsive`
+    - fresh Brave Search artifact: `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/brave_search_route_recovery_20260721.json`
     - WebGPT exact-tab escalation: `BLOCKED_WEBGPT_TAB_IDENTITY_MISSING` for tab `837359458`
     - `recommended_next_action=do not retry PDF Lab page payloads against these model routes; wait for quota/cooldown recovery or switch Tau to an approved non-exhausted model route, then require a minimal Tau canary PASS`
   - Important correction: the current blocker is no longer an ambiguous `review_response_not_parseable` page payload failure. Tau now proves the live `vlm-free2` route is provider quota/rate-limit exhausted when allowed to surface the upstream error, and a text-only alternate route is also exhausted.
@@ -195,7 +201,7 @@
 | `explicitly_blocked` | `2` |
 | `not_run` | `448` unreviewed pages remaining after page401 |
 | Active page/checklist item | blocked pending `vlm-free2` provider quota/rate-limit recovery or approved alternate Tau model route proven by Tau-owned minimal canary PASS |
-| Latest failure signature | `vlm-free2=scillm_chat_review_provider_quota_exhausted`; `local-text=scillm_chat_review_route_exhausted`; WebGPT exact-tab escalation blocked by `BLOCKED_WEBGPT_TAB_IDENTITY_MISSING` |
+| Latest failure signature | resumed `vlm-free2=scillm_chat_review_service_unresponsive` after 150.124672s; prior `vlm-free2=scillm_chat_review_provider_quota_exhausted`; `local-text=scillm_chat_review_route_exhausted`; WebGPT exact-tab escalation blocked by `BLOCKED_WEBGPT_TAB_IDENTITY_MISSING` |
 
 ## 7. Important Correction To Claude Report
 
