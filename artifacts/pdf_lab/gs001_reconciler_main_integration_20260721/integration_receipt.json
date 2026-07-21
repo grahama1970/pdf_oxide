@@ -1,0 +1,71 @@
+{
+  "schema": "pdf_lab.integration_receipt.v1",
+  "created_utc": "2026-07-21T13:40:00Z",
+  "repo": "grahama1970/pdf_oxide",
+  "worktree": "/tmp/pdf_oxide_integrate_gs001_20260721",
+  "branch": "codex/integrate-gs001-reconciler-20260721",
+  "base_ref": "origin/main",
+  "base_commit": "1becfd79",
+  "integrated_commit": "44410852",
+  "source_repair_commit": "61050fc5",
+  "source_repair_subject": "feat(extractors): reconcile detected lattice tables with the block stream",
+  "boundary": {
+    "direct_scillm_called_from_pdf_oxide": false,
+    "direct_opencode_called_from_pdf_oxide": false,
+    "model_or_provider_work_required": false,
+    "tau_owns_future_model_executor_route": true
+  },
+  "files_integrated": [
+    "python/pdf_oxide/pipeline_extract.py",
+    "python/pdf_oxide/pipeline_types.py",
+    "src/extractors/document_extractor.rs",
+    "src/extractors/mod.rs",
+    "src/extractors/table_block_reconciler.rs",
+    "src/python.rs"
+  ],
+  "proof": [
+    {
+      "command": "uv run pytest -q tests/test_nist_table_duplicate_suppression.py tests/test_nist_page_28_regression.py",
+      "mocked": false,
+      "live": false,
+      "exercised": "current-main cherry-pick of the table/block reconciler through focused Python extraction regressions",
+      "result": "15 passed in 2.03s"
+    },
+    {
+      "command": "cargo test --lib",
+      "mocked": false,
+      "live": false,
+      "exercised": "Rust library test suite after current-main cherry-pick",
+      "result": "FAILED only at pipeline::converters::toc_detector::tests::test_extract_simple_toc; 4543 passed, 1 failed, 8 ignored, 0 measured, 0 filtered out",
+      "known_baseline_failure": "pipeline::converters::toc_detector::tests::test_extract_simple_toc"
+    }
+  ],
+  "evidence_commit_reconciliation": {
+    "attempted_source_commits": [
+      "897ca8b6",
+      "a41ea818",
+      "8bff1849"
+    ],
+    "result": "not_cherry_picked",
+    "reason": "897ca8b6 conflicted against current main: old artifacts/pdf-lab directory rename split and modify/delete conflicts for scripts/pdf_lab/cross_page_regression.py and scripts/pdf_lab/promotion_gate.py, both deleted on current main",
+    "fallback": "this current-main integration receipt records the proof commands and conflict outcome without resurrecting deleted scripts"
+  },
+  "claims": {
+    "proves": [
+      "61050fc5 applies cleanly to current origin/main as 44410852",
+      "focused NIST table duplicate/page28 regression tests pass after integration",
+      "Rust library test failure count remains a single known TOC baseline failure"
+    ],
+    "does_not_prove": [
+      "all PDF Lab page candidates are complete",
+      "Tau-owned model executor route is repaired",
+      "old Claude evidence commits are cleanly integrated into current main",
+      "DOI-chrome residual class is closed"
+    ]
+  },
+  "next_candidates": [
+    "page 34 body-lines-as-headings",
+    "page 45 list threshold",
+    "DOI-chrome leftovers"
+  ]
+}

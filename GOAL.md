@@ -6,11 +6,11 @@ Last updated: 2026-07-21
 
 Harden all PDF Lab page candidates one page/checklist item at a time across the
 active candidate queue, using a proof ladder that preserves visual/human
-evidence, creates or updates the focused regression before patching, runs a
-bounded scillm/OpenCode executor only when useful, performs deterministic
-project-agent audit, commits and pushes task-relevant code/artifacts, and
-advances only when the current candidate is proven or explicitly blocked with
-receipt artifacts.
+evidence, creates or updates the focused regression before patching, routes any
+model or executor work through Tau-owned DAG/harness contracts, performs
+deterministic project-agent audit, commits and pushes task-relevant
+code/artifacts, and advances only when the current candidate is proven or
+explicitly blocked with receipt artifacts.
 
 ## Scope
 
@@ -76,6 +76,7 @@ Current completed page evidence:
 | `page_0026` | live second-pass table-contained DOI/reference fragment reconciliation with VLM-backed reviewed-clean rerun | `artifacts/pdf_lab/page26_vlm_free2_repaired_clean_20260721/audit_summary.json` | `origin/main` at `1b6690a2b0493a2f9b3209e6f38e8861e9e5413e` |
 | `page_0027` | live second-pass VLM-backed review with page-orchestrator registration, five candidate findings validated clean | `artifacts/pdf_lab/page27_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `a5fc2f5c96974dd328f28af29935b0fa90b32fdd` |
 | `page_0028` | live second-pass review explicitly blocked at Tau/SciLLM orchestration boundary after authenticated `vlm-free2` ReadTimeout; pdf_oxide-side chunking drift rolled back; Tau issue filed | `artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/page_cases/page_case_0001_p0028/scillm_review_error.json`, `artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/tau-receipts/dag-receipt.json`, `https://github.com/grahama1970/tau/issues/120` | `origin/main` at `e68942f185c3a9ffaa9097a6f0a26155541631a8` |
+| `page_0456` | GS001 detected-lattice table/block reconciliation integrated onto current main candidate branch; residuals remain the separate DOI-chrome/fail-open classes | `artifacts/pdf_lab/gs001_reconciler_main_integration_20260721/integration_receipt.json` | pending push from `codex/integrate-gs001-reconciler-20260721` |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -98,9 +99,10 @@ For each page/checklist item:
    share a page.
 7. Create or update a focused regression before patching. The regression must
    point back to the page issue and source evidence.
-8. Use a bounded scillm/OpenCode executor only when it is useful and the prompt
-   contract is concrete. Tau owns DAG orchestration; do not modify scillm
-   internals from this repository.
+8. Use Tau-owned DAG/harness contracts for any model, SciLLM, OpenCode, or
+   provider-backed executor work. `pdf_oxide` must not call SciLLM/OpenCode
+   directly from its project-agent loop; it may only prepare deterministic
+   evidence and Tau contract inputs.
 9. Audit the diff, test output, extraction artifact, and executor receipts.
 10. Commit and push only task-relevant code and receipt artifacts after focused
     proof passes.
@@ -136,11 +138,9 @@ regression that will prove the single selected checklist item.
   selected candidate lacks focused extraction proof.
 - Do not mark the all-candidates goal complete until every active candidate has
   either passing receipt-backed proof or an explicit blocked receipt.
-- The `local-text` second-pass review family is not the production review path.
-  It can prove minimal text transport and now returns parseable JSON, but the
-  local `qwen2.5:0.5b` backend does not reliably satisfy the full page-review
-  schema. Use the live VLM-backed SciLLM route, currently `vlm-free2`, for the
-  next one-page review gate unless a later receipt proves a better local model.
+- The project-agent boundary is Tau-first: direct SciLLM/OpenCode calls from
+  `pdf_oxide` are not allowed. If a one-page review requires model transport,
+  create Tau DAG contract inputs and wait for Tau-owned receipts.
 
 ## Required Status Shape
 
