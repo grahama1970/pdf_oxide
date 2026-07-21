@@ -210,6 +210,7 @@ mod tests {
                 confidence: 0.9,
                 header_level: None,
                 header_validation: None,
+                lines: Vec::new(),
             },
             ClassifiedBlock {
                 block_type: BlockType::Caption,
@@ -221,6 +222,7 @@ mod tests {
                 confidence: 0.8,
                 header_level: None,
                 header_validation: None,
+                lines: Vec::new(),
             },
         ];
         let fig_bbox = Rect::new(50.0, 200.0, 200.0, 80.0);
@@ -242,6 +244,7 @@ mod tests {
                 confidence: 0.9,
                 header_level: Some(1),
                 header_validation: None,
+                lines: Vec::new(),
             },
             ClassifiedBlock {
                 block_type: BlockType::Body,
@@ -253,6 +256,7 @@ mod tests {
                 confidence: 0.9,
                 header_level: None,
                 header_validation: None,
+                lines: Vec::new(),
             },
         ];
         let fig_bbox = Rect::new(50.0, 200.0, 200.0, 80.0);
@@ -271,6 +275,7 @@ mod tests {
             confidence: 0.9,
             header_level: None,
             header_validation: None,
+            lines: Vec::new(),
         }];
         let fig_bbox = Rect::new(50.0, 200.0, 200.0, 80.0);
         let (caption, num) = find_caption(&blocks, &fig_bbox);

@@ -232,6 +232,7 @@ mod tests {
             confidence: 0.9,
             header_level: None,
             header_validation: None,
+            lines: Vec::new(),
         }
     }
 

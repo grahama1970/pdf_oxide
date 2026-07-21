@@ -1,0 +1,97 @@
+/home/graham/.local/lib/python3.12/site-packages/pytest_asyncio/plugin.py:252: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+.............F                                                           [100%]
+=================================== FAILURES ===================================
+_________ test_nist_page_46_splits_h_nested_account_notification_list __________
+
+    def test_nist_page_46_splits_h_nested_account_notification_list():
+>       page = _extract_page_46_with_ledger()
+
+tests/test_nist_page46_nested_list_segmentation.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_nist_page46_nested_list_segmentation.py:22: in _extract_page_46_with_ledger
+    return snapshot._extract_page(NIST_PDF, 45, LEDGER, "release")
+scripts/pdf_lab/snapshot_current_extraction.py:940: in _extract_page
+    import pdf_oxide  # noqa: PLC0415
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    """
+    PDF Oxide - The Complete PDF Toolkit
+    
+    Extract, create, and edit PDFs with one library.
+    Rust core with Python bindings. Fast, safe, dependency-free.
+    
+    # Extract. Create. Edit.
+    
+    ## Extract
+    - Text with reading order and layout analysis
+    - Images (JPEG, PNG, TIFF)
+    - Forms and annotations
+    - Convert to Markdown, HTML, PlainText
+    
+    ## Create
+    - Fluent API: `Pdf.create()`
+    - Tables, images, graphics
+    - Colors, gradients, patterns
+    
+    ## Edit
+    - Annotations (highlights, notes, stamps)
+    - Form fields (text, checkbox, radio)
+    - Round-trip: modify existing PDFs
+    
+    # Quick Start
+    
+    ```python
+    from pdf_oxide import PdfDocument, Pdf
+    
+    # Extract
+    doc = PdfDocument("input.pdf")
+    text = doc.to_plain_text(0)
+    
+    # Create
+    pdf = Pdf.create()
+    pdf.add_page().text("Hello!", x=72, y=720, size=24)
+    pdf.save("output.pdf")
+    ```
+    
+    # License
+    
+    Dual-licensed under MIT OR Apache-2.0.
+    """
+    
+>   from .pdf_oxide import (
+        VERSION,
+        BlendMode,
+        # Advanced Graphics
+        Color,
+        ExtGState,
+        LinearGradient,
+        LineCap,
+        LineJoin,
+        PatternPresets,
+        # PDF Creation
+        Pdf,
+        PdfDocument,
+        RadialGradient,
+        # Extraction
+        TextSpan,
+        # Geometry (Phase 1.7)
+        Rect,
+        Point,
+        # OCR (always available as stub if feature is off)
+        OcrConfig,
+        OcrEngine,
+        # Office (always available as stub if feature is off)
+        OfficeConverter,
+        # Standalone functions
+        map_framework_controls,
+        merge_tables,
+    )
+E   ModuleNotFoundError: No module named 'pdf_oxide.pdf_oxide'
+
+python/pdf_oxide/__init__.py:45: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_nist_page46_nested_list_segmentation.py::test_nist_page_46_splits_h_nested_account_notification_list
+1 failed, 13 passed in 0.12s
