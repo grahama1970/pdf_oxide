@@ -1,0 +1,169 @@
+{
+  "schema": "tau.dag_contract.v1",
+  "dag_id": "pdf-lab-page30-second-pass-review-20260721T1310Z",
+  "provider_sensitive": true,
+  "requires_provider_route": true,
+  "goal": {
+    "goal_id": "pdf-lab-all-page-candidates",
+    "goal_version": "2026-07-21-page30",
+    "goal_hash": "sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978"
+  },
+  "target": {
+    "repo": "grahama1970/pdf_oxide",
+    "target": "pdf-lab page_case_0001_p0030 second-pass model review",
+    "branch": "codex/pdf-lab-next-page-20260721",
+    "commit": "917d82a8dde376fc5795085902b96a6880826f7f",
+    "allowed_paths": [
+      "GOAL.md",
+      "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/**"
+    ]
+  },
+  "context": {
+    "schema": "pdf_lab.tau_second_pass_context.v1",
+    "page_case": {
+      "case_id": "page_case_0001_p0030",
+      "page_number": 30,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "candidate_count": 13,
+      "candidate_preset_types": [
+        "footnote",
+        "list",
+        "section_heading",
+        "side_chrome",
+        "text"
+      ]
+    },
+    "route_boundary": {
+      "pdf_oxide_direct_model_transport": "forbidden",
+      "tau_issue": "https://github.com/grahama1970/tau/issues/120",
+      "required_owner": "tau",
+      "blocked_guard_receipt": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/boundary_guard_receipt.json"
+    },
+    "input_artifacts": {
+      "review_bundle_zip": {
+        "path": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/review_bundle.zip",
+        "sha256": "eb0210c81b4656be605667940a30d3746e4a6302af023b2592a053f173c3455f"
+      },
+      "review_request_json": {
+        "path": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/review_request.json",
+        "sha256": "4f95a5e67797857dff7d33e515d53b7afd10b5c35fe7a566f3e8fc7ce3d82f73"
+      },
+      "candidate_presets_json": {
+        "path": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/candidate_presets.json",
+        "sha256": "0e37ba6d348ae37afde46e6a6b68a970f8651addd5e4f33b5483a7446786d69d"
+      },
+      "page_before_json": {
+        "path": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/page_before.json",
+        "sha256": "aca9a94cfcc438fd9b724afaadf3e7202e94266c1ccf4917103c5e72e9b89c16"
+      },
+      "page_before_png": {
+        "path": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/page_before.png",
+        "sha256": "11f26449b7a9ba5f78fdad816da1084a5332376c737b99854d44086938837250"
+      },
+      "page_candidates_png": {
+        "path": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/page_candidates.png",
+        "sha256": "7ab681c7ccaf4853ad052ff364df11296688a4721c830167146ddbb98d1253c3"
+      }
+    },
+    "required_tau_output_contract": {
+      "schema": "pdf_lab.tau_second_pass_review_receipt.v1",
+      "must_include": [
+        "tau_work_order_sha256",
+        "route_owner=tau",
+        "provider_live",
+        "model_transport_invoked_by_tau",
+        "model_response_artifact",
+        "parseable_review_response_json",
+        "review_validation_artifact",
+        "terminal_result"
+      ],
+      "allowed_terminal_results": [
+        "reviewed_clean",
+        "still_open",
+        "blocked_substrate",
+        "human_needed"
+      ],
+      "forbidden": [
+        "pdf_oxide_http_model_call",
+        "pdf_oxide_scillm_preflight",
+        "missing_work_order_sha256",
+        "unvalidated_model_response"
+      ]
+    }
+  },
+  "entry_node": "tau-native-second-pass-review",
+  "terminal_nodes": [
+    "project-agent-audit",
+    "human"
+  ],
+  "limits": {
+    "resume": true,
+    "default_timeout_seconds": 900,
+    "max_total_attempts": 2,
+    "provider_command_timeout_seconds": 900
+  },
+  "nodes": [
+    {
+      "id": "tau-native-second-pass-review",
+      "agent": "tau-pdf-lab-second-pass-reviewer",
+      "executor": "local",
+      "max_attempts": 1,
+      "context": {
+        "required_action": "Create and execute the Tau-owned PDF Lab model transport work order for page_case_0001_p0030 using the hash-bound review bundle inputs.",
+        "must_not_call_from_pdf_oxide": true
+      },
+      "required_evidence": [
+        "tau_work_order_sha256",
+        "provider_readiness_receipt",
+        "model_response_artifact",
+        "parseable_review_response_json",
+        "review_validation_artifact",
+        "tau_second_pass_review_receipt"
+      ]
+    },
+    {
+      "id": "project-agent-audit",
+      "agent": "pdf-oxide-project-agent",
+      "executor": "local",
+      "max_attempts": 1,
+      "context": {
+        "required_action": "Reconcile the Tau receipt with local page30 artifacts and only then decide whether page30 can be patched, marked clean, or remains blocked."
+      },
+      "required_evidence": [
+        "tau_second_pass_review_receipt",
+        "review_validation_artifact",
+        "terminal_ledger_update",
+        "focused_local_test_or_block_receipt"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "tau-native-second-pass-review",
+      "to": "project-agent-audit"
+    },
+    {
+      "from": "project-agent-audit",
+      "to": "human"
+    }
+  ],
+  "required_evidence": [
+    "tau_work_order_sha256",
+    "tau_second_pass_review_receipt",
+    "review_validation_artifact",
+    "project_agent_audit_receipt"
+  ],
+  "fail_closed_on": [
+    "goal_hash_mismatch",
+    "target_changed",
+    "unexpected_node",
+    "unexpected_edge",
+    "missing_required_evidence",
+    "max_attempts_exceeded",
+    "malformed_handoff",
+    "invalid_provider_receipt",
+    "missing_work_order_sha256",
+    "provider_auth_required",
+    "unresolved_block_alert"
+  ]
+}

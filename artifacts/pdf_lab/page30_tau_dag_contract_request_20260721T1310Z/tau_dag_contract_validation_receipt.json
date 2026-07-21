@@ -1,0 +1,65 @@
+{
+  "schema": "pdf_lab.tau_dag_contract_validation_receipt.v1",
+  "created_at": "2026-07-21T13:10:00Z",
+  "ok": true,
+  "mocked": false,
+  "live": false,
+  "provider_live": false,
+  "contract_path": "artifacts/pdf_lab/page30_tau_dag_contract_request_20260721T1310Z/tau_pdf_lab_page30_second_pass_dag_contract.json",
+  "contract_sha256": "1661032848c06d662b88806b9e2400fe77a055eae54f043f1b167a7ed225b236",
+  "validated_by": [
+    "python -m json.tool",
+    "tau_coding.project_dag.validate_dag_contract"
+  ],
+  "validation_result": {
+    "dag_id": "pdf-lab-page30-second-pass-review-20260721T1310Z",
+    "entry_node": "tau-native-second-pass-review",
+    "node_count": 2,
+    "edge_count": 2,
+    "required_evidence_count": 4,
+    "fail_closed_on_count": 11
+  },
+  "source_evidence": {
+    "pdf_oxide_commit": "917d82a8dde376fc5795085902b96a6880826f7f",
+    "goal_hash": "sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978",
+    "goal_md_sha256": "1004b4394a27713e593f6df45e2da99bcf698a99fa532825d6141fb41aa387d6",
+    "boundary_guard_receipt_sha256": "4e71f8c3e2bac1589fd4da6442a593337c3e15336202187b82e0175c85e8d591",
+    "review_bundle_sha256": "eb0210c81b4656be605667940a30d3746e4a6302af023b2592a053f173c3455f",
+    "review_request_sha256": "4f95a5e67797857dff7d33e515d53b7afd10b5c35fe7a566f3e8fc7ce3d82f73",
+    "candidate_presets_sha256": "0e37ba6d348ae37afde46e6a6b68a970f8651addd5e4f33b5483a7446786d69d",
+    "page_before_json_sha256": "aca9a94cfcc438fd9b724afaadf3e7202e94266c1ccf4917103c5e72e9b89c16",
+    "page_before_png_sha256": "11f26449b7a9ba5f78fdad816da1084a5332376c737b99854d44086938837250",
+    "page_candidates_png_sha256": "7ab681c7ccaf4853ad052ff364df11296688a4721c830167146ddbb98d1253c3"
+  },
+  "proof_scope": {
+    "proves": [
+      "The page30 Tau DAG contract request is valid JSON.",
+      "The page30 Tau DAG contract request satisfies Tau's local tau.dag_contract.v1 validator.",
+      "The contract request names the missing Tau-owned second-pass model review route and binds it to the pushed page30 evidence hashes."
+    ],
+    "does_not_prove": [
+      "Tau executed the contract.",
+      "Tau issue #120 is fixed.",
+      "A model-backed second-pass response was received.",
+      "Any page30 extraction issue is repaired."
+    ]
+  },
+  "commands": [
+    {
+      "command": ".venv/bin/python -m json.tool artifacts/pdf_lab/page30_tau_dag_contract_request_20260721T1310Z/tau_pdf_lab_page30_second_pass_dag_contract.json >/dev/null",
+      "cwd": "/tmp/pdf_oxide_next_page_20260721",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python - <<'PY' ... validate_dag_contract(payload) ... PY",
+      "cwd": "/home/graham/workspace/experiments/tau",
+      "exit_code": 0
+    }
+  ],
+  "next_required_external_receipt": {
+    "owner": "tau",
+    "issue": "https://github.com/grahama1970/tau/issues/120",
+    "required_schema": "pdf_lab.tau_second_pass_review_receipt.v1",
+    "required_result": "Tau-owned model-backed second-pass review receipt for page_case_0001_p0030, or Tau-owned blocked receipt with concrete endpoint/auth/provider blocker."
+  }
+}

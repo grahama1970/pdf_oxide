@@ -125,6 +125,7 @@ or lacks an accepted Tau-native PDF Lab work-order contract:
 | Deterministic evidence bundle | `artifacts/pdf_lab/page30_deterministic_evidence_20260721T1245Z/page_case_0001_p0030/review_bundle.zip`, `review.html`, `review_html_screenshot.png`, `visual_verification_receipt.json` |
 | Current deterministic status | `terminal_status=blocked_substrate`, `reason=page_orchestrator_registration_failed`, `registered=false`, `transport_run_id=null` |
 | Boundary guard evidence | `artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/boundary_guard_receipt.json`, `page_case_0001_p0030/scillm_page_orchestrator_run_error.json`, `terminal_ledger.json`, `review_bundle.zip` |
+| Tau contract request | `artifacts/pdf_lab/page30_tau_dag_contract_request_20260721T1310Z/tau_pdf_lab_page30_second_pass_dag_contract.json`, validated by `tau_dag_contract_validation_receipt.json` |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching; pdf_oxide live model transport must fail closed unless a Tau-owned receipt explicitly authorizes the route |
 
 Before patching page30, wait for Tau issue #120 to provide the accepted
@@ -133,7 +134,9 @@ non-model evidence preparation that cannot be mistaken for live review proof.
 The current pdf_oxide-side live transport entrypoints fail closed
 unconditionally. The deprecated `PDF_LAB_ALLOW_PDF_OXIDE_LIVE_MODEL_TRANSPORT`
 variable is ignored; only a Tau-owned work-order/transport receipt may enable
-model-backed second-pass review.
+model-backed second-pass review. The page30 evidence has been converted into a
+schema-valid `tau.dag_contract.v1` request artifact so Tau can own the next
+model-backed review route without pdf_oxide invoking SciLLM/OpenCode directly.
 
 ## Blockers And Boundaries
 
