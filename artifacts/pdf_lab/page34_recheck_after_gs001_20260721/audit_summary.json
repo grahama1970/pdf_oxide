@@ -1,0 +1,35 @@
+{
+  "schema": "pdf_lab.page_candidate_recheck.v1",
+  "created_utc": "2026-07-21T13:55:00Z",
+  "repo": "grahama1970/pdf_oxide",
+  "remote_main_checked": "962e9469397617def2ff9cf06a7901807b2ababc",
+  "candidate": {
+    "page": 34,
+    "defect_class": "body lines as headings",
+    "source_receipt": "artifacts/pdf_lab/page34_candidate_audit_20260721/audit_summary.json",
+    "status": "closed_current_main"
+  },
+  "source_receipt_facts": {
+    "status": "passing_current_contract_no_patch",
+    "long_body_heading_suspect_count": 0,
+    "sidebar_chrome_non_noise_contamination_count": 0,
+    "section_headings": [
+      "CHAPTER TWO",
+      "THE FUNDAMENTALS",
+      "2.1 REQUIREMENTS AND CONTROLS"
+    ]
+  },
+  "proof": {
+    "command": "uv run pytest -q tests/test_nist_page34_sidebar_chrome.py",
+    "mocked": false,
+    "live": false,
+    "result": "1 passed in 1.48s",
+    "what_it_proves": "current main still satisfies the focused page34 body-heading/sidebar-chrome contract after GS001 reconciler integration",
+    "what_it_does_not_prove": "all remaining PDF Lab candidates are complete"
+  },
+  "boundary": {
+    "direct_scillm_called_from_pdf_oxide": false,
+    "direct_opencode_called_from_pdf_oxide": false
+  },
+  "next_candidate": "page 45 list threshold"
+}
