@@ -1,0 +1,54 @@
+{
+  "changed_files_at_repair_commit": [
+    "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_running_header_noise_evidence.zip",
+    "artifacts/pdf_lab/issue4_running_header_noise_20260720/page27_ledger_input.json",
+    "artifacts/pdf_lab/issue4_running_header_noise_20260720/page27_ledger_output.json",
+    "artifacts/pdf_lab/issue4_running_header_noise_20260720/page27_snapshot.json",
+    "artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json",
+    "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+    "tests/test_nist_running_header_merge.py"
+  ],
+  "checks": {
+    "no_control_id_condition_in_executable_rule": true,
+    "no_page_number_condition_in_executable_rule": true,
+    "no_text_regex_or_phrase_condition_in_executable_rule": true,
+    "rule_requires_same_band_multiple_fragments": true,
+    "rule_suppresses_children": true,
+    "rule_synthesizes_header_footer_noise_page_chrome": true,
+    "rule_targets_running_header_type": true,
+    "rule_uses_top_margin_bbox_constraint": true
+  },
+  "does_not_prove": [
+    "That every NIST running header in the document is semantically correct.",
+    "That unrelated document families are unaffected beyond the frozen GS001 packet."
+  ],
+  "entry_id": "nist-running-header-merge-001",
+  "executable_rule": {
+    "max_y_center_delta": 0.02,
+    "merge_when": {
+      "bbox_constraints": {
+        "y_max_lt": 0.08
+      },
+      "type": "running_header"
+    },
+    "min_count": 2,
+    "suppress_children": true,
+    "synthesize": {
+      "semantic_role": "page_chrome",
+      "source_type": "synthetic",
+      "type": "header_footer_noise"
+    }
+  },
+  "inspection_notes": [
+    "Executable match predicates are element type, top-margin geometry, same-band y-center tolerance, and minimum fragment count.",
+    "The executable rule contains no text phrase, regex, page number, or NIST control identifier condition.",
+    "NIST/page-27 strings appear in tests, evidence, and checklist prose; they are not executable match predicates.",
+    "Cross-page frozen packet regression is recorded separately in promotion/frozen_packet_cross_page_regression.json."
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "live": false,
+  "mocked": false,
+  "repair_commit": "eb24e7122bfe4082fb7864ba1a565d20e450088d",
+  "schema_version": "pdf_lab.anti_overfit_inspection.v1",
+  "status": "PASS"
+}

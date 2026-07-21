@@ -1,21 +1,38 @@
 {
+  "anti_overfit_inspection": {
+    "artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/anti_overfit_inspection.json",
+    "checks": {
+      "no_control_id_condition_in_executable_rule": true,
+      "no_page_number_condition_in_executable_rule": true,
+      "no_text_regex_or_phrase_condition_in_executable_rule": true,
+      "rule_requires_same_band_multiple_fragments": true,
+      "rule_suppresses_children": true,
+      "rule_synthesizes_header_footer_noise_page_chrome": true,
+      "rule_targets_running_header_type": true,
+      "rule_uses_top_margin_bbox_constraint": true
+    },
+    "live": false,
+    "mocked": false,
+    "status": "PASS"
+  },
   "artifact": "issue4_running_header_noise_20260720",
-  "issue": "https://github.com/grahama1970/pdf_oxide/issues/4",
-  "target": "gs001:row:1 page 27 NIST running header fragments",
-  "mocked": false,
-  "live": false,
-  "exercise": "Deterministic local application of nist-running-header-merge-001 ledger rule to representative page 27 extracted elements.",
-  "proves": [
-    "The representative issue #4 extracted-JSON shape is repaired: same-band running_header fragments merge into one header_footer_noise page_chrome element.",
-    "The current real NIST page 27 snapshot routes the top header to header_footer_noise and preserves actual:p27:table:0.",
-    "The touched Python regression file passes ruff."
-  ],
-  "does_not_prove": [
-    "Full GS001 PDF extraction quality across all pages.",
-    "Live second-pass model behavior.",
-    "Criterion 6 live GitHub mutation behavior.",
-    "That reportlab should remain an undeclared import dependency."
-  ],
+  "before_after_regression": {
+    "artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+    "gate": {
+      "blocking_class_increased": false,
+      "header_footer_noise_increased": true,
+      "issue_signature_decreased": true,
+      "status": "PASS",
+      "table_preserved": true
+    }
+  },
+  "checks": {
+    "merged_child_ids_preserved": true,
+    "no_running_header_outputs": true,
+    "one_header_footer_noise_output": true,
+    "semantic_role_page_chrome": true,
+    "table_preserved": true
+  },
   "commands": [
     "PYTHONPATH=python uv run --with reportlab --with pymupdf pytest -q tests/test_nist_running_header_merge.py",
     "PYTHONPATH=python uv run --with reportlab --with pymupdf python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/issue4_running_header_noise_20260720/page27_snapshot.json --apply-mode release --max-pages 27 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
@@ -23,90 +40,152 @@
     "uv run --with ruff ruff check tests/test_nist_running_header_merge.py",
     "python3 -m json.tool artifacts/pdf_lab/issue4_running_header_noise_20260720/*.json >/dev/null (expanded per file)",
     "PYTHONPATH=python uv run --with reportlab python <before_after_issue4_regression_receipt>",
-    "review-code fanout via SciLLM gemini-flash with Tau-compatible SCILLM_MASTER_KEY auth -> PASS"
+    "review-code fanout via SciLLM gemini-flash with Tau-compatible SCILLM_MASTER_KEY auth -> PASS",
+    "PYTHONPATH=python uv run --with reportlab --with pymupdf python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --pages 27,20,468,401,415,483,34,31,32,33,23 --ledger <baseline-parent-ledger> --out artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/frozen_packet_baseline_extraction.json",
+    "PYTHONPATH=python uv run --with reportlab --with pymupdf python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --pages 27,20,468,401,415,483,34,31,32,33,23 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --out artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/frozen_packet_candidate_extraction.json",
+    "python3 /home/graham/workspace/experiments/pdf_oxide-gs001/scripts/pdf_lab/cross_page_regression.py --baseline artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/frozen_packet_baseline_extraction.json --candidate artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/frozen_packet_candidate_extraction.json --output artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/frozen_packet_cross_page_regression.json",
+    "python3 /home/graham/workspace/experiments/pdf_oxide-gs001/scripts/pdf_lab/promotion_gate.py --page-scoped artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/page_scoped_comparison.json --cross-page artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/frozen_packet_cross_page_regression.json --output artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/promotion_verdict.json",
+    "python3 <anti_overfit_inspection_receipt> -> PASS"
   ],
-  "checks": {
-    "no_running_header_outputs": true,
-    "one_header_footer_noise_output": true,
-    "table_preserved": true,
-    "merged_child_ids_preserved": true,
-    "semantic_role_page_chrome": true
-  },
-  "status": "pass",
-  "test_result": {
-    "command": "PYTHONPATH=python uv run --with reportlab --with pymupdf pytest -q tests/test_nist_running_header_merge.py",
-    "stdout": "..                                                                       [100%]\n2 passed in 0.31s",
-    "exit_code": 0
-  },
+  "does_not_prove": [
+    "Full GS001 PDF extraction quality across all pages.",
+    "Live second-pass model behavior.",
+    "Criterion 6 live GitHub mutation behavior.",
+    "That reportlab should remain an undeclared import dependency."
+  ],
+  "exercise": "Deterministic local application of nist-running-header-merge-001 ledger rule to representative page 27 extracted elements.",
+  "issue": "https://github.com/grahama1970/pdf_oxide/issues/4",
   "lint_result": {
     "command": "uv run --with ruff ruff check tests/test_nist_running_header_merge.py",
-    "stdout": "All checks passed!",
-    "exit_code": 0
+    "exit_code": 0,
+    "stdout": "All checks passed!"
   },
+  "live": false,
+  "mocked": false,
+  "promotion_gate": {
+    "artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/promotion_verdict.json",
+    "cross_page_artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/frozen_packet_cross_page_regression.json",
+    "document_wide": {
+      "char_retention": 1.000138,
+      "damaging_total": 0,
+      "damaging_transitions_found": {},
+      "off_pattern_changes": 0,
+      "pages_touched": 0,
+      "structural_change": false,
+      "transitions": {},
+      "type_changes": 0
+    },
+    "frozen_page_changes": {
+      "20": 0,
+      "23": 0,
+      "31": 0,
+      "32": 0,
+      "33": 0,
+      "34": 0,
+      "401": 0,
+      "415": 0,
+      "468": 0,
+      "483": 0
+    },
+    "live": false,
+    "mocked": false,
+    "page_scoped": {
+      "defect_vector": {
+        "blocking_class_increased": false,
+        "issue_signature_after": 0,
+        "issue_signature_before": 1,
+        "repaired_signature_after": 1
+      },
+      "matched": 1,
+      "passed": true,
+      "total": 1
+    },
+    "page_scoped_artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/promotion/page_scoped_comparison.json",
+    "page_scoped_comparison": {
+      "defect_vector": {
+        "blocking_class_increased": false,
+        "issue_signature_after": 0,
+        "issue_signature_before": 1,
+        "repaired_signature_after": 1
+      },
+      "matched_expected_elements": 1,
+      "passed": true,
+      "schema_version": "pdf-lab.comparison.v2",
+      "source_receipt": "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+      "total_expected_elements": 1,
+      "unmatched_expected_elements": 0
+    },
+    "scope": "Target page 27 plus frozen GS001 cross-page packet pages 20, 468, 401, 415, 483, 34, 31, 32, 33, and 23.",
+    "status": "PASS"
+  },
+  "proves": [
+    "The representative issue #4 extracted-JSON shape is repaired: same-band running_header fragments merge into one header_footer_noise page_chrome element.",
+    "The current real NIST page 27 snapshot routes the top header to header_footer_noise and preserves actual:p27:table:0.",
+    "The touched Python regression file passes ruff.",
+    "The issue #4 repair passes the GS001 promotion gate for page-scoped defect reduction plus frozen cross-page regression.",
+    "The executable ledger predicate is not overfit to NIST page text, page number, or control identifier conditions."
+  ],
   "snapshot_result": {
     "artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/page27_snapshot.json",
     "checks": {
+      "table_actual_p27_table_0_preserved": true,
       "top_header_is_header_footer_noise": true,
-      "top_header_semantic_role_page_chrome": true,
       "top_header_not_running_header": true,
-      "table_actual_p27_table_0_preserved": true
+      "top_header_semantic_role_page_chrome": true
     }
   },
-  "before_after_regression": {
-    "artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
-    "gate": {
-      "status": "PASS",
-      "issue_signature_decreased": true,
-      "blocking_class_increased": false,
-      "header_footer_noise_increased": true,
-      "table_preserved": true
-    }
-  },
+  "status": "pass",
   "structured_code_review": {
+    "aggregate": {
+      "accepted_blocking_findings": [],
+      "accepted_non_blocking_findings": [],
+      "missing_evidence": [],
+      "per_scope": [
+        {
+          "blocking_findings": 0,
+          "missing_evidence": 0,
+          "non_blocking_findings": 0,
+          "scope": "tests_validation",
+          "verdict": "PASS"
+        },
+        {
+          "blocking_findings": 0,
+          "missing_evidence": 0,
+          "non_blocking_findings": 0,
+          "scope": "correctness_regression",
+          "verdict": "PASS"
+        },
+        {
+          "blocking_findings": 0,
+          "missing_evidence": 0,
+          "non_blocking_findings": 0,
+          "scope": "evidence_closure_safety",
+          "verdict": "PASS"
+        }
+      ],
+      "schema": "review_code.aggregate.v1",
+      "summary": "0 evidence-backed blocking findings, 0 evidence-backed non-blocking findings, 0 unsupported/rejected concerns.",
+      "unsupported_or_rejected_concerns": [],
+      "verdict": "PASS"
+    },
     "artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/review-code/structured_review_authenticated.json",
+    "auth_source": "env_file:/home/graham/workspace/experiments/scillm/.env:SCILLM_MASTER_KEY",
+    "live": true,
+    "mocked": false,
+    "ok": true,
     "reviewers_dir": "artifacts/pdf_lab/issue4_running_header_noise_20260720/review-code/reviewers-authenticated",
     "schema": "review_code.fanout.v1",
-    "ok": true,
-    "verdict": "PASS",
     "scopes": [
       "correctness_regression",
       "tests_validation",
       "evidence_closure_safety"
     ],
-    "aggregate": {
-      "schema": "review_code.aggregate.v1",
-      "verdict": "PASS",
-      "summary": "0 evidence-backed blocking findings, 0 evidence-backed non-blocking findings, 0 unsupported/rejected concerns.",
-      "accepted_blocking_findings": [],
-      "accepted_non_blocking_findings": [],
-      "unsupported_or_rejected_concerns": [],
-      "missing_evidence": [],
-      "per_scope": [
-        {
-          "scope": "tests_validation",
-          "verdict": "PASS",
-          "blocking_findings": 0,
-          "non_blocking_findings": 0,
-          "missing_evidence": 0
-        },
-        {
-          "scope": "correctness_regression",
-          "verdict": "PASS",
-          "blocking_findings": 0,
-          "non_blocking_findings": 0,
-          "missing_evidence": 0
-        },
-        {
-          "scope": "evidence_closure_safety",
-          "verdict": "PASS",
-          "blocking_findings": 0,
-          "non_blocking_findings": 0,
-          "missing_evidence": 0
-        }
-      ]
-    },
-    "auth_source": "env_file:/home/graham/workspace/experiments/scillm/.env:SCILLM_MASTER_KEY",
-    "mocked": false,
-    "live": true
+    "verdict": "PASS"
+  },
+  "target": "gs001:row:1 page 27 NIST running header fragments",
+  "test_result": {
+    "command": "PYTHONPATH=python uv run --with reportlab --with pymupdf pytest -q tests/test_nist_running_header_merge.py",
+    "exit_code": 0,
+    "stdout": "..                                                                       [100%]\n2 passed in 0.31s"
   }
 }
