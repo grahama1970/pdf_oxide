@@ -1,0 +1,451 @@
+{
+  "generated_at": "2026-07-21T02:05:03.358334+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04473802296802251,
+            0.8507378272760927,
+            0.05821938948197798
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p421:block:0",
+          "is_bold": false,
+          "page": 421,
+          "pdf_page_index": 420,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05679397390346334,
+            0.8517353332120609,
+            0.07054738324097913
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p421:block:1",
+          "is_bold": false,
+          "page": 421,
+          "pdf_page_index": 420,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.9414804632013495,
+            0.8528897154564951,
+            0.9549618345318418
+          ],
+          "font_name": "TT0",
+          "font_size": 8.125714302062988,
+          "id": "actual:p421:block:2",
+          "is_bold": false,
+          "page": 421,
+          "pdf_page_index": 420,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.125714302062988,
+            "header_level": null,
+            "is_bold": false,
+            "text": "APPENDIX A   PAGE 394"
+          },
+          "source_type": "Body",
+          "text": "APPENDIX A   PAGE 394",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.5297058735018462,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p421:block:3",
+          "is_bold": false,
+          "page": 421,
+          "pdf_page_index": 420,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              303.1199951171875,
+              349.6199951171875
+            ],
+            "block_type": "Boilerplate",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+          },
+          "source_type": "Boilerplate",
+          "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.09307097425364484,
+            0.25534608629014754,
+            0.11588885567405006
+          ],
+          "font_name": "TT2",
+          "font_size": 14.020000457763672,
+          "id": "actual:p421:block:4",
+          "is_bold": true,
+          "page": 421,
+          "pdf_page_index": 420,
+          "raw": {
+            "bbox": [
+              90.0,
+              704.760009765625,
+              69.86051940917969,
+              16.02001953125
+            ],
+            "block_type": "Title",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT2",
+            "font_size": 14.020000457763672,
+            "header_level": 1,
+            "header_validation": {
+              "confidence": 0.8999999761581421,
+              "depth_level": 1,
+              "disposition": "Accept",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 14.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": true,
+                "has_number_prefix": true,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 1,
+                "size_ratio": 1.276867151260376,
+                "text_len": 10,
+                "title_case_ratio": 1.0,
+                "word_count": 2
+              },
+              "has_numbering": true,
+              "is_header": true,
+              "level": 1,
+              "number_text": "A",
+              "reasons": [
+                "numbering",
+                "bold_large_font",
+                "formal_prefix",
+                "title_case_like",
+                "all_caps_medium"
+              ],
+              "title_text": ""
+            },
+            "is_bold": true,
+            "text": "APPENDIX A"
+          },
+          "source_type": "Title",
+          "text": "APPENDIX A",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.14705441044826134,
+            0.12898307376437718,
+            0.2613644319422105,
+            0.15705853279190835
+          ],
+          "font_name": "TT2",
+          "font_size": 16.020000457763672,
+          "id": "actual:p421:block:5",
+          "is_bold": true,
+          "page": 421,
+          "pdf_page_index": 420,
+          "raw": {
+            "bbox": [
+              89.99729919433594,
+              673.2006225585938,
+              73.57984924316406,
+              16.02001953125
+            ],
+            "block_type": "Title",
+            "confidence": 0.25,
+            "font_name": "TT2",
+            "font_size": 16.020000457763672,
+            "header_level": 2,
+            "header_validation": {
+              "confidence": 0.25,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 16.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.4590164422988892,
+                "text_len": 8,
+                "title_case_ratio": 1.0,
+                "word_count": 1
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "bold_large_font",
+                "all_caps_medium",
+                "single_word_negative",
+                "short_all_caps_negative"
+              ],
+              "title_text": "GLOSSARY"
+            },
+            "is_bold": true,
+            "text": "GLOSSARY"
+          },
+          "source_type": "Title",
+          "text": "GLOSSARY",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.15823163889875316,
+            0.3886931425605724,
+            0.1751593580149641
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p421:block:6",
+          "is_bold": false,
+          "page": 421,
+          "pdf_page_index": 420,
+          "raw": {
+            "bbox": [
+              90.0,
+              656.4000244140625,
+              150.109619140625,
+              10.02001953125
+            ],
+            "block_type": "Title",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": 3,
+            "is_bold": false,
+            "text": "COMMON TERMS AND DEFINITIONS"
+          },
+          "source_type": "Title",
+          "text": "COMMON TERMS AND DEFINITIONS",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.18873045179578993,
+            0.852615256714665,
+            0.2412181623054273
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979999542236328,
+          "id": "actual:p421:block:7",
+          "is_bold": false,
+          "page": 421,
+          "pdf_page_index": 420,
+          "raw": {
+            "bbox": [
+              90.0,
+              604.3809814453125,
+              434.30841064453125,
+              37.8590087890625
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Appendix A provides definitions for terminology used in NIST Special Publication 800-53. Sources for terms used in this publication are cited as applicable. Where no citation is noted, the source of the definition is Special Publication 800-53."
+          },
+          "source_type": "Body",
+          "text": "Appendix A provides definitions for terminology used in NIST Special Publication 800-53. Sources for terms used in this publication are cited as applicable. Where no citation is noted, the source of the definition is Special Publication 800-53.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.1545044892753651,
+            0.25839516610810254,
+            0.8433749130348754,
+            0.9008382161458334
+          ],
+          "id": "actual:p421:definition_table:glossary",
+          "page": 421,
+          "pdf_page_index": 420,
+          "raw": {
+            "column_count": 2,
+            "repair": "definition_list_from_classified_blocks",
+            "row_count": 6,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "TERM"
+                  },
+                  {
+                    "text": "DEFINITION"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "access control"
+                  },
+                  {
+                    "text": "[FIPS 201-2] The process of granting or denying specific requests for obtaining and using information and related information processing services; and to enter specific physical facilities (e.g., Federal buildings, military establishments, and border crossing entrances)."
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "adequate security"
+                  },
+                  {
+                    "text": "[OMB A-130] Security protections commensurate with the risk resulting from the unauthorized access, use, disclosure, disruption, modification, or destruction of information. This includes ensuring that information hosted on behalf of an agency and information systems and applications used by the agency operate effectively and provide appropriate confidentiality, integrity, and availability protections through the application of cost-effective security controls."
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "advanced persistent threat"
+                  },
+                  {
+                    "text": "[SP 800-39] An adversary that possesses sophisticated levels of expertise and significant resources which allow it to create opportunities to achieve its objectives by using multiple attack vectors, including cyber, physical, and deception. These objectives typically include establishing and extending footholds within the IT infrastructure of the targeted organizations for purposes of exfiltrating information, undermining or impeding critical aspects of a mission, program, or organization; or positioning itself to carry out these objectives in the future. The advanced persistent threat pursues its objectives repeatedly over an extended period; adapts to defenders\u2019 efforts to resist it; and is determined to maintain the level of interaction needed to execute its objectives."
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "agency"
+                  },
+                  {
+                    "text": "[OMB A-130] Any executive agency or department, military department, Federal Government corporation, Federal Government- controlled corporation, or other establishment in the Executive Branch of the Federal Government, or any independent regulatory agency. See executive agency."
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "all-source intelligence"
+                  },
+                  {
+                    "text": "[DODTERMS] Intelligence products and/or organizations and activities that incorporate all sources of information, most frequently including human resources intelligence, imagery intelligence, measurement and signature intelligence, signals intelligence, and open-source data in the production of finished intelligence."
+                  }
+                ]
+              }
+            ],
+            "section_type": "glossary",
+            "source_element_ids": [
+              "actual:p421:block:8",
+              "actual:p421:block:9",
+              "actual:p421:block:10",
+              "actual:p421:block:11",
+              "actual:p421:block:12",
+              "actual:p421:block:13",
+              "actual:p421:block:14",
+              "actual:p421:block:15",
+              "actual:p421:block:16",
+              "actual:p421:block:17",
+              "actual:p421:block:18",
+              "actual:p421:block:19",
+              "actual:p421:block:20",
+              "actual:p421:block:21",
+              "actual:p421:block:22"
+            ]
+          },
+          "source_type": "DefinitionList",
+          "tableKind": "glossary",
+          "table_kind": "glossary",
+          "text": "TERM | DEFINITION\naccess control | [FIPS 201-2] The process of granting or denying specific requests for obtaining and using information and related information processing services; and to enter specific physical facilities (e.g., Federal buildings, military establishments, and border crossing entrances).\nadequate security | [OMB A-130] Security protections commensurate with the risk resulting from the unauthorized access, use, disclosure, disruption, modification, or destruction of information. This includes ensuring that information hosted on behalf of an agency and information systems and applications used by the agency operate effectively and provide appropriate confidentiality, integrity, and availability protections through the application of cost-effective security controls.\nadvanced persistent threat | [SP 800-39] An adversary that possesses sophisticated levels of expertise and significant resources which allow it to create opportunities to achieve its objectives by using multiple attack vectors, including cyber, physical, and deception. These objectives typically include establishing and extending footholds within the IT infrastructure of the targeted organizations for purposes of exfiltrating information, undermining or impeding critical aspects of a mission, program, or organization; or positioning itself to carry out these objectives in the future. The advanced persistent threat pursues its objectives repeatedly over an extended period; adapts to defenders\u2019 efforts to resist it; and is determined to maintain the level of interaction needed to execute its objectives.\nagency | [OMB A-130] Any executive agency or department, military department, Federal Government corporation, Federal Government- controlled corporation, or other establishment in the Executive Branch of the Federal Government, or any independent regulatory agency. See executive agency.\nall-source intelligence | [DODTERMS] Intelligence products and/or organizations and activities that incorporate all sources of information, most frequently including human resources intelligence, imagery intelligence, measurement and signature intelligence, signals intelligence, and open-source data in the production of finished intelligence.",
+          "type": "table"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 421,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 420
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

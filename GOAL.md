@@ -22,6 +22,10 @@ Current completed page evidence:
 | Page | Issue | Receipt | Remote proof |
 |------|-------|---------|--------------|
 | `nist_phase54_page_0046` | `grahama1970/pdf_oxide#3` | `artifacts/pdf_lab/restart_recovery_20260721T0100Z/page46_final_audit_summary.json` | `origin/main` at `9c80e780f6716b5284d89bac196dffbc261342b7` |
+| `page_0456` | control-table column headers | `artifacts/pdf_lab/page456_control_table_headers_20260721/audit_summary.json` | `origin/main` at `007d572acade8a962b1c033a742eae35648d1a26` |
+| `page_0034` | sidebar chrome contamination | `artifacts/pdf_lab/page34_candidate_audit_20260721/audit_summary.json` | `origin/main` at `2f04e0582722f380bbf01da416d68b0c0418100d` |
+| `page_0045` | AC-1 lower-alpha list markers | `artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/audit_summary.json` | `origin/main` at `4f6e35b3447191ff9c6ec485d4f4eeb72158381c` |
+| `page_0421` | glossary term-definition materialization | `artifacts/pdf_lab/page421_glossary_term_audit_20260721/audit_summary.json` | `origin/main` after page421 push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -55,18 +59,19 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after page46 is page456, based on the GS001 handoff:
+The next candidate after page421 is page104, based on the GS001 handoff's
+independent reviewer measurement:
 
 | Field | Value |
 |-------|-------|
-| Page | `page_0456` / NIST SP 800-53r5 page 456 |
-| Defect class | control-table column headers |
-| Observed failure | `CONTROL NUMBER`, `CONTROL NAME`, and `IMPLEMENTED` extract as headings/prose instead of table/header structure |
-| Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, section 5 |
-| Candidate artifacts to inspect first | `artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/` and `artifacts/pdf_lab/project_agent_hardening/page_0456_release_after_hardening.json` |
-| Constraint | positional, typographic, and frequency-based fixes only; no source phrases, page numbers, or control IDs as classifier shortcuts |
+| Page | `page_0104` / NIST SP 800-53r5 page 104 |
+| Defect class | to be selected from the remaining independent reviewer findings |
+| Observed failure | GS001 handoff reports page104 reduced from 11 findings to 3 remaining findings |
+| Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
+| Candidate artifacts to inspect first | current `artifacts/pdf_lab/` page104 receipts, release snapshot, model-review receipts, and live current extraction |
+| Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |
 
-Before patching page456, produce a selection receipt that names the exact page
+Before patching page104, produce a selection receipt that names the exact page
 image/current extraction/model-review artifacts used and the focused regression
 that will prove the single selected checklist item.
 

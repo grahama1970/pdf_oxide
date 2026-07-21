@@ -1,0 +1,20 @@
+{
+  "image_size_px": [
+    1275,
+    1650
+  ],
+  "original_image": "artifacts/pdf_lab/page421_glossary_term_audit_20260721/page421_original.png",
+  "overlay_bbox_normalized": [
+    0.1545044892753651,
+    0.25839516610810254,
+    0.8433749130348754,
+    0.9008382161458334
+  ],
+  "overlay_block_id": "actual:p421:definition_table:glossary",
+  "overlay_image": "artifacts/pdf_lab/page421_glossary_term_audit_20260721/page421_glossary_table_overlay.png",
+  "overlay_source_snapshot": "artifacts/pdf_lab/page421_glossary_term_audit_20260721/patched_page421_snapshot.json",
+  "page": 421,
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_page_index": 420,
+  "schema": "pdf_lab.page_visual_receipt.v1"
+}

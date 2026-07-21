@@ -1,0 +1,22 @@
+{
+  "baseline_snapshot": "baseline_page421_snapshot.json",
+  "block_count": 9,
+  "glossary_table_count": 1,
+  "glossary_table_ids": [
+    "actual:p421:definition_table:glossary"
+  ],
+  "glossary_table_text": "TERM | DEFINITION\naccess control | [FIPS 201-2] The process of granting or denying specific requests for obtaining and using information and related information processing services; and to enter specific physical facilities (e.g., Federal buildings, military establishments, and border crossing entrances).\nadequate security | [OMB A-130] Security protections commensurate with the risk resulting from the unauthorized access, use, disclosure, disruption, modification, or destruction of information. This includes ensuring that information hosted on behalf of an agency and information systems and applications used by the agency operate effectively and provide appropriate confidentiality, integrity, and availability protections through the application of cost-effective security controls.\nadvanced persistent threat | [SP 800-39] An adversary that possesses sophisticated levels of expertise and significant resources which allow it to create opportunities to achieve its objectives by using multiple attack vectors, including cyber, physical, and deception. These objectives typically include establishing and extending footholds within the IT infrastructure of the targeted organizations for purposes of exfiltrating information, undermining or impeding critical aspects of a mission, program, or organization; or positioning itself to carry out these objectives in the future. The advanced persistent threat pursues its objectives repeatedly over an extended period; adapts to defenders\u2019 efforts to resist it; and is determined to maintain the level of interaction needed to execute its objectives.\nagency | [OMB A-130] Any executive agency or department, military department, Federal Government corporation, Federal Government- controlled corporation, or other establishment in the Executive Branch of the Federal Government, or any independent regulatory agency. See executive agency.\nall-source intelligence | [DODTERMS] Intelligence products and/or organizations and activities that incorporate all sources of information, most frequently including human resources intelligence, imagery intelligence, measurement and signature intelligence, signals intelligence, and open-source data in the production of finished intelligence.",
+  "green_test_log": "test_logs/green_test_page421_glossary_terms.log",
+  "page": 421,
+  "patched_snapshot": "patched_page421_snapshot.json",
+  "red_test_log": "test_logs/red_test_page421_glossary_terms.log",
+  "schema": "pdf_lab.page421_glossary_term_audit.v1",
+  "standalone_term_definition_leak_count": 0,
+  "standalone_term_definition_leaks": [],
+  "type_counts": {
+    "header_footer_noise": 4,
+    "paragraph_block": 1,
+    "section_heading": 3,
+    "table": 1
+  }
+}

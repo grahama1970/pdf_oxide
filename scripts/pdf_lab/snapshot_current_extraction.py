@@ -732,6 +732,203 @@ def _table_text(table: dict[str, Any]) -> str:
     return ""
 
 
+def _flatten_toc_entries(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    out: list[dict[str, Any]] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        out.append(entry)
+        children = entry.get("children")
+        if isinstance(children, list):
+            out.extend(_flatten_toc_entries(children))
+    return out
+
+
+def _toc_section_type_for_page(doc: Any, page_index: int) -> str:
+    try:
+        toc_payload = doc.get_toc()
+    except Exception:
+        return "body"
+    if not isinstance(toc_payload, dict):
+        return "body"
+
+    entries = _flatten_toc_entries(toc_payload.get("entries") or [])
+    page_entries: list[tuple[int, str]] = []
+    for entry in entries:
+        try:
+            page = int(entry.get("page"))
+        except (TypeError, ValueError):
+            continue
+        title = str(entry.get("text") or entry.get("title") or "").strip()
+        if title:
+            page_entries.append((page, title))
+    if not page_entries:
+        return "body"
+
+    page_base = 0 if any(page == 0 for page, _ in page_entries) else 1
+    current_page = page_index + page_base
+    active_title = ""
+    for page, title in sorted(page_entries, key=lambda item: item[0]):
+        if page <= current_page:
+            active_title = title
+        else:
+            break
+
+    normalized = active_title.lower()
+    if "glossary" in normalized:
+        return "glossary"
+    if "acronym" in normalized:
+        return "acronyms"
+    return "body"
+
+
+def _element_center_y(element: dict[str, Any]) -> float:
+    bbox = element.get("bbox")
+    if not isinstance(bbox, list) or len(bbox) != 4:
+        return 0.0
+    return (float(bbox[1]) + float(bbox[3])) / 2.0
+
+
+def _is_definition_term_candidate(element: dict[str, Any]) -> bool:
+    if element.get("source_type") != "Body" or not element.get("is_bold"):
+        return False
+    bbox = element.get("bbox")
+    if not isinstance(bbox, list) or len(bbox) != 4:
+        return False
+    text = _normalize_text(element.get("text") or "")
+    if not text or text.endswith((".", ":", ";")):
+        return False
+    if len(text.split()) > 6 or len(text) > 80:
+        return False
+    return 0.10 <= float(bbox[0]) <= 0.30 and float(bbox[2]) <= 0.36
+
+
+def _is_definition_reference_candidate(element: dict[str, Any]) -> bool:
+    text = _normalize_text(element.get("text") or "")
+    bbox = element.get("bbox")
+    if not text or not isinstance(bbox, list) or len(bbox) != 4:
+        return False
+    return (
+        element.get("source_type") == "Reference"
+        or bool(re.fullmatch(r"\[[^\]]+\]", text))
+    ) and float(bbox[0]) <= 0.36
+
+
+def _is_definition_body_candidate(element: dict[str, Any]) -> bool:
+    if element.get("source_type") != "Body":
+        return False
+    bbox = element.get("bbox")
+    if not isinstance(bbox, list) or len(bbox) != 4:
+        return False
+    text = _normalize_text(element.get("text") or "")
+    return bool(text) and float(bbox[0]) >= 0.30
+
+
+def _definition_table_from_elements(
+    elements: list[dict[str, Any]],
+    *,
+    page_index: int,
+    section_type: str,
+) -> dict[str, Any] | None:
+    if section_type not in {"glossary", "acronyms"}:
+        return None
+
+    terms = sorted(
+        [element for element in elements if _is_definition_term_candidate(element)],
+        key=lambda element: (_element_center_y(element), float(element["bbox"][0])),
+    )
+    if len(terms) < 2:
+        return None
+
+    references = [element for element in elements if _is_definition_reference_candidate(element)]
+    definitions = [element for element in elements if _is_definition_body_candidate(element)]
+    rows: list[list[str]] = [["TERM", "DEFINITION"]]
+    source_elements: list[dict[str, Any]] = []
+    seen_source_ids: set[str] = set()
+
+    for index, term in enumerate(terms):
+        term_bbox = term["bbox"]
+        row_top = max(0.0, float(term_bbox[1]) - 0.015)
+        row_bottom = (
+            max(row_top, float(terms[index + 1]["bbox"][1]) - 0.012)
+            if index + 1 < len(terms)
+            else min(1.0, float(term_bbox[3]) + 0.18)
+        )
+        row_refs = [
+            ref
+            for ref in references
+            if row_top <= _element_center_y(ref) <= row_bottom
+        ]
+        row_defs = [
+            definition
+            for definition in definitions
+            if row_top <= _element_center_y(definition) <= row_bottom
+        ]
+        if not row_defs:
+            continue
+
+        citation = " ".join(_normalize_text(ref.get("text") or "") for ref in row_refs).strip()
+        definition_text = " ".join(_normalize_text(definition.get("text") or "") for definition in row_defs).strip()
+        if citation:
+            definition_text = f"{citation} {definition_text}".strip()
+        term_text = _normalize_text(term.get("text") or "")
+        rows.append([term_text, definition_text])
+
+        for source in [term, *row_refs, *row_defs]:
+            source_id = str(source.get("id") or "")
+            if source_id and source_id not in seen_source_ids:
+                seen_source_ids.add(source_id)
+                source_elements.append(source)
+
+    if len(rows) < 3:
+        return None
+
+    bbox = _bbox_union([
+        source["bbox"]
+        for source in source_elements
+        if isinstance(source.get("bbox"), list) and len(source["bbox"]) == 4
+    ])
+    text = "\n".join(" | ".join(cell for cell in row).strip() for row in rows)
+    return {
+        "id": f"actual:p{page_index + 1}:definition_table:{section_type}",
+        "page": page_index + 1,
+        "pdf_page_index": page_index,
+        "type": "table",
+        "source_type": "DefinitionList",
+        "bbox": bbox,
+        "text": text,
+        "table_kind": section_type,
+        "tableKind": section_type,
+        "raw": {
+            "repair": "definition_list_from_classified_blocks",
+            "section_type": section_type,
+            "row_count": len(rows),
+            "column_count": 2,
+            "rows": [
+                {"cells": [{"text": cell} for cell in row]}
+                for row in rows
+            ],
+            "source_element_ids": [source.get("id") for source in source_elements],
+        },
+    }
+
+
+def _suppress_definition_table_source_blocks(
+    elements: list[dict[str, Any]],
+    definition_table: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    if not definition_table:
+        return elements
+    source_ids = {
+        str(source_id)
+        for source_id in (definition_table.get("raw") or {}).get("source_element_ids") or []
+        if source_id
+    }
+    if not source_ids:
+        return elements
+    return [element for element in elements if str(element.get("id") or "") not in source_ids]
+
+
 def _is_page46_ac2_control_table(table: dict[str, Any], page_index: int, bbox: list[float]) -> bool:
     """Identify the NIST SP 800-53r5 page-46 AC-2 hanging-list false table."""
     if page_index != 45:
@@ -960,6 +1157,15 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
     raw_elements = _consolidate_rotated_side_chrome_fragments(raw_elements, text_lines, page_index)
     raw_elements = _suppress_rotated_side_chrome_duplicates(raw_elements)
     raw_elements = _merge_footnote_continuations(raw_elements)
+    section_type = _toc_section_type_for_page(doc, page_index)
+    definition_table = _definition_table_from_elements(
+        raw_elements,
+        page_index=page_index,
+        section_type=section_type,
+    )
+    raw_elements = _suppress_definition_table_source_blocks(raw_elements, definition_table)
+    if definition_table:
+        raw_elements.append(definition_table)
 
     for index, table in enumerate(_extract_tables_for_snapshot(doc, page_index)):
         metrics = _table_metrics(table)
