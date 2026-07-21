@@ -1,0 +1,42 @@
+{
+  "image_size_px": [
+    1275,
+    1650
+  ],
+  "original_image": "artifacts/pdf_lab/page36_figure_region_content_20260721/page36_original.png",
+  "overlay_block_ids": [
+    "actual:p36:block:10",
+    "actual:p36:block:11",
+    "actual:p36:block:12",
+    "actual:p36:block:13",
+    "actual:p36:block:14",
+    "actual:p36:block:15",
+    "actual:p36:block:16",
+    "actual:p36:block:17",
+    "actual:p36:block:18",
+    "actual:p36:block:19",
+    "actual:p36:block:21",
+    "actual:p36:block:24",
+    "actual:p36:block:25",
+    "actual:p36:table:0",
+    "actual:p36:table:1",
+    "actual:p36:table:2"
+  ],
+  "overlay_image": "artifacts/pdf_lab/page36_figure_region_content_20260721/page36_figure_region_content_overlay.png",
+  "overlay_region_normalized": [
+    0.1,
+    0.33,
+    0.85,
+    0.77
+  ],
+  "overlay_source_snapshot": "artifacts/pdf_lab/page36_figure_region_content_20260721/current_page36_snapshot.json",
+  "page": 36,
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_page_index": 35,
+  "schema": "pdf_lab.visual_receipt.v1",
+  "sha256": {
+    "current_page36_snapshot": "9d14c76c10259f6fbc1b92703da5123a5ca2f45824a1de6bf95bc8363d2357c4",
+    "original_image": "77e2806c59b8bbe0b105dd89a81398f449159cb9a47188d9c19d7850cd8dfe2a",
+    "overlay_image": "46ab30ff0b57ec909222428e494f5593523d7e5011b46fd33586d31987e0ce48"
+  }
+}

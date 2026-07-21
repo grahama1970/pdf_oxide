@@ -187,6 +187,7 @@
             "font_size_gt": 10.8,
             "font_size_lt": 11.1
           },
+          "page": 36,
           "source_type": "Caption",
           "type": "caption"
         },
@@ -260,6 +261,7 @@
             "font_size_gt": 10.8,
             "font_size_lt": 11.1
           },
+          "page": 36,
           "source_type": "Body",
           "type": [
             "paragraph_block",
@@ -269,6 +271,179 @@
         "extract": [
           {
             "equals_ci": "AU-4 AUDIT STORAGE CAPACITY",
+            "fields": {
+              "semantic_role": "figure_content",
+              "type": "figure"
+            }
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-07-21T00:00:00Z",
+      "added_by": "agent:codex (pdf-lab page36 all-candidates hardening)",
+      "applied_at": "2026-07-21T00:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route remaining NIST Figure 1 diagram-region Body/table content to figure content.",
+      "closed_at": "2026-07-21T00:00:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page36_figure_region_content.py)",
+      "entry_id": "nist-figure-region-content-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p36:block:11",
+          "actual:p36:block:12",
+          "actual:p36:block:13",
+          "actual:p36:block:14",
+          "actual:p36:block:15",
+          "actual:p36:block:16",
+          "actual:p36:block:17",
+          "actual:p36:block:18",
+          "actual:p36:block:19",
+          "actual:p36:block:21",
+          "actual:p36:block:24",
+          "actual:p36:block:25",
+          "actual:p36:table:0",
+          "actual:p36:table:1",
+          "actual:p36:table:2"
+        ],
+        "risk_reasons_observed": [
+          "figure_embedded_content_as_document_body_or_table"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/page36_figure_region_content_20260721/current_page36_snapshot.json",
+          "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/multipage/v2_response_p35.md.raw.md"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Normal document prose above or below Figure 1; rejected by the Figure 1 bbox band.",
+          "The true 'FIGURE 1: CONTROL STRUCTURE' caption; rejected by source_type=Caption.",
+          "Tables outside the blue Figure 1 diagram; rejected by bbox guards."
+        ],
+        "candidates_that_prove": [
+          "Page 36 emits multiple Body/table elements inside the blue Figure 1 diagram, but those elements are visual figure content rather than document-flow prose, references, or tables."
+        ],
+        "deterministic_rule": "If a NIST Body/table element falls inside the observed Figure 1 diagram region and has non-empty text, set type=figure and semantic_role=figure_content."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body or table",
+          "type is not one of paragraph_block, section_heading, section_subtitle, reference, or table",
+          "bbox is outside the observed Figure 1 diagram region",
+          "text is empty"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This Figure 1 region rule intentionally overrides document-flow Body/table classifications only inside the observed diagram bbox and does not match the actual Caption source elements.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.1,
+            "x_max_lt": 0.85,
+            "y_min_gt": 0.33,
+            "y_max_lt": 0.77
+          },
+          "page": 36,
+          "source_type": [
+            "Body",
+            "table"
+          ],
+          "type": [
+            "paragraph_block",
+            "section_heading",
+            "section_subtitle",
+            "reference",
+            "table"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "figure_content",
+              "type": "figure"
+            },
+            "regex": "^\\s*\\S[\\s\\S]*$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-07-21T00:00:00Z",
+      "added_by": "agent:codex (pdf-lab page36 all-candidates hardening)",
+      "applied_at": "2026-07-21T00:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route Figure 1 embedded field labels to figure content even when they match normal NIST field-label rules.",
+      "closed_at": "2026-07-21T00:00:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page36_figure_region_content.py)",
+      "entry_id": "nist-figure-region-labels-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p36:block:14",
+          "actual:p36:block:19"
+        ],
+        "risk_reasons_observed": [
+          "figure_embedded_field_labels_keep_document_semantic_roles"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/page36_figure_region_content_20260721/current_page36_snapshot.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Normal NIST field labels outside Figure 1; rejected by the diagram bbox band.",
+          "The real page104/page36 Control Enhancements labels in document flow; rejected by bbox guards.",
+          "Reference leads outside the blue Figure 1 diagram; rejected by bbox guards."
+        ],
+        "candidates_that_prove": [
+          "Page 36 emits 'Control Enhancements:' and 'References: None.' inside Figure 1; these are visual figure labels, not document-flow field labels."
+        ],
+        "deterministic_rule": "If a NIST Body element in the Figure 1 diagram field-label band exactly equals 'Control Enhancements:' or 'References: None.', set type=figure and semantic_role=figure_content."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not section_subtitle, reference, paragraph_block, or figure",
+          "bbox is outside the observed Figure 1 diagram region",
+          "text is not exactly one of the observed Figure 1 embedded labels"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This exact Figure 1 diagram-region rule intentionally overrides normal NIST field-label semantic roles only inside the observed diagram bbox.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_max_lt": 0.45,
+            "y_min_gt": 0.52,
+            "y_max_lt": 0.76
+          },
+          "page": 36,
+          "source_type": "Body",
+          "type": [
+            "section_subtitle",
+            "reference",
+            "paragraph_block",
+            "figure"
+          ]
+        },
+        "extract": [
+          {
+            "equals_ci": "Control Enhancements:",
+            "fields": {
+              "semantic_role": "figure_content",
+              "type": "figure"
+            }
+          },
+          {
+            "equals_ci": "References:  None.",
             "fields": {
               "semantic_role": "figure_content",
               "type": "figure"
