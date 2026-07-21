@@ -1,0 +1,398 @@
+{
+  "checks": {
+    "agent_skills_pr_1_reconciled_as_superseded": true,
+    "agent_skills_pr_1_terminal": true,
+    "issue_70_closed": true,
+    "issue_70_proof_comment_present": true,
+    "issue_71_closed": true,
+    "issue_71_proof_comment_present": true,
+    "issue_72_closed": true,
+    "issue_72_proof_comment_present": true,
+    "pdf_oxide_pr_1_merged": true,
+    "ticket70_all_pages_raw_and_validated": true,
+    "ticket70_no_invalid_api_key": true,
+    "ticket70_preflight_auth_200": true,
+    "ticket71_all_pages_raw_and_validated": true,
+    "ticket71_false_table_ids_absent_from_findings": true,
+    "ticket71_snapshots_no_target_tables": true,
+    "ticket72_all_pages_raw_and_validated": true,
+    "ticket72_snapshots_materialize_footnotes_not_unknown": true,
+    "ticket72_target_ids_absent_from_findings": true
+  },
+  "claim_boundary": {
+    "does_not_prove": [
+      "Criterion 8 closure page/terminal receipt",
+      "Criterion 10 human acceptance",
+      "full-document NIST extraction quality",
+      "semantic correctness of the remaining four non-footnote reviewer findings in ticket72 live summary"
+    ],
+    "proves": [
+      "agent-skills issues #70-#72 are closed and have proof comments backed by local artifact checks",
+      "the #70 live SciLLM auth rerun had auth HTTP 200, 10/10 raw/validation success, and no Invalid API key responses",
+      "the #71 target false-table finding IDs are absent in the post-patch live summary and target snapshots contain no table blocks",
+      "the #72 target footnote finding IDs are absent in the post-patch live summary and target snapshots materialize footnotes without unknown_region output blocks",
+      "both PR #1 lifecycle items are terminal: pdf_oxide#1 merged; agent-skills#1 closed as superseded"
+    ]
+  },
+  "criterion": 9,
+  "generated_at": "2026-07-20T23:00:00-04:00",
+  "github_readbacks": {
+    "issues": {
+      "agent-skills#70": {
+        "closedAt": "2026-06-30T14:13:28Z",
+        "proof": {
+          "count": 2,
+          "createdAt": [
+            "2026-06-30T14:13:10Z",
+            "2026-06-30T14:13:26Z"
+          ],
+          "present": true,
+          "urls": [
+            "https://github.com/grahama1970/agent-skills/issues/70#issuecomment-4844419199",
+            "https://github.com/grahama1970/agent-skills/issues/70#issuecomment-4844421706"
+          ]
+        },
+        "state": "CLOSED",
+        "url": "https://github.com/grahama1970/agent-skills/issues/70"
+      },
+      "agent-skills#71": {
+        "closedAt": "2026-06-30T14:25:54Z",
+        "proof": {
+          "count": 1,
+          "createdAt": [
+            "2026-06-30T14:25:52Z"
+          ],
+          "present": true,
+          "urls": [
+            "https://github.com/grahama1970/agent-skills/issues/71#issuecomment-4844541081"
+          ]
+        },
+        "state": "CLOSED",
+        "url": "https://github.com/grahama1970/agent-skills/issues/71"
+      },
+      "agent-skills#72": {
+        "closedAt": "2026-06-30T14:35:55Z",
+        "proof": {
+          "count": 1,
+          "createdAt": [
+            "2026-06-30T14:35:52Z"
+          ],
+          "present": true,
+          "urls": [
+            "https://github.com/grahama1970/agent-skills/issues/72#issuecomment-4844643433"
+          ]
+        },
+        "state": "CLOSED",
+        "url": "https://github.com/grahama1970/agent-skills/issues/72"
+      }
+    },
+    "pull_requests": {
+      "agent-skills#1": {
+        "closedAt": "2026-07-21T00:28:29Z",
+        "headRefName": "review-extraction/gs001-r3-runner-contract",
+        "isDraft": true,
+        "mergedAt": null,
+        "reconciliation_comment": {
+          "count": 1,
+          "createdAt": [
+            "2026-07-21T00:28:29Z"
+          ],
+          "present": true,
+          "urls": [
+            "https://github.com/grahama1970/agent-skills/pull/1#issuecomment-5028780675"
+          ]
+        },
+        "state": "CLOSED",
+        "url": "https://github.com/grahama1970/agent-skills/pull/1"
+      },
+      "pdf_oxide#1": {
+        "closedAt": "2026-07-20T21:20:53Z",
+        "headRefName": "pdf-oxide/gs001-r3-runner-tests",
+        "isDraft": true,
+        "mergedAt": "2026-07-20T21:20:53Z",
+        "state": "MERGED",
+        "url": "https://github.com/grahama1970/pdf_oxide/pull/1"
+      }
+    }
+  },
+  "goal_id": "PDF-EXTRACTION-GS001-TAU-V1",
+  "live": true,
+  "local_artifact_evidence": {
+    "agent_skills_pr_1_supersession": {
+      "head_commit": "49b7ba6b91e272f9b9f4f88d9c58ee882bae36b5",
+      "later_origin_main_commits_on_path": [
+        "3ea7108a4",
+        "85771ffd8"
+      ],
+      "merge_base_is_ancestor_of_origin_main": false,
+      "origin_main_commit_checked": "49c4556a935e7db34717107c6beb5e063e957e5f",
+      "same_path_set_on_origin_main": [
+        "skills/review-extraction/README.md",
+        "skills/review-extraction/SKILL.md",
+        "skills/review-extraction/UPSTREAM_MANIFEST.json",
+        "skills/review-extraction/scripts/build_golden_slice_bundle.py"
+      ]
+    },
+    "ticket70": {
+      "auth_source": "docker:scillm-proxy:SCILLM_MASTER_KEY",
+      "auth_status_code": 200,
+      "preflight_path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_ticket70_rerun_20260630T1405/scillm_preflight.json",
+      "preflight_sha256": "sha256:a50f1837724853dd38ba03cd61aaad571c1cdb31ff075306e40977da88babcbc",
+      "response_counts": {
+        "http_status_401_files": 0,
+        "invalid_api_key_files": 0,
+        "raw_ok_inferred": 10,
+        "response_files": 10,
+        "unique_status_codes": [
+          200
+        ],
+        "validation_files": 10,
+        "validation_ok_inferred": 10
+      },
+      "summary_counts": {
+        "finding_count": 15,
+        "human_needed_count": 0,
+        "ok_count": 10,
+        "page_count": 10,
+        "raw_ok_count": 10
+      },
+      "summary_path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_ticket70_rerun_20260630T1405/summary.json",
+      "summary_sha256": "sha256:2b5293f58b3bc5a358270197cd0102f8e6062a7d2335530bb2a7ad94de186c54"
+    },
+    "ticket71": {
+      "remaining_finding_ids": [
+        "p31-footnotes-typed-unknown",
+        "p31-footnote20-continuation-split",
+        "p31-footnote-citation-text-corruption",
+        "p32-footnotes-unknown-region",
+        "p32-footnote-reference-token-corruption",
+        "p33-bullets-as-paragraphs",
+        "p33-footnote-unknown",
+        "p34-footer-heading-dup",
+        "p34-top-chapter-label-missing",
+        "p34-footnote-classification",
+        "p34-linewrapped-reference-spacing",
+        "p401_missing_main_references_heading",
+        "p401_footer_duplicate_body_fragment",
+        "p401_gray_band_heading_underclassified",
+        "p401_reference_continuations_as_paragraphs",
+        "p401_footnote_unknown_region"
+      ],
+      "response_counts": {
+        "http_status_401_files": 0,
+        "invalid_api_key_files": 0,
+        "raw_ok_inferred": 10,
+        "response_files": 10,
+        "unique_status_codes": [
+          200
+        ],
+        "validation_files": 10,
+        "validation_ok_inferred": 10
+      },
+      "snapshots": {
+        "31": {
+          "path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/after_table_fp_patch/page_0031.json",
+          "sha256": "sha256:2502bcc8852dda3eb299252a0d179be4c1e7a2b8749213258db598d913994966",
+          "table_like_objects": 0,
+          "target_ids_present": []
+        },
+        "33": {
+          "path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/after_table_fp_patch/page_0033.json",
+          "sha256": "sha256:289983c346caf0dd3420d8f39cac06ef6e5fdb7c4dc9165375a9867a7225c7e6",
+          "table_like_objects": 0,
+          "target_ids_present": []
+        },
+        "415": {
+          "path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/after_table_fp_patch/page_0415.json",
+          "sha256": "sha256:8b43383290d08cb5a3b48c4833082e83e7be78afb4f53735d33071c9805a0bda",
+          "table_like_objects": 0,
+          "target_ids_present": []
+        }
+      },
+      "summary_counts": {
+        "finding_count": 16,
+        "human_needed_count": 0,
+        "ok_count": 10,
+        "page_count": 10,
+        "raw_ok_count": 10
+      },
+      "summary_path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_after_table_fp_patch/summary.json",
+      "summary_sha256": "sha256:3830e4ee74f9cdeebf5a6b271df6e6d77a39b2239e2d3cf9d11aa64276d506ed",
+      "target_false_table_ids": [
+        "p31-footnotes-false-table",
+        "p33-footnote-false-table",
+        "p415_spurious_header_ref_table"
+      ],
+      "target_false_table_ids_present": []
+    },
+    "ticket72": {
+      "remaining_finding_ids": [
+        "p33_bullets_as_paragraphs",
+        "p34-inline-citation-hyphen-wrap-space",
+        "p401-reference-continuations-as-paragraphs",
+        "p401-gray-band-heading-as-paragraph"
+      ],
+      "response_counts": {
+        "http_status_401_files": 0,
+        "invalid_api_key_files": 0,
+        "raw_ok_inferred": 10,
+        "response_files": 10,
+        "unique_status_codes": [
+          200
+        ],
+        "validation_files": 10,
+        "validation_ok_inferred": 10
+      },
+      "snapshots": {
+        "31": {
+          "block_type_counts": {
+            "footnote": 6,
+            "header_footer_noise": 4,
+            "list": 1,
+            "paragraph_block": 3
+          },
+          "continuations": [
+            [
+              "actual:p31:block:15",
+              [
+                "actual:p31:block:16"
+              ]
+            ]
+          ],
+          "corrupt_sp80053a_ids": [],
+          "footnote_ids": [
+            "actual:p31:block:10",
+            "actual:p31:block:11",
+            "actual:p31:block:12",
+            "actual:p31:block:13",
+            "actual:p31:block:14",
+            "actual:p31:block:15"
+          ],
+          "path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/ticket72_footnote_patch_snapshot_20260630T1428/page_0031.json",
+          "sha256": "sha256:ea0950f273342dc48c6b762d9a48633adc584f25cb298933904b24d3bcb333dd",
+          "unknown_block_ids": []
+        },
+        "32": {
+          "block_type_counts": {
+            "footnote": 2,
+            "header_footer_noise": 4,
+            "paragraph_block": 5,
+            "section_heading": 3
+          },
+          "continuations": [
+            [
+              "actual:p32:block:14",
+              [
+                "actual:p32:block:15"
+              ]
+            ]
+          ],
+          "corrupt_sp80053a_ids": [],
+          "footnote_ids": [
+            "actual:p32:block:14",
+            "actual:p32:block:16"
+          ],
+          "path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/ticket72_footnote_patch_snapshot_20260630T1428/page_0032.json",
+          "sha256": "sha256:d424cba40963816ad366905952efeb7882d11701e85680d7ea7a4dc32a947eb1",
+          "unknown_block_ids": []
+        },
+        "33": {
+          "block_type_counts": {
+            "footnote": 1,
+            "header_footer_noise": 4,
+            "paragraph_block": 3
+          },
+          "continuations": [],
+          "corrupt_sp80053a_ids": [],
+          "footnote_ids": [
+            "actual:p33:block:9"
+          ],
+          "path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/ticket72_footnote_patch_snapshot_20260630T1428/page_0033.json",
+          "sha256": "sha256:9b4875e9eba461da28b39c08a2d776b7f7eee34f3b3fdf1b656797d30c806f65",
+          "unknown_block_ids": []
+        },
+        "34": {
+          "block_type_counts": {
+            "footnote": 1,
+            "header_footer_noise": 4,
+            "paragraph_block": 3,
+            "section_heading": 3,
+            "section_subtitle": 1
+          },
+          "continuations": [
+            [
+              "actual:p34:block:13",
+              [
+                "actual:p34:block:14"
+              ]
+            ]
+          ],
+          "corrupt_sp80053a_ids": [],
+          "footnote_ids": [
+            "actual:p34:block:13"
+          ],
+          "path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/ticket72_footnote_patch_snapshot_20260630T1428/page_0034.json",
+          "sha256": "sha256:d1522a0fcf63dc7c229675296e9c5aa3673518c45dca4d1039299eae2271011f",
+          "unknown_block_ids": []
+        },
+        "401": {
+          "block_type_counts": {
+            "footnote": 1,
+            "header_footer_noise": 4,
+            "paragraph_block": 4,
+            "reference": 21,
+            "section_subtitle": 1
+          },
+          "continuations": [
+            [
+              "actual:p401:block:32",
+              [
+                "actual:p401:block:33"
+              ]
+            ]
+          ],
+          "corrupt_sp80053a_ids": [],
+          "footnote_ids": [
+            "actual:p401:block:32"
+          ],
+          "path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/ticket72_footnote_patch_snapshot_20260630T1428/page_0401.json",
+          "sha256": "sha256:211f8745f8a8c151a70c9a6a46dd3578f648dd719d1f7b38b6aee686f9b11372",
+          "unknown_block_ids": []
+        }
+      },
+      "summary_counts": {
+        "finding_count": 4,
+        "human_needed_count": 0,
+        "ok_count": 10,
+        "page_count": 10,
+        "raw_ok_count": 10
+      },
+      "summary_path": "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_ticket72_footnote_patch_20260630T1438/summary.json",
+      "summary_sha256": "sha256:cb5cdfadb081196e3f89cf7dfa64b5b145cae6fcfbdcd6d52ae7ca2b917934bd",
+      "target_72_ids": [
+        "p31-footnote-citation-text-corruption",
+        "p31-footnote20-continuation-split",
+        "p31-footnotes-typed-unknown",
+        "p32-footnote-reference-token-corruption",
+        "p32-footnotes-unknown-region",
+        "p33-footnote-unknown",
+        "p34-footnote-classification",
+        "p401_footnote_unknown_region"
+      ],
+      "target_72_ids_present": []
+    }
+  },
+  "mocked": false,
+  "receipt_files": [
+    "artifacts/pdf-lab/loop-runs/gs001-truth-reconciliation-20260720T2300Z/receipts/agent-skills-issue-70.json",
+    "artifacts/pdf-lab/loop-runs/gs001-truth-reconciliation-20260720T2300Z/receipts/agent-skills-issue-71.json",
+    "artifacts/pdf-lab/loop-runs/gs001-truth-reconciliation-20260720T2300Z/receipts/agent-skills-issue-72.json",
+    "artifacts/pdf-lab/loop-runs/gs001-truth-reconciliation-20260720T2300Z/receipts/agent-skills-pr-1-after-close.json",
+    "artifacts/pdf-lab/loop-runs/gs001-truth-reconciliation-20260720T2300Z/receipts/agent-skills-pr-1.json",
+    "artifacts/pdf-lab/loop-runs/gs001-truth-reconciliation-20260720T2300Z/receipts/agent-skills-pr-list-after-close.json",
+    "artifacts/pdf-lab/loop-runs/gs001-truth-reconciliation-20260720T2300Z/receipts/pdf-oxide-pr-1.json"
+  ],
+  "schema_version": "pdf_lab.gs001.truth_reconciliation_receipt.v1",
+  "status": "PASS",
+  "worktree": "/tmp/pdf_oxide-gs001-criterion6-closure-2gua8L"
+}
