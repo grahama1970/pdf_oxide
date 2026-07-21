@@ -28,7 +28,11 @@
     "dpi72_candidate_overlay": "artifacts/pdf_lab/live_second_pass_page16_dpi72_20260721T1200Z/page_cases/page_case_0001_p0016/page_candidates.png",
     "brave_search_receipt": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/brave_large_payload_readtimeout.json",
     "webgpt_bundle": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle.md",
-    "webgpt_stderr": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_submit.stderr"
+    "webgpt_initial_stderr": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_submit.stderr",
+    "webgpt_assess_response": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle-assess-response.md",
+    "webgpt_assess_meta": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle-assess-response.meta.json",
+    "webgpt_assess_receipt": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle-assess-response.receipt.json",
+    "browser_oracle_registry": ".ask/browser-oracles.yaml"
   },
   "patch": {
     "files": [
@@ -84,6 +88,12 @@
       {
         "bundle": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle.md",
         "result": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+      },
+      {
+        "bundle": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle.md",
+        "result": "PASS_CURRENT_GATE",
+        "response": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle-assess-response.md",
+        "routing_proof": "requested_tab_id == controlled_tab_id == 837360471, tab_was_created == false, controlled_tab_id_mismatch == false"
       }
     ]
   },

@@ -1,0 +1,17 @@
+{
+  "schema": "surf.webgpt_submit_receipt.v1",
+  "status": "submitted_to_chatgpt",
+  "submitted_to_chatgpt": true,
+  "prepared_prompt_is_transport_proof": false,
+  "input": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle.submitted-assess.md",
+  "submitted_output": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle-assess-response.md.submitted.md",
+  "output": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle-assess-response.md",
+  "raw_output": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle-assess-response.raw.md",
+  "meta_output": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle-assess-response.meta.json",
+  "sentinel": "<<<WEBGPT_DONE:20260721T095501Z:5c230e4f>>>",
+  "requested_tab_id": "837360471",
+  "requested_url": null,
+  "requested_model": null,
+  "requested_reasoning": "Pro",
+  "receipt_at": "2026-07-21T09:55:06Z"
+}
