@@ -3635,6 +3635,108 @@ impl PyPdfDocument {
         Ok(list.into())
     }
 
+    /// Classify blocks and reconcile them with detected tables on a page.
+    ///
+    /// Runs the block classifier and the table detector over the same page,
+    /// then merges the two streams: blocks geometrically contained in a
+    /// detected table region are consumed into the table (their intact span
+    /// text rebuilds the cell text), everything else stays a standalone
+    /// block. Ambiguous cases fail open and retain the block.
+    ///
+    /// Args:
+    ///     page (int): Page index (0-based)
+    ///
+    /// Returns:
+    ///     dict: {"blocks": [...same shape as classify_blocks...],
+    ///            "tables": [...same shape as read_pdf...],
+    ///            "reconciliation": {"consumed": [...], "retained_ambiguous": [...]}}
+    fn classify_blocks_reconciled(&mut self, py: Python<'_>, page: usize) -> PyResult<PyObject> {
+        use crate::tables::{self, ExtractConfig, Flavor};
+
+        let result_dict = pyo3::types::PyDict::new(py);
+        let spans = self
+            .inner
+            .extract_spans_unsorted(page)
+            .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+        if spans.is_empty() {
+            result_dict.set_item("blocks", pyo3::types::PyList::empty(py))?;
+            result_dict.set_item("tables", pyo3::types::PyList::empty(py))?;
+            let rec = pyo3::types::PyDict::new(py);
+            rec.set_item("consumed", pyo3::types::PyList::empty(py))?;
+            rec.set_item("retained_ambiguous", pyo3::types::PyList::empty(py))?;
+            result_dict.set_item("reconciliation", rec)?;
+            return Ok(result_dict.into());
+        }
+        let info = self
+            .inner
+            .get_page_info(page)
+            .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+        let page_height = info.media_box.height as f64;
+
+        // Same auto-flavor behavior as read_pdf: lattice first, then stream.
+        let mut config = ExtractConfig::default();
+        config.pages = Some(vec![page]);
+        config.flavor = Flavor::Lattice;
+        let mut tables = tables::extract_tables(&mut self.inner, &config)
+            .map_err(|e| PyRuntimeError::new_err(format!("Lattice extraction failed: {}", e)))?;
+        if tables.is_empty() {
+            config.flavor = Flavor::Stream;
+            tables = tables::extract_tables(&mut self.inner, &config)
+                .map_err(|e| PyRuntimeError::new_err(format!("Stream extraction failed: {}", e)))?;
+        }
+
+        let classifier = crate::extractors::block_classifier::BlockClassifier::new(
+            info.media_box.width,
+            info.media_box.height,
+            &spans,
+        );
+        let mut blocks = classifier.classify_spans(&spans);
+        let reconciliation = crate::extractors::table_block_reconciler::reconcile_page(
+            &mut blocks,
+            &mut tables,
+            &spans,
+            page_height,
+        );
+
+        let block_list = pyo3::types::PyList::empty(py);
+        for b in &blocks {
+            let dict = pyo3::types::PyDict::new(py);
+            dict.set_item("block_type", format!("{:?}", b.block_type))?;
+            dict.set_item("text", &b.text)?;
+            dict.set_item("bbox", (b.bbox.x, b.bbox.y, b.bbox.width, b.bbox.height))?;
+            dict.set_item("font_size", b.font_size)?;
+            dict.set_item("font_name", &b.font_name)?;
+            dict.set_item("is_bold", b.is_bold)?;
+            dict.set_item("confidence", b.confidence)?;
+            dict.set_item("header_level", b.header_level)?;
+            block_list.append(dict)?;
+        }
+        result_dict.set_item("blocks", block_list)?;
+
+        let table_list = pyo3::types::PyList::empty(py);
+        for table in &tables {
+            table_list.append(table_to_pydict(py, table)?)?;
+        }
+        result_dict.set_item("tables", table_list)?;
+
+        let rec = pyo3::types::PyDict::new(py);
+        let consumed_list = pyo3::types::PyList::empty(py);
+        for c in &reconciliation.consumed {
+            let dict = pyo3::types::PyDict::new(py);
+            dict.set_item("block_index", c.block_index)?;
+            dict.set_item("original_type", &c.original_type)?;
+            dict.set_item("text", &c.text)?;
+            dict.set_item("bbox", c.bbox)?;
+            dict.set_item("table_order", c.table_order)?;
+            dict.set_item("cells", c.cells.clone())?;
+            consumed_list.append(dict)?;
+        }
+        rec.set_item("consumed", consumed_list)?;
+        rec.set_item("retained_ambiguous", reconciliation.retained_ambiguous.clone())?;
+        result_dict.set_item("reconciliation", rec)?;
+        Ok(result_dict.into())
+    }
+
     /// Validate whether text is a section header using heuristic analysis.
     ///
     /// Returns a dict with disposition ("Accept", "Reject", or "Escalate"):
@@ -4256,7 +4358,7 @@ impl PyPdfDocument {
     /// Returns:
     ///     dict with keys: profile, pages, figures, sections, engineering,
     ///     running_headers, running_footers, recommended_strategy, page_count
-    #[pyo3(signature = (detect_figures=true, detect_engineering=true, normalize_text=true, build_sections=true, max_pages=0, body_font_size_override=None, header_ratio_override=None))]
+    #[pyo3(signature = (detect_figures=true, detect_engineering=true, normalize_text=true, build_sections=true, max_pages=0, body_font_size_override=None, header_ratio_override=None, reconcile_tables=false))]
     fn extract_document(
         &mut self,
         py: Python<'_>,
@@ -4267,6 +4369,7 @@ impl PyPdfDocument {
         max_pages: usize,
         body_font_size_override: Option<f32>,
         header_ratio_override: Option<f32>,
+        reconcile_tables: bool,
     ) -> PyResult<PyObject> {
         use crate::extractors::document_extractor::{
             extract_document_with_config, ExtractionConfig,
@@ -4280,6 +4383,7 @@ impl PyPdfDocument {
             max_pages,
             body_font_size_override,
             header_ratio_override,
+            reconcile_tables,
         };
 
         let doc = &mut self.inner;
@@ -4382,6 +4486,27 @@ impl PyPdfDocument {
         // Strategy and page count
         dict.set_item("recommended_strategy", &result.recommended_strategy)?;
         dict.set_item("page_count", result.page_count)?;
+
+        // Reconciled tables + provenance (only when reconcile_tables was set)
+        if reconcile_tables {
+            let table_list = pyo3::types::PyList::empty(py);
+            for table in &result.tables {
+                table_list.append(table_to_pydict(py, table)?)?;
+            }
+            dict.set_item("tables", table_list)?;
+            let consumed_list = pyo3::types::PyList::empty(py);
+            for (page, record) in &result.consumed_blocks {
+                let c = pyo3::types::PyDict::new(py);
+                c.set_item("page", page)?;
+                c.set_item("original_type", &record.original_type)?;
+                c.set_item("text", &record.text)?;
+                c.set_item("bbox", record.bbox)?;
+                c.set_item("table_order", record.table_order)?;
+                c.set_item("cells", record.cells.clone())?;
+                consumed_list.append(c)?;
+            }
+            dict.set_item("consumed_blocks", consumed_list)?;
+        }
 
         Ok(dict.into())
     }

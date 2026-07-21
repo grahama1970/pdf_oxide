@@ -23,6 +23,7 @@ pub mod prediction;
 pub mod section_hierarchy;
 pub mod structured;
 pub mod synthetic_structure;
+pub mod table_block_reconciler;
 pub mod table_merger;
 pub mod text;
 pub mod text_normalizer;

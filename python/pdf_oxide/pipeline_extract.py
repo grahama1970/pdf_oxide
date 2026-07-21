@@ -22,11 +22,18 @@ def extract_content(pdf_path: str, config: PipelineConfig) -> PipelineResult:
         detect_engineering=True,
         normalize_text=True,
         build_sections=True,
+        reconcile_tables=config.reconcile_tables,
     )
 
     sections = _build_sections(raw)
     blocks = _build_blocks(raw, sections)
-    tables = _extract_tables(doc, config, sections)
+    if config.reconcile_tables and raw.get("tables") is not None:
+        # Engine already extracted and reconciled tables against the block
+        # stream; consuming them here keeps one source of truth (a separate
+        # read_pdf pass would resurface the lossy un-reconciled cell text).
+        tables = _tables_from_engine(raw, sections, config)
+    else:
+        tables = _extract_tables(doc, config, sections)
     figures = _build_figures(raw, doc, config, sections)
 
     elapsed = time.monotonic() - t0
@@ -98,6 +105,36 @@ def _build_blocks(
                 }
             )
     return blocks
+
+
+def _tables_from_engine(
+    raw: Dict[str, Any], sections: List[Dict], config: PipelineConfig
+) -> List[Dict[str, Any]]:
+    """Build table dicts from the engine's reconciled extract_document result."""
+    tables = []
+    for t in raw.get("tables", []):
+        page_num = t.get("page", 0)
+        order = t.get("order", 0)
+        tables.append(
+            {
+                "id": md5(f"tbl_{page_num}_{order}_{t.get('bbox', ())}"),
+                "page": page_num,
+                "order": order,
+                "bbox": t.get("bbox"),
+                "rows": t.get("rows", 0),
+                "cols": t.get("cols", 0),
+                "accuracy": t.get("accuracy", 0.0),
+                "whitespace": t.get("whitespace", 0.0),
+                "flavor": t.get("flavor", config.table_flavor),
+                "data": t.get("data", []),
+                "df_data": t.get("df_data", []),
+                "csv_data": data_to_csv(t.get("data", [])),
+                "html_data": data_to_html(t.get("data", [])),
+                "section_id": assign_section(t, sections, page_num),
+                "extraction_method": "pdf_oxide",
+            }
+        )
+    return tables
 
 
 def _extract_tables(
