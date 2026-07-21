@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T14:24:00Z
+**Timestamp**: 2026-07-21T14:31:00Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -93,18 +93,28 @@
   - pdf_oxide review response: `artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_response.json`
   - pdf_oxide validation: `review_validation.ok=true`; `terminal_ledger.terminal_status=reviewed_clean`; `terminal_ledger_validation.ok=true`
   - Page audit: `artifacts/pdf_lab/page41_tau_live_review_20260721/audit_summary.json`
+- Page43 follow-on live review:
+  - Selection artifacts:
+    - `artifacts/pdf_lab/fresh_candidate_selection_after_page41_tau_20260721/candidate_manifest_unreviewed_pages.json`
+    - `artifacts/pdf_lab/fresh_candidate_selection_after_page41_tau_20260721/sampled_page_cases.json`
+  - Selection result: page 43 with `13` candidates: `side_chrome=4`, `text=3`, `section_heading=3`, `list=1`, `footnote=2`.
+  - Prep artifact: `artifacts/pdf_lab/live_second_pass_page43_tau_prep_20260721/page_case_0001_p0043/`
+  - Tau live command: `uv run tau scillm-chat-review --request /tmp/pdf_oxide_integrate_gs001_20260721/artifacts/pdf_lab/live_second_pass_page43_tau_prep_20260721/page_case_0001_p0043/review_request.json --out /tmp/tau-issue122-page43-live-20260721T1429/receipt.json --response-out /tmp/tau-issue122-page43-live-20260721T1429/review_response.json --scillm-base-url http://127.0.0.1:4001 --caller-skill pdf-lab --apply --request-timeout-s 120`
+  - Tau result: `status=PASS`, `provider_live=true`, `http_status=200`, `duration_seconds=22.64361`, parsed schema `pdf_lab.second_pass.review_response.v1`, `parsed_candidate_finding_count=13`, `parsed_page_status=clean`
+  - pdf_oxide validation: `review_validation.ok=true`; `terminal_ledger.terminal_status=reviewed_clean`; `terminal_ledger_validation.ok=true`; `review_bundle_validation.ok=true`
+  - Page audit: `artifacts/pdf_lab/page43_tau_live_review_20260721/audit_summary.json`
 
 ## 6. Campaign Status
 
 | Field | Value |
 |-------|-------|
-| `passed` | `1` for the page41 live-review item |
+| `passed` | `2` for the page41 and page43 live-review items |
 | `failed` | `0` |
 | `blocked_by_systemic_failure` | `0` |
 | `explicitly_blocked` | `0` |
-| `not_run` | `452` unreviewed pages remaining in the filtered current manifest |
-| Active page/checklist item | next fresh selected current-extraction page after page41 |
-| Latest failure signature | none for page41 |
+| `not_run` | `451` unreviewed pages remaining in the filtered current manifest |
+| Active page/checklist item | next fresh selected current-extraction page after page43 |
+| Latest failure signature | none for page43 |
 
 ## 7. Important Correction To Claude Report
 
@@ -128,7 +138,7 @@
 
 Use the same one-candidate proof ladder, without direct SciLLM calls from `pdf_oxide`:
 
-1. Select the next fresh current-extraction candidate after excluding page41.
+1. Select the next fresh current-extraction candidate after excluding page43.
 2. Any candidate whose model/executor review is required must go through Tau DAG contracts, not direct SciLLM/OpenCode calls from this repo.
 3. Criterion 6 live GitHub apply remains blocked until a valid approval receipt for mutation exists.
 

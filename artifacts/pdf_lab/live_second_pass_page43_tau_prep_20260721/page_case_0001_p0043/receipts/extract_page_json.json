@@ -1,0 +1,21 @@
+{
+  "command_or_endpoint": "snapshot_current_extraction._extract_page",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T14:28:44.801308+00:00",
+  "input_artifacts": [
+    "sampled_candidate_manifest.json"
+  ],
+  "next_allowed_nodes": [
+    "select_page_candidates"
+  ],
+  "node_id": "extract_page_json",
+  "output_artifacts": [
+    "page_before.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T14:28:44.801295+00:00",
+  "validator_result": {
+    "block_count": 13,
+    "ok": true
+  }
+}
