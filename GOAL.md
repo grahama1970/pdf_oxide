@@ -31,6 +31,7 @@ Current completed page evidence:
 | `page_0045` | Control Enhancements None field/value typing | `artifacts/pdf_lab/page45_control_enhancements_none_20260721/audit_summary.json` | `origin/main` after page45 Control Enhancements push |
 | `page_0045` | quick-link summary-table section link | `artifacts/pdf_lab/page45_quick_link_20260721/audit_summary.json` | `origin/main` after page45 quick-link push |
 | `page_0045` | AC-1 heading normalization | `artifacts/pdf_lab/page45_ac1_heading_20260721/audit_summary.json` | `origin/main` after page45 AC-1 heading push |
+| `page_0045` | AC-1 body/list TOC lineage | `artifacts/pdf_lab/page45_toc_lineage_20260721/audit_summary.json` | `origin/main` after page45 TOC-lineage push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -64,14 +65,14 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after the page45 AC-1 heading item is another remaining page45
+The next candidate after the page45 TOC-lineage item is another remaining page45
 checklist item, based on the GS001 handoff's independent reviewer measurement:
 
 | Field | Value |
 |-------|-------|
 | Page | `page_0045` / NIST SP 800-53r5 page 45 |
 | Defect class | to be selected from the remaining independent reviewer findings |
-| Observed failure | GS001 handoff reports page45 reduced from 29 findings to 20 remaining findings; the AC-1 lower-alpha marker, Control Enhancements None, quick-link, and AC-1 heading checklist items now have focused receipts |
+| Observed failure | GS001 handoff reports page45 reduced from 29 findings to 20 remaining findings; the AC-1 lower-alpha marker, Control Enhancements None, quick-link, AC-1 heading, and TOC-lineage checklist items now have focused receipts |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
 | Candidate artifacts to inspect first | current `artifacts/pdf_lab/` page45 receipts, release snapshot, model-review receipts, and live current extraction |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |
