@@ -1,0 +1,132 @@
+{
+  "accepted_engine_commit": "eb24e7122bfe4082fb7864ba1a565d20e450088d",
+  "accepted_evidence_commit": "b1cc6134d7a0f12fb53e06b3e6a14f168460bc51",
+  "checks": [
+    {
+      "code": "issue_4_closed",
+      "ok": true
+    },
+    {
+      "code": "closure_comment_present",
+      "ok": true
+    },
+    {
+      "code": "accepted_engine_commit_on_remote_main",
+      "ok": true
+    },
+    {
+      "code": "before_after_gate_pass",
+      "ok": true
+    },
+    {
+      "code": "issue_signature_decreased",
+      "ok": true
+    },
+    {
+      "code": "no_blocking_class_increased",
+      "ok": true
+    },
+    {
+      "code": "table_preserved",
+      "ok": true
+    },
+    {
+      "code": "focused_test_recorded_pass",
+      "ok": true
+    }
+  ],
+  "clean_rerun_receipt": {
+    "gate": {
+      "blocking_class_increased": false,
+      "header_footer_noise_increased": true,
+      "issue_signature_decreased": true,
+      "status": "PASS",
+      "table_preserved": true
+    },
+    "path": "/tmp/pdf_oxide-issue4-clean-fp1ZKQ/artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+    "sha256": "a3cca4bc41303e7a4133c59038c1e6d470c2baa4785224ad81acac8694a283bb"
+  },
+  "criterion": 6,
+  "does_not_prove": [
+    "The whole GS001 immutable goal is complete.",
+    "Primary proof structured code review has run.",
+    "Criterion 8 closure proof or Criterion 10 human acceptance."
+  ],
+  "evidence_bundle": {
+    "path": "/tmp/pdf_oxide-issue4-clean-fp1ZKQ/artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_running_header_noise_evidence.zip",
+    "sha256": "25a037863881c51f640572939d11f86e72261ad775d46b1cb2eab61977a27a15"
+  },
+  "generated_at": "2026-07-21T00:02:52.626880+00:00",
+  "issue": {
+    "body": "## Discrepancy\n- defect_key: `sha256:033d7b46aad99599b8bbb90ac8bbf421110bb2f967e0ac560f297374024feead`\n- observation_id: `sha256:a17864a978dee265688e1c0edc92cd67463971c4d6f73fdf7c27f92861d50b17`\n- page: 27\n- kind: bbox_iou_below_threshold\n- classification: bbox_iou_below_threshold\n- target: gs001:row:1\n- proposed owner layer: pdf_oxide_core_bug\n\n## Evidence\nbbox_iou_below_threshold\n\n## Recommended engine fix\nclassifier: running_header must classify as header_footer_noise\n\n## Closure requirement\nDeterministic proof only: pdf-lab regression-check PASS with this\ndefect class strictly decreased and no blocking class increased.\n\n## Tau Recovery Binding\n- Source projection: `/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-ticket-lifecycle-run2/intermediate/gs001-ticket-projection.json`\n- Criterion: `6`\n- Parent goal hash: `sha256:9d2bd5e1992e0e9875d1e14d78cc7ffb8cce4c087ab58a41447f999ae7118580`\n",
+    "closed": true,
+    "closedAt": "2026-07-21T00:01:17Z",
+    "comments": [
+      {
+        "author": {
+          "login": "grahama1970"
+        },
+        "authorAssociation": "OWNER",
+        "body": "Closure evidence for the specific issue #4 defect only.\n\nDeterministic artifact: artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json\nEvidence bundle: artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_running_header_noise_evidence.zip\n\nGate result from issue4_before_after_regression.json:\n- status: PASS\n- issue_signature_decreased: true\n- blocking_class_increased: false\n- header_footer_noise_increased: true\n- table_preserved: true\n\nCommands recorded in proof_summary.json:\n- PYTHONPATH=python uv run --with reportlab --with pymupdf pytest -q tests/test_nist_running_header_merge.py -> 2 passed in 0.31s\n- uv run --with ruff ruff check tests/test_nist_running_header_merge.py -> All checks passed!\n\nRemote main evidence commit: b1cc6134d7a0f12fb53e06b3e6a14f168460bc51\n\nScope: closes only the page 27 running_header -> header_footer_noise classifier defect described in this issue. It does not claim full GS001 convergence or live model second-pass health.",
+        "createdAt": "2026-07-21T00:01:17Z",
+        "id": "IC_kwDORehdZ88AAAABK7pJ5Q",
+        "includesCreatedEdit": false,
+        "isMinimized": false,
+        "minimizedReason": "",
+        "reactionGroups": [],
+        "url": "https://github.com/grahama1970/pdf_oxide/issues/4#issuecomment-5028596197",
+        "viewerDidAuthor": true
+      }
+    ],
+    "labels": [
+      {
+        "color": "0e8a16",
+        "description": "Work item generated or managed by an agent workflow",
+        "id": "LA_kwDORehdZ88AAAACskVj9g",
+        "name": "agent-work"
+      },
+      {
+        "color": "1d76db",
+        "description": "Next action is a local coder repair",
+        "id": "LA_kwDORehdZ88AAAACskVkJQ",
+        "name": "next:coder"
+      },
+      {
+        "color": "5319e7",
+        "description": "Work is intended for a local executor",
+        "id": "LA_kwDORehdZ88AAAACskVkTQ",
+        "name": "executor:local"
+      }
+    ],
+    "number": 4,
+    "state": "CLOSED",
+    "title": "[pdf-lab] bbox_iou_below_threshold on page 27 (sha256:033d7b46aad9)",
+    "url": "https://github.com/grahama1970/pdf_oxide/issues/4"
+  },
+  "issue_url": "https://github.com/grahama1970/pdf_oxide/issues/4",
+  "live": true,
+  "mocked": false,
+  "parent_goal_hash": "sha256:9d2bd5e1992e0e9875d1e14d78cc7ffb8cce4c087ab58a41447f999ae7118580",
+  "proof_summary": {
+    "lint_result": {
+      "command": "uv run --with ruff ruff check tests/test_nist_running_header_merge.py",
+      "exit_code": 0,
+      "stdout": "All checks passed!"
+    },
+    "path": "/tmp/pdf_oxide-issue4-clean-fp1ZKQ/artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json",
+    "sha256": "af3d4ca45aeeba1adaff9975a69c052b696389c4993952e01cc490a3c89464d4",
+    "test_result": {
+      "command": "PYTHONPATH=python uv run --with reportlab --with pymupdf pytest -q tests/test_nist_running_header_merge.py",
+      "exit_code": 0,
+      "stdout": "..                                                                       [100%]\n2 passed in 0.31s"
+    }
+  },
+  "proves": [
+    "The live GitHub issue created by Criterion 6 is now closed.",
+    "The closure comment names deterministic proof artifacts and command results.",
+    "The accepted engine repair is present on remote main with a before/after rerun receipt showing the defect signature decreased and no blocking class increased."
+  ],
+  "remote_main_sha": "b1cc6134d7a0f12fb53e06b3e6a14f168460bc51",
+  "schema": "pdf_oxide.gs001.criterion6_ticket_closure_receipt.v1",
+  "status": "PASS"
+}

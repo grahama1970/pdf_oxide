@@ -1,0 +1,58 @@
+{
+  "accepted_engine_commit": "eb24e7122bfe4082fb7864ba1a565d20e450088d",
+  "accepted_evidence_commit": "b1cc6134d7a0f12fb53e06b3e6a14f168460bc51",
+  "checks": [
+    {
+      "code": "issue_4_closed",
+      "ok": true
+    },
+    {
+      "code": "closure_comment_present",
+      "ok": true
+    },
+    {
+      "code": "accepted_engine_commit_on_remote_main",
+      "ok": true
+    },
+    {
+      "code": "before_after_gate_pass",
+      "ok": true
+    },
+    {
+      "code": "issue_signature_decreased",
+      "ok": true
+    },
+    {
+      "code": "no_blocking_class_increased",
+      "ok": true
+    },
+    {
+      "code": "table_preserved",
+      "ok": true
+    },
+    {
+      "code": "focused_test_recorded_pass",
+      "ok": true
+    }
+  ],
+  "closed_at": "2026-07-21T00:01:17Z",
+  "criterion": 6,
+  "does_not_prove": [
+    "The whole GS001 immutable goal is complete.",
+    "Primary proof structured code review has run.",
+    "Criterion 8 closure proof or Criterion 10 human acceptance."
+  ],
+  "issue_url": "https://github.com/grahama1970/pdf_oxide/issues/4",
+  "live": true,
+  "mocked": false,
+  "parent_goal_hash": "sha256:9d2bd5e1992e0e9875d1e14d78cc7ffb8cce4c087ab58a41447f999ae7118580",
+  "receipts": {
+    "engine_before_after_regression": "/tmp/pdf_oxide-issue4-clean-fp1ZKQ/artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+    "engine_evidence_bundle": "/tmp/pdf_oxide-issue4-clean-fp1ZKQ/artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_running_header_noise_evidence.zip",
+    "issue_4_closure_readback": "artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/receipts/issue-4-closure-readback.json"
+  },
+  "remaining_for_criterion6": [],
+  "remote_main_sha": "b1cc6134d7a0f12fb53e06b3e6a14f168460bc51",
+  "schema": "pdf_oxide.gs001.criterion6_ticket_closure_summary.v1",
+  "status": "PASS"
+}
