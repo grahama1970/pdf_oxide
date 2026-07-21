@@ -1,0 +1,32 @@
+{
+  "query": "human in the loop PDF extraction annotation repair loop active learning",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Human-in-the-loop Technical Document Annotation",
+      "description": "The document annotation process in a human-in-the-loop system. . . . . . . ... User study evaluation metrics gain for each group. The left shows the me- dian evaluation metric gain, from minute 5 to minute 60, in the user study. The right shows the metric gain, from 2 documents labeled to 80 documents \u00b7 labeled, for each group. CTM combined with active learning helps annota-",
+      "url": "https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2287.pdf"
+    },
+    {
+      "title": "MTR120603 MITRE TECHNICAL REPORT Active Learning with a Human In The Loop",
+      "description": "trained taggers in particular, the larger the corpus of annotated text the better the resulting tagger \u00b7 tends to be. For many text extraction problems, though, attaining human levels of accuracy with a",
+      "url": "https://www.mitre.org/sites/default/files/pdf/12_4811.pdf"
+    },
+    {
+      "title": "(PDF) Efficient Human-in-the-Loop Active Learning: A Novel Framework for Data Labeling in AI Systems",
+      "description": "PDF | Modern AI algorithms require labeled data. In real world, majority of data are unlabeled. Labeling the data are costly. this is particularly true... | Find, read and cite all the research you need on ResearchGate",
+      "url": "https://www.researchgate.net/publication/387670737_Efficient_Human-in-the-Loop_Active_Learning_A_Novel_Framework_for_Data_Labeling_in_AI_Systems"
+    },
+    {
+      "title": "Human-in-the-Loop for Active learning | Humans in the Loop | Image Annotation",
+      "description": "Humans in the Loop <strong>provides continuous ML model improvement with human input: from dataset collection and annotation to model verification and edge case handling</strong>.",
+      "url": "https://humansintheloop.org/solutions/human-in-the-loop-for-active-learning/"
+    },
+    {
+      "title": "1 Introduction to human-in-the-loop machine learning \u00b7 Human-in-the-Loop Machine Learning: Active learning and annotation for human-centered AI",
+      "description": "<strong>Annotating unlabeled data to create training, validation, and evaluation data</strong> \u00b7 Sampling the most important unlabeled data items (active learning) \u00b7 Incorporating human\u2013computer interaction principles into annotation \u00b7 Implementing transfer ...",
+      "url": "https://livebook.manning.com/book/human-in-the-loop-machine-learning/chapter-1"
+    }
+  ]
+}

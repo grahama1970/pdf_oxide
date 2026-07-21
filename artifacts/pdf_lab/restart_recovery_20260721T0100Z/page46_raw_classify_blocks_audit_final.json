@@ -1,0 +1,104 @@
+{
+  "schema": "pdf_lab.page46.raw_classify_blocks_audit.v1",
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "page_index": 45,
+  "block_count": 28,
+  "matching_blocks": [
+    {
+      "index": 4,
+      "block_type": "Body",
+      "text": "AC-2 ACCOUNT MANAGEMENT",
+      "bbox": [
+        90.0,
+        709.5,
+        156.80337524414062,
+        10.97998046875
+      ],
+      "font_size": 10.979999542236328,
+      "font_name": "TT2"
+    },
+    {
+      "index": 9,
+      "block_type": "List",
+      "text": "d. Specify:",
+      "bbox": [
+        125.99998474121094,
+        593.8222045898438,
+        51.883575439453125,
+        10.02001953125
+      ],
+      "font_size": 10.020000457763672,
+      "font_name": "TT0"
+    },
+    {
+      "index": 16,
+      "block_type": "List",
+      "text": "h. Notify account managers and [Assignment: organization-defined personnel or roles] within:",
+      "bbox": [
+        126.00001525878906,
+        429.7347412109375,
+        389.97845458984375,
+        10.019989013671875
+      ],
+      "font_size": 10.020000457763672,
+      "font_name": "TT0"
+    },
+    {
+      "index": 17,
+      "block_type": "List",
+      "text": "1. [Assignment: organization-defined time period] when accounts are no longer required;",
+      "bbox": [
+        143.9959716796875,
+        411.5584716796875,
+        372.0927734375,
+        10.019989013671875
+      ],
+      "font_size": 10.020001411437988,
+      "font_name": "TT0"
+    },
+    {
+      "index": 18,
+      "block_type": "List",
+      "text": "2. [Assignment: organization-defined time period] when users are terminated or transferred; and",
+      "bbox": [
+        143.98599243164062,
+        381.13775634765625,
+        335.4636535644531,
+        22.264434814453125
+      ],
+      "font_size": 10.020000457763672,
+      "font_name": "TT0"
+    },
+    {
+      "index": 19,
+      "block_type": "List",
+      "text": "3. [Assignment: organization-defined time period] when system usage or need-to-know changes for an individual;",
+      "bbox": [
+        143.9860076904297,
+        350.717041015625,
+        364.59375,
+        22.264434814453125
+      ],
+      "font_size": 10.020002365112305,
+      "font_name": "TT0"
+    },
+    {
+      "index": 20,
+      "block_type": "List",
+      "text": "i. Authorize access to the system based on:",
+      "bbox": [
+        125.97001647949219,
+        332.48065185546875,
+        187.78480529785156,
+        10.019989013671875
+      ],
+      "font_size": 10.020000457763672,
+      "font_name": "TT0"
+    }
+  ],
+  "h_block_absorbs_i": false,
+  "h_block_absorbs_numbered_children": false,
+  "h_parent_count": 1,
+  "h_child_count": 3,
+  "i_parent_count": 1
+}

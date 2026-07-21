@@ -1,0 +1,1351 @@
+{
+  "generated_at": "2026-07-21T01:06:28.928197+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04473802296802251,
+            0.8507378272760927,
+            0.05821938948197798
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p46:block:0",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05679397390346334,
+            0.8517353332120609,
+            0.07054738324097913
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p46:block:1",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.9417424250130702,
+            0.8396249409594567,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 7.9800004959106445,
+          "id": "actual:p46:block:2",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              423.8504638671875,
+              7.979999542236328
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 7.9800004959106445,
+            "header_level": null,
+            "is_bold": false,
+            "text": "CHAPTER THREE   19 PAGE"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Body",
+          "text": "CHAPTER THREE   19 PAGE",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.0296323533151664,
+            0.28780303338561397,
+            0.049705879361021756,
+            0.7406287915778883
+          ],
+          "font_name": "ArialMT",
+          "font_size": 9.0,
+          "id": "actual:p46:rotated_side_chrome:1",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "fragment_ids": [
+              "actual:p46:block:3",
+              "actual:p46:block:4"
+            ],
+            "fragments": [
+              {
+                "bbox": [
+                  0.03441176383323919,
+                  0.27643939702197756,
+                  0.056470587362650954,
+                  0.5315908952192827
+                ],
+                "font_name": "TT1",
+                "font_size": 9.0,
+                "id": "actual:p46:block:3",
+                "is_bold": false,
+                "page": 46,
+                "pdf_page_index": 45,
+                "raw": {
+                  "bbox": [
+                    21.059999465942383,
+                    370.9800109863281,
+                    13.5,
+                    202.07998657226562
+                  ],
+                  "block_type": "Boilerplate",
+                  "confidence": 0.8999999761581421,
+                  "font_name": "TT1",
+                  "font_size": 9.0,
+                  "header_level": null,
+                  "is_bold": false,
+                  "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800"
+                },
+                "source_type": "Boilerplate",
+                "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800",
+                "type": "unknown_region"
+              },
+              {
+                "bbox": [
+                  0.03441176383323919,
+                  0.7027272696446891,
+                  0.06380882761836831,
+                  0.7178787847962043
+                ],
+                "font_name": "TT1",
+                "font_size": 9.0,
+                "id": "actual:p46:block:4",
+                "is_bold": false,
+                "page": 46,
+                "pdf_page_index": 45,
+                "raw": {
+                  "bbox": [
+                    21.059999465942383,
+                    223.44000244140625,
+                    17.991003036499023,
+                    12.0
+                  ],
+                  "block_type": "Boilerplate",
+                  "confidence": 0.8999999761581421,
+                  "font_name": "TT1",
+                  "font_size": 9.0,
+                  "header_level": null,
+                  "is_bold": false,
+                  "text": "-53r5"
+                },
+                "source_type": "Boilerplate",
+                "text": "-53r5",
+                "type": "unknown_region"
+              }
+            ],
+            "line_bbox": [
+              18.135000228881836,
+              227.94000244140625,
+              30.419998168945312,
+              586.5780029296875
+            ],
+            "line_dir": [
+              0.0,
+              1.0
+            ],
+            "source": "fitz_rawdict_rotated_margin_line"
+          },
+          "source_type": "RotatedSideChrome",
+          "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.08976235052551886,
+            0.3991685007132736,
+            0.1090050706959734
+          ],
+          "font_name": "TT2",
+          "font_size": 10.979999542236328,
+          "id": "actual:p46:block:5",
+          "is_bold": true,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              90.0,
+              709.5,
+              156.80337524414062,
+              10.97998046875
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT2",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0958082675933838,
+                "text_len": 23,
+                "title_case_ratio": 1.0,
+                "word_count": 3
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "AC-2 ACCOUNT MANAGEMENT"
+            },
+            "is_bold": true,
+            "text": "AC-2 ACCOUNT MANAGEMENT"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "AC-2 ACCOUNT MANAGEMENT",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.11451952385179924,
+            0.25978078405841504,
+            0.13144725260108409
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:6",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              126.0,
+              691.02001953125,
+              39.69923400878906,
+              10.02001953125
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control:"
+          },
+          "semantic_role": "nist_field_label",
+          "source_type": "Body",
+          "text": "Control:",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.13739830556541982,
+            0.8089341805651297,
+            0.1698620921433574
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:7",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              126.0,
+              660.595458984375,
+              371.34222412109375,
+              22.3245849609375
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "a. Define and document the types of accounts allowed and specifically prohibited for use within the system;"
+          },
+          "source_type": "List",
+          "text": "a. Define and document the types of accounts allowed and specifically prohibited for use within the system;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20588237787383834,
+            0.17588420829387627,
+            0.40743345372817097,
+            0.1928119274100872
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:8",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              126.00001525878906,
+              642.419189453125,
+              125.56063842773438,
+              10.02001953125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "b. Assign account managers;"
+          },
+          "source_type": "List",
+          "text": "b. Assign account managers;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20588237787383834,
+            0.19883404356060605,
+            0.8180767383450777,
+            0.23122192151618726
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020001411437988,
+          "id": "actual:p46:block:9",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              126.00001525878906,
+              611.9984741210938,
+              376.87823486328125,
+              22.26446533203125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020001411437988,
+            "header_level": null,
+            "is_bold": false,
+            "text": "c. Require [Assignment: organization-defined prerequisites and criteria] for group and role membership;"
+          },
+          "source_type": "List",
+          "text": "c. Require [Assignment: organization-defined prerequisites and criteria] for group and role membership;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.2058823280085146,
+            0.23724403766670613,
+            0.28702303319195516,
+            0.25417175678291704
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:10",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              125.99998474121094,
+              593.8222045898438,
+              51.883575439453125,
+              10.02001953125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "d. Specify:"
+          },
+          "source_type": "List",
+          "text": "d. Specify:",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23528743569367852,
+            0.2602697815557923,
+            0.4749570859023948,
+            0.2771975006720032
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:11",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              143.99591064453125,
+              575.5858154296875,
+              148.95733642578125,
+              10.02001953125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "1. Authorized users of the system;"
+          },
+          "source_type": "List",
+          "text": "1. Authorized users of the system;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23527107986749388,
+            0.2832196168225221,
+            0.48593812830307903,
+            0.30014733593873305
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:12",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              143.98590087890625,
+              557.4095458984375,
+              155.62063598632812,
+              10.02001953125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "2. Group and role membership; and"
+          },
+          "source_type": "List",
+          "text": "2. Group and role membership; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23527107986749388,
+            0.3061694520892519,
+            0.8430087020973754,
+            0.3385573493109809
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:13",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              143.98590087890625,
+              526.9888305664062,
+              374.161865234375,
+              22.26446533203125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "3. Access authorizations (i.e., privileges) and [Assignment: organization-defined attributes (as required)] for each account;"
+          },
+          "source_type": "List",
+          "text": "3. Access authorizations (i.e., privileges) and [Assignment: organization-defined attributes (as required)] for each account;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20586597218232996,
+            0.34457944619535197,
+            0.8362615248736214,
+            0.376967343417081
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:14",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              125.98997497558594,
+              496.568115234375,
+              388.08660888671875,
+              22.26446533203125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "e. Require approvals by [Assignment: organization-defined personnel or roles] for requests to create accounts;"
+          },
+          "source_type": "List",
+          "text": "e. Require approvals by [Assignment: organization-defined personnel or roles] for requests to create accounts;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20586592231700623,
+            0.38298944030145204,
+            0.8107597999323427,
+            0.415377337523181
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:15",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              125.98994445800781,
+              466.14739990234375,
+              372.469482421875,
+              22.264434814453125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "f. Create, enable, modify, disable, and remove accounts in accordance with [Assignment: organization-defined policy, procedures, prerequisites, and criteria];"
+          },
+          "source_type": "List",
+          "text": "f. Create, enable, modify, disable, and remove accounts in accordance with [Assignment: organization-defined policy, procedures, prerequisites, and criteria];",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20586599711499182,
+            0.42147534302990847,
+            0.42733265995200165,
+            0.4384030814122672
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:16",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              125.989990234375,
+              447.9110107421875,
+              137.75497436523438,
+              10.019989013671875
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "g. Monitor the use of accounts;"
+          },
+          "source_type": "List",
+          "text": "g. Monitor the use of accounts;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20588237787383834,
+            0.44442517829663825,
+            0.8394803315206291,
+            0.461352916678997
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:17",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              126.00001525878906,
+              429.7347412109375,
+              389.97845458984375,
+              10.019989013671875
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "h. Notify account managers and [Assignment: organization-defined personnel or roles] within:"
+          },
+          "source_type": "List",
+          "text": "h. Notify account managers and [Assignment: organization-defined personnel or roles] within:",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23528753542432598,
+            0.4673750135633681,
+            0.8396916607626124,
+            0.4843027519457268
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020001411437988,
+          "id": "actual:p46:block:18",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              143.9959716796875,
+              411.5584716796875,
+              372.0927734375,
+              10.019989013671875
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020001411437988,
+            "header_level": null,
+            "is_bold": false,
+            "text": "1. [Assignment: organization-defined time period] when accounts are no longer required;"
+          },
+          "source_type": "List",
+          "text": "1. [Assignment: organization-defined time period] when accounts are no longer required;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23527122946346507,
+            0.49032484883009786,
+            0.7797093110926011,
+            0.5227127460518268
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:19",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              143.98599243164062,
+              381.13775634765625,
+              335.4636535644531,
+              22.264434814453125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "2. [Assignment: organization-defined time period] when users are terminated or transferred; and"
+          },
+          "source_type": "List",
+          "text": "2. [Assignment: organization-defined time period] when users are terminated or transferred; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23527125439612695,
+            0.5287348429361979,
+            0.8273517882901859,
+            0.561122740157927
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020002365112305,
+          "id": "actual:p46:block:20",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              143.9860076904297,
+              350.717041015625,
+              364.59375,
+              22.264434814453125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020002365112305,
+            "header_level": null,
+            "is_bold": false,
+            "text": "3. [Assignment: organization-defined time period] when system usage or need-to-know changes for an individual;"
+          },
+          "source_type": "List",
+          "text": "3. [Assignment: organization-defined time period] when system usage or need-to-know changes for an individual;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20583336026060814,
+            0.5672207456646543,
+            0.5090448716107536,
+            0.5841484840470131
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:21",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              125.97001647949219,
+              332.48065185546875,
+              187.78480529785156,
+              10.019989013671875
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "i. Authorize access to the system based on:"
+          },
+          "source_type": "List",
+          "text": "i. Authorize access to the system based on:",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23523841808044832,
+            0.5901705809313842,
+            0.45274941438163807,
+            0.6070983193137429
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:22",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              143.96591186523438,
+              314.30438232421875,
+              135.34014892578125,
+              10.019989013671875
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "1. A valid access authorization;"
+          },
+          "source_type": "List",
+          "text": "1. A valid access authorization;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23523841808044832,
+            0.6131963248204704,
+            0.45079613978566685,
+            0.6301240632028291
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:23",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              143.96591186523438,
+              296.0679931640625,
+              134.14779663085938,
+              10.019989013671875
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "2. Intended system usage; and"
+          },
+          "source_type": "List",
+          "text": "2. Intended system usage; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23523846794577205,
+            0.6361461600872002,
+            0.6595233593111723,
+            0.6530738599372633
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:24",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              143.9659423828125,
+              277.8917236328125,
+              261.9429016113281,
+              10.019989013671875
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "3. [Assignment: organization-defined attributes (as required)];"
+          },
+          "source_type": "List",
+          "text": "3. [Assignment: organization-defined attributes (as required)];",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.2058170792324091,
+            0.6590959953539299,
+            0.8150004467933006,
+            0.6914838540433633
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:25",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              125.96005249023438,
+              247.47100830078125,
+              375.09466552734375,
+              22.264434814453125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "j. Review accounts for compliance with account management requirements [Assignment: organization-defined frequency];"
+          },
+          "source_type": "List",
+          "text": "j. Review accounts for compliance with account management requirements [Assignment: organization-defined frequency];",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.205800623675577,
+            0.6974300808376737,
+            0.8360029233047386,
+            0.7298938481494633
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:26",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              125.94998168945312,
+              217.05027770996094,
+              387.9523620605469,
+              22.324569702148438
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "k. Establish and implement a process for changing shared or group account authenticators (if deployed) when individuals are removed from the group; and"
+          },
+          "source_type": "List",
+          "text": "k. Establish and implement a process for changing shared or group account authenticators (if deployed) when individuals are removed from the group; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.2058169296364379,
+            0.7359159835661301,
+            0.8301497316048816,
+            0.7528436834161932
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:27",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              125.9599609375,
+              198.87399291992188,
+              384.337158203125,
+              10.020004272460938
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "l. Align account management processes with personnel termination and transfer processes."
+          },
+          "source_type": "List",
+          "text": "l. Align account management processes with personnel termination and transfer processes.",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.2058823280085146,
+            0.7589134447502367,
+            0.8404185974520016,
+            0.8992133092398595
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p46:block:28",
+          "is_bold": false,
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "bbox": [
+              125.99998474121094,
+              82.94926452636719,
+              390.5345458984375,
+              107.73074340820312
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Examples of system account types include individual, shared, group, system, guest, anonymous, emergency, developer, temporary, and service. Identification of authorized system users and the specification of access privileges reflect the requirements in other controls in the security plan. Users requiring administrative privileges on system accounts receive additional scrutiny by organizational personnel responsible for approving such accounts and privileged access, including system owner, mission or business owner, senior agency information security officer, or senior agency official for privacy. Types of accounts that organizations may wish to prohibit due to increased risk include shared, group, emergency, anonymous, temporary, and guest accounts."
+          },
+          "source_type": "Body",
+          "text": "Discussion:  Examples of system account types include individual, shared, group, system, guest, anonymous, emergency, developer, temporary, and service. Identification of authorized system users and the specification of access privileges reflect the requirements in other controls in the security plan. Users requiring administrative privileges on system accounts receive additional scrutiny by organizational personnel responsible for approving such accounts and privileged access, including system owner, mission or business owner, senior agency information security officer, or senior agency official for privacy. Types of accounts that organizations may wish to prohibit due to increased risk include shared, group, emergency, anonymous, temporary, and guest accounts.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588237787383834,
+            0.44442517829663825,
+            0.8394803315206291,
+            0.461352916678997
+          ],
+          "id": "actual:p46:ac2_control:0",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 0,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.09030303088101474,
+              0.88,
+              0.1504047304473961
+            ]
+          },
+          "source_type": "List",
+          "text": "h. Notify account managers and [Assignment: organization-defined personnel or roles] within:",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23528753542432598,
+            0.4673750135633681,
+            0.8396916607626124,
+            0.4843027519457268
+          ],
+          "id": "actual:p46:ac2_control:1",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 1,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.1504047304473961,
+              0.88,
+              0.21050643001377747
+            ]
+          },
+          "source_type": "List",
+          "text": "1. [Assignment: organization-defined time period] when accounts are no longer required;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23527122946346507,
+            0.49032484883009786,
+            0.7797093110926011,
+            0.5227127460518268
+          ],
+          "id": "actual:p46:ac2_control:2",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 2,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.21050643001377745,
+              0.88,
+              0.2706081295801588
+            ]
+          },
+          "source_type": "List",
+          "text": "2. [Assignment: organization-defined time period] when users are terminated or transferred; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23527125439612695,
+            0.5287348429361979,
+            0.8273517882901859,
+            0.561122740157927
+          ],
+          "id": "actual:p46:ac2_control:3",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 3,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.2706081295801588,
+              0.88,
+              0.3307098291465401
+            ]
+          },
+          "source_type": "List",
+          "text": "3. [Assignment: organization-defined time period] when system usage or need-to-know changes for an individual;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20583336026060814,
+            0.5672207456646543,
+            0.5090448716107536,
+            0.5841484840470131
+          ],
+          "id": "actual:p46:ac2_control:4",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 4,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.3307098291465402,
+              0.88,
+              0.3908115287129215
+            ]
+          },
+          "source_type": "List",
+          "text": "i. Authorize access to the system based on:",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23523841808044832,
+            0.5901705809313842,
+            0.45274941438163807,
+            0.6070983193137429
+          ],
+          "id": "actual:p46:ac2_control:5",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 5,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.3908115287129216,
+              0.88,
+              0.4509132282793029
+            ]
+          },
+          "source_type": "List",
+          "text": "1. A valid access authorization;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23523841808044832,
+            0.6131963248204704,
+            0.45079613978566685,
+            0.6301240632028291
+          ],
+          "id": "actual:p46:ac2_control:6",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 6,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.4509132282793029,
+              0.88,
+              0.5110149278456843
+            ]
+          },
+          "source_type": "List",
+          "text": "2. Intended system usage; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23523846794577205,
+            0.6361461600872002,
+            0.6595233593111723,
+            0.6530738599372633
+          ],
+          "id": "actual:p46:ac2_control:7",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 7,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.5110149278456843,
+              0.88,
+              0.5711166274120656
+            ]
+          },
+          "source_type": "List",
+          "text": "3. [Assignment: organization-defined attributes (as required)];",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.2058170792324091,
+            0.6590959953539299,
+            0.8150004467933006,
+            0.6914838540433633
+          ],
+          "id": "actual:p46:ac2_control:8",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 8,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.5711166274120656,
+              0.88,
+              0.6312183269784469
+            ]
+          },
+          "source_type": "List",
+          "text": "j. Review accounts for compliance with account management requirements [Assignment: organization-defined frequency];",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.205800623675577,
+            0.6974300808376737,
+            0.8360029233047386,
+            0.7298938481494633
+          ],
+          "id": "actual:p46:ac2_control:9",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 9,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.631218326978447,
+              0.88,
+              0.6913200265448284
+            ]
+          },
+          "source_type": "List",
+          "text": "k. Establish and implement a process for changing shared or group account authenticators (if deployed) when individuals are removed from the group; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.2058169296364379,
+            0.7359159835661301,
+            0.8301497316048816,
+            0.7528436834161932
+          ],
+          "id": "actual:p46:ac2_control:10",
+          "page": 46,
+          "pdf_page_index": 45,
+          "raw": {
+            "repair": "page46_ac2_control_table_to_structured_text",
+            "source_row_index": 10,
+            "source_table_bbox": [
+              0.0,
+              0.09030303088101474,
+              1.0,
+              0.7514217261112097
+            ],
+            "synthetic_row_bbox": [
+              0.14,
+              0.6913200265448284,
+              0.88,
+              0.7514217261112097
+            ]
+          },
+          "source_type": "List",
+          "text": "l. Align account management processes with personnel termination and transfer processes.",
+          "type": "list"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 46,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 45
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}
