@@ -1,0 +1,240 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p8:block:0",
+      "is_bold": false,
+      "page": 8,
+      "pdf_page_index": 7,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p8:block:1",
+      "is_bold": false,
+      "page": 8,
+      "pdf_page_index": 7,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.4950000039892259,
+        0.939856018682923,
+        0.5050338545655892,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p8:block:2",
+      "is_bold": false,
+      "page": 8,
+      "pdf_page_index": 7,
+      "raw": {
+        "bbox": [
+          302.94000244140625,
+          38.400001525878906,
+          8.15399169921875,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "vi"
+      },
+      "source_type": "PageNumber",
+      "text": "vi",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p8:block:3",
+      "is_bold": false,
+      "page": 8,
+      "pdf_page_index": 7,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.42274510003382865,
+        0.13188354415122908,
+        0.5746494866664114,
+        0.15112626432168363
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p8:block:4",
+      "is_bold": true,
+      "page": 8,
+      "pdf_page_index": 7,
+      "raw": {
+        "bbox": [
+          258.7200012207031,
+          676.1400146484375,
+          95.5369873046875,
+          10.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0958082675933838,
+            "text_len": 15,
+            "title_case_ratio": 1.0,
+            "word_count": 2
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "all_caps_medium"
+          ],
+          "title_text": "RISK MANAGEMENT"
+        },
+        "is_bold": true,
+        "text": "RISK MANAGEMENT"
+      },
+      "source_type": "Body",
+      "text": "RISK MANAGEMENT",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.18290840099060457,
+        0.15656504004892677,
+        0.8147740083582261,
+        0.37394348298660435
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020002365112305,
+      "id": "actual:p8:block:5",
+      "is_bold": false,
+      "page": 8,
+      "pdf_page_index": 7,
+      "raw": {
+        "bbox": [
+          111.93994140625,
+          498.9630126953125,
+          391.60968017578125,
+          168.7769775390625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020002365112305,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Organizations must exercise due diligence in managing information security and privacy risk. This is accomplished, in part, by establishing a comprehensive risk management program that uses the flexibility inherent in NIST publications to categorize systems, select and implement security and privacy controls that meet mission and business needs, assess the effectiveness of the controls, authorize the systems for operation, and continuously monitor the systems. Exercising due diligence and implementing robust and comprehensive information security and privacy risk management programs can facilitate compliance with applicable laws, regulations, executive orders, and governmentwide policies. Risk management frameworks and risk management processes are essential in developing, implementing, and maintaining the protection measures necessary to address stakeholder needs and the current threats to organizational operations and assets, individuals, other organizations, and the Nation. Employing effective risk-based processes, procedures, methods, and technologies ensures that information systems and organizations have the necessary trustworthiness and resiliency to support essential mission and business functions, the U.S. critical infrastructure, and continuity of government."
+      },
+      "source_type": "Body",
+      "text": "Organizations must exercise due diligence in managing information security and privacy risk. This is accomplished, in part, by establishing a comprehensive risk management program that uses the flexibility inherent in NIST publications to categorize systems, select and implement security and privacy controls that meet mission and business needs, assess the effectiveness of the controls, authorize the systems for operation, and continuously monitor the systems. Exercising due diligence and implementing robust and comprehensive information security and privacy risk management programs can facilitate compliance with applicable laws, regulations, executive orders, and governmentwide policies. Risk management frameworks and risk management processes are essential in developing, implementing, and maintaining the protection measures necessary to address stakeholder needs and the current threats to organizational operations and assets, individuals, other organizations, and the Nation. Employing effective risk-based processes, procedures, methods, and technologies ensures that information systems and organizations have the necessary trustworthiness and resiliency to support essential mission and business functions, the U.S. critical infrastructure, and continuity of government.",
+      "type": "paragraph_block"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 8,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 7
+}

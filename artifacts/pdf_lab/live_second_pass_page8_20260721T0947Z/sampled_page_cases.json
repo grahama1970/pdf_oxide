@@ -1,0 +1,185 @@
+{
+  "created_at": "2026-07-21T09:10:26.045918+00:00",
+  "forced_pages": {
+    "accepted": [
+      8
+    ],
+    "rejected": [],
+    "requested": [
+      8
+    ]
+  },
+  "manifest_schema": "pdf_lab.second_pass.candidate_manifest.v1",
+  "manifest_validation": {
+    "candidate_count": 6,
+    "declared_candidate_count": 6,
+    "errors": [],
+    "ok": true,
+    "schema": "pdf_lab.second_pass.candidate_manifest_validation.v1"
+  },
+  "page_cases": [
+    {
+      "candidate_ids": [
+        "cand:p0008:0000:side_chrome",
+        "cand:p0008:0001:side_chrome",
+        "cand:p0008:0002:side_chrome",
+        "cand:p0008:0003:side_chrome",
+        "cand:p0008:0004:text",
+        "cand:p0008:0005:text"
+      ],
+      "case_id": "page_case_0001_p0008",
+      "forced_by_human_annotation": true,
+      "page_index": 7,
+      "page_number": 8,
+      "preset_counts": {
+        "side_chrome": 4,
+        "text": 2
+      },
+      "selection_probability_basis": {
+        "candidate_count_on_page": 6,
+        "candidate_share_estimate": 1.0,
+        "forced_page": true,
+        "method": "forced_human_annotation",
+        "page_score": 22.5,
+        "total_candidate_count": 6,
+        "total_page_score": 22.5,
+        "weighted_page_score_inclusion_estimate": 1.0
+      },
+      "selection_probability_estimate": 1.0,
+      "selection_reason": [
+        "human_annotated_page",
+        "high_risk_preset",
+        "high_risk_candidate",
+        "document_position_stratum",
+        "boundary_geometry",
+        "high_candidate_score"
+      ],
+      "selection_score": 22.5,
+      "strata": [
+        "geometry:boundary",
+        "position:first_20",
+        "position:frontmatter",
+        "preset:side_chrome",
+        "preset:text",
+        "risk:high"
+      ]
+    }
+  ],
+  "page_count": 492,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "probabilistic_selected_pages": [],
+  "requested_sample_size": 1,
+  "sampling_audit": {
+    "accepted_forced_pages": [
+      8
+    ],
+    "adequate_for_priority_strata": true,
+    "adequate_sample_size": true,
+    "candidate_count": 6,
+    "candidate_page_count": 1,
+    "covered_priority_strata": [
+      "geometry:boundary",
+      "position:first_20",
+      "position:frontmatter",
+      "preset:side_chrome",
+      "preset:text",
+      "risk:high"
+    ],
+    "covered_strata": [
+      "geometry:boundary",
+      "position:first_20",
+      "position:frontmatter",
+      "preset:side_chrome",
+      "preset:text",
+      "risk:high"
+    ],
+    "forced_pages_are_additive": true,
+    "missed_priority_strata": [],
+    "missed_strata": [],
+    "page_count": 492,
+    "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+    "priority_strata": [
+      "geometry:boundary",
+      "position:first_20",
+      "position:frontmatter",
+      "preset:side_chrome",
+      "preset:text",
+      "risk:high"
+    ],
+    "priority_strata_count": 6,
+    "priority_strata_coverage_ratio": 1.0,
+    "probabilistic_selected_count": 0,
+    "random_reserve_fraction": 0.2,
+    "recommended_min_sample_size": 1,
+    "rejected_forced_pages": [],
+    "requested_forced_pages": [
+      8
+    ],
+    "requested_sample_size": 1,
+    "schema": "pdf_lab.second_pass.sampling_audit.v1",
+    "seed": 8,
+    "selected_count": 1,
+    "selection_records": [
+      {
+        "candidate_page_count": 1,
+        "selected_pages": [
+          8
+        ],
+        "stratum": "forced:human_annotated"
+      }
+    ],
+    "statistical_significance_basis": {
+      "accepted_forced_page_count": 1,
+      "adequacy_rule": "adequate_sample_size && adequate_for_priority_strata && selected_count >= recommended_min_sample_size",
+      "adequate": true,
+      "candidate_page_population": 1,
+      "finite_population_fraction": 1.0,
+      "forced_pages_are_additive": true,
+      "large_document_floor": 1,
+      "method": "stratified_priority_coverage_plus_weighted_random_reserve",
+      "priority_stratum_count": 6,
+      "probabilistic_selected_page_count": 0,
+      "random_reserve_fraction": 0.2,
+      "random_reserve_record_count": 0,
+      "recommended_min_sample_size": 1,
+      "seed": 8,
+      "selected_page_count": 1,
+      "sqrt_population_floor": 1
+    },
+    "strata_coverage_ratio": 1.0,
+    "warnings": []
+  },
+  "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+  "seed": 8,
+  "selected_count": 1,
+  "selected_pages": [
+    8
+  ],
+  "strata": [
+    {
+      "page_count": 1,
+      "stratum": "geometry:boundary"
+    },
+    {
+      "page_count": 1,
+      "stratum": "position:first_20"
+    },
+    {
+      "page_count": 1,
+      "stratum": "position:frontmatter"
+    },
+    {
+      "page_count": 1,
+      "stratum": "preset:side_chrome"
+    },
+    {
+      "page_count": 1,
+      "stratum": "preset:text"
+    },
+    {
+      "page_count": 1,
+      "stratum": "risk:high"
+    }
+  ]
+}
