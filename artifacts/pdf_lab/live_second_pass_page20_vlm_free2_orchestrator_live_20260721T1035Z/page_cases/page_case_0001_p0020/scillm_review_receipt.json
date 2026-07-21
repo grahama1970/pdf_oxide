@@ -1,0 +1,115 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0020:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"Extracted JSON block 0 text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' and bbox match the header visible on the rendered page.\",\n      \"rationale\": \"The extracted block correctly identifies the main header text, including its split nature with extensive spacing, as page chrome. The bounding box accurately covers the header area.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0020:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"Extracted JSON block 1 text '_________________________________________________________________________________________________' and bbox correspond to the horizontal line below the header on the rendered page.\",\n      \"rationale\": \"The extracted block accurately captures the horizontal separator line below the header as page chrome. The bounding box and text content are correct.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0020:0002:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"Extracted JSON block 2 text 'xviii' and bbox at the bottom center match the page number on the rendered page.\",\n      \"rationale\": \"The extracted block correctly identifies the roman numeral page number at the bottom center as page chrome. The text and bounding box are accurate.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0020:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"Extracted JSON block 3 text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' and vertical bbox on the left margin match the boilerplate text on the rendered page.\",\n      \"rationale\": \"The extracted block accurately captures the vertically oriented boilerplate text on the left margin as page chrome. The text content and bounding box are correct.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0020:0004:table\",\n      \"status\": \"clean\",\n      \"evidence\": \"Extracted JSON block 4 with type 'table' has a bbox and text content that perfectly match the large table occupying the majority of the page on the rendered image.\",\n      \"rationale\": \"The table extraction is clean. The bounding box encompasses the entire table, and the text is correctly extracted with column delimiters, reflecting the visual content and structure of the table.\",\n      \"suggested_fix_surface\": \"none\"\n    }\n  ],\n  \"page_rationale\": \"All identified candidates on page 20, including four side chrome elements (header text, header line, page number, boilerplate text) and one table, have been accurately extracted with correct bounding boxes, text content, and semantic classifications as confirmed by visual inspection against the rendered page and the extracted JSON. The page is clean.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784629950,
+    "id": "s0pfaqm_DtHwjrEPkLbW-A4",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0020",
+      "item_id": "page_case_0001_p0020:e30a13821713fcf8",
+      "request_sha256": "e30a13821713fcf88eaa42f5344d606ffa68e3edcce2b0e6527b0f5da952c2e1"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm-free2",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 785,
+      "completion_tokens_details": null,
+      "prompt_tokens": 7244,
+      "prompt_tokens_details": null,
+      "total_tokens": 9647
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0020:0000:side_chrome",
+        "evidence": "Extracted JSON block 0 text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' and bbox match the header visible on the rendered page.",
+        "rationale": "The extracted block correctly identifies the main header text, including its split nature with extensive spacing, as page chrome. The bounding box accurately covers the header area.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0020:0001:side_chrome",
+        "evidence": "Extracted JSON block 1 text '_________________________________________________________________________________________________' and bbox correspond to the horizontal line below the header on the rendered page.",
+        "rationale": "The extracted block accurately captures the horizontal separator line below the header as page chrome. The bounding box and text content are correct.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0020:0002:side_chrome",
+        "evidence": "Extracted JSON block 2 text 'xviii' and bbox at the bottom center match the page number on the rendered page.",
+        "rationale": "The extracted block correctly identifies the roman numeral page number at the bottom center as page chrome. The text and bounding box are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0020:0003:side_chrome",
+        "evidence": "Extracted JSON block 3 text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' and vertical bbox on the left margin match the boilerplate text on the rendered page.",
+        "rationale": "The extracted block accurately captures the vertically oriented boilerplate text on the left margin as page chrome. The text content and bounding box are correct.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0020:0004:table",
+        "evidence": "Extracted JSON block 4 with type 'table' has a bbox and text content that perfectly match the large table occupying the majority of the page on the rendered image.",
+        "rationale": "The table extraction is clean. The bounding box encompasses the entire table, and the text is correctly extracted with column delimiters, reflecting the visual content and structure of the table.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      }
+    ],
+    "page_rationale": "All identified candidates on page 20, including four side chrome elements (header text, header line, page number, boilerplate text) and one table, have been accurately extracted with correct bounding boxes, text content, and semantic classifications as confirmed by visual inspection against the rendered page and the extracted JSON. The page is clean.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0020",
+    "item_id": "page_case_0001_p0020:e30a13821713fcf8",
+    "request_sha256": "e30a13821713fcf88eaa42f5344d606ffa68e3edcce2b0e6527b0f5da952c2e1"
+  }
+}
