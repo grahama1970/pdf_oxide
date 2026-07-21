@@ -1,0 +1,226 @@
+{
+  "candidate_count": 8,
+  "candidates": [
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "candidate_id": "cand:p0013:0000:side_chrome",
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/12/blocks/0",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "candidate_id": "cand:p0013:0001:side_chrome",
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/12/blocks/1",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.4950980392156863,
+        0.939856018682923,
+        0.5048333460988562,
+        0.9550605542732008
+      ],
+      "candidate_id": "cand:p0013:0002:side_chrome",
+      "features": {
+        "bbox_area": 0.000148,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "PageNumber",
+        "text_length": 2
+      },
+      "json_pointer": "/pages/12/blocks/2",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "xi"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "candidate_id": "cand:p0013:0003:side_chrome",
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/12/blocks/3",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.3484313815247779,
+        0.12938356881189828,
+        0.6497641170726103,
+        0.14862628898235283
+      ],
+      "candidate_id": "cand:p0013:0004:section_heading",
+      "features": {
+        "bbox_area": 0.005798,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Title",
+        "text_length": 35
+      },
+      "json_pointer": "/pages/12/blocks/4",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "USE OF EXAMPLES IN THIS PUBLICATION"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.18333332834680097,
+        0.1539892331518308,
+        0.8148121553308824,
+        0.17091695226804174
+      ],
+      "candidate_id": "cand:p0013:0005:text",
+      "features": {
+        "bbox_area": 0.010689,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 98
+      },
+      "json_pointer": "/pages/12/blocks/5",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Throughout this publication, examples are used to illustrate, clarify, or explain certain items in"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.18331694758795444,
+        0.16944939199120107,
+        0.8150315128899868,
+        0.186377111107412
+      ],
+      "candidate_id": "cand:p0013:0006:section_heading",
+      "features": {
+        "bbox_area": 0.010693,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Title",
+        "text_length": 95
+      },
+      "json_pointer": "/pages/12/blocks/6",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "chapter sections, controls, and control enhancements. These examples are illustrative in nature"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.1833169226552926,
+        0.18483364220821497,
+        0.8148931366166258,
+        0.21729742878615255
+      ],
+      "candidate_id": "cand:p0013:0007:text",
+      "features": {
+        "bbox_area": 0.020503,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 112
+      },
+      "json_pointer": "/pages/12/blocks/7",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "and are not intended to limit or constrain the application of controls or control enhancements by organizations."
+    }
+  ],
+  "page_case": {
+    "case_id": "page_case_0001_p0013",
+    "page_number": 13
+  },
+  "schema": "pdf_lab.second_pass.candidate_presets.v1"
+}

@@ -1,0 +1,30 @@
+{
+  "candidate_count": 8,
+  "errors": [],
+  "expected_candidate_ids": [
+    "cand:p0013:0000:side_chrome",
+    "cand:p0013:0001:side_chrome",
+    "cand:p0013:0002:side_chrome",
+    "cand:p0013:0003:side_chrome",
+    "cand:p0013:0004:section_heading",
+    "cand:p0013:0005:text",
+    "cand:p0013:0006:section_heading",
+    "cand:p0013:0007:text"
+  ],
+  "ok": true,
+  "page_case": {
+    "case_id": "page_case_0001_p0013",
+    "page_number": 13
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": [
+    "cand:p0013:0000:side_chrome",
+    "cand:p0013:0001:side_chrome",
+    "cand:p0013:0002:side_chrome",
+    "cand:p0013:0003:side_chrome",
+    "cand:p0013:0004:section_heading",
+    "cand:p0013:0005:text",
+    "cand:p0013:0006:section_heading",
+    "cand:p0013:0007:text"
+  ]
+}

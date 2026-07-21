@@ -1,0 +1,32 @@
+{
+  "query": "PDF text extraction merge adjacent lines paragraph heading false positive heuristic bbox font size",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Appendix 1: Details on Text Extraction - PyMuPDF documentation",
+      "description": "This seems to be the case for rotated ... \u2013 we filed a bug at MuPDF\u2019s site. To address the font issue, you can <strong>use a simple utility script to scan through the HTML file and replace font references</strong>....",
+      "url": "https://pymupdf.readthedocs.io/en/latest/app1.html"
+    },
+    {
+      "title": "Implementing PDF Parsers for Financial Documents: Rule\u2011Based vs Model\u2011Driven Extraction for Structured Markdown | by Sai Dheeraj Gummadi | Data Science in Your Pocket | Medium",
+      "description": "Strengths: Full BBoxes, fast tables. # pip install pymupdf pandas import fitz import pandas as pd def extract_pdf_to_dataframe_enhanced(pdf_path): # Your code + improvements doc = fitz.open(pdf_path) rows = [] for page_index, page in enumerate(doc): page_number = page_index + 1 page_dict = page.get_text(&quot;dict&quot;) # Paragraphs + Headings (font size heuristic) for block in page_dict[&quot;blocks&quot;]: if block[&quot;type&quot;] != 0: continue # text only text_parts = [] for line in block[&quot;lines&quot;]: for span in line[&quot;spans&quot;]: text_parts.append(span[&quot;text&quot;]) text = &quot; &quot;.join(text_parts).strip() if not text: continue #",
+      "url": "https://medium.com/data-science-in-your-pocket/battle-of-the-pdf-parsers-for-financial-documents-rule-based-vs-model-driven-extraction-for-0dbea09e8ec1"
+    },
+    {
+      "title": "pdftext \u00b7 PyPI",
+      "description": "PDFText is a very light wrapper around pypdfium2. It first uses pypdfium2 to extract characters in order, along with font and other information. Then it uses heuristic rules to group characters into spans, lines, and blocks.",
+      "url": "https://pypi.org/project/pdftext/"
+    },
+    {
+      "title": "GitHub - datalab-to/pdftext: Extract structured text from pdfs quickly \u00b7 GitHub",
+      "description": "This command outputs structured blocks and lines with font and other information. ... PDF_PATH must be a single pdf file. --out_path path to the output txt file. If not specified, will write to stdout. ... The output will be a json list, with each item in the list corresponding to a single page in the input pdf (in order). Each page will include the following keys: ... If the pdf is rotated, the bboxes will be relative to the rotated page (they&#x27;re rotated after being extracted).",
+      "url": "https://github.com/datalab-to/pdftext"
+    },
+    {
+      "title": "PDF header and paragraph detection \u00b7 jsvine/pdfplumber \u00b7 Discussion #868",
+      "description": "This is non-trivial as it depends on font-names - find any style changes which identify start or end of paras * identify lists within paras (may require finding the bullet symbol), also tables * find any other hint for start/end of para, e.g. interpara whitespace * find any (recursive) numbering, e.g 1.2.a (may involve upper/lower variation, roman, letters, etc. *...etc.) Then join adjacent lines within para skipping embedded lists and tables, relying on interline whitespace.",
+      "url": "https://github.com/jsvine/pdfplumber/discussions/868"
+    }
+  ]
+}

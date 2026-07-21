@@ -1,0 +1,122 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0013:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text, and preset type for this candidate accurately represent the header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' on the rendered page and in the annotated image. The extracted JSON's source_type 'Header' and semantic_role 'page_chrome' are also appropriate.\",\n      \"rationale\": \"Header text correctly extracted as side_chrome.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text, and preset type for this candidate accurately represent the horizontal line under the header on the rendered page and in the annotated image. The extracted JSON's source_type 'Header' and semantic_role 'page_chrome' are also appropriate.\",\n      \"rationale\": \"Header separator line correctly extracted as side_chrome.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0002:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text 'xi', and preset type for this candidate accurately represent the page number at the bottom of the rendered page and in the annotated image. The extracted JSON's source_type 'PageNumber' is also appropriate.\",\n      \"rationale\": \"Page number correctly extracted as side_chrome.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text, and preset type for this candidate accurately represent the boilerplate text on the left margin of the rendered page and in the annotated image. The extracted JSON's source_type 'Boilerplate' is also appropriate.\",\n      \"rationale\": \"Left margin boilerplate text correctly extracted as side_chrome.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0004:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text 'USE OF EXAMPLES IN THIS PUBLICATION', and preset type for this candidate accurately represent the section heading on the rendered page and in the annotated image. The extracted JSON's type 'section_heading' and source_type 'Title' are also appropriate.\",\n      \"rationale\": \"Section heading correctly extracted.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0005:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text, and preset type for this candidate accurately represent the paragraph text below the section heading on the rendered page and in the annotated image. The extracted JSON's type 'paragraph_block' and source_type 'Body' are also appropriate.\",\n      \"rationale\": \"Paragraph text correctly extracted.\",\n      \"suggested_fix_surface\": \"none\"\n    }\n  ],\n  \"page_rationale\": \"All candidates on page 13 are correctly extracted and classified according to their preset types, bounding boxes, and text content. The page header, separator line, page number, left margin boilerplate, section heading, and body paragraph are all accurately represented.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784625942,
+    "id": "DDtfaui9F7LojrEPodyaoQ8",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0013",
+      "item_id": "page_case_0001_p0013:709a1a48487b223f",
+      "request_sha256": "709a1a48487b223fa3b8ae797446c5ac5ba87d360a9ba2ff4245f96c1a62fa51"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 890,
+      "completion_tokens_details": null,
+      "prompt_tokens": 5154,
+      "prompt_tokens_details": null,
+      "total_tokens": 6902
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0013:0000:side_chrome",
+        "evidence": "The extracted bounding box, text, and preset type for this candidate accurately represent the header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' on the rendered page and in the annotated image. The extracted JSON's source_type 'Header' and semantic_role 'page_chrome' are also appropriate.",
+        "rationale": "Header text correctly extracted as side_chrome.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0013:0001:side_chrome",
+        "evidence": "The extracted bounding box, text, and preset type for this candidate accurately represent the horizontal line under the header on the rendered page and in the annotated image. The extracted JSON's source_type 'Header' and semantic_role 'page_chrome' are also appropriate.",
+        "rationale": "Header separator line correctly extracted as side_chrome.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0013:0002:side_chrome",
+        "evidence": "The extracted bounding box, text 'xi', and preset type for this candidate accurately represent the page number at the bottom of the rendered page and in the annotated image. The extracted JSON's source_type 'PageNumber' is also appropriate.",
+        "rationale": "Page number correctly extracted as side_chrome.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0013:0003:side_chrome",
+        "evidence": "The extracted bounding box, text, and preset type for this candidate accurately represent the boilerplate text on the left margin of the rendered page and in the annotated image. The extracted JSON's source_type 'Boilerplate' is also appropriate.",
+        "rationale": "Left margin boilerplate text correctly extracted as side_chrome.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0013:0004:section_heading",
+        "evidence": "The extracted bounding box, text 'USE OF EXAMPLES IN THIS PUBLICATION', and preset type for this candidate accurately represent the section heading on the rendered page and in the annotated image. The extracted JSON's type 'section_heading' and source_type 'Title' are also appropriate.",
+        "rationale": "Section heading correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0013:0005:text",
+        "evidence": "The extracted bounding box, text, and preset type for this candidate accurately represent the paragraph text below the section heading on the rendered page and in the annotated image. The extracted JSON's type 'paragraph_block' and source_type 'Body' are also appropriate.",
+        "rationale": "Paragraph text correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      }
+    ],
+    "page_rationale": "All candidates on page 13 are correctly extracted and classified according to their preset types, bounding boxes, and text content. The page header, separator line, page number, left margin boilerplate, section heading, and body paragraph are all accurately represented.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0013",
+    "item_id": "page_case_0001_p0013:709a1a48487b223f",
+    "request_sha256": "709a1a48487b223fa3b8ae797446c5ac5ba87d360a9ba2ff4245f96c1a62fa51"
+  }
+}
