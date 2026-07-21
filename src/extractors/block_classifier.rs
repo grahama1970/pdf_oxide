@@ -539,30 +539,29 @@ impl BlockClassifier {
             );
         }
 
-        // A list marker is structural; bold is styling. NIST sets control
-        // requirements ("a. Define and document...") in bold, so excluding bold
-        // dropped them to body and the bold-heading rule then promoted some to
-        // Title. size_ratio <= 1.15 already excludes real headings, which is
-        // what the !is_bold guard was actually protecting against.
-        if is_list_item(trimmed) && size_ratio <= 1.15 {
-            // Extra check: don't classify numbered headers as list items
-            let numbering = analyze_section_numbering(trimmed);
-            if !numbering.has_numbering || numbering.depth_level <= 1 {
-                // Only if it doesn't look like a real section number
-                if !numbering.has_numbering {
-                    return self.make_block(
-                        BlockType::List,
-                        text,
-                        bbox,
-                        avg_font_size,
-                        font_name,
-                        is_bold,
-                        0.85,
-                        None,
-                        None,
-                    );
-                }
-            }
+        // List labels are structural, but a marker alone is ambiguous with a
+        // section number. Accept only body-ish lines inside the content area.
+        // The small allowance above the body face covers mixed-font pages where
+        // the weighted median sits just below the list face; bold text receives
+        // no such allowance because enlarged bold labels are heading-shaped.
+        // `is_list_item` rejects multi-level decimal section numbers such as
+        // "2.2", while retaining alpha-numeric list labels such as "h.3".
+        let is_bodyish_list = size_ratio <= 1.20
+            && bbox.x >= self.page_width * 0.08
+            && bbox.x + bbox.width <= self.page_width * 0.92
+            && (!is_bold || size_ratio <= 1.15);
+        if is_list_item(trimmed) && is_bodyish_list {
+            return self.make_block(
+                BlockType::List,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.85,
+                None,
+                None,
+            );
         }
 
         // Rotated margin chrome (DOI watermark, spine text): a span far taller
@@ -1755,34 +1754,39 @@ fn is_list_item(text: &str) -> bool {
     {
         return true;
     }
-    // Numbered lists: "1.", "1)", "(1)", "a.", "a)", "(a)"
-    let bytes = trimmed.as_bytes();
-    if bytes.len() >= 2 {
-        if bytes[0] == b'(' {
-            if let Some(close) = trimmed.find(')') {
-                if close <= 4 {
-                    let inner = &trimmed[1..close];
-                    if inner.parse::<u32>().is_ok()
-                        || (inner.len() == 1 && inner.chars().next().unwrap().is_alphabetic())
-                    {
-                        return true;
-                    }
-                }
-            }
-        } else if bytes[0].is_ascii_digit() || bytes[0].is_ascii_alphabetic() {
-            if let Some(pos) = trimmed.find(|c: char| c == '.' || c == ')') {
-                if pos <= 4 {
-                    let prefix = &trimmed[..pos];
-                    if prefix.parse::<u32>().is_ok()
-                        || (prefix.len() == 1 && prefix.chars().next().unwrap().is_alphabetic())
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
+    // A marker must be the complete first token. This keeps decimal section
+    // numbers ("2.2") out while admitting list nesting labels ("h.3").
+    let marker = match trimmed.split_whitespace().next() {
+        Some(marker) => marker,
+        None => return false,
+    };
+
+    if marker.starts_with('(') && marker.ends_with(')') {
+        let inner = &marker[1..marker.len() - 1];
+        return inner.parse::<u32>().is_ok()
+            || (inner.len() == 1 && inner.as_bytes()[0].is_ascii_alphabetic());
     }
-    false
+
+    let has_closing_delimiter = marker.ends_with(')') || marker.ends_with('.');
+    let marker = marker
+        .strip_suffix(')')
+        .or_else(|| marker.strip_suffix('.'))
+        .unwrap_or(marker);
+    let parts: Vec<&str> = marker.split('.').collect();
+    match parts.as_slice() {
+        [single] => {
+            has_closing_delimiter
+                && (single.parse::<u32>().is_ok()
+                    || (single.len() == 1 && single.as_bytes()[0].is_ascii_alphabetic()))
+        },
+        [letter, number] => {
+            letter.len() == 1
+                && letter.as_bytes()[0].is_ascii_alphabetic()
+                && !number.is_empty()
+                && number.bytes().all(|b| b.is_ascii_digit())
+        },
+        _ => false,
+    }
 }
 
 fn is_caption(text: &str, size_ratio: f32) -> bool {
@@ -2120,9 +2124,77 @@ mod tests {
     fn test_list_item_detection() {
         assert!(is_list_item("• First item"));
         assert!(is_list_item("1. First item"));
+        assert!(is_list_item("a. First lettered item"));
+        assert!(is_list_item("i. Roman-shaped lettered item"));
+        assert!(is_list_item("l. Later lettered item"));
+        assert!(is_list_item("h.3 Nested alpha-numeric item"));
+        assert!(is_list_item("i.1 Nested roman-shaped alpha-numeric item"));
         assert!(is_list_item("a) Sub item"));
         assert!(is_list_item("(3) Third option"));
+        assert!(!is_list_item("2.2 TITLE CASE HEADING"));
+        assert!(!is_list_item("2.2.1 DEEPER HEADING"));
+        assert!(!is_list_item("A normal sentence starts with an article."));
+        assert!(!is_list_item("I think this is ordinary prose."));
+        assert!(!is_list_item("1 bare number without a list delimiter"));
         assert!(!is_list_item("Regular text here"));
+    }
+
+    #[test]
+    fn test_bodyish_lettered_and_numbered_items_do_not_capture_headings_or_prose() {
+        let mut spans = vec![
+            make_span("a. First list entry", 126.0, 700.0, 11.6, false),
+            make_span("i. Ninth list entry", 126.0, 675.0, 11.6, false),
+            make_span("l. Twelfth list entry", 126.0, 650.0, 11.6, false),
+            make_span("h.3 Nested list entry", 126.0, 625.0, 11.6, false),
+            make_span("i.1 Another nested list entry", 126.0, 600.0, 11.6, false),
+            make_span("1. Numeric list entry", 144.0, 575.0, 11.6, false),
+            make_span("2.2 TITLE CASE HEADING", 90.0, 550.0, 13.0, true),
+            make_span(
+                "Ordinary prose remains body text even at the slightly elevated list face.",
+                90.0,
+                500.0,
+                11.6,
+                false,
+            ),
+        ];
+        // Preserve coverage for the previous bold, body-sized list behavior.
+        spans.push(make_span("b. Bold list entry", 126.0, 475.0, 11.4, true));
+
+        let expected_chars: String = spans.iter().map(|span| span.text.as_str()).collect();
+        let classifier =
+            BlockClassifier::new_with_overrides(612.0, 792.0, &spans, Some(10.0), None);
+        let blocks = classifier.classify_spans(&spans);
+
+        for marker in ["a.", "i.", "l.", "h.3", "i.1", "1.", "b."] {
+            let block = blocks
+                .iter()
+                .find(|block| block.text.contains(marker))
+                .unwrap_or_else(|| panic!("missing retained list item {marker}"));
+            assert_eq!(block.block_type, BlockType::List, "{marker} must be a list");
+        }
+
+        let heading = blocks
+            .iter()
+            .find(|block| block.text.contains("2.2 TITLE CASE HEADING"))
+            .expect("numbered heading must be retained");
+        assert_eq!(heading.block_type, BlockType::Title);
+
+        let prose = blocks
+            .iter()
+            .find(|block| block.text.contains("Ordinary prose remains body text"))
+            .expect("ordinary prose must be retained");
+        assert_eq!(prose.block_type, BlockType::Body);
+
+        let actual_chars: String = blocks.iter().map(|block| block.text.as_str()).collect();
+        let actual_chars: String = actual_chars
+            .chars()
+            .filter(|c| !c.is_whitespace())
+            .collect();
+        let expected_chars: String = expected_chars
+            .chars()
+            .filter(|c| !c.is_whitespace())
+            .collect();
+        assert_eq!(actual_chars, expected_chars, "classification must retain every character");
     }
 
     #[test]
