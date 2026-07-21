@@ -3133,6 +3133,76 @@
       "status": "closed"
     },
     {
+      "added_at": "2026-07-21T00:00:00Z",
+      "added_by": "agent:codex (pdf-lab page45 all-candidates hardening)",
+      "applied_at": "2026-07-21T00:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route exact NIST 'Control Enhancements: None.' field/value lines to labeled_enhancements instead of generic prose.",
+      "closed_at": "2026-07-21T00:00:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page45_control_enhancements_none.py)",
+      "entry_id": "nist-control-enhancements-none-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:19"
+        ],
+        "risk_reasons_observed": [
+          "control_enhancements_none_as_paragraph_block"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/page45_issue2_item2_labeled_enhancements_20260604/proof_summary.json",
+          "artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/baseline_page45_snapshot.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Standalone 'Control Enhancements:' labels; rejected because this rule only matches the exact label/value text.",
+          "Numbered control enhancement headings; rejected because this rule only matches the exact 'None.' field/value line.",
+          "Ordinary body paragraphs mentioning control enhancements; rejected by exact text and main-column bbox guards."
+        ],
+        "candidates_that_prove": [
+          "Page 45 emits 'Control Enhancements: None.' as a single Body paragraph_block in the control field region, but the page45 item2 receipt expects labeled_enhancements."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block in the main control column matches only 'Control Enhancements: None.' with PDF spacing variation, set type=labeled_enhancements and semantic_role=nist_control_enhancements_none."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block or paragraph",
+          "bbox x_min is outside the NIST control field indent band",
+          "text does not match only 'Control Enhancements: None.' allowing PDF whitespace variation"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This exact field/value rule intentionally overrides generic Body paragraph typing only for NIST control-enhancement-none boilerplate.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_min_lt": 0.22,
+            "y_max_lt": 0.9
+          },
+          "source_type": "Body",
+          "type": [
+            "paragraph_block",
+            "paragraph"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "nist_control_enhancements_none",
+              "type": "labeled_enhancements"
+            },
+            "regex": "^\\s*Control\\s+Enhancements:\\s+None\\.\\s*$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
       "added_at": "2026-06-01T16:27:00Z",
       "added_by": "agent:codex (next-30 full-text agentic second pass)",
       "applied_at": "2026-06-01T16:27:00Z",

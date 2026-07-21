@@ -1,0 +1,67 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T02:35:42.227326+00:00",
+  "status": "passing_current_contract",
+  "mocked": "no",
+  "live": "yes",
+  "page_id": "nist_phase54_page_0045",
+  "page_number": 45,
+  "pdf_page_index": 44,
+  "candidate": {
+    "defect_class": "control enhancements none field/value line typed as generic paragraph",
+    "owner": "nist_preset",
+    "selected_from": [
+      "/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md measured page45 remaining findings",
+      "artifacts/pdf_lab/page45_issue2_item2_labeled_enhancements_20260604/proof_summary.json",
+      "artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/baseline_page45_snapshot.json"
+    ]
+  },
+  "current_extraction": {
+    "snapshot": "artifacts/pdf_lab/page45_control_enhancements_none_20260721/current_page45_snapshot.json",
+    "snapshot_sha256": "98dec9ed160d2dda729eea85a3d65f53aa1283c5e86de1d693f7d2e15aafa75b",
+    "block_count": 21,
+    "type_counts": {
+      "header_footer_noise": 4,
+      "section_heading": 2,
+      "paragraph_block": 4,
+      "list": 9,
+      "labeled_enhancements": 1,
+      "reference": 1
+    },
+    "candidate_block": {
+      "id": "actual:p45:block:19",
+      "type": "labeled_enhancements",
+      "semantic_role": "nist_control_enhancements_none",
+      "source_type": "Body",
+      "text": "Control Enhancements:  None.",
+      "bbox": [
+        0.20588235294117646,
+        0.8212619357638888,
+        0.40904774385340076,
+        0.838189635613952
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ]
+    }
+  },
+  "proof": {
+    "commands": [
+      "uv run maturin develop",
+      "pytest -q tests/test_nist_page45_control_enhancements_none.py",
+      "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page45_control_enhancements_none_20260721/current_page45_snapshot.json --max-pages 45 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+      "pytest -q tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py",
+      "pytest -q tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page35_control_families_table.py tests/test_nist_page104_au12_page_break_label.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page46_nested_list_segmentation.py"
+    ],
+    "logs": [
+      "artifacts/pdf_lab/page45_control_enhancements_none_20260721/test_logs/snapshot_page45.log",
+      "artifacts/pdf_lab/page45_control_enhancements_none_20260721/test_logs/pytest_page45_focused.log",
+      "artifacts/pdf_lab/page45_control_enhancements_none_20260721/test_logs/regression_suite.log"
+    ],
+    "result": "page45 Control Enhancements: None. is labeled_enhancements with semantic_role=nist_control_enhancements_none; existing page45 list-marker guard still passes",
+    "does_not_prove": "remaining page45 independent-review findings or all-candidates goal completion",
+    "regression_suite_result": "8 passed, 5 warnings in 169.68s"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page45_control_enhancements_none_20260721/visual_receipt.json"
+}

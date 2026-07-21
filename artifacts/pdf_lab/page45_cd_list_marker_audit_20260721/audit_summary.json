@@ -1,0 +1,122 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T02:39:58.208061+00:00",
+  "status": "passing_current_contract",
+  "mocked": "no",
+  "live": "yes",
+  "page_id": "nist_phase54_page_0045",
+  "page_number": 45,
+  "pdf_page_index": 44,
+  "candidate": {
+    "defect_class": "lower-alpha list markers misclassified as headings",
+    "handoff_claim": "page45 leftover c./d. still Title; font just above list threshold",
+    "next_action": "advance candidate as currently passing on main; keep focused regression to prevent recurrence",
+    "owner": "pdf_oxide_core/nist_preset list marker typing",
+    "page_id": "nist_phase54_page_0045",
+    "page_number": 45,
+    "pdf_page_index": 44,
+    "selection_source": "/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md section 5 plus page45 issue #2/#9 receipts"
+  },
+  "current_extraction": {
+    "snapshot": "artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/baseline_page45_snapshot.json",
+    "snapshot_sha256": "d6d09c1b2a5477abaa329b24e37c848176232f9650d90ebe151d3f2693b2b591",
+    "block_count": 21,
+    "type_counts": {
+      "header_footer_noise": 4,
+      "section_heading": 2,
+      "paragraph_block": 5,
+      "list": 9,
+      "reference": 1
+    },
+    "audit": {
+      "block_count": 21,
+      "cd_not_list_count": 0,
+      "cd_not_list_problems": [],
+      "list_marker_blocks": [
+        {
+          "id": "actual:p45:block:8",
+          "source_type": "List",
+          "text": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or roles]:",
+          "type": "list"
+        },
+        {
+          "id": "actual:p45:block:13",
+          "source_type": "List",
+          "text": "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and",
+          "type": "list"
+        },
+        {
+          "id": "actual:p45:block:14",
+          "source_type": "List",
+          "text": "c. Review and update the current access control:",
+          "type": "list"
+        }
+      ],
+      "related_controls_blocks": [
+        {
+          "id": "actual:p45:block:18",
+          "source_type": "Body",
+          "text": "Related Controls: IA-1, PM-9, PM-24, PS-8, SI-12.",
+          "type": "paragraph_block"
+        }
+      ],
+      "snapshot": "artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/baseline_page45_snapshot.json",
+      "snapshot_sha256": "d6d09c1b2a5477abaa329b24e37c848176232f9650d90ebe151d3f2693b2b591"
+    }
+  },
+  "proof": {
+    "commands": [
+      "uv run maturin develop",
+      "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/baseline_page45_snapshot.json --max-pages 45 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+      "pytest -q tests/test_nist_page45_ac1_list_markers.py"
+    ],
+    "does_not_prove": "remaining page104/page421 or live model-backed repair lifecycle",
+    "live": "yes",
+    "logs": [
+      "artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/test_logs/baseline_maturin_develop.log",
+      "artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/test_logs/baseline_snapshot_page45.log",
+      "artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/test_logs/pytest_page45_ac1_list_markers.log"
+    ],
+    "mocked": "no",
+    "result": "page45 selected candidate is passing on current main; regression added and receipt preserved"
+  },
+  "source_artifacts": [
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/page45_issue2_item1_core_list_20260604/proof_summary.json",
+      "sha256": "36641929e23a150bdc5f4d96a2b3cf970ed59f0696360591017fc5032c1be4f4",
+      "size": 674
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/page45_issue2_item1_core_list_20260604/after_snapshot.json",
+      "sha256": "77d6568c662a6928f0eaf05a58f75aeb7536b3d76e9d34909871b156f958f919",
+      "size": 26025
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/page45_issue2_item6_chrome_noise_20260604/proof_summary.json",
+      "sha256": "ec829b6740594e7814c934bd328e918dfe15c2c38ef90dabb4aac3a02aa7d025",
+      "size": 1833
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/page45_human_reannotation_20260604/in_progress_entry.json",
+      "sha256": "29f45da0960cd28534b671302bd7a62e362e8408013afcfe732dac2e995bd052",
+      "size": 12757
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/project_agent_hardening/page_0045_repair_closure_current/snapshot.json",
+      "sha256": "dbe49bf432fad56b2062218e9ff7bb2ad5c82604b140a0174a5accaea0cbc8e9",
+      "size": 29529
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/project_agent_hardening/page_0045_repair_closure_current/agent_second_pass.before.json",
+      "sha256": "ad359892382a0e2e7ef7994fb3ce5d16e323f8f08b2ede55c36f64c24ff5b8fe",
+      "size": 23410
+    }
+  ],
+  "selection_receipt": "artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/selection_receipt.json"
+}
