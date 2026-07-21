@@ -63,7 +63,7 @@ Current completed page evidence:
 | `page_0012` | live second-pass frontmatter heading/text/side-chrome review | `artifacts/pdf_lab/page12_frontmatter_review_20260721/audit_summary.json` | `origin/main` after page12 reviewed-clean evidence push |
 | `page_0013` | live second-pass Use of Examples paragraph merge review | `artifacts/pdf_lab/page13_use_examples_paragraph_20260721/audit_summary.json` | `origin/main` after page13 paragraph-merge push |
 | `page_0014` | live second-pass Federal Records Management frontmatter review blocked by repeated SciLLM ReadTimeout | `artifacts/pdf_lab/page14_scillm_readtimeout_20260721/audit_summary.json` | `origin/main` at `42d035760394f101830b5615e67a33b6761526f9` |
-| `page_0016` | live second-pass Planning Note review blocked by repeated SciLLM local-text ReadTimeout after DPI/payload reduction | `artifacts/pdf_lab/page16_scillm_readtimeout_20260721/audit_summary.json` | pending push of page16 blocked-substrate receipts |
+| `page_0016` | live second-pass Planning Note review blocked by repeated SciLLM local-text ReadTimeout after DPI/payload reduction | `artifacts/pdf_lab/page16_scillm_readtimeout_20260721/audit_summary.json` | `origin/main` at `0a679d7ffb01a1e3a27c5f3d648bbcac735c3f28` |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
