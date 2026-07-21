@@ -1,0 +1,25 @@
+{
+  "schema": "pdf_lab.visual_receipt.v1",
+  "page_id": "nist_phase54_page_0045",
+  "candidate": "page45 running header/footer/rotated DOI chrome noise suppression",
+  "original_image": "artifacts/pdf_lab/page45_chrome_noise_20260721/page45_original.png",
+  "overlay_image": "artifacts/pdf_lab/page45_chrome_noise_20260721/page45_chrome_noise_overlay.png",
+  "checked_block_ids": [
+    "actual:p45:block:0",
+    "actual:p45:block:1",
+    "actual:p45:block:2",
+    "actual:p45:block:3"
+  ],
+  "expected_chrome_anchors": [
+    "NIST SP 800-53, REV. 5",
+    "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+    "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+    "CHAPTER THREE 18 PAGE"
+  ],
+  "overlay_labels": [
+    "chrome-noise 1",
+    "chrome-noise 2",
+    "chrome-noise 3",
+    "chrome-noise 4"
+  ]
+}

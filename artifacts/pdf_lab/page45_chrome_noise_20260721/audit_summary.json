@@ -1,0 +1,126 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T03:15:38.856752+00:00",
+  "status": "passing_current_contract",
+  "mocked": "no",
+  "live": "yes",
+  "page_id": "nist_phase54_page_0045",
+  "page_number": 45,
+  "pdf_page_index": 44,
+  "candidate": {
+    "defect_class": "running header/footer/rotated DOI chrome duplicated into body content",
+    "owner": "snapshot_current_extraction_chrome_suppression",
+    "selected_from": [
+      "/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md measured page45 remaining findings",
+      "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/page45_issue2_item6_chrome_noise_20260604/proof_summary.json",
+      "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/page45_human_reannotation_20260604/in_progress_entry.json",
+      "artifacts/pdf_lab/page45_toc_lineage_20260721/current_page45_snapshot.json"
+    ]
+  },
+  "current_extraction": {
+    "snapshot": "artifacts/pdf_lab/page45_chrome_noise_20260721/current_page45_snapshot.json",
+    "snapshot_sha256": "3597a4fd76064fa4ced0c4718a0317be57e4b11ffd8ca08344417056dc133917",
+    "block_count": 21,
+    "type_counts": {
+      "header_footer_noise": 4,
+      "section_heading": 2,
+      "section_link": 1,
+      "paragraph_block": 3,
+      "list": 9,
+      "labeled_enhancements": 1,
+      "reference": 1
+    },
+    "chrome_block_count": 4,
+    "chrome_blocks": [
+      {
+        "id": "actual:p45:block:0",
+        "type": "header_footer_noise",
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+        "bbox": [
+          0.14705882352941177,
+          0.04473802296802251,
+          0.8507378272760927,
+          0.05821938948197798
+        ],
+        "toc_path": [
+          "toc:0014",
+          "toc:0015"
+        ]
+      },
+      {
+        "id": "actual:p45:block:1",
+        "type": "header_footer_noise",
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text": "_________________________________________________________________________________________________",
+        "bbox": [
+          0.14705882352941177,
+          0.05679397390346334,
+          0.8517353332120609,
+          0.07054738324097913
+        ],
+        "toc_path": [
+          "toc:0014",
+          "toc:0015"
+        ]
+      },
+      {
+        "id": "actual:p45:block:2",
+        "type": "header_footer_noise",
+        "semantic_role": "page_chrome",
+        "source_type": "Body",
+        "text": "CHAPTER THREE   18 PAGE",
+        "bbox": [
+          0.14705882352941177,
+          0.9417424250130702,
+          0.8396249409594567,
+          0.9518181820108433
+        ],
+        "toc_path": [
+          "toc:0014",
+          "toc:0015"
+        ]
+      },
+      {
+        "id": "actual:p45:block:3",
+        "type": "header_footer_noise",
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+        "bbox": [
+          0.03441176383323919,
+          0.27643939702197756,
+          0.5297058735018462,
+          0.7178787847962043
+        ],
+        "toc_path": [
+          "toc:0014",
+          "toc:0015"
+        ]
+      }
+    ],
+    "non_chrome_anchor_matches": []
+  },
+  "proof": {
+      "commands": [
+        "pytest -q tests/test_nist_page45_chrome_noise.py",
+        "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page45_chrome_noise_20260721/current_page45_snapshot.json --max-pages 45 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+        "pytest -q tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py",
+        "pytest -q tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page35_control_families_table.py tests/test_nist_page104_au12_page_break_label.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page46_nested_list_segmentation.py"
+      ],
+      "logs": [
+        "artifacts/pdf_lab/page45_chrome_noise_20260721/test_logs/pytest_page45_chrome_noise.log",
+        "artifacts/pdf_lab/page45_chrome_noise_20260721/test_logs/snapshot_page45.log",
+        "artifacts/pdf_lab/page45_chrome_noise_20260721/test_logs/pytest_page45_focused.log",
+        "artifacts/pdf_lab/page45_chrome_noise_20260721/test_logs/regression_suite.log"
+      ],
+      "result": "page45 running header, header rule, rotated DOI boilerplate, and footer/page marker are header_footer_noise only and have no non-chrome duplicates",
+      "focused_result": "1 passed, 5 warnings in 24.82s",
+      "page45_focused_result": "9 passed, 5 warnings in 210.71s",
+      "regression_suite_result": "15 passed, 5 warnings in 329.59s",
+      "does_not_prove": "remaining page45 independent-review findings or all-candidates goal completion"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page45_chrome_noise_20260721/visual_receipt.json"
+}
