@@ -1,0 +1,56 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0019:0000:side_chrome",
+      "evidence": "Extracted JSON block 0 shows 'type': 'header_footer_noise' and 'semantic_role': 'page_chrome' with the text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' and a bbox matching the visual header.",
+      "rationale": "The candidate correctly identifies the document header text as side chrome, and the bounding box and text content are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0019:0001:side_chrome",
+      "evidence": "Extracted JSON block 1 shows 'type': 'header_footer_noise' and 'semantic_role': 'page_chrome' with the text '_________________________________________________________________________________________________' and a bbox matching the visual header separator line.",
+      "rationale": "The candidate correctly identifies the header's separator line as side chrome, and the bounding box and text content are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0019:0002:side_chrome",
+      "evidence": "Extracted JSON block 2 shows 'type': 'header_footer_noise' and 'source_type': 'PageNumber' with the text 'xvii' and a bbox matching the visual page number in the footer.",
+      "rationale": "The candidate correctly identifies the page number in the footer as side chrome, and the bounding box and text content are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0019:0003:side_chrome",
+      "evidence": "Extracted JSON block 3 shows 'type': 'header_footer_noise' and 'source_type': 'Boilerplate' with the rotated text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' and a bbox matching the visual boilerplate text on the left margin.",
+      "rationale": "The candidate correctly identifies the rotated boilerplate text on the side of the page as side chrome, and the bounding box and text content are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0019:0004:section_heading",
+      "evidence": "Extracted JSON block 4 shows 'type': 'section_heading' and 'semantic_role': 'frontmatter_section_heading' with the text 'Errata' and a bbox matching the visual section heading.",
+      "rationale": "The candidate correctly identifies the 'Errata' heading as a section heading, and the bounding box and text content are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0019:0005:text",
+      "evidence": "Extracted JSON block 5 shows 'type': 'paragraph_block' with the descriptive paragraph text and a bbox matching the visual content above the table.",
+      "rationale": "The candidate correctly identifies the introductory paragraph as text, and the bounding box and text content are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0019:0006:table",
+      "evidence": "Extracted JSON block 6 shows 'type': 'table' with a bbox matching the visual table on the page. The 'text' field contains pipe-separated content indicating correct table structure extraction.",
+      "rationale": "The candidate correctly identifies the main errata table as a table, and its bounding box and structured text content are accurately extracted.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    }
+  ],
+  "page_rationale": "All candidate extractions on page 19 are accurate. Headers, footer, side boilerplate, section heading, a descriptive paragraph, and a complex table are all correctly identified with accurate bounding boxes and text content. The page extraction is clean.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

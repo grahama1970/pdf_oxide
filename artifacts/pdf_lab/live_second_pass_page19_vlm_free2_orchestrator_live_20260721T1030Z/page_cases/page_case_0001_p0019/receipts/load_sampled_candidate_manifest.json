@@ -1,0 +1,22 @@
+{
+  "command_or_endpoint": "run_page_second_pass_dag.load_sampled_candidate_manifest",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T10:29:48.356603+00:00",
+  "input_artifacts": [
+    "state.json"
+  ],
+  "next_allowed_nodes": [
+    "extract_page_json",
+    "render_original_page"
+  ],
+  "node_id": "load_sampled_candidate_manifest",
+  "output_artifacts": [
+    "sampled_candidate_manifest.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T10:29:48.356596+00:00",
+  "validator_result": {
+    "candidate_count": 7,
+    "ok": true
+  }
+}
