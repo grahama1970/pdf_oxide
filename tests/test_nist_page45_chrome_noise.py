@@ -59,3 +59,20 @@ def test_nist_page_45_chrome_text_is_typed_as_noise_not_body_content():
     )
     for anchor in CHROME_ANCHORS:
         assert _normalized(anchor) not in non_chrome_text
+
+
+def test_nist_page_45_rotated_doi_chrome_bbox_stays_in_left_margin():
+    page = _extract_page_45_with_ledger()
+    blocks = page.get("blocks") or []
+    doi_blocks = [
+        block
+        for block in blocks
+        if block.get("type") == "header_footer_noise"
+        and "doi.org/10.6028/NIST.SP.800" in _normalized(block.get("text"))
+    ]
+
+    assert len(doi_blocks) == 1
+    bbox = doi_blocks[0].get("bbox")
+    assert isinstance(bbox, list) and len(bbox) == 4
+    assert bbox[0] < 0.06
+    assert bbox[2] < 0.08

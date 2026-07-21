@@ -1,0 +1,83 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "page": "page_0045",
+  "issue": "rotated DOI side-chrome bbox over-broad in live second-pass review",
+  "candidate_id": "cand:p0045:0003:side_chrome",
+  "source_block_id": "actual:p45:block:3",
+  "mocked": "no",
+  "live": "yes",
+  "status": "passed_current_gate",
+  "patch": {
+    "files": [
+      "scripts/pdf_lab/snapshot_current_extraction.py",
+      "tests/test_nist_page45_chrome_noise.py"
+    ],
+    "summary": "When a Boilerplate block does not match PyMuPDF text lines through exact whitespace-normalized matching, match it against vertical margin lines with whitespace-insensitive compact text and y-axis overlap, then use the raw vertical line bbox for the extracted candidate."
+  },
+  "pre_fix_live_receipt": {
+    "root": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0101Z",
+    "review_validation": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0101Z/page_cases/page_case_0001_p0045/review_validation.json",
+    "terminal_ledger": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0101Z/page_cases/page_case_0001_p0045/terminal_ledger.json",
+    "observed_status": "still_open",
+    "observed_reason": "patch_delegate_dry_run",
+    "model_defect": "candidate bbox covered the left margin DOI chrome plus main body region instead of only the narrow vertical margin text"
+  },
+  "post_fix_live_receipt": {
+    "root": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z",
+    "harness_final_gate": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/harness_final_gate.json",
+    "review_request_validation": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/review_request_validation.json",
+    "review_validation": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/review_validation.json",
+    "terminal_ledger": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/terminal_ledger.json",
+    "review_response": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/review_response.json",
+    "candidate_presets": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/candidate_presets.json",
+    "review_html": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/review.html",
+    "review_bundle_zip": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/review_bundle.zip",
+    "review_cdp_render_validation": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/review_cdp_render_validation.json",
+    "review_cdp_screenshot": "artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/review_cdp_screenshot.png",
+    "terminal_status": "passed",
+    "page_status": "clean",
+    "expected_candidate_count": 21,
+    "seen_candidate_count": 21,
+    "fixed_bbox": [
+      0.0296323533151664,
+      0.28780303338561397,
+      0.049705879361021756,
+      0.7406287915778883
+    ]
+  },
+  "deterministic_proof": {
+    "focused_pytest_log": "artifacts/pdf_lab/page45_rotated_doi_bbox_20260721/test_logs/pytest_page45_chrome_noise.log",
+    "focused_pytest_result": "2 passed, 5 warnings in 43.71s",
+    "page45_guard_result": "13 passed, 5 warnings in 317.93s",
+    "page45_guard_command": "pytest -q tests/test_nist_page45_discussion_role.py tests/test_nist_page45_discussion_text.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py"
+  },
+  "broad_nist_regression_attempt": {
+    "command": "pytest -q $(rg --files tests | rg 'test_nist_' | sort)",
+    "result": "3 failed, 40 passed, 5 warnings, 7 errors in 515.37s",
+    "classification": "not_current_patch_blocker",
+    "reason": "The broad failures reproduce on a clean origin/main worktree at a02fede1 after building the native extension there.",
+    "baseline_worktree": "/tmp/pdf_oxide_baseline_a02fede1",
+    "baseline_commit": "a02fede1",
+    "baseline_table_subset_result": "3 failed, 5 warnings in 0.25s",
+    "baseline_page28_signature": "expected_elements not present: /tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/expected_elements_v2.json"
+  },
+  "unblock_attempts": {
+    "brave_search": {
+      "used": true,
+      "command": "/home/graham/workspace/experiments/agent-skills/skills/brave-search/run.sh web \"pytest fixture missing expected_elements_v2.json baseline golden slices regression tests\" --count 3",
+      "result": "Returned generic pytest fixture documentation; no project-specific external fix."
+    },
+    "webgpt": {
+      "used": true,
+      "bundle": "artifacts/pdf_lab/webgpt_unblock_page45_20260721T0635Z/bundle.md",
+      "result": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+    }
+  },
+  "does_not_prove": [
+    "Criterion 6 live GitHub apply",
+    "page 28 golden-slice fixture availability",
+    "pre-existing table duplicate suppression failures",
+    "all remaining PDF Lab page candidates"
+  ],
+  "next_step": "Select the next newly surfaced current-extraction residual or fresh reviewer finding from the active queue."
+}

@@ -1,0 +1,704 @@
+{
+  "apply_mode": "release",
+  "candidate_count": 21,
+  "candidates": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "block_id": "actual:p45:block:0",
+      "block_index": 0,
+      "candidate_id": "cand:p0045:0000:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/44/blocks/0",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "block_id": "actual:p45:block:1",
+      "block_index": 1,
+      "candidate_id": "cand:p0045:0001:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/44/blocks/1",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528988906760621,
+        0.9549618345318418
+      ],
+      "block_id": "actual:p45:block:2",
+      "block_index": 2,
+      "candidate_id": "cand:p0045:0002:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009516,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 21
+      },
+      "json_pointer": "/pages/44/blocks/2",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "CHAPTER THREE PAGE 18"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_id": "actual:p45:block:3",
+      "block_index": 3,
+      "candidate_id": "cand:p0045:0003:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/44/blocks/3",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.08938735422461924,
+        0.35544124927396087,
+        0.11388766163527364
+      ],
+      "block_id": "actual:p45:block:4",
+      "block_index": 4,
+      "candidate_id": "cand:p0045:0004:section_heading",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:section_heading",
+        "preset_type:section_heading",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.005105,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Title",
+        "text_length": 18
+      },
+      "json_pointer": "/pages/44/blocks/4",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "section_heading",
+      "text_excerpt": "3.1 ACCESS CONTROL"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.12650474394210662,
+        0.4737120484994128,
+        0.14574746411256115
+      ],
+      "block_id": "actual:p45:block:5",
+      "block_index": 5,
+      "candidate_id": "cand:p0045:0005:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:section_link",
+        "preset_type:text"
+      ],
+      "features": {
+        "bbox_area": 0.006286,
+        "block_type": "section_link",
+        "has_toc_entries": false,
+        "semantic_role": "nist_quick_link",
+        "source_type": "Body",
+        "text_length": 42
+      },
+      "json_pointer": "/pages/44/blocks/5",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Quick link to Access Control Summary Table"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.16620171672165995,
+        0.4016318477057164,
+        0.1854444368921145
+      ],
+      "block_id": "actual:p45:block:6",
+      "block_index": 6,
+      "candidate_id": "cand:p0045:0006:section_heading",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:section_heading",
+        "preset_type:section_heading",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.004899,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": "nist_control_heading",
+        "source_type": "Body",
+        "text_length": 26
+      },
+      "json_pointer": "/pages/44/blocks/6",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "section_heading",
+      "text_excerpt": "AC-1 POLICY AND PROCEDURES"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.19088321261935765,
+        0.25978078405841504,
+        0.20781093173556858
+      ],
+      "block_id": "actual:p45:block:7",
+      "block_index": 7,
+      "candidate_id": "cand:p0045:0007:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text"
+      ],
+      "features": {
+        "bbox_area": 0.000912,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": "nist_field_label",
+        "source_type": "Body",
+        "text_length": 8
+      },
+      "json_pointer": "/pages/44/blocks/7",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Control:"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.21383774882615214,
+        0.818778941833895,
+        0.24622562678173335
+      ],
+      "block_id": "actual:p45:block:8",
+      "block_index": 8,
+      "candidate_id": "cand:p0045:0008:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.01985,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 95
+      },
+      "json_pointer": "/pages/44/blocks/8",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or roles]:"
+    },
+    {
+      "bbox": [
+        0.23532024707669527,
+        0.2522477429322522,
+        0.8235532473894506,
+        0.2846356208878334
+      ],
+      "block_id": "actual:p45:block:9",
+      "block_index": 9,
+      "candidate_id": "cand:p0045:0009:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.019052,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 123
+      },
+      "json_pointer": "/pages/44/blocks/9",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "1. [Selection (one or more): Organization-level; Mission/business process-level; System- level] access control policy that:"
+    },
+    {
+      "bbox": [
+        0.26472535476185916,
+        0.2906577370383523,
+        0.804395239337597,
+        0.32304561499393347
+      ],
+      "block_id": "actual:p45:block:10",
+      "block_index": 10,
+      "candidate_id": "cand:p0045:0010:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.017479,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 141
+      },
+      "json_pointer": "/pages/44/blocks/10",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance; and"
+    },
+    {
+      "bbox": [
+        0.26472532982919733,
+        0.3290677311444523,
+        0.8486730039509294,
+        0.36145562836618134
+      ],
+      "block_id": "actual:p45:block:11",
+      "block_index": 11,
+      "candidate_id": "cand:p0045:0011:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.018913,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 123
+      },
+      "json_pointer": "/pages/44/blocks/11",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "(b) Is consistent with applicable laws, executive orders, directives, regulations, policies, standards, and guidelines; and"
+    },
+    {
+      "bbox": [
+        0.23532024707669527,
+        0.36740181662819604,
+        0.7937600628223295,
+        0.3998656224722814
+      ],
+      "block_id": "actual:p45:block:12",
+      "block_index": 12,
+      "candidate_id": "cand:p0045:0012:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.018129,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 111
+      },
+      "json_pointer": "/pages/44/blocks/12",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "2. Procedures to facilitate the implementation of the access control policy and the associated access controls;"
+    },
+    {
+      "bbox": [
+        0.2058824028065002,
+        0.40581181073429606,
+        0.8041798211390676,
+        0.4382756165783815
+      ],
+      "block_id": "actual:p45:block:13",
+      "block_index": 13,
+      "candidate_id": "cand:p0045:0013:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.019423,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 168
+      },
+      "json_pointer": "/pages/44/blocks/13",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.44429771346275254,
+        0.5434303533018024,
+        0.46122545184511127
+      ],
+      "block_id": "actual:p45:block:14",
+      "block_index": 14,
+      "candidate_id": "cand:p0045:0014:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.005714,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 48
+      },
+      "json_pointer": "/pages/44/blocks/14",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "c. Review and update the current access control:"
+    },
+    {
+      "bbox": [
+        0.23532017227870966,
+        0.4672475487294823,
+        0.7945901210012,
+        0.49963544595121134
+      ],
+      "block_id": "actual:p45:block:15",
+      "block_index": 15,
+      "candidate_id": "cand:p0045:0015:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.018114,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 115
+      },
+      "json_pointer": "/pages/44/blocks/15",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "1. Policy [Assignment: organization-defined frequency] and following [Assignment: organization-defined events]; and"
+    },
+    {
+      "bbox": [
+        0.23530381645252502,
+        0.5056575428355824,
+        0.8308636035794527,
+        0.5380454400573114
+      ],
+      "block_id": "actual:p45:block:16",
+      "block_index": 16,
+      "candidate_id": "cand:p0045:0016:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.019289,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 115
+      },
+      "json_pointer": "/pages/44/blocks/16",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "2. Procedures [Assignment: organization-defined frequency] and following [Assignment: organization-defined events]."
+    },
+    {
+      "bbox": [
+        0.20586599711499182,
+        0.544064993810172,
+        0.8519990210439644,
+        0.7922823356859612
+      ],
+      "block_id": "actual:p45:block:17",
+      "block_index": 17,
+      "candidate_id": "cand:p0045:0017:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "long_text_region"
+      ],
+      "features": {
+        "bbox_area": 0.160381,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": "discussion",
+        "source_type": "Body",
+        "text_length": 1510
+      },
+      "json_pointer": "/pages/44/blocks/17",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Discussion: Access control policy and procedures address the controls in the AC family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of access control policy and procedures. Security and privacy program policies and procedures at "
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.7983073995570944,
+        0.5322631636476205,
+        0.8152350994071575
+      ],
+      "block_id": "actual:p45:block:18",
+      "block_index": 18,
+      "candidate_id": "cand:p0045:0018:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text"
+      ],
+      "features": {
+        "bbox_area": 0.005525,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": "related_controls",
+        "source_type": "Body",
+        "text_length": 49
+      },
+      "json_pointer": "/pages/44/blocks/18",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Related Controls: IA-1, PM-9, PM-24, PS-8, SI-12."
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.8212619357638888,
+        0.40904774385340076,
+        0.838189635613952
+      ],
+      "block_id": "actual:p45:block:19",
+      "block_index": 19,
+      "candidate_id": "cand:p0045:0019:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:labeled_enhancements",
+        "preset_type:text"
+      ],
+      "features": {
+        "bbox_area": 0.003439,
+        "block_type": "labeled_enhancements",
+        "has_toc_entries": false,
+        "semantic_role": "nist_control_enhancements_none",
+        "source_type": "Body",
+        "text_length": 27
+      },
+      "json_pointer": "/pages/44/blocks/19",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Control Enhancements: None."
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.8442923035284485,
+        0.793733933392693,
+        0.8612200033785117
+      ],
+      "block_id": "actual:p45:block:20",
+      "block_index": 20,
+      "candidate_id": "cand:p0045:0020:reference",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:reference",
+        "preset_type:reference",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.009951,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_lead",
+        "source_type": "Body",
+        "text_length": 88
+      },
+      "json_pointer": "/pages/44/blocks/20",
+      "page_index": 44,
+      "page_number": 45,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "reference",
+      "text_excerpt": "References: [OMB A-130], [SP 800-12], [SP 800-30], [SP 800-39], [SP 800-100], [IR 7874]."
+    }
+  ],
+  "census_failure_count": 0,
+  "census_failures": [],
+  "command": "scripts/pdf_lab/run_second_pass_harness.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --candidate-census-page 45 --candidate-page-timeout-s 90 --candidate-census-timeout-s 120 --sample-size 1 --seed 45 --review-mode live --patch-mode dry_run --commit-mode dry_run --model gpt-5.5 --batch-id pdf_lab_live_one_case_20260721_after_bbox --scillm-timeout-s 120 --scillm-preflight-mode live --caller-skill pdf-lab --page-extract-timeout-s 90 --page-orchestrator-mode dry_run --stop-on-nonterminal",
+  "created_at": "2026-07-21T06:23:44.827206+00:00",
+  "extracted_page_count": 1,
+  "git_head": "a02fede181c3e71799a0fc61c01bdd28f9bbddbb",
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page_count": 492,
+  "page_count_with_candidates": 1,
+  "pages": [
+    {
+      "candidate_count": 21,
+      "page_number": 45,
+      "preset_counts": {
+        "list": 9,
+        "reference": 1,
+        "section_heading": 2,
+        "side_chrome": 4,
+        "text": 5
+      },
+      "risk_candidate_count": 16
+    }
+  ],
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "preset_counts": {
+    "list": 9,
+    "reference": 1,
+    "section_heading": 2,
+    "side_chrome": 4,
+    "text": 5
+  },
+  "preset_types": [
+    "appendix",
+    "equation",
+    "figure",
+    "footnote",
+    "list",
+    "reference",
+    "section_heading",
+    "side_chrome",
+    "table",
+    "text",
+    "toc",
+    "unknown_layout"
+  ],
+  "schema": "pdf_lab.second_pass.candidate_manifest.v1"
+}

@@ -13,6 +13,10 @@ def _normalize_text(text: str) -> str:
     return " ".join(str(text or "").split())
 
 
+def _compact_text(text: str) -> str:
+    return re.sub(r"\s+", "", _normalize_text(text)).lower()
+
+
 def _normalize_bracketed_citation_wraps(text: str) -> str:
     return re.sub(
         r"(\[(?:OMB|SP|NIST\s+SP|FIPS|IR)\s+[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-)\s+([A-Za-z0-9])",
@@ -321,6 +325,34 @@ def _should_split_block(block_bbox: list[float], matched_lines: list[dict[str, A
     return _bbox_area(block_bbox) > _bbox_area(union) * 1.35 or any(gap > 0.018 for gap in vertical_gaps)
 
 
+def _rotated_side_chrome_lines_from_block(
+    block_text: str,
+    block_bbox: list[float],
+    text_lines: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    target = _compact_text(block_text)
+    if len(target) < 12 or len(block_bbox) != 4:
+        return []
+
+    matches: list[dict[str, Any]] = []
+    for line in text_lines:
+        line_text = _compact_text(str(line.get("text") or ""))
+        if len(line_text) < 12:
+            continue
+        if target != line_text and target not in line_text and line_text not in target:
+            continue
+        if not _is_vertical_margin_line(line):
+            continue
+        bbox = line.get("bbox")
+        if not isinstance(bbox, list) or len(bbox) != 4:
+            continue
+        if _bbox_axis_coverage(bbox, block_bbox, 1, 3) < 0.35:
+            continue
+        matches.append(line)
+
+    return matches
+
+
 def _block_elements(
     *,
     block: dict[str, Any],
@@ -342,6 +374,8 @@ def _block_elements(
         text = _normalize_bracketed_citation_wraps(text)
     else:
         matched_lines = _match_text_lines(text, text_lines, original_block_bbox)
+        if not matched_lines and source_type == "Boilerplate":
+            matched_lines = _rotated_side_chrome_lines_from_block(text, original_block_bbox, text_lines)
     if matched_lines:
         block_bbox = _bbox_union([line["bbox"] for line in matched_lines])
 

@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PDF Lab Second-Pass Review page_case_0001_p0045</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c2430;
+      --muted: #5b6572;
+      --line: #c9d2dc;
+      --panel: #f7f9fb;
+      --accent: #0b5cad;
+    }
+    body {
+      margin: 0;
+      font: 14px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #ffffff;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+    }
+    h1, h2 {
+      margin: 0 0 10px;
+      letter-spacing: 0;
+    }
+    h1 {
+      font-size: 22px;
+    }
+    h2 {
+      font-size: 17px;
+    }
+    section {
+      margin: 22px 0;
+    }
+    .meta, .candidate, pre {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+      padding: 12px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .value {
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    figure {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    figcaption {
+      padding: 8px 10px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+    .candidate {
+      margin: 10px 0;
+      padding: 10px;
+    }
+    .candidate code {
+      color: var(--accent);
+    }
+    pre {
+      overflow: auto;
+      padding: 12px;
+      max-height: 420px;
+      white-space: pre-wrap;
+    }
+    a {
+      color: var(--accent);
+    }
+    ul {
+      columns: 2;
+      padding-left: 18px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>PDF Lab Second-Pass Page Review</h1>
+    <div class="meta">
+      <div><div class="label">Case</div><div class="value">page_case_0001_p0045</div></div>
+      <div><div class="label">Page</div><div class="value">45</div></div>
+      <div><div class="label">Status</div><div class="value">still_open</div></div>
+      <div><div class="label">Reason</div><div class="value">patch_delegate_dry_run</div></div>
+      <div><div class="label">Commit</div><div class="value">none</div></div>
+    </div>
+  </header>
+
+	  <section>
+	    <h2>Before Evidence</h2>
+	    <div class="image-grid"><figure><img src="page_before.png" alt="Rendered page before review"><figcaption>Rendered page before review</figcaption></figure><figure><img src="page_candidates.png" alt="Annotated candidate bounding boxes"><figcaption>Annotated candidate bounding boxes</figcaption></figure></div>
+	  </section>
+
+  <section>
+    <h2>Selected Candidates</h2>
+    <div class="candidate"><code>cand:p0045:0000:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.04473802296802251,
+    0.8507378272760927,
+    0.05821938948197798
+  ],
+  "block_id": "actual:p45:block:0",
+  "block_index": 0,
+  "candidate_id": "cand:p0045:0000:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.009487,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": "page_chrome",
+    "source_type": "Header",
+    "text_length": 94
+  },
+  "json_pointer": "/pages/44/blocks/0",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+}</pre></div><div class="candidate"><code>cand:p0045:0001:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.05679397390346334,
+    0.8517353332120609,
+    0.07054738324097913
+  ],
+  "block_id": "actual:p45:block:1",
+  "block_index": 1,
+  "candidate_id": "cand:p0045:0001:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.009692,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": "page_chrome",
+    "source_type": "Header",
+    "text_length": 97
+  },
+  "json_pointer": "/pages/44/blocks/1",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "_________________________________________________________________________________________________"
+}</pre></div><div class="candidate"><code>cand:p0045:0002:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.9414804632013495,
+    0.8528988906760621,
+    0.9549618345318418
+  ],
+  "block_id": "actual:p45:block:2",
+  "block_index": 2,
+  "candidate_id": "cand:p0045:0002:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.009516,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 21
+  },
+  "json_pointer": "/pages/44/blocks/2",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "CHAPTER THREE PAGE 18"
+}</pre></div><div class="candidate"><code>cand:p0045:0003:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.03441176383323919,
+    0.27643939702197756,
+    0.5297058735018462,
+    0.7178787847962043
+  ],
+  "block_id": "actual:p45:block:3",
+  "block_index": 3,
+  "candidate_id": "cand:p0045:0003:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry",
+    "large_region"
+  ],
+  "features": {
+    "bbox_area": 0.218642,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Boilerplate",
+    "text_length": 92
+  },
+  "json_pointer": "/pages/44/blocks/3",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+}</pre></div><div class="candidate"><code>cand:p0045:0004:section_heading</code><div>section_heading</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.08938735422461924,
+    0.35544124927396087,
+    0.11388766163527364
+  ],
+  "block_id": "actual:p45:block:4",
+  "block_index": 4,
+  "candidate_id": "cand:p0045:0004:section_heading",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:section_heading",
+    "preset_type:section_heading",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.005105,
+    "block_type": "section_heading",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Title",
+    "text_length": 18
+  },
+  "json_pointer": "/pages/44/blocks/4",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "section_heading",
+  "text_excerpt": "3.1 ACCESS CONTROL"
+}</pre></div><div class="candidate"><code>cand:p0045:0005:text</code><div>text</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.12650474394210662,
+    0.4737120484994128,
+    0.14574746411256115
+  ],
+  "block_id": "actual:p45:block:5",
+  "block_index": 5,
+  "candidate_id": "cand:p0045:0005:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:section_link",
+    "preset_type:text"
+  ],
+  "features": {
+    "bbox_area": 0.006286,
+    "block_type": "section_link",
+    "has_toc_entries": false,
+    "semantic_role": "nist_quick_link",
+    "source_type": "Body",
+    "text_length": 42
+  },
+  "json_pointer": "/pages/44/blocks/5",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "Quick link to Access Control Summary Table"
+}</pre></div><div class="candidate"><code>cand:p0045:0006:section_heading</code><div>section_heading</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.16620171672165995,
+    0.4016318477057164,
+    0.1854444368921145
+  ],
+  "block_id": "actual:p45:block:6",
+  "block_index": 6,
+  "candidate_id": "cand:p0045:0006:section_heading",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:section_heading",
+    "preset_type:section_heading",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.004899,
+    "block_type": "section_heading",
+    "has_toc_entries": false,
+    "semantic_role": "nist_control_heading",
+    "source_type": "Body",
+    "text_length": 26
+  },
+  "json_pointer": "/pages/44/blocks/6",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "section_heading",
+  "text_excerpt": "AC-1 POLICY AND PROCEDURES"
+}</pre></div><div class="candidate"><code>cand:p0045:0007:text</code><div>text</div><pre>{
+  "bbox": [
+    0.20588235294117646,
+    0.19088321261935765,
+    0.25978078405841504,
+    0.20781093173556858
+  ],
+  "block_id": "actual:p45:block:7",
+  "block_index": 7,
+  "candidate_id": "cand:p0045:0007:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text"
+  ],
+  "features": {
+    "bbox_area": 0.000912,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": "nist_field_label",
+    "source_type": "Body",
+    "text_length": 8
+  },
+  "json_pointer": "/pages/44/blocks/7",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "Control:"
+}</pre></div><div class="candidate"><code>cand:p0045:0008:list</code><div>list</div><pre>{
+  "bbox": [
+    0.20588235294117646,
+    0.21383774882615214,
+    0.818778941833895,
+    0.24622562678173335
+  ],
+  "block_id": "actual:p45:block:8",
+  "block_index": 8,
+  "candidate_id": "cand:p0045:0008:list",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:list",
+    "preset_type:list",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.01985,
+    "block_type": "list",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "List",
+    "text_length": 95
+  },
+  "json_pointer": "/pages/44/blocks/8",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "list",
+  "text_excerpt": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or roles]:"
+}</pre></div><div class="candidate"><code>cand:p0045:0009:list</code><div>list</div><pre>{
+  "bbox": [
+    0.23532024707669527,
+    0.2522477429322522,
+    0.8235532473894506,
+    0.2846356208878334
+  ],
+  "block_id": "actual:p45:block:9",
+  "block_index": 9,
+  "candidate_id": "cand:p0045:0009:list",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:list",
+    "preset_type:list",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.019052,
+    "block_type": "list",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "List",
+    "text_length": 123
+  },
+  "json_pointer": "/pages/44/blocks/9",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "list",
+  "text_excerpt": "1. [Selection (one or more): Organization-level; Mission/business process-level; System- level] access control policy that:"
+}</pre></div><div class="candidate"><code>cand:p0045:0010:list</code><div>list</div><pre>{
+  "bbox": [
+    0.26472535476185916,
+    0.2906577370383523,
+    0.804395239337597,
+    0.32304561499393347
+  ],
+  "block_id": "actual:p45:block:10",
+  "block_index": 10,
+  "candidate_id": "cand:p0045:0010:list",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:list",
+    "preset_type:list",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.017479,
+    "block_type": "list",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "List",
+    "text_length": 141
+  },
+  "json_pointer": "/pages/44/blocks/10",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "list",
+  "text_excerpt": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance; and"
+}</pre></div><div class="candidate"><code>cand:p0045:0011:list</code><div>list</div><pre>{
+  "bbox": [
+    0.26472532982919733,
+    0.3290677311444523,
+    0.8486730039509294,
+    0.36145562836618134
+  ],
+  "block_id": "actual:p45:block:11",
+  "block_index": 11,
+  "candidate_id": "cand:p0045:0011:list",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:list",
+    "preset_type:list",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.018913,
+    "block_type": "list",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "List",
+    "text_length": 123
+  },
+  "json_pointer": "/pages/44/blocks/11",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "list",
+  "text_excerpt": "(b) Is consistent with applicable laws, executive orders, directives, regulations, policies, standards, and guidelines; and"
+}</pre></div><div class="candidate"><code>cand:p0045:0012:list</code><div>list</div><pre>{
+  "bbox": [
+    0.23532024707669527,
+    0.36740181662819604,
+    0.7937600628223295,
+    0.3998656224722814
+  ],
+  "block_id": "actual:p45:block:12",
+  "block_index": 12,
+  "candidate_id": "cand:p0045:0012:list",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:list",
+    "preset_type:list",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.018129,
+    "block_type": "list",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "List",
+    "text_length": 111
+  },
+  "json_pointer": "/pages/44/blocks/12",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "list",
+  "text_excerpt": "2. Procedures to facilitate the implementation of the access control policy and the associated access controls;"
+}</pre></div><div class="candidate"><code>cand:p0045:0013:list</code><div>list</div><pre>{
+  "bbox": [
+    0.2058824028065002,
+    0.40581181073429606,
+    0.8041798211390676,
+    0.4382756165783815
+  ],
+  "block_id": "actual:p45:block:13",
+  "block_index": 13,
+  "candidate_id": "cand:p0045:0013:list",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:list",
+    "preset_type:list",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.019423,
+    "block_type": "list",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "List",
+    "text_length": 168
+  },
+  "json_pointer": "/pages/44/blocks/13",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "list",
+  "text_excerpt": "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and"
+}</pre></div><div class="candidate"><code>cand:p0045:0014:list</code><div>list</div><pre>{
+  "bbox": [
+    0.20588235294117646,
+    0.44429771346275254,
+    0.5434303533018024,
+    0.46122545184511127
+  ],
+  "block_id": "actual:p45:block:14",
+  "block_index": 14,
+  "candidate_id": "cand:p0045:0014:list",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:list",
+    "preset_type:list",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.005714,
+    "block_type": "list",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "List",
+    "text_length": 48
+  },
+  "json_pointer": "/pages/44/blocks/14",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "list",
+  "text_excerpt": "c. Review and update the current access control:"
+}</pre></div><div class="candidate"><code>cand:p0045:0015:list</code><div>list</div><pre>{
+  "bbox": [
+    0.23532017227870966,
+    0.4672475487294823,
+    0.7945901210012,
+    0.49963544595121134
+  ],
+  "block_id": "actual:p45:block:15",
+  "block_index": 15,
+  "candidate_id": "cand:p0045:0015:list",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:list",
+    "preset_type:list",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.018114,
+    "block_type": "list",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "List",
+    "text_length": 115
+  },
+  "json_pointer": "/pages/44/blocks/15",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "list",
+  "text_excerpt": "1. Policy [Assignment: organization-defined frequency] and following [Assignment: organization-defined events]; and"
+}</pre></div><div class="candidate"><code>cand:p0045:0016:list</code><div>list</div><pre>{
+  "bbox": [
+    0.23530381645252502,
+    0.5056575428355824,
+    0.8308636035794527,
+    0.5380454400573114
+  ],
+  "block_id": "actual:p45:block:16",
+  "block_index": 16,
+  "candidate_id": "cand:p0045:0016:list",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:list",
+    "preset_type:list",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.019289,
+    "block_type": "list",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "List",
+    "text_length": 115
+  },
+  "json_pointer": "/pages/44/blocks/16",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "list",
+  "text_excerpt": "2. Procedures [Assignment: organization-defined frequency] and following [Assignment: organization-defined events]."
+}</pre></div><div class="candidate"><code>cand:p0045:0017:text</code><div>text</div><pre>{
+  "bbox": [
+    0.20586599711499182,
+    0.544064993810172,
+    0.8519990210439644,
+    0.7922823356859612
+  ],
+  "block_id": "actual:p45:block:17",
+  "block_index": 17,
+  "candidate_id": "cand:p0045:0017:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text",
+    "long_text_region"
+  ],
+  "features": {
+    "bbox_area": 0.160381,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": "discussion",
+    "source_type": "Body",
+    "text_length": 1510
+  },
+  "json_pointer": "/pages/44/blocks/17",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "Discussion: Access control policy and procedures address the controls in the AC family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of access control policy and procedures. Security and privacy program policies and procedures at "
+}</pre></div><div class="candidate"><code>cand:p0045:0018:text</code><div>text</div><pre>{
+  "bbox": [
+    0.20588235294117646,
+    0.7983073995570944,
+    0.5322631636476205,
+    0.8152350994071575
+  ],
+  "block_id": "actual:p45:block:18",
+  "block_index": 18,
+  "candidate_id": "cand:p0045:0018:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text"
+  ],
+  "features": {
+    "bbox_area": 0.005525,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": "related_controls",
+    "source_type": "Body",
+    "text_length": 49
+  },
+  "json_pointer": "/pages/44/blocks/18",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "Related Controls: IA-1, PM-9, PM-24, PS-8, SI-12."
+}</pre></div><div class="candidate"><code>cand:p0045:0019:text</code><div>text</div><pre>{
+  "bbox": [
+    0.20588235294117646,
+    0.8212619357638888,
+    0.40904774385340076,
+    0.838189635613952
+  ],
+  "block_id": "actual:p45:block:19",
+  "block_index": 19,
+  "candidate_id": "cand:p0045:0019:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:labeled_enhancements",
+    "preset_type:text"
+  ],
+  "features": {
+    "bbox_area": 0.003439,
+    "block_type": "labeled_enhancements",
+    "has_toc_entries": false,
+    "semantic_role": "nist_control_enhancements_none",
+    "source_type": "Body",
+    "text_length": 27
+  },
+  "json_pointer": "/pages/44/blocks/19",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "Control Enhancements: None."
+}</pre></div><div class="candidate"><code>cand:p0045:0020:reference</code><div>reference</div><pre>{
+  "bbox": [
+    0.20588235294117646,
+    0.8442923035284485,
+    0.793733933392693,
+    0.8612200033785117
+  ],
+  "block_id": "actual:p45:block:20",
+  "block_index": 20,
+  "candidate_id": "cand:p0045:0020:reference",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:reference",
+    "preset_type:reference",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.009951,
+    "block_type": "reference",
+    "has_toc_entries": false,
+    "semantic_role": "reference_lead",
+    "source_type": "Body",
+    "text_length": 88
+  },
+  "json_pointer": "/pages/44/blocks/20",
+  "page_index": 44,
+  "page_number": 45,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "reference",
+  "text_excerpt": "References: [OMB A-130], [SP 800-12], [SP 800-30], [SP 800-39], [SP 800-100], [IR 7874]."
+}</pre></div>
+  </section>
+
+  <section>
+    <h2>Review Validation</h2>
+    <pre>{
+  "candidate_count": 21,
+  "errors": [],
+  "expected_candidate_ids": [
+    "cand:p0045:0000:side_chrome",
+    "cand:p0045:0001:side_chrome",
+    "cand:p0045:0002:side_chrome",
+    "cand:p0045:0003:side_chrome",
+    "cand:p0045:0004:section_heading",
+    "cand:p0045:0005:text",
+    "cand:p0045:0006:section_heading",
+    "cand:p0045:0007:text",
+    "cand:p0045:0008:list",
+    "cand:p0045:0009:list",
+    "cand:p0045:0010:list",
+    "cand:p0045:0011:list",
+    "cand:p0045:0012:list",
+    "cand:p0045:0013:list",
+    "cand:p0045:0014:list",
+    "cand:p0045:0015:list",
+    "cand:p0045:0016:list",
+    "cand:p0045:0017:text",
+    "cand:p0045:0018:text",
+    "cand:p0045:0019:text",
+    "cand:p0045:0020:reference"
+  ],
+  "ok": true,
+  "page_case": {
+    "case_id": "page_case_0001_p0045",
+    "page_number": 45
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": [
+    "cand:p0045:0000:side_chrome",
+    "cand:p0045:0001:side_chrome",
+    "cand:p0045:0002:side_chrome",
+    "cand:p0045:0003:side_chrome",
+    "cand:p0045:0004:section_heading",
+    "cand:p0045:0005:text",
+    "cand:p0045:0006:section_heading",
+    "cand:p0045:0007:text",
+    "cand:p0045:0008:list",
+    "cand:p0045:0009:list",
+    "cand:p0045:0010:list",
+    "cand:p0045:0011:list",
+    "cand:p0045:0012:list",
+    "cand:p0045:0013:list",
+    "cand:p0045:0014:list",
+    "cand:p0045:0015:list",
+    "cand:p0045:0016:list",
+    "cand:p0045:0017:text",
+    "cand:p0045:0018:text",
+    "cand:p0045:0019:text",
+    "cand:p0045:0020:reference"
+  ]
+}</pre>
+  </section>
+
+  <section>
+    <h2>Page Case</h2>
+    <pre>{
+  "candidate_ids": [
+    "cand:p0045:0000:side_chrome",
+    "cand:p0045:0001:side_chrome",
+    "cand:p0045:0002:side_chrome",
+    "cand:p0045:0003:side_chrome",
+    "cand:p0045:0004:section_heading",
+    "cand:p0045:0005:text",
+    "cand:p0045:0006:section_heading",
+    "cand:p0045:0007:text",
+    "cand:p0045:0008:list",
+    "cand:p0045:0009:list",
+    "cand:p0045:0010:list",
+    "cand:p0045:0011:list",
+    "cand:p0045:0012:list",
+    "cand:p0045:0013:list",
+    "cand:p0045:0014:list",
+    "cand:p0045:0015:list",
+    "cand:p0045:0016:list",
+    "cand:p0045:0017:text",
+    "cand:p0045:0018:text",
+    "cand:p0045:0019:text",
+    "cand:p0045:0020:reference"
+  ],
+  "case_id": "page_case_0001_p0045",
+  "forced_by_human_annotation": false,
+  "page_index": 44,
+  "page_number": 45,
+  "preset_counts": {
+    "list": 9,
+    "reference": 1,
+    "section_heading": 2,
+    "side_chrome": 4,
+    "text": 5
+  },
+  "selection_probability_basis": {
+    "candidate_count_on_page": 21,
+    "candidate_share_estimate": 1.0,
+    "forced_page": false,
+    "method": "max(weighted_page_score_inclusion_estimate,candidate_share_estimate)",
+    "page_score": 74.25,
+    "total_candidate_count": 21,
+    "total_page_score": 74.25,
+    "weighted_page_score_inclusion_estimate": 1.0
+  },
+  "selection_probability_estimate": 1.0,
+  "selection_reason": [
+    "high_risk_preset",
+    "high_risk_candidate",
+    "boundary_geometry",
+    "high_candidate_score"
+  ],
+  "selection_score": 74.25,
+  "strata": [
+    "geometry:boundary",
+    "preset:list",
+    "preset:reference",
+    "preset:section_heading",
+    "preset:side_chrome",
+    "preset:text",
+    "risk:high"
+  ]
+}</pre>
+  </section>
+
+  <section>
+    <h2>Artifacts</h2>
+    <ul><li><a href="state.json">state.json</a></li><li><a href="sampled_candidate_manifest.json">sampled_candidate_manifest.json</a></li><li><a href="page_before.json">page_before.json</a></li><li><a href="page_before.png">page_before.png</a></li><li><a href="page_candidates.png">page_candidates.png</a></li><li><a href="selected_candidates.json">selected_candidates.json</a></li><li><a href="candidate_presets.json">candidate_presets.json</a></li><li><a href="review_request.json">review_request.json</a></li><li><a href="review_request_validation.json">review_request_validation.json</a></li><li><a href="scillm_orchestrator_page_dag_spec.json">scillm_orchestrator_page_dag_spec.json</a></li><li><a href="scillm_orchestrator_page_dag_spec_validation.json">scillm_orchestrator_page_dag_spec_validation.json</a></li><li><a href="scillm_orchestrator_page_submission.json">scillm_orchestrator_page_submission.json</a></li><li><a href="scillm_orchestrator_page_submission_validation.json">scillm_orchestrator_page_submission_validation.json</a></li><li><a href="review_validation.json">review_validation.json</a></li><li><a href="scillm_review_preflight.json">scillm_review_preflight.json</a></li><li><a href="scillm_review_receipt.json">scillm_review_receipt.json</a></li><li><a href="review_response.json">review_response.json</a></li><li><a href="scillm_page_orchestrator_run_request.json">scillm_page_orchestrator_run_request.json</a></li><li><a href="scillm_page_orchestrator_run_validation.json">scillm_page_orchestrator_run_validation.json</a></li><li><a href="patch_baseline.json">patch_baseline.json</a></li><li><a href="patch_evidence_workspace.json">patch_evidence_workspace.json</a></li><li><a href="patch_request.json">patch_request.json</a></li><li><a href="patch_validation.json">patch_validation.json</a></li><li><a href="patch_attempts_ledger.json">patch_attempts_ledger.json</a></li><li><a href="patch_attempt_01_validation.json">patch_attempt_01_validation.json</a></li><li><a href="patch_attempt_01_prompt_contract.json">patch_attempt_01_prompt_contract.json</a></li><li><a href="patch_attempt_01_prompt_review_payload.txt">patch_attempt_01_prompt_review_payload.txt</a></li></ul>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,154 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0045:0000:side_chrome",
+      "evidence": "Top header text appears at the top margin and the extracted text matches the rendered NIST title/header line.",
+      "rationale": "Preset type, location, and text agree with the page chrome evidence.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0001:side_chrome",
+      "evidence": "Horizontal rule/underscore header line appears directly below the top header.",
+      "rationale": "The candidate is page chrome with an appropriate top-margin bounding box and matching extracted underscore line.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0002:side_chrome",
+      "evidence": "Footer shows CHAPTER THREE at left and PAGE 18 at right in the bottom margin.",
+      "rationale": "Footer chrome is correctly classified as side/page chrome; normalized text order is acceptable for the visual footer content.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0003:side_chrome",
+      "evidence": "The rendered boilerplate is a narrow vertical line of text along the far left margin, but the annotated red box extends far into the main body column and overlaps body text/list/discussion areas.",
+      "rationale": "The semantic type and text are side chrome, but the bounding box is substantially too wide for the visible vertical boilerplate.",
+      "status": "defect",
+      "suggested_fix_surface": "Tighten the boilerplate side-chrome bounding box to the narrow left-margin vertical text instead of spanning into the main content column."
+    },
+    {
+      "candidate_id": "cand:p0045:0004:section_heading",
+      "evidence": "Rendered heading reads 3.1 ACCESS CONTROL in large bold text near the top of the body.",
+      "rationale": "Extracted section heading text, type, and bounding box match the visual heading.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0005:text",
+      "evidence": "Rendered blue underlined link reads Quick link to Access Control Summary Table.",
+      "rationale": "The candidate text and bounding box match the visible link; preset text is acceptable for this section-link block.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0006:section_heading",
+      "evidence": "Rendered control heading line contains AC-1 followed by POLICY AND PROCEDURES.",
+      "rationale": "The candidate captures the visible control heading with the expected section-heading role and appropriate bounds.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0007:text",
+      "evidence": "Rendered field label reads Control: below the AC-1 heading.",
+      "rationale": "The extracted label text and small bounding box match the visual label.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0008:list",
+      "evidence": "Rendered list item starts with a. Develop, document, and disseminate to ... and wraps to the next line.",
+      "rationale": "List type, text, indentation, and bounding box agree with the rendered list item.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0009:list",
+      "evidence": "Rendered nested list item starts with 1. [Selection (one or more): ...] access control policy that:",
+      "rationale": "The candidate correctly captures the nested list item, including wrapping and indentation.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0010:list",
+      "evidence": "Rendered nested item starts with (a) Addresses purpose, scope, roles, responsibilities, management commitment...",
+      "rationale": "Text, list classification, and bounding box match the visual nested list item.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0011:list",
+      "evidence": "Rendered nested item starts with (b) Is consistent with applicable laws, executive orders...",
+      "rationale": "The candidate accurately captures the list text and placement.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0012:list",
+      "evidence": "Rendered nested item starts with 2. Procedures to facilitate the implementation of the access control policy...",
+      "rationale": "List type, text, wrapping, and bounds agree with the rendered page.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0013:list",
+      "evidence": "Rendered list item starts with b. Designate an [Assignment: organization-defined official]...",
+      "rationale": "The candidate matches the visible list item and its body-column indentation.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0014:list",
+      "evidence": "Rendered list item reads c. Review and update the current access control:",
+      "rationale": "The extracted list item text, type, and bounding box align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0015:list",
+      "evidence": "Rendered nested item starts with 1. Policy [Assignment: organization-defined frequency]...",
+      "rationale": "The candidate correctly captures the nested list item and its line wrap.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0016:list",
+      "evidence": "Rendered nested item starts with 2. Procedures [Assignment: organization-defined frequency]...",
+      "rationale": "The list text, indentation, and bounding box match the rendered item.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0017:text",
+      "evidence": "Rendered paragraph begins Discussion: Access control policy and procedures address the controls in the AC family... and continues through the long discussion paragraph.",
+      "rationale": "The extracted normalized discussion paragraph corresponds to the visible text block and the bounding box covers the paragraph region.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0018:text",
+      "evidence": "Rendered line reads Related Controls: IA-1, PM-9, PM-24, PS-8, SI-12.",
+      "rationale": "The candidate captures the related-controls line with appropriate text type and bounds.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0019:text",
+      "evidence": "Rendered line reads Control Enhancements: None.",
+      "rationale": "The extracted labeled text and bounding box match the visible line.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0020:reference",
+      "evidence": "Rendered references line lists [OMB A-130], [SP 800-12], [SP 800-30], [SP 800-39], [SP 800-100], and [IR 7874].",
+      "rationale": "The candidate is correctly classified as a reference line and matches the visual text and placement.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    }
+  ],
+  "page_rationale": "The main text, headings, list items, footer, top header, and reference lines are generally extracted with matching text and structure. The page has a defect because the left-margin vertical boilerplate side-chrome candidate has a bounding box that is much wider than the rendered boilerplate and overlaps body content.",
+  "page_status": "defect",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

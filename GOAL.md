@@ -43,6 +43,7 @@ Current completed page evidence:
 | `page_0036` | Figure 1 embedded AU-4 heading typed as figure content | `artifacts/pdf_lab/page36_figure_control_heading_20260721/audit_summary.json` | `origin/main` after page36 figure-heading push |
 | `page_0036` | Figure 1 remaining diagram-region content typed as figure content | `artifacts/pdf_lab/page36_figure_region_content_20260721/audit_summary.json` | `origin/main` after page36 figure-region push |
 | `page_0045` | GS001 stale AC-2 page residual reconciliation | `artifacts/pdf_lab/page45_residual_current_20260721/audit_summary.json` | `origin/main` after page45 residual reconciliation push |
+| `page_0045` | live second-pass rotated DOI side-chrome bbox narrowing | `artifacts/pdf_lab/page45_rotated_doi_bbox_20260721/audit_summary.json` | `origin/main` after page45 rotated DOI bbox push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -76,15 +77,15 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after the page45 residual reconciliation item must be selected from
-the remaining residual findings, based on the GS001 handoff's independent
+The next candidate after the page45 rotated DOI bbox item must be selected from
+the remaining residual findings, based on current extraction evidence and fresh
 reviewer measurement:
 
 | Field | Value |
 |-------|-------|
-| Page | newly surfaced current-extraction residual |
+| Page | next newly surfaced current-extraction residual |
 | Defect class | to be selected from the remaining independent reviewer findings |
-| Observed failure | GS001 handoff residual pages inspected in this loop now have focused receipts or no-patch reconciliations: page104 had 3, page35/page36 Figure 1 diagram-region content now has focused receipts, page421 had 4, and page45 had stale AC-2 page residuals reconciled against current extraction; continue only from a newly surfaced current-extraction residual or a fresh reviewer finding |
+| Observed failure | GS001 handoff residual pages inspected in this loop now have focused receipts or no-patch reconciliations: page104 had 3, page35/page36 Figure 1 diagram-region content now has focused receipts, page421 had 4, page45 had stale AC-2 page residuals reconciled against current extraction, and the live second-pass page45 rotated DOI bbox defect now has focused/live receipts; continue only from a newly surfaced current-extraction residual or a fresh reviewer finding |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
 | Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts for page104, page35, page421, and page45; release snapshots; model-review receipts; and live current extraction |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |

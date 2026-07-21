@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "html": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/review.html",
+  "screenshot": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_one_case_20260721T0623Z/page_cases/page_case_0001_p0045/review_cdp_screenshot.png",
+  "title": "PDF Lab Second-Pass Review page_case_0001_p0045",
+  "body_text_length": 21983,
+  "body_width": 1440,
+  "body_height": 13837.09375,
+  "image_count": 2,
+  "images": [
+    {
+      "src": "page_before.png",
+      "complete": true,
+      "width": 1275,
+      "height": 1650
+    },
+    {
+      "src": "page_candidates.png",
+      "complete": true,
+      "width": 1275,
+      "height": 1650
+    }
+  ],
+  "expected_text_present": true
+}
