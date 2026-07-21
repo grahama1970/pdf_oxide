@@ -24,6 +24,7 @@ Current completed page evidence:
 | `nist_phase54_page_0046` | `grahama1970/pdf_oxide#3` | `artifacts/pdf_lab/restart_recovery_20260721T0100Z/page46_final_audit_summary.json` | `origin/main` at `9c80e780f6716b5284d89bac196dffbc261342b7` |
 | `page_0456` | control-table column headers | `artifacts/pdf_lab/page456_control_table_headers_20260721/audit_summary.json` | `origin/main` at `007d572acade8a962b1c033a742eae35648d1a26` |
 | `page_0034` | sidebar chrome contamination | `artifacts/pdf_lab/page34_candidate_audit_20260721/audit_summary.json` | `origin/main` at `2f04e0582722f380bbf01da416d68b0c0418100d` |
+| `page_0034` | body lines as headings | `artifacts/pdf_lab/page34_candidate_audit_20260721/audit_summary.json` | `origin/main` after page34 body-heading audit push |
 | `page_0045` | AC-1 lower-alpha list markers | `artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/audit_summary.json` | `origin/main` at `4f6e35b3447191ff9c6ec485d4f4eeb72158381c` |
 | `page_0421` | glossary term-definition materialization | `artifacts/pdf_lab/page421_glossary_term_audit_20260721/audit_summary.json` | `origin/main` after page421 push |
 | `page_0104` | AU-12 page-break field label | `artifacts/pdf_lab/page104_candidate_audit_20260721/audit_summary.json` | `origin/main` after page104 push |
@@ -69,7 +70,7 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after the page45 Discussion semantic-role item must be selected from
+The next candidate after the page34 body-heading audit item must be selected from
 the remaining residual findings, based on the GS001 handoff's independent
 reviewer measurement:
 
@@ -77,7 +78,7 @@ reviewer measurement:
 |-------|-------|
 | Page | `page_0104`, `page_0035`, `page_0421`, or remaining `page_0045` residual |
 | Defect class | to be selected from the remaining independent reviewer findings |
-| Observed failure | GS001 handoff reports residual findings after prior fixes: page104 has 3, page35 has 13, page421 has 4, and page45 had 20 before the focused page45 receipt pass; the AC-1 lower-alpha marker, Control Enhancements None, quick-link, AC-1 heading, TOC-lineage, chrome-noise, Related Controls, Discussion text line-order, and Discussion semantic-role checklist items now have focused receipts |
+| Observed failure | GS001 handoff reports residual findings after prior fixes: page104 has 3, page35 has 13, page421 has 4, and page45 had 20 before the focused page45 receipt pass; page34 body-heading audit and the AC-1 lower-alpha marker, Control Enhancements None, quick-link, AC-1 heading, TOC-lineage, chrome-noise, Related Controls, Discussion text line-order, and Discussion semantic-role checklist items now have focused receipts |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
 | Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts for page104, page35, page421, and page45; release snapshots; model-review receipts; and live current extraction |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |

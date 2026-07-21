@@ -1,0 +1,62 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T05:05:00Z",
+  "status": "passing_current_contract_no_patch",
+  "mocked": "no",
+  "live": "yes",
+  "page_id": "nist_phase54_page_0034",
+  "page_number": 34,
+  "pdf_page_index": 33,
+  "candidate": {
+    "defect_class": "sidebar chrome contamination / body lines misclassified as section headings",
+    "owner": "nist_preset",
+    "selected_from": [
+      "/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md section 5",
+      "artifacts/pdf_lab/page34_candidate_audit_20260721/selection_receipt.json"
+    ],
+    "resolution": "Current main already satisfies the selected contract; no code patch is justified."
+  },
+  "current_extraction": {
+    "snapshot": "artifacts/pdf_lab/page34_candidate_audit_20260721/current_page34_snapshot.json",
+    "snapshot_sha256": "9d6c84fc967d306ffddee7824c1259bb2cb66f7656c3a80d0b0e28e0f46b8d48",
+    "block_count": 12,
+    "type_counts": {
+      "footnote": 1,
+      "header_footer_noise": 4,
+      "paragraph_block": 3,
+      "section_heading": 3,
+      "section_subtitle": 1
+    },
+    "section_headings": [
+      {
+        "id": "actual:p34:block:4",
+        "text": "CHAPTER TWO"
+      },
+      {
+        "id": "actual:p34:block:5",
+        "text": "THE FUNDAMENTALS"
+      },
+      {
+        "id": "actual:p34:block:8",
+        "text": "2.1 REQUIREMENTS AND CONTROLS"
+      }
+    ],
+    "long_body_heading_suspect_count": 0,
+    "long_body_heading_suspects": [],
+    "sidebar_chrome_non_noise_contamination_count": 0,
+    "sidebar_chrome_non_noise_contamination": []
+  },
+  "proof": {
+    "commands": [
+      "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page34_candidate_audit_20260721/current_page34_snapshot.json --max-pages 34 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+      "pytest -q tests/test_nist_page34_sidebar_chrome.py"
+    ],
+    "logs": [
+      "artifacts/pdf_lab/page34_candidate_audit_20260721/test_logs/current_snapshot_page34.log",
+      "artifacts/pdf_lab/page34_candidate_audit_20260721/test_logs/pytest_page34_sidebar_chrome_current.log"
+    ],
+    "focused_result": "1 passed, 5 warnings in 25.84s",
+    "does_not_prove": "remaining page35/page104/page421/page45 residuals or all-candidates goal completion"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page34_candidate_audit_20260721/selection_receipt.json"
+}
