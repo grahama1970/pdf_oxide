@@ -54,6 +54,7 @@
         "live": true,
         "provider_live": true,
         "run_dir": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640",
+        "tau_issue_comment": "https://github.com/grahama1970/tau/issues/123#issuecomment-5036636615",
         "assessment": "DIAGNOSIS: BLOCKED_CURRENT_GATE: Tau/SciLLM vlm-free2 route unresponsive with cascading alternate-route exhaustion; no legitimate self-unblock path exists inside pdf_oxide."
       }
     }

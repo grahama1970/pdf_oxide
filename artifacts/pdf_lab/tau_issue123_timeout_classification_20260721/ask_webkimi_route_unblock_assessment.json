@@ -12,6 +12,7 @@
   "handler": "webkimi",
   "transport": "kimi.submit",
   "ask_run_dir": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640",
+  "tau_issue_comment": "https://github.com/grahama1970/tau/issues/123#issuecomment-5036636615",
   "ask_execution_status": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640/execution-status.json",
   "tau_dag_receipt": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640/tau-receipts/dag-receipt.json",
   "handler_receipt": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640/node-artifacts/handler-webkimi/node-receipt.json",
