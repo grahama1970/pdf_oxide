@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T14:11:32Z
+**Timestamp**: 2026-07-21T14:24:00Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -13,7 +13,7 @@
 
 - Main repo URL: `https://github.com/grahama1970/pdf_oxide`
 - Remote main verification command: `git ls-remote origin refs/heads/main`
-- Verified remote main before page41 Tau-boundary receipt commit: `b801350ac2b703497508bacae5df541ea3f6e9e1`
+- Verified remote main before page41 Tau-live review receipt commit: `dcf87cbfca165f6779dffa4fb37e7b21e450ad8d`
 - Clean integration worktree: `/tmp/pdf_oxide_integrate_gs001_20260721`
 - Integration branch: `codex/integrate-gs001-reconciler-20260721`
 - Do not continue from the dirty detached checkout at `/home/graham/workspace/experiments/pdf_oxide` unless intentionally reconciling worktrees.
@@ -69,36 +69,42 @@
     - `review_bundle_validation.ok=true`
     - `scillm_orchestrator_page_submission_validation.ok=true`, DAG spec SHA `d555159d2a6dcc10c20a6eef494aa312fa48291cbdb133f6bd2e07c272fbfa23`
 
-## 5. Current Blocker
+## 5. Page41 Tau Boundary Resolution
 
-- Page41 is explicitly blocked at the Tau boundary, not by a new pdf_oxide extraction failure.
-- Block receipt:
+- Page41 was explicitly blocked at the Tau boundary, not by a new pdf_oxide extraction failure.
+- Historical block receipt:
   - `artifacts/pdf_lab/page41_tau_boundary_blocked_20260721/audit_summary.json`
-- Tau issue:
+- Tau issue and fix:
   - `https://github.com/grahama1970/tau/issues/122`
   - Title: `Add Tau-owned generic SciLLM chat/VLM review executor for PDF Lab page cases`
-- Boundary:
-  - `pdf_oxide` produced valid page evidence and Tau contract inputs.
-  - No discovered Tau-owned generic chat/VLM executor consumes `review_request.json` and emits `review_response.json` plus provider-live receipt.
-  - Do not bypass this by calling SciLLM/OpenCode directly from `pdf_oxide`.
-- External unblock attempts:
+  - Tau commit: `b48d815c34ee603e79f4c6f64edcfc92ccf3d8d4`
+  - New Tau command: `tau scillm-chat-review`
+  - Tau proof bundle: `/tmp/tau-issue122-pdf-lab-executor/experiments/goal-locked-subagents/proofs/issue-122-pdf-lab-chat-review-20260721/`
+- Historical external unblock attempts:
   - Brave Search artifact: `artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/webgpt_unblock_brave_search.json`
   - WebGPT browser-oracle doctor artifact: `artifacts/pdf_lab/page41_tau_boundary_blocked_20260721/webgpt_browser_oracle_doctor.json`; readiness `needs_attention`, issue `tab_stale_manual_binding`, tab `837359458`
   - Ask/Tau WebClaude run dir: `/mnt/storage12tb/skills/ask/outputs/pdf_oxide_page41_tau_boundary/pdf-lab-page41-tau-boundary-webclaude-20260721`
   - Ask/Tau DAG receipt: `/mnt/storage12tb/skills/ask/outputs/pdf_oxide_page41_tau_boundary/pdf-lab-page41-tau-boundary-webclaude-20260721/tau-receipts/dag-receipt.json`; status `BLOCKED`, verdict `COMMAND_FAILED`, `mocked=false`, `live=true`, `provider_live=false`
   - WebClaude node receipt: `/mnt/storage12tb/skills/ask/outputs/pdf_oxide_page41_tau_boundary/pdf-lab-page41-tau-boundary-webclaude-20260721/node-artifacts/handler-webclaude/node-receipt.json`; timeout waiting for sentinel `<<<CLAUDE_DONE:20260721T140332Z:a9b9f1df>>>`, `raw_chars=50093`, `clean_chars=0`, `raw_contains_sentinel=false`
+- Live resolution:
+  - Tau live command: `uv run tau scillm-chat-review --request /tmp/pdf_oxide_integrate_gs001_20260721/artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_request.json --out /tmp/tau-issue122-page41-live-20260721T1422/receipt.json --response-out /tmp/tau-issue122-page41-live-20260721T1422/review_response.json --scillm-base-url http://127.0.0.1:4001 --caller-skill pdf-lab --apply --request-timeout-s 120`
+  - Tau result: `status=PASS`, `provider_live=true`, `http_status=200`, `duration_seconds=20.373208`, parsed schema `pdf_lab.second_pass.review_response.v1`, `parsed_candidate_finding_count=13`, `parsed_page_status=clean`
+  - pdf_oxide case receipt: `artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/tau_scillm_chat_review_receipt.json`
+  - pdf_oxide review response: `artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_response.json`
+  - pdf_oxide validation: `review_validation.ok=true`; `terminal_ledger.terminal_status=reviewed_clean`; `terminal_ledger_validation.ok=true`
+  - Page audit: `artifacts/pdf_lab/page41_tau_live_review_20260721/audit_summary.json`
 
 ## 6. Campaign Status
 
 | Field | Value |
 |-------|-------|
-| `passed` | `0` for the active page41 live-review item |
+| `passed` | `1` for the page41 live-review item |
 | `failed` | `0` |
 | `blocked_by_systemic_failure` | `0` |
-| `explicitly_blocked` | `1` |
+| `explicitly_blocked` | `0` |
 | `not_run` | `452` unreviewed pages remaining in the filtered current manifest |
-| Active page/checklist item | `page_0041` live second-pass model-backed page review through Tau |
-| Latest failure signature | No Tau-owned generic SciLLM chat/VLM review executor found; WebGPT tab stale; Ask/Tau WebClaude sentinel timeout |
+| Active page/checklist item | next fresh selected current-extraction page after page41 |
+| Latest failure signature | none for page41 |
 
 ## 7. Important Correction To Claude Report
 
@@ -122,8 +128,8 @@
 
 Use the same one-candidate proof ladder, without direct SciLLM calls from `pdf_oxide`:
 
-1. Resume page41 only after Tau issue `#122` is resolved or another Tau-owned generic chat/VLM executor receipt is available.
+1. Select the next fresh current-extraction candidate after excluding page41.
 2. Any candidate whose model/executor review is required must go through Tau DAG contracts, not direct SciLLM/OpenCode calls from this repo.
 3. Criterion 6 live GitHub apply remains blocked until a valid approval receipt for mutation exists.
 
-Before patching the next item, rerun page41 live review through the Tau-owned executor and require `validation_result.status != blocked`, then decide whether the page41 candidates are clean, need a focused regression, or need a page-local patch.
+Before patching the next item, produce a selection receipt with source page image/current extraction/model-review artifacts and the focused regression that will prove that one checklist item.

@@ -78,7 +78,7 @@ Current completed page evidence:
 | `page_0028` | live second-pass review explicitly blocked at Tau/SciLLM orchestration boundary after authenticated `vlm-free2` ReadTimeout; pdf_oxide-side chunking drift rolled back; Tau issue filed | `artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/page_cases/page_case_0001_p0028/scillm_review_error.json`, `artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/tau-receipts/dag-receipt.json`, `https://github.com/grahama1970/tau/issues/120` | `origin/main` at `e68942f185c3a9ffaa9097a6f0a26155541631a8` |
 | `page_0456` | GS001 detected-lattice table/block reconciliation integrated onto current main; residuals remain the separate DOI-chrome/fail-open classes | `artifacts/pdf_lab/gs001_reconciler_main_integration_20260721/integration_receipt.json` | `origin/main` at `042126b10fff3de1832ed64b4236443018148b04` |
 | `all_pages` | DOI/publication side-chrome census after GS001 integration and normal `uv run` PyMuPDF dev dependency repair | `artifacts/pdf_lab/doi_chrome_census_20260721/audit_summary.json` | `origin/main` after DOI-chrome census push |
-| `page_0041` | live second-pass model-backed review explicitly blocked at Tau boundary after pdf_oxide produced a valid model-ready page bundle and Tau contract inputs; no Tau-owned generic chat/VLM executor was found, WebGPT binding was stale, and Ask/Tau WebClaude fallback timed out without sentinel response | `artifacts/pdf_lab/page41_tau_boundary_blocked_20260721/audit_summary.json`, `artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_bundle.zip`, `/mnt/storage12tb/skills/ask/outputs/pdf_oxide_page41_tau_boundary/pdf-lab-page41-tau-boundary-webclaude-20260721/tau-receipts/dag-receipt.json`, `https://github.com/grahama1970/tau/issues/122` | pending push after page41 Tau-boundary receipt commit |
+| `page_0041` | live second-pass model-backed review rerun through Tau-owned `scillm-chat-review`; 13/13 candidate findings clean, pdf_oxide review validation and terminal ledger validation pass | `artifacts/pdf_lab/page41_tau_boundary_blocked_20260721/audit_summary.json`, `artifacts/pdf_lab/page41_tau_live_review_20260721/audit_summary.json`, `artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_bundle.zip`, `artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/tau_scillm_chat_review_receipt.json`, `https://github.com/grahama1970/tau/issues/122` | pending push after page41 Tau-live review receipt commit |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -118,24 +118,24 @@ fresh current-extraction reviewer/candidate selection pass:
 
 | Field | Value |
 |-------|-------|
-| Page | `page_0041` |
-| Defect class | Tau-bound live second-pass review transport for 13 current candidates (`side_chrome`, `text`, `section_heading`, `footnote`) |
-| Observed failure | pdf_oxide prepared the original image, annotated candidate image, extracted page JSON, candidate presets, model-ready prompt payload, HTML review artifact, ZIP bundle, and Tau submission contract. The review cannot advance because no Tau-owned generic chat/VLM executor was found for this request shape; the human-provided WebGPT tab is stale and the Ask/Tau WebClaude fallback timed out without a sentinel-delimited provider response. |
+| Page | fresh reviewer-selected page after excluding page41 |
+| Defect class | to be selected from fresh current-extraction/model-review evidence |
+| Observed failure | page41 Tau-bound live second-pass review is now reviewed clean through Tau commit `b48d815c34ee603e79f4c6f64edcfc92ccf3d8d4`; current broad NIST deterministic suite passes after page45 rotated DOI bbox, NIST table duplicate suppression, page28 fixture/dependency repairs, GS001 table/block reconciliation, page34/page45 focused rechecks, DOI/publication side-chrome census, and page41 Tau live review |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
-| Candidate artifacts to inspect first | `artifacts/pdf_lab/fresh_candidate_selection_after_doi_chrome_20260721/sampled_page_cases_unreviewed.json`, `artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/`, `artifacts/pdf_lab/page41_tau_boundary_blocked_20260721/audit_summary.json`, `/mnt/storage12tb/skills/ask/outputs/pdf_oxide_page41_tau_boundary/pdf-lab-page41-tau-boundary-webclaude-20260721/` |
-| Constraint | do not call SciLLM or OpenCode directly from pdf_oxide; unblock Tau issue `https://github.com/grahama1970/tau/issues/122` or provide a usable Tau-owned executor receipt before rerunning page41 live review |
+| Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts, release snapshots, model-review receipts, and a fresh current-extraction reviewer pass excluding page41 |
+| Constraint | select one checklist item only; preserve visual/current extraction evidence before patching; any model/executor work must use Tau-owned commands such as `tau scillm-chat-review`, not direct SciLLM/OpenCode from pdf_oxide |
 
 Current campaign status for the active page41 item:
 
 | Field | Value |
 |-------|-------|
-| `passed` | `0` |
+| `passed` | `1` |
 | `failed` | `0` |
 | `blocked_by_systemic_failure` | `0` |
-| `explicitly_blocked` | `1` |
+| `explicitly_blocked` | `0` |
 | `not_run` | `452` unreviewed pages remaining in the filtered current manifest |
-| Active page/checklist item | `page_0041` live second-pass model-backed page review through Tau |
-| Latest failure signature | No Tau-owned generic SciLLM chat/VLM review executor found; WebGPT tab `837359458` stale; Ask/Tau WebClaude run live but provider-unusable due sentinel timeout |
+| Active page/checklist item | next fresh selected current-extraction page after page41 |
+| Latest failure signature | none for page41; Tau live review receipt passed with `provider_live=true`, `http_status=200`, `duration_seconds=20.373208`, `parsed_candidate_finding_count=13`, `parsed_page_status=clean` |
 
 Before patching the next item, produce a selection receipt that names the
 exact page image/current extraction/model-review artifacts used and the focused

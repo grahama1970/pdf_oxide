@@ -17,6 +17,7 @@
     "review.html",
     "review_request.json",
     "review_request_validation.json",
+    "review_response.json",
     "review_validation.json",
     "sampled_candidate_manifest.json",
     "scillm_orchestrator_page_dag_spec.json",
@@ -27,6 +28,8 @@
     "scillm_page_orchestrator_run_validation.json",
     "selected_candidates.json",
     "state.json",
+    "tau_scillm_chat_review_raw_response.json",
+    "tau_scillm_chat_review_receipt.json",
     "terminal_ledger.json",
     "terminal_ledger_validation.json"
   ],
@@ -34,10 +37,10 @@
   "terminal_ledger_matches_argument": true,
   "terminal_ledger_validation_matches_recomputed": true,
   "terminal_ledger_validation_ok": true,
-  "terminal_status": "still_open",
+  "terminal_status": "reviewed_clean",
   "unsafe_evidence_artifacts": [],
   "unsafe_zip_entries": [],
   "zip_content_ok": true,
-  "zip_entry_count": 34,
+  "zip_entry_count": 39,
   "zip_path": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_bundle.zip"
 }

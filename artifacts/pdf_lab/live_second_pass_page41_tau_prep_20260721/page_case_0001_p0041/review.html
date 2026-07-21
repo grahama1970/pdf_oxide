@@ -112,8 +112,8 @@
     <div class="meta">
       <div><div class="label">Case</div><div class="value">page_case_0001_p0041</div></div>
       <div><div class="label">Page</div><div class="value">41</div></div>
-      <div><div class="label">Status</div><div class="value">still_open</div></div>
-      <div><div class="label">Reason</div><div class="value">dry_run_review_not_executed</div></div>
+      <div><div class="label">Status</div><div class="value">reviewed_clean</div></div>
+      <div><div class="label">Reason</div><div class="value">scillm_review_validated_clean</div></div>
       <div><div class="label">Commit</div><div class="value">none</div></div>
     </div>
   </header>
@@ -524,9 +524,7 @@
     <h2>Review Validation</h2>
     <pre>{
   "candidate_count": 13,
-  "errors": [
-    "dry_run_review_not_executed"
-  ],
+  "errors": [],
   "expected_candidate_ids": [
     "cand:p0041:0000:side_chrome",
     "cand:p0041:0001:side_chrome",
@@ -542,13 +540,27 @@
     "cand:p0041:0011:footnote",
     "cand:p0041:0012:footnote"
   ],
-  "ok": false,
+  "ok": true,
   "page_case": {
     "case_id": "page_case_0001_p0041",
     "page_number": 41
   },
   "schema": "pdf_lab.second_pass.review_validation.v1",
-  "seen_candidate_ids": []
+  "seen_candidate_ids": [
+    "cand:p0041:0000:side_chrome",
+    "cand:p0041:0001:side_chrome",
+    "cand:p0041:0002:side_chrome",
+    "cand:p0041:0003:side_chrome",
+    "cand:p0041:0004:text",
+    "cand:p0041:0005:text",
+    "cand:p0041:0006:section_heading",
+    "cand:p0041:0007:text",
+    "cand:p0041:0008:text",
+    "cand:p0041:0009:text",
+    "cand:p0041:0010:footnote",
+    "cand:p0041:0011:footnote",
+    "cand:p0041:0012:footnote"
+  ]
 }</pre>
   </section>
 
@@ -611,7 +623,7 @@
 
   <section>
     <h2>Artifacts</h2>
-    <ul><li><a href="state.json">state.json</a></li><li><a href="sampled_candidate_manifest.json">sampled_candidate_manifest.json</a></li><li><a href="page_before.json">page_before.json</a></li><li><a href="page_before.png">page_before.png</a></li><li><a href="page_candidates.png">page_candidates.png</a></li><li><a href="selected_candidates.json">selected_candidates.json</a></li><li><a href="candidate_presets.json">candidate_presets.json</a></li><li><a href="review_request.json">review_request.json</a></li><li><a href="review_request_validation.json">review_request_validation.json</a></li><li><a href="scillm_orchestrator_page_dag_spec.json">scillm_orchestrator_page_dag_spec.json</a></li><li><a href="scillm_orchestrator_page_dag_spec_validation.json">scillm_orchestrator_page_dag_spec_validation.json</a></li><li><a href="scillm_orchestrator_page_submission.json">scillm_orchestrator_page_submission.json</a></li><li><a href="scillm_orchestrator_page_submission_validation.json">scillm_orchestrator_page_submission_validation.json</a></li><li><a href="review_validation.json">review_validation.json</a></li><li><a href="scillm_page_orchestrator_run_request.json">scillm_page_orchestrator_run_request.json</a></li><li><a href="scillm_page_orchestrator_run_validation.json">scillm_page_orchestrator_run_validation.json</a></li></ul>
+    <ul><li><a href="state.json">state.json</a></li><li><a href="sampled_candidate_manifest.json">sampled_candidate_manifest.json</a></li><li><a href="page_before.json">page_before.json</a></li><li><a href="page_before.png">page_before.png</a></li><li><a href="page_candidates.png">page_candidates.png</a></li><li><a href="selected_candidates.json">selected_candidates.json</a></li><li><a href="candidate_presets.json">candidate_presets.json</a></li><li><a href="review_request.json">review_request.json</a></li><li><a href="review_request_validation.json">review_request_validation.json</a></li><li><a href="scillm_orchestrator_page_dag_spec.json">scillm_orchestrator_page_dag_spec.json</a></li><li><a href="scillm_orchestrator_page_dag_spec_validation.json">scillm_orchestrator_page_dag_spec_validation.json</a></li><li><a href="scillm_orchestrator_page_submission.json">scillm_orchestrator_page_submission.json</a></li><li><a href="scillm_orchestrator_page_submission_validation.json">scillm_orchestrator_page_submission_validation.json</a></li><li><a href="tau_scillm_chat_review_receipt.json">tau_scillm_chat_review_receipt.json</a></li><li><a href="tau_scillm_chat_review_raw_response.json">tau_scillm_chat_review_raw_response.json</a></li><li><a href="review_response.json">review_response.json</a></li><li><a href="review_validation.json">review_validation.json</a></li><li><a href="scillm_page_orchestrator_run_request.json">scillm_page_orchestrator_run_request.json</a></li><li><a href="scillm_page_orchestrator_run_validation.json">scillm_page_orchestrator_run_validation.json</a></li><li><a href="review.html">review.html</a></li><li><a href="terminal_ledger_validation.json">terminal_ledger_validation.json</a></li></ul>
   </section>
 </main>
 </body>
