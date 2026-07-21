@@ -49,7 +49,7 @@ DEFAULT_TRANSPORT_CHILD_MODE = "apply_patches"
 DEFAULT_ALLOWED_PATCH_PREFIXES = ["python/pdf_oxide/", "src/", "scripts/pdf_lab/", "tests/"]
 TRANSPORT_SUCCESS_DELIVERY_STATES = {"completed", "acted", "idle_seen"}
 DEFAULT_SCILLM_ORCHESTRATOR_OPENCODE_MODEL = "opencode-go/kimi-k2.6"
-FALLBACK_SCILLM_AUTH_TOKEN = "sk-dev-proxy-123"
+FALLBACK_SCILLM_AUTH_TOKEN = "PDF_LAB_NO_STATIC_SCILLM_TOKEN"
 PATCH_PROMPT_PROFILES = {"full", "compact", "plan_only"}
 PATCH_REPAIR_STRATEGIES = {"single", "split", "chat_plan_split"}
 PAGE_ORCHESTRATOR_MODES = {"dry_run", "live"}
@@ -793,6 +793,12 @@ def build_candidate_presets(page_case: dict[str, Any], candidates: list[dict[str
                 "Does the rendered page evidence agree with this table candidate's visible bbox, "
                 "row/column structure, and explicit off-page/full-bbox metadata?"
             )
+        if candidate.get("preset_type") == "text":
+            return (
+                "Does the rendered page evidence agree with this generic text review stratum, "
+                "including clean-compatible specific extracted subtypes such as section_subtitle "
+                "when text, bbox, and visual role are accurate?"
+            )
         return (
             "Does the rendered page evidence agree with this extracted candidate's preset type, "
             "bounding box, text, and nearby structure?"
@@ -800,6 +806,13 @@ def build_candidate_presets(page_case: dict[str, Any], candidates: list[dict[str
 
     return {
         "schema": CANDIDATE_PRESETS_SCHEMA,
+        "preset_contract": {
+            "text": (
+                "preset_type text is a broad review stratum, not an exact expected semantic type; "
+                "a more specific extracted subtype such as section_subtitle is clean-compatible "
+                "when its text, bbox, and visual role are accurate"
+            )
+        },
         "page_case": {
             "case_id": page_case.get("case_id"),
             "page_number": page_case.get("page_number"),
@@ -897,10 +910,18 @@ def build_review_request(
         "- Return exactly one finding for each required_candidate_ids entry and no other candidate_id values.\n"
         "- Do not infer, rewrite, or repair candidate_id suffixes from preset_type, extracted JSON type, visual class, or rationale.\n"
         "- If the visual/extracted evidence suggests a different semantic type, describe that only in status/rationale/suggested_fix_surface; keep candidate_id unchanged.\n\n"
+        "Preset type compatibility:\n"
+        "- preset_type text is a broad review stratum, not an expected exact semantic type.\n"
+        "- A more specific extracted subtype such as section_subtitle is clean-compatible with preset_type text when its text, bbox, and visual role are accurate.\n"
+        "- Do not report a defect solely because the extracted subtype is more specific than preset_type text.\n\n"
         "Suggested fix surface discipline:\n"
         "- For status clean, suggested_fix_surface MUST be null, an empty string, or the literal string \"none\".\n"
         "- For status defect, suggested_fix_surface MUST identify the concrete fix surface, such as pdf_oxide_core, nist_preset, export/schema, UI, or external harness.\n"
         "- Do not include optional improvement advice in suggested_fix_surface for a clean finding; put clean rationale in rationale only.\n\n"
+        "Page/candidate status consistency:\n"
+        "- page_status clean requires every candidate finding status to be clean.\n"
+        "- page_status defect requires at least one defect candidate finding.\n"
+        "- page_status substrate_blocked requires at least one substrate_blocked candidate finding and allows only clean or substrate_blocked candidate findings.\n\n"
         f"required_candidate_ids:\n{json.dumps(required_candidate_ids, indent=2)}\n\n"
         "Allowed status values: clean, defect, unsure, substrate_blocked.\n"
         "Return a JSON object with exactly this shape. Keep every candidate_id unchanged. "
@@ -967,6 +988,14 @@ def build_review_request(
             "schema": "pdf_lab.second_pass.review_response.v1",
             "page_status": ["clean", "defect", "unsure", "substrate_blocked"],
             "candidate_findings": "one finding per candidate_id",
+            "preset_type_compatibility": {
+                "text": "broad review stratum; section_subtitle may be clean-compatible when text, bbox, and visual role are accurate",
+            },
+            "status_consistency": {
+                "clean": "requires every candidate finding status to be clean",
+                "defect": "requires at least one defect candidate finding",
+                "substrate_blocked": "requires at least one substrate_blocked candidate finding and allows only clean or substrate_blocked findings",
+            },
             "suggested_fix_surface": {
                 "clean": "must be null, empty string, or 'none'",
                 "defect": "must identify the concrete fix surface",
@@ -8252,7 +8281,7 @@ def run_page_case(
     if review_fixture_artifact is not None:
         terminal["evidence_artifacts"].append(review_fixture_artifact)
     if review_response is not None:
-        if review_mode == "live":
+        if review_mode == "live" and review_receipt is not None:
             terminal["evidence_artifacts"].append("scillm_review_receipt.json")
         terminal["evidence_artifacts"].append("review_response.json")
     if review_error is not None:

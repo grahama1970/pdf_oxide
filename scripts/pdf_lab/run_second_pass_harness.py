@@ -43,7 +43,7 @@ PAGE_RESULT_READ_ERROR_KEYS = (
     "code_root_cleanup_read_errors",
 )
 DEFAULT_SCILLM_MOUNTED_WORKSPACE_PREFIXES = ["/home/graham/workspace"]
-FALLBACK_SCILLM_AUTH_TOKEN = "sk-dev-proxy-123"
+FALLBACK_SCILLM_AUTH_TOKEN = "PDF_LAB_NO_STATIC_SCILLM_TOKEN"
 BASE_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
     "terminal_ledger.json",
     "review_bundle.zip",

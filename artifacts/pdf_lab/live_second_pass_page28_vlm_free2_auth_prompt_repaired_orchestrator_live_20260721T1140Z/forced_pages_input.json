@@ -1,0 +1,8 @@
+{
+  "page_count": 1,
+  "pages": [
+    28
+  ],
+  "schema": "pdf_lab.second_pass.forced_pages_input.v1",
+  "source": "artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/human_forced_pages.json"
+}

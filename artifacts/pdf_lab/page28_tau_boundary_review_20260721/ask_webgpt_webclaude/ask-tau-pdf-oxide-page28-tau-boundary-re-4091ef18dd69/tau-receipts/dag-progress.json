@@ -1,0 +1,124 @@
+{
+  "active_goal_hash": "sha256:f2eac40967d045fc103c8762e6fd5b7627784a503665faf2b09f4f8393a9d200",
+  "active_subagents": [],
+  "completed_subagents": [
+    {
+      "agent": "handler-webclaude",
+      "node_id": "handler-webclaude"
+    },
+    {
+      "agent": "handler-webgpt",
+      "node_id": "handler-webgpt"
+    },
+    {
+      "agent": "join",
+      "node_id": "join"
+    }
+  ],
+  "dag_id": "ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69",
+  "entry_node": "handler-webgpt",
+  "event_count": 6,
+  "events": [
+    {
+      "agent": "handler-webclaude",
+      "attempt": 1,
+      "event": "node_started",
+      "node_id": "handler-webclaude",
+      "ts": "2026-07-21T11:53:27Z"
+    },
+    {
+      "agent": "handler-webgpt",
+      "attempt": 1,
+      "event": "node_started",
+      "node_id": "handler-webgpt",
+      "ts": "2026-07-21T11:53:27Z"
+    },
+    {
+      "agent": "handler-webclaude",
+      "attempt": 1,
+      "event": "node_completed",
+      "node_id": "handler-webclaude",
+      "ok": true,
+      "ts": "2026-07-21T11:55:23Z"
+    },
+    {
+      "agent": "handler-webgpt",
+      "attempt": 1,
+      "event": "node_completed",
+      "node_id": "handler-webgpt",
+      "ok": true,
+      "ts": "2026-07-21T11:57:36Z"
+    },
+    {
+      "agent": "join",
+      "attempt": 1,
+      "event": "node_started",
+      "node_id": "join",
+      "ts": "2026-07-21T11:57:36Z"
+    },
+    {
+      "agent": "join",
+      "attempt": 1,
+      "event": "node_completed",
+      "node_id": "join",
+      "ok": true,
+      "ts": "2026-07-21T11:57:36Z"
+    }
+  ],
+  "last_event": {
+    "agent": "join",
+    "attempt": 1,
+    "event": "node_completed",
+    "node_id": "join",
+    "ok": true,
+    "ts": "2026-07-21T11:57:36Z"
+  },
+  "live": true,
+  "mocked": false,
+  "node_count": 3,
+  "node_progress": [
+    {
+      "agent": "handler-webclaude",
+      "attempt": 1,
+      "last_event_at": "2026-07-21T11:55:23Z",
+      "node_id": "handler-webclaude",
+      "status": "COMPLETED"
+    },
+    {
+      "agent": "handler-webgpt",
+      "attempt": 1,
+      "last_event_at": "2026-07-21T11:57:36Z",
+      "node_id": "handler-webgpt",
+      "status": "COMPLETED"
+    },
+    {
+      "agent": "join",
+      "attempt": 1,
+      "last_event_at": "2026-07-21T11:57:36Z",
+      "node_id": "join",
+      "status": "COMPLETED"
+    }
+  ],
+  "ok": true,
+  "proof_scope": {
+    "does_not_prove": [
+      "The active subprocess will finish successfully.",
+      "Provider/model semantic quality.",
+      "Final DAG acceptance before dag-receipt.json is written."
+    ],
+    "proves": [
+      "Tau has written a durable local progress artifact for this DAG run.",
+      "Operators can inspect active and completed subagents before the final DAG receipt exists."
+    ]
+  },
+  "provider_live": false,
+  "run_dir": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/tau-receipts",
+  "scheduler": "bounded-ready-queue",
+  "schema": "tau.dag_progress.v1",
+  "status": "PASS",
+  "terminal_nodes": [
+    "human"
+  ],
+  "updated_at": "2026-07-21T11:57:36Z",
+  "verdict": "PASS"
+}

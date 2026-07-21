@@ -532,6 +532,21 @@ def _suppress_rotated_side_chrome_duplicates(elements: list[dict[str, Any]]) -> 
     return out
 
 
+def _normalize_page_chrome_source_types(elements: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    normalized: list[dict[str, Any]] = []
+    for element in elements:
+        if (
+            element.get("type") == "header_footer_noise"
+            and element.get("semantic_role") == "page_chrome"
+            and element.get("source_type") == "Body"
+        ):
+            bbox = element.get("bbox")
+            if isinstance(bbox, list) and len(bbox) == 4 and float(bbox[1]) >= 0.90:
+                element = {**element, "source_type": "Footer"}
+        normalized.append(element)
+    return normalized
+
+
 def _is_numbered_footnote_start(element: dict[str, Any]) -> bool:
     text = _normalize_text(element.get("text") or "")
     return bool(re.match(r"^\d+\s+\S+", text))
@@ -1509,6 +1524,7 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
         blocks = raw_elements
         ledger_used = None
 
+    blocks = _normalize_page_chrome_source_types(blocks)
     blocks = _suppress_rotated_side_chrome_duplicates(blocks)
     blocks = _add_toc_lineage(blocks, pdf_path, page_index + 1)
 

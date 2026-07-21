@@ -436,6 +436,39 @@ def test_rotated_side_chrome_suppresses_duplicate_margin_fragments() -> None:
     ]
 
 
+def test_page28_footer_source_type_normalizes_body_to_footer() -> None:
+    mod = _load_module()
+    element = {
+        "id": "actual:p28:block:2",
+        "page": 28,
+        "pdf_page_index": 27,
+        "type": "header_footer_noise",
+        "source_type": "Body",
+        "semantic_role": "page_chrome",
+        "bbox": [
+            0.14705882352941177,
+            0.9414804632013495,
+            0.8528853273080066,
+            0.9549618345318418,
+        ],
+        "text": "CHAPTER ONE  PAGE 1",
+        "raw": {
+            "block_type": "Body",
+            "text": "CHAPTER ONE  PAGE 1",
+        },
+    }
+
+    result = mod._normalize_page_chrome_source_types([element])
+
+    assert result[0]["id"] == "actual:p28:block:2"
+    assert result[0]["bbox"] == element["bbox"]
+    assert result[0]["text"] == "CHAPTER ONE  PAGE 1"
+    assert result[0]["type"] == "header_footer_noise"
+    assert result[0]["semantic_role"] == "page_chrome"
+    assert result[0]["source_type"] == "Footer"
+    assert result[0]["raw"]["block_type"] == "Body"
+
+
 def test_table_geometry_metadata_preserves_off_page_extent() -> None:
     mod = _load_module()
 

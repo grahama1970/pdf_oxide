@@ -1,0 +1,12 @@
+VERDICT: DIRECT_RETRY
+WHY:
+Reviewer 1 — Yes, the agent drifted. Implementing candidate chunking inside pdf_oxide changed model-call topology and retry semantics even though GOAL.md assigns DAG orchestration to Tau and forbids SciLLM-internal work from this repository. The rollback was correct.
+Reviewer 2 — The ownership boundary is: pdf_oxide owns extraction, presets, deterministic validation, and page evidence; Tau owns DAG execution, decomposition, retry budgets, and terminal orchestration; SciLLM owns model transport. The latest timeout is only one vlm-free2 failure after that route previously returned page-28 reviews and reviewed pages 17–27. It does not yet justify another pdf_oxide patch or a Tau defect ticket. The current adapter performs one bounded blocking review call, so repeat that exact call once rather than redesigning it locally.
+The approach was spiraling when each page-28 failure triggered another local contract or orchestration change. Stop immediately: no more chunking, fallback-model selection, timeout-policy changes, or same-signature retries beyond this single bounded retry.
+The immutable goal remains one page/checklist item at a time with receipt-backed proof or an explicit blocked receipt. The exact blocker is that page 28’s deterministic extractor and prompt repairs pass, but scillm_one_shot_page_review produced ReadTimeout before review_response.json, leaving the page blocked_substrate.
+NEXT_ACTION:
+Run exactly one authenticated page-28 retry with the same model, 120-second timeout, DPI, candidate set, prompt contract, and two images, using a fresh output directory. Do not change code first. Bind the retry to the prior request shape or record the new request hash so any difference is explicit. If the same ReadTimeout recurs, stop direct retries, preserve both receipts, and then open a Tau-owned runtime ticket; no human decision is required for this retry.
+NON_GOALS:
+No pdf_oxide chunked-review implementation; no Tau edits from the dirty local checkout; no SciLLM-internal changes; no timeout increase; no alternate model route; no dashboard, batch campaign, Criterion 6 apply, or page-29 work.
+PROOF_REQUIRED:
+Success requires a fresh review_response.json, scillm_review_receipt.json with HTTP 200, review_validation.json with ok:true and all 18 candidate IDs exactly once, plus a valid terminal ledger and preserved ZIP/HTML evidence. A repeated identical ReadTimeout is also valid proof—but only as the second representative receipt that triggers TAU_TICKET, not another local retry or patch.

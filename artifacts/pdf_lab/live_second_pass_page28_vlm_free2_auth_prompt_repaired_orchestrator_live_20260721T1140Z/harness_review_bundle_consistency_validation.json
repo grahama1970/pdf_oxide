@@ -1,0 +1,17 @@
+{
+  "bundle_validation_path": "artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/harness_review_bundle_zip.json",
+  "comparisons": {
+    "harness_final_gate.json": true,
+    "harness_readiness_audit.json": true,
+    "harness_report.json": true,
+    "harness_review_bundle_zip.json": true
+  },
+  "errors": [],
+  "final_gate_path": "artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/harness_final_gate.json",
+  "ok": true,
+  "readiness_audit_path": "artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/harness_readiness_audit.json",
+  "report_path": "artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/harness_report.json",
+  "schema": "pdf_lab.second_pass.harness_review_bundle_consistency_validation.v1",
+  "zip_entry_count": 42,
+  "zip_path": "artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/harness_review_bundle.zip"
+}

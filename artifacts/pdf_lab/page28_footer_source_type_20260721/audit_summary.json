@@ -1,0 +1,32 @@
+{
+  "schema": "pdf_lab.page28_footer_source_type_audit.v1",
+  "created_at": "2026-07-21T11:27:34.607749+00:00",
+  "mocked": false,
+  "live": false,
+  "page_number": 28,
+  "target_block_id": "actual:p28:block:2",
+  "what_was_exercised": [
+    "deterministic snapshot_current_extraction release-mode extraction for GS001/NIST SP 800-53r5 page 28",
+    "post-ledger page_chrome footer source_type normalization for bottom-geometry header_footer_noise elements"
+  ],
+  "what_remains_unverified": [
+    "semantic judgment must be rechecked by the repaired live second-pass VLM run",
+    "remaining candidate pages still require one-page iteration",
+    "Criterion 6 live GitHub apply remains blocked without approval receipt"
+  ],
+  "checks": {
+    "block_found": true,
+    "text_preserved": true,
+    "bbox_preserved": true,
+    "type_preserved_header_footer_noise": true,
+    "semantic_role_preserved_page_chrome": true,
+    "source_type_is_footer": true,
+    "raw_block_type_preserved_body": true
+  },
+  "evidence": {
+    "page_after": "artifacts/pdf_lab/page28_footer_source_type_20260721/page_after.json",
+    "source_pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+    "ledger": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json"
+  },
+  "ok": true
+}

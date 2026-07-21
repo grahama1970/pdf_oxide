@@ -327,6 +327,78 @@ def test_review_request_requires_verbatim_candidate_ids_and_preserves_candidate_
     assert "NIST SP 800-53" in candidate_presets["candidates"][0]["text_excerpt"]
 
 
+def test_text_preset_semantic_subtype_contract(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    page_case = {
+        "case_id": "page_case_0001_p0028",
+        "page_number": 28,
+        "candidate_ids": ["cand:p0028:0006:text"],
+    }
+    candidates = [
+        {
+            "candidate_id": "cand:p0028:0006:text",
+            "preset_type": "text",
+            "bbox": [0.14705882352941177, 0.15823163889875316, 0.7191140667285795, 0.1751593580149641],
+            "features": {"block_type": "section_subtitle", "source_type": "Body"},
+            "json_pointer": "/pages/27/blocks/6",
+            "text_excerpt": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
+        },
+    ]
+
+    candidate_presets = dag.build_candidate_presets(page_case, candidates)
+    (case_dir / "candidate_presets.json").write_text(json.dumps(candidate_presets), encoding="utf-8")
+    (case_dir / "page_before.json").write_text(
+        json.dumps(
+            {
+                "page": 28,
+                "blocks": [
+                    {
+                        "id": "actual:p28:block:6",
+                        "type": "section_subtitle",
+                        "source_type": "Body",
+                        "bbox": candidates[0]["bbox"],
+                        "text": candidates[0]["text_excerpt"],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (case_dir / "page_before.png").write_bytes(b"png")
+    (case_dir / "page_candidates.png").write_bytes(b"png")
+
+    review_request = dag.build_review_request(
+        case_dir=case_dir,
+        page_case=page_case,
+        page_json_path="page_before.json",
+        original_image_path="page_before.png",
+        annotated_image_path="page_candidates.png",
+        candidate_presets_path="candidate_presets.json",
+        model="gpt-5.5",
+        batch_id="pdf-lab-test",
+    )
+
+    prompt_text = review_request["scillm_payload"]["messages"][0]["content"][0]["text"]
+    candidate_question = candidate_presets["candidates"][0]["question"]
+    assert "preset_type text is a broad review stratum" in prompt_text
+    assert "section_subtitle is clean-compatible with preset_type text" in prompt_text
+    assert "Do not report a defect solely because the extracted subtype is more specific" in prompt_text
+    assert "page_status clean requires every candidate finding status to be clean" in prompt_text
+    assert "generic text review stratum" in candidate_question
+    assert "section_subtitle" in candidate_question
+    assert "preset_contract" in candidate_presets
+    assert (
+        review_request["required_response_schema"]["preset_type_compatibility"]["text"]
+        == "broad review stratum; section_subtitle may be clean-compatible when text, bbox, and visual role are accurate"
+    )
+    assert (
+        review_request["required_response_schema"]["status_consistency"]["clean"]
+        == "requires every candidate finding status to be clean"
+    )
+
+
 def test_run_page_case_dry_run_writes_self_contained_artifacts(tmp_path: Path, monkeypatch) -> None:
     dag = _load_module()
 
