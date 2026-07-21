@@ -93,24 +93,78 @@ contain the word PENDING).
 
 - `goal_id`: PDF-EXTRACTION-GS001-TAU-V1
 - `goal_version`: 1
-- `pdf_oxide_baseline_commit`: PENDING_BASELINE_AUDIT
-- `agent_skills_baseline_commit`: PENDING_BASELINE_AUDIT
-- `tau_baseline_commit`: PENDING_BASELINE_AUDIT
-- `source_pdf_sha256`: PENDING_SOURCE_PDF
-- `expected_contract_sha256`: PENDING_ROW_RECOVERY
-- `preset_ledger_sha256`: PENDING_BASELINE_AUDIT
-- `frozen_regression_set`: PENDING_PACKET_RECOVERY (stratified NIST pages 20 468 401 415 483 34 31 32 33 23)
+- `pdf_oxide_baseline_commit`: 11e0d9c1c5d758a79d332e827a649c31599309e2
+- `agent_skills_baseline_commit`: fecff7aa6fb913624d999f99f94d2c684ddb302e
+- `tau_baseline_commit`: cf24d09b1c0717b6d6708a0942abf3d9a17664a5
+- `source_pdf_sha256`: fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6
+- `expected_contract_sha256`: sha256:3813cb652ee89fb0ace070311f93f523898c7f9e5a559fb8bc8eb71ec32a0533
+- `preset_ledger_sha256`: sha256:c4436ddf636a6f94d4bda2885be1c9bbfbb8a79d7e094d6d5611461330c00391
+- `frozen_regression_set`: NIST pages 20 468 401 415 483 34 31 32 33 23 (stratified; packet regenerated at loop bring-up)
 - `max_repair_attempts`: 2
 
 ## Unblock list (what resolves the pins)
 
-1. `source_pdf_sha256` — provide NIST_SP_800-53r5.pdf (commit as corpus
-   fixture, allow nvlpubs.nist.gov in the environment network policy, or
-   push from the workstation).
-2. `expected_contract_sha256` — push the original human-labeled bundle
-   (/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/) or relabel
-   rows 1-9; then `lock-contract`.
-3. Baseline commits — complete the integration-branch baseline audit
-   (fork vs upstream 0.3.74) and pin the three repo SHAs.
-4. `frozen_regression_set` — recover or regenerate the ten-page review
-   packet referenced by agent-skills issues #70-#73.
+1. ~~`source_pdf_sha256`~~ — RESOLVED 2026-07-18. Committed as corpus
+   fixture at `golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf`;
+   sha256 verified byte-identical to the live download from
+   nvlpubs.nist.gov, not merely to the local artifact copies.
+2. ~~`expected_contract_sha256`~~ — RESOLVED 2026-07-18. The bundle was NOT
+   lost: it survived as a published UI asset at
+   pi-mono/packages/ux-lab/public/pdf-lab-pages/gs001_intro_page_27.expected_elements.json
+   (slice_id nist_page_28_printed_page_1, human-captured 2026-05-13).
+   Committed to golden_slices/gs001_nist_page28/recovered_v2/. The v3
+   contract merges those 10 human rows with CHAPTER ONE per
+   gs001-decision-001 = 11 rows, locked at
+   sha256:a9a6166146049abd5654fd3750dfbeb7136dbff3061d76260742bbfcce841219.
+   The green-boxed human_labeled_page.png did not survive; text_hints did,
+   and they are the operative matcher key.
+3. ~~Baseline commits~~ — AUDIT COMPLETE 2026-07-18. The fork-vs-upstream
+   0.3.74 comparison criterion 1 calls for has been performed against the PyPI
+   sdist (artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/
+   upstream-compatibility-audit.json):
+
+     upstream 370 .rs files, fork 271; 245 shared paths of which only 62 are
+     byte-identical and 183 diverged; 125 upstream-only, 26 fork-only.
+
+   Decisive finding: block_classifier.rs and block_merger.rs -- the two files
+   GS001 repaired -- do NOT exist upstream at all, along with the whole
+   document_extractor / section_hierarchy / figure_detector surface. The fork is
+   not a patched 0.3.74; it is a structurally different extraction pipeline.
+
+   DECISION: MAINTAIN FORK. Upstream compatibility is not a patch question but a
+   re-platforming question, which is why GOAL.md already lists "no automatic
+   merging to upstream pdf_oxide" as a non-goal. The baseline pins therefore
+   stand as audited: the fork IS the baseline, with no upstream reconciliation
+   pending.
+4. `frozen_regression_set` — pinned as the stratified ten-page list; the
+   review packet itself is regenerated at loop bring-up rather than
+   recovered (agent-skills #70-#73 packet was not found on disk).
+
+## Promotion evidence rule (added 2026-07-18, from a near-miss)
+
+A page-scoped comparison MAY NOT promote a repair on its own. Promotion
+requires both a page-scoped verdict and a document-wide cross-page regression
+report, and absent cross-page evidence is a FAILURE, not "not applicable".
+
+This is not theoretical. A classifier rule closed GS001 page 28 row 5 and the
+page-scoped comparator reported passed=true with 11/11 matched and a clean
+defect vector. The same build misclassified 56 real headings across the other
+491 pages. Nothing in the page-scoped verdict could see it; promoting on that
+verdict alone would have shipped the fix. It was caught only by testing the
+original sweep's candidate pages.
+
+Enforced by scripts/pdf_lab/promotion_gate.py (7 tests). A large blast radius
+is NOT damage -- a repair that corrects the same defect class on 375 pages is
+generalising, which is the anti-overfit signal we want. What blocks promotion
+is collateral: changes outside the repair's declared pattern, or transitions
+declared harmful (e.g. Title -> Body demotes a real heading).
+
+## Contract authorship note (2026-07-18)
+
+Rows are not human-drawn boxes. They combine (a) the recovered 2026-05-13
+human labels and (b) an independent agent reading of the rendered page
+image, which agreed with the human labels on all 10 shared rows. Bboxes are
+derived from the PDF's own text layer (pdftotext -bbox, 612x792 pts), NOT
+from pdf_oxide extractor output — the no-inference rule is intact. Rows may
+still be imperfect; that is acceptable by design, because the loop's purpose
+is convergence and a wrong row exercises the discrepancy path just as well.

@@ -1,0 +1,71 @@
+{
+  "audit_artifact": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/upstream-compatibility-audit.json",
+  "checks": [
+    {
+      "code": "audit_artifact_present",
+      "fact": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/upstream-compatibility-audit.json",
+      "ok": true
+    },
+    {
+      "code": "decision_written",
+      "fact": "MAINTAIN FORK. Do not attempt to reconcile with 0.3.74 under this goal.",
+      "ok": true
+    },
+    {
+      "code": "divergence_enumerated",
+      "fact": "{\"fork_only\": 26, \"fork_rs_files\": 271, \"shared_identical\": 62, \"shared_modified\": 183, \"shared_paths\": 245, \"upstream_only\": 125, \"upstream_rs_files\": 370}",
+      "ok": true
+    },
+    {
+      "code": "goal_pins_resolved",
+      "fact": "pending_pins={}",
+      "ok": true
+    },
+    {
+      "code": "goal_lock_succeeded",
+      "fact": "sha256:b66ed53c4b5510b1b5a4a05a0cf9274dd68bcf1119828d9e56540b8a8f17321b",
+      "ok": true
+    },
+    {
+      "code": "dag_hash_propagated",
+      "fact": "sha256:b66ed53c4b5510b1b5a4a05a0cf9274dd68bcf1119828d9e56540b8a8f17321b",
+      "ok": true
+    }
+  ],
+  "criterion": 1,
+  "dag_contract": ".tau/gs001-execution-dag.json",
+  "decision": "MAINTAIN FORK. Do not attempt to reconcile with 0.3.74 under this goal.",
+  "divergence": {
+    "fork_only": 26,
+    "fork_rs_files": 271,
+    "shared_identical": 62,
+    "shared_modified": 183,
+    "shared_paths": 245,
+    "upstream_only": 125,
+    "upstream_rs_files": 370
+  },
+  "does_not_prove": [
+    "Criterion 9 truth reconciliation.",
+    "Criterion 8 closure proof replay from a clean checkout.",
+    "Criterion 10 human acceptance."
+  ],
+  "goal_hash": "sha256:b66ed53c4b5510b1b5a4a05a0cf9274dd68bcf1119828d9e56540b8a8f17321b",
+  "goal_lock_receipt": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/goal-lock-receipt.json",
+  "goal_pins": {
+    "agent_skills_baseline_commit": "fecff7aa6fb913624d999f99f94d2c684ddb302e",
+    "expected_contract_sha256": "sha256:3813cb652ee89fb0ace070311f93f523898c7f9e5a559fb8bc8eb71ec32a0533",
+    "frozen_regression_set": "NIST pages 20 468 401 415 483 34 31 32 33 23 (stratified; packet regenerated at loop bring-up)",
+    "goal_id": "PDF-EXTRACTION-GS001-TAU-V1",
+    "goal_version": "1",
+    "max_repair_attempts": "2",
+    "pdf_oxide_baseline_commit": "11e0d9c1c5d758a79d332e827a649c31599309e2",
+    "preset_ledger_sha256": "sha256:c4436ddf636a6f94d4bda2885be1c9bbfbb8a79d7e094d6d5611461330c00391",
+    "source_pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+    "tau_baseline_commit": "cf24d09b1c0717b6d6708a0942abf3d9a17664a5"
+  },
+  "key_finding": "The two files GS001 repaired -- src/extractors/block_classifier.rs and src/extractors/block_merger.rs -- do NOT exist upstream. They are fork-only, along with 24 other files including the whole document_extractor / section_hierarchy / figure_detector surface. The fork is not a patched 0.3.74; it is a structurally different extraction pipeline that shares a name and 62 identical files.",
+  "live": false,
+  "mocked": false,
+  "schema_version": "pdf_oxide.gs001.criterion1_baseline_audit_receipt.v1",
+  "status": "PASS"
+}

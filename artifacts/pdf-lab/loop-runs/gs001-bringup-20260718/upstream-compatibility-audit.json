@@ -1,0 +1,30 @@
+{
+  "schema_version": "pdf_lab.upstream_compatibility_audit.v1",
+  "criterion": "GS001 criterion 1 -- upstream compatibility decision documented",
+  "fork_version": "0.3.14",
+  "upstream_version": "0.3.74",
+  "upstream_source": "PyPI sdist pdf_oxide-0.3.74.tar.gz",
+  "divergence": {
+    "upstream_rs_files": 370,
+    "fork_rs_files": 271,
+    "shared_paths": 245,
+    "shared_identical": 62,
+    "shared_modified": 183,
+    "upstream_only": 125,
+    "fork_only": 26
+  },
+  "key_finding": "The two files GS001 repaired -- src/extractors/block_classifier.rs and src/extractors/block_merger.rs -- do NOT exist upstream. They are fork-only, along with 24 other files including the whole document_extractor / section_hierarchy / figure_detector surface. The fork is not a patched 0.3.74; it is a structurally different extraction pipeline that shares a name and 62 identical files.",
+  "consequences": [
+    "The GS001 repairs CANNOT be upstreamed as patches -- there is no upstream file to patch.",
+    "The fork is 60 minor versions behind (0.3.14 vs 0.3.74) and 125 upstream files are absent.",
+    "Only 62 of 245 shared files are byte-identical; 183 have diverged.",
+    "'Merge upstream' is not a bounded task and is out of scope for this goal (non-goal: no automatic merging to upstream pdf_oxide)."
+  ],
+  "decision": "MAINTAIN FORK. Do not attempt to reconcile with 0.3.74 under this goal.",
+  "decision_rationale": "GOAL.md already lists 'no automatic merging to upstream pdf_oxide' as a non-goal. This audit establishes WHY that non-goal is correct rather than merely convenient: the repair surface is fork-only, so upstream compatibility is not a patch question but a re-platforming question, which exceeds a bounded extraction-repair goal.",
+  "baseline_pins_status": "The three *_baseline_commit pins may now be described as audited: the audit is complete and its conclusion is that the fork is the baseline, with no upstream reconciliation pending.",
+  "evidence_commands": [
+    "pip download pdf_oxide==0.3.74 --no-deps --no-binary :all:",
+    "compare src/**/*.rs path sets and byte-identity between sdist and fork"
+  ]
+}

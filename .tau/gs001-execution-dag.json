@@ -4,7 +4,7 @@
   "goal": {
     "goal_id": "PDF-EXTRACTION-GS001-TAU-V1",
     "goal_version": 1,
-    "goal_hash": "sha256:replace-with-goal-hash-from-scripts-gs001_lock-py-lock-goal"
+    "goal_hash": "sha256:b66ed53c4b5510b1b5a4a05a0cf9274dd68bcf1119828d9e56540b8a8f17321b"
   },
   "target": {
     "repo": "grahama1970/pdf_oxide",
@@ -19,7 +19,10 @@
     ]
   },
   "entry_node": "extract-gs001",
-  "terminal_nodes": ["closure-publisher", "human"],
+  "terminal_nodes": [
+    "closure-publisher",
+    "human"
+  ],
   "limits": {
     "resume": true,
     "default_timeout_seconds": 600,
@@ -31,14 +34,19 @@
       "agent": "coder",
       "executor": "local",
       "max_attempts": 1,
-      "required_evidence": ["actual_elements.json", "page render PNG"]
+      "required_evidence": [
+        "actual_elements.json",
+        "page render PNG"
+      ]
     },
     {
       "id": "compare-contract",
       "agent": "reviewer",
       "executor": "local",
       "max_attempts": 1,
-      "required_evidence": ["comparison.json (pdf-lab.comparison.v2 defect vector)"]
+      "required_evidence": [
+        "comparison.json (pdf-lab.comparison.v2 defect vector)"
+      ]
     },
     {
       "id": "second-pass-review",
@@ -57,20 +65,26 @@
       "agent": "reviewer",
       "executor": "local",
       "max_attempts": 1,
-      "required_evidence": ["owner routing per pdf_lab.extraction_discrepancy.v1 owner_layer"]
+      "required_evidence": [
+        "owner routing per pdf_lab.extraction_discrepancy.v1 owner_layer"
+      ]
     },
     {
       "id": "ticket-projector",
       "agent": "reviewer",
       "executor": "local",
       "max_attempts": 1,
-      "required_evidence": ["gs001-ticket-projection.json (dry run, defect_key dedup)"]
+      "required_evidence": [
+        "gs001-ticket-projection.json (dry run, defect_key dedup)"
+      ]
     },
     {
       "id": "apply-gate",
       "agent": "human",
       "executor": "human",
-      "required_evidence": ["tau.human_approval_packet.v1 for any live GitHub mutation"]
+      "required_evidence": [
+        "tau.human_approval_packet.v1 for any live GitHub mutation"
+      ]
     },
     {
       "id": "bounded-fixer",
@@ -87,7 +101,9 @@
       "agent": "reviewer",
       "executor": "local",
       "max_attempts": 1,
-      "reviewer": { "reviews_node": "bounded-fixer" },
+      "reviewer": {
+        "reviews_node": "bounded-fixer"
+      },
       "required_evidence": [
         "regression_verdict.json (pdf_lab.regression_verdict.v1, PASS requires targeted class strictly decreased)"
       ]
@@ -97,7 +113,9 @@
       "agent": "coder",
       "executor": "local",
       "max_attempts": 1,
-      "required_evidence": ["post-fix actual_elements.json + comparison.json"]
+      "required_evidence": [
+        "post-fix actual_elements.json + comparison.json"
+      ]
     },
     {
       "id": "closure-audit",
@@ -113,7 +131,9 @@
       "agent": "releaser",
       "executor": "local",
       "max_attempts": 1,
-      "required_evidence": ["closure report + terminal ledger + goal-hash continuity"]
+      "required_evidence": [
+        "closure report + terminal ledger + goal-hash continuity"
+      ]
     },
     {
       "id": "human",
@@ -122,7 +142,10 @@
     }
   ],
   "edges": [
-    { "from": "extract-gs001", "to": "compare-contract" },
+    {
+      "from": "extract-gs001",
+      "to": "compare-contract"
+    },
     {
       "from": "compare-contract",
       "to": "closure-audit",
@@ -143,7 +166,10 @@
         "value": false
       }
     },
-    { "from": "second-pass-review", "to": "owner-router" },
+    {
+      "from": "second-pass-review",
+      "to": "owner-router"
+    },
     {
       "from": "owner-router",
       "to": "human",
@@ -164,9 +190,18 @@
         "value": "human_contract_ambiguity"
       }
     },
-    { "from": "ticket-projector", "to": "apply-gate" },
-    { "from": "apply-gate", "to": "bounded-fixer" },
-    { "from": "bounded-fixer", "to": "regression-referee" },
+    {
+      "from": "ticket-projector",
+      "to": "apply-gate"
+    },
+    {
+      "from": "apply-gate",
+      "to": "bounded-fixer"
+    },
+    {
+      "from": "bounded-fixer",
+      "to": "regression-referee"
+    },
     {
       "from": "regression-referee",
       "to": "rerun-extraction",
@@ -197,7 +232,10 @@
         "value": true
       }
     },
-    { "from": "rerun-extraction", "to": "closure-audit" },
+    {
+      "from": "rerun-extraction",
+      "to": "closure-audit"
+    },
     {
       "from": "closure-audit",
       "to": "closure-publisher",
