@@ -1,0 +1,22 @@
+{
+  "candidate_ids_from_reviewer": [
+    "row:7",
+    "row:16",
+    "row:19",
+    "row:26"
+  ],
+  "defect_class": "stale_standalone_glossary_citation_reference_blocks",
+  "focused_regression": "tests/test_nist_page421_glossary_terms.py",
+  "owner": "nist_preset",
+  "page": 421,
+  "reconciliation": "The stale reviewer rows expected bracketed source citations to stop being standalone reference blocks. Current release extraction has zero standalone citation reference blocks and one glossary table carrying the term/source/definition rows.",
+  "schema": "pdf_lab.selection_receipt.v1",
+  "selected_candidate": "page421_reference_residual_reconciliation",
+  "selection_basis": {
+    "current_extraction": "artifacts/pdf_lab/page421_reference_residual_reconciliation_20260721/current_page421_snapshot.json",
+    "existing_annotated_page_image": "artifacts/pdf_lab/page421_glossary_term_audit_20260721/page421_glossary_table_overlay.png",
+    "existing_original_page_image": "artifacts/pdf_lab/page421_glossary_term_audit_20260721/page421_original.png",
+    "existing_visual_receipt": "artifacts/pdf_lab/page421_glossary_term_audit_20260721/visual_receipt.json",
+    "independent_reviewer": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/multipage/v2_response_p421.md.raw.md"
+  }
+}

@@ -83,3 +83,17 @@ def test_nist_page_421_glossary_terms_materialize_as_definition_table():
             )
 
     assert leaked_definition_parts == []
+
+    standalone_citation_references = [
+        {
+            "id": block.get("id"),
+            "type": block.get("type"),
+            "source_type": block.get("source_type"),
+            "text": " ".join(str(block.get("text") or "").split()),
+        }
+        for block in blocks
+        if block.get("type") == "reference"
+        and " ".join(str(block.get("text") or "").split())
+        in {"[FIPS 201-2]", "[OMB A-130]", "[SP 800-39]"}
+    ]
+    assert standalone_citation_references == []
