@@ -1,0 +1,40 @@
+{
+  "case_dir": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/page_cases/page_case_0001_p0014",
+  "create_run_body": {
+    "dag_node_id": "pdf_lab_second_pass_page:page_case_0001_p0014",
+    "orchestrator_context": {
+      "case_dir": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/page_cases/page_case_0001_p0014",
+      "case_id": "page_case_0001_p0014",
+      "dag_spec_artifact": "scillm_orchestrator_page_dag_spec.json",
+      "dag_spec_sha256": "62c795dc06498cdfdac6060ca2e78618765c54b909cf6e5e167949c2b8006ad3",
+      "ownership_contract": {
+        "executor_outputs_are": "evidence_not_truth",
+        "local_pdf_lab_role": "deterministic_substrate_and_acceptance_gate",
+        "mode": "scillm_transport_parent_owns_page_dag_state",
+        "project_agent_role": "final_reviewer_only",
+        "state_owner_required_on_every_node": "scillm_orchestrator"
+      },
+      "page_number": 14,
+      "required_terminal_gate": "deterministic_pdf_lab_acceptance_before_commit",
+      "schema": "pdf_lab.second_pass.scillm_orchestrator_context.v1",
+      "target_dag_state_owner": "scillm_orchestrator"
+    },
+    "title": "pdf-lab second-pass page DAG page_case_0001_p0014",
+    "workspace": "/tmp/pdf_oxide_page45b_1784600709"
+  },
+  "cwd": "/tmp/pdf_oxide_page45b_1784600709",
+  "dag_node_id": "pdf_lab_second_pass_page:page_case_0001_p0014",
+  "dag_spec_artifact": "scillm_orchestrator_page_dag_spec.json",
+  "dag_spec_sha256": "62c795dc06498cdfdac6060ca2e78618765c54b909cf6e5e167949c2b8006ad3",
+  "endpoint": "POST /v1/scillm/opencode/transport/runs",
+  "orchestrator_submission_schema": "pdf_lab.second_pass.scillm_orchestrator_page_submission.v1",
+  "schema": "pdf_lab.second_pass.page_orchestrator_run_request.v1",
+  "scillm_metadata": {
+    "case_id": "page_case_0001_p0014",
+    "dag_spec_sha256": "62c795dc06498cdfdac6060ca2e78618765c54b909cf6e5e167949c2b8006ad3",
+    "graph_node": "scillm_orchestrator_page_dag",
+    "page_number": 14
+  },
+  "target_dag_state_owner": "scillm_orchestrator",
+  "timeout_s": 45.0
+}

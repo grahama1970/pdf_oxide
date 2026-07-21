@@ -62,6 +62,7 @@ Current completed page evidence:
 | `page_0011` | live second-pass frontmatter text/side-chrome review | `artifacts/pdf_lab/page11_frontmatter_review_20260721/audit_summary.json` | `origin/main` after page11 reviewed-clean evidence push |
 | `page_0012` | live second-pass frontmatter heading/text/side-chrome review | `artifacts/pdf_lab/page12_frontmatter_review_20260721/audit_summary.json` | `origin/main` after page12 reviewed-clean evidence push |
 | `page_0013` | live second-pass Use of Examples paragraph merge review | `artifacts/pdf_lab/page13_use_examples_paragraph_20260721/audit_summary.json` | `origin/main` after page13 paragraph-merge push |
+| `page_0014` | live second-pass Federal Records Management frontmatter review blocked by repeated SciLLM ReadTimeout | `artifacts/pdf_lab/page14_scillm_readtimeout_20260721/audit_summary.json` | pending push of page14 blocked-substrate receipts |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old

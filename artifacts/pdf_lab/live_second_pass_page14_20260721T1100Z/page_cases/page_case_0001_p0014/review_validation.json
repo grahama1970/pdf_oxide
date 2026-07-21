@@ -1,0 +1,21 @@
+{
+  "candidate_count": 6,
+  "errors": [
+    "scillm_review_call_failed"
+  ],
+  "expected_candidate_ids": [
+    "cand:p0014:0000:side_chrome",
+    "cand:p0014:0001:side_chrome",
+    "cand:p0014:0002:side_chrome",
+    "cand:p0014:0003:side_chrome",
+    "cand:p0014:0004:section_heading",
+    "cand:p0014:0005:text"
+  ],
+  "ok": false,
+  "page_case": {
+    "case_id": "page_case_0001_p0014",
+    "page_number": 14
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": []
+}

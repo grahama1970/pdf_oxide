@@ -1,0 +1,81 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "candidate": "page14 Federal Records Management live second-pass review",
+  "mocked": "no",
+  "live": "yes",
+  "campaign_status": {
+    "active_family": "NIST SP 800-53r5 current-extraction page candidates",
+    "active_page": 14,
+    "passed": 0,
+    "failed": 0,
+    "blocked_by_systemic_failure": 0,
+    "not_run": "remaining active candidate queue after page 14",
+    "latest_failure_signature": "Two live page14 SciLLM chat completion attempts timed out at POST /v1/chat/completions after successful preflight health checks"
+  },
+  "evidence": {
+    "first_live_run": "artifacts/pdf_lab/live_second_pass_page14_20260721T1100Z/harness_final_gate.json",
+    "first_terminal_ledger": "artifacts/pdf_lab/live_second_pass_page14_20260721T1100Z/page_cases/page_case_0001_p0014/terminal_ledger.json",
+    "first_review_validation": "artifacts/pdf_lab/live_second_pass_page14_20260721T1100Z/page_cases/page_case_0001_p0014/review_validation.json",
+    "first_substrate_error": "artifacts/pdf_lab/live_second_pass_page14_20260721T1100Z/page_cases/page_case_0001_p0014/scillm_review_error.json",
+    "retry_live_run": "artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/harness_final_gate.json",
+    "retry_terminal_ledger": "artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/page_cases/page_case_0001_p0014/terminal_ledger.json",
+    "retry_review_validation": "artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/page_cases/page_case_0001_p0014/review_validation.json",
+    "retry_substrate_error": "artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/page_cases/page_case_0001_p0014/scillm_review_error.json",
+    "review_request": "artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/page_cases/page_case_0001_p0014/review_request.json",
+    "review_bundle": "artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/page_cases/page_case_0001_p0014/review_bundle.zip",
+    "page_image": "artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/page_cases/page_case_0001_p0014/page_before.png",
+    "candidate_overlay": "artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/page_cases/page_case_0001_p0014/page_candidates.png",
+    "webgpt_bundle": "artifacts/pdf_lab/live_second_pass_page14_20260721T1100Z/unblock/webgpt_page14_readtimeout_bundle.md",
+    "brave_search_receipt": "artifacts/pdf_lab/live_second_pass_page14_20260721T1100Z/unblock/brave_scillm_chat_readtimeout.json"
+  },
+  "proof": {
+    "first_live_second_pass": {
+      "harness_final_gate": "artifacts/pdf_lab/live_second_pass_page14_20260721T1100Z/harness_final_gate.json",
+      "harness_terminal_status": "failed_closed",
+      "page_terminal_status": "blocked_substrate",
+      "review_validation_ok": false,
+      "error_type": "ReadTimeout",
+      "endpoint": "POST /v1/chat/completions"
+    },
+    "retry_live_second_pass": {
+      "harness_final_gate": "artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z/harness_final_gate.json",
+      "harness_terminal_status": "failed_closed",
+      "page_terminal_status": "blocked_substrate",
+      "review_validation_ok": false,
+      "error_type": "ReadTimeout",
+      "endpoint": "POST /v1/chat/completions"
+    },
+    "candidate_count": 6,
+    "seen_candidate_count": 0,
+    "request_validation": "review_request_validation.json ok=true in both runs",
+    "bundle_consistency": "harness_review_bundle_consistency_validation.json ok=true in retry run"
+  },
+  "unblock_attempts": {
+    "brave_search": [
+      {
+        "query": "OpenAI compatible chat completions ReadTimeout local LLM proxy request timeout large prompt mitigation",
+        "receipt": "artifacts/pdf_lab/live_second_pass_page14_20260721T1100Z/unblock/brave_scillm_chat_readtimeout.json"
+      }
+    ],
+    "webgpt": [
+      {
+        "bundle": "artifacts/pdf_lab/live_second_pass_page14_20260721T1100Z/unblock/webgpt_page14_readtimeout_bundle.md",
+        "result": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+      }
+    ]
+  },
+  "terminal_status": "blocked_substrate",
+  "blocker": {
+    "type": "live_model_transport_timeout",
+    "owner": "scillm_or_transport_runtime",
+    "reason": "The same live SciLLM chat completion timeout survived two focused attempts on the same page with valid request artifacts and healthy preflight responses. This is not an extraction-code defect proven by the current evidence."
+  },
+  "what_was_exercised": "Two live page14 second-pass review attempts used the running SciLLM proxy on localhost:4001, the local-text model route, model-ready review payload construction, page image and candidate overlay generation, review request validation, bundle generation, and fail-closed terminal ledger creation.",
+  "what_remains_unverified": [
+    "page14 semantic review result, because no model response was returned",
+    "whether a different live model route or transport timeout configuration can complete page14 under the accepted contract",
+    "remaining active page candidates beyond page14",
+    "Criterion 6 live GitHub apply mutation, still requiring approval receipt",
+    "WebGPT exact-tab availability"
+  ]
+}
