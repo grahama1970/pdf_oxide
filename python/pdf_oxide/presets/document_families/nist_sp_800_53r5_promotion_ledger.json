@@ -3138,6 +3138,76 @@
       "applied_at": "2026-07-21T00:00:00Z",
       "applier_rule_kind": "text_classifier_rule",
       "category": "semantic_enrichment",
+      "checklist_item": "Mark NIST Related Controls lead/value lines with related_controls semantic role while preserving paragraph typing.",
+      "closed_at": "2026-07-21T00:00:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page45_related_controls.py)",
+      "entry_id": "nist-related-controls-lead-role-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:18"
+        ],
+        "risk_reasons_observed": [
+          "related_controls_line_missing_semantic_role"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/page45_human_reannotation_20260604/in_progress_entry.json",
+          "artifacts/pdf_lab/page45_chrome_noise_20260721/current_page45_snapshot.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Standalone exact 'Related Controls:' field labels; rejected because this rule requires text after the colon.",
+          "Revision-history prose mentioning Related Controls; rejected by NIST main-column Body bbox guards.",
+          "Wrapped Related Controls continuation fragments; rejected because this rule only marks the lead/value line."
+        ],
+        "candidates_that_prove": [
+          "Page 45 emits 'Related Controls: IA-1, PM-9, PM-24, PS-8, SI-12.' as a Body paragraph_block, but the human page45 reannotation classifies the region as related-controls labeled content."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block in the main control column begins with 'Related Controls:' and includes value text after the colon, preserve type=paragraph_block and set semantic_role=related_controls."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block or paragraph",
+          "bbox x_min is outside the NIST control field indent band",
+          "text does not begin with 'Related Controls:' followed by value text"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally adds semantic role only to explicit NIST Related Controls lead/value lines and preserves paragraph_block typing for downstream list-marker guards.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_min_lt": 0.22,
+            "y_max_lt": 0.9
+          },
+          "source_type": "Body",
+          "type": [
+            "paragraph_block",
+            "paragraph"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "related_controls",
+              "type": "paragraph_block"
+            },
+            "regex": "^\\s*Related\\s+Controls:\\s+\\S.+$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-07-21T00:00:00Z",
+      "added_by": "agent:codex (pdf-lab page45 all-candidates hardening)",
+      "applied_at": "2026-07-21T00:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
       "checklist_item": "Route exact NIST 'Control Enhancements: None.' field/value lines to labeled_enhancements instead of generic prose.",
       "closed_at": "2026-07-21T00:00:00Z",
       "closed_by": "agent:codex (validated by tests/test_nist_page45_control_enhancements_none.py)",

@@ -1,0 +1,16 @@
+{
+  "schema": "pdf_lab.visual_receipt.v1",
+  "page_id": "nist_phase54_page_0045",
+  "candidate": "page45 Related Controls semantic role",
+  "original_image": "artifacts/pdf_lab/page45_related_controls_20260721/page45_original.png",
+  "overlay_image": "artifacts/pdf_lab/page45_related_controls_20260721/page45_related_controls_overlay.png",
+  "checked_block_ids": [
+    "actual:p45:block:18"
+  ],
+  "expected_visible_text": "Related Controls: IA-1, PM-9, PM-24, PS-8, SI-12.",
+  "expected_type": "paragraph_block",
+  "expected_semantic_role": "related_controls",
+  "overlay_labels": [
+    "related-controls"
+  ]
+}
