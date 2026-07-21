@@ -68,7 +68,7 @@ Current completed page evidence:
 | `page_0018` | live second-pass VLM-backed review with page-orchestrator registration, sixteen candidate findings validated clean | `artifacts/pdf_lab/page18_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `a1a85a9d4a3470e3f5a1a93ffab70e9f450d0594` |
 | `page_0019` | live second-pass VLM-backed review with page-orchestrator registration, seven candidate findings validated clean | `artifacts/pdf_lab/page19_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `2dc73e8072331db45942fa5eaa8e3d923770bb72` |
 | `page_0020` | live second-pass VLM-backed review with page-orchestrator registration, five candidate findings validated clean | `artifacts/pdf_lab/page20_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `c67907e3f430a26aec65d3d0c17ff2b80b035f04` |
-| `page_0021` | live second-pass VLM-backed review with page-orchestrator registration, five candidate findings validated clean | `artifacts/pdf_lab/page21_vlm_free2_clean_20260721/audit_summary.json` | pending push of VLM-backed page21 receipt |
+| `page_0021` | live second-pass VLM-backed review with page-orchestrator registration, five candidate findings validated clean | `artifacts/pdf_lab/page21_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `4e2316f5732d86267b38973df24b02b1b5d4b635` |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
