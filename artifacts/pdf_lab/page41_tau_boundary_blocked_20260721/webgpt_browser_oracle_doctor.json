@@ -1,0 +1,15 @@
+{
+  "readiness": "needs_attention",
+  "backend": "webgpt",
+  "project": "pdf-lab",
+  "source": "cli.project_override",
+  "registry_path": "/tmp/pdf_oxide_integrate_gs001_20260721/.ask/browser-oracles.yaml",
+  "binding_path": "/home/graham/.pi/webgpt-projects/pdf-lab.json",
+  "tab_id": "837359458",
+  "conversation_url": "https://chatgpt.com/g/g-p-6a2421edf6c48191bf65737182e5a073-pdf-lab/c/6a5beb30-367c-83ea-888b-97cb1a22cf2c",
+  "issues": [
+    "tab_stale_manual_binding"
+  ],
+  "surf_run": "/home/graham/workspace/experiments/agent-skills/skills/surf/run.sh",
+  "resume_hint": "browser-oracle register --at <dir> --project <name> --default && browser-oracle bind <name> --tab-id <id> --url <url> --manual"
+}

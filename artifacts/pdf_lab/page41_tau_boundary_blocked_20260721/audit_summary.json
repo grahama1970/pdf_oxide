@@ -1,0 +1,117 @@
+{
+  "schema": "pdf_lab.page41_tau_boundary_block_receipt.v1",
+  "created_at": "2026-07-21T14:11:32Z",
+  "status": "explicitly_blocked",
+  "mocked": false,
+  "live": true,
+  "direct_scillm_called_from_pdf_oxide": false,
+  "immutable_goal": {
+    "objective": "Harden all PDF Lab page candidates one page/checklist item at a time across the active candidate queue, routing model or executor work through Tau-owned DAG/harness contracts and advancing only when the current candidate is proven or explicitly blocked with receipt artifacts.",
+    "active_page": 41,
+    "active_case_id": "page_case_0001_p0041",
+    "active_checklist_item": "live second-pass model-backed page review through Tau-owned transport"
+  },
+  "campaign_status": {
+    "passed": 0,
+    "failed": 0,
+    "blocked_by_systemic_failure": 0,
+    "explicitly_blocked": 1,
+    "not_run": 452,
+    "active_family": "PDF Lab live second-pass model review through Tau",
+    "latest_failure_signature": "No Tau-owned generic SciLLM chat/VLM review executor was found for a model-ready PDF Lab page review request; WebGPT binding was stale and Ask/Tau WebClaude fallback timed out without a sentinel-delimited provider response."
+  },
+  "selection": {
+    "source_manifest": "artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_full_plain_uv_after_dev_pymupdf.json",
+    "stale_selection_rejection": "artifacts/pdf_lab/fresh_candidate_selection_after_doi_chrome_20260721/stale_selection_rejection.json",
+    "filtered_manifest": "artifacts/pdf_lab/fresh_candidate_selection_after_doi_chrome_20260721/candidate_manifest_unreviewed_pages.json",
+    "sampled_cases": "artifacts/pdf_lab/fresh_candidate_selection_after_doi_chrome_20260721/sampled_page_cases_unreviewed.json",
+    "source_candidate_count": 9333,
+    "filtered_candidate_count": 8897,
+    "filtered_page_count": 453,
+    "selected_page": 41,
+    "candidate_count_on_page": 13,
+    "preset_counts": {
+      "side_chrome": 4,
+      "text": 5,
+      "section_heading": 1,
+      "footnote": 3
+    },
+    "selection_reason": [
+      "high_risk_preset",
+      "high_risk_candidate",
+      "boundary_geometry",
+      "high_candidate_score"
+    ],
+    "initial_page_15_selection_rejected_as_stale": true
+  },
+  "pdf_oxide_prepared_artifacts": {
+    "case_dir": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041",
+    "original_page_image": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/page_before.png",
+    "annotated_candidate_image": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/page_candidates.png",
+    "extracted_page_json": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/page_before.json",
+    "candidate_presets": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/candidate_presets.json",
+    "model_ready_request": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_request.json",
+    "review_request_validation": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_request_validation.json",
+    "review_html": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review.html",
+    "review_bundle_zip": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_bundle.zip",
+    "review_bundle_validation": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_bundle_validation.json",
+    "tau_submission": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/scillm_orchestrator_page_submission.json",
+    "tau_submission_validation": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/scillm_orchestrator_page_submission_validation.json",
+    "page_orchestrator_request": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/scillm_page_orchestrator_run_request.json",
+    "page_orchestrator_validation": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/scillm_page_orchestrator_run_validation.json"
+  },
+  "pdf_oxide_validation": {
+    "review_request_validation_ok": true,
+    "review_request_image_part_count": 2,
+    "review_request_text_part_count": 1,
+    "review_request_sha256": "0d5241ec3e224f72291138120f888832baf054a7dc4e4564183cc6f0725eff43",
+    "review_bundle_validation_ok": true,
+    "tau_submission_validation_ok": true,
+    "tau_dag_spec_sha256": "d555159d2a6dcc10c20a6eef494aa312fa48291cbdb133f6bd2e07c272fbfa23",
+    "page_terminal_status_before_external_block": "still_open",
+    "page_terminal_status_reason": "dry_run_review_not_executed"
+  },
+  "tau_boundary": {
+    "tau_repo": "/home/graham/workspace/experiments/tau",
+    "tau_issue_url": "https://github.com/grahama1970/tau/issues/122",
+    "tau_issue_title": "Add Tau-owned generic SciLLM chat/VLM review executor for PDF Lab page cases",
+    "observed_boundary": "Tau exposes generic dag-run and scillm-worker-launch for OpenCode work orders, but no discovered Tau-owned generic chat/VLM executor consumed the PDF Lab review_request.json and produced review_response.json with provider-live receipt.",
+    "criterion_6_github_apply": "separately blocked until a valid approval receipt for mutation exists"
+  },
+  "external_unblock_attempts": {
+    "brave_search": {
+      "used": true,
+      "artifact": "artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/webgpt_unblock_brave_search.json",
+      "result": "No Tau-specific generic SciLLM chat/VLM executor command was discovered."
+    },
+    "webgpt": {
+      "used": true,
+      "artifact": "artifacts/pdf_lab/page41_tau_boundary_blocked_20260721/webgpt_browser_oracle_doctor.json",
+      "backend": "webgpt",
+      "project": "pdf-lab",
+      "tab_id": "837359458",
+      "readiness": "needs_attention",
+      "issues": [
+        "tab_stale_manual_binding"
+      ],
+      "result": "The human-provided WebGPT tab binding was stale; no usable WebGPT oracle response was obtained."
+    },
+    "ask_tau_webclaude": {
+      "used": true,
+      "ask_run_dir": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_page41_tau_boundary/pdf-lab-page41-tau-boundary-webclaude-20260721",
+      "dag_receipt": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_page41_tau_boundary/pdf-lab-page41-tau-boundary-webclaude-20260721/tau-receipts/dag-receipt.json",
+      "node_receipt": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_page41_tau_boundary/pdf-lab-page41-tau-boundary-webclaude-20260721/node-artifacts/handler-webclaude/node-receipt.json",
+      "status": "BLOCKED",
+      "verdict": "COMMAND_FAILED",
+      "mocked": false,
+      "live": true,
+      "provider_live": false,
+      "failure": "timed out waiting for marker '<<<CLAUDE_DONE:20260721T140332Z:a9b9f1df>>>'",
+      "raw_chars": 50093,
+      "clean_chars": 0,
+      "raw_contains_sentinel": false
+    }
+  },
+  "blocked_reason": "The current page41 live second-pass candidate cannot proceed without either a Tau-owned generic chat/VLM executor for PDF Lab model-ready review requests or a usable external oracle response. Calling SciLLM directly from pdf_oxide would violate the current project boundary.",
+  "next_required_action": "Implement or expose the Tau-owned generic SciLLM chat/VLM executor tracked in tau issue 122, then rerun page41 through the same prepared page case until validation_result.status is not blocked."
+}
