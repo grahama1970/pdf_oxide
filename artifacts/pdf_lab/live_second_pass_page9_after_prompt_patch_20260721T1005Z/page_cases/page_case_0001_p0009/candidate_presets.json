@@ -1,0 +1,172 @@
+{
+  "candidate_count": 6,
+  "candidates": [
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "candidate_id": "cand:p0009:0000:side_chrome",
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/8/blocks/0",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "candidate_id": "cand:p0009:0001:side_chrome",
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/8/blocks/1",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.4932352701822917,
+        0.939856018682923,
+        0.5066029168421926,
+        0.9550605542732008
+      ],
+      "candidate_id": "cand:p0009:0002:side_chrome",
+      "features": {
+        "bbox_area": 0.000203,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "PageNumber",
+        "text_length": 3
+      },
+      "json_pointer": "/pages/8/blocks/2",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "vii"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "candidate_id": "cand:p0009:0003:side_chrome",
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/8/blocks/3",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.31156861548330267,
+        0.13150477168535946,
+        0.6879134832643995,
+        0.150747491855814
+      ],
+      "candidate_id": "cand:p0009:0004:text",
+      "features": {
+        "bbox_area": 0.007242,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 39
+      },
+      "json_pointer": "/pages/8/blocks/4",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "COMMON SECURITY AND PRIVACY FOUNDATIONS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.18431373047672844,
+        0.1561861905184659,
+        0.815396925982307,
+        0.4351775429465554
+      ],
+      "candidate_id": "cand:p0009:0005:text",
+      "features": {
+        "bbox_area": 0.176067,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 1650
+      },
+      "json_pointer": "/pages/8/blocks/5",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "In working with the Office of Management and Budget to develop standards and guidelines required by FISMA, NIST consults with federal agencies, state, local, and tribal governments, and private sector organizations to improve information security and privacy, avoid unnecessary and costly duplication of effort, and help ensure that its publications are complementary with the standards and guidelines used for the protection of national security systems. In addition to a comprehensive and transpare"
+    }
+  ],
+  "page_case": {
+    "case_id": "page_case_0001_p0009",
+    "page_number": 9
+  },
+  "schema": "pdf_lab.second_pass.candidate_presets.v1"
+}

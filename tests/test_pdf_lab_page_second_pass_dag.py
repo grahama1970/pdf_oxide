@@ -307,6 +307,16 @@ def test_review_request_requires_verbatim_candidate_ids_and_preserves_candidate_
     assert "required_candidate_ids" in prompt_text
     assert "candidate_findings[].candidate_id MUST be copied verbatim" in prompt_text
     assert "Do not infer, rewrite, or repair candidate_id suffixes" in prompt_text
+    assert "For status clean, suggested_fix_surface MUST be null" in prompt_text
+    assert "Do not include optional improvement advice in suggested_fix_surface for a clean finding" in prompt_text
+    assert (
+        review_request["required_response_schema"]["suggested_fix_surface"]["clean"]
+        == "must be null, empty string, or 'none'"
+    )
+    assert (
+        review_request["required_response_schema"]["suggested_fix_surface"]["defect"]
+        == "must identify the concrete fix surface"
+    )
     assert "cand:p0027:0000:side_chrome" in prompt_text
     assert "cand:p0027:0001:side_chrome" in prompt_text
     assert "cand:p0027:0000:section_heading" not in prompt_text

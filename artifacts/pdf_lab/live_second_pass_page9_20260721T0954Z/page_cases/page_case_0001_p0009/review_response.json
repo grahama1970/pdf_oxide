@@ -1,0 +1,49 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0009:0000:side_chrome",
+      "evidence": "The extracted bounding box, text, and preset type 'side_chrome' accurately capture the header 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'.",
+      "rationale": "The candidate correctly identifies the header as page chrome, and the bounding box and text match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0009:0001:side_chrome",
+      "evidence": "The extracted bounding box, text, and preset type 'side_chrome' accurately capture the horizontal line below the header.",
+      "rationale": "The candidate correctly identifies the decorative line as page chrome, and the bounding box and text match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0009:0002:side_chrome",
+      "evidence": "The extracted bounding box, text, and preset type 'side_chrome' accurately capture the page number 'vii' at the bottom of the page.",
+      "rationale": "The candidate correctly identifies the page number as page chrome, and the bounding box and text match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0009:0003:side_chrome",
+      "evidence": "The extracted bounding box, text, and preset type 'side_chrome' accurately capture the vertical boilerplate text on the left margin.",
+      "rationale": "The candidate correctly identifies the boilerplate text as page chrome, and the bounding box and text match the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0009:0004:text",
+      "evidence": "The extracted bounding box, text, and preset type 'text' accurately capture the heading 'COMMON SECURITY AND PRIVACY FOUNDATIONS'.",
+      "rationale": "The candidate correctly extracts the text content and bounding box. While semantically this is a heading, the 'text' preset type is acceptable, and the extracted 'block_type' is 'paragraph_block'.",
+      "status": "clean",
+      "suggested_fix_surface": "Consider refining semantic role to 'heading' if more granularity is desired."
+    },
+    {
+      "candidate_id": "cand:p0009:0005:text",
+      "evidence": "The extracted bounding box, text, and preset type 'text' accurately capture the main body paragraph.",
+      "rationale": "The candidate correctly extracts the body text and its bounding box, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    }
+  ],
+  "page_rationale": "All candidate extractions on page 9 are clean. Bounding boxes, text content, and preset types are accurate when compared against the rendered page and annotated image. Semantic types are mostly accurate, with a minor suggestion for a heading. The page is free of defects.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

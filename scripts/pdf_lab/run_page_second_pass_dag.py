@@ -864,6 +864,10 @@ def build_review_request(
         "- Return exactly one finding for each required_candidate_ids entry and no other candidate_id values.\n"
         "- Do not infer, rewrite, or repair candidate_id suffixes from preset_type, extracted JSON type, visual class, or rationale.\n"
         "- If the visual/extracted evidence suggests a different semantic type, describe that only in status/rationale/suggested_fix_surface; keep candidate_id unchanged.\n\n"
+        "Suggested fix surface discipline:\n"
+        "- For status clean, suggested_fix_surface MUST be null, an empty string, or the literal string \"none\".\n"
+        "- For status defect, suggested_fix_surface MUST identify the concrete fix surface, such as pdf_oxide_core, nist_preset, export/schema, UI, or external harness.\n"
+        "- Do not include optional improvement advice in suggested_fix_surface for a clean finding; put clean rationale in rationale only.\n\n"
         f"required_candidate_ids:\n{json.dumps(required_candidate_ids, indent=2)}\n\n"
         "Required response schema:\n"
         "{\n"
@@ -871,7 +875,7 @@ def build_review_request(
         '  "page_status": "clean|defect|unsure|substrate_blocked",\n'
         '  "candidate_findings": [\n'
         '    {"candidate_id": "...", "status": "clean|defect|unsure|substrate_blocked", '
-        '"evidence": "...", "rationale": "...", "suggested_fix_surface": "..."}\n'
+        '"evidence": "...", "rationale": "...", "suggested_fix_surface": null|"none"|"concrete fix surface"}\n'
         "  ],\n"
         '  "page_rationale": "..."\n'
         "}\n\n"
@@ -926,6 +930,10 @@ def build_review_request(
             "schema": "pdf_lab.second_pass.review_response.v1",
             "page_status": ["clean", "defect", "unsure", "substrate_blocked"],
             "candidate_findings": "one finding per candidate_id",
+            "suggested_fix_surface": {
+                "clean": "must be null, empty string, or 'none'",
+                "defect": "must identify the concrete fix surface",
+            },
             "page_rationale": "non-empty page-level rationale tied to rendered and extracted evidence",
         },
     }

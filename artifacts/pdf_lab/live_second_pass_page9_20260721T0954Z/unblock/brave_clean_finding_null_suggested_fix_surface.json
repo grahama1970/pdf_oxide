@@ -1,0 +1,32 @@
+{
+  "query": "JSON schema null field when status clean suggested_fix_surface validator prompt",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Allow null value for non-required fields (json schema) [#2958251] | Drupal.org",
+      "description": "After looking at this patch some more and thinking through what you are doing, my expectation is that rather than fix the error, you&#x27;ve probably made the schema definition for optional properties unenforceable. If you test the resulting schema for validity, it may even be broken.",
+      "url": "https://www.drupal.org/project/schemata/issues/2958251"
+    },
+    {
+      "title": "Tips for JSON Schema Validation - Database Manual - MongoDB Docs",
+      "description": "If your schema validates data types for a field, to insert documents with a null value for that field, <strong>you must explicitly allow null as a valid BSON type</strong>.",
+      "url": "https://www.mongodb.com/docs/manual/core/schema-validation/specify-json-schema/json-schema-tips/"
+    },
+    {
+      "title": "Forums | Microsoft Power Platform Community",
+      "description": "Quickly search for answers, join discussions, post questions, and work smarter in your business applications by joining the Microsoft Dynamics 365 Community.",
+      "url": "https://powerusers.microsoft.com/t5/Building-Flows/Parse-JSON-validation-failed-for-null-values-how-to-avoid/td-p/1406079"
+    },
+    {
+      "title": "Validation error when field is nullable and consumer sends in a null value \u00b7 Issue #183 \u00b7 networknt/json-schema-validator",
+      "description": "<strong>The validator identifies it correctly as nullable, however proceeds to look for null as a value in the enumerated fields</strong>. It is a delta between OpenAPI and JSONSchema specifications: -- https://json-schema.org/understanding-json-schema/refe...",
+      "url": "https://github.com/networknt/json-schema-validator/issues/183"
+    },
+    {
+      "title": "How to allow None (null) for fields in JSON Schema?",
+      "description": "How to allow None (null) for fields in JSON Schema \u00b7 Hey Hooman. This is because you require fb_id be a string, and null is not a string. If you also want to allow null values for fb_id, you can <strong>set its schema to {&quot;type&quot;: [&quot;string&quot;, &quot;null&quot;]}</strong> \u00b7 Hi Chase, Thank you very much, it worked.",
+      "url": "https://groups.google.com/g/jsonschema/c/mD6GDca4zN8"
+    }
+  ]
+}
