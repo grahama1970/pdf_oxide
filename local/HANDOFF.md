@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T16:45:00Z
+**Timestamp**: 2026-07-21T17:40:00Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -13,10 +13,15 @@
 
 - Main repo URL: `https://github.com/grahama1970/pdf_oxide`
 - Remote main verification command: `git ls-remote origin refs/heads/main`
-- Verified remote main before Tau #123 root-cause receipt import: `67cbdec1acfe3254ecb191a71fc249bd9a1021f2`
+- Verified remote main after latest handoff refresh: `aad02e2a80c8d2928944e92dbe936f120bfa3225`
 - Clean integration worktree: `/tmp/pdf_oxide_integrate_gs001_20260721`
 - Integration branch: `codex/integrate-gs001-reconciler-20260721`
 - Do not continue from the dirty detached checkout at `/home/graham/workspace/experiments/pdf_oxide` unless intentionally reconciling worktrees.
+- `$handoff` automated facts command:
+  - Command: `/home/graham/workspace/experiments/agent-skills/skills/handoff/run.sh`
+  - Result: exited `0`; reported no uncommitted changes in the clean worktree.
+  - Last 5 commits: `aad02e2a`, `a874508b`, `89e2a476`, `b051f8a3`, `29b4de61`.
+  - TODO scan note: output is noisy because it includes binary/generated fixture content; real source TODOs called out by the scan include PKCS#7 signature creation/verification placeholders in `src/signatures/`.
 
 ## 3. What Landed On Main
 
