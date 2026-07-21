@@ -39,6 +39,7 @@ Current completed page evidence:
 | `page_0045` | Discussion semantic role | `artifacts/pdf_lab/page45_discussion_role_20260721/audit_summary.json` | `origin/main` after page45 discussion-role push |
 | `page_0104` | Control Enhancements standalone label subtitle typing | `artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/audit_summary.json` | `origin/main` after page104 Control Enhancements subtitle push |
 | `page_0421` | GS001 standalone glossary citation reference residual reconciliation | `artifacts/pdf_lab/page421_reference_residual_reconciliation_20260721/audit_summary.json` | `origin/main` after page421 citation residual reconciliation push |
+| `page_0036` | Figure 1 intro sentence typed as body prose | `artifacts/pdf_lab/page36_figure_intro_sentence_20260721/audit_summary.json` | `origin/main` after page36 figure-intro push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -72,15 +73,15 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after the page421 glossary citation residual reconciliation must be selected from
+The next candidate after the page36 Figure 1 intro sentence item must be selected from
 the remaining residual findings, based on the GS001 handoff's independent
 reviewer measurement:
 
 | Field | Value |
 |-------|-------|
-| Page | `page_0035` or remaining `page_0045` residual |
+| Page | remaining `page_0036` Figure 1 diagram items or remaining `page_0045` residual |
 | Defect class | to be selected from the remaining independent reviewer findings |
-| Observed failure | GS001 handoff reports residual findings after prior fixes: page104 had 3, page35 has 13, page421 had 4, and page45 had 20 before the focused page45 receipt pass; page34 body-heading audit, page104 AU-12 field-label audit, page104 Control Enhancements subtitle typing, page421 glossary citation residual reconciliation, and the AC-1 lower-alpha marker, Control Enhancements None, quick-link, AC-1 heading, TOC-lineage, chrome-noise, Related Controls, Discussion text line-order, and Discussion semantic-role checklist items now have focused receipts |
+| Observed failure | GS001 handoff reports residual findings after prior fixes: page104 had 3, page35/page36 Figure 1 has diagram-region items remaining after the intro-sentence fix, page421 had 4, and page45 had 20 before the focused page45 receipt pass; page34 body-heading audit, page104 AU-12 field-label audit, page104 Control Enhancements subtitle typing, page421 glossary citation residual reconciliation, page36 Figure 1 intro-sentence typing, and the AC-1 lower-alpha marker, Control Enhancements None, quick-link, AC-1 heading, TOC-lineage, chrome-noise, Related Controls, Discussion text line-order, and Discussion semantic-role checklist items now have focused receipts |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
 | Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts for page104, page35, page421, and page45; release snapshots; model-review receipts; and live current extraction |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |

@@ -131,6 +131,79 @@
       "verification_scope": "ledger_only_single_extract"
     },
     {
+      "added_at": "2026-07-21T00:00:00Z",
+      "added_by": "agent:codex (pdf-lab page36 all-candidates hardening)",
+      "applied_at": "2026-07-21T00:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route the NIST Figure 1 introductory sentence to body prose instead of figure caption.",
+      "closed_at": "2026-07-21T00:00:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page36_figure_intro_sentence.py)",
+      "entry_id": "nist-figure-intro-prose-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p36:block:7"
+        ],
+        "risk_reasons_observed": [
+          "figure_intro_sentence_as_caption"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/page36_figure_intro_sentence_20260721/current_page36_snapshot.json",
+          "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/multipage/v2_response_p35.md.raw.md"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Actual figure captions such as 'FIGURE 1: CONTROL STRUCTURE'; rejected because this rule only matches the complete introductory sentence.",
+          "Other NIST caption blocks beginning with FIGURE; rejected by exact text, bbox, and font guards.",
+          "Body prose that mentions Figure 1 but is already source_type Body; rejected by source_type guard."
+        ],
+        "candidates_that_prove": [
+          "Page 36 emits 'Figure 1 illustrates the structure of a typical control.' as actual:p36:block:7 with source_type=Caption, but the sentence is body prose introducing the following figure."
+        ],
+        "deterministic_rule": "If a NIST Caption block in the body text band exactly equals 'Figure 1 illustrates the structure of a typical control.', set type=paragraph_block and semantic_role=figure_intro."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Caption",
+          "type is not caption",
+          "bbox is outside the observed body-prose line band above Figure 1",
+          "font_size is outside the observed 10.8-11.1pt body-prose band",
+          "text is not exactly 'Figure 1 illustrates the structure of a typical control.'"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This exact sentence is a documented counterexample to the generic Caption->caption and FIGURE-prefix semantic rules; it intentionally keeps the following all-caps figure title classified as a caption.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.14,
+            "x_min_lt": 0.16,
+            "y_min_gt": 0.28,
+            "y_max_lt": 0.32
+          },
+          "font_properties": {
+            "font_size_gt": 10.8,
+            "font_size_lt": 11.1
+          },
+          "source_type": "Caption",
+          "type": "caption"
+        },
+        "extract": [
+          {
+            "equals_ci": "Figure 1 illustrates the structure of a typical control.",
+            "fields": {
+              "semantic_role": "figure_intro",
+              "type": "paragraph_block"
+            }
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
       "added_at": "2026-05-11T18:30:00Z",
       "added_by": "agent:claude-opus-4-7 (B.2 bulk authoring after nist-tomap-004 proof)",
       "applied_at": "2026-05-11T18:30:00Z",

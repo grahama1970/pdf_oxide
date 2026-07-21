@@ -1,0 +1,45 @@
+/home/graham/.local/lib/python3.12/site-packages/pytest_asyncio/plugin.py:252: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____________ test_nist_page_36_figure_intro_sentence_is_body_prose _____________
+
+    def test_nist_page_36_figure_intro_sentence_is_body_prose():
+        page = _extract_page_36_with_ledger()
+        blocks = page.get("blocks") or []
+
+        intro_matches = [
+            block
+            for block in blocks
+            if _norm(block.get("text")) == "Figure 1 illustrates the structure of a typical control."
+        ]
+        assert len(intro_matches) == 1
+        intro = intro_matches[0]
+        assert intro.get("id") == "actual:p36:block:7"
+        assert intro.get("source_type") == "Caption"
+>       assert intro.get("type") == "paragraph_block"
+E       AssertionError: assert 'caption' == 'paragraph_block'
+E
+E         - paragraph_block
+E         + caption
+
+tests/test_nist_page36_figure_intro_sentence.py:45: AssertionError
+=============================== warnings summary ===============================
+tests/test_nist_page36_figure_intro_sentence.py::test_nist_page_36_figure_intro_sentence_is_body_prose
+tests/test_nist_page36_figure_intro_sentence.py::test_nist_page_36_figure_intro_sentence_is_body_prose
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_nist_page36_figure_intro_sentence.py::test_nist_page_36_figure_intro_sentence_is_body_prose
+tests/test_nist_page36_figure_intro_sentence.py::test_nist_page_36_figure_intro_sentence_is_body_prose
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_nist_page36_figure_intro_sentence.py::test_nist_page_36_figure_intro_sentence_is_body_prose
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_nist_page36_figure_intro_sentence.py::test_nist_page_36_figure_intro_sentence_is_body_prose
+1 failed, 5 warnings in 11.21s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

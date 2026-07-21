@@ -1,0 +1,1309 @@
+{
+  "generated_at": "2026-07-21T05:08:07.559191+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04473802296802251,
+            0.8507378272760927,
+            0.05821938948197798
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p36:block:0",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05679397390346334,
+            0.8517353332120609,
+            0.07054738324097913
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p36:block:1",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.9414804632013495,
+            0.852897594177645,
+            0.9549618345318418
+          ],
+          "font_name": "TT0",
+          "font_size": 7.980000019073486,
+          "id": "actual:p36:block:2",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              433.8087158203125,
+              7.979999542236328
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "CHAPTER TWO  PAGE 9"
+          },
+          "source_type": "Body",
+          "text": "CHAPTER TWO  PAGE 9",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.5297058735018462,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p36:block:3",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              303.1199951171875,
+              349.6199951171875
+            ],
+            "block_type": "Boilerplate",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+          },
+          "source_type": "Boilerplate",
+          "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.08994257570517183,
+            0.8022633970173356,
+            0.1254612026792584
+          ],
+          "font_name": "TT0",
+          "font_size": 10.980000495910645,
+          "id": "actual:p36:block:4",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              90.0,
+              696.0604858398438,
+              403.4403991699219,
+              24.41949462890625
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.980000495910645,
+            "header_level": null,
+            "is_bold": false,
+            "text": "selection and implementation of control enhancements always requires the selection and implementation of the base control."
+          },
+          "source_type": "Body",
+          "text": "selection and implementation of control enhancements always requires the selection and implementation of the base control.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.13895049239649918,
+            0.8487184811261744,
+            0.24234546314586292
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979999542236328,
+          "id": "actual:p36:block:5",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              90.0,
+              603.4881591796875,
+              431.92578125,
+              78.17755126953125
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "is_bold": false,
+            "text": "The families are arranged in alphabetical order, while the controls and control enhancements within each family are in numerical order. The order of the families, controls, and control enhancements does not imply any logical progression, level of prioritization or importance, or order in which the controls or control enhancements are to be implemented. Rather, it reflects the order in which they were included in the catalog. Control designations are not re-used when a control is withdrawn."
+          },
+          "source_type": "Body",
+          "text": "The families are arranged in alphabetical order, while the controls and control enhancements within each family are in numerical order. The order of the families, controls, and control enhancements does not imply any logical progression, level of prioritization or importance, or order in which the controls or control enhancements are to be implemented. Rather, it reflects the order in which they were included in the catalog. Control designations are not re-used when a control is withdrawn.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.14704092187819137,
+            0.2558347528631037,
+            0.8303700366051369,
+            0.2913533798371903
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979997634887695,
+          "id": "actual:p36:block:6",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              89.98904418945312,
+              564.6738891601562,
+              420.67889404296875,
+              24.41949462890625
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.979997634887695,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Security and privacy controls have the following structure: a base control section, a discussion section, a related controls section, a control enhancements section, and a references section."
+          },
+          "source_type": "Body",
+          "text": "Security and privacy controls have the following structure: a base control section, a discussion section, a related controls section, a control enhancements section, and a references section.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.14700506871042687,
+            0.28977291993420534,
+            0.5257110097049887,
+            0.3083224633727411
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979999542236328,
+          "id": "actual:p36:block:7",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              89.96710205078125,
+              551.234375,
+              234.32415771484375,
+              10.97998046875
+            ],
+            "block_type": "Caption",
+            "confidence": 0.800000011920929,
+            "font_name": "TT0",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Figure 1 illustrates the structure of a typical control."
+          },
+          "semantic_role": "figure_caption",
+          "source_type": "Caption",
+          "text": "Figure 1 illustrates the structure of a typical control.",
+          "type": "caption"
+        },
+        {
+          "bbox": [
+            0.39548764197654973,
+            0.8015683106701783,
+            0.6044241711984273,
+            0.8181822805693655
+          ],
+          "font_name": "TT3",
+          "font_size": 9.479999542236328,
+          "id": "actual:p36:block:8",
+          "is_bold": true,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              242.03843688964844,
+              147.3081817626953,
+              130.0021514892578,
+              9.479995727539062
+            ],
+            "block_type": "Caption",
+            "confidence": 0.800000011920929,
+            "font_name": "TT3",
+            "font_size": 9.479999542236328,
+            "header_level": null,
+            "is_bold": true,
+            "text": "FIGURE 1: CONTROL STRUCTURE"
+          },
+          "semantic_role": "figure_caption",
+          "source_type": "Caption",
+          "text": "FIGURE 1: CONTROL STRUCTURE",
+          "type": "caption"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.8351697825422191,
+            0.8506598379097733,
+            0.9046267114504419
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979999542236328,
+          "id": "actual:p36:block:9",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              90.0,
+              78.96143341064453,
+              433.06982421875,
+              51.298561096191406
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "is_bold": false,
+            "text": "The control section prescribes a security or privacy capability to be implemented. Security and privacy capabilities are achieved by the activities or actions, automated or nonautomated, carried out by information systems and organizations. Organizations designate the responsibility for control development, implementation, assessment, and monitoring. Organizations have the"
+          },
+          "source_type": "Body",
+          "text": "The control section prescribes a security or privacy capability to be implemented. Security and privacy capabilities are achieved by the activities or actions, automated or nonautomated, carried out by information systems and organizations. Organizations designate the responsibility for control development, implementation, assessment, and monitoring. Organizations have the",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.15960784363590813,
+            0.37824719361584597,
+            0.41836433161317915,
+            0.39748995231859613
+          ],
+          "font_name": "TT3",
+          "font_size": 10.979999542236328,
+          "id": "actual:p36:block:10",
+          "is_bold": true,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              97.68000030517578,
+              481.0199890136719,
+              160.818603515625,
+              10.980010986328125
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT3",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0958082675933838,
+                "text_len": 27,
+                "title_case_ratio": 1.0,
+                "word_count": 4
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "AU-4 AUDIT STORAGE CAPACITY"
+            },
+            "is_bold": true,
+            "text": "AU-4 AUDIT STORAGE CAPACITY"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "AU-4 AUDIT STORAGE CAPACITY",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.2184313605813419,
+            0.40292863171510024,
+            0.8301982505648744,
+            0.4353866962471394
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p36:block:11",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              133.67999267578125,
+              450.29998779296875,
+              374.4012451171875,
+              22.32000732421875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control:  Allocate audit record storage capacity to accommodate [Assignment: organization- defined audit record retention requirements]."
+          },
+          "source_type": "Body",
+          "text": "Control:  Allocate audit record storage capacity to accommodate [Assignment: organization- defined audit record retention requirements].",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.2184313605813419,
+            0.4413377395784012,
+            0.8273805107166564,
+            0.5045645742705374
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p36:block:12",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              133.67999267578125,
+              395.5111083984375,
+              374.89129638671875,
+              46.688873291015625
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Organizations consider the types of auditing to be performed and the audit processing requirements when allocating audit storage capacity. Allocating sufficient audit storage capacity reduces the likelihood of such capacity being exceeded and resulting in the potential loss or reduction of auditing capability."
+          },
+          "semantic_role": "discussion",
+          "source_type": "Body",
+          "text": "Discussion:  Organizations consider the types of auditing to be performed and the audit processing requirements when allocating audit storage capacity. Allocating sufficient audit storage capacity reduces the likelihood of such capacity being exceeded and resulting in the potential loss or reduction of auditing capability.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.2184313605813419,
+            0.5106559136901239,
+            0.7223621443206188,
+            0.5275836520724826
+          ],
+          "font_name": "TT0",
+          "font_size": 10.019998550415039,
+          "id": "actual:p36:block:13",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              133.67999267578125,
+              377.2799987792969,
+              310.6645202636719,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.019998550415039,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  AU-2, AU-5, AU-6, AU-7, AU-9, AU-11, AU-12, AU-14, SI-4."
+          },
+          "semantic_role": "related_controls",
+          "source_type": "Body",
+          "text": "Related Controls:  AU-2, AU-5, AU-6, AU-7, AU-9, AU-11, AU-12, AU-14, SI-4.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.2184313605813419,
+            0.5336104498969184,
+            0.37429804583780124,
+            0.5505381882792771
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p36:block:14",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              133.67999267578125,
+              359.1000061035156,
+              97.60453796386719,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control Enhancements:"
+          },
+          "semantic_role": "nist_control_enhancements_heading",
+          "source_type": "Body",
+          "text": "Control Enhancements:",
+          "type": "section_subtitle"
+        },
+        {
+          "bbox": [
+            0.2184313605813419,
+            0.5564763232915089,
+            0.5937473571378421,
+            0.5740366078386403
+          ],
+          "font_name": "TT3",
+          "font_size": 8.65999984741211,
+          "id": "actual:p36:block:15",
+          "is_bold": true,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              133.67999267578125,
+              340.8599853515625,
+              231.48345947265625,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.3499999940395355,
+            "font_name": "TT3",
+            "font_size": 8.65999984741211,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.3499999940395355,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 8.65999984741211,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.8642714023590088,
+                "text_len": 57,
+                "title_case_ratio": 0.75,
+                "word_count": 8
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like",
+                "parentheses_negative"
+              ],
+              "title_text": "(1)AUDIT STORAGE CAPACITY | TRANSFER TO ALTERNATE STORAGE"
+            },
+            "is_bold": true,
+            "text": "(1)AUDIT STORAGE CAPACITY | TRANSFER TO ALTERNATE STORAGE"
+          },
+          "source_type": "Body",
+          "text": "(1) AUDIT STORAGE CAPACITY | TRANSFER TO ALTERNATE STORAGE",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.2478267195957159,
+            0.5755672262172506,
+            0.8236097946665646,
+            0.6086635782261087
+          ],
+          "font_name": "TT3",
+          "font_size": 10.020000457763672,
+          "id": "actual:p36:block:16",
+          "is_bold": true,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              151.66995239257812,
+              313.4354248046875,
+              354.6669616699219,
+              22.324554443359375
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT3",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0,
+                "text_len": 84,
+                "title_case_ratio": 0.1111111119389534,
+                "word_count": 9
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Off-load audit records [Assignment: organization-defined frequency] onto a different"
+            },
+            "is_bold": true,
+            "text": "Off-load audit records [Assignment: organization-defined frequency] onto a different system or media than the system being audited."
+          },
+          "source_type": "Body",
+          "text": "Off-load audit records [Assignment: organization-defined frequency] onto a different system or media than the system being audited.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.24784312528722427,
+            0.6103528725980508,
+            0.8341002121470333,
+            0.7044184520991161
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p36:block:17",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              151.67999267578125,
+              237.22677612304688,
+              361.09478759765625,
+              71.11322021484375
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Off-loading is a process designed to preserve the confidentiality and integrity of audit records by moving the records from the primary system to a secondary or alternate system. It is a common process in systems with limited audit storage capacity; the audit storage is used only in a transitory fashion until the system can communicate with the secondary or alternate system designated for storing the audit records, at which point the information is transferred."
+          },
+          "source_type": "Body",
+          "text": "Discussion:  Off-loading is a process designed to preserve the confidentiality and integrity of audit records by moving the records from the primary system to a secondary or alternate system. It is a common process in systems with limited audit storage capacity; the audit storage is used only in a transitory fashion until the system can communicate with the secondary or alternate system designated for storing the audit records, at which point the information is transferred.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.24784312528722427,
+            0.7067165182094381,
+            0.41002468034332873,
+            0.7236442180595013
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p36:block:18",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              151.67999267578125,
+              222.0,
+              101.4525146484375,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  None."
+          },
+          "source_type": "Body",
+          "text": "Related Controls:  None.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.2184313605813419,
+            0.7295195454298847,
+            0.3442249173432394,
+            0.7464472452799479
+          ],
+          "font_name": "TT0",
+          "font_size": 10.680000305175781,
+          "id": "actual:p36:block:19",
+          "is_bold": false,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              133.67999267578125,
+              203.94000244140625,
+              79.92001342773438,
+              12.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.680000305175781,
+            "header_level": null,
+            "is_bold": false,
+            "text": "References:  None."
+          },
+          "semantic_role": "reference_lead",
+          "source_type": "Body",
+          "text": "References:  None.",
+          "type": "reference"
+        },
+        {
+          "bbox": [
+            0.6160784453348397,
+            0.5423598241324377,
+            0.8139533747255413,
+            0.5581325569538155
+          ],
+          "font_name": "TT3",
+          "font_size": 9.75,
+          "id": "actual:p36:block:21",
+          "is_bold": true,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              377.0400085449219,
+              353.1000061035156,
+              124.01998901367188,
+              12.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT3",
+            "font_size": 9.75,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.75,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9730538725852966,
+                "text_len": 30,
+                "title_case_ratio": 1.0,
+                "word_count": 2
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "Organization-defined Parameter"
+            },
+            "is_bold": true,
+            "text": "Organization-defined Parameter"
+          },
+          "source_type": "Body",
+          "text": "Organization-defined Parameter",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.6258823669034671,
+            0.369784075804431,
+            0.8237572962941687,
+            0.3855568086258089
+          ],
+          "font_name": "TT3",
+          "font_size": 9.75,
+          "id": "actual:p36:block:24",
+          "is_bold": true,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              383.0400085449219,
+              489.7799987792969,
+              124.01998901367188,
+              12.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT3",
+            "font_size": 9.75,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.75,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9730538725852966,
+                "text_len": 30,
+                "title_case_ratio": 1.0,
+                "word_count": 2
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "Organization-defined Parameter"
+            },
+            "is_bold": true,
+            "text": "Organization-defined Parameter"
+          },
+          "source_type": "Body",
+          "text": "Organization-defined Parameter",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.13764705533295676,
+            0.34031438345860954,
+            0.42338232900582107,
+            0.35608711627998735
+          ],
+          "font_name": "TT3",
+          "font_size": 10.5,
+          "id": "actual:p36:block:25",
+          "is_bold": true,
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "bbox": [
+              84.23999786376953,
+              513.1199951171875,
+              177.83999633789062,
+              12.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT3",
+            "font_size": 10.5,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.5,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.047904133796692,
+                "text_len": 31,
+                "title_case_ratio": 1.0,
+                "word_count": 4
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "Control Identifier Control Name"
+            },
+            "is_bold": true,
+            "text": "Control Identifier Control Name"
+          },
+          "source_type": "Body",
+          "text": "Control Identifier Control Name",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.10457516339869281,
+            0.5712184328021426,
+            0.21339870278352227,
+            0.614400266396879
+          ],
+          "id": "actual:p36:table:0",
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "accuracy": 90.99159240722656,
+            "bbox": [
+              64.0,
+              452.4049987792969,
+              130.60000610351562,
+              486.6050109863281
+            ],
+            "cols": 1,
+            "column_count": 1,
+            "data": [
+              [
+                "Control"
+              ],
+              [
+                "Enhancement"
+              ]
+            ],
+            "df_data": [
+              {
+                "0": "Control"
+              },
+              {
+                "0": "Enhancement"
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 0,
+            "page": 35,
+            "row_count": 2,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "Control"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "Enhancement"
+                  }
+                ]
+              }
+            ],
+            "table_geometry": {
+              "bbox_clipped_to_page": false,
+              "full_normalized_bbox": [
+                0.10457516339869281,
+                0.5712184328021426,
+                0.21339870278352227,
+                0.614400266396879
+              ],
+              "off_page_extent": {
+                "bottom": 0.0,
+                "left": 0.0,
+                "right": 0.0,
+                "top": 0.0
+              },
+              "raw_bbox": [
+                64.0,
+                452.4049987792969,
+                130.60000610351562,
+                486.6050109863281
+              ],
+              "visible_bbox": [
+                0.10457516339869281,
+                0.5712184328021426,
+                0.21339870278352227,
+                0.614400266396879
+              ]
+            },
+            "whitespace": 0.0
+          },
+          "source_type": "table",
+          "table_geometry": {
+            "bbox_clipped_to_page": false,
+            "full_normalized_bbox": [
+              0.10457516339869281,
+              0.5712184328021426,
+              0.21339870278352227,
+              0.614400266396879
+            ],
+            "off_page_extent": {
+              "bottom": 0.0,
+              "left": 0.0,
+              "right": 0.0,
+              "top": 0.0
+            },
+            "raw_bbox": [
+              64.0,
+              452.4049987792969,
+              130.60000610351562,
+              486.6050109863281
+            ],
+            "visible_bbox": [
+              0.10457516339869281,
+              0.5712184328021426,
+              0.21339870278352227,
+              0.614400266396879
+            ]
+          },
+          "text": "Control\nEnhancement",
+          "type": "table"
+        },
+        {
+          "bbox": [
+            0.11876960205875971,
+            0.40625377616497,
+            0.19033823449627246,
+            0.4494356097597064
+          ],
+          "id": "actual:p36:table:1",
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "accuracy": 79.85178629557291,
+            "bbox": [
+              72.68699645996094,
+              321.75299072265625,
+              116.48699951171875,
+              355.9530029296875
+            ],
+            "cols": 1,
+            "column_count": 1,
+            "data": [
+              [
+                "Base"
+              ],
+              [
+                "Control"
+              ]
+            ],
+            "df_data": [
+              {
+                "0": "Base"
+              },
+              {
+                "0": "Control"
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 1,
+            "page": 35,
+            "row_count": 2,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "Base"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "Control"
+                  }
+                ]
+              }
+            ],
+            "table_geometry": {
+              "bbox_clipped_to_page": false,
+              "full_normalized_bbox": [
+                0.11876960205875971,
+                0.40625377616497,
+                0.19033823449627246,
+                0.4494356097597064
+              ],
+              "off_page_extent": {
+                "bottom": 0.0,
+                "left": 0.0,
+                "right": 0.0,
+                "top": 0.0
+              },
+              "raw_bbox": [
+                72.68699645996094,
+                321.75299072265625,
+                116.48699951171875,
+                355.9530029296875
+              ],
+              "visible_bbox": [
+                0.11876960205875971,
+                0.40625377616497,
+                0.19033823449627246,
+                0.4494356097597064
+              ]
+            },
+            "whitespace": 0.0
+          },
+          "source_type": "table",
+          "table_geometry": {
+            "bbox_clipped_to_page": false,
+            "full_normalized_bbox": [
+              0.11876960205875971,
+              0.40625377616497,
+              0.19033823449627246,
+              0.4494356097597064
+            ],
+            "off_page_extent": {
+              "bottom": 0.0,
+              "left": 0.0,
+              "right": 0.0,
+              "top": 0.0
+            },
+            "raw_bbox": [
+              72.68699645996094,
+              321.75299072265625,
+              116.48699951171875,
+              355.9530029296875
+            ],
+            "visible_bbox": [
+              0.11876960205875971,
+              0.40625377616497,
+              0.19033823449627246,
+              0.4494356097597064
+            ]
+          },
+          "text": "Base\nControl",
+          "type": "table"
+        },
+        {
+          "bbox": [
+            0.375599680383221,
+            0.7311515230121035,
+            0.7589330236896191,
+            0.7629697009770557
+          ],
+          "id": "actual:p36:table:2",
+          "page": 36,
+          "pdf_page_index": 35,
+          "raw": {
+            "accuracy": 80.53656684027779,
+            "bbox": [
+              229.86700439453125,
+              579.0720062255859,
+              464.4670104980469,
+              604.2720031738281
+            ],
+            "cols": 1,
+            "column_count": 1,
+            "data": [
+              [
+                ""
+              ],
+              [
+                "Sources for additional information related to the control"
+              ]
+            ],
+            "df_data": [
+              {
+                "0": ""
+              },
+              {
+                "0": "Sources for additional information related to the control"
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 2,
+            "page": 35,
+            "row_count": 2,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "Sources for additional information related to the control"
+                  }
+                ]
+              }
+            ],
+            "table_geometry": {
+              "bbox_clipped_to_page": false,
+              "full_normalized_bbox": [
+                0.375599680383221,
+                0.7311515230121035,
+                0.7589330236896191,
+                0.7629697009770557
+              ],
+              "off_page_extent": {
+                "bottom": 0.0,
+                "left": 0.0,
+                "right": 0.0,
+                "top": 0.0
+              },
+              "raw_bbox": [
+                229.86700439453125,
+                579.0720062255859,
+                464.4670104980469,
+                604.2720031738281
+              ],
+              "visible_bbox": [
+                0.375599680383221,
+                0.7311515230121035,
+                0.7589330236896191,
+                0.7629697009770557
+              ]
+            },
+            "whitespace": 50.0
+          },
+          "source_type": "table",
+          "table_geometry": {
+            "bbox_clipped_to_page": false,
+            "full_normalized_bbox": [
+              0.375599680383221,
+              0.7311515230121035,
+              0.7589330236896191,
+              0.7629697009770557
+            ],
+            "off_page_extent": {
+              "bottom": 0.0,
+              "left": 0.0,
+              "right": 0.0,
+              "top": 0.0
+            },
+            "raw_bbox": [
+              229.86700439453125,
+              579.0720062255859,
+              464.4670104980469,
+              604.2720031738281
+            ],
+            "visible_bbox": [
+              0.375599680383221,
+              0.7311515230121035,
+              0.7589330236896191,
+              0.7629697009770557
+            ]
+          },
+          "text": "Sources for additional information related to the control",
+          "type": "table"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 36,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 35
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

@@ -1,0 +1,111 @@
+{
+  "candidate": "Figure 1 introductory sentence",
+  "candidate_block": {
+    "bbox": [
+      0.14700506871042687,
+      0.28977291993420534,
+      0.5257110097049887,
+      0.3083224633727411
+    ],
+    "font_name": "TT0",
+    "font_size": 10.979999542236328,
+    "id": "actual:p36:block:7",
+    "is_bold": false,
+    "page": 36,
+    "pdf_page_index": 35,
+    "raw": {
+      "bbox": [
+        89.96710205078125,
+        551.234375,
+        234.32415771484375,
+        10.97998046875
+      ],
+      "block_type": "Caption",
+      "confidence": 0.800000011920929,
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "header_level": null,
+      "is_bold": false,
+      "text": "Figure 1 illustrates the structure of a typical control."
+    },
+    "semantic_role": "figure_intro",
+    "source_type": "Caption",
+    "text": "Figure 1 illustrates the structure of a typical control.",
+    "type": "paragraph_block"
+  },
+  "current_snapshot": "artifacts/pdf_lab/page36_figure_intro_sentence_20260721/current_page36_snapshot.json",
+  "figure_title_block": {
+    "bbox": [
+      0.39548764197654973,
+      0.8015683106701783,
+      0.6044241711984273,
+      0.8181822805693655
+    ],
+    "font_name": "TT3",
+    "font_size": 9.479999542236328,
+    "id": "actual:p36:block:8",
+    "is_bold": true,
+    "page": 36,
+    "pdf_page_index": 35,
+    "raw": {
+      "bbox": [
+        242.03843688964844,
+        147.3081817626953,
+        130.0021514892578,
+        9.479995727539062
+      ],
+      "block_type": "Caption",
+      "confidence": 0.800000011920929,
+      "font_name": "TT3",
+      "font_size": 9.479999542236328,
+      "header_level": null,
+      "is_bold": true,
+      "text": "FIGURE 1: CONTROL STRUCTURE"
+    },
+    "semantic_role": "figure_caption",
+    "source_type": "Caption",
+    "text": "FIGURE 1: CONTROL STRUCTURE",
+    "type": "caption"
+  },
+  "live": false,
+  "mocked": false,
+  "page": 36,
+  "page_boundary_reconciliation": {
+    "current_visible_page_with_candidate": 36,
+    "gs001_reported_page": 35,
+    "page35_current_snapshot": "artifacts/pdf_lab/page35_residual_current_20260721/current_page35_snapshot.json",
+    "page36_pre_patch_snapshot": "artifacts/pdf_lab/page36_figure_current_20260721/current_page36_snapshot.json"
+  },
+  "proof_commands": {
+    "broad_nist_regression": "pytest -q tests/test_nist_page36_figure_intro_sentence.py tests/test_nist_page104_control_enhancements_subtitle.py tests/test_nist_page104_au12_page_break_label.py tests/test_nist_page45_discussion_role.py tests/test_nist_page45_discussion_text.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page35_control_families_table.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page46_nested_list_segmentation.py",
+    "focused_page36_page35": "pytest -q tests/test_nist_page36_figure_intro_sentence.py tests/test_nist_page35_control_families_table.py",
+    "green": "pytest -q tests/test_nist_page36_figure_intro_sentence.py",
+    "json_schema": "python -m json.tool python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+    "red": "pytest -q tests/test_nist_page36_figure_intro_sentence.py"
+  },
+  "proof_results": {
+    "broad_nist_regression": "20 passed, 5 warnings in 413.73s",
+    "focused_page36_page35": "2 passed, 5 warnings in 12.12s",
+    "green": "1 passed, 5 warnings in 2.60s",
+    "red": "1 failed, 5 warnings in 11.21s; type was caption before patch"
+  },
+  "schema": "pdf_lab.page36_figure_intro_sentence_audit.v1",
+  "selection_receipt": "artifacts/pdf_lab/page36_figure_intro_sentence_20260721/selection_receipt.json",
+  "sha256": {
+    "current_page36_snapshot": "0f32fe6b37e4fb1caf1d36c34c5be2047785fe2303bbd1047fb12c92968d7daa",
+    "selection_receipt": "4ab4b604481839303f76a5575f36aa9a4828b7b0a6e87605c4f02eb2a367a878",
+    "visual_receipt": "edae010c80cbb6fc09d7bdb96d39c07d4ab6b769c6119a09c6c7765d1129c57d"
+  },
+  "source_reviewer_page_label": "page35 row 9",
+  "status": "passing_current_contract",
+  "test_logs": {
+    "broad_nist_regression": "artifacts/pdf_lab/page36_figure_intro_sentence_20260721/test_logs/pytest_broad_nist_regression.log",
+    "focused_page36_page35": "artifacts/pdf_lab/page36_figure_intro_sentence_20260721/test_logs/pytest_page36_page35_focused.log",
+    "green": "artifacts/pdf_lab/page36_figure_intro_sentence_20260721/test_logs/green_test_page36_figure_intro_sentence.log",
+    "red": "artifacts/pdf_lab/page36_figure_intro_sentence_20260721/test_logs/red_test_page36_figure_intro_sentence.log",
+    "snapshot": "artifacts/pdf_lab/page36_figure_intro_sentence_20260721/test_logs/current_snapshot_page36.log"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page36_figure_intro_sentence_20260721/visual_receipt.json",
+  "what_remains_unverified": "remaining Figure 1 diagram-region blocks, live model-backed second-pass repair lifecycle, and Criterion 6 live GitHub apply",
+  "what_was_exercised": "deterministic local extraction of NIST SP 800-53r5 page 36 with release promotion ledger"
+}
