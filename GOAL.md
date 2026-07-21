@@ -55,6 +55,7 @@ Current completed page evidence:
 | `page_0004` | live second-pass frontmatter authority/publication details review | `artifacts/pdf_lab/page4_frontmatter_review_20260721/audit_summary.json` | `origin/main` after page4 reviewed-clean evidence push |
 | `page_0005` | live second-pass frontmatter abstract/keywords review | `artifacts/pdf_lab/page5_frontmatter_review_20260721/audit_summary.json` | `origin/main` after page5 reviewed-clean evidence push |
 | `page_0006` | live second-pass Historical Contributions frontmatter heading review | `artifacts/pdf_lab/page6_historical_contributions_20260721/audit_summary.json` | `origin/main` after page6 Historical Contributions heading push |
+| `page_0007` | live second-pass frontmatter revision/detail review | `artifacts/pdf_lab/page7_frontmatter_review_20260721/audit_summary.json` | `origin/main` after page7 reviewed-clean evidence push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
