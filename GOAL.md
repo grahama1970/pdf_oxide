@@ -122,6 +122,8 @@ or lacks an accepted Tau-native PDF Lab work-order contract:
 | Observed failure | No page30 live model review has been run. Page29 proved the ownership boundary: pdf_oxide must not call SciLLM directly or via a local Tau wrapper; Tau issue #120 must provide the native route |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
 | Candidate artifacts to inspect first | `artifacts/pdf_lab/next_candidate_selection_page30_20260721T1235Z/selection_receipt.json`, `candidate_manifest.json`, `sampled_page_cases.json` |
+| Deterministic evidence bundle | `artifacts/pdf_lab/page30_deterministic_evidence_20260721T1245Z/page_case_0001_p0030/review_bundle.zip`, `review.html`, `review_html_screenshot.png`, `visual_verification_receipt.json` |
+| Current deterministic status | `terminal_status=still_open`, `reason=dry_run_review_not_executed`, `page_orchestrator_mode=dry_run`, `registered=false`, `transport_run_id=null` |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching; no pdf_oxide-side SciLLM/model transport attempts until Tau owns the route |
 
 Before patching page30, wait for Tau issue #120 to provide the accepted
