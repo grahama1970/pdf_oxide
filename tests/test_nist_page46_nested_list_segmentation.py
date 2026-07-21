@@ -46,6 +46,16 @@ def test_nist_page_46_splits_h_nested_account_notification_list():
         for text in texts
     )
 
+    assert any(text == "d. Specify:" for text in texts)
+    assert sum(text == "d. Specify:" for text in texts) == 1
+    assert any(text == "1. Authorized users of the system;" for text in texts)
+    assert any(text == "2. Group and role membership; and" for text in texts)
+    assert any(
+        text.startswith("3. Access authorizations (i.e., privileges)")
+        and "for each account;" in text
+        for text in texts
+    )
+
     assert any(text.startswith("h. Notify account managers") and text.endswith("within:") for text in texts)
     assert (
         sum(text.startswith("h. Notify account managers") and text.endswith("within:") for text in texts) == 1

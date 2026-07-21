@@ -6,6 +6,8 @@
   "raw_audit": "page46_raw_classify_blocks_audit_final.json",
   "raw_core": {
     "block_count": 28,
+    "d_child_count": 3,
+    "d_parent_count": 1,
     "h_block_absorbs_i": false,
     "h_block_absorbs_numbered_children": false,
     "h_child_count": 3,
@@ -19,6 +21,8 @@
     "child_1": 1,
     "child_2": 1,
     "child_3": 1,
+    "d_child_count": 3,
+    "d_parent": 1,
     "h_parent": 1,
     "i_parent": 1
   },
