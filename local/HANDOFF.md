@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T12:31:00Z
+**Timestamp**: 2026-07-21T12:55:00Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -11,9 +11,10 @@
 
 ## 2. Current State
 
-- Current page: page29 selected after page28 was recorded as blocked at the Tau/SciLLM orchestration boundary.
+- Current page: page30 selected after page29 was recorded as blocked at the Tau/SciLLM orchestration boundary.
 - Current clean worktree: `/tmp/pdf_oxide_next_page_20260721`, branch `codex/pdf-lab-next-page-20260721`.
-- Current remote main at start of this slice: `1becfd792225911c0c681b2c6638a8dfb698f356`.
+- Current pushed branch head: `b6d6fc237f3c28bae1843678ad3fc7c202807da5`.
+- Current remote main: `1becfd792225911c0c681b2c6638a8dfb698f356`.
 - Do not continue from the dirty detached checkout at `/home/graham/workspace/experiments/pdf_oxide` unless intentionally reconciling worktrees.
 
 ## 3. Proven Local Work
@@ -53,6 +54,21 @@
   - Child validation: `review_validation.json`, `ok:false`, errors `["page_orchestrator_registration_failed"]`.
   - Root error: `scillm_page_orchestrator_run_error.json`, `HTTPStatusError`, HTTP 404 for `POST /v1/scillm/opencode/transport/runs`.
   - Why invalid: although Tau dispatched the local command, the wrapper invoked the pdf_oxide harness path that called SciLLM HTTP transport. The human explicitly disallowed this; Tau must own SciLLM/DAG routing itself.
+- Page30 deterministic evidence exists and is pushed, but page30 live second-pass has not run:
+  - Selection receipt: `artifacts/pdf_lab/next_candidate_selection_page30_20260721T1235Z/selection_receipt.json`
+  - Selected case: `page_case_0001_p0030`
+  - Candidate count: `13`
+  - Candidate presets: `side_chrome`, `text`, `section_heading`, `list`, `footnote`
+  - Dry-run case dir: `artifacts/pdf_lab/page30_deterministic_evidence_20260721T1245Z/page_case_0001_p0030`
+  - Bundle: `review_bundle.zip`
+  - HTML: `review.html`
+  - Browser screenshot: `review_html_screenshot.png` (`1280 x 9424`)
+  - Visual receipt: `visual_verification_receipt.json`
+  - `review_request_validation.json`: `ok:true`
+  - `terminal_ledger_validation.json`: `ok:true`, `terminal_status:"still_open"`
+  - `review_bundle_validation.json`: `ok:true`, `zip_content_ok:true`, no missing or mismatched entries, `zip_entry_count:36`
+  - `scillm_page_orchestrator_run_validation.json`: `mode:"dry_run"`, `registered:false`, `transport_run_id:null`
+  - Non-claim: this is deterministic prep only; no live model-backed review was executed.
 
 ## 5. Drift Rollback
 
@@ -77,21 +93,23 @@
 - Tau ticket:
   - `https://github.com/grahama1970/tau/issues/120`
   - Title: `Own PDF Lab page28 large live-review timeout orchestration`
+  - Page29 boundary update comment: `https://github.com/grahama1970/tau/issues/120#issuecomment-5034036323`
+  - Page30 deterministic evidence update comment: `https://github.com/grahama1970/tau/issues/120#issuecomment-5034186098`
 - Memory-first hook:
   - `/home/graham/.codex/hook-logs/memory-first-20260721T114729Z.json`
 
 ## 7. Next Steps
 
 1. Stop all pdf_oxide-side live SciLLM/model transport attempts. Do not call `/v1/chat/completions` or `/v1/scillm/opencode/transport/*` from pdf_oxide wrappers or harness retries.
-2. Treat page29 as selected but blocked on Tau-native model transport. Deterministic non-model extraction/artifact preparation may continue only if it does not invoke SciLLM.
-3. Tau-owned ticket for page28 live review timeout has been filed:
+2. Treat page30 as the active selected case and blocked for live review on Tau-native model transport. Deterministic non-model prep has already produced original image, annotated image, extracted JSON, presets, prompt payload, HTML, screenshot, and ZIP.
+3. Tau-owned ticket for the missing PDF Lab live review route is open:
    - Issue: `https://github.com/grahama1970/tau/issues/120`
-   - Problem: pdf_oxide existing harness directly posts a 39k-char, 18-candidate, 2-image review payload to SciLLM and timed out at 120s.
+   - Problem: pdf_oxide-side live model transport is disallowed; page28 timed out, page29 proved the local wrapper boundary violation, and page30 now waits with deterministic inputs ready.
    - Required owner: Tau should provide or own the DAG/model-review transport strategy, including chunking/retries/merge semantics if that is the chosen route.
-   - Acceptance: one page28 live gate produces `review_response.json`, `review_validation.json` with all 18 expected IDs seen exactly once, terminal ledger `reviewed_clean` or a valid non-clean receipt, and `harness_final_gate.json` not blocked.
-4. File or update a Tau issue for the page29/route-shape blocker if issue #120 does not already cover the missing Tau-native PDF Lab second-pass transport contract.
+   - Acceptance: one live PDF Lab page case through Tau-owned route produces parseable `review_response.json`, `review_validation.json` with all expected IDs seen exactly once, terminal ledger `reviewed_clean` or a valid non-clean receipt, and a final gate not blocked; or a Tau-owned blocked receipt that does not route through pdf_oxide-owned SciLLM calls.
+4. Do not advance to page31 while page30 is the active selected case unless the human explicitly changes the page policy or Tau #120 remains externally blocked and the human authorizes deterministic selection-only backlog work.
 5. Do not claim a Tau creator-reviewer loop unless Tau receipts contain creator/reviewer topology and node artifacts. The page28 artifact was a WebGPT/WebClaude roundtable review, not a creator-reviewer repair loop.
-6. Do not commit the page29 wrapper as an accepted workflow. If committing this handoff, stage only `local/HANDOFF.md`, `artifacts/pdf_lab/page29_tau_boundary_violation_20260721T1230Z/receipt.json`, and non-model page29 selection evidence.
+6. Do not commit the page29 wrapper as an accepted workflow. The invalid wrapper artifacts remain untracked in `/tmp/pdf_oxide_next_page_20260721` and should not be staged.
 
 ## 8. Key Files
 
@@ -105,3 +123,6 @@
 - `artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/page_cases/page_case_0001_p0028/scillm_review_error.json`
 - `artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/selection_receipt.json`
 - `artifacts/pdf_lab/page29_tau_boundary_violation_20260721T1230Z/receipt.json`
+- `artifacts/pdf_lab/next_candidate_selection_page30_20260721T1235Z/selection_receipt.json`
+- `artifacts/pdf_lab/page30_deterministic_evidence_20260721T1245Z/page_case_0001_p0030/review_bundle.zip`
+- `artifacts/pdf_lab/page30_deterministic_evidence_20260721T1245Z/page_case_0001_p0030/visual_verification_receipt.json`
