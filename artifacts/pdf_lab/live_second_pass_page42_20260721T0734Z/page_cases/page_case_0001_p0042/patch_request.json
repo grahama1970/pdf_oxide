@@ -1,0 +1,31 @@
+{
+  "agent": "build",
+  "attempt_agent_sequence": [
+    "build"
+  ],
+  "attempt_count": 1,
+  "attempt_index": 1,
+  "cleanup_session": true,
+  "cwd": "/tmp/pdf_oxide_page45b_1784600709",
+  "endpoint": "POST /v1/scillm/opencode/runs",
+  "opencode_model": null,
+  "prompt": "## Role\nBounded OpenCode patch executor for one PDF Oxide pdf-lab page DAG node.\n\n## Task\nPerform the patch now. Create or edit source files in the workspace root, add one focused regression test, and leave a non-empty git diff.\n\n## Context\n- Workspace root: /tmp/pdf_oxide_page45b_1784600709\n- Evidence case directory: /tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0042\n- The deterministic harness owns validation, re-extraction, second review, terminal status, git commit, and rollback proof.\n- A valid patch session must leave a non-empty diff in the workspace root.\n\n## Constraints\n- Start by checking `pwd`; if outside the workspace root, run `cd` to the workspace root.\n- Read `review_response`, `review_validation`, `page_before.json`, and `candidate_presets` from the evidence paths.\n- If `defect_findings[].suggested_fix_surface` names exact file paths, edit those paths directly after checking the JSON evidence; do not spend the run searching the repository.\n- Edit only `python/pdf_oxide/`, `src/`, `scripts/pdf_lab/`, or `tests/`.\n- Do not edit generated artifacts as proof.\n- Do not commit. Do not mark the page fixed. Do not claim terminal closure.\n- If the workspace or evidence is inaccessible, do not edit files.\n- Do not return only a plan, todo list, promise, or progress update. A response without a git diff is invalid unless it ends with `PATCH_DELEGATE_BLOCKED` and a concrete blocker.\n\n## Plan Payload\nUse these exact JSON fields: `evidence_paths`, `page_case`, `repair_diagnosis`, `fallback_scope`.\n- If `repair_diagnosis` is null, use `fallback_scope.actionable_findings` as the whole patch scope.\n- Apply `implementation_hint` entries directly after reading the named function or local block.\n- Inspect only `fallback_scope.likely_files`; do not run broad repository searches.\n- If the defect is not localizable within `fallback_scope.max_initial_file_reads`, return `PATCH_DELEGATE_BLOCKED reason=unsupported_defect: <one sentence>`.\n- Add or update exactly one focused regression test; a Rust unit test is preferred when the scoped code surface is Rust.\n- If `fallback_scope.required_test_name` is present, use that exact test function name.\n- Follow `test_hint`; do not inspect PDF fixtures or Python bindings when a helper-level Rust unit test is named.\n- Do not repeat visual review; the harness already owns visual review and closure.\n\n{\n  \"evidence_paths\": {\n    \"artifact_case_dir\": \"/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page42_20260721T0734Z/page_cases/page_case_0001_p0042\",\n    \"case_dir\": \"/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0042\",\n    \"case_files\": {\n      \"candidate_presets\": \"candidate_presets.json\",\n      \"page_before_image\": \"page_before.png\",\n      \"page_before_json\": \"page_before.json\",\n      \"page_candidates_image\": \"page_candidates.png\",\n      \"review_response\": \"review_response.json\",\n      \"review_validation\": \"review_validation.json\"\n    },\n    \"workspace_root\": \"/tmp/pdf_oxide_page45b_1784600709\"\n  },\n  \"fallback_scope\": {\n    \"actionable_findings\": [\n      {\n        \"candidate_id\": \"cand:p0042:0004:appendix\",\n        \"rationale\": \"The bbox and text extraction align with the rendered paragraph, but the preset type appendix does not agree with the...\",\n        \"status\": \"defect\",\n        \"suggested_fix_surface\": \"Adjust appendix preset detection/classification so references to an appendix inside normal paragraphs are not classified as appendix content.\"\n      },\n      {\n        \"candidate_id\": \"cand:p0042:0005:text\",\n        \"rationale\": \"The visual structure indicates this is a callout title or section heading rather than ordinary paragraph text. The ca...\",\n        \"status\": \"defect\",\n        \"suggested_fix_surface\": \"Improve heading/callout-title recognition for bold centered all-caps text inside shaded boxed regions.\"\n      }\n    ],\n    \"block_if_not_localized\": \"If the fix is not localizable after reading the likely files and evidence JSON, return PATCH_DELEGATE_BLOCKED reason=unsupported_defect.\",\n    \"candidate_count\": 2,\n    \"likely_files\": [\n      \"src/extractors/block_classifier.rs\",\n      \"tests/test_integration.py\"\n    ],\n    \"max_initial_file_reads\": 2,\n    \"primary_scope\": \"classification_defect\",\n    \"representative_candidate_ids\": [\n      \"cand:p0042:0004:appendix\",\n      \"cand:p0042:0005:text\"\n    ],\n    \"required_test_name\": \"test_page_top_title_and_qid_table_row_are_not_footer_or_reference\"\n  },\n  \"page_case\": {\n    \"candidate_ids\": [\n      \"cand:p0042:0000:side_chrome\",\n      \"cand:p0042:0001:side_chrome\",\n      \"cand:p0042:0002:side_chrome\",\n      \"cand:p0042:0003:side_chrome\",\n      \"cand:p0042:0004:appendix\",\n      \"cand:p0042:0005:text\",\n      \"cand:p0042:0006:text\"\n    ],\n    \"case_id\": \"page_case_0001_p0042\",\n    \"page_number\": 42\n  },\n  \"repair_diagnosis\": null\n}\n## Output Format\nEnd with exactly one of these status lines:\n- `PATCH_APPLIED changed_files=<comma-separated paths> tests=<test file paths> commands=<commands run or commands to run>`\n- `PATCH_DELEGATE_BLOCKED reason=<workspace_missing|evidence_missing|unsupported_defect|no_code_defect|other>: <one sentence>`\nDo not output commentary after the status line.\n",
+  "prompt_profile": "plan_only",
+  "schema": "pdf_lab.second_pass.opencode_patch_request.v1",
+  "scillm_metadata": {
+    "agent": "build",
+    "attempt_count": 1,
+    "attempt_index": 1,
+    "case_id": "page_case_0001_p0042",
+    "graph_node": "opencode_patch_attempt",
+    "page_number": 42,
+    "transport_retry_fresh_parent": false
+  },
+  "skills": [
+    "memory",
+    "debugger",
+    "scillm"
+  ],
+  "timeout_s": 600.0,
+  "transport_retry_fresh_parent": false
+}

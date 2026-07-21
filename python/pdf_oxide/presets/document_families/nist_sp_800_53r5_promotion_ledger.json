@@ -4778,6 +4778,78 @@
       },
       "rule_class": "document_family_adapter",
       "status": "closed"
+    },
+    {
+      "added_at": "2026-07-21T07:45:00Z",
+      "added_by": "agent:codex (PDF Lab page42 live second-pass hardening)",
+      "applied_at": "2026-07-21T07:45:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route the NIST page 42 bold centered callout title 'EVIDENCE OF CONTROL IMPLEMENTATION' to section_heading instead of generic paragraph_block.",
+      "closed_at": "2026-07-21T07:45:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page42_callout_title.py)",
+      "entry_id": "nist-page42-evidence-callout-heading-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p42:block:5",
+          "cand:p0042:0005:text"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/live_second_pass_page42_20260721T0734Z/page_cases/page_case_0001_p0042/review_response.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any non-bold or off-band prose containing the same words; rejected by exact text, bbox, and font guards.",
+          "Generic all-caps body labels elsewhere; rejected because this rule uses equals_ci on the exact callout title."
+        ],
+        "candidates_that_prove": [
+          "Page 42 block 5 is bold, centered, all-caps text inside a shaded callout box and the live page42 second-pass review classified it as a heading/callout title defect."
+        ],
+        "deterministic_rule": "If NIST Body paragraph_block exactly equals 'EVIDENCE OF CONTROL IMPLEMENTATION' in the observed centered callout-title band, set type=section_heading and semantic_role=nist_callout_heading."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "text is not exactly EVIDENCE OF CONTROL IMPLEMENTATION",
+          "source_type is not Body",
+          "type is not paragraph_block",
+          "font is not bold or outside the 10.5-11.2pt band",
+          "bbox is outside the observed centered callout-title band"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This exact-text rule intentionally overrides generic Body paragraph typing only for the visual callout title identified by the page42 live second-pass review.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "width_gt": 0.25,
+            "width_lt": 0.4,
+            "x_min_gt": 0.32,
+            "x_min_lt": 0.36,
+            "y_min_gt": 0.22,
+            "y_max_lt": 0.29
+          },
+          "font_properties": {
+            "font_size_gt": 10.5,
+            "font_size_lt": 11.2,
+            "is_bold": true
+          },
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "equals_ci": "EVIDENCE OF CONTROL IMPLEMENTATION",
+            "fields": {
+              "semantic_role": "nist_callout_heading",
+              "type": "section_heading"
+            }
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
     }
   ],
   "preset_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",

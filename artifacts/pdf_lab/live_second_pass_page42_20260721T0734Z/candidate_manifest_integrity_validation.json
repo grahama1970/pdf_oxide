@@ -1,0 +1,14 @@
+{
+  "actual_candidate_count": 7,
+  "candidate_count": 7,
+  "errors": [],
+  "ok": true,
+  "page_count_with_candidates": 1,
+  "preset_counts": {
+    "appendix": 1,
+    "side_chrome": 4,
+    "text": 2
+  },
+  "schema": "pdf_lab.second_pass.candidate_manifest_integrity_validation.v1",
+  "unique_candidate_id_count": 7
+}

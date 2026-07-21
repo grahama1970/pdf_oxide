@@ -1,0 +1,199 @@
+{
+  "candidate_count": 7,
+  "candidates": [
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "candidate_id": "cand:p0042:0000:side_chrome",
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/41/blocks/0",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "candidate_id": "cand:p0042:0001:side_chrome",
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/41/blocks/1",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528974944469976,
+        0.9549618345318418
+      ],
+      "candidate_id": "cand:p0042:0002:side_chrome",
+      "features": {
+        "bbox_area": 0.009516,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 19
+      },
+      "json_pointer": "/pages/41/blocks/2",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "CHAPTER TWO PAGE 15"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "candidate_id": "cand:p0042:0003:side_chrome",
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/41/blocks/3",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14704092187819137,
+        0.08994257570517183,
+        0.8519873525582108,
+        0.19326826538702455
+      ],
+      "candidate_id": "cand:p0042:0004:appendix",
+      "features": {
+        "bbox_area": 0.072839,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 547
+      },
+      "json_pointer": "/pages/41/blocks/4",
+      "preset_type": "appendix",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Organizations can select assurance-related controls to define system development activities, generate evidence about the functionality and behavior of the system, and trace the evidence to the system elements that provide such functionality or exhibit such behavior. The evidence is used to obtain a degree of confidence that the system satisfies the stated security and privacy requirements while supporting the organization\u2019s mission and business functions. Assurance- related controls are identifi"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.3407843097362643,
+        0.2446108538695056,
+        0.660252290613511,
+        0.2638535740399601
+      ],
+      "candidate_id": "cand:p0042:0005:text",
+      "features": {
+        "bbox_area": 0.006147,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 34
+      },
+      "json_pointer": "/pages/41/blocks/5",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "EVIDENCE OF CONTROL IMPLEMENTATION"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.1847058464499081,
+        0.2692922727026121,
+        0.8164947609496273,
+        0.3479847378200955
+      ],
+      "candidate_id": "cand:p0042:0006:text",
+      "features": {
+        "bbox_area": 0.049717,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 451
+      },
+      "json_pointer": "/pages/41/blocks/6",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "During control selection and implementation, it is important for organizations to consider the evidence (e.g., artifacts, documentation) that will be needed to support current and future control assessments. Such assessments help determine whether the controls are implemented correctly, operating as intended, and satisfying security and privacy policies\u2014thus, providing essential information for senior leaders to make informed risk-based decisions."
+    }
+  ],
+  "page_case": {
+    "case_id": "page_case_0001_p0042",
+    "page_number": 42
+  },
+  "schema": "pdf_lab.second_pass.candidate_presets.v1"
+}

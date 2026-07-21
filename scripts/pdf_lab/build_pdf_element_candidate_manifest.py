@@ -42,6 +42,10 @@ PRESET_TYPES = {
 }
 
 
+def _is_appendix_heading_text(text: str) -> bool:
+    return bool(re.match(r"^\s*(?:APPENDIX|Appendix)\s+[A-Z0-9]\b(?:\s*[:.\-–—]|\s+|$)", text))
+
+
 class PageCensusTimeout(TimeoutError):
     """Raised when one page exceeds the candidate census page timeout."""
 
@@ -172,7 +176,7 @@ def infer_preset_type(block: dict[str, Any], page_number: int, page_count: int |
     if raw_type in {"toc", "toc_entry"} or ("..." in text and re.search(r"\.{3,}\s*\d+\b", text)):
         return "toc"
     if raw_type in {"section_header", "section_heading", "header"}:
-        if re.search(r"\bAPPENDIX\b", text, re.I):
+        if _is_appendix_heading_text(text):
             return "appendix"
         return "section_heading"
     if raw_type in {"figure", "image", "caption"} or re.match(r"^Figure\s+\d+", text, re.I):
@@ -181,7 +185,7 @@ def infer_preset_type(block: dict[str, Any], page_number: int, page_count: int |
         return "equation"
     if raw_type in {"unknown", "unknown_region", ""}:
         return "unknown_layout"
-    if re.search(r"\bAPPENDIX\b", text, re.I) or (page_count and page_number > max(1, int(page_count * 0.85))):
+    if _is_appendix_heading_text(text) or (page_count and page_number > max(1, int(page_count * 0.85))):
         return "appendix"
     return "text"
 

@@ -46,6 +46,7 @@ Current completed page evidence:
 | `page_0045` | live second-pass rotated DOI side-chrome bbox narrowing | `artifacts/pdf_lab/page45_rotated_doi_bbox_20260721/audit_summary.json` | `origin/main` after page45 rotated DOI bbox push |
 | `nist_style_fixture_page_0001_and_nist_page_0157` | table duplicate suppression and false-positive table handling | `artifacts/pdf_lab/nist_table_duplicate_suppression_20260721/audit_summary.json` | `origin/main` after NIST table duplicate suppression push |
 | `page_0028` | golden-slice recovered fixture path and review-runner dependencies | `artifacts/pdf_lab/page28_golden_slice_fixture_20260721/audit_summary.json` | `origin/main` after page28 fixture/dependency push |
+| `page_0042` | live second-pass Appendix C prose preset and callout-title classification | `artifacts/pdf_lab/page42_callout_title_20260721/audit_summary.json` | `origin/main` after page42 callout-title push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old

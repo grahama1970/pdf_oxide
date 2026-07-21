@@ -1,0 +1,56 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0042:0000:side_chrome",
+      "evidence": "The rendered page shows the NIST SP 800-53 revision text at the upper left and the document title at the upper right in the header area. The annotated top header box aligns with this header text, and the extracted JSON text matches it.",
+      "rationale": "This is page chrome/header content, not body content. The bounding box and extracted text agree with the visual page.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0042:0001:side_chrome",
+      "evidence": "The rendered page shows a horizontal rule beneath the header, represented in extraction as a run of underscores. The annotated top rule box aligns with that line.",
+      "rationale": "The extracted underscore line is header/page chrome noise and the preset type side_chrome is appropriate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0042:0002:side_chrome",
+      "evidence": "The rendered page footer shows 'CHAPTER TWO' at the lower left and 'PAGE 15' at the lower right. The annotated footer box spans the footer line and the extracted text is 'CHAPTER TWO  PAGE 15'.",
+      "rationale": "This is footer/page chrome. Although the JSON source_type is Body, the extracted type and candidate preset correctly treat it as header_footer_noise/side_chrome.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0042:0003:side_chrome",
+      "evidence": "The rendered page includes a rotated left-margin boilerplate statement about the publication being available free of charge. The annotated vertical side box tightly covers this text, and the extracted JSON text matches.",
+      "rationale": "This rotated margin boilerplate is page side chrome rather than body content. The bounding box and classification agree with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0042:0004:text",
+      "evidence": "The main body paragraph near the top of the page begins 'Organizations can select assurance-related controls...' and ends with 'Appendix C.' The annotated blue box covers this paragraph, and the extracted JSON text matches the visible content.",
+      "rationale": "This is normal body paragraph text with an appropriate bbox and extracted text.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0042:0005:section_heading",
+      "evidence": "Inside the blue callout box, the centered bold all-caps heading reads 'EVIDENCE OF CONTROL IMPLEMENTATION'. The annotated heading box aligns with this text, and the extracted JSON records it as a section_heading with semantic_role nist_callout_heading.",
+      "rationale": "The visual presentation is a distinct callout heading. The preset and extracted text agree with the rendered page.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0042:0006:text",
+      "evidence": "The blue callout body paragraph begins 'During control selection and implementation...' and matches the extracted JSON text. The annotated blue box covers the paragraph within the callout.",
+      "rationale": "This is paragraph text within a callout block. The bbox, text, and preset type are consistent with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    }
+  ],
+  "page_rationale": "All seven required candidates align with the rendered page and extracted JSON: header text, header rule, footer, rotated side boilerplate, the top body paragraph, the callout heading, and the callout paragraph are correctly identified with appropriate bounding boxes and preset types.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

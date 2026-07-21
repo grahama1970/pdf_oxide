@@ -1,0 +1,22 @@
+{
+  "query": "OpenAI compatible proxy Authorization Bearer header 401 X-Caller-Skill local proxy",
+  "count": 3,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Using OpenAI Compatible but got `Authorization: Bearer noop` even after setting the right apikey \u00b7 Issue #5670 \u00b7 cline/cline",
+      "description": "\u6a21\u578b\u5217\u8868\u8bf7\u6c42 - Authorization: Bearer noop \u6240\u6709\u8bf7\u6c42\u5934: {&#x27;accept&#x27;: &#x27;application/json&#x27;, &#x27;content-type&#x27;: &#x27;application/json&#x27;, &#x27;user-agent&#x27;: &#x27;OpenAI/JS 4.96.0&#x27;, &#x27;x-stainless-lang&#x27;: &#x27;js&#x27;, &#x27;x-stainless-package-version&#x27;: &#x27;4.96.0&#x27;, &#x27;x-stainless-os&#x27;: &#x27;MacOS&#x27;, &#x27;x-stainless-arch&#x27;: &#x27;arm64&#x27;, &#x27;x-stainless-runtime&#x27;: &#x27;node&#x27;, &#x27;x-stainless-runtime-version&#x27;: &#x27;v20.18.3&#x27;, &#x27;authorization&#x27;: &#x27;Bearer noop&#x27;, &#x27;x-stainless-retry-count&#x27;: &#x27;0&#x27;, &#x27;x-stainless-timeout&#x27;: &#x27;600&#x27;, &#x27;accept-encoding&#x27;: &#x27;gzip,deflate&#x27;, &#x27;host&#x27;: &#x27;localhost:8000&#x27;, &#x27;connection&#x27;: &#x27;keep-alive&#x27;} \u83b7\u53d6\u6a21\u578b\u5217\u8868\u9519\u8bef\uff1aClient error &#x27;401 Unauthorized&#x27; for url &#x27;https://api.deepseek.com/models&#x27; For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401",
+      "url": "https://github.com/cline/cline/issues/5670"
+    },
+    {
+      "title": "OpenAI Compatible API Proxy: Route 600+ LLMs Without Rewriting Code (2026) | AI Security Gateway",
+      "description": "The four critical pieces of compatibility are: Authentication header format: <strong>The proxy must accept Authorization: Bearer &lt;key&gt; (the OpenAI convention), not custom header names like x-api-key</strong>.",
+      "url": "https://aisecuritygateway.ai/blog/openai-compatible-api-proxy-explained"
+    },
+    {
+      "title": "openai provider fails with 401 on API Gateway using Ocp-Apim-Subscription-Key due to conflicting Authorization header \u00b7 Issue #9527 \u00b7 continuedev/continue",
+      "description": "When configuring the openai provider ... a 401 Unauthorized error. <strong>The gateway requires an Ocp-Apim-Subscription-Key header for authentication and does not use the standard Authorization: Bearer header</strong>....",
+      "url": "https://github.com/continuedev/continue/issues/9527"
+    }
+  ]
+}
