@@ -12,7 +12,7 @@ use crate::extractors::block_classifier::{BlockClassifier, BlockType, Classified
 use crate::extractors::block_merger::{mark_running_headers_footers, merge_blocks, MergedBlock};
 use crate::extractors::document_profiler::{profile_document_with_cache, DocumentProfile};
 use crate::extractors::engineering::{detect_engineering_features_from_spans, EngineeringProfile};
-use crate::extractors::figure_detector::{detect_figures_from_blocks, DetectedFigure};
+use crate::extractors::figure_detector::detect_figures_from_blocks;
 use crate::extractors::section_hierarchy::{build_section_hierarchy_from_classified, SectionTree};
 use crate::extractors::text_normalizer::full_normalize;
 use crate::layout::text_block::TextSpan;
@@ -90,6 +90,11 @@ pub struct FigureSummary {
     pub context_above: String,
     pub context_below: String,
     pub section_title: Option<String>,
+    /// Raw blocks absorbed from the standalone stream into this figure.
+    /// Text is preserved verbatim for lossless retrieval.
+    pub content_blocks: Vec<crate::extractors::figure_block_reconciler::ConsumedBlock>,
+    /// Original page-local indices of table detections suppressed inside this figure.
+    pub suppressed_table_orders: Vec<usize>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -184,6 +189,7 @@ pub fn extract_document_with_config(
     let mut all_dims: Vec<(f32, f32)> = Vec::with_capacity(max_pages);
     let mut all_page_blocks: Vec<Vec<MergedBlock>> = Vec::new();
     let mut pages: Vec<PageResult> = Vec::new();
+    let mut figures: Vec<FigureSummary> = Vec::new();
     let mut result_tables: Vec<crate::tables::Table> = Vec::new();
     let mut result_consumed_blocks: Vec<(
         usize,
@@ -193,6 +199,26 @@ pub fn extract_document_with_config(
     for pg in 0..max_pages {
         let spans = doc.extract_spans_unsorted(pg).unwrap_or_default();
         if spans.is_empty() {
+            if config.detect_figures {
+                if let Ok(detected) = detect_figures_from_blocks(doc, pg, &[]) {
+                    figures.extend(detected.into_iter().map(|figure| FigureSummary {
+                        page: figure.page,
+                        bbox: [
+                            figure.bbox.x,
+                            figure.bbox.y,
+                            figure.bbox.width,
+                            figure.bbox.height,
+                        ],
+                        caption: figure.caption,
+                        caption_number: figure.caption_number,
+                        context_above: figure.context_above,
+                        context_below: figure.context_below,
+                        section_title: figure.section_title,
+                        content_blocks: Vec::new(),
+                        suppressed_table_orders: Vec::new(),
+                    }));
+                }
+            }
             all_spans.push(vec![]);
             all_classified.push(vec![]);
             all_dims.push((612.0, 792.0));
@@ -221,50 +247,123 @@ pub fn extract_document_with_config(
         let classified = classifier.classify_spans(&spans);
         let mut merged = merge_blocks(&classified, height);
 
-        // Reconcile the merged block stream with detected lattice tables
-        // BEFORE normalization: character accounting compares raw block
-        // text against the raw span text that built it.
+        // Detect figures before either asset stream is reconciled so figure
+        // geometry can absorb contained blocks and veto enclosed table regions.
+        let detected_figures = if config.detect_figures {
+            detect_figures_from_blocks(doc, pg, &classified).unwrap_or_default()
+        } else {
+            Vec::new()
+        };
+
+        let mut page_tables = Vec::new();
         if config.reconcile_tables {
             let mut table_config = crate::tables::ExtractConfig::default();
             table_config.pages = Some(vec![pg]);
             table_config.flavor = crate::tables::Flavor::Lattice;
-            if let Ok(mut page_tables) = crate::tables::extract_tables(doc, &table_config) {
-                if !page_tables.is_empty() {
-                    let views: Vec<crate::extractors::table_block_reconciler::BlockView> =
-                        merged
-                            .iter()
-                            .map(|b| crate::extractors::table_block_reconciler::BlockView {
-                                bbox: (b.bbox.x, b.bbox.y, b.bbox.width, b.bbox.height),
-                                text: &b.text,
-                                type_label: format!("{:?}", b.block_type),
-                            })
-                            .collect();
-                    let reconciliation =
-                        crate::extractors::table_block_reconciler::reconcile_views(
-                            &views,
-                            &mut page_tables,
-                            &spans,
-                            height as f64,
-                        );
-                    let mut consumed: Vec<usize> = reconciliation
-                        .consumed
-                        .iter()
-                        .map(|c| c.block_index)
-                        .collect();
-                    consumed.sort_unstable_by(|a, b| b.cmp(a));
-                    for index in consumed {
-                        merged.remove(index);
-                    }
-                    for record in reconciliation.consumed {
-                        result_consumed_blocks.push((pg, record));
-                    }
-                    for (order, mut table) in page_tables.into_iter().enumerate() {
-                        table.page = pg;
-                        table.order = order;
-                        result_tables.push(table);
-                    }
-                }
+            page_tables = crate::tables::extract_tables(doc, &table_config).unwrap_or_default();
+        }
+
+        let mut figure_content = vec![Vec::new(); detected_figures.len()];
+        let mut suppressed_table_orders = vec![Vec::new(); detected_figures.len()];
+        if !detected_figures.is_empty() {
+            let views: Vec<crate::extractors::figure_block_reconciler::BlockView> = merged
+                .iter()
+                .map(|block| crate::extractors::figure_block_reconciler::BlockView {
+                    bbox: (block.bbox.x, block.bbox.y, block.bbox.width, block.bbox.height),
+                    text: &block.text,
+                    type_label: format!("{:?}", block.block_type),
+                })
+                .collect();
+            let reconciliation = crate::extractors::figure_block_reconciler::reconcile_views(
+                &views,
+                &detected_figures,
+                &page_tables,
+                &spans,
+                height as f64,
+            );
+
+            let mut consumed_indices: Vec<usize> = reconciliation
+                .consumed
+                .iter()
+                .map(|record| record.block_index)
+                .collect();
+            consumed_indices.sort_unstable_by(|a, b| b.cmp(a));
+            for index in consumed_indices {
+                merged.remove(index);
             }
+            for record in reconciliation.consumed {
+                figure_content[record.figure_index].push(record);
+            }
+
+            let mut suppressed_indices: Vec<usize> = reconciliation
+                .suppressed_tables
+                .iter()
+                .map(|record| record.table_index)
+                .collect();
+            for record in reconciliation.suppressed_tables {
+                suppressed_table_orders[record.figure_index].push(record.table_index);
+            }
+            suppressed_indices.sort_unstable_by(|a, b| b.cmp(a));
+            suppressed_indices.dedup();
+            for index in suppressed_indices {
+                page_tables.remove(index);
+            }
+        }
+
+        // Reconcile the merged block stream with detected lattice tables
+        // BEFORE normalization: character accounting compares raw block
+        // text against the raw span text that built it.
+        if !page_tables.is_empty() {
+            let views: Vec<crate::extractors::table_block_reconciler::BlockView> = merged
+                .iter()
+                .map(|b| crate::extractors::table_block_reconciler::BlockView {
+                    bbox: (b.bbox.x, b.bbox.y, b.bbox.width, b.bbox.height),
+                    text: &b.text,
+                    type_label: format!("{:?}", b.block_type),
+                })
+                .collect();
+            let reconciliation = crate::extractors::table_block_reconciler::reconcile_views(
+                &views,
+                &mut page_tables,
+                &spans,
+                height as f64,
+            );
+            let mut consumed: Vec<usize> = reconciliation
+                .consumed
+                .iter()
+                .map(|c| c.block_index)
+                .collect();
+            consumed.sort_unstable_by(|a, b| b.cmp(a));
+            for index in consumed {
+                merged.remove(index);
+            }
+            for record in reconciliation.consumed {
+                result_consumed_blocks.push((pg, record));
+            }
+            for (order, mut table) in page_tables.into_iter().enumerate() {
+                table.page = pg;
+                table.order = order;
+                result_tables.push(table);
+            }
+        }
+
+        for (figure_index, figure) in detected_figures.into_iter().enumerate() {
+            figures.push(FigureSummary {
+                page: figure.page,
+                bbox: [
+                    figure.bbox.x,
+                    figure.bbox.y,
+                    figure.bbox.width,
+                    figure.bbox.height,
+                ],
+                caption: figure.caption,
+                caption_number: figure.caption_number,
+                context_above: figure.context_above,
+                context_below: figure.context_below,
+                section_title: figure.section_title,
+                content_blocks: std::mem::take(&mut figure_content[figure_index]),
+                suppressed_table_orders: std::mem::take(&mut suppressed_table_orders[figure_index]),
+            });
         }
 
         // Build page text from merged blocks
@@ -343,27 +442,7 @@ pub fn extract_document_with_config(
         }
     }
 
-    // Step 4: Detect figures using cached classified blocks (only extract_images is new)
-    let mut figures: Vec<FigureSummary> = Vec::new();
-    if config.detect_figures {
-        for pg in 0..max_pages {
-            if let Ok(detected) = detect_figures_from_blocks(doc, pg, &all_classified[pg]) {
-                for fig in detected {
-                    figures.push(FigureSummary {
-                        page: fig.page,
-                        bbox: [fig.bbox.x, fig.bbox.y, fig.bbox.width, fig.bbox.height],
-                        caption: fig.caption,
-                        caption_number: fig.caption_number,
-                        context_above: fig.context_above,
-                        context_below: fig.context_below,
-                        section_title: fig.section_title,
-                    });
-                }
-            }
-        }
-    }
-
-    // Step 5: Build section hierarchy from cached classified blocks
+    // Step 4: Build section hierarchy from cached classified blocks
     let mut sections: Vec<SectionSummary> = Vec::new();
     if config.build_sections {
         let page_blocks: Vec<(usize, Vec<ClassifiedBlock>)> = all_classified
@@ -583,5 +662,35 @@ mod tests {
         assert!(config.normalize_text);
         assert!(config.build_sections);
         assert_eq!(config.max_pages, 0);
+    }
+
+    #[test]
+    fn page_without_detected_figures_is_byte_identical() {
+        let fixture = "tests/fixtures/simple.pdf";
+        let mut with_detection = PdfDocument::open(fixture).expect("open fixture");
+        let enabled = extract_document_with_config(
+            &mut with_detection,
+            &ExtractionConfig {
+                detect_figures: true,
+                ..ExtractionConfig::default()
+            },
+        )
+        .expect("extract with figure detection");
+        assert!(enabled.figures.is_empty(), "fixture must not contain a figure");
+
+        let mut without_detection = PdfDocument::open(fixture).expect("open fixture again");
+        let disabled = extract_document_with_config(
+            &mut without_detection,
+            &ExtractionConfig {
+                detect_figures: false,
+                ..ExtractionConfig::default()
+            },
+        )
+        .expect("extract without figure detection");
+
+        assert_eq!(
+            serde_json::to_vec(&enabled).expect("serialize enabled result"),
+            serde_json::to_vec(&disabled).expect("serialize disabled result"),
+        );
     }
 }

@@ -4450,6 +4450,17 @@ impl PyPdfDocument {
             f.set_item("context_above", &fig.context_above)?;
             f.set_item("context_below", &fig.context_below)?;
             f.set_item("section_title", fig.section_title.as_deref())?;
+            let content_blocks = pyo3::types::PyList::empty(py);
+            for block in &fig.content_blocks {
+                let content = pyo3::types::PyDict::new(py);
+                content.set_item("block_index", block.block_index)?;
+                content.set_item("original_type", &block.original_type)?;
+                content.set_item("text", &block.text)?;
+                content.set_item("bbox", block.bbox)?;
+                content_blocks.append(content)?;
+            }
+            f.set_item("content_blocks", content_blocks)?;
+            f.set_item("suppressed_table_orders", fig.suppressed_table_orders.clone())?;
             figures_list.append(f)?;
         }
         dict.set_item("figures", figures_list)?;

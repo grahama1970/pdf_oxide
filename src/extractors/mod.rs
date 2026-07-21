@@ -9,6 +9,7 @@ pub mod content_assembler;
 pub mod document_extractor;
 pub mod document_profiler;
 pub mod engineering;
+pub mod figure_block_reconciler;
 pub mod figure_detector;
 pub mod forms;
 pub mod framework_mapper;
