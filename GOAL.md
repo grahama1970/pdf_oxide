@@ -76,6 +76,7 @@ Current completed page evidence:
 | `page_0026` | live second-pass table-contained DOI/reference fragment reconciliation with VLM-backed reviewed-clean rerun | `artifacts/pdf_lab/page26_vlm_free2_repaired_clean_20260721/audit_summary.json` | `origin/main` at `1b6690a2b0493a2f9b3209e6f38e8861e9e5413e` |
 | `page_0027` | live second-pass VLM-backed review with page-orchestrator registration, five candidate findings validated clean | `artifacts/pdf_lab/page27_vlm_free2_clean_20260721/audit_summary.json` | `origin/main` at `a5fc2f5c96974dd328f28af29935b0fa90b32fdd` |
 | `page_0028` | live second-pass review explicitly blocked at Tau/SciLLM orchestration boundary after authenticated `vlm-free2` ReadTimeout; pdf_oxide-side chunking drift rolled back; Tau issue filed | `artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/page_cases/page_case_0001_p0028/scillm_review_error.json`, `artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/tau-receipts/dag-receipt.json`, `https://github.com/grahama1970/tau/issues/120` | `origin/main` at `e68942f185c3a9ffaa9097a6f0a26155541631a8` |
+| `page_0029` | selected as the next one-page candidate; live second-pass blocked because the attempted Tau-dispatched local wrapper still invoked SciLLM transport from pdf_oxide-owned code, violating the Tau-only model transport boundary; Tau issue #120 updated with this evidence | `artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/selection_receipt.json`, `artifacts/pdf_lab/page29_tau_boundary_violation_20260721T1230Z/receipt.json`, `https://github.com/grahama1970/tau/issues/120#issuecomment-5034036323` | branch `codex/pdf-lab-next-page-20260721` at `49bbd78bb0c74edee074fb8909419c2df6613c3f` |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -109,17 +110,19 @@ For each page/checklist item:
 
 ## Active Next Candidate
 
-The next candidate after the page28 fixture/dependency item must come from a
-fresh current-extraction reviewer/candidate selection pass:
+The next candidate after page29 must be selected with deterministic PDF Lab
+current-extraction evidence only. Do not invoke SciLLM, OpenCode, or a
+pdf_oxide-owned model transport wrapper while Tau issue #120 remains unresolved
+or lacks an accepted Tau-native PDF Lab work-order contract:
 
 | Field | Value |
 |-------|-------|
-| Page | fresh reviewer-selected page |
-| Defect class | to be selected from fresh current-extraction/model-review evidence |
-| Observed failure | Current broad NIST deterministic suite passes after page45 rotated DOI bbox, NIST table duplicate suppression, and page28 fixture/dependency repairs; stale handoff rows for page456/page34/page45 have focused receipts or no-patch reconciliations |
+| Page | fresh deterministic reviewer-selected page after page29 |
+| Defect class | to be selected from current extraction/manifest evidence without live model transport |
+| Observed failure | Page29 is selected but model review is blocked at the ownership boundary: pdf_oxide must not call SciLLM directly or via a local Tau wrapper; Tau issue #120 must provide the native route |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
-| Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts, release snapshots, model-review receipts, and a fresh current-extraction reviewer pass |
-| Constraint | select one checklist item only; preserve visual/current extraction evidence before patching |
+| Candidate artifacts to inspect first | current deterministic `artifacts/pdf_lab/` receipts, release snapshots, candidate manifests, and visual/current-extraction evidence |
+| Constraint | select one checklist item only; preserve visual/current extraction evidence before patching; no pdf_oxide-side SciLLM/model transport attempts until Tau owns the route |
 
 Before patching the next item, produce a selection receipt that names the
 exact page image/current extraction/model-review artifacts used and the focused
@@ -139,8 +142,11 @@ regression that will prove the single selected checklist item.
 - The `local-text` second-pass review family is not the production review path.
   It can prove minimal text transport and now returns parseable JSON, but the
   local `qwen2.5:0.5b` backend does not reliably satisfy the full page-review
-  schema. Use the live VLM-backed SciLLM route, currently `vlm-free2`, for the
-  next one-page review gate unless a later receipt proves a better local model.
+  schema.
+- Do not use a pdf_oxide-owned live VLM/SciLLM route for the next one-page
+  review gate. Tau issue #120 now owns the missing PDF Lab model transport
+  contract, including endpoint/surface selection, auth, timeout/retry/chunk
+  policy, and terminal receipts.
 
 ## Required Status Shape
 
