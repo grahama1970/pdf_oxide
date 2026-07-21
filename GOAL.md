@@ -60,6 +60,7 @@ Current completed page evidence:
 | `page_0009` | live second-pass clean suggested_fix_surface prompt-contract review | `artifacts/pdf_lab/page9_clean_suggested_fix_surface_20260721/audit_summary.json` | `origin/main` after page9 prompt-contract push |
 | `page_0010` | live second-pass frontmatter text/side-chrome review | `artifacts/pdf_lab/page10_frontmatter_review_20260721/audit_summary.json` | `origin/main` after page10 reviewed-clean evidence push |
 | `page_0011` | live second-pass frontmatter text/side-chrome review | `artifacts/pdf_lab/page11_frontmatter_review_20260721/audit_summary.json` | `origin/main` after page11 reviewed-clean evidence push |
+| `page_0012` | live second-pass frontmatter heading/text/side-chrome review | `artifacts/pdf_lab/page12_frontmatter_review_20260721/audit_summary.json` | `origin/main` after page12 reviewed-clean evidence push |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
