@@ -1,0 +1,64 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T04:45:00Z",
+  "status": "passing_current_contract_after_patch",
+  "mocked": "no",
+  "live": "yes",
+  "page_id": "nist_phase54_page_0045",
+  "page_number": 45,
+  "pdf_page_index": 44,
+  "candidate": {
+    "defect_class": "Discussion lead/body paragraph missing semantic_role=discussion",
+    "owner": "nist_preset",
+    "selected_from": [
+      "artifacts/pdf_lab/page45_discussion_text_20260721/current_page45_snapshot.json",
+      "artifacts/pdf_lab/page45_discussion_role_20260721/selection_receipt.json"
+    ]
+  },
+  "current_extraction": {
+    "snapshot": "artifacts/pdf_lab/page45_discussion_role_20260721/current_page45_snapshot.json",
+    "snapshot_sha256": "f7d6bf83337c58019b9f0853b7e084d609a98a81666932697ab7881ae9e206e8",
+    "candidate_block": {
+      "id": "actual:p45:block:17",
+      "type": "paragraph_block",
+      "semantic_role": "discussion",
+      "source_type": "Body",
+      "bbox": [
+        0.20586599711499182,
+        0.544064993810172,
+        0.8519990210439644,
+        0.7922823356859612
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ]
+    }
+  },
+  "patch": {
+    "file": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+    "entry_id": "nist-discussion-lead-role-001",
+    "rule_effect": "Preserve type=paragraph_block and set semantic_role=discussion for guarded NIST Body Discussion lead/body paragraphs."
+  },
+  "proof": {
+    "commands": [
+      "pytest -q tests/test_nist_page45_discussion_role.py",
+      "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page45_discussion_role_20260721/current_page45_snapshot.json --max-pages 45 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+      "pytest -q tests/test_nist_page45_discussion_role.py tests/test_nist_page45_discussion_text.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py",
+      "pytest -q tests/test_nist_page45_discussion_role.py tests/test_nist_page45_discussion_text.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page35_control_families_table.py tests/test_nist_page104_au12_page_break_label.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page46_nested_list_segmentation.py"
+    ],
+    "logs": [
+      "artifacts/pdf_lab/page45_discussion_role_20260721/test_logs/red_test_page45_discussion_role.log",
+      "artifacts/pdf_lab/page45_discussion_role_20260721/test_logs/green_test_page45_discussion_role.log",
+      "artifacts/pdf_lab/page45_discussion_role_20260721/test_logs/snapshot_page45.log",
+      "artifacts/pdf_lab/page45_discussion_role_20260721/test_logs/pytest_page45_focused.log",
+      "artifacts/pdf_lab/page45_discussion_role_20260721/test_logs/pytest_broad_nist_regression.log"
+    ],
+    "red_result": "pre-patch ledger produced semantic_role null and AssertionError",
+    "green_result": "1 passed, 5 warnings in 25.30s",
+    "page45_focused_result": "12 passed, 5 warnings in 273.71s",
+    "broad_result": "18 passed, 5 warnings in 390.10s",
+    "does_not_prove": "remaining independent-review findings or all-candidates goal completion"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page45_discussion_role_20260721/visual_receipt.json"
+}

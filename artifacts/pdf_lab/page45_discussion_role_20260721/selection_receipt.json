@@ -1,0 +1,29 @@
+{
+  "schema": "pdf_lab.page_candidate_selection_receipt.v1",
+  "generated_at": "2026-07-21T04:45:00Z",
+  "page_id": "nist_phase54_page_0045",
+  "page_number": 45,
+  "candidate": "Discussion semantic role",
+  "selected_block_id": "actual:p45:block:17",
+  "selection_basis": [
+    "artifacts/pdf_lab/page45_discussion_text_20260721/current_page45_snapshot.json showed the Discussion block text was repaired but semantic_role remained null",
+    "adjacent page45 lead/value blocks already carry semantic roles: related_controls, nist_control_enhancements_none, reference_lead",
+    "/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md reports remaining page45 residuals after independent review"
+  ],
+  "expected_contract": {
+    "type": "paragraph_block",
+    "semantic_role": "discussion",
+    "source_type": "Body",
+    "toc_path": [
+      "toc:0014",
+      "toc:0015"
+    ]
+  },
+  "focused_regression": "tests/test_nist_page45_discussion_role.py",
+  "visual_inputs": [
+    "artifacts/pdf_lab/page45_discussion_role_20260721/page45_original.png",
+    "artifacts/pdf_lab/page45_discussion_role_20260721/page45_discussion_role_overlay.png"
+  ],
+  "mocked": "no",
+  "live": "yes"
+}

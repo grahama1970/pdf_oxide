@@ -3203,6 +3203,76 @@
       "status": "closed"
     },
     {
+      "added_at": "2026-07-21T04:30:00Z",
+      "added_by": "agent:codex (pdf-lab page45 all-candidates hardening)",
+      "applied_at": "2026-07-21T04:30:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Mark NIST Discussion lead/body paragraphs with discussion semantic role while preserving paragraph typing.",
+      "closed_at": "2026-07-21T04:30:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page45_discussion_role.py)",
+      "entry_id": "nist-discussion-lead-role-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:17"
+        ],
+        "risk_reasons_observed": [
+          "discussion_line_missing_semantic_role"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/page45_discussion_text_20260721/current_page45_snapshot.json",
+          "artifacts/pdf_lab/page45_discussion_text_20260721/page45_discussion_text_overlay.png"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Ordinary body paragraphs that mention discussion but do not begin with 'Discussion:'; rejected by prefix matcher.",
+          "References appendix entries or prose outside the NIST control field indent band; rejected by source/type/bbox guards.",
+          "Standalone exact field labels without body text; rejected because this rule requires content after the colon."
+        ],
+        "candidates_that_prove": [
+          "Page 45 emits the AC-1 'Discussion:' paragraph as a Body paragraph_block in the same control field region as Related Controls and Control Enhancements, but semantic_role is null."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block in the main control column begins with 'Discussion:' and includes body text after the colon, preserve type=paragraph_block and set semantic_role=discussion."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block or paragraph",
+          "bbox x_min is outside the NIST control field indent band",
+          "text does not begin with 'Discussion:' followed by body text"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally adds semantic role only to explicit NIST Discussion lead/body paragraphs and preserves paragraph_block typing.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_min_lt": 0.22,
+            "y_max_lt": 0.9
+          },
+          "source_type": "Body",
+          "type": [
+            "paragraph_block",
+            "paragraph"
+          ]
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "discussion",
+              "type": "paragraph_block"
+            },
+            "regex": "^\\s*Discussion:\\s+\\S.+$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
       "added_at": "2026-07-21T00:00:00Z",
       "added_by": "agent:codex (pdf-lab page45 all-candidates hardening)",
       "applied_at": "2026-07-21T00:00:00Z",
@@ -3863,12 +3933,12 @@
             "paragraph",
             "body",
             "text",
-        "section_heading",
-        "section_header",
-        "section_subtitle",
-        "header",
-        "caption",
-        "unknown_region",
+            "section_heading",
+            "section_header",
+            "section_subtitle",
+            "header",
+            "caption",
+            "unknown_region",
             "requirement",
             "control_reference",
             "list"

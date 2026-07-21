@@ -1,0 +1,14 @@
+{
+  "schema": "pdf_lab.visual_receipt.v1",
+  "generated_at": "2026-07-21T04:45:00Z",
+  "candidate": "page45 Discussion semantic role",
+  "original_image": "artifacts/pdf_lab/page45_discussion_role_20260721/page45_original.png",
+  "overlay_image": "artifacts/pdf_lab/page45_discussion_role_20260721/page45_discussion_role_overlay.png",
+  "overlay_sha256": "fc951ffc5768a80fde1f19e880c29082ec8c89a450fd18262b7c700548f6a3b4",
+  "expected_visible_region": "Discussion paragraph",
+  "expected_visible_text_prefix": "Discussion: Access control policy and procedures",
+  "expected_type": "paragraph_block",
+  "expected_semantic_role": "discussion",
+  "mocked": "no",
+  "live": "yes"
+}
