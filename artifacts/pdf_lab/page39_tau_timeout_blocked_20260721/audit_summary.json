@@ -1,0 +1,90 @@
+{
+  "attempts": [
+    {
+      "alert_codes": [
+        "scillm_chat_review_timeout",
+        "review_response_not_parseable"
+      ],
+      "duration_seconds": 120.110561,
+      "error": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/tau_attempt1_error.json",
+      "live": true,
+      "ok": false,
+      "provider_live": false,
+      "receipt": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/tau_attempt1_receipt.json",
+      "request_timeout_s": 120,
+      "review_request_bytes": 992975,
+      "status": "BLOCKED",
+      "timed_out": true
+    },
+    {
+      "alert_codes": [
+        "scillm_chat_review_timeout",
+        "review_response_not_parseable"
+      ],
+      "duration_seconds": 120.055722,
+      "error": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/tau_attempt2_error.json",
+      "live": true,
+      "ok": false,
+      "provider_live": false,
+      "receipt": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/tau_attempt2_receipt.json",
+      "request_timeout_s": 120,
+      "review_request_bytes": 992975,
+      "status": "BLOCKED",
+      "timed_out": true
+    },
+    {
+      "alert_codes": [
+        "scillm_chat_review_timeout",
+        "review_response_not_parseable"
+      ],
+      "duration_seconds": 120.10714,
+      "error": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/tau_attempt3_dpi110_error.json",
+      "live": true,
+      "ok": false,
+      "provider_live": false,
+      "receipt": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/tau_attempt3_dpi110_receipt.json",
+      "request_timeout_s": 120,
+      "review_request_bytes": 700183,
+      "status": "BLOCKED",
+      "timed_out": true
+    }
+  ],
+  "campaign_status": {
+    "active_family": "PDF Lab page39 live second-pass model review through Tau",
+    "blocked_by_systemic_failure": 1,
+    "failed": 0,
+    "latest_failure_signature": "scillm_chat_review_timeout+review_response_not_parseable@120s",
+    "not_run": 449,
+    "passed": 0
+  },
+  "case_dir": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039",
+  "created_at": "2026-07-21T14:50:43.642085Z",
+  "direct_scillm_called_from_pdf_oxide": false,
+  "failure_signature": "scillm_chat_review_timeout+review_response_not_parseable@120s",
+  "live": true,
+  "mocked": false,
+  "provider_live": false,
+  "review_bundle_validation": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/review_bundle_validation.json",
+  "review_bundle_zip": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/review_bundle.zip",
+  "review_request_validation": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/review_request_validation.json",
+  "schema": "pdf_lab.page39_tau_timeout_blocked_audit.v1",
+  "status": "blocked_by_systemic_failure",
+  "tau_commit": "b48d815c34ee603e79f4c6f64edcfc92ccf3d8d4",
+  "tau_issue": "https://github.com/grahama1970/tau/issues/123",
+  "terminal_ledger": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/terminal_ledger.json",
+  "terminal_ledger_validation": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/terminal_ledger_validation.json",
+  "terminal_result": {
+    "bundle_validation_errors": [],
+    "bundle_validation_ok": true,
+    "reason": "scillm_review_call_failed",
+    "review_validation_ok": false,
+    "terminal_status": "blocked_substrate",
+    "terminal_validation_errors": [],
+    "terminal_validation_ok": true
+  },
+  "unblock_artifacts": {
+    "brave_search": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/brave_search_ollama_timeout.json",
+    "webgpt_assess_bundle": "artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/webgpt_assess_bundle.md",
+    "webgpt_attempt_status": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+  }
+}

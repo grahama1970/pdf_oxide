@@ -1,0 +1,21 @@
+{
+  "case_id": "page_case_0001_p0039",
+  "endpoint": "POST /v1/chat/completions",
+  "error": "Tau scillm-chat-review timed out three times at request_timeout_s=120; latest reduced-DPI payload also timed out without raw response.",
+  "error_type": "TimeoutError",
+  "latest_review_request_bytes": 700183,
+  "latest_tau_alert_codes": [
+    "scillm_chat_review_timeout",
+    "review_response_not_parseable"
+  ],
+  "latest_tau_duration_seconds": 120.10714,
+  "node_id": "scillm_one_shot_page_review",
+  "page_number": 39,
+  "preflight_artifact": null,
+  "schema": "pdf_lab.second_pass.substrate_error.v1",
+  "tau_attempt_receipts": [
+    "tau_attempt1_receipt.json",
+    "tau_attempt2_receipt.json",
+    "tau_attempt3_dpi110_receipt.json"
+  ]
+}

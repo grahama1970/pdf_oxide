@@ -81,6 +81,7 @@ Current completed page evidence:
 | `page_0041` | live second-pass model-backed review rerun through Tau-owned `scillm-chat-review`; 13/13 candidate findings clean, pdf_oxide review validation and terminal ledger validation pass | `artifacts/pdf_lab/page41_tau_boundary_blocked_20260721/audit_summary.json`, `artifacts/pdf_lab/page41_tau_live_review_20260721/audit_summary.json`, `artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/review_bundle.zip`, `artifacts/pdf_lab/live_second_pass_page41_tau_prep_20260721/page_case_0001_p0041/tau_scillm_chat_review_receipt.json`, `https://github.com/grahama1970/tau/issues/122` | pending push after page41 Tau-live review receipt commit |
 | `page_0043` | live second-pass model-backed review through Tau-owned `scillm-chat-review`; 13/13 candidate findings clean, pdf_oxide review validation and terminal ledger validation pass | `artifacts/pdf_lab/fresh_candidate_selection_after_page41_tau_20260721/sampled_page_cases.json`, `artifacts/pdf_lab/page43_tau_live_review_20260721/audit_summary.json`, `artifacts/pdf_lab/live_second_pass_page43_tau_prep_20260721/page_case_0001_p0043/review_bundle.zip`, `artifacts/pdf_lab/live_second_pass_page43_tau_prep_20260721/page_case_0001_p0043/tau_scillm_chat_review_receipt.json` | pending push after page43 Tau-live review receipt commit |
 | `page_0040` | live second-pass model-backed review through Tau-owned `scillm-chat-review`; 11/11 candidate findings clean, pdf_oxide review validation and terminal ledger validation pass | `artifacts/pdf_lab/fresh_candidate_selection_after_page43_tau_20260721/sampled_page_cases.json`, `artifacts/pdf_lab/page40_tau_live_review_20260721/audit_summary.json`, `artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/review_bundle.zip`, `artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/tau_scillm_chat_review_receipt.json` | pending push after page40 Tau-live review receipt commit |
+| `page_0039` | live second-pass Tau-owned `scillm-chat-review` circuit-broken after three matching 120s timeout receipts, including one contract-preserving DPI-reduced payload; terminal ledger and review bundle valid as `blocked_substrate` | `artifacts/pdf_lab/fresh_candidate_selection_after_page40_tau_20260721/sampled_page_cases.json`, `artifacts/pdf_lab/page39_tau_timeout_blocked_20260721/audit_summary.json`, `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/tau_attempt1_receipt.json`, `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/tau_attempt2_receipt.json`, `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/tau_attempt3_dpi110_receipt.json`, `artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/review_bundle.zip`, `https://github.com/grahama1970/tau/issues/123` | pending push after page39 timeout-blocked receipt commit |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -120,24 +121,24 @@ fresh current-extraction reviewer/candidate selection pass:
 
 | Field | Value |
 |-------|-------|
-| Page | fresh reviewer-selected page after excluding page40 |
+| Page | fresh reviewer-selected page after excluding page39 |
 | Defect class | to be selected from fresh current-extraction/model-review evidence |
-| Observed failure | page40, page41, and page43 Tau-bound live second-pass reviews are reviewed clean through Tau commit `b48d815c34ee603e79f4c6f64edcfc92ccf3d8d4`; current broad NIST deterministic suite passes after page45 rotated DOI bbox, NIST table duplicate suppression, page28 fixture/dependency repairs, GS001 table/block reconciliation, page34/page45 focused rechecks, DOI/publication side-chrome census, page41 Tau live review, page43 Tau live review, and page40 Tau live review |
+| Observed failure | page39 live second-pass review through Tau commit `b48d815c34ee603e79f4c6f64edcfc92ccf3d8d4` timed out three times at the 120s gate with signature `scillm_chat_review_timeout+review_response_not_parseable@120s`; page40, page41, and page43 Tau-bound live second-pass reviews remain reviewed clean |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
-| Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts, release snapshots, model-review receipts, and a fresh current-extraction reviewer pass excluding page40 |
+| Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts, release snapshots, model-review receipts, and a fresh current-extraction reviewer pass excluding page39 |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching; any model/executor work must use Tau-owned commands such as `tau scillm-chat-review`, not direct SciLLM/OpenCode from pdf_oxide |
 
-Current campaign status for the active page41 item:
+Current campaign status for the active Tau live-review sequence:
 
 | Field | Value |
 |-------|-------|
 | `passed` | `3` |
 | `failed` | `0` |
-| `blocked_by_systemic_failure` | `0` |
-| `explicitly_blocked` | `0` |
-| `not_run` | `450` unreviewed pages remaining in the filtered current manifest |
-| Active page/checklist item | next fresh selected current-extraction page after page40 |
-| Latest failure signature | none for page40; Tau live review receipt passed with `provider_live=true`, `http_status=200`, `duration_seconds=52.409736`, `parsed_candidate_finding_count=11`, `parsed_page_status=clean` |
+| `blocked_by_systemic_failure` | `1` |
+| `explicitly_blocked` | `1` |
+| `not_run` | `449` unreviewed pages remaining after page39 |
+| Active page/checklist item | next fresh selected current-extraction page after page39 |
+| Latest failure signature | `scillm_chat_review_timeout+review_response_not_parseable@120s` on page39; receipts at `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/` and page audit at `artifacts/pdf_lab/page39_tau_timeout_blocked_20260721/audit_summary.json` |
 
 Before patching the next item, produce a selection receipt that names the
 exact page image/current extraction/model-review artifacts used and the focused

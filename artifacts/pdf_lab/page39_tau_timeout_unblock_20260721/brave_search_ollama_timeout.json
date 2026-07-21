@@ -1,0 +1,32 @@
+{
+  "query": "Ollama OpenAI compatible chat completions vision base64 image timeout response_format json_object",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "OpenAI compatibility - Ollama",
+      "description": "curl -X POST http://localhost:11434/v1/responses \\ -H &quot;Content-Type: application/json&quot; \\ -d &#x27;{ &quot;model&quot;: &quot;qwen3:8b&quot;, &quot;input&quot;: &quot;Write a short poem about the color blue&quot; }&#x27; ... from openai import OpenAI client = OpenAI( base_url=&#x27;http://localhost:11434/v1/&#x27;, api_key=&#x27;ollama&#x27;, # required but ignored ) response = client.chat.completions.create( model=&#x27;qwen3-vl:8b&#x27;, messages=[ { &#x27;role&#x27;: &#x27;user&#x27;, &#x27;content&#x27;: [ {&#x27;type&#x27;: &#x27;text&#x27;, &#x27;text&#x27;: &quot;What&#x27;s in this image?&quot;}, { &#x27;type&#x27;: &#x27;image_url&#x27;, &#x27;image_url&#x27;: &#x27;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAABmCAYAAADBPx+VAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IAr",
+      "url": "https://docs.ollama.com/api/openai-compatibility"
+    },
+    {
+      "title": "OpenAI Compatibility - Ollama English Documentation",
+      "description": "from openai import OpenAI client = OpenAI( base_url=&#x27;http://localhost:11434/v1/&#x27;, # required but ignored api_key=&#x27;ollama&#x27;, ) chat_completion = client.chat.completions.create( messages=[ { &#x27;role&#x27;: &#x27;user&#x27;, &#x27;content&#x27;: &#x27;Say this is a test&#x27;, } ], model=&#x27;llama3.2&#x27;, ) response = client.chat.completions.create( model=&quot;llava&quot;, messages=[ { &quot;role&quot;: &quot;user&quot;, &quot;content&quot;: [ {&quot;type&quot;: &quot;text&quot;, &quot;text&quot;: &quot;What&#x27;s in this image?&quot;}, { &quot;type&quot;: &quot;image_url&quot;, &quot;image_url&quot;: &quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAABmCAYAAADBPx+VAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAA3VSURBVHgB7Z27",
+      "url": "https://ollama.readthedocs.io/en/openai/"
+    },
+    {
+      "title": "OpenAI compatibility \u00b7 Ollama Blog",
+      "description": "To invoke Ollama\u2019s OpenAI compatible API endpoint, use the same OpenAI format and change the hostname to http://localhost:11434: curl http://localhost:11434/v1/chat/completions \\ -H &quot;Content-Type: application/json&quot; \\ -d &#x27;{ &quot;model&quot;: &quot;llama2&quot;, &quot;messages&quot;: [ { &quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;You are a helpful assistant.&quot;",
+      "url": "https://ollama.com/blog/openai-compatibility"
+    },
+    {
+      "title": "[Bug] Ollama Cloud vision models return 500 on /v1/chat/completions \u2014 need native /api/chat adapter \u00b7 Issue #14592 \u00b7 NousResearch/hermes-agent",
+      "description": "The DEFAULT_OLLAMA_CLOUD_BASE_URL is set to https://ollama.com/v1 (in hermes_cli/auth.py:74). For vision, vision_tools.py constructs messages in OpenAI format: &quot;content&quot;: [ {&quot;type&quot;: &quot;text&quot;, &quot;text&quot;: &quot;...&quot;}, {&quot;type&quot;: &quot;image_url&quot;, &quot;image_url&quot;: {&quot;url&quot;: &quot;data:image/png;base64,...&quot;}} ]",
+      "url": "https://github.com/NousResearch/hermes-agent/issues/14592"
+    },
+    {
+      "title": "Ollama | liteLLM",
+      "description": "To use ollama JSON Mode pass format=&quot;json&quot; to litellm.completion()",
+      "url": "https://docs.litellm.ai/docs/providers/ollama"
+    }
+  ]
+}

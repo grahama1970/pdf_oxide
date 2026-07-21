@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T14:34:30Z
+**Timestamp**: 2026-07-21T14:51:30Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -13,7 +13,7 @@
 
 - Main repo URL: `https://github.com/grahama1970/pdf_oxide`
 - Remote main verification command: `git ls-remote origin refs/heads/main`
-- Verified remote main before page41 Tau-live review receipt commit: `dcf87cbfca165f6779dffa4fb37e7b21e450ad8d`
+- Verified remote main before page39 timeout-blocked receipt commit: `0f690bd1356a744199fdc20bc6babccae39d4d58`
 - Clean integration worktree: `/tmp/pdf_oxide_integrate_gs001_20260721`
 - Integration branch: `codex/integrate-gs001-reconciler-20260721`
 - Do not continue from the dirty detached checkout at `/home/graham/workspace/experiments/pdf_oxide` unless intentionally reconciling worktrees.
@@ -113,6 +113,32 @@
   - Tau result: `status=PASS`, `provider_live=true`, `http_status=200`, `duration_seconds=52.409736`, parsed schema `pdf_lab.second_pass.review_response.v1`, `parsed_candidate_finding_count=11`, `parsed_page_status=clean`
   - pdf_oxide validation: `review_validation.ok=true`; `terminal_ledger.terminal_status=reviewed_clean`; `terminal_ledger_validation.ok=true`; `review_bundle_validation.ok=true`
   - Page audit: `artifacts/pdf_lab/page40_tau_live_review_20260721/audit_summary.json`
+- Page39 follow-on live review:
+  - Selection artifacts:
+    - `artifacts/pdf_lab/fresh_candidate_selection_after_page40_tau_20260721/candidate_manifest_unreviewed_pages.json`
+    - `artifacts/pdf_lab/fresh_candidate_selection_after_page40_tau_20260721/sampled_page_cases.json`
+  - Selection result: page 39 with `10` candidates: `side_chrome=4`, `text=5`, `footnote=1`.
+  - Initial prep artifact: `artifacts/pdf_lab/live_second_pass_page39_tau_prep_20260721/page_case_0001_p0039/`
+  - Initial Tau live command timed out twice at the 120s gate:
+    - `/tmp/tau-issue122-page39-live-20260721T1436/receipt.json`
+    - `/tmp/tau-issue122-page39-live-retry2-20260721T1443/receipt.json`
+  - Required unblock attempts:
+    - Brave Search artifact: `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/brave_search_ollama_timeout.json`
+    - WebGPT assess bundle: `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/webgpt_assess_bundle.md`
+    - WebGPT routing failed before submission because exact tab `837359458` was not open: `BLOCKED_WEBGPT_TAB_IDENTITY_MISSING`.
+  - Contract-preserving payload reduction:
+    - Reduced-DPI prep artifact: `artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/`
+    - Request validation remained valid: `image_part_count=2`, `text_part_count=1`, `review_request_validation.ok=true`
+    - Payload reduced from `992975` bytes to `700183` bytes.
+  - Reduced-DPI Tau live command also timed out at the 120s gate:
+    - `/tmp/tau-issue122-page39-live-dpi110-20260721T1448/receipt.json`
+  - Circuit breaker:
+    - Three matching live failures with signature `scillm_chat_review_timeout+review_response_not_parseable@120s`.
+    - No further page39 live model retries should run until a focused Tau/model transport repair check exists.
+    - Tau owner ticket: `https://github.com/grahama1970/tau/issues/123`
+    - pdf_oxide terminal ledger is valid as `blocked_substrate`, reason `scillm_review_call_failed`.
+    - Page audit: `artifacts/pdf_lab/page39_tau_timeout_blocked_20260721/audit_summary.json`
+    - Review bundle: `artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/review_bundle.zip`
 
 ## 6. Campaign Status
 
@@ -120,11 +146,11 @@
 |-------|-------|
 | `passed` | `3` for the page40, page41, and page43 live-review items |
 | `failed` | `0` |
-| `blocked_by_systemic_failure` | `0` |
-| `explicitly_blocked` | `0` |
-| `not_run` | `450` unreviewed pages remaining in the filtered current manifest |
-| Active page/checklist item | next fresh selected current-extraction page after page40 |
-| Latest failure signature | none for page40 |
+| `blocked_by_systemic_failure` | `1` for page39 Tau live-review timeout family |
+| `explicitly_blocked` | `1` |
+| `not_run` | `449` unreviewed pages remaining after page39 |
+| Active page/checklist item | next fresh selected current-extraction page after excluding page39 |
+| Latest failure signature | `scillm_chat_review_timeout+review_response_not_parseable@120s` |
 
 ## 7. Important Correction To Claude Report
 
@@ -143,13 +169,15 @@
 - Tau issues remain the model-route boundary:
   - `https://github.com/grahama1970/tau/issues/120`
   - `https://github.com/grahama1970/tau/issues/122`
+  - `https://github.com/grahama1970/tau/issues/123`
 
 ## 9. Remaining Candidate Classes
 
 Use the same one-candidate proof ladder, without direct SciLLM calls from `pdf_oxide`:
 
-1. Select the next fresh current-extraction candidate after excluding page40.
+1. Select the next fresh current-extraction candidate after excluding page39.
 2. Any candidate whose model/executor review is required must go through Tau DAG contracts, not direct SciLLM/OpenCode calls from this repo.
 3. Criterion 6 live GitHub apply remains blocked until a valid approval receipt for mutation exists.
+4. Do not retry page39's live model-review family until the Tau/model transport timeout signature has a focused repair receipt.
 
 Before patching the next item, produce a selection receipt with source page image/current extraction/model-review artifacts and the focused regression that will prove that one checklist item.

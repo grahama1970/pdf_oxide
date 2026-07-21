@@ -1,0 +1,18 @@
+{
+  "command_or_endpoint": "run_page_second_pass_dag.initialize_page_case",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T14:36:07.163417+00:00",
+  "input_artifacts": [],
+  "next_allowed_nodes": [
+    "load_sampled_candidate_manifest"
+  ],
+  "node_id": "initialize_page_case",
+  "output_artifacts": [
+    "state.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T14:36:07.163414+00:00",
+  "validator_result": {
+    "ok": true
+  }
+}
