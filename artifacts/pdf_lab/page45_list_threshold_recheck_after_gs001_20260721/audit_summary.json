@@ -1,0 +1,35 @@
+{
+  "schema": "pdf_lab.page_candidate_recheck.v1",
+  "created_utc": "2026-07-21T14:00:00Z",
+  "repo": "grahama1970/pdf_oxide",
+  "remote_main_checked": "25808d30b2502d9de2fe400a2b755b9887cbfa13",
+  "candidate": {
+    "page": 45,
+    "defect_class": "AC-1 lower-alpha/list-threshold markers",
+    "source_receipt": "artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/audit_summary.json",
+    "status": "closed_current_main"
+  },
+  "source_receipt_facts": {
+    "status": "passing_current_contract",
+    "cd_not_list_count": 0,
+    "list_marker_blocks": [
+      "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or roles]:",
+      "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and",
+      "c. Review and update the current access control:"
+    ],
+    "related_controls_type": "paragraph_block"
+  },
+  "proof": {
+    "command": "uv run pytest -q tests/test_nist_page45_ac1_list_markers.py",
+    "mocked": false,
+    "live": false,
+    "result": "1 passed in 1.44s",
+    "what_it_proves": "current main still satisfies the focused page45 AC-1 list-marker/list-threshold contract after GS001 reconciler integration",
+    "what_it_does_not_prove": "DOI-chrome leftovers or all remaining PDF Lab candidates are complete"
+  },
+  "boundary": {
+    "direct_scillm_called_from_pdf_oxide": false,
+    "direct_opencode_called_from_pdf_oxide": false
+  },
+  "next_candidate": "DOI-chrome leftovers"
+}

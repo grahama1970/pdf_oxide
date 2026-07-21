@@ -25,7 +25,7 @@ Current completed page evidence:
 | `page_0456` | control-table column headers | `artifacts/pdf_lab/page456_control_table_headers_20260721/selection_receipt.json` | `origin/main` at `007d572acade8a962b1c033a742eae35648d1a26` |
 | `page_0034` | sidebar chrome contamination | `artifacts/pdf_lab/page34_candidate_audit_20260721/audit_summary.json` | `origin/main` at `2f04e0582722f380bbf01da416d68b0c0418100d` |
 | `page_0034` | body lines as headings | `artifacts/pdf_lab/page34_candidate_audit_20260721/audit_summary.json`, `artifacts/pdf_lab/page34_recheck_after_gs001_20260721/audit_summary.json` | `origin/main` at `962e9469397617def2ff9cf06a7901807b2ababc` |
-| `page_0045` | AC-1 lower-alpha list markers | `artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/audit_summary.json` | `origin/main` at `4f6e35b3447191ff9c6ec485d4f4eeb72158381c` |
+| `page_0045` | AC-1 lower-alpha/list-threshold markers | `artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/audit_summary.json`, `artifacts/pdf_lab/page45_list_threshold_recheck_after_gs001_20260721/audit_summary.json` | `origin/main` at `25808d30b2502d9de2fe400a2b755b9887cbfa13` |
 | `page_0421` | glossary term-definition materialization | `artifacts/pdf_lab/page421_glossary_term_audit_20260721/audit_summary.json` | `origin/main` after page421 push |
 | `page_0104` | AU-12 page-break field label | `artifacts/pdf_lab/page104_candidate_audit_20260721/audit_summary.json` | `origin/main` after page104 push |
 | `page_0035` | control families table/caption/footnote | `artifacts/pdf_lab/page35_candidate_audit_20260721/audit_summary.json` | `origin/main` after page35 push |
