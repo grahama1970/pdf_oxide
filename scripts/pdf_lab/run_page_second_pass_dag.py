@@ -213,12 +213,11 @@ class PdfOxideLiveModelTransportBlocked(RuntimeError):
 
 
 def assert_pdf_oxide_live_model_transport_allowed(endpoint: str) -> None:
-    if os.environ.get(PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV) == "1":
-        return
     raise PdfOxideLiveModelTransportBlocked(
         "pdf_oxide-owned live model transport is disabled for "
         f"{endpoint}; Tau issue #120 owns the PDF Lab second-pass SciLLM/OpenCode route. "
-        f"Set {PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV}=1 only with a valid Tau-owned receipt."
+        f"{PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV} is deprecated and ignored; "
+        "only a Tau-owned work-order/transport receipt may enable model-backed second-pass review."
     )
 
 

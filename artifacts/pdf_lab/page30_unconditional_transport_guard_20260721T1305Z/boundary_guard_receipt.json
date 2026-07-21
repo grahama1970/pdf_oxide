@@ -1,0 +1,75 @@
+{
+  "schema": "pdf_lab.second_pass.boundary_guard_receipt.v2",
+  "created_at": "2026-07-21T13:05:00Z",
+  "case_id": "page_case_0001_p0030",
+  "page_number": 30,
+  "mocked": false,
+  "live": false,
+  "runner_invocation_live_mode": true,
+  "model_transport_invoked": false,
+  "guard": {
+    "deprecated_environment_override": "PDF_LAB_ALLOW_PDF_OXIDE_LIVE_MODEL_TRANSPORT",
+    "deprecated_override_effect": "ignored",
+    "blocked_error_type": "PdfOxideLiveModelTransportBlocked",
+    "blocked_endpoint": "POST /v1/scillm/opencode/transport/runs",
+    "owner": "tau",
+    "owner_issue": "https://github.com/grahama1970/tau/issues/120"
+  },
+  "reviewer_advisory": {
+    "source": "webgpt",
+    "response": "/tmp/pdf_oxide_webgpt_review_5915d44e/response.md",
+    "meta": "/tmp/pdf_oxide_webgpt_review_5915d44e/response.meta.json",
+    "transport_status": "recovered_focus_changed",
+    "proof_boundary": "advisory_only_not_closure_proof",
+    "ruling": "BLOCKED_CURRENT_GATE: Tau issue #120 remains open and has not produced a native PDF Lab work-order/transport receipt.",
+    "applied_local_action": "Removed the functional environment-variable bypass so pdf_oxide-owned live model transport fails unconditionally."
+  },
+  "proof_scope": {
+    "proves": [
+      "pdf_oxide page30 live-orchestrator registration now fails closed before model transport.",
+      "The deprecated PDF_LAB_ALLOW_PDF_OXIDE_LIVE_MODEL_TRANSPORT variable is ignored by the guard.",
+      "The page30 review bundle still contains original page image, annotated candidate image, current extracted JSON, candidate presets, prompt payload, validation, terminal ledger, and receipt artifacts.",
+      "The generated terminal ledger validates with terminal_status=blocked_substrate and reason=page_orchestrator_registration_failed."
+    ],
+    "does_not_prove": [
+      "Tau issue #120 is fixed.",
+      "A Tau-native PDF Lab model transport route exists.",
+      "A model-backed second-pass response was received.",
+      "Any page30 extraction defect is repaired.",
+      "The full test file is green."
+    ]
+  },
+  "artifacts": {
+    "case_dir": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030",
+    "review_bundle": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/review_bundle.zip",
+    "guard_error": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/scillm_page_orchestrator_run_error.json",
+    "terminal_ledger": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/terminal_ledger.json",
+    "terminal_ledger_validation": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/terminal_ledger_validation.json",
+    "review_bundle_validation": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/review_bundle_validation.json",
+    "run_log": "artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/test_logs/run_page_case_guard.log"
+  },
+  "commands": [
+    {
+      "command": ".venv/bin/python scripts/pdf_lab/run_page_second_pass_dag.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --manifest artifacts/pdf_lab/next_candidate_selection_page30_20260721T1235Z/candidate_manifest.json --sampled-cases artifacts/pdf_lab/next_candidate_selection_page30_20260721T1235Z/sampled_page_cases.json --out artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z --case-id page_case_0001_p0030 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --dpi 150 --model local-text --batch-id page30-unconditional-transport-guard-20260721 --review-mode dry_run --scillm-preflight-mode dry_run --patch-mode dry_run --commit-mode dry_run --page-orchestrator-mode live --page-extract-timeout-s 90",
+      "exit_code": 0,
+      "result": {
+        "terminal_status": "blocked_substrate"
+      }
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_pdf_lab_page_second_pass_dag.py -k \"live_model_transport_guard or preflight_scillm_surface\"",
+      "exit_code": 0,
+      "result": {
+        "passed": 6,
+        "deselected": 214
+      }
+    },
+    {
+      "command": "zip -T artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/page_case_0001_p0030/review_bundle.zip",
+      "exit_code": 0,
+      "result": {
+        "zip_test": "OK"
+      }
+    }
+  ]
+}

@@ -57,11 +57,12 @@ def test_pdf_oxide_live_model_transport_guard_blocks_direct_orchestrator(monkeyp
         )
 
 
-def test_pdf_oxide_live_model_transport_guard_allows_explicit_tau_override(monkeypatch) -> None:
+def test_pdf_oxide_live_model_transport_guard_ignores_deprecated_override(monkeypatch) -> None:
     dag = _load_module()
     monkeypatch.setenv(dag.PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV, "1")
 
-    dag.assert_pdf_oxide_live_model_transport_allowed("POST /v1/chat/completions")
+    with pytest.raises(dag.PdfOxideLiveModelTransportBlocked, match="deprecated and ignored"):
+        dag.assert_pdf_oxide_live_model_transport_allowed("POST /v1/chat/completions")
 
 
 def _selected_candidates_payload(
@@ -2255,7 +2256,7 @@ def test_live_review_preflight_failure_blocks_before_model_call(tmp_path: Path, 
 
 def test_preflight_scillm_surface_checks_caller_contract_and_opencode_health(monkeypatch) -> None:
     dag = _load_module()
-    monkeypatch.setenv(dag.PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV, "1")
+    monkeypatch.setattr(dag, "assert_pdf_oxide_live_model_transport_allowed", lambda endpoint: None)
     calls: list[tuple[str, str, bool]] = []
 
     class FakeResponse:
@@ -2309,7 +2310,7 @@ def test_preflight_scillm_surface_checks_caller_contract_and_opencode_health(mon
 
 def test_preflight_scillm_surface_rejects_missing_caller_contract_regression(monkeypatch) -> None:
     dag = _load_module()
-    monkeypatch.setenv(dag.PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV, "1")
+    monkeypatch.setattr(dag, "assert_pdf_oxide_live_model_transport_allowed", lambda endpoint: None)
 
     class FakeResponse:
         status_code = 404
@@ -2357,7 +2358,7 @@ def test_preflight_scillm_surface_rejects_missing_caller_contract_regression(mon
 
 def test_preflight_scillm_surface_ledgers_failed_get_response(monkeypatch) -> None:
     dag = _load_module()
-    monkeypatch.setenv(dag.PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV, "1")
+    monkeypatch.setattr(dag, "assert_pdf_oxide_live_model_transport_allowed", lambda endpoint: None)
 
     class FakeResponse:
         status_code = 503

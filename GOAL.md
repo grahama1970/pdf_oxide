@@ -124,16 +124,16 @@ or lacks an accepted Tau-native PDF Lab work-order contract:
 | Candidate artifacts to inspect first | `artifacts/pdf_lab/next_candidate_selection_page30_20260721T1235Z/selection_receipt.json`, `candidate_manifest.json`, `sampled_page_cases.json` |
 | Deterministic evidence bundle | `artifacts/pdf_lab/page30_deterministic_evidence_20260721T1245Z/page_case_0001_p0030/review_bundle.zip`, `review.html`, `review_html_screenshot.png`, `visual_verification_receipt.json` |
 | Current deterministic status | `terminal_status=blocked_substrate`, `reason=page_orchestrator_registration_failed`, `registered=false`, `transport_run_id=null` |
-| Boundary guard evidence | `artifacts/pdf_lab/page30_live_transport_guard_20260721T1255Z/boundary_guard_receipt.json`, `page_case_0001_p0030/scillm_page_orchestrator_run_error.json`, `terminal_ledger.json`, `review_bundle.zip` |
+| Boundary guard evidence | `artifacts/pdf_lab/page30_unconditional_transport_guard_20260721T1305Z/boundary_guard_receipt.json`, `page_case_0001_p0030/scillm_page_orchestrator_run_error.json`, `terminal_ledger.json`, `review_bundle.zip` |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching; pdf_oxide live model transport must fail closed unless a Tau-owned receipt explicitly authorizes the route |
 
 Before patching page30, wait for Tau issue #120 to provide the accepted
 Tau-native PDF Lab model transport contract, or continue only deterministic
 non-model evidence preparation that cannot be mistaken for live review proof.
-The current pdf_oxide-side live transport entrypoints are guarded by
-`PDF_LAB_ALLOW_PDF_OXIDE_LIVE_MODEL_TRANSPORT`; without that explicit
-Tau-receipt override, page30 live-orchestrator registration writes a blocked
-receipt before any model transport request is sent.
+The current pdf_oxide-side live transport entrypoints fail closed
+unconditionally. The deprecated `PDF_LAB_ALLOW_PDF_OXIDE_LIVE_MODEL_TRANSPORT`
+variable is ignored; only a Tau-owned work-order/transport receipt may enable
+model-backed second-pass review.
 
 ## Blockers And Boundaries
 
