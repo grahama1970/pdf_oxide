@@ -1,0 +1,170 @@
+{
+  "blocking_items": [
+    {
+      "criterion": 4,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/row1-issue4-live-lifecycle-summary.json"
+      ],
+      "name": "No overfitting",
+      "status": "SCOPED_PASS_NOT_FULL_REPLAY",
+      "summary": "Accepted issue #4 repair has anti-overfit PASS and document-wide promotion evidence. Full all-repair static replay is not present in this branch."
+    },
+    {
+      "criterion": 7,
+      "evidence": [
+        ".tau/gs001-execution-dag.json"
+      ],
+      "name": "Tau proof",
+      "status": "PENDING_REPLAY",
+      "summary": "DAG contract goal hash updated to current hash. Historical Tau receipts exist, but full closure-publisher replay with current goal hash is not present in this branch."
+    },
+    {
+      "criterion": 8,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-state.json",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-page.html",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/terminal-receipt.json"
+      ],
+      "name": "Closure publication",
+      "status": "PUBLISHED_PENDING_REPLAY",
+      "summary": "This bundle publishes current closure state and terminal reason; visual screenshot proof is added after browser inspection."
+    },
+    {
+      "criterion": 10,
+      "evidence": [],
+      "name": "Human acceptance",
+      "status": "PENDING_HUMAN",
+      "summary": "No machine may establish this criterion."
+    }
+  ],
+  "branch": "codex/gs001-criterion6-ticket-closure-20260720",
+  "claim_boundary": {
+    "does_not_prove": [
+      "human acceptance",
+      "full Tau closure-publisher replay under current goal hash",
+      "full all-repair static anti-overfit replay beyond scoped issue #4 evidence"
+    ],
+    "proves": [
+      "current branch contains machine-readable closure-state record",
+      "current branch contains locked contract/source artifacts and committed receipts for Criteria 1,2,3,5,6,9",
+      "visual closure page can be rendered from a clean checkout once committed"
+    ]
+  },
+  "counts": {
+    "criteria_not_pass": 4,
+    "criteria_pass": 6,
+    "criteria_total": 10
+  },
+  "criteria": [
+    {
+      "criterion": 1,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/criterion1-baseline-audit-receipt.json"
+      ],
+      "name": "Repository integrity and fork audit",
+      "status": "PASS",
+      "summary": "Fork-vs-upstream audit present; maintain-fork decision recorded; goal pins resolved."
+    },
+    {
+      "criterion": 2,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/criterion2-contract-integrity-receipt.json",
+        "golden_slices/gs001_nist_page28/expected_contract_lock.json"
+      ],
+      "name": "Expected-contract integrity",
+      "status": "PASS",
+      "summary": "Locked 11-row contract, no unresolved row fields, source PDF hash matches, two waivers signed."
+    },
+    {
+      "criterion": 3,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/criterion3-extraction-closure-receipt.json",
+        "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/cmp-final/comparison.json",
+        "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/gs001-closure-report.json"
+      ],
+      "name": "Extraction closure on GS001",
+      "status": "PASS",
+      "summary": "11/11 matched, 0 missing, 0 ambiguous, 0 unwaived extras."
+    },
+    {
+      "criterion": 4,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/row1-issue4-live-lifecycle-summary.json"
+      ],
+      "name": "No overfitting",
+      "status": "SCOPED_PASS_NOT_FULL_REPLAY",
+      "summary": "Accepted issue #4 repair has anti-overfit PASS and document-wide promotion evidence. Full all-repair static replay is not present in this branch."
+    },
+    {
+      "criterion": 5,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/criterion5-regression-receipt.json",
+        "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/regression_verdict.json"
+      ],
+      "name": "Regression proof",
+      "status": "PASS",
+      "summary": "Regression verdict PASS, targeted class strictly decreased, nothing worsened, off-pattern changes zero."
+    },
+    {
+      "criterion": 6,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/criterion6-ticket-closure-summary.json",
+        "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/row1-issue4-live-lifecycle-summary.json"
+      ],
+      "name": "Ticket lifecycle proof",
+      "status": "PASS",
+      "summary": "Issue #4 closed on accepted remote commit; row-1 live model-backed lifecycle proof has parseable JSON and validation pass."
+    },
+    {
+      "criterion": 7,
+      "evidence": [
+        ".tau/gs001-execution-dag.json"
+      ],
+      "name": "Tau proof",
+      "status": "PENDING_REPLAY",
+      "summary": "DAG contract goal hash updated to current hash. Historical Tau receipts exist, but full closure-publisher replay with current goal hash is not present in this branch."
+    },
+    {
+      "criterion": 8,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-state.json",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-page.html",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/terminal-receipt.json",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/receipts/gs001-closure-page-visual-receipt.json",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/receipts/gs001-closure-page.png"
+      ],
+      "name": "Closure publication",
+      "status": "PUBLISHED_PENDING_REPLAY",
+      "summary": "This bundle publishes current closure state, terminal reason, and a Chromium-rendered visual receipt."
+    },
+    {
+      "criterion": 9,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-truth-reconciliation-20260720T2300Z/criterion9-truth-reconciliation-receipt.json"
+      ],
+      "name": "Truth reconciliation",
+      "status": "PASS",
+      "summary": "Issues agent-skills#70-#72 reverified; pdf_oxide#1 merged; stale agent-skills#1 closed as superseded."
+    },
+    {
+      "criterion": 10,
+      "evidence": [],
+      "name": "Human acceptance",
+      "status": "PENDING_HUMAN",
+      "summary": "No machine may establish this criterion."
+    }
+  ],
+  "criterion8_status": "PUBLISHED_PENDING_REPLAY",
+  "dag_contract": ".tau/gs001-execution-dag.json",
+  "dag_goal_hash": "sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca",
+  "generated_at": "2026-07-20T23:35:00-04:00",
+  "goal_hash": "sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca",
+  "goal_id": "PDF-EXTRACTION-GS001-TAU-V1",
+  "goal_lock_receipt": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/goal-lock-receipt.json",
+  "live": true,
+  "mocked": false,
+  "parent_goal_status": "PENDING_TAU_REPLAY_AND_HUMAN_ACCEPTANCE",
+  "schema_version": "pdf_oxide.gs001.closure_state.v1",
+  "source_commit_at_generation": "69d9ec0f1c15012c48fcfff6568f30653e5c9157",
+  "terminal_reason": "tau_full_closure_replay_missing_for_current_goal_hash_and_human_acceptance_pending"
+}

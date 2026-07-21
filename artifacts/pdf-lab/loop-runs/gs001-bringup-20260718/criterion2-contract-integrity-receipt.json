@@ -1,0 +1,44 @@
+{
+  "checks": {
+    "contract_lock_hash_matches_canonical_contract": true,
+    "contract_status_locked": true,
+    "expected_row_count_11": true,
+    "goal_pin_matches_contract_lock": true,
+    "no_unresolved_row_fields": true,
+    "source_pdf_sha256_matches_goal_pin": true,
+    "waiver_count_2": true,
+    "waivers_signed": true
+  },
+  "contract_lock_receipt": "golden_slices/gs001_nist_page28/expected_contract_lock.json",
+  "contract_path": "golden_slices/gs001_nist_page28/expected_elements_v3.draft.json",
+  "contract_raw_file_sha256": "sha256:98ba1d2cb9dc3d0ea16f9b7ec6f05908f38b1663cbe0ecc5e1ed275b1a552f13",
+  "contract_sha256": "sha256:e618177bdcf1e8d7b22c538290a25999eadc3690b346bbbbbf28d75f433b916a",
+  "criterion": 2,
+  "does_not_prove": [
+    "Criterion 8 closure publication.",
+    "Criterion 10 human acceptance beyond signatures already embedded in contract waivers."
+  ],
+  "expected_row_count": 11,
+  "generated_at": "2026-07-20T23:20:00-04:00",
+  "goal_hash": "sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca",
+  "goal_id": "PDF-EXTRACTION-GS001-TAU-V1",
+  "live": false,
+  "mocked": false,
+  "schema_version": "pdf_oxide.gs001.criterion2_contract_integrity_receipt.v1",
+  "signed_waivers": [
+    {
+      "signed_by": "graham@grahama.co",
+      "signed_via": "GS001 R8 extras triage, PR grahama1970/pdf_oxide#1",
+      "waiver_id": "gs001-waiver-001"
+    },
+    {
+      "signed_by": "graham@grahama.co",
+      "signed_via": "GS001 R8 extras triage, PR grahama1970/pdf_oxide#1",
+      "waiver_id": "gs001-waiver-002"
+    }
+  ],
+  "source_pdf_path": "golden_slices/gs001_nist_page28/source/NIST_SP_800-53r5.pdf",
+  "source_pdf_sha256": "sha256:fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "status": "PASS",
+  "waiver_count": 2
+}

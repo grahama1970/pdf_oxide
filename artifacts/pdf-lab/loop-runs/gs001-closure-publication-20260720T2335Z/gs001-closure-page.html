@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>GS001 Closure State</title>
+<style>
+  body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #16191f; background: #f6f7f9; }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px 24px 48px; }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 8px; letter-spacing: 0; }
+  h2 { font-size: 18px; margin: 30px 0 12px; }
+  .summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 24px 0; }
+  .metric { background: #fff; border: 1px solid #d8dde6; border-radius: 8px; padding: 14px 16px; }
+  .metric b { display:block; font-size: 24px; margin-top: 4px; }
+  .banner { border: 1px solid #a65800; background: #fff4e5; color: #3d2600; padding: 14px 16px; border-radius: 8px; margin: 18px 0; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #d8dde6; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid #e5e8ef; font-size: 14px; }
+  th { background: #eef1f5; font-size: 12px; text-transform: uppercase; color: #4d5665; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; overflow-wrap: anywhere; }
+  .status { display: inline-block; border-radius: 4px; padding: 3px 7px; font-weight: 700; font-size: 12px; }
+  .pass { background: #d9f2e4; color: #0c5f33; }
+  .pending_human, .pending_replay, .published_pending_replay, .scoped_pass_not_full_replay { background: #fff0c2; color: #6b4b00; }
+  ul { background: #fff; border: 1px solid #d8dde6; border-radius: 8px; padding: 14px 18px 14px 34px; }
+  li { margin: 6px 0; }
+  @media (max-width: 820px) { .summary { grid-template-columns: 1fr 1fr; } main { padding: 22px 14px 36px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>PDF-EXTRACTION-GS001-TAU-V1 Closure State</h1>
+  <p><code>sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca</code></p>
+  <div class='banner'><strong>Terminal reason:</strong> tau_full_closure_replay_missing_for_current_goal_hash_and_human_acceptance_pending. This page is a closure-state publication, not human acceptance.</div>
+  <section class='summary'>
+    <div class='metric'>Criteria PASS<b>6 / 10</b></div>
+    <div class='metric'>GS001 Match<b>11 / 11</b></div>
+    <div class='metric'>Unwaived Extras<b>0</b></div>
+    <div class='metric'>Parent Status<b>Pending</b></div>
+  </section>
+  <h2>Criteria</h2>
+  <table><thead><tr><th>#</th><th>Criterion</th><th>Status</th><th>Evidence Summary</th></tr></thead><tbody><tr><td>1</td><td>Repository integrity and fork audit</td><td><span class='status pass'>PASS</span></td><td>Fork-vs-upstream audit present; maintain-fork decision recorded; goal pins resolved.</td></tr>
+<tr><td>2</td><td>Expected-contract integrity</td><td><span class='status pass'>PASS</span></td><td>Locked 11-row contract, no unresolved row fields, source PDF hash matches, two waivers signed.</td></tr>
+<tr><td>3</td><td>Extraction closure on GS001</td><td><span class='status pass'>PASS</span></td><td>11/11 matched, 0 missing, 0 ambiguous, 0 unwaived extras.</td></tr>
+<tr><td>4</td><td>No overfitting</td><td><span class='status scoped_pass_not_full_replay'>SCOPED_PASS_NOT_FULL_REPLAY</span></td><td>Accepted issue #4 repair has anti-overfit PASS and document-wide promotion evidence. Full all-repair static replay is not present in this branch.</td></tr>
+<tr><td>5</td><td>Regression proof</td><td><span class='status pass'>PASS</span></td><td>Regression verdict PASS, targeted class strictly decreased, nothing worsened, off-pattern changes zero.</td></tr>
+<tr><td>6</td><td>Ticket lifecycle proof</td><td><span class='status pass'>PASS</span></td><td>Issue #4 closed on accepted remote commit; row-1 live model-backed lifecycle proof has parseable JSON and validation pass.</td></tr>
+<tr><td>7</td><td>Tau proof</td><td><span class='status pending_replay'>PENDING_REPLAY</span></td><td>DAG contract goal hash updated to current hash. Historical Tau receipts exist, but full closure-publisher replay with current goal hash is not present in this branch.</td></tr>
+<tr><td>8</td><td>Closure publication</td><td><span class='status published_pending_replay'>PUBLISHED_PENDING_REPLAY</span></td><td>This bundle publishes current closure state, terminal reason, and a Chromium-rendered visual receipt.</td></tr>
+<tr><td>9</td><td>Truth reconciliation</td><td><span class='status pass'>PASS</span></td><td>Issues agent-skills#70-#72 reverified; pdf_oxide#1 merged; stale agent-skills#1 closed as superseded.</td></tr>
+<tr><td>10</td><td>Human acceptance</td><td><span class='status pending_human'>PENDING_HUMAN</span></td><td>No machine may establish this criterion.</td></tr></tbody></table>
+  <h2>Evidence Files</h2>
+  <ul><li><code>artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/criterion1-baseline-audit-receipt.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/criterion2-contract-integrity-receipt.json</code></li>
+<li><code>golden_slices/gs001_nist_page28/expected_contract_lock.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/criterion3-extraction-closure-receipt.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/cmp-final/comparison.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/gs001-closure-report.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/row1-issue4-live-lifecycle-summary.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/criterion5-regression-receipt.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/regression_verdict.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-criterion6-github-approval-artifact-20260720T2100Z/criterion6-ticket-closure-summary.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/row1-issue4-live-lifecycle-summary.json</code></li>
+<li><code>.tau/gs001-execution-dag.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-state.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-page.html</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/terminal-receipt.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/receipts/gs001-closure-page-visual-receipt.json</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/receipts/gs001-closure-page.png</code></li>
+<li><code>artifacts/pdf-lab/loop-runs/gs001-truth-reconciliation-20260720T2300Z/criterion9-truth-reconciliation-receipt.json</code></li></ul>
+</main>
+</body>
+</html>

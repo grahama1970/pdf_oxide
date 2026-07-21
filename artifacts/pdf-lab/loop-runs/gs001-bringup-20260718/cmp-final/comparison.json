@@ -1,0 +1,280 @@
+{
+  "schema_version": "pdf-lab.comparison.v2",
+  "created_at": "2026-07-18T17:19:00Z",
+  "target": 0.95,
+  "passed": true,
+  "passed_recall_only": true,
+  "accuracy": 1.0,
+  "defect_vector": {
+    "matched_expected": 11,
+    "missing_expected": 0,
+    "ambiguous_expected": 0,
+    "unwaived_extras": 0,
+    "waived_extras": 3,
+    "type_mismatches": 0
+  },
+  "blockers": [],
+  "matched_expected_elements": 11,
+  "total_expected_elements": 11,
+  "unmatched_expected_elements": 0,
+  "ambiguous_expected_elements": 0,
+  "unmatched_actual_elements": 3,
+  "policy": {
+    "accuracy_formula": "matched_expected_elements / total_expected_elements",
+    "verdict": "strict: missing/ambiguous/unwaived-extras/type-mismatch all block passed",
+    "ambiguity_margin": 0.05,
+    "text_similarity_threshold": 0.8,
+    "bbox_iou_thresholds": {
+      "default": 0.5,
+      "running_header": 0.35,
+      "running_footer": 0.35,
+      "caption": 0.45,
+      "table_candidate": 0.4
+    },
+    "type_aliases": {
+      "paragraph": [
+        "paragraph",
+        "table_candidate",
+        "requirement"
+      ],
+      "table_candidate": [
+        "table_candidate",
+        "table",
+        "paragraph"
+      ],
+      "requirement": [
+        "requirement",
+        "paragraph",
+        "table_candidate"
+      ]
+    }
+  },
+  "waivers": [
+    {
+      "waiver_id": "gs001-waiver-001",
+      "text_contains": "This publication is available free of charge",
+      "type": "header_footer_noise",
+      "decision": "accepted_page_chrome_noise",
+      "reason": "Side DOI watermark (extraction blocks 4-5); rotated page chrome, not content.",
+      "signed_by": "graham@grahama.co",
+      "signed_via": "GS001 R8 extras triage, PR grahama1970/pdf_oxide#1",
+      "text_matches_any": [
+        "This publication is available free of charge",
+        "doi.org/10.6028",
+        "-53r5"
+      ],
+      "scope_note": "Signed reason names 'extraction blocks 4-5' (plural): the whole rotated DOI watermark run. The single text_contains matched only its first fragment, because the extractor splits the rotated run across blocks. Re-expressed as a content predicate over the whole run. Scope unchanged from what was signed."
+    },
+    {
+      "waiver_id": "gs001-waiver-002",
+      "type": "header_footer_noise",
+      "decision": "accepted_page_chrome_noise",
+      "reason": "Horizontal separator rule (extraction block:1); page furniture.",
+      "signed_by": "graham@grahama.co",
+      "signed_via": "GS001 R8 extras triage, PR grahama1970/pdf_oxide#1",
+      "text_pattern": "^[_\\-\\u2014\\s]{20,}$",
+      "scope_note": "Was pinned to actual_id 'actual:p27:block:1', an extractor-assigned block id that does not survive re-extraction. Re-expressed as a content predicate: a rule of 20+ underscore/dash characters. Scope unchanged from what was signed."
+    }
+  ],
+  "subscores": {
+    "mean_iou": 0.7368,
+    "mean_text_similarity": 1.0,
+    "type_accuracy_on_matches": 1.0
+  },
+  "matches": [
+    {
+      "expected_id": "gs001:row:1",
+      "actual_id": "actual:p27:cf71642d944762cc5915042b23b79bb1",
+      "page": 27,
+      "score": 0.6677,
+      "iou": 0.6222,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:2",
+      "actual_id": "actual:p27:aeea1b33243dc53004f4692e143344a2",
+      "page": 27,
+      "score": 0.4191,
+      "iou": 0.0,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:3",
+      "actual_id": "actual:p27:4aad3ab87dada435e0e3dc439e15cc29",
+      "page": 27,
+      "score": 0.8358,
+      "iou": 0.635,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:4",
+      "actual_id": "actual:p27:58afc2c7cd7ea368026d31f126629584",
+      "page": 27,
+      "score": 0.8664,
+      "iou": 0.7031,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:5",
+      "actual_id": "actual:p27:5b53b3a04d9fbdac6d7bf9b16e5df1d7",
+      "page": 27,
+      "score": 0.8847,
+      "iou": 0.7437,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:6",
+      "actual_id": "actual:p27:b01e7a6f7b31de1b98bbb0f7024ae457",
+      "page": 27,
+      "score": 0.9795,
+      "iou": 0.9562,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:7",
+      "actual_id": "actual:p27:ef2ca0a4e44d017739ea4bd64a64985b",
+      "page": 27,
+      "score": 0.9847,
+      "iou": 0.9671,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:8",
+      "actual_id": "actual:p27:9c2ab01026400d482034cac741b30bff",
+      "page": 27,
+      "score": 0.945,
+      "iou": 0.9283,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:9",
+      "actual_id": "actual:p27:ff297232954831084e523b9e2423c02a",
+      "page": 27,
+      "score": 0.9754,
+      "iou": 0.9491,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:10",
+      "actual_id": "actual:p27:f1503c5b0897f9658f34ca038d99919e",
+      "page": 27,
+      "score": 0.9498,
+      "iou": 0.8903,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    },
+    {
+      "expected_id": "gs001:row:11",
+      "actual_id": "actual:p27:40b9cd90a3ddb8bd27a2b2d307915649",
+      "page": 27,
+      "score": 0.8696,
+      "iou": 0.7101,
+      "text_similarity": 1.0,
+      "type_compatible": true
+    }
+  ],
+  "misses": [],
+  "ambiguous": [],
+  "waived_extras": [
+    {
+      "actual": {
+        "id": "actual:p27:bbd8c581f38aa38452e93bc8e0a72c8a",
+        "page": 27,
+        "type": "header_footer_noise",
+        "raw_type": "Header",
+        "bbox": [
+          90.0,
+          45.3,
+          523.8,
+          53.28
+        ],
+        "text": "_________________________________________________________________________________________________"
+      },
+      "waiver": {
+        "waiver_id": "gs001-waiver-001",
+        "text_contains": "This publication is available free of charge",
+        "type": "header_footer_noise",
+        "decision": "accepted_page_chrome_noise",
+        "reason": "Side DOI watermark (extraction blocks 4-5); rotated page chrome, not content.",
+        "signed_by": "graham@grahama.co",
+        "signed_via": "GS001 R8 extras triage, PR grahama1970/pdf_oxide#1",
+        "text_matches_any": [
+          "This publication is available free of charge",
+          "doi.org/10.6028",
+          "-53r5"
+        ],
+        "scope_note": "Signed reason names 'extraction blocks 4-5' (plural): the whole rotated DOI watermark run. The single text_contains matched only its first fragment, because the extractor splits the rotated run across blocks. Re-expressed as a content predicate over the whole run. Scope unchanged from what was signed."
+      }
+    },
+    {
+      "actual": {
+        "id": "actual:p27:29c1c4dc0532f4be228195962617c43d",
+        "page": 27,
+        "type": "header_footer_noise",
+        "raw_type": "Boilerplate",
+        "bbox": [
+          21.06,
+          412.02,
+          165.56,
+          421.02
+        ],
+        "text": "https://doi.org/10.6028/NIST.SP.800"
+      },
+      "waiver": {
+        "waiver_id": "gs001-waiver-001",
+        "text_contains": "This publication is available free of charge",
+        "type": "header_footer_noise",
+        "decision": "accepted_page_chrome_noise",
+        "reason": "Side DOI watermark (extraction blocks 4-5); rotated page chrome, not content.",
+        "signed_by": "graham@grahama.co",
+        "signed_via": "GS001 R8 extras triage, PR grahama1970/pdf_oxide#1",
+        "text_matches_any": [
+          "This publication is available free of charge",
+          "doi.org/10.6028",
+          "-53r5"
+        ],
+        "scope_note": "Signed reason names 'extraction blocks 4-5' (plural): the whole rotated DOI watermark run. The single text_contains matched only its first fragment, because the extractor splits the rotated run across blocks. Re-expressed as a content predicate over the whole run. Scope unchanged from what was signed."
+      }
+    },
+    {
+      "actual": {
+        "id": "actual:p27:440fd88e9159be7ccf7aa724471fc278",
+        "page": 27,
+        "type": "list",
+        "raw_type": "List",
+        "bbox": [
+          21.06,
+          556.56,
+          39.05,
+          568.56
+        ],
+        "text": "-53r5"
+      },
+      "waiver": {
+        "waiver_id": "gs001-waiver-001",
+        "text_contains": "This publication is available free of charge",
+        "type": "header_footer_noise",
+        "decision": "accepted_page_chrome_noise",
+        "reason": "Side DOI watermark (extraction blocks 4-5); rotated page chrome, not content.",
+        "signed_by": "graham@grahama.co",
+        "signed_via": "GS001 R8 extras triage, PR grahama1970/pdf_oxide#1",
+        "text_matches_any": [
+          "This publication is available free of charge",
+          "doi.org/10.6028",
+          "-53r5"
+        ],
+        "scope_note": "Signed reason names 'extraction blocks 4-5' (plural): the whole rotated DOI watermark run. The single text_contains matched only its first fragment, because the extractor splits the rotated run across blocks. Re-expressed as a content predicate over the whole run. Scope unchanged from what was signed."
+      }
+    }
+  ],
+  "unmatched_actual_sample": []
+}

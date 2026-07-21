@@ -1,0 +1,64 @@
+{
+  "checks": {
+    "document_wide_present": true,
+    "nothing_worsened": true,
+    "off_pattern_changes_zero": true,
+    "regression_schema_v1": true,
+    "regression_verdict_pass": true,
+    "targeted_class_strictly_decreased": true
+  },
+  "criterion": 5,
+  "cross_page_regression_path": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/cross_page_regression.json",
+  "cross_page_regression_sha256": "sha256:ba81784329032a0c23f755d44670a44382f77ed48ab21735d16dccf13502ec4e",
+  "does_not_prove": [
+    "Criterion 8 visual publication.",
+    "Criterion 10 human acceptance."
+  ],
+  "generated_at": "2026-07-20T23:30:00-04:00",
+  "goal_hash": "sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca",
+  "goal_id": "PDF-EXTRACTION-GS001-TAU-V1",
+  "live": false,
+  "mocked": false,
+  "regression_summary": {
+    "baseline": {
+      "accuracy": 0.45454545454545453,
+      "matched": 5,
+      "type_mismatch_count": 5
+    },
+    "candidate": {
+      "accuracy": 0.5454545454545454,
+      "matched": 6,
+      "type_mismatch_count": 4
+    },
+    "document_wide": {
+      "blocks_baseline": 12648,
+      "blocks_candidate": 12648,
+      "frozen_page_changes": {
+        "20": 0,
+        "23": 0,
+        "31": 1,
+        "32": 1,
+        "33": 1,
+        "34": 1,
+        "401": 0,
+        "415": 0,
+        "468": 1,
+        "483": 1
+      },
+      "interpretation": "All 375 changes are bottom-of-page footers carrying a page marker; 0 blocks added or removed; 0 changes fall outside the expected pattern. The same defect class was corrected on 375 pages, which is the anti-overfit signal: a memorized fix would have moved exactly one block.",
+      "off_pattern_changes": 0,
+      "pages_touched": 375,
+      "structural_change": false,
+      "transitions": {
+        "Body -> Header": 214,
+        "Title -> Header": 161
+      },
+      "type_changes": 375
+    },
+    "target_class": "type_mismatch"
+  },
+  "regression_verdict_path": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/regression_verdict.json",
+  "regression_verdict_sha256": "sha256:8c69ca1f480e681ae1334464f9669d7ce9562c5227eac7b5be792a2fb5da9cfc",
+  "schema_version": "pdf_oxide.gs001.criterion5_regression_receipt.v1",
+  "status": "PASS"
+}

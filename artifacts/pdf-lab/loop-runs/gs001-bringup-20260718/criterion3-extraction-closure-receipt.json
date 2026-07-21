@@ -1,0 +1,37 @@
+{
+  "checks": {
+    "closure_report_contract_matches_goal_pin": true,
+    "comparison_passed": true,
+    "comparison_schema_v2": true,
+    "matched_11_of_11": true,
+    "zero_ambiguous": true,
+    "zero_unmatched_expected": true,
+    "zero_unwaived_extras": true
+  },
+  "closure_report_path": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/gs001-closure-report.json",
+  "closure_report_sha256": "sha256:5605fc5f996da45f3f752e1879af07792f1c0e659a776a0bd56effb731cb7251",
+  "comparison_path": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/cmp-final/comparison.json",
+  "comparison_sha256": "sha256:1f4d05e36c4d9354efeabbf6cdd76295f259abe9746899e1b7814142277409b4",
+  "counts": {
+    "accuracy": 1.0,
+    "extras_total": 3,
+    "extras_unwaived": 0,
+    "extras_waived": 3,
+    "matched_expected_elements": 11,
+    "total_expected_elements": 11,
+    "unmatched_actual_elements": 3,
+    "unmatched_expected_elements": 0
+  },
+  "criterion": 3,
+  "does_not_prove": [
+    "Criterion 8 visual publication.",
+    "Criterion 10 human acceptance."
+  ],
+  "generated_at": "2026-07-20T23:30:00-04:00",
+  "goal_hash": "sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca",
+  "goal_id": "PDF-EXTRACTION-GS001-TAU-V1",
+  "live": false,
+  "mocked": false,
+  "schema_version": "pdf_oxide.gs001.criterion3_extraction_closure_receipt.v1",
+  "status": "PASS"
+}

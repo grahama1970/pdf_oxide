@@ -4,7 +4,7 @@
   "goal": {
     "goal_id": "PDF-EXTRACTION-GS001-TAU-V1",
     "goal_version": 1,
-    "goal_hash": "sha256:b66ed53c4b5510b1b5a4a05a0cf9274dd68bcf1119828d9e56540b8a8f17321b"
+    "goal_hash": "sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca"
   },
   "target": {
     "repo": "grahama1970/pdf_oxide",

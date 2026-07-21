@@ -1,0 +1,9 @@
+{
+  "schema_version": "pdf_lab.expected_contract_lock.v1",
+  "slice_id": "GS001",
+  "contract_path": "golden_slices/gs001_nist_page28/expected_elements_v3.draft.json",
+  "contract_version": 5,
+  "expected_row_count": 11,
+  "waiver_count": 2,
+  "contract_sha256": "sha256:e618177bdcf1e8d7b22c538290a25999eadc3690b346bbbbbf28d75f433b916a"
+}

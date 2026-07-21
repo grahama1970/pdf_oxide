@@ -1,0 +1,49 @@
+{
+  "closure_state": "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-state.json",
+  "goal_hash": "sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca",
+  "goal_id": "PDF-EXTRACTION-GS001-TAU-V1",
+  "live": true,
+  "mocked": false,
+  "not_final_because": [
+    {
+      "criterion": 4,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-row1-issue4-live-lifecycle-20260720T2145Z/row1-issue4-live-lifecycle-summary.json"
+      ],
+      "name": "No overfitting",
+      "status": "SCOPED_PASS_NOT_FULL_REPLAY",
+      "summary": "Accepted issue #4 repair has anti-overfit PASS and document-wide promotion evidence. Full all-repair static replay is not present in this branch."
+    },
+    {
+      "criterion": 7,
+      "evidence": [
+        ".tau/gs001-execution-dag.json"
+      ],
+      "name": "Tau proof",
+      "status": "PENDING_REPLAY",
+      "summary": "DAG contract goal hash updated to current hash. Historical Tau receipts exist, but full closure-publisher replay with current goal hash is not present in this branch."
+    },
+    {
+      "criterion": 8,
+      "evidence": [
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-state.json",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-page.html",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/terminal-receipt.json"
+      ],
+      "name": "Closure publication",
+      "status": "PUBLISHED_PENDING_REPLAY",
+      "summary": "This bundle publishes current closure state and terminal reason; visual screenshot proof is added after browser inspection."
+    },
+    {
+      "criterion": 10,
+      "evidence": [],
+      "name": "Human acceptance",
+      "status": "PENDING_HUMAN",
+      "summary": "No machine may establish this criterion."
+    }
+  ],
+  "schema_version": "pdf_oxide.gs001.terminal_receipt.v1",
+  "terminal_reason": "tau_full_closure_replay_missing_for_current_goal_hash_and_human_acceptance_pending",
+  "terminal_status": "pending",
+  "visual_page": "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-page.html"
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": "pdf_lab.closure_report.v1",
+  "slice_id": "GS001",
+  "page_index": 27,
+  "contract_sha256": "sha256:e618177bdcf1e8d7b22c538290a25999eadc3690b346bbbbbf28d75f433b916a",
+  "expected_rows": 11,
+  "matched": 11,
+  "missing": 0,
+  "ambiguous": 0,
+  "extras_total": 3,
+  "extras_waived": 3,
+  "extras_unwaived": 0,
+  "accuracy": 1.0,
+  "criterion_3_met": true,
+  "caveat": "GCP-001/002/003 are applied by agent and AWAIT HUMAN SIGNATURE. Closure is provisional until signed.",
+  "document_wide": {
+    "blocks": "12648 -> 12660",
+    "structural_change": true,
+    "type_changes": 2448,
+    "pages_touched": 490,
+    "transitions": {
+      "Footer -> Header": 980,
+      "Body -> Boilerplate": 865,
+      "Body -> Footer": 216,
+      "Title -> Footer": 162,
+      "Body -> Subtitle": 111,
+      "Title -> Subtitle": 69,
+      "Header -> Footer": 20,
+      "Body -> Title": 12,
+      "Title -> ChapterLabel": 6,
+      "Title -> Body": 6,
+      "Body -> Footnote": 1
+    }
+  },
+  "rust_suite": {
+    "passed": 4525,
+    "failed": 1,
+    "failing_test": "toc_detector::test_extract_simple_toc",
+    "vs_baseline": "identical - pre-existing known failure, not a regression"
+  },
+  "pdf_lab_tests": "47 passed",
+  "awaiting_human": [
+    "GCP-001 contract text fields",
+    "GCP-002 bbox corrections",
+    "GCP-003 waiver identity",
+    "promotion of branch gs001-yratio (tau apply gate)"
+  ]
+}

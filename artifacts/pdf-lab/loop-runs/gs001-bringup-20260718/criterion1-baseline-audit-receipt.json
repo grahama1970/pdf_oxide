@@ -23,12 +23,12 @@
     },
     {
       "code": "goal_lock_succeeded",
-      "fact": "sha256:b66ed53c4b5510b1b5a4a05a0cf9274dd68bcf1119828d9e56540b8a8f17321b",
+      "fact": "sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca",
       "ok": true
     },
     {
       "code": "dag_hash_propagated",
-      "fact": "sha256:b66ed53c4b5510b1b5a4a05a0cf9274dd68bcf1119828d9e56540b8a8f17321b",
+      "fact": "sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca",
       "ok": true
     }
   ],
@@ -49,11 +49,11 @@
     "Criterion 8 closure proof replay from a clean checkout.",
     "Criterion 10 human acceptance."
   ],
-  "goal_hash": "sha256:b66ed53c4b5510b1b5a4a05a0cf9274dd68bcf1119828d9e56540b8a8f17321b",
+  "goal_hash": "sha256:ca56881acd36f5fdffffafc2a2ee73bbfd806df820f2fe0bd50ec52e794308ca",
   "goal_lock_receipt": "artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/goal-lock-receipt.json",
   "goal_pins": {
     "agent_skills_baseline_commit": "fecff7aa6fb913624d999f99f94d2c684ddb302e",
-    "expected_contract_sha256": "sha256:3813cb652ee89fb0ace070311f93f523898c7f9e5a559fb8bc8eb71ec32a0533",
+    "expected_contract_sha256": "sha256:e618177bdcf1e8d7b22c538290a25999eadc3690b346bbbbbf28d75f433b916a",
     "frozen_regression_set": "NIST pages 20 468 401 415 483 34 31 32 33 23 (stratified; packet regenerated at loop bring-up)",
     "goal_id": "PDF-EXTRACTION-GS001-TAU-V1",
     "goal_version": "1",
