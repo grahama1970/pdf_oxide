@@ -290,6 +290,7 @@ impl BlockClassifier {
 
         merge_consecutive_body(&mut blocks);
         promote_isolated_heading_blocks(&mut blocks);
+        promote_footnote_continuations(&mut blocks, self.page_height, self.median_font_size);
         // WebGPT 2026-05-13 R8 — suppress empty-text classified blocks
         // before they reach the release element list. PDFs occasionally
         // emit zero-width whitespace-only blocks; these should not appear
@@ -297,6 +298,7 @@ impl BlockClassifier {
         // emitted by separate pipelines and are not affected.
         blocks.retain(|b| !b.text.trim().is_empty());
         merge_list_runs_and_continuations(&mut blocks);
+        merge_rotated_boilerplate_fragments(&mut blocks, self.page_width, self.page_height);
 
         blocks
     }
@@ -446,7 +448,7 @@ impl BlockClassifier {
         }
 
         // Footnote detection (small font, bottom of page, starts with marker)
-        if size_ratio < 0.85 && y_ratio > 0.75 && trimmed.len() < 500 {
+        if size_ratio < 0.85 && y_ratio > 0.70 && trimmed.len() < 500 {
             if trimmed.starts_with(|c: char| c.is_ascii_digit())
                 || trimmed.starts_with('*')
                 || trimmed.starts_with('†')
@@ -516,20 +518,17 @@ impl BlockClassifier {
             // Extra check: don't classify numbered headers as list items
             let numbering = analyze_section_numbering(trimmed);
             if !numbering.has_numbering || numbering.depth_level <= 1 {
-                // Only if it doesn't look like a real section number
-                if !numbering.has_numbering {
-                    return self.make_block(
-                        BlockType::List,
-                        text,
-                        bbox,
-                        avg_font_size,
-                        font_name,
-                        is_bold,
-                        0.85,
-                        None,
-                        None,
-                    );
-                }
+                return self.make_block(
+                    BlockType::List,
+                    text,
+                    bbox,
+                    avg_font_size,
+                    font_name,
+                    is_bold,
+                    0.85,
+                    None,
+                    None,
+                );
             }
         }
 
@@ -788,7 +787,12 @@ fn try_decimal(text: &str) -> Option<NumberingAnalysis> {
     }
 
     // Count depth
-    let depth = num_text.matches('.').count() as u8 + 1;
+    let depth = num_text
+        .trim_end_matches('.')
+        .split('.')
+        .filter(|part| !part.is_empty())
+        .count()
+        .max(1) as u8;
     let depth = depth.min(6);
 
     Some(NumberingAnalysis {
@@ -1368,6 +1372,58 @@ fn promote_isolated_heading_blocks(blocks: &mut Vec<ClassifiedBlock>) {
     }
 }
 
+fn promote_footnote_continuations(
+    blocks: &mut Vec<ClassifiedBlock>,
+    page_height: f32,
+    median_font_size: f32,
+) {
+    use BlockType::{Body, Footnote};
+
+    let mut previous_footnote: Option<ClassifiedBlock> = None;
+    for block in blocks.iter_mut() {
+        if block.block_type == Footnote {
+            previous_footnote = Some(block.clone());
+            continue;
+        }
+        let Some(prev) = previous_footnote.as_ref() else {
+            continue;
+        };
+        if block.block_type != Body {
+            previous_footnote = None;
+            continue;
+        }
+
+        let visual_top_ratio = if page_height > 0.0 {
+            (page_height - (block.bbox.y + block.bbox.height)) / page_height
+        } else {
+            0.0
+        };
+        let x_delta = (block.bbox.x - prev.bbox.x).abs();
+        let prev_bottom_y = prev.bbox.y;
+        let block_top_y = block.bbox.y + block.bbox.height;
+        let y_gap = prev_bottom_y - block_top_y;
+        let font_ratio = block.font_size / prev.font_size.max(1.0);
+        let small_enough = median_font_size <= 0.0 || block.font_size <= median_font_size * 0.95;
+
+        if visual_top_ratio > 0.70
+            && small_enough
+            && x_delta <= block.font_size * 2.5
+            && (-block.font_size..=block.font_size * 1.8).contains(&y_gap)
+            && (0.80..=1.20).contains(&font_ratio)
+            && !block
+                .text
+                .trim_start()
+                .starts_with(|c: char| c.is_ascii_digit())
+        {
+            block.block_type = Footnote;
+            block.confidence = block.confidence.max(0.72);
+            previous_footnote = Some(block.clone());
+        } else {
+            previous_footnote = None;
+        }
+    }
+}
+
 /// Narrow post-classification pass: merge bullet-list runs and absorb
 /// indented body continuation lines into their preceding list anchor
 /// (WebGPT 2026-05-13 R8).
@@ -1448,7 +1504,10 @@ fn merge_list_runs_and_continuations(blocks: &mut Vec<ClassifiedBlock>) {
 
             // Indentation classification.
             let dx = next.bbox.x - anchor_x;
-            let is_continuation = next.block_type == Body && dx > 0.5 && dx <= anchor_fs * 4.0;
+            let is_continuation = next.block_type == Body
+                && !is_list_item(&next.text)
+                && dx > 0.5
+                && dx <= anchor_fs * 4.0;
             let is_sibling_list = next.block_type == List
                 && dx.abs() <= 2.0
                 && starts_with_symbol_bullet(&blocks[i].text)
@@ -1464,6 +1523,87 @@ fn merge_list_runs_and_continuations(blocks: &mut Vec<ClassifiedBlock>) {
             blocks[i].bbox = blocks[i].bbox.union(&absorbed.bbox);
             blocks[i].lines.extend(absorbed.lines);
             // anchor stays typed List; iterate to look for further merges.
+        }
+        i += 1;
+    }
+}
+
+/// Merge consecutive `Boilerplate` blocks that are vertically aligned near the
+/// left margin, representing rotated side-chrome text fragments.
+///
+/// Rotated publication/DOI text in the left margin is extracted as multiple
+/// horizontal bboxes by upstream tools. Without this merge, each fragment
+/// becomes a separate candidate with an incorrect horizontal bbox. The merged
+/// block uses a narrow, tall bbox that better approximates the rendered vertical
+/// text region.
+fn merge_rotated_boilerplate_fragments(
+    blocks: &mut Vec<ClassifiedBlock>,
+    page_width: f32,
+    page_height: f32,
+) {
+    let left_margin_threshold = page_width * 0.12;
+    let max_merged_height = page_height * 0.65;
+    let mut i = 0;
+    while i + 1 < blocks.len() {
+        if blocks[i].block_type != BlockType::Boilerplate {
+            i += 1;
+            continue;
+        }
+        let anchor_x = blocks[i].bbox.x;
+        let anchor_h = blocks[i]
+            .lines
+            .last()
+            .map(|line| line.bbox.height)
+            .unwrap_or(blocks[i].bbox.height);
+        let anchor_fs = blocks[i].font_size.max(1.0);
+
+        // Only consider boilerplate near the left margin
+        if anchor_x > left_margin_threshold {
+            i += 1;
+            continue;
+        }
+
+        // Prevent runaway merges
+        if blocks[i].bbox.height > max_merged_height {
+            i += 1;
+            continue;
+        }
+
+        // Check if the next block is also boilerplate with similar x and height
+        if blocks[i + 1].block_type == BlockType::Boilerplate {
+            let next_x = blocks[i + 1].bbox.x;
+            let next_h = blocks[i + 1].bbox.height;
+            let x_delta = (anchor_x - next_x).abs();
+            let h_ratio = if anchor_h > 0.0 {
+                next_h / anchor_h
+            } else {
+                1.0
+            };
+
+            // Rotated side-chrome fragments share the same x and similar height
+            // (the height is the rendered width of the rotated text).
+            if x_delta <= anchor_fs * 2.0 && (0.5..=2.0).contains(&h_ratio) {
+                let next = blocks.remove(i + 1);
+                blocks[i].text.push(' ');
+                blocks[i].text.push_str(&next.text);
+                blocks[i].lines.extend(next.lines);
+
+                // Recompute bbox as a narrow, tall strip for rotated text.
+                let min_x = blocks[i].bbox.x.min(next.bbox.x);
+                let min_y = blocks[i].bbox.y.min(next.bbox.y);
+                let max_top_y =
+                    (blocks[i].bbox.y + blocks[i].bbox.height).max(next.bbox.y + next.bbox.height);
+                let max_h = blocks[i].bbox.height.max(next.bbox.height);
+
+                blocks[i].bbox = Rect {
+                    x: min_x,
+                    y: min_y,
+                    width: max_h * 1.5,
+                    height: max_top_y - min_y,
+                };
+                // Don't increment i; check if the next block also merges
+                continue;
+            }
         }
         i += 1;
     }
@@ -1571,6 +1711,25 @@ fn is_boilerplate(text: &str) -> bool {
     }
     // "printed on"
     if lower.starts_with("printed on") {
+        return true;
+    }
+    // NIST / standards-body publication availability and DOI lines
+    // (WebGPT 2026-06-30 p0193 rotated side-chrome regression)
+    if lower.starts_with("this publication is available free of charge from")
+        || lower.starts_with("https://doi.org/")
+        || lower.starts_with("http://doi.org/")
+    {
+        return true;
+    }
+    // Short hyphenated document revision suffix fragments like "-53r5", "-171r2"
+    // that are part of a rotated DOI line and should not be treated as list items.
+    if trimmed.starts_with('-')
+        && trimmed.len() >= 3
+        && trimmed.len() <= 8
+        && trimmed.chars().skip(1).all(|c| c.is_ascii_alphanumeric())
+        && trimmed.contains('r')
+        && trimmed.chars().filter(|c| c.is_ascii_digit()).count() >= 1
+    {
         return true;
     }
     false
@@ -2426,6 +2585,80 @@ mod tests {
         assert!(list_blocks[1].text.contains("remote maintenance"));
     }
 
+    #[test]
+    fn test_nist_ordered_nested_lists_remain_item_level_blocks() {
+        let spans = vec![
+            make_span("Control:", 126.0, 635.0, 10.0, true),
+            make_span(
+                "h. Notify account managers and assigned personnel within:",
+                126.0,
+                612.0,
+                10.0,
+                false,
+            ),
+            make_span(
+                "1. [Assignment: organization-defined time period] when accounts are no longer required;",
+                144.0,
+                594.0,
+                10.0,
+                false,
+            ),
+            make_span(
+                "2. [Assignment: organization-defined time period] when users are terminated or transferred; and",
+                144.0,
+                576.0,
+                10.0,
+                false,
+            ),
+            make_span(
+                "3. [Assignment: organization-defined time period] when system usage or need-to-know changes",
+                144.0,
+                558.0,
+                10.0,
+                false,
+            ),
+            make_span("for an individual;", 162.0, 544.0, 10.0, false),
+            make_span("i. Authorize access to the system based on:", 126.0, 526.0, 10.0, false),
+            make_span("1. A valid access authorization;", 144.0, 508.0, 10.0, false),
+            make_span("2. Intended system usage; and", 144.0, 490.0, 10.0, false),
+            make_span(
+                "3. [Assignment: organization-defined attributes (as required)];",
+                144.0,
+                472.0,
+                10.0,
+                false,
+            ),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        let list_blocks: Vec<&ClassifiedBlock> = blocks
+            .iter()
+            .filter(|b| b.block_type == BlockType::List)
+            .collect();
+        assert_eq!(
+            list_blocks.len(),
+            8,
+            "ordered nested lists should stay item-level blocks: {:?}",
+            blocks
+                .iter()
+                .map(|b| (format!("{:?}", b.block_type), b.text.as_str()))
+                .collect::<Vec<_>>()
+        );
+        assert!(list_blocks[0]
+            .text
+            .starts_with("h. Notify account managers"));
+        assert!(!list_blocks[0].text.contains("1. [Assignment:"));
+        assert!(list_blocks[1].text.starts_with("1. [Assignment:"));
+        assert!(list_blocks[2].text.starts_with("2. [Assignment:"));
+        assert!(list_blocks[3].text.starts_with("3. [Assignment:"));
+        assert!(list_blocks[3].text.contains("for an individual;"));
+        assert!(list_blocks[4].text.starts_with("i. Authorize access"));
+        assert_eq!(list_blocks[5].text, "1. A valid access authorization;");
+        assert_eq!(list_blocks[6].text, "2. Intended system usage; and");
+        assert!(list_blocks[7].text.starts_with("3. [Assignment:"));
+    }
+
     /// GS001 R8 — empty-text classified blocks must not appear in the
     /// final block list.
     #[test]
@@ -2468,6 +2701,16 @@ mod tests {
             make_span("Preset: requirements_matrix (Table ID: t0)", 42.0, 736.0, 14.0, true),
             make_span("[QID_88D69E9342E4]Req ID", 0.0, 704.0, 11.0, false),
             make_span("[QID_D124C0C983D6]AC-1", 0.0, 684.0, 11.0, false),
+            // Rotated side-chrome fragments from NIST 800-53r5 left-margin DOI line
+            make_span(
+                "This publication is available free of charge from:",
+                21.0,
+                564.0,
+                9.0,
+                false,
+            ),
+            make_span("https://doi.org/10.6028/NIST.SP.800", 21.0, 371.0, 9.0, false),
+            make_span("-53r5", 21.0, 223.0, 9.0, false),
         ];
         let classifier = BlockClassifier::new(612.0, 792.0, &spans);
         let blocks = classifier.classify_spans(&spans);
@@ -2478,15 +2721,81 @@ mod tests {
             .expect("expected top-page preset label block");
         assert_ne!(preset.block_type, BlockType::Footer);
 
-        let qid_rows: Vec<&ClassifiedBlock> = blocks
-            .iter()
-            .filter(|b| b.text.contains("[QID_"))
-            .collect();
+        let qid_rows: Vec<&ClassifiedBlock> =
+            blocks.iter().filter(|b| b.text.contains("[QID_")).collect();
         assert!(!qid_rows.is_empty(), "expected QID table-row-like text");
         for row in qid_rows {
             assert_ne!(row.block_type, BlockType::Footer, "QID row should not be footer: {row:?}");
-            assert_ne!(row.block_type, BlockType::Reference, "QID row should not be reference: {row:?}");
+            assert_ne!(
+                row.block_type,
+                BlockType::Reference,
+                "QID row should not be reference: {row:?}"
+            );
         }
+
+        // Rotated side-chrome publication/DOI text must be merged into a single
+        // Boilerplate block with a narrow, tall bbox (not exposed as individual
+        // horizontal fragments). Regression for p0193 rotated side-chrome defect.
+        let chrome = blocks
+            .iter()
+            .find(|b| {
+                b.block_type == BlockType::Boilerplate
+                    && b.text
+                        .contains("This publication is available free of charge from:")
+            })
+            .expect("expected merged rotated side-chrome block");
+        assert!(
+            chrome.text.contains("https://doi.org/10.6028/NIST.SP.800"),
+            "merged side-chrome should contain DOI URL: {chrome:?}"
+        );
+        assert!(
+            chrome.text.contains("-53r5"),
+            "merged side-chrome should contain revision suffix: {chrome:?}"
+        );
+        assert!(
+            chrome.bbox.width < chrome.bbox.height,
+            "rotated side-chrome bbox must be narrow and tall, got width={w} height={h}",
+            w = chrome.bbox.width,
+            h = chrome.bbox.height
+        );
+        // Ensure the individual fragments are no longer exposed as separate blocks.
+        for needle in [
+            "This publication is available free of charge from:",
+            "https://doi.org/10.6028/NIST.SP.800",
+            "-53r5",
+        ] {
+            let exact_matches: Vec<_> = blocks.iter().filter(|b| b.text == needle).collect();
+            assert!(
+                exact_matches.is_empty(),
+                "individual rotated fragment {needle:?} must not remain as a separate block"
+            );
+        }
+    }
+
+    #[test]
+    fn test_bottom_footnote_continuation_lines_remain_footnotes() {
+        let spans = vec![
+            make_span("Body line establishes the page text size.", 90.0, 520.0, 11.0, false),
+            make_span("1 An information system is a discrete set of information resources organized for the collection, processing,", 90.0, 210.0, 9.0, false),
+            make_span("maintenance, use, sharing, dissemination, or disposition of information [OMB A-130].", 90.0, 198.0, 9.0, false),
+            make_span("2 The term organization describes an entity of any size.", 90.0, 186.0, 9.0, false),
+            make_span("(e.g., a federal agency or any of its operational elements).", 90.0, 174.0, 9.0, false),
+        ];
+        let classifier =
+            BlockClassifier::new_with_overrides(612.0, 792.0, &spans, Some(11.0), None);
+        let blocks = classifier.classify_spans(&spans);
+
+        let continuation = blocks
+            .iter()
+            .find(|b| b.text.contains("maintenance, use"))
+            .expect("expected first footnote continuation");
+        assert_eq!(continuation.block_type, BlockType::Footnote);
+
+        let parenthetical = blocks
+            .iter()
+            .find(|b| b.text.contains("federal agency"))
+            .expect("expected second footnote continuation");
+        assert_eq!(parenthetical.block_type, BlockType::Footnote);
     }
 
     #[test]

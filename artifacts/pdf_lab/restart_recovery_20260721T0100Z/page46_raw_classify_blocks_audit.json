@@ -1,0 +1,49 @@
+{
+  "schema": "pdf_lab.page46.raw_classify_blocks_audit.v1",
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "page_index": 45,
+  "block_count": 20,
+  "matching_blocks": [
+    {
+      "index": 6,
+      "block_type": "Body",
+      "text": "AC-2 ACCOUNT MANAGEMENT",
+      "bbox": [
+        90.0,
+        709.5,
+        156.80337524414062,
+        10.97998046875
+      ],
+      "font_size": 10.979999542236328,
+      "font_name": "TT2"
+    },
+    {
+      "index": 11,
+      "block_type": "Body",
+      "text": "d. Specify:",
+      "bbox": [
+        125.99998474121094,
+        593.8222045898438,
+        51.883575439453125,
+        10.02001953125
+      ],
+      "font_size": 10.020000457763672,
+      "font_name": "TT0"
+    },
+    {
+      "index": 18,
+      "block_type": "List",
+      "text": "h. Notify account managers and [Assignment: organization-defined personnel or roles] within: 1. [Assignment: organization-defined time period] when accounts are no longer required; 2. [Assignment: organization-defined time period] when users are terminated or transferred; and 3. [Assignment: organization-defined time period] when system usage or need-to-know changes for an individual; i. Authorize access to the system based on: 1. A valid access authorization; 2. Intended system usage; and 3. [Assignment: organization-defined attributes (as required)]; j. Review accounts for compliance with account management requirements [Assignment: organization-defined frequency]; k. Establish and implement a process for changing shared or group account authenticators (if deployed) when individuals are removed from the group; and l. Align account management processes with personnel termination and transfer processes.",
+      "bbox": [
+        125.94998168945312,
+        198.87399291992188,
+        390.1387634277344,
+        240.8807373046875
+      ],
+      "font_size": 10.020000457763672,
+      "font_name": "TT0"
+    }
+  ],
+  "h_block_absorbs_i": true,
+  "h_block_absorbs_numbered_children": true
+}

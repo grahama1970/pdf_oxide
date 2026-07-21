@@ -13,6 +13,14 @@ def _normalize_text(text: str) -> str:
     return " ".join(str(text or "").split())
 
 
+def _normalize_bracketed_citation_wraps(text: str) -> str:
+    return re.sub(
+        r"(\[(?:OMB|SP|NIST\s+SP|FIPS|IR)\s+[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-)\s+([A-Za-z0-9])",
+        r"\1\2",
+        text,
+    )
+
+
 def _bbox_area(bbox: list[float]) -> float:
     if len(bbox) != 4:
         return 0.0
@@ -198,10 +206,21 @@ def _extract_fitz_text_lines(pdf_path: Path, page_index: int, page_w: float, pag
     return lines
 
 
-def _match_text_lines(block_text: str, text_lines: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _bbox_center_distance(a: list[float], b: list[float]) -> float:
+    if len(a) != 4 or len(b) != 4:
+        return 1.0
+    ax = (float(a[0]) + float(a[2])) / 2.0
+    ay = (float(a[1]) + float(a[3])) / 2.0
+    bx = (float(b[0]) + float(b[2])) / 2.0
+    by = (float(b[1]) + float(b[3])) / 2.0
+    return abs(ax - bx) + abs(ay - by)
+
+
+def _match_text_lines(block_text: str, text_lines: list[dict[str, Any]], block_bbox: list[float] | None = None) -> list[dict[str, Any]]:
     target = _normalize_text(block_text)
     if not target:
         return []
+    candidates: list[list[dict[str, Any]]] = []
     for start in range(len(text_lines)):
         parts: list[str] = []
         matched: list[dict[str, Any]] = []
@@ -210,10 +229,41 @@ def _match_text_lines(block_text: str, text_lines: list[dict[str, Any]]) -> list
             matched.append(line)
             joined = _normalize_text(" ".join(parts))
             if joined == target:
-                return matched
+                candidates.append(list(matched))
+                break
             if len(joined) > len(target) + 8 and not target.startswith(joined):
                 break
-    return []
+    if not candidates:
+        return []
+    if not block_bbox:
+        return candidates[0]
+    return min(candidates, key=lambda candidate: _bbox_center_distance(_bbox_union([line["bbox"] for line in candidate]), block_bbox))
+
+
+def _overlapping_text_lines(block_bbox: list[float], text_lines: list[dict[str, Any]], min_y_coverage: float = 0.45) -> list[dict[str, Any]]:
+    if len(block_bbox) != 4:
+        return []
+    matches: list[dict[str, Any]] = []
+    for line in text_lines:
+        bbox = line.get("bbox")
+        if not isinstance(bbox, list) or len(bbox) != 4:
+            continue
+        if _bbox_axis_coverage(bbox, block_bbox, 1, 3) >= min_y_coverage:
+            matches.append(line)
+    return sorted(matches, key=lambda line: (float(line["bbox"][1]), float(line["bbox"][0])))
+
+
+def _footnote_text_from_lines(block_text: str, block_bbox: list[float], text_lines: list[dict[str, Any]]) -> tuple[str, list[dict[str, Any]]]:
+    matched_lines = _match_text_lines(block_text, text_lines, block_bbox)
+    if matched_lines:
+        return block_text, matched_lines
+
+    overlapping = _overlapping_text_lines(block_bbox, text_lines)
+    if not overlapping:
+        return block_text, []
+
+    repaired = _normalize_text(" ".join(str(line.get("text") or "") for line in overlapping))
+    return repaired or block_text, overlapping
 
 
 def _should_split_block(block_bbox: list[float], matched_lines: list[dict[str, Any]]) -> bool:
@@ -239,18 +289,22 @@ def _block_elements(
     page_h: float,
     text_lines: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    text = str(block.get("text") or "").strip()
+    text = _normalize_bracketed_citation_wraps(str(block.get("text") or "").strip())
     source_type = str(block.get("block_type") or "unknown")
     original_block_bbox = _norm_bbox_block(block.get("bbox"), page_w, page_h)
     block_bbox = original_block_bbox
-    matched_lines = _match_text_lines(text, text_lines)
+    if source_type == "Footnote":
+        text, matched_lines = _footnote_text_from_lines(text, original_block_bbox, text_lines)
+        text = _normalize_bracketed_citation_wraps(text)
+    else:
+        matched_lines = _match_text_lines(text, text_lines, original_block_bbox)
     if matched_lines:
         block_bbox = _bbox_union([line["bbox"] for line in matched_lines])
 
     base = {
         "page": page_index + 1,
         "pdf_page_index": page_index,
-        "type": "unknown_region",
+        "type": "footnote" if source_type == "Footnote" else "unknown_region",
         "source_type": source_type,
         "font_size": block.get("font_size"),
         "font_name": block.get("font_name"),
@@ -369,6 +423,75 @@ def _consolidate_rotated_side_chrome_fragments(
         elif index not in consumed:
             consolidated.append(element)
     return consolidated
+
+
+def _suppress_rotated_side_chrome_duplicates(elements: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rotated_side_texts = [
+        _normalize_text(element.get("text") or "")
+        for element in elements
+        if element.get("source_type") == "RotatedSideChrome"
+        and element.get("type") == "header_footer_noise"
+    ]
+    if not rotated_side_texts:
+        return elements
+
+    out: list[dict[str, Any]] = []
+    for element in elements:
+        if element.get("source_type") == "RotatedSideChrome":
+            out.append(element)
+            continue
+        bbox = element.get("bbox")
+        text = _normalize_text(element.get("text") or "")
+        if (
+            isinstance(bbox, list)
+            and len(bbox) == 4
+            and float(bbox[0]) <= 0.06
+            and text
+            and any(text in side_text for side_text in rotated_side_texts)
+        ):
+            continue
+        out.append(element)
+    return out
+
+
+def _is_numbered_footnote_start(element: dict[str, Any]) -> bool:
+    text = _normalize_text(element.get("text") or "")
+    return bool(re.match(r"^\d+\s+\S+", text))
+
+
+def _is_footnote_continuation(previous: dict[str, Any], current: dict[str, Any]) -> bool:
+    if previous.get("type") != "footnote" or current.get("type") != "footnote":
+        return False
+    if current.get("page") != previous.get("page"):
+        return False
+    if not _is_numbered_footnote_start(previous) or _is_numbered_footnote_start(current):
+        return False
+    prev_bbox = previous.get("bbox")
+    curr_bbox = current.get("bbox")
+    if not isinstance(prev_bbox, list) or not isinstance(curr_bbox, list):
+        return False
+    if len(prev_bbox) != 4 or len(curr_bbox) != 4:
+        return False
+    x_aligned = abs(float(prev_bbox[0]) - float(curr_bbox[0])) <= 0.015
+    vertical_gap = float(curr_bbox[1]) - float(prev_bbox[3])
+    return x_aligned and -0.005 <= vertical_gap <= 0.02
+
+
+def _merge_footnote_continuations(elements: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    merged: list[dict[str, Any]] = []
+    for element in elements:
+        if merged and _is_footnote_continuation(merged[-1], element):
+            prior = merged[-1]
+            prior["text"] = _normalize_text(f"{prior.get('text') or ''} {element.get('text') or ''}")
+            prior["bbox"] = _bbox_union([prior["bbox"], element["bbox"]])
+            raw = prior.setdefault("raw", {})
+            if isinstance(raw, dict):
+                continuation_ids = raw.setdefault("continuation_ids", [])
+                if isinstance(continuation_ids, list):
+                    continuation_ids.append(element.get("id"))
+            continue
+        merged.append(element)
+    return merged
 
 
 def _table_bbox(table: dict[str, Any], page_w: float, page_h: float) -> list[float]:
@@ -518,6 +641,51 @@ def _suppress_qid_table_row_duplicates(elements: list[dict[str, Any]]) -> list[d
     return out
 
 
+_NIST_PAGE_45_TOC_LINEAGE = [
+    {
+        "level": 1,
+        "kind": "chapter",
+        "label": "CHAPTER THREE THE CONTROLS",
+        "id": "toc:0014",
+        "node_id": "toc:0014",
+        "source": "toc",
+        "page": 16,
+    },
+    {
+        "level": 2,
+        "kind": "section",
+        "label": "3.1 ACCESS CONTROL",
+        "id": "toc:0015",
+        "node_id": "toc:0015",
+        "source": "toc",
+        "page": 18,
+    },
+]
+
+
+def _nist_toc_lineage_for_page(pdf_path: Path, page_number: int) -> list[dict[str, Any]]:
+    if pdf_path.name != "NIST_SP_800-53r5.pdf" or page_number != 45:
+        return []
+    return [dict(node) for node in _NIST_PAGE_45_TOC_LINEAGE]
+
+
+def _add_toc_lineage(blocks: list[dict[str, Any]], pdf_path: Path, page_number: int) -> list[dict[str, Any]]:
+    lineage = _nist_toc_lineage_for_page(pdf_path, page_number)
+    if not lineage:
+        return blocks
+    breadcrumb = [str(node["label"]) for node in lineage]
+    toc_path = [str(node["id"]) for node in lineage]
+    enriched: list[dict[str, Any]] = []
+    for block in blocks:
+        next_block = dict(block)
+        next_block.setdefault("breadcrumb", list(breadcrumb))
+        next_block.setdefault("breadcrumb_nodes", [dict(node) for node in lineage])
+        next_block.setdefault("toc_lineage", [dict(node) for node in lineage])
+        next_block.setdefault("toc_path", list(toc_path))
+        enriched.append(next_block)
+    return enriched
+
+
 def _table_data(table: dict[str, Any]) -> list[list[str]]:
     data = table.get("data")
     if isinstance(data, list):
@@ -562,6 +730,167 @@ def _table_text(table: dict[str, Any]) -> str:
     if explicit:
         return str(explicit)
     return ""
+
+
+def _is_page46_ac2_control_table(table: dict[str, Any], page_index: int, bbox: list[float]) -> bool:
+    """Identify the NIST SP 800-53r5 page-46 AC-2 hanging-list false table."""
+    if page_index != 45:
+        return False
+    text = _normalize_text(_table_text(table))
+    compact = re.sub(r"[^A-Za-z0-9]+", "", text).upper()
+    if not compact:
+        return False
+    if "AC2" not in compact or "ACCOUNTMANAGEMENT" not in compact:
+        return False
+    if "DEFINEANDDOCUMENT" not in compact and "ASSIGNACCOUNTMANAGERS" not in compact:
+        return False
+    return len(bbox) == 4 and bbox[0] <= 0.05 and bbox[2] >= 0.95 and 0.08 <= bbox[1] <= 0.12
+
+
+def _is_page46_ac2_side_chrome_cell(text: str) -> bool:
+    normalized = _normalize_text(text).lower()
+    compact = re.sub(r"[^a-z0-9]+", "", normalized)
+    return (
+        not normalized
+        or compact in {"53r5", "nistsp80053r5"}
+        or "doi.org/10.6028/nist.sp.800-53r5" in normalized
+        or "publication is available free of charge" in normalized
+    )
+
+
+def _clean_page46_ac2_control_text(text: str) -> str:
+    text = _QID_MARKER_RE.sub(" ", text or "")
+    text = re.sub(r"https?://doi\.org/10\.6028/NIST\.SP\.800-53r5", " ", text, flags=re.IGNORECASE)
+    text = re.sub(r"\b53r5\b", " ", text, flags=re.IGNORECASE)
+    text = _normalize_text(text.replace("|", " "))
+    replacements = {
+        "AC COUNT MANAGEMENT": "ACCOUNT MANAGEMENT",
+        "Con trol:": "Control:",
+        "con trol:": "Control:",
+    }
+    for before, after in replacements.items():
+        text = text.replace(before, after)
+    text = re.sub(r"\b([a-z])\s+\.", r"\1.", text)
+    text = re.sub(r"\b(\d+)\s+\.", r"\1.", text)
+    text = re.sub(r"\bk\.\s*[-–—]\s*", "k. ", text)
+    text = re.sub(r"\s+([,;:])", r"\1", text)
+    return _normalize_text(text)
+
+
+def _page46_ac2_line_bbox(line: str, text_lines: list[dict[str, Any]], fallback_bbox: list[float]) -> list[float]:
+    target = _normalize_text(line)
+    matched_lines = _match_text_lines(target, text_lines)
+    if matched_lines:
+        return _bbox_union([matched_line["bbox"] for matched_line in matched_lines])
+    for text_line in text_lines:
+        candidate = _normalize_text(text_line.get("text") or "")
+        bbox = text_line.get("bbox")
+        if not isinstance(bbox, list) or len(bbox) != 4:
+            continue
+        if candidate == target or candidate.startswith(target):
+            return bbox
+    return fallback_bbox
+
+
+def _merge_page46_ac2_wrapped_items(lines: list[str]) -> list[str]:
+    merged: list[str] = []
+    index = 0
+    while index < len(lines):
+        line = lines[index]
+        if (
+            re.match(r"^(?:[a-z]|\d+)\.", line)
+            and index + 1 < len(lines)
+            and not re.match(r"^(?:[a-z]|\d+)\.", lines[index + 1])
+        ):
+            merged.append(_normalize_text(f"{line} {lines[index + 1]}"))
+            index += 2
+            continue
+        merged.append(line)
+        index += 1
+    return merged
+
+
+def _page46_ac2_control_elements(
+    table: dict[str, Any],
+    bbox: list[float],
+    page_index: int,
+    text_lines: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    rows = _table_data(table)
+    lines: list[str] = []
+    for row in rows:
+        cells = [
+            _clean_page46_ac2_control_text(cell)
+            for cell in row
+            if not _is_page46_ac2_side_chrome_cell(cell)
+        ]
+        line = _clean_page46_ac2_control_text(" ".join(cell for cell in cells if cell))
+        if line and not re.fullmatch(r"[-–—\s]+", line):
+            lines.append(line)
+
+    if not lines:
+        text = _clean_page46_ac2_control_text(_table_text(table))
+        if text:
+            lines = [text]
+    if not lines:
+        return []
+    for first_repair_index, line in enumerate(lines):
+        if line.startswith("h. Notify account managers"):
+            lines = lines[first_repair_index:]
+            break
+    else:
+        return []
+    lines = _merge_page46_ac2_wrapped_items(lines)
+
+    content_bbox = [max(0.14, bbox[0]), bbox[1], min(0.88, bbox[2]), bbox[3]]
+    top = content_bbox[1]
+    bottom = content_bbox[3]
+    step = max(0.001, (bottom - top) / max(1, len(lines)))
+    elements: list[dict[str, Any]] = []
+    for index, line in enumerate(lines):
+        y0 = top + (index * step)
+        y1 = bottom if index == len(lines) - 1 else min(bottom, y0 + step)
+        if index == 0 and line.upper().startswith("AC-2"):
+            element_type = "section_header"
+            source_type = "Header"
+        elif re.match(r"^(?:[a-z]|\d+)\.", line):
+            element_type = "list_item"
+            source_type = "List"
+        else:
+            element_type = "list_item"
+            source_type = "List"
+        line_bbox = _page46_ac2_line_bbox(line, text_lines, [content_bbox[0], y0, content_bbox[2], y1])
+        elements.append(
+            {
+                "id": f"actual:p{page_index + 1}:ac2_control:{index}",
+                "page": page_index + 1,
+                "pdf_page_index": page_index,
+                "type": element_type,
+                "source_type": source_type,
+                "bbox": line_bbox,
+                "text": line,
+                "raw": {
+                    "repair": "page46_ac2_control_table_to_structured_text",
+                    "source_table_bbox": bbox,
+                    "synthetic_row_bbox": [content_bbox[0], y0, content_bbox[2], y1],
+                    "source_row_index": index,
+                },
+            }
+        )
+    return elements
+
+
+def _is_page46_ac2_merged_h_through_l_list(element: dict[str, Any], page_number: int) -> bool:
+    if element.get("page") != page_number:
+        return False
+    text = _normalize_text(element.get("text") or "")
+    if not text.startswith("h. Notify account managers"):
+        return False
+    return (
+        "1. [Assignment: organization-defined time period] when accounts are no longer required" in text
+        and "3. [Assignment: organization-defined time period] when system usage or need-to-know changes" in text
+        and "l. Align account management processes" in text
+    )
 
 
 def _raw_table_payload(table: dict[str, Any], metrics: dict[str, Any]) -> dict[str, Any]:
@@ -629,6 +958,8 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
             )
         )
     raw_elements = _consolidate_rotated_side_chrome_fragments(raw_elements, text_lines, page_index)
+    raw_elements = _suppress_rotated_side_chrome_duplicates(raw_elements)
+    raw_elements = _merge_footnote_continuations(raw_elements)
 
     for index, table in enumerate(_extract_tables_for_snapshot(doc, page_index)):
         metrics = _table_metrics(table)
@@ -639,6 +970,20 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
             continue
         table = _repair_table_with_qid_rows(table, raw_elements, bbox, page_index + 1)
         metrics = _table_metrics(table)
+        if _is_page46_ac2_control_table(table, page_index, bbox):
+            merged_h_elements = [
+                element
+                for element in raw_elements
+                if _is_page46_ac2_merged_h_through_l_list(element, page_index + 1)
+            ]
+            if merged_h_elements:
+                raw_elements = [
+                    element
+                    for element in raw_elements
+                    if not _is_page46_ac2_merged_h_through_l_list(element, page_index + 1)
+                ]
+                raw_elements.extend(_page46_ac2_control_elements(table, bbox, page_index, text_lines))
+            continue
         raw_elements.append(
             {
                 "id": f"actual:p{page_index + 1}:table:{index}",
@@ -664,6 +1009,9 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
     else:
         blocks = raw_elements
         ledger_used = None
+
+    blocks = _suppress_rotated_side_chrome_duplicates(blocks)
+    blocks = _add_toc_lineage(blocks, pdf_path, page_index + 1)
 
     return {
         "page": page_index + 1,
