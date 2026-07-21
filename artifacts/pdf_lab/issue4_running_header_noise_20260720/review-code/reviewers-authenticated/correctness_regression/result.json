@@ -1,0 +1,67 @@
+{
+  "scope": "correctness_regression",
+  "content": "{\n  \"_review_proof\": {\n    \"exact_model_required\": true,\n    \"files_reviewed\": [\n      \"python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n      \"tests/test_nist_running_header_merge.py\",\n      \"artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json\",\n      \"artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json\"\n    ],\n    \"model_requested\": \"gemini-flash\",\n    \"model_served\": \"gemini-flash\",\n    \"prompt_sha256\": \"6a40f9d91596234337adfa19f6d4e681bd7542d2b3df6ae3b83f97b0ad2e48c7\",\n    \"raw_response\": {\n      \"heartbeat_events\": 0,\n      \"model\": \"gemini-flash\",\n      \"progress_events\": 2,\n      \"stream\": true,\n      \"usage\": {}\n    },\n    \"reasoning_effort\": \"high\"\n  },\n  \"blocking_findings\": [],\n  \"evidence_checked\": [\n    {\n      \"reference\": \"python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n      \"result\": \"Verified that the 'nist-running-header-merge-001' rule's 'synthesize.type' is set to 'header_footer_noise' and 'nist-top-header-chrome-001' rule's 'extract.fields.type' is set to 'header_footer_noise', matching the requested change. The 'release_conflict_waiver' for 'nist-top-header-chrome-001' is appropriate for its reclassification role.\",\n      \"type\": \"file\"\n    },\n    {\n      \"reference\": \"tests/test_nist_running_header_merge.py\",\n      \"result\": \"Verified that 'test_nist_same_band_running_headers_merge_to_one_header_footer_noise_element' correctly asserts the merged element's type is 'header_footer_noise', its semantic role is 'page_chrome', child IDs are preserved, and the table element remains. 'test_nist_page_27_snapshot_routes_top_header_to_header_footer_noise' also confirms this behavior with a live PDF snapshot.\",\n      \"type\": \"file\"\n    },\n    {\n      \"reference\": \"artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json\",\n      \"result\": \"Confirmed that the 'before' state shows 'type: running_header' for the merged element, and the 'after' state shows 'type: header_footer_noise', with 'gate.status: PASS', 'issue_signature_decreased: true', 'blocking_class_increased: false', and 'table_preserved: true'.\",\n      \"type\": \"artifact\"\n    },\n    {\n      \"reference\": \"artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json\",\n      \"result\": \"Confirmed the overall 'status: pass', successful pytest and ruff results, and that the snapshot and before-after regression checks all passed, explicitly proving the desired behavior and regression safety.\",\n      \"type\": \"artifact\"\n    }\n  ],\n  \"missing_evidence\": [],\n  \"non_blocking_findings\": [],\n  \"scope\": \"correctness_regression\",\n  \"summary\": \"The diff correctly changes the synthesized running-header parent type to 'header_footer_noise' and reclassifies top-band header blocks, as verified by comprehensive tests and regression artifacts, without introducing regressions.\",\n  \"unsupported_or_rejected_concerns\": [],\n  \"verdict\": \"PASS\"\n}",
+  "receipt": {
+    "scope": "correctness_regression",
+    "verdict": "PASS",
+    "summary": "The diff correctly changes the synthesized running-header parent type to 'header_footer_noise' and reclassifies top-band header blocks, as verified by comprehensive tests and regression artifacts, without introducing regressions.",
+    "blocking_findings": [],
+    "non_blocking_findings": [],
+    "unsupported_or_rejected_concerns": [],
+    "evidence_checked": [
+      {
+        "type": "file",
+        "reference": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+        "result": "Verified that the 'nist-running-header-merge-001' rule's 'synthesize.type' is set to 'header_footer_noise' and 'nist-top-header-chrome-001' rule's 'extract.fields.type' is set to 'header_footer_noise', matching the requested change. The 'release_conflict_waiver' for 'nist-top-header-chrome-001' is appropriate for its reclassification role."
+      },
+      {
+        "type": "file",
+        "reference": "tests/test_nist_running_header_merge.py",
+        "result": "Verified that 'test_nist_same_band_running_headers_merge_to_one_header_footer_noise_element' correctly asserts the merged element's type is 'header_footer_noise', its semantic role is 'page_chrome', child IDs are preserved, and the table element remains. 'test_nist_page_27_snapshot_routes_top_header_to_header_footer_noise' also confirms this behavior with a live PDF snapshot."
+      },
+      {
+        "type": "artifact",
+        "reference": "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+        "result": "Confirmed that the 'before' state shows 'type: running_header' for the merged element, and the 'after' state shows 'type: header_footer_noise', with 'gate.status: PASS', 'issue_signature_decreased: true', 'blocking_class_increased: false', and 'table_preserved: true'."
+      },
+      {
+        "type": "artifact",
+        "reference": "artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json",
+        "result": "Confirmed the overall 'status: pass', successful pytest and ruff results, and that the snapshot and before-after regression checks all passed, explicitly proving the desired behavior and regression safety."
+      }
+    ],
+    "missing_evidence": [],
+    "_review_proof": {
+      "prompt_sha256": "6a40f9d91596234337adfa19f6d4e681bd7542d2b3df6ae3b83f97b0ad2e48c7",
+      "model_requested": "gemini-flash",
+      "model_served": "gemini-flash",
+      "exact_model_required": true,
+      "reasoning_effort": "high",
+      "raw_response": {
+        "model": "gemini-flash",
+        "usage": {},
+        "stream": true,
+        "progress_events": 2,
+        "heartbeat_events": 0
+      },
+      "files_reviewed": [
+        "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+        "tests/test_nist_running_header_merge.py",
+        "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+        "artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json"
+      ]
+    }
+  },
+  "model": "gemini-flash",
+  "usage": {},
+  "ok": true,
+  "error": null,
+  "prompt_sha256": "6a40f9d91596234337adfa19f6d4e681bd7542d2b3df6ae3b83f97b0ad2e48c7",
+  "raw_response": {
+    "model": "gemini-flash",
+    "usage": {},
+    "stream": true,
+    "progress_events": 2,
+    "heartbeat_events": 0
+  }
+}

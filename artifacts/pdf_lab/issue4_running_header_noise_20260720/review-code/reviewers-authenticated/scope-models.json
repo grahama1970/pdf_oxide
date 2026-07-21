@@ -1,0 +1,14 @@
+{
+  "default_model": "gemini-flash",
+  "scopes": [
+    "correctness_regression",
+    "tests_validation",
+    "evidence_closure_safety"
+  ],
+  "scope_models": {
+    "correctness_regression": "gemini-flash",
+    "tests_validation": "gemini-flash",
+    "evidence_closure_safety": "gemini-flash"
+  },
+  "max_concurrency": 3
+}

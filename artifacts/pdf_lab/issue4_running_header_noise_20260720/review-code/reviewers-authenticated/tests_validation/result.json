@@ -1,0 +1,67 @@
+{
+  "scope": "tests_validation",
+  "content": "{\n  \"_review_proof\": {\n    \"exact_model_required\": true,\n    \"files_reviewed\": [\n      \"python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n      \"tests/test_nist_running_header_merge.py\",\n      \"artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json\",\n      \"artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json\"\n    ],\n    \"model_requested\": \"gemini-flash\",\n    \"model_served\": \"gemini-flash\",\n    \"prompt_sha256\": \"1a0a78af8566c82cd2a9515d15a17b61ec8c65892e07784decc3ba13595ae566\",\n    \"raw_response\": {\n      \"heartbeat_events\": 0,\n      \"model\": \"gemini-flash\",\n      \"progress_events\": 2,\n      \"stream\": true,\n      \"usage\": {}\n    },\n    \"reasoning_effort\": \"high\"\n  },\n  \"blocking_findings\": [],\n  \"evidence_checked\": [\n    {\n      \"reference\": \"python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n      \"result\": \"Reviewed the 'nist-running-header-merge-001' entry, specifically the 'synthesize.type' field, which is changed to 'header_footer_noise'.\",\n      \"type\": \"file\"\n    },\n    {\n      \"reference\": \"tests/test_nist_running_header_merge.py\",\n      \"result\": \"Reviewed two tests: 'test_nist_same_band_running_headers_merge_to_one_header_footer_noise_element' (mocked input) and 'test_nist_page_27_snapshot_routes_top_header_to_header_footer_noise' (live PDF snapshot). Both assert the new 'header_footer_noise' type for the merged element, verify child suppression, and confirm table preservation.\",\n      \"type\": \"file\"\n    },\n    {\n      \"reference\": \"artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json\",\n      \"result\": \"Confirmed the 'before' state shows 'type: running_header' and the 'after' state shows 'type: header_footer_noise' for the merged element, with 'gate.status=PASS' and 'table_preserved=true'. This directly verifies the intended behavior change.\",\n      \"type\": \"artifact\"\n    },\n    {\n      \"reference\": \"artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json\",\n      \"result\": \"Confirmed pytest command 'PYTHONPATH=python uv run --with reportlab --with pymupdf pytest -q tests/test_nist_running_header_merge.py' passed with '2 passed in 0.31s'. Confirmed ruff check passed. Confirmed snapshot and before/after regression checks passed as described.\",\n      \"type\": \"artifact\"\n    }\n  ],\n  \"missing_evidence\": [],\n  \"non_blocking_findings\": [],\n  \"scope\": \"tests_validation\",\n  \"summary\": \"The change to synthesize a 'header_footer_noise' parent for merged running headers is sufficiently verified by focused unit tests, a live PDF snapshot test, and a before/after regression artifact.\",\n  \"unsupported_or_rejected_concerns\": [],\n  \"verdict\": \"PASS\"\n}",
+  "receipt": {
+    "scope": "tests_validation",
+    "verdict": "PASS",
+    "summary": "The change to synthesize a 'header_footer_noise' parent for merged running headers is sufficiently verified by focused unit tests, a live PDF snapshot test, and a before/after regression artifact.",
+    "blocking_findings": [],
+    "non_blocking_findings": [],
+    "unsupported_or_rejected_concerns": [],
+    "evidence_checked": [
+      {
+        "type": "file",
+        "reference": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+        "result": "Reviewed the 'nist-running-header-merge-001' entry, specifically the 'synthesize.type' field, which is changed to 'header_footer_noise'."
+      },
+      {
+        "type": "file",
+        "reference": "tests/test_nist_running_header_merge.py",
+        "result": "Reviewed two tests: 'test_nist_same_band_running_headers_merge_to_one_header_footer_noise_element' (mocked input) and 'test_nist_page_27_snapshot_routes_top_header_to_header_footer_noise' (live PDF snapshot). Both assert the new 'header_footer_noise' type for the merged element, verify child suppression, and confirm table preservation."
+      },
+      {
+        "type": "artifact",
+        "reference": "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+        "result": "Confirmed the 'before' state shows 'type: running_header' and the 'after' state shows 'type: header_footer_noise' for the merged element, with 'gate.status=PASS' and 'table_preserved=true'. This directly verifies the intended behavior change."
+      },
+      {
+        "type": "artifact",
+        "reference": "artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json",
+        "result": "Confirmed pytest command 'PYTHONPATH=python uv run --with reportlab --with pymupdf pytest -q tests/test_nist_running_header_merge.py' passed with '2 passed in 0.31s'. Confirmed ruff check passed. Confirmed snapshot and before/after regression checks passed as described."
+      }
+    ],
+    "missing_evidence": [],
+    "_review_proof": {
+      "prompt_sha256": "1a0a78af8566c82cd2a9515d15a17b61ec8c65892e07784decc3ba13595ae566",
+      "model_requested": "gemini-flash",
+      "model_served": "gemini-flash",
+      "exact_model_required": true,
+      "reasoning_effort": "high",
+      "raw_response": {
+        "model": "gemini-flash",
+        "usage": {},
+        "stream": true,
+        "progress_events": 2,
+        "heartbeat_events": 0
+      },
+      "files_reviewed": [
+        "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+        "tests/test_nist_running_header_merge.py",
+        "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+        "artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json"
+      ]
+    }
+  },
+  "model": "gemini-flash",
+  "usage": {},
+  "ok": true,
+  "error": null,
+  "prompt_sha256": "1a0a78af8566c82cd2a9515d15a17b61ec8c65892e07784decc3ba13595ae566",
+  "raw_response": {
+    "model": "gemini-flash",
+    "usage": {},
+    "stream": true,
+    "progress_events": 2,
+    "heartbeat_events": 0
+  }
+}

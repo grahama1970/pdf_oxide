@@ -1,0 +1,82 @@
+{
+  "scope": "evidence_closure_safety",
+  "content": "{\n  \"_review_proof\": {\n    \"exact_model_required\": true,\n    \"files_reviewed\": [\n      \"python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n      \"tests/test_nist_running_header_merge.py\",\n      \"artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json\",\n      \"artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json\"\n    ],\n    \"model_requested\": \"gemini-flash\",\n    \"model_served\": \"gemini-flash\",\n    \"prompt_sha256\": \"a13b52347eb54710f3fe763d94c5a4091ced26d71eeae2bf14dbbcb8b6715318\",\n    \"raw_response\": {\n      \"heartbeat_events\": 0,\n      \"model\": \"gemini-flash\",\n      \"progress_events\": 3,\n      \"stream\": true,\n      \"usage\": {}\n    },\n    \"reasoning_effort\": \"high\"\n  },\n  \"blocking_findings\": [],\n  \"evidence_checked\": [\n    {\n      \"reference\": \"python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n      \"result\": \"Reviewed 'nist-running-header-merge-001' entry for closure status, provenance, and rule definition. Noted absence of inline 'verification_result' block, but 'closed_by' links to external tests.\",\n      \"type\": \"file\"\n    },\n    {\n      \"reference\": \"tests/test_nist_running_header_merge.py\",\n      \"result\": \"Reviewed both test functions. 'test_nist_same_band_running_headers_merge_to_one_header_footer_noise_element' verifies mocked input. 'test_nist_page_27_snapshot_routes_top_header_to_header_footer_noise' verifies live PDF snapshot. Both confirm expected type change, child suppression, and table preservation.\",\n      \"type\": \"file\"\n    },\n    {\n      \"reference\": \"artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json\",\n      \"result\": \"Reviewed 'before' and 'after' states, confirming the change from 'running_header' to 'header_footer_noise' type for the merged element, preservation of child IDs and table, and the 'gate.status: PASS' with 'issue_signature_decreased: true'.\",\n      \"type\": \"artifact\"\n    },\n    {\n      \"reference\": \"artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json\",\n      \"result\": \"Reviewed 'status: pass', 'commands' for pytest and ruff, 'test_result' (2 passed), 'lint_result' (All checks passed), and 'snapshot_result' confirming top header routing and table preservation. Confirmed explicit checks for desired outputs.\",\n      \"type\": \"artifact\"\n    },\n    {\n      \"reference\": \"python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json::compiled_preset_sha256\",\n      \"result\": \"Value 'dd136785cf2283bfa4bf07f65b173d102a807c404dcc5a6bb9f71af92f52e5ef' present, indicating compiled preset integrity.\",\n      \"type\": \"field\"\n    },\n    {\n      \"reference\": \"python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json::entries[...].status (for nist-running-header-merge-001)\",\n      \"result\": \"Status is 'closed'. Closure is linked to test validation via 'closed_by' field.\",\n      \"type\": \"field\"\n    },\n    {\n      \"reference\": \"python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json::entries[...].closed_by (for nist-running-header-merge-001)\",\n      \"result\": \"Value 'agent:codex (validated by tests/test_nist_running_header_merge.py)' explicitly links closure to external, verifiable evidence.\",\n      \"type\": \"field\"\n    }\n  ],\n  \"missing_evidence\": [],\n  \"non_blocking_findings\": [],\n  \"scope\": \"evidence_closure_safety\",\n  \"summary\": \"The diff preserves scillm's evidence, provenance, review, and phase-closure invariants, with robust, traceable evidence for the running header merge.\",\n  \"unsupported_or_rejected_concerns\": [],\n  \"verdict\": \"PASS\"\n}",
+  "receipt": {
+    "scope": "evidence_closure_safety",
+    "verdict": "PASS",
+    "summary": "The diff preserves scillm's evidence, provenance, review, and phase-closure invariants, with robust, traceable evidence for the running header merge.",
+    "blocking_findings": [],
+    "non_blocking_findings": [],
+    "unsupported_or_rejected_concerns": [],
+    "evidence_checked": [
+      {
+        "type": "file",
+        "reference": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+        "result": "Reviewed 'nist-running-header-merge-001' entry for closure status, provenance, and rule definition. Noted absence of inline 'verification_result' block, but 'closed_by' links to external tests."
+      },
+      {
+        "type": "file",
+        "reference": "tests/test_nist_running_header_merge.py",
+        "result": "Reviewed both test functions. 'test_nist_same_band_running_headers_merge_to_one_header_footer_noise_element' verifies mocked input. 'test_nist_page_27_snapshot_routes_top_header_to_header_footer_noise' verifies live PDF snapshot. Both confirm expected type change, child suppression, and table preservation."
+      },
+      {
+        "type": "artifact",
+        "reference": "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+        "result": "Reviewed 'before' and 'after' states, confirming the change from 'running_header' to 'header_footer_noise' type for the merged element, preservation of child IDs and table, and the 'gate.status: PASS' with 'issue_signature_decreased: true'."
+      },
+      {
+        "type": "artifact",
+        "reference": "artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json",
+        "result": "Reviewed 'status: pass', 'commands' for pytest and ruff, 'test_result' (2 passed), 'lint_result' (All checks passed), and 'snapshot_result' confirming top header routing and table preservation. Confirmed explicit checks for desired outputs."
+      },
+      {
+        "type": "field",
+        "reference": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json::compiled_preset_sha256",
+        "result": "Value 'dd136785cf2283bfa4bf07f65b173d102a807c404dcc5a6bb9f71af92f52e5ef' present, indicating compiled preset integrity."
+      },
+      {
+        "type": "field",
+        "reference": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json::entries[...].status (for nist-running-header-merge-001)",
+        "result": "Status is 'closed'. Closure is linked to test validation via 'closed_by' field."
+      },
+      {
+        "type": "field",
+        "reference": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json::entries[...].closed_by (for nist-running-header-merge-001)",
+        "result": "Value 'agent:codex (validated by tests/test_nist_running_header_merge.py)' explicitly links closure to external, verifiable evidence."
+      }
+    ],
+    "missing_evidence": [],
+    "_review_proof": {
+      "prompt_sha256": "a13b52347eb54710f3fe763d94c5a4091ced26d71eeae2bf14dbbcb8b6715318",
+      "model_requested": "gemini-flash",
+      "model_served": "gemini-flash",
+      "exact_model_required": true,
+      "reasoning_effort": "high",
+      "raw_response": {
+        "model": "gemini-flash",
+        "usage": {},
+        "stream": true,
+        "progress_events": 3,
+        "heartbeat_events": 0
+      },
+      "files_reviewed": [
+        "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+        "tests/test_nist_running_header_merge.py",
+        "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+        "artifacts/pdf_lab/issue4_running_header_noise_20260720/proof_summary.json"
+      ]
+    }
+  },
+  "model": "gemini-flash",
+  "usage": {},
+  "ok": true,
+  "error": null,
+  "prompt_sha256": "a13b52347eb54710f3fe763d94c5a4091ced26d71eeae2bf14dbbcb8b6715318",
+  "raw_response": {
+    "model": "gemini-flash",
+    "usage": {},
+    "stream": true,
+    "progress_events": 3,
+    "heartbeat_events": 0
+  }
+}

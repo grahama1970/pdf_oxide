@@ -22,7 +22,8 @@
     "PYTHONPATH=python uv run --with reportlab python <direct ledger proof script>",
     "uv run --with ruff ruff check tests/test_nist_running_header_merge.py",
     "python3 -m json.tool artifacts/pdf_lab/issue4_running_header_noise_20260720/*.json >/dev/null (expanded per file)",
-    "PYTHONPATH=python uv run --with reportlab python <before_after_issue4_regression_receipt>"
+    "PYTHONPATH=python uv run --with reportlab python <before_after_issue4_regression_receipt>",
+    "review-code fanout via SciLLM gemini-flash with Tau-compatible SCILLM_MASTER_KEY auth -> PASS"
   ],
   "checks": {
     "no_running_header_outputs": true,
@@ -60,5 +61,52 @@
       "header_footer_noise_increased": true,
       "table_preserved": true
     }
+  },
+  "structured_code_review": {
+    "artifact": "artifacts/pdf_lab/issue4_running_header_noise_20260720/review-code/structured_review_authenticated.json",
+    "reviewers_dir": "artifacts/pdf_lab/issue4_running_header_noise_20260720/review-code/reviewers-authenticated",
+    "schema": "review_code.fanout.v1",
+    "ok": true,
+    "verdict": "PASS",
+    "scopes": [
+      "correctness_regression",
+      "tests_validation",
+      "evidence_closure_safety"
+    ],
+    "aggregate": {
+      "schema": "review_code.aggregate.v1",
+      "verdict": "PASS",
+      "summary": "0 evidence-backed blocking findings, 0 evidence-backed non-blocking findings, 0 unsupported/rejected concerns.",
+      "accepted_blocking_findings": [],
+      "accepted_non_blocking_findings": [],
+      "unsupported_or_rejected_concerns": [],
+      "missing_evidence": [],
+      "per_scope": [
+        {
+          "scope": "tests_validation",
+          "verdict": "PASS",
+          "blocking_findings": 0,
+          "non_blocking_findings": 0,
+          "missing_evidence": 0
+        },
+        {
+          "scope": "correctness_regression",
+          "verdict": "PASS",
+          "blocking_findings": 0,
+          "non_blocking_findings": 0,
+          "missing_evidence": 0
+        },
+        {
+          "scope": "evidence_closure_safety",
+          "verdict": "PASS",
+          "blocking_findings": 0,
+          "non_blocking_findings": 0,
+          "missing_evidence": 0
+        }
+      ]
+    },
+    "auth_source": "env_file:/home/graham/workspace/experiments/scillm/.env:SCILLM_MASTER_KEY",
+    "mocked": false,
+    "live": true
   }
 }
