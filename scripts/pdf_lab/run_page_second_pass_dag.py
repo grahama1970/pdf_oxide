@@ -167,6 +167,7 @@ MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
     "terminal_ledger_validation.json",
     "review.html",
 }
+PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV = "PDF_LAB_ALLOW_PDF_OXIDE_LIVE_MODEL_TRANSPORT"
 BLOCKED_PAGE_REVIEW_BUNDLE_ARTIFACTS_BY_REASON = {
     "page_dag_setup_failed": {
         "sampled_candidate_manifest.json",
@@ -205,6 +206,20 @@ PATCH_EVIDENCE_WORKSPACE_FILES = [
 
 class PageExtractionTimeout(TimeoutError):
     """Raised when page extraction exceeds the page DAG timeout."""
+
+
+class PdfOxideLiveModelTransportBlocked(RuntimeError):
+    """Raised when pdf_oxide tries to own a live model transport path."""
+
+
+def assert_pdf_oxide_live_model_transport_allowed(endpoint: str) -> None:
+    if os.environ.get(PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV) == "1":
+        return
+    raise PdfOxideLiveModelTransportBlocked(
+        "pdf_oxide-owned live model transport is disabled for "
+        f"{endpoint}; Tau issue #120 owns the PDF Lab second-pass SciLLM/OpenCode route. "
+        f"Set {PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV}=1 only with a valid Tau-owned receipt."
+    )
 
 
 def is_plain_int(value: Any) -> bool:
@@ -1717,6 +1732,7 @@ def call_page_orchestrator_run(
     caller_skill: str,
     timeout_s: float,
 ) -> dict[str, Any]:
+    assert_pdf_oxide_live_model_transport_allowed("POST /v1/scillm/opencode/transport/runs")
     import httpx  # noqa: PLC0415
 
     headers = {
@@ -2011,6 +2027,7 @@ def call_scillm_review(
     caller_skill: str,
     timeout_s: float,
 ) -> dict[str, Any]:
+    assert_pdf_oxide_live_model_transport_allowed("POST /v1/chat/completions")
     import httpx  # noqa: PLC0415
 
     url = f"{base_url.rstrip('/')}/v1/chat/completions"
@@ -2046,6 +2063,7 @@ def preflight_scillm_surface(
     timeout_s: float,
     verify_caller_contract: bool = True,
 ) -> dict[str, Any]:
+    assert_pdf_oxide_live_model_transport_allowed(f"preflight scillm surface {surface}")
     import httpx  # noqa: PLC0415
 
     headers = {
@@ -2737,6 +2755,7 @@ def call_scillm_repair_plan(
     caller_skill: str,
     timeout_s: float,
 ) -> dict[str, Any]:
+    assert_pdf_oxide_live_model_transport_allowed("POST /v1/chat/completions")
     import httpx  # noqa: PLC0415
 
     response = httpx.post(
@@ -3075,6 +3094,7 @@ def call_opencode_patch(
     caller_skill: str,
     timeout_s: float,
 ) -> dict[str, Any]:
+    assert_pdf_oxide_live_model_transport_allowed("POST /v1/scillm/opencode/runs")
     import httpx  # noqa: PLC0415
 
     url = f"{base_url.rstrip('/')}/v1/scillm/opencode/runs"
@@ -3158,6 +3178,7 @@ def fetch_opencode_run_snapshot(
     run_id: str,
     timeout_s: float = 5.0,
 ) -> dict[str, Any] | None:
+    assert_pdf_oxide_live_model_transport_allowed("GET /v1/scillm/opencode/runs/{run_id}")
     import httpx  # noqa: PLC0415
 
     response = httpx.get(
@@ -3834,6 +3855,7 @@ def call_scillm_orchestrator_patch(
     caller_skill: str,
     timeout_s: float,
 ) -> dict[str, Any]:
+    assert_pdf_oxide_live_model_transport_allowed("POST /v1/scillm/opencode/transport/*")
     import httpx  # noqa: PLC0415
 
     headers = {

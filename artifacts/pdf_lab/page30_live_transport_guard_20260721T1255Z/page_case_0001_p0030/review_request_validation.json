@@ -1,0 +1,19 @@
+{
+  "artifact_paths": {
+    "annotated_image": "page_candidates.png",
+    "candidate_presets": "candidate_presets.json",
+    "original_image": "page_before.png",
+    "page_json": "page_before.json"
+  },
+  "errors": [],
+  "image_part_count": 0,
+  "ok": true,
+  "schema": "pdf_lab.second_pass.review_request_validation.v1",
+  "scillm_metadata": {
+    "batch_id": "page30-live-transport-guard-20260721",
+    "case_id": "page_case_0001_p0030",
+    "item_id": "page_case_0001_p0030:acadf1509ee5b91c",
+    "request_sha256": "acadf1509ee5b91c839eb0e7541daa24ca7da4755ab751112fce3a78c7d3a7f9"
+  },
+  "text_part_count": 1
+}

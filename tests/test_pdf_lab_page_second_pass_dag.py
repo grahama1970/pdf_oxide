@@ -7,6 +7,8 @@ import sys
 import zipfile
 from pathlib import Path
 
+import pytest
+
 
 def _load_module():
     path = Path(__file__).resolve().parents[1] / "scripts/pdf_lab/run_page_second_pass_dag.py"
@@ -25,6 +27,41 @@ def test_default_scillm_auth_token_prefers_current_proxy_env(monkeypatch) -> Non
     monkeypatch.setenv("GRAFANA_SCILLM_SERVICE_TOKEN", "service-token")
 
     assert dag.default_scillm_auth_token() == "current-master"
+
+
+def test_pdf_oxide_live_model_transport_guard_blocks_direct_scillm_review(monkeypatch) -> None:
+    dag = _load_module()
+    monkeypatch.delenv(dag.PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV, raising=False)
+
+    with pytest.raises(dag.PdfOxideLiveModelTransportBlocked, match="Tau issue #120"):
+        dag.call_scillm_review(
+            {"scillm_payload": {}, "scillm_metadata": {}},
+            base_url="http://127.0.0.1:9",
+            auth_token="token",
+            caller_skill="pdf-lab",
+            timeout_s=0.01,
+        )
+
+
+def test_pdf_oxide_live_model_transport_guard_blocks_direct_orchestrator(monkeypatch) -> None:
+    dag = _load_module()
+    monkeypatch.delenv(dag.PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV, raising=False)
+
+    with pytest.raises(dag.PdfOxideLiveModelTransportBlocked, match="Tau issue #120"):
+        dag.call_page_orchestrator_run(
+            {"create_run_body": {}, "scillm_metadata": {}},
+            base_url="http://127.0.0.1:9",
+            auth_token="token",
+            caller_skill="pdf-lab",
+            timeout_s=0.01,
+        )
+
+
+def test_pdf_oxide_live_model_transport_guard_allows_explicit_tau_override(monkeypatch) -> None:
+    dag = _load_module()
+    monkeypatch.setenv(dag.PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV, "1")
+
+    dag.assert_pdf_oxide_live_model_transport_allowed("POST /v1/chat/completions")
 
 
 def _selected_candidates_payload(
@@ -2218,6 +2255,7 @@ def test_live_review_preflight_failure_blocks_before_model_call(tmp_path: Path, 
 
 def test_preflight_scillm_surface_checks_caller_contract_and_opencode_health(monkeypatch) -> None:
     dag = _load_module()
+    monkeypatch.setenv(dag.PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV, "1")
     calls: list[tuple[str, str, bool]] = []
 
     class FakeResponse:
@@ -2271,6 +2309,7 @@ def test_preflight_scillm_surface_checks_caller_contract_and_opencode_health(mon
 
 def test_preflight_scillm_surface_rejects_missing_caller_contract_regression(monkeypatch) -> None:
     dag = _load_module()
+    monkeypatch.setenv(dag.PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV, "1")
 
     class FakeResponse:
         status_code = 404
@@ -2318,6 +2357,7 @@ def test_preflight_scillm_surface_rejects_missing_caller_contract_regression(mon
 
 def test_preflight_scillm_surface_ledgers_failed_get_response(monkeypatch) -> None:
     dag = _load_module()
+    monkeypatch.setenv(dag.PDF_OXIDE_LIVE_MODEL_TRANSPORT_OVERRIDE_ENV, "1")
 
     class FakeResponse:
         status_code = 503
