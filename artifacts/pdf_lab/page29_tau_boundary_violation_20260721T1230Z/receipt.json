@@ -1,0 +1,65 @@
+{
+  "schema": "pdf_lab.boundary_violation_receipt.v1",
+  "created_at": "2026-07-21T12:31:00Z",
+  "mocked": false,
+  "live": true,
+  "status": "BLOCKED",
+  "page_case_id": "page_case_0001_p0029",
+  "page_number": 29,
+  "summary": "A Tau-dispatched local wrapper invoked the pdf_oxide page harness, which then called SciLLM HTTP transport from pdf_oxide-owned code. This violates the human-stated boundary that Tau owns SciLLM/DAG agentic harness work.",
+  "boundary_violation": {
+    "violated": true,
+    "rule": "pdf_oxide project agent must not make or wrap direct SciLLM calls for the second-pass model transport path; Tau must own that route.",
+    "bad_path": "artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/tau/page29_tau_runner.py",
+    "bad_effect": "The wrapper called scripts/pdf_lab/run_page_second_pass_dag.py, which attempted POST /v1/scillm/opencode/transport/runs.",
+    "corrective_action": "Stop this path. Do not reuse or commit the wrapper as an accepted workflow. Treat the page29 live second-pass gate as blocked until Tau provides a native route or explicit work-order contract for the PDF Lab model transport."
+  },
+  "local_receipts": {
+    "tau_dag_receipt": "artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/tau/run/dag-receipt.json",
+    "tau_dag_status": "PASS",
+    "tau_dag_proves": "Tau parsed and dispatched one bounded local command node.",
+    "tau_dag_does_not_prove": "It does not prove a Tau-native SciLLM adapter, provider/model quality, or a valid PDF Lab live second-pass review.",
+    "pdf_lab_child_receipt": "artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness-command-receipt.json",
+    "pdf_lab_child_status": "BLOCKED",
+    "review_validation": "artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/page_case_0001_p0029/page_case_0001_p0029/review_validation.json",
+    "review_validation_ok": false,
+    "review_validation_errors": [
+      "page_orchestrator_registration_failed"
+    ],
+    "scillm_error": "artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/page_case_0001_p0029/page_case_0001_p0029/scillm_page_orchestrator_run_error.json",
+    "scillm_error_type": "HTTPStatusError",
+    "scillm_error_message": "Client error '404 Not Found' for url 'http://localhost:4001/v1/scillm/opencode/transport/runs'"
+  },
+  "selection_evidence": {
+    "selection_receipt": "artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/selection_receipt.json",
+    "candidate_manifest": "artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/candidate_manifest.json",
+    "sampled_page_cases": "artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/sampled_page_cases.json",
+    "candidate_count": 13,
+    "selected_pages": [
+      29
+    ]
+  },
+  "unblock_attempts": {
+    "memory_first": "/home/graham/.codex/hook-logs/memory-first-20260721T122749Z.json",
+    "brave_search": "artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/unblock_brave_search.json",
+    "webgpt": "not_submitted_after_boundary_violation"
+  },
+  "next_required_action": {
+    "owner": "tau",
+    "action": "Provide a Tau-native work-order/DAG route for PDF Lab page second-pass model transport, or explicitly declare the accepted Tau-owned SciLLM surface and receipt contract.",
+    "pdf_oxide_action_until_then": "Do not run live second-pass SciLLM transport from pdf_oxide. Continue only deterministic extraction/selection/artifact preparation that does not call SciLLM."
+  },
+  "proof_scope": {
+    "proves": [
+      "A boundary violation occurred in the page29 attempt.",
+      "The page29 live second-pass model transport is not a valid progress artifact.",
+      "The immediate blocker is ownership/routing, not a semantic page29 extraction verdict."
+    ],
+    "does_not_prove": [
+      "Page29 extraction correctness.",
+      "A clean second-pass model lifecycle.",
+      "A working Tau-native PDF Lab model transport.",
+      "Closure of the immutable goal."
+    ]
+  }
+}

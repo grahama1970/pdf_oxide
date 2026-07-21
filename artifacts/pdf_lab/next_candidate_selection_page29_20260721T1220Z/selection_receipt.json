@@ -1,0 +1,106 @@
+{
+  "schema": "pdf_lab.next_candidate_selection_receipt.v1",
+  "created_at": "2026-07-21T12:20:56Z",
+  "mocked": false,
+  "live": false,
+  "proof_scope": {
+    "proves": [
+      "The next one-page PDF Lab candidate was selected from the current extraction manifest in a clean worktree after the page28 Tau boundary receipt was pushed to main.",
+      "The page29 candidate manifest and sampled page case schema validated deterministically.",
+      "The selected page case has complete candidate ids and priority strata coverage for the local manifest subset."
+    ],
+    "does_not_prove": [
+      "Any model-backed second-pass response.",
+      "Any semantic extraction correctness for page29.",
+      "Any Tau creator-reviewer repair loop.",
+      "Any SciLLM transport or provider behavior."
+    ]
+  },
+  "repo": {
+    "path": "/tmp/pdf_oxide_next_page_20260721",
+    "branch": "codex/pdf-lab-next-page-20260721",
+    "base_remote_ref": "origin/main",
+    "base_commit": "1becfd792225911c0c681b2c6638a8dfb698f356"
+  },
+  "selection": {
+    "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+    "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+    "page_case_id": "page_case_0001_p0029",
+    "page_number": 29,
+    "page_index": 28,
+    "candidate_count": 13,
+    "candidate_ids": [
+      "cand:p0029:0000:side_chrome",
+      "cand:p0029:0001:side_chrome",
+      "cand:p0029:0002:side_chrome",
+      "cand:p0029:0003:side_chrome",
+      "cand:p0029:0004:text",
+      "cand:p0029:0005:text",
+      "cand:p0029:0006:section_heading",
+      "cand:p0029:0007:text",
+      "cand:p0029:0008:footnote",
+      "cand:p0029:0009:footnote",
+      "cand:p0029:0010:footnote",
+      "cand:p0029:0011:footnote",
+      "cand:p0029:0012:footnote"
+    ],
+    "preset_counts": {
+      "footnote": 5,
+      "section_heading": 1,
+      "side_chrome": 4,
+      "text": 3
+    },
+    "selection_reason": [
+      "high_risk_preset",
+      "high_risk_candidate",
+      "boundary_geometry",
+      "high_candidate_score"
+    ],
+    "selection_score": 48.5,
+    "selection_probability_estimate": 1.0,
+    "strata": [
+      "geometry:boundary",
+      "preset:footnote",
+      "preset:section_heading",
+      "preset:side_chrome",
+      "preset:text",
+      "risk:high"
+    ]
+  },
+  "inputs": {
+    "candidate_manifest": "artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/candidate_manifest.json",
+    "sampled_page_cases": "artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/sampled_page_cases.json",
+    "candidate_census_progress": "artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/candidate_census_progress.json",
+    "candidate_manifest_debug": "artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/candidate_manifest_debug.log"
+  },
+  "command_receipts": {
+    "maturin_develop": {
+      "command": "uv run maturin develop",
+      "result": "installed editable pdf_oxide-0.3.14 into /tmp/pdf_oxide_next_page_20260721/.venv"
+    },
+    "pymupdf_install": {
+      "command": "uv pip install --python .venv/bin/python PyMuPDF",
+      "result": "installed pymupdf==1.28.0 into the local clean-worktree virtualenv"
+    },
+    "manifest": {
+      "command": ".venv/bin/python scripts/pdf_lab/build_pdf_element_candidate_manifest.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --page 29 --out artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/candidate_manifest.json --page-timeout-s 90 --debug-log artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/candidate_manifest_debug.log --progress-path artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/candidate_census_progress.json",
+      "result": {
+        "candidate_count": 13,
+        "page_count": 492
+      }
+    },
+    "sampler": {
+      "command": ".venv/bin/python scripts/pdf_lab/select_stratified_page_cases.py --manifest artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/candidate_manifest.json --out artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/sampled_page_cases.json --sample-size 1 --seed 29",
+      "result": {
+        "selected_count": 1,
+        "selected_pages": [
+          29
+        ]
+      }
+    }
+  },
+  "next_action": {
+    "status": "pending",
+    "action": "Run the one-page second-pass proof ladder for page_case_0001_p0029 without claiming a Tau creator-reviewer loop unless Tau receipts contain that topology."
+  }
+}
