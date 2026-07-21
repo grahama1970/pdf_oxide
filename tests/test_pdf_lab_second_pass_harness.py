@@ -18,6 +18,16 @@ def _load_module():
     return module
 
 
+def test_default_scillm_auth_token_prefers_current_proxy_env(monkeypatch) -> None:
+    harness = _load_module()
+    monkeypatch.setenv("SCILLM_PROXY_KEY", harness.FALLBACK_SCILLM_AUTH_TOKEN)
+    monkeypatch.delenv("SCILLM_AUTH_TOKEN", raising=False)
+    monkeypatch.setenv("SCILLM_MASTER_KEY", "current-master")
+    monkeypatch.setenv("GRAFANA_SCILLM_SERVICE_TOKEN", "service-token")
+
+    assert harness.default_scillm_auth_token() == "current-master"
+
+
 def _passing_sampling_audit(*, candidate_count: int, selected_count: int, seed: int = 1234) -> dict:
     return {
         "schema": "pdf_lab.second_pass.sampling_audit.v1",

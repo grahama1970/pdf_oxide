@@ -43,11 +43,31 @@ PAGE_RESULT_READ_ERROR_KEYS = (
     "code_root_cleanup_read_errors",
 )
 DEFAULT_SCILLM_MOUNTED_WORKSPACE_PREFIXES = ["/home/graham/workspace"]
+FALLBACK_SCILLM_AUTH_TOKEN = "sk-dev-proxy-123"
 BASE_PAGE_REVIEW_BUNDLE_ARTIFACTS = {
     "terminal_ledger.json",
     "review_bundle.zip",
     "review_bundle_validation.json",
 }
+
+
+def default_scillm_auth_token() -> str:
+    candidates: list[str] = []
+    for env_name in (
+        "SCILLM_PROXY_KEY",
+        "SCILLM_AUTH_TOKEN",
+        "SCILLM_MASTER_KEY",
+        "GRAFANA_SCILLM_SERVICE_TOKEN",
+    ):
+        token = os.environ.get(env_name)
+        if token:
+            candidates.append(token)
+    for token in candidates:
+        if token != FALLBACK_SCILLM_AUTH_TOKEN:
+            return token
+    return candidates[0] if candidates else FALLBACK_SCILLM_AUTH_TOKEN
+
+
 REQUIRED_PAGE_DAG_ARTIFACTS = {
     "state.json",
     "sampled_candidate_manifest.json",
@@ -6622,7 +6642,7 @@ def main() -> int:
     parser.add_argument("--model", default="gpt-5.5")
     parser.add_argument("--batch-id", default="pdf-lab-second-pass")
     parser.add_argument("--scillm-base-url", default=os.environ.get("SCILLM_API_BASE", "http://localhost:4001"))
-    parser.add_argument("--scillm-auth-token", default=os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123"))
+    parser.add_argument("--scillm-auth-token", default=default_scillm_auth_token())
     parser.add_argument("--caller-skill", default="pdf-lab")
     parser.add_argument("--scillm-timeout-s", type=float, default=180.0)
     parser.add_argument("--scillm-preflight-mode", choices=["dry_run", "live"], default="live")

@@ -1,0 +1,7 @@
+{
+  "endpoint": "POST /v1/scillm/opencode/transport/runs",
+  "error": "Client error '401 Unauthorized' for url 'http://localhost:4001/v1/scillm/opencode/transport/runs'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401",
+  "error_type": "HTTPStatusError",
+  "node_id": "register_page_orchestrator_run",
+  "schema": "pdf_lab.second_pass.substrate_error.v1"
+}

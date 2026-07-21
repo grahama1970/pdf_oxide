@@ -17,6 +17,16 @@ def _load_module():
     return module
 
 
+def test_default_scillm_auth_token_prefers_current_proxy_env(monkeypatch) -> None:
+    dag = _load_module()
+    monkeypatch.setenv("SCILLM_PROXY_KEY", dag.FALLBACK_SCILLM_AUTH_TOKEN)
+    monkeypatch.delenv("SCILLM_AUTH_TOKEN", raising=False)
+    monkeypatch.setenv("SCILLM_MASTER_KEY", "current-master")
+    monkeypatch.setenv("GRAFANA_SCILLM_SERVICE_TOKEN", "service-token")
+
+    assert dag.default_scillm_auth_token() == "current-master"
+
+
 def _selected_candidates_payload(
     candidate_ids: list[str],
     *,

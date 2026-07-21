@@ -49,6 +49,7 @@ DEFAULT_TRANSPORT_CHILD_MODE = "apply_patches"
 DEFAULT_ALLOWED_PATCH_PREFIXES = ["python/pdf_oxide/", "src/", "scripts/pdf_lab/", "tests/"]
 TRANSPORT_SUCCESS_DELIVERY_STATES = {"completed", "acted", "idle_seen"}
 DEFAULT_SCILLM_ORCHESTRATOR_OPENCODE_MODEL = "opencode-go/kimi-k2.6"
+FALLBACK_SCILLM_AUTH_TOKEN = "sk-dev-proxy-123"
 PATCH_PROMPT_PROFILES = {"full", "compact", "plan_only"}
 PATCH_REPAIR_STRATEGIES = {"single", "split", "chat_plan_split"}
 PAGE_ORCHESTRATOR_MODES = {"dry_run", "live"}
@@ -90,6 +91,25 @@ PROMPT_PAYLOAD_REPLACEMENTS = {
     "leverage": "use",
     "utilize": "use",
 }
+
+
+def default_scillm_auth_token() -> str:
+    candidates: list[str] = []
+    for env_name in (
+        "SCILLM_PROXY_KEY",
+        "SCILLM_AUTH_TOKEN",
+        "SCILLM_MASTER_KEY",
+        "GRAFANA_SCILLM_SERVICE_TOKEN",
+    ):
+        token = os.environ.get(env_name)
+        if token:
+            candidates.append(token)
+    for token in candidates:
+        if token != FALLBACK_SCILLM_AUTH_TOKEN:
+            return token
+    return candidates[0] if candidates else FALLBACK_SCILLM_AUTH_TOKEN
+
+
 PROMPT_PAYLOAD_EXACT_KEYS = {
     "candidate_id",
     "status",
@@ -6554,7 +6574,7 @@ def run_page_case(
     review_fixture_path: Path | None = None,
     review_after_fixture_path: Path | None = None,
     scillm_base_url: str = "http://localhost:4001",
-    scillm_auth_token: str = "sk-dev-proxy-123",
+    scillm_auth_token: str | None = None,
     caller_skill: str = "pdf-lab",
     scillm_timeout_s: float = 180.0,
     scillm_preflight_mode: str = "dry_run",
@@ -6575,6 +6595,8 @@ def run_page_case(
     page_extract_timeout_s: float | None = None,
     page_orchestrator_mode: str = "dry_run",
 ) -> dict[str, Any]:
+    if scillm_auth_token is None:
+        scillm_auth_token = default_scillm_auth_token()
     code_root = code_root.resolve()
     effective_opencode_model = resolve_effective_opencode_model(
         patch_mode=patch_mode,
@@ -8356,7 +8378,7 @@ def main() -> int:
     parser.add_argument("--review-fixture", type=Path, dest="review_fixture_path")
     parser.add_argument("--review-after-fixture", type=Path, dest="review_after_fixture_path")
     parser.add_argument("--scillm-base-url", default=os.environ.get("SCILLM_API_BASE", "http://localhost:4001"))
-    parser.add_argument("--scillm-auth-token", default=os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123"))
+    parser.add_argument("--scillm-auth-token", default=default_scillm_auth_token())
     parser.add_argument("--caller-skill", default="pdf-lab")
     parser.add_argument("--scillm-timeout-s", type=float, default=180.0)
     parser.add_argument("--scillm-preflight-mode", choices=["dry_run", "live"], default="live")

@@ -1,0 +1,32 @@
+{
+  "query": "HTTP Bearer token invalid 401 unauthorized no authorization header FastAPI optional bearer",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "HTTPBearer security scheme is returning 403 instead or 401 \u00b7 Issue #10177 \u00b7 fastapi/fastapi",
+      "description": "fix: give correct unauthorized response on OpenID Connect Auth #9312",
+      "url": "https://github.com/fastapi/fastapi/issues/10177"
+    },
+    {
+      "title": "HTTPBearer security scheme is returning 403 instead or 401 \u00b7 fastapi/fastapi \u00b7 Discussion #9130",
+      "description": "<strong>If it doesn&#x27;t see an Authorization header, or the value doesn&#x27;t have a Bearer token, it will respond with a 401 status code error (UNAUTHORIZED) directly</strong>.",
+      "url": "https://github.com/fastapi/fastapi/discussions/9130"
+    },
+    {
+      "title": "Security Tools - FastAPI - Tiangolo.com",
+      "description": "If you are implementing an OAuth2 authentication scheme other than the provided ones in FastAPI (based on bearer tokens), you might want to override this. Ref: https://datatracker.ietf.org/doc/html/rfc6749 &quot;&quot;&quot; return HTTPException( status_code=HTTP_401_UNAUTHORIZED, detail=&quot;Not authenticated&quot;, headers={&quot;WWW-Authenticate&quot;: &quot;Bearer&quot;}, )",
+      "url": "https://fastapi.tiangolo.com/reference/security/"
+    },
+    {
+      "title": "HTTP 401 Unauthorized: Causes & Fixes | Authgear",
+      "description": "tl;dr \u2014 A 401 Unauthorized means <strong>the server requires authentication and either none was provided or it was invalid</strong> (expired token, wrong API key, malformed Bearer header).",
+      "url": "https://www.authgear.com/post/http-401-unauthorized/"
+    },
+    {
+      "title": "python - FastAPI - after successful login, no Authorization header received, also from Swagger and only when deployed on server - Stack Overflow",
+      "description": "And the same API successfully works in localhost. ... Solved, <strong>the cause was a hard-to-find network setting that was dropping the auth header from http requests</strong>, totally unrelated with FastAPI.",
+      "url": "https://stackoverflow.com/questions/74362487/fastapi-after-successful-login-no-authorization-header-received-also-from-sw"
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0003:0000:side_chrome",
+      "evidence": "Extracted JSON block type is 'header_footer_noise' with semantic role 'page_chrome'. Text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' and bounding box [0.14705882352941177, 0.04473802296802251, 0.8507378272760927, 0.05821938948197798] match the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the top header as side chrome. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0001:side_chrome",
+      "evidence": "Extracted JSON block type is 'header_footer_noise' with semantic role 'page_chrome'. Text '_________________________________________________________________________________________________' and bounding box [0.14705882352941177, 0.05679397390346334, 0.8517353332120609, 0.07054738324097913] match the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the underline below the header as side chrome. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0002:side_chrome",
+      "evidence": "Extracted JSON block type is 'header_footer_noise' with source type 'PageNumber'. Text 'i' and bounding box [0.4983333512848499, 0.939856018682923, 0.5017010059232027, 0.9550605542732008] match the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the page number 'i' at the bottom of the page as side chrome. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0003:side_chrome",
+      "evidence": "Extracted JSON block type is 'header_footer_noise' with source type 'Boilerplate'. Text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' and bounding box [0.0296323533151664, 0.28780303338561397, 0.049705879361021756, 0.7406287915778883] match the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the boilerplate text in the left margin as side chrome. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0004:text",
+      "evidence": "Extracted JSON block type is 'paragraph_block' with source type 'Body'. Text 'Authority' and bounding box [0.4544117746789471, 0.08938735422461924, 0.5455193613089767, 0.11388766163527364] match the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the 'Authority' section title as text. While semantically a heading, 'paragraph_block' is an acceptable classification in this context, and the bounding box and text are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0005:text",
+      "evidence": "Extracted JSON block type is 'paragraph_block' with source type 'Body'. Text content matches the preset. Bounding box [0.14705882352941177, 0.12668496912175958, 0.8458228017769608, 0.2638795448072029] matches the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the paragraph as text. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0006:text",
+      "evidence": "Extracted JSON block type is 'paragraph_block' with source type 'Body'. Text content matches the preset. Bounding box [0.14705882352941177, 0.27745206428296637, 0.8341806449142157, 0.38077772506559737] matches the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the paragraph as text. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0007:text",
+      "evidence": "Extracted JSON block type is 'paragraph_block' with source type 'Body'. Text content matches the preset. Bounding box [0.18893352832669527, 0.39056546760327887, 0.810964945874183, 0.42494567716964565] matches the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the paragraph as text. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0008:text",
+      "evidence": "Extracted JSON block type is 'paragraph_block' with source type 'Body'. Text 'CODEN: NSPUE2' and bounding box [0.44531938141467525, 0.4304996837269176, 0.5548075756995506, 0.4474274221092764] match the preset and rendered page.",
+      "rationale": "The candidate correctly identifies 'CODEN: NSPUE2' as text. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0009:side_chrome",
+      "evidence": "Extracted JSON block type is 'header_footer_noise' with source type 'Boilerplate'. Text 'This publication is available free of charge from:' and bounding box [0.34100985059551164, 0.45344951899364744, 0.659010245129953, 0.47037725737600616] match the preset and rendered page.",
+      "rationale": "The candidate correctly identifies this boilerplate text as side chrome. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0010:side_chrome",
+      "evidence": "Extracted JSON block type is 'header_footer_noise' with source type 'Boilerplate'. Text 'https://doi.org/10.6028/NIST.SP.800-53r5' and bounding box [0.36013300278607535, 0.4689096778330177, 0.6399120754665799, 0.4858374162153764] match the preset and rendered page.",
+      "rationale": "The candidate correctly identifies this boilerplate URL as side chrome. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0011:text",
+      "evidence": "Extracted JSON block type is 'paragraph_block' with source type 'Body'. Text 'Comments on this publication may be submitted to:' and bounding box [0.3059803831811045, 0.7867320667613636, 0.6938972223817913, 0.8059747869318182] match the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the introductory text for comments as text. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0012:reference",
+      "evidence": "Extracted JSON block type is 'reference' with semantic role 'reference_continuation'. Text content matches the preset. Bounding box [0.2698030409470103, 0.8114134663283222, 0.7301454232409109, 0.8747216426964962] matches the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the contact information as a reference block. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0013:text",
+      "evidence": "Extracted JSON block type is 'paragraph_block' with source type 'Body'. Text 'All comments are subject to release under the Freedom of Information Act (FOIA) [FOIA96].' and bounding box [0.16892156413957185, 0.8882759171302872, 0.8311878777796926, 0.9068255183672664] match the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the paragraph as text. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0014:text",
+      "evidence": "Extracted JSON block type is 'paragraph_block' with source type 'Body'. Text content matches the preset. Bounding box [0.17117647407880796, 0.5183831802522293, 0.8265389835133272, 0.5816154865303425] matches the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the paragraph as text. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0015:text",
+      "evidence": "Extracted JSON block type is 'paragraph_block' with source type 'Body'. Text content matches the preset. Bounding box [0.1711764865451389, 0.5876375834147135, 0.8265346452301624, 0.6970985489662247] matches the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the paragraph as text. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0003:0016:text",
+      "evidence": "Extracted JSON block type is 'paragraph_block' with source type 'Body'. Text content matches the preset. Bounding box [0.17117649901146983, 0.7031206843828914, 0.8264697205786612, 0.7509687019116951] matches the preset and rendered page.",
+      "rationale": "The candidate correctly identifies the paragraph as text. The bounding box, text, and type classification are accurate.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    }
+  ],
+  "page_rationale": "All candidates on page 3 were extracted cleanly, with accurate bounding boxes, text, and type classifications matching the rendered page and preset expectations. No defects or issues were found.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}
