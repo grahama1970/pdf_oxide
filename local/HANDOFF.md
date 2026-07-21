@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T15:15:00Z
+**Timestamp**: 2026-07-21T15:35:00Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -156,20 +156,28 @@
   - Review bundle: `artifacts/pdf_lab/live_second_pass_page401_tau_prep_20260721/page_case_0001_p0401/review_bundle.zip`
 - Tau #123 root-cause classification:
   - Tau issue: `https://github.com/grahama1970/tau/issues/123`
-  - Tau commit: `7009e45461dfd8fb9bb5c1fe56ebcd339941b50f`
-  - Tau proof comment: `https://github.com/grahama1970/tau/issues/123#issuecomment-5035757958`
+  - Tau commits:
+    - `7009e45461dfd8fb9bb5c1fe56ebcd339941b50f`: fail-closed timeout/no-parse ambiguity classifier.
+    - `915a819f97ac3f7e975b45b3afdcf809320cce78`: quota/rate-limit and route-exhaustion classifier.
+  - Tau proof comments:
+    - `https://github.com/grahama1970/tau/issues/123#issuecomment-5035757958`
+    - `https://github.com/grahama1970/tau/issues/123#issuecomment-5035953118`
   - Tau issue state: closed with deterministic proof.
   - Imported pdf_oxide artifacts:
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/page39-diagnostic-receipt.json`
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/page39-diagnostic-receipt.error.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/quota-canary-receipt.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/quota-canary-receipt.error.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/quota-canary-receipt.raw-response.json`
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/tau-audit-summary.json`
   - Live receipt boundary:
     - `mocked=false`
     - `live=true`
     - `provider_live=false`
-    - `root_cause_code=scillm_chat_review_service_unresponsive`
-    - `recommended_next_action=do not retry PDF Lab page payloads; repair or restart the SciLLM/Ollama route until a minimal Tau canary returns PASS, then rerun the page request through Tau`
-  - Important correction: the current blocker is no longer an ambiguous `review_response_not_parseable` page payload failure. Tau now proves the route is unresponsive even to a minimal canary.
+    - short page39 timeout diagnostic: `root_cause_code=scillm_chat_review_service_unresponsive`
+    - longer minimal Tau canary: `http_status=429`, `root_cause_code=scillm_chat_review_provider_quota_exhausted`
+    - `recommended_next_action=do not retry PDF Lab page payloads against this model route; wait for quota recovery or switch Tau to an approved non-exhausted model route, then require a minimal Tau canary PASS`
+  - Important correction: the current blocker is no longer an ambiguous `review_response_not_parseable` page payload failure. Tau now proves the live `vlm-free2` route is provider quota/rate-limit exhausted when allowed to surface the upstream error.
 
 ## 6. Campaign Status
 
@@ -180,8 +188,8 @@
 | `blocked_by_systemic_failure` | `2` for page39 and page401 Tau live-review timeout family |
 | `explicitly_blocked` | `2` |
 | `not_run` | `448` unreviewed pages remaining after page401 |
-| Active page/checklist item | blocked pending SciLLM/Ollama route recovery proven by Tau-owned minimal canary PASS |
-| Latest failure signature | `scillm_chat_review_service_unresponsive` |
+| Active page/checklist item | blocked pending `vlm-free2` provider quota/rate-limit recovery or approved alternate Tau model route proven by Tau-owned minimal canary PASS |
+| Latest failure signature | `scillm_chat_review_provider_quota_exhausted` |
 
 ## 7. Important Correction To Claude Report
 
@@ -206,9 +214,9 @@
 
 Use the same one-candidate proof ladder, without direct SciLLM calls from `pdf_oxide`:
 
-1. Do not select another live model-review candidate until a Tau-owned minimal canary returns PASS against the SciLLM/Ollama route.
+1. Do not select another live model-review candidate until a Tau-owned minimal canary returns PASS against `vlm-free2` or against an explicitly approved alternate Tau model route.
 2. Any candidate whose model/executor review is required must go through Tau DAG contracts, not direct SciLLM/OpenCode calls from this repo.
 3. Criterion 6 live GitHub apply remains blocked until a valid approval receipt for mutation exists.
-4. After route recovery is proven, resume by selecting the next fresh current-extraction candidate after excluding page401.
+4. After route recovery or approved route replacement is proven, resume by selecting the next fresh current-extraction candidate after excluding page401.
 
 Before patching the next item, produce a selection receipt with source page image/current extraction/model-review artifacts and the focused regression that will prove that one checklist item.
