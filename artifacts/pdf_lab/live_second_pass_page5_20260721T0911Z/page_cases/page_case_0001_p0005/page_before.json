@@ -1,0 +1,2013 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p5:block:0",
+      "is_bold": false,
+      "page": 5,
+      "pdf_page_index": 4,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p5:block:1",
+      "is_bold": false,
+      "page": 5,
+      "pdf_page_index": 4,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.49490196876276554,
+        0.939856018682923,
+        0.5049357694738051,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p5:block:2",
+      "is_bold": false,
+      "page": 5,
+      "pdf_page_index": 4,
+      "raw": {
+        "bbox": [
+          302.8800048828125,
+          38.400001525878906,
+          8.217010498046875,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "iii"
+      },
+      "source_type": "PageNumber",
+      "text": "iii",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p5:block:3",
+      "is_bold": false,
+      "page": 5,
+      "pdf_page_index": 4,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.4063725440330755,
+        0.08938735422461924,
+        0.5934900022020527,
+        0.11388766163527364
+      ],
+      "font_name": "TT2",
+      "font_size": 13.979999542236328,
+      "id": "actual:p5:block:4",
+      "is_bold": true,
+      "page": 5,
+      "pdf_page_index": 4,
+      "raw": {
+        "bbox": [
+          248.6999969482422,
+          706.6799926757812,
+          117.75352478027344,
+          13.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.30000001192092896,
+        "font_name": "TT2",
+        "font_size": 13.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.30000001192092896,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 13.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.5533332824707031,
+            "text_len": 16,
+            "title_case_ratio": 1.0,
+            "word_count": 1
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "bold_large_font",
+            "single_word_negative"
+          ],
+          "title_text": "Acknowledgements"
+        },
+        "is_bold": true,
+        "text": "Acknowledgements"
+      },
+      "source_type": "Body",
+      "text": "Acknowledgements",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14704092187819137,
+        0.12668496912175958,
+        0.8496586419398489,
+        0.2300106588036123
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p5:block:5",
+      "is_bold": false,
+      "page": 5,
+      "pdf_page_index": 4,
+      "raw": {
+        "bbox": [
+          89.98904418945312,
+          613.25732421875,
+          432.4506530761719,
+          78.1226806640625
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": false,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.21999990940094,
+            "text_len": 91,
+            "title_case_ratio": 0.5714285969734192,
+            "word_count": 14
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "This publication was developed by the Joint Task Force Interagency Working Group. The group"
+        },
+        "is_bold": false,
+        "text": "This publication was developed by the Joint Task Force Interagency Working Group. The group includes representatives from the civil, defense, and intelligence communities. The National Institute of Standards and Technology wishes to acknowledge and thank the senior leaders from the Department of Commerce, Department of Defense, the Office of the Director of National Intelligence, the Committee on National Security Systems, and the members of the interagency working group whose dedicated efforts contributed significantly to this publication."
+      },
+      "source_type": "Body",
+      "text": "This publication was developed by the Joint Task Force Interagency Working Group. The group includes representatives from the civil, defense, and intelligence communities. The National Institute of Standards and Technology wishes to acknowledge and thank the senior leaders from the Department of Commerce, Department of Defense, the Office of the Director of National Intelligence, the Committee on National Security Systems, and the members of the interagency working group whose dedicated efforts contributed significantly to this publication.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.0,
+        0.24378790036596434,
+        1.0,
+        0.8460858566592439
+      ],
+      "id": "actual:p5:table:0",
+      "page": 5,
+      "pdf_page_index": 4,
+      "raw": {
+        "accuracy": 95.76072902244161,
+        "bbox": [
+          0.0,
+          193.08001708984375,
+          612.0,
+          670.0999984741211
+        ],
+        "cols": 7,
+        "column_count": 7,
+        "data": [
+          [
+            "Departm",
+            "ent of Defe",
+            "nse",
+            "",
+            "",
+            "Office o",
+            "f the Director of National"
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Intellige",
+            "nce"
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Dana Deas",
+            "y",
+            "",
+            "",
+            "",
+            "Matthew",
+            "A. Kozma"
+          ],
+          [
+            "Chief Infor",
+            "mation Officer",
+            "",
+            "",
+            "",
+            "Chief Infor",
+            "mation Officer"
+          ],
+          [
+            "John Sherm",
+            "an",
+            "",
+            "",
+            "",
+            "Michael E.",
+            "Waschull"
+          ],
+          [
+            "Principal D",
+            "eputy CIO",
+            "",
+            "",
+            "",
+            "Deputy Ch",
+            "ief Information Officer"
+          ],
+          [
+            "Mark Haku",
+            "n",
+            "",
+            "",
+            "",
+            "Clifford M",
+            ". Conner"
+          ],
+          [
+            "Deputy CIO",
+            "for Cybersecurity",
+            "and DoD SIS",
+            "O",
+            "",
+            "Cybersecu",
+            "rity Group and IC CISO"
+          ],
+          [
+            "Kevin Dula",
+            "ny",
+            "",
+            "",
+            "",
+            "Vacant",
+            ""
+          ],
+          [
+            "Director, C",
+            "ybersecurity Polic",
+            "y and Partner",
+            "ships",
+            "",
+            "Director, S",
+            "ecurity Coordination Center"
+          ],
+          [
+            "Nationa",
+            "l Institute of",
+            "Standards",
+            "",
+            "",
+            "Commit",
+            "tee on National Security"
+          ],
+          [
+            "and Tec",
+            "hnology",
+            "",
+            "",
+            "",
+            "System",
+            "s"
+          ],
+          [
+            "Charles H.",
+            "Romine",
+            "",
+            "",
+            "",
+            "Mark G. H",
+            "akun"
+          ],
+          [
+            "Director, In",
+            "formation Techn",
+            "ology Laborat",
+            "ory",
+            "",
+            "Chair",
+            ""
+          ],
+          [
+            "Kevin Stine",
+            "",
+            "",
+            "",
+            "",
+            "Susan Dor",
+            "r"
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Acting Cyb",
+            "ersecurity Advisor",
+            ", ITL",
+            "",
+            "",
+            "Co-Chair",
+            ""
+          ],
+          [
+            "Matthew S",
+            "choll",
+            "",
+            "",
+            "",
+            "Kevin Dula",
+            "ny"
+          ],
+          [
+            "Chief, Com",
+            "puter Security Div",
+            "ision",
+            "",
+            "",
+            "Tri-Chair\u2014",
+            "Defense Community"
+          ],
+          [
+            "Kevin Stine",
+            "",
+            "",
+            "",
+            "",
+            "Chris John",
+            "son"
+          ],
+          [
+            "Chief, Appl",
+            "ied Cybersecurity",
+            "Division",
+            "",
+            "",
+            "Tri-Chair\u2014",
+            "Intelligence Community"
+          ],
+          [
+            "Ron Ross",
+            "",
+            "",
+            "",
+            "",
+            "Vicki Mich",
+            "etti"
+          ],
+          [
+            "FISMA Imp",
+            "lementation Proje",
+            "ct Leader",
+            "",
+            "",
+            "Tri-Chair\u2014",
+            "Civil Agencies"
+          ],
+          [
+            "",
+            "",
+            "Joi",
+            "nt Task Fo",
+            "rce Work",
+            "ing Grou",
+            "p"
+          ],
+          [
+            "Victoria Pil",
+            "litteri",
+            "McKay T",
+            "olboe",
+            "",
+            "Dorian Pa",
+            "ppas\nKelley Dempsey"
+          ],
+          [
+            "NIST, JTF L",
+            "eader",
+            "DoD",
+            "",
+            "",
+            "Intelligenc",
+            "e Community\nNIST"
+          ],
+          [
+            "-\n53r5",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Ehijele Olu",
+            "mese",
+            "Lydia Hu",
+            "mphries",
+            "",
+            "Daniel Fai",
+            "gin\nNaomi Lefkovitz"
+          ],
+          [
+            "The MITRE",
+            "Corporation",
+            "Booz Alle",
+            "n Hamilton",
+            "",
+            "Aerospace",
+            "Corporation\nNIST"
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "Esten Port",
+            "er",
+            "Julie Net",
+            "hery nyder",
+            "",
+            "Christina S",
+            "ames\nChristian Enloe"
+          ],
+          [
+            "The MITRE",
+            "Corporation",
+            "The MITR",
+            "E Corporatio",
+            "n",
+            "The MITRE",
+            "Corporation\nNIST"
+          ],
+          [
+            "David Blac",
+            "k",
+            "Rich Grau",
+            "bart",
+            "",
+            "Peter Dus",
+            "piva\nKaitlin Boeckl"
+          ],
+          [
+            "The MITRE",
+            "Corporation",
+            "The MITR",
+            "E Corporatio",
+            "n",
+            "Intelligenc",
+            "e Community\nNIST"
+          ],
+          [
+            "Eduardo Ta",
+            "kamura",
+            "Ned ore",
+            "n",
+            "",
+            "Andrew R",
+            "egenscheid\nJon Boyens"
+          ],
+          [
+            "NIST",
+            "",
+            "NIST",
+            "",
+            "",
+            "NIST",
+            "NIST"
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        ],
+        "df_data": [
+          {
+            "0": "Departm",
+            "1": "ent of Defe",
+            "2": "nse",
+            "3": "",
+            "4": "",
+            "5": "Office o",
+            "6": "f the Director of National"
+          },
+          {
+            "0": "",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Intellige",
+            "6": "nce"
+          },
+          {
+            "0": "",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": ""
+          },
+          {
+            "0": "Dana Deas",
+            "1": "y",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Matthew",
+            "6": "A. Kozma"
+          },
+          {
+            "0": "Chief Infor",
+            "1": "mation Officer",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Chief Infor",
+            "6": "mation Officer"
+          },
+          {
+            "0": "John Sherm",
+            "1": "an",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Michael E.",
+            "6": "Waschull"
+          },
+          {
+            "0": "Principal D",
+            "1": "eputy CIO",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Deputy Ch",
+            "6": "ief Information Officer"
+          },
+          {
+            "0": "Mark Haku",
+            "1": "n",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Clifford M",
+            "6": ". Conner"
+          },
+          {
+            "0": "Deputy CIO",
+            "1": "for Cybersecurity",
+            "2": "and DoD SIS",
+            "3": "O",
+            "4": "",
+            "5": "Cybersecu",
+            "6": "rity Group and IC CISO"
+          },
+          {
+            "0": "Kevin Dula",
+            "1": "ny",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Vacant",
+            "6": ""
+          },
+          {
+            "0": "Director, C",
+            "1": "ybersecurity Polic",
+            "2": "y and Partner",
+            "3": "ships",
+            "4": "",
+            "5": "Director, S",
+            "6": "ecurity Coordination Center"
+          },
+          {
+            "0": "Nationa",
+            "1": "l Institute of",
+            "2": "Standards",
+            "3": "",
+            "4": "",
+            "5": "Commit",
+            "6": "tee on National Security"
+          },
+          {
+            "0": "and Tec",
+            "1": "hnology",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "System",
+            "6": "s"
+          },
+          {
+            "0": "Charles H.",
+            "1": "Romine",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Mark G. H",
+            "6": "akun"
+          },
+          {
+            "0": "Director, In",
+            "1": "formation Techn",
+            "2": "ology Laborat",
+            "3": "ory",
+            "4": "",
+            "5": "Chair",
+            "6": ""
+          },
+          {
+            "0": "Kevin Stine",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Susan Dor",
+            "6": "r"
+          },
+          {
+            "0": "",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": ""
+          },
+          {
+            "0": "Acting Cyb",
+            "1": "ersecurity Advisor",
+            "2": ", ITL",
+            "3": "",
+            "4": "",
+            "5": "Co-Chair",
+            "6": ""
+          },
+          {
+            "0": "Matthew S",
+            "1": "choll",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Kevin Dula",
+            "6": "ny"
+          },
+          {
+            "0": "Chief, Com",
+            "1": "puter Security Div",
+            "2": "ision",
+            "3": "",
+            "4": "",
+            "5": "Tri-Chair\u2014",
+            "6": "Defense Community"
+          },
+          {
+            "0": "Kevin Stine",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Chris John",
+            "6": "son"
+          },
+          {
+            "0": "Chief, Appl",
+            "1": "ied Cybersecurity",
+            "2": "Division",
+            "3": "",
+            "4": "",
+            "5": "Tri-Chair\u2014",
+            "6": "Intelligence Community"
+          },
+          {
+            "0": "Ron Ross",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "Vicki Mich",
+            "6": "etti"
+          },
+          {
+            "0": "FISMA Imp",
+            "1": "lementation Proje",
+            "2": "ct Leader",
+            "3": "",
+            "4": "",
+            "5": "Tri-Chair\u2014",
+            "6": "Civil Agencies"
+          },
+          {
+            "0": "",
+            "1": "",
+            "2": "Joi",
+            "3": "nt Task Fo",
+            "4": "rce Work",
+            "5": "ing Grou",
+            "6": "p"
+          },
+          {
+            "0": "Victoria Pil",
+            "1": "litteri",
+            "2": "McKay T",
+            "3": "olboe",
+            "4": "",
+            "5": "Dorian Pa",
+            "6": "ppas\nKelley Dempsey"
+          },
+          {
+            "0": "NIST, JTF L",
+            "1": "eader",
+            "2": "DoD",
+            "3": "",
+            "4": "",
+            "5": "Intelligenc",
+            "6": "e Community\nNIST"
+          },
+          {
+            "0": "-\n53r5",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": ""
+          },
+          {
+            "0": "",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": ""
+          },
+          {
+            "0": "Ehijele Olu",
+            "1": "mese",
+            "2": "Lydia Hu",
+            "3": "mphries",
+            "4": "",
+            "5": "Daniel Fai",
+            "6": "gin\nNaomi Lefkovitz"
+          },
+          {
+            "0": "The MITRE",
+            "1": "Corporation",
+            "2": "Booz Alle",
+            "3": "n Hamilton",
+            "4": "",
+            "5": "Aerospace",
+            "6": "Corporation\nNIST"
+          },
+          {
+            "0": "",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": ""
+          },
+          {
+            "0": "Esten Port",
+            "1": "er",
+            "2": "Julie Net",
+            "3": "hery nyder",
+            "4": "",
+            "5": "Christina S",
+            "6": "ames\nChristian Enloe"
+          },
+          {
+            "0": "The MITRE",
+            "1": "Corporation",
+            "2": "The MITR",
+            "3": "E Corporatio",
+            "4": "n",
+            "5": "The MITRE",
+            "6": "Corporation\nNIST"
+          },
+          {
+            "0": "David Blac",
+            "1": "k",
+            "2": "Rich Grau",
+            "3": "bart",
+            "4": "",
+            "5": "Peter Dus",
+            "6": "piva\nKaitlin Boeckl"
+          },
+          {
+            "0": "The MITRE",
+            "1": "Corporation",
+            "2": "The MITR",
+            "3": "E Corporatio",
+            "4": "n",
+            "5": "Intelligenc",
+            "6": "e Community\nNIST"
+          },
+          {
+            "0": "Eduardo Ta",
+            "1": "kamura",
+            "2": "Ned ore",
+            "3": "n",
+            "4": "",
+            "5": "Andrew R",
+            "6": "egenscheid\nJon Boyens"
+          },
+          {
+            "0": "NIST",
+            "1": "",
+            "2": "NIST",
+            "3": "",
+            "4": "",
+            "5": "NIST",
+            "6": "NIST"
+          },
+          {
+            "0": "",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": ""
+          }
+        ],
+        "flavor": "Stream",
+        "order": 0,
+        "page": 4,
+        "row_count": 39,
+        "rows": [
+          {
+            "cells": [
+              {
+                "text": "Departm"
+              },
+              {
+                "text": "ent of Defe"
+              },
+              {
+                "text": "nse"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Office o"
+              },
+              {
+                "text": "f the Director of National"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Intellige"
+              },
+              {
+                "text": "nce"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Dana Deas"
+              },
+              {
+                "text": "y"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Matthew"
+              },
+              {
+                "text": "A. Kozma"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Chief Infor"
+              },
+              {
+                "text": "mation Officer"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Chief Infor"
+              },
+              {
+                "text": "mation Officer"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "John Sherm"
+              },
+              {
+                "text": "an"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Michael E."
+              },
+              {
+                "text": "Waschull"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Principal D"
+              },
+              {
+                "text": "eputy CIO"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Deputy Ch"
+              },
+              {
+                "text": "ief Information Officer"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Mark Haku"
+              },
+              {
+                "text": "n"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Clifford M"
+              },
+              {
+                "text": ". Conner"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Deputy CIO"
+              },
+              {
+                "text": "for Cybersecurity"
+              },
+              {
+                "text": "and DoD SIS"
+              },
+              {
+                "text": "O"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Cybersecu"
+              },
+              {
+                "text": "rity Group and IC CISO"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Kevin Dula"
+              },
+              {
+                "text": "ny"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Vacant"
+              },
+              {
+                "text": ""
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Director, C"
+              },
+              {
+                "text": "ybersecurity Polic"
+              },
+              {
+                "text": "y and Partner"
+              },
+              {
+                "text": "ships"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Director, S"
+              },
+              {
+                "text": "ecurity Coordination Center"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Nationa"
+              },
+              {
+                "text": "l Institute of"
+              },
+              {
+                "text": "Standards"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Commit"
+              },
+              {
+                "text": "tee on National Security"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "and Tec"
+              },
+              {
+                "text": "hnology"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "System"
+              },
+              {
+                "text": "s"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Charles H."
+              },
+              {
+                "text": "Romine"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Mark G. H"
+              },
+              {
+                "text": "akun"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Director, In"
+              },
+              {
+                "text": "formation Techn"
+              },
+              {
+                "text": "ology Laborat"
+              },
+              {
+                "text": "ory"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Chair"
+              },
+              {
+                "text": ""
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Kevin Stine"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Susan Dor"
+              },
+              {
+                "text": "r"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Acting Cyb"
+              },
+              {
+                "text": "ersecurity Advisor"
+              },
+              {
+                "text": ", ITL"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Co-Chair"
+              },
+              {
+                "text": ""
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Matthew S"
+              },
+              {
+                "text": "choll"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Kevin Dula"
+              },
+              {
+                "text": "ny"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Chief, Com"
+              },
+              {
+                "text": "puter Security Div"
+              },
+              {
+                "text": "ision"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Tri-Chair\u2014"
+              },
+              {
+                "text": "Defense Community"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Kevin Stine"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Chris John"
+              },
+              {
+                "text": "son"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Chief, Appl"
+              },
+              {
+                "text": "ied Cybersecurity"
+              },
+              {
+                "text": "Division"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Tri-Chair\u2014"
+              },
+              {
+                "text": "Intelligence Community"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Ron Ross"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Vicki Mich"
+              },
+              {
+                "text": "etti"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "FISMA Imp"
+              },
+              {
+                "text": "lementation Proje"
+              },
+              {
+                "text": "ct Leader"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Tri-Chair\u2014"
+              },
+              {
+                "text": "Civil Agencies"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Joi"
+              },
+              {
+                "text": "nt Task Fo"
+              },
+              {
+                "text": "rce Work"
+              },
+              {
+                "text": "ing Grou"
+              },
+              {
+                "text": "p"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Victoria Pil"
+              },
+              {
+                "text": "litteri"
+              },
+              {
+                "text": "McKay T"
+              },
+              {
+                "text": "olboe"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Dorian Pa"
+              },
+              {
+                "text": "ppas Kelley Dempsey"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "NIST, JTF L"
+              },
+              {
+                "text": "eader"
+              },
+              {
+                "text": "DoD"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Intelligenc"
+              },
+              {
+                "text": "e Community NIST"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "- 53r5"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Ehijele Olu"
+              },
+              {
+                "text": "mese"
+              },
+              {
+                "text": "Lydia Hu"
+              },
+              {
+                "text": "mphries"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Daniel Fai"
+              },
+              {
+                "text": "gin Naomi Lefkovitz"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "The MITRE"
+              },
+              {
+                "text": "Corporation"
+              },
+              {
+                "text": "Booz Alle"
+              },
+              {
+                "text": "n Hamilton"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Aerospace"
+              },
+              {
+                "text": "Corporation NIST"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Esten Port"
+              },
+              {
+                "text": "er"
+              },
+              {
+                "text": "Julie Net"
+              },
+              {
+                "text": "hery nyder"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Christina S"
+              },
+              {
+                "text": "ames Christian Enloe"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "The MITRE"
+              },
+              {
+                "text": "Corporation"
+              },
+              {
+                "text": "The MITR"
+              },
+              {
+                "text": "E Corporatio"
+              },
+              {
+                "text": "n"
+              },
+              {
+                "text": "The MITRE"
+              },
+              {
+                "text": "Corporation NIST"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "David Blac"
+              },
+              {
+                "text": "k"
+              },
+              {
+                "text": "Rich Grau"
+              },
+              {
+                "text": "bart"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Peter Dus"
+              },
+              {
+                "text": "piva Kaitlin Boeckl"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "The MITRE"
+              },
+              {
+                "text": "Corporation"
+              },
+              {
+                "text": "The MITR"
+              },
+              {
+                "text": "E Corporatio"
+              },
+              {
+                "text": "n"
+              },
+              {
+                "text": "Intelligenc"
+              },
+              {
+                "text": "e Community NIST"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "Eduardo Ta"
+              },
+              {
+                "text": "kamura"
+              },
+              {
+                "text": "Ned ore"
+              },
+              {
+                "text": "n"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "Andrew R"
+              },
+              {
+                "text": "egenscheid Jon Boyens"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "NIST"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "NIST"
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": ""
+              },
+              {
+                "text": "NIST"
+              },
+              {
+                "text": "NIST"
+              }
+            ]
+          }
+        ],
+        "table_geometry": {
+          "bbox_clipped_to_page": false,
+          "full_normalized_bbox": [
+            0.0,
+            0.24378790036596434,
+            1.0,
+            0.8460858566592439
+          ],
+          "off_page_extent": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0
+          },
+          "raw_bbox": [
+            0.0,
+            193.08001708984375,
+            612.0,
+            670.0999984741211
+          ],
+          "visible_bbox": [
+            0.0,
+            0.24378790036596434,
+            1.0,
+            0.8460858566592439
+          ]
+        },
+        "whitespace": 42.49084249084249
+      },
+      "source_type": "table",
+      "table_geometry": {
+        "bbox_clipped_to_page": false,
+        "full_normalized_bbox": [
+          0.0,
+          0.24378790036596434,
+          1.0,
+          0.8460858566592439
+        ],
+        "off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "raw_bbox": [
+          0.0,
+          193.08001708984375,
+          612.0,
+          670.0999984741211
+        ],
+        "visible_bbox": [
+          0.0,
+          0.24378790036596434,
+          1.0,
+          0.8460858566592439
+        ]
+      },
+      "text": "Departm | ent of Defe | nse |  |  | Office o | f the Director of National\n|  |  |  |  | Intellige | nce\n|  |  |  |  |  |\nDana Deas | y |  |  |  | Matthew | A. Kozma\nChief Infor | mation Officer |  |  |  | Chief Infor | mation Officer\nJohn Sherm | an |  |  |  | Michael E. | Waschull\nPrincipal D | eputy CIO |  |  |  | Deputy Ch | ief Information Officer\nMark Haku | n |  |  |  | Clifford M | . Conner\nDeputy CIO | for Cybersecurity | and DoD SIS | O |  | Cybersecu | rity Group and IC CISO\nKevin Dula | ny |  |  |  | Vacant |\nDirector, C | ybersecurity Polic | y and Partner | ships |  | Director, S | ecurity Coordination Center\nNationa | l Institute of | Standards |  |  | Commit | tee on National Security\nand Tec | hnology |  |  |  | System | s\nCharles H. | Romine |  |  |  | Mark G. H | akun\nDirector, In | formation Techn | ology Laborat | ory |  | Chair |\nKevin Stine |  |  |  |  | Susan Dor | r\n|  |  |  |  |  |\nActing Cyb | ersecurity Advisor | , ITL |  |  | Co-Chair |\nMatthew S | choll |  |  |  | Kevin Dula | ny\nChief, Com | puter Security Div | ision |  |  | Tri-Chair\u2014 | Defense Community\nKevin Stine |  |  |  |  | Chris John | son\nChief, Appl | ied Cybersecurity | Division |  |  | Tri-Chair\u2014 | Intelligence Community\nRon Ross |  |  |  |  | Vicki Mich | etti\nFISMA Imp | lementation Proje | ct Leader |  |  | Tri-Chair\u2014 | Civil Agencies\n|  | Joi | nt Task Fo | rce Work | ing Grou | p\nVictoria Pil | litteri | McKay T | olboe |  | Dorian Pa | ppas Kelley Dempsey\nNIST, JTF L | eader | DoD |  |  | Intelligenc | e Community NIST\n- 53r5 |  |  |  |  |  |\n|  |  |  |  |  |\nEhijele Olu | mese | Lydia Hu | mphries |  | Daniel Fai | gin Naomi Lefkovitz\nThe MITRE | Corporation | Booz Alle | n Hamilton |  | Aerospace | Corporation NIST\n|  |  |  |  |  |\nEsten Port | er | Julie Net | hery nyder |  | Christina S | ames Christian Enloe\nThe MITRE | Corporation | The MITR | E Corporatio | n | The MITRE | Corporation NIST\nDavid Blac | k | Rich Grau | bart |  | Peter Dus | piva Kaitlin Boeckl\nThe MITRE | Corporation | The MITR | E Corporatio | n | Intelligenc | e Community NIST\nEduardo Ta | kamura | Ned ore | n |  | Andrew R | egenscheid Jon Boyens\nNIST |  | NIST |  |  | NIST | NIST",
+      "type": "table"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 5,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 4
+}

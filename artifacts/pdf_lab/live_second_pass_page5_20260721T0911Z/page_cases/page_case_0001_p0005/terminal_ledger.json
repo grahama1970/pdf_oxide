@@ -1,0 +1,40 @@
+{
+  "allowed_terminal_statuses": [
+    "blocked_substrate",
+    "human_needed",
+    "patched_confirmed",
+    "rejected_with_proof",
+    "reviewed_clean",
+    "still_open"
+  ],
+  "case_id": "page_case_0001_p0005",
+  "commit_sha": null,
+  "evidence_artifacts": [
+    "state.json",
+    "sampled_candidate_manifest.json",
+    "page_before.json",
+    "page_before.png",
+    "page_candidates.png",
+    "selected_candidates.json",
+    "candidate_presets.json",
+    "review_request.json",
+    "review_request_validation.json",
+    "scillm_orchestrator_page_dag_spec.json",
+    "scillm_orchestrator_page_dag_spec_validation.json",
+    "scillm_orchestrator_page_submission.json",
+    "scillm_orchestrator_page_submission_validation.json",
+    "review_validation.json",
+    "scillm_review_preflight.json",
+    "scillm_review_receipt.json",
+    "review_response.json",
+    "scillm_page_orchestrator_run_request.json",
+    "scillm_page_orchestrator_run_validation.json",
+    "scillm_page_orchestrator_run_receipt.json",
+    "review.html",
+    "terminal_ledger_validation.json"
+  ],
+  "page_number": 5,
+  "reason": "scillm_review_validated_clean",
+  "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+  "terminal_status": "reviewed_clean"
+}

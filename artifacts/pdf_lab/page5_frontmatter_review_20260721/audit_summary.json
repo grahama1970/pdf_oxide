@@ -1,0 +1,35 @@
+{
+  "campaign_status": {
+    "active_family": "NIST SP 800-53r5 current-extraction page candidates",
+    "active_page": 5,
+    "blocked_by_systemic_failure": 0,
+    "failed": 0,
+    "latest_failure_signature": "none for page5 live second-pass review",
+    "not_run": "remaining active candidate queue",
+    "passed": 1
+  },
+  "candidate": "frontmatter abstract/keywords page",
+  "evidence": {
+    "live_final_gate": "artifacts/pdf_lab/live_second_pass_page5_20260721T0911Z/harness_final_gate.json",
+    "live_model_response": "artifacts/pdf_lab/live_second_pass_page5_20260721T0911Z/page_cases/page_case_0001_p0005/review_response.json",
+    "live_review_validation": "artifacts/pdf_lab/live_second_pass_page5_20260721T0911Z/page_cases/page_case_0001_p0005/review_validation.json",
+    "live_terminal_ledger": "artifacts/pdf_lab/live_second_pass_page5_20260721T0911Z/page_cases/page_case_0001_p0005/terminal_ledger.json",
+    "review_bundle": "artifacts/pdf_lab/live_second_pass_page5_20260721T0911Z/page_cases/page_case_0001_p0005/review_bundle.zip"
+  },
+  "mocked": "no",
+  "live": "yes",
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "verified": {
+    "candidate_count": 7,
+    "defect_count": 0,
+    "harness_final_gate_ok": true,
+    "review_response_page_status": "clean",
+    "review_validation_ok": true,
+    "terminal_status": "reviewed_clean"
+  },
+  "what_was_exercised": "A live page5 second-pass review used the running SciLLM proxy on localhost:4001 and the page orchestrator live transport path with the patched pdf_oxide auth resolver.",
+  "what_remains_unverified": [
+    "remaining active page candidates beyond page 5",
+    "Criterion 6 live GitHub apply mutation, still requiring approval receipt"
+  ]
+}
