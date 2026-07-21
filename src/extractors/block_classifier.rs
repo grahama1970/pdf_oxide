@@ -255,15 +255,38 @@ impl BlockClassifier {
         body_font_size_override: Option<f32>,
         header_ratio_override: Option<f32>,
     ) -> Self {
-        let mut sizes: Vec<f32> = spans.iter().map(|s| s.font_size).collect();
-        sizes.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
-        let auto_median = if sizes.is_empty() {
+        // Estimate the body face by rendered text coverage, not by the number
+        // of TextSpan records. A PDF may split small page chrome into hundreds
+        // of short spans while storing each full body line in one long span;
+        // an unweighted span median then makes body text look artificially
+        // large to the heading classifier.
+        let mut size_weights: Vec<(f32, usize)> = spans
+            .iter()
+            .map(|span| {
+                let visible_chars = span.text.chars().filter(|c| !c.is_whitespace()).count();
+                (span.font_size, visible_chars.max(1))
+            })
+            .collect();
+        size_weights.sort_by(|a, b| {
+            a.0.partial_cmp(&b.0)
+                .unwrap_or(std::cmp::Ordering::Equal)
+        });
+        let auto_median = if size_weights.is_empty() {
             12.0
         } else {
-            sizes[sizes.len() / 2]
+            let total_weight: usize = size_weights.iter().map(|(_, weight)| weight).sum();
+            let midpoint = total_weight / 2;
+            let mut cumulative = 0;
+            size_weights
+                .iter()
+                .find_map(|(size, weight)| {
+                    cumulative += weight;
+                    (cumulative > midpoint).then_some(*size)
+                })
+                .unwrap_or(12.0)
         };
         let median_font_size = body_font_size_override.unwrap_or(auto_median);
-        let max_font_size = sizes.last().copied().unwrap_or(12.0);
+        let max_font_size = size_weights.last().map(|(size, _)| *size).unwrap_or(12.0);
 
         Self {
             page_width,
@@ -557,6 +580,31 @@ impl BlockClassifier {
                 is_bold,
                 0.85,
                 Some(0),
+                None,
+            );
+        }
+
+        // Callout-box title: some documents set a short title at body size,
+        // relying on bold, all-caps, and centered placement rather than font
+        // enlargement. Require a geometrically short line as well as centered
+        // placement so a full-width prose fragment cannot qualify merely
+        // because its center happens to coincide with the page center.
+        let char_count = trimmed.chars().count();
+        if is_bold
+            && is_all_caps_text(trimmed)
+            && (5..=60).contains(&char_count)
+            && is_centered
+            && bbox.width <= self.page_width * 0.6
+        {
+            return self.make_block(
+                BlockType::Title,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.85,
+                Some(2),
                 None,
             );
         }
@@ -2105,6 +2153,120 @@ mod tests {
         assert!(blocks.len() >= 2);
         assert_eq!(blocks[0].block_type, BlockType::Title);
         assert!(blocks[0].header_level.is_some());
+    }
+
+    #[test]
+    fn test_body_font_frequency_uses_text_coverage_not_span_count() {
+        // Many tiny chrome fragments can outnumber the much longer body-text
+        // spans on a page. They must not pull the body-font estimate down and
+        // make ordinary body-size text look like large-font heading text.
+        let mut spans = Vec::new();
+        for sequence in 0..60 {
+            let mut chrome = make_span("x", 20.0 + sequence as f32, 770.0, 9.0, false);
+            chrome.sequence = sequence;
+            spans.push(chrome);
+        }
+
+        let prose = "ordinary body prose continues across nearly the full text column without ending here";
+        let continuation = "and this following line completes the same paragraph in the normal body face.";
+        spans.push(make_span(prose, 90.0, 700.0, 11.0, true));
+        spans.push(make_span(continuation, 90.0, 685.0, 11.0, false));
+        spans.push(make_span(
+            "2.2 CONTROL STRUCTURE AND ORGANIZATION",
+            90.0,
+            650.0,
+            14.0,
+            true,
+        ));
+
+        let expected_chars: String = spans.iter().map(|span| span.text.as_str()).collect();
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        let prose_block = blocks
+            .iter()
+            .find(|block| block.text.contains(prose))
+            .expect("body prose must be retained");
+        assert_eq!(prose_block.block_type, BlockType::Body);
+        assert!(prose_block.text.contains(continuation));
+
+        let heading = blocks
+            .iter()
+            .find(|block| block.text.contains("CONTROL STRUCTURE"))
+            .expect("real heading must be retained");
+        assert_eq!(heading.block_type, BlockType::Title);
+
+        let actual_chars: String = blocks
+            .iter()
+            .flat_map(|block| block.text.chars())
+            .filter(|c| !c.is_whitespace())
+            .collect();
+        let expected_chars: String = expected_chars
+            .chars()
+            .filter(|c| !c.is_whitespace())
+            .collect();
+        assert_eq!(actual_chars, expected_chars, "classification must not delete text");
+    }
+
+    #[test]
+    fn test_body_sized_centered_all_caps_callout_titles_remain_headings() {
+        const PAGE_WIDTH: f32 = 612.0;
+        let titles = [
+            "CONTROL BASELINES",
+            "FEDERAL RECORDS MANAGEMENT COLLABORATION",
+        ];
+
+        for title in titles {
+            let mut callout_title = make_span(title, 0.0, 700.0, 11.0, true);
+            callout_title.bbox.x = (PAGE_WIDTH - callout_title.bbox.width) / 2.0;
+            let body = make_span(
+                "ordinary body prose supplies the dominant body-size coverage on this page.",
+                72.0,
+                680.0,
+                11.0,
+                false,
+            );
+            let expected_text = format!("{}{}", callout_title.text, body.text);
+            let spans = vec![callout_title, body];
+
+            let classifier = BlockClassifier::new(PAGE_WIDTH, 792.0, &spans);
+            let blocks = classifier.classify_spans(&spans);
+
+            let heading = blocks
+                .iter()
+                .find(|block| block.text == title)
+                .expect("callout title must be retained as its own block");
+            assert_eq!(heading.block_type, BlockType::Title);
+            assert_eq!(heading.font_size, 11.0, "body-size title must be rescued");
+
+            let actual_text: String = blocks.iter().map(|block| block.text.as_str()).collect();
+            assert_eq!(actual_text, expected_text, "classification must retain every character");
+        }
+    }
+
+    #[test]
+    fn test_centered_full_width_prose_stays_body() {
+        const PAGE_WIDTH: f32 = 612.0;
+        let prose_fragments = [
+            "The organization defines the applicable controls and",
+            "systems and services operating within the authorization",
+            "records are retained according to the approved schedule",
+            "and responsibilities remain assigned across the enterprise",
+        ];
+
+        for prose in prose_fragments {
+            let mut span = make_span(prose, 0.0, 700.0, 11.0, true);
+            span.bbox.width = PAGE_WIDTH * 0.9;
+            span.bbox.x = (PAGE_WIDTH - span.bbox.width) / 2.0;
+            let spans = vec![span];
+
+            let classifier = BlockClassifier::new(PAGE_WIDTH, 792.0, &spans);
+            let blocks = classifier.classify_spans(&spans);
+
+            assert_eq!(blocks.len(), 1);
+            assert_eq!(blocks[0].block_type, BlockType::Body);
+            assert_eq!(blocks[0].text, prose, "classification must retain every character");
+        }
     }
 
     #[test]
