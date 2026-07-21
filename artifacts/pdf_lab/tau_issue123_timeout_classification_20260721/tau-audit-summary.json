@@ -7,8 +7,8 @@
   "live": true,
   "provider_live": false,
   "root_cause_code": "scillm_chat_review_provider_quota_exhausted",
-  "root_cause_basis": "live Tau canary eventually surfaced HTTP 429 provider quota/rate-limit exhaustion on the vlm-free2 route; shorter page39 timeout diagnosis remains preserved as service-unresponsive within its 30s diagnosis budget",
-  "recommended_next_action": "do not retry PDF Lab page payloads against this model route; wait for quota recovery or switch Tau to an approved non-exhausted model route, then require a minimal Tau canary PASS",
+  "root_cause_basis": "live Tau canary eventually surfaced HTTP 429 provider quota/rate-limit exhaustion on the vlm-free2 route; shorter page39 timeout diagnosis remains preserved as service-unresponsive within its 30s diagnosis budget; a local-text canary then surfaced HTTP 502 route exhaustion",
+  "recommended_next_action": "do not retry PDF Lab page payloads against these model routes; wait for quota/cooldown recovery or switch Tau to an approved non-exhausted model route, then require a minimal Tau canary PASS",
   "changed_files": [
     "PROJECT_KNOWLEDGE.md",
     "src/tau_coding/scillm_chat_review.py",
@@ -20,13 +20,20 @@
     "page39_timeout_error": "experiments/goal-locked-subagents/proofs/issue-123-pdf-lab-chat-review-timeout-20260721/page39-diagnostic-receipt.error.json",
     "quota_canary": "experiments/goal-locked-subagents/proofs/issue-123-pdf-lab-chat-review-timeout-20260721/quota-canary-receipt.json",
     "quota_canary_error": "experiments/goal-locked-subagents/proofs/issue-123-pdf-lab-chat-review-timeout-20260721/quota-canary-receipt.error.json",
-    "quota_canary_raw_response": "experiments/goal-locked-subagents/proofs/issue-123-pdf-lab-chat-review-timeout-20260721/quota-canary-receipt.raw-response.json"
+    "quota_canary_raw_response": "experiments/goal-locked-subagents/proofs/issue-123-pdf-lab-chat-review-timeout-20260721/quota-canary-receipt.raw-response.json",
+    "local_text_canary": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/local-text-canary-receipt.json",
+    "webgpt_unblock_attempt": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_attempt.json"
   },
   "external_unblock_attempts": [
     {
       "skill": "brave-search",
       "command": "python /home/graham/workspace/experiments/agent-skills/skills/brave-search/brave_search.py web \"OpenAI compatible proxy 502 all groups exhausted circuit breaker quota rate limit\" --count 5 --json",
       "result": "returned current/public rate-limit and quota-handling references; used as advisory context only"
+    },
+    {
+      "skill": "webgpt",
+      "command": "python /home/graham/workspace/experiments/agent-skills/skills/webgpt/scripts/webgpt_cli.py submit artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_assess_bundle.md -p pdf_oxide --output-contract assess --tab-id 837359458 --expect-url https://chatgpt.com/g/g-p-6a2421edf6c48191bf65737182e5a073-pdf-lab/c/6a5beb30-367c-83ea-888b-97cb1a22cf2c --repo-root /tmp/pdf_oxide_integrate_gs001_20260721 --source-path GOAL.md --source-path local/HANDOFF.md --source-path artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/quota-canary-receipt.json --source-path artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/tau-audit-summary.json",
+      "result": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
     }
   ],
   "proof_commands": [
@@ -81,6 +88,25 @@
       },
       "proves": "Tau classifies the live vlm-free2 route failure as provider quota/rate-limit exhaustion without emitting review_response_not_parseable",
       "does_not_prove": "that any PDF Lab candidate can currently receive parseable live model review JSON"
+    },
+    {
+      "command": "uv run tau scillm-chat-review --request /tmp/tau-issue123-local-text-canary-request.json --out /tmp/tau-issue123-local-text-canary-receipt.json --response-out /tmp/tau-issue123-local-text-canary-response.json --scillm-base-url http://127.0.0.1:4001 --caller-skill pdf-lab --apply --request-timeout-s 120 --timeout-diagnosis-mode live_canary --timeout-diagnosis-timeout-s 30",
+      "result": {
+        "status": "BLOCKED",
+        "ok": false,
+        "mocked": false,
+        "live": true,
+        "provider_live": false,
+        "http_status": 502,
+        "timed_out": false,
+        "root_cause_code": "scillm_chat_review_route_exhausted",
+        "alert_codes": [
+          "scillm_chat_review_route_exhausted"
+        ],
+        "duration_seconds": 1.436898
+      },
+      "proves": "Tau-owned local-text canary did not provide a usable alternate schema-JSON route; it failed closed as route exhausted",
+      "does_not_prove": "that no future Tau-approved route can work after cooldown/reconfiguration"
     }
   ]
 }

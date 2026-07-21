@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T15:35:00Z
+**Timestamp**: 2026-07-21T15:39:00Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -169,6 +169,10 @@
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/quota-canary-receipt.json`
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/quota-canary-receipt.error.json`
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/quota-canary-receipt.raw-response.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/local-text-canary-receipt.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/local-text-canary-receipt.error.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/local-text-canary-receipt.raw-response.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_attempt.json`
     - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/tau-audit-summary.json`
   - Live receipt boundary:
     - `mocked=false`
@@ -176,8 +180,10 @@
     - `provider_live=false`
     - short page39 timeout diagnostic: `root_cause_code=scillm_chat_review_service_unresponsive`
     - longer minimal Tau canary: `http_status=429`, `root_cause_code=scillm_chat_review_provider_quota_exhausted`
-    - `recommended_next_action=do not retry PDF Lab page payloads against this model route; wait for quota recovery or switch Tau to an approved non-exhausted model route, then require a minimal Tau canary PASS`
-  - Important correction: the current blocker is no longer an ambiguous `review_response_not_parseable` page payload failure. Tau now proves the live `vlm-free2` route is provider quota/rate-limit exhausted when allowed to surface the upstream error.
+    - local-text alternate canary: `http_status=502`, `root_cause_code=scillm_chat_review_route_exhausted`
+    - WebGPT exact-tab escalation: `BLOCKED_WEBGPT_TAB_IDENTITY_MISSING` for tab `837359458`
+    - `recommended_next_action=do not retry PDF Lab page payloads against these model routes; wait for quota/cooldown recovery or switch Tau to an approved non-exhausted model route, then require a minimal Tau canary PASS`
+  - Important correction: the current blocker is no longer an ambiguous `review_response_not_parseable` page payload failure. Tau now proves the live `vlm-free2` route is provider quota/rate-limit exhausted when allowed to surface the upstream error, and a text-only alternate route is also exhausted.
 
 ## 6. Campaign Status
 
@@ -189,7 +195,7 @@
 | `explicitly_blocked` | `2` |
 | `not_run` | `448` unreviewed pages remaining after page401 |
 | Active page/checklist item | blocked pending `vlm-free2` provider quota/rate-limit recovery or approved alternate Tau model route proven by Tau-owned minimal canary PASS |
-| Latest failure signature | `scillm_chat_review_provider_quota_exhausted` |
+| Latest failure signature | `vlm-free2=scillm_chat_review_provider_quota_exhausted`; `local-text=scillm_chat_review_route_exhausted`; WebGPT exact-tab escalation blocked by `BLOCKED_WEBGPT_TAB_IDENTITY_MISSING` |
 
 ## 7. Important Correction To Claude Report
 
@@ -214,7 +220,7 @@
 
 Use the same one-candidate proof ladder, without direct SciLLM calls from `pdf_oxide`:
 
-1. Do not select another live model-review candidate until a Tau-owned minimal canary returns PASS against `vlm-free2` or against an explicitly approved alternate Tau model route.
+1. Do not select another live model-review candidate until a Tau-owned minimal canary returns PASS against `vlm-free2` or against an explicitly approved alternate Tau model route. The attempted `local-text` alternate is not currently usable.
 2. Any candidate whose model/executor review is required must go through Tau DAG contracts, not direct SciLLM/OpenCode calls from this repo.
 3. Criterion 6 live GitHub apply remains blocked until a valid approval receipt for mutation exists.
 4. After route recovery or approved route replacement is proven, resume by selecting the next fresh current-extraction candidate after excluding page401.

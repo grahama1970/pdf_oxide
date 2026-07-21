@@ -1,0 +1,16 @@
+{
+  "schema": "pdf_lab.webgpt_unblock_attempt.v1",
+  "created_at": "2026-07-21T15:38:00Z",
+  "status": "BLOCKED",
+  "mocked": false,
+  "live": true,
+  "provider_live": false,
+  "command": "python /home/graham/workspace/experiments/agent-skills/skills/webgpt/scripts/webgpt_cli.py submit artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_assess_bundle.md -p pdf_oxide --output-contract assess --tab-id 837359458 --expect-url https://chatgpt.com/g/g-p-6a2421edf6c48191bf65737182e5a073-pdf-lab/c/6a5beb30-367c-83ea-888b-97cb1a22cf2c --repo-root /tmp/pdf_oxide_integrate_gs001_20260721 --source-path GOAL.md --source-path local/HANDOFF.md --source-path artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/quota-canary-receipt.json --source-path artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/tau-audit-summary.json",
+  "exit_code": 2,
+  "error": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0",
+  "requested_tab_id": "837359458",
+  "expected_url": "https://chatgpt.com/g/g-p-6a2421edf6c48191bf65737182e5a073-pdf-lab/c/6a5beb30-367c-83ea-888b-97cb1a22cf2c",
+  "bundle": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_assess_bundle.md",
+  "proves": "WebGPT exact-tab escalation was attempted and failed before prompt submission because the required tab was not open",
+  "does_not_prove": "WebGPT reviewed the route blocker or supplied a semantic recommendation"
+}
