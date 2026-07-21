@@ -82,6 +82,7 @@ Current completed page evidence:
 | `page_0043` | live second-pass model-backed review through Tau-owned `scillm-chat-review`; 13/13 candidate findings clean, pdf_oxide review validation and terminal ledger validation pass | `artifacts/pdf_lab/fresh_candidate_selection_after_page41_tau_20260721/sampled_page_cases.json`, `artifacts/pdf_lab/page43_tau_live_review_20260721/audit_summary.json`, `artifacts/pdf_lab/live_second_pass_page43_tau_prep_20260721/page_case_0001_p0043/review_bundle.zip`, `artifacts/pdf_lab/live_second_pass_page43_tau_prep_20260721/page_case_0001_p0043/tau_scillm_chat_review_receipt.json` | pending push after page43 Tau-live review receipt commit |
 | `page_0040` | live second-pass model-backed review through Tau-owned `scillm-chat-review`; 11/11 candidate findings clean, pdf_oxide review validation and terminal ledger validation pass | `artifacts/pdf_lab/fresh_candidate_selection_after_page43_tau_20260721/sampled_page_cases.json`, `artifacts/pdf_lab/page40_tau_live_review_20260721/audit_summary.json`, `artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/review_bundle.zip`, `artifacts/pdf_lab/live_second_pass_page40_tau_prep_20260721/page_case_0001_p0040/tau_scillm_chat_review_receipt.json` | pending push after page40 Tau-live review receipt commit |
 | `page_0039` | live second-pass Tau-owned `scillm-chat-review` circuit-broken after three matching 120s timeout receipts, including one contract-preserving DPI-reduced payload; terminal ledger and review bundle valid as `blocked_substrate` | `artifacts/pdf_lab/fresh_candidate_selection_after_page40_tau_20260721/sampled_page_cases.json`, `artifacts/pdf_lab/page39_tau_timeout_blocked_20260721/audit_summary.json`, `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/tau_attempt1_receipt.json`, `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/tau_attempt2_receipt.json`, `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/tau_attempt3_dpi110_receipt.json`, `artifacts/pdf_lab/live_second_pass_page39_tau_prep_dpi110_20260721/page_case_0001_p0039/review_bundle.zip`, `https://github.com/grahama1970/tau/issues/123` | pending push after page39 timeout-blocked receipt commit |
+| `page_0401` | live second-pass Tau-owned `scillm-chat-review` hit the same 120s timeout signature after page39 circuit breaker; recorded as blocked by existing Tau issue #123 with valid terminal ledger and bundle | `artifacts/pdf_lab/fresh_candidate_selection_after_page39_tau_20260721/sampled_page_cases.json`, `artifacts/pdf_lab/page401_tau_timeout_blocked_20260721/audit_summary.json`, `artifacts/pdf_lab/live_second_pass_page401_tau_prep_20260721/page_case_0001_p0401/tau_attempt1_receipt.json`, `artifacts/pdf_lab/live_second_pass_page401_tau_prep_20260721/page_case_0001_p0401/review_bundle.zip`, `https://github.com/grahama1970/tau/issues/123#issuecomment-5035599797` | pending push after page401 timeout-blocked receipt commit |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -121,11 +122,11 @@ fresh current-extraction reviewer/candidate selection pass:
 
 | Field | Value |
 |-------|-------|
-| Page | fresh reviewer-selected page after excluding page39 |
+| Page | blocked pending Tau issue #123 repair receipt before more live model-review pages |
 | Defect class | to be selected from fresh current-extraction/model-review evidence |
-| Observed failure | page39 live second-pass review through Tau commit `b48d815c34ee603e79f4c6f64edcfc92ccf3d8d4` timed out three times at the 120s gate with signature `scillm_chat_review_timeout+review_response_not_parseable@120s`; page40, page41, and page43 Tau-bound live second-pass reviews remain reviewed clean |
+| Observed failure | page39 live second-pass review through Tau commit `b48d815c34ee603e79f4c6f64edcfc92ccf3d8d4` timed out three times at the 120s gate with signature `scillm_chat_review_timeout+review_response_not_parseable@120s`; page401 then hit the same signature on a valid 854883-byte request; page40, page41, and page43 Tau-bound live second-pass reviews remain reviewed clean |
 | Handoff evidence | `/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md`, measured-position table |
-| Candidate artifacts to inspect first | current `artifacts/pdf_lab/` receipts, release snapshots, model-review receipts, and a fresh current-extraction reviewer pass excluding page39 |
+| Candidate artifacts to inspect first | Tau issue `https://github.com/grahama1970/tau/issues/123`, page39/page401 timeout receipts, and any focused Tau repair/root-cause receipt |
 | Constraint | select one checklist item only; preserve visual/current extraction evidence before patching; any model/executor work must use Tau-owned commands such as `tau scillm-chat-review`, not direct SciLLM/OpenCode from pdf_oxide |
 
 Current campaign status for the active Tau live-review sequence:
@@ -134,11 +135,11 @@ Current campaign status for the active Tau live-review sequence:
 |-------|-------|
 | `passed` | `3` |
 | `failed` | `0` |
-| `blocked_by_systemic_failure` | `1` |
-| `explicitly_blocked` | `1` |
-| `not_run` | `449` unreviewed pages remaining after page39 |
-| Active page/checklist item | next fresh selected current-extraction page after page39 |
-| Latest failure signature | `scillm_chat_review_timeout+review_response_not_parseable@120s` on page39; receipts at `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/` and page audit at `artifacts/pdf_lab/page39_tau_timeout_blocked_20260721/audit_summary.json` |
+| `blocked_by_systemic_failure` | `2` |
+| `explicitly_blocked` | `2` |
+| `not_run` | `448` unreviewed pages remaining after page401 |
+| Active page/checklist item | blocked pending Tau issue #123 focused repair/root-cause receipt |
+| Latest failure signature | `scillm_chat_review_timeout+review_response_not_parseable@120s` on page39 and page401; receipts at `artifacts/pdf_lab/page39_tau_timeout_unblock_20260721/`, `artifacts/pdf_lab/page39_tau_timeout_blocked_20260721/audit_summary.json`, and `artifacts/pdf_lab/page401_tau_timeout_blocked_20260721/audit_summary.json` |
 
 Before patching the next item, produce a selection receipt that names the
 exact page image/current extraction/model-review artifacts used and the focused
