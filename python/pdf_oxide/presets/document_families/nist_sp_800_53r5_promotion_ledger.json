@@ -4929,6 +4929,80 @@
       },
       "rule_class": "document_family_adapter",
       "status": "closed"
+    },
+    {
+      "added_at": "2026-07-21T09:20:00Z",
+      "added_by": "agent:codex (PDF Lab page6 live second-pass hardening)",
+      "applied_at": "2026-07-21T09:20:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route the NIST page 6 bold centered frontmatter heading 'HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53' to section_heading instead of reference.",
+      "closed_at": "2026-07-21T09:20:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page6_historical_contributions_heading.py)",
+      "entry_id": "nist-page6-historical-contributions-heading-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p6:block:5",
+          "cand:p0006:0005:reference"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/review_response.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Any reference citation or continuation with different text; rejected by exact text.",
+          "Any non-bold or off-band occurrence of the same words; rejected by page, font, and bbox guards."
+        ],
+        "candidates_that_prove": [
+          "Page 6 block 5 is bold, centered, all-caps frontmatter text and the live page6 second-pass review classified it as a heading/title rather than a reference citation."
+        ],
+        "deterministic_rule": "If NIST Body paragraph text on page 6 exactly equals 'HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53' in the observed centered heading band, set type=section_heading and semantic_role=frontmatter_section_heading before the broader reference-continuation classifier can claim it."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "page is not 6",
+          "text is not exactly HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53",
+          "source_type is not Body",
+          "type is not paragraph_block before semantic enrichment",
+          "font is not bold or outside the 10.8-11.2pt band",
+          "bbox is outside the observed centered heading band"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This exact-text page6 rule intentionally overrides generic reference-continuation typing only for the visual frontmatter heading identified by the live second-pass review.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "width_gt": 0.49,
+            "width_lt": 0.52,
+            "x_min_gt": 0.24,
+            "x_min_lt": 0.26,
+            "y_min_gt": 0.40,
+            "y_max_lt": 0.44
+          },
+          "font_properties": {
+            "font_size_gt": 10.8,
+            "font_size_lt": 11.2,
+            "is_bold": true
+          },
+          "page": 6,
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "equals_ci": "HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53",
+            "fields": {
+              "semantic_role": "frontmatter_section_heading",
+              "type": "section_heading"
+            }
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
     }
   ],
   "preset_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",

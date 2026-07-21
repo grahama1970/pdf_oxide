@@ -1,0 +1,32 @@
+{
+  "query": "\"HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53\"",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "NIST Special Publication 800-53A Revision 5",
+      "description": "<strong>HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53</strong>A",
+      "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53Ar5.pdf"
+    },
+    {
+      "title": "NIST Special Publication 800-53 Revision 5 Security and Privacy Controls for",
+      "description": "<strong>HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53</strong>",
+      "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf"
+    },
+    {
+      "title": "NIST Special Publication 800-53B Control Baselines for Information",
+      "description": "HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53 \u00b7 <strong>The authors wanted to acknowledge the many individuals who contributed to previous versions</strong> \u00b7 of Special Publication 800-53 since its inception in 2005. They include Marshall Abrams, Dennis \u00b7 Bailey, Lee Badger, Curt Barker, Matthew ...",
+      "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53B.pdf"
+    },
+    {
+      "title": "NIST Special Publication 800-53 Revision 5 Security and Privacy Controls for",
+      "description": "<strong>HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53</strong>",
+      "url": "https://cdn.lawreportgroup.com/acuris/files/Cybersecurity-New/Trump%20Cyber%20EO%20%E2%80%A2%20NIST%20Patching%20publication%20SP_800-53r5.pdf"
+    },
+    {
+      "title": "NIST Special Publication 800-53 Revision 5 Security and Privacy Controls for",
+      "description": "<strong>HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53</strong>",
+      "url": "https://rmf.org/wp-content/uploads/2020/10/NIST.SP_.800-53r5.pdf"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "agent_sequence": [
+    "build"
+  ],
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "agent": "build",
+      "attempt_index": 1,
+      "diagnosis_error_artifact": null,
+      "diagnosis_opencode_host_artifacts": [],
+      "diagnosis_receipt_artifact": null,
+      "diagnosis_request_artifact": null,
+      "diagnosis_transport_event_artifacts": [],
+      "diagnosis_validation_artifact": null,
+      "error_artifact": null,
+      "errors": [
+        "patch_delegate_dry_run"
+      ],
+      "ok": false,
+      "opencode_child_handle_artifacts": [],
+      "opencode_host_artifacts": [],
+      "prompt_contract_artifacts": [
+        "patch_attempt_01_prompt_contract.json",
+        "patch_attempt_01_prompt_review_payload.txt"
+      ],
+      "receipt_artifact": null,
+      "repair_plan_receipt_artifact": null,
+      "repair_plan_request_artifact": null,
+      "repair_plan_request_validation_artifact": null,
+      "repair_plan_validation_artifact": null,
+      "request_artifact": "patch_attempt_01_request.json",
+      "transport_event_artifacts": [],
+      "transport_retry_fresh_parent": false,
+      "validation_artifact": "patch_attempt_01_validation.json"
+    }
+  ],
+  "candidate_count": 7,
+  "candidate_ids": [
+    "cand:p0006:0000:side_chrome",
+    "cand:p0006:0001:side_chrome",
+    "cand:p0006:0002:side_chrome",
+    "cand:p0006:0003:side_chrome",
+    "cand:p0006:0004:text",
+    "cand:p0006:0005:reference",
+    "cand:p0006:0006:text"
+  ],
+  "page_case": {
+    "case_id": "page_case_0001_p0006",
+    "page_number": 6
+  },
+  "patch_backend": "opencode_serve",
+  "patch_mode": "dry_run",
+  "patch_prompt_profile": "plan_only",
+  "repair_strategy": "single",
+  "schema": "pdf_lab.second_pass.patch_attempts_ledger.v1",
+  "selected_attempt_index": null
+}
