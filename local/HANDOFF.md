@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T15:45:00Z
+**Timestamp**: 2026-07-21T16:45:00Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -188,6 +188,7 @@
     - resumed minimal Tau `vlm-free2` canary at `2026-07-21T15:43:22Z`: `timed_out=true`, `duration_seconds=150.124672`, `root_cause_code=scillm_chat_review_service_unresponsive`
     - fresh Brave Search artifact: `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/brave_search_route_recovery_20260721.json`
     - WebGPT exact-tab escalation: `BLOCKED_WEBGPT_TAB_IDENTITY_MISSING` for tab `837359458`
+    - Tau-owned `$ask webkimi` route assessment: `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/ask_webkimi_route_unblock_assessment.json`; runtime artifacts under `/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640/`; `mocked=false`, `live=true`, `provider_live=true`, `transport=kimi.submit`, substantive diagnosis `BLOCKED_CURRENT_GATE`
     - `recommended_next_action=do not retry PDF Lab page payloads against these model routes; wait for quota/cooldown recovery or switch Tau to an approved non-exhausted model route, then require a minimal Tau canary PASS`
   - Important correction: the current blocker is no longer an ambiguous `review_response_not_parseable` page payload failure. Tau now proves the live `vlm-free2` route is provider quota/rate-limit exhausted when allowed to surface the upstream error, and a text-only alternate route is also exhausted.
 
@@ -201,7 +202,7 @@
 | `explicitly_blocked` | `2` |
 | `not_run` | `448` unreviewed pages remaining after page401 |
 | Active page/checklist item | blocked pending `vlm-free2` provider quota/rate-limit recovery or approved alternate Tau model route proven by Tau-owned minimal canary PASS |
-| Latest failure signature | resumed `vlm-free2=scillm_chat_review_service_unresponsive` after 150.124672s; prior `vlm-free2=scillm_chat_review_provider_quota_exhausted`; `local-text=scillm_chat_review_route_exhausted`; WebGPT exact-tab escalation blocked by `BLOCKED_WEBGPT_TAB_IDENTITY_MISSING` |
+| Latest failure signature | resumed `vlm-free2=scillm_chat_review_service_unresponsive` after 150.124672s; prior `vlm-free2=scillm_chat_review_provider_quota_exhausted`; `local-text=scillm_chat_review_route_exhausted`; WebGPT exact-tab escalation blocked by `BLOCKED_WEBGPT_TAB_IDENTITY_MISSING`; Tau-owned `$ask webkimi` live advisory assessment returned `BLOCKED_CURRENT_GATE` |
 
 ## 7. Important Correction To Claude Report
 
@@ -226,7 +227,7 @@
 
 Use the same one-candidate proof ladder, without direct SciLLM calls from `pdf_oxide`:
 
-1. Do not select another live model-review candidate until a Tau-owned minimal canary returns PASS against `vlm-free2` or against an explicitly approved alternate Tau model route. The attempted `local-text` alternate is not currently usable.
+1. Do not select another live model-review candidate until a Tau-owned minimal canary returns PASS against `vlm-free2` or against an explicitly approved alternate Tau model route. The attempted `local-text` alternate is not currently usable, and the Tau-owned `$ask webkimi` route assessment confirms there is no legitimate `pdf_oxide` self-unblock under the current gate.
 2. Any candidate whose model/executor review is required must go through Tau DAG contracts, not direct SciLLM/OpenCode calls from this repo.
 3. Criterion 6 live GitHub apply remains blocked until a valid approval receipt for mutation exists.
 4. After route recovery or approved route replacement is proven, resume by selecting the next fresh current-extraction candidate after excluding page401.

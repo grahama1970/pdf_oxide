@@ -7,7 +7,7 @@
   "live": true,
   "provider_live": false,
   "root_cause_code": "scillm_chat_review_provider_quota_exhausted",
-  "root_cause_basis": "live Tau canary eventually surfaced HTTP 429 provider quota/rate-limit exhaustion on the vlm-free2 route; shorter page39 timeout diagnosis remains preserved as service-unresponsive within its 30s diagnosis budget; a local-text canary then surfaced HTTP 502 route exhaustion; a resumed vlm-free2 canary later timed out through both primary and diagnosis canary budgets",
+  "root_cause_basis": "live Tau canary eventually surfaced HTTP 429 provider quota/rate-limit exhaustion on the vlm-free2 route; shorter page39 timeout diagnosis remains preserved as service-unresponsive within its 30s diagnosis budget; a local-text canary then surfaced HTTP 502 route exhaustion; a resumed vlm-free2 canary later timed out through both primary and diagnosis canary budgets; a Tau-owned ask/webkimi advisory assessment found no legitimate pdf_oxide self-unblock under the current gate",
   "recommended_next_action": "do not retry PDF Lab page payloads against these model routes; wait for quota/cooldown recovery or switch Tau to an approved non-exhausted model route, then require a minimal Tau canary PASS",
   "changed_files": [
     "PROJECT_KNOWLEDGE.md",
@@ -25,7 +25,8 @@
     "webgpt_unblock_attempt": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_attempt.json",
     "resume_vlm_free2_canary": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/vlm-free2-resume-canary-20260721T154322Z-receipt.json",
     "resume_vlm_free2_canary_error": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/vlm-free2-resume-canary-20260721T154322Z-receipt.error.json",
-    "brave_search_route_recovery": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/brave_search_route_recovery_20260721.json"
+    "brave_search_route_recovery": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/brave_search_route_recovery_20260721.json",
+    "ask_webkimi_route_unblock_assessment": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/ask_webkimi_route_unblock_assessment.json"
   },
   "external_unblock_attempts": [
     {
@@ -42,6 +43,19 @@
       "skill": "webgpt",
       "command": "python /home/graham/workspace/experiments/agent-skills/skills/webgpt/scripts/webgpt_cli.py submit artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_assess_bundle.md -p pdf_oxide --output-contract assess --tab-id 837359458 --expect-url https://chatgpt.com/g/g-p-6a2421edf6c48191bf65737182e5a073-pdf-lab/c/6a5beb30-367c-83ea-888b-97cb1a22cf2c --repo-root /tmp/pdf_oxide_integrate_gs001_20260721 --source-path GOAL.md --source-path local/HANDOFF.md --source-path artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/quota-canary-receipt.json --source-path artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/tau-audit-summary.json",
       "result": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+    },
+    {
+      "skill": "ask",
+      "handler": "webkimi",
+      "command": "cd /home/graham/workspace/experiments/agent-skills/skills/ask && ./run.sh tau-dag \"Assess the current PDF Oxide route blocker...\" --repo local/pdf_oxide --target pdf-lab-route-unblock --handler webkimi --execute --run-output-root /mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721 --ask-id pdf-oxide-route-unblock-webkimi-20260721T1640 --poll-timeout-seconds 300 --json",
+      "result": {
+        "transport_status": "PASS",
+        "mocked": false,
+        "live": true,
+        "provider_live": true,
+        "run_dir": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640",
+        "assessment": "DIAGNOSIS: BLOCKED_CURRENT_GATE: Tau/SciLLM vlm-free2 route unresponsive with cascading alternate-route exhaustion; no legitimate self-unblock path exists inside pdf_oxide."
+      }
     }
   ],
   "proof_commands": [
