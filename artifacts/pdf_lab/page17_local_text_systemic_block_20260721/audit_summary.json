@@ -1,0 +1,96 @@
+{
+  "blocker": {
+    "owner": "scillm_or_transport_runtime",
+    "reason": "Page17 is the third representative local-text second-pass review case with the same ReadTimeout endpoint/error signature after healthy preflight. Per circuit breaker, further untouched same-family candidates are blocked_by_systemic_failure until the transport can return parseable schema JSON under the 120-second gate.",
+    "type": "live_model_transport_timeout_family"
+  },
+  "campaign_status": {
+    "active_family": "NIST SP 800-53r5 current-extraction live local-text second-pass review transport",
+    "active_page": 17,
+    "blocked_by_systemic_failure": 56,
+    "failed": 0,
+    "latest_failure_signature": "Page17 reproduced the same local-text ReadTimeout with a 139076-character request at DPI 72, after page14 and page16 had already reproduced the same endpoint/error family.",
+    "not_run": 0,
+    "passed": 0
+  },
+  "candidate": "page17 live local-text transport circuit-breaker representative",
+  "evidence": {
+    "brave_search_receipt": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/brave_systemic_local_text_readtimeout.json",
+    "candidate_overlay": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/page_cases/page_case_0001_p0017/page_candidates.png",
+    "live_run": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/harness_final_gate.json",
+    "page_image": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/page_cases/page_case_0001_p0017/page_before.png",
+    "review_bundle": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/page_cases/page_case_0001_p0017/review_bundle.zip",
+    "review_request": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/page_cases/page_case_0001_p0017/review_request.json",
+    "review_validation": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/page_cases/page_case_0001_p0017/review_validation.json",
+    "substrate_error": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/page_cases/page_case_0001_p0017/scillm_review_error.json",
+    "systemic_block_summary": "artifacts/pdf_lab/page17_local_text_systemic_block_20260721/systemic_block_summary.json",
+    "terminal_ledger": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/page_cases/page_case_0001_p0017/terminal_ledger.json",
+    "webgpt_assessment": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/webgpt_page17_systemic_readtimeout_bundle-assess-response.md",
+    "webgpt_meta": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/webgpt_page17_systemic_readtimeout_bundle-assess-response.meta.json",
+    "webgpt_receipt": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/webgpt_page17_systemic_readtimeout_bundle-assess-response.receipt.json"
+  },
+  "live": "yes",
+  "mocked": "no",
+  "proof": {
+    "browser_oracle_routing": "requested_tab_id == controlled_tab_id == 837360471, tab_was_created == false, controlled_tab_id_mismatch == false",
+    "circuit_breaker_representatives": [
+      {
+        "attempt_count": 2,
+        "audit": "artifacts/pdf_lab/page14_scillm_readtimeout_20260721/audit_summary.json",
+        "latest_error": "ReadTimeout at POST /v1/chat/completions",
+        "page": 14,
+        "terminal_status": "blocked_substrate"
+      },
+      {
+        "attempt_count": 3,
+        "audit": "artifacts/pdf_lab/page16_scillm_readtimeout_20260721/audit_summary.json",
+        "latest_error": "ReadTimeout at POST /v1/chat/completions",
+        "page": 16,
+        "terminal_status": "blocked_substrate"
+      },
+      {
+        "attempt_count": 1,
+        "audit": "artifacts/pdf_lab/page17_local_text_systemic_block_20260721/audit_summary.json",
+        "latest_error": "ReadTimeout at POST /v1/chat/completions",
+        "page": 17,
+        "terminal_status": "blocked_substrate"
+      }
+    ],
+    "page17_live_second_pass": {
+      "base64_chars": 121824,
+      "candidate_count": 6,
+      "endpoint": "POST /v1/chat/completions",
+      "error_type": "ReadTimeout",
+      "harness_terminal_status": "failed_closed",
+      "non_image_chars": 17252,
+      "page_terminal_status": "blocked_substrate",
+      "request_json_chars": 139076,
+      "review_validation_ok": false
+    },
+    "webgpt_assessment_ruling": "PASS_CURRENT_GATE"
+  },
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "terminal_status": "blocked_substrate",
+  "unblock_attempts": {
+    "brave_search": [
+      {
+        "query": "OpenAI compatible chat completions ReadTimeout small payload local LLM proxy timeout systemic failure",
+        "receipt": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/brave_systemic_local_text_readtimeout.json"
+      }
+    ],
+    "webgpt": [
+      {
+        "bundle": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/webgpt_page17_systemic_readtimeout_bundle.md",
+        "response": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/webgpt_page17_systemic_readtimeout_bundle-assess-response.md",
+        "result": "PASS_CURRENT_GATE"
+      }
+    ]
+  },
+  "what_remains_unverified": [
+    "page17 semantic review result, because no model response was returned",
+    "remaining untouched active candidate pages in the local-text live review family, intentionally not run after the circuit breaker opened",
+    "whether scillm/tau transport repair can return parseable schema JSON under 120 seconds",
+    "Criterion 6 live GitHub apply mutation, still requiring approval receipt"
+  ],
+  "what_was_exercised": "A live page17 second-pass review used SciLLM localhost:4001 with model local-text, DPI 72 image evidence, request validation, bundle packaging, fail-closed review validation, and terminal ledger creation. Brave and WebGPT assessment were also captured for the systemic blocker."
+}

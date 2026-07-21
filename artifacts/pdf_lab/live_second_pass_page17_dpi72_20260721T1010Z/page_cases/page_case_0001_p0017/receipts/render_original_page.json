@@ -1,0 +1,20 @@
+{
+  "command_or_endpoint": "fitz.Page.get_pixmap",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T09:59:47.074187+00:00",
+  "input_artifacts": [
+    "state.json"
+  ],
+  "next_allowed_nodes": [
+    "render_annotated_candidates"
+  ],
+  "node_id": "render_original_page",
+  "output_artifacts": [
+    "page_before.png"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T09:59:47.074173+00:00",
+  "validator_result": {
+    "ok": true
+  }
+}

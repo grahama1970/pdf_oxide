@@ -1,0 +1,32 @@
+{
+  "query": "OpenAI compatible chat completions ReadTimeout small payload local LLM proxy timeout systemic failure",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "fix(provider): AsyncOpenAI client has no timeout, hangs up to 600s on large context requests \u00b7 Issue #3455 \u00b7 HKUDS/nanobot",
+      "description": "The AsyncOpenAI client should have a reasonable timeout (e.g., 120s connect+read) so that hung requests fail fast and allow retries, rather than blocking the entire session for <strong>10 minutes</strong>.",
+      "url": "https://github.com/HKUDS/nanobot/issues/3455"
+    },
+    {
+      "title": "Embedded agent times out connecting to local OpenAI-compatible LLM despite direct curl working \u00b7 Issue #17613 \u00b7 openclaw/openclaw",
+      "description": "The agent hangs for the full timeout duration <strong>(90-120 seconds</strong>), then fails over to the cloud provider. Tried with and without explicit api: &quot;openai-completions&quot; setting - no change",
+      "url": "https://github.com/openclaw/openclaw/issues/17613"
+    },
+    {
+      "title": "Timeout for OpenAI chat completion in Python - API - OpenAI Developer Community",
+      "description": "I\u2019m using the OpenAI API in a Python 3.10 program using the python client library, the model is \u2018gpt-3.5-turbo\u2019. I\u2019ve noticed that periodically the openai.chatcompletion call randomly takes a very long time to complete. I want to protect my users from having to wait for completion by ...",
+      "url": "https://community.openai.com/t/timeout-for-openai-chat-completion-in-python/411252"
+    },
+    {
+      "title": "Troubleshooting \u00b7 OpenClaw",
+      "description": "incomplete turn detected ... stopReason=stop payloads=0: the backend completed the Chat Completions request but returned no user-visible assistant text for that turn. OpenClaw retries replay-safe empty OpenAI-compatible turns once; persistent failures usually mean the backend is emitting empty/non-text content or suppressing final-answer text.",
+      "url": "https://docs.openclaw.ai/gateway/troubleshooting"
+    },
+    {
+      "title": "[ChatGPT] Time-out when using local LLM \u00b7 Issue #20203 \u00b7 openhab/openhab-addons",
+      "description": "Feb 09 12:20:37 llama llama-swap[35453]: llama-swap listening on http://10.40.0.62:8080 Feb 09 12:21:52 llama llama-swap[35453]: [INFO] &lt;GLM-4.7-flash-act&gt; Health check passed on http://localhost:10000/health Feb 09 12:21:52 llama llama-swap[35453]: 2026/02/09 12:21:52 http: proxy error: context canceled Feb 09 12:21:52 llama llama-swap[35453]: [WARN] metrics skipped, HTTP status=502, path=/v1/chat/completions Feb 09 12:21:52 llama llama-swap[35453]: [INFO] Request 10.40.0.10 &quot;POST /v1/chat/completions HTTP/1.1&quot; 502 -1 &quot;Jetty/9.4.57.v20241219&quot; 10.253937183s Feb 09 12:22:09 llama llama-swap[354",
+      "url": "https://github.com/openhab/openhab-addons/issues/20203"
+    }
+  ]
+}

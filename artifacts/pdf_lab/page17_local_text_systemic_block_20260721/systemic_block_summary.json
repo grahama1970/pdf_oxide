@@ -1,0 +1,347 @@
+{
+  "active_manifest": "artifacts/pdf_lab/live_second_pass_next_after_page42_20260721T0745Z/candidate_manifest.json",
+  "blocked_by_systemic_failure_count": 56,
+  "blocked_by_systemic_failure_pages": [
+    {
+      "candidate_count": 16,
+      "page": 18,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 7,
+      "page": 19,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 5,
+      "page": 20,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 5,
+      "page": 21,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 5,
+      "page": 22,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 5,
+      "page": 23,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 5,
+      "page": 24,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 5,
+      "page": 25,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 7,
+      "page": 26,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 5,
+      "page": 27,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 13,
+      "page": 29,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 13,
+      "page": 30,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 15,
+      "page": 31,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 14,
+      "page": 32,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 9,
+      "page": 33,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 10,
+      "page": 37,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 25,
+      "page": 38,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 10,
+      "page": 39,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 11,
+      "page": 40,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 13,
+      "page": 41,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 13,
+      "page": 43,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 5,
+      "page": 44,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 28,
+      "page": 46,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 18,
+      "page": 47,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 27,
+      "page": 48,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 24,
+      "page": 49,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 23,
+      "page": 50,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 19,
+      "page": 51,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 20,
+      "page": 52,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 19,
+      "page": 53,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 20,
+      "page": 54,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 16,
+      "page": 55,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 15,
+      "page": 56,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 25,
+      "page": 57,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 20,
+      "page": 58,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 23,
+      "page": 59,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 23,
+      "page": 60,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 25,
+      "page": 61,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 27,
+      "page": 62,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 26,
+      "page": 63,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 22,
+      "page": 64,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 24,
+      "page": 65,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 19,
+      "page": 66,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 27,
+      "page": 67,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 25,
+      "page": 68,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 25,
+      "page": 69,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 25,
+      "page": 70,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 23,
+      "page": 71,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 12,
+      "page": 72,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 21,
+      "page": 73,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 24,
+      "page": 74,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 21,
+      "page": 75,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 27,
+      "page": 77,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 20,
+      "page": 78,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 26,
+      "page": 79,
+      "status": "blocked_by_systemic_failure"
+    },
+    {
+      "candidate_count": 19,
+      "page": 80,
+      "status": "blocked_by_systemic_failure"
+    }
+  ],
+  "brave_search_receipt": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/brave_systemic_local_text_readtimeout.json",
+  "candidate_page_count": 80,
+  "circuit_breaker_rule": "three representative cases in one family with the same failed gate/root cause stop the family; untouched cases are blocked_by_systemic_failure",
+  "created_at": "2026-07-21T10:06:19.878576+00:00",
+  "failed": 0,
+  "failure_signature": "ReadTimeout at POST /v1/chat/completions after successful SciLLM preflight health checks",
+  "family": "live local-text second-pass review transport",
+  "latest_failure_signature": "Page17 reproduced the same local-text ReadTimeout with a 139076-character request at DPI 72, after page14 and page16 had already reproduced the same endpoint/error family.",
+  "not_run_count": 0,
+  "passed": 0,
+  "receipt_backed_candidate_page_count_before_page17": 23,
+  "receipt_backed_candidate_pages_before_page17": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    28,
+    34,
+    35,
+    36,
+    42,
+    45,
+    76
+  ],
+  "representative_failures": [
+    {
+      "attempt_count": 2,
+      "audit": "artifacts/pdf_lab/page14_scillm_readtimeout_20260721/audit_summary.json",
+      "latest_error": "ReadTimeout at POST /v1/chat/completions",
+      "page": 14,
+      "terminal_status": "blocked_substrate"
+    },
+    {
+      "attempt_count": 3,
+      "audit": "artifacts/pdf_lab/page16_scillm_readtimeout_20260721/audit_summary.json",
+      "latest_error": "ReadTimeout at POST /v1/chat/completions",
+      "page": 16,
+      "terminal_status": "blocked_substrate"
+    },
+    {
+      "attempt_count": 1,
+      "audit": "artifacts/pdf_lab/page17_local_text_systemic_block_20260721/audit_summary.json",
+      "latest_error": "ReadTimeout at POST /v1/chat/completions",
+      "page": 17,
+      "terminal_status": "blocked_substrate"
+    }
+  ],
+  "schema": "pdf_lab.local_text_transport_systemic_block.v1",
+  "webgpt_assessment": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/webgpt_page17_systemic_readtimeout_bundle-assess-response.md"
+}

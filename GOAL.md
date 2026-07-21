@@ -64,6 +64,7 @@ Current completed page evidence:
 | `page_0013` | live second-pass Use of Examples paragraph merge review | `artifacts/pdf_lab/page13_use_examples_paragraph_20260721/audit_summary.json` | `origin/main` after page13 paragraph-merge push |
 | `page_0014` | live second-pass Federal Records Management frontmatter review blocked by repeated SciLLM ReadTimeout | `artifacts/pdf_lab/page14_scillm_readtimeout_20260721/audit_summary.json` | `origin/main` at `42d035760394f101830b5615e67a33b6761526f9` |
 | `page_0016` | live second-pass Planning Note review blocked by repeated SciLLM local-text ReadTimeout after DPI/payload reduction | `artifacts/pdf_lab/page16_scillm_readtimeout_20260721/audit_summary.json` | `origin/main` at `0a679d7ffb01a1e3a27c5f3d648bbcac735c3f28` |
+| `page_0017` | live second-pass local-text transport circuit-breaker representative; remaining same-family candidates blocked by systemic ReadTimeout | `artifacts/pdf_lab/page17_local_text_systemic_block_20260721/audit_summary.json` | pending push of page17/systemic block receipts |
 
 The active queue is source-derived from PDF Lab artifacts, GS001 handoffs, and
 current repository evidence. Do not treat a stale page-local section in an old
@@ -124,6 +125,11 @@ regression that will prove the single selected checklist item.
   selected candidate lacks focused extraction proof.
 - Do not mark the all-candidates goal complete until every active candidate has
   either passing receipt-backed proof or an explicit blocked receipt.
+- The live `local-text` second-pass review family is open-circuit after page14,
+  page16, and page17 all returned `ReadTimeout` at `POST /v1/chat/completions`
+  after successful SciLLM preflight health checks. Untouched active candidates
+  in that same family are `blocked_by_systemic_failure` until the scillm/tau
+  transport path can return parseable schema JSON under the 120-second gate.
 
 ## Required Status Shape
 
