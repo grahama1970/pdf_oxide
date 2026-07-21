@@ -43,6 +43,12 @@
     }
   ],
   "schema_version": "pdf_oxide.gs001.terminal_receipt.v1",
+  "tau_tracking_issue": {
+    "number": 119,
+    "repo": "grahama1970/tau",
+    "state": "OPEN",
+    "url": "https://github.com/grahama1970/tau/issues/119"
+  },
   "terminal_reason": "tau_full_closure_replay_missing_for_current_goal_hash_and_human_acceptance_pending",
   "terminal_status": "pending",
   "visual_page": "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-page.html"

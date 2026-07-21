@@ -4,15 +4,15 @@
     "pending_human_visible": true,
     "pending_replay_visible": true,
     "table_has_positive_geometry": true,
+    "tau_issue_visible": true,
     "terminal_reason_visible": true,
-    "title_visible": true,
-    "visual_receipt_text_visible": true
+    "title_visible": true
   },
   "live": false,
-  "manual_inspection_note": "Screenshot visibly shows the GS001 closure-state page, 10 criteria rows, 11/11 GS001 match, 0 unwaived extras, and explicit pending Tau replay / human acceptance states.",
+  "manual_inspection_note": "Screenshot visibly shows the GS001 closure-state page, Tau issue #119 tracker, 10 criteria rows, 11/11 GS001 match, 0 unwaived extras, and explicit pending Tau replay / human acceptance states.",
   "metrics": {
     "rowCount": 10,
-    "scrollHeight": 1623,
+    "scrollHeight": 1676,
     "statuses": [
       "PASS",
       "PASS",
@@ -25,7 +25,7 @@
       "PASS",
       "PENDING_HUMAN"
     ],
-    "tableHeight": 569,
+    "tableHeight": 554,
     "tableWidth": 1180
   },
   "mocked": false,
@@ -33,6 +33,6 @@
   "page_path": "/tmp/pdf_oxide-gs001-criterion6-closure-2gua8L/artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-page.html",
   "schema_version": "pdf_oxide.gs001.visual_closure_receipt.v1",
   "screenshot_path": "/tmp/pdf_oxide-gs001-criterion6-closure-2gua8L/artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/receipts/gs001-closure-page.png",
-  "screenshot_sha256": "sha256:2ab8fb0cd88042c87a9a13f848f55cb342f9d18f8f33274dd8d25e65318e9307",
+  "screenshot_sha256": "sha256:1400d2682cb6954bbb9c8c29d275f7008ef838e4785feb5467a2b260842346f3",
   "url": "file:///tmp/pdf_oxide-gs001-criterion6-closure-2gua8L/artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-page.html"
 }

@@ -12,22 +12,25 @@
     {
       "criterion": 7,
       "evidence": [
-        ".tau/gs001-execution-dag.json"
+        ".tau/gs001-execution-dag.json",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/receipts/tau-issue-119-readback.json"
       ],
       "name": "Tau proof",
       "status": "PENDING_REPLAY",
-      "summary": "DAG contract goal hash updated to current hash. Historical Tau receipts exist, but full closure-publisher replay with current goal hash is not present in this branch."
+      "summary": "DAG contract goal hash updated to current hash. Full closure-publisher replay under current hash is tracked by Tau issue #119."
     },
     {
       "criterion": 8,
       "evidence": [
         "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-state.json",
         "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/gs001-closure-page.html",
-        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/terminal-receipt.json"
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/terminal-receipt.json",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/receipts/gs001-closure-page-visual-receipt.json",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/receipts/gs001-closure-page.png"
       ],
       "name": "Closure publication",
       "status": "PUBLISHED_PENDING_REPLAY",
-      "summary": "This bundle publishes current closure state and terminal reason; visual screenshot proof is added after browser inspection."
+      "summary": "This bundle publishes current closure state, terminal reason, and a Chromium-rendered visual receipt."
     },
     {
       "criterion": 10,
@@ -118,11 +121,12 @@
     {
       "criterion": 7,
       "evidence": [
-        ".tau/gs001-execution-dag.json"
+        ".tau/gs001-execution-dag.json",
+        "artifacts/pdf-lab/loop-runs/gs001-closure-publication-20260720T2335Z/receipts/tau-issue-119-readback.json"
       ],
       "name": "Tau proof",
       "status": "PENDING_REPLAY",
-      "summary": "DAG contract goal hash updated to current hash. Historical Tau receipts exist, but full closure-publisher replay with current goal hash is not present in this branch."
+      "summary": "DAG contract goal hash updated to current hash. Full closure-publisher replay under current hash is tracked by Tau issue #119."
     },
     {
       "criterion": 8,
@@ -166,5 +170,11 @@
   "parent_goal_status": "PENDING_TAU_REPLAY_AND_HUMAN_ACCEPTANCE",
   "schema_version": "pdf_oxide.gs001.closure_state.v1",
   "source_commit_at_generation": "69d9ec0f1c15012c48fcfff6568f30653e5c9157",
+  "tau_tracking_issue": {
+    "number": 119,
+    "repo": "grahama1970/tau",
+    "state": "OPEN",
+    "url": "https://github.com/grahama1970/tau/issues/119"
+  },
   "terminal_reason": "tau_full_closure_replay_missing_for_current_goal_hash_and_human_acceptance_pending"
 }
