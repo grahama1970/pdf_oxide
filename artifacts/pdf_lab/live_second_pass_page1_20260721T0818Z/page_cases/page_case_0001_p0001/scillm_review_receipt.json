@@ -1,0 +1,129 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0001:0000:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'NIST Special Publication 800-53' is present at the top right of the page. The bounding box and preset type 'text' are accurate.\",\n      \"rationale\": \"The candidate's text, bounding box, and classification as 'text' align perfectly with the visual evidence on the original rendered page and the annotated image.\",\n      \"suggested_fix_surface\": \"\"\n    },\n    {\n      \"candidate_id\": \"cand:p0001:0001:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'Revision 5' is present below the previous candidate at the top right. The bounding box and preset type 'text' are accurate.\",\n      \"rationale\": \"The candidate's text, bounding box, and classification as 'text' align perfectly with the visual evidence on the original rendered page and the annotated image.\",\n      \"suggested_fix_surface\": \"\"\n    },\n    {\n      \"candidate_id\": \"cand:p0001:0002:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'Security and Privacy Controls for' is the first line of the main document title, centered on the page. The bounding box and preset type 'section_heading' are accurate.\",\n      \"rationale\": \"The candidate accurately captures the text and bounding box for a major section heading (the document's title). The preset type is appropriate.\",\n      \"suggested_fix_surface\": \"\"\n    },\n    {\n      \"candidate_id\": \"cand:p0001:0003:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'Information Systems and Organizations' is the second line of the main document title, centered on the page, directly below the previous candidate. The bounding box and preset type 'section_heading' are accurate.\",\n      \"rationale\": \"The candidate accurately captures the text and bounding box for a major section heading (the document's title). The preset type is appropriate and correctly identifies this as a continuation of the title.\",\n      \"suggested_fix_surface\": \"\"\n    },\n    {\n      \"candidate_id\": \"cand:p0001:0004:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'JOINT TASK FORCE' is present in the middle of the page. The bounding box and preset type 'text' are accurate.\",\n      \"rationale\": \"The candidate's text, bounding box, and classification as 'text' align perfectly with the visual evidence on the original rendered page and the annotated image.\",\n      \"suggested_fix_surface\": \"\"\n    },\n    {\n      \"candidate_id\": \"cand:p0001:0005:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'This publication is available free of charge from:' is present towards the bottom right of the page. The bounding box and preset type 'text' are accurate.\",\n      \"rationale\": \"The candidate's text, bounding box, and classification as 'text' align perfectly with the visual evidence on the original rendered page and the annotated image.\",\n      \"suggested_fix_surface\": \"\"\n    },\n    {\n      \"candidate_id\": \"cand:p0001:0006:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'https://doi.org/10.6028/NIST.SP.800-53r5' is present directly below the previous candidate. The bounding box and preset type 'text' are accurate.\",\n      \"rationale\": \"The candidate's text, bounding box, and classification as 'text' align perfectly with the visual evidence on the original rendered page and the annotated image.\",\n      \"suggested_fix_surface\": \"\"\n    }\n  ],\n  \"page_rationale\": \"All candidates on page 1 were extracted accurately with correct text content, precise bounding boxes, and appropriate preset type classifications. No defects were found.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784621922,
+    "id": "Uytfaur-FvPI-8YP0IfI8AI",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0001",
+      "item_id": "page_case_0001_p0001:afdc57b7c5c47f60",
+      "request_sha256": "afdc57b7c5c47f6032ca2fa2faa2c5df143038491a05e987fd27e02473958e0b"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 1002,
+      "completion_tokens_details": null,
+      "prompt_tokens": 5294,
+      "prompt_tokens_details": null,
+      "total_tokens": 9005
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0001:0000:text",
+        "evidence": "The extracted text 'NIST Special Publication 800-53' is present at the top right of the page. The bounding box and preset type 'text' are accurate.",
+        "rationale": "The candidate's text, bounding box, and classification as 'text' align perfectly with the visual evidence on the original rendered page and the annotated image.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      },
+      {
+        "candidate_id": "cand:p0001:0001:text",
+        "evidence": "The extracted text 'Revision 5' is present below the previous candidate at the top right. The bounding box and preset type 'text' are accurate.",
+        "rationale": "The candidate's text, bounding box, and classification as 'text' align perfectly with the visual evidence on the original rendered page and the annotated image.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      },
+      {
+        "candidate_id": "cand:p0001:0002:section_heading",
+        "evidence": "The extracted text 'Security and Privacy Controls for' is the first line of the main document title, centered on the page. The bounding box and preset type 'section_heading' are accurate.",
+        "rationale": "The candidate accurately captures the text and bounding box for a major section heading (the document's title). The preset type is appropriate.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      },
+      {
+        "candidate_id": "cand:p0001:0003:section_heading",
+        "evidence": "The extracted text 'Information Systems and Organizations' is the second line of the main document title, centered on the page, directly below the previous candidate. The bounding box and preset type 'section_heading' are accurate.",
+        "rationale": "The candidate accurately captures the text and bounding box for a major section heading (the document's title). The preset type is appropriate and correctly identifies this as a continuation of the title.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      },
+      {
+        "candidate_id": "cand:p0001:0004:text",
+        "evidence": "The extracted text 'JOINT TASK FORCE' is present in the middle of the page. The bounding box and preset type 'text' are accurate.",
+        "rationale": "The candidate's text, bounding box, and classification as 'text' align perfectly with the visual evidence on the original rendered page and the annotated image.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      },
+      {
+        "candidate_id": "cand:p0001:0005:text",
+        "evidence": "The extracted text 'This publication is available free of charge from:' is present towards the bottom right of the page. The bounding box and preset type 'text' are accurate.",
+        "rationale": "The candidate's text, bounding box, and classification as 'text' align perfectly with the visual evidence on the original rendered page and the annotated image.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      },
+      {
+        "candidate_id": "cand:p0001:0006:text",
+        "evidence": "The extracted text 'https://doi.org/10.6028/NIST.SP.800-53r5' is present directly below the previous candidate. The bounding box and preset type 'text' are accurate.",
+        "rationale": "The candidate's text, bounding box, and classification as 'text' align perfectly with the visual evidence on the original rendered page and the annotated image.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      }
+    ],
+    "page_rationale": "All candidates on page 1 were extracted accurately with correct text content, precise bounding boxes, and appropriate preset type classifications. No defects were found.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0001",
+    "item_id": "page_case_0001_p0001:afdc57b7c5c47f60",
+    "request_sha256": "afdc57b7c5c47f6032ca2fa2faa2c5df143038491a05e987fd27e02473958e0b"
+  }
+}
