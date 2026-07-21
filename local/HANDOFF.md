@@ -1,6 +1,6 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-21T14:59:30Z
+**Timestamp**: 2026-07-21T15:15:00Z
 **Active Agent**: codex
 
 ## 1. Project Overview
@@ -13,7 +13,7 @@
 
 - Main repo URL: `https://github.com/grahama1970/pdf_oxide`
 - Remote main verification command: `git ls-remote origin refs/heads/main`
-- Verified remote main before page401 timeout-blocked receipt commit: `93f529fa30c8955c2ef4da38de9c2b2b485a3bf8`
+- Verified remote main before Tau #123 root-cause receipt import: `67cbdec1acfe3254ecb191a71fc249bd9a1021f2`
 - Clean integration worktree: `/tmp/pdf_oxide_integrate_gs001_20260721`
 - Integration branch: `codex/integrate-gs001-reconciler-20260721`
 - Do not continue from the dirty detached checkout at `/home/graham/workspace/experiments/pdf_oxide` unless intentionally reconciling worktrees.
@@ -154,6 +154,22 @@
   - pdf_oxide terminal ledger is valid as `blocked_substrate`, reason `scillm_review_call_failed`.
   - Page audit: `artifacts/pdf_lab/page401_tau_timeout_blocked_20260721/audit_summary.json`
   - Review bundle: `artifacts/pdf_lab/live_second_pass_page401_tau_prep_20260721/page_case_0001_p0401/review_bundle.zip`
+- Tau #123 root-cause classification:
+  - Tau issue: `https://github.com/grahama1970/tau/issues/123`
+  - Tau commit: `7009e45461dfd8fb9bb5c1fe56ebcd339941b50f`
+  - Tau proof comment: `https://github.com/grahama1970/tau/issues/123#issuecomment-5035757958`
+  - Tau issue state: closed with deterministic proof.
+  - Imported pdf_oxide artifacts:
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/page39-diagnostic-receipt.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/page39-diagnostic-receipt.error.json`
+    - `artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/tau-audit-summary.json`
+  - Live receipt boundary:
+    - `mocked=false`
+    - `live=true`
+    - `provider_live=false`
+    - `root_cause_code=scillm_chat_review_service_unresponsive`
+    - `recommended_next_action=do not retry PDF Lab page payloads; repair or restart the SciLLM/Ollama route until a minimal Tau canary returns PASS, then rerun the page request through Tau`
+  - Important correction: the current blocker is no longer an ambiguous `review_response_not_parseable` page payload failure. Tau now proves the route is unresponsive even to a minimal canary.
 
 ## 6. Campaign Status
 
@@ -164,8 +180,8 @@
 | `blocked_by_systemic_failure` | `2` for page39 and page401 Tau live-review timeout family |
 | `explicitly_blocked` | `2` |
 | `not_run` | `448` unreviewed pages remaining after page401 |
-| Active page/checklist item | blocked pending Tau issue #123 focused repair/root-cause receipt |
-| Latest failure signature | `scillm_chat_review_timeout+review_response_not_parseable@120s` |
+| Active page/checklist item | blocked pending SciLLM/Ollama route recovery proven by Tau-owned minimal canary PASS |
+| Latest failure signature | `scillm_chat_review_service_unresponsive` |
 
 ## 7. Important Correction To Claude Report
 
@@ -190,9 +206,9 @@
 
 Use the same one-candidate proof ladder, without direct SciLLM calls from `pdf_oxide`:
 
-1. Do not select another live model-review candidate until Tau issue #123 has a focused repair/root-cause receipt.
+1. Do not select another live model-review candidate until a Tau-owned minimal canary returns PASS against the SciLLM/Ollama route.
 2. Any candidate whose model/executor review is required must go through Tau DAG contracts, not direct SciLLM/OpenCode calls from this repo.
 3. Criterion 6 live GitHub apply remains blocked until a valid approval receipt for mutation exists.
-4. After Tau #123 is repaired or root-caused, resume by selecting the next fresh current-extraction candidate after excluding page401.
+4. After route recovery is proven, resume by selecting the next fresh current-extraction candidate after excluding page401.
 
 Before patching the next item, produce a selection receipt with source page image/current extraction/model-review artifacts and the focused regression that will prove that one checklist item.
