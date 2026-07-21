@@ -3134,6 +3134,78 @@
     },
     {
       "added_at": "2026-07-21T00:00:00Z",
+      "added_by": "agent:codex (pdf-lab page104 all-candidates hardening)",
+      "applied_at": "2026-07-21T00:00:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route standalone NIST 'Control Enhancements:' labels to section_subtitle instead of generic control heading.",
+      "closed_at": "2026-07-21T00:00:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_page104_control_enhancements_subtitle.py)",
+      "entry_id": "nist-control-enhancements-subtitle-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p104:block:18"
+        ],
+        "risk_reasons_observed": [
+          "standalone_control_enhancements_label_as_section_heading"
+        ],
+        "second_pass_results": [
+          "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/current_page104_snapshot.json",
+          "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/multipage/v2_response_p104.md.raw.md"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Exact 'Control Enhancements: None.' field/value lines; rejected because this rule only matches the standalone label.",
+          "Numbered control enhancement headings such as '(1) AUDIT RECORD RETENTION | LONG-TERM RETRIEVAL CAPABILITY'; rejected because this rule only matches the exact standalone label.",
+          "Body paragraphs mentioning control enhancements; rejected by exact text, bbox, and font guards."
+        ],
+        "candidates_that_prove": [
+          "Page 104 emits the standalone underlined 'Control Enhancements:' label as actual:p104:block:18 in the control field region, while the independent GS001 reviewer expected section_subtitle."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block in the main control field indent band exactly equals 'Control Enhancements:', set type=section_subtitle and semantic_role=nist_control_enhancements_heading."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block",
+          "bbox x_min is outside the NIST control field indent band",
+          "font_size is outside the observed 9.9-10.15pt standalone label band",
+          "text is not exactly 'Control Enhancements:'"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This exact standalone-label rule intentionally wins over the broader NIST control-heading regex and the generic Body paragraph_block mapping.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.2,
+            "x_min_lt": 0.22,
+            "y_max_lt": 0.9
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 10.15
+          },
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "equals_ci": "Control Enhancements:",
+            "fields": {
+              "semantic_role": "nist_control_enhancements_heading",
+              "type": "section_subtitle"
+            }
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-07-21T00:00:00Z",
       "added_by": "agent:codex (pdf-lab page45 all-candidates hardening)",
       "applied_at": "2026-07-21T00:00:00Z",
       "applier_rule_kind": "text_classifier_rule",

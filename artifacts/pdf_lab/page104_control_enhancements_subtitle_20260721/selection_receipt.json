@@ -1,0 +1,23 @@
+{
+  "candidate_id": "actual:p104:block:18",
+  "defect_class": "standalone_control_enhancements_label_mistyped_as_control_heading",
+  "focused_regression": "tests/test_nist_page104_control_enhancements_subtitle.py",
+  "observed_pre_patch_failure": {
+    "expected_semantic_role": "nist_control_enhancements_heading",
+    "expected_type": "section_subtitle",
+    "pre_patch_id": "actual:p104:block:18",
+    "pre_patch_semantic_role": "nist_control_heading",
+    "pre_patch_type": "section_heading"
+  },
+  "owner": "nist_preset",
+  "page": 104,
+  "red_receipt": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/test_logs/red_test_page104_control_enhancements_subtitle.log",
+  "schema": "pdf_lab.selection_receipt.v1",
+  "selected_candidate": "page104_control_enhancements_subtitle",
+  "selection_basis": {
+    "annotated_page_image": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/page104_control_enhancements_subtitle_overlay.png",
+    "independent_reviewer": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/multipage/v2_response_p104.md.raw.md",
+    "original_page_image": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/page104_original.png",
+    "pre_patch_current_extraction": "artifacts/pdf_lab/page104_residual_current_20260721/current_page104_snapshot.json"
+  }
+}
