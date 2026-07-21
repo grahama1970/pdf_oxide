@@ -1,0 +1,11 @@
+{
+  "case_id": "page_case_0001_p0004",
+  "dag_spec_sha256": "833648df3346f558fe7a22b431c2c462c4ab9a0202b4f3c864671af5b8cd6ff5",
+  "errors": [],
+  "mode": "live",
+  "ok": true,
+  "page_number": 4,
+  "registered": true,
+  "schema": "pdf_lab.second_pass.page_orchestrator_run_validation.v1",
+  "transport_run_id": "otr-7f461796784c"
+}

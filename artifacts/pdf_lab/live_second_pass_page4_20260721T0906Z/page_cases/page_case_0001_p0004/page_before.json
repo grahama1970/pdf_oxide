@@ -1,0 +1,436 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p4:block:0",
+      "is_bold": false,
+      "page": 4,
+      "pdf_page_index": 3,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p4:block:1",
+      "is_bold": false,
+      "page": 4,
+      "pdf_page_index": 3,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.49656861747791564,
+        0.939856018682923,
+        0.5032700681998059,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p4:block:2",
+      "is_bold": false,
+      "page": 4,
+      "pdf_page_index": 3,
+      "raw": {
+        "bbox": [
+          303.8999938964844,
+          38.400001525878906,
+          6.17401123046875,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "ii"
+      },
+      "source_type": "PageNumber",
+      "text": "ii",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p4:block:3",
+      "is_bold": false,
+      "page": 4,
+      "pdf_page_index": 3,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.299215678296058,
+        0.08938735422461924,
+        0.7005172928953483,
+        0.11388766163527364
+      ],
+      "font_name": "TT2",
+      "font_size": 13.979999542236328,
+      "id": "actual:p4:block:4",
+      "is_bold": true,
+      "page": 4,
+      "pdf_page_index": 3,
+      "raw": {
+        "bbox": [
+          183.1199951171875,
+          706.6799926757812,
+          248.85797119140625,
+          13.97998046875
+        ],
+        "block_type": "Title",
+        "confidence": 0.75,
+        "font_name": "TT2",
+        "font_size": 13.979999542236328,
+        "header_level": 2,
+        "header_validation": {
+          "confidence": 0.75,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 13.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.2732239961624146,
+            "text_len": 38,
+            "title_case_ratio": 0.800000011920929,
+            "word_count": 5
+          },
+          "has_numbering": false,
+          "is_header": true,
+          "level": 2,
+          "number_text": "",
+          "reasons": [
+            "bold_large_font",
+            "title_case_like"
+          ],
+          "title_text": "Reports on Computer Systems Technology"
+        },
+        "is_bold": true,
+        "text": "Reports on Computer Systems Technology"
+      },
+      "source_type": "Title",
+      "text": "Reports on Computer Systems Technology",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14704087201286764,
+        0.12668496912175958,
+        0.8517665489047181,
+        0.2978177118783045
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p4:block:5",
+      "is_bold": false,
+      "page": 4,
+      "pdf_page_index": 3,
+      "raw": {
+        "bbox": [
+          89.989013671875,
+          559.5541381835938,
+          433.79351806640625,
+          131.82586669921875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "The National Institute of Standards and Technology (NIST) Information Technology Laboratory (ITL) promotes the U.S. economy and public welfare by providing technical leadership for the Nation\u2019s measurement and standards infrastructure. ITL develops tests, test methods, reference data, proof of concept implementations, and technical analyses to advance the development and productive use of information technology (IT). ITL\u2019s responsibilities include the development of management, administrative, technical, and physical standards and guidelines for the cost- effective security of other than national security-related information in federal information systems. The Special Publication 800-series reports on ITL\u2019s research, guidelines, and outreach efforts in information systems security and privacy and its collaborative activities with industry, government, and academic organizations."
+      },
+      "source_type": "Body",
+      "text": "The National Institute of Standards and Technology (NIST) Information Technology Laboratory (ITL) promotes the U.S. economy and public welfare by providing technical leadership for the Nation\u2019s measurement and standards infrastructure. ITL develops tests, test methods, reference data, proof of concept implementations, and technical analyses to advance the development and productive use of information technology (IT). ITL\u2019s responsibilities include the development of management, administrative, technical, and physical standards and guidelines for the cost- effective security of other than national security-related information in federal information systems. The Special Publication 800-series reports on ITL\u2019s research, guidelines, and outreach efforts in information systems security and privacy and its collaborative activities with industry, government, and academic organizations.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.45990194682202307,
+        0.3243116128324258,
+        0.5399900947520936,
+        0.3488119106100063
+      ],
+      "font_name": "TT2",
+      "font_size": 13.979999542236328,
+      "id": "actual:p4:block:6",
+      "is_bold": true,
+      "page": 4,
+      "pdf_page_index": 3,
+      "raw": {
+        "bbox": [
+          281.4599914550781,
+          520.6199951171875,
+          52.173370361328125,
+          13.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.30000001192092896,
+        "font_name": "TT2",
+        "font_size": 13.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.30000001192092896,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 13.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.2732239961624146,
+            "text_len": 8,
+            "title_case_ratio": 1.0,
+            "word_count": 1
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "bold_large_font",
+            "single_word_negative"
+          ],
+          "title_text": "Abstract"
+        },
+        "is_bold": true,
+        "text": "Abstract"
+      },
+      "source_type": "Body",
+      "text": "Abstract",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.1470409717435151,
+        0.36107893664427476,
+        0.8497520895565257,
+        0.5661497405081084
+      ],
+      "font_name": "TT0",
+      "font_size": 10.980000495910645,
+      "id": "actual:p4:block:7",
+      "is_bold": false,
+      "page": 4,
+      "pdf_page_index": 3,
+      "raw": {
+        "bbox": [
+          89.98907470703125,
+          347.03515625,
+          432.55487060546875,
+          158.70486450195312
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.980000495910645,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication provides a catalog of security and privacy controls for information systems and organizations to protect organizational operations and assets, individuals, other organizations, and the Nation from a diverse set of threats and risks, including hostile attacks, human errors, natural disasters, structural failures, foreign intelligence entities, and privacy risks. The controls are flexible and customizable and implemented as part of an organization-wide process to manage risk. The controls address diverse requirements derived from mission and business needs, laws, executive orders, directives, regulations, policies, standards, and guidelines. Finally, the consolidated control catalog addresses security and privacy from a functionality perspective (i.e., the strength of functions and mechanisms provided by the controls) and from an assurance perspective (i.e., the measure of confidence in the security or privacy capability provided by the controls). Addressing functionality and assurance helps to ensure that information technology products and the systems that rely on those products are sufficiently trustworthy."
+      },
+      "source_type": "Body",
+      "text": "This publication provides a catalog of security and privacy controls for information systems and organizations to protect organizational operations and assets, individuals, other organizations, and the Nation from a diverse set of threats and risks, including hostile attacks, human errors, natural disasters, structural failures, foreign intelligence entities, and privacy risks. The controls are flexible and customizable and implemented as part of an organization-wide process to manage risk. The controls address diverse requirements derived from mission and business needs, laws, executive orders, directives, regulations, policies, standards, and guidelines. Finally, the consolidated control catalog addresses security and privacy from a functionality perspective (i.e., the strength of functions and mechanisms provided by the controls) and from an assurance perspective (i.e., the measure of confidence in the security or privacy capability provided by the controls). Addressing functionality and assurance helps to ensure that information technology products and the systems that rely on those products are sufficiently trustworthy.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.45313726686963846,
+        0.5943116082085503,
+        0.5467508852092269,
+        0.6188119059861309
+      ],
+      "font_name": "TT2",
+      "font_size": 13.979999542236328,
+      "id": "actual:p4:block:8",
+      "is_bold": true,
+      "page": 4,
+      "pdf_page_index": 3,
+      "raw": {
+        "bbox": [
+          277.32000732421875,
+          306.7799987792969,
+          60.5194091796875,
+          13.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.30000001192092896,
+        "font_name": "TT2",
+        "font_size": 13.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.30000001192092896,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 13.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.2732239961624146,
+            "text_len": 8,
+            "title_case_ratio": 1.0,
+            "word_count": 1
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "bold_large_font",
+            "single_word_negative"
+          ],
+          "title_text": "Keywords"
+        },
+        "is_bold": true,
+        "text": "Keywords"
+      },
+      "source_type": "Body",
+      "text": "Keywords",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.6315334975117385,
+        0.8404996784683926,
+        0.7009903108230745
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p4:block:9",
+      "is_bold": false,
+      "page": 4,
+      "pdf_page_index": 3,
+      "raw": {
+        "bbox": [
+          90.0,
+          240.24000549316406,
+          523.9049682617188,
+          51.30000305175781
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Assurance; availability; computer security; confidentiality; control; cybersecurity; FISMA; information security; information system; integrity; personally identifiable information; Privacy Act; privacy controls; privacy functions; privacy requirements; Risk Management Framework; security controls; security functions; security requirements; system; system security."
+      },
+      "source_type": "Body",
+      "text": "Assurance; availability; computer security; confidentiality; control; cybersecurity; FISMA; information security; information system; integrity; personally identifiable information; Privacy Act; privacy controls; privacy functions; privacy requirements; Risk Management Framework; security controls; security functions; security requirements; system; system security.",
+      "type": "paragraph_block"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 4,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 3
+}
