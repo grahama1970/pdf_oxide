@@ -1,0 +1,18 @@
+{
+  "schema": "pdf_lab.visual_receipt.v1",
+  "page": 45,
+  "candidate_id": "actual:p45:block:6",
+  "original_image": "artifacts/pdf_lab/page45_ac1_heading_20260721/page45_original.png",
+  "overlay_image": "artifacts/pdf_lab/page45_ac1_heading_20260721/page45_ac1_heading_overlay.png",
+  "bbox": [
+    0.14705882352941177,
+    0.16620171672165995,
+    0.4016318477057164,
+    0.1854444368921145
+  ],
+  "expected_visible_text": "AC-1 POLICY AND PROCEDURES",
+  "sha256": {
+    "original_image": "a6f6b63a10eb8f9673ea4f4fe48c7f8f58f1227c6a8c6cdbbeb758c4a4887ec6",
+    "overlay_image": "20db076d6eaf5d9751b8f3c3287aa3fe72a824152499f9019f8007f268be1197"
+  }
+}
