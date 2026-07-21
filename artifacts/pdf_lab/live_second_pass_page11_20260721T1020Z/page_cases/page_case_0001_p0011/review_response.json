@@ -1,0 +1,49 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0011:0000:side_chrome",
+      "evidence": "The extracted text, bounding box, and classification as 'side_chrome' (header/footer noise with semantic role page_chrome) perfectly match the header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' visible at the top of the rendered page.",
+      "rationale": "The header text is accurately extracted with correct bounding box and semantic classification.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0011:0001:side_chrome",
+      "evidence": "The extracted text, bounding box, and classification as 'side_chrome' (header/footer noise with semantic role page_chrome) perfectly match the horizontal line below the header text visible at the top of the rendered page.",
+      "rationale": "The horizontal line below the header is accurately extracted with correct bounding box and semantic classification.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0011:0002:side_chrome",
+      "evidence": "The extracted text 'ix', bounding box, and classification as 'side_chrome' (header/footer noise with source_type PageNumber) perfectly match the page number visible at the bottom center of the rendered page.",
+      "rationale": "The page number is accurately extracted with correct bounding box and semantic classification.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0011:0003:side_chrome",
+      "evidence": "The extracted text, bounding box, and classification as 'side_chrome' (header/footer noise with source_type Boilerplate) perfectly match the vertical boilerplate text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' on the left side of the rendered page.",
+      "rationale": "The boilerplate text is accurately extracted with correct bounding box and semantic classification.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0011:0004:text",
+      "evidence": "The extracted text 'INFORMATION SYSTEMS \u2014 A BROAD-BASED PERSPECTIVE', bounding box, and classification as 'text' (paragraph_block with source_type Body) perfectly match the main title of the content on the rendered page.",
+      "rationale": "The content title is accurately extracted with correct bounding box and semantic classification.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0011:0005:text",
+      "evidence": "The extracted text, bounding box, and classification as 'text' (paragraph_block with source_type Body) perfectly match the introductory paragraph of the content on the rendered page. The preset text_excerpt was truncated but the full extracted JSON text is accurate.",
+      "rationale": "The main body paragraph is accurately extracted with correct bounding box and semantic classification.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    }
+  ],
+  "page_rationale": "All candidate extractions on page 11 are clean. The headers, page number, side boilerplate, and main content text are all accurately identified, bounded, and extracted according to the rendered page evidence and preset questions.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}
