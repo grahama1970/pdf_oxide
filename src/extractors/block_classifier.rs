@@ -232,6 +232,19 @@ pub struct BlockClassifier {
     median_font_size: f32,
     max_font_size: f32,
     header_ratio: f32,
+    repeated_margin_origins: Vec<MarginOrigin>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum MarginSide {
+    Left,
+    Right,
+}
+
+#[derive(Debug, Clone, Copy)]
+struct MarginOrigin {
+    side: MarginSide,
+    coordinate: f32,
 }
 
 impl BlockClassifier {
@@ -287,6 +300,8 @@ impl BlockClassifier {
         };
         let median_font_size = body_font_size_override.unwrap_or(auto_median);
         let max_font_size = size_weights.last().map(|(size, _)| *size).unwrap_or(12.0);
+        let repeated_margin_origins =
+            detect_repeated_margin_origins(spans, page_width, page_height, median_font_size);
 
         Self {
             page_width,
@@ -294,6 +309,7 @@ impl BlockClassifier {
             median_font_size,
             max_font_size,
             header_ratio: header_ratio_override.unwrap_or(1.2),
+            repeated_margin_origins,
         }
     }
 
@@ -322,6 +338,21 @@ impl BlockClassifier {
         merge_list_runs_and_continuations(&mut blocks);
 
         blocks
+    }
+
+    fn is_repeated_margin_chrome(&self, bbox: &Rect, size_ratio: f32) -> bool {
+        if size_ratio > 1.30 {
+            return false;
+        }
+
+        let tolerance = self.page_width * 0.01;
+        self.repeated_margin_origins.iter().any(|origin| {
+            let coordinate = match origin.side {
+                MarginSide::Left => bbox.x,
+                MarginSide::Right => bbox.x + bbox.width,
+            };
+            (coordinate - origin.coordinate).abs() <= tolerance
+        })
     }
 
     fn classify_line(&self, spans: &[&TextSpan]) -> ClassifiedBlock {
@@ -368,6 +399,10 @@ impl BlockClassifier {
         let is_centered = (x_center - page_center).abs() < self.page_width * 0.1;
         let size_ratio = avg_font_size / self.median_font_size;
         let trimmed = text.trim();
+        // Running furniture is commonly a wide rule/title pair fully inside
+        // the page's top or bottom band. Permit modest body-face estimation
+        // drift on sparse/table pages, while retaining the strong geometry.
+        let is_wide_margin_chrome = bbox.width >= self.page_width * 0.60 && size_ratio <= 1.20;
 
         // Page number detection (top/bottom of page)
         if is_page_number(trimmed, y_ratio) {
@@ -404,7 +439,7 @@ impl BlockClassifier {
             // But check if it's actually a section header that happens to be at the bottom.
             // A running footer may restate the chapter/section name beside a page
             // marker ("<Chapter name>   PAGE 12"); structural page chrome wins.
-            if !is_content_exception(trimmed) || has_page_marker(trimmed) {
+            if !is_content_exception(trimmed) || has_page_marker(trimmed) || is_wide_margin_chrome {
                 return self.make_block(
                     BlockType::Footer,
                     text,
@@ -420,7 +455,10 @@ impl BlockClassifier {
         }
 
         // Running header (top 8% of page, short text, not larger than median)
-        if y_ratio < 0.08 && trimmed.len() < 200 && avg_font_size <= self.median_font_size {
+        if y_ratio < 0.08
+            && trimmed.len() < 200
+            && (avg_font_size <= self.median_font_size || is_wide_margin_chrome)
+        {
             if !is_content_exception(trimmed) {
                 return self.make_block(
                     BlockType::Header,
@@ -522,9 +560,10 @@ impl BlockClassifier {
         // not detectable by aspect ratio. What distinguishes it is that it starts
         // outside the body text column, hard against a page edge, at below-body
         // size. Positional/typographic only.
-        if size_ratio < 0.95
-            && (bbox.x < self.page_width * 0.06
-                || bbox.x + bbox.width > self.page_width * 0.94)
+        let is_at_page_edge =
+            bbox.x < self.page_width * 0.06 || bbox.x + bbox.width > self.page_width * 0.94;
+        if is_at_page_edge
+            && (size_ratio < 0.95 || self.is_repeated_margin_chrome(&bbox, size_ratio))
         {
             return self.make_block(
                 BlockType::Boilerplate,
@@ -1276,6 +1315,57 @@ pub fn validate_header_with_ratio(
 // ---------------------------------------------------------------------------
 // Helper functions
 // ---------------------------------------------------------------------------
+
+fn detect_repeated_margin_origins(
+    spans: &[TextSpan],
+    page_width: f32,
+    page_height: f32,
+    median_font_size: f32,
+) -> Vec<MarginOrigin> {
+    let mut candidates: Vec<(MarginSide, f32, f32)> = Vec::new();
+    for span in spans {
+        if span.text.trim().is_empty() || span.font_size > median_font_size * 1.30 {
+            continue;
+        }
+        if span.bbox.x < page_width * 0.06 {
+            candidates.push((MarginSide::Left, span.bbox.x, span.bbox.y));
+        }
+        let right = span.bbox.x + span.bbox.width;
+        if right > page_width * 0.94 {
+            candidates.push((MarginSide::Right, right, span.bbox.y));
+        }
+    }
+
+    let x_tolerance = page_width * 0.01;
+    let y_tolerance = median_font_size * 0.60;
+    let mut origins = Vec::new();
+    for &(side, coordinate, _) in &candidates {
+        let mut aligned_y: Vec<f32> = candidates
+            .iter()
+            .filter(|(other_side, other_coordinate, _)| {
+                *other_side == side && (*other_coordinate - coordinate).abs() <= x_tolerance
+            })
+            .map(|(_, _, y)| *y)
+            .collect();
+        aligned_y.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+        aligned_y.dedup_by(|a, b| (*a - *b).abs() <= y_tolerance);
+
+        let spans_page_height = aligned_y
+            .first()
+            .zip(aligned_y.last())
+            .map(|(first, last)| last - first)
+            .unwrap_or(0.0);
+        if aligned_y.len() >= 3
+            && spans_page_height >= page_height * 0.25
+            && !origins.iter().any(|existing: &MarginOrigin| {
+                existing.side == side && (existing.coordinate - coordinate).abs() <= x_tolerance
+            })
+        {
+            origins.push(MarginOrigin { side, coordinate });
+        }
+    }
+    origins
+}
 
 fn group_spans_into_lines(spans: &[TextSpan]) -> Vec<Vec<&TextSpan>> {
     if spans.is_empty() {
@@ -2728,5 +2818,78 @@ mod tests {
         let blocks = classifier.classify_spans(&spans);
         assert_eq!(blocks.len(), 1);
         assert_eq!(blocks[0].text, "Hello world.");
+    }
+
+    #[test]
+    fn test_repeated_edge_aligned_body_face_text_is_boilerplate_without_deletion() {
+        let spans = vec![
+            make_span("First rotated margin segment", 21.0, 565.0, 10.0, false),
+            make_span("Second rotated margin segment", 21.0, 370.0, 10.0, false),
+            make_span("Third rotated margin segment", 21.0, 220.0, 10.0, false),
+            make_span("Ordinary prose remains inside the body column.", 90.0, 500.0, 10.0, false),
+        ];
+        let expected: String = spans.iter().map(|span| span.text.as_str()).collect();
+        let classifier =
+            BlockClassifier::new_with_overrides(612.0, 792.0, &spans, Some(10.0), None);
+        let blocks = classifier.classify_spans(&spans);
+
+        let margin_blocks: Vec<_> = blocks
+            .iter()
+            .filter(|block| block.text.contains("rotated margin segment"))
+            .collect();
+        assert_eq!(margin_blocks.len(), 3);
+        assert!(margin_blocks
+            .iter()
+            .all(|block| block.block_type == BlockType::Boilerplate));
+        assert_eq!(
+            blocks
+                .iter()
+                .find(|block| block.text.contains("Ordinary prose"))
+                .map(|block| block.block_type),
+            Some(BlockType::Body)
+        );
+
+        let actual: String = blocks.iter().map(|block| block.text.as_str()).collect();
+        let without_whitespace = |value: String| {
+            value
+                .chars()
+                .filter(|character| !character.is_whitespace())
+                .collect::<String>()
+        };
+        assert_eq!(without_whitespace(actual), without_whitespace(expected));
+    }
+
+    #[test]
+    fn test_single_body_face_line_at_page_edge_is_not_boilerplate() {
+        let spans = vec![make_span(
+            "A single marginal prose note remains content.",
+            21.0,
+            400.0,
+            10.0,
+            false,
+        )];
+        let classifier =
+            BlockClassifier::new_with_overrides(612.0, 792.0, &spans, Some(10.0), None);
+        let blocks = classifier.classify_spans(&spans);
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].block_type, BlockType::Body);
+    }
+
+    #[test]
+    fn test_wide_margin_band_chrome_tolerates_skewed_body_face() {
+        let mut header = make_span("RUNNING DOCUMENT HEADER", 90.0, 748.0, 8.0, false);
+        header.bbox.width = 410.0;
+        let mut rule = make_span("________________________________", 90.0, 738.0, 8.0, false);
+        rule.bbox.width = 410.0;
+        let mut footer = make_span("Chapter Overview", 90.0, 38.0, 7.0, false);
+        footer.bbox.width = 410.0;
+        let spans = vec![header, rule, footer];
+        let classifier = BlockClassifier::new_with_overrides(612.0, 792.0, &spans, Some(7.0), None);
+        let blocks = classifier.classify_spans(&spans);
+
+        assert_eq!(blocks.len(), 3);
+        assert_eq!(blocks[0].block_type, BlockType::Header);
+        assert_eq!(blocks[1].block_type, BlockType::Header);
+        assert_eq!(blocks[2].block_type, BlockType::Footer);
     }
 }
