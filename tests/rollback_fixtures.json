@@ -362,6 +362,42 @@
    "text_prefix": "https://doi.org/10.6028/",
    "expected_type": "Body",
    "origin": "rollback small-classes-b: URL/quick-link promotion is S0"
+  },
+  {
+   "page": 401,
+   "text_prefix": "[EO 13556] Executive",
+   "expected_type": "Reference",
+   "origin": "references-redesign leak: long-form bibliography entries and short source tags are S0"
+  },
+  {
+   "page": 412,
+   "text_prefix": "[SP 800-121] Padgett",
+   "expected_type": "Reference",
+   "origin": "references-redesign leak: long-form bibliography entries and short source tags are S0"
+  },
+  {
+   "page": 414,
+   "text_prefix": "[SP 800-166] Cooper ",
+   "expected_type": "Reference",
+   "origin": "references-redesign leak: long-form bibliography entries and short source tags are S0"
+  },
+  {
+   "page": 414,
+   "text_prefix": "[SP 800-184] Bartock",
+   "expected_type": "Reference",
+   "origin": "references-redesign leak: long-form bibliography entries and short source tags are S0"
+  },
+  {
+   "page": 442,
+   "text_prefix": "[CNSSI 4009]",
+   "expected_type": "Reference",
+   "origin": "references-redesign leak: long-form bibliography entries and short source tags are S0"
+  },
+  {
+   "page": 443,
+   "text_prefix": "[CNSSI 4009]",
+   "expected_type": "Reference",
+   "origin": "references-redesign leak: long-form bibliography entries and short source tags are S0"
   }
  ]
 }
