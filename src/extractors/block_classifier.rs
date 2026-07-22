@@ -586,14 +586,17 @@ impl BlockClassifier {
 
         // List item detection (but not if bold/large — those are likely numbered headers)
         // Must come after caption check since "Table 1." could match list pattern
-        // Rotated text is stored in text-flow orientation, so margin furniture is
-        // not detectable by aspect ratio. What distinguishes it is that it starts
-        // outside the body text column, hard against a page edge, at below-body
-        // size. Positional/typographic only.
+        // Assembled quarter-turn text has a tall axis-aligned page box. Older
+        // producers may instead emit several short edge-aligned spans, so keep
+        // the repeated-origin and below-body-size fallbacks. Positional and
+        // typographic only.
         let is_at_page_edge =
             bbox.x < self.page_width * 0.06 || bbox.x + bbox.width > self.page_width * 0.94;
+        let is_tall_rotated_span = bbox.height > bbox.width * 3.0;
         if is_at_page_edge
-            && (size_ratio < 0.95 || self.is_repeated_margin_chrome(&bbox, size_ratio))
+            && (is_tall_rotated_span
+                || size_ratio < 0.95
+                || self.is_repeated_margin_chrome(&bbox, size_ratio))
         {
             return self.make_block(
                 BlockType::Boilerplate,
@@ -3383,6 +3386,26 @@ mod tests {
                 .collect::<String>()
         };
         assert_eq!(without_whitespace(actual), without_whitespace(expected));
+    }
+
+    #[test]
+    fn test_assembled_tall_margin_span_is_boilerplate_without_text_deletion() {
+        let mut margin = make_span("Complete rotated margin line", 21.0, 220.0, 10.0, false);
+        margin.bbox = Rect::new(21.0, 220.0, 10.0, 330.0);
+        let body =
+            make_span("Ordinary prose remains inside the body column.", 90.0, 500.0, 10.0, false);
+        let expected = format!("{}{}", margin.text, body.text);
+        let spans = vec![margin, body];
+        let classifier =
+            BlockClassifier::new_with_overrides(612.0, 792.0, &spans, Some(10.0), None);
+
+        let blocks = classifier.classify_spans(&spans);
+
+        assert_eq!(blocks.len(), 2);
+        assert_eq!(blocks[0].block_type, BlockType::Boilerplate);
+        assert_eq!(blocks[0].text, "Complete rotated margin line");
+        let actual: String = blocks.iter().map(|block| block.text.as_str()).collect();
+        assert_eq!(actual, expected);
     }
 
     #[test]

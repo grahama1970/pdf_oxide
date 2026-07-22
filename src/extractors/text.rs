@@ -2594,6 +2594,11 @@ impl TextExtractor {
         // Flush any remaining Tj buffer at end of content stream
         self.flush_tj_span_buffer()?;
 
+        // Reconstruct text whose writing axis is vertical while physical
+        // content-stream neighbours are still adjacent. Reading-order sorting
+        // can interleave a tall rotated run with horizontal page content.
+        self.merge_adjacent_vertical_spans();
+
         // Sort spans by reading order (top-to-bottom, left-to-right)
         if log::log_enabled!(log::Level::Debug) {
             let space_spans = self
@@ -2631,8 +2636,11 @@ impl TextExtractor {
         parse_and_execute_text_only(content_stream, |op| self.execute_operator(op))?;
         self.flush_tj_span_buffer()?;
 
-        // Deduplicate but do NOT sort or merge — preserve content stream order
+        // Deduplicate and assemble only vertical writing runs.  This preserves
+        // content-stream order and leaves horizontal spans untouched while
+        // preventing rotated text from reaching layout as one block per glyph.
         self.deduplicate_overlapping_spans();
+        self.merge_adjacent_vertical_spans();
 
         Ok(std::mem::take(&mut self.spans))
     }
@@ -3025,6 +3033,127 @@ impl TextExtractor {
         );
 
         self.spans = deduplicated;
+    }
+
+    /// Merge consecutive spans whose page geometry establishes a vertical writing run.
+    ///
+    /// This is the quarter-turn counterpart of horizontal span merging. It is
+    /// intentionally positional and typographic only: no text or document identity
+    /// participates in the decision.
+    fn merge_adjacent_vertical_spans(&mut self) {
+        if self.spans.len() < 3 {
+            return;
+        }
+
+        // TextSpan currently stores an axis-aligned box rather than the text
+        // matrix.  For a quarter-turn span, the extractor's bbox.width is the
+        // advance along the writing axis and bbox.height is the glyph's font
+        // extent perpendicular to it.  Infer a vertical writing run only from
+        // at least three consecutive, style-compatible spans whose origins:
+        //   * share an X baseline,
+        //   * move consistently up or down page Y, and
+        //   * are separated by the preceding span's advance.
+        // Requiring three physical samples avoids treating two ordinary lines
+        // with a common left edge as rotated text.
+        fn follows_vertically(previous: &TextSpan, next: &TextSpan) -> Option<f32> {
+            let font_size = previous.font_size.abs().max(next.font_size.abs());
+            if font_size <= f32::EPSILON
+                || previous.font_name != next.font_name
+                || (previous.font_size - next.font_size).abs() > font_size * 0.05
+                || previous.font_weight != next.font_weight
+                || previous.is_italic != next.is_italic
+                || previous.color != next.color
+            {
+                return None;
+            }
+
+            let baseline_tolerance = (font_size * 0.05).max(0.25);
+            if (next.bbox.x - previous.bbox.x).abs() > baseline_tolerance {
+                return None;
+            }
+
+            let delta_y = next.bbox.y - previous.bbox.y;
+            let advance = previous.bbox.width.abs();
+            let continuity_tolerance = (font_size * 0.20).max(0.5);
+            if delta_y.abs() <= f32::EPSILON
+                || delta_y.abs() > font_size * 1.05
+                || (delta_y.abs() - advance).abs() > continuity_tolerance
+            {
+                return None;
+            }
+
+            Some(delta_y.signum())
+        }
+
+        let old_len = self.spans.len();
+        let spans = std::mem::take(&mut self.spans);
+        let mut merged = Vec::with_capacity(old_len);
+        let mut index = 0;
+
+        while index < spans.len() {
+            if index + 2 >= spans.len() {
+                merged.extend(spans[index..].iter().cloned());
+                break;
+            }
+
+            let first_direction = follows_vertically(&spans[index], &spans[index + 1]);
+            let second_direction = follows_vertically(&spans[index + 1], &spans[index + 2]);
+            let direction = match (first_direction, second_direction) {
+                (Some(first), Some(second)) if first == second => first,
+                _ => {
+                    merged.push(spans[index].clone());
+                    index += 1;
+                    continue;
+                },
+            };
+
+            let run_start = index;
+            let mut run_end = index + 3;
+            while run_end < spans.len() {
+                match follows_vertically(&spans[run_end - 1], &spans[run_end]) {
+                    Some(next_direction) if next_direction == direction => run_end += 1,
+                    _ => break,
+                }
+            }
+
+            let run = &spans[run_start..run_end];
+            let mut combined = run[0].clone();
+            combined.text.clear();
+            for span in run {
+                combined.text.push_str(&span.text);
+            }
+
+            // Convert the rotated per-glyph representation into an ordinary
+            // axis-aligned page box: font extent across X, accumulated advance
+            // along Y.  Text and sequence are preserved exactly.
+            let min_x = run
+                .iter()
+                .map(|span| span.bbox.x)
+                .fold(f32::INFINITY, f32::min);
+            let max_x = run
+                .iter()
+                .map(|span| span.bbox.x + span.bbox.height.abs())
+                .fold(f32::NEG_INFINITY, f32::max);
+            let mut min_y = f32::INFINITY;
+            let mut max_y = f32::NEG_INFINITY;
+            for span in run {
+                let end_y = span.bbox.y + direction * span.bbox.width.abs();
+                min_y = min_y.min(span.bbox.y).min(end_y);
+                max_y = max_y.max(span.bbox.y).max(end_y);
+            }
+            combined.bbox = Rect {
+                x: min_x,
+                y: min_y,
+                width: (max_x - min_x).max(0.0),
+                height: (max_y - min_y).max(0.0),
+            };
+
+            merged.push(combined);
+            index = run_end;
+        }
+
+        log::debug!("Merged adjacent vertical spans: {} -> {} spans", old_len, merged.len());
+        self.spans = merged;
     }
 
     /// Merge adjacent text spans on the same line to reconstruct complete words.
@@ -8380,6 +8509,92 @@ mod tests {
     // ========================================================================
     // NEW COMPREHENSIVE TESTS: merge_adjacent_spans
     // ========================================================================
+
+    fn vertical_test_span(text: &str, x: f32, y: f32, advance: f32, sequence: usize) -> TextSpan {
+        TextSpan {
+            text: text.to_string(),
+            bbox: Rect::new(x, y, advance, 9.0),
+            font_name: "F1".to_string(),
+            font_size: 9.0,
+            font_weight: FontWeight::Normal,
+            color: Color::black(),
+            mcid: None,
+            sequence,
+            split_boundary_before: false,
+            offset_semantic: false,
+            is_italic: false,
+            char_spacing: 0.0,
+            word_spacing: 0.0,
+            horizontal_scaling: 100.0,
+            primary_detected: false,
+        }
+    }
+
+    #[test]
+    fn test_merge_adjacent_vertical_spans_downward() {
+        let mut extractor = TextExtractor::new();
+        extractor.spans = vec![
+            vertical_test_span("T", 29.15, 100.0, 4.0, 0),
+            vertical_test_span("h", 29.15, 96.0, 5.0, 1),
+            vertical_test_span("i", 29.15, 91.0, 2.0, 2),
+            vertical_test_span("s", 29.15, 89.0, 3.5, 3),
+        ];
+
+        extractor.merge_adjacent_vertical_spans();
+
+        assert_eq!(extractor.spans.len(), 1);
+        assert_eq!(extractor.spans[0].text, "This");
+        assert!((extractor.spans[0].bbox.x - 29.15).abs() < 0.01);
+        assert!((extractor.spans[0].bbox.y - 85.5).abs() < 0.01);
+        assert!((extractor.spans[0].bbox.width - 9.0).abs() < 0.01);
+        assert!((extractor.spans[0].bbox.height - 14.5).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_merge_adjacent_vertical_spans_upward() {
+        let mut extractor = TextExtractor::new();
+        extractor.spans = vec![
+            vertical_test_span("A", 40.0, 10.0, 4.0, 0),
+            vertical_test_span("B", 40.0, 14.0, 5.0, 1),
+            vertical_test_span("C", 40.0, 19.0, 3.0, 2),
+        ];
+
+        extractor.merge_adjacent_vertical_spans();
+
+        assert_eq!(extractor.spans.len(), 1);
+        assert_eq!(extractor.spans[0].text, "ABC");
+        assert!((extractor.spans[0].bbox.y - 10.0).abs() < 0.01);
+        assert!((extractor.spans[0].bbox.height - 12.0).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_vertical_merge_requires_three_geometry_samples() {
+        let mut extractor = TextExtractor::new();
+        extractor.spans = vec![
+            vertical_test_span("A", 40.0, 20.0, 4.0, 0),
+            vertical_test_span("B", 40.0, 16.0, 5.0, 1),
+        ];
+
+        extractor.merge_adjacent_vertical_spans();
+
+        assert_eq!(extractor.spans.len(), 2);
+        assert_eq!(extractor.spans[0].text, "A");
+        assert_eq!(extractor.spans[1].text, "B");
+    }
+
+    #[test]
+    fn test_vertical_merge_leaves_horizontal_run_unchanged() {
+        let mut extractor = TextExtractor::new();
+        extractor.spans = vec![
+            vertical_test_span("A", 10.0, 20.0, 4.0, 0),
+            vertical_test_span("B", 14.0, 20.0, 5.0, 1),
+            vertical_test_span("C", 19.0, 20.0, 3.0, 2),
+        ];
+
+        extractor.merge_adjacent_vertical_spans();
+
+        assert_eq!(extractor.spans.len(), 3);
+    }
 
     #[test]
     fn test_merge_adjacent_spans_same_line() {
