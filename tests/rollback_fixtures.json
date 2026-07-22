@@ -1,0 +1,367 @@
+{
+ "schema_version": "pdf_lab.rollback_fixtures.v1",
+ "engine_baseline": "523e9670+figure(5ed3a42c,d5558c13)",
+ "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+ "fixtures": [
+  {
+   "page": 420,
+   "text_prefix": "[FIPS 201-2]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 420,
+   "text_prefix": "[OMB A-130]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 420,
+   "text_prefix": "[SP 800-39]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 420,
+   "text_prefix": "[OMB A-130]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 420,
+   "text_prefix": "[DODTERMS]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 425,
+   "text_prefix": "[SP 800-128]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 425,
+   "text_prefix": "[SP 800-137]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 425,
+   "text_prefix": "[SP 800-37]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 425,
+   "text_prefix": "[SP 800-53B]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 430,
+   "text_prefix": "[FIPS 199]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 430,
+   "text_prefix": "[FISMA]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 430,
+   "text_prefix": "[SP 800-82]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 430,
+   "text_prefix": "[OMB A-130]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 430,
+   "text_prefix": "[SP 800-37]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 430,
+   "text_prefix": "[OMB A-130]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 430,
+   "text_prefix": "[OMB A-130]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 430,
+   "text_prefix": "[OMB A-130]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 440,
+   "text_prefix": "[CNSSI 4009]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 440,
+   "text_prefix": "[SP 800-63-3]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 440,
+   "text_prefix": "[OMB A-130]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 440,
+   "text_prefix": "[ATOM54]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 440,
+   "text_prefix": "[OMB A-130]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 440,
+   "text_prefix": "[SP 800-39]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 440,
+   "text_prefix": "[IR 8062, adapted]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 447,
+   "text_prefix": "[SP 800-37]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 447,
+   "text_prefix": "[SP 800-30]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 447,
+   "text_prefix": "[OMB A-130]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 447,
+   "text_prefix": "[SP 800-160-1]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 447,
+   "text_prefix": "[SP 800-160-1]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 447,
+   "text_prefix": "[CNSSI 4009]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 448,
+   "text_prefix": "[SP 800-30]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 448,
+   "text_prefix": "[CNSSI 4009]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 448,
+   "text_prefix": "[SP 800-154]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 448,
+   "text_prefix": "[FIPS 200]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 448,
+   "text_prefix": "[CNSSI 4009]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 448,
+   "text_prefix": "[CNSSI 4009]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 448,
+   "text_prefix": "[CNSSI 4009]",
+   "expected_type": "Reference",
+   "origin": "rollback small-classes-a: References de-typing is S0"
+  },
+  {
+   "page": 34,
+   "text_prefix": "TABLE 1: SECURITY AND PR",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 455,
+   "text_prefix": "TABLE C-1: ACCESS CONTRO",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 459,
+   "text_prefix": "TABLE C-2: AWARENESS AND",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 460,
+   "text_prefix": "TABLE C-3: AUDIT AND ACC",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 462,
+   "text_prefix": "TABLE C-4: ASSESSMENT, A",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 463,
+   "text_prefix": "TABLE C-5: CONFIGURATION",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 465,
+   "text_prefix": "TABLE C-6: CONTINGENCY P",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 467,
+   "text_prefix": "TABLE C-7: IDENTIFICATIO",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 469,
+   "text_prefix": "TABLE C-8: INCIDENT RESP",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 471,
+   "text_prefix": "TABLE C-9: MAINTENANCE F",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 472,
+   "text_prefix": "TABLE C-10: MEDIA PROTEC",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 473,
+   "text_prefix": "TABLE C-11: PHYSICAL AND",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 475,
+   "text_prefix": "TABLE C-12: PLANNING FAM",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 476,
+   "text_prefix": "TABLE C-13: PROGRAM MANA",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 477,
+   "text_prefix": "TABLE C-14: PERSONNEL SE",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 478,
+   "text_prefix": "TABLE C-15: PERSONALLY I",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 479,
+   "text_prefix": "TABLE C-16: RISK ASSESSM",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 480,
+   "text_prefix": "TABLE C-17: SYSTEM AND S",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 484,
+   "text_prefix": "TABLE C-18: SYSTEM AND C",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 488,
+   "text_prefix": "TABLE C-19: SYSTEM AND I",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 491,
+   "text_prefix": "TABLE C-20: SUPPLY CHAIN",
+   "expected_type": "Caption",
+   "origin": "rollback small-classes-b: Caption->Title is S0"
+  },
+  {
+   "page": 91,
+   "text_prefix": "Quick link to Audit and ",
+   "expected_type": "Body",
+   "origin": "rollback small-classes-b: URL/quick-link promotion is S0"
+  },
+  {
+   "page": 415,
+   "text_prefix": "https://doi.org/10.6028/",
+   "expected_type": "Body",
+   "origin": "rollback small-classes-b: URL/quick-link promotion is S0"
+  }
+ ]
+}
