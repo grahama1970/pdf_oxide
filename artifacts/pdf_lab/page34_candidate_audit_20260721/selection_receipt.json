@@ -1,0 +1,106 @@
+{
+  "campaign_status": {
+    "active_family": "nist_page_chrome_heading_suppression",
+    "blocked_by_systemic_failure": [],
+    "failed": [],
+    "latest_failure_signature": null,
+    "not_run": [
+      "page45_leftover_c_d_title",
+      "page104_remaining_findings",
+      "page421_remaining_findings"
+    ],
+    "passed": [
+      "page456_control_table_header_cell_leakage_current_main",
+      "page34_sidebar_chrome_body_heading_current_main"
+    ]
+  },
+  "candidate": {
+    "defect_class": "sidebar chrome contamination / body lines as headings",
+    "handoff_claim": "body lines as headings (~18 findings); one-case bundle identifies sidebar DOI/chrome contaminating body paragraphs",
+    "next_action": "advance candidate as currently passing on main; keep focused regression to prevent recurrence",
+    "owner": "pdf_oxide_core/nist_preset chrome suppression",
+    "page_id": "nist_phase54_page_0034",
+    "page_number": 34,
+    "pdf_page_index": 33,
+    "selection_source": "/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md section 5 plus page_0034_one_case_agentic_second_pass bundle"
+  },
+  "current_main_audit": {
+    "block_count": 12,
+    "long_body_heading_suspect_count": 0,
+    "long_body_heading_suspects": [],
+    "sidebar_chrome_non_noise_contamination": [],
+    "sidebar_chrome_non_noise_contamination_count": 0,
+    "snapshot": "artifacts/pdf_lab/page34_candidate_audit_20260721/baseline_page34_snapshot.json",
+    "snapshot_sha256": "9519565370bf08b44772a5783e2ac7c6df6ef21746cad08acd015a9650d989e9",
+    "type_counts": {
+      "footnote": 1,
+      "header_footer_noise": 4,
+      "paragraph_block": 3,
+      "section_heading": 3,
+      "section_subtitle": 1
+    }
+  },
+  "generated_at": "2026-07-21T01:49:34.346593+00:00",
+  "goal": "all PDF Lab page candidates, one page/checklist item at a time",
+  "proof": {
+    "commands": [
+      "uv run maturin develop",
+      "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page34_candidate_audit_20260721/baseline_page34_snapshot.json --max-pages 34 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+      "pytest -q tests/test_nist_page34_sidebar_chrome.py"
+    ],
+    "does_not_prove": "remaining page45/page104/page421 or live model-backed repair lifecycle",
+    "live": "yes",
+    "logs": [
+      "artifacts/pdf_lab/page34_candidate_audit_20260721/test_logs/baseline_maturin_develop.log",
+      "artifacts/pdf_lab/page34_candidate_audit_20260721/test_logs/baseline_snapshot_page34.log",
+      "artifacts/pdf_lab/page34_candidate_audit_20260721/test_logs/pytest_page34_sidebar_chrome.log"
+    ],
+    "mocked": "no",
+    "result": "page34 selected candidate is passing on current main; regression added and receipt preserved"
+  },
+  "schema": "pdf_lab.page_candidate_selection_receipt.v1",
+  "source_artifacts": [
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/project_agent_hardening/page_0034_one_case_agentic_second_pass/accepted_visual_evidence.json",
+      "sha256": "1b419c9707b1041d0c2b55a6a74b02e4e2000d245897d0e135c05c31211300a2",
+      "size": 2868
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/project_agent_hardening/page_0034_one_case_agentic_second_pass/agent_second_pass.json",
+      "sha256": "9b0a11424e0272ebf8f71ce478beb109fb3186c5b6f9699783eb43aab404fa62",
+      "size": 12127
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/project_agent_hardening/page_0034_one_case_agentic_second_pass/expected_elements.json",
+      "sha256": "3d2320b60f853e547d54d39e69be457eb2b27e2edf8dde8419ffc997761b1483",
+      "size": 11746
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/project_agent_hardening/page_0034_one_case_agentic_second_pass/release_extraction_blocks.json",
+      "sha256": "894976272363580a9f4966255a1a5dd4d95a9997f8895aa221d5dc53d8f887e4",
+      "size": 23786
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/project_agent_hardening/page_0034_one_case_agentic_second_pass/page.png",
+      "sha256": "d6a3cc4600cc38ab27191283bb4a2b31d9214c241615580d530ab306e435b242",
+      "size": 218640
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/project_agent_hardening/page_0034_one_case_agentic_second_pass/bbox_overlay.png",
+      "sha256": "cd4b2d568d8bb37c50ce0a91d133a3110ec566794c0d1bbbb185e5a19517e1a9",
+      "size": 253445
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/project_agent_hardening/page_0034_one_case_agentic_second_pass/page_0034_sidebar_cleanup_verification.json",
+      "sha256": "5fcb7db328e2aead36b40f41e053b8d38195ce0625079be9b3863066d2d3bf68",
+      "size": 1352
+    }
+  ]
+}

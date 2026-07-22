@@ -1,0 +1,98 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0043:0000:side_chrome",
+      "evidence": "Extracted JSON block 0 shows type 'header_footer_noise' and semantic_role 'page_chrome' with text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' and accurate bbox.",
+      "rationale": "The header text is correctly extracted with accurate bounding box and text, and classified as side_chrome.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0001:side_chrome",
+      "evidence": "Extracted JSON block 1 shows type 'header_footer_noise' and semantic_role 'page_chrome' with text '_________________________________________________________________________________________________' and accurate bbox.",
+      "rationale": "The header separator line is correctly extracted with accurate bounding box and text, and classified as side_chrome.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0002:side_chrome",
+      "evidence": "Extracted JSON block 2 shows type 'header_footer_noise' and semantic_role 'page_chrome' with text 'CHAPTER THREE PAGE 16' and accurate bbox.",
+      "rationale": "The footer text is correctly extracted with accurate bounding box and text, and classified as side_chrome.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0003:side_chrome",
+      "evidence": "Extracted JSON block 3 shows type 'header_footer_noise' with text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' and accurate bbox for the vertical boilerplate text.",
+      "rationale": "The vertical boilerplate text on the left margin is correctly extracted with accurate bounding box and text, and classified as side_chrome.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0004:section_heading",
+      "evidence": "Extracted JSON block 4 shows type 'section_heading' with text 'CHAPTER THREE' and accurate bbox.",
+      "rationale": "The section heading 'CHAPTER THREE' is correctly extracted with accurate bounding box and text, and classified as section_heading.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0005:section_heading",
+      "evidence": "Extracted JSON block 5 shows type 'section_heading' with text 'THE CONTROLS' and accurate bbox.",
+      "rationale": "The section heading 'THE CONTROLS' is correctly extracted with accurate bounding box and text, and classified as section_heading.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0006:section_heading",
+      "evidence": "Extracted JSON block 6 shows type 'section_heading' with text 'SECURITY AND PRIVACY CONTROLS AND CONTROL ENHANCEMENTS' and accurate bbox.",
+      "rationale": "The section heading 'SECURITY AND PRIVACY CONTROLS AND CONTROL ENHANCEMENTS' is correctly extracted with accurate bounding box and text, and classified as section_heading.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0007:text",
+      "evidence": "Extracted JSON block 7 shows type 'paragraph_block' with accurate text and bbox. The visual rendering confirms this is a standard paragraph.",
+      "rationale": "The paragraph text is correctly extracted with accurate bounding box and text. The extracted type 'paragraph_block' is a clean-compatible subtype of 'text'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0008:list",
+      "evidence": "Extracted JSON block 8 shows type 'list' with accurate text and bbox. The visual rendering confirms this is a bulleted list.",
+      "rationale": "The bulleted list is correctly extracted with accurate bounding box and text, and classified as list.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0009:text",
+      "evidence": "Extracted JSON block 9 shows type 'paragraph_block' with accurate text and bbox. The visual rendering confirms this is a standard paragraph.",
+      "rationale": "The paragraph text is correctly extracted with accurate bounding box and text. The extracted type 'paragraph_block' is a clean-compatible subtype of 'text'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0010:text",
+      "evidence": "Extracted JSON block 10 shows type 'paragraph_block' with accurate text and bbox. The visual rendering confirms this is a standard paragraph.",
+      "rationale": "The paragraph text is correctly extracted with accurate bounding box and text. The extracted type 'paragraph_block' is a clean-compatible subtype of 'text'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0011:footnote",
+      "evidence": "Extracted JSON block 11 shows type 'footnote' with accurate text and bbox. The visual rendering confirms this is a footnote.",
+      "rationale": "The footnote is correctly extracted with accurate bounding box and text, and classified as footnote.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0043:0012:footnote",
+      "evidence": "Extracted JSON block 12 shows type 'footnote' with accurate text and bbox. The visual rendering confirms this is a footnote.",
+      "rationale": "The footnote is correctly extracted with accurate bounding box and text, and classified as footnote.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    }
+  ],
+  "page_rationale": "All candidates on page 43 are correctly extracted with accurate bounding boxes, text, and classifications consistent with their visual appearance and preset types.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

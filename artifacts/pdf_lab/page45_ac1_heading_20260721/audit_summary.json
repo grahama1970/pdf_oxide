@@ -1,0 +1,69 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T02:53:13.544004+00:00",
+  "status": "passing_current_contract",
+  "mocked": "no",
+  "live": "yes",
+  "page_id": "nist_phase54_page_0045",
+  "page_number": 45,
+  "pdf_page_index": 44,
+  "candidate": {
+    "defect_class": "AC-1 control heading split/duplicate or typed outside section_heading",
+    "owner": "nist_preset",
+    "selected_from": [
+      "/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md measured page45 remaining findings",
+      "artifacts/pdf_lab/page45_issue2_item4_ac1_heading_20260604/proof_summary.json",
+      "artifacts/pdf_lab/page45_quick_link_20260721/current_page45_snapshot.json"
+    ]
+  },
+  "current_extraction": {
+    "snapshot": "artifacts/pdf_lab/page45_ac1_heading_20260721/current_page45_snapshot.json",
+    "snapshot_sha256": "fe87dd500e25caeac49ab5372b2ee2ab002ae67193ff2d3bcf310403c862cd66",
+    "block_count": 21,
+    "type_counts": {
+      "header_footer_noise": 4,
+      "section_heading": 2,
+      "section_link": 1,
+      "paragraph_block": 3,
+      "list": 9,
+      "labeled_enhancements": 1,
+      "reference": 1
+    },
+    "candidate_block": {
+      "id": "actual:p45:block:6",
+      "type": "section_heading",
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "AC-1 POLICY AND PROCEDURES",
+      "bbox": [
+        0.14705882352941177,
+        0.16620171672165995,
+        0.4016318477057164,
+        0.1854444368921145
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ]
+    },
+    "split_or_duplicate_ac1_heading_blocks": []
+  },
+  "proof": {
+    "commands": [
+      "pytest -q tests/test_nist_page45_ac1_heading.py",
+      "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page45_ac1_heading_20260721/current_page45_snapshot.json --max-pages 45 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+      "pytest -q tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py",
+      "pytest -q tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page35_control_families_table.py tests/test_nist_page104_au12_page_break_label.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page46_nested_list_segmentation.py"
+    ],
+    "logs": [
+      "artifacts/pdf_lab/page45_ac1_heading_20260721/test_logs/snapshot_page45.log",
+      "artifacts/pdf_lab/page45_ac1_heading_20260721/test_logs/pytest_page45_focused.log",
+      "artifacts/pdf_lab/page45_ac1_heading_20260721/test_logs/regression_suite.log"
+    ],
+    "result": "page45 AC-1 heading is exactly one section_heading with semantic_role=nist_control_heading and no split/duplicate fragments",
+    "focused_result": "4 passed, 5 warnings in 93.38s",
+    "regression_suite_result": "10 passed, 5 warnings in 214.31s",
+    "does_not_prove": "remaining page45 independent-review findings or all-candidates goal completion"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page45_ac1_heading_20260721/visual_receipt.json"
+}

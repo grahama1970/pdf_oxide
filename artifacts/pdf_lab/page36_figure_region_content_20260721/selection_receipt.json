@@ -1,0 +1,34 @@
+{
+  "candidate_ids": [
+    "actual:p36:block:10",
+    "actual:p36:block:11",
+    "actual:p36:block:12",
+    "actual:p36:block:13",
+    "actual:p36:block:14",
+    "actual:p36:block:15",
+    "actual:p36:block:16",
+    "actual:p36:block:17",
+    "actual:p36:block:18",
+    "actual:p36:block:19",
+    "actual:p36:block:21",
+    "actual:p36:block:24",
+    "actual:p36:block:25",
+    "actual:p36:table:0",
+    "actual:p36:table:1",
+    "actual:p36:table:2"
+  ],
+  "defect_class": "figure_embedded_content_mistyped_as_document_body_reference_or_table",
+  "focused_regression": "tests/test_nist_page36_figure_region_content.py",
+  "owner": "nist_preset",
+  "page": 36,
+  "red_receipt": "artifacts/pdf_lab/page36_figure_region_content_20260721/test_logs/red_test_page36_figure_region_content.log",
+  "schema": "pdf_lab.selection_receipt.v1",
+  "selected_candidate": "page36_figure_region_content",
+  "selection_basis": {
+    "annotated_page_image": "artifacts/pdf_lab/page36_figure_region_content_20260721/page36_figure_region_content_overlay.png",
+    "independent_reviewer": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/multipage/v2_response_p35.md.raw.md",
+    "original_page_image": "artifacts/pdf_lab/page36_figure_region_content_20260721/page36_original.png",
+    "pre_patch_current_extraction": "artifacts/pdf_lab/page36_figure_control_heading_20260721/current_page36_snapshot.json"
+  },
+  "source_reviewer_page_label": "page35 rows 13-23"
+}

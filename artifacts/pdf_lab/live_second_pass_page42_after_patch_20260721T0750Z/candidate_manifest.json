@@ -1,0 +1,268 @@
+{
+  "apply_mode": "release",
+  "candidate_count": 7,
+  "candidates": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "block_id": "actual:p42:block:0",
+      "block_index": 0,
+      "candidate_id": "cand:p0042:0000:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/41/blocks/0",
+      "page_index": 41,
+      "page_number": 42,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "block_id": "actual:p42:block:1",
+      "block_index": 1,
+      "candidate_id": "cand:p0042:0001:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/41/blocks/1",
+      "page_index": 41,
+      "page_number": 42,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528974944469976,
+        0.9549618345318418
+      ],
+      "block_id": "actual:p42:block:2",
+      "block_index": 2,
+      "candidate_id": "cand:p0042:0002:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009516,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 19
+      },
+      "json_pointer": "/pages/41/blocks/2",
+      "page_index": 41,
+      "page_number": 42,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "CHAPTER TWO PAGE 15"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_id": "actual:p42:block:3",
+      "block_index": 3,
+      "candidate_id": "cand:p0042:0003:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/41/blocks/3",
+      "page_index": 41,
+      "page_number": 42,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "bbox": [
+        0.14704092187819137,
+        0.08994257570517183,
+        0.8519873525582108,
+        0.19326826538702455
+      ],
+      "block_id": "actual:p42:block:4",
+      "block_index": 4,
+      "candidate_id": "cand:p0042:0004:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text"
+      ],
+      "features": {
+        "bbox_area": 0.072839,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 547
+      },
+      "json_pointer": "/pages/41/blocks/4",
+      "page_index": 41,
+      "page_number": 42,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Organizations can select assurance-related controls to define system development activities, generate evidence about the functionality and behavior of the system, and trace the evidence to the system elements that provide such functionality or exhibit such behavior. The evidence is used to obtain a degree of confidence that the system satisfies the stated security and privacy requirements while supporting the organization\u2019s mission and business functions. Assurance- related controls are identifi"
+    },
+    {
+      "bbox": [
+        0.3407843097362643,
+        0.2446108538695056,
+        0.660252290613511,
+        0.2638535740399601
+      ],
+      "block_id": "actual:p42:block:5",
+      "block_index": 5,
+      "candidate_id": "cand:p0042:0005:section_heading",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:section_heading",
+        "preset_type:section_heading",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.006147,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": "nist_callout_heading",
+        "source_type": "Body",
+        "text_length": 34
+      },
+      "json_pointer": "/pages/41/blocks/5",
+      "page_index": 41,
+      "page_number": 42,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "section_heading",
+      "text_excerpt": "EVIDENCE OF CONTROL IMPLEMENTATION"
+    },
+    {
+      "bbox": [
+        0.1847058464499081,
+        0.2692922727026121,
+        0.8164947609496273,
+        0.3479847378200955
+      ],
+      "block_id": "actual:p42:block:6",
+      "block_index": 6,
+      "candidate_id": "cand:p0042:0006:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text"
+      ],
+      "features": {
+        "bbox_area": 0.049717,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 451
+      },
+      "json_pointer": "/pages/41/blocks/6",
+      "page_index": 41,
+      "page_number": 42,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "During control selection and implementation, it is important for organizations to consider the evidence (e.g., artifacts, documentation) that will be needed to support current and future control assessments. Such assessments help determine whether the controls are implemented correctly, operating as intended, and satisfying security and privacy policies\u2014thus, providing essential information for senior leaders to make informed risk-based decisions."
+    }
+  ],
+  "census_failure_count": 0,
+  "census_failures": [],
+  "command": "scripts/pdf_lab/run_second_pass_harness.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --out artifacts/pdf_lab/live_second_pass_page42_after_patch_20260721T0750Z --candidate-census-page 42 --sample-size 1 --seed 46 --review-mode live --patch-mode dry_run --patch-backend opencode_serve --commit-mode dry_run --scillm-base-url http://localhost:4001 --scillm-timeout-s 120 --page-orchestrator-mode dry_run --patch-prompt-profile plan_only --repair-strategy single --candidate-census-timeout-s 120 --candidate-page-timeout-s 90 --page-extract-timeout-s 90 --caller-skill pdf-lab --stop-on-nonterminal",
+  "created_at": "2026-07-21T07:31:16.198322+00:00",
+  "extracted_page_count": 1,
+  "git_head": "1de738fd8a634e2148c05207735cb16551da131f",
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page_count": 492,
+  "page_count_with_candidates": 1,
+  "pages": [
+    {
+      "candidate_count": 7,
+      "page_number": 42,
+      "preset_counts": {
+        "section_heading": 1,
+        "side_chrome": 4,
+        "text": 2
+      },
+      "risk_candidate_count": 5
+    }
+  ],
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "preset_counts": {
+    "section_heading": 1,
+    "side_chrome": 4,
+    "text": 2
+  },
+  "preset_types": [
+    "appendix",
+    "equation",
+    "figure",
+    "footnote",
+    "list",
+    "reference",
+    "section_heading",
+    "side_chrome",
+    "table",
+    "text",
+    "toc",
+    "unknown_layout"
+  ],
+  "schema": "pdf_lab.second_pass.candidate_manifest.v1"
+}

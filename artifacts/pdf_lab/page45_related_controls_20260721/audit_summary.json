@@ -1,0 +1,80 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T03:31:03.851912+00:00",
+  "status": "passing_current_contract_after_patch",
+  "mocked": "no",
+  "live": "yes",
+  "page_id": "nist_phase54_page_0045",
+  "page_number": 45,
+  "pdf_page_index": 44,
+  "candidate": {
+    "defect_class": "Related Controls lead/value line missing semantic_role=related_controls",
+    "owner": "nist_preset",
+    "selected_from": [
+      "artifacts/pdf_lab/page45_human_reannotation_20260604/in_progress_entry.json",
+      "artifacts/pdf_lab/page45_chrome_noise_20260721/current_page45_snapshot.json"
+    ]
+  },
+  "current_extraction": {
+    "snapshot": "artifacts/pdf_lab/page45_related_controls_20260721/current_page45_snapshot.json",
+    "snapshot_sha256": "675c8ca454b5787e53601592d31a0ff4992623b1df0bd34a1b08d0af653322e4",
+    "block_count": 21,
+    "type_counts": {
+      "header_footer_noise": 4,
+      "section_heading": 2,
+      "section_link": 1,
+      "paragraph_block": 3,
+      "list": 9,
+      "labeled_enhancements": 1,
+      "reference": 1
+    },
+    "candidate_block": {
+      "id": "actual:p45:block:18",
+      "type": "paragraph_block",
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls:  IA-1, PM-9, PM-24, PS-8, SI-12.",
+      "bbox": [
+        0.20588235294117646,
+        0.7983073995570944,
+        0.5322631636476205,
+        0.8152350994071575
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ],
+      "breadcrumb": [
+        "CHAPTER THREE THE CONTROLS",
+        "3.1 ACCESS CONTROL"
+      ]
+    }
+  },
+  "patch": {
+    "ledger_entry_id": "nist-related-controls-lead-role-001",
+    "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+    "rule_effect": "preserve type=paragraph_block and set semantic_role=related_controls for guarded NIST Body Related Controls lead/value lines"
+  },
+  "proof": {
+        "commands": [
+            "python red baseline probe with HEAD ledger saved to /tmp/page45_related_controls_baseline_ledger.json",
+            "pytest -q tests/test_nist_page45_related_controls.py",
+            "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page45_related_controls_20260721/current_page45_snapshot.json --max-pages 45 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+            "pytest -q tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py",
+            "pytest -q tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page35_control_families_table.py tests/test_nist_page104_au12_page_break_label.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page46_nested_list_segmentation.py"
+        ],
+        "logs": [
+            "artifacts/pdf_lab/page45_related_controls_20260721/test_logs/red_probe_page45_related_controls.log",
+            "artifacts/pdf_lab/page45_related_controls_20260721/test_logs/pytest_page45_related_controls.log",
+            "artifacts/pdf_lab/page45_related_controls_20260721/test_logs/snapshot_page45.log",
+            "artifacts/pdf_lab/page45_related_controls_20260721/test_logs/pytest_page45_focused.log",
+            "artifacts/pdf_lab/page45_related_controls_20260721/test_logs/regression_suite.log"
+        ],
+        "red_result": "pre-patch ledger produced semantic_role None and AssertionError",
+        "focused_result": "1 passed, 5 warnings in 24.93s",
+        "page45_focused_result": "10 passed, 5 warnings in 230.86s",
+        "regression_suite_result": "16 passed, 5 warnings in 357.97s",
+        "does_not_prove": "remaining independent-review findings or all-candidates goal completion"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page45_related_controls_20260721/visual_receipt.json"
+}

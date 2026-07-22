@@ -1,0 +1,43 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "status": "passed_current_gate",
+  "page": 15,
+  "candidate": "frontmatter reference/TOC/side-chrome sampled page",
+  "mocked": false,
+  "live": true,
+  "what_was_exercised": [
+    "fresh current-extraction candidate census over the first 80 pages",
+    "stratified one-page selection selected page 15 with 44 candidates",
+    "page-level second-pass DAG with live scillm review",
+    "model-ready prompt payload, original page image, annotated candidate image, response, validation, HTML review artifact, and terminal ledger"
+  ],
+  "what_remains_unverified": [
+    "the document-level statistical sampling gate remains intentionally broader than the one-page hardening loop and rejects sample_size=1",
+    "remaining active candidates beyond page 15 are not covered by this receipt"
+  ],
+  "proof": {
+    "document_level_one_case_attempt": {
+      "path": "artifacts/pdf_lab/live_second_pass_next_after_page42_20260721T0745Z/harness_final_gate.json",
+      "terminal_status": "failed_closed",
+      "reason": "document sampling gate rejected sample_size=1 before page DAG execution"
+    },
+    "page_level_live_second_pass": {
+      "case_dir": "artifacts/pdf_lab/live_second_pass_page15_20260721T0748Z/page_case_0001_p0015",
+      "terminal_ledger": "artifacts/pdf_lab/live_second_pass_page15_20260721T0748Z/page_case_0001_p0015/terminal_ledger.json",
+      "terminal_status": "reviewed_clean",
+      "reason": "scillm_review_validated_clean",
+      "review_validation": "artifacts/pdf_lab/live_second_pass_page15_20260721T0748Z/page_case_0001_p0015/review_validation.json",
+      "review_response": "artifacts/pdf_lab/live_second_pass_page15_20260721T0748Z/page_case_0001_p0015/review_response.json",
+      "review_html": "artifacts/pdf_lab/live_second_pass_page15_20260721T0748Z/page_case_0001_p0015/review.html",
+      "review_bundle": "artifacts/pdf_lab/live_second_pass_page15_20260721T0748Z/page_case_0001_p0015/review_bundle.zip"
+    }
+  },
+  "campaign_status": {
+    "passed": 1,
+    "failed": 0,
+    "blocked_by_systemic_failure": 0,
+    "not_run": "remaining active candidate queue",
+    "active_family": "NIST SP 800-53r5 current-extraction page candidates",
+    "latest_failure_signature": "document-level sampling gate rejects sample_size=1; page-level DAG used for the immutable one-page loop"
+  }
+}

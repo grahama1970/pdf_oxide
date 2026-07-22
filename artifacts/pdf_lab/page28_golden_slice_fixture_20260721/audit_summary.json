@@ -1,0 +1,83 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T07:35:00Z",
+  "status": "passed_current_gate",
+  "mocked": "no",
+  "live": "no",
+  "deterministic_real_extraction": "yes",
+  "page_id": "page_0028",
+  "candidate": {
+    "defect_class": "missing golden-slice expected-elements fixture and runner dependencies",
+    "owner": "test_fixture_dependency",
+    "selected_from": [
+      "GOAL.md active next candidate",
+      "tests/test_nist_page_28_regression.py setup failure",
+      "/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md section 2 drift note"
+    ]
+  },
+  "patch": {
+    "files": [
+      "tests/test_nist_page_28_regression.py",
+      "tests/fixtures/golden_slices/gs001_nist_page28/expected_elements_v2.json",
+      "tests/fixtures/golden_slices/gs001_nist_page28/human_labeled_page.png",
+      "pyproject.toml",
+      "uv.lock"
+    ],
+    "summary": [
+      "Add recovered page28 expected-elements and human-label fixtures to the repository.",
+      "Keep the old /tmp fixture path as first preference, but fall back to the committed recovered fixture when /tmp is absent.",
+      "Declare runner imports loguru, reportlab, and pypdfium2 in the dev dependency group so uv --project can execute the review-extraction runner."
+    ]
+  },
+  "unblock_attempts": {
+    "brave_search": [
+      {
+        "query": "Python package imports optional reportlab ModuleNotFoundError pyproject dependency",
+        "result": "Returned generic missing-module/install guidance; no project-specific public fix."
+      }
+    ],
+    "webgpt": [
+      {
+        "bundle": "artifacts/pdf_lab/page28_golden_slice_fixture_20260721/webgpt_unblock/reportlab_bundle.md",
+        "result": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+      }
+    ]
+  },
+  "proof": {
+    "commands": [
+      "pytest -q tests/test_nist_page_28_regression.py",
+      "pytest -q $(rg --files tests | rg 'test_nist_' | sort)"
+    ],
+    "logs": [
+      "artifacts/pdf_lab/page28_golden_slice_fixture_20260721/test_logs/pytest_page28_regression.log",
+      "artifacts/pdf_lab/page28_golden_slice_fixture_20260721/test_logs/pytest_page28_regression_after_loguru.log",
+      "artifacts/pdf_lab/page28_golden_slice_fixture_20260721/test_logs/pytest_page28_regression_after_reportlab.log",
+      "artifacts/pdf_lab/page28_golden_slice_fixture_20260721/test_logs/pytest_page28_regression_after_pypdfium2.log",
+      "artifacts/pdf_lab/page28_golden_slice_fixture_20260721/test_logs/pytest_full_nist_after_page28.log"
+    ],
+    "page28_result": "7 passed in 1.64s",
+    "full_nist_result": "50 passed, 5 warnings in 537.00s"
+  },
+  "campaign_status": {
+    "passed": [
+      "page28_golden_slice_fixture",
+      "nist_table_duplicate_suppression",
+      "page45_rotated_doi_bbox"
+    ],
+    "failed": [],
+    "blocked_by_systemic_failure": [],
+    "not_run": [
+      "fresh live model-backed reviewer run across remaining active candidates",
+      "Criterion 6 live GitHub apply"
+    ],
+    "active_family": "fresh_reviewer_selection",
+    "latest_failure_signature": null
+  },
+  "does_not_prove": [
+    "Criterion 6 live GitHub apply",
+    "fresh live model-backed review across all remaining page candidates",
+    "human acceptance of GCP signatures",
+    "all-candidates goal completion"
+  ],
+  "next_step": "Run a fresh current-extraction reviewer/candidate selection pass or select the next fresh reviewer finding; do not reuse stale handoff rows already reconciled by receipts."
+}

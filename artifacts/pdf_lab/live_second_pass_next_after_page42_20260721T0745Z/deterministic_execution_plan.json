@@ -1,0 +1,119 @@
+{
+  "agent_decision_allowed": false,
+  "commit_policy": {
+    "commit_mode": "dry_run",
+    "failed_commit_attempt_policy": "unstage_attempted_patch_files_only_and_record_index_cleanup",
+    "one_git_commit_per_verified_bug_fix": true,
+    "patched_confirmed_requires": [
+      "after_review_validation reviewed_clean",
+      "patch_scope_validation.ok",
+      "test_validation.ok",
+      "commit_acceptance_gate.ok",
+      "commit_gate.exact_file_match",
+      "revertability_check.ok"
+    ]
+  },
+  "created_at": "2026-07-21T07:47:54.785171+00:00",
+  "execution_mode": "sequential",
+  "owner": "pdf_lab_harness_code",
+  "page_case_order": [
+    {
+      "candidate_ids": [
+        "cand:p0015:0000:side_chrome",
+        "cand:p0015:0001:side_chrome",
+        "cand:p0015:0002:side_chrome",
+        "cand:p0015:0003:side_chrome",
+        "cand:p0015:0004:section_heading",
+        "cand:p0015:0005:toc",
+        "cand:p0015:0006:reference",
+        "cand:p0015:0007:reference",
+        "cand:p0015:0008:reference",
+        "cand:p0015:0009:reference",
+        "cand:p0015:0010:reference",
+        "cand:p0015:0011:reference",
+        "cand:p0015:0012:reference",
+        "cand:p0015:0013:reference",
+        "cand:p0015:0014:reference",
+        "cand:p0015:0015:reference",
+        "cand:p0015:0016:reference",
+        "cand:p0015:0017:reference",
+        "cand:p0015:0018:reference",
+        "cand:p0015:0019:reference",
+        "cand:p0015:0020:reference",
+        "cand:p0015:0021:reference",
+        "cand:p0015:0022:reference",
+        "cand:p0015:0023:reference",
+        "cand:p0015:0024:reference",
+        "cand:p0015:0025:reference",
+        "cand:p0015:0026:reference",
+        "cand:p0015:0027:reference",
+        "cand:p0015:0028:reference",
+        "cand:p0015:0029:reference",
+        "cand:p0015:0030:reference",
+        "cand:p0015:0031:reference",
+        "cand:p0015:0032:reference",
+        "cand:p0015:0033:reference",
+        "cand:p0015:0034:reference",
+        "cand:p0015:0035:reference",
+        "cand:p0015:0036:reference",
+        "cand:p0015:0037:reference",
+        "cand:p0015:0038:reference",
+        "cand:p0015:0039:reference",
+        "cand:p0015:0040:reference",
+        "cand:p0015:0041:reference",
+        "cand:p0015:0042:reference",
+        "cand:p0015:0043:reference"
+      ],
+      "case_id": "page_case_0001_p0015",
+      "forced_by_human_annotation": false,
+      "index": 1,
+      "page_number": 15,
+      "preset_counts": {
+        "reference": 38,
+        "section_heading": 1,
+        "side_chrome": 4,
+        "toc": 1
+      },
+      "selection_probability_basis": {
+        "candidate_count_on_page": 44,
+        "candidate_share_estimate": 0.03453689,
+        "forced_page": false,
+        "method": "max(weighted_page_score_inclusion_estimate,candidate_share_estimate)",
+        "page_score": 180.75,
+        "total_candidate_count": 1274,
+        "total_page_score": 3842.25,
+        "weighted_page_score_inclusion_estimate": 0.04704275
+      },
+      "selection_probability_estimate": 0.04704275,
+      "strata": [
+        "geometry:boundary",
+        "position:first_20",
+        "position:frontmatter",
+        "preset:reference",
+        "preset:section_heading",
+        "preset:side_chrome",
+        "preset:toc",
+        "risk:high"
+      ]
+    }
+  ],
+  "per_page_dag_policy": {
+    "page_orchestrator_mode": "live",
+    "patch_backend": "opencode_serve",
+    "patch_delegate_is_executor_only": true,
+    "patch_mode": "dry_run",
+    "planner_merge_decision_owner": "pdf_lab_harness_code",
+    "review_mode": "live"
+  },
+  "pre_page_gates": [
+    "candidate_sample_linkage_validation.ok",
+    "sampling_gate.ok",
+    "scillm_code_root_visibility.ok",
+    "scillm_proof_floor.ok when live patch mode requires scillm",
+    "opencode_completion_canary.ok when patch_backend == opencode_serve",
+    "scillm_transport_readonly_canary.ok when patch_backend == scillm_orchestrator",
+    "scillm_transport_write_canary.ok when patch_backend == scillm_orchestrator"
+  ],
+  "schema": "pdf_lab.second_pass.deterministic_execution_plan.v1",
+  "stop_on_nonterminal": false
+}

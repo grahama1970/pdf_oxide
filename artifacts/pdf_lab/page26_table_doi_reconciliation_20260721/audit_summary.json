@@ -1,0 +1,44 @@
+{
+  "schema": "pdf_lab.page26_table_doi_reconciliation_audit.v1",
+  "created_at": "2026-07-21T11:16:06.119029+00:00",
+  "mocked": false,
+  "live": false,
+  "page_number": 26,
+  "snapshot_record_key": "blocks",
+  "what_was_exercised": [
+    "deterministic snapshot_current_extraction release-mode extraction for GS001/NIST SP 800-53r5 through page 26",
+    "page26 table-contained horizontal Boilerplate/header_footer_noise fragment reconciliation",
+    "duplicate standalone table-contained fragment suppression after merge"
+  ],
+  "what_remains_unverified": [
+    "semantic judgment was separately exercised by the repaired live second-pass VLM run",
+    "remaining candidate pages still require one-page iteration",
+    "Criterion 6 live GitHub apply remains blocked without approval receipt"
+  ],
+  "checks": {
+    "page_found": true,
+    "table_count": 1,
+    "table_bbox": [
+      0.14666667015723933,
+      0.09151512685448232,
+      0.8525490355647467,
+      0.8976515182340988
+    ],
+    "revision_cell_contains_800_181_fragment": true,
+    "revision_cell_contains_800_181r1_fragment": true,
+    "table_text_contains_800_181_fragment": true,
+    "table_text_contains_800_181r1_fragment": true,
+    "standalone_noise_800_181_count": 0,
+    "fragment_ids": [
+      "actual:p26:block:7",
+      "actual:p26:block:9"
+    ],
+    "fragment_ids_match_expected": true
+  },
+  "evidence": {
+    "page_after": "artifacts/pdf_lab/page26_table_doi_reconciliation_20260721/page_after.json",
+    "source_pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+    "ledger": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json"
+  },
+  "ok": true
+}

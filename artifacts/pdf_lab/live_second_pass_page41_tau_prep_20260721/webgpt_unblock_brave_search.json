@@ -1,0 +1,32 @@
+{
+  "query": "grahama1970 tau scillm chat completions worker executor",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "GitHub - grahama1970/agent-skills: Shared skills for AI agents (Claude Code, Codex, Gemini) \u00b7 GitHub",
+      "description": "Scillm 1-shot, exec, subagent, and DAG orch.",
+      "url": "https://github.com/grahama1970/agent-skills"
+    },
+    {
+      "title": "grahama1970 (Graham) \u00b7 GitHub",
+      "description": "grahama1970 has 25 repositories available. Follow their code on GitHub.",
+      "url": "https://github.com/grahama1970"
+    },
+    {
+      "title": "Chat completions - SiliconFlow",
+      "description": "<strong>Creates a model response for the given chat conversation</strong>.",
+      "url": "https://docs.siliconflow.com/en/api-reference/chat-completions/chat-completions"
+    },
+    {
+      "title": "GitHub - grahama1970/claude-code-hooks-test: Test suite demonstrating Claude Code hooks have 0% execution rate in chat sessions \u00b7 GitHub",
+      "description": "Test suite demonstrating Claude Code hooks have 0% execution rate in chat sessions - grahama1970/claude-code-hooks-test",
+      "url": "https://github.com/grahama1970/claude-code-hooks-test"
+    },
+    {
+      "title": "`RuntimeError: There is no Stream(gpu, N) in current thread` when calling `/v1/messages` or `/v1/chat/completions` on Qwen3.5 MLX models (MLLM path runs in worker thread) \u00b7 Issue #407 \u00b7 waybarrios/vllm-mlx",
+      "description": "/v1/chat/completions fails in exactly the same way (also routes through mllm.chat()).",
+      "url": "https://github.com/waybarrios/vllm-mlx/issues/407"
+    }
+  ]
+}

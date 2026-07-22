@@ -1,0 +1,362 @@
+{
+  "created_at": "2026-07-21T07:53:26.900204+00:00",
+  "forced_pages": {
+    "accepted": [
+      76
+    ],
+    "rejected": [],
+    "requested": [
+      76
+    ]
+  },
+  "manifest_schema": "pdf_lab.second_pass.candidate_manifest.v1",
+  "manifest_validation": {
+    "candidate_count": 1274,
+    "declared_candidate_count": 1274,
+    "errors": [],
+    "ok": true,
+    "schema": "pdf_lab.second_pass.candidate_manifest_validation.v1"
+  },
+  "page_cases": [
+    {
+      "candidate_ids": [
+        "cand:p0015:0000:side_chrome",
+        "cand:p0015:0001:side_chrome",
+        "cand:p0015:0002:side_chrome",
+        "cand:p0015:0003:side_chrome",
+        "cand:p0015:0004:section_heading",
+        "cand:p0015:0005:toc",
+        "cand:p0015:0006:reference",
+        "cand:p0015:0007:reference",
+        "cand:p0015:0008:reference",
+        "cand:p0015:0009:reference",
+        "cand:p0015:0010:reference",
+        "cand:p0015:0011:reference",
+        "cand:p0015:0012:reference",
+        "cand:p0015:0013:reference",
+        "cand:p0015:0014:reference",
+        "cand:p0015:0015:reference",
+        "cand:p0015:0016:reference",
+        "cand:p0015:0017:reference",
+        "cand:p0015:0018:reference",
+        "cand:p0015:0019:reference",
+        "cand:p0015:0020:reference",
+        "cand:p0015:0021:reference",
+        "cand:p0015:0022:reference",
+        "cand:p0015:0023:reference",
+        "cand:p0015:0024:reference",
+        "cand:p0015:0025:reference",
+        "cand:p0015:0026:reference",
+        "cand:p0015:0027:reference",
+        "cand:p0015:0028:reference",
+        "cand:p0015:0029:reference",
+        "cand:p0015:0030:reference",
+        "cand:p0015:0031:reference",
+        "cand:p0015:0032:reference",
+        "cand:p0015:0033:reference",
+        "cand:p0015:0034:reference",
+        "cand:p0015:0035:reference",
+        "cand:p0015:0036:reference",
+        "cand:p0015:0037:reference",
+        "cand:p0015:0038:reference",
+        "cand:p0015:0039:reference",
+        "cand:p0015:0040:reference",
+        "cand:p0015:0041:reference",
+        "cand:p0015:0042:reference",
+        "cand:p0015:0043:reference"
+      ],
+      "case_id": "page_case_0001_p0015",
+      "forced_by_human_annotation": false,
+      "page_index": 14,
+      "page_number": 15,
+      "preset_counts": {
+        "reference": 38,
+        "section_heading": 1,
+        "side_chrome": 4,
+        "toc": 1
+      },
+      "selection_probability_basis": {
+        "candidate_count_on_page": 44,
+        "candidate_share_estimate": 0.03453689,
+        "forced_page": false,
+        "method": "max(weighted_page_score_inclusion_estimate,candidate_share_estimate)",
+        "page_score": 180.75,
+        "total_candidate_count": 1274,
+        "total_page_score": 3842.25,
+        "weighted_page_score_inclusion_estimate": 0.04704275
+      },
+      "selection_probability_estimate": 0.04704275,
+      "selection_reason": [
+        "high_risk_preset",
+        "high_risk_candidate",
+        "document_position_stratum",
+        "boundary_geometry",
+        "high_candidate_score"
+      ],
+      "selection_score": 180.75,
+      "strata": [
+        "geometry:boundary",
+        "position:first_20",
+        "position:frontmatter",
+        "preset:reference",
+        "preset:section_heading",
+        "preset:side_chrome",
+        "preset:toc",
+        "risk:high"
+      ]
+    },
+    {
+      "candidate_ids": [
+        "cand:p0076:0000:side_chrome",
+        "cand:p0076:0001:side_chrome",
+        "cand:p0076:0002:side_chrome",
+        "cand:p0076:0003:side_chrome",
+        "cand:p0076:0004:text",
+        "cand:p0076:0005:text",
+        "cand:p0076:0006:section_heading",
+        "cand:p0076:0007:text",
+        "cand:p0076:0008:text",
+        "cand:p0076:0009:text",
+        "cand:p0076:0010:section_heading",
+        "cand:p0076:0011:text",
+        "cand:p0076:0012:text",
+        "cand:p0076:0013:text",
+        "cand:p0076:0014:section_heading",
+        "cand:p0076:0015:list",
+        "cand:p0076:0016:list",
+        "cand:p0076:0017:text",
+        "cand:p0076:0018:text",
+        "cand:p0076:0019:section_heading",
+        "cand:p0076:0020:text",
+        "cand:p0076:0021:section_heading",
+        "cand:p0076:0022:text",
+        "cand:p0076:0023:text",
+        "cand:p0076:0024:text",
+        "cand:p0076:0025:section_heading",
+        "cand:p0076:0026:text",
+        "cand:p0076:0027:section_heading",
+        "cand:p0076:0028:text",
+        "cand:p0076:0029:section_heading"
+      ],
+      "case_id": "page_case_0002_p0076",
+      "forced_by_human_annotation": true,
+      "page_index": 75,
+      "page_number": 76,
+      "preset_counts": {
+        "list": 2,
+        "section_heading": 8,
+        "side_chrome": 4,
+        "text": 16
+      },
+      "selection_probability_basis": {
+        "candidate_count_on_page": 30,
+        "candidate_share_estimate": 0.02354788,
+        "forced_page": true,
+        "method": "forced_human_annotation",
+        "page_score": 76.0,
+        "total_candidate_count": 1274,
+        "total_page_score": 3842.25,
+        "weighted_page_score_inclusion_estimate": 0.01978008
+      },
+      "selection_probability_estimate": 1.0,
+      "selection_reason": [
+        "human_annotated_page",
+        "high_risk_preset",
+        "high_risk_candidate",
+        "boundary_geometry",
+        "high_candidate_score"
+      ],
+      "selection_score": 76.0,
+      "strata": [
+        "geometry:boundary",
+        "preset:list",
+        "preset:section_heading",
+        "preset:side_chrome",
+        "preset:text",
+        "risk:high"
+      ]
+    }
+  ],
+  "page_count": 492,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "probabilistic_selected_pages": [
+    15
+  ],
+  "requested_sample_size": 1,
+  "sampling_audit": {
+    "accepted_forced_pages": [
+      76
+    ],
+    "adequate_for_priority_strata": false,
+    "adequate_sample_size": false,
+    "candidate_count": 1274,
+    "candidate_page_count": 80,
+    "covered_priority_strata": [
+      "geometry:boundary",
+      "position:first_20",
+      "position:frontmatter",
+      "preset:list",
+      "preset:reference",
+      "preset:section_heading",
+      "preset:side_chrome",
+      "preset:text",
+      "preset:toc",
+      "risk:high"
+    ],
+    "covered_strata": [
+      "geometry:boundary",
+      "position:first_20",
+      "position:frontmatter",
+      "preset:list",
+      "preset:reference",
+      "preset:section_heading",
+      "preset:side_chrome",
+      "preset:text",
+      "preset:toc",
+      "risk:high"
+    ],
+    "forced_pages_are_additive": true,
+    "missed_priority_strata": [
+      "preset:figure",
+      "preset:footnote",
+      "preset:table"
+    ],
+    "missed_strata": [
+      "preset:figure",
+      "preset:footnote",
+      "preset:table"
+    ],
+    "page_count": 492,
+    "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+    "priority_strata": [
+      "geometry:boundary",
+      "position:first_20",
+      "position:frontmatter",
+      "preset:figure",
+      "preset:footnote",
+      "preset:list",
+      "preset:reference",
+      "preset:section_heading",
+      "preset:side_chrome",
+      "preset:table",
+      "preset:text",
+      "preset:toc",
+      "risk:high"
+    ],
+    "priority_strata_count": 13,
+    "priority_strata_coverage_ratio": 0.769231,
+    "probabilistic_selected_count": 1,
+    "random_reserve_fraction": 0.2,
+    "recommended_min_sample_size": 16,
+    "rejected_forced_pages": [],
+    "requested_forced_pages": [
+      76
+    ],
+    "requested_sample_size": 1,
+    "schema": "pdf_lab.second_pass.sampling_audit.v1",
+    "seed": 49,
+    "selected_count": 2,
+    "selection_records": [
+      {
+        "candidate_page_count": 1,
+        "selected_pages": [
+          76
+        ],
+        "stratum": "forced:human_annotated"
+      },
+      {
+        "candidate_page_count": 1,
+        "selected_pages": [
+          15
+        ],
+        "stratum": "preset:toc"
+      }
+    ],
+    "statistical_significance_basis": {
+      "accepted_forced_page_count": 1,
+      "adequacy_rule": "adequate_sample_size && adequate_for_priority_strata && selected_count >= recommended_min_sample_size",
+      "adequate": false,
+      "candidate_page_population": 80,
+      "finite_population_fraction": 0.025,
+      "forced_pages_are_additive": true,
+      "large_document_floor": 12,
+      "method": "stratified_priority_coverage_plus_weighted_random_reserve",
+      "priority_stratum_count": 13,
+      "probabilistic_selected_page_count": 1,
+      "random_reserve_fraction": 0.2,
+      "random_reserve_record_count": 0,
+      "recommended_min_sample_size": 16,
+      "seed": 49,
+      "selected_page_count": 2,
+      "sqrt_population_floor": 9
+    },
+    "strata_coverage_ratio": 0.769231,
+    "warnings": [
+      "requested sample_size 1 is below recommended minimum 16 for 80 candidate pages and 13 priority strata",
+      "priority strata not represented in selected pages: ['preset:figure', 'preset:footnote', 'preset:table']",
+      "weighted random reserve did not select an additional page"
+    ]
+  },
+  "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+  "seed": 49,
+  "selected_count": 2,
+  "selected_pages": [
+    15,
+    76
+  ],
+  "strata": [
+    {
+      "page_count": 78,
+      "stratum": "geometry:boundary"
+    },
+    {
+      "page_count": 20,
+      "stratum": "position:first_20"
+    },
+    {
+      "page_count": 20,
+      "stratum": "position:frontmatter"
+    },
+    {
+      "page_count": 2,
+      "stratum": "preset:figure"
+    },
+    {
+      "page_count": 13,
+      "stratum": "preset:footnote"
+    },
+    {
+      "page_count": 34,
+      "stratum": "preset:list"
+    },
+    {
+      "page_count": 17,
+      "stratum": "preset:reference"
+    },
+    {
+      "page_count": 56,
+      "stratum": "preset:section_heading"
+    },
+    {
+      "page_count": 78,
+      "stratum": "preset:side_chrome"
+    },
+    {
+      "page_count": 15,
+      "stratum": "preset:table"
+    },
+    {
+      "page_count": 71,
+      "stratum": "preset:text"
+    },
+    {
+      "page_count": 1,
+      "stratum": "preset:toc"
+    },
+    {
+      "page_count": 80,
+      "stratum": "risk:high"
+    }
+  ]
+}

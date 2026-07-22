@@ -1,0 +1,25 @@
+{
+  "candidate_count": 6,
+  "errors": [
+    "candidate_findings[0].candidate_id must be non-empty",
+    "candidate_findings[1].candidate_id must be non-empty",
+    "candidate_findings[2].candidate_id must be non-empty",
+    "candidate_findings[3].candidate_id must be non-empty",
+    "missing candidate findings: ['cand:p0017:0000:side_chrome', 'cand:p0017:0001:side_chrome', 'cand:p0017:0002:side_chrome', 'cand:p0017:0003:side_chrome', 'cand:p0017:0004:list', 'cand:p0017:0005:text']"
+  ],
+  "expected_candidate_ids": [
+    "cand:p0017:0000:side_chrome",
+    "cand:p0017:0001:side_chrome",
+    "cand:p0017:0002:side_chrome",
+    "cand:p0017:0003:side_chrome",
+    "cand:p0017:0004:list",
+    "cand:p0017:0005:text"
+  ],
+  "ok": false,
+  "page_case": {
+    "case_id": "page_case_0001_p0017",
+    "page_number": 17
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": []
+}

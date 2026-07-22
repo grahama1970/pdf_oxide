@@ -1,0 +1,612 @@
+{
+  "apply_mode": "release",
+  "candidate_count": 18,
+  "candidates": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "block_id": "actual:p28:block:0",
+      "block_index": 0,
+      "candidate_id": "cand:p0028:0000:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/27/blocks/0",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "block_id": "actual:p28:block:1",
+      "block_index": 1,
+      "candidate_id": "cand:p0028:0001:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/27/blocks/1",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528853273080066,
+        0.9549618345318418
+      ],
+      "block_id": "actual:p28:block:2",
+      "block_index": 2,
+      "candidate_id": "cand:p0028:0002:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.009516,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Footer",
+        "text_length": 18
+      },
+      "json_pointer": "/pages/27/blocks/2",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "CHAPTER ONE PAGE 1"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_id": "actual:p28:block:3",
+      "block_index": 3,
+      "candidate_id": "cand:p0028:0003:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry"
+      ],
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/27/blocks/3",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.09307097425364484,
+        0.27232949250663807,
+        0.11588885567405006
+      ],
+      "block_id": "actual:p28:block:4",
+      "block_index": 4,
+      "candidate_id": "cand:p0028:0004:section_heading",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:section_heading",
+        "preset_type:section_heading",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.002858,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Title",
+        "text_length": 11
+      },
+      "json_pointer": "/pages/27/blocks/4",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "section_heading",
+      "text_excerpt": "CHAPTER ONE"
+    },
+    {
+      "bbox": [
+        0.1470528272242328,
+        0.12898307376437718,
+        0.31880975860396243,
+        0.15705853279190835
+      ],
+      "block_id": "actual:p28:block:5",
+      "block_index": 5,
+      "candidate_id": "cand:p0028:0005:section_heading",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:section_heading",
+        "preset_type:section_heading",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.004822,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Title",
+        "text_length": 12
+      },
+      "json_pointer": "/pages/27/blocks/5",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "section_heading",
+      "text_excerpt": "INTRODUCTION"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.15823163889875316,
+        0.7191140667285795,
+        0.1751593580149641
+      ],
+      "block_id": "actual:p28:block:6",
+      "block_index": 6,
+      "candidate_id": "cand:p0028:0006:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:section_subtitle",
+        "preset_type:text"
+      ],
+      "features": {
+        "bbox_area": 0.009684,
+        "block_type": "section_subtitle",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 72
+      },
+      "json_pointer": "/pages/27/blocks/6",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS"
+    },
+    {
+      "bbox": [
+        0.14697116029028798,
+        0.18873045179578993,
+        0.8469282162734886,
+        0.30902521538011957
+      ],
+      "block_id": "actual:p28:block:7",
+      "block_index": 7,
+      "candidate_id": "cand:p0028:0007:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text"
+      ],
+      "features": {
+        "bbox_area": 0.084201,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 555
+      },
+      "json_pointer": "/pages/27/blocks/7",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Modern information systems1 can include a variety of computing platforms (e.g., industrial control systems, general purpose computing systems, cyber-physical systems, super computers, weapons systems, communications systems, environmental control systems, medical devices, embedded devices, sensors, and mobile devices such as smart phones and tablets). These platforms all share a common foundation\u2014computers with complex hardware, software and firmware providing a capability that supports the esse"
+    },
+    {
+      "bbox": [
+        0.14703897713056577,
+        0.32259496053059894,
+        0.845089781518076,
+        0.4937227422540838
+      ],
+      "block_id": "actual:p28:block:8",
+      "block_index": 8,
+      "candidate_id": "cand:p0028:0008:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "long_text_region"
+      ],
+      "features": {
+        "bbox_area": 0.119456,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 884
+      },
+      "json_pointer": "/pages/27/blocks/8",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Security controls are the safeguards or countermeasures employed within a system or an organization to protect the confidentiality, integrity, and availability of the system and its information and to manage information security3 risk. Privacy controls are the administrative, technical, and physical safeguards employed within a system or an organization to manage privacy risks and to ensure compliance with applicable privacy requirements.4 Security and privacy controls are selected and implement"
+    },
+    {
+      "bbox": [
+        0.1470541361889808,
+        0.5072910809757734,
+        0.8428934134689032,
+        0.5766791526717369
+      ],
+      "block_id": "actual:p28:block:9",
+      "block_index": 9,
+      "candidate_id": "cand:p0028:0009:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text"
+      ],
+      "features": {
+        "bbox_area": 0.048283,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 341
+      },
+      "json_pointer": "/pages/27/blocks/9",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "The selection, design, and implementation of security and privacy controls5 are important tasks that have significant implications for the operations6 and assets of organizations as well as the welfare of individuals and the Nation. Organizations should answer several key questions when addressing information security and privacy controls:"
+    },
+    {
+      "bbox": [
+        0.14708595026552287,
+        0.583430781508937,
+        0.8394090241076899,
+        0.686382178104285
+      ],
+      "block_id": "actual:p28:block:10",
+      "block_index": 10,
+      "candidate_id": "cand:p0028:0010:list",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:list",
+        "preset_type:list",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.071276,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "List",
+        "text_length": 395
+      },
+      "json_pointer": "/pages/27/blocks/10",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "list",
+      "text_excerpt": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals? \u2022 Have the selected controls been implemented or is there a plan in place to do so? \u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective?7"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7266742436572758,
+        0.7791440377827563,
+        0.7557423909505209
+      ],
+      "block_id": "actual:p28:block:11",
+      "block_index": 11,
+      "candidate_id": "cand:p0028:0011:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.018374,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 193
+      },
+      "json_pointer": "/pages/27/blocks/11",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130]."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7569015194671322,
+        0.8381487279156454,
+        0.7859696667603772
+      ],
+      "block_id": "actual:p28:block:13",
+      "block_index": 12,
+      "candidate_id": "cand:p0028:0012:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.020089,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 196
+      },
+      "json_pointer": "/pages/27/blocks/12",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements)."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7872045497701625,
+        0.6981442021388634,
+        0.8024090853604403
+      ],
+      "block_id": "actual:p28:block:15",
+      "block_index": 13,
+      "candidate_id": "cand:p0028:0013:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.008379,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/27/blocks/13",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "3 The two terms information security and security are used synonymously in this publication."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8035682138770518,
+        0.45684804480060254,
+        0.8187727494673296
+      ],
+      "block_id": "actual:p28:block:16",
+      "block_index": 14,
+      "candidate_id": "cand:p0028:0014:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.00471,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 52
+      },
+      "json_pointer": "/pages/27/blocks/14",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "4 [OMB A-130] defines security and privacy controls."
+    },
+    {
+      "bbox": [
+        0.14704900006063623,
+        0.8200075554125237,
+        0.8403667375153187,
+        0.8490757027057686
+      ],
+      "block_id": "actual:p28:block:17",
+      "block_index": 15,
+      "candidate_id": "cand:p0028:0015:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.020153,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 160
+      },
+      "json_pointer": "/pages/27/blocks/15",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8502348312223801,
+        0.6120427449544271,
+        0.8654393668126579
+      ],
+      "block_id": "actual:p28:block:19",
+      "block_index": 16,
+      "candidate_id": "cand:p0028:0016:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.00707,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 78
+      },
+      "json_pointer": "/pages/27/blocks/16",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "6 Organizational operations include mission, functions, image, and reputation."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8666742498224432,
+        0.8278501922009038,
+        0.9096060088186553
+      ],
+      "block_id": "actual:p28:block:20",
+      "block_index": 17,
+      "candidate_id": "cand:p0028:0017:footnote",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:footnote",
+        "preset_type:footnote",
+        "hardening_interest"
+      ],
+      "features": {
+        "bbox_area": 0.029228,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 258
+      },
+      "json_pointer": "/pages/27/blocks/17",
+      "page_index": 27,
+      "page_number": 28,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "footnote",
+      "text_excerpt": "7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [SP 800-53A]."
+    }
+  ],
+  "census_failure_count": 0,
+  "census_failures": [],
+  "command": "scripts/pdf_lab/run_second_pass_harness.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --out artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z --candidate-census-page 28 --sample-size 1 --seed 28 --review-mode live --patch-mode dry_run --patch-backend opencode_serve --commit-mode dry_run --model vlm-free2 --scillm-base-url http://localhost:4001 --caller-skill pdf-lab --scillm-timeout-s 120 --dpi 72 --page-orchestrator-mode live --patch-prompt-profile plan_only --repair-strategy single --candidate-census-timeout-s 120 --candidate-page-timeout-s 90 --page-extract-timeout-s 90 --human-annotated-pages-json artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/human_forced_pages.json --stop-on-nonterminal",
+  "created_at": "2026-07-21T11:38:42.696389+00:00",
+  "extracted_page_count": 1,
+  "git_head": "2540e6eb2732751951d8c2b9721d59506977f6f0",
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page_count": 492,
+  "page_count_with_candidates": 1,
+  "pages": [
+    {
+      "candidate_count": 18,
+      "page_number": 28,
+      "preset_counts": {
+        "footnote": 7,
+        "list": 1,
+        "section_heading": 2,
+        "side_chrome": 4,
+        "text": 4
+      },
+      "risk_candidate_count": 14
+    }
+  ],
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "preset_counts": {
+    "footnote": 7,
+    "list": 1,
+    "section_heading": 2,
+    "side_chrome": 4,
+    "text": 4
+  },
+  "preset_types": [
+    "appendix",
+    "equation",
+    "figure",
+    "footnote",
+    "list",
+    "reference",
+    "section_heading",
+    "side_chrome",
+    "table",
+    "text",
+    "toc",
+    "unknown_layout"
+  ],
+  "schema": "pdf_lab.second_pass.candidate_manifest.v1"
+}

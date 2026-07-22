@@ -1,0 +1,273 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p7:block:0",
+      "is_bold": false,
+      "page": 7,
+      "pdf_page_index": 6,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p7:block:1",
+      "is_bold": false,
+      "page": 7,
+      "pdf_page_index": 6,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.49666665270437604,
+        0.939856018682923,
+        0.5033137003580729,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p7:block:2",
+      "is_bold": false,
+      "page": 7,
+      "pdf_page_index": 6,
+      "raw": {
+        "bbox": [
+          303.9599914550781,
+          38.400001525878906,
+          6.110992431640625,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "v"
+      },
+      "source_type": "PageNumber",
+      "text": "v",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p7:block:3",
+      "is_bold": false,
+      "page": 7,
+      "pdf_page_index": 6,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.38343137853285847,
+        0.08938735422461924,
+        0.616467993243847,
+        0.11388766163527364
+      ],
+      "font_name": "TT2",
+      "font_size": 13.979999542236328,
+      "id": "actual:p7:block:4",
+      "is_bold": true,
+      "page": 7,
+      "pdf_page_index": 6,
+      "raw": {
+        "bbox": [
+          234.66000366210938,
+          706.6799926757812,
+          145.83938598632812,
+          13.97998046875
+        ],
+        "block_type": "Title",
+        "confidence": 0.75,
+        "font_name": "TT2",
+        "font_size": 13.979999542236328,
+        "header_level": 2,
+        "header_validation": {
+          "confidence": 0.75,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 13.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.5533332824707031,
+            "text_len": 24,
+            "title_case_ratio": 1.0,
+            "word_count": 3
+          },
+          "has_numbering": false,
+          "is_header": true,
+          "level": 2,
+          "number_text": "",
+          "reasons": [
+            "bold_large_font",
+            "title_case_like"
+          ],
+          "title_text": "Patent Disclosure Notice"
+        },
+        "is_bold": true,
+        "text": "Patent Disclosure Notice"
+      },
+      "source_type": "Title",
+      "text": "Patent Disclosure Notice",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.12668496912175958,
+        0.8355013778786254,
+        0.33118750832297583
+      ],
+      "font_name": "TT3",
+      "font_size": 10.979999542236328,
+      "id": "actual:p7:block:5",
+      "is_bold": false,
+      "page": 7,
+      "pdf_page_index": 6,
+      "raw": {
+        "bbox": [
+          90.0,
+          532.72998046875,
+          423.79412841796875,
+          158.6500244140625
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT3",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": false,
+            "is_bold": false,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.21999990940094,
+            "text_len": 88,
+            "title_case_ratio": 0.4166666567325592,
+            "word_count": 12
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "parentheses_negative"
+          ],
+          "title_text": "NOTICE: The Information Technology Laboratory (ITL) has requested that holders of patent"
+        },
+        "is_bold": false,
+        "text": "NOTICE: The Information Technology Laboratory (ITL) has requested that holders of patent claims whose use may be required for compliance with the guidance or requirements of this publication disclose such patent claims to ITL. However, holders of patents are not obligated to respond to ITL calls for patents and ITL has not undertaken a patent search in order to identify which, if any, patents may apply to this publication.  As of the date of publication and following call(s) for the identification of patent claims whose use may be required for compliance with the guidance or requirements of this publication, no such patent claims have been identified to ITL.  No representation is made or implied by ITL that licenses are not required to avoid patent infringement in the use of this publication."
+      },
+      "source_type": "Body",
+      "text": "NOTICE: The Information Technology Laboratory (ITL) has requested that holders of patent claims whose use may be required for compliance with the guidance or requirements of this publication disclose such patent claims to ITL. However, holders of patents are not obligated to respond to ITL calls for patents and ITL has not undertaken a patent search in order to identify which, if any, patents may apply to this publication.  As of the date of publication and following call(s) for the identification of patent claims whose use may be required for compliance with the guidance or requirements of this publication, no such patent claims have been identified to ITL.  No representation is made or implied by ITL that licenses are not required to avoid patent infringement in the use of this publication.",
+      "type": "paragraph_block"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 7,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 6
+}

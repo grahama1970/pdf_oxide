@@ -1,0 +1,122 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0007:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' is correctly identified as a header and matches the rendered page. The bounding box accurately captures the text.\",\n      \"rationale\": \"The candidate correctly identifies the header text as side chrome, and the bounding box is precise.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0007:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text '_________________________________________________________________________________________________' is correctly identified as a header line and matches the rendered page. The bounding box accurately captures the line.\",\n      \"rationale\": \"The candidate correctly identifies the decorative line below the header text as side chrome, and the bounding box is precise.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0007:0002:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'v' (page number) is correctly identified as page chrome and matches the rendered page. The bounding box accurately captures the page number at the bottom center.\",\n      \"rationale\": \"The candidate correctly identifies the page number as side chrome, and the bounding box is precise.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0007:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' is correctly identified as boilerplate text (side chrome) and matches the rendered page. The bounding box accurately captures the rotated text on the left side of the page.\",\n      \"rationale\": \"The candidate correctly identifies the rotated boilerplate text as side chrome, and the bounding box is precise.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0007:0004:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text 'Patent Disclosure Notice' is correctly identified as a section heading and matches the rendered page. The bounding box accurately captures the heading.\",\n      \"rationale\": \"The candidate correctly identifies the main heading as a section heading, and the bounding box is precise.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0007:0005:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted text beginning with 'NOTICE: The Information Technology Laboratory (ITL) has requested...' is correctly identified as a paragraph block and matches the rendered page. The bounding box accurately captures the entire paragraph.\",\n      \"rationale\": \"The candidate correctly identifies the main body text as a paragraph block, and the bounding box is precise.\",\n      \"suggested_fix_surface\": null\n    }\n  ],\n  \"page_rationale\": \"All candidate extractions on page 7 are clean. Headers, footers, boilerplate, section headings, and body text are all correctly identified with accurate bounding boxes and text content.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784624941,
+    "id": "IjdfavC0EIersOIPqaaF8Ag",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0007",
+      "item_id": "page_case_0001_p0007:b815bc2768534fd6",
+      "request_sha256": "b815bc2768534fd6ee6a96f6191383e8b59fd16eb1ee64b8115635fad9e36f09"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 846,
+      "completion_tokens_details": null,
+      "prompt_tokens": 5121,
+      "prompt_tokens_details": null,
+      "total_tokens": 7295
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0007:0000:side_chrome",
+        "evidence": "The extracted text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' is correctly identified as a header and matches the rendered page. The bounding box accurately captures the text.",
+        "rationale": "The candidate correctly identifies the header text as side chrome, and the bounding box is precise.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0007:0001:side_chrome",
+        "evidence": "The extracted text '_________________________________________________________________________________________________' is correctly identified as a header line and matches the rendered page. The bounding box accurately captures the line.",
+        "rationale": "The candidate correctly identifies the decorative line below the header text as side chrome, and the bounding box is precise.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0007:0002:side_chrome",
+        "evidence": "The extracted text 'v' (page number) is correctly identified as page chrome and matches the rendered page. The bounding box accurately captures the page number at the bottom center.",
+        "rationale": "The candidate correctly identifies the page number as side chrome, and the bounding box is precise.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0007:0003:side_chrome",
+        "evidence": "The extracted text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' is correctly identified as boilerplate text (side chrome) and matches the rendered page. The bounding box accurately captures the rotated text on the left side of the page.",
+        "rationale": "The candidate correctly identifies the rotated boilerplate text as side chrome, and the bounding box is precise.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0007:0004:section_heading",
+        "evidence": "The extracted text 'Patent Disclosure Notice' is correctly identified as a section heading and matches the rendered page. The bounding box accurately captures the heading.",
+        "rationale": "The candidate correctly identifies the main heading as a section heading, and the bounding box is precise.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0007:0005:text",
+        "evidence": "The extracted text beginning with 'NOTICE: The Information Technology Laboratory (ITL) has requested...' is correctly identified as a paragraph block and matches the rendered page. The bounding box accurately captures the entire paragraph.",
+        "rationale": "The candidate correctly identifies the main body text as a paragraph block, and the bounding box is precise.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      }
+    ],
+    "page_rationale": "All candidate extractions on page 7 are clean. Headers, footers, boilerplate, section headings, and body text are all correctly identified with accurate bounding boxes and text content.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0007",
+    "item_id": "page_case_0001_p0007:b815bc2768534fd6",
+    "request_sha256": "b815bc2768534fd6ee6a96f6191383e8b59fd16eb1ee64b8115635fad9e36f09"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0009:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text, and preset type 'side_chrome' accurately capture the header 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'.\",\n      \"rationale\": \"The candidate correctly identifies the header as page chrome, and the bounding box and text match the visual evidence.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0009:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text, and preset type 'side_chrome' accurately capture the horizontal line below the header.\",\n      \"rationale\": \"The candidate correctly identifies the decorative line as page chrome, and the bounding box and text match the visual evidence.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0009:0002:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text, and preset type 'side_chrome' accurately capture the page number 'vii' at the bottom of the page.\",\n      \"rationale\": \"The candidate correctly identifies the page number as page chrome, and the bounding box and text match the visual evidence.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0009:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text, and preset type 'side_chrome' accurately capture the vertical boilerplate text on the left margin.\",\n      \"rationale\": \"The candidate correctly identifies the boilerplate text as page chrome, and the bounding box and text match the visual evidence.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0009:0004:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text, and preset type 'text' accurately capture the heading 'COMMON SECURITY AND PRIVACY FOUNDATIONS'.\",\n      \"rationale\": \"The candidate correctly extracts the text content and bounding box. While semantically this is a heading, the 'text' preset type is acceptable, and the extracted 'block_type' is 'paragraph_block'.\",\n      \"suggested_fix_surface\": \"Consider refining semantic role to 'heading' if more granularity is desired.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0009:0005:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted bounding box, text, and preset type 'text' accurately capture the main body paragraph.\",\n      \"rationale\": \"The candidate correctly extracts the body text and its bounding box, matching the visual evidence.\",\n      \"suggested_fix_surface\": null\n    }\n  ],\n  \"page_rationale\": \"All candidate extractions on page 9 are clean. Bounding boxes, text content, and preset types are accurate when compared against the rendered page and annotated image. Semantic types are mostly accurate, with a minor suggestion for a heading. The page is free of defects.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784625123,
+    "id": "2TdfapzJNuq8jrEPn62umA8",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0009",
+      "item_id": "page_case_0001_p0009:06224f5ecc552222",
+      "request_sha256": "06224f5ecc55222211a13a1e3b13d099bd557e7cdf7852dd076ad5bb2f813491"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 821,
+      "completion_tokens_details": null,
+      "prompt_tokens": 5188,
+      "prompt_tokens_details": null,
+      "total_tokens": 7399
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0009:0000:side_chrome",
+        "evidence": "The extracted bounding box, text, and preset type 'side_chrome' accurately capture the header 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'.",
+        "rationale": "The candidate correctly identifies the header as page chrome, and the bounding box and text match the visual evidence.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0009:0001:side_chrome",
+        "evidence": "The extracted bounding box, text, and preset type 'side_chrome' accurately capture the horizontal line below the header.",
+        "rationale": "The candidate correctly identifies the decorative line as page chrome, and the bounding box and text match the visual evidence.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0009:0002:side_chrome",
+        "evidence": "The extracted bounding box, text, and preset type 'side_chrome' accurately capture the page number 'vii' at the bottom of the page.",
+        "rationale": "The candidate correctly identifies the page number as page chrome, and the bounding box and text match the visual evidence.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0009:0003:side_chrome",
+        "evidence": "The extracted bounding box, text, and preset type 'side_chrome' accurately capture the vertical boilerplate text on the left margin.",
+        "rationale": "The candidate correctly identifies the boilerplate text as page chrome, and the bounding box and text match the visual evidence.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0009:0004:text",
+        "evidence": "The extracted bounding box, text, and preset type 'text' accurately capture the heading 'COMMON SECURITY AND PRIVACY FOUNDATIONS'.",
+        "rationale": "The candidate correctly extracts the text content and bounding box. While semantically this is a heading, the 'text' preset type is acceptable, and the extracted 'block_type' is 'paragraph_block'.",
+        "status": "clean",
+        "suggested_fix_surface": "Consider refining semantic role to 'heading' if more granularity is desired."
+      },
+      {
+        "candidate_id": "cand:p0009:0005:text",
+        "evidence": "The extracted bounding box, text, and preset type 'text' accurately capture the main body paragraph.",
+        "rationale": "The candidate correctly extracts the body text and its bounding box, matching the visual evidence.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      }
+    ],
+    "page_rationale": "All candidate extractions on page 9 are clean. Bounding boxes, text content, and preset types are accurate when compared against the rendered page and annotated image. Semantic types are mostly accurate, with a minor suggestion for a heading. The page is free of defects.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0009",
+    "item_id": "page_case_0001_p0009:06224f5ecc552222",
+    "request_sha256": "06224f5ecc55222211a13a1e3b13d099bd557e7cdf7852dd076ad5bb2f813491"
+  }
+}

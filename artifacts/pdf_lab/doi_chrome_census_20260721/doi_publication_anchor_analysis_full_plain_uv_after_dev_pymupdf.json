@@ -1,0 +1,21 @@
+{
+  "anchor_page_count": 492,
+  "anchor_page_minmax": [
+    1,
+    492
+  ],
+  "anchor_record_count": 576,
+  "block_type_counts": {
+    "header_footer_noise": 576
+  },
+  "combined_publication_doi_count": 490,
+  "combined_publication_doi_not_left_margin_count": 0,
+  "combined_publication_doi_not_left_margin_first10": [],
+  "non_side_chrome_count": 0,
+  "preset_counts": {
+    "side_chrome": 576
+  },
+  "source_type_counts": {
+    "Boilerplate": 576
+  }
+}

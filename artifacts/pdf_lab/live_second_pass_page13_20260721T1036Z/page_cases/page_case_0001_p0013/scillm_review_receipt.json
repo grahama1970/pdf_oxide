@@ -1,0 +1,136 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"defect\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0013:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate accurately identifies the header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' with the correct bounding box. The preset type `side_chrome` aligns with the extracted `header_footer_noise` type and `page_chrome` semantic role.\",\n      \"rationale\": \"The extraction is correct for this page chrome element.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate correctly identifies the horizontal underscore line with the accurate bounding box. The preset type `side_chrome` aligns with the extracted `header_footer_noise` type and `page_chrome` semantic role.\",\n      \"rationale\": \"The extraction is correct for this page chrome element.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0002:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate correctly identifies the page number 'xi' with the accurate bounding box. The preset type `side_chrome` aligns with the extracted `header_footer_noise` type and `PageNumber` source type.\",\n      \"rationale\": \"The extraction is correct for this page chrome element.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate correctly identifies the vertical boilerplate text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' with the accurate bounding box. The preset type `side_chrome` aligns with the extracted `header_footer_noise` type and `Boilerplate` source type.\",\n      \"rationale\": \"The extraction is correct for this page chrome element.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0004:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate accurately extracts the section heading 'USE OF EXAMPLES IN THIS PUBLICATION' with the correct bounding box. The preset type `section_heading` aligns with the extracted `section_heading` type and `Title` source type.\",\n      \"rationale\": \"The extraction is correct for this section heading.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0005:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The candidate extracts 'Throughout this publication, examples are used to illustrate, clarify, or explain certain items in' as `text`. Visually, this is the first line of a multi-line paragraph that is incorrectly segmented. The text ends mid-sentence and the bounding box only covers the first line, separating it from its logical continuation.\",\n      \"rationale\": \"This block represents only the first line of a complete paragraph, indicating a paragraph segmentation defect. The content should be merged with subsequent lines into a single logical text block.\",\n      \"suggested_fix_surface\": \"pdf_oxide_core\"\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0006:section_heading\",\n      \"status\": \"defect\",\n      \"evidence\": \"The candidate extracts 'chapter sections, controls, and control enhancements. These examples are illustrative in nature' as a `section_heading`. Visually, this is the second line of the same paragraph started in `cand:p0013:0005`, not a heading. It continues the previous sentence.\",\n      \"rationale\": \"This block is incorrectly classified as `section_heading` and is also part of a larger paragraph that has been improperly segmented. It should be classified as `text` and merged with the surrounding lines.\",\n      \"suggested_fix_surface\": \"pdf_oxide_core\"\n    },\n    {\n      \"candidate_id\": \"cand:p0013:0007:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The candidate extracts 'and are not intended to limit or constrain the application of controls or control enhancements by organizations.' as `text`. While the `preset_type` is correct for this line of text, it is the third and final line of a single logical paragraph that has been incorrectly split into three separate blocks (`cand:p0013:0005`, `cand:p0013:0006`, and this one).\",\n      \"rationale\": \"This block, though correctly typed as `text` individually, is part of a paragraph that suffers from significant segmentation defects across multiple blocks on the page. It should be merged into a single logical paragraph block.\",\n      \"suggested_fix_surface\": \"pdf_oxide_core\"\n    }\n  ],\n  \"page_rationale\": \"The page exhibits significant defects in paragraph segmentation and block type classification. A single logical paragraph is incorrectly broken into three separate blocks, with one of these intermediate blocks (`cand:p0013:0006`) also being misclassified as a `section_heading` when it is clearly body text. This indicates a core issue with how text blocks are identified and grouped.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784625711,
+    "id": "HDpfatiJEK6N_PUP7seveQ",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0013",
+      "item_id": "page_case_0001_p0013:be7221677ba1063b",
+      "request_sha256": "be7221677ba1063bd941b19d061d04e17affb2e6f8c0e9f02ad80982146ccccd"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 1329,
+      "completion_tokens_details": null,
+      "prompt_tokens": 6200,
+      "prompt_tokens_details": null,
+      "total_tokens": 10571
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0013:0000:side_chrome",
+        "evidence": "The candidate accurately identifies the header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' with the correct bounding box. The preset type `side_chrome` aligns with the extracted `header_footer_noise` type and `page_chrome` semantic role.",
+        "rationale": "The extraction is correct for this page chrome element.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0013:0001:side_chrome",
+        "evidence": "The candidate correctly identifies the horizontal underscore line with the accurate bounding box. The preset type `side_chrome` aligns with the extracted `header_footer_noise` type and `page_chrome` semantic role.",
+        "rationale": "The extraction is correct for this page chrome element.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0013:0002:side_chrome",
+        "evidence": "The candidate correctly identifies the page number 'xi' with the accurate bounding box. The preset type `side_chrome` aligns with the extracted `header_footer_noise` type and `PageNumber` source type.",
+        "rationale": "The extraction is correct for this page chrome element.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0013:0003:side_chrome",
+        "evidence": "The candidate correctly identifies the vertical boilerplate text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' with the accurate bounding box. The preset type `side_chrome` aligns with the extracted `header_footer_noise` type and `Boilerplate` source type.",
+        "rationale": "The extraction is correct for this page chrome element.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0013:0004:section_heading",
+        "evidence": "The candidate accurately extracts the section heading 'USE OF EXAMPLES IN THIS PUBLICATION' with the correct bounding box. The preset type `section_heading` aligns with the extracted `section_heading` type and `Title` source type.",
+        "rationale": "The extraction is correct for this section heading.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0013:0005:text",
+        "evidence": "The candidate extracts 'Throughout this publication, examples are used to illustrate, clarify, or explain certain items in' as `text`. Visually, this is the first line of a multi-line paragraph that is incorrectly segmented. The text ends mid-sentence and the bounding box only covers the first line, separating it from its logical continuation.",
+        "rationale": "This block represents only the first line of a complete paragraph, indicating a paragraph segmentation defect. The content should be merged with subsequent lines into a single logical text block.",
+        "status": "defect",
+        "suggested_fix_surface": "pdf_oxide_core"
+      },
+      {
+        "candidate_id": "cand:p0013:0006:section_heading",
+        "evidence": "The candidate extracts 'chapter sections, controls, and control enhancements. These examples are illustrative in nature' as a `section_heading`. Visually, this is the second line of the same paragraph started in `cand:p0013:0005`, not a heading. It continues the previous sentence.",
+        "rationale": "This block is incorrectly classified as `section_heading` and is also part of a larger paragraph that has been improperly segmented. It should be classified as `text` and merged with the surrounding lines.",
+        "status": "defect",
+        "suggested_fix_surface": "pdf_oxide_core"
+      },
+      {
+        "candidate_id": "cand:p0013:0007:text",
+        "evidence": "The candidate extracts 'and are not intended to limit or constrain the application of controls or control enhancements by organizations.' as `text`. While the `preset_type` is correct for this line of text, it is the third and final line of a single logical paragraph that has been incorrectly split into three separate blocks (`cand:p0013:0005`, `cand:p0013:0006`, and this one).",
+        "rationale": "This block, though correctly typed as `text` individually, is part of a paragraph that suffers from significant segmentation defects across multiple blocks on the page. It should be merged into a single logical paragraph block.",
+        "status": "defect",
+        "suggested_fix_surface": "pdf_oxide_core"
+      }
+    ],
+    "page_rationale": "The page exhibits significant defects in paragraph segmentation and block type classification. A single logical paragraph is incorrectly broken into three separate blocks, with one of these intermediate blocks (`cand:p0013:0006`) also being misclassified as a `section_heading` when it is clearly body text. This indicates a core issue with how text blocks are identified and grouped.",
+    "page_status": "defect",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0013",
+    "item_id": "page_case_0001_p0013:be7221677ba1063b",
+    "request_sha256": "be7221677ba1063bd941b19d061d04e17affb2e6f8c0e9f02ad80982146ccccd"
+  }
+}

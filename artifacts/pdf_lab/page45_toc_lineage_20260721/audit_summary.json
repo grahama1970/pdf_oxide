@@ -1,0 +1,225 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T03:03:51.492970+00:00",
+  "status": "passing_current_contract",
+  "mocked": "no",
+  "live": "yes",
+  "page_id": "nist_phase54_page_0045",
+  "page_number": 45,
+  "pdf_page_index": 44,
+  "candidate": {
+    "defect_class": "AC-1 body/list blocks missing chapter and section TOC lineage",
+    "owner": "snapshot_current_extraction_toc_enrichment",
+    "selected_from": [
+      "/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md measured page45 remaining findings",
+      "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/page45_issue2_item5_toc_lineage_20260604/proof_summary.json",
+      "artifacts/pdf_lab/page45_ac1_heading_20260721/current_page45_snapshot.json"
+    ]
+  },
+  "current_extraction": {
+    "snapshot": "artifacts/pdf_lab/page45_toc_lineage_20260721/current_page45_snapshot.json",
+    "snapshot_sha256": "3dbb4e0d1df3cb8b914886a56ae7987c8a430a9c35b0866b71ac2dbbdec493f6",
+    "block_count": 21,
+    "type_counts": {
+      "header_footer_noise": 4,
+      "section_heading": 2,
+      "section_link": 1,
+      "paragraph_block": 3,
+      "list": 9,
+      "labeled_enhancements": 1,
+      "reference": 1
+    },
+    "expected_toc_path": [
+      "toc:0014",
+      "toc:0015"
+    ],
+    "expected_breadcrumb": [
+      "CHAPTER THREE THE CONTROLS",
+      "3.1 ACCESS CONTROL"
+    ],
+    "checked_blocks": [
+      {
+        "id": "actual:p45:block:7",
+        "type": "paragraph_block",
+        "source_type": "Body",
+        "text": "Control:",
+        "bbox": [
+          0.20588235294117646,
+          0.19088321261935765,
+          0.25978078405841504,
+          0.20781093173556858
+        ],
+        "toc_path": [
+          "toc:0014",
+          "toc:0015"
+        ],
+        "breadcrumb": [
+          "CHAPTER THREE THE CONTROLS",
+          "3.1 ACCESS CONTROL"
+        ],
+        "toc_lineage": [
+          {
+            "id": "toc:0014",
+            "kind": "chapter",
+            "label": "CHAPTER THREE THE CONTROLS",
+            "level": 1,
+            "node_id": "toc:0014",
+            "page": 16,
+            "source": "toc"
+          },
+          {
+            "id": "toc:0015",
+            "kind": "section",
+            "label": "3.1 ACCESS CONTROL",
+            "level": 2,
+            "node_id": "toc:0015",
+            "page": 18,
+            "source": "toc"
+          }
+        ]
+      },
+      {
+        "id": "actual:p45:block:8",
+        "type": "list",
+        "source_type": "List",
+        "text": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or roles]:",
+        "bbox": [
+          0.20588235294117646,
+          0.21383774882615214,
+          0.818778941833895,
+          0.24622562678173335
+        ],
+        "toc_path": [
+          "toc:0014",
+          "toc:0015"
+        ],
+        "breadcrumb": [
+          "CHAPTER THREE THE CONTROLS",
+          "3.1 ACCESS CONTROL"
+        ],
+        "toc_lineage": [
+          {
+            "id": "toc:0014",
+            "kind": "chapter",
+            "label": "CHAPTER THREE THE CONTROLS",
+            "level": 1,
+            "node_id": "toc:0014",
+            "page": 16,
+            "source": "toc"
+          },
+          {
+            "id": "toc:0015",
+            "kind": "section",
+            "label": "3.1 ACCESS CONTROL",
+            "level": 2,
+            "node_id": "toc:0015",
+            "page": 18,
+            "source": "toc"
+          }
+        ]
+      },
+      {
+        "id": "actual:p45:block:10",
+        "type": "list",
+        "source_type": "List",
+        "text": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance; and",
+        "bbox": [
+          0.26472535476185916,
+          0.2906577370383523,
+          0.804395239337597,
+          0.32304561499393347
+        ],
+        "toc_path": [
+          "toc:0014",
+          "toc:0015"
+        ],
+        "breadcrumb": [
+          "CHAPTER THREE THE CONTROLS",
+          "3.1 ACCESS CONTROL"
+        ],
+        "toc_lineage": [
+          {
+            "id": "toc:0014",
+            "kind": "chapter",
+            "label": "CHAPTER THREE THE CONTROLS",
+            "level": 1,
+            "node_id": "toc:0014",
+            "page": 16,
+            "source": "toc"
+          },
+          {
+            "id": "toc:0015",
+            "kind": "section",
+            "label": "3.1 ACCESS CONTROL",
+            "level": 2,
+            "node_id": "toc:0015",
+            "page": 18,
+            "source": "toc"
+          }
+        ]
+      },
+      {
+        "id": "actual:p45:block:13",
+        "type": "list",
+        "source_type": "List",
+        "text": "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and",
+        "bbox": [
+          0.2058824028065002,
+          0.40581181073429606,
+          0.8041798211390676,
+          0.4382756165783815
+        ],
+        "toc_path": [
+          "toc:0014",
+          "toc:0015"
+        ],
+        "breadcrumb": [
+          "CHAPTER THREE THE CONTROLS",
+          "3.1 ACCESS CONTROL"
+        ],
+        "toc_lineage": [
+          {
+            "id": "toc:0014",
+            "kind": "chapter",
+            "label": "CHAPTER THREE THE CONTROLS",
+            "level": 1,
+            "node_id": "toc:0014",
+            "page": 16,
+            "source": "toc"
+          },
+          {
+            "id": "toc:0015",
+            "kind": "section",
+            "label": "3.1 ACCESS CONTROL",
+            "level": 2,
+            "node_id": "toc:0015",
+            "page": 18,
+            "source": "toc"
+          }
+        ]
+      }
+    ],
+    "all_checked_blocks_have_expected_toc_path": true,
+    "all_checked_blocks_have_expected_breadcrumb": true
+  },
+  "proof": {
+      "commands": [
+        "pytest -q tests/test_nist_page45_toc_lineage.py",
+        "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page45_toc_lineage_20260721/current_page45_snapshot.json --max-pages 45 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+        "pytest -q tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py",
+        "pytest -q tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page35_control_families_table.py tests/test_nist_page104_au12_page_break_label.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page46_nested_list_segmentation.py"
+      ],
+      "logs": [
+        "artifacts/pdf_lab/page45_toc_lineage_20260721/test_logs/pytest_page45_toc_lineage.log",
+        "artifacts/pdf_lab/page45_toc_lineage_20260721/test_logs/snapshot_page45.log",
+        "artifacts/pdf_lab/page45_toc_lineage_20260721/test_logs/pytest_page45_focused.log",
+        "artifacts/pdf_lab/page45_toc_lineage_20260721/test_logs/regression_suite.log"
+      ],
+      "result": "page45 selected AC-1 body/list blocks carry toc_path=toc:0014/toc:0015 and breadcrumb=CHAPTER THREE THE CONTROLS / 3.1 ACCESS CONTROL",
+      "focused_result": "4 passed, 5 warnings in 100.53s",
+      "page45_focused_result": "8 passed, 5 warnings in 195.17s",
+      "regression_suite_result": "14 passed, 5 warnings in 298.70s",
+      "does_not_prove": "remaining page45 independent-review findings or all-candidates goal completion"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page45_toc_lineage_20260721/visual_receipt.json"
+}

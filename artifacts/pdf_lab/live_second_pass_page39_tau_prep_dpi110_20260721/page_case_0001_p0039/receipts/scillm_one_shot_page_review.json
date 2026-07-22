@@ -1,0 +1,19 @@
+{
+  "command_or_endpoint": "dry_run:POST /v1/chat/completions",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T14:46:55.458090+00:00",
+  "input_artifacts": [
+    "review_request.json"
+  ],
+  "next_allowed_nodes": [
+    "write_page_terminal_ledger"
+  ],
+  "node_id": "scillm_one_shot_page_review",
+  "output_artifacts": [],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T14:46:55.458087+00:00",
+  "validator_result": {
+    "ok": false,
+    "reason": "dry_run_review_not_executed"
+  }
+}

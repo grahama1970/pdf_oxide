@@ -1,0 +1,22 @@
+{
+  "command_or_endpoint": "POST /v1/chat/completions",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T09:17:22.987432+00:00",
+  "input_artifacts": [
+    "review_request.json"
+  ],
+  "next_allowed_nodes": [
+    "validate_review_response"
+  ],
+  "node_id": "scillm_one_shot_page_review",
+  "output_artifacts": [
+    "scillm_review_receipt.json",
+    "review_response.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T09:17:22.987421+00:00",
+  "validator_result": {
+    "http_status": 200,
+    "ok": true
+  }
+}

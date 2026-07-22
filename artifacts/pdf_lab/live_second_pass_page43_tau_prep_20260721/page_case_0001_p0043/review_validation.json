@@ -1,0 +1,40 @@
+{
+  "candidate_count": 13,
+  "errors": [],
+  "expected_candidate_ids": [
+    "cand:p0043:0000:side_chrome",
+    "cand:p0043:0001:side_chrome",
+    "cand:p0043:0002:side_chrome",
+    "cand:p0043:0003:side_chrome",
+    "cand:p0043:0004:section_heading",
+    "cand:p0043:0005:section_heading",
+    "cand:p0043:0006:section_heading",
+    "cand:p0043:0007:text",
+    "cand:p0043:0008:list",
+    "cand:p0043:0009:text",
+    "cand:p0043:0010:text",
+    "cand:p0043:0011:footnote",
+    "cand:p0043:0012:footnote"
+  ],
+  "ok": true,
+  "page_case": {
+    "case_id": "page_case_0001_p0043",
+    "page_number": 43
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": [
+    "cand:p0043:0000:side_chrome",
+    "cand:p0043:0001:side_chrome",
+    "cand:p0043:0002:side_chrome",
+    "cand:p0043:0003:side_chrome",
+    "cand:p0043:0004:section_heading",
+    "cand:p0043:0005:section_heading",
+    "cand:p0043:0006:section_heading",
+    "cand:p0043:0007:text",
+    "cand:p0043:0008:list",
+    "cand:p0043:0009:text",
+    "cand:p0043:0010:text",
+    "cand:p0043:0011:footnote",
+    "cand:p0043:0012:footnote"
+  ]
+}

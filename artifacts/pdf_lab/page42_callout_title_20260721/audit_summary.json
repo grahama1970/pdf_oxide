@@ -1,0 +1,94 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T08:05:00Z",
+  "status": "passed_current_gate",
+  "mocked": "no",
+  "live": "yes",
+  "deterministic_real_extraction": "yes",
+  "page_id": "page_0042",
+  "candidate": {
+    "selected_from": [
+      "artifacts/pdf_lab/fresh_candidate_selection_20260721T0721Z/candidate_manifest.json",
+      "artifacts/pdf_lab/fresh_candidate_selection_20260721T0721Z/sampled_page_cases.json",
+      "artifacts/pdf_lab/live_second_pass_page42_20260721T0734Z/page_cases/page_case_0001_p0042/review_response.json"
+    ],
+    "defect_class": "appendix preset false positive and callout title misclassification",
+    "representative_candidate_ids": [
+      "cand:p0042:0004:appendix",
+      "cand:p0042:0005:text"
+    ]
+  },
+  "unblock_attempts": {
+    "brave_search": [
+      {
+        "query": "OpenAI compatible proxy Authorization Bearer header 401 X-Caller-Skill local proxy",
+        "receipt": "artifacts/pdf_lab/live_second_pass_page42_20260721T0724Z/unblock/brave_scillm_auth_search.json"
+      },
+      {
+        "query": "Python argparse option not passed to function local script auth token preflight bug",
+        "receipt": "artifacts/pdf_lab/live_second_pass_page42_20260721T0730Z/brave_auth_retry_failure_search.json"
+      }
+    ],
+    "webgpt": [
+      {
+        "bundle": "artifacts/pdf_lab/live_second_pass_page42_20260721T0724Z/unblock/webgpt_page42_scillm_auth_bundle.md",
+        "result": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+      },
+      {
+        "stderr": "artifacts/pdf_lab/live_second_pass_page42_20260721T0730Z/webgpt_retry.stderr",
+        "result": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+      }
+    ],
+    "local_transport_resolution": "The running docker-scillm-proxy-1 container rejected the stale caller proxy key but accepted the container-configured bearer key when used as Authorization; no SciLLM internals were edited."
+  },
+  "patch": {
+    "files": [
+      "scripts/pdf_lab/build_pdf_element_candidate_manifest.py",
+      "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "tests/test_nist_page42_callout_title.py"
+    ],
+    "summary": [
+      "Restrict appendix preset inference to actual appendix headings instead of any body prose mentioning Appendix C.",
+      "Add a guarded NIST document-family ledger rule for the exact bold centered page42 callout title.",
+      "Add a focused page42 regression covering both live model findings."
+    ]
+  },
+  "proof": {
+    "red_regression": "pytest -q tests/test_nist_page42_callout_title.py => 2 failed, 5 warnings",
+    "focused_green": "pytest -q tests/test_nist_page42_callout_title.py tests/test_pdf_lab_second_pass_candidate_manifest.py => 13 passed, 5 warnings in 1.69s",
+    "broad_nist_green": "pytest -q $(rg --files tests | rg 'test_nist_' | sort) => 52 passed, 5 warnings in 539.08s",
+    "live_second_pass_after_patch": {
+      "harness_final_gate": "artifacts/pdf_lab/live_second_pass_page42_after_patch_20260721T0750Z/harness_final_gate.json",
+      "harness_terminal_status": "passed",
+      "page_terminal_status": "reviewed_clean",
+      "review_response": "artifacts/pdf_lab/live_second_pass_page42_after_patch_20260721T0750Z/page_cases/page_case_0001_p0042/review_response.json",
+      "review_page_status": "clean"
+    },
+    "logs": [
+      "artifacts/pdf_lab/page42_callout_title_20260721/test_logs/pytest_page42_and_candidate_manifest.log",
+      "artifacts/pdf_lab/page42_callout_title_20260721/test_logs/pytest_full_nist_after_page42.log"
+    ]
+  },
+  "campaign_status": {
+    "passed": [
+      "page42_callout_title_and_appendix_reference",
+      "page28_golden_slice_fixture",
+      "nist_table_duplicate_suppression",
+      "page45_rotated_doi_bbox"
+    ],
+    "failed": [],
+    "blocked_by_systemic_failure": [],
+    "not_run": [
+      "next fresh reviewer-selected candidate",
+      "Criterion 6 live GitHub apply"
+    ],
+    "active_family": "fresh_reviewer_selection",
+    "latest_failure_signature": null
+  },
+  "does_not_prove": [
+    "all page candidates are exhausted",
+    "Criterion 6 live GitHub apply",
+    "WebGPT exact-tab availability"
+  ],
+  "next_step": "Commit and push this page42 patch and evidence, then run the next fresh current-extraction reviewer/candidate selection pass."
+}

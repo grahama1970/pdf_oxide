@@ -1,0 +1,84 @@
+{
+  "campaign_status": {
+    "active_family": "NIST SP 800-53r5 current-extraction page candidates",
+    "active_page": 6,
+    "blocked_by_systemic_failure": 0,
+    "failed": 0,
+    "latest_failure_signature": "page6 live second-pass initially marked cand:p0006:0005:reference as a defect: bold centered Historical Contributions frontmatter heading was typed as reference/reference_continuation",
+    "not_run": "remaining active candidate queue after page 6",
+    "passed": 1
+  },
+  "candidate": "frontmatter Historical Contributions heading",
+  "evidence": {
+    "initial_failed_gate": "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/harness_final_gate.json",
+    "initial_live_model_response": "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/review_response.json",
+    "live_final_gate": "artifacts/pdf_lab/live_second_pass_page6_after_heading_patch_20260721T0930Z/harness_final_gate.json",
+    "live_model_response": "artifacts/pdf_lab/live_second_pass_page6_after_heading_patch_20260721T0930Z/page_cases/page_case_0001_p0006/review_response.json",
+    "live_review_validation": "artifacts/pdf_lab/live_second_pass_page6_after_heading_patch_20260721T0930Z/page_cases/page_case_0001_p0006/review_validation.json",
+    "live_terminal_ledger": "artifacts/pdf_lab/live_second_pass_page6_after_heading_patch_20260721T0930Z/page_cases/page_case_0001_p0006/terminal_ledger.json",
+    "review_bundle": "artifacts/pdf_lab/live_second_pass_page6_after_heading_patch_20260721T0930Z/page_cases/page_case_0001_p0006/review_bundle.zip",
+    "webgpt_bundle": "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/unblock/webgpt_page6_historical_contributions_bundle.md",
+    "brave_search_receipt": "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/unblock/brave_page6_historical_contributions_heading.json"
+  },
+  "live": "yes",
+  "mocked": "no",
+  "patch": {
+    "files": [
+      "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "tests/test_nist_page6_historical_contributions_heading.py"
+    ],
+    "summary": [
+      "Add a guarded page6 exact-text NIST preset rule that classifies the bold centered Historical Contributions line as frontmatter_section_heading.",
+      "Match the rule against the pre-semantic-enrichment Body paragraph state so the exact matcher claims type and semantic_role before the broader reference-continuation regex.",
+      "Add a focused regression that extracts NIST page 6 with the release ledger and asserts the heading is not typed as a reference."
+    ]
+  },
+  "proof": {
+    "direct_applier_trace": "page6 exact rule fired once; broad nist-reference-continuation-001 attempted both fields and was specificity-skipped behind the equals_ci writer",
+    "focused_green": "pytest -q tests/test_nist_page6_historical_contributions_heading.py => 1 passed, 5 warnings in 1.58s",
+    "ledger_json": "python -m json.tool python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json => ledger_json_ok",
+    "live_second_pass_after_patch": {
+      "harness_final_gate": "artifacts/pdf_lab/live_second_pass_page6_after_heading_patch_20260721T0930Z/harness_final_gate.json",
+      "harness_terminal_status": "passed",
+      "page_terminal_status": "reviewed_clean",
+      "review_response": "artifacts/pdf_lab/live_second_pass_page6_after_heading_patch_20260721T0930Z/page_cases/page_case_0001_p0006/review_response.json",
+      "review_page_status": "clean"
+    }
+  },
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "unblock_attempts": {
+    "brave_search": [
+      {
+        "query": "NIST SP 800-53r5 Historical Contributions to NIST Special Publication 800-53 heading front matter",
+        "receipt": "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/unblock/brave_page6_historical_contributions_heading.json"
+      }
+    ],
+    "webgpt": [
+      {
+        "bundle": "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/unblock/webgpt_page6_historical_contributions_bundle.md",
+        "result": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+      }
+    ]
+  },
+  "verified": {
+    "candidate_count": 7,
+    "defect_count": 0,
+    "harness_final_gate_ok": true,
+    "historical_contributions_block": {
+      "id": "actual:p6:block:5",
+      "semantic_role": "frontmatter_section_heading",
+      "source_type": "Body",
+      "text": "HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53",
+      "type": "section_heading"
+    },
+    "review_response_page_status": "clean",
+    "review_validation_ok": true,
+    "terminal_status": "reviewed_clean"
+  },
+  "what_remains_unverified": [
+    "remaining active page candidates beyond page 6",
+    "Criterion 6 live GitHub apply mutation, still requiring approval receipt",
+    "WebGPT exact-tab availability"
+  ],
+  "what_was_exercised": "A live page6 second-pass review used the running SciLLM proxy on localhost:4001 and the page orchestrator live transport path after the release ledger classified the Historical Contributions line as a frontmatter section heading."
+}

@@ -1,0 +1,71 @@
+/home/graham/.local/lib/python3.12/site-packages/pytest_asyncio/plugin.py:252: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______________ test_nist_page_36_figure_region_content_is_figure _______________
+
+    def test_nist_page_36_figure_region_content_is_figure():
+        page = _extract_page_36_with_ledger()
+        blocks = page.get("blocks") or []
+        by_id = {block.get("id"): block for block in blocks}
+
+        expected_figure_ids = {
+            "actual:p36:block:10",
+            "actual:p36:block:11",
+            "actual:p36:block:12",
+            "actual:p36:block:13",
+            "actual:p36:block:14",
+            "actual:p36:block:15",
+            "actual:p36:block:16",
+            "actual:p36:block:17",
+            "actual:p36:block:18",
+            "actual:p36:block:19",
+            "actual:p36:block:21",
+            "actual:p36:block:24",
+            "actual:p36:block:25",
+            "actual:p36:table:0",
+            "actual:p36:table:1",
+            "actual:p36:table:2",
+        }
+
+        missing = sorted(expected_figure_ids - set(by_id))
+        assert missing == []
+
+        offenders = [
+            {
+                "id": block_id,
+                "type": by_id[block_id].get("type"),
+                "semantic_role": by_id[block_id].get("semantic_role"),
+                "source_type": by_id[block_id].get("source_type"),
+                "text": " ".join(str(by_id[block_id].get("text") or "").split())[:120],
+            }
+            for block_id in sorted(expected_figure_ids)
+            if by_id[block_id].get("type") != "figure"
+            or by_id[block_id].get("semantic_role") != "figure_content"
+        ]
+>       assert offenders == []
+E       AssertionError: assert [{'id': 'actu...i', ...}, ...] == []
+E
+E         Left contains 15 more items, first extra item: {'id': 'actual:p36:block:11', 'semantic_role': None, 'source_type': 'Body', 'text': 'Control: Allocate audit record storage capacity to accommodate [Assignment: organization- defined audit record retention', ...}
+E         Use -v to get more diff
+
+tests/test_nist_page36_figure_region_content.py:67: AssertionError
+=============================== warnings summary ===============================
+tests/test_nist_page36_figure_region_content.py::test_nist_page_36_figure_region_content_is_figure
+tests/test_nist_page36_figure_region_content.py::test_nist_page_36_figure_region_content_is_figure
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_nist_page36_figure_region_content.py::test_nist_page_36_figure_region_content_is_figure
+tests/test_nist_page36_figure_region_content.py::test_nist_page_36_figure_region_content_is_figure
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_nist_page36_figure_region_content.py::test_nist_page_36_figure_region_content_is_figure
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_nist_page36_figure_region_content.py::test_nist_page_36_figure_region_content_is_figure
+1 failed, 5 warnings in 2.78s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

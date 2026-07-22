@@ -1,0 +1,119 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0018:0000:side_chrome",
+      "evidence": "Extracted JSON block 0 text: 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'. Bbox and type match the top header.",
+      "rationale": "The extracted text, bounding box, and classification as 'side_chrome' (header) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0001:side_chrome",
+      "evidence": "Extracted JSON block 1 text: '_________________________________________________________________________________________________'. Bbox and type match the horizontal line below the header.",
+      "rationale": "The extracted text (horizontal line), bounding box, and classification as 'side_chrome' (header component) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0002:side_chrome",
+      "evidence": "Extracted JSON block 2 text: 'xvi'. Bbox and type match the page number at the bottom center.",
+      "rationale": "The extracted text, bounding box, and classification as 'side_chrome' (page number) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0003:side_chrome",
+      "evidence": "Extracted JSON block 3 text: 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5'. Bbox and type match the vertical boilerplate text on the left margin.",
+      "rationale": "The extracted text, bounding box, and classification as 'side_chrome' (boilerplate) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0004:text",
+      "evidence": "Extracted JSON block 4 text: 'Prologue'. Bbox and type match the main heading on the page.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (heading) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0005:text",
+      "evidence": "Extracted JSON block 5 contains the first quoted paragraph. Bbox and text are correct.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (paragraph) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0006:text",
+      "evidence": "Extracted JSON block 6 contains the second quoted paragraph. Bbox and text are correct.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (paragraph) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0007:text",
+      "evidence": "Extracted JSON block 7 contains the third quoted paragraph. Bbox and text are correct.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (paragraph) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0008:text",
+      "evidence": "Extracted JSON block 8 text: 'THE NATIONAL STRATEGY FOR CYBERSPACE OPERATIONS'. Bbox and type match the first source attribution line.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (source attribution) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0009:text",
+      "evidence": "Extracted JSON block 9 text: 'OFFICE OF THE CHAIRMAN, JOINT CHIEFS OF STAFF, U.S. DEPARTMENT OF DEFENSE'. Bbox and type match the second source attribution line.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (source attribution) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0010:text",
+      "evidence": "Extracted JSON block 10 text: '__________'. Bbox and type match the horizontal line separating content sections.",
+      "rationale": "The extracted text (horizontal line), bounding box, and classification as 'text' are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0011:text",
+      "evidence": "Extracted JSON block 11 contains the fourth quoted paragraph. Bbox and text are correct.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (paragraph) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0012:text",
+      "evidence": "Extracted JSON block 12 contains the fifth quoted paragraph. Bbox and text are correct.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (paragraph) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0013:text",
+      "evidence": "Extracted JSON block 13 contains the sixth quoted paragraph. Bbox and text are correct.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (paragraph) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0014:text",
+      "evidence": "Extracted JSON block 14 text: 'THE NATIONAL PRIVACY RESEARCH STRATEGY'. Bbox and type match the third source attribution line.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (source attribution) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0018:0015:text",
+      "evidence": "Extracted JSON block 15 text: 'NATIONAL SCIENCE AND TECHNOLOGY COUNCIL, NETWORKING AND INFORMATION TECHNOLOGY RESEARCH AND DEVELOPMENT PROGRAM'. Bbox and type match the fourth source attribution line.",
+      "rationale": "The extracted text, bounding box, and classification as 'text' (source attribution) are accurate and align with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    }
+  ],
+  "page_rationale": "All candidate extractions (headers, page number, boilerplate, main heading, paragraphs, source attributions, and horizontal lines) are accurate in terms of text, bounding box, and assigned preset type. No defects were found on this page.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

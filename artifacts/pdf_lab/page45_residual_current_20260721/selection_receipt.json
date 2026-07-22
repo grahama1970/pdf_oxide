@@ -1,0 +1,24 @@
+{
+  "defect_class": "stale_page45_control_entry_residuals_after_focused_fixes",
+  "focused_regression_set": "page45 focused pytest guard set in test_logs/pytest_page45_focused.log",
+  "owner": "nist_preset",
+  "page": 45,
+  "reconciliation": "Current page45 release extraction no longer matches the old reviewer residual rows: chrome is noise, AC-1 heading is a section heading, ordered requirements are list blocks, and control/discussion/related/enhancement fields have the expected roles or types.",
+  "schema": "pdf_lab.selection_receipt.v1",
+  "selected_candidate": "page45_stale_reviewer_residual_reconciliation",
+  "selection_basis": {
+    "current_extraction": "artifacts/pdf_lab/page45_residual_current_20260721/current_page45_snapshot.json",
+    "independent_reviewer": "/home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/loop-runs/gs001-bringup-20260718/multipage/v2_response_p45.md.raw.md",
+    "prior_receipts": [
+      "artifacts/pdf_lab/page45_ac1_heading_20260721/audit_summary.json",
+      "artifacts/pdf_lab/page45_cd_list_marker_audit_20260721/audit_summary.json",
+      "artifacts/pdf_lab/page45_chrome_noise_20260721/audit_summary.json",
+      "artifacts/pdf_lab/page45_control_enhancements_none_20260721/audit_summary.json",
+      "artifacts/pdf_lab/page45_discussion_text_20260721/audit_summary.json",
+      "artifacts/pdf_lab/page45_discussion_role_20260721/audit_summary.json",
+      "artifacts/pdf_lab/page45_related_controls_20260721/audit_summary.json",
+      "artifacts/pdf_lab/page45_toc_lineage_20260721/audit_summary.json",
+      "artifacts/pdf_lab/page45_quick_link_20260721/audit_summary.json"
+    ]
+  }
+}

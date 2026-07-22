@@ -1,0 +1,290 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"defect\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0076:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the header text and its bounding box matches the visual evidence. The preset type 'side_chrome' aligns with the extracted type 'header_footer_noise' and semantic role 'page_chrome'.\",\n      \"rationale\": \"The side chrome (header text) is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the header separator line and its bounding box matches the visual evidence. The preset type 'side_chrome' aligns with the extracted type 'header_footer_noise' and semantic role 'page_chrome'.\",\n      \"rationale\": \"The side chrome (separator line) is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0002:side_chrome\",\n      \"status\": \"defect\",\n      \"evidence\": \"The bounding box and preset type are correct, but the extracted text 'CHAPTER THREE   49 PAGE' has the word order '49 PAGE' instead of 'PAGE 49' as shown in the rendered page.\",\n      \"rationale\": \"Text extraction defect: the order of 'PAGE 49' is reversed to '49 PAGE'.\",\n      \"suggested_fix_surface\": \"text_extraction\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the vertical side chrome text and its bounding box matches the visual evidence. The preset type 'side_chrome' aligns with the extracted type 'header_footer_noise'.\",\n      \"rationale\": \"The side chrome (vertical text) is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0004:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the paragraph text and its bounding box matches the visual evidence. The preset type 'text' aligns with the extracted type 'paragraph_block'.\",\n      \"rationale\": \"The text block is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0005:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Related Controls:  AU-2' where only one space is present in the rendered page.\",\n      \"rationale\": \"Text extraction defect: extraneous space after the colon.\",\n      \"suggested_fix_surface\": \"text_extraction\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0006:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.\",\n      \"rationale\": \"The section heading is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0007:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the paragraph text and its bounding box matches the visual evidence. The preset type 'text' aligns with the extracted type 'paragraph_block'.\",\n      \"rationale\": \"The text block is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0008:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Discussion:  Virtual private networks' where only one space is present in the rendered page.\",\n      \"rationale\": \"Text extraction defect: extraneous space after the colon.\",\n      \"suggested_fix_surface\": \"text_extraction\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0009:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Related Controls:  SC-8' where only one space is present in the rendered page.\",\n      \"rationale\": \"Text extraction defect: extraneous space after the colon.\",\n      \"suggested_fix_surface\": \"text_extraction\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0010:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.\",\n      \"rationale\": \"The section heading is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0011:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the paragraph text and its bounding box matches the visual evidence. The preset type 'text' aligns with the extracted type 'paragraph_block'.\",\n      \"rationale\": \"The text block is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0012:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Discussion:  Organizations' where only one space is present in the rendered page.\",\n      \"rationale\": \"Text extraction defect: extraneous space after the colon.\",\n      \"suggested_fix_surface\": \"text_extraction\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0013:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Related Controls:  SC-7' where only one space is present in the rendered page.\",\n      \"rationale\": \"Text extraction defect: extraneous space after the colon.\",\n      \"suggested_fix_surface\": \"text_extraction\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0014:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.\",\n      \"rationale\": \"The section heading is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0015:list\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the list item and its bounding box matches the visual evidence. The preset type 'list' aligns with the extracted type 'list' and semantic role 'nist_list_item'.\",\n      \"rationale\": \"The list item is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0016:list\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the list item and its bounding box matches the visual evidence. The preset type 'list' aligns with the extracted type 'list' and semantic role 'nist_list_item'.\",\n      \"rationale\": \"The list item is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0017:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Discussion:  Remote access' where only one space is present in the rendered page.\",\n      \"rationale\": \"Text extraction defect: extraneous space after the colon.\",\n      \"suggested_fix_surface\": \"text_extraction\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0018:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Related Controls:  AC-6' where only one space is present in the rendered page.\",\n      \"rationale\": \"Text extraction defect: extraneous space after the colon.\",\n      \"suggested_fix_surface\": \"text_extraction\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0019:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.\",\n      \"rationale\": \"The section heading is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0020:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the text and its bounding box matches the visual evidence. The semantic role 'nist_withdrawn_note' is correctly identified.\",\n      \"rationale\": \"The text block with a 'withdrawn note' semantic role is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0021:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.\",\n      \"rationale\": \"The section heading is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0022:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the paragraph text and its bounding box matches the visual evidence. The preset type 'text' aligns with the extracted type 'paragraph_block'.\",\n      \"rationale\": \"The text block is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0023:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Discussion:  Remote access' where only one space is present in the rendered page.\",\n      \"rationale\": \"Text extraction defect: extraneous space after the colon.\",\n      \"suggested_fix_surface\": \"text_extraction\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0024:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Related Controls:  AT-2' where only one space is present in the rendered page.\",\n      \"rationale\": \"Text extraction defect: extraneous space after the colon.\",\n      \"suggested_fix_surface\": \"text_extraction\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0025:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.\",\n      \"rationale\": \"The section heading is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0026:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the text and its bounding box matches the visual evidence. The semantic role 'nist_withdrawn_note' is correctly identified.\",\n      \"rationale\": \"The text block with a 'withdrawn note' semantic role is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0027:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.\",\n      \"rationale\": \"The section heading is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0028:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the text and its bounding box matches the visual evidence. The semantic role 'nist_withdrawn_note' is correctly identified.\",\n      \"rationale\": \"The text block with a 'withdrawn note' semantic role is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0029:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.\",\n      \"rationale\": \"The section heading is correctly extracted.\",\n      \"suggested_fix_surface\": null\n    }\n  ],\n  \"page_rationale\": \"Multiple text extraction defects were found where extraneous spaces were inserted after colons in 'Discussion:' and 'Related Controls:' paragraphs. Additionally, a minor text order defect was found in the footer, where '49 PAGE' was extracted instead of 'PAGE 49'.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784620459,
+    "id": "hCVfauKnEvH3jrEP7tSEuQY",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0002_p0076",
+      "item_id": "page_case_0002_p0076:06d164d8ce78a294",
+      "request_sha256": "06d164d8ce78a294b06ba3909226b119d561090bc12fbaa9aae8ab57fb402e27"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 3504,
+      "completion_tokens_details": null,
+      "prompt_tokens": 32232,
+      "prompt_tokens_details": null,
+      "total_tokens": 41881
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0076:0000:side_chrome",
+        "evidence": "The extracted candidate correctly identifies the header text and its bounding box matches the visual evidence. The preset type 'side_chrome' aligns with the extracted type 'header_footer_noise' and semantic role 'page_chrome'.",
+        "rationale": "The side chrome (header text) is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0001:side_chrome",
+        "evidence": "The extracted candidate correctly identifies the header separator line and its bounding box matches the visual evidence. The preset type 'side_chrome' aligns with the extracted type 'header_footer_noise' and semantic role 'page_chrome'.",
+        "rationale": "The side chrome (separator line) is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0002:side_chrome",
+        "evidence": "The bounding box and preset type are correct, but the extracted text 'CHAPTER THREE   49 PAGE' has the word order '49 PAGE' instead of 'PAGE 49' as shown in the rendered page.",
+        "rationale": "Text extraction defect: the order of 'PAGE 49' is reversed to '49 PAGE'.",
+        "status": "defect",
+        "suggested_fix_surface": "text_extraction"
+      },
+      {
+        "candidate_id": "cand:p0076:0003:side_chrome",
+        "evidence": "The extracted candidate correctly identifies the vertical side chrome text and its bounding box matches the visual evidence. The preset type 'side_chrome' aligns with the extracted type 'header_footer_noise'.",
+        "rationale": "The side chrome (vertical text) is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0004:text",
+        "evidence": "The extracted candidate correctly identifies the paragraph text and its bounding box matches the visual evidence. The preset type 'text' aligns with the extracted type 'paragraph_block'.",
+        "rationale": "The text block is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0005:text",
+        "evidence": "The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Related Controls:  AU-2' where only one space is present in the rendered page.",
+        "rationale": "Text extraction defect: extraneous space after the colon.",
+        "status": "defect",
+        "suggested_fix_surface": "text_extraction"
+      },
+      {
+        "candidate_id": "cand:p0076:0006:section_heading",
+        "evidence": "The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.",
+        "rationale": "The section heading is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0007:text",
+        "evidence": "The extracted candidate correctly identifies the paragraph text and its bounding box matches the visual evidence. The preset type 'text' aligns with the extracted type 'paragraph_block'.",
+        "rationale": "The text block is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0008:text",
+        "evidence": "The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Discussion:  Virtual private networks' where only one space is present in the rendered page.",
+        "rationale": "Text extraction defect: extraneous space after the colon.",
+        "status": "defect",
+        "suggested_fix_surface": "text_extraction"
+      },
+      {
+        "candidate_id": "cand:p0076:0009:text",
+        "evidence": "The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Related Controls:  SC-8' where only one space is present in the rendered page.",
+        "rationale": "Text extraction defect: extraneous space after the colon.",
+        "status": "defect",
+        "suggested_fix_surface": "text_extraction"
+      },
+      {
+        "candidate_id": "cand:p0076:0010:section_heading",
+        "evidence": "The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.",
+        "rationale": "The section heading is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0011:text",
+        "evidence": "The extracted candidate correctly identifies the paragraph text and its bounding box matches the visual evidence. The preset type 'text' aligns with the extracted type 'paragraph_block'.",
+        "rationale": "The text block is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0012:text",
+        "evidence": "The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Discussion:  Organizations' where only one space is present in the rendered page.",
+        "rationale": "Text extraction defect: extraneous space after the colon.",
+        "status": "defect",
+        "suggested_fix_surface": "text_extraction"
+      },
+      {
+        "candidate_id": "cand:p0076:0013:text",
+        "evidence": "The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Related Controls:  SC-7' where only one space is present in the rendered page.",
+        "rationale": "Text extraction defect: extraneous space after the colon.",
+        "status": "defect",
+        "suggested_fix_surface": "text_extraction"
+      },
+      {
+        "candidate_id": "cand:p0076:0014:section_heading",
+        "evidence": "The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.",
+        "rationale": "The section heading is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0015:list",
+        "evidence": "The extracted candidate correctly identifies the list item and its bounding box matches the visual evidence. The preset type 'list' aligns with the extracted type 'list' and semantic role 'nist_list_item'.",
+        "rationale": "The list item is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0016:list",
+        "evidence": "The extracted candidate correctly identifies the list item and its bounding box matches the visual evidence. The preset type 'list' aligns with the extracted type 'list' and semantic role 'nist_list_item'.",
+        "rationale": "The list item is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0017:text",
+        "evidence": "The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Discussion:  Remote access' where only one space is present in the rendered page.",
+        "rationale": "Text extraction defect: extraneous space after the colon.",
+        "status": "defect",
+        "suggested_fix_surface": "text_extraction"
+      },
+      {
+        "candidate_id": "cand:p0076:0018:text",
+        "evidence": "The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Related Controls:  AC-6' where only one space is present in the rendered page.",
+        "rationale": "Text extraction defect: extraneous space after the colon.",
+        "status": "defect",
+        "suggested_fix_surface": "text_extraction"
+      },
+      {
+        "candidate_id": "cand:p0076:0019:section_heading",
+        "evidence": "The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.",
+        "rationale": "The section heading is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0020:text",
+        "evidence": "The extracted candidate correctly identifies the text and its bounding box matches the visual evidence. The semantic role 'nist_withdrawn_note' is correctly identified.",
+        "rationale": "The text block with a 'withdrawn note' semantic role is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0021:section_heading",
+        "evidence": "The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.",
+        "rationale": "The section heading is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0022:text",
+        "evidence": "The extracted candidate correctly identifies the paragraph text and its bounding box matches the visual evidence. The preset type 'text' aligns with the extracted type 'paragraph_block'.",
+        "rationale": "The text block is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0023:text",
+        "evidence": "The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Discussion:  Remote access' where only one space is present in the rendered page.",
+        "rationale": "Text extraction defect: extraneous space after the colon.",
+        "status": "defect",
+        "suggested_fix_surface": "text_extraction"
+      },
+      {
+        "candidate_id": "cand:p0076:0024:text",
+        "evidence": "The bounding box and preset type are correct, but the extracted text contains two spaces after the colon in 'Related Controls:  AT-2' where only one space is present in the rendered page.",
+        "rationale": "Text extraction defect: extraneous space after the colon.",
+        "status": "defect",
+        "suggested_fix_surface": "text_extraction"
+      },
+      {
+        "candidate_id": "cand:p0076:0025:section_heading",
+        "evidence": "The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.",
+        "rationale": "The section heading is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0026:text",
+        "evidence": "The extracted candidate correctly identifies the text and its bounding box matches the visual evidence. The semantic role 'nist_withdrawn_note' is correctly identified.",
+        "rationale": "The text block with a 'withdrawn note' semantic role is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0027:section_heading",
+        "evidence": "The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.",
+        "rationale": "The section heading is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0028:text",
+        "evidence": "The extracted candidate correctly identifies the text and its bounding box matches the visual evidence. The semantic role 'nist_withdrawn_note' is correctly identified.",
+        "rationale": "The text block with a 'withdrawn note' semantic role is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0029:section_heading",
+        "evidence": "The extracted candidate correctly identifies the section heading and its bounding box matches the visual evidence. The preset type 'section_heading' aligns with the extracted type 'section_heading' and semantic role 'nist_control_heading'.",
+        "rationale": "The section heading is correctly extracted.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      }
+    ],
+    "page_rationale": "Multiple text extraction defects were found where extraneous spaces were inserted after colons in 'Discussion:' and 'Related Controls:' paragraphs. Additionally, a minor text order defect was found in the footer, where '49 PAGE' was extracted instead of 'PAGE 49'.",
+    "page_status": "defect",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0002_p0076",
+    "item_id": "page_case_0002_p0076:06d164d8ce78a294",
+    "request_sha256": "06d164d8ce78a294b06ba3909226b119d561090bc12fbaa9aae8ab57fb402e27"
+  }
+}

@@ -1,0 +1,1232 @@
+{
+  "generated_at": "2026-06-01T21:19:21.941454+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04500001849550189,
+            1.0,
+            0.055075751410590276
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p463:block:0",
+          "is_bold": false,
+          "page": 463,
+          "pdf_page_index": 462,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "source_type": "Footer",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05719703134864268,
+            0.8558836294934641,
+            0.06727276426373106
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p463:block:1",
+          "is_bold": false,
+          "page": 463,
+          "pdf_page_index": 462,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "source_type": "Footer",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.940454545647207,
+            0.8562647002974367,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 8.107500076293945,
+          "id": "actual:p463:block:2",
+          "is_bold": false,
+          "page": 463,
+          "pdf_page_index": 462,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.107500076293945,
+            "header_level": null,
+            "is_bold": false,
+            "text": "APPENDIX C   PAGE 436"
+          },
+          "source_type": "Body",
+          "text": "APPENDIX C   PAGE 436",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.3498234998166951,
+            0.28780303338561397
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p463:block:3",
+          "is_bold": false,
+          "page": 463,
+          "pdf_page_index": 462,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              564.0599975585938,
+              193.031982421875,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from:"
+          },
+          "source_type": "Body",
+          "text": "This publication is available free of charge from:",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.5202272588556464,
+            0.2705250191532709,
+            0.5315908952192827
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p463:block:4",
+          "is_bold": false,
+          "page": 463,
+          "pdf_page_index": 462,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              370.9800109863281,
+              144.50131225585938,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "https://doi.org/10.6028/NIST.SP.800"
+          },
+          "source_type": "Body",
+          "text": "https://doi.org/10.6028/NIST.SP.800",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.7027272696446891,
+            0.06380882761836831,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p463:block:5",
+          "is_bold": false,
+          "page": 463,
+          "pdf_page_index": 462,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              17.991003036499023,
+              12.0
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "-53r5"
+          },
+          "source_type": "List",
+          "text": "-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.2697058783637153,
+            0.09037880945687342,
+            0.733696881462546,
+            0.1023484817659012
+          ],
+          "font_name": "TT2",
+          "font_size": 9.479998588562012,
+          "id": "actual:p463:block:6",
+          "is_bold": true,
+          "page": 463,
+          "pdf_page_index": 462,
+          "raw": {
+            "bbox": [
+              165.05999755859375,
+              710.9400024414062,
+              283.9624938964844,
+              9.47998046875
+            ],
+            "block_type": "Caption",
+            "confidence": 0.800000011920929,
+            "font_name": "TT2",
+            "font_size": 9.479998588562012,
+            "header_level": null,
+            "is_bold": true,
+            "text": "TABLE C-4:  ASSESSMENT, AUTHORIZATION, AND MONITORING FAMILY"
+          },
+          "semantic_role": "table_caption",
+          "source_type": "Caption",
+          "text": "TABLE C-4:  ASSESSMENT, AUTHORIZATION, AND MONITORING FAMILY",
+          "type": "caption"
+        },
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.11371211812953756,
+            0.8525490355647467,
+            0.7496212082679825
+          ],
+          "id": "actual:p463:table:0",
+          "page": 463,
+          "pdf_page_index": 462,
+          "raw": {
+            "accuracy": 99.16082214006741,
+            "bbox": [
+              89.76000213623047,
+              90.05999755859375,
+              521.760009765625,
+              593.6999969482422
+            ],
+            "cols": 4,
+            "column_count": 4,
+            "data": [
+              [
+                "CONTROL\nNUMBER",
+                "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "IMPLEMENTED\nBY",
+                "ASSURANCE"
+              ],
+              [
+                "CA-1",
+                "Policy and Procedures",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-2",
+                "Control Assessments",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-2(1)",
+                "INDEPENDENT ASSESSORS",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-2(2)",
+                "SPECIALIZED ASSESSMENTS",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-2(3)",
+                "LEVERAGING RESULTS FROM EXTERNAL ORGANIZATIONS",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-3",
+                "Information Exchange",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-3(1)",
+                "UNCLASSIFIED NATIONAL SECURITY SYSTEM CONNECTIONS",
+                "W: Moved to SC-7(25).",
+                ""
+              ],
+              [
+                "CA-3(2)",
+                "CLASSIFIED NATIONAL SECURITY SYSTEM CONNECTIONS",
+                "W: Moved to SC-7(26).",
+                ""
+              ],
+              [
+                "CA-3(3)",
+                "UNCLASSIFIED NON-NATIONAL SECURITY SYSTEM CONNECTIONS",
+                "W: Moved to SC-7(27).",
+                ""
+              ],
+              [
+                "CA-3(4)",
+                "CONNECTIONS TO PUBLIC NETWORKS",
+                "W: Moved to SC-7(28).",
+                ""
+              ],
+              [
+                "CA-3(5)",
+                "RESTRICTIONS ON EXTERNAL SYSTEM CONNECTIONS",
+                "W: Incorporated into SC-7(5).",
+                ""
+              ],
+              [
+                "CA-3(6)",
+                "TRANSFER AUTHORIZATIONS",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "CA-3(7)",
+                "TRANSITIVE INFORMATION EXCHANGES",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "CA-4",
+                "Security Certification",
+                "W: Incorporated into CA-2.",
+                ""
+              ],
+              [
+                "CA-5",
+                "Plan of Action and Milestones",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-5(1)",
+                "AUTOMATION SUPPORT FOR ACCURACY AND CURRENCY",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-6",
+                "Authorization",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-6(1)",
+                "JOINT AUTHORIZATION \u2014 INTRA-ORGANIZATION",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-6(2)",
+                "JOINT AUTHORIZATION \u2014 INTER-ORGANIZATION",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-7",
+                "Continuous Monitoring",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-7(1)",
+                "INDEPENDENT ASSESSMENT",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-7(2)",
+                "TYPES OF ASSESSMENTS",
+                "W: Incorporated into CA-2.",
+                ""
+              ],
+              [
+                "CA-7(3)",
+                "TREND ANALYSES",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-7(4)",
+                "RISK MONITORING",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "CA-7(5)",
+                "CONSISTENCY ANALYSIS",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-7(6)",
+                "AUTOMATION SUPPORT FOR MONITORING",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "CA-8",
+                "Penetration Testing",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-8(1)",
+                "INDEPENDENT PENETRATION TESTING AGENT OR TEAM",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-8(2)",
+                "RED TEAM EXERCISES",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-8(3)",
+                "FACILITY PENETRATION TESTING",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-9",
+                "Internal System Connections",
+                "O",
+                "\u221a"
+              ],
+              [
+                "CA-9(1)",
+                "COMPLIANCE CHECKS",
+                "O/S",
+                "\u221a"
+              ],
+              [
+                "",
+                "",
+                "",
+                ""
+              ]
+            ],
+            "df_data": [
+              {
+                "0": "CONTROL\nNUMBER",
+                "1": "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "2": "IMPLEMENTED\nBY",
+                "3": "ASSURANCE"
+              },
+              {
+                "0": "CA-1",
+                "1": "Policy and Procedures",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-2",
+                "1": "Control Assessments",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-2(1)",
+                "1": "INDEPENDENT ASSESSORS",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-2(2)",
+                "1": "SPECIALIZED ASSESSMENTS",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-2(3)",
+                "1": "LEVERAGING RESULTS FROM EXTERNAL ORGANIZATIONS",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-3",
+                "1": "Information Exchange",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-3(1)",
+                "1": "UNCLASSIFIED NATIONAL SECURITY SYSTEM CONNECTIONS",
+                "2": "W: Moved to SC-7(25).",
+                "3": ""
+              },
+              {
+                "0": "CA-3(2)",
+                "1": "CLASSIFIED NATIONAL SECURITY SYSTEM CONNECTIONS",
+                "2": "W: Moved to SC-7(26).",
+                "3": ""
+              },
+              {
+                "0": "CA-3(3)",
+                "1": "UNCLASSIFIED NON-NATIONAL SECURITY SYSTEM CONNECTIONS",
+                "2": "W: Moved to SC-7(27).",
+                "3": ""
+              },
+              {
+                "0": "CA-3(4)",
+                "1": "CONNECTIONS TO PUBLIC NETWORKS",
+                "2": "W: Moved to SC-7(28).",
+                "3": ""
+              },
+              {
+                "0": "CA-3(5)",
+                "1": "RESTRICTIONS ON EXTERNAL SYSTEM CONNECTIONS",
+                "2": "W: Incorporated into SC-7(5).",
+                "3": ""
+              },
+              {
+                "0": "CA-3(6)",
+                "1": "TRANSFER AUTHORIZATIONS",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-3(7)",
+                "1": "TRANSITIVE INFORMATION EXCHANGES",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-4",
+                "1": "Security Certification",
+                "2": "W: Incorporated into CA-2.",
+                "3": ""
+              },
+              {
+                "0": "CA-5",
+                "1": "Plan of Action and Milestones",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-5(1)",
+                "1": "AUTOMATION SUPPORT FOR ACCURACY AND CURRENCY",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-6",
+                "1": "Authorization",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-6(1)",
+                "1": "JOINT AUTHORIZATION \u2014 INTRA-ORGANIZATION",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-6(2)",
+                "1": "JOINT AUTHORIZATION \u2014 INTER-ORGANIZATION",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-7",
+                "1": "Continuous Monitoring",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-7(1)",
+                "1": "INDEPENDENT ASSESSMENT",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-7(2)",
+                "1": "TYPES OF ASSESSMENTS",
+                "2": "W: Incorporated into CA-2.",
+                "3": ""
+              },
+              {
+                "0": "CA-7(3)",
+                "1": "TREND ANALYSES",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-7(4)",
+                "1": "RISK MONITORING",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-7(5)",
+                "1": "CONSISTENCY ANALYSIS",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-7(6)",
+                "1": "AUTOMATION SUPPORT FOR MONITORING",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-8",
+                "1": "Penetration Testing",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-8(1)",
+                "1": "INDEPENDENT PENETRATION TESTING AGENT OR TEAM",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-8(2)",
+                "1": "RED TEAM EXERCISES",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-8(3)",
+                "1": "FACILITY PENETRATION TESTING",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-9",
+                "1": "Internal System Connections",
+                "2": "O",
+                "3": "\u221a"
+              },
+              {
+                "0": "CA-9(1)",
+                "1": "COMPLIANCE CHECKS",
+                "2": "O/S",
+                "3": "\u221a"
+              },
+              {
+                "0": "",
+                "1": "",
+                "2": "",
+                "3": ""
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 0,
+            "page": 462,
+            "row_count": 34,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "CONTROL NUMBER"
+                  },
+                  {
+                    "text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
+                  },
+                  {
+                    "text": "IMPLEMENTED BY"
+                  },
+                  {
+                    "text": "ASSURANCE"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-1"
+                  },
+                  {
+                    "text": "Policy and Procedures"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-2"
+                  },
+                  {
+                    "text": "Control Assessments"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-2(1)"
+                  },
+                  {
+                    "text": "INDEPENDENT ASSESSORS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-2(2)"
+                  },
+                  {
+                    "text": "SPECIALIZED ASSESSMENTS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-2(3)"
+                  },
+                  {
+                    "text": "LEVERAGING RESULTS FROM EXTERNAL ORGANIZATIONS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-3"
+                  },
+                  {
+                    "text": "Information Exchange"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-3(1)"
+                  },
+                  {
+                    "text": "UNCLASSIFIED NATIONAL SECURITY SYSTEM CONNECTIONS"
+                  },
+                  {
+                    "text": "W: Moved to SC-7(25)."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-3(2)"
+                  },
+                  {
+                    "text": "CLASSIFIED NATIONAL SECURITY SYSTEM CONNECTIONS"
+                  },
+                  {
+                    "text": "W: Moved to SC-7(26)."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-3(3)"
+                  },
+                  {
+                    "text": "UNCLASSIFIED NON-NATIONAL SECURITY SYSTEM CONNECTIONS"
+                  },
+                  {
+                    "text": "W: Moved to SC-7(27)."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-3(4)"
+                  },
+                  {
+                    "text": "CONNECTIONS TO PUBLIC NETWORKS"
+                  },
+                  {
+                    "text": "W: Moved to SC-7(28)."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-3(5)"
+                  },
+                  {
+                    "text": "RESTRICTIONS ON EXTERNAL SYSTEM CONNECTIONS"
+                  },
+                  {
+                    "text": "W: Incorporated into SC-7(5)."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-3(6)"
+                  },
+                  {
+                    "text": "TRANSFER AUTHORIZATIONS"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-3(7)"
+                  },
+                  {
+                    "text": "TRANSITIVE INFORMATION EXCHANGES"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-4"
+                  },
+                  {
+                    "text": "Security Certification"
+                  },
+                  {
+                    "text": "W: Incorporated into CA-2."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-5"
+                  },
+                  {
+                    "text": "Plan of Action and Milestones"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-5(1)"
+                  },
+                  {
+                    "text": "AUTOMATION SUPPORT FOR ACCURACY AND CURRENCY"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-6"
+                  },
+                  {
+                    "text": "Authorization"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-6(1)"
+                  },
+                  {
+                    "text": "JOINT AUTHORIZATION \u2014 INTRA-ORGANIZATION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-6(2)"
+                  },
+                  {
+                    "text": "JOINT AUTHORIZATION \u2014 INTER-ORGANIZATION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-7"
+                  },
+                  {
+                    "text": "Continuous Monitoring"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-7(1)"
+                  },
+                  {
+                    "text": "INDEPENDENT ASSESSMENT"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-7(2)"
+                  },
+                  {
+                    "text": "TYPES OF ASSESSMENTS"
+                  },
+                  {
+                    "text": "W: Incorporated into CA-2."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-7(3)"
+                  },
+                  {
+                    "text": "TREND ANALYSES"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-7(4)"
+                  },
+                  {
+                    "text": "RISK MONITORING"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-7(5)"
+                  },
+                  {
+                    "text": "CONSISTENCY ANALYSIS"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-7(6)"
+                  },
+                  {
+                    "text": "AUTOMATION SUPPORT FOR MONITORING"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-8"
+                  },
+                  {
+                    "text": "Penetration Testing"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-8(1)"
+                  },
+                  {
+                    "text": "INDEPENDENT PENETRATION TESTING AGENT OR TEAM"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-8(2)"
+                  },
+                  {
+                    "text": "RED TEAM EXERCISES"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-8(3)"
+                  },
+                  {
+                    "text": "FACILITY PENETRATION TESTING"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-9"
+                  },
+                  {
+                    "text": "Internal System Connections"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA-9(1)"
+                  },
+                  {
+                    "text": "COMPLIANCE CHECKS"
+                  },
+                  {
+                    "text": "O/S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "whitespace": 8.088235294117647
+          },
+          "source_type": "table",
+          "text": "CONTROL NUMBER | CONTROL NAME CONTROL ENHANCEMENT NAME | IMPLEMENTED BY | ASSURANCE\nCA-1 | Policy and Procedures | O | \u221a\nCA-2 | Control Assessments | O | \u221a\nCA-2(1) | INDEPENDENT ASSESSORS | O | \u221a\nCA-2(2) | SPECIALIZED ASSESSMENTS | O | \u221a\nCA-2(3) | LEVERAGING RESULTS FROM EXTERNAL ORGANIZATIONS | O | \u221a\nCA-3 | Information Exchange | O | \u221a\nCA-3(1) | UNCLASSIFIED NATIONAL SECURITY SYSTEM CONNECTIONS | W: Moved to SC-7(25). |\nCA-3(2) | CLASSIFIED NATIONAL SECURITY SYSTEM CONNECTIONS | W: Moved to SC-7(26). |\nCA-3(3) | UNCLASSIFIED NON-NATIONAL SECURITY SYSTEM CONNECTIONS | W: Moved to SC-7(27). |\nCA-3(4) | CONNECTIONS TO PUBLIC NETWORKS | W: Moved to SC-7(28). |\nCA-3(5) | RESTRICTIONS ON EXTERNAL SYSTEM CONNECTIONS | W: Incorporated into SC-7(5). |\nCA-3(6) | TRANSFER AUTHORIZATIONS | O/S | \u221a\nCA-3(7) | TRANSITIVE INFORMATION EXCHANGES | O/S | \u221a\nCA-4 | Security Certification | W: Incorporated into CA-2. |\nCA-5 | Plan of Action and Milestones | O | \u221a\nCA-5(1) | AUTOMATION SUPPORT FOR ACCURACY AND CURRENCY | O | \u221a\nCA-6 | Authorization | O | \u221a\nCA-6(1) | JOINT AUTHORIZATION \u2014 INTRA-ORGANIZATION | O | \u221a\nCA-6(2) | JOINT AUTHORIZATION \u2014 INTER-ORGANIZATION | O | \u221a\nCA-7 | Continuous Monitoring | O | \u221a\nCA-7(1) | INDEPENDENT ASSESSMENT | O | \u221a\nCA-7(2) | TYPES OF ASSESSMENTS | W: Incorporated into CA-2. |\nCA-7(3) | TREND ANALYSES | O | \u221a\nCA-7(4) | RISK MONITORING | O/S | \u221a\nCA-7(5) | CONSISTENCY ANALYSIS | O | \u221a\nCA-7(6) | AUTOMATION SUPPORT FOR MONITORING | O/S | \u221a\nCA-8 | Penetration Testing | O | \u221a\nCA-8(1) | INDEPENDENT PENETRATION TESTING AGENT OR TEAM | O | \u221a\nCA-8(2) | RED TEAM EXERCISES | O | \u221a\nCA-8(3) | FACILITY PENETRATION TESTING | O | \u221a\nCA-9 | Internal System Connections | O | \u221a\nCA-9(1) | COMPLIANCE CHECKS | O/S | \u221a\n|  |  |",
+          "type": "table"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 463,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 462
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

@@ -1,0 +1,891 @@
+{
+  "generated_at": "2026-06-01T21:19:18.157793+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04500001849550189,
+            1.0,
+            0.055075751410590276
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p459:block:0",
+          "is_bold": false,
+          "page": 459,
+          "pdf_page_index": 458,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "source_type": "Footer",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05719703134864268,
+            0.8558836294934641,
+            0.06727276426373106
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p459:block:1",
+          "is_bold": false,
+          "page": 459,
+          "pdf_page_index": 458,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "source_type": "Footer",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.940454545647207,
+            0.8562647002974367,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 8.107500076293945,
+          "id": "actual:p459:block:2",
+          "is_bold": false,
+          "page": 459,
+          "pdf_page_index": 458,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.107500076293945,
+            "header_level": null,
+            "is_bold": false,
+            "text": "APPENDIX C   PAGE 432"
+          },
+          "source_type": "Body",
+          "text": "APPENDIX C   PAGE 432",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.3498234998166951,
+            0.28780303338561397
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p459:block:3",
+          "is_bold": false,
+          "page": 459,
+          "pdf_page_index": 458,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              564.0599975585938,
+              193.031982421875,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from:"
+          },
+          "source_type": "Body",
+          "text": "This publication is available free of charge from:",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.5202272588556464,
+            0.2705250191532709,
+            0.5315908952192827
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p459:block:4",
+          "is_bold": false,
+          "page": 459,
+          "pdf_page_index": 458,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              370.9800109863281,
+              144.50131225585938,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "https://doi.org/10.6028/NIST.SP.800"
+          },
+          "source_type": "Body",
+          "text": "https://doi.org/10.6028/NIST.SP.800",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.7027272696446891,
+            0.06380882761836831,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p459:block:5",
+          "is_bold": false,
+          "page": 459,
+          "pdf_page_index": 458,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              17.991003036499023,
+              12.0
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "-53r5"
+          },
+          "source_type": "List",
+          "text": "-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.5401514997385969
+          ],
+          "id": "actual:p459:table:0",
+          "page": 459,
+          "pdf_page_index": 458,
+          "raw": {
+            "accuracy": 99.01839763526259,
+            "bbox": [
+              89.76000213623047,
+              72.47998046875,
+              521.760009765625,
+              427.79998779296875
+            ],
+            "cols": 4,
+            "column_count": 4,
+            "data": [
+              [
+                "CONTROL\nNUMBER",
+                "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "IMPLEMENTED\nBY",
+                "ASSURANCE"
+              ],
+              [
+                "AC-19",
+                "Access Control for Mobile Devices",
+                "O",
+                ""
+              ],
+              [
+                "AC-19(1)",
+                "USE OF WRITABLE AND PORTABLE STORAGE DEVICES",
+                "W: Incorporated into MP-7.",
+                ""
+              ],
+              [
+                "AC-19(2)",
+                "USE OF PERSONALLY OWNED PORTABLE STORAGE DEVICES",
+                "W: Incorporated into MP-7.",
+                ""
+              ],
+              [
+                "AC-19(3)",
+                "USE OF PORTABLE STORAGE DEVICES WITH NO IDENTIFIABLE OWNER",
+                "W: Incorporated into MP-7.",
+                ""
+              ],
+              [
+                "AC-19(4)",
+                "RESTRICTIONS FOR CLASSIFIED INFORMATION",
+                "O",
+                ""
+              ],
+              [
+                "AC-19(5)",
+                "FULL DEVICE OR CONTAINER-BASED ENCRYPTION",
+                "O",
+                ""
+              ],
+              [
+                "AC-20",
+                "Use of External Systems",
+                "O",
+                ""
+              ],
+              [
+                "AC-20(1)",
+                "LIMITS ON AUTHORIZED USE",
+                "O",
+                ""
+              ],
+              [
+                "AC-20(2)",
+                "PORTABLE STORAGE DEVICES \u2014 RESTRICTED USE",
+                "O",
+                ""
+              ],
+              [
+                "AC-20(3)",
+                "NON-ORGANIZATIONALLY OWNED SYSTEMS \u2014 RESTRICTED USE",
+                "O",
+                ""
+              ],
+              [
+                "AC-20(4)",
+                "NETWORK ACCESSIBLE STORAGE DEVICES \u2014 PROHIBITED USE",
+                "O",
+                ""
+              ],
+              [
+                "AC-20(5)",
+                "PORTABLE STORAGE DEVICES \u2014 PROHIBITED USE",
+                "O",
+                ""
+              ],
+              [
+                "AC-21",
+                "Information Sharing",
+                "O",
+                ""
+              ],
+              [
+                "AC-21(1)",
+                "AUTOMATED DECISION SUPPORT",
+                "S",
+                ""
+              ],
+              [
+                "AC-21(2)",
+                "INFORMATION SEARCH AND RETRIEVAL",
+                "S",
+                ""
+              ],
+              [
+                "AC-22",
+                "Publicly Accessible Content",
+                "O",
+                ""
+              ],
+              [
+                "AC-23",
+                "Data Mining Protection",
+                "O",
+                ""
+              ],
+              [
+                "AC-24",
+                "Access Control Decisions",
+                "O",
+                ""
+              ],
+              [
+                "AC-24(1)",
+                "TRANSMIT ACCESS AUTHORIZATION INFORMATION",
+                "S",
+                ""
+              ],
+              [
+                "AC-24(2)",
+                "NO USER OR PROCESS IDENTITY",
+                "S",
+                ""
+              ],
+              [
+                "AC-25",
+                "Reference Monitor",
+                "S",
+                "\u221a"
+              ],
+              [
+                "",
+                "",
+                "",
+                ""
+              ]
+            ],
+            "df_data": [
+              {
+                "0": "CONTROL\nNUMBER",
+                "1": "CONTROL NAME\nCONTROL ENHANCEMENT NAME",
+                "2": "IMPLEMENTED\nBY",
+                "3": "ASSURANCE"
+              },
+              {
+                "0": "AC-19",
+                "1": "Access Control for Mobile Devices",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-19(1)",
+                "1": "USE OF WRITABLE AND PORTABLE STORAGE DEVICES",
+                "2": "W: Incorporated into MP-7.",
+                "3": ""
+              },
+              {
+                "0": "AC-19(2)",
+                "1": "USE OF PERSONALLY OWNED PORTABLE STORAGE DEVICES",
+                "2": "W: Incorporated into MP-7.",
+                "3": ""
+              },
+              {
+                "0": "AC-19(3)",
+                "1": "USE OF PORTABLE STORAGE DEVICES WITH NO IDENTIFIABLE OWNER",
+                "2": "W: Incorporated into MP-7.",
+                "3": ""
+              },
+              {
+                "0": "AC-19(4)",
+                "1": "RESTRICTIONS FOR CLASSIFIED INFORMATION",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-19(5)",
+                "1": "FULL DEVICE OR CONTAINER-BASED ENCRYPTION",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-20",
+                "1": "Use of External Systems",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-20(1)",
+                "1": "LIMITS ON AUTHORIZED USE",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-20(2)",
+                "1": "PORTABLE STORAGE DEVICES \u2014 RESTRICTED USE",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-20(3)",
+                "1": "NON-ORGANIZATIONALLY OWNED SYSTEMS \u2014 RESTRICTED USE",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-20(4)",
+                "1": "NETWORK ACCESSIBLE STORAGE DEVICES \u2014 PROHIBITED USE",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-20(5)",
+                "1": "PORTABLE STORAGE DEVICES \u2014 PROHIBITED USE",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-21",
+                "1": "Information Sharing",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-21(1)",
+                "1": "AUTOMATED DECISION SUPPORT",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-21(2)",
+                "1": "INFORMATION SEARCH AND RETRIEVAL",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-22",
+                "1": "Publicly Accessible Content",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-23",
+                "1": "Data Mining Protection",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-24",
+                "1": "Access Control Decisions",
+                "2": "O",
+                "3": ""
+              },
+              {
+                "0": "AC-24(1)",
+                "1": "TRANSMIT ACCESS AUTHORIZATION INFORMATION",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-24(2)",
+                "1": "NO USER OR PROCESS IDENTITY",
+                "2": "S",
+                "3": ""
+              },
+              {
+                "0": "AC-25",
+                "1": "Reference Monitor",
+                "2": "S",
+                "3": "\u221a"
+              },
+              {
+                "0": "",
+                "1": "",
+                "2": "",
+                "3": ""
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 0,
+            "page": 458,
+            "row_count": 23,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "CONTROL NUMBER"
+                  },
+                  {
+                    "text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
+                  },
+                  {
+                    "text": "IMPLEMENTED BY"
+                  },
+                  {
+                    "text": "ASSURANCE"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-19"
+                  },
+                  {
+                    "text": "Access Control for Mobile Devices"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-19(1)"
+                  },
+                  {
+                    "text": "USE OF WRITABLE AND PORTABLE STORAGE DEVICES"
+                  },
+                  {
+                    "text": "W: Incorporated into MP-7."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-19(2)"
+                  },
+                  {
+                    "text": "USE OF PERSONALLY OWNED PORTABLE STORAGE DEVICES"
+                  },
+                  {
+                    "text": "W: Incorporated into MP-7."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-19(3)"
+                  },
+                  {
+                    "text": "USE OF PORTABLE STORAGE DEVICES WITH NO IDENTIFIABLE OWNER"
+                  },
+                  {
+                    "text": "W: Incorporated into MP-7."
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-19(4)"
+                  },
+                  {
+                    "text": "RESTRICTIONS FOR CLASSIFIED INFORMATION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-19(5)"
+                  },
+                  {
+                    "text": "FULL DEVICE OR CONTAINER-BASED ENCRYPTION"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-20"
+                  },
+                  {
+                    "text": "Use of External Systems"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-20(1)"
+                  },
+                  {
+                    "text": "LIMITS ON AUTHORIZED USE"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-20(2)"
+                  },
+                  {
+                    "text": "PORTABLE STORAGE DEVICES \u2014 RESTRICTED USE"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-20(3)"
+                  },
+                  {
+                    "text": "NON-ORGANIZATIONALLY OWNED SYSTEMS \u2014 RESTRICTED USE"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-20(4)"
+                  },
+                  {
+                    "text": "NETWORK ACCESSIBLE STORAGE DEVICES \u2014 PROHIBITED USE"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-20(5)"
+                  },
+                  {
+                    "text": "PORTABLE STORAGE DEVICES \u2014 PROHIBITED USE"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-21"
+                  },
+                  {
+                    "text": "Information Sharing"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-21(1)"
+                  },
+                  {
+                    "text": "AUTOMATED DECISION SUPPORT"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-21(2)"
+                  },
+                  {
+                    "text": "INFORMATION SEARCH AND RETRIEVAL"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-22"
+                  },
+                  {
+                    "text": "Publicly Accessible Content"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-23"
+                  },
+                  {
+                    "text": "Data Mining Protection"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-24"
+                  },
+                  {
+                    "text": "Access Control Decisions"
+                  },
+                  {
+                    "text": "O"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-24(1)"
+                  },
+                  {
+                    "text": "TRANSMIT ACCESS AUTHORIZATION INFORMATION"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-24(2)"
+                  },
+                  {
+                    "text": "NO USER OR PROCESS IDENTITY"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC-25"
+                  },
+                  {
+                    "text": "Reference Monitor"
+                  },
+                  {
+                    "text": "S"
+                  },
+                  {
+                    "text": "\u221a"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "whitespace": 26.08695652173913
+          },
+          "source_type": "table",
+          "text": "CONTROL NUMBER | CONTROL NAME CONTROL ENHANCEMENT NAME | IMPLEMENTED BY | ASSURANCE\nAC-19 | Access Control for Mobile Devices | O |\nAC-19(1) | USE OF WRITABLE AND PORTABLE STORAGE DEVICES | W: Incorporated into MP-7. |\nAC-19(2) | USE OF PERSONALLY OWNED PORTABLE STORAGE DEVICES | W: Incorporated into MP-7. |\nAC-19(3) | USE OF PORTABLE STORAGE DEVICES WITH NO IDENTIFIABLE OWNER | W: Incorporated into MP-7. |\nAC-19(4) | RESTRICTIONS FOR CLASSIFIED INFORMATION | O |\nAC-19(5) | FULL DEVICE OR CONTAINER-BASED ENCRYPTION | O |\nAC-20 | Use of External Systems | O |\nAC-20(1) | LIMITS ON AUTHORIZED USE | O |\nAC-20(2) | PORTABLE STORAGE DEVICES \u2014 RESTRICTED USE | O |\nAC-20(3) | NON-ORGANIZATIONALLY OWNED SYSTEMS \u2014 RESTRICTED USE | O |\nAC-20(4) | NETWORK ACCESSIBLE STORAGE DEVICES \u2014 PROHIBITED USE | O |\nAC-20(5) | PORTABLE STORAGE DEVICES \u2014 PROHIBITED USE | O |\nAC-21 | Information Sharing | O |\nAC-21(1) | AUTOMATED DECISION SUPPORT | S |\nAC-21(2) | INFORMATION SEARCH AND RETRIEVAL | S |\nAC-22 | Publicly Accessible Content | O |\nAC-23 | Data Mining Protection | O |\nAC-24 | Access Control Decisions | O |\nAC-24(1) | TRANSMIT ACCESS AUTHORIZATION INFORMATION | S |\nAC-24(2) | NO USER OR PROCESS IDENTITY | S |\nAC-25 | Reference Monitor | S | \u221a\n|  |  |",
+          "type": "table"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 459,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 458
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

@@ -1,0 +1,46 @@
+{
+  "candidate_count": 16,
+  "errors": [],
+  "expected_candidate_ids": [
+    "cand:p0018:0000:side_chrome",
+    "cand:p0018:0001:side_chrome",
+    "cand:p0018:0002:side_chrome",
+    "cand:p0018:0003:side_chrome",
+    "cand:p0018:0004:text",
+    "cand:p0018:0005:text",
+    "cand:p0018:0006:text",
+    "cand:p0018:0007:text",
+    "cand:p0018:0008:text",
+    "cand:p0018:0009:text",
+    "cand:p0018:0010:text",
+    "cand:p0018:0011:text",
+    "cand:p0018:0012:text",
+    "cand:p0018:0013:text",
+    "cand:p0018:0014:text",
+    "cand:p0018:0015:text"
+  ],
+  "ok": true,
+  "page_case": {
+    "case_id": "page_case_0001_p0018",
+    "page_number": 18
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": [
+    "cand:p0018:0000:side_chrome",
+    "cand:p0018:0001:side_chrome",
+    "cand:p0018:0002:side_chrome",
+    "cand:p0018:0003:side_chrome",
+    "cand:p0018:0004:text",
+    "cand:p0018:0005:text",
+    "cand:p0018:0006:text",
+    "cand:p0018:0007:text",
+    "cand:p0018:0008:text",
+    "cand:p0018:0009:text",
+    "cand:p0018:0010:text",
+    "cand:p0018:0011:text",
+    "cand:p0018:0012:text",
+    "cand:p0018:0013:text",
+    "cand:p0018:0014:text",
+    "cand:p0018:0015:text"
+  ]
+}

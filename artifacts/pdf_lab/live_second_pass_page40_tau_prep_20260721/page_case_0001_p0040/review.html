@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PDF Lab Second-Pass Review page_case_0001_p0040</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c2430;
+      --muted: #5b6572;
+      --line: #c9d2dc;
+      --panel: #f7f9fb;
+      --accent: #0b5cad;
+    }
+    body {
+      margin: 0;
+      font: 14px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #ffffff;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+    }
+    h1, h2 {
+      margin: 0 0 10px;
+      letter-spacing: 0;
+    }
+    h1 {
+      font-size: 22px;
+    }
+    h2 {
+      font-size: 17px;
+    }
+    section {
+      margin: 22px 0;
+    }
+    .meta, .candidate, pre {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+      padding: 12px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .value {
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    figure {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    figcaption {
+      padding: 8px 10px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+    .candidate {
+      margin: 10px 0;
+      padding: 10px;
+    }
+    .candidate code {
+      color: var(--accent);
+    }
+    pre {
+      overflow: auto;
+      padding: 12px;
+      max-height: 420px;
+      white-space: pre-wrap;
+    }
+    a {
+      color: var(--accent);
+    }
+    ul {
+      columns: 2;
+      padding-left: 18px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>PDF Lab Second-Pass Page Review</h1>
+    <div class="meta">
+      <div><div class="label">Case</div><div class="value">page_case_0001_p0040</div></div>
+      <div><div class="label">Page</div><div class="value">40</div></div>
+      <div><div class="label">Status</div><div class="value">reviewed_clean</div></div>
+      <div><div class="label">Reason</div><div class="value">scillm_review_validated_clean</div></div>
+      <div><div class="label">Commit</div><div class="value">none</div></div>
+    </div>
+  </header>
+
+	  <section>
+	    <h2>Before Evidence</h2>
+	    <div class="image-grid"><figure><img src="page_before.png" alt="Rendered page before review"><figcaption>Rendered page before review</figcaption></figure><figure><img src="page_candidates.png" alt="Annotated candidate bounding boxes"><figcaption>Annotated candidate bounding boxes</figcaption></figure></div>
+	  </section>
+
+  <section>
+    <h2>Selected Candidates</h2>
+    <div class="candidate"><code>cand:p0040:0000:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.04473802296802251,
+    0.8507378272760927,
+    0.05821938948197798
+  ],
+  "block_id": "actual:p40:block:0",
+  "block_index": 0,
+  "candidate_id": "cand:p0040:0000:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.009487,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": "page_chrome",
+    "source_type": "Header",
+    "text_length": 94
+  },
+  "json_pointer": "/pages/39/blocks/0",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+}</pre></div><div class="candidate"><code>cand:p0040:0001:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.05679397390346334,
+    0.8517353332120609,
+    0.07054738324097913
+  ],
+  "block_id": "actual:p40:block:1",
+  "block_index": 1,
+  "candidate_id": "cand:p0040:0001:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.009692,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": "page_chrome",
+    "source_type": "Header",
+    "text_length": 97
+  },
+  "json_pointer": "/pages/39/blocks/1",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "_________________________________________________________________________________________________"
+}</pre></div><div class="candidate"><code>cand:p0040:0002:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.9414804632013495,
+    0.8528974944469976,
+    0.9549618345318418
+  ],
+  "block_id": "actual:p40:block:2",
+  "block_index": 2,
+  "candidate_id": "cand:p0040:0002:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.009516,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": "page_chrome",
+    "source_type": "Footer",
+    "text_length": 19
+  },
+  "json_pointer": "/pages/39/blocks/2",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "CHAPTER TWO PAGE 13"
+}</pre></div><div class="candidate"><code>cand:p0040:0003:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.0296323533151664,
+    0.28780303338561397,
+    0.049705879361021756,
+    0.7406287915778883
+  ],
+  "block_id": "actual:p40:block:3",
+  "block_index": 3,
+  "candidate_id": "cand:p0040:0003:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.00909,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Boilerplate",
+    "text_length": 92
+  },
+  "json_pointer": "/pages/39/blocks/3",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+}</pre></div><div class="candidate"><code>cand:p0040:0004:text</code><div>text</div><pre>{
+  "bbox": [
+    0.14704087201286764,
+    0.08994257570517183,
+    0.8465639002182904,
+    0.159330088682849
+  ],
+  "block_id": "actual:p40:block:4",
+  "block_index": 4,
+  "candidate_id": "cand:p0040:0004:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text"
+  ],
+  "features": {
+    "bbox_area": 0.048538,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 377
+  },
+  "json_pointer": "/pages/39/blocks/4",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "control. Identifying the control implementation approach can result in significant savings to organizations in implementation and assessment costs and a more consistent application of the controls organization-wide. Typically, the identification of the control implementation approach is straightforward. However, the implementation takes significant planning and coordination."
+}</pre></div><div class="candidate"><code>cand:p0040:0005:text</code><div>text</div><pre>{
+  "bbox": [
+    0.14704092187819137,
+    0.1729026177916864,
+    0.8518099317363664,
+    0.32712782272184737
+  ],
+  "block_id": "actual:p40:block:5",
+  "block_index": 5,
+  "candidate_id": "cand:p0040:0005:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text",
+    "long_text_region"
+  ],
+  "features": {
+    "bbox_area": 0.108693,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 790
+  },
+  "json_pointer": "/pages/39/blocks/5",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "Planning for the implementation approach of a control (i.e., common, hybrid, or system-specific) is best carried out early in the system development life cycle and coordinated with the entities providing the control [SP 800-37]. Similarly, if a control is to be inheritable, coordination is required with the inheriting entity to ensure that the control meets its needs. This is especially important given the nature of control parameters. An inheriting entity cannot assume that controls are the sam"
+}</pre></div><div class="candidate"><code>cand:p0040:0006:section_heading</code><div>section_heading</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.3400691639293324,
+    0.520607792474086,
+    0.3645694617069129
+  ],
+  "block_id": "actual:p40:block:6",
+  "block_index": 6,
+  "candidate_id": "cand:p0040:0006:section_heading",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:section_heading",
+    "preset_type:section_heading",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.009152,
+    "block_type": "section_heading",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Title",
+    "text_length": 33
+  },
+  "json_pointer": "/pages/39/blocks/6",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "section_heading",
+  "text_excerpt": "2.4 SECURITY AND PRIVACY CONTROLS"
+}</pre></div><div class="candidate"><code>cand:p0040:0007:text</code><div>text</div><pre>{
+  "bbox": [
+    0.14704079721488206,
+    0.3697910886822325,
+    0.8488242953431373,
+    0.6426621639367306
+  ],
+  "block_id": "actual:p40:block:7",
+  "block_index": 7,
+  "candidate_id": "cand:p0040:0007:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text",
+    "long_text_region"
+  ],
+  "features": {
+    "bbox_area": 0.191496,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 1444
+  },
+  "json_pointer": "/pages/39/blocks/7",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "The selection and implementation of security and privacy controls reflect the objectives of information security and privacy programs and how those programs manage their respective risks. Depending on the circumstances, these objectives and risks can be independent or overlapping. Federal information security programs are responsible for protecting information and information systems from unauthorized access, use, disclosure, disruption, modification, or destruction (i.e., unauthorized activity "
+}</pre></div><div class="candidate"><code>cand:p0040:0008:text</code><div>text</div><pre>{
+  "bbox": [
+    0.14704870086869384,
+    0.6562346641463462,
+    0.8513655319712521,
+    0.7595603249289773
+  ],
+  "block_id": "actual:p40:block:8",
+  "block_index": 8,
+  "candidate_id": "cand:p0040:0008:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text"
+  ],
+  "features": {
+    "bbox_area": 0.072774,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 484
+  },
+  "json_pointer": "/pages/39/blocks/8",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "There also may be circumstances in which the selection and/or implementation of the control or control enhancement affects the ability of a program to achieve its objectives and manage its respective risks. The control discussion section may highlight specific security and/or privacy considerations so that organizations can take these considerations into account as they determine the most effective method to implement the control. However, these considerations are not exhaustive."
+}</pre></div><div class="candidate"><code>cand:p0040:0009:text</code><div>text</div><pre>{
+  "bbox": [
+    0.14704870086869384,
+    0.7730486320726799,
+    0.8375248129850899,
+    0.8085679333619397
+  ],
+  "block_id": "actual:p40:block:9",
+  "block_index": 9,
+  "candidate_id": "cand:p0040:0009:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text"
+  ],
+  "features": {
+    "bbox_area": 0.024525,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 180
+  },
+  "json_pointer": "/pages/39/blocks/9",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "For example, an organization might select AU-3 (Content of Audit Records) to support monitoring for unauthorized access to an information asset that does not include PII. Since the"
+}</pre></div><div class="candidate"><code>cand:p0040:0010:footnote</code><div>footnote</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.8388711948587437,
+    0.8317108154296875,
+    0.9096098620482166
+  ],
+  "block_id": "actual:p40:block:10",
+  "block_index": 10,
+  "candidate_id": "cand:p0040:0010:footnote",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:footnote",
+    "preset_type:footnote",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.048431,
+    "block_type": "footnote",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Footnote",
+    "text_length": 473
+  },
+  "json_pointer": "/pages/39/blocks/10",
+  "page_index": 39,
+  "page_number": 40,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "footnote",
+  "text_excerpt": "28 Privacy programs may also choose to consider the risks to individuals that may arise from their interactions with information systems, where the processing of personally identifiable information may be less impactful than the effect that the system has on individuals\u2019 behavior or activities. Such effects would constitute risks to individual autonomy, and organizations may need to take steps to manage those risks in addition to information security and privacy risks."
+}</pre></div>
+  </section>
+
+  <section>
+    <h2>Review Validation</h2>
+    <pre>{
+  "candidate_count": 11,
+  "errors": [],
+  "expected_candidate_ids": [
+    "cand:p0040:0000:side_chrome",
+    "cand:p0040:0001:side_chrome",
+    "cand:p0040:0002:side_chrome",
+    "cand:p0040:0003:side_chrome",
+    "cand:p0040:0004:text",
+    "cand:p0040:0005:text",
+    "cand:p0040:0006:section_heading",
+    "cand:p0040:0007:text",
+    "cand:p0040:0008:text",
+    "cand:p0040:0009:text",
+    "cand:p0040:0010:footnote"
+  ],
+  "ok": true,
+  "page_case": {
+    "case_id": "page_case_0001_p0040",
+    "page_number": 40
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": [
+    "cand:p0040:0000:side_chrome",
+    "cand:p0040:0001:side_chrome",
+    "cand:p0040:0002:side_chrome",
+    "cand:p0040:0003:side_chrome",
+    "cand:p0040:0004:text",
+    "cand:p0040:0005:text",
+    "cand:p0040:0006:section_heading",
+    "cand:p0040:0007:text",
+    "cand:p0040:0008:text",
+    "cand:p0040:0009:text",
+    "cand:p0040:0010:footnote"
+  ]
+}</pre>
+  </section>
+
+  <section>
+    <h2>Page Case</h2>
+    <pre>{
+  "candidate_ids": [
+    "cand:p0040:0000:side_chrome",
+    "cand:p0040:0001:side_chrome",
+    "cand:p0040:0002:side_chrome",
+    "cand:p0040:0003:side_chrome",
+    "cand:p0040:0004:text",
+    "cand:p0040:0005:text",
+    "cand:p0040:0006:section_heading",
+    "cand:p0040:0007:text",
+    "cand:p0040:0008:text",
+    "cand:p0040:0009:text",
+    "cand:p0040:0010:footnote"
+  ],
+  "case_id": "page_case_0001_p0040",
+  "forced_by_human_annotation": false,
+  "page_index": 39,
+  "page_number": 40,
+  "preset_counts": {
+    "footnote": 1,
+    "section_heading": 1,
+    "side_chrome": 4,
+    "text": 5
+  },
+  "selection_probability_basis": {
+    "candidate_count_on_page": 11,
+    "candidate_share_estimate": 0.00124,
+    "forced_page": false,
+    "method": "max(weighted_page_score_inclusion_estimate,candidate_share_estimate)",
+    "page_score": 34.0,
+    "total_candidate_count": 8871,
+    "total_page_score": 26475.0,
+    "weighted_page_score_inclusion_estimate": 0.00128423
+  },
+  "selection_probability_estimate": 0.00128423,
+  "selection_reason": [
+    "high_risk_preset",
+    "high_risk_candidate",
+    "boundary_geometry",
+    "high_candidate_score"
+  ],
+  "selection_score": 34.0,
+  "strata": [
+    "geometry:boundary",
+    "preset:footnote",
+    "preset:section_heading",
+    "preset:side_chrome",
+    "preset:text",
+    "risk:high"
+  ]
+}</pre>
+  </section>
+
+  <section>
+    <h2>Artifacts</h2>
+    <ul><li><a href="state.json">state.json</a></li><li><a href="sampled_candidate_manifest.json">sampled_candidate_manifest.json</a></li><li><a href="page_before.json">page_before.json</a></li><li><a href="page_before.png">page_before.png</a></li><li><a href="page_candidates.png">page_candidates.png</a></li><li><a href="selected_candidates.json">selected_candidates.json</a></li><li><a href="candidate_presets.json">candidate_presets.json</a></li><li><a href="review_request.json">review_request.json</a></li><li><a href="review_request_validation.json">review_request_validation.json</a></li><li><a href="scillm_orchestrator_page_dag_spec.json">scillm_orchestrator_page_dag_spec.json</a></li><li><a href="scillm_orchestrator_page_dag_spec_validation.json">scillm_orchestrator_page_dag_spec_validation.json</a></li><li><a href="scillm_orchestrator_page_submission.json">scillm_orchestrator_page_submission.json</a></li><li><a href="scillm_orchestrator_page_submission_validation.json">scillm_orchestrator_page_submission_validation.json</a></li><li><a href="tau_scillm_chat_review_receipt.json">tau_scillm_chat_review_receipt.json</a></li><li><a href="tau_scillm_chat_review_raw_response.json">tau_scillm_chat_review_raw_response.json</a></li><li><a href="review_response.json">review_response.json</a></li><li><a href="review_validation.json">review_validation.json</a></li><li><a href="scillm_page_orchestrator_run_request.json">scillm_page_orchestrator_run_request.json</a></li><li><a href="scillm_page_orchestrator_run_validation.json">scillm_page_orchestrator_run_validation.json</a></li><li><a href="review.html">review.html</a></li><li><a href="terminal_ledger_validation.json">terminal_ledger_validation.json</a></li></ul>
+  </section>
+</main>
+</body>
+</html>

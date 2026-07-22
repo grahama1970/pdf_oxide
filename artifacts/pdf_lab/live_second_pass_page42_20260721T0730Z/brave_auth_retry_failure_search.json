@@ -1,0 +1,22 @@
+{
+  "query": "Python argparse option not passed to function local script auth token preflight bug",
+  "count": 3,
+  "offset": 0,
+  "results": [
+    {
+      "title": "google oauth - Imported python module overrides option parser - Stack Overflow",
+      "description": "I had an identical problem. <strong>The problem happens because the google authorization module also uses argparse</strong>. What you should achieve is not to share that memory space.",
+      "url": "https://stackoverflow.com/questions/34550023/imported-python-module-overrides-option-parser"
+    },
+    {
+      "title": "argparse does not accept options taking arguments beginning with dash (regression from optparse) \u00b7 Issue #53580 \u00b7 python/cpython",
+      "description": "assignee = None closed_at = &lt;Date 2021-12-26.23:41:14.505&gt; created_at = &lt;Date 2010-07-22.22:15:36.970&gt; labels = [&#x27;3.7&#x27;, &#x27;type-feature&#x27;, &#x27;library&#x27;] title = &#x27;argparse does not accept options taking arguments beginning with dash (regression from optparse)&#x27; updated_at = &lt;Date 2022-01-12.23:59:10.962&gt; user = &#x27;https://github.com/andersk&#x27;",
+      "url": "https://github.com/python/cpython/issues/53580"
+    },
+    {
+      "title": "Issue 9334: argparse does not accept options taking arguments beginning with dash (regression from optparse) - Python tracker",
+      "description": "This issue tracker has been migrated to GitHub, and is currently read-only. For more information, see the GitHub FAQs in the Python&#x27;s Developer Guide \u00b7 This issue has been migrated to GitHub: https://github.com/python/cpython/issues/53580",
+      "url": "https://bugs.python.org/issue9334"
+    }
+  ]
+}

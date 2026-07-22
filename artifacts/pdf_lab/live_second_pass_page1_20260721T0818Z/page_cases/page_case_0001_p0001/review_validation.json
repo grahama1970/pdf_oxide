@@ -1,0 +1,28 @@
+{
+  "candidate_count": 7,
+  "errors": [],
+  "expected_candidate_ids": [
+    "cand:p0001:0000:text",
+    "cand:p0001:0001:text",
+    "cand:p0001:0002:section_heading",
+    "cand:p0001:0003:section_heading",
+    "cand:p0001:0004:text",
+    "cand:p0001:0005:text",
+    "cand:p0001:0006:text"
+  ],
+  "ok": true,
+  "page_case": {
+    "case_id": "page_case_0001_p0001",
+    "page_number": 1
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": [
+    "cand:p0001:0000:text",
+    "cand:p0001:0001:text",
+    "cand:p0001:0002:section_heading",
+    "cand:p0001:0003:section_heading",
+    "cand:p0001:0004:text",
+    "cand:p0001:0005:text",
+    "cand:p0001:0006:text"
+  ]
+}

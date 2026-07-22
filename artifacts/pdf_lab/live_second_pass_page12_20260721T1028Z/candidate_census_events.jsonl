@@ -1,0 +1,3 @@
+{"created_at": "2026-07-21T09:20:03.297223+00:00", "event": "page_started", "page_index": 11, "page_number": 12, "page_timeout_s": 90.0, "schema": "pdf_lab.second_pass.candidate_census_event.v1"}
+{"block_count": 6, "created_at": "2026-07-21T09:20:04.915567+00:00", "duration_s": 1.618, "event": "page_completed", "page_index": 11, "page_number": 12, "schema": "pdf_lab.second_pass.candidate_census_event.v1"}
+{"completed_pages": 1, "created_at": "2026-07-21T09:20:04.916048+00:00", "event": "completed", "failed_pages": 0, "limit": 1, "schema": "pdf_lab.second_pass.candidate_census_event.v1"}

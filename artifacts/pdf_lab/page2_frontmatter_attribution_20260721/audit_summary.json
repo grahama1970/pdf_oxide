@@ -1,0 +1,79 @@
+{
+  "campaign_status": {
+    "active_family": "NIST SP 800-53r5 current-extraction page candidates",
+    "blocked_by_systemic_failure": 0,
+    "failed": 0,
+    "latest_failure_signature": "none for page2 after NIST frontmatter attribution and candidate-preset repairs",
+    "not_run": "remaining active candidate queue",
+    "passed": 1
+  },
+  "candidate": "frontmatter issuing-organization attribution and boilerplate candidate preset classification",
+  "live": true,
+  "mocked": false,
+  "page": 2,
+  "proof": {
+    "deterministic_tests": {
+      "full_nist": {
+        "command": "pytest -q $(rg --files tests | rg 'test_nist_' | sort)",
+        "log": "artifacts/pdf_lab/page2_frontmatter_attribution_20260721/test_logs/pytest_full_nist_after_page2.log",
+        "result": "55 passed, 5 warnings in 594.21s"
+      },
+      "targeted_page2_and_manifest": {
+        "command": "pytest -q tests/test_nist_page2_frontmatter_attribution.py tests/test_pdf_lab_second_pass_candidate_manifest.py",
+        "log": "artifacts/pdf_lab/page2_frontmatter_attribution_20260721/test_logs/pytest_page2_manifest_targeted.log",
+        "result": "13 passed, 5 warnings in 0.74s"
+      }
+    },
+    "live_second_pass_after_ledger_patch": {
+      "case_dir": "artifacts/pdf_lab/live_second_pass_page2_after_patch_20260721T0825Z/page_cases/page_case_0001_p0002",
+      "reason": "candidate preset text/chrome mismatch after attribution line was repaired",
+      "terminal_status": "still_open"
+    },
+    "live_second_pass_after_manifest_patch": {
+      "case_dir": "artifacts/pdf_lab/live_second_pass_page2_after_manifest_patch_20260721T0827Z/page_cases/page_case_0001_p0002",
+      "candidate_count": 11,
+      "harness_final_gate": "artifacts/pdf_lab/live_second_pass_page2_after_manifest_patch_20260721T0827Z/harness_final_gate.json",
+      "reason": "scillm_review_validated_clean",
+      "review_bundle": "artifacts/pdf_lab/live_second_pass_page2_after_manifest_patch_20260721T0827Z/page_cases/page_case_0001_p0002/review_bundle.zip",
+      "review_html": "artifacts/pdf_lab/live_second_pass_page2_after_manifest_patch_20260721T0827Z/page_cases/page_case_0001_p0002/review.html",
+      "review_response": "artifacts/pdf_lab/live_second_pass_page2_after_manifest_patch_20260721T0827Z/page_cases/page_case_0001_p0002/review_response.json",
+      "review_validation": "artifacts/pdf_lab/live_second_pass_page2_after_manifest_patch_20260721T0827Z/page_cases/page_case_0001_p0002/review_validation.json",
+      "terminal_ledger": "artifacts/pdf_lab/live_second_pass_page2_after_manifest_patch_20260721T0827Z/page_cases/page_case_0001_p0002/terminal_ledger.json",
+      "terminal_status": "reviewed_clean"
+    },
+    "live_second_pass_before_patch": {
+      "case_dir": "artifacts/pdf_lab/live_second_pass_page2_20260721T0821Z/page_cases/page_case_0001_p0002",
+      "reason": "patch_delegate_dry_run",
+      "terminal_status": "still_open"
+    },
+    "selection": {
+      "forced_pages_input": "artifacts/pdf_lab/live_second_pass_page2_20260721T0821Z/forced_pages_input.json",
+      "human_forced_pages": "artifacts/pdf_lab/live_second_pass_page2_20260721T0821Z/human_forced_pages.json",
+      "sampled_page_cases": "artifacts/pdf_lab/live_second_pass_page2_20260721T0821Z/sampled_page_cases.json",
+      "selected_pages": [
+        2
+      ]
+    },
+    "unblock_attempts": {
+      "brave_search": "artifacts/pdf_lab/live_second_pass_page2_20260721T0821Z/unblock/brave_frontmatter_attribution_list_search.json",
+      "webgpt_bundle": "artifacts/pdf_lab/live_second_pass_page2_20260721T0821Z/unblock/webgpt_page2_frontmatter_list_bundle.md",
+      "webgpt_executable_failure": "artifacts/pdf_lab/live_second_pass_page2_20260721T0821Z/unblock/webgpt_submit.stderr",
+      "webgpt_result": "artifacts/pdf_lab/live_second_pass_page2_20260721T0821Z/unblock/webgpt_submit_python.stderr",
+      "webgpt_status": "blocked_tab_identity_missing"
+    }
+  },
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "status": "passed_current_gate",
+  "what_remains_unverified": [
+    "remaining active candidates beyond page 2 are not covered by this receipt"
+  ],
+  "what_was_exercised": [
+    "forced one-page page2 candidate selection from current extraction",
+    "live scillm second-pass review before patch",
+    "focused red regression for page2 issuing-organization attribution",
+    "NIST ledger override for the page2 U.S. Department of Commerce attribution line",
+    "candidate manifest preset inference repair for extracted header_footer_noise/boilerplate blocks",
+    "live scillm second-pass review after both repairs",
+    "full NIST deterministic regression suite"
+  ]
+}

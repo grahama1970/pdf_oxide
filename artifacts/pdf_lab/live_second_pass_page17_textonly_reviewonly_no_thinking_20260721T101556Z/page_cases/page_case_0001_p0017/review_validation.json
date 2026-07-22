@@ -1,0 +1,32 @@
+{
+  "candidate_count": 6,
+  "errors": [
+    "page_status must be one of clean, defect, unsure, substrate_blocked",
+    "page_rationale must be non-empty",
+    "candidate_findings[0].status must be a closed vocabulary value",
+    "candidate_findings[0].evidence must be non-empty",
+    "candidate_findings[0].rationale must be non-empty",
+    "candidate_findings[1].status must be a closed vocabulary value",
+    "candidate_findings[1].evidence must be non-empty",
+    "candidate_findings[1].rationale must be non-empty",
+    "missing candidate findings: ['cand:p0017:0000:side_chrome', 'cand:p0017:0001:side_chrome', 'cand:p0017:0002:side_chrome', 'cand:p0017:0003:side_chrome']"
+  ],
+  "expected_candidate_ids": [
+    "cand:p0017:0000:side_chrome",
+    "cand:p0017:0001:side_chrome",
+    "cand:p0017:0002:side_chrome",
+    "cand:p0017:0003:side_chrome",
+    "cand:p0017:0004:list",
+    "cand:p0017:0005:text"
+  ],
+  "ok": false,
+  "page_case": {
+    "case_id": "page_case_0001_p0017",
+    "page_number": 17
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": [
+    "cand:p0017:0004:list",
+    "cand:p0017:0005:text"
+  ]
+}

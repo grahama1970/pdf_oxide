@@ -1,0 +1,16 @@
+{
+  "schema": "pdf_lab.visual_receipt.v1",
+  "page_id": "nist_phase54_page_0045",
+  "candidate": "page45 Discussion text line-order repair",
+  "original_image": "artifacts/pdf_lab/page45_discussion_text_20260721/page45_original.png",
+  "overlay_image": "artifacts/pdf_lab/page45_discussion_text_20260721/page45_discussion_text_overlay.png",
+  "checked_block_ids": [
+    "actual:p45:block:17"
+  ],
+  "expected_visible_region": "Discussion paragraph",
+  "expected_phrase": "policies and procedures. Policies and procedures contribute",
+  "forbidden_phrase": "aPnd procedures. olicies",
+  "overlay_labels": [
+    "discussion-text"
+  ]
+}

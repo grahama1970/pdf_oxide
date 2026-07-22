@@ -1,0 +1,658 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p3:block:0",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p3:block:1",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.4983333512848499,
+        0.939856018682923,
+        0.5017010059232027,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p3:block:2",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          304.9800109863281,
+          38.400001525878906,
+          4.076995849609375,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "i"
+      },
+      "source_type": "PageNumber",
+      "text": "i",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p3:block:3",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.4544117746789471,
+        0.08938735422461924,
+        0.5455193613089767,
+        0.11388766163527364
+      ],
+      "font_name": "TT2",
+      "font_size": 13.979999542236328,
+      "id": "actual:p3:block:4",
+      "is_bold": true,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          278.1000061035156,
+          706.6799926757812,
+          58.95367431640625,
+          13.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.30000001192092896,
+        "font_name": "TT2",
+        "font_size": 13.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.30000001192092896,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 13.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.3952094316482544,
+            "text_len": 9,
+            "title_case_ratio": 1.0,
+            "word_count": 1
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "bold_large_font",
+            "single_word_negative"
+          ],
+          "title_text": "Authority"
+        },
+        "is_bold": true,
+        "text": "Authority"
+      },
+      "source_type": "Body",
+      "text": "Authority",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.12668496912175958,
+        0.8458228017769608,
+        0.2638795448072029
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p3:block:5",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          90.0,
+          586.4331665039062,
+          430.118408203125,
+          104.94683837890625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication has been developed by NIST to further its statutory responsibilities under the Federal Information Security Modernization Act (FISMA), 44 U.S.C. \u00a7 3551 et seq., Public Law (P.L.) 113-283. NIST is responsible for developing information security standards and guidelines, including minimum requirements for federal information systems. Such information security standards and guidelines shall not apply to national security systems without the express approval of the appropriate federal officials exercising policy authority over such systems. This guideline is consistent with the requirements of the Office of Management and Budget (OMB) Circular A-130."
+      },
+      "source_type": "Body",
+      "text": "This publication has been developed by NIST to further its statutory responsibilities under the Federal Information Security Modernization Act (FISMA), 44 U.S.C. \u00a7 3551 et seq., Public Law (P.L.) 113-283. NIST is responsible for developing information security standards and guidelines, including minimum requirements for federal information systems. Such information security standards and guidelines shall not apply to national security systems without the express approval of the appropriate federal officials exercising policy authority over such systems. This guideline is consistent with the requirements of the Office of Management and Budget (OMB) Circular A-130.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.27745206428296637,
+        0.8341806449142157,
+        0.38077772506559737
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p3:block:6",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          90.0,
+          493.84979248046875,
+          428.0662841796875,
+          78.1226806640625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Nothing in this publication should be taken to contradict the standards and guidelines made mandatory and binding on federal agencies by the Secretary of Commerce under statutory authority. Nor should these guidelines be interpreted as altering or superseding the existing authorities of the Secretary of Commerce, OMB Director, or any other federal official. This publication may be used by nongovernmental organizations on a voluntary basis and is not subject to copyright in the United States. Attribution would, however, be appreciated by NIST."
+      },
+      "source_type": "Body",
+      "text": "Nothing in this publication should be taken to contradict the standards and guidelines made mandatory and binding on federal agencies by the Secretary of Commerce under statutory authority. Nor should these guidelines be interpreted as altering or superseding the existing authorities of the Secretary of Commerce, OMB Director, or any other federal official. This publication may be used by nongovernmental organizations on a voluntary basis and is not subject to copyright in the United States. Attribution would, however, be appreciated by NIST.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.18893352832669527,
+        0.39056546760327887,
+        0.810964945874183,
+        0.42494567716964565
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p3:block:7",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          115.6273193359375,
+          458.94000244140625,
+          383.1800231933594,
+          23.446685791015625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "National Institute of Standards and Technology Special Publication 800-53, Revision 5 Natl. Inst. Stand. Technol. Spec. Publ. 800-53, Rev. 5, 492 pages (September 2020)"
+      },
+      "source_type": "Body",
+      "text": "National Institute of Standards and Technology Special Publication 800-53, Revision 5 Natl. Inst. Stand. Technol. Spec. Publ. 800-53, Rev. 5, 492 pages (September 2020)",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.44531938141467525,
+        0.4304996837269176,
+        0.5548075756995506,
+        0.4474274221092764
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p3:block:8",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          272.53546142578125,
+          440.76373291015625,
+          69.22817993164062,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "CODEN: NSPUE2"
+      },
+      "source_type": "Body",
+      "text": "CODEN: NSPUE2",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.34100985059551164,
+        0.45344951899364744,
+        0.659010245129953,
+        0.47037725737600616
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p3:block:9",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          208.69802856445312,
+          422.58746337890625,
+          196.90304565429688,
+          10.019989013671875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from:"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from:",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.36013300278607535,
+        0.4689096778330177,
+        0.6399120754665799,
+        0.4858374162153764
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p3:block:10",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          220.40139770507812,
+          410.3399963378906,
+          176.1685791015625,
+          10.02301025390625
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "https://doi.org/10.6028/NIST.SP.800-53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "https://doi.org/10.6028/NIST.SP.800-53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.3059803831811045,
+        0.7867320667613636,
+        0.6938972223817913,
+        0.8059747869318182
+      ],
+      "font_name": "TT2",
+      "font_size": 10.020000457763672,
+      "id": "actual:p3:block:11",
+      "is_bold": true,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          89.99885559082031,
+          157.5,
+          337.218017578125,
+          23.207656860351562
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 0,
+            "title_case_ratio": 0.0,
+            "word_count": 0
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": ""
+        },
+        "is_bold": true,
+        "text": " Comments on this publication may be submitted to:"
+      },
+      "source_type": "Body",
+      "text": "Comments on this publication may be submitted to:",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.2698030409470103,
+        0.8114134663283222,
+        0.7301454232409109,
+        0.8747216426964962
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p3:block:12",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          165.1194610595703,
+          102.34668731689453,
+          283.956787109375,
+          46.753318786621094
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "National Institute of Standards and Technology Attn: Computer Security Division, Information Technology Laboratory 100 Bureau Drive (Mail Stop 8930) Gaithersburg, MD 20899-8930 Email: sec-cert@nist.gov"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "National Institute of Standards and Technology Attn: Computer Security Division, Information Technology Laboratory 100 Bureau Drive (Mail Stop 8930) Gaithersburg, MD 20899-8930 Email: sec-cert@nist.gov",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.16892156413957185,
+        0.8882759171302872,
+        0.8311878777796926,
+        0.9068255183672664
+      ],
+      "font_name": "TT0",
+      "font_size": 10.5,
+      "id": "actual:p3:block:13",
+      "is_bold": true,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          103.37999725341797,
+          77.22000122070312,
+          407.7225646972656,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT0",
+        "font_size": 10.5,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.5,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.047904133796692,
+            "text_len": 89,
+            "title_case_ratio": 0.2857142984867096,
+            "word_count": 14
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "sentence_negative",
+            "parentheses_negative"
+          ],
+          "title_text": "All comments are subject to release under the Freedom of Information Act (FOIA) [FOIA96]."
+        },
+        "is_bold": true,
+        "text": "All comments are subject to release under the Freedom of Information Act (FOIA) [FOIA96]."
+      },
+      "source_type": "Body",
+      "text": "All comments are subject to release under the Freedom of Information Act (FOIA) [FOIA96].",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.17117647407880796,
+        0.5183831802522293,
+        0.8265389835133272,
+        0.5816154865303425
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p3:block:14",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          104.76000213623047,
+          334.4867858886719,
+          404.6527099609375,
+          46.693206787109375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Certain commercial entities, equipment, or materials may be identified in this document to describe an experimental procedure or concept adequately. Such identification is not intended to imply recommendation or endorsement by NIST, nor is it intended to imply that the entities, materials, or equipment are necessarily the best available for the purpose."
+      },
+      "source_type": "Body",
+      "text": "Certain commercial entities, equipment, or materials may be identified in this document to describe an experimental procedure or concept adequately. Such identification is not intended to imply recommendation or endorsement by NIST, nor is it intended to imply that the entities, materials, or equipment are necessarily the best available for the purpose.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.1711764865451389,
+        0.5876375834147135,
+        0.8265346452301624,
+        0.6970985489662247
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p3:block:15",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          104.760009765625,
+          243.02420043945312,
+          404.86322021484375,
+          83.30630493164062
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "There may be references in this publication to other publications currently under development by NIST in accordance with its assigned statutory responsibilities. The information in this publication, including concepts, practices, and methodologies may be used by federal agencies even before the completion of such companion publications. Thus, until each publication is completed, current requirements, guidelines, and procedures, where they exist, remain operative. For planning and transition purposes, federal agencies may wish to closely follow the development of these new publications by NIST."
+      },
+      "source_type": "Body",
+      "text": "There may be references in this publication to other publications currently under development by NIST in accordance with its assigned statutory responsibilities. The information in this publication, including concepts, practices, and methodologies may be used by federal agencies even before the completion of such companion publications. Thus, until each publication is completed, current requirements, guidelines, and procedures, where they exist, remain operative. For planning and transition purposes, federal agencies may wish to closely follow the development of these new publications by NIST.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.17117649901146983,
+        0.7031206843828914,
+        0.8264697205786612,
+        0.7509687019116951
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p3:block:16",
+      "is_bold": false,
+      "page": 3,
+      "pdf_page_index": 2,
+      "raw": {
+        "bbox": [
+          104.76001739501953,
+          200.35902404785156,
+          403.7078857421875,
+          34.50889587402344
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Organizations are encouraged to review draft publications during the designated public comment periods and provide feedback to NIST. Many NIST publications, other than the ones noted above, are available at https://csrc.nist.gov/publications."
+      },
+      "source_type": "Body",
+      "text": "Organizations are encouraged to review draft publications during the designated public comment periods and provide feedback to NIST. Many NIST publications, other than the ones noted above, are available at https://csrc.nist.gov/publications.",
+      "type": "paragraph_block"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 3,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 2
+}

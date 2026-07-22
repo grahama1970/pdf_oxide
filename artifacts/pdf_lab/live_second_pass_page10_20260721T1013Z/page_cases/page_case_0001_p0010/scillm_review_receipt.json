@@ -1,0 +1,122 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0010:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted block correctly identifies the header text as 'side_chrome' with an accurate bounding box and text content. The semantic role 'page_chrome' and source type 'Header' are appropriate.\",\n      \"rationale\": \"Visual inspection confirms the header text, bounding box, and classification as page chrome are correct.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0010:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted block correctly identifies the header underline as 'side_chrome' with an accurate bounding box and text content. The semantic role 'page_chrome' and source type 'Header' are appropriate.\",\n      \"rationale\": \"Visual inspection confirms the underline graphic, bounding box, and classification as page chrome are correct.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0010:0002:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted block correctly identifies the page number 'viii' as 'side_chrome' with an accurate bounding box and text content. The source type 'PageNumber' is appropriate.\",\n      \"rationale\": \"Visual inspection confirms the page number, bounding box, and classification as page chrome are correct.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0010:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted block correctly identifies the rotated side text as 'side_chrome' with an accurate bounding box and text content. The source type 'Boilerplate' is appropriate.\",\n      \"rationale\": \"Visual inspection confirms the side boilerplate text, bounding box, and classification as page chrome are correct.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0010:0004:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted block correctly identifies the main heading text as 'text' with an accurate bounding box and text content. The extracted type 'paragraph_block' and source type 'Body' are acceptable for general text classification.\",\n      \"rationale\": \"Visual inspection confirms the heading text and bounding box are correct. While a more specific 'heading' type could exist, the current 'text' and 'paragraph_block' classification accurately captures the text content and boundaries for a text block.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0010:0005:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted block correctly identifies the main body paragraph as 'text' with an accurate bounding box and text content. The extracted type 'paragraph_block' and source type 'Body' are appropriate.\",\n      \"rationale\": \"Visual inspection confirms the body paragraph text and bounding box are correct and fully extracted.\",\n      \"suggested_fix_surface\": \"none\"\n    }\n  ],\n  \"page_rationale\": \"All candidate extractions on page 10 are clean. The bounding boxes, text content, and preset types/extracted types align accurately with the visual evidence on the rendered page and the annotated image.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784625442,
+    "id": "Fzlfau-JJerUjMcPn936yAg",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0010",
+      "item_id": "page_case_0001_p0010:f7ce5710df824912",
+      "request_sha256": "f7ce5710df8249124ace86acd48a238ed22a469b1b8091bcf15e8216742c173c"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 849,
+      "completion_tokens_details": null,
+      "prompt_tokens": 5263,
+      "prompt_tokens_details": null,
+      "total_tokens": 7781
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0010:0000:side_chrome",
+        "evidence": "The extracted block correctly identifies the header text as 'side_chrome' with an accurate bounding box and text content. The semantic role 'page_chrome' and source type 'Header' are appropriate.",
+        "rationale": "Visual inspection confirms the header text, bounding box, and classification as page chrome are correct.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0010:0001:side_chrome",
+        "evidence": "The extracted block correctly identifies the header underline as 'side_chrome' with an accurate bounding box and text content. The semantic role 'page_chrome' and source type 'Header' are appropriate.",
+        "rationale": "Visual inspection confirms the underline graphic, bounding box, and classification as page chrome are correct.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0010:0002:side_chrome",
+        "evidence": "The extracted block correctly identifies the page number 'viii' as 'side_chrome' with an accurate bounding box and text content. The source type 'PageNumber' is appropriate.",
+        "rationale": "Visual inspection confirms the page number, bounding box, and classification as page chrome are correct.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0010:0003:side_chrome",
+        "evidence": "The extracted block correctly identifies the rotated side text as 'side_chrome' with an accurate bounding box and text content. The source type 'Boilerplate' is appropriate.",
+        "rationale": "Visual inspection confirms the side boilerplate text, bounding box, and classification as page chrome are correct.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0010:0004:text",
+        "evidence": "The extracted block correctly identifies the main heading text as 'text' with an accurate bounding box and text content. The extracted type 'paragraph_block' and source type 'Body' are acceptable for general text classification.",
+        "rationale": "Visual inspection confirms the heading text and bounding box are correct. While a more specific 'heading' type could exist, the current 'text' and 'paragraph_block' classification accurately captures the text content and boundaries for a text block.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0010:0005:text",
+        "evidence": "The extracted block correctly identifies the main body paragraph as 'text' with an accurate bounding box and text content. The extracted type 'paragraph_block' and source type 'Body' are appropriate.",
+        "rationale": "Visual inspection confirms the body paragraph text and bounding box are correct and fully extracted.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      }
+    ],
+    "page_rationale": "All candidate extractions on page 10 are clean. The bounding boxes, text content, and preset types/extracted types align accurately with the visual evidence on the rendered page and the annotated image.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0010",
+    "item_id": "page_case_0001_p0010:f7ce5710df824912",
+    "request_sha256": "f7ce5710df8249124ace86acd48a238ed22a469b1b8091bcf15e8216742c173c"
+  }
+}

@@ -1,0 +1,506 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p43:block:0",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p43:block:1",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528988906760621,
+        0.9549618345318418
+      ],
+      "font_name": "TT0",
+      "font_size": 7.9800004959106445,
+      "id": "actual:p43:block:2",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          423.8504638671875,
+          7.979999542236328
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 7.9800004959106445,
+        "header_level": null,
+        "is_bold": false,
+        "text": "CHAPTER THREE   16 PAGE"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Footer",
+      "text": "CHAPTER THREE PAGE 16",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p43:block:3",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.09307097425364484,
+        0.29019155065997754,
+        0.11588885567405006
+      ],
+      "font_name": "TT2",
+      "font_size": 14.520000457763672,
+      "id": "actual:p43:block:4",
+      "is_bold": true,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          90.0,
+          704.760009765625,
+          91.16050720214844,
+          16.02001953125
+        ],
+        "block_type": "Title",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 14.520000457763672,
+        "header_level": 1,
+        "header_validation": {
+          "confidence": 0.8999999761581421,
+          "depth_level": 1,
+          "disposition": "Accept",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 14.520000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": true,
+            "has_number_prefix": true,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 1,
+            "size_ratio": 1.3224045038223267,
+            "text_len": 13,
+            "title_case_ratio": 1.0,
+            "word_count": 2
+          },
+          "has_numbering": true,
+          "is_header": true,
+          "level": 1,
+          "number_text": "THREE",
+          "reasons": [
+            "numbering",
+            "bold_large_font",
+            "formal_prefix",
+            "title_case_like",
+            "all_caps_medium"
+          ],
+          "title_text": ""
+        },
+        "is_bold": true,
+        "text": "CHAPTER THREE"
+      },
+      "source_type": "Title",
+      "text": "CHAPTER THREE",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14706978143430224,
+        0.12898307376437718,
+        0.3115912543402778,
+        0.1570593034378206
+      ],
+      "font_name": "TT2",
+      "font_size": 15.270000457763672,
+      "id": "actual:p43:block:5",
+      "is_bold": true,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          90.00670623779297,
+          673.2000122070312,
+          104.23554229736328,
+          16.0206298828125
+        ],
+        "block_type": "Title",
+        "confidence": 0.75,
+        "font_name": "TT2",
+        "font_size": 15.270000457763672,
+        "header_level": 2,
+        "header_validation": {
+          "confidence": 0.75,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 15.270000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.390710473060608,
+            "text_len": 12,
+            "title_case_ratio": 1.0,
+            "word_count": 2
+          },
+          "has_numbering": false,
+          "is_header": true,
+          "level": 2,
+          "number_text": "",
+          "reasons": [
+            "bold_large_font",
+            "title_case_like",
+            "all_caps_medium"
+          ],
+          "title_text": "THE CONTROLS"
+        },
+        "is_bold": true,
+        "text": "THE CONTROLS"
+      },
+      "source_type": "Title",
+      "text": "THE CONTROLS",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.15823163889875316,
+        0.5998924105775123,
+        0.1751593580149641
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p43:block:6",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          90.0,
+          656.4000244140625,
+          279.34759521484375,
+          10.02001953125
+        ],
+        "block_type": "Title",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": 3,
+        "is_bold": false,
+        "text": "SECURITY AND PRIVACY CONTROLS AND CONTROL ENHANCEMENTS"
+      },
+      "source_type": "Title",
+      "text": "SECURITY AND PRIVACY CONTROLS AND CONTROL ENHANCEMENTS",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14701464285258375,
+        0.18873045179578993,
+        0.8458593031939339,
+        0.3768328271730982
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p43:block:7",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          89.97296142578125,
+          496.9741516113281,
+          430.22930908203125,
+          145.26583862304688
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This catalog of security and privacy controls provides protective measures for systems, organizations, and individuals.32 The controls are designed to facilitate risk management and compliance with applicable federal laws, executive orders, directives, regulations, policies, and standards. With few exceptions, the security and privacy controls in the catalog are policy-, technology-, and sector-neutral, meaning that the controls focus on the fundamental measures necessary to protect information and the privacy of individuals across the information life cycle. While the security and privacy controls are largely policy-, technology-, and sector-neutral, that does not imply that the controls are policy-, technology-, and sector-unaware. Understanding policies, technologies, and sectors is necessary so that the controls are relevant when they are implemented. Employing a policy-, technology-, and sector-neutral control catalog has many benefits. It encourages organizations to:"
+      },
+      "source_type": "Body",
+      "text": "This catalog of security and privacy controls provides protective measures for systems, organizations, and individuals.32 The controls are designed to facilitate risk management and compliance with applicable federal laws, executive orders, directives, regulations, policies, and standards. With few exceptions, the security and privacy controls in the catalog are policy-, technology-, and sector-neutral, meaning that the controls focus on the fundamental measures necessary to protect information and the privacy of individuals across the information life cycle. While the security and privacy controls are largely policy-, technology-, and sector-neutral, that does not imply that the controls are policy-, technology-, and sector-unaware. Understanding policies, technologies, and sectors is necessary so that the controls are relevant when they are implemented. Employing a policy-, technology-, and sector-neutral control catalog has many benefits. It encourages organizations to:",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14703269409977532,
+        0.3835844560102983,
+        0.826913472094567,
+        0.5374430646800031
+      ],
+      "font_name": "C2_0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p43:block:8",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          89.9840087890625,
+          369.7708435058594,
+          418.60369873046875,
+          118.14480590820312
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "C2_0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "\u2022 Focus on the security and privacy functions and capabilities required for mission and business success and the protection of information and the privacy of individuals, irrespective of the technologies that are employed in organizational systems; \u2022 Analyze each security and privacy control for its applicability to specific technologies, environments of operation, mission and business functions, and communities of interest; and \u2022 Specify security and privacy policies as part of the tailoring process for controls that have variable parameters."
+      },
+      "source_type": "List",
+      "text": "\u2022 Focus on the security and privacy functions and capabilities required for mission and business success and the protection of information and the privacy of individuals, irrespective of the technologies that are employed in organizational systems; \u2022 Analyze each security and privacy control for its applicability to specific technologies, environments of operation, mission and business functions, and communities of interest; and \u2022 Specify security and privacy policies as part of the tailoring process for controls that have variable parameters.",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.14703269409977532,
+        0.5510155648896189,
+        0.8524143991906659,
+        0.7051581951102825
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p43:block:9",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          89.9840087890625,
+          236.94049072265625,
+          434.17950439453125,
+          118.36972045898438
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "In the few cases where specific technologies are referenced in controls, organizations are cautioned that the need to manage security and privacy risks may go beyond the requirements in a single control associated with a technology. The additional needed protection measures are obtained from the other controls in the catalog. Federal Information Processing Standards, Special Publications, and Interagency/Internal Reports provide guidance on selecting security and privacy controls that reduce risk for specific technologies and sector-specific applications, including smart grid, cloud, healthcare, mobile, industrial control systems, and Internet of Things (IoT) devices.33 NIST publications are cited as references as applicable to specific controls in Sections 3.1 through 3.20."
+      },
+      "source_type": "Body",
+      "text": "In the few cases where specific technologies are referenced in controls, organizations are cautioned that the need to manage security and privacy risks may go beyond the requirements in a single control associated with a technology. The additional needed protection measures are obtained from the other controls in the catalog. Federal Information Processing Standards, Special Publications, and Interagency/Internal Reports provide guidance on selecting security and privacy controls that reduce risk for specific technologies and sector-specific applications, including smart grid, cloud, healthcare, mobile, industrial control systems, and Internet of Things (IoT) devices.33 NIST publications are cited as references as applicable to specific controls in Sections 3.1 through 3.20.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.1470332426183364,
+        0.7187306567876026,
+        0.8365773718341504,
+        0.8390254011057844
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p43:block:10",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          89.98434448242188,
+          130.9176483154297,
+          424.4747619628906,
+          91.56217956542969
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Security and privacy controls in the catalog are expected to change over time as controls are withdrawn, revised, and added. To maintain stability in security and privacy plans, controls are not renumbered each time a control is withdrawn. Rather, notations of the controls that have been withdrawn are maintained in the control catalog for historical purposes. Controls may be withdrawn for a variety of reasons, including when the function or capability provided by the control has been incorporated into another control, the control is redundant to an existing control, or the control is deemed to be no longer necessary or effective."
+      },
+      "source_type": "Body",
+      "text": "Security and privacy controls in the catalog are expected to change over time as controls are withdrawn, revised, and added. To maintain stability in security and privacy plans, controls are not renumbered each time a control is withdrawn. Rather, notations of the controls that have been withdrawn are maintained in the control catalog for historical purposes. Controls may be withdrawn for a variety of reasons, including when the function or capability provided by the control has been incorporated into another control, the control is redundant to an existing control, or the control is deemed to be no longer necessary or effective.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8640984429253472,
+        0.8172401976741217,
+        0.879302978515625
+      ],
+      "font_name": "TT0",
+      "font_size": 8.625,
+      "id": "actual:p43:block:11",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          90.0,
+          98.4000015258789,
+          412.1940002441406,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.625,
+        "header_level": null,
+        "is_bold": false,
+        "text": "32 The controls in this publication are available online and can be obtained in various formats. See [NVD 800-53]."
+      },
+      "source_type": "Footnote",
+      "text": "32 The controls in this publication are available online and can be obtained in various formats. See [NVD 800-53].",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8805378615254104,
+        0.8032066993464052,
+        0.9096060088186553
+      ],
+      "font_name": "TT0",
+      "font_size": 8.666666984558105,
+      "id": "actual:p43:block:12",
+      "is_bold": false,
+      "page": 43,
+      "pdf_page_index": 42,
+      "raw": {
+        "bbox": [
+          90.0,
+          85.37999725341797,
+          403.5846252441406,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "continuation_ids": [
+          "actual:p43:block:13"
+        ],
+        "font_name": "TT0",
+        "font_size": 8.666666984558105,
+        "header_level": null,
+        "is_bold": false,
+        "text": "33 For example, [-SP 80082] provides guidance on risk management and control selection for industrial control"
+      },
+      "source_type": "Footnote",
+      "text": "33 For example, [SP 800-82] provides guidance on risk management and control selection for industrial control systems.",
+      "type": "footnote"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 43,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 42
+}

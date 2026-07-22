@@ -1,0 +1,39 @@
+{
+  "command_or_endpoint": "prepare:POST /v1/scillm/opencode/runs",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T07:54:19.862307+00:00",
+  "input_artifacts": [
+    "review_response.json",
+    "review_validation.json",
+    "patch_baseline.json"
+  ],
+  "next_allowed_nodes": [
+    "validate_patch_scope"
+  ],
+  "node_id": "opencode_patch_attempt_01",
+  "output_artifacts": [
+    "patch_attempt_01_request.json",
+    "patch_request.json",
+    "patch_attempt_01_prompt_contract.json",
+    "patch_attempt_01_prompt_review_payload.txt"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T07:54:19.862294+00:00",
+  "validator_result": {
+    "agent": "build",
+    "attempt_count": 1,
+    "attempt_index": 1,
+    "baseline_changed_count": 36,
+    "baseline_dirty": true,
+    "ok": true,
+    "opencode_model": null,
+    "opencode_model_defaulted": false,
+    "patch_backend": "opencode_serve",
+    "patch_mode": "dry_run",
+    "patch_prompt_profile": "plan_only",
+    "prompt_contract_errors": [],
+    "prompt_contract_ok": true,
+    "repair_strategy": "single",
+    "requested_opencode_model": null
+  }
+}

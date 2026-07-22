@@ -1,0 +1,14 @@
+{
+  "defect_vector": {
+    "blocking_class_increased": false,
+    "issue_signature_after": 0,
+    "issue_signature_before": 1,
+    "repaired_signature_after": 1
+  },
+  "matched_expected_elements": 1,
+  "passed": true,
+  "schema_version": "pdf-lab.comparison.v2",
+  "source_receipt": "artifacts/pdf_lab/issue4_running_header_noise_20260720/issue4_before_after_regression.json",
+  "total_expected_elements": 1,
+  "unmatched_expected_elements": 0
+}

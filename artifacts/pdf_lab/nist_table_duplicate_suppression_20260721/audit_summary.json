@@ -1,0 +1,67 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "generated_at": "2026-07-21T07:20:00Z",
+  "status": "passed_current_gate",
+  "mocked": "no",
+  "live": "no",
+  "deterministic_real_extraction": "yes",
+  "page_id": "nist_style_fixture_page_0001_and_nist_page_0157",
+  "candidate": {
+    "defect_class": "NIST table duplicate suppression and false-positive table handling",
+    "owner": "nist_preset/export suppression",
+    "selection_receipt": "artifacts/pdf_lab/nist_table_duplicate_suppression_20260721/selection_receipt.json",
+    "selected_from": [
+      "current broad test_nist_* regression attempt",
+      "tests/test_nist_table_duplicate_suppression.py"
+    ]
+  },
+  "patch": {
+    "files": [
+      "scripts/pdf_lab/snapshot_current_extraction.py",
+      "python/pdf_oxide/presets/applier.py",
+      "tests/test_nist_table_duplicate_suppression.py"
+    ],
+    "summary": [
+      "QID table-row reconstruction now falls back to the raw classifier text when PyMuPDF line repair has narrowed a body row and dropped leading cells.",
+      "Table-contained suppression now treats full-width rows as covered when y-axis overlap is high and the row spans the table x-range, matching the snapshot suppression path.",
+      "The false-positive-table regression now expects the current ledger contract for NIST running headers: top running header text is page chrome, not a section heading."
+    ]
+  },
+  "proof": {
+    "commands": [
+      "pytest -q tests/test_nist_table_duplicate_suppression.py::test_nist_style_page_1_real_extraction_suppresses_qid_table_row_duplicates tests/test_nist_table_duplicate_suppression.py::test_nist_table_suppression_removes_full_width_qid_rows_inside_table tests/test_nist_table_duplicate_suppression.py::test_nist_false_positive_table_is_removed_before_body_suppression",
+      "pytest -q tests/test_nist_table_duplicate_suppression.py",
+      "pytest -q $(rg --files tests | rg 'test_nist_' | rg -v 'test_nist_page_28_regression.py' | sort)"
+    ],
+    "logs": [
+      "artifacts/pdf_lab/nist_table_duplicate_suppression_20260721/test_logs/pytest_representative_table_failures.log",
+      "artifacts/pdf_lab/nist_table_duplicate_suppression_20260721/test_logs/pytest_table_duplicate_suppression.log",
+      "artifacts/pdf_lab/nist_table_duplicate_suppression_20260721/test_logs/pytest_nist_excluding_page28.log"
+    ],
+    "representative_result": "3 passed, 5 warnings in 0.24s",
+    "focused_file_result": "8 passed, 5 warnings in 0.20s",
+    "nist_excluding_page28_result": "43 passed, 5 warnings in 526.68s"
+  },
+  "campaign_status": {
+    "passed": [
+      "nist_table_duplicate_suppression"
+    ],
+    "failed": [
+      "page28_missing_golden_slice_fixture"
+    ],
+    "blocked_by_systemic_failure": [],
+    "not_run": [
+      "full test_nist set after page28 fixture recovery",
+      "fresh model-backed reviewer run for remaining page candidates"
+    ],
+    "active_family": "page28_missing_golden_slice_fixture",
+    "latest_failure_signature": "tests/test_nist_page_28_regression.py setup fails because /tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/expected_elements_v2.json is absent"
+  },
+  "does_not_prove": [
+    "page28 golden-slice fixture availability",
+    "Criterion 6 live GitHub apply",
+    "a fresh live model-backed review for all remaining candidates",
+    "all-candidates goal completion"
+  ],
+  "next_step": "Recover or repoint the page28 golden-slice fixture path, then rerun tests/test_nist_page_28_regression.py."
+}

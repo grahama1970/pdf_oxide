@@ -1,0 +1,79 @@
+{
+  "agent_decision_allowed": false,
+  "commit_policy": {
+    "commit_mode": "dry_run",
+    "failed_commit_attempt_policy": "unstage_attempted_patch_files_only_and_record_index_cleanup",
+    "one_git_commit_per_verified_bug_fix": true,
+    "patched_confirmed_requires": [
+      "after_review_validation reviewed_clean",
+      "patch_scope_validation.ok",
+      "test_validation.ok",
+      "commit_acceptance_gate.ok",
+      "commit_gate.exact_file_match",
+      "revertability_check.ok"
+    ]
+  },
+  "created_at": "2026-07-21T10:19:11.984981+00:00",
+  "execution_mode": "sequential",
+  "owner": "pdf_lab_harness_code",
+  "page_case_order": [
+    {
+      "candidate_ids": [
+        "cand:p0017:0000:side_chrome",
+        "cand:p0017:0001:side_chrome",
+        "cand:p0017:0002:side_chrome",
+        "cand:p0017:0003:side_chrome",
+        "cand:p0017:0004:list",
+        "cand:p0017:0005:text"
+      ],
+      "case_id": "page_case_0001_p0017",
+      "forced_by_human_annotation": true,
+      "index": 1,
+      "page_number": 17,
+      "preset_counts": {
+        "list": 1,
+        "side_chrome": 4,
+        "text": 1
+      },
+      "selection_probability_basis": {
+        "candidate_count_on_page": 6,
+        "candidate_share_estimate": 1.0,
+        "forced_page": true,
+        "method": "forced_human_annotation",
+        "page_score": 25.5,
+        "total_candidate_count": 6,
+        "total_page_score": 25.5,
+        "weighted_page_score_inclusion_estimate": 1.0
+      },
+      "selection_probability_estimate": 1.0,
+      "strata": [
+        "geometry:boundary",
+        "position:first_20",
+        "position:frontmatter",
+        "preset:list",
+        "preset:side_chrome",
+        "preset:text",
+        "risk:high"
+      ]
+    }
+  ],
+  "per_page_dag_policy": {
+    "page_orchestrator_mode": "dry_run",
+    "patch_backend": "opencode_serve",
+    "patch_delegate_is_executor_only": true,
+    "patch_mode": "dry_run",
+    "planner_merge_decision_owner": "pdf_lab_harness_code",
+    "review_mode": "live"
+  },
+  "pre_page_gates": [
+    "candidate_sample_linkage_validation.ok",
+    "sampling_gate.ok",
+    "scillm_code_root_visibility.ok",
+    "scillm_proof_floor.ok when live patch mode requires scillm",
+    "opencode_completion_canary.ok when patch_backend == opencode_serve",
+    "scillm_transport_readonly_canary.ok when patch_backend == scillm_orchestrator",
+    "scillm_transport_write_canary.ok when patch_backend == scillm_orchestrator"
+  ],
+  "schema": "pdf_lab.second_pass.deterministic_execution_plan.v1",
+  "stop_on_nonterminal": true
+}

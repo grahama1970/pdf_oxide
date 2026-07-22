@@ -1,0 +1,244 @@
+{
+  "apply_mode": "release",
+  "candidate_count": 6,
+  "candidates": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "block_id": "actual:p14:block:0",
+      "block_index": 0,
+      "candidate_id": "cand:p0014:0000:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/13/blocks/0",
+      "page_index": 13,
+      "page_number": 14,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "block_id": "actual:p14:block:1",
+      "block_index": 1,
+      "candidate_id": "cand:p0014:0001:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/13/blocks/1",
+      "page_index": 13,
+      "page_number": 14,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "bbox": [
+        0.49343139050053614,
+        0.939856018682923,
+        0.5065048816157323,
+        0.9550605542732008
+      ],
+      "block_id": "actual:p14:block:2",
+      "block_index": 2,
+      "candidate_id": "cand:p0014:0002:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.000199,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "PageNumber",
+        "text_length": 3
+      },
+      "json_pointer": "/pages/13/blocks/2",
+      "page_index": 13,
+      "page_number": 14,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "xii"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "block_id": "actual:p14:block:3",
+      "block_index": 3,
+      "candidate_id": "cand:p0014:0003:side_chrome",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:header_footer_noise",
+        "preset_type:side_chrome",
+        "hardening_interest",
+        "boundary_geometry",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/13/blocks/3",
+      "page_index": 13,
+      "page_number": 14,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "side_chrome",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "bbox": [
+        0.3028431312710631,
+        0.13188354415122908,
+        0.6945817236806832,
+        0.15112626432168363
+      ],
+      "block_id": "actual:p14:block:4",
+      "block_index": 4,
+      "candidate_id": "cand:p0014:0004:section_heading",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:section_heading",
+        "preset_type:section_heading",
+        "hardening_interest",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.007538,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Title",
+        "text_length": 40
+      },
+      "json_pointer": "/pages/13/blocks/4",
+      "page_index": 13,
+      "page_number": 14,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "section_heading",
+      "text_excerpt": "FEDERAL RECORDS MANAGEMENT COLLABORATION"
+    },
+    {
+      "bbox": [
+        0.18294117497462853,
+        0.15656504004892677,
+        0.8147825353285846,
+        0.2506417361172763
+      ],
+      "block_id": "actual:p14:block:5",
+      "block_index": 5,
+      "candidate_id": "cand:p0014:0005:text",
+      "confidence": 0.8,
+      "detection_reason": [
+        "block_type:paragraph_block",
+        "preset_type:text",
+        "frontmatter_or_early_page"
+      ],
+      "features": {
+        "bbox_area": 0.059442,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 476
+      },
+      "json_pointer": "/pages/13/blocks/5",
+      "page_index": 13,
+      "page_number": 14,
+      "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+      "preset_type": "text",
+      "text_excerpt": "Federal records management processes have a nexus with certain information security and privacy requirements and controls. For example, records officers may be managing records retention, including when records will be deleted. Collaborating with records officers on the selection and implementation of security and privacy controls related to records management can support consistency and efficiency and ultimately strengthen the organization\u2019s security and privacy posture."
+    }
+  ],
+  "census_failure_count": 0,
+  "census_failures": [],
+  "command": "scripts/pdf_lab/run_second_pass_harness.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --out artifacts/pdf_lab/live_second_pass_page14_retry_20260721T1115Z --candidate-census-page 14 --sample-size 1 --seed 14 --review-mode live --patch-mode dry_run --patch-backend opencode_serve --commit-mode dry_run --model local-text --scillm-base-url http://localhost:4001 --caller-skill pdf-lab --scillm-timeout-s 120 --page-orchestrator-mode live --patch-prompt-profile plan_only --repair-strategy single --candidate-census-timeout-s 120 --candidate-page-timeout-s 90 --page-extract-timeout-s 90 --human-annotated-pages-json artifacts/pdf_lab/live_second_pass_page14_20260721T1100Z/human_forced_pages.json --stop-on-nonterminal",
+  "created_at": "2026-07-21T09:32:44.565583+00:00",
+  "extracted_page_count": 1,
+  "git_head": "b94ce1ee2fe508ba59189991ea1ac32504eaea81",
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page_count": 492,
+  "page_count_with_candidates": 1,
+  "pages": [
+    {
+      "candidate_count": 6,
+      "page_number": 14,
+      "preset_counts": {
+        "section_heading": 1,
+        "side_chrome": 4,
+        "text": 1
+      },
+      "risk_candidate_count": 5
+    }
+  ],
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "preset_counts": {
+    "section_heading": 1,
+    "side_chrome": 4,
+    "text": 1
+  },
+  "preset_types": [
+    "appendix",
+    "equation",
+    "figure",
+    "footnote",
+    "list",
+    "reference",
+    "section_heading",
+    "side_chrome",
+    "table",
+    "text",
+    "toc",
+    "unknown_layout"
+  ],
+  "schema": "pdf_lab.second_pass.candidate_manifest.v1"
+}

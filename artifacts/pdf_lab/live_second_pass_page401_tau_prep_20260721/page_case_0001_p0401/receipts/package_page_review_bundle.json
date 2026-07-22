@@ -1,0 +1,22 @@
+{
+  "command_or_endpoint": "zipfile.ZipFile",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T14:55:22.001545+00:00",
+  "input_artifacts": [
+    "terminal_ledger.json",
+    "review.html"
+  ],
+  "next_allowed_nodes": [],
+  "node_id": "package_page_review_bundle",
+  "output_artifacts": [
+    "review_bundle.zip",
+    "review_bundle_validation.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T14:55:22.001535+00:00",
+  "validator_result": {
+    "errors": [],
+    "missing_expected_zip_entries": [],
+    "ok": true
+  }
+}

@@ -42,9 +42,16 @@ import pytest
 PDF_PATH = Path("/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf")
 LEDGER_PATH = Path(__file__).resolve().parent.parent / "python" / "pdf_oxide" / "presets" / "document_families" / "nist_sp_800_53r5_promotion_ledger.json"
 RUNNER = Path.home() / ".claude" / "skills" / "review-extraction" / "scripts" / "build_golden_slice_bundle.py"
+LOCAL_FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "golden_slices" / "gs001_nist_page28"
 EXPECTED = Path("/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/expected_elements_v2.json")
+EXPECTED_FALLBACK = LOCAL_FIXTURE_DIR / "expected_elements_v2.json"
 HUMAN_LABEL = Path("/tmp/pdf-lab-golden-slices/nist_page_28_printed_page_1/human_labeled_page.png")
+HUMAN_LABEL_FALLBACK = LOCAL_FIXTURE_DIR / "human_labeled_page.png"
 PAGE_INDEX = 27
+
+
+def _existing_path(primary: Path, fallback: Path) -> Path:
+    return primary if primary.exists() else fallback
 
 
 @pytest.fixture(scope="module")
@@ -56,8 +63,10 @@ def release_json():
         pytest.fail(f"runner not installed at {RUNNER}")
     if not LEDGER_PATH.exists():
         pytest.fail(f"ledger not present: {LEDGER_PATH}")
-    if not EXPECTED.exists():
-        pytest.fail(f"expected_elements not present: {EXPECTED}")
+    expected_path = _existing_path(EXPECTED, EXPECTED_FALLBACK)
+    if not expected_path.exists():
+        pytest.fail(f"expected_elements not present: {EXPECTED} or {EXPECTED_FALLBACK}")
+    human_label_path = _existing_path(HUMAN_LABEL, HUMAN_LABEL_FALLBACK)
 
     with tempfile.TemporaryDirectory() as tmpdir:
         out_dir = Path(tmpdir) / "nist_page_28_regression"
@@ -66,13 +75,13 @@ def release_json():
             str(RUNNER),
             "--pdf", str(PDF_PATH),
             "--page-index", str(PAGE_INDEX),
-            "--expected-elements", str(EXPECTED),
+            "--expected-elements", str(expected_path),
             "--ledger", str(LEDGER_PATH),
             "--slice-id", "nist_page_28_regression_under_test",
             "--out", str(out_dir),
         ]
-        if HUMAN_LABEL.exists():
-            cmd += ["--human-labeled-page", str(HUMAN_LABEL)]
+        if human_label_path.exists():
+            cmd += ["--human-labeled-page", str(human_label_path)]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
         if result.returncode != 0:
             pytest.fail(

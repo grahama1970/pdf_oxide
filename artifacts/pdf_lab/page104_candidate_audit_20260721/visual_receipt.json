@@ -1,0 +1,20 @@
+{
+  "image_size_px": [
+    1275,
+    1650
+  ],
+  "original_image": "artifacts/pdf_lab/page104_candidate_audit_20260721/page104_original.png",
+  "overlay_bbox_normalized": [
+    0.20588235294117646,
+    0.8697468150745739,
+    0.25978078405841504,
+    0.886674514924637
+  ],
+  "overlay_block_id": "actual:p104:block:25",
+  "overlay_image": "artifacts/pdf_lab/page104_candidate_audit_20260721/page104_au12_control_label_overlay.png",
+  "overlay_source_snapshot": "artifacts/pdf_lab/page104_candidate_audit_20260721/baseline_page104_snapshot.json",
+  "page": 104,
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_page_index": 103,
+  "schema": "pdf_lab.page_visual_receipt.v1"
+}

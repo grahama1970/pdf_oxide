@@ -1,0 +1,13 @@
+{
+  "after_status": [],
+  "before_status": [],
+  "case_id": "page_case_0001_p0012",
+  "cleanup_required": false,
+  "code_root": "/tmp/pdf_oxide_page45b_1784600709",
+  "commands": [],
+  "errors": [],
+  "ok": true,
+  "pre_page_head": null,
+  "schema": "pdf_lab.second_pass.code_root_cleanup.v1",
+  "terminal_status": "reviewed_clean"
+}

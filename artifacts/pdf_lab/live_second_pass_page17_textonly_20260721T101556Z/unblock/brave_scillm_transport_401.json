@@ -1,0 +1,32 @@
+{
+  "query": "SciLLM opencode transport runs 401 Unauthorized X-Caller-Skill Authorization Bearer",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "fix: Plugin client returns 401 Unauthorized when OPENCODE_SERVER_PASSWORD is set (Desktop) \u00b7 Issue #8676 \u00b7 anomalyco/opencode",
+      "description": "<strong>Use CLI version (opencode command) instead of Desktop, as CLI does not set OPENCODE_SERVER_PASSWORD</strong>.",
+      "url": "https://github.com/anomalyco/opencode/issues/8676"
+    },
+    {
+      "title": "How to resolve \"401 Unauthorized\" errors in OpenClaw model calls? - Tencent Cloud",
+      "description": "import requests url = &quot;https://api.example.com/openclaw/endpoint&quot; headers = { &quot;Authorization&quot;: &quot;Bearer YOUR_API_KEY&quot; } response = requests.post(url, headers=headers, json={&quot;input&quot;: &quot;Your input data&quot;}) print(response.status_code) print(response.json())",
+      "url": "https://www.tencentcloud.com/techpedia/141186"
+    },
+    {
+      "title": "401 Unauthorized Error: Causes & mTLS Fix Guide (2026)",
+      "description": "<strong>The request reached the API but lacked valid authentication</strong>. Check that the Authorization header is present, formatted correctly, and contains a non-expired credential - whether that is a Bearer token, an API key, or a client certificate depending ...",
+      "url": "https://sslinsights.com/how-to-fix-401-unauthorized-access-error/"
+    },
+    {
+      "title": "HTTP 401 Unauthorized: Causes & Fixes | Authgear",
+      "description": "Common mistakes: Bearer: eyJ... (wrong format \u2014 the header name is Authorization, not Bearer), a trailing space after \u201cBearer\u201d, or omitting the space entirely.",
+      "url": "https://www.authgear.com/post/http-401-unauthorized/"
+    },
+    {
+      "title": "AuthenticationError: Error code: 401 - API - OpenAI Developer Community",
+      "description": "Hello, I tried to run some inference in a Jupyter Notebok but I cannot manage to get a valid connection. The documentation and looking here in the forum or online didn\u2019t help me at all. I added a credit card and have \u2026",
+      "url": "https://community.openai.com/t/authenticationerror-error-code-401/766947"
+    }
+  ]
+}

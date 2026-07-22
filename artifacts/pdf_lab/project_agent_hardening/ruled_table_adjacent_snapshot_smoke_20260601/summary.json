@@ -1,0 +1,119 @@
+{
+  "finding_count": 0,
+  "findings": [],
+  "ok": true,
+  "page_count": 10,
+  "pages": [
+    {
+      "block_count": 18,
+      "contained_unknown_region_count": 0,
+      "page": 18,
+      "path": "artifacts/pdf_lab/project_agent_hardening/ruled_table_adjacent_snapshot_smoke_20260601/page_18.json",
+      "table_count": 0,
+      "table_row_counts": []
+    },
+    {
+      "block_count": 7,
+      "contained_unknown_region_count": 0,
+      "page": 25,
+      "path": "artifacts/pdf_lab/project_agent_hardening/ruled_table_adjacent_snapshot_smoke_20260601/page_25.json",
+      "table_count": 1,
+      "table_row_counts": [
+        17
+      ]
+    },
+    {
+      "block_count": 8,
+      "contained_unknown_region_count": 0,
+      "page": 456,
+      "path": "artifacts/pdf_lab/project_agent_hardening/ruled_table_adjacent_snapshot_smoke_20260601/page_456.json",
+      "table_count": 1,
+      "table_row_counts": [
+        43
+      ]
+    },
+    {
+      "block_count": 7,
+      "contained_unknown_region_count": 0,
+      "page": 459,
+      "path": "artifacts/pdf_lab/project_agent_hardening/ruled_table_adjacent_snapshot_smoke_20260601/page_459.json",
+      "table_count": 1,
+      "table_row_counts": [
+        23
+      ]
+    },
+    {
+      "block_count": 9,
+      "contained_unknown_region_count": 0,
+      "page": 460,
+      "path": "artifacts/pdf_lab/project_agent_hardening/ruled_table_adjacent_snapshot_smoke_20260601/page_460.json",
+      "table_count": 1,
+      "table_row_counts": [
+        19
+      ]
+    },
+    {
+      "block_count": 7,
+      "contained_unknown_region_count": 0,
+      "page": 462,
+      "path": "artifacts/pdf_lab/project_agent_hardening/ruled_table_adjacent_snapshot_smoke_20260601/page_462.json",
+      "table_count": 1,
+      "table_row_counts": [
+        29
+      ]
+    },
+    {
+      "block_count": 8,
+      "contained_unknown_region_count": 0,
+      "page": 463,
+      "path": "artifacts/pdf_lab/project_agent_hardening/ruled_table_adjacent_snapshot_smoke_20260601/page_463.json",
+      "table_count": 1,
+      "table_row_counts": [
+        34
+      ]
+    },
+    {
+      "block_count": 7,
+      "contained_unknown_region_count": 0,
+      "page": 465,
+      "path": "artifacts/pdf_lab/project_agent_hardening/ruled_table_adjacent_snapshot_smoke_20260601/page_465.json",
+      "table_count": 1,
+      "table_row_counts": [
+        27
+      ]
+    },
+    {
+      "block_count": 7,
+      "contained_unknown_region_count": 0,
+      "page": 467,
+      "path": "artifacts/pdf_lab/project_agent_hardening/ruled_table_adjacent_snapshot_smoke_20260601/page_467.json",
+      "table_count": 1,
+      "table_row_counts": [
+        16
+      ]
+    },
+    {
+      "block_count": 7,
+      "contained_unknown_region_count": 0,
+      "page": 469,
+      "path": "artifacts/pdf_lab/project_agent_hardening/ruled_table_adjacent_snapshot_smoke_20260601/page_469.json",
+      "table_count": 1,
+      "table_row_counts": [
+        30
+      ]
+    }
+  ],
+  "pages_requested": [
+    18,
+    25,
+    456,
+    459,
+    460,
+    462,
+    463,
+    465,
+    467,
+    469
+  ],
+  "schema": "pdf_oxide.pdf_lab.adjacent_snapshot_smoke.v1"
+}

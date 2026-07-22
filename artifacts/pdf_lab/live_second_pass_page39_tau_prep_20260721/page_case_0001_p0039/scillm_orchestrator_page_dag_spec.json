@@ -1,0 +1,276 @@
+{
+  "candidate_count": 10,
+  "candidate_ids": [
+    "cand:p0039:0000:side_chrome",
+    "cand:p0039:0001:side_chrome",
+    "cand:p0039:0002:side_chrome",
+    "cand:p0039:0003:side_chrome",
+    "cand:p0039:0004:text",
+    "cand:p0039:0005:text",
+    "cand:p0039:0006:text",
+    "cand:p0039:0007:text",
+    "cand:p0039:0008:text",
+    "cand:p0039:0009:footnote"
+  ],
+  "case_id": "page_case_0001_p0039",
+  "code_root": "/tmp/pdf_oxide_integrate_gs001_20260721",
+  "current_planner_role": "pdf_lab_project_agent_final_reviewer_only",
+  "deterministic_gate_owner": "pdf_lab_harness",
+  "model_and_agent_call_rule": "all model, VLM, diagnosis, and patch delegate nodes must use scillm localhost HTTP endpoints with X-Caller-Skill",
+  "nodes": [
+    {
+      "kind": "deterministic_materialization",
+      "node_id": "load_sampled_candidate_manifest",
+      "required_outputs": [
+        "sampled_candidate_manifest.json"
+      ],
+      "runtime_owner": "pdf_lab_deterministic_harness",
+      "state_owner": "scillm_orchestrator"
+    },
+    {
+      "failure_terminal_status": "blocked_substrate",
+      "kind": "deterministic_extractor",
+      "node_id": "extract_page_json",
+      "required_outputs": [
+        "page_before.json"
+      ],
+      "runtime_owner": "pdf_lab_deterministic_harness",
+      "state_owner": "scillm_orchestrator",
+      "timeout_s": 30.0
+    },
+    {
+      "kind": "deterministic_visual_evidence",
+      "node_id": "render_page_evidence",
+      "required_outputs": [
+        "page_before.png",
+        "page_candidates.png"
+      ],
+      "runtime_owner": "pdf_lab_deterministic_harness",
+      "state_owner": "scillm_orchestrator"
+    },
+    {
+      "caller_skill": "pdf-lab",
+      "endpoint": "POST /v1/chat/completions",
+      "kind": "bounded_llm_review",
+      "mode": "dry_run",
+      "node_id": "scillm_one_shot_page_review",
+      "request_artifact": "review_request.json",
+      "required_headers": [
+        "Authorization",
+        "X-Caller-Skill"
+      ],
+      "required_outputs": [
+        "review_response.json",
+        "review_validation.json"
+      ],
+      "runtime_owner": "scillm_chat",
+      "state_owner": "scillm_orchestrator"
+    },
+    {
+      "kind": "deterministic_gate",
+      "node_id": "validate_review_response",
+      "required_outputs": [
+        "review_validation.json"
+      ],
+      "runtime_owner": "pdf_lab_deterministic_harness",
+      "state_owner": "scillm_orchestrator"
+    },
+    {
+      "agent_profiles": [
+        "build"
+      ],
+      "caller_skill": "pdf-lab",
+      "endpoint": "POST /v1/scillm/opencode/transport/runs + children + message",
+      "kind": "bounded_patch_executor",
+      "mode": "dry_run",
+      "node_id": "patch_delegate_attempts",
+      "opencode_model": null,
+      "required_headers": [
+        "Authorization",
+        "X-Caller-Skill"
+      ],
+      "required_outputs": [
+        "patch_attempts_ledger.json",
+        "patch_validation.json"
+      ],
+      "runtime_owner": "scillm_orchestrator",
+      "state_owner": "scillm_orchestrator",
+      "surface": "scillm_opencode_transport"
+    },
+    {
+      "kind": "deterministic_gate",
+      "node_id": "validate_patch_file_scope",
+      "required_outputs": [
+        "patch_delta.json",
+        "patch_scope_validation.json"
+      ],
+      "runtime_owner": "pdf_lab_deterministic_harness",
+      "state_owner": "scillm_orchestrator"
+    },
+    {
+      "kind": "deterministic_gate",
+      "node_id": "run_page_targeted_tests",
+      "required_outputs": [
+        "test_validation.json"
+      ],
+      "runtime_owner": "pdf_lab_deterministic_harness",
+      "state_owner": "scillm_orchestrator"
+    },
+    {
+      "kind": "deterministic_extractor",
+      "node_id": "reextract_page_after_patch",
+      "required_outputs": [
+        "page_after.json",
+        "page_after.png",
+        "page_after_candidates.png",
+        "review_after_request.json",
+        "review_after_request_validation.json"
+      ],
+      "runtime_owner": "pdf_lab_deterministic_harness",
+      "state_owner": "scillm_orchestrator",
+      "timeout_s": 30.0
+    },
+    {
+      "caller_skill": "pdf-lab",
+      "endpoint": "POST /v1/chat/completions",
+      "kind": "bounded_llm_review",
+      "node_id": "rerun_page_review_after_patch",
+      "required_headers": [
+        "Authorization",
+        "X-Caller-Skill"
+      ],
+      "required_outputs": [
+        "review_after_response.json",
+        "review_after_validation.json"
+      ],
+      "runtime_owner": "scillm_chat",
+      "state_owner": "scillm_orchestrator"
+    },
+    {
+      "kind": "deterministic_gate",
+      "node_id": "deterministic_page_closure_gate",
+      "required_inputs": [
+        "patch_delta.json",
+        "patch_scope_validation.json",
+        "test_validation.json",
+        "page_after.json",
+        "review_after_response.json",
+        "review_after_validation.json",
+        "review_after_request_validation.json"
+      ],
+      "required_outputs": [],
+      "runtime_owner": "pdf_lab_deterministic_harness",
+      "state_owner": "scillm_orchestrator"
+    },
+    {
+      "kind": "deterministic_commit_gate",
+      "node_id": "commit_page_bug_fix",
+      "required_outputs": [
+        "commit_gate.json",
+        "commit_acceptance_gate.json",
+        "revertability_check.json"
+      ],
+      "runtime_owner": "pdf_lab_git_gate",
+      "state_owner": "scillm_orchestrator"
+    }
+  ],
+  "orchestration_contract": {
+    "executor_outputs_are": "evidence_not_truth",
+    "local_pdf_lab_role": "deterministic_substrate_and_acceptance_gate",
+    "mode": "scillm_transport_parent_owns_page_dag_state",
+    "project_agent_role": "final_reviewer_only",
+    "state_owner_required_on_every_node": "scillm_orchestrator"
+  },
+  "page_case": {
+    "candidate_ids": [
+      "cand:p0039:0000:side_chrome",
+      "cand:p0039:0001:side_chrome",
+      "cand:p0039:0002:side_chrome",
+      "cand:p0039:0003:side_chrome",
+      "cand:p0039:0004:text",
+      "cand:p0039:0005:text",
+      "cand:p0039:0006:text",
+      "cand:p0039:0007:text",
+      "cand:p0039:0008:text",
+      "cand:p0039:0009:footnote"
+    ],
+    "case_id": "page_case_0001_p0039",
+    "forced_by_human_annotation": false,
+    "page_index": 38,
+    "page_number": 39,
+    "preset_counts": {
+      "footnote": 1,
+      "side_chrome": 4,
+      "text": 5
+    },
+    "selection_probability_basis": {
+      "candidate_count_on_page": 10,
+      "candidate_share_estimate": 0.00112867,
+      "forced_page": false,
+      "method": "max(weighted_page_score_inclusion_estimate,candidate_share_estimate)",
+      "page_score": 31.25,
+      "total_candidate_count": 8860,
+      "total_page_score": 26441.0,
+      "weighted_page_score_inclusion_estimate": 0.00118188
+    },
+    "selection_probability_estimate": 0.00118188,
+    "selection_reason": [
+      "high_risk_preset",
+      "high_risk_candidate",
+      "boundary_geometry",
+      "high_candidate_score"
+    ],
+    "selection_score": 31.25,
+    "strata": [
+      "geometry:boundary",
+      "preset:footnote",
+      "preset:side_chrome",
+      "preset:text",
+      "risk:high"
+    ]
+  },
+  "page_number": 39,
+  "patch_backend": "scillm_orchestrator",
+  "patch_mode": "dry_run",
+  "repair_strategy": "single",
+  "review_mode": "dry_run",
+  "schema": "pdf_lab.second_pass.page_orchestrator_dag_spec.v1",
+  "status": "ready_for_scillm_orchestrator_nodes",
+  "target_dag_state_owner": "scillm_orchestrator",
+  "terminal_requirements": {
+    "one_git_commit_per_verified_bug_fix": true,
+    "patched_confirmed_requires": [
+      "commit_acceptance_gate.json",
+      "commit_gate.json",
+      "page_after.json",
+      "page_after.png",
+      "page_after_candidates.png",
+      "patch_delta.json",
+      "patch_scope_validation.json",
+      "revertability_check.json",
+      "review_after_request.json",
+      "review_after_request_validation.json",
+      "review_after_response.json",
+      "review_after_validation.json",
+      "selected_candidates.json",
+      "test_validation.json",
+      "commit_sha"
+    ],
+    "review_bundle": "review_bundle.zip",
+    "terminal_ledger": "terminal_ledger.json"
+  },
+  "transport_contract": {
+    "blocked_events": [
+      "permission_requested",
+      "session_error",
+      "tool_call:status=error"
+    ],
+    "endpoint": "POST /v1/scillm/opencode/transport/runs + children + message",
+    "required_event_artifacts": [
+      "transport_event_stream.json",
+      "transport_events.jsonl"
+    ],
+    "stream": true,
+    "terminal_event": "message.completed"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "accepted_forced_page_count": 0,
+  "adequate_for_priority_strata": false,
+  "adequate_sample_size": false,
+  "candidate_count": 1274,
+  "covered_priority_strata": [
+    "geometry:boundary",
+    "position:first_20",
+    "position:frontmatter",
+    "preset:reference",
+    "preset:section_heading",
+    "preset:side_chrome",
+    "preset:toc",
+    "risk:high"
+  ],
+  "duplicate_accepted_forced_pages": [],
+  "duplicate_probabilistic_selected_pages": [],
+  "duplicate_selected_pages": [],
+  "errors": [
+    "sampling_audit adequate_sample_size is not true",
+    "sampling_audit adequate_for_priority_strata is not true",
+    "sampling_audit statistical_significance_basis.adequate is not true",
+    "sampling_audit missed priority strata: ['preset:figure', 'preset:footnote', 'preset:list', 'preset:table', 'preset:text']"
+  ],
+  "forced_pages_are_additive": true,
+  "missed_priority_strata": [
+    "preset:figure",
+    "preset:footnote",
+    "preset:list",
+    "preset:table",
+    "preset:text"
+  ],
+  "ok": false,
+  "probabilistic_selected_count": 1,
+  "recommended_min_sample_size": 16,
+  "sampling_audit_schema": "pdf_lab.second_pass.sampling_audit.v1",
+  "sampling_audit_seed": 47,
+  "schema": "pdf_lab.second_pass.sampling_gate.v1",
+  "seed": 47,
+  "selected_count": 1,
+  "selected_pages": [
+    15
+  ],
+  "statistical_significance_adequate": false,
+  "statistical_significance_basis": {
+    "accepted_forced_page_count": 0,
+    "adequacy_rule": "adequate_sample_size && adequate_for_priority_strata && selected_count >= recommended_min_sample_size",
+    "adequate": false,
+    "candidate_page_population": 80,
+    "finite_population_fraction": 0.0125,
+    "forced_pages_are_additive": true,
+    "large_document_floor": 12,
+    "method": "stratified_priority_coverage_plus_weighted_random_reserve",
+    "priority_stratum_count": 13,
+    "probabilistic_selected_page_count": 1,
+    "random_reserve_fraction": 0.2,
+    "random_reserve_record_count": 0,
+    "recommended_min_sample_size": 16,
+    "seed": 47,
+    "selected_page_count": 1,
+    "sqrt_population_floor": 9
+  },
+  "statistical_significance_seed": 47,
+  "warnings": [
+    "requested sample_size 1 is below recommended minimum 16 for 80 candidate pages and 13 priority strata",
+    "priority strata not represented in selected pages: ['preset:figure', 'preset:footnote', 'preset:list', 'preset:table', 'preset:text']",
+    "weighted random reserve did not select an additional page"
+  ]
+}

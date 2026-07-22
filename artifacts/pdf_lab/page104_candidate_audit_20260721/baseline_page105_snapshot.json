@@ -1,0 +1,961 @@
+{
+  "generated_at": "2026-07-21T02:12:59.081718+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04473802296802251,
+            0.8507378272760927,
+            0.05821938948197798
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p105:block:0",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05679397390346334,
+            0.8517353332120609,
+            0.07054738324097913
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p105:block:1",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.9417424250130702,
+            0.8396249409594567,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 7.9800004959106445,
+          "id": "actual:p105:block:2",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              423.8504638671875,
+              7.979999542236328
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 7.9800004959106445,
+            "header_level": null,
+            "is_bold": false,
+            "text": "CHAPTER THREE   78 PAGE"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Body",
+          "text": "CHAPTER THREE   78 PAGE",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.5297058735018462,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p105:block:3",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              303.1199951171875,
+              349.6199951171875
+            ],
+            "block_type": "Boilerplate",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+          },
+          "source_type": "Boilerplate",
+          "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.08989831173058713,
+            0.820358924616396,
+            0.12228619931924223
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p105:block:4",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              126.0,
+              698.2755737304688,
+              378.3402099609375,
+              22.26446533203125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "a. Provide audit record generation capability for the event types the system is capable of auditing as defined in AU-2a on [Assignment: organization-defined system components];"
+          },
+          "source_type": "List",
+          "text": "a. Provide audit record generation capability for the event types the system is capable of auditing as defined in AU-2a on [Assignment: organization-defined system components];",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.12830745812618372,
+            0.830298679326874,
+            0.16069534571483882
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020001411437988,
+          "id": "actual:p105:block:5",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              126.0,
+              667.8555297851562,
+              384.3501892089844,
+              22.26446533203125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020001411437988,
+            "header_level": null,
+            "is_bold": false,
+            "text": "b. Allow [Assignment: organization-defined personnel or roles] to select the event types that are to be logged by specific components of the system; and"
+          },
+          "source_type": "List",
+          "text": "b. Allow [Assignment: organization-defined personnel or roles] to select the event types that are to be logged by specific components of the system; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.2058987087673611,
+            0.16671652745718907,
+            0.8276292389514399,
+            0.19909877969761086
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020002365112305,
+          "id": "actual:p105:block:6",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              126.010009765625,
+              637.4400024414062,
+              382.7816467285156,
+              22.260009765625
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020002365112305,
+            "header_level": null,
+            "is_bold": false,
+            "text": "c. Generate audit records for the event types defined in AU-2c that include the audit record content defined in AU-3."
+          },
+          "source_type": "List",
+          "text": "c. Generate audit records for the event types defined in AU-2c that include the audit record content defined in AU-3.",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.20512559678819445,
+            0.8457938798891953,
+            0.2529623821528271
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p105:block:7",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              126.0,
+              594.780029296875,
+              393.85418701171875,
+              34.5
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Audit records can be generated from many different system components. The event types specified in AU-2d are the event types for which audit logs are to be generated and are a subset of all event types for which the system can generate audit records."
+          },
+          "source_type": "Body",
+          "text": "Discussion:  Audit records can be generated from many different system components. The event types specified in AU-2d are the event types for which audit logs are to be generated and are a subset of all event types for which the system can generate audit records.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.25891352181482796,
+            0.837916654698989,
+            0.2913715285484237
+          ],
+          "font_name": "TT0",
+          "font_size": 10.019996643066406,
+          "id": "actual:p105:block:8",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              126.0,
+              564.3599853515625,
+              389.08453369140625,
+              22.32000732421875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.019996643066406,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  AC-6, AC-17, AU-2, AU-3, AU-4, AU-5, AU-6, AU-7, AU-14, CM-5, MA-4, MP-4, PM-12, SA-8, SC-18, SI-3, SI-4, SI-7, SI-10."
+          },
+          "source_type": "Body",
+          "text": "Related Controls:  AC-6, AC-17, AU-2, AU-3, AU-4, AU-5, AU-6, AU-7, AU-14, CM-5, MA-4, MP-4, PM-12, SA-8, SC-18, SI-3, SI-4, SI-7, SI-10.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.29739834563900724,
+            0.3617490381976358,
+            0.3143260647552182
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p105:block:9",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              126.0,
+              546.1799926757812,
+              97.60482788085938,
+              10.02001953125
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control Enhancements:"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "Control Enhancements:",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.32032140096028644,
+            0.7370595495685254,
+            0.3389608595106337
+          ],
+          "font_name": "TT3",
+          "font_size": 9.663999557495117,
+          "id": "actual:p105:block:10",
+          "is_bold": true,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              126.0,
+              527.0399780273438,
+              329.6014709472656,
+              10.97998046875
+            ],
+            "block_type": "Body",
+            "confidence": 0.3499999940395355,
+            "font_name": "TT3",
+            "font_size": 9.663999557495117,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.3499999940395355,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.663999557495117,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9644709825515747,
+                "text_len": 73,
+                "title_case_ratio": 0.800000011920929,
+                "word_count": 10
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like",
+                "parentheses_negative"
+              ],
+              "title_text": "(1) AUDIT RECORD GENERATION | SYSTEM-WIDE AND TIME-CORRELATED AUDIT TRAIL"
+            },
+            "is_bold": true,
+            "text": "(1) AUDIT RECORD GENERATION | SYSTEM-WIDE AND TIME-CORRELATED AUDIT TRAIL"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "(1) AUDIT RECORD GENERATION | SYSTEM-WIDE AND TIME-CORRELATED AUDIT TRAIL",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.23527771195555044,
+            0.34087025035511365,
+            0.8462356866574755,
+            0.4048110114203559
+          ],
+          "font_name": "TT3",
+          "font_size": 10.020000457763672,
+          "id": "actual:p105:block:11",
+          "is_bold": true,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              143.98995971679688,
+              474.88665771484375,
+              376.1608581542969,
+              46.75335693359375
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT3",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0,
+                "text_len": 86,
+                "title_case_ratio": 0.10000000149011612,
+                "word_count": 10
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Compile audit records from [Assignment: organization-defined system components] into a"
+            },
+            "is_bold": true,
+            "text": "Compile audit records from [Assignment: organization-defined system components] into a system-wide (logical or physical) audit trail that is time-correlated to within [Assignment: organization-defined level of tolerance for the relationship between time stamps of individual records in the audit trail]."
+          },
+          "source_type": "Body",
+          "text": "Compile audit records from [Assignment: organization-defined system components] into a system-wide (logical or physical) audit trail that is time-correlated to within [Assignment: organization-defined level of tolerance for the relationship between time stamps of individual records in the audit trail].",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.40648924702345723,
+            0.8478167166117749,
+            0.45433183149857953
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p105:block:12",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              144.0,
+              435.2954406738281,
+              377.12884521484375,
+              34.504547119140625
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Audit trails are time-correlated if the time stamps in the individual audit records can be reliably related to the time stamps in other audit records to achieve a time ordering of the records within organizational tolerances."
+          },
+          "source_type": "Body",
+          "text": "Discussion:  Audit trails are time-correlated if the time stamps in the individual audit records can be reliably related to the time stamps in other audit records to achieve a time ordering of the records within organizational tolerances.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.4565650092230903,
+            0.44030238132850796,
+            0.473492747605449
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020001411437988,
+          "id": "actual:p105:block:13",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              144.0,
+              420.1199951171875,
+              127.72958374023438,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020001411437988,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  AU-8, SC-45."
+          },
+          "source_type": "Body",
+          "text": "Related Controls:  AU-8, SC-45.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.4795637805052478,
+            0.5802586374719159,
+            0.498203239055595
+          ],
+          "font_name": "TT3",
+          "font_size": 9.797999382019043,
+          "id": "actual:p105:block:14",
+          "is_bold": true,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              126.0,
+              400.9200134277344,
+              234.14688110351562,
+              10.980010986328125
+            ],
+            "block_type": "Body",
+            "confidence": 0.3499999940395355,
+            "font_name": "TT3",
+            "font_size": 9.797999382019043,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.3499999940395355,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.797999382019043,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9778441786766052,
+                "text_len": 50,
+                "title_case_ratio": 0.7142857313156128,
+                "word_count": 7
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like",
+                "parentheses_negative"
+              ],
+              "title_text": "(2) AUDIT RECORD GENERATION | STANDARDIZED FORMATS"
+            },
+            "is_bold": true,
+            "text": "(2) AUDIT RECORD GENERATION | STANDARDIZED FORMATS"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "(2) AUDIT RECORD GENERATION | STANDARDIZED FORMATS",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.23527776182087418,
+            0.5001126684323706,
+            0.8100548039853962,
+            0.5331331118188724
+          ],
+          "font_name": "TT3",
+          "font_size": 10.020000457763672,
+          "id": "actual:p105:block:15",
+          "is_bold": true,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              143.989990234375,
+              373.25555419921875,
+              354.01776123046875,
+              22.264434814453125
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT3",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0,
+                "text_len": 86,
+                "title_case_ratio": 0.0714285746216774,
+                "word_count": 14
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "parentheses_negative"
+              ],
+              "title_text": "Produce a system-wide (logical or physical) audit trail composed of audit records in a"
+            },
+            "is_bold": true,
+            "text": "Produce a system-wide (logical or physical) audit trail composed of audit records in a standardized format."
+          },
+          "source_type": "Body",
+          "text": "Produce a system-wide (logical or physical) audit trail composed of audit records in a standardized format.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.5348983533454664,
+            0.8245436225841248,
+            0.6289695970939867
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p105:block:16",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              144.0,
+              296.9823303222656,
+              362.92041015625,
+              71.11764526367188
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Audit records that follow common standards promote interoperability and information exchange between devices and systems. Promoting interoperability and information exchange facilitates the production of event information that can be readily analyzed and correlated. If logging mechanisms do not conform to standardized formats, systems may convert individual audit records into standardized formats when compiling system-wide audit trails."
+          },
+          "source_type": "Body",
+          "text": "Discussion:  Audit records that follow common standards promote interoperability and information exchange between devices and systems. Promoting interoperability and information exchange facilitates the production of event information that can be readily analyzed and correlated. If logging mechanisms do not conform to standardized formats, systems may convert individual audit records into standardized formats when compiling system-wide audit trails.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.6311862059313842,
+            0.3974674698574091,
+            0.6481139057814472
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p105:block:17",
+          "is_bold": true,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              144.0,
+              281.82000732421875,
+              101.44248962402344,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.10000000149011612,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.10000000149011612,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": true,
+                "font_size": 10.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0,
+                "text_len": 24,
+                "title_case_ratio": 1.0,
+                "word_count": 3
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like",
+                "sentence_negative"
+              ],
+              "title_text": "Related Controls:  None."
+            },
+            "is_bold": true,
+            "text": "Related Controls:  None."
+          },
+          "source_type": "Body",
+          "text": "Related Controls:  None.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.6541849772135416,
+            0.664307388604856,
+            0.6728245128284801
+          ],
+          "font_name": "TT3",
+          "font_size": 9.600000381469727,
+          "id": "actual:p105:block:18",
+          "is_bold": true,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              126.0,
+              262.6199951171875,
+              285.08148193359375,
+              10.980010986328125
+            ],
+            "block_type": "Body",
+            "confidence": 0.3499999940395355,
+            "font_name": "TT3",
+            "font_size": 9.600000381469727,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.3499999940395355,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.600000381469727,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9580838084220886,
+                "text_len": 63,
+                "title_case_ratio": 0.7777777910232544,
+                "word_count": 9
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like",
+                "parentheses_negative"
+              ],
+              "title_text": "(3) AUDIT RECORD GENERATION | CHANGES BY AUTHORIZED INDIVIDUALS"
+            },
+            "is_bold": true,
+            "text": "(3) AUDIT RECORD GENERATION | CHANGES BY AUTHORIZED INDIVIDUALS"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "(3) AUDIT RECORD GENERATION | CHANGES BY AUTHORIZED INDIVIDUALS",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.6746581106474905,
+            0.8493434930938522,
+            0.7385989102450284
+          ],
+          "font_name": "TT3",
+          "font_size": 10.020000457763672,
+          "id": "actual:p105:block:19",
+          "is_bold": true,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              144.0,
+              210.5266571044922,
+              378.006591796875,
+              46.75334167480469
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT3",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0,
+                "text_len": 89,
+                "title_case_ratio": 0.10000000149011612,
+                "word_count": 10
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Provide and implement the capability for [Assignment: organization-defined individuals or"
+            },
+            "is_bold": true,
+            "text": "Provide and implement the capability for [Assignment: organization-defined individuals or roles] to change the logging to be performed on [Assignment: organization-defined system components] based on [Assignment: organization-defined selectable event criteria] within [Assignment: organization-defined time thresholds]."
+          },
+          "source_type": "Body",
+          "text": "Provide and implement the capability for [Assignment: organization-defined individuals or roles] to change the logging to be performed on [Assignment: organization-defined system components] based on [Assignment: organization-defined selectable event criteria] within [Assignment: organization-defined time thresholds].",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.7402771458481298,
+            0.8498155182483149,
+            0.8498083557745423
+          ],
+          "font_name": "TT0",
+          "font_size": 10.019999504089355,
+          "id": "actual:p105:block:20",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              144.0,
+              122.07801055908203,
+              378.35418701171875,
+              83.36199188232422
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.019999504089355,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Permitting authorized individuals to make changes to system logging enables organizations to extend or limit logging as necessary to meet organizational requirements. Logging that is limited to conserve system resources may be extended (either temporarily or permanently) to address certain threat situations. In addition, logging may be limited to a specific set of event types to facilitate audit reduction, analysis, and reporting. Organizations can establish time thresholds in which logging actions are changed (e.g., near real-time, within minutes, or within hours)."
+          },
+          "source_type": "Body",
+          "text": "Discussion:  Permitting authorized individuals to make changes to system logging enables organizations to extend or limit logging as necessary to meet organizational requirements. Logging that is limited to conserve system resources may be extended (either temporarily or permanently) to address certain threat situations. In addition, logging may be limited to a specific set of event types to facilitate audit reduction, analysis, and reporting. Organizations can establish time thresholds in which logging actions are changed (e.g., near real-time, within minutes, or within hours).",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.852019570090554,
+            0.3930474574269812,
+            0.8689472699406171
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p105:block:21",
+          "is_bold": false,
+          "page": 105,
+          "pdf_page_index": 104,
+          "raw": {
+            "bbox": [
+              144.0,
+              106.91999816894531,
+              98.74945068359375,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  AC-3."
+          },
+          "source_type": "Body",
+          "text": "Related Controls:  AC-3.",
+          "type": "paragraph_block"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 105,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 104
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

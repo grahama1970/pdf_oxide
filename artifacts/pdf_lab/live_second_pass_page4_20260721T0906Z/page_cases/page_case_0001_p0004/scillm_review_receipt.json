@@ -1,0 +1,150 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0004:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate's bounding box, text content, and classification as 'side_chrome' (header) align perfectly with the original rendered page and extracted JSON. It correctly captures the top left header text.\",\n      \"rationale\": \"The header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' is accurately extracted with the correct bounding box and classified as side_chrome.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0004:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate's bounding box, text content (a horizontal line), and classification as 'side_chrome' (header decorative element) match the rendered page and extracted JSON.\",\n      \"rationale\": \"The decorative line beneath the main header text is correctly identified as side_chrome with accurate text and bounding box.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0004:0002:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate's bounding box, text content ('ii'), and classification as 'side_chrome' (page number) are correct according to the rendered page and extracted JSON.\",\n      \"rationale\": \"The page number 'ii' at the bottom center of the page is accurately extracted and classified as side_chrome.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0004:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate's bounding box, text content (rotated boilerplate text on the left margin), and classification as 'side_chrome' are accurate based on the rendered page and extracted JSON.\",\n      \"rationale\": \"The rotated boilerplate text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' on the left side of the page is correctly identified as side_chrome.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0004:0004:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate's bounding box, text content ('Reports on Computer Systems Technology'), and classification as 'section_heading' are consistent with the visual evidence and extracted JSON.\",\n      \"rationale\": \"This main title for the page content is accurately extracted and correctly classified as a section_heading.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0004:0005:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate's bounding box, text content, and classification as 'text' (a body paragraph) are correct as seen in the rendered page and extracted JSON.\",\n      \"rationale\": \"The introductory paragraph providing context about NIST ITL is accurately extracted as a 'text' block.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0004:0006:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate's bounding box and text content ('Abstract') are accurately extracted. While visually functioning as a heading, its classification as 'text' aligns with the provided preset type.\",\n      \"rationale\": \"The word 'Abstract' is correctly extracted with its bounding box. Although it serves as a semantic heading for the following abstract content, its classification as 'text' is consistent with the candidate's preset type, and it is a block of text.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0004:0007:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate's bounding box, text content (the abstract paragraph), and classification as 'text' are correct based on the rendered page and extracted JSON.\",\n      \"rationale\": \"The full abstract paragraph, detailing the publication's content, is accurately extracted as a 'text' block.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0004:0008:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate's bounding box and text content ('Keywords') are accurately extracted. Similar to 'Abstract', it visually functions as a heading, but its classification as 'text' aligns with the preset type.\",\n      \"rationale\": \"The word 'Keywords' is correctly extracted with its bounding box. Similar to 'Abstract', it acts as a semantic heading for the keyword list, but its classification as 'text' is consistent with the candidate's preset type, and it is a block of text.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0004:0009:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The candidate's bounding box, text content (the list of keywords), and classification as 'text' are accurate according to the rendered page and extracted JSON.\",\n      \"rationale\": \"The paragraph containing the list of keywords is accurately extracted as a 'text' block.\",\n      \"suggested_fix_surface\": null\n    }\n  ],\n  \"page_rationale\": \"All candidate extractions on page 4 are clean. The bounding boxes, text content, and assigned preset types (side_chrome, section_heading, text) accurately reflect the visual evidence and the extracted JSON. For candidates classified as 'text' (e.g., 'Abstract' and 'Keywords'), while they visually function as headings, their extraction as 'text' is consistent with the provided preset types. No defects were found.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784624098,
+    "id": "1DNfavTVFpWi1MkP4p-kgQ4",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0004",
+      "item_id": "page_case_0001_p0004:038b6f5a397f9b71",
+      "request_sha256": "038b6f5a397f9b718452620270ecd7b59fd798ee63b88dd3eaaba01e6057bfd8"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 1449,
+      "completion_tokens_details": null,
+      "prompt_tokens": 7674,
+      "prompt_tokens_details": null,
+      "total_tokens": 10983
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0004:0000:side_chrome",
+        "evidence": "The candidate's bounding box, text content, and classification as 'side_chrome' (header) align perfectly with the original rendered page and extracted JSON. It correctly captures the top left header text.",
+        "rationale": "The header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' is accurately extracted with the correct bounding box and classified as side_chrome.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0004:0001:side_chrome",
+        "evidence": "The candidate's bounding box, text content (a horizontal line), and classification as 'side_chrome' (header decorative element) match the rendered page and extracted JSON.",
+        "rationale": "The decorative line beneath the main header text is correctly identified as side_chrome with accurate text and bounding box.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0004:0002:side_chrome",
+        "evidence": "The candidate's bounding box, text content ('ii'), and classification as 'side_chrome' (page number) are correct according to the rendered page and extracted JSON.",
+        "rationale": "The page number 'ii' at the bottom center of the page is accurately extracted and classified as side_chrome.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0004:0003:side_chrome",
+        "evidence": "The candidate's bounding box, text content (rotated boilerplate text on the left margin), and classification as 'side_chrome' are accurate based on the rendered page and extracted JSON.",
+        "rationale": "The rotated boilerplate text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' on the left side of the page is correctly identified as side_chrome.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0004:0004:section_heading",
+        "evidence": "The candidate's bounding box, text content ('Reports on Computer Systems Technology'), and classification as 'section_heading' are consistent with the visual evidence and extracted JSON.",
+        "rationale": "This main title for the page content is accurately extracted and correctly classified as a section_heading.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0004:0005:text",
+        "evidence": "The candidate's bounding box, text content, and classification as 'text' (a body paragraph) are correct as seen in the rendered page and extracted JSON.",
+        "rationale": "The introductory paragraph providing context about NIST ITL is accurately extracted as a 'text' block.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0004:0006:text",
+        "evidence": "The candidate's bounding box and text content ('Abstract') are accurately extracted. While visually functioning as a heading, its classification as 'text' aligns with the provided preset type.",
+        "rationale": "The word 'Abstract' is correctly extracted with its bounding box. Although it serves as a semantic heading for the following abstract content, its classification as 'text' is consistent with the candidate's preset type, and it is a block of text.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0004:0007:text",
+        "evidence": "The candidate's bounding box, text content (the abstract paragraph), and classification as 'text' are correct based on the rendered page and extracted JSON.",
+        "rationale": "The full abstract paragraph, detailing the publication's content, is accurately extracted as a 'text' block.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0004:0008:text",
+        "evidence": "The candidate's bounding box and text content ('Keywords') are accurately extracted. Similar to 'Abstract', it visually functions as a heading, but its classification as 'text' aligns with the preset type.",
+        "rationale": "The word 'Keywords' is correctly extracted with its bounding box. Similar to 'Abstract', it acts as a semantic heading for the keyword list, but its classification as 'text' is consistent with the candidate's preset type, and it is a block of text.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0004:0009:text",
+        "evidence": "The candidate's bounding box, text content (the list of keywords), and classification as 'text' are accurate according to the rendered page and extracted JSON.",
+        "rationale": "The paragraph containing the list of keywords is accurately extracted as a 'text' block.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      }
+    ],
+    "page_rationale": "All candidate extractions on page 4 are clean. The bounding boxes, text content, and assigned preset types (side_chrome, section_heading, text) accurately reflect the visual evidence and the extracted JSON. For candidates classified as 'text' (e.g., 'Abstract' and 'Keywords'), while they visually function as headings, their extraction as 'text' is consistent with the provided preset types. No defects were found.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0004",
+    "item_id": "page_case_0001_p0004:038b6f5a397f9b71",
+    "request_sha256": "038b6f5a397f9b718452620270ecd7b59fd798ee63b88dd3eaaba01e6057bfd8"
+  }
+}

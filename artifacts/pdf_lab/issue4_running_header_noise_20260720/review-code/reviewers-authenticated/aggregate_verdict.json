@@ -1,0 +1,32 @@
+{
+  "schema": "review_code.aggregate.v1",
+  "verdict": "PASS",
+  "summary": "0 evidence-backed blocking findings, 0 evidence-backed non-blocking findings, 0 unsupported/rejected concerns.",
+  "accepted_blocking_findings": [],
+  "accepted_non_blocking_findings": [],
+  "unsupported_or_rejected_concerns": [],
+  "missing_evidence": [],
+  "per_scope": [
+    {
+      "scope": "tests_validation",
+      "verdict": "PASS",
+      "blocking_findings": 0,
+      "non_blocking_findings": 0,
+      "missing_evidence": 0
+    },
+    {
+      "scope": "correctness_regression",
+      "verdict": "PASS",
+      "blocking_findings": 0,
+      "non_blocking_findings": 0,
+      "missing_evidence": 0
+    },
+    {
+      "scope": "evidence_closure_safety",
+      "verdict": "PASS",
+      "blocking_findings": 0,
+      "non_blocking_findings": 0,
+      "missing_evidence": 0
+    }
+  ]
+}

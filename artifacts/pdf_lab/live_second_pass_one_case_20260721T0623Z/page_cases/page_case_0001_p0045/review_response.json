@@ -1,0 +1,154 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0045:0000:side_chrome",
+      "evidence": "Top header text appears at the top margin and matches the extracted NIST SP 800-53 header string.",
+      "rationale": "The candidate is page chrome/header content with appropriate bounding box and text.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0001:side_chrome",
+      "evidence": "The horizontal rule beneath the top header is captured as an underscore/header line at the correct top-page location.",
+      "rationale": "The candidate represents header chrome rather than body content, and its bbox aligns with the rendered line.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0002:side_chrome",
+      "evidence": "The footer shows CHAPTER THREE on the left and PAGE 18 on the right, spanning the bottom margin.",
+      "rationale": "The extracted normalized footer text and wide bottom bbox agree with page chrome behavior.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0003:side_chrome",
+      "evidence": "The rotated left-margin boilerplate DOI/free-charge notice is boxed separately from the main body.",
+      "rationale": "The candidate is side chrome/boilerplate and the bounding box matches the vertical margin text.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0004:section_heading",
+      "evidence": "The rendered heading reads 3.1 ACCESS CONTROL in large bold text near the top of the body.",
+      "rationale": "The extracted section heading text, type, and bbox match the visual structure.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0005:text",
+      "evidence": "The rendered blue underlined text reads Quick link to Access Control Summary Table and is boxed at the correct location.",
+      "rationale": "Although the extracted block type is section_link, the candidate preset as text is acceptable for this standalone body link and the content/bbox match.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0006:section_heading",
+      "evidence": "The rendered control heading line shows AC-1 followed by POLICY AND PROCEDURES, boxed as a single heading region.",
+      "rationale": "The extracted text and section-heading role agree with the visible control heading, despite AC-1 appearing as a blue underlined link in the render.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0007:text",
+      "evidence": "The label Control: appears directly below the AC-1 heading at the expected indentation.",
+      "rationale": "The extracted field-label text and small bbox match the rendered label.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0008:list",
+      "evidence": "The first list item begins with a. Develop, document, and disseminate... and wraps onto a second line.",
+      "rationale": "The candidate is correctly identified as a list item with bbox covering the rendered wrapped item.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0009:list",
+      "evidence": "The nested item begins with 1. [Selection (one or more): Organization-level... and wraps onto a second line.",
+      "rationale": "The extracted list text, nesting position, and bbox agree with the rendered page.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0010:list",
+      "evidence": "The nested item (a) Addresses purpose, scope, roles... is boxed at the proper indentation.",
+      "rationale": "The candidate accurately captures this list subitem and its line wrapping.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0011:list",
+      "evidence": "The nested item (b) Is consistent with applicable laws... appears immediately below item (a).",
+      "rationale": "The list type, text, and bbox align with the rendered content.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0012:list",
+      "evidence": "The item 2. Procedures to facilitate the implementation... is shown at the same nested level as item 1.",
+      "rationale": "The candidate correctly captures this list item and its visible wrapping.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0013:list",
+      "evidence": "The item b. Designate an [Assignment: organization-defined official]... appears as a wrapped list item.",
+      "rationale": "The list classification and bounding region match the rendered body structure.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0014:list",
+      "evidence": "The item c. Review and update the current access control: appears as a short list line.",
+      "rationale": "The candidate text and bbox match the visible list entry.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0015:list",
+      "evidence": "The nested item 1. Policy [Assignment: organization-defined frequency]... is boxed below item c.",
+      "rationale": "The candidate is a correctly extracted nested list item with matching text and geometry.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0016:list",
+      "evidence": "The nested item 2. Procedures [Assignment: organization-defined frequency]... appears below the policy item.",
+      "rationale": "The extracted list text, bbox, and rendered position agree.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0017:text",
+      "evidence": "The Discussion paragraph begins after the list and spans multiple lines down the page.",
+      "rationale": "The extracted paragraph text is normalized correctly and the bbox covers the rendered discussion block.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0018:text",
+      "evidence": "The Related Controls line appears below the discussion and includes IA-1, PM-9, PM-24, PS-8, SI-12.",
+      "rationale": "The candidate captures the rendered related-controls text in the correct location as a body text block.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0019:text",
+      "evidence": "The Control Enhancements: None. line appears below Related Controls.",
+      "rationale": "The extracted text and bbox match this short labeled body line.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    },
+    {
+      "candidate_id": "cand:p0045:0020:reference",
+      "evidence": "The References line appears near the bottom of the body and lists OMB A-130, SP 800-12, SP 800-30, SP 800-39, SP 800-100, and IR 7874.",
+      "rationale": "The reference preset, text, and bounding box agree with the rendered references line.",
+      "status": "clean",
+      "suggested_fix_surface": ""
+    }
+  ],
+  "page_rationale": "All required candidates are present in the extracted JSON and align with the rendered page geometry, text, and nearby structure. Page chrome, headings, list items, body discussion text, related-controls text, control-enhancements text, and references are consistently identified.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

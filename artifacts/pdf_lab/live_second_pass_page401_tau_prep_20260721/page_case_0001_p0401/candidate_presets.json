@@ -1,0 +1,850 @@
+{
+  "candidate_count": 31,
+  "candidates": [
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "candidate_id": "cand:p0401:0000:side_chrome",
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/400/blocks/0",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "candidate_id": "cand:p0401:0001:side_chrome",
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/400/blocks/1",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528897154564951,
+        0.9549618345318418
+      ],
+      "candidate_id": "cand:p0401:0002:side_chrome",
+      "features": {
+        "bbox_area": 0.009516,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footer",
+        "text_length": 19
+      },
+      "json_pointer": "/pages/400/blocks/2",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "REFERENCES PAGE 374"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "candidate_id": "cand:p0401:0003:side_chrome",
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/400/blocks/3",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.08913536264438822,
+        0.282990623922909,
+        0.11721082167191939
+      ],
+      "candidate_id": "cand:p0401:0004:text",
+      "features": {
+        "bbox_area": 0.003816,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 10
+      },
+      "json_pointer": "/pages/400/blocks/4",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this generic text review stratum, including clean-compatible specific extracted subtypes such as section_subtitle when text, bbox, and visual role are accurate?",
+      "text_excerpt": "REFERENCES"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.11845891162602588,
+        0.6609537461224724,
+        0.13538664037531073
+      ],
+      "candidate_id": "cand:p0401:0005:text",
+      "features": {
+        "bbox_area": 0.008699,
+        "block_type": "section_subtitle",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 68
+      },
+      "json_pointer": "/pages/400/blocks/5",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this generic text review stratum, including clean-compatible specific extracted subtypes such as section_subtitle when text, bbox, and visual role are accurate?",
+      "text_excerpt": "LAWS, POLICIES, DIRECTIVES, REGULATIONS, STANDARDS, AND GUIDELINES34"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.4045097999323427,
+        0.15895074786561908,
+        0.5945157319112541,
+        0.17472348068699692
+      ],
+      "candidate_id": "cand:p0401:0006:text",
+      "features": {
+        "bbox_area": 0.002997,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 25
+      },
+      "json_pointer": "/pages/400/blocks/6",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this generic text review stratum, including clean-compatible specific extracted subtypes such as section_subtitle when text, bbox, and visual role are accurate?",
+      "text_excerpt": "LAWS AND EXECUTIVE ORDERS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.188654697302616,
+        0.6227235981062347,
+        0.20720424074115176
+      ],
+      "candidate_id": "cand:p0401:0007:reference",
+      "features": {
+        "bbox_area": 0.00866,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 54
+      },
+      "json_pointer": "/pages/400/blocks/7",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[ATOM54] Atomic Energy Act (P.L. 83-703), August 1954."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2882352841445823,
+        0.20565587824041193,
+        0.8195818234113307,
+        0.22258359735662286
+      ],
+      "candidate_id": "cand:p0401:0008:reference",
+      "features": {
+        "bbox_area": 0.008994,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_continuation",
+        "source_type": "Body",
+        "text_length": 71
+      },
+      "json_pointer": "/pages/400/blocks/8",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "https://www.govinfo.gov/content/pkg/STATUTE-68/pdf/STATUTE-68-Pg919.pdf"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.22857893356169112,
+        0.8005371592403238,
+        0.2471284770002269
+      ],
+      "candidate_id": "cand:p0401:0009:reference",
+      "features": {
+        "bbox_area": 0.011958,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 76
+      },
+      "json_pointer": "/pages/400/blocks/9",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[CMPPA] Computer Matching and Privacy Protection Act of 1988 (P.L. 100-503),"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2882352841445823,
+        0.24554801709724194,
+        0.768916959076925,
+        0.29485638936360675
+      ],
+      "candidate_id": "cand:p0401:0010:reference",
+      "features": {
+        "bbox_area": 0.023702,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_continuation",
+        "source_type": "Body",
+        "text_length": 88
+      },
+      "json_pointer": "/pages/400/blocks/10",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "October 1988. https://www.govinfo.gov/content/pkg/STATUTE-102/pdf/STATUTE-102-Pg2507.pdf"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.3008516485040838,
+        0.7832074134178411,
+        0.31940119194261957
+      ],
+      "candidate_id": "cand:p0401:0011:reference",
+      "features": {
+        "bbox_area": 0.011637,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 71
+      },
+      "json_pointer": "/pages/400/blocks/11",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[EGOV] E-Government Act [includes FISMA] (P.L. 107-347), December 2002."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2882352841445823,
+        0.31785290650647097,
+        0.7576511358123978,
+        0.3347806448888297
+      ],
+      "candidate_id": "cand:p0401:0012:reference",
+      "features": {
+        "bbox_area": 0.007946,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_continuation",
+        "source_type": "Body",
+        "text_length": 62
+      },
+      "json_pointer": "/pages/400/blocks/12",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "https://www.congress.gov/107/plaws/publ347/PLAW-107publ347.pdf"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.34085167778862846,
+        0.8202435861226001,
+        0.35940120196101644
+      ],
+      "candidate_id": "cand:p0401:0013:reference",
+      "features": {
+        "bbox_area": 0.012324,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 81
+      },
+      "json_pointer": "/pages/400/blocks/13",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[EVIDACT] Foundations for Evidence-Based Policymaking Act of 2018 (P.L. 115-435),"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2882352841445823,
+        0.3577514417243726,
+        0.7576511358123978,
+        0.3916745426678898
+      ],
+      "candidate_id": "cand:p0401:0014:text",
+      "features": {
+        "bbox_area": 0.015924,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 76
+      },
+      "json_pointer": "/pages/400/blocks/14",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this generic text review stratum, including clean-compatible specific extracted subtypes such as section_subtitle when text, bbox, and visual role are accurate?",
+      "text_excerpt": "January 2019. https://www.congress.gov/115/plaws/publ435/PLAW-115publ435.pdf"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.3977456140999842,
+        0.8283113467147927,
+        0.41629513827237213
+      ],
+      "candidate_id": "cand:p0401:0015:reference",
+      "features": {
+        "bbox_area": 0.012473,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 82
+      },
+      "json_pointer": "/pages/400/blocks/15",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[FASC18] Secure Technology Act [includes Federal Acquisition Supply Chain Security"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.28821733262803817,
+        0.4146453780357284,
+        0.7149495642169629,
+        0.4485685175115412
+      ],
+      "candidate_id": "cand:p0401:0016:text",
+      "features": {
+        "bbox_area": 0.014476,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/400/blocks/16",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this generic text review stratum, including clean-compatible specific extracted subtypes such as section_subtitle when text, bbox, and visual role are accurate?",
+      "text_excerpt": "Act] (P.L. 115-390), December 2018. https://www.congress.gov/bill/115th-congress/senate-bill/3085"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.45463955041133997,
+        0.8260562373142616,
+        0.4731890745837279
+      ],
+      "candidate_id": "cand:p0401:0017:reference",
+      "features": {
+        "bbox_area": 0.012431,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 79
+      },
+      "json_pointer": "/pages/400/blocks/17",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[FISMA] Federal Information Security Modernization Act (P.L. 113-283), December"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.28825318579580267,
+        0.4715393143470841,
+        0.32923078848645576,
+        0.49008883851947205
+      ],
+      "candidate_id": "cand:p0401:0018:reference",
+      "features": {
+        "bbox_area": 0.00076,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_continuation",
+        "source_type": "List",
+        "text_length": 5
+      },
+      "json_pointer": "/pages/400/blocks/18",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "2014."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2882352841445823,
+        0.48853471544053817,
+        0.7576511358123978,
+        0.5054624538228969
+      ],
+      "candidate_id": "cand:p0401:0019:reference",
+      "features": {
+        "bbox_area": 0.007946,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_continuation",
+        "source_type": "Body",
+        "text_length": 62
+      },
+      "json_pointer": "/pages/400/blocks/19",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "https://www.congress.gov/113/plaws/publ283/PLAW-113publ283.pdf"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.5115334867226957,
+        0.8224587533988205,
+        0.5300830108950837
+      ],
+      "candidate_id": "cand:p0401:0020:reference",
+      "features": {
+        "bbox_area": 0.012365,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 80
+      },
+      "json_pointer": "/pages/400/blocks/20",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[FOIA96] Freedom of Information Act (FOIA), 5 U.S.C. \u00a7 552, As Amended By Public"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2882352841445823,
+        0.5284332506584398,
+        0.8139855877246732,
+        0.5947806233107441
+      ],
+      "candidate_id": "cand:p0401:0021:reference",
+      "features": {
+        "bbox_area": 0.034882,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_continuation",
+        "source_type": "Body",
+        "text_length": 166
+      },
+      "json_pointer": "/pages/400/blocks/21",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Law No. 104-231, 110 Stat. 3048, Electronic Freedom of Information Act Amendments of 1996. https://www.govinfo.gov/content/pkg/PLAW-104publ231/pdf/PLAW-104publ231.pdf"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.600775901717369,
+        0.5935135885001788,
+        0.6193254258897569
+      ],
+      "candidate_id": "cand:p0401:0022:reference",
+      "features": {
+        "bbox_area": 0.008118,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 51
+      },
+      "json_pointer": "/pages/400/blocks/22",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[PRIVACT] Privacy Act (P.L. 93-579), December 1974."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2882352841445823,
+        0.6177771211874605,
+        0.8278155856662326,
+        0.6347048595698193
+      ],
+      "candidate_id": "cand:p0401:0023:reference",
+      "features": {
+        "bbox_area": 0.009134,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_continuation",
+        "source_type": "Body",
+        "text_length": 72
+      },
+      "json_pointer": "/pages/400/blocks/23",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "https://www.govinfo.gov/content/pkg/STATUTE-88/pdf/STATUTE-88-Pg1896.pdf"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.6407001765087398,
+        0.6095978979970894,
+        0.6592497392134233
+      ],
+      "candidate_id": "cand:p0401:0024:reference",
+      "features": {
+        "bbox_area": 0.008416,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 58
+      },
+      "json_pointer": "/pages/400/blocks/24",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[USA PATRIOT] USA Patriot Act (P.L. 107-56), October 2001."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2882352841445823,
+        0.6577013574465357,
+        0.7411672056110856,
+        0.6746290572965988
+      ],
+      "candidate_id": "cand:p0401:0025:reference",
+      "features": {
+        "bbox_area": 0.007667,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_continuation",
+        "source_type": "Body",
+        "text_length": 60
+      },
+      "json_pointer": "/pages/400/blocks/25",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "https://www.congress.gov/107/plaws/publ56/PLAW-107publ56.pdf"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.6806243742355192,
+        0.7965948566112643,
+        0.6991739754724984
+      ],
+      "candidate_id": "cand:p0401:0026:reference",
+      "features": {
+        "bbox_area": 0.011885,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 78
+      },
+      "json_pointer": "/pages/400/blocks/26",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[USC 552] United States Code, 2006 Edition, Supplement 4, Title 5 - Government"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.28823525921192045,
+        0.6975934577710701,
+        0.8178382325016595,
+        0.7469775267321654
+      ],
+      "candidate_id": "cand:p0401:0027:reference",
+      "features": {
+        "bbox_area": 0.026154,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_continuation",
+        "source_type": "Body",
+        "text_length": 153
+      },
+      "json_pointer": "/pages/400/blocks/27",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Organization and Employees, January 2011. https://www.govinfo.gov/content/pkg/USCODE-2010-title5/pdf/USCODE-2010-title5-partI-chap5-subchapII-sec552a.pdf"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.15588235543444265,
+        0.7529728436710859,
+        0.832427031074474,
+        0.771522444908065
+      ],
+      "candidate_id": "cand:p0401:0028:reference",
+      "features": {
+        "bbox_area": 0.01255,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Reference",
+        "text_length": 86
+      },
+      "json_pointer": "/pages/400/blocks/28",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[USC 2901] United States Code, 2008 Edition, Title 44 - Public Printing and Documents,"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2882352841445823,
+        0.7699419272066367,
+        0.8260735405815972,
+        0.8192502416745581
+      ],
+      "candidate_id": "cand:p0401:0029:reference",
+      "features": {
+        "bbox_area": 0.02652,
+        "block_type": "reference",
+        "has_toc_entries": false,
+        "semantic_role": "reference_continuation",
+        "source_type": "Body",
+        "text_length": 137
+      },
+      "json_pointer": "/pages/400/blocks/29",
+      "preset_type": "reference",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Chapters 29, 31, and 33, January 2012. https://www.govinfo.gov/content/pkg/USCODE-2011-title44/pdf/USCODE-2011-title44-chap29-sec2901.pdf"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.852810638119476,
+        0.831426682815053,
+        0.9096060088186553
+      ],
+      "candidate_id": "cand:p0401:0030:footnote",
+      "features": {
+        "bbox_area": 0.038869,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 408
+      },
+      "json_pointer": "/pages/400/blocks/30",
+      "preset_type": "footnote",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "34 The references cited in this appendix are those external publications that directly support the FISMA and Privacy Projects at NIST. Additional NIST standards, guidelines, and interagency reports are also cited throughout this publication, including in the references section of the applicable controls in Chapter Three. Direct links to the NIST website are provided to obtain access to those publications."
+    }
+  ],
+  "page_case": {
+    "case_id": "page_case_0001_p0401",
+    "page_number": 401
+  },
+  "preset_contract": {
+    "text": "preset_type text is a broad review stratum, not an exact expected semantic type; a more specific extracted subtype such as section_subtitle is clean-compatible when its text, bbox, and visual role are accurate"
+  },
+  "schema": "pdf_lab.second_pass.candidate_presets.v1"
+}

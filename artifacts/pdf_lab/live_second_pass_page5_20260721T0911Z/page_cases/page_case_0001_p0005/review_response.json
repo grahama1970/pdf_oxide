@@ -1,0 +1,56 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0005:0000:side_chrome",
+      "evidence": "The extracted candidate accurately captures the header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' with the correct bounding box and 'side_chrome' preset type. Visual evidence matches the extraction.",
+      "rationale": "The header text is correctly identified as side chrome with accurate text and bounding box.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0005:0001:side_chrome",
+      "evidence": "The extracted candidate accurately captures the horizontal line below the header text with the correct bounding box and 'side_chrome' preset type. Visual evidence matches the extraction.",
+      "rationale": "The horizontal line, acting as a separator in the header, is correctly identified as side chrome with accurate text and bounding box.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0005:0002:side_chrome",
+      "evidence": "The extracted candidate accurately captures the page number 'iii' at the bottom of the page with the correct bounding box and 'side_chrome' preset type. Visual evidence matches the extraction.",
+      "rationale": "The page number is correctly identified as side chrome with accurate text and bounding box.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0005:0003:side_chrome",
+      "evidence": "The extracted candidate accurately captures the vertical boilerplate text on the left side of the page, 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5', with the correct bounding box and 'side_chrome' preset type. Visual evidence matches the extraction.",
+      "rationale": "The boilerplate text is correctly identified as side chrome with accurate text and bounding box.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0005:0004:text",
+      "evidence": "The extracted candidate accurately captures the 'Acknowledgements' heading with the correct bounding box and 'text' preset type. Visual evidence matches the extraction.",
+      "rationale": "The heading is correctly identified as text with accurate text and bounding box.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0005:0005:text",
+      "evidence": "The extracted candidate accurately captures the paragraph text below the heading with the correct bounding box and 'text' preset type. The extracted text from JSON matches the full paragraph on the rendered page, although the preset excerpt was truncated. Visual evidence matches the extraction.",
+      "rationale": "The paragraph is correctly identified as text with accurate bounding box and content.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0005:0006:table",
+      "evidence": "The extracted candidate correctly identifies the large table on the page with an accurate bounding box and 'table' preset type. The extracted text contains the content from the table. Visual evidence clearly shows a table in the identified area.",
+      "rationale": "The table is correctly identified with accurate bounding box and content matching the rendered page.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    }
+  ],
+  "page_rationale": "All candidates on page 5 are extracted cleanly with accurate bounding boxes, text, and correct preset classifications. The page status is clean.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

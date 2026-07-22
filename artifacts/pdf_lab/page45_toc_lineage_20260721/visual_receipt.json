@@ -1,0 +1,33 @@
+{
+  "schema": "pdf_lab.visual_receipt.v1",
+  "page_id": "nist_phase54_page_0045",
+  "candidate": "page45 TOC lineage on AC-1 body/list blocks",
+  "original_image": "artifacts/pdf_lab/page45_toc_lineage_20260721/page45_original.png",
+  "overlay_image": "artifacts/pdf_lab/page45_toc_lineage_20260721/page45_toc_lineage_overlay.png",
+  "checked_block_ids": [
+    "actual:p45:block:7",
+    "actual:p45:block:8",
+    "actual:p45:block:10",
+    "actual:p45:block:13"
+  ],
+  "expected_toc_path": [
+    "toc:0014",
+    "toc:0015"
+  ],
+  "expected_breadcrumb": [
+    "CHAPTER THREE THE CONTROLS",
+    "3.1 ACCESS CONTROL"
+  ],
+  "expected_visible_texts": [
+    "Control:",
+    "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or roles]:",
+    "(a) Addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance; and",
+    "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and"
+  ],
+  "overlay_labels": [
+    "toc-lineage 1",
+    "toc-lineage 2",
+    "toc-lineage 3",
+    "toc-lineage 4"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "webgpt.source_provenance.v1",
+  "repository_url": "https://github.com/grahama1970/pdf_oxide.git",
+  "branch": "codex/page45-remaining-second-item",
+  "upstream": "origin/main",
+  "commit_sha": "1f9fe12f8c0d972b099a22c7ebb463fac85f5201",
+  "source_paths": [
+    "GOAL.md",
+    "artifacts/pdf_lab/page14_scillm_readtimeout_20260721/audit_summary.json",
+    "artifacts/pdf_lab/page16_scillm_readtimeout_20260721/audit_summary.json"
+  ],
+  "proof_cwd": "."
+}

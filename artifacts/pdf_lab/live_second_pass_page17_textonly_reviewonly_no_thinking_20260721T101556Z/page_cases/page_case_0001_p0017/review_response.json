@@ -1,0 +1,20 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0017:0004:list",
+      "evidence": null,
+      "rationale": null,
+      "status": "clean|unspecified"
+    },
+    {
+      "candidate_id": "cand:p0017:0005:text",
+      "evidence": null,
+      "rationale": null,
+      "status": "clean|unsure"
+    }
+  ],
+  "none": null,
+  "page_rationale": null,
+  "page_status": "clean|unsure",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

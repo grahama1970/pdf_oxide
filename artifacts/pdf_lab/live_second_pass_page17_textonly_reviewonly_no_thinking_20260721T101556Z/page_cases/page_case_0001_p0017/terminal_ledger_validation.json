@@ -1,0 +1,15 @@
+{
+  "case_id": "page_case_0001_p0017",
+  "declared_evidence_count": 21,
+  "duplicate_evidence_artifacts": [],
+  "errors": [
+    "review_validation seen_candidate_ids do not match selected_candidates",
+    "review_response candidate_findings do not match selected_candidates"
+  ],
+  "missing_artifacts": [],
+  "ok": false,
+  "page_number": 17,
+  "schema": "pdf_lab.second_pass.page_terminal_ledger_validation.v1",
+  "terminal_status": "human_needed",
+  "unsafe_evidence_artifacts": []
+}

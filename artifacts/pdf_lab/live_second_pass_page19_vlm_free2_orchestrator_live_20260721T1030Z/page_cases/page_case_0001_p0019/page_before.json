@@ -1,0 +1,894 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p19:block:0",
+      "is_bold": false,
+      "page": 19,
+      "pdf_page_index": 18,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p19:block:1",
+      "is_bold": false,
+      "page": 19,
+      "pdf_page_index": 18,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.4900980432049122,
+        0.939856018682923,
+        0.5098391763525072,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p19:block:2",
+      "is_bold": false,
+      "page": 19,
+      "pdf_page_index": 18,
+      "raw": {
+        "bbox": [
+          299.94000244140625,
+          38.400001525878906,
+          14.156982421875,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "xvii"
+      },
+      "source_type": "PageNumber",
+      "text": "xvii",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p19:block:3",
+      "is_bold": false,
+      "page": 19,
+      "pdf_page_index": 18,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.47098037619995914,
+        0.08938735422461924,
+        0.5289219874961704,
+        0.11388766163527364
+      ],
+      "font_name": "TT2",
+      "font_size": 13.979999542236328,
+      "id": "actual:p19:block:4",
+      "is_bold": true,
+      "page": 19,
+      "pdf_page_index": 18,
+      "raw": {
+        "bbox": [
+          288.239990234375,
+          706.6799926757812,
+          38.612762451171875,
+          13.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.30000001192092896,
+        "font_name": "TT2",
+        "font_size": 13.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.30000001192092896,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 13.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.5533332824707031,
+            "text_len": 6,
+            "title_case_ratio": 1.0,
+            "word_count": 1
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "bold_large_font",
+            "single_word_negative"
+          ],
+          "title_text": "Errata"
+        },
+        "is_bold": true,
+        "text": "Errata"
+      },
+      "semantic_role": "frontmatter_section_heading",
+      "source_type": "Body",
+      "text": "Errata",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14704092187819137,
+        0.12668496912175958,
+        0.8290257672079249,
+        0.2300072679615984
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p19:block:5",
+      "is_bold": false,
+      "page": 19,
+      "pdf_page_index": 18,
+      "raw": {
+        "bbox": [
+          89.98904418945312,
+          613.260009765625,
+          419.8233642578125,
+          78.1199951171875
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": false,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.21999990940094,
+            "text_len": 90,
+            "title_case_ratio": 0.2857142984867096,
+            "word_count": 14
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "This table contains changes that have been incorporated into SP 800-53, Revision 5. Errata"
+        },
+        "is_bold": false,
+        "text": "This table contains changes that have been incorporated into SP 800-53, Revision 5. Errata updates can include corrections, clarifications, or other minor changes in the publication that are either editorial or substantive in nature. Any potential updates for this document that are not yet published in an errata update or revision\u2014including additional issues and potential corrections\u2014will be posted as they are identified; see the SP 800-53, Revision 5 publication details."
+      },
+      "source_type": "Body",
+      "text": "This table contains changes that have been incorporated into SP 800-53, Revision 5. Errata updates can include corrections, clarifications, or other minor changes in the publication that are either editorial or substantive in nature. Any potential updates for this document that are not yet published in an errata update or revision\u2014including additional issues and potential corrections\u2014will be posted as they are identified; see the SP 800-53, Revision 5 publication details.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.25272723881885256,
+        0.8525490355647467,
+        0.8321969774034288
+      ],
+      "id": "actual:p19:table:0",
+      "page": 19,
+      "pdf_page_index": 18,
+      "raw": {
+        "accuracy": 100.0,
+        "bbox": [
+          89.76000213623047,
+          200.15997314453125,
+          521.760009765625,
+          659.1000061035156
+        ],
+        "cols": 4,
+        "column_count": 4,
+        "data": [
+          [
+            "DATE",
+            "TYPE",
+            "REVISION",
+            "PAGE"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Acknowledgements (ODNI): Add \u201cMatthew A. Kozma, Chief\nInformation Officer\u201d",
+            "iii"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Acknowledgements (ODNI): Add \u201cMichael E. Waschull, Deputy Chief\nInformation Officer\u201d",
+            "iii"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Acknowledgements (ODNI): Add \u201cClifford M. Conner, Cybersecurity\nGroup and IC CISO\u201d",
+            "iii"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Call Out Box: Change \u201cSpecial Publication 800-53B contains control\nbaselines\u201d to \u201cSP 800-53B contains security and privacy control\nbaselines\u201d",
+            "x"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Chapter One (Footnote 7): Add \u201c[SP 800-53A]\u201d",
+            "1"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Section 1.4: Delete \u201cThe controls have also been mapped to the\nrequirements for federal information systems included in [OMB A-\n130].\u201d",
+            "5"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Section 1.4 (Footnote 23): Delete \u201c[OMB A-130] establishes policy\nfor the planning, budgeting, governance, acquisition, and\nmanagement of federal information, personnel, equipment, funds,\nIT resources, and supporting infrastructure and services.\u201d",
+            "5"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Section 2.4 (first paragraph): Change \u201cpersonally identifiable\ninformation (PII)\u201d to \u201cPII\u201d",
+            "13"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control AC-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "18"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control AC-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "18"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement AC-3(2) Discussion: Change \u201cauthorization\nduties to other individuals\u201d to \u201cauthorization duties\u201d",
+            "23"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement AC-3(9) Discussion: Change \u201cmitigating\ncontrol\u201d to \u201cmitigation measure\u201d",
+            "26"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement AC-3(14) Related Controls: Add \u201c, PT-6\u201d",
+            "28"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement AC-4(17): Change \u201c organization, system,\napplication, service, individual\u201d to \u201corganization; system;\napplication; service; individual\u201d",
+            "33"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement AC-4(25): Change \u201c Selection (one or more: \u201d to\n\u201c Selection (one or more): \u201d",
+            "34"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control AC-12: Change \u201c conditions, \u201d to \u201c conditions \u201d",
+            "43"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control AC-14 Discussion: Change \u201cassignment\u201d to \u201cassignment\noperation\u201d",
+            "44"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control AC-19 Discussion: Change \u201cthe organizational network\u201d to\n\u201cits network\u201d",
+            "52"
+          ]
+        ],
+        "df_data": [
+          {
+            "0": "DATE",
+            "1": "TYPE",
+            "2": "REVISION",
+            "3": "PAGE"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Acknowledgements (ODNI): Add \u201cMatthew A. Kozma, Chief\nInformation Officer\u201d",
+            "3": "iii"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Acknowledgements (ODNI): Add \u201cMichael E. Waschull, Deputy Chief\nInformation Officer\u201d",
+            "3": "iii"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Acknowledgements (ODNI): Add \u201cClifford M. Conner, Cybersecurity\nGroup and IC CISO\u201d",
+            "3": "iii"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Call Out Box: Change \u201cSpecial Publication 800-53B contains control\nbaselines\u201d to \u201cSP 800-53B contains security and privacy control\nbaselines\u201d",
+            "3": "x"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Chapter One (Footnote 7): Add \u201c[SP 800-53A]\u201d",
+            "3": "1"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Section 1.4: Delete \u201cThe controls have also been mapped to the\nrequirements for federal information systems included in [OMB A-\n130].\u201d",
+            "3": "5"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Section 1.4 (Footnote 23): Delete \u201c[OMB A-130] establishes policy\nfor the planning, budgeting, governance, acquisition, and\nmanagement of federal information, personnel, equipment, funds,\nIT resources, and supporting infrastructure and services.\u201d",
+            "3": "5"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Section 2.4 (first paragraph): Change \u201cpersonally identifiable\ninformation (PII)\u201d to \u201cPII\u201d",
+            "3": "13"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control AC-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "18"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control AC-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "18"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement AC-3(2) Discussion: Change \u201cauthorization\nduties to other individuals\u201d to \u201cauthorization duties\u201d",
+            "3": "23"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement AC-3(9) Discussion: Change \u201cmitigating\ncontrol\u201d to \u201cmitigation measure\u201d",
+            "3": "26"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement AC-3(14) Related Controls: Add \u201c, PT-6\u201d",
+            "3": "28"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement AC-4(17): Change \u201c organization, system,\napplication, service, individual\u201d to \u201corganization; system;\napplication; service; individual\u201d",
+            "3": "33"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement AC-4(25): Change \u201c Selection (one or more: \u201d to\n\u201c Selection (one or more): \u201d",
+            "3": "34"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control AC-12: Change \u201c conditions, \u201d to \u201c conditions \u201d",
+            "3": "43"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control AC-14 Discussion: Change \u201cassignment\u201d to \u201cassignment\noperation\u201d",
+            "3": "44"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control AC-19 Discussion: Change \u201cthe organizational network\u201d to\n\u201cits network\u201d",
+            "3": "52"
+          }
+        ],
+        "flavor": "Lattice",
+        "order": 0,
+        "page": 18,
+        "row_count": 19,
+        "rows": [
+          {
+            "cells": [
+              {
+                "text": "DATE"
+              },
+              {
+                "text": "TYPE"
+              },
+              {
+                "text": "REVISION"
+              },
+              {
+                "text": "PAGE"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Acknowledgements (ODNI): Add \u201cMatthew A. Kozma, Chief Information Officer\u201d"
+              },
+              {
+                "text": "iii"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Acknowledgements (ODNI): Add \u201cMichael E. Waschull, Deputy Chief Information Officer\u201d"
+              },
+              {
+                "text": "iii"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Acknowledgements (ODNI): Add \u201cClifford M. Conner, Cybersecurity Group and IC CISO\u201d"
+              },
+              {
+                "text": "iii"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Call Out Box: Change \u201cSpecial Publication 800-53B contains control baselines\u201d to \u201cSP 800-53B contains security and privacy control baselines\u201d"
+              },
+              {
+                "text": "x"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Chapter One (Footnote 7): Add \u201c[SP 800-53A]\u201d"
+              },
+              {
+                "text": "1"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Section 1.4: Delete \u201cThe controls have also been mapped to the requirements for federal information systems included in [OMB A- 130].\u201d"
+              },
+              {
+                "text": "5"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Section 1.4 (Footnote 23): Delete \u201c[OMB A-130] establishes policy for the planning, budgeting, governance, acquisition, and management of federal information, personnel, equipment, funds, IT resources, and supporting infrastructure and services.\u201d"
+              },
+              {
+                "text": "5"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Section 2.4 (first paragraph): Change \u201cpersonally identifiable information (PII)\u201d to \u201cPII\u201d"
+              },
+              {
+                "text": "13"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control AC-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "18"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control AC-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "18"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement AC-3(2) Discussion: Change \u201cauthorization duties to other individuals\u201d to \u201cauthorization duties\u201d"
+              },
+              {
+                "text": "23"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement AC-3(9) Discussion: Change \u201cmitigating control\u201d to \u201cmitigation measure\u201d"
+              },
+              {
+                "text": "26"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement AC-3(14) Related Controls: Add \u201c, PT-6\u201d"
+              },
+              {
+                "text": "28"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement AC-4(17): Change \u201c organization, system, application, service, individual\u201d to \u201corganization; system; application; service; individual\u201d"
+              },
+              {
+                "text": "33"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement AC-4(25): Change \u201c Selection (one or more: \u201d to \u201c Selection (one or more): \u201d"
+              },
+              {
+                "text": "34"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control AC-12: Change \u201c conditions, \u201d to \u201c conditions \u201d"
+              },
+              {
+                "text": "43"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control AC-14 Discussion: Change \u201cassignment\u201d to \u201cassignment operation\u201d"
+              },
+              {
+                "text": "44"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control AC-19 Discussion: Change \u201cthe organizational network\u201d to \u201cits network\u201d"
+              },
+              {
+                "text": "52"
+              }
+            ]
+          }
+        ],
+        "table_geometry": {
+          "bbox_clipped_to_page": false,
+          "full_normalized_bbox": [
+            0.14666667015723933,
+            0.25272723881885256,
+            0.8525490355647467,
+            0.8321969774034288
+          ],
+          "off_page_extent": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0
+          },
+          "raw_bbox": [
+            89.76000213623047,
+            200.15997314453125,
+            521.760009765625,
+            659.1000061035156
+          ],
+          "visible_bbox": [
+            0.14666667015723933,
+            0.25272723881885256,
+            0.8525490355647467,
+            0.8321969774034288
+          ]
+        },
+        "whitespace": 0.0
+      },
+      "source_type": "table",
+      "table_geometry": {
+        "bbox_clipped_to_page": false,
+        "full_normalized_bbox": [
+          0.14666667015723933,
+          0.25272723881885256,
+          0.8525490355647467,
+          0.8321969774034288
+        ],
+        "off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "raw_bbox": [
+          89.76000213623047,
+          200.15997314453125,
+          521.760009765625,
+          659.1000061035156
+        ],
+        "visible_bbox": [
+          0.14666667015723933,
+          0.25272723881885256,
+          0.8525490355647467,
+          0.8321969774034288
+        ]
+      },
+      "text": "DATE | TYPE | REVISION | PAGE\n12-10-2020 | Editorial | Acknowledgements (ODNI): Add \u201cMatthew A. Kozma, Chief Information Officer\u201d | iii\n12-10-2020 | Editorial | Acknowledgements (ODNI): Add \u201cMichael E. Waschull, Deputy Chief Information Officer\u201d | iii\n12-10-2020 | Editorial | Acknowledgements (ODNI): Add \u201cClifford M. Conner, Cybersecurity Group and IC CISO\u201d | iii\n12-10-2020 | Editorial | Call Out Box: Change \u201cSpecial Publication 800-53B contains control baselines\u201d to \u201cSP 800-53B contains security and privacy control baselines\u201d | x\n12-10-2020 | Editorial | Chapter One (Footnote 7): Add \u201c[SP 800-53A]\u201d | 1\n12-10-2020 | Editorial | Section 1.4: Delete \u201cThe controls have also been mapped to the requirements for federal information systems included in [OMB A- 130].\u201d | 5\n12-10-2020 | Editorial | Section 1.4 (Footnote 23): Delete \u201c[OMB A-130] establishes policy for the planning, budgeting, governance, acquisition, and management of federal information, personnel, equipment, funds, IT resources, and supporting infrastructure and services.\u201d | 5\n12-10-2020 | Editorial | Section 2.4 (first paragraph): Change \u201cpersonally identifiable information (PII)\u201d to \u201cPII\u201d | 13\n12-10-2020 | Editorial | Control AC-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 18\n12-10-2020 | Editorial | Control AC-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 18\n12-10-2020 | Editorial | Control Enhancement AC-3(2) Discussion: Change \u201cauthorization duties to other individuals\u201d to \u201cauthorization duties\u201d | 23\n12-10-2020 | Editorial | Control Enhancement AC-3(9) Discussion: Change \u201cmitigating control\u201d to \u201cmitigation measure\u201d | 26\n12-10-2020 | Editorial | Control Enhancement AC-3(14) Related Controls: Add \u201c, PT-6\u201d | 28\n12-10-2020 | Editorial | Control Enhancement AC-4(17): Change \u201c organization, system, application, service, individual\u201d to \u201corganization; system; application; service; individual\u201d | 33\n12-10-2020 | Editorial | Control Enhancement AC-4(25): Change \u201c Selection (one or more: \u201d to \u201c Selection (one or more): \u201d | 34\n12-10-2020 | Editorial | Control AC-12: Change \u201c conditions, \u201d to \u201c conditions \u201d | 43\n12-10-2020 | Editorial | Control AC-14 Discussion: Change \u201cassignment\u201d to \u201cassignment operation\u201d | 44\n12-10-2020 | Editorial | Control AC-19 Discussion: Change \u201cthe organizational network\u201d to \u201cits network\u201d | 52",
+      "type": "table"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 19,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 18
+}

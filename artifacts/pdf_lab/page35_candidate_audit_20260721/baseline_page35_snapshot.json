@@ -1,0 +1,912 @@
+{
+  "generated_at": "2026-07-21T02:22:02.243003+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04473802296802251,
+            0.8507378272760927,
+            0.05821938948197798
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p35:block:0",
+          "is_bold": false,
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05679397390346334,
+            0.8517353332120609,
+            0.07054738324097913
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p35:block:1",
+          "is_bold": false,
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.9414804632013495,
+            0.852897594177645,
+            0.9549618345318418
+          ],
+          "font_name": "TT0",
+          "font_size": 7.980000019073486,
+          "id": "actual:p35:block:2",
+          "is_bold": false,
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              433.8087158203125,
+              7.979999542236328
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "CHAPTER TWO  PAGE 8"
+          },
+          "source_type": "Body",
+          "text": "CHAPTER TWO  PAGE 8",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.5297058735018462,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p35:block:3",
+          "is_bold": false,
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              303.1199951171875,
+              349.6199951171875
+            ],
+            "block_type": "Boilerplate",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+          },
+          "source_type": "Boilerplate",
+          "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705877366408804,
+            0.08994257570517183,
+            0.8496677174287683,
+            0.24410623492616595
+          ],
+          "font_name": "TT2",
+          "font_size": 10.979999542236328,
+          "id": "actual:p35:block:4",
+          "is_bold": false,
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "bbox": [
+              89.99996948242188,
+              602.0936279296875,
+              432.4637145996094,
+              118.3863525390625
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": false,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.21999990940094,
+                "text_len": 96,
+                "title_case_ratio": 0.07692307978868484,
+                "word_count": 13
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Controls can be viewed as descriptions of the safeguards and protection capabilities appropriate"
+            },
+            "is_bold": false,
+            "text": "Controls can be viewed as descriptions of the safeguards and protection capabilities appropriate for achieving the particular security and privacy objectives of the organization and reflecting the protection needs of organizational stakeholders. Controls are selected and implemented by the organization in order to satisfy the system requirements. Controls can include administrative, technical, and physical aspects. In some cases, the selection and implementation of a control may necessitate additional specification by the organization in the form of derived requirements or instantiated control parameter values. The derived requirements and control parameter values may be necessary to provide the appropriate level of implementation detail for particular controls within the SDLC."
+          },
+          "source_type": "Body",
+          "text": "Controls can be viewed as descriptions of the safeguards and protection capabilities appropriate for achieving the particular security and privacy objectives of the organization and reflecting the protection needs of organizational stakeholders. Controls are selected and implemented by the organization in order to satisfy the system requirements. Controls can include administrative, technical, and physical aspects. In some cases, the selection and implementation of a control may necessitate additional specification by the organization in the form of derived requirements or instantiated control parameter values. The derived requirements and control parameter values may be necessary to provide the appropriate level of implementation detail for particular controls within the SDLC.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.2571145837957209,
+            0.5991572959750306,
+            0.2816148815733014
+          ],
+          "font_name": "TT3",
+          "font_size": 12.889089584350586,
+          "id": "actual:p35:block:5",
+          "is_bold": true,
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "bbox": [
+              90.0,
+              573.8400268554688,
+              279.87164306640625,
+              13.97998046875
+            ],
+            "block_type": "Title",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT3",
+            "font_size": 12.889089584350586,
+            "header_level": 2,
+            "header_validation": {
+              "confidence": 0.8999999761581421,
+              "depth_level": 2,
+              "disposition": "Accept",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 12.889089584350586,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": true,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 2,
+                "size_ratio": 1.4321210384368896,
+                "text_len": 40,
+                "title_case_ratio": 0.800000011920929,
+                "word_count": 5
+              },
+              "has_numbering": true,
+              "is_header": true,
+              "level": 2,
+              "number_text": "2.2",
+              "reasons": [
+                "numbering",
+                "bold_large_font",
+                "title_case_like"
+              ],
+              "title_text": "CONTROL STRUCTURE AND ORGANIZATION"
+            },
+            "is_bold": true,
+            "text": "2.2   CONTROL STRUCTURE AND ORGANIZATION"
+          },
+          "source_type": "Title",
+          "text": "2.2   CONTROL STRUCTURE AND ORGANIZATION",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.14700626547819648,
+            0.28683652781476876,
+            0.847709605896395,
+            0.4240951152762981
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979999542236328,
+          "id": "actual:p35:block:6",
+          "is_bold": false,
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "bbox": [
+              89.96783447265625,
+              459.54241943359375,
+              431.3778076171875,
+              104.99755859375
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT0",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": false,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.21999990940094,
+                "text_len": 96,
+                "title_case_ratio": 0.07692307978868484,
+                "word_count": 13
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Security and privacy controls described in this publication have a well-defined organization and"
+            },
+            "is_bold": false,
+            "text": "Security and privacy controls described in this publication have a well-defined organization and structure. For ease of use in the security and privacy control selection and specification process, controls are organized into 20 families.25 Each family contains controls that are related to the specific topic of the family. A two-character identifier uniquely identifies each control family (e.g., PS for Personnel Security). Security and privacy controls may involve aspects of policy, oversight, supervision, manual processes, and automated mechanisms that are implemented by systems or actions by individuals. Table 1 lists the security and privacy control families and their associated family identifiers."
+          },
+          "source_type": "Body",
+          "text": "Security and privacy controls described in this publication have a well-defined organization and structure. For ease of use in the security and privacy control selection and specification process, controls are organized into 20 families.25 Each family contains controls that are related to the specific topic of the family. A two-character identifier uniquely identifies each control family (e.g., PS for Personnel Security). Security and privacy controls may involve aspects of policy, oversight, supervision, manual processes, and automated mechanisms that are implemented by systems or actions by individuals. Table 1 lists the security and privacy control families and their associated family identifiers.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.32862744300194036,
+            0.4375634626908736,
+            0.671234878839231,
+            0.45417743259006077
+          ],
+          "font_name": "TT3",
+          "font_size": 9.479999542236328,
+          "id": "actual:p35:block:7",
+          "is_bold": true,
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "bbox": [
+              201.1199951171875,
+              435.6000061035156,
+              211.84005737304688,
+              9.480010986328125
+            ],
+            "block_type": "Caption",
+            "confidence": 0.800000011920929,
+            "font_name": "TT3",
+            "font_size": 9.479999542236328,
+            "header_level": null,
+            "is_bold": true,
+            "text": "TABLE 1: SECURITY AND PRIVACY CONTROL FAMILIES"
+          },
+          "semantic_role": "table_caption",
+          "source_type": "Caption",
+          "text": "TABLE 1: SECURITY AND PRIVACY CONTROL FAMILIES",
+          "type": "caption"
+        },
+        {
+          "bbox": [
+            0.1470587985967499,
+            0.698723610001381,
+            0.8446834788602942,
+            0.8190184313841541
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979999542236328,
+          "id": "actual:p35:block:17",
+          "is_bold": false,
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "bbox": [
+              89.99998474121094,
+              146.76321411132812,
+              429.40142822265625,
+              91.56217956542969
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT0",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": false,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.21999990940094,
+                "text_len": 95,
+                "title_case_ratio": 0.07692307978868484,
+                "word_count": 13
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Families of controls contain base controls and control enhancements, which are directly related"
+            },
+            "is_bold": false,
+            "text": "Families of controls contain base controls and control enhancements, which are directly related to their base controls. Control enhancements either add functionality or specificity to a base control or increase the strength of a base control. Control enhancements are used in systems and environments of operation that require greater protection than the protection provided by the base control. The need for organizations to select and implement control enhancements is due to the potential adverse organizational or individual impacts or when organizations require additions to the base control functionality or assurance based on assessments of risk. The"
+          },
+          "source_type": "Body",
+          "text": "Families of controls contain base controls and control enhancements, which are directly related to their base controls. Control enhancements either add functionality or specificity to a base control or increase the strength of a base control. Control enhancements are used in systems and environments of operation that require greater protection than the protection provided by the base control. The need for organizations to select and implement control enhancements is due to the potential adverse organizational or individual impacts or when organizations require additions to the base control functionality or assurance based on assessments of risk. The",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.14705877366408804,
+            0.852810638119476,
+            0.8412553375842524,
+            0.9096060088186553
+          ],
+          "font_name": "TT4",
+          "font_size": 12.0,
+          "id": "actual:p35:block:18",
+          "is_bold": false,
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "bbox": [
+              89.99996948242188,
+              74.39999389648438,
+              426.8337097167969,
+              56.100006103515625
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT4",
+            "font_size": 12.0,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 12.0,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": false,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.3333333730697632,
+                "text_len": 0,
+                "title_case_ratio": 0.0,
+                "word_count": 0
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": ""
+            },
+            "is_bold": false,
+            "text": " 25 Of the 20 control families in NIST SP 800-53, 17 are aligned with the minimum security requirements in [FIPS 200]. The Program Management (PM), PII Processing and Transparency (PT), and Supply Chain Risk Management (SR) families address enterprise-level program management, privacy, and supply chain risk considerations pertaining to federal mandates emergent since [FIPS 200]."
+          },
+          "semantic_role": "footnote_group",
+          "source_type": "Body",
+          "text": "25 Of the 20 control families in NIST SP 800-53, 17 are aligned with the minimum security requirements in [FIPS 200]. The Program Management (PM), PII Processing and Transparency (PT), and Supply Chain Risk Management (SR) families address enterprise-level program management, privacy, and supply chain risk considerations pertaining to federal mandates emergent since [FIPS 200].",
+          "type": "footnote"
+        },
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.46143938315035116,
+            0.8525490355647467,
+            0.6751515166928069
+          ],
+          "id": "actual:p35:table:0",
+          "page": 35,
+          "pdf_page_index": 34,
+          "raw": {
+            "accuracy": 100.0,
+            "bbox": [
+              89.76000213623047,
+              365.4599914550781,
+              521.760009765625,
+              534.7200012207031
+            ],
+            "cols": 4,
+            "column_count": 4,
+            "data": [
+              [
+                "ID",
+                "FAMILY",
+                "ID",
+                "FAMILY"
+              ],
+              [
+                "AC",
+                "Access Control",
+                "PE",
+                "Physical and Environmental Protection"
+              ],
+              [
+                "AT",
+                "Awareness and Training",
+                "PL",
+                "Planning"
+              ],
+              [
+                "AU",
+                "Audit and Accountability",
+                "PM",
+                "Program Management"
+              ],
+              [
+                "CA",
+                "Assessment, Authorization, and Monitoring",
+                "PS",
+                "Personnel Security"
+              ],
+              [
+                "CM",
+                "Configuration Management",
+                "PT",
+                "PII Processing and Transparency"
+              ],
+              [
+                "CP",
+                "Contingency Planning",
+                "RA",
+                "Risk Assessment"
+              ],
+              [
+                "IA",
+                "Identification and Authentication",
+                "SA",
+                "System and Services Acquisition"
+              ],
+              [
+                "IR",
+                "Incident Response",
+                "SC",
+                "System and Communications Protection"
+              ],
+              [
+                "MA",
+                "Maintenance",
+                "SI",
+                "System and Information Integrity"
+              ],
+              [
+                "MP",
+                "Media Protection",
+                "SR",
+                "Supply Chain Risk Management"
+              ],
+              [
+                "",
+                "",
+                "",
+                ""
+              ]
+            ],
+            "df_data": [
+              {
+                "0": "ID",
+                "1": "FAMILY",
+                "2": "ID",
+                "3": "FAMILY"
+              },
+              {
+                "0": "AC",
+                "1": "Access Control",
+                "2": "PE",
+                "3": "Physical and Environmental Protection"
+              },
+              {
+                "0": "AT",
+                "1": "Awareness and Training",
+                "2": "PL",
+                "3": "Planning"
+              },
+              {
+                "0": "AU",
+                "1": "Audit and Accountability",
+                "2": "PM",
+                "3": "Program Management"
+              },
+              {
+                "0": "CA",
+                "1": "Assessment, Authorization, and Monitoring",
+                "2": "PS",
+                "3": "Personnel Security"
+              },
+              {
+                "0": "CM",
+                "1": "Configuration Management",
+                "2": "PT",
+                "3": "PII Processing and Transparency"
+              },
+              {
+                "0": "CP",
+                "1": "Contingency Planning",
+                "2": "RA",
+                "3": "Risk Assessment"
+              },
+              {
+                "0": "IA",
+                "1": "Identification and Authentication",
+                "2": "SA",
+                "3": "System and Services Acquisition"
+              },
+              {
+                "0": "IR",
+                "1": "Incident Response",
+                "2": "SC",
+                "3": "System and Communications Protection"
+              },
+              {
+                "0": "MA",
+                "1": "Maintenance",
+                "2": "SI",
+                "3": "System and Information Integrity"
+              },
+              {
+                "0": "MP",
+                "1": "Media Protection",
+                "2": "SR",
+                "3": "Supply Chain Risk Management"
+              },
+              {
+                "0": "",
+                "1": "",
+                "2": "",
+                "3": ""
+              }
+            ],
+            "flavor": "Lattice",
+            "order": 0,
+            "page": 34,
+            "row_count": 12,
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "text": "ID"
+                  },
+                  {
+                    "text": "FAMILY"
+                  },
+                  {
+                    "text": "ID"
+                  },
+                  {
+                    "text": "FAMILY"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AC"
+                  },
+                  {
+                    "text": "Access Control"
+                  },
+                  {
+                    "text": "PE"
+                  },
+                  {
+                    "text": "Physical and Environmental Protection"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AT"
+                  },
+                  {
+                    "text": "Awareness and Training"
+                  },
+                  {
+                    "text": "PL"
+                  },
+                  {
+                    "text": "Planning"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "AU"
+                  },
+                  {
+                    "text": "Audit and Accountability"
+                  },
+                  {
+                    "text": "PM"
+                  },
+                  {
+                    "text": "Program Management"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CA"
+                  },
+                  {
+                    "text": "Assessment, Authorization, and Monitoring"
+                  },
+                  {
+                    "text": "PS"
+                  },
+                  {
+                    "text": "Personnel Security"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CM"
+                  },
+                  {
+                    "text": "Configuration Management"
+                  },
+                  {
+                    "text": "PT"
+                  },
+                  {
+                    "text": "PII Processing and Transparency"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "CP"
+                  },
+                  {
+                    "text": "Contingency Planning"
+                  },
+                  {
+                    "text": "RA"
+                  },
+                  {
+                    "text": "Risk Assessment"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "IA"
+                  },
+                  {
+                    "text": "Identification and Authentication"
+                  },
+                  {
+                    "text": "SA"
+                  },
+                  {
+                    "text": "System and Services Acquisition"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "IR"
+                  },
+                  {
+                    "text": "Incident Response"
+                  },
+                  {
+                    "text": "SC"
+                  },
+                  {
+                    "text": "System and Communications Protection"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "MA"
+                  },
+                  {
+                    "text": "Maintenance"
+                  },
+                  {
+                    "text": "SI"
+                  },
+                  {
+                    "text": "System and Information Integrity"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "text": "MP"
+                  },
+                  {
+                    "text": "Media Protection"
+                  },
+                  {
+                    "text": "SR"
+                  },
+                  {
+                    "text": "Supply Chain Risk Management"
+                  }
+                ]
+              }
+            ],
+            "table_geometry": {
+              "bbox_clipped_to_page": false,
+              "full_normalized_bbox": [
+                0.14666667015723933,
+                0.46143938315035116,
+                0.8525490355647467,
+                0.6751515166928069
+              ],
+              "off_page_extent": {
+                "bottom": 0.0,
+                "left": 0.0,
+                "right": 0.0,
+                "top": 0.0
+              },
+              "raw_bbox": [
+                89.76000213623047,
+                365.4599914550781,
+                521.760009765625,
+                534.7200012207031
+              ],
+              "visible_bbox": [
+                0.14666667015723933,
+                0.46143938315035116,
+                0.8525490355647467,
+                0.6751515166928069
+              ]
+            },
+            "whitespace": 8.333333333333334
+          },
+          "source_type": "table",
+          "table_geometry": {
+            "bbox_clipped_to_page": false,
+            "full_normalized_bbox": [
+              0.14666667015723933,
+              0.46143938315035116,
+              0.8525490355647467,
+              0.6751515166928069
+            ],
+            "off_page_extent": {
+              "bottom": 0.0,
+              "left": 0.0,
+              "right": 0.0,
+              "top": 0.0
+            },
+            "raw_bbox": [
+              89.76000213623047,
+              365.4599914550781,
+              521.760009765625,
+              534.7200012207031
+            ],
+            "visible_bbox": [
+              0.14666667015723933,
+              0.46143938315035116,
+              0.8525490355647467,
+              0.6751515166928069
+            ]
+          },
+          "text": "ID | FAMILY | ID | FAMILY\nAC | Access Control | PE | Physical and Environmental Protection\nAT | Awareness and Training | PL | Planning\nAU | Audit and Accountability | PM | Program Management\nCA | Assessment, Authorization, and Monitoring | PS | Personnel Security\nCM | Configuration Management | PT | PII Processing and Transparency\nCP | Contingency Planning | RA | Risk Assessment\nIA | Identification and Authentication | SA | System and Services Acquisition\nIR | Incident Response | SC | System and Communications Protection\nMA | Maintenance | SI | System and Information Integrity\nMP | Media Protection | SR | Supply Chain Risk Management",
+          "type": "table"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 35,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 34
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

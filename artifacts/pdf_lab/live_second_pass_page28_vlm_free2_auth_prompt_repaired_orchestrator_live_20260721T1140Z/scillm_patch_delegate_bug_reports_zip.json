@@ -1,0 +1,21 @@
+{
+  "duplicate_zip_entries": [],
+  "included_artifacts": [
+    "scillm_patch_delegate_bug_reports.json"
+  ],
+  "included_count": 1,
+  "invalid_zip": false,
+  "mismatched_zip_entries": [],
+  "missing_artifacts": [],
+  "missing_expected_source_artifacts": [],
+  "missing_expected_zip_entries": [],
+  "ok": true,
+  "required_zip_entries": [
+    "scillm_patch_delegate_bug_reports.json"
+  ],
+  "schema": "pdf_lab.second_pass.scillm_patch_delegate_bug_report_zip.v1",
+  "undeclared_zip_entries": [],
+  "zip_content_ok": true,
+  "zip_entry_count": 1,
+  "zip_path": "artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/scillm_patch_delegate_bug_reports.zip"
+}

@@ -1,0 +1,715 @@
+{
+  "candidate": "stale page45 independent reviewer residuals",
+  "current_snapshot": "artifacts/pdf_lab/page45_residual_current_20260721/current_page45_snapshot.json",
+  "key_blocks": {
+    "control_enhancements_none": {
+      "bbox": [
+        0.20588235294117646,
+        0.8212619357638888,
+        0.40904774385340076,
+        0.838189635613952
+      ],
+      "breadcrumb": [
+        "CHAPTER THREE THE CONTROLS",
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p45:block:19",
+      "is_bold": false,
+      "page": 45,
+      "pdf_page_index": 44,
+      "raw": {
+        "bbox": [
+          126.0,
+          131.27999877929688,
+          126.59269714355469,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Control Enhancements:  None."
+      },
+      "semantic_role": "nist_control_enhancements_none",
+      "source_type": "Body",
+      "text": "Control Enhancements:  None.",
+      "toc_lineage": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ],
+      "type": "labeled_enhancements"
+    },
+    "control_label": {
+      "bbox": [
+        0.20588235294117646,
+        0.19088321261935765,
+        0.25978078405841504,
+        0.20781093173556858
+      ],
+      "breadcrumb": [
+        "CHAPTER THREE THE CONTROLS",
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p45:block:7",
+      "is_bold": false,
+      "page": 45,
+      "pdf_page_index": 44,
+      "raw": {
+        "bbox": [
+          126.0,
+          630.5399780273438,
+          35.20025634765625,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Control:"
+      },
+      "semantic_role": "nist_field_label",
+      "source_type": "Body",
+      "text": "Control:",
+      "toc_lineage": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ],
+      "type": "paragraph_block"
+    },
+    "discussion": {
+      "bbox": [
+        0.20586599711499182,
+        0.544064993810172,
+        0.8519990210439644,
+        0.7922823356859612
+      ],
+      "breadcrumb": [
+        "CHAPTER THREE THE CONTROLS",
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020001411437988,
+      "id": "actual:p45:block:17",
+      "is_bold": false,
+      "page": 45,
+      "pdf_page_index": 44,
+      "raw": {
+        "bbox": [
+          125.989990234375,
+          167.63861083984375,
+          397.7178955078125,
+          193.20138549804688
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020001411437988,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Discussion:  Access control policy and procedures address the controls in the AC family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies aPnd procedures. olicies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of access control policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies reflecting the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to access control policy and procedures include assessment or audit findings, security incidents or breaches, or changes in laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure."
+      },
+      "semantic_role": "discussion",
+      "source_type": "Body",
+      "text": "Discussion: Access control policy and procedures address the controls in the AC family that are implemented within systems and organizations. The risk management strategy is an important factor in establishing such policies and procedures. Policies and procedures contribute to security and privacy assurance. Therefore, it is important that security and privacy programs collaborate on the development of access control policy and procedures. Security and privacy program policies and procedures at the organization level are preferable, in general, and may obviate the need for mission- or system-specific policies and procedures. The policy can be included as part of the general security and privacy policy or be represented by multiple policies reflecting the complex nature of organizations. Procedures can be established for security and privacy programs, for mission or business processes, and for systems, if needed. Procedures describe how the policies or controls are implemented and can be directed at the individual or role that is the object of the procedure. Procedures can be documented in system security and privacy plans or in one or more separate documents. Events that may precipitate an update to access control policy and procedures include assessment or audit findings, security incidents or breaches, or changes in laws, executive orders, directives, regulations, policies, standards, and guidelines. Simply restating controls does not constitute an organizational policy or procedure.",
+      "toc_lineage": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ],
+      "type": "paragraph_block"
+    },
+    "footer": {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528988906760621,
+        0.9549618345318418
+      ],
+      "breadcrumb": [
+        "CHAPTER THREE THE CONTROLS",
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 7.9800004959106445,
+      "id": "actual:p45:block:2",
+      "is_bold": false,
+      "page": 45,
+      "pdf_page_index": 44,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          423.8504638671875,
+          7.979999542236328
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 7.9800004959106445,
+        "header_level": null,
+        "is_bold": false,
+        "text": "CHAPTER THREE   18 PAGE"
+      },
+      "source_type": "Body",
+      "text": "CHAPTER THREE PAGE 18",
+      "toc_lineage": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ],
+      "type": "header_footer_noise"
+    },
+    "heading": {
+      "bbox": [
+        0.14705882352941177,
+        0.16620171672165995,
+        0.4016318477057164,
+        0.1854444368921145
+      ],
+      "breadcrumb": [
+        "CHAPTER THREE THE CONTROLS",
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p45:block:6",
+      "is_bold": true,
+      "page": 45,
+      "pdf_page_index": 44,
+      "raw": {
+        "bbox": [
+          90.0,
+          648.9600219726562,
+          158.30764770507812,
+          10.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0958082675933838,
+            "text_len": 26,
+            "title_case_ratio": 1.0,
+            "word_count": 4
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "AC-1 POLICY AND PROCEDURES"
+        },
+        "is_bold": true,
+        "text": "AC-1 POLICY AND PROCEDURES"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "AC-1 POLICY AND PROCEDURES",
+      "toc_lineage": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ],
+      "type": "section_heading"
+    },
+    "list_a": {
+      "bbox": [
+        0.20588235294117646,
+        0.21383774882615214,
+        0.818778941833895,
+        0.24622562678173335
+      ],
+      "breadcrumb": [
+        "CHAPTER THREE THE CONTROLS",
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.019999504089355,
+      "id": "actual:p45:block:8",
+      "is_bold": false,
+      "page": 45,
+      "pdf_page_index": 44,
+      "raw": {
+        "bbox": [
+          126.0,
+          600.1155395507812,
+          377.30010986328125,
+          22.26446533203125
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.019999504089355,
+        "header_level": null,
+        "is_bold": false,
+        "text": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or roles]:"
+      },
+      "source_type": "List",
+      "text": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or roles]:",
+      "toc_lineage": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ],
+      "type": "list"
+    },
+    "list_c": {
+      "bbox": [
+        0.20588235294117646,
+        0.44429771346275254,
+        0.5434303533018024,
+        0.46122545184511127
+      ],
+      "breadcrumb": [
+        "CHAPTER THREE THE CONTROLS",
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p45:block:14",
+      "is_bold": false,
+      "page": 45,
+      "pdf_page_index": 44,
+      "raw": {
+        "bbox": [
+          126.0,
+          429.835693359375,
+          208.85687255859375,
+          10.019989013671875
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "c. Review and update the current access control:"
+      },
+      "source_type": "List",
+      "text": "c. Review and update the current access control:",
+      "toc_lineage": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ],
+      "type": "list"
+    },
+    "related_controls": {
+      "bbox": [
+        0.20588235294117646,
+        0.7983073995570944,
+        0.5322631636476205,
+        0.8152350994071575
+      ],
+      "breadcrumb": [
+        "CHAPTER THREE THE CONTROLS",
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020003318786621,
+      "id": "actual:p45:block:18",
+      "is_bold": false,
+      "page": 45,
+      "pdf_page_index": 44,
+      "raw": {
+        "bbox": [
+          126.0,
+          149.4600067138672,
+          201.949462890625,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020003318786621,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Related Controls:  IA-1, PM-9, PM-24, PS-8, SI-12."
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls:  IA-1, PM-9, PM-24, PS-8, SI-12.",
+      "toc_lineage": [
+        {
+          "id": "toc:0014",
+          "kind": "chapter",
+          "label": "CHAPTER THREE THE CONTROLS",
+          "level": 1,
+          "node_id": "toc:0014",
+          "page": 16,
+          "source": "toc"
+        },
+        {
+          "id": "toc:0015",
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "level": 2,
+          "node_id": "toc:0015",
+          "page": 18,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0014",
+        "toc:0015"
+      ],
+      "type": "paragraph_block"
+    }
+  },
+  "live": false,
+  "mocked": false,
+  "page": 45,
+  "page45_block_count": 21,
+  "page45_type_counts": {
+    "header_footer_noise": 4,
+    "labeled_enhancements": 1,
+    "list": 9,
+    "paragraph_block": 3,
+    "reference": 1,
+    "section_heading": 2,
+    "section_link": 1
+  },
+  "proof_commands": {
+    "current_snapshot": "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page45_residual_current_20260721/current_page45_snapshot.json --max-pages 45 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+    "focused_page45": "pytest -q tests/test_nist_page45_discussion_role.py tests/test_nist_page45_discussion_text.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py"
+  },
+  "proof_results": {
+    "focused_page45": "12 passed, 5 warnings in 283.25s",
+    "latest_broad_nist_regression": "22 passed, 5 warnings in 451.33s"
+  },
+  "schema": "pdf_lab.page45_residual_reconciliation_audit.v1",
+  "selection_receipt": "artifacts/pdf_lab/page45_residual_current_20260721/selection_receipt.json",
+  "status": "passing_current_contract_no_code_patch",
+  "test_logs": {
+    "focused_page45": "artifacts/pdf_lab/page45_residual_current_20260721/test_logs/pytest_page45_focused.log",
+    "latest_broad_nist_regression": "artifacts/pdf_lab/page36_figure_region_content_20260721/test_logs/pytest_broad_nist_regression_rerun.log",
+    "snapshot": "artifacts/pdf_lab/page45_residual_current_20260721/test_logs/snapshot_page45.log"
+  },
+  "what_remains_unverified": "live model-backed second-pass repair lifecycle and Criterion 6 live GitHub apply",
+  "what_was_exercised": "deterministic local extraction of NIST SP 800-53r5 page 45 with release promotion ledger and focused page45 regression set"
+}

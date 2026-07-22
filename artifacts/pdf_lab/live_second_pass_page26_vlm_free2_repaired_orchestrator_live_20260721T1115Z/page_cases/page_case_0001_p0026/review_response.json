@@ -1,0 +1,42 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0026:0000:side_chrome",
+      "evidence": "Extracted JSON block 0 text: 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'. The bbox [0.147, 0.045, 0.851, 0.058] matches the header on the rendered page.",
+      "rationale": "The header text is correctly identified, extracted, and classified as side_chrome (semantic_role: page_chrome, source_type: Header) with an accurate bounding box. The presence of extra spaces in the extracted text due to layout is a minor formatting detail that does not impact the overall correctness of the extraction.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0026:0001:side_chrome",
+      "evidence": "Extracted JSON block 1 text: '_________________________________________________________________________________________________'. The bbox [0.147, 0.057, 0.852, 0.071] matches the horizontal line separator in the header on the rendered page.",
+      "rationale": "The horizontal line of underscores, serving as a visual separator in the header, is correctly identified, extracted, and classified as side_chrome (semantic_role: page_chrome, source_type: Header) with an accurate bounding box.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0026:0002:side_chrome",
+      "evidence": "Extracted JSON block 2 text: 'xxiv'. The bbox [0.489, 0.940, 0.511, 0.955] matches the page number in the footer on the rendered page.",
+      "rationale": "The page number 'xxiv' in the footer is correctly identified, extracted, and classified as side_chrome (source_type: PageNumber) with an accurate bounding box.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0026:0003:side_chrome",
+      "evidence": "Extracted JSON block 3 text: 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5'. The bbox [0.030, 0.288, 0.050, 0.741] matches the vertical boilerplate text in the left margin on the rendered page.",
+      "rationale": "The boilerplate text positioned vertically in the left margin is correctly identified, extracted, and classified as side_chrome (source_type: Boilerplate) with an accurate bounding box.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0026:0004:table",
+      "evidence": "Extracted JSON table 0 starts with text: 'DATE | TYPE | REVISION | PAGE\\n12-10-2020 | Editorial | References [SP 800-181]: Change \u201cNewhouse WD, Witte GA,...'. The bbox [0.147, 0.092, 0.853, 0.898] matches the large table on the rendered page.",
+      "rationale": "The main content of the page, a large table, is correctly identified, extracted, and classified as a table. The bounding box accurately captures the table, and the extracted text effectively represents the table's content and structure, including column delimiters.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    }
+  ],
+  "page_rationale": "All header, footer, boilerplate, and table elements on page 26 are accurately extracted and correctly classified according to their respective preset types. Bounding boxes and text content align well with the rendered page.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

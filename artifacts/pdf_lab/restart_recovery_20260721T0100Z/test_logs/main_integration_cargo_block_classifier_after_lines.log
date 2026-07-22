@@ -1,0 +1,1868 @@
+warning: `/home/graham/.cargo/config` is deprecated in favor of `config.toml`
+  |
+  = help: if you need to support cargo 1.38 or earlier, you can symlink `config` to `config.toml`
+   Compiling pdf_oxide v0.3.14 (/tmp/pdf_oxide_main_cherrypick_e24cca69_299909)
+warning: unused import: `EngineeringProfile`
+  --> src/extractors/document_extractor.rs:14:78
+   |
+14 | use crate::extractors::engineering::{detect_engineering_features_from_spans, EngineeringProfile};
+   |                                                                              ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `DetectedFigure`
+  --> src/extractors/document_extractor.rs:15:70
+   |
+15 | use crate::extractors::figure_detector::{detect_figures_from_blocks, DetectedFigure};
+   |                                                                      ^^^^^^^^^^^^^^
+
+warning: unused import: `SectionTree`
+  --> src/extractors/document_extractor.rs:16:85
+   |
+16 | use crate::extractors::section_hierarchy::{build_section_hierarchy_from_classified, SectionTree};
+   |                                                                                     ^^^^^^^^^^^
+
+warning: unused import: `crate::extractors::block_classifier::NumberingAnalysis`
+   --> src/extractors/section_hierarchy.rs:970:13
+    |
+970 |         use crate::extractors::block_classifier::NumberingAnalysis;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::extractors::block_classifier::NumberingType`
+   --> src/extractors/section_hierarchy.rs:971:13
+    |
+971 |         use crate::extractors::block_classifier::NumberingType;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: duplicated attribute
+   --> src/fonts/text_decode.rs:513:5
+    |
+513 |     #[test]
+    |     ^^^^^^^
+    |
+    = note: `#[warn(duplicate_macro_attributes)]` on by default
+
+warning: cannot test inner items
+   --> src/fonts/text_decode.rs:515:9
+    |
+515 |         #[test]
+    |         ^^^^^^^
+    |
+    = note: `#[warn(unnameable_test_items)]` on by default
+
+warning: unused import: `Error`
+ --> src/outline.rs:7:20
+  |
+7 | use crate::error::{Error, Result};
+  |                    ^^^^^
+
+warning: value assigned to `peak_start` is never read
+    --> src/document.rs:4412:21
+     |
+4412 |                     peak_start = b;
+     |                     ^^^^^^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+     = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> src/extractors/content_assembler.rs:313:13
+    |
+313 |         let mut flush_text = |merged: &mut Vec<MergedContentEntry>,
+    |             ----^^^^^^^^^^
+    |             |
+    |             help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> src/extractors/content_assembler.rs:533:5
+    |
+533 |     mut blocks: Vec<ContentBlock>,
+    |     ----^^^^^^
+    |     |
+    |     help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/extractors/section_hierarchy.rs:180:13
+    |
+180 |         let mut sec = FlatSection {
+    |             ----^^^
+    |             |
+    |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> src/extractors/section_hierarchy.rs:244:21
+    |
+244 |                 let mut prev = merged.pop().unwrap();
+    |                     ----^^^^
+    |                     |
+    |                     help: remove this `mut`
+
+warning: missing documentation for a module
+   --> src/extractors/mod.rs:5:1
+    |
+  5 | pub mod block_classifier;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: the lint level is defined here
+   --> src/lib.rs:132:9
+    |
+132 | #![warn(missing_docs)]
+    |         ^^^^^^^^^^^^
+
+warning: missing documentation for a module
+  --> src/extractors/mod.rs:10:1
+   |
+10 | pub mod document_profiler;
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a module
+  --> src/extractors/mod.rs:11:1
+   |
+11 | pub mod engineering;
+   | ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a module
+  --> src/extractors/mod.rs:22:1
+   |
+22 | pub mod prediction;
+   | ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for an enum
+ --> src/extractors/block_classifier.rs:5:1
+  |
+5 | pub enum BlockType {
+  | ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a variant
+ --> src/extractors/block_classifier.rs:6:5
+  |
+6 |     Header,
+  |     ^^^^^^
+
+warning: missing documentation for a variant
+ --> src/extractors/block_classifier.rs:7:5
+  |
+7 |     Body,
+  |     ^^^^
+
+warning: missing documentation for a variant
+ --> src/extractors/block_classifier.rs:8:5
+  |
+8 |     Footer,
+  |     ^^^^^^
+
+warning: missing documentation for a variant
+ --> src/extractors/block_classifier.rs:9:5
+  |
+9 |     PageNumber,
+  |     ^^^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/block_classifier.rs:10:5
+   |
+10 |     List,
+   |     ^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/block_classifier.rs:11:5
+   |
+11 |     Caption,
+   |     ^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/block_classifier.rs:12:5
+   |
+12 |     Footnote,
+   |     ^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/block_classifier.rs:13:5
+   |
+13 |     Title,
+   |     ^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/block_classifier.rs:14:5
+   |
+14 |     Subtitle,
+   |     ^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/block_classifier.rs:15:5
+   |
+15 |     TableOfContents,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/block_classifier.rs:16:5
+   |
+16 |     Reference,
+   |     ^^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/block_classifier.rs:17:5
+   |
+17 |     Equation,
+   |     ^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/block_classifier.rs:18:5
+   |
+18 |     Boilerplate,
+   |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct
+   --> src/extractors/block_classifier.rs:204:1
+    |
+204 | pub struct ClassifiedBlock {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+   --> src/extractors/block_classifier.rs:229:1
+    |
+229 | pub struct BlockClassifier {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:12:5
+   |
+12 |     pub block_type: BlockType,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:13:5
+   |
+13 |     pub text: String,
+   |     ^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:14:5
+   |
+14 |     pub bbox: Rect,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:15:5
+   |
+15 |     pub font_size: f32,
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:16:5
+   |
+16 |     pub font_name: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:17:5
+   |
+17 |     pub is_bold: bool,
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:18:5
+   |
+18 |     pub confidence: f32,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:19:5
+   |
+19 |     pub header_level: Option<u8>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:20:5
+   |
+20 |     pub paragraph_id: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:21:5
+   |
+21 |     pub is_running_header: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/block_merger.rs:22:5
+   |
+22 |     pub is_running_footer: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:20:5
+   |
+20 |     pub id: String,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:21:5
+   |
+21 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:22:5
+   |
+22 |     pub bbox: Rect,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:23:5
+   |
+23 |     pub text: String,
+   |     ^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:24:5
+   |
+24 |     pub block_type: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:25:5
+   |
+25 |     pub section_id: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:26:5
+   |
+26 |     pub is_equation: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:27:5
+   |
+27 |     pub latex_content: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:33:5
+   |
+33 |     pub id: String,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:34:5
+   |
+34 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:35:5
+   |
+35 |     pub bbox: Rect,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:36:5
+   |
+36 |     pub csv_data: String,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:37:5
+   |
+37 |     pub html_data: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:38:5
+   |
+38 |     pub section_id: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:39:5
+   |
+39 |     pub sort_order: i64,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:40:5
+   |
+40 |     pub llm_title: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:41:5
+   |
+41 |     pub llm_description: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:42:5
+   |
+42 |     pub image_path: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:48:5
+   |
+48 |     pub id: String,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:49:5
+   |
+49 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:50:5
+   |
+50 |     pub bbox: Rect,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:51:5
+   |
+51 |     pub image_path: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:52:5
+   |
+52 |     pub section_id: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:53:5
+   |
+53 |     pub sort_order: i64,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:54:5
+   |
+54 |     pub llm_title: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:55:5
+   |
+55 |     pub llm_description: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:61:5
+   |
+61 |     pub id: String,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:62:5
+   |
+62 |     pub title: String,
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:63:5
+   |
+63 |     pub page_start: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:64:5
+   |
+64 |     pub page_end: usize,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:65:5
+   |
+65 |     pub parent_id: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:75:5
+   |
+75 |     pub id: String,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:76:5
+   |
+76 |     pub section_id: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:77:5
+   |
+77 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:78:5
+   |
+78 |     pub content_type: String, // "text", "table", "figure", "equation", "section"
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:79:5
+   |
+79 |     pub content: String,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:80:5
+   |
+80 |     pub asset_id: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:81:5
+   |
+81 |     pub sort_order: i64,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:82:5
+   |
+82 |     pub bbox: Rect,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:88:5
+   |
+88 |     pub sections: Vec<ContentSection>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:89:5
+   |
+89 |     pub blocks: Vec<ContentBlock>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:90:5
+   |
+90 |     pub tables: Vec<ContentTable>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:91:5
+   |
+91 |     pub figures: Vec<ContentFigure>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/content_assembler.rs:92:5
+   |
+92 |     pub merged_content: Vec<MergedContentEntry>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:35:5
+   |
+35 |     pub running_footers: Vec<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/document_extractor.rs:43:1
+   |
+43 | pub struct ProfileSummary {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:44:5
+   |
+44 |     pub domain: String,
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:45:5
+   |
+45 |     pub complexity_score: u8,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:46:5
+   |
+46 |     pub is_scanned: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:47:5
+   |
+47 |     pub has_tables: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:48:5
+   |
+48 |     pub has_images: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:49:5
+   |
+49 |     pub has_toc: bool,
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:54:5
+   |
+54 |     pub column_count: u8,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/document_extractor.rs:58:1
+   |
+58 | pub struct PageResult {
+   | ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:59:5
+   |
+59 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:60:5
+   |
+60 |     pub blocks: Vec<BlockSummary>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:61:5
+   |
+61 |     pub text: String,
+   |     ^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/document_extractor.rs:65:1
+   |
+65 | pub struct BlockSummary {
+   | ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:66:5
+   |
+66 |     pub block_type: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:67:5
+   |
+67 |     pub text: String,
+   |     ^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:68:5
+   |
+68 |     pub bbox: [f32; 4],
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:69:5
+   |
+69 |     pub font_size: f32,
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:70:5
+   |
+70 |     pub font_name: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:71:5
+   |
+71 |     pub is_bold: bool,
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:72:5
+   |
+72 |     pub confidence: f32,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:73:5
+   |
+73 |     pub header_level: Option<u8>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:74:5
+   |
+74 |     pub paragraph_id: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/document_extractor.rs:78:1
+   |
+78 | pub struct FigureSummary {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:79:5
+   |
+79 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:80:5
+   |
+80 |     pub bbox: [f32; 4],
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:81:5
+   |
+81 |     pub caption: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:82:5
+   |
+82 |     pub caption_number: Option<u32>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:83:5
+   |
+83 |     pub context_above: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:84:5
+   |
+84 |     pub context_below: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:85:5
+   |
+85 |     pub section_title: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/document_extractor.rs:89:1
+   |
+89 | pub struct SectionSummary {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:90:5
+   |
+90 |     pub title: String,
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:91:5
+   |
+91 |     pub level: u8,
+   |     ^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:92:5
+   |
+92 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:93:5
+   |
+93 |     pub numbering: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/document_extractor.rs:97:1
+   |
+97 | pub struct EngineeringSummary {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:98:5
+   |
+98 |     pub has_title_block: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_extractor.rs:99:5
+   |
+99 |     pub has_revision_table: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/extractors/document_extractor.rs:100:5
+    |
+100 |     pub has_drawing_border: bool,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/extractors/document_extractor.rs:101:5
+    |
+101 |     pub security_markings: Vec<String>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/extractors/document_extractor.rs:102:5
+    |
+102 |     pub document_number: Option<String>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+ --> src/extractors/document_profiler.rs:8:1
+  |
+8 | pub struct DocumentProfile {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+ --> src/extractors/document_profiler.rs:9:5
+  |
+9 |     pub page_count: usize,
+  |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:10:5
+   |
+10 |     pub domain: String,
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:11:5
+   |
+11 |     pub layout: LayoutProfile,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:12:5
+   |
+12 |     pub complexity_score: u8,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:13:5
+   |
+13 |     pub is_scanned: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:14:5
+   |
+14 |     pub has_toc: bool,
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:15:5
+   |
+15 |     pub has_outline: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:16:5
+   |
+16 |     pub has_tables: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:17:5
+   |
+17 |     pub has_images: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:18:5
+   |
+18 |     pub has_forms: bool,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:19:5
+   |
+19 |     pub has_annotations: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:20:5
+   |
+20 |     pub languages: Vec<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:21:5
+   |
+21 |     pub primary_font: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:22:5
+   |
+22 |     pub primary_font_size: f32,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:23:5
+   |
+23 |     pub title: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:24:5
+   |
+24 |     pub preset: String,
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/document_profiler.rs:28:1
+   |
+28 | pub struct LayoutProfile {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:29:5
+   |
+29 |     pub columns: u8,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:30:5
+   |
+30 |     pub has_header: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:31:5
+   |
+31 |     pub has_footer: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:32:5
+   |
+32 |     pub has_page_numbers: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:33:5
+   |
+33 |     pub has_margin_notes: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:34:5
+   |
+34 |     pub avg_chars_per_page: f32,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:35:5
+   |
+35 |     pub page_width: f32,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:36:5
+   |
+36 |     pub page_height: f32,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/document_profiler.rs:37:5
+   |
+37 |     pub orientation: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a function
+  --> src/extractors/document_profiler.rs:40:1
+   |
+40 | pub fn profile_document(doc: &mut PdfDocument) -> Result<DocumentProfile> {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for an enum
+ --> src/extractors/engineering.rs:7:1
+  |
+7 | pub enum EngineeringElement {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a variant
+ --> src/extractors/engineering.rs:8:5
+  |
+8 |     TitleBlock,
+  |     ^^^^^^^^^^
+
+warning: missing documentation for a variant
+ --> src/extractors/engineering.rs:9:5
+  |
+9 |     RevisionTable,
+  |     ^^^^^^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/engineering.rs:10:5
+   |
+10 |     DrawingBorder,
+   |     ^^^^^^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/engineering.rs:11:5
+   |
+11 |     PartsTable,
+   |     ^^^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/engineering.rs:12:5
+   |
+12 |     NotesBlock,
+   |     ^^^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/engineering.rs:13:5
+   |
+13 |     DistributionStatement,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/engineering.rs:14:5
+   |
+14 |     SecurityMarking,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/engineering.rs:15:5
+   |
+15 |     DrawingNumber,
+   |     ^^^^^^^^^^^^^
+
+warning: missing documentation for a variant
+  --> src/extractors/engineering.rs:16:5
+   |
+16 |     ApprovalBlock,
+   |     ^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+  --> src/extractors/engineering.rs:20:5
+   |
+20 |     pub fn as_str(&self) -> &'static str {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/engineering.rs:36:1
+   |
+36 | pub struct DetectedElement {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:37:5
+   |
+37 |     pub element_type: EngineeringElement,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:38:5
+   |
+38 |     pub bbox: Rect,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:39:5
+   |
+39 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:40:5
+   |
+40 |     pub text: String,
+   |     ^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:41:5
+   |
+41 |     pub confidence: f32,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/engineering.rs:45:1
+   |
+45 | pub struct EngineeringProfile {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:46:5
+   |
+46 |     pub is_engineering: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:47:5
+   |
+47 |     pub doc_subtype: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:48:5
+   |
+48 |     pub elements: Vec<DetectedElement>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:49:5
+   |
+49 |     pub drawing_number: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:50:5
+   |
+50 |     pub revision: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:51:5
+   |
+51 |     pub cage_code: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/engineering.rs:52:5
+   |
+52 |     pub distribution_statement: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/figure_detector.rs:14:5
+   |
+14 |     pub bbox: Rect,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/figure_detector.rs:15:5
+   |
+15 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/figure_detector.rs:16:5
+   |
+16 |     pub caption: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/figure_detector.rs:17:5
+   |
+17 |     pub caption_number: Option<u32>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/figure_detector.rs:18:5
+   |
+18 |     pub context_above: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/figure_detector.rs:19:5
+   |
+19 |     pub context_below: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/figure_detector.rs:20:5
+   |
+20 |     pub section_title: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:17:5
+   |
+17 |     pub candidate: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:18:5
+   |
+18 |     pub start: usize,
+   |     ^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:19:5
+   |
+19 |     pub end: usize,
+   |     ^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:20:5
+   |
+20 |     pub context_window: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:26:5
+   |
+26 |     pub candidate: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:27:5
+   |
+27 |     pub control_id: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:28:5
+   |
+28 |     pub control_key: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:29:5
+   |
+29 |     pub framework: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:30:5
+   |
+30 |     pub confidence: f32,
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:31:5
+   |
+31 |     pub method: String, // "exact", "parent_exact", "fuzzy"
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:32:5
+   |
+32 |     pub context_window: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:38:5
+   |
+38 |     pub chunk_key: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:39:5
+   |
+39 |     pub is_requirement: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:40:5
+   |
+40 |     pub candidates_found: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:41:5
+   |
+41 |     pub matches: Vec<ControlMatch>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:47:5
+   |
+47 |     pub chunks_processed: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:48:5
+   |
+48 |     pub chunks_with_candidates: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:49:5
+   |
+49 |     pub chunks_with_matches: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:50:5
+   |
+50 |     pub requirement_chunks: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:51:5
+   |
+51 |     pub total_candidates: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:52:5
+   |
+52 |     pub exact_matches: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:53:5
+   |
+53 |     pub parent_exact_matches: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:54:5
+   |
+54 |     pub fuzzy_matches: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/framework_mapper.rs:55:5
+   |
+55 |     pub unmatched: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for an associated function
+  --> src/extractors/framework_mapper.rs:76:5
+   |
+76 |     pub fn new() -> Self {
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+  --> src/extractors/framework_mapper.rs:98:5
+   |
+98 |     pub fn len(&self) -> usize {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/extractors/framework_mapper.rs:102:5
+    |
+102 |     pub fn is_empty(&self) -> bool {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/extractors/framework_mapper.rs:182:5
+    |
+182 |     pub fn get_framework(&self, control_id: &str) -> &str {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:13:5
+   |
+13 |     pub profile: DocumentProfile,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:14:5
+   |
+14 |     pub engineering: EngineeringProfile,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:15:5
+   |
+15 |     pub sections: SectionTree,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:16:5
+   |
+16 |     pub page_block_summary: Vec<PageBlockSummary>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:17:5
+   |
+17 |     pub recommended_strategy: String,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/prediction.rs:21:1
+   |
+21 | pub struct PageBlockSummary {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:22:5
+   |
+22 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:23:5
+   |
+23 |     pub total_blocks: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:24:5
+   |
+24 |     pub title_count: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:25:5
+   |
+25 |     pub body_count: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:26:5
+   |
+26 |     pub list_count: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:27:5
+   |
+27 |     pub table_count: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:28:5
+   |
+28 |     pub caption_count: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:29:5
+   |
+29 |     pub footnote_count: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:30:5
+   |
+30 |     pub has_header: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:31:5
+   |
+31 |     pub has_footer: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/prediction.rs:32:5
+   |
+32 |     pub has_page_number: bool,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/section_hierarchy.rs:19:1
+   |
+19 | pub struct Section {
+   | ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/section_hierarchy.rs:20:5
+   |
+20 |     pub title: String,
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/section_hierarchy.rs:21:5
+   |
+21 |     pub level: u8,
+   |     ^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/section_hierarchy.rs:22:5
+   |
+22 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/section_hierarchy.rs:23:5
+   |
+23 |     pub bbox: (f32, f32, f32, f32),
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/section_hierarchy.rs:24:5
+   |
+24 |     pub children: Vec<Section>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/section_hierarchy.rs:25:5
+   |
+25 |     pub numbering: Option<String>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/section_hierarchy.rs:29:1
+   |
+29 | pub struct SectionTree {
+   | ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/section_hierarchy.rs:30:5
+   |
+30 |     pub sections: Vec<Section>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/section_hierarchy.rs:31:5
+   |
+31 |     pub total_sections: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/section_hierarchy.rs:32:5
+   |
+32 |     pub max_depth: u8,
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a function
+   --> src/extractors/section_hierarchy.rs:457:1
+    |
+457 | pub fn build_section_hierarchy(doc: &mut PdfDocument) -> Result<SectionTree> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/extractors/section_hierarchy.rs:820:5
+    |
+820 |     pub fn to_flat_list(&self) -> Vec<(u8, String, usize)> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/extractors/section_hierarchy.rs:830:5
+    |
+830 |     pub fn to_flat_list(&self) -> Vec<(u8, String, usize)> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/table_merger.rs:13:5
+   |
+13 |     pub index: usize,
+   |     ^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/table_merger.rs:14:5
+   |
+14 |     pub page: usize,
+   |     ^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/table_merger.rs:17:5
+   |
+17 |     pub column_count: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/table_merger.rs:18:5
+   |
+18 |     pub row_count: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/table_merger.rs:19:5
+   |
+19 |     pub title: String,
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+  --> src/extractors/table_merger.rs:38:1
+   |
+38 | pub struct MergeDetail {
+   | ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/table_merger.rs:39:5
+   |
+39 |     pub target_index: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/table_merger.rs:40:5
+   |
+40 |     pub absorbed_index: usize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/table_merger.rs:41:5
+   |
+41 |     pub reason: String,
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/table_merger.rs:42:5
+   |
+42 |     pub horizontal_iou: f32,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/extractors/table_merger.rs:43:5
+   |
+43 |     pub width_ratio: f32,
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct
+   --> src/extractors/table_merger.rs:255:1
+    |
+255 | pub struct MergeFeatures {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/extractors/table_merger.rs:256:5
+    |
+256 |     pub col_count_match: bool,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/extractors/table_merger.rs:257:5
+    |
+257 |     pub width_ratio: f32,
+    |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/extractors/table_merger.rs:258:5
+    |
+258 |     pub horizontal_iou: f32,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/extractors/table_merger.rs:259:5
+    |
+259 |     pub title_has_continued: bool,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/extractors/table_merger.rs:260:5
+    |
+260 |     pub title_word_overlap: f32,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/extractors/table_merger.rs:261:5
+    |
+261 |     pub row_count_ratio: f32,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/extractors/table_merger.rs:262:5
+    |
+262 |     pub consecutive_pages: bool,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for an associated function
+   --> src/fonts/text_decode.rs:332:5
+    |
+332 |     pub fn new(bytes: &'a [u8], _font: Option<&FontInfo>, byte_mode: ByteMode) -> Self {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for an associated function
+  --> src/pipeline/converters/toc_detector.rs:80:5
+   |
+80 |     pub fn new() -> Self {
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/tables/types.rs:34:5
+   |
+34 |     pub text: String,
+   |     ^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/tables/types.rs:35:5
+   |
+35 |     pub x0: f64,
+   |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/tables/types.rs:36:5
+   |
+36 |     pub y0: f64,
+   |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/tables/types.rs:37:5
+   |
+37 |     pub x1: f64,
+   |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/tables/types.rs:38:5
+   |
+38 |     pub y1: f64,
+   |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+  --> src/tables/types.rs:39:5
+   |
+39 |     pub font_size: f64,
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for an associated function
+  --> src/tables/types.rs:96:5
+   |
+96 |     pub fn new(x0: f64, y0: f64, x1: f64, y1: f64) -> Self {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/tables/types.rs:120:5
+    |
+120 |     pub fn width(&self) -> f64 {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/tables/types.rs:124:5
+    |
+124 |     pub fn height(&self) -> f64 {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/tables/types.rs:135:5
+    |
+135 |     pub x0: f64,
+    |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/tables/types.rs:136:5
+    |
+136 |     pub y0: f64,
+    |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/tables/types.rs:137:5
+    |
+137 |     pub x1: f64,
+    |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/tables/types.rs:138:5
+    |
+138 |     pub y1: f64,
+    |     ^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/tables/types.rs:142:5
+    |
+142 |     pub fn is_horizontal(&self, tol: f64) -> bool {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/tables/types.rs:146:5
+    |
+146 |     pub fn is_vertical(&self, tol: f64) -> bool {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/tables/types.rs:150:5
+    |
+150 |     pub fn length(&self) -> f64 {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/tables/types.rs:158:5
+    |
+158 |     pub x0: f64,
+    |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/tables/types.rs:159:5
+    |
+159 |     pub y0: f64,
+    |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/tables/types.rs:160:5
+    |
+160 |     pub x1: f64,
+    |     ^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/tables/types.rs:161:5
+    |
+161 |     pub y1: f64,
+    |     ^^^^^^^^^^^
+
+warning: missing documentation for an associated function
+   --> src/tables/types.rs:165:5
+    |
+165 |     pub fn new(x0: f64, y0: f64, x1: f64, y1: f64) -> Self {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/tables/types.rs:169:5
+    |
+169 |     pub fn width(&self) -> f64 {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/tables/types.rs:173:5
+    |
+173 |     pub fn height(&self) -> f64 {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/tables/types.rs:245:5
+    |
+245 |     pub fn num_rows(&self) -> usize {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a method
+   --> src/tables/types.rs:249:5
+    |
+249 |     pub fn num_cols(&self) -> usize {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/tables/types.rs:448:5
+    |
+448 |     pub flavor: Flavor,
+    |     ^^^^^^^^^^^^^^^^^^
+
+warning: missing documentation for a struct field
+   --> src/tables/types.rs:449:5
+    |
+449 |     pub strategy: Strategy,
+    |     ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `pdf_oxide` (lib test) generated 297 warnings (run `cargo fix --lib -p pdf_oxide --tests` to apply 10 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.19s
+     Running unittests src/lib.rs (target/debug/deps/pdf_oxide-d46bc918132778c0)
+
+running 49 tests
+test extractors::block_classifier::tests::test_boilerplate_arxiv ... ok
+test extractors::block_classifier::tests::test_boilerplate_tlp ... ok
+test extractors::block_classifier::tests::test_boilerplate_copyright ... ok
+test extractors::block_classifier::tests::test_caption_detection ... ok
+test extractors::block_classifier::tests::test_caption_rejected ... ok
+test extractors::block_classifier::tests::test_bullet_prefix_rejected ... ok
+test extractors::block_classifier::tests::test_classify_header ... ok
+test extractors::block_classifier::tests::test_bottom_footnote_continuation_lines_remain_footnotes ... ok
+test extractors::block_classifier::tests::test_classify_line_already_sorted_spans_unchanged ... ok
+test extractors::block_classifier::tests::test_classify_line_kerned_span_order_yields_modern_not_dermon ... ok
+test extractors::block_classifier::tests::test_content_exception_numbered ... ok
+test extractors::block_classifier::tests::test_classify_spans_drops_empty_text_blocks ... ok
+test extractors::block_classifier::tests::test_colon_label_rejected ... ok
+test extractors::block_classifier::tests::test_continued_pattern_rejected ... ok
+test extractors::block_classifier::tests::test_count_sentence_breaks ... ok
+test extractors::block_classifier::tests::test_decimal_numbering ... ok
+test extractors::block_classifier::tests::test_decimal_single ... ok
+test extractors::block_classifier::tests::test_disposition_accept_formal_prefix ... ok
+test extractors::block_classifier::tests::test_disposition_accept_numbered ... ok
+test extractors::block_classifier::tests::test_disposition_escalate_ambiguous ... ok
+test extractors::block_classifier::tests::test_disposition_reject_bullet ... ok
+test extractors::block_classifier::tests::test_disposition_reject_multi_sentence ... ok
+test extractors::block_classifier::tests::test_disposition_reject_requirement_id ... ok
+test extractors::block_classifier::tests::test_features_extraction ... ok
+test extractors::block_classifier::tests::test_enumerated_list_siblings_remain_separate_with_continuations ... ok
+test extractors::block_classifier::tests::test_features_size_ratio ... ok
+test extractors::block_classifier::tests::test_formal_prefix_accepted ... ok
+test extractors::block_classifier::tests::test_header_body_not_merged_each_has_lines ... ok
+test extractors::block_classifier::tests::test_labeled_numbering ... ok
+test extractors::block_classifier::tests::test_list_item_detection ... ok
+test extractors::block_classifier::tests::test_lines_preserved_through_body_merge ... ok
+test extractors::block_classifier::tests::test_make_block_default_lines_empty ... ok
+test extractors::block_classifier::tests::test_multi_sentence_rejected ... ok
+test extractors::block_classifier::tests::test_merge_list_runs_groups_bullets_and_continuations ... ok
+test extractors::block_classifier::tests::test_nist_top_running_header_and_rule_are_page_chrome_not_section_headings ... ok
+test extractors::block_classifier::tests::test_nist_ordered_nested_lists_remain_item_level_blocks ... ok
+test extractors::block_classifier::tests::test_no_numbering ... ok
+test extractors::block_classifier::tests::test_not_boilerplate ... ok
+test extractors::block_classifier::tests::test_numbered_header_accepted ... ok
+test extractors::block_classifier::tests::test_page_number_detection ... ok
+test extractors::block_classifier::tests::test_numbered_header_not_demoted ... ok
+test extractors::block_classifier::tests::test_page_number_formats ... ok
+test extractors::block_classifier::tests::test_requirement_id_rejected ... ok
+test extractors::block_classifier::tests::test_roman_paren ... ok
+test extractors::block_classifier::tests::test_page_top_title_and_qid_table_row_are_not_footer_or_reference ... ok
+test extractors::block_classifier::tests::test_sentence_ending_rejected ... ok
+test extractors::block_classifier::tests::test_sentence_ending_demotes_to_body ... ok
+test extractors::block_classifier::tests::test_toc_entry ... ok
+test extractors::block_classifier::tests::test_single_line_block_has_one_line ... ok
+
+test result: ok. 49 passed; 0 failed; 0 ignored; 0 measured; 4498 filtered out; finished in 0.00s
+

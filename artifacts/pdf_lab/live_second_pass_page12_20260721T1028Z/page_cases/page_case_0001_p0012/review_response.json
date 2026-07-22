@@ -1,0 +1,49 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0012:0000:side_chrome",
+      "evidence": "The extracted bounding box accurately encloses the header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'. The text content matches the rendered page. The classification as 'side_chrome' is appropriate for header content.",
+      "rationale": "Bounding box, text, and preset type are all accurate and consistent with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0012:0001:side_chrome",
+      "evidence": "The extracted bounding box accurately encloses the horizontal line directly below the header text. The text content matches the rendered page. The classification as 'side_chrome' is appropriate for header chrome elements.",
+      "rationale": "Bounding box, text, and preset type are all accurate and consistent with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0012:0002:side_chrome",
+      "evidence": "The extracted bounding box accurately encloses the page number 'x' at the bottom center of the page. The text content matches the rendered page. The classification as 'side_chrome' is appropriate for page numbers.",
+      "rationale": "Bounding box, text, and preset type are all accurate and consistent with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0012:0003:side_chrome",
+      "evidence": "The extracted bounding box accurately encloses the boilerplate text on the left margin. The text content matches the rendered page. The classification as 'side_chrome' is appropriate for such document boilerplate.",
+      "rationale": "Bounding box, text, and preset type are all accurate and consistent with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0012:0004:section_heading",
+      "evidence": "The extracted bounding box accurately encloses the text 'CONTROL BASELINES'. The text content matches the rendered page. The classification as 'section_heading' is appropriate for this element.",
+      "rationale": "Bounding box, text, and preset type are all accurate and consistent with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0012:0005:text",
+      "evidence": "The extracted bounding box accurately encloses the main body paragraph. The full text content from the extracted JSON matches the rendered page. The classification as 'text' is appropriate for this paragraph.",
+      "rationale": "Bounding box, text, and preset type are all accurate and consistent with the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    }
+  ],
+  "page_rationale": "All candidates on page 12 are accurately extracted with correct bounding boxes, text content, and preset classifications according to the rendered page and given definitions.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

@@ -1,0 +1,1212 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p22:block:0",
+      "is_bold": false,
+      "page": 22,
+      "pdf_page_index": 21,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p22:block:1",
+      "is_bold": false,
+      "page": 22,
+      "pdf_page_index": 21,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.4936274609534569,
+        0.939856018682923,
+        0.5063627654430913,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p22:block:2",
+      "is_bold": false,
+      "page": 22,
+      "pdf_page_index": 21,
+      "raw": {
+        "bbox": [
+          302.1000061035156,
+          38.400001525878906,
+          9.8280029296875,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "xx"
+      },
+      "source_type": "PageNumber",
+      "text": "xx",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p22:block:3",
+      "is_bold": false,
+      "page": 22,
+      "pdf_page_index": 21,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490355647467,
+        0.8982575734456381
+      ],
+      "id": "actual:p22:table:0",
+      "page": 22,
+      "pdf_page_index": 21,
+      "raw": {
+        "accuracy": 100.0,
+        "bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          711.4199981689453
+        ],
+        "cols": 4,
+        "column_count": 4,
+        "data": [
+          [
+            "DATE",
+            "TYPE",
+            "REVISION",
+            "PAGE"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PE-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "179"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PE-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "179"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement PE-3(8) Discussion: Delete \u201c, or mantrap,\u201d",
+            "183"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement PE-3(8) Discussion: Change \u201cMantraps\u201d to\n\u201cVestibules\u201d",
+            "183"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement PE-19(1) Title: Delete \u201dAND TEMPEST\u201d",
+            "192"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PL-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "194"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PL-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "194"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PL-2 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "196"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PL-7 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "198"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PL-11 Discussion: Change \u201c[FISMA] and [PRIVACT]\u201d to\n\u201c[FISMA], [PRIVACT], and [OMB A-130]\u201d",
+            "201"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "204"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-2 References: Add \u201c, [SP 800-181]\u201d",
+            "204"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-5 References: Add \u201c[OMB A-130],\u201d",
+            "206"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-8 References: Add \u201c[EO 13636],\u201d",
+            "207"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-10 References: Add \u201c, [SP 800-181]\u201d",
+            "208"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-11 Related Controls: Add \u201cRA-9,\u201d",
+            "209"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-12 References: Add \u201c[NITP12],\u201d",
+            "210"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-17 References: Add \u201c[SP 800-172],\u201d",
+            "212"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-19 Related Controls: Add \u201c, PM-27\u201d",
+            "213"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-22 References: Add \u201c[OMB M-19-15],\u201d",
+            "216"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-24 Related Controls: Add \u201cPT-2,\u201d",
+            "216"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-24 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "217"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-25 Related Controls: Add \u201c, SI-12\u201d",
+            "217"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-25 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "217"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-29 References: Add \u201c, [SP 800-181]\u201d",
+            "219"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-30 References: Add \u201c[CNSSD 505],\u201d",
+            "220"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-31 Discussion: Change \u201cSC-18c\u201d to \u201cSC-18b\u201d",
+            "220"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-31 References: Add \u201c, [SP 800-137A]\u201d",
+            "221"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PM-32 References: Change \u201c[SP 800-137]\u201d to \u201c[SP 800-160-\n1], [SP 800-160-2]\u201d",
+            "221"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PS-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "222"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PS-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "222"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement PS-3(3) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d",
+            "224"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PT-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "229"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control PT-1 Discussion: Change \u201cprivacy breaches\u201d to \u201cbreaches\u201d",
+            "229"
+          ]
+        ],
+        "df_data": [
+          {
+            "0": "DATE",
+            "1": "TYPE",
+            "2": "REVISION",
+            "3": "PAGE"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PE-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "179"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PE-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "179"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement PE-3(8) Discussion: Delete \u201c, or mantrap,\u201d",
+            "3": "183"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement PE-3(8) Discussion: Change \u201cMantraps\u201d to\n\u201cVestibules\u201d",
+            "3": "183"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement PE-19(1) Title: Delete \u201dAND TEMPEST\u201d",
+            "3": "192"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PL-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "194"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PL-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "194"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PL-2 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "3": "196"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PL-7 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "3": "198"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PL-11 Discussion: Change \u201c[FISMA] and [PRIVACT]\u201d to\n\u201c[FISMA], [PRIVACT], and [OMB A-130]\u201d",
+            "3": "201"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "204"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-2 References: Add \u201c, [SP 800-181]\u201d",
+            "3": "204"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-5 References: Add \u201c[OMB A-130],\u201d",
+            "3": "206"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-8 References: Add \u201c[EO 13636],\u201d",
+            "3": "207"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-10 References: Add \u201c, [SP 800-181]\u201d",
+            "3": "208"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-11 Related Controls: Add \u201cRA-9,\u201d",
+            "3": "209"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-12 References: Add \u201c[NITP12],\u201d",
+            "3": "210"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-17 References: Add \u201c[SP 800-172],\u201d",
+            "3": "212"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-19 Related Controls: Add \u201c, PM-27\u201d",
+            "3": "213"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-22 References: Add \u201c[OMB M-19-15],\u201d",
+            "3": "216"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-24 Related Controls: Add \u201cPT-2,\u201d",
+            "3": "216"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-24 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "3": "217"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-25 Related Controls: Add \u201c, SI-12\u201d",
+            "3": "217"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-25 References: Change \u201c[OMB A-130, Appendix II]\u201d to\n\u201c[OMB A-130]\u201d",
+            "3": "217"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-29 References: Add \u201c, [SP 800-181]\u201d",
+            "3": "219"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-30 References: Add \u201c[CNSSD 505],\u201d",
+            "3": "220"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-31 Discussion: Change \u201cSC-18c\u201d to \u201cSC-18b\u201d",
+            "3": "220"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-31 References: Add \u201c, [SP 800-137A]\u201d",
+            "3": "221"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PM-32 References: Change \u201c[SP 800-137]\u201d to \u201c[SP 800-160-\n1], [SP 800-160-2]\u201d",
+            "3": "221"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PS-1a.1.: Change \u201corganization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "222"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PS-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "222"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement PS-3(3) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d",
+            "3": "224"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PT-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "229"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control PT-1 Discussion: Change \u201cprivacy breaches\u201d to \u201cbreaches\u201d",
+            "3": "229"
+          }
+        ],
+        "flavor": "Lattice",
+        "order": 0,
+        "page": 21,
+        "row_count": 35,
+        "rows": [
+          {
+            "cells": [
+              {
+                "text": "DATE"
+              },
+              {
+                "text": "TYPE"
+              },
+              {
+                "text": "REVISION"
+              },
+              {
+                "text": "PAGE"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PE-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "179"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PE-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "179"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement PE-3(8) Discussion: Delete \u201c, or mantrap,\u201d"
+              },
+              {
+                "text": "183"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement PE-3(8) Discussion: Change \u201cMantraps\u201d to \u201cVestibules\u201d"
+              },
+              {
+                "text": "183"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement PE-19(1) Title: Delete \u201dAND TEMPEST\u201d"
+              },
+              {
+                "text": "192"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PL-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "194"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PL-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "194"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PL-2 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d"
+              },
+              {
+                "text": "196"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PL-7 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d"
+              },
+              {
+                "text": "198"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PL-11 Discussion: Change \u201c[FISMA] and [PRIVACT]\u201d to \u201c[FISMA], [PRIVACT], and [OMB A-130]\u201d"
+              },
+              {
+                "text": "201"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "204"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-2 References: Add \u201c, [SP 800-181]\u201d"
+              },
+              {
+                "text": "204"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-5 References: Add \u201c[OMB A-130],\u201d"
+              },
+              {
+                "text": "206"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-8 References: Add \u201c[EO 13636],\u201d"
+              },
+              {
+                "text": "207"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-10 References: Add \u201c, [SP 800-181]\u201d"
+              },
+              {
+                "text": "208"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-11 Related Controls: Add \u201cRA-9,\u201d"
+              },
+              {
+                "text": "209"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-12 References: Add \u201c[NITP12],\u201d"
+              },
+              {
+                "text": "210"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-17 References: Add \u201c[SP 800-172],\u201d"
+              },
+              {
+                "text": "212"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-19 Related Controls: Add \u201c, PM-27\u201d"
+              },
+              {
+                "text": "213"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-22 References: Add \u201c[OMB M-19-15],\u201d"
+              },
+              {
+                "text": "216"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-24 Related Controls: Add \u201cPT-2,\u201d"
+              },
+              {
+                "text": "216"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-24 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d"
+              },
+              {
+                "text": "217"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-25 Related Controls: Add \u201c, SI-12\u201d"
+              },
+              {
+                "text": "217"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-25 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d"
+              },
+              {
+                "text": "217"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-29 References: Add \u201c, [SP 800-181]\u201d"
+              },
+              {
+                "text": "219"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-30 References: Add \u201c[CNSSD 505],\u201d"
+              },
+              {
+                "text": "220"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-31 Discussion: Change \u201cSC-18c\u201d to \u201cSC-18b\u201d"
+              },
+              {
+                "text": "220"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-31 References: Add \u201c, [SP 800-137A]\u201d"
+              },
+              {
+                "text": "221"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PM-32 References: Change \u201c[SP 800-137]\u201d to \u201c[SP 800-160- 1], [SP 800-160-2]\u201d"
+              },
+              {
+                "text": "221"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PS-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "222"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PS-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "222"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement PS-3(3) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d"
+              },
+              {
+                "text": "224"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PT-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "229"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control PT-1 Discussion: Change \u201cprivacy breaches\u201d to \u201cbreaches\u201d"
+              },
+              {
+                "text": "229"
+              }
+            ]
+          }
+        ],
+        "table_geometry": {
+          "bbox_clipped_to_page": false,
+          "full_normalized_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8982575734456381
+          ],
+          "off_page_extent": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0
+          },
+          "raw_bbox": [
+            89.76000213623047,
+            72.47998046875,
+            521.760009765625,
+            711.4199981689453
+          ],
+          "visible_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8982575734456381
+          ]
+        },
+        "whitespace": 0.0
+      },
+      "source_type": "table",
+      "table_geometry": {
+        "bbox_clipped_to_page": false,
+        "full_normalized_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8982575734456381
+        ],
+        "off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "raw_bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          711.4199981689453
+        ],
+        "visible_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8982575734456381
+        ]
+      },
+      "text": "DATE | TYPE | REVISION | PAGE\n12-10-2020 | Editorial | Control PE-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 179\n12-10-2020 | Editorial | Control PE-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 179\n12-10-2020 | Editorial | Control Enhancement PE-3(8) Discussion: Delete \u201c, or mantrap,\u201d | 183\n12-10-2020 | Editorial | Control Enhancement PE-3(8) Discussion: Change \u201cMantraps\u201d to \u201cVestibules\u201d | 183\n12-10-2020 | Editorial | Control Enhancement PE-19(1) Title: Delete \u201dAND TEMPEST\u201d | 192\n12-10-2020 | Editorial | Control PL-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 194\n12-10-2020 | Editorial | Control PL-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 194\n12-10-2020 | Editorial | Control PL-2 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 196\n12-10-2020 | Editorial | Control PL-7 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 198\n12-10-2020 | Editorial | Control PL-11 Discussion: Change \u201c[FISMA] and [PRIVACT]\u201d to \u201c[FISMA], [PRIVACT], and [OMB A-130]\u201d | 201\n12-10-2020 | Editorial | Control PM-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 204\n12-10-2020 | Editorial | Control PM-2 References: Add \u201c, [SP 800-181]\u201d | 204\n12-10-2020 | Editorial | Control PM-5 References: Add \u201c[OMB A-130],\u201d | 206\n12-10-2020 | Editorial | Control PM-8 References: Add \u201c[EO 13636],\u201d | 207\n12-10-2020 | Editorial | Control PM-10 References: Add \u201c, [SP 800-181]\u201d | 208\n12-10-2020 | Editorial | Control PM-11 Related Controls: Add \u201cRA-9,\u201d | 209\n12-10-2020 | Editorial | Control PM-12 References: Add \u201c[NITP12],\u201d | 210\n12-10-2020 | Editorial | Control PM-17 References: Add \u201c[SP 800-172],\u201d | 212\n12-10-2020 | Editorial | Control PM-19 Related Controls: Add \u201c, PM-27\u201d | 213\n12-10-2020 | Editorial | Control PM-22 References: Add \u201c[OMB M-19-15],\u201d | 216\n12-10-2020 | Editorial | Control PM-24 Related Controls: Add \u201cPT-2,\u201d | 216\n12-10-2020 | Editorial | Control PM-24 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 217\n12-10-2020 | Editorial | Control PM-25 Related Controls: Add \u201c, SI-12\u201d | 217\n12-10-2020 | Editorial | Control PM-25 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 217\n12-10-2020 | Editorial | Control PM-29 References: Add \u201c, [SP 800-181]\u201d | 219\n12-10-2020 | Editorial | Control PM-30 References: Add \u201c[CNSSD 505],\u201d | 220\n12-10-2020 | Editorial | Control PM-31 Discussion: Change \u201cSC-18c\u201d to \u201cSC-18b\u201d | 220\n12-10-2020 | Editorial | Control PM-31 References: Add \u201c, [SP 800-137A]\u201d | 221\n12-10-2020 | Editorial | Control PM-32 References: Change \u201c[SP 800-137]\u201d to \u201c[SP 800-160- 1], [SP 800-160-2]\u201d | 221\n12-10-2020 | Editorial | Control PS-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 222\n12-10-2020 | Editorial | Control PS-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 222\n12-10-2020 | Editorial | Control Enhancement PS-3(3) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d | 224\n12-10-2020 | Editorial | Control PT-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 229\n12-10-2020 | Editorial | Control PT-1 Discussion: Change \u201cprivacy breaches\u201d to \u201cbreaches\u201d | 229",
+      "type": "table"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 22,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 21
+}

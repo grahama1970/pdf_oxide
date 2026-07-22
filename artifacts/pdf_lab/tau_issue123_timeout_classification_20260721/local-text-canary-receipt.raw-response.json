@@ -1,0 +1,1 @@
+{"error":{"message":"All groups exhausted for model='local-text' (chain=['local-text']): Connection error.","type":"router_error","code":502,"advice":"All providers failed after exhausting fallbacks. Check /v1/scillm/health for provider status. If batch processing, use CHUNK_SIZE=4 to reduce concurrent load on providers.","skill":"/best-practices-scillm"}}

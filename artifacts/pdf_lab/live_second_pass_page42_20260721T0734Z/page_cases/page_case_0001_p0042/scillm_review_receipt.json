@@ -1,0 +1,129 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"defect\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0042:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The rendered page shows the top running header text: \u201cNIST SP 800-53, REV. 5\u201d at left and \u201cSECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS\u201d at right. The extracted JSON text and top-page bbox match this header region.\",\n      \"rationale\": \"This is page chrome/header content, and the candidate preset type side_chrome agrees with the visual page structure and extracted header_footer_noise classification.\",\n      \"suggested_fix_surface\": \"\"\n    },\n    {\n      \"candidate_id\": \"cand:p0042:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The rendered page shows a horizontal rule immediately below the running header. The extracted JSON contains an underscore-line block with a bbox directly under the header.\",\n      \"rationale\": \"The line is part of the page header chrome rather than main body content, so the side_chrome preset is appropriate.\",\n      \"suggested_fix_surface\": \"\"\n    },\n    {\n      \"candidate_id\": \"cand:p0042:0002:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The rendered page footer shows \u201cCHAPTER TWO\u201d on the lower left and \u201cPAGE 15\u201d on the lower right. The extracted JSON captures this as \u201cCHAPTER TWO  PAGE 15\u201d in the bottom-page bbox.\",\n      \"rationale\": \"Although the raw source_type is Body, the visual evidence is clearly footer/page chrome. The side_chrome preset matches the rendered page.\",\n      \"suggested_fix_surface\": \"\"\n    },\n    {\n      \"candidate_id\": \"cand:p0042:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The rendered page has rotated gray side text along the left margin: \u201cThis publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5.\u201d The extracted bbox is a narrow vertical left-margin region and the text matches.\",\n      \"rationale\": \"This is margin boilerplate/page chrome and not body content. The side_chrome preset is appropriate.\",\n      \"suggested_fix_surface\": \"\"\n    },\n    {\n      \"candidate_id\": \"cand:p0042:0004:appendix\",\n      \"status\": \"defect\",\n      \"evidence\": \"The candidate bbox covers the first main body paragraph near the top of the page. The paragraph discusses assurance-related controls and ends with a hyperlink-style reference to \u201cAppendix C.\u201d It is not an appendix section or appendix heading.\",\n      \"rationale\": \"The bbox and text extraction align with the rendered paragraph, but the preset type appendix does not agree with the visual/semantic evidence. This appears to be ordinary body text that merely references Appendix C.\",\n      \"suggested_fix_surface\": \"Adjust appendix preset detection/classification so references to an appendix inside normal paragraphs are not classified as appendix content.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0042:0005:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The rendered page shows \u201cEVIDENCE OF CONTROL IMPLEMENTATION\u201d as a bold, centered, all-caps title inside a shaded callout box. The extracted JSON captures the text and bbox correctly but classifies it as paragraph_block/text.\",\n      \"rationale\": \"The visual structure indicates this is a callout title or section heading rather than ordinary paragraph text. The candidate text and geometry are correct, but the semantic/preset classification as generic text is questionable.\",\n      \"suggested_fix_surface\": \"Improve heading/callout-title recognition for bold centered all-caps text inside shaded boxed regions.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0042:0006:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The rendered page shows a paragraph inside the shaded blue callout box beginning \u201cDuring control selection and implementation...\u201d The extracted JSON text and bbox match this paragraph region.\",\n      \"rationale\": \"This is body paragraph text within the callout. The text preset agrees with the rendered page and extracted content.\",\n      \"suggested_fix_surface\": \"\"\n    }\n  ],\n  \"page_rationale\": \"Most page chrome and body text candidates match the rendered evidence. The page has defects because one normal body paragraph was classified with an appendix preset due to an Appendix C reference, and the bold centered callout title is classified as generic text rather than a heading/callout title.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784618908,
+    "id": "chatcmpl-codex-e8b1534b",
+    "model": "gpt-5.5",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0042",
+      "item_id": "page_case_0001_p0042:377962653d02af59",
+      "request_sha256": "377962653d02af59b04763133003b80e62817d3dd543f234ec3915d58b7dd86d"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": "codex-oauth",
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "gpt-5.5",
+      "model_served": "gpt-5.5",
+      "routed_to_provider": "codex-oauth"
+    },
+    "scillm_reasoning": {
+      "applied_effort": "high",
+      "forwarded": true,
+      "ignored_reason": null,
+      "provider_field": "reasoning.effort",
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 1513,
+      "completion_tokens_details": null,
+      "prompt_tokens": 10225,
+      "prompt_tokens_details": null,
+      "total_tokens": 11738
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0042:0000:side_chrome",
+        "evidence": "The rendered page shows the top running header text: \u201cNIST SP 800-53, REV. 5\u201d at left and \u201cSECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS\u201d at right. The extracted JSON text and top-page bbox match this header region.",
+        "rationale": "This is page chrome/header content, and the candidate preset type side_chrome agrees with the visual page structure and extracted header_footer_noise classification.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      },
+      {
+        "candidate_id": "cand:p0042:0001:side_chrome",
+        "evidence": "The rendered page shows a horizontal rule immediately below the running header. The extracted JSON contains an underscore-line block with a bbox directly under the header.",
+        "rationale": "The line is part of the page header chrome rather than main body content, so the side_chrome preset is appropriate.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      },
+      {
+        "candidate_id": "cand:p0042:0002:side_chrome",
+        "evidence": "The rendered page footer shows \u201cCHAPTER TWO\u201d on the lower left and \u201cPAGE 15\u201d on the lower right. The extracted JSON captures this as \u201cCHAPTER TWO  PAGE 15\u201d in the bottom-page bbox.",
+        "rationale": "Although the raw source_type is Body, the visual evidence is clearly footer/page chrome. The side_chrome preset matches the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      },
+      {
+        "candidate_id": "cand:p0042:0003:side_chrome",
+        "evidence": "The rendered page has rotated gray side text along the left margin: \u201cThis publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5.\u201d The extracted bbox is a narrow vertical left-margin region and the text matches.",
+        "rationale": "This is margin boilerplate/page chrome and not body content. The side_chrome preset is appropriate.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      },
+      {
+        "candidate_id": "cand:p0042:0004:appendix",
+        "evidence": "The candidate bbox covers the first main body paragraph near the top of the page. The paragraph discusses assurance-related controls and ends with a hyperlink-style reference to \u201cAppendix C.\u201d It is not an appendix section or appendix heading.",
+        "rationale": "The bbox and text extraction align with the rendered paragraph, but the preset type appendix does not agree with the visual/semantic evidence. This appears to be ordinary body text that merely references Appendix C.",
+        "status": "defect",
+        "suggested_fix_surface": "Adjust appendix preset detection/classification so references to an appendix inside normal paragraphs are not classified as appendix content."
+      },
+      {
+        "candidate_id": "cand:p0042:0005:text",
+        "evidence": "The rendered page shows \u201cEVIDENCE OF CONTROL IMPLEMENTATION\u201d as a bold, centered, all-caps title inside a shaded callout box. The extracted JSON captures the text and bbox correctly but classifies it as paragraph_block/text.",
+        "rationale": "The visual structure indicates this is a callout title or section heading rather than ordinary paragraph text. The candidate text and geometry are correct, but the semantic/preset classification as generic text is questionable.",
+        "status": "defect",
+        "suggested_fix_surface": "Improve heading/callout-title recognition for bold centered all-caps text inside shaded boxed regions."
+      },
+      {
+        "candidate_id": "cand:p0042:0006:text",
+        "evidence": "The rendered page shows a paragraph inside the shaded blue callout box beginning \u201cDuring control selection and implementation...\u201d The extracted JSON text and bbox match this paragraph region.",
+        "rationale": "This is body paragraph text within the callout. The text preset agrees with the rendered page and extracted content.",
+        "status": "clean",
+        "suggested_fix_surface": ""
+      }
+    ],
+    "page_rationale": "Most page chrome and body text candidates match the rendered evidence. The page has defects because one normal body paragraph was classified with an appendix preset due to an Appendix C reference, and the bold centered callout title is classified as generic text rather than a heading/callout title.",
+    "page_status": "defect",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0042",
+    "item_id": "page_case_0001_p0042:377962653d02af59",
+    "request_sha256": "377962653d02af59b04763133003b80e62817d3dd543f234ec3915d58b7dd86d"
+  }
+}

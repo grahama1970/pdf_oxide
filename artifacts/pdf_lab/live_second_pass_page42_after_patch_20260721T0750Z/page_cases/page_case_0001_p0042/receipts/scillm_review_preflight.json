@@ -1,0 +1,21 @@
+{
+  "command_or_endpoint": "GET /health/liveliness + GET /v1/scillm/health",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T07:31:18.241767+00:00",
+  "input_artifacts": [
+    "review_request.json"
+  ],
+  "next_allowed_nodes": [
+    "scillm_one_shot_page_review"
+  ],
+  "node_id": "scillm_review_preflight",
+  "output_artifacts": [
+    "scillm_review_preflight.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T07:31:18.241755+00:00",
+  "validator_result": {
+    "errors": [],
+    "ok": true
+  }
+}

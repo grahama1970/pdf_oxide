@@ -1,0 +1,81 @@
+{
+  "candidate": "standalone Control Enhancements label",
+  "candidate_block": {
+    "bbox": [
+      0.20588235294117646,
+      0.6324741093799321,
+      0.3617490381976358,
+      0.6494018092299952
+    ],
+    "font_name": "TT0",
+    "font_size": 10.020000457763672,
+    "id": "actual:p104:block:18",
+    "is_bold": false,
+    "page": 104,
+    "pdf_page_index": 103,
+    "raw": {
+      "bbox": [
+        126.0,
+        280.79998779296875,
+        97.60482788085938,
+        10.019989013671875
+      ],
+      "block_type": "Body",
+      "confidence": 0.8999999761581421,
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "header_level": null,
+      "is_bold": false,
+      "text": "Control Enhancements:"
+    },
+    "semantic_role": "nist_control_enhancements_heading",
+    "source_type": "Body",
+    "text": "Control Enhancements:",
+    "type": "section_subtitle"
+  },
+  "current_snapshot": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/current_page104_snapshot.json",
+  "label_match_count": 1,
+  "live": false,
+  "mocked": false,
+  "page": 104,
+  "page104_block_count": 26,
+  "page104_type_counts": {
+    "header_footer_noise": 4,
+    "list": 2,
+    "paragraph_block": 12,
+    "reference": 2,
+    "section_heading": 5,
+    "section_subtitle": 1
+  },
+  "proof_commands": {
+    "broad_nist_regression": "pytest -q tests/test_nist_page104_control_enhancements_subtitle.py tests/test_nist_page104_au12_page_break_label.py tests/test_nist_page45_discussion_role.py tests/test_nist_page45_discussion_text.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page35_control_families_table.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page46_nested_list_segmentation.py",
+    "focused_page104": "pytest -q tests/test_nist_page104_control_enhancements_subtitle.py tests/test_nist_page104_au12_page_break_label.py",
+    "green": "pytest -q tests/test_nist_page104_control_enhancements_subtitle.py",
+    "json_schema": "python -m json.tool python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+    "red": "pytest -q tests/test_nist_page104_control_enhancements_subtitle.py"
+  },
+  "proof_results": {
+    "broad_nist_regression": "19 passed, 5 warnings in 438.67s",
+    "focused_page104": "2 passed, 5 warnings in 72.10s",
+    "green": "1 passed, 5 warnings in 26.16s",
+    "red": "1 failed in 18.71s; type was section_heading before patch"
+  },
+  "schema": "pdf_lab.page104_control_enhancements_subtitle_audit.v1",
+  "selection_receipt": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/selection_receipt.json",
+  "sha256": {
+    "current_page104_snapshot": "bc0579c764a712416400e8c61fca19bfbe3688455e80132dc1e2550114f15baa",
+    "selection_receipt": "5e70067fa69613dcf910d4e04ba929cd7cfc61748fd1327b1d0046b4bd674a21",
+    "visual_receipt": "acfa89b8ec878b2ef6a91e5421ffaa1745d7cad7c405ce3a4ecf8b053f324d21"
+  },
+  "status": "passing_current_contract",
+  "test_logs": {
+    "broad_nist_regression": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/test_logs/pytest_broad_nist_regression.log",
+    "focused_page104": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/test_logs/pytest_page104_focused.log",
+    "green": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/test_logs/green_test_page104_control_enhancements_subtitle.log",
+    "red": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/test_logs/red_test_page104_control_enhancements_subtitle.log",
+    "snapshot": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/test_logs/current_snapshot_page104.log"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/visual_receipt.json",
+  "what_remains_unverified": "live model-backed second-pass repair lifecycle and Criterion 6 live GitHub apply",
+  "what_was_exercised": "deterministic local extraction of NIST SP 800-53r5 page 104 with the release promotion ledger"
+}

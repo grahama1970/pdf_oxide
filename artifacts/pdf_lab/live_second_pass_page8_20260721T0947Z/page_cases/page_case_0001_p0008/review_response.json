@@ -1,0 +1,49 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0008:0000:side_chrome",
+      "evidence": "Header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' is accurately extracted. The bounding box, text content, and classification as 'side_chrome' align with the rendered page and annotated image.",
+      "rationale": "The top header information, which is considered page chrome, is correctly identified and extracted.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0008:0001:side_chrome",
+      "evidence": "The horizontal rule (underscore line) below the header is accurately extracted. The bounding box, text content, and classification as 'side_chrome' align with the rendered page and annotated image.",
+      "rationale": "The horizontal rule, a design element considered page chrome, is correctly identified and extracted.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0008:0002:side_chrome",
+      "evidence": "The page number 'vi' at the bottom center is accurately extracted. The bounding box, text content, and classification as 'side_chrome' align with the rendered page and annotated image.",
+      "rationale": "The page number, a standard page chrome element, is correctly identified and extracted.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0008:0003:side_chrome",
+      "evidence": "The vertical boilerplate text on the left side of the page is accurately extracted. The bounding box, text content, and classification as 'side_chrome' align with the rendered page and annotated image.",
+      "rationale": "The vertical boilerplate text, which is a consistent page chrome element, is correctly identified and extracted.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0008:0004:text",
+      "evidence": "The heading 'RISK MANAGEMENT' is accurately extracted. The bounding box, text content, and classification as 'text' align with the rendered page and annotated image.",
+      "rationale": "The main content heading is correctly identified and extracted as a standard text block.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0008:0005:text",
+      "evidence": "The main body paragraph starting with 'Organizations must exercise due diligence...' is accurately extracted. The bounding box, text content, and classification as 'text' align with the rendered page and annotated image.",
+      "rationale": "The main body paragraph is correctly identified and extracted as a standard text block.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    }
+  ],
+  "page_rationale": "All identified candidates on page 8, including header, horizontal rule, page number, vertical boilerplate, a heading, and a main body paragraph, are accurately extracted with correct bounding boxes and classifications. The extracted JSON perfectly reflects the visual and structural elements of the page.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

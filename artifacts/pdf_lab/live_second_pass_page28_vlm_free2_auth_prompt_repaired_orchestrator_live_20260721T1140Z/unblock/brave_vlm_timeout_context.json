@@ -1,0 +1,32 @@
+{
+  "query": "LLM vision JSON structured output long prompt image timeout reduce candidates payload",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "How to Prompt LLMs for Vision: Tips to Boost Accuracy",
+      "description": "Below is the generationConfig dictionary, which shows how the above parameters can be used with Gemini Inference inside the payload: &quot;generationConfig&quot;: { &quot;temperature&quot;: 0, &quot;topK&quot;: 5, &quot;topP&quot;: 0.9, &quot;maxOutputTokens&quot;: 8000, &quot;stopSequences&quot;: [&quot;&lt;THE END&gt;&quot;], # The LLM stops generating when this sequence appears. &quot;thinkingConfig&quot;: { &quot;thinkingBudget&quot;: -1 # Dynamic thinking enabled } } Large Multimodal Models like Google Gemini have transformed computer vision by integrating text and image understanding. By carefully structuring prompts, leveraging contextual cues and examples, and using structured outputs or grounding search, you can significantly improve accuracy in tasks such as object detection, OCR, and visual question answering.",
+      "url": "https://blog.roboflow.com/prompting-tips-for-large-language-models-with-vision/"
+    },
+    {
+      "title": "Structured Outputs - Ollama",
+      "description": "Fetch the complete documentation index at: /llms.txt \u00b7 Use this file to discover all available pages before exploring further. ... Ollama\u2019s Cloud currently does not support structured outputs. Structured outputs let you enforce a JSON schema on model responses so you can reliably extract structured data, describe images, or keep every reply consistent.",
+      "url": "https://docs.ollama.com/capabilities/structured-outputs"
+    },
+    {
+      "title": "Vision Language Model Prompt Engineering Guide for Image and Video Understanding | NVIDIA Technical Blog",
+      "description": "<strong>The VLM can also be prompted to output in a structured format such as JSON so that the response can easily be parsed and sent to a database or a notification service</strong>.",
+      "url": "https://developer.nvidia.com/blog/vision-language-model-prompt-engineering-guide-for-image-and-video-understanding/"
+    },
+    {
+      "title": "LLM Structured Output in 2026: Stop Parsing JSON with Regex and Do It Right - DEV Community",
+      "description": "When you JSON.parse() a raw LLM response, you&#x27;re making several dangerous assumptions: ... Structured output eliminates all six of these problems by constraining the model&#x27;s output at the token generation level \u2014 not after the fact. Level 1: Prompt Engineering (Unreliable) &quot;Return JSON with fields: name, email, score&quot; \u2192 Works 80-95% of the time \u2192 Fails silently on edge cases \u2192 No type guarantees Level 2: Function Calling / Tool Use (Better) Define a function schema, model &quot;calls&quot; it \u2192 Works 95-99% of the time \u2192 Schema is a hint, not a constraint \u2192 Can still produce invalid values within valid types Level 3: Native Structured Output (Best) Constrained decoding with JSON Schema \u2192 Works 100% of the time (schema-valid guaranteed) \u2192 Uses finite state machines to mask invalid tokens \u2192 Types AND values are enforced at generation time",
+      "url": "https://dev.to/pockit_tools/llm-structured-output-in-2026-stop-parsing-json-with-regex-and-do-it-right-34pk"
+    },
+    {
+      "title": "Best Structured Prompt Formats for LLMs, Ranked \u2014 MightyBot",
+      "description": "It is a compact, lossless way to represent JSON-like data for LLM input by declaring repeated fields once and encoding uniform object arrays as rows. It is most useful when many records share the same schema. ... TOON can be better than JSON when the input is a uniform array of objects because it declares fields once and streams rows compactly. It is not automatically better for small, deeply nested, or irregular payloads, and it may require extra prompt instructions that reduce the token savings on short inputs.",
+      "url": "https://mightybot.ai/blog/best-structured-prompt-formats-for-llms/"
+    }
+  ]
+}

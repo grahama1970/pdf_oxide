@@ -1,0 +1,377 @@
+{
+  "batch_id": "ruled-table-after-final-verified-target-rerun",
+  "created_at": "2026-06-01T21:00:59.286151+00:00",
+  "finding_count": 0,
+  "findings": [],
+  "human_needed": [],
+  "human_needed_count": 0,
+  "manifests": [
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:35.267077+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 19,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0019/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0019/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0019/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0019/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0019/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0019/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:22.362985+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:03.722956+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 20,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0020/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0020/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0020/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0020/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0020/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0020/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:14.207220+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T20:59:53.262114+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 21,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0021/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0021/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0021/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0021/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0021/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0021/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:11.830662+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T20:59:40.616065+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 22,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0022/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0022/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0022/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0022/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0022/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0022/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:06.990166+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T20:59:45.551546+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 23,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0023/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0023/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0023/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0023/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0023/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0023/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:09.383457+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T20:59:36.401643+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 24,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0024/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0024/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0024/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0024/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0024/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0024/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:08.196161+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:02.188508+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 457,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0457/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0457/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0457/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0457/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0457/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0457/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:13.001461+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:41.132789+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 458,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0458/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0458/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0458/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0458/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0458/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0458/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:23.526225+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:51.396900+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 461,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0461/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0461/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0461/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0461/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0461/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0461/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:27.096960+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:30.043918+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 464,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0464/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0464/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0464/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0464/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0464/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0464/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:21.274388+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:19.373330+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 466,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0466/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0466/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0466/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0466/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0466/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0466/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:18.910616+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:11.811578+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 470,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0470/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0470/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0470/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0470/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0470/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0470/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:16.564732+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:59.284723+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 474,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0474/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0474/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0474/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0474/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0474/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0474/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:28.254596+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:12.067671+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 481,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0481/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0481/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0481/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0481/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0481/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0481/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:15.399048+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T20:59:53.127645+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 482,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0482/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0482/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0482/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0482/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0482/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0482/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:10.654418+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:21.483852+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 485,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0485/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0485/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0485/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0485/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0485/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0485/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:17.743015+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:49.708611+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 486,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0486/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0486/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0486/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0486/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0486/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0486/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:25.907740+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:42.951607+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 489,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0489/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0489/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0489/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0489/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0489/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0489/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:24.724155+00:00"
+    },
+    {
+      "finding_count": 0,
+      "finished_at": "2026-06-01T21:00:27.696820+00:00",
+      "human_needed_count": 0,
+      "model": "gpt-5.5",
+      "ok": true,
+      "page": 490,
+      "parse_error": "",
+      "paths": {
+        "model_review": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0490/model_review.json",
+        "overlay": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0490/bbox_overlay_current.png",
+        "page": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0490/page.png",
+        "prompt": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0490/prompt.txt",
+        "response_raw": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0490/response.raw.json",
+        "validation": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_verified_target_rerun/pages/page_0490/validation.json"
+      },
+      "raw_ok": true,
+      "started_at": "2026-06-01T20:59:20.097523+00:00"
+    }
+  ],
+  "model": "gpt-5.5",
+  "ok_count": 19,
+  "packet": "artifacts/pdf_lab/project_agent_hardening/fresh_next30_review_packet_20260601Tnow",
+  "page_count": 19,
+  "raw_ok_count": 19,
+  "schema": "pdf_oxide.next30_agentic_second_pass.summary.v1"
+}

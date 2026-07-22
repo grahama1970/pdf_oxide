@@ -1,0 +1,32 @@
+{
+  "query": "OpenAI compatible chat completions ReadTimeout local LLM large prompt image payload timeout mitigation",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Configuring timeout for ChatCompletion Python - API - OpenAI Developer Community",
+      "description": "I, like many of the rest of us, are running into the random 600s read_timeout error with the ChatCompletions api using gpt-3.5-turbo. I have looked through the python code and see that there is a timeout parameter that d\u2026",
+      "url": "https://community.openai.com/t/configuring-timeout-for-chatcompletion-python/107226"
+    },
+    {
+      "title": "Timeout for OpenAI chat completion in Python - API - OpenAI Developer Community",
+      "description": "I\u2019m using the OpenAI API in a Python 3.10 program using the python client library, the model is \u2018gpt-3.5-turbo\u2019. I\u2019ve noticed that periodically the openai.chatcompletion call randomly takes a very long time to complete. I want to protect my users from having to wait for completion by ...",
+      "url": "https://community.openai.com/t/timeout-for-openai-chat-completion-in-python/411252"
+    },
+    {
+      "title": "Setting Timeout in the OpenAI Python Library - BioErrorLog Tech Blog",
+      "description": "Looking at the openai source code, it appears that a timeout parameter might also work for ChatCompletion. class ChatCompletion(EngineAPIResource): engine_required = False OBJECT_NAME = &quot;chat.completions&quot; @classmethod def create(cls, *args, **kwargs): &quot;&quot;&quot; Creates a new chat completion for the provided messages and parameters.",
+      "url": "https://en.bioerrorlog.work/entry/openai-python-timeout"
+    },
+    {
+      "title": "How To Fix OpenAI Rate Limits & Timeout Errors. | by Puneet Bhatt | Medium",
+      "description": "Let\u2019s explore a few of them briefly. ... <strong>Exponential backoff</strong> is a strategy used to handle rate limits by gradually increasing the time between subsequent retries in the event of a rate-limiting error.",
+      "url": "https://medium.com/@puneet1337/how-to-fix-openai-rate-limits-timeout-errors-cd3dc5ddd50b"
+    },
+    {
+      "title": "Speeding up your OpenAI LLM applications | by Diverger | Medium",
+      "description": "To solve this, we introduce a straightforward solution <strong>using the stream API option together with the timeout parameter</strong> so that these blocked requests can easily be detected and restarted.",
+      "url": "https://diverger.medium.com/speeding-up-your-openai-llm-applications-f0e011f2f0d6"
+    }
+  ]
+}

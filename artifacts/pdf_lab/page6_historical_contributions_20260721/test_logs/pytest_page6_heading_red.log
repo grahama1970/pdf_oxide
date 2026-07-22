@@ -1,0 +1,2272 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_nist_page_6_historical_contributions_is_frontmatter_heading_not_reference _
+
+    def test_nist_page_6_historical_contributions_is_frontmatter_heading_not_reference():
+        page = _extract_page_6_with_ledger()
+        matches = [block for block in page.get("blocks") or [] if str(block.get("text") or "") == HEADING_TEXT]
+
+        assert len(matches) == 1
+        heading = matches[0]
+>       assert heading.get("type") == "section_heading"
+E       AssertionError: assert 'reference' == 'section_heading'
+E
+E         - section_heading
+E         + reference
+
+tests/test_nist_page6_historical_contributions_heading.py:35: AssertionError
+----------------------------- Captured stderr call -----------------------------
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=90 y=748
+[text_raster] 'I' found=1 missing=0 font_size=1.0 x=91 y=748
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=91 y=748
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=91 y=748
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=106 y=748
+[text_raster] 'P' found=1 missing=0 font_size=1.0 x=107 y=748
+[text_raster] '80' found=2 missing=0 font_size=1.0 x=116 y=748
+[text_raster] '0' found=1 missing=0 font_size=1.0 x=117 y=748
+[text_raster] '-' found=1 missing=0 font_size=1.0 x=116 y=748
+[text_raster] '53' found=2 missing=0 font_size=1.0 x=117 y=748
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=118 y=748
+[text_raster] 'R' found=1 missing=0 font_size=1.0 x=142 y=748
+[text_raster] 'EV' found=2 missing=0 font_size=1.0 x=146 y=748
+[text_raster] '.' found=1 missing=0 font_size=1.0 x=153 y=748
+[text_raster] '5' found=1 missing=0 font_size=1.0 x=156 y=748
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=285 y=748
+[text_raster] 'EC' found=2 missing=0 font_size=1.0 x=289 y=748
+[text_raster] 'U' found=1 missing=0 font_size=1.0 x=290 y=748
+[text_raster] 'RI' found=2 missing=0 font_size=1.0 x=291 y=748
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=291 y=748
+[text_raster] 'Y' found=1 missing=0 font_size=1.0 x=292 y=748
+[text_raster] ' A' found=1 missing=0 font_size=1.0 x=292 y=748
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=293 y=748
+[text_raster] 'D' found=1 missing=0 font_size=1.0 x=294 y=748
+[text_raster] 'P' found=1 missing=0 font_size=1.0 x=326 y=748
+[text_raster] 'RI' found=2 missing=0 font_size=1.0 x=330 y=748
+[text_raster] 'V' found=1 missing=0 font_size=1.0 x=331 y=748
+[text_raster] 'A' found=1 missing=0 font_size=1.0 x=332 y=748
+[text_raster] 'C' found=1 missing=0 font_size=1.0 x=332 y=748
+[text_raster] 'Y' found=1 missing=0 font_size=1.0 x=333 y=748
+[text_raster] 'C' found=1 missing=0 font_size=1.0 x=351 y=748
+[text_raster] 'O' found=1 missing=0 font_size=1.0 x=355 y=748
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=356 y=748
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=357 y=748
+[text_raster] 'RO' found=2 missing=0 font_size=1.0 x=357 y=748
+[text_raster] 'L' found=1 missing=0 font_size=1.0 x=358 y=748
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=359 y=748
+[text_raster] ' F' found=1 missing=0 font_size=1.0 x=359 y=748
+[text_raster] 'O' found=1 missing=0 font_size=1.0 x=360 y=748
+[text_raster] 'R ' found=1 missing=0 font_size=1.0 x=361 y=748
+[text_raster] 'I' found=1 missing=0 font_size=1.0 x=394 y=748
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=396 y=748
+[text_raster] 'F' found=1 missing=0 font_size=1.0 x=397 y=748
+[text_raster] 'O' found=1 missing=0 font_size=1.0 x=397 y=748
+[text_raster] 'RM' found=2 missing=0 font_size=1.0 x=398 y=748
+[text_raster] 'A' found=1 missing=0 font_size=1.0 x=400 y=748
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=400 y=748
+[text_raster] 'I' found=1 missing=0 font_size=1.0 x=401 y=748
+[text_raster] 'O' found=1 missing=0 font_size=1.0 x=401 y=748
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=402 y=748
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=435 y=748
+[text_raster] 'Y' found=1 missing=0 font_size=1.0 x=439 y=748
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=440 y=748
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=440 y=748
+[text_raster] 'EM' found=2 missing=0 font_size=1.0 x=441 y=748
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=442 y=748
+[text_raster] ' A' found=1 missing=0 font_size=1.0 x=442 y=748
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=443 y=748
+[text_raster] 'D' found=1 missing=0 font_size=1.0 x=444 y=748
+[text_raster] 'O' found=1 missing=0 font_size=1.0 x=475 y=748
+[text_raster] 'RG' found=2 missing=0 font_size=1.0 x=480 y=748
+[text_raster] 'A' found=1 missing=0 font_size=1.0 x=481 y=748
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=482 y=748
+[text_raster] 'I' found=1 missing=0 font_size=1.0 x=483 y=748
+[text_raster] 'Z' found=1 missing=0 font_size=1.0 x=483 y=748
+[text_raster] 'A' found=1 missing=0 font_size=1.0 x=483 y=748
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=484 y=748
+[text_raster] 'I' found=1 missing=0 font_size=1.0 x=485 y=748
+[text_raster] 'O' found=1 missing=0 font_size=1.0 x=485 y=748
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=485 y=748
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=486 y=748
+[text_raster] '_________' found=9 missing=0 font_size=1.0 x=90 y=739
+[text_raster] '____' found=4 missing=0 font_size=1.0 x=95 y=739
+[text_raster] '_________' found=9 missing=0 font_size=1.0 x=97 y=739
+[text_raster] '____' found=4 missing=0 font_size=1.0 x=102 y=739
+[text_raster] '_________' found=9 missing=0 font_size=1.0 x=104 y=739
+[text_raster] '____' found=4 missing=0 font_size=1.0 x=109 y=739
+[text_raster] '_________' found=9 missing=0 font_size=1.0 x=112 y=739
+[text_raster] '____' found=4 missing=0 font_size=1.0 x=117 y=739
+[text_raster] '_________' found=9 missing=0 font_size=1.0 x=119 y=739
+[text_raster] '____' found=4 missing=0 font_size=1.0 x=124 y=739
+[text_raster] '_________' found=9 missing=0 font_size=1.0 x=126 y=739
+[text_raster] '____' found=4 missing=0 font_size=1.0 x=131 y=739
+[text_raster] '_________' found=9 missing=0 font_size=1.0 x=133 y=739
+[text_raster] '____' found=4 missing=0 font_size=1.0 x=138 y=739
+[text_raster] '______' found=6 missing=0 font_size=1.0 x=141 y=739
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=303 y=38
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=303 y=38
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=21 y=564
+[text_raster] 'hi' found=2 missing=0 font_size=1.0 x=22 y=564
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=22 y=564
+[text_raster] ' pub' found=3 missing=0 font_size=1.0 x=23 y=564
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=25 y=564
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=25 y=564
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=25 y=564
+[text_raster] 'at' found=2 missing=0 font_size=1.0 x=26 y=564
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=27 y=564
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=27 y=564
+[text_raster] 'n i' found=2 missing=0 font_size=1.0 x=27 y=564
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=29 y=564
+[text_raster] ' av' found=2 missing=0 font_size=1.0 x=29 y=564
+[text_raster] 'ai' found=2 missing=0 font_size=1.0 x=30 y=564
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=31 y=564
+[text_raster] 'ab' found=2 missing=0 font_size=1.0 x=31 y=564
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=32 y=564
+[text_raster] 'e f' found=2 missing=0 font_size=1.0 x=33 y=564
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=34 y=564
+[text_raster] 'ee of' found=4 missing=0 font_size=1.0 x=34 y=564
+[text_raster] ' c' found=1 missing=0 font_size=1.0 x=36 y=564
+[text_raster] 'har' found=3 missing=0 font_size=1.0 x=37 y=564
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=39 y=564
+[text_raster] 'e f' found=2 missing=0 font_size=1.0 x=39 y=564
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=40 y=564
+[text_raster] 'om' found=2 missing=0 font_size=1.0 x=41 y=564
+[text_raster] ':' found=1 missing=0 font_size=1.0 x=42 y=564
+[text_raster] 'ht' found=2 missing=0 font_size=1.0 x=21 y=371
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=22 y=371
+[text_raster] 'ps' found=2 missing=0 font_size=1.0 x=22 y=371
+[text_raster] ':' found=1 missing=0 font_size=1.0 x=23 y=371
+[text_raster] '/' found=1 missing=0 font_size=1.0 x=24 y=371
+[text_raster] '/' found=1 missing=0 font_size=1.0 x=24 y=371
+[text_raster] 'doi' found=3 missing=0 font_size=1.0 x=24 y=371
+[text_raster] '.' found=1 missing=0 font_size=1.0 x=25 y=371
+[text_raster] 'or' found=2 missing=0 font_size=1.0 x=26 y=371
+[text_raster] 'g/' found=2 missing=0 font_size=1.0 x=27 y=371
+[text_raster] '10.' found=3 missing=0 font_size=1.0 x=27 y=371
+[text_raster] '6' found=1 missing=0 font_size=1.0 x=29 y=371
+[text_raster] '02' found=2 missing=0 font_size=1.0 x=29 y=371
+[text_raster] '8/' found=2 missing=0 font_size=1.0 x=30 y=371
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=31 y=371
+[text_raster] 'I' found=1 missing=0 font_size=1.0 x=32 y=371
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=32 y=371
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=33 y=371
+[text_raster] '.' found=1 missing=0 font_size=1.0 x=34 y=371
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=34 y=371
+[text_raster] 'P' found=1 missing=0 font_size=1.0 x=35 y=371
+[text_raster] '.' found=1 missing=0 font_size=1.0 x=35 y=371
+[text_raster] '800' found=3 missing=0 font_size=1.0 x=35 y=371
+[text_raster] '-' found=1 missing=0 font_size=1.0 x=21 y=226
+[text_raster] '53r' found=3 missing=0 font_size=1.0 x=21 y=223
+[text_raster] '5' found=1 missing=0 font_size=1.0 x=23 y=223
+[text_raster] 'In' found=2 missing=0 font_size=1.0 x=90 y=710
+[text_raster] ' a' found=1 missing=0 font_size=1.0 x=91 y=710
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=92 y=710
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=92 y=710
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=93 y=710
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=93 y=710
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=93 y=710
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=94 y=710
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=94 y=710
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=95 y=710
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=95 y=710
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=90 y=710
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=90 y=710
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=91 y=710
+[text_raster] ' a' found=1 missing=0 font_size=1.0 x=91 y=710
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=92 y=710
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=93 y=710
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=93 y=710
+[text_raster] 'e a' found=2 missing=0 font_size=1.0 x=94 y=710
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=95 y=710
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=96 y=710
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=96 y=710
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=96 y=710
+[text_raster] 'w' found=1 missing=0 font_size=1.0 x=97 y=710
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=97 y=710
+[text_raster] 'ed' found=2 missing=0 font_size=1.0 x=98 y=710
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=99 y=710
+[text_raster] 'me' found=2 missing=0 font_size=1.0 x=99 y=710
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=101 y=710
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=101 y=710
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=101 y=710
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=102 y=710
+[text_raster] ' a' found=1 missing=0 font_size=1.0 x=102 y=710
+[text_raster] ' s' found=1 missing=0 font_size=1.0 x=103 y=710
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=104 y=710
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=104 y=710
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=105 y=710
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=105 y=710
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=105 y=710
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=106 y=710
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=106 y=710
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=107 y=710
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=108 y=710
+[text_raster] 'e o' found=2 missing=0 font_size=1.0 x=113 y=710
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=114 y=710
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=115 y=710
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=115 y=710
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=116 y=710
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=116 y=710
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=117 y=710
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=117 y=710
+[text_raster] ' go' found=2 missing=0 font_size=1.0 x=117 y=710
+[text_raster] 'es' found=2 missing=0 font_size=1.0 x=119 y=710
+[text_raster] ' t' found=1 missing=0 font_size=1.0 x=120 y=710
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=120 y=710
+[text_raster] 'J' found=1 missing=0 font_size=1.0 x=113 y=710
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=113 y=710
+[text_raster] 'ff B' found=3 missing=0 font_size=1.0 x=114 y=710
+[text_raster] 're' found=2 missing=0 font_size=1.0 x=114 y=710
+[text_raster] 'we' found=2 missing=0 font_size=1.0 x=115 y=710
+[text_raster] 'r, ' found=2 missing=0 font_size=1.0 x=116 y=710
+[text_raster] 'Ji' found=2 missing=0 font_size=1.0 x=126 y=710
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=126 y=710
+[text_raster] 'F' found=1 missing=0 font_size=1.0 x=90 y=708
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=90 y=708
+[text_raster] 'ti' found=2 missing=0 font_size=1.0 x=91 y=708
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=92 y=708
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=92 y=708
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=93 y=708
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=93 y=708
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=94 y=708
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=94 y=708
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=95 y=708
+[text_raster] 'NIS' found=3 missing=0 font_size=1.0 x=96 y=708
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=97 y=708
+[text_raster] ' w' found=1 missing=0 font_size=1.0 x=98 y=708
+[text_raster] 'eb' found=2 missing=0 font_size=1.0 x=99 y=708
+[text_raster] ' t' found=1 missing=0 font_size=1.0 x=100 y=708
+[text_raster] 'ea' found=2 missing=0 font_size=1.0 x=100 y=708
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=101 y=708
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=102 y=708
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=102 y=708
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=103 y=708
+[text_raster] ' t' found=1 missing=0 font_size=1.0 x=103 y=708
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=103 y=708
+[text_raster] 'ei' found=2 missing=0 font_size=1.0 x=104 y=708
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=105 y=708
+[text_raster] ' o' found=1 missing=0 font_size=1.0 x=105 y=708
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=106 y=708
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=107 y=708
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=107 y=708
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=107 y=708
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=108 y=708
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=108 y=708
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=109 y=708
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=109 y=708
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=109 y=708
+[text_raster] 'g ' found=1 missing=0 font_size=1.0 x=110 y=708
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=102 y=708
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=102 y=708
+[text_raster] 'mi' found=2 missing=0 font_size=1.0 x=103 y=708
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=104 y=708
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=104 y=708
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=105 y=708
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=105 y=708
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=105 y=708
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=106 y=708
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=106 y=708
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=107 y=708
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=107 y=708
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=107 y=708
+[text_raster] ' s' found=1 missing=0 font_size=1.0 x=108 y=708
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=109 y=708
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=109 y=708
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=110 y=708
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=110 y=708
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=111 y=708
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=111 y=708
+[text_raster] '.' found=1 missing=0 font_size=1.0 x=112 y=708
+[text_raster] 'Th' found=2 missing=0 font_size=1.0 x=102 y=708
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=103 y=708
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=122 y=708
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=122 y=708
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=123 y=708
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=123 y=708
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=124 y=708
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=124 y=708
+[text_raster] 's al' found=3 missing=0 font_size=1.0 x=125 y=708
+[text_raster] 'so' found=2 missing=0 font_size=1.0 x=126 y=708
+[text_raster] ' w' found=1 missing=0 font_size=1.0 x=127 y=708
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=128 y=708
+[text_raster] 'sh' found=2 missing=0 font_size=1.0 x=128 y=708
+[text_raster] 'to' found=2 missing=0 font_size=1.0 x=90 y=707
+[text_raster] ' r' found=1 missing=0 font_size=1.0 x=91 y=707
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=91 y=707
+[text_raster] 'co' found=2 missing=0 font_size=1.0 x=92 y=707
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=93 y=707
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=94 y=707
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=94 y=707
+[text_raster] 'ze' found=2 missing=0 font_size=1.0 x=94 y=707
+[text_raster] 'K' found=1 missing=0 font_size=1.0 x=95 y=707
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=95 y=707
+[text_raster] 'is' found=2 missing=0 font_size=1.0 x=96 y=707
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=96 y=707
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=97 y=707
+[text_raster] 'n B' found=2 missing=0 font_size=1.0 x=97 y=707
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=98 y=707
+[text_raster] 'ldw' found=3 missing=0 font_size=1.0 x=99 y=707
+[text_raster] 'in,' found=3 missing=0 font_size=1.0 x=100 y=707
+[text_raster] 'Car' found=3 missing=0 font_size=1.0 x=95 y=707
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=96 y=707
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=97 y=707
+[text_raster] ' Bal' found=3 missing=0 font_size=1.0 x=97 y=707
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=98 y=707
+[text_raster] 's,' found=2 missing=0 font_size=1.0 x=99 y=707
+[text_raster] 'Jo' found=2 missing=0 font_size=1.0 x=95 y=707
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=96 y=707
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=96 y=707
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=97 y=707
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=97 y=707
+[text_raster] 'zi' found=2 missing=0 font_size=1.0 x=98 y=707
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=98 y=707
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=99 y=707
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=99 y=707
+[text_raster] 'J' found=1 missing=0 font_size=1.0 x=95 y=707
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=95 y=707
+[text_raster] 'nn' found=2 missing=0 font_size=1.0 x=96 y=707
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=97 y=707
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=97 y=707
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=97 y=707
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=98 y=707
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=98 y=707
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=99 y=707
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=99 y=707
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=100 y=707
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=100 y=707
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=101 y=707
+[text_raster] 'lie' found=3 missing=0 font_size=1.0 x=101 y=707
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=102 y=707
+[text_raster] 'Se' found=2 missing=0 font_size=1.0 x=95 y=707
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=96 y=707
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=97 y=707
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=98 y=707
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=98 y=707
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=123 y=707
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=123 y=707
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=124 y=707
+[text_raster] 's,' found=2 missing=0 font_size=1.0 x=124 y=707
+[text_raster] 'Ru' found=2 missing=0 font_size=1.0 x=125 y=707
+[text_raster] 'th' found=2 missing=0 font_size=1.0 x=126 y=707
+[text_raster] 'Can' found=3 missing=0 font_size=1.0 x=90 y=706
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=91 y=706
+[text_raster] 'at' found=2 missing=0 font_size=1.0 x=92 y=706
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=93 y=706
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=93 y=706
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=93 y=706
+[text_raster] 'K' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'hle' found=3 missing=0 font_size=1.0 x=95 y=706
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=96 y=706
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=97 y=706
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=97 y=706
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=97 y=706
+[text_raster] 'upe' found=3 missing=0 font_size=1.0 x=98 y=706
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=100 y=706
+[text_raster] 'K' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'sh' found=2 missing=0 font_size=1.0 x=95 y=706
+[text_raster] 'a Cr' found=3 missing=0 font_size=1.0 x=96 y=706
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=97 y=706
+[text_raster] 'sb' found=2 missing=0 font_size=1.0 x=98 y=706
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=99 y=706
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=99 y=706
+[text_raster] 'Ch' found=2 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'ar' found=2 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=95 y=706
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=96 y=706
+[text_raster] 's Cu' found=3 missing=0 font_size=1.0 x=96 y=706
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=97 y=706
+[text_raster] 'sh' found=2 missing=0 font_size=1.0 x=98 y=706
+[text_raster] 'al' found=2 missing=0 font_size=1.0 x=99 y=706
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=100 y=706
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=100 y=706
+[text_raster] 'J' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] '’' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=95 y=706
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=96 y=706
+[text_raster] 'lle' found=3 missing=0 font_size=1.0 x=96 y=706
+[text_raster] ' D' found=1 missing=0 font_size=1.0 x=97 y=706
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=98 y=706
+[text_raster] 'V' found=1 missing=0 font_size=1.0 x=98 y=706
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=98 y=706
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=99 y=706
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=99 y=706
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=100 y=706
+[text_raster] 'J' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=95 y=706
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=96 y=706
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=96 y=706
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=96 y=706
+[text_raster] ' F' found=1 missing=0 font_size=1.0 x=97 y=706
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=97 y=706
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=98 y=706
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=98 y=706
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=99 y=706
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=99 y=706
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=100 y=706
+[text_raster] 'Ji' found=2 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=94 y=706
+[text_raster] 'F' found=1 missing=0 font_size=1.0 x=90 y=705
+[text_raster] 'en' found=2 missing=0 font_size=1.0 x=90 y=705
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=91 y=705
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=91 y=705
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=92 y=705
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=93 y=705
+[text_raster] 'Hild' found=4 missing=0 font_size=1.0 x=93 y=705
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=94 y=705
+[text_raster] ' Fe' found=2 missing=0 font_size=1.0 x=95 y=705
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=96 y=705
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=96 y=705
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=96 y=705
+[text_raster] 'io' found=2 missing=0 font_size=1.0 x=97 y=705
+[text_raster] 'lo' found=2 missing=0 font_size=1.0 x=98 y=705
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=98 y=705
+[text_raster] 'Ry' found=2 missing=0 font_size=1.0 x=93 y=705
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=94 y=705
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=94 y=705
+[text_raster] ' G' found=1 missing=0 font_size=1.0 x=95 y=705
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=95 y=705
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=96 y=705
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=96 y=705
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=96 y=705
+[text_raster] 'zzo' found=3 missing=0 font_size=1.0 x=97 y=705
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=98 y=705
+[text_raster] 'R' found=1 missing=0 font_size=1.0 x=106 y=705
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=106 y=705
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=106 y=705
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=107 y=705
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=107 y=705
+[text_raster] ' G' found=1 missing=0 font_size=1.0 x=108 y=705
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=108 y=705
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=109 y=705
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=109 y=705
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=110 y=705
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=110 y=705
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=111 y=705
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=112 y=705
+[text_raster] 'ik' found=2 missing=0 font_size=1.0 x=112 y=705
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=112 y=705
+[text_raster] 'G' found=1 missing=0 font_size=1.0 x=113 y=705
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=113 y=705
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=113 y=705
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=114 y=705
+[text_raster] 'ia' found=2 missing=0 font_size=1.0 x=114 y=705
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=115 y=705
+[text_raster] 'Pau' found=3 missing=0 font_size=1.0 x=117 y=705
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=119 y=705
+[text_raster] ' G' found=1 missing=0 font_size=1.0 x=119 y=705
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=119 y=705
+[text_raster] 'assi' found=4 missing=0 font_size=1.0 x=120 y=705
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=122 y=705
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=122 y=705
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=122 y=705
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=123 y=705
+[text_raster] 'c G' found=2 missing=0 font_size=1.0 x=123 y=705
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=124 y=705
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=124 y=705
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=125 y=705
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=126 y=705
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=126 y=705
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=128 y=705
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=90 y=703
+[text_raster] 'at' found=2 missing=0 font_size=1.0 x=90 y=703
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=91 y=703
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=91 y=703
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=92 y=703
+[text_raster] 'w' found=1 missing=0 font_size=1.0 x=92 y=703
+[text_raster] ' H' found=1 missing=0 font_size=1.0 x=93 y=703
+[text_raster] 'al' found=2 missing=0 font_size=1.0 x=93 y=703
+[text_raster] 'st' found=2 missing=0 font_size=1.0 x=94 y=703
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=95 y=703
+[text_raster] 'ad' found=2 missing=0 font_size=1.0 x=95 y=703
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=96 y=703
+[text_raster] 'K' found=1 missing=0 font_size=1.0 x=98 y=703
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=98 y=703
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=99 y=703
+[text_raster] 'in' found=2 missing=0 font_size=1.0 x=99 y=703
+[text_raster] ' He' found=2 missing=0 font_size=1.0 x=100 y=703
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=101 y=703
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=101 y=703
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=102 y=703
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=102 y=703
+[text_raster] 'Sc' found=2 missing=0 font_size=1.0 x=104 y=703
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=105 y=703
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=105 y=703
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=106 y=703
+[text_raster] ' Hill,' found=5 missing=0 font_size=1.0 x=106 y=703
+[text_raster] 'R' found=1 missing=0 font_size=1.0 x=108 y=703
+[text_raster] 'al' found=2 missing=0 font_size=1.0 x=108 y=703
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=108 y=703
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=109 y=703
+[text_raster] ' J' found=1 missing=0 font_size=1.0 x=110 y=703
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=110 y=703
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=110 y=703
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=111 y=703
+[text_raster] 's,' found=2 missing=0 font_size=1.0 x=112 y=703
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=113 y=703
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=113 y=703
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=114 y=703
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=114 y=703
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=114 y=703
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=114 y=703
+[text_raster] ' K' found=1 missing=0 font_size=1.0 x=115 y=703
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=115 y=703
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=115 y=703
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=116 y=703
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=116 y=703
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=116 y=703
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=117 y=703
+[text_raster] 'R' found=1 missing=0 font_size=1.0 x=113 y=703
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=113 y=703
+[text_raster] 'q' found=1 missing=0 font_size=1.0 x=114 y=703
+[text_raster] 'ue' found=2 missing=0 font_size=1.0 x=114 y=703
+[text_raster] 'l L' found=2 missing=0 font_size=1.0 x=115 y=703
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=115 y=703
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=116 y=703
+[text_raster] 'ne' found=2 missing=0 font_size=1.0 x=116 y=703
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=117 y=703
+[text_raster] 'J' found=1 missing=0 font_size=1.0 x=125 y=703
+[text_raster] 'aso' found=3 missing=0 font_size=1.0 x=125 y=703
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=127 y=703
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=90 y=702
+[text_raster] 'ar' found=2 missing=0 font_size=1.0 x=90 y=702
+[text_raster] 'si' found=2 missing=0 font_size=1.0 x=91 y=702
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=92 y=702
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=92 y=702
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=93 y=702
+[text_raster] 'K' found=1 missing=0 font_size=1.0 x=94 y=702
+[text_raster] 'ir' found=2 missing=0 font_size=1.0 x=94 y=702
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=94 y=702
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=95 y=702
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=95 y=702
+[text_raster] 'n M' found=2 missing=0 font_size=1.0 x=96 y=702
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=96 y=702
+[text_raster] 'nc' found=2 missing=0 font_size=1.0 x=97 y=702
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=98 y=702
+[text_raster] 'da' found=2 missing=0 font_size=1.0 x=99 y=702
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=100 y=702
+[text_raster] 'E' found=1 missing=0 font_size=1.0 x=100 y=702
+[text_raster] 'lle' found=3 missing=0 font_size=1.0 x=100 y=702
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=101 y=702
+[text_raster] ' N' found=1 missing=0 font_size=1.0 x=102 y=702
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=103 y=702
+[text_raster] 'de' found=2 missing=0 font_size=1.0 x=103 y=702
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=104 y=702
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=105 y=702
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=105 y=702
+[text_raster] 'E' found=1 missing=0 font_size=1.0 x=94 y=702
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=94 y=702
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=94 y=702
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=95 y=702
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=95 y=702
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=95 y=702
+[text_raster] ' New' found=3 missing=0 font_size=1.0 x=96 y=702
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=98 y=702
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=98 y=702
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=99 y=702
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=99 y=702
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=94 y=702
+[text_raster] 'ic' found=2 missing=0 font_size=1.0 x=94 y=702
+[text_raster] 'ha' found=2 missing=0 font_size=1.0 x=94 y=702
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=96 y=702
+[text_raster] 'l N' found=2 missing=0 font_size=1.0 x=96 y=702
+[text_raster] 'ie' found=2 missing=0 font_size=1.0 x=97 y=702
+[text_raster] 'le' found=2 missing=0 font_size=1.0 x=98 y=702
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=99 y=702
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=99 y=702
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=120 y=702
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=120 y=702
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=120 y=702
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=121 y=702
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=121 y=702
+[text_raster] 'el' found=2 missing=0 font_size=1.0 x=122 y=702
+[text_raster] ' Nu' found=2 missing=0 font_size=1.0 x=122 y=702
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=124 y=702
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=124 y=702
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=125 y=702
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=126 y=702
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=126 y=702
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=126 y=702
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=127 y=702
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=128 y=702
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=90 y=701
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=91 y=701
+[text_raster] 'yl' found=2 missing=0 font_size=1.0 x=91 y=701
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=92 y=701
+[text_raster] 'r R' found=2 missing=0 font_size=1.0 x=92 y=701
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=93 y=701
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=94 y=701
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=94 y=701
+[text_raster] 'rt' found=2 missing=0 font_size=1.0 x=95 y=701
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=95 y=701
+[text_raster] ', ' found=1 missing=0 font_size=1.0 x=96 y=701
+[text_raster] 'J' found=1 missing=0 font_size=1.0 x=90 y=701
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=90 y=701
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=91 y=701
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=91 y=701
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=92 y=701
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=92 y=701
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=93 y=701
+[text_raster] ' Se' found=2 missing=0 font_size=1.0 x=93 y=701
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=95 y=701
+[text_raster] 'hr' found=2 missing=0 font_size=1.0 x=95 y=701
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=96 y=701
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=97 y=701
+[text_raster] 'Jo' found=2 missing=0 font_size=1.0 x=90 y=701
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=91 y=701
+[text_raster] ' S' found=1 missing=0 font_size=1.0 x=91 y=701
+[text_raster] 'tu' found=2 missing=0 font_size=1.0 x=92 y=701
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=93 y=701
+[text_raster] 'tz,' found=3 missing=0 font_size=1.0 x=93 y=701
+[text_raster] 'J' found=1 missing=0 font_size=1.0 x=108 y=701
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=108 y=701
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=108 y=701
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=109 y=701
+[text_raster] ' W' found=1 missing=0 font_size=1.0 x=109 y=701
+[text_raster] 'illi' found=4 missing=0 font_size=1.0 x=109 y=701
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=110 y=701
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=111 y=701
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=112 y=701
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=112 y=701
+[text_raster] 'th' found=2 missing=0 font_size=1.0 x=108 y=701
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=109 y=701
+[text_raster] 'pr' found=2 missing=0 font_size=1.0 x=115 y=701
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=116 y=701
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=117 y=701
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=117 y=701
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=117 y=701
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=118 y=701
+[text_raster] 'io' found=2 missing=0 font_size=1.0 x=118 y=701
+[text_raster] 'na' found=2 missing=0 font_size=1.0 x=119 y=701
+[text_raster] 'l ' found=1 missing=0 font_size=1.0 x=120 y=701
+[text_raster] 'st' found=2 missing=0 font_size=1.0 x=120 y=701
+[text_raster] 'af' found=2 missing=0 font_size=1.0 x=121 y=701
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=122 y=701
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=122 y=701
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=123 y=701
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=123 y=701
+[text_raster] 'm t' found=2 missing=0 font_size=1.0 x=123 y=701
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=125 y=701
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=125 y=701
+[text_raster] ' NI' found=2 missing=0 font_size=1.0 x=126 y=701
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=127 y=701
+[text_raster] 'T ' found=1 missing=0 font_size=1.0 x=128 y=701
+[text_raster] 'C' found=1 missing=0 font_size=1.0 x=90 y=700
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=90 y=700
+[text_raster] 'mp' found=2 missing=0 font_size=1.0 x=91 y=700
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=92 y=700
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=93 y=700
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=93 y=700
+[text_raster] ' S' found=1 missing=0 font_size=1.0 x=94 y=700
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=95 y=700
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=95 y=700
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=96 y=700
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=96 y=700
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=97 y=700
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=97 y=700
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=97 y=700
+[text_raster] 'D' found=1 missing=0 font_size=1.0 x=98 y=700
+[text_raster] 'iv' found=2 missing=0 font_size=1.0 x=98 y=700
+[text_raster] 'is' found=2 missing=0 font_size=1.0 x=99 y=700
+[text_raster] 'io' found=2 missing=0 font_size=1.0 x=99 y=700
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=100 y=700
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=101 y=700
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=102 y=700
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=102 y=700
+[text_raster] ' A' found=1 missing=0 font_size=1.0 x=103 y=700
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=103 y=700
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=104 y=700
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=104 y=700
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=105 y=700
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=105 y=700
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=105 y=700
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=106 y=700
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=106 y=700
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=107 y=700
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=107 y=700
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=108 y=700
+[text_raster] 'ec' found=2 missing=0 font_size=1.0 x=109 y=700
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=110 y=700
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=110 y=700
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=111 y=700
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=111 y=700
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=111 y=700
+[text_raster] ' D' found=1 missing=0 font_size=1.0 x=112 y=700
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=112 y=700
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=112 y=700
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=113 y=700
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=113 y=700
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=113 y=700
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=114 y=700
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=114 y=700
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=115 y=700
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=116 y=700
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=116 y=700
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=117 y=700
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=118 y=700
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=118 y=700
+[text_raster] 'e ' found=1 missing=0 font_size=1.0 x=118 y=700
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=119 y=700
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=120 y=700
+[text_raster] 'pr' found=2 missing=0 font_size=1.0 x=120 y=700
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=121 y=700
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=122 y=700
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=122 y=700
+[text_raster] 'nt' found=2 missing=0 font_size=1.0 x=123 y=700
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=123 y=700
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=124 y=700
+[text_raster] 'iv' found=2 missing=0 font_size=1.0 x=124 y=700
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=125 y=700
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=126 y=700
+[text_raster] ' f' found=1 missing=0 font_size=1.0 x=126 y=700
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=127 y=700
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=127 y=700
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=127 y=700
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=90 y=698
+[text_raster] 'he ' found=2 missing=0 font_size=1.0 x=90 y=698
+[text_raster] 'F' found=1 missing=0 font_size=1.0 x=92 y=698
+[text_raster] 'ed' found=2 missing=0 font_size=1.0 x=92 y=698
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=93 y=698
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=94 y=698
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=94 y=698
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=94 y=698
+[text_raster] 'IO C' found=3 missing=0 font_size=1.0 x=95 y=698
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=95 y=698
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=96 y=698
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=96 y=698
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=97 y=698
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=97 y=698
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=98 y=698
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=100 y=698
+[text_raster] ' Fe' found=2 missing=0 font_size=1.0 x=100 y=698
+[text_raster] 'de' found=2 missing=0 font_size=1.0 x=100 y=698
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=101 y=698
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=102 y=698
+[text_raster] 'l C' found=2 missing=0 font_size=1.0 x=102 y=698
+[text_raster] 'I' found=1 missing=0 font_size=1.0 x=103 y=698
+[text_raster] 'SO' found=2 missing=0 font_size=1.0 x=103 y=698
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=104 y=698
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=104 y=698
+[text_raster] 'un' found=2 missing=0 font_size=1.0 x=105 y=698
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=106 y=698
+[text_raster] 'il,' found=3 missing=0 font_size=1.0 x=106 y=698
+[text_raster] 'Fe' found=2 missing=0 font_size=1.0 x=107 y=698
+[text_raster] 'de' found=2 missing=0 font_size=1.0 x=108 y=698
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=109 y=698
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=109 y=698
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=110 y=698
+[text_raster] ' P' found=1 missing=0 font_size=1.0 x=110 y=698
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=111 y=698
+[text_raster] 'iv' found=2 missing=0 font_size=1.0 x=111 y=698
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=112 y=698
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=112 y=698
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=113 y=698
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=113 y=698
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=114 y=698
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=114 y=698
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=115 y=698
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=115 y=698
+[text_raster] 'il,' found=3 missing=0 font_size=1.0 x=116 y=698
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=116 y=698
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=117 y=698
+[text_raster] 'nt' found=2 missing=0 font_size=1.0 x=117 y=698
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=118 y=698
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=118 y=698
+[text_raster] 'l B' found=2 missing=0 font_size=1.0 x=119 y=698
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=119 y=698
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=120 y=698
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=120 y=698
+[text_raster] 'line' found=4 missing=0 font_size=1.0 x=121 y=698
+[text_raster] 'In' found=2 missing=0 font_size=1.0 x=90 y=697
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=91 y=697
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=91 y=697
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=92 y=697
+[text_raster] 'ge' found=2 missing=0 font_size=1.0 x=93 y=697
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=94 y=697
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=94 y=697
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=95 y=697
+[text_raster] ' W' found=1 missing=0 font_size=1.0 x=95 y=697
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=96 y=697
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=96 y=697
+[text_raster] 'ki' found=2 missing=0 font_size=1.0 x=96 y=697
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=97 y=697
+[text_raster] 'g ' found=1 missing=0 font_size=1.0 x=97 y=697
+[text_raster] 'G' found=1 missing=0 font_size=1.0 x=98 y=697
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=98 y=697
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=98 y=697
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=99 y=697
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=99 y=697
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=101 y=697
+[text_raster] ' S' found=1 missing=0 font_size=1.0 x=101 y=697
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=102 y=697
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=103 y=697
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=103 y=697
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=104 y=697
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=104 y=697
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=104 y=697
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=105 y=697
+[text_raster] ' a' found=1 missing=0 font_size=1.0 x=105 y=697
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=106 y=697
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=107 y=697
+[text_raster] ' P' found=1 missing=0 font_size=1.0 x=107 y=697
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=108 y=697
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=108 y=697
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=109 y=697
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=109 y=697
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=110 y=697
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=110 y=697
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=111 y=697
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=111 y=697
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=112 y=697
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=112 y=697
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=112 y=697
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=113 y=697
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=113 y=697
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=114 y=697
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=114 y=697
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=115 y=697
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=115 y=697
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=115 y=697
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=116 y=697
+[text_raster] ' W' found=1 missing=0 font_size=1.0 x=116 y=697
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=116 y=697
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=117 y=697
+[text_raster] 'ki' found=2 missing=0 font_size=1.0 x=117 y=697
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=118 y=697
+[text_raster] 'g ' found=1 missing=0 font_size=1.0 x=118 y=697
+[text_raster] 'G' found=1 missing=0 font_size=1.0 x=119 y=697
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=119 y=697
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=119 y=697
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=120 y=697
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=120 y=697
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=122 y=697
+[text_raster] ' an' found=2 missing=0 font_size=1.0 x=122 y=697
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=124 y=697
+[text_raster] 'F' found=1 missing=0 font_size=1.0 x=124 y=697
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=124 y=697
+[text_raster] 'de' found=2 missing=0 font_size=1.0 x=125 y=697
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=126 y=697
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=126 y=697
+[text_raster] 'l ' found=1 missing=0 font_size=1.0 x=127 y=697
+[text_raster] 'Pr' found=2 missing=0 font_size=1.0 x=90 y=696
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=91 y=696
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=91 y=696
+[text_raster] 'ac' found=2 missing=0 font_size=1.0 x=92 y=696
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=93 y=696
+[text_raster] ' Co' found=2 missing=0 font_size=1.0 x=93 y=696
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=94 y=696
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=95 y=696
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=95 y=696
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=96 y=696
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=96 y=696
+[text_raster] 'R' found=1 missing=0 font_size=1.0 x=96 y=696
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=96 y=696
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=97 y=696
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=97 y=696
+[text_raster] ' M' found=1 missing=0 font_size=1.0 x=97 y=696
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=97 y=696
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=98 y=696
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=98 y=696
+[text_raster] 'gemen' found=5 missing=0 font_size=1.0 x=99 y=696
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=102 y=696
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=103 y=696
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=103 y=696
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=104 y=696
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=104 y=696
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=105 y=696
+[text_raster] 'mmi' found=3 missing=0 font_size=1.0 x=105 y=696
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=107 y=696
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=108 y=696
+[text_raster] 'ee' found=2 missing=0 font_size=1.0 x=108 y=696
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=110 y=696
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=110 y=696
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=111 y=696
+[text_raster] ' t' found=1 missing=0 font_size=1.0 x=111 y=696
+[text_raster] 'he' found=2 missing=0 font_size=1.0 x=112 y=696
+[text_raster] 'ir' found=2 missing=0 font_size=1.0 x=113 y=696
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=110 y=696
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=111 y=696
+[text_raster] 'go' found=2 missing=0 font_size=1.0 x=111 y=696
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=112 y=696
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=113 y=696
+[text_raster] 'g ' found=1 missing=0 font_size=1.0 x=113 y=696
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=117 y=696
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=118 y=696
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=118 y=696
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=119 y=696
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=119 y=696
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=119 y=696
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=120 y=696
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=120 y=696
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=121 y=696
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=121 y=696
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=121 y=696
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=122 y=696
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=122 y=696
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=123 y=696
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=123 y=696
+[text_raster] ' h' found=1 missing=0 font_size=1.0 x=124 y=696
+[text_raster] 'el' found=2 missing=0 font_size=1.0 x=125 y=696
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=126 y=696
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=126 y=696
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=126 y=696
+[text_raster] 'g t' found=2 missing=0 font_size=1.0 x=127 y=696
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=128 y=696
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=90 y=695
+[text_raster] 'mp' found=2 missing=0 font_size=1.0 x=90 y=695
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=92 y=695
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=92 y=695
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=93 y=695
+[text_raster] 'e t' found=2 missing=0 font_size=1.0 x=93 y=695
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=94 y=695
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=94 y=695
+[text_raster] ' co' found=2 missing=0 font_size=1.0 x=95 y=695
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=96 y=695
+[text_raster] 'te' found=2 missing=0 font_size=1.0 x=97 y=695
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=98 y=695
+[text_raster] 't ' found=1 missing=0 font_size=1.0 x=98 y=695
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=99 y=695
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=99 y=695
+[text_raster] ' t' found=1 missing=0 font_size=1.0 x=100 y=695
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=94 y=695
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=95 y=695
+[text_raster] ' p' found=1 missing=0 font_size=1.0 x=96 y=695
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=96 y=695
+[text_raster] 'blic' found=4 missing=0 font_size=1.0 x=97 y=695
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=98 y=695
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=99 y=695
+[text_raster] 'io' found=2 missing=0 font_size=1.0 x=99 y=695
+[text_raster] 'n.' found=2 missing=0 font_size=1.0 x=100 y=695
+[text_raster] 'F' found=1 missing=0 font_size=1.0 x=106 y=695
+[text_raster] 'ina' found=3 missing=0 font_size=1.0 x=107 y=695
+[text_raster] 'lly' found=3 missing=0 font_size=1.0 x=108 y=695
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=109 y=695
+[text_raster] 'th' found=2 missing=0 font_size=1.0 x=109 y=695
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=110 y=695
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=111 y=695
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=112 y=695
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=112 y=695
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=112 y=695
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=113 y=695
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=113 y=695
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=114 y=695
+[text_raster] ' gr' found=2 missing=0 font_size=1.0 x=114 y=695
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=115 y=695
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=116 y=695
+[text_raster] 'ef' found=2 missing=0 font_size=1.0 x=116 y=695
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=117 y=695
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=118 y=695
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=118 y=695
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=118 y=695
+[text_raster] ' a' found=1 missing=0 font_size=1.0 x=119 y=695
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=119 y=695
+[text_raster] 'kn' found=2 missing=0 font_size=1.0 x=120 y=695
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=121 y=695
+[text_raster] 'w' found=1 missing=0 font_size=1.0 x=121 y=695
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=122 y=695
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=122 y=695
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=122 y=695
+[text_raster] 'ge ' found=2 missing=0 font_size=1.0 x=123 y=695
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=124 y=695
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=125 y=695
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=125 y=695
+[text_raster] 'co' found=2 missing=0 font_size=1.0 x=90 y=694
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=91 y=694
+[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=92 y=694
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=92 y=694
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=92 y=694
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=93 y=694
+[text_raster] 'ti' found=2 missing=0 font_size=1.0 x=94 y=694
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=94 y=694
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=95 y=694
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=95 y=694
+[text_raster] ' f' found=1 missing=0 font_size=1.0 x=96 y=694
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=96 y=694
+[text_raster] 'om' found=2 missing=0 font_size=1.0 x=96 y=694
+[text_raster] 'in' found=2 missing=0 font_size=1.0 x=98 y=694
+[text_raster] 'div' found=3 missing=0 font_size=1.0 x=99 y=694
+[text_raster] 'id' found=2 missing=0 font_size=1.0 x=100 y=694
+[text_raster] 'ua' found=2 missing=0 font_size=1.0 x=101 y=694
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=102 y=694
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=102 y=694
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=102 y=694
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=103 y=694
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=104 y=694
+[text_raster] ' o' found=1 missing=0 font_size=1.0 x=104 y=694
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=105 y=694
+[text_raster] 'ga' found=2 missing=0 font_size=1.0 x=105 y=694
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=106 y=694
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=107 y=694
+[text_raster] 'z' found=1 missing=0 font_size=1.0 x=107 y=694
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=108 y=694
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=108 y=694
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=109 y=694
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=109 y=694
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=109 y=694
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=110 y=694
+[text_raster] ' i' found=1 missing=0 font_size=1.0 x=110 y=694
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=111 y=694
+[text_raster] ' t' found=1 missing=0 font_size=1.0 x=111 y=694
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=112 y=694
+[text_raster] 'e p' found=2 missing=0 font_size=1.0 x=113 y=694
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=114 y=694
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=114 y=694
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=115 y=694
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=115 y=694
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=116 y=694
+[text_raster] ' a' found=1 missing=0 font_size=1.0 x=116 y=694
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=117 y=694
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=117 y=694
+[text_raster] ' p' found=1 missing=0 font_size=1.0 x=118 y=694
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=119 y=694
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=119 y=694
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=119 y=694
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=120 y=694
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=120 y=694
+[text_raster] 'e s' found=2 missing=0 font_size=1.0 x=121 y=694
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=122 y=694
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=123 y=694
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=123 y=694
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=123 y=694
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=124 y=694
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=124 y=694
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=125 y=694
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=123 y=694
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=124 y=694
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=125 y=694
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=125 y=694
+[text_raster] 'na' found=2 missing=0 font_size=1.0 x=90 y=692
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=91 y=692
+[text_raster] 'io' found=2 missing=0 font_size=1.0 x=91 y=692
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=92 y=692
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=93 y=692
+[text_raster] 'lly' found=3 missing=0 font_size=1.0 x=93 y=692
+[text_raster] ' a' found=1 missing=0 font_size=1.0 x=94 y=692
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=95 y=692
+[text_raster] 'd in' found=3 missing=0 font_size=1.0 x=96 y=692
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=97 y=692
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=98 y=692
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=98 y=692
+[text_raster] 'na' found=2 missing=0 font_size=1.0 x=98 y=692
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=100 y=692
+[text_raster] 'io' found=2 missing=0 font_size=1.0 x=100 y=692
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=101 y=692
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=101 y=692
+[text_raster] 'lly' found=3 missing=0 font_size=1.0 x=102 y=692
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=103 y=692
+[text_raster] ' w' found=1 missing=0 font_size=1.0 x=103 y=692
+[text_raster] 'ho' found=2 missing=0 font_size=1.0 x=103 y=692
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=105 y=692
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=105 y=692
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=90 y=692
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=90 y=692
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=91 y=692
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=91 y=692
+[text_raster] 'gh' found=2 missing=0 font_size=1.0 x=92 y=692
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=93 y=692
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=93 y=692
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=93 y=692
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=94 y=692
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=109 y=692
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=110 y=692
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=110 y=692
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=111 y=692
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=112 y=692
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=112 y=692
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=113 y=692
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=113 y=692
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=114 y=692
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=114 y=692
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=115 y=692
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=115 y=692
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=115 y=692
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=116 y=692
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=116 y=692
+[text_raster] ' c' found=1 missing=0 font_size=1.0 x=117 y=692
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=117 y=692
+[text_raster] 'mmen' found=4 missing=0 font_size=1.0 x=118 y=692
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=121 y=692
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=121 y=692
+[text_raster] ' i' found=1 missing=0 font_size=1.0 x=122 y=692
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=122 y=692
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=123 y=692
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=123 y=692
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=124 y=692
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=124 y=692
+[text_raster] 'ed' found=2 missing=0 font_size=1.0 x=125 y=692
+[text_raster] ' t' found=1 missing=0 font_size=1.0 x=126 y=692
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=126 y=692
+[text_raster] 'e ' found=1 missing=0 font_size=1.0 x=127 y=692
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=90 y=691
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=91 y=691
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=91 y=691
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=92 y=691
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=92 y=691
+[text_raster] 'll ' found=2 missing=0 font_size=1.0 x=93 y=691
+[text_raster] 'q' found=1 missing=0 font_size=1.0 x=93 y=691
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=93 y=691
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=94 y=691
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=94 y=691
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=94 y=691
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=95 y=691
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=95 y=691
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=95 y=691
+[text_raster] ' t' found=1 missing=0 font_size=1.0 x=95 y=691
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=96 y=691
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=96 y=691
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=97 y=691
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=97 y=691
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=98 y=691
+[text_raster] 'gh' found=2 missing=0 font_size=1.0 x=98 y=691
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=100 y=691
+[text_raster] 'es' found=2 missing=0 font_size=1.0 x=100 y=691
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=101 y=691
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=102 y=691
+[text_raster] ' a' found=1 missing=0 font_size=1.0 x=102 y=691
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=103 y=691
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=103 y=691
+[text_raster] ' u' found=1 missing=0 font_size=1.0 x=104 y=691
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=104 y=691
+[text_raster] 'ef' found=2 missing=0 font_size=1.0 x=105 y=691
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=106 y=691
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=106 y=691
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=107 y=691
+[text_raster] 'es' found=2 missing=0 font_size=1.0 x=107 y=691
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=108 y=691
+[text_raster] ' o' found=1 missing=0 font_size=1.0 x=109 y=691
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=110 y=691
+[text_raster] ' t' found=1 missing=0 font_size=1.0 x=110 y=691
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=110 y=691
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=111 y=691
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=111 y=691
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=112 y=691
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=112 y=691
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=113 y=691
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=114 y=691
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=114 y=691
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=114 y=691
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=115 y=691
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=115 y=691
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=115 y=691
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=116 y=691
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=116 y=691
+[text_raster] '.' found=1 missing=0 font_size=1.0 x=117 y=691
+[text_raster] 'H' found=1 missing=0 font_size=1.0 x=150 y=454
+[text_raster] 'IS' found=2 missing=0 font_size=1.0 x=151 y=454
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=152 y=454
+[text_raster] 'O' found=1 missing=0 font_size=1.0 x=152 y=454
+[text_raster] 'R' found=1 missing=0 font_size=1.0 x=153 y=454
+[text_raster] 'ICAL' found=4 missing=0 font_size=1.0 x=154 y=454
+[text_raster] 'CO' found=2 missing=0 font_size=1.0 x=156 y=454
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=157 y=454
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=157 y=454
+[text_raster] 'R' found=1 missing=0 font_size=1.0 x=158 y=454
+[text_raster] 'IB' found=2 missing=0 font_size=1.0 x=159 y=454
+[text_raster] 'U' found=1 missing=0 font_size=1.0 x=159 y=454
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=160 y=454
+[text_raster] 'I' found=1 missing=0 font_size=1.0 x=160 y=454
+[text_raster] 'ON' found=2 missing=0 font_size=1.0 x=161 y=454
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=162 y=454
+[text_raster] ' T' found=1 missing=0 font_size=1.0 x=163 y=454
+[text_raster] 'O N' found=2 missing=0 font_size=1.0 x=163 y=454
+[text_raster] 'IS' found=2 missing=0 font_size=1.0 x=165 y=454
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=166 y=454
+[text_raster] ' S' found=1 missing=0 font_size=1.0 x=166 y=454
+[text_raster] 'P' found=1 missing=0 font_size=1.0 x=167 y=454
+[text_raster] 'E' found=1 missing=0 font_size=1.0 x=167 y=454
+[text_raster] 'CIAL' found=4 missing=0 font_size=1.0 x=168 y=454
+[text_raster] ' P' found=1 missing=0 font_size=1.0 x=170 y=454
+[text_raster] 'U' found=1 missing=0 font_size=1.0 x=170 y=454
+[text_raster] 'B' found=1 missing=0 font_size=1.0 x=171 y=454
+[text_raster] 'L' found=1 missing=0 font_size=1.0 x=172 y=454
+[text_raster] 'ICA' found=3 missing=0 font_size=1.0 x=172 y=454
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=173 y=454
+[text_raster] 'IO' found=2 missing=0 font_size=1.0 x=174 y=454
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=175 y=454
+[text_raster] ' 800' found=3 missing=0 font_size=1.0 x=176 y=454
+[text_raster] '-' found=1 missing=0 font_size=1.0 x=150 y=454
+[text_raster] '53' found=2 missing=0 font_size=1.0 x=151 y=454
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=112 y=435
+[text_raster] 'he' found=2 missing=0 font_size=1.0 x=113 y=435
+[text_raster] ' a' found=1 missing=0 font_size=1.0 x=114 y=435
+[text_raster] 'ut' found=2 missing=0 font_size=1.0 x=114 y=435
+[text_raster] 'ho' found=2 missing=0 font_size=1.0 x=115 y=435
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=116 y=435
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=117 y=435
+[text_raster] ' w' found=1 missing=0 font_size=1.0 x=117 y=435
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=118 y=435
+[text_raster] 'nt' found=2 missing=0 font_size=1.0 x=118 y=435
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=119 y=435
+[text_raster] 'd ' found=1 missing=0 font_size=1.0 x=120 y=435
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=121 y=435
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=121 y=435
+[text_raster] ' a' found=1 missing=0 font_size=1.0 x=121 y=435
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=122 y=435
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=122 y=435
+[text_raster] 'no' found=2 missing=0 font_size=1.0 x=123 y=435
+[text_raster] 'w' found=1 missing=0 font_size=1.0 x=124 y=435
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=125 y=435
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=125 y=435
+[text_raster] 'dge' found=3 missing=0 font_size=1.0 x=125 y=435
+[text_raster] ' t' found=1 missing=0 font_size=1.0 x=127 y=435
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=127 y=435
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=128 y=435
+[text_raster] ' m' found=1 missing=0 font_size=1.0 x=128 y=435
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=129 y=435
+[text_raster] 'ny i' found=3 missing=0 font_size=1.0 x=130 y=435
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=131 y=435
+[text_raster] 'di' found=2 missing=0 font_size=1.0 x=132 y=435
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=133 y=435
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=133 y=435
+[text_raster] 'dua' found=3 missing=0 font_size=1.0 x=133 y=435
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=135 y=435
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=135 y=435
+[text_raster] 'w' found=1 missing=0 font_size=1.0 x=136 y=435
+[text_raster] 'ho' found=2 missing=0 font_size=1.0 x=136 y=435
+[text_raster] ' co' found=2 missing=0 font_size=1.0 x=137 y=435
+[text_raster] 'nt' found=2 missing=0 font_size=1.0 x=139 y=435
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=139 y=435
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=140 y=435
+[text_raster] 'but' found=3 missing=0 font_size=1.0 x=140 y=435
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=141 y=435
+[text_raster] 'd ' found=1 missing=0 font_size=1.0 x=142 y=435
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=143 y=435
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=143 y=435
+[text_raster] ' pr' found=2 missing=0 font_size=1.0 x=143 y=435
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=145 y=435
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=145 y=435
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=146 y=435
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=146 y=435
+[text_raster] 'us' found=2 missing=0 font_size=1.0 x=146 y=435
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=147 y=435
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=148 y=435
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=148 y=435
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=149 y=435
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=149 y=435
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=149 y=435
+[text_raster] 'ns' found=2 missing=0 font_size=1.0 x=150 y=435
+[text_raster] 'of ' found=2 missing=0 font_size=1.0 x=112 y=434
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=113 y=434
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=114 y=434
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=114 y=434
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=115 y=434
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=115 y=434
+[text_raster] 'al' found=2 missing=0 font_size=1.0 x=115 y=434
+[text_raster] 'Pu' found=2 missing=0 font_size=1.0 x=112 y=434
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=113 y=434
+[text_raster] 'li' found=2 missing=0 font_size=1.0 x=114 y=434
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=114 y=434
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=115 y=434
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=115 y=434
+[text_raster] 'io' found=2 missing=0 font_size=1.0 x=115 y=434
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=116 y=434
+[text_raster] '8' found=1 missing=0 font_size=1.0 x=117 y=434
+[text_raster] '0' found=1 missing=0 font_size=1.0 x=117 y=434
+[text_raster] '0' found=1 missing=0 font_size=1.0 x=118 y=434
+[text_raster] '-' found=1 missing=0 font_size=1.0 x=123 y=434
+[text_raster] '53' found=2 missing=0 font_size=1.0 x=123 y=434
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=124 y=434
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=125 y=434
+[text_raster] 'nce' found=3 missing=0 font_size=1.0 x=125 y=434
+[text_raster] ' i' found=1 missing=0 font_size=1.0 x=126 y=434
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=127 y=434
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=127 y=434
+[text_raster] ' i' found=1 missing=0 font_size=1.0 x=127 y=434
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=128 y=434
+[text_raster] 'ce' found=2 missing=0 font_size=1.0 x=128 y=434
+[text_raster] 'pt' found=2 missing=0 font_size=1.0 x=129 y=434
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=130 y=434
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=130 y=434
+[text_raster] 'n ' found=1 missing=0 font_size=1.0 x=131 y=434
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=132 y=434
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=132 y=434
+[text_raster] '2' found=1 missing=0 font_size=1.0 x=133 y=434
+[text_raster] '0' found=1 missing=0 font_size=1.0 x=133 y=434
+[text_raster] '05.' found=3 missing=0 font_size=1.0 x=134 y=434
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=135 y=434
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=136 y=434
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=136 y=434
+[text_raster] 'y ' found=1 missing=0 font_size=1.0 x=137 y=434
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=137 y=434
+[text_raster] 'ncl' found=3 missing=0 font_size=1.0 x=138 y=434
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=139 y=434
+[text_raster] 'de' found=2 missing=0 font_size=1.0 x=139 y=434
+[text_raster] ' M' found=1 missing=0 font_size=1.0 x=140 y=434
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=141 y=434
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=142 y=434
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=142 y=434
+[text_raster] 'ha' found=2 missing=0 font_size=1.0 x=143 y=434
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=144 y=434
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=144 y=434
+[text_raster] ' A' found=1 missing=0 font_size=1.0 x=144 y=434
+[text_raster] 'br' found=2 missing=0 font_size=1.0 x=145 y=434
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=146 y=434
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=146 y=434
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=147 y=434
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=147 y=434
+[text_raster] 'De' found=2 missing=0 font_size=1.0 x=148 y=434
+[text_raster] 'nni' found=3 missing=0 font_size=1.0 x=149 y=434
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=150 y=434
+[text_raster] 'B' found=1 missing=0 font_size=1.0 x=112 y=433
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=113 y=433
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=113 y=433
+[text_raster] 'ley' found=3 missing=0 font_size=1.0 x=113 y=433
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=115 y=433
+[text_raster] ' Lee' found=3 missing=0 font_size=1.0 x=115 y=433
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=117 y=433
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=117 y=433
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=118 y=433
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=118 y=433
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=119 y=433
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=120 y=433
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=120 y=433
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=121 y=433
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=121 y=433
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=122 y=433
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=122 y=433
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=123 y=433
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=123 y=433
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=124 y=433
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=124 y=433
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=125 y=433
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=125 y=433
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=126 y=433
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=127 y=433
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=127 y=433
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=127 y=433
+[text_raster] 'ew' found=2 missing=0 font_size=1.0 x=128 y=433
+[text_raster] 'B' found=1 missing=0 font_size=1.0 x=129 y=433
+[text_raster] 'ar' found=2 missing=0 font_size=1.0 x=130 y=433
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=131 y=433
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=131 y=433
+[text_raster] 'tt,' found=3 missing=0 font_size=1.0 x=132 y=433
+[text_raster] ' N' found=1 missing=0 font_size=1.0 x=133 y=433
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=134 y=433
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=134 y=433
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=134 y=433
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=135 y=433
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=135 y=433
+[text_raster] 'ar' found=2 missing=0 font_size=1.0 x=136 y=433
+[text_raster] 'tol' found=3 missing=0 font_size=1.0 x=137 y=433
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=138 y=433
+[text_raster] 'F' found=1 missing=0 font_size=1.0 x=139 y=433
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=139 y=433
+[text_raster] 'an' found=2 missing=0 font_size=1.0 x=139 y=433
+[text_raster] 'k ' found=1 missing=0 font_size=1.0 x=140 y=433
+[text_raster] 'B' found=1 missing=0 font_size=1.0 x=141 y=433
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=142 y=433
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=142 y=433
+[text_raster] 'z,' found=2 missing=0 font_size=1.0 x=142 y=433
+[text_raster] ' P' found=1 missing=0 font_size=1.0 x=143 y=433
+[text_raster] 'au' found=2 missing=0 font_size=1.0 x=144 y=433
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=145 y=433
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=145 y=433
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=146 y=433
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=146 y=433
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=147 y=433
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=147 y=433
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=148 y=433
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=148 y=433
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=148 y=433
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=149 y=433
+[text_raster] 'D' found=1 missing=0 font_size=1.0 x=149 y=433
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=150 y=433
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=150 y=433
+[text_raster] 'B' found=1 missing=0 font_size=1.0 x=112 y=432
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=113 y=432
+[text_raster] 'de' found=2 missing=0 font_size=1.0 x=113 y=432
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=114 y=432
+[text_raster] 'u,' found=2 missing=0 font_size=1.0 x=115 y=432
+[text_raster] ' P' found=1 missing=0 font_size=1.0 x=116 y=432
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=116 y=432
+[text_raster] 'ul' found=2 missing=0 font_size=1.0 x=117 y=432
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=117 y=432
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=118 y=432
+[text_raster] 'us' found=2 missing=0 font_size=1.0 x=119 y=432
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=119 y=432
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=120 y=432
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=120 y=432
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=120 y=432
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=121 y=432
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=121 y=432
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=122 y=432
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=122 y=432
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=122 y=432
+[text_raster] 'ur' found=2 missing=0 font_size=1.0 x=123 y=432
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=124 y=432
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=124 y=432
+[text_raster] 'y,' found=2 missing=0 font_size=1.0 x=125 y=432
+[text_raster] 'B' found=1 missing=0 font_size=1.0 x=126 y=432
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=126 y=432
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=126 y=432
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=127 y=432
+[text_raster] ' B' found=1 missing=0 font_size=1.0 x=127 y=432
+[text_raster] 'ur' found=2 missing=0 font_size=1.0 x=128 y=432
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=128 y=432
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=129 y=432
+[text_raster] 'Da' found=2 missing=0 font_size=1.0 x=129 y=432
+[text_raster] 'w' found=1 missing=0 font_size=1.0 x=130 y=432
+[text_raster] 'n C' found=2 missing=0 font_size=1.0 x=131 y=432
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=132 y=432
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=133 y=432
+[text_raster] 'pe' found=2 missing=0 font_size=1.0 x=133 y=432
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=134 y=432
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=135 y=432
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=135 y=432
+[text_raster] ', R' found=2 missing=0 font_size=1.0 x=135 y=432
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=136 y=432
+[text_raster] 'ge' found=2 missing=0 font_size=1.0 x=136 y=432
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=137 y=432
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=138 y=432
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=139 y=432
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=139 y=432
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=139 y=432
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=140 y=432
+[text_raster] 'w' found=1 missing=0 font_size=1.0 x=140 y=432
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=141 y=432
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=141 y=432
+[text_raster] 'or' found=2 missing=0 font_size=1.0 x=142 y=432
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=143 y=432
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=143 y=432
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=143 y=432
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=144 y=432
+[text_raster] ' Cas' found=3 missing=0 font_size=1.0 x=144 y=432
+[text_raster] 'ta' found=2 missing=0 font_size=1.0 x=146 y=432
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=147 y=432
+[text_raster] 'z' found=1 missing=0 font_size=1.0 x=147 y=432
+[text_raster] 'a,' found=2 missing=0 font_size=1.0 x=148 y=432
+[text_raster] ' M' found=1 missing=0 font_size=1.0 x=149 y=432
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=150 y=432
+[text_raster] 'ke' found=2 missing=0 font_size=1.0 x=150 y=432
+[text_raster] 'Coop' found=4 missing=0 font_size=1.0 x=112 y=430
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=114 y=430
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=115 y=430
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=115 y=430
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=116 y=430
+[text_raster] 'at' found=2 missing=0 font_size=1.0 x=117 y=430
+[text_raster] 't Coos' found=5 missing=0 font_size=1.0 x=117 y=430
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=120 y=430
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=120 y=430
+[text_raster] 'D' found=1 missing=0 font_size=1.0 x=121 y=430
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=122 y=430
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=122 y=430
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=123 y=430
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=123 y=430
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=124 y=430
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=124 y=430
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=124 y=430
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=125 y=430
+[text_raster] 'ssa' found=3 missing=0 font_size=1.0 x=126 y=430
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=127 y=430
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=127 y=430
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=127 y=430
+[text_raster] 'G' found=1 missing=0 font_size=1.0 x=121 y=430
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=122 y=430
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=122 y=430
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=123 y=430
+[text_raster] 'ge' found=2 missing=0 font_size=1.0 x=123 y=430
+[text_raster] ' Di' found=2 missing=0 font_size=1.0 x=124 y=430
+[text_raster] 'no' found=2 missing=0 font_size=1.0 x=125 y=430
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=126 y=430
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=126 y=430
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=127 y=430
+[text_raster] 'Ra' found=2 missing=0 font_size=1.0 x=127 y=430
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=128 y=430
+[text_raster] 'dy ' found=2 missing=0 font_size=1.0 x=129 y=430
+[text_raster] 'E' found=1 missing=0 font_size=1.0 x=130 y=430
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=130 y=430
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=131 y=430
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=131 y=430
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=132 y=430
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=132 y=430
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=132 y=430
+[text_raster] ' K' found=1 missing=0 font_size=1.0 x=133 y=430
+[text_raster] 'ur' found=2 missing=0 font_size=1.0 x=133 y=430
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=134 y=430
+[text_raster] ' E' found=1 missing=0 font_size=1.0 x=135 y=430
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=135 y=430
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=136 y=430
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=136 y=430
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=137 y=430
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=137 y=430
+[text_raster] 'D' found=1 missing=0 font_size=1.0 x=145 y=430
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=146 y=430
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=146 y=430
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=147 y=430
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=147 y=430
+[text_raster] 'e F' found=2 missing=0 font_size=1.0 x=147 y=430
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=148 y=430
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=149 y=430
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=149 y=430
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=150 y=430
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=150 y=430
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=150 y=430
+[text_raster] 'D' found=1 missing=0 font_size=1.0 x=112 y=429
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=113 y=429
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=113 y=429
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=114 y=429
+[text_raster] ' F' found=1 missing=0 font_size=1.0 x=114 y=429
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=115 y=429
+[text_raster] 'rra' found=3 missing=0 font_size=1.0 x=116 y=429
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=117 y=429
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=117 y=429
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=117 y=429
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=118 y=429
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=118 y=429
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=118 y=429
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=119 y=429
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=119 y=429
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=120 y=429
+[text_raster] ' F' found=1 missing=0 font_size=1.0 x=120 y=429
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=121 y=429
+[text_raster] 'rla' found=3 missing=0 font_size=1.0 x=122 y=429
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=123 y=429
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=123 y=429
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=123 y=429
+[text_raster] 'H' found=1 missing=0 font_size=1.0 x=124 y=429
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=125 y=429
+[text_raster] 'rrie' found=4 missing=0 font_size=1.0 x=125 y=429
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=126 y=429
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=127 y=429
+[text_raster] ' Go' found=2 missing=0 font_size=1.0 x=127 y=429
+[text_raster] 'ld' found=2 missing=0 font_size=1.0 x=129 y=429
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=129 y=429
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=130 y=429
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=131 y=429
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=131 y=429
+[text_raster] ' Pe' found=2 missing=0 font_size=1.0 x=131 y=429
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=133 y=429
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=133 y=429
+[text_raster] 'r Go' found=3 missing=0 font_size=1.0 x=134 y=429
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=135 y=429
+[text_raster] 'ld' found=2 missing=0 font_size=1.0 x=136 y=429
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=137 y=429
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=137 y=429
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=138 y=429
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=138 y=429
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=139 y=429
+[text_raster] ' Ti' found=2 missing=0 font_size=1.0 x=139 y=429
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=140 y=429
+[text_raster] ' Gra' found=3 missing=0 font_size=1.0 x=141 y=429
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=143 y=429
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=143 y=429
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=144 y=429
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=144 y=429
+[text_raster] ' Je' found=2 missing=0 font_size=1.0 x=144 y=429
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=146 y=429
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=146 y=429
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=147 y=429
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=147 y=429
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=147 y=429
+[text_raster] 'r Gu' found=3 missing=0 font_size=1.0 x=148 y=429
+[text_raster] 'il' found=2 missing=0 font_size=1.0 x=149 y=429
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=150 y=429
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=150 y=429
+[text_raster] 'Ga' found=2 missing=0 font_size=1.0 x=112 y=428
+[text_raster] 'ry' found=2 missing=0 font_size=1.0 x=113 y=428
+[text_raster] ' Gu' found=2 missing=0 font_size=1.0 x=114 y=428
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=116 y=428
+[text_raster] 'ssa' found=3 missing=0 font_size=1.0 x=116 y=428
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=117 y=428
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=118 y=428
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=118 y=428
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=118 y=428
+[text_raster] ' S' found=1 missing=0 font_size=1.0 x=119 y=428
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=119 y=428
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=120 y=428
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=120 y=428
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=121 y=428
+[text_raster] 'ri' found=2 missing=0 font_size=1.0 x=121 y=428
+[text_raster] ' Gu' found=2 missing=0 font_size=1.0 x=122 y=428
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=123 y=428
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=124 y=428
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=124 y=428
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=125 y=428
+[text_raster] ' Prisc' found=5 missing=0 font_size=1.0 x=125 y=428
+[text_raster] 'il' found=2 missing=0 font_size=1.0 x=127 y=428
+[text_raster] 'la' found=2 missing=0 font_size=1.0 x=128 y=428
+[text_raster] ' Gu' found=2 missing=0 font_size=1.0 x=128 y=428
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=130 y=428
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=130 y=428
+[text_raster] 'ri' found=2 missing=0 font_size=1.0 x=131 y=428
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=131 y=428
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=132 y=428
+[text_raster] 'Ri' found=2 missing=0 font_size=1.0 x=132 y=428
+[text_raster] 'cha' found=3 missing=0 font_size=1.0 x=133 y=428
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=135 y=428
+[text_raster] 'd H' found=2 missing=0 font_size=1.0 x=135 y=428
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=136 y=428
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=137 y=428
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=137 y=428
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=138 y=428
+[text_raster] 'Pe' found=2 missing=0 font_size=1.0 x=138 y=428
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=139 y=428
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=140 y=428
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=140 y=428
+[text_raster] ' H' found=1 missing=0 font_size=1.0 x=141 y=428
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=142 y=428
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=142 y=428
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=143 y=428
+[text_raster] 's,' found=2 missing=0 font_size=1.0 x=143 y=428
+[text_raster] 'B' found=1 missing=0 font_size=1.0 x=138 y=428
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=139 y=428
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=139 y=428
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=140 y=428
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=140 y=428
+[text_raster] 'tt Hod' found=5 missing=0 font_size=1.0 x=141 y=428
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=144 y=428
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=144 y=428
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=145 y=428
+[text_raster] 'Wi' found=2 missing=0 font_size=1.0 x=112 y=427
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=113 y=427
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=114 y=427
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=114 y=427
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=114 y=427
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=114 y=427
+[text_raster] ' H' found=1 missing=0 font_size=1.0 x=115 y=427
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=116 y=427
+[text_raster] 'nt' found=2 missing=0 font_size=1.0 x=117 y=427
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=118 y=427
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=118 y=427
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=119 y=427
+[text_raster] 'n,' found=2 missing=0 font_size=1.0 x=119 y=427
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=120 y=427
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=121 y=427
+[text_raster] 'nt' found=2 missing=0 font_size=1.0 x=121 y=427
+[text_raster] 'hi' found=2 missing=0 font_size=1.0 x=122 y=427
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=123 y=427
+[text_raster] ' I' found=1 missing=0 font_size=1.0 x=124 y=427
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=124 y=427
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=124 y=427
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=125 y=427
+[text_raster] 'ne' found=2 missing=0 font_size=1.0 x=125 y=427
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=126 y=427
+[text_raster] 'Ar' found=2 missing=0 font_size=1.0 x=127 y=427
+[text_raster] 'no' found=2 missing=0 font_size=1.0 x=128 y=427
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=129 y=427
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=129 y=427
+[text_raster] ' J' found=1 missing=0 font_size=1.0 x=129 y=427
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=130 y=427
+[text_raster] 'hns' found=3 missing=0 font_size=1.0 x=131 y=427
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=132 y=427
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=133 y=427
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=133 y=427
+[text_raster] ' Ro' found=2 missing=0 font_size=1.0 x=133 y=427
+[text_raster] 'ge' found=2 missing=0 font_size=1.0 x=135 y=427
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=136 y=427
+[text_raster] ' J' found=1 missing=0 font_size=1.0 x=136 y=427
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=137 y=427
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=137 y=427
+[text_raster] 'ns' found=2 missing=0 font_size=1.0 x=138 y=427
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=139 y=427
+[text_raster] 'n,' found=2 missing=0 font_size=1.0 x=139 y=427
+[text_raster] 'Do' found=2 missing=0 font_size=1.0 x=140 y=427
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=141 y=427
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=142 y=427
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=142 y=427
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=143 y=427
+[text_raster] 'Jo' found=2 missing=0 font_size=1.0 x=143 y=427
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=144 y=427
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=145 y=427
+[text_raster] 's,' found=2 missing=0 font_size=1.0 x=145 y=427
+[text_raster] ' L' found=1 missing=0 font_size=1.0 x=146 y=427
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=147 y=427
+[text_raster] 'sa' found=2 missing=0 font_size=1.0 x=147 y=427
+[text_raster] ' K' found=1 missing=0 font_size=1.0 x=148 y=427
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=149 y=427
+[text_raster] 'ise' found=3 missing=0 font_size=1.0 x=149 y=427
+[text_raster] 'r,' found=2 missing=0 font_size=1.0 x=150 y=427
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=112 y=425
+[text_raster] 'tu' found=2 missing=0 font_size=1.0 x=113 y=425
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=114 y=425
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=114 y=425
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=114 y=425
+[text_raster] 'K' found=1 missing=0 font_size=1.0 x=115 y=425
+[text_raster] 'at' found=2 missing=0 font_size=1.0 x=116 y=425
+[text_raster] 'z' found=1 missing=0 font_size=1.0 x=115 y=425
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=116 y=425
+[text_raster] 'e,' found=2 missing=0 font_size=1.0 x=116 y=425
+[text_raster] ' S' found=1 missing=0 font_size=1.0 x=117 y=425
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=118 y=425
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=118 y=425
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=119 y=425
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=119 y=425
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=119 y=425
+[text_raster] 'K' found=1 missing=0 font_size=1.0 x=120 y=425
+[text_raster] 'ell' found=3 missing=0 font_size=1.0 x=121 y=425
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=122 y=425
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=123 y=425
+[text_raster] ' T' found=1 missing=0 font_size=1.0 x=123 y=425
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=124 y=425
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=124 y=425
+[text_raster] 'K' found=1 missing=0 font_size=1.0 x=125 y=425
+[text_raster] 'ell' found=3 missing=0 font_size=1.0 x=126 y=425
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=127 y=425
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=128 y=425
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=128 y=425
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=129 y=425
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=131 y=425
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=131 y=425
+[text_raster] ' C' found=1 missing=0 font_size=1.0 x=131 y=425
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=132 y=425
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=133 y=425
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=133 y=425
+[text_raster] ' K' found=1 missing=0 font_size=1.0 x=134 y=425
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=134 y=425
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=135 y=425
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=135 y=425
+[text_raster] 'y,' found=2 missing=0 font_size=1.0 x=135 y=425
+[text_raster] ' E' found=1 missing=0 font_size=1.0 x=136 y=425
+[text_raster] 'us' found=2 missing=0 font_size=1.0 x=137 y=425
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=138 y=425
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=138 y=425
+[text_raster] 'ce' found=2 missing=0 font_size=1.0 x=139 y=425
+[text_raster] ' K' found=1 missing=0 font_size=1.0 x=140 y=425
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=140 y=425
+[text_raster] 'ng,' found=3 missing=0 font_size=1.0 x=141 y=425
+[text_raster] 'D' found=1 missing=0 font_size=1.0 x=142 y=425
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=143 y=425
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=143 y=425
+[text_raster] 'ie' found=2 missing=0 font_size=1.0 x=144 y=425
+[text_raster] 'l K' found=2 missing=0 font_size=1.0 x=145 y=425
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=146 y=425
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=146 y=425
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=146 y=425
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=147 y=425
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=148 y=425
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=142 y=425
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=143 y=425
+[text_raster] 'ev' found=2 missing=0 font_size=1.0 x=143 y=425
+[text_raster] 'e ' found=1 missing=0 font_size=1.0 x=144 y=425
+[text_raster] 'L' found=1 missing=0 font_size=1.0 x=112 y=424
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=113 y=424
+[text_raster] 'Fo' found=2 missing=0 font_size=1.0 x=113 y=424
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=114 y=424
+[text_raster] 'nt' found=2 missing=0 font_size=1.0 x=115 y=424
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=115 y=424
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=116 y=424
+[text_raster] 'n,' found=2 missing=0 font_size=1.0 x=116 y=424
+[text_raster] 'An' found=2 missing=0 font_size=1.0 x=117 y=424
+[text_raster] 'na' found=2 missing=0 font_size=1.0 x=118 y=424
+[text_raster] 'be' found=2 missing=0 font_size=1.0 x=119 y=424
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=120 y=424
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=121 y=424
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=121 y=424
+[text_raster] ' L' found=1 missing=0 font_size=1.0 x=121 y=424
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=122 y=424
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=122 y=424
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=123 y=424
+[text_raster] ' R' found=1 missing=0 font_size=1.0 x=123 y=424
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=124 y=424
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=125 y=424
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=125 y=424
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=126 y=424
+[text_raster] ' Len' found=3 missing=0 font_size=1.0 x=126 y=424
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=128 y=424
+[text_raster] 'z' found=1 missing=0 font_size=1.0 x=128 y=424
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=129 y=424
+[text_raster] ' S' found=1 missing=0 font_size=1.0 x=129 y=424
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=130 y=424
+[text_raster] 'ev' found=2 missing=0 font_size=1.0 x=130 y=424
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=131 y=424
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=124 y=424
+[text_raster] 'Li' found=2 missing=0 font_size=1.0 x=132 y=424
+[text_raster] 'p' found=1 missing=0 font_size=1.0 x=133 y=424
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=133 y=424
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=134 y=424
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=135 y=424
+[text_raster] 'W' found=1 missing=0 font_size=1.0 x=135 y=424
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=136 y=424
+[text_raster] 'll' found=2 missing=0 font_size=1.0 x=136 y=424
+[text_raster] 'ia' found=2 missing=0 font_size=1.0 x=137 y=424
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=138 y=424
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=139 y=424
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=140 y=424
+[text_raster] 'cG' found=2 missing=0 font_size=1.0 x=140 y=424
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=141 y=424
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=141 y=424
+[text_raster] 'go' found=2 missing=0 font_size=1.0 x=142 y=424
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=143 y=424
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=143 y=424
+[text_raster] ' T' found=1 missing=0 font_size=1.0 x=144 y=424
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=144 y=424
+[text_raster] 'om' found=2 missing=0 font_size=1.0 x=145 y=424
+[text_raster] 'as' found=2 missing=0 font_size=1.0 x=146 y=424
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=147 y=424
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=148 y=424
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=149 y=424
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=149 y=424
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=150 y=424
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=150 y=424
+[text_raster] 'n,' found=2 missing=0 font_size=1.0 x=150 y=424
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=112 y=423
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=113 y=423
+[text_raster] 'om' found=2 missing=0 font_size=1.0 x=113 y=423
+[text_raster] 'as' found=2 missing=0 font_size=1.0 x=115 y=423
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=116 y=423
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=117 y=423
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=117 y=423
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=118 y=423
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=118 y=423
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=119 y=423
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=119 y=423
+[text_raster] 'R' found=1 missing=0 font_size=1.0 x=120 y=423
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=120 y=423
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=121 y=423
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=121 y=423
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=122 y=423
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=122 y=423
+[text_raster] ' M' found=1 missing=0 font_size=1.0 x=122 y=423
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=123 y=423
+[text_raster] 'rt' found=2 missing=0 font_size=1.0 x=124 y=423
+[text_raster] 'in' found=2 missing=0 font_size=1.0 x=125 y=423
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=125 y=423
+[text_raster] 'E' found=1 missing=0 font_size=1.0 x=126 y=423
+[text_raster] 'rik' found=3 missing=0 font_size=1.0 x=126 y=423
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=127 y=423
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=128 y=423
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=129 y=423
+[text_raster] 'C' found=1 missing=0 font_size=1.0 x=129 y=423
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=130 y=423
+[text_raster] 'll' found=2 missing=0 font_size=1.0 x=130 y=423
+[text_raster] 'ist' found=3 missing=0 font_size=1.0 x=131 y=423
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=132 y=423
+[text_raster] 'r,' found=2 missing=0 font_size=1.0 x=132 y=423
+[text_raster] ' Ti' found=2 missing=0 font_size=1.0 x=133 y=423
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=134 y=423
+[text_raster] ' M' found=1 missing=0 font_size=1.0 x=135 y=423
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=136 y=423
+[text_raster] 'C' found=1 missing=0 font_size=1.0 x=136 y=423
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=137 y=423
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=137 y=423
+[text_raster] 'sn' found=2 missing=0 font_size=1.0 x=138 y=423
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=139 y=423
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=139 y=423
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=140 y=423
+[text_raster] ' M' found=1 missing=0 font_size=1.0 x=140 y=423
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=141 y=423
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=141 y=423
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=142 y=423
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=142 y=423
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=143 y=423
+[text_raster] 'l ' found=1 missing=0 font_size=1.0 x=143 y=423
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=143 y=423
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=144 y=423
+[text_raster] 'E' found=1 missing=0 font_size=1.0 x=145 y=423
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=145 y=423
+[text_raster] 'il' found=2 missing=0 font_size=1.0 x=146 y=423
+[text_raster] 'le' found=2 missing=0 font_size=1.0 x=146 y=423
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=147 y=423
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=147 y=423
+[text_raster] ' R' found=1 missing=0 font_size=1.0 x=148 y=423
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=148 y=423
+[text_raster] 'sa' found=2 missing=0 font_size=1.0 x=149 y=423
+[text_raster] 'li' found=2 missing=0 font_size=1.0 x=150 y=423
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=150 y=423
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=112 y=422
+[text_raster] 'c' found=1 missing=0 font_size=1.0 x=113 y=422
+[text_raster] 'Qu' found=2 missing=0 font_size=1.0 x=113 y=422
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=115 y=422
+[text_raster] 'id' found=2 missing=0 font_size=1.0 x=115 y=422
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=116 y=422
+[text_raster] ' Pe' found=2 missing=0 font_size=1.0 x=116 y=422
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=117 y=422
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=118 y=422
+[text_raster] 'r M' found=2 missing=0 font_size=1.0 x=118 y=422
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=120 y=422
+[text_raster] 'll' found=2 missing=0 font_size=1.0 x=120 y=422
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=121 y=422
+[text_raster] ' Jo' found=2 missing=0 font_size=1.0 x=121 y=422
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=122 y=422
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=123 y=422
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=124 y=422
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=124 y=422
+[text_raster] 'ld' found=2 missing=0 font_size=1.0 x=125 y=422
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=125 y=422
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=126 y=422
+[text_raster] 'r,' found=2 missing=0 font_size=1.0 x=126 y=422
+[text_raster] ' Pa' found=2 missing=0 font_size=1.0 x=127 y=422
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=128 y=422
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=130 y=422
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=130 y=422
+[text_raster] 'll' found=2 missing=0 font_size=1.0 x=131 y=422
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=131 y=422
+[text_raster] 'r,' found=2 missing=0 font_size=1.0 x=132 y=422
+[text_raster] ' S' found=1 missing=0 font_size=1.0 x=132 y=422
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=133 y=422
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=133 y=422
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=134 y=422
+[text_raster] 'ra' found=2 missing=0 font_size=1.0 x=134 y=422
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=136 y=422
+[text_raster] 'ira' found=3 missing=0 font_size=1.0 x=136 y=422
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=138 y=422
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=138 y=422
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=138 y=422
+[text_raster] 'le' found=2 missing=0 font_size=1.0 x=139 y=422
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=139 y=422
+[text_raster] ' Jo' found=2 missing=0 font_size=1.0 x=140 y=422
+[text_raster] 'j' found=1 missing=0 font_size=1.0 x=141 y=422
+[text_raster] 'i ' found=1 missing=0 font_size=1.0 x=141 y=422
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=142 y=422
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=143 y=422
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=143 y=422
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=144 y=422
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=144 y=422
+[text_raster] 'li' found=2 missing=0 font_size=1.0 x=144 y=422
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=145 y=422
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=145 y=422
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=146 y=422
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=146 y=422
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=147 y=422
+[text_raster] 'D' found=1 missing=0 font_size=1.0 x=147 y=422
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=148 y=422
+[text_raster] 'u' found=1 missing=0 font_size=1.0 x=149 y=422
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=149 y=422
+[text_raster] 'la' found=2 missing=0 font_size=1.0 x=150 y=422
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=150 y=422
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=112 y=421
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=113 y=421
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=114 y=421
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=114 y=421
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=114 y=421
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=115 y=421
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=115 y=421
+[text_raster] 'er' found=2 missing=0 font_size=1.0 x=116 y=421
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=117 y=421
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=118 y=421
+[text_raster] 'G' found=1 missing=0 font_size=1.0 x=118 y=421
+[text_raster] 'eo' found=2 missing=0 font_size=1.0 x=119 y=421
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=120 y=421
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=120 y=421
+[text_raster] 'e M' found=2 missing=0 font_size=1.0 x=120 y=421
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=122 y=421
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=122 y=421
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=123 y=421
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=123 y=421
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=124 y=421
+[text_raster] 'R' found=1 missing=0 font_size=1.0 x=124 y=421
+[text_raster] 'am' found=2 missing=0 font_size=1.0 x=125 y=421
+[text_raster] 'a M' found=2 missing=0 font_size=1.0 x=126 y=421
+[text_raster] 'oor' found=3 missing=0 font_size=1.0 x=128 y=421
+[text_raster] 'th' found=2 missing=0 font_size=1.0 x=129 y=421
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=130 y=421
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=130 y=421
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=131 y=421
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=132 y=421
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=132 y=421
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=132 y=421
+[text_raster] ' M' found=1 missing=0 font_size=1.0 x=133 y=421
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=134 y=421
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=134 y=421
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=135 y=421
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=135 y=421
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=135 y=421
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=136 y=421
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=136 y=421
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=137 y=421
+[text_raster] 'Har' found=3 missing=0 font_size=1.0 x=131 y=421
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=132 y=421
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=133 y=421
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=133 y=421
+[text_raster] ' N' found=1 missing=0 font_size=1.0 x=134 y=421
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=134 y=421
+[text_raster] 'w' found=1 missing=0 font_size=1.0 x=135 y=421
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=136 y=421
+[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=136 y=421
+[text_raster] 'om' found=2 missing=0 font_size=1.0 x=137 y=421
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=138 y=421
+[text_raster] 'S' found=1 missing=0 font_size=1.0 x=131 y=421
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=131 y=421
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=132 y=421
+[text_raster] 'rri' found=3 missing=0 font_size=1.0 x=132 y=421
+[text_raster] 'll' found=2 missing=0 font_size=1.0 x=133 y=421
+[text_raster] ' N' found=1 missing=0 font_size=1.0 x=134 y=421
+[text_raster] 'ic' found=2 missing=0 font_size=1.0 x=134 y=421
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=135 y=421
+[text_raster] 'ly' found=2 missing=0 font_size=1.0 x=136 y=421
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=136 y=421
+[text_raster] 'Ro' found=2 missing=0 font_size=1.0 x=112 y=419
+[text_raster] 'be' found=2 missing=0 font_size=1.0 x=113 y=419
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=114 y=419
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=115 y=419
+[text_raster] ' N' found=1 missing=0 font_size=1.0 x=115 y=419
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=116 y=419
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=116 y=419
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=117 y=419
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=117 y=419
+[text_raster] 'ye' found=2 missing=0 font_size=1.0 x=118 y=419
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=119 y=419
+[text_raster] ', L' found=2 missing=0 font_size=1.0 x=119 y=419
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=120 y=419
+[text_raster] 'uA' found=2 missing=0 font_size=1.0 x=121 y=419
+[text_raster] 'nna' found=3 missing=0 font_size=1.0 x=122 y=419
+[text_raster] 'N' found=1 missing=0 font_size=1.0 x=124 y=419
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=124 y=419
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=125 y=419
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=125 y=419
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=126 y=419
+[text_raster] 'gi' found=2 missing=0 font_size=1.0 x=126 y=419
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=127 y=419
+[text_raster] 'co' found=2 missing=0 font_size=1.0 x=127 y=419
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=128 y=419
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=129 y=419
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=130 y=419
+[text_raster] ' P' found=1 missing=0 font_size=1.0 x=130 y=419
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=131 y=419
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=131 y=419
+[text_raster] 'O' found=1 missing=0 font_size=1.0 x=132 y=419
+[text_raster] '’' found=1 missing=0 font_size=1.0 x=133 y=419
+[text_raster] 'Re' found=2 missing=0 font_size=1.0 x=133 y=419
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=134 y=419
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=134 y=419
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=134 y=419
+[text_raster] 'y,' found=2 missing=0 font_size=1.0 x=134 y=419
+[text_raster] 'T' found=1 missing=0 font_size=1.0 x=136 y=419
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=136 y=419
+[text_raster] 'm' found=1 missing=0 font_size=1.0 x=136 y=419
+[text_raster] ' P' found=1 missing=0 font_size=1.0 x=137 y=419
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=138 y=419
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=138 y=419
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=139 y=419
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=139 y=419
+[text_raster] ' K' found=1 missing=0 font_size=1.0 x=139 y=419
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=140 y=419
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=141 y=419
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=141 y=419
+[text_raster] 'n Q' found=2 missing=0 font_size=1.0 x=142 y=419
+[text_raster] 'ui' found=2 missing=0 font_size=1.0 x=143 y=419
+[text_raster] 'g' found=1 missing=0 font_size=1.0 x=144 y=419
+[text_raster] 'g,' found=2 missing=0 font_size=1.0 x=144 y=419
+[text_raster] ' St' found=2 missing=0 font_size=1.0 x=145 y=419
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=146 y=419
+[text_raster] 'v' found=1 missing=0 font_size=1.0 x=147 y=419
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=147 y=419
+[text_raster] ' Q' found=1 missing=0 font_size=1.0 x=148 y=419
+[text_raster] 'ui' found=2 missing=0 font_size=1.0 x=149 y=419
+[text_raster] 'nn' found=2 missing=0 font_size=1.0 x=149 y=419
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=150 y=419
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=112 y=418
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=113 y=418
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=114 y=418
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=114 y=418
+[text_raster] ' Ri' found=2 missing=0 font_size=1.0 x=114 y=418
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=115 y=418
+[text_raster] 'dl' found=2 missing=0 font_size=1.0 x=116 y=418
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=117 y=418
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=117 y=418
+[text_raster] ' E' found=1 missing=0 font_size=1.0 x=117 y=418
+[text_raster] 'd Ro' found=3 missing=0 font_size=1.0 x=118 y=418
+[text_raster] 'ba' found=2 missing=0 font_size=1.0 x=120 y=418
+[text_raster] 'ck' found=2 missing=0 font_size=1.0 x=121 y=418
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=122 y=418
+[text_raster] 'C' found=1 missing=0 font_size=1.0 x=122 y=418
+[text_raster] 'he' found=2 missing=0 font_size=1.0 x=123 y=418
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=124 y=418
+[text_raster] 'yl' found=2 missing=0 font_size=1.0 x=124 y=418
+[text_raster] 'Ro' found=2 missing=0 font_size=1.0 x=125 y=418
+[text_raster] 'by' found=2 missing=0 font_size=1.0 x=126 y=418
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=127 y=418
+[text_raster] 'G' found=1 missing=0 font_size=1.0 x=128 y=418
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=128 y=418
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=129 y=418
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=129 y=418
+[text_raster] 'ge' found=2 missing=0 font_size=1.0 x=130 y=418
+[text_raster] ' Ro' found=2 missing=0 font_size=1.0 x=131 y=418
+[text_raster] 'ge' found=2 missing=0 font_size=1.0 x=132 y=418
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=133 y=418
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=133 y=418
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=134 y=418
+[text_raster] ' Sco' found=3 missing=0 font_size=1.0 x=134 y=418
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=136 y=418
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=136 y=418
+[text_raster] 'R' found=1 missing=0 font_size=1.0 x=137 y=418
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=137 y=418
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=138 y=418
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=138 y=418
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=139 y=418
+[text_raster] ' M' found=1 missing=0 font_size=1.0 x=139 y=418
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=140 y=418
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=140 y=418
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=141 y=418
+[text_raster] ' Rubi' found=4 missing=0 font_size=1.0 x=141 y=418
+[text_raster] 'n,' found=2 missing=0 font_size=1.0 x=143 y=418
+[text_raster] 'K' found=1 missing=0 font_size=1.0 x=144 y=418
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=145 y=418
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=145 y=418
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=146 y=418
+[text_raster] 'n S' found=2 missing=0 font_size=1.0 x=146 y=418
+[text_raster] 'ca' found=2 missing=0 font_size=1.0 x=147 y=418
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=148 y=418
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=149 y=418
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=149 y=418
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=149 y=418
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=112 y=418
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=113 y=418
+[text_raster] 'Ro' found=2 missing=0 font_size=1.0 x=112 y=417
+[text_raster] 'ge' found=2 missing=0 font_size=1.0 x=113 y=417
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=114 y=417
+[text_raster] 'Sc' found=2 missing=0 font_size=1.0 x=115 y=417
+[text_raster] 'he' found=2 missing=0 font_size=1.0 x=116 y=417
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=117 y=417
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=117 y=417
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=117 y=417
+[text_raster] 'J' found=1 missing=0 font_size=1.0 x=118 y=417
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=118 y=417
+[text_raster] 'ck' found=2 missing=0 font_size=1.0 x=119 y=417
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=120 y=417
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=120 y=417
+[text_raster] ' S' found=1 missing=0 font_size=1.0 x=121 y=417
+[text_raster] 'no' found=2 missing=0 font_size=1.0 x=121 y=417
+[text_raster] 'uf' found=2 missing=0 font_size=1.0 x=122 y=417
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=123 y=417
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=124 y=417
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=124 y=417
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=124 y=417
+[text_raster] ' Ra' found=2 missing=0 font_size=1.0 x=125 y=417
+[text_raster] 'y Sn' found=3 missing=0 font_size=1.0 x=126 y=417
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=128 y=417
+[text_raster] 'uf' found=2 missing=0 font_size=1.0 x=129 y=417
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=129 y=417
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=130 y=417
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=130 y=417
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=131 y=417
+[text_raster] ' M' found=1 missing=0 font_size=1.0 x=131 y=417
+[text_raster] 'ur' found=2 missing=0 font_size=1.0 x=132 y=417
+[text_raster] 'ugi' found=3 missing=0 font_size=1.0 x=133 y=417
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=134 y=417
+[text_raster] 'h ' found=1 missing=0 font_size=1.0 x=135 y=417
+[text_raster] 'So' found=2 missing=0 font_size=1.0 x=136 y=417
+[text_raster] 'up' found=2 missing=0 font_size=1.0 x=137 y=417
+[text_raster] 'pa' found=2 missing=0 font_size=1.0 x=138 y=417
+[text_raster] 'ya' found=2 missing=0 font_size=1.0 x=139 y=417
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=140 y=417
+[text_raster] ' G' found=1 missing=0 font_size=1.0 x=140 y=417
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=141 y=417
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=142 y=417
+[text_raster] 'y St' found=3 missing=0 font_size=1.0 x=142 y=417
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=144 y=417
+[text_raster] 'ne' found=2 missing=0 font_size=1.0 x=144 y=417
+[text_raster] 'b' found=1 missing=0 font_size=1.0 x=145 y=417
+[text_raster] 'ur' found=2 missing=0 font_size=1.0 x=146 y=417
+[text_raster] 'ne' found=2 missing=0 font_size=1.0 x=147 y=417
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=148 y=417
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=148 y=417
+[text_raster] ' K' found=1 missing=0 font_size=1.0 x=148 y=417
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=149 y=417
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=150 y=417
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=150 y=417
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=150 y=417
+[text_raster] 'St' found=2 missing=0 font_size=1.0 x=112 y=416
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=113 y=416
+[text_raster] 'uf' found=2 missing=0 font_size=1.0 x=114 y=416
+[text_raster] 'f' found=1 missing=0 font_size=1.0 x=114 y=416
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=115 y=416
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=115 y=416
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=115 y=416
+[text_raster] ' M' found=1 missing=0 font_size=1.0 x=116 y=416
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=117 y=416
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=118 y=416
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=118 y=416
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=118 y=416
+[text_raster] 'nne' found=3 missing=0 font_size=1.0 x=119 y=416
+[text_raster] ' Sw' found=2 missing=0 font_size=1.0 x=120 y=416
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=122 y=416
+[text_raster] 'ns' found=2 missing=0 font_size=1.0 x=122 y=416
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=123 y=416
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=124 y=416
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=124 y=416
+[text_raster] ' P' found=1 missing=0 font_size=1.0 x=124 y=416
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=125 y=416
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=126 y=416
+[text_raster] ' T' found=1 missing=0 font_size=1.0 x=126 y=416
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=127 y=416
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=128 y=416
+[text_raster] 'h,' found=2 missing=0 font_size=1.0 x=128 y=416
+[text_raster] ' G' found=1 missing=0 font_size=1.0 x=129 y=416
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=130 y=416
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=130 y=416
+[text_raster] 'nda' found=3 missing=0 font_size=1.0 x=131 y=416
+[text_raster] ' T' found=1 missing=0 font_size=1.0 x=132 y=416
+[text_raster] 'ur' found=2 missing=0 font_size=1.0 x=133 y=416
+[text_raster] 'ne' found=2 missing=0 font_size=1.0 x=134 y=416
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=135 y=416
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=135 y=416
+[text_raster] 'P' found=1 missing=0 font_size=1.0 x=136 y=416
+[text_raster] 'a' found=1 missing=0 font_size=1.0 x=136 y=416
+[text_raster] 't' found=1 missing=0 font_size=1.0 x=137 y=416
+[text_raster] 'ric' found=3 missing=0 font_size=1.0 x=137 y=416
+[text_raster] 'k' found=1 missing=0 font_size=1.0 x=138 y=416
+[text_raster] 'Vi' found=2 missing=0 font_size=1.0 x=139 y=416
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=140 y=416
+[text_raster] 'cus' found=3 missing=0 font_size=1.0 x=140 y=416
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=142 y=416
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=142 y=416
+[text_raster] ' J' found=1 missing=0 font_size=1.0 x=142 y=416
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=143 y=416
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=144 y=416
+[text_raster] ' We' found=2 missing=0 font_size=1.0 x=144 y=416
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=146 y=416
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=146 y=416
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=147 y=416
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=147 y=416
+[text_raster] 'Ri' found=2 missing=0 font_size=1.0 x=148 y=416
+[text_raster] 'cha' found=3 missing=0 font_size=1.0 x=148 y=416
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=150 y=416
+[text_raster] 'd ' found=1 missing=0 font_size=1.0 x=150 y=416
+[text_raster] 'W' found=1 missing=0 font_size=1.0 x=112 y=414
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=113 y=414
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=113 y=414
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=114 y=414
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=114 y=414
+[text_raster] 'e' found=1 missing=0 font_size=1.0 x=114 y=414
+[text_raster] 'r' found=1 missing=0 font_size=1.0 x=115 y=414
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=115 y=414
+[text_raster] 'M' found=1 missing=0 font_size=1.0 x=116 y=414
+[text_raster] 'ar' found=2 missing=0 font_size=1.0 x=117 y=414
+[text_raster] 'k ' found=1 missing=0 font_size=1.0 x=117 y=414
+[text_raster] 'W' found=1 missing=0 font_size=1.0 x=118 y=414
+[text_raster] 'i' found=1 missing=0 font_size=1.0 x=119 y=414
+[text_raster] 'l' found=1 missing=0 font_size=1.0 x=119 y=414
+[text_raster] 's' found=1 missing=0 font_size=1.0 x=119 y=414
+[text_raster] 'on' found=2 missing=0 font_size=1.0 x=120 y=414
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=121 y=414
+[text_raster] 'J' found=1 missing=0 font_size=1.0 x=121 y=414
+[text_raster] 'o' found=1 missing=0 font_size=1.0 x=122 y=414
+[text_raster] 'h' found=1 missing=0 font_size=1.0 x=122 y=414
+[text_raster] 'n' found=1 missing=0 font_size=1.0 x=123 y=414
+[text_raster] ' W' found=1 missing=0 font_size=1.0 x=123 y=414
+[text_raster] 'ood' found=3 missing=0 font_size=1.0 x=124 y=414
+[text_raster] 'w' found=1 missing=0 font_size=1.0 x=126 y=414
+[text_raster] 'ar' found=2 missing=0 font_size=1.0 x=127 y=414
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=128 y=414
+[text_raster] ',' found=1 missing=0 font_size=1.0 x=128 y=414
+[text_raster] 'an' found=2 missing=0 font_size=1.0 x=129 y=414
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=130 y=414
+[text_raster] 'Car' found=3 missing=0 font_size=1.0 x=130 y=414
+[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=132 y=414
+[text_raster] ' W' found=1 missing=0 font_size=1.0 x=132 y=414
+[text_raster] 'oo' found=2 missing=0 font_size=1.0 x=134 y=414
+[text_raster] 'd' found=1 missing=0 font_size=1.0 x=135 y=414
+[text_raster] 'y' found=1 missing=0 font_size=1.0 x=135 y=414
+[text_raster] '.' found=1 missing=0 font_size=1.0 x=136 y=414
+=============================== warnings summary ===============================
+tests/test_nist_page6_historical_contributions_heading.py::test_nist_page_6_historical_contributions_is_frontmatter_heading_not_reference
+tests/test_nist_page6_historical_contributions_heading.py::test_nist_page_6_historical_contributions_is_frontmatter_heading_not_reference
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_nist_page6_historical_contributions_heading.py::test_nist_page_6_historical_contributions_is_frontmatter_heading_not_reference
+tests/test_nist_page6_historical_contributions_heading.py::test_nist_page_6_historical_contributions_is_frontmatter_heading_not_reference
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_nist_page6_historical_contributions_heading.py::test_nist_page_6_historical_contributions_is_frontmatter_heading_not_reference
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_nist_page6_historical_contributions_heading.py::test_nist_page_6_historical_contributions_is_frontmatter_heading_not_reference
+1 failed, 5 warnings in 1.58s

@@ -1,0 +1,57 @@
+{
+  "campaign_status": {
+    "active_family": "NIST SP 800-53r5 current-extraction page candidates",
+    "active_page": 3,
+    "blocked_by_systemic_failure": 0,
+    "failed": 0,
+    "latest_failure_signature": "initial page3 live runs blocked at SciLLM transport registration with 401 until pdf_oxide harness auth default skipped stale sk-dev-proxy-123 when current SCILLM_MASTER_KEY is available",
+    "not_run": "remaining active candidate queue",
+    "passed": 1
+  },
+  "candidate": "frontmatter acknowledgments/reviewers page and SciLLM transport auth default repair",
+  "evidence": {
+    "brave_search": "artifacts/pdf_lab/live_second_pass_page3_20260721T0842Z/unblock/brave_transport_auth_401_optional_bearer.json",
+    "failed_auth_run": "artifacts/pdf_lab/live_second_pass_page3_20260721T0842Z",
+    "focused_auth_tests": [
+      {
+        "command": "pytest -q tests/test_pdf_lab_page_second_pass_dag.py::test_default_scillm_auth_token_prefers_current_proxy_env tests/test_pdf_lab_second_pass_harness.py::test_default_scillm_auth_token_prefers_current_proxy_env",
+        "result": "2 passed in 0.22s",
+        "test_log": "artifacts/pdf_lab/page3_transport_auth_20260721/test_logs/pytest_scillm_auth_default_final.log"
+      }
+    ],
+    "live_final_gate": "artifacts/pdf_lab/live_second_pass_page3_after_auth_resolver_patch_20260721T0900Z/harness_final_gate.json",
+    "live_model_response": "artifacts/pdf_lab/live_second_pass_page3_after_auth_resolver_patch_20260721T0900Z/page_cases/page_case_0001_p0003/review_response.json",
+    "live_review_validation": "artifacts/pdf_lab/live_second_pass_page3_after_auth_resolver_patch_20260721T0900Z/page_cases/page_case_0001_p0003/review_validation.json",
+    "live_terminal_ledger": "artifacts/pdf_lab/live_second_pass_page3_after_auth_resolver_patch_20260721T0900Z/page_cases/page_case_0001_p0003/terminal_ledger.json",
+    "manual_master_key_confirmation_run": "artifacts/pdf_lab/live_second_pass_page3_with_master_key_20260721T0852Z",
+    "webgpt_bundle": "artifacts/pdf_lab/live_second_pass_page3_20260721T0842Z/unblock/webgpt_page3_transport_auth_bundle.md",
+    "webgpt_result": {
+      "stderr": "artifacts/pdf_lab/live_second_pass_page3_20260721T0842Z/unblock/webgpt_submit.stderr",
+      "stdout": "artifacts/pdf_lab/live_second_pass_page3_20260721T0842Z/unblock/webgpt_submit.stdout",
+      "status": "BLOCKED_WEBGPT_TAB_IDENTITY_MISSING: expected one open tab 837359458, found 0"
+    }
+  },
+  "mocked": "no",
+  "live": "yes",
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "source_changes": [
+    "scripts/pdf_lab/run_page_second_pass_dag.py",
+    "scripts/pdf_lab/run_second_pass_harness.py",
+    "tests/test_pdf_lab_page_second_pass_dag.py",
+    "tests/test_pdf_lab_second_pass_harness.py"
+  ],
+  "verified": {
+    "candidate_count": 17,
+    "defect_count": 0,
+    "harness_final_gate_ok": true,
+    "review_response_page_status": "clean",
+    "review_validation_ok": true,
+    "terminal_status": "reviewed_clean"
+  },
+  "what_was_exercised": "A live page3 second-pass review used the running SciLLM proxy on localhost:4001 and the page orchestrator live transport path after the pdf_oxide harness auth resolver skipped the stale fallback token and selected the current SCILLM_MASTER_KEY from the process environment.",
+  "what_remains_unverified": [
+    "remaining active page candidates beyond page 3",
+    "Criterion 6 live GitHub apply mutation, still requiring approval receipt",
+    "WebGPT advisory review content, because exact tab 837359458 was not visible to Browser Oracle"
+  ]
+}

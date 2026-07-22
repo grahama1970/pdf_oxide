@@ -1,0 +1,83 @@
+{
+  "artifacts": {
+    "events_jsonl": "/tmp/pdf_oxide_integrate_gs001_20260721/artifacts/pdf_lab/doi_chrome_census_20260721/candidate_census_events.jsonl",
+    "first60_analysis": "/tmp/pdf_oxide_integrate_gs001_20260721/artifacts/pdf_lab/doi_chrome_census_20260721/doi_publication_anchor_analysis_first60.json",
+    "first60_with_pymupdf_manifest": "/tmp/pdf_oxide_integrate_gs001_20260721/artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_first60_with_pymupdf.json",
+    "first_failed_no_pymupdf_manifest": "/tmp/pdf_oxide_integrate_gs001_20260721/artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_first60.json",
+    "full_plain_uv_manifest": "/tmp/pdf_oxide_integrate_gs001_20260721/artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_full_plain_uv_after_dev_pymupdf.json",
+    "full_plain_uv_progress": "/tmp/pdf_oxide_integrate_gs001_20260721/artifacts/pdf_lab/doi_chrome_census_20260721/candidate_census_progress_full_plain_uv_after_dev_pymupdf.json"
+  },
+  "commands": [
+    {
+      "cmd": "uv run pytest -q tests/test_nist_page45_chrome_noise.py tests/test_nist_page_28_regression.py -k \"doi or chrome\"",
+      "result": "3 passed, 6 deselected in 4.82s"
+    },
+    {
+      "cmd": "uv run pytest -q tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page34_sidebar_chrome.py tests/test_nist_page_28_regression.py",
+      "result": "11 passed in 7.13s"
+    },
+    {
+      "cmd": "uv run python scripts/pdf_lab/build_pdf_element_candidate_manifest.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_full_plain_uv_after_dev_pymupdf.json --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --page-timeout-s 30 --debug-log artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_full_plain_uv_after_dev_pymupdf_debug.log --progress-path artifacts/pdf_lab/doi_chrome_census_20260721/candidate_census_progress_full_plain_uv_after_dev_pymupdf.json",
+      "result": "candidate_count=9333, page_count=492, extracted_page_count=492, census_failure_count=0"
+    }
+  ],
+  "created_at": "2026-07-21T13:55:31.124411+00:00",
+  "direct_scillm_called_from_pdf_oxide": false,
+  "doi_publication_anchor_analysis": {
+    "anchor_page_count": 492,
+    "anchor_page_minmax": [
+      1,
+      492
+    ],
+    "anchor_record_count": 576,
+    "block_type_counts": {
+      "header_footer_noise": 576
+    },
+    "combined_publication_doi_count": 490,
+    "combined_publication_doi_not_left_margin_count": 0,
+    "combined_publication_doi_not_left_margin_first10": [],
+    "non_side_chrome_count": 0,
+    "preset_counts": {
+      "side_chrome": 576
+    },
+    "source_type_counts": {
+      "Boilerplate": 576
+    }
+  },
+  "git_head": "d5b1454728fc011d02078ab982f3d884f64a99ac",
+  "live": false,
+  "manifest": {
+    "candidate_count": 9333,
+    "census_failure_count": 0,
+    "extracted_page_count": 492,
+    "page_count": 492,
+    "path": "/tmp/pdf_oxide_integrate_gs001_20260721/artifacts/pdf_lab/doi_chrome_census_20260721/candidate_manifest_full_plain_uv_after_dev_pymupdf.json",
+    "preset_counts": {
+      "appendix": 64,
+      "figure": 42,
+      "footnote": 36,
+      "list": 1106,
+      "reference": 766,
+      "section_heading": 1266,
+      "side_chrome": 2098,
+      "table": 110,
+      "text": 3844,
+      "toc": 1
+    }
+  },
+  "mocked": false,
+  "schema": "pdf_lab.doi_chrome_census_audit.v1",
+  "status": "passing_current_contract",
+  "tau_required": false,
+  "what_remains_unverified": [
+    "This is deterministic extraction evidence only; it is not a new model-backed second-pass review.",
+    "Criterion 6 live GitHub apply remains blocked without a valid approval receipt for mutation.",
+    "The all-candidates goal remains open pending fresh reviewer-selected candidates beyond the completed/rechecked queue."
+  ],
+  "what_this_proves": [
+    "PyMuPDF-backed rotated DOI side-chrome bbox narrowing is available in the normal dev/test uv environment.",
+    "Across the full 492-page NIST document, DOI/publication anchor records remain side_chrome/header_footer_noise, not body content.",
+    "Combined rotated DOI/publication side-chrome records satisfy the left-margin bbox contract."
+  ],
+  "what_was_exercised": "Deterministic pdf_oxide current extraction through scripts/pdf_lab/build_pdf_element_candidate_manifest.py under plain uv run on all 492 NIST SP 800-53r5 pages, plus focused pytest regressions for page45 DOI/chrome, page45 list markers, page34 sidebar/body-heading, and page28."
+}

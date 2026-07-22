@@ -1,0 +1,50 @@
+{
+  "campaign_status": {
+    "active_family": "NIST SP 800-53r5 current-extraction page candidates",
+    "blocked_by_systemic_failure": 0,
+    "failed": 0,
+    "latest_failure_signature": "none for page1; live model review returned clean",
+    "not_run": "remaining active candidate queue",
+    "passed": 1
+  },
+  "candidate": "frontmatter title and DOI chrome separation",
+  "live": true,
+  "mocked": false,
+  "page": 1,
+  "proof": {
+    "deterministic_gate": {
+      "harness_final_gate": "artifacts/pdf_lab/live_second_pass_page1_20260721T0818Z/harness_final_gate.json",
+      "ok": true,
+      "terminal_status": "passed"
+    },
+    "live_second_pass": {
+      "case_dir": "artifacts/pdf_lab/live_second_pass_page1_20260721T0818Z/page_cases/page_case_0001_p0001",
+      "candidate_count": 7,
+      "review_bundle": "artifacts/pdf_lab/live_second_pass_page1_20260721T0818Z/page_cases/page_case_0001_p0001/review_bundle.zip",
+      "review_html": "artifacts/pdf_lab/live_second_pass_page1_20260721T0818Z/page_cases/page_case_0001_p0001/review.html",
+      "review_response": "artifacts/pdf_lab/live_second_pass_page1_20260721T0818Z/page_cases/page_case_0001_p0001/review_response.json",
+      "review_validation": "artifacts/pdf_lab/live_second_pass_page1_20260721T0818Z/page_cases/page_case_0001_p0001/review_validation.json",
+      "terminal_ledger": "artifacts/pdf_lab/live_second_pass_page1_20260721T0818Z/page_cases/page_case_0001_p0001/terminal_ledger.json",
+      "terminal_status": "reviewed_clean"
+    },
+    "selection": {
+      "forced_pages_input": "artifacts/pdf_lab/live_second_pass_page1_20260721T0818Z/forced_pages_input.json",
+      "human_forced_pages": "artifacts/pdf_lab/live_second_pass_page1_20260721T0818Z/human_forced_pages.json",
+      "sampled_page_cases": "artifacts/pdf_lab/live_second_pass_page1_20260721T0818Z/sampled_page_cases.json",
+      "selected_pages": [
+        1
+      ]
+    }
+  },
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "status": "passed_current_gate",
+  "what_remains_unverified": [
+    "remaining active candidates beyond page 1 are not covered by this receipt"
+  ],
+  "what_was_exercised": [
+    "forced one-page page1 candidate selection from current extraction",
+    "live scillm second-pass page review",
+    "review bundle generation with original page image, annotated candidate image, extracted page JSON, candidate presets, model-ready prompt payload, response, validation result, and HTML review artifact",
+    "deterministic harness final gate"
+  ]
+}

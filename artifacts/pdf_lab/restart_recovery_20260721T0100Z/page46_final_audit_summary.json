@@ -1,0 +1,31 @@
+{
+  "brave_search_receipt": "brave_search_hil_pdf_extraction.json",
+  "exercised": "rebuilt local Rust/Python extension, raw pdf_oxide classify_blocks on NIST_SP_800-53r5.pdf page index 45, snapshot_current_extraction with release ledger",
+  "live": "yes",
+  "mocked": "no",
+  "raw_audit": "page46_raw_classify_blocks_audit_final.json",
+  "raw_core": {
+    "block_count": 28,
+    "d_child_count": 3,
+    "d_parent_count": 1,
+    "h_block_absorbs_i": false,
+    "h_block_absorbs_numbered_children": false,
+    "h_child_count": 3,
+    "h_parent_count": 1,
+    "i_parent_count": 1
+  },
+  "schema": "pdf_lab.page46.issue3.final_audit.v1",
+  "snapshot": "page46_current_snapshot_final.json",
+  "snapshot_ac2_table_count": 0,
+  "snapshot_counts": {
+    "child_1": 1,
+    "child_2": 1,
+    "child_3": 1,
+    "d_child_count": 3,
+    "d_parent": 1,
+    "h_parent": 1,
+    "i_parent": 1
+  },
+  "snapshot_repair_marker_count": 0,
+  "unverified": "visual CDP review of localhost PDF Lab route was not rerun in this slice"
+}

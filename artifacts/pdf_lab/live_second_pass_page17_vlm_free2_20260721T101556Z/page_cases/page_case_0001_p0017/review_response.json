@@ -1,0 +1,49 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0017:0000:side_chrome",
+      "evidence": "Extracted JSON block 0 text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' with bbox [0.147, 0.045, 0.851, 0.058] matches the header on the rendered page and annotation 1. The preset type 'side_chrome' and source_type 'Header' are accurate.",
+      "rationale": "The header text is correctly extracted with an accurate bounding box and classified as side_chrome, consistent with its function as page chrome.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0017:0001:side_chrome",
+      "evidence": "Extracted JSON block 1 text '_________________________________________________________________________________________________' with bbox [0.147, 0.057, 0.852, 0.071] matches the horizontal line on the rendered page and annotation 2. The preset type 'side_chrome' and source_type 'Header' are accurate.",
+      "rationale": "The horizontal line, functioning as a separator for the header, is correctly extracted with an accurate bounding box and classified as side_chrome.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0017:0002:side_chrome",
+      "evidence": "Extracted JSON block 2 text 'xv' with bbox [0.493, 0.940, 0.506, 0.955] matches the page number at the bottom of the rendered page and annotation 3. The preset type 'side_chrome' and source_type 'PageNumber' are accurate.",
+      "rationale": "The page number 'xv' is correctly extracted with an accurate bounding box and classified as side_chrome, consistent with its role as page chrome.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0017:0003:side_chrome",
+      "evidence": "Extracted JSON block 3 text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' with bbox [0.030, 0.288, 0.050, 0.741] matches the vertical boilerplate text on the left margin of the rendered page and annotation 4. The preset type 'side_chrome' and source_type 'Boilerplate' are accurate.",
+      "rationale": "The vertical boilerplate text on the left margin is correctly extracted with an accurate bounding box and classified as side_chrome. The text content is also accurate, despite its rotation on the page.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0017:0004:list",
+      "evidence": "Extracted JSON block 4 full text matches the bulleted list on the rendered page, starting with '\u2022 Removing control baselines...' and ending with '...cyber-attack data.', with bbox [0.147, 0.091, 0.845, 0.229]. This corresponds to annotation 5. The preset type 'list' and source_type 'List' are accurate.",
+      "rationale": "The bulleted list is accurately extracted with correct text content, bounding box, and classification as a list type.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0017:0005:text",
+      "evidence": "Extracted JSON block 5 full text matches the paragraph on the rendered page, starting with 'In separating the process...' and ending with '...assessment information.', with bbox [0.147, 0.243, 0.850, 0.363]. This corresponds to annotation 6. The preset type 'text' and source_type 'Body' are accurate.",
+      "rationale": "The paragraph of body text is accurately extracted with correct text content, bounding box, and classified as a text block.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    }
+  ],
+  "page_rationale": "All candidates on page p0017 (header, horizontal line, page number, boilerplate text, bulleted list, and paragraph) were accurately extracted regarding their text content, bounding boxes, and preset type classifications, aligning with the rendered page and annotations. Therefore, the page is classified as clean.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

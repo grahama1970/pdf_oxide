@@ -1,0 +1,32 @@
+{
+  "query": "PDF extraction table cell text misclassified header footer noise DOI references table row",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Tabular Data Extraction from PDF - Advanced Accuracy Techniques",
+      "description": "Footnotes: By understanding the contextual relevance of footnotes, LLMs can correctly associate them with the appropriate data points in the table, ensuring that supplementary information is not misclassified. Complex Headers: LLMs\u2019 ability to parse multi-level headers and align them with the corresponding data ensures that even the most complex tables are accurately extracted and reconstructed. Empty Columns and Rows: LLMs can identify and manage empty columns or rows, ensuring that they do not lead to data misalignment or loss, thus maintaining the integrity of the extracted data.",
+      "url": "https://forage.ai/blog/dive-in-how-to-extract-tabular-data-from-pdfs/"
+    },
+    {
+      "title": "The RAG Playbook: Advanced Parsing for PDFs That Hate You - Tables, Footnotes, & Figures",
+      "description": "You\u2019ll likely end up with a stack ... the pipeline approach. Clean up the junk. <strong>Removing or segregating footers, headers, and other noise will boost your RAG results significantly</strong>....",
+      "url": "https://lettersfromacoder.substack.com/p/the-rag-playbook-advanced-parsing"
+    },
+    {
+      "title": "I Tested 12 \u201cBest-in-Class\u201d PDF Table Extraction Tools, and the Results Were Appalling | by Mark Kramer | Medium",
+      "description": "For SoAs, that approach is a non-starter, since it loses the semantics attached to merged cells. For example, this: ... I evaluated six commercial table extraction solutions, focusing on those that provided a free trial or had an interactive web page available to try out the product. Here they are, in alphabetical order: Among all the commercial solutions, ComPDF was the only tool to correctly capture the hierarchical column headers. However, it had issues with row label merging and missed multiple \u2018X\u2019s, a serious error in this context.",
+      "url": "https://medium.com/@kramermark/i-tested-12-best-in-class-pdf-table-extraction-tools-and-the-results-were-appalling-f8a9991d972e"
+    },
+    {
+      "title": "(PDF) pdf2table: A Method to Extract Table Information from PDF Files.",
+      "description": "By using methods to analyze the geometry, syntax, and the semantics of the character data, as well as utilizing some well-known image processing techniques, we are able to 1) isolate embedded tables from documents, and 2) identify table components such as title blocks, table entries, and footer blocks.",
+      "url": "https://www.researchgate.net/publication/220887997_pdf2table_A_Method_to_Extract_Table_Information_from_PDF_Files"
+    },
+    {
+      "title": "python - How can I extract tables as structured data from PDF documents? - Stack Overflow",
+      "description": "Amazon Textract can extract tables in a document, and extract cells, merged cells, and column headers within a table.",
+      "url": "https://stackoverflow.com/questions/17591426/how-can-i-extract-tables-as-structured-data-from-pdf-documents"
+    }
+  ]
+}

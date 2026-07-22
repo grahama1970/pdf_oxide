@@ -1,0 +1,42 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0023:0000:side_chrome",
+      "evidence": "Extracted JSON block 0's bbox [0.14705882352941177, 0.04473802296802251, 0.8507378272760927, 0.05821938948197798] and text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' perfectly match the rendered page's top header and the preset.",
+      "rationale": "The top header text is accurately extracted, including its bounding box, text content, and correct classification as 'side_chrome' with source type 'Header'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0023:0001:side_chrome",
+      "evidence": "Extracted JSON block 1's bbox [0.14705882352941177, 0.05679397390346334, 0.8517353332120609, 0.07054738324097913] and text '_________________________________________________________________________________________________' perfectly match the rendered page's header separator line and the preset.",
+      "rationale": "The horizontal separator line below the header text is accurately extracted, including its bounding box, text content, and correct classification as 'side_chrome' with source type 'Header'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0023:0002:side_chrome",
+      "evidence": "Extracted JSON block 2's bbox [0.49196076237298303, 0.939856018682923, 0.5080637215009702, 0.9550605542732008] and text 'xxi' perfectly match the rendered page's bottom page number and the preset.",
+      "rationale": "The page number 'xxi' is accurately extracted, including its bounding box, text content, and correct classification as 'side_chrome' with source type 'PageNumber'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0023:0003:side_chrome",
+      "evidence": "Extracted JSON block 3's bbox [0.0296323533151664, 0.28780303338561397, 0.049705879361021756, 0.7406287915778883] and text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' perfectly match the rendered page's vertical boilerplate text and the preset.",
+      "rationale": "The vertical boilerplate text on the left side of the page is accurately extracted, including its bounding box, text content, and correct classification as 'side_chrome' with source type 'Boilerplate'.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0023:0004:table",
+      "evidence": "Extracted JSON block 4's bbox [0.14666667015723933, 0.09151512685448232, 0.8525490355647467, 0.8793181795062441] and text, classified as 'table', perfectly reflect the rendered page's main content table. The text accurately captures the column data using pipe delimiters.",
+      "rationale": "The main content table is accurately identified and extracted. The bounding box correctly encompasses the table, and the text content faithfully represents the table data, preserving column structure via pipe delimiters. The classification as 'table' is appropriate.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    }
+  ],
+  "page_rationale": "All candidate extractions for page 23 are accurate. This includes the header text, a header separator line, the page number, vertical boilerplate text, and the main content table. Bounding boxes, text content, and classification types are all correctly identified and represented in the extracted JSON, aligning perfectly with the visual evidence.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

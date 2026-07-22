@@ -1,0 +1,75 @@
+{
+  "schema": "pdf_oxide.pdf_lab.route_unblock_assessment.v1",
+  "created_at": "2026-07-21T16:39:22Z",
+  "status": "BLOCKED_CURRENT_GATE",
+  "assessment": "DIAGNOSIS: BLOCKED_CURRENT_GATE: Tau/SciLLM vlm-free2 route unresponsive with cascading alternate-route exhaustion; no legitimate self-unblock path exists inside pdf_oxide.",
+  "mocked": false,
+  "live": true,
+  "provider_live": true,
+  "advisory_only": true,
+  "execution_owner": "$tau",
+  "transport_owner": "$surf",
+  "handler": "webkimi",
+  "transport": "kimi.submit",
+  "ask_run_dir": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640",
+  "tau_issue_comment": "https://github.com/grahama1970/tau/issues/123#issuecomment-5036636615",
+  "ask_execution_status": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640/execution-status.json",
+  "tau_dag_receipt": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640/tau-receipts/dag-receipt.json",
+  "handler_receipt": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640/node-artifacts/handler-webkimi/node-receipt.json",
+  "handler_response": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640/node-artifacts/handler-webkimi/response.md",
+  "handler_response_meta": "/mnt/storage12tb/skills/ask/outputs/pdf_oxide_route_unblock_20260721/pdf-oxide-route-unblock-webkimi-20260721T1640/node-artifacts/handler-webkimi/response.meta.json",
+  "dag_receipt_summary": {
+    "status": "PASS",
+    "verdict": "PASS",
+    "mocked": false,
+    "live": true,
+    "provider_live": false,
+    "execution_seconds": 17.259126,
+    "node_count": 2,
+    "selected_agents": [
+      "handler-webkimi",
+      "join"
+    ],
+    "proof_scope_proves": [
+      "DAG contract parsed and validated.",
+      "Bounded ready-queue scheduler preflight checked unsupported edge conditions, acyclicity, local-only execution, provider branches, and mutating branches.",
+      "Ready nodes were dispatched by the bounded ready-queue scheduler.",
+      "Each dispatched node used the real local command subprocess runner.",
+      "Node evidence and reviewer verdicts were checked against the immutable goal hash."
+    ],
+    "proof_scope_does_not_prove": [
+      "Provider/model semantic quality.",
+      "GitHub mutation or ticket closure.",
+      "Mutating branch safety.",
+      "Unbounded autonomous operation."
+    ]
+  },
+  "handler_receipt_summary": {
+    "status": "PASS",
+    "mocked": false,
+    "live": true,
+    "provider_live": true,
+    "browser_oracle_project": "webkimi",
+    "tab_id": "837360537",
+    "conversation_url": "https://www.kimi.com/chat/19f857db-4302-86b5-8000-095c9bf66015?chat_enter_method=new_chat",
+    "response_chars": 3270,
+    "clean_contains_sentinel": false,
+    "raw_contains_sentinel": true,
+    "failure": null
+  },
+  "input_evidence": {
+    "pdf_oxide_main_commit": "89e2a47683ed0968cca13716a33422e4357388e9",
+    "vlm_free2_resume_canary": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/vlm-free2-resume-canary-20260721T154322Z-receipt.json",
+    "quota_canary": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/quota-canary-receipt.json",
+    "local_text_canary": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/local-text-canary-receipt.json",
+    "webgpt_route_unblock_attempt": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/webgpt_route_unblock_attempt.json",
+    "brave_search_route_recovery": "artifacts/pdf_lab/tau_issue123_timeout_classification_20260721/brave_search_route_recovery_20260721.json"
+  },
+  "webkimi_position": {
+    "primary_blocker": "Tau/SciLLM vlm-free2 route is unresponsive with provider_live=false and timeout evidence; pdf_oxide has no self-healing mechanism for that Tau-owned route.",
+    "secondary_blocker": "Tau-owned local-text alternate route is exhausted with HTTP 502 route_exhausted.",
+    "tertiary_blocker": "WebGPT exact-tab escalation is blocked by BLOCKED_WEBGPT_TAB_IDENTITY_MISSING.",
+    "policy_blocker": "GOAL.md prohibits selecting or rerunning more live model-review candidates until a Tau-owned minimal canary PASS exists for vlm-free2 or an explicitly approved alternate route."
+  },
+  "recommended_next_action": "Do not select or rerun another PDF Lab live model-review candidate. Wait for Tau/SciLLM route recovery or an explicitly approved alternate Tau route, then require a minimal Tau canary PASS before resuming the all-candidates loop."
+}

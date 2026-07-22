@@ -1,0 +1,290 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"defect\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0076:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' is correctly identified as side_chrome with correct text and bbox.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The horizontal line below the header is correctly identified as side_chrome with correct text and bbox.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0002:side_chrome\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted text content 'CHAPTER THREE   49 PAGE' does not precisely match the rendered page 'CHAPTER THREE PAGE 49'. The order of '49' and 'PAGE' is swapped in the extraction.\",\n      \"rationale\": \"The footer text has the page number and the word 'PAGE' swapped in the extracted JSON compared to the rendered page.\",\n      \"suggested_fix_surface\": \"Correct the text order for 'CHAPTER THREE PAGE 49'.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The rotated boilerplate text on the left side of the page is correctly identified as side_chrome with correct text and bbox.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0004:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The paragraph text is correctly identified as 'text' with correct content and bbox, and `is_bold` is correctly false.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0005:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The 'Related Controls' line is correctly extracted as 'text' with the semantic role 'related_controls', and `is_bold` is correctly true in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0006:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0007:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.\",\n      \"rationale\": \"The `is_bold` attribute in the extracted JSON is incorrect. The text 'Implement cryptographic mechanisms to protect the confidentiality and integrity of remote access sessions.' is not bold on the rendered page.\",\n      \"suggested_fix_surface\": \"Correct `is_bold` to `false` for this block.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0008:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.\",\n      \"rationale\": \"The `is_bold` attribute in the extracted JSON is incorrect. The 'Discussion' text is not bold on the rendered page.\",\n      \"suggested_fix_surface\": \"Correct `is_bold` to `false` for this block.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0009:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The 'Related Controls' line is correctly extracted as 'text' with the semantic role 'related_controls', and `is_bold` is correctly false in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0010:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0011:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.\",\n      \"rationale\": \"The `is_bold` attribute in the extracted JSON is incorrect. The text 'Route remote accesses through authorized and managed network access control points.' is not bold on the rendered page.\",\n      \"suggested_fix_surface\": \"Correct `is_bold` to `false` for this block.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0012:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The 'Discussion' text is correctly extracted as 'text' with the semantic role 'discussion', and `is_bold` is correctly false in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0013:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The 'Related Controls' line is correctly extracted as 'text' with the semantic role 'related_controls', and `is_bold` is correctly false in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0014:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0015:list\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.\",\n      \"rationale\": \"The `is_bold` attribute in the extracted JSON is incorrect. The list item text is not bold on the rendered page.\",\n      \"suggested_fix_surface\": \"Correct `is_bold` to `false` for this block.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0016:list\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.\",\n      \"rationale\": \"The `is_bold` attribute in the extracted JSON is incorrect. The list item text is not bold on the rendered page.\",\n      \"suggested_fix_surface\": \"Correct `is_bold` to `false` for this block.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0017:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The 'Discussion' text is correctly extracted as 'text' with the semantic role 'discussion', and `is_bold` is correctly false in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0018:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.\",\n      \"rationale\": \"The `is_bold` attribute in the extracted JSON is incorrect. The 'Related Controls' text is not bold on the rendered page.\",\n      \"suggested_fix_surface\": \"Correct `is_bold` to `false` for this block.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0019:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0020:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.\",\n      \"rationale\": \"The `is_bold` attribute in the extracted JSON is incorrect. The '[Withdrawn: Incorporated into SI-4.]' text is not bold on the rendered page.\",\n      \"suggested_fix_surface\": \"Correct `is_bold` to `false` for this block.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0021:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0022:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.\",\n      \"rationale\": \"The `is_bold` attribute in the extracted JSON is incorrect. The text 'Protect information about remote access mechanisms from unauthorized use and disclosure.' is not bold on the rendered page.\",\n      \"suggested_fix_surface\": \"Correct `is_bold` to `false` for this block.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0023:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The 'Discussion' text is correctly extracted as 'text' with the semantic role 'discussion', and `is_bold` is correctly false in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0024:text\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.\",\n      \"rationale\": \"The `is_bold` attribute in the extracted JSON is incorrect. The 'Related Controls' text is not bold on the rendered page.\",\n      \"suggested_fix_surface\": \"Correct `is_bold` to `false` for this block.\"\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0025:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0026:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The '[Withdrawn: Incorporated into AC-3(10).]' text is correctly identified as 'text' with the semantic role 'nist_withdrawn_note', and `is_bold` is correctly false matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0027:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0028:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The '[Withdrawn: Incorporated into CM-7.]' text is correctly identified as 'text' with the semantic role 'nist_withdrawn_note', and `is_bold` is correctly false matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0076:0029:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.\",\n      \"rationale\": \"The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.\",\n      \"suggested_fix_surface\": null\n    }\n  ],\n  \"page_rationale\": \"Multiple candidates (7, 8, 11, 15, 16, 18, 20, 22, 24) have an incorrect `is_bold: true` attribute in the extracted JSON; the corresponding text on the rendered page is not bold. Additionally, candidate 2 has a text ordering defect in the footer.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784620692,
+    "id": "dCZfapmNF-qj1MkPx8vOwQ0",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0002_p0076",
+      "item_id": "page_case_0002_p0076:37f62c0669f14db2",
+      "request_sha256": "37f62c0669f14db23bbef0ee752fe8c42260f13fcc1b7c49fb3b5b5cffd4899b"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 3800,
+      "completion_tokens_details": null,
+      "prompt_tokens": 32335,
+      "prompt_tokens_details": null,
+      "total_tokens": 40080
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0076:0000:side_chrome",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' is correctly identified as side_chrome with correct text and bbox.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0001:side_chrome",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The horizontal line below the header is correctly identified as side_chrome with correct text and bbox.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0002:side_chrome",
+        "evidence": "The extracted text content 'CHAPTER THREE   49 PAGE' does not precisely match the rendered page 'CHAPTER THREE PAGE 49'. The order of '49' and 'PAGE' is swapped in the extraction.",
+        "rationale": "The footer text has the page number and the word 'PAGE' swapped in the extracted JSON compared to the rendered page.",
+        "status": "defect",
+        "suggested_fix_surface": "Correct the text order for 'CHAPTER THREE PAGE 49'."
+      },
+      {
+        "candidate_id": "cand:p0076:0003:side_chrome",
+        "evidence": "The extracted JSON's type, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The rotated boilerplate text on the left side of the page is correctly identified as side_chrome with correct text and bbox.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0004:text",
+        "evidence": "The extracted JSON's type, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The paragraph text is correctly identified as 'text' with correct content and bbox, and `is_bold` is correctly false.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0005:text",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The 'Related Controls' line is correctly extracted as 'text' with the semantic role 'related_controls', and `is_bold` is correctly true in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0006:section_heading",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0007:text",
+        "evidence": "The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.",
+        "rationale": "The `is_bold` attribute in the extracted JSON is incorrect. The text 'Implement cryptographic mechanisms to protect the confidentiality and integrity of remote access sessions.' is not bold on the rendered page.",
+        "status": "defect",
+        "suggested_fix_surface": "Correct `is_bold` to `false` for this block."
+      },
+      {
+        "candidate_id": "cand:p0076:0008:text",
+        "evidence": "The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.",
+        "rationale": "The `is_bold` attribute in the extracted JSON is incorrect. The 'Discussion' text is not bold on the rendered page.",
+        "status": "defect",
+        "suggested_fix_surface": "Correct `is_bold` to `false` for this block."
+      },
+      {
+        "candidate_id": "cand:p0076:0009:text",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The 'Related Controls' line is correctly extracted as 'text' with the semantic role 'related_controls', and `is_bold` is correctly false in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0010:section_heading",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0011:text",
+        "evidence": "The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.",
+        "rationale": "The `is_bold` attribute in the extracted JSON is incorrect. The text 'Route remote accesses through authorized and managed network access control points.' is not bold on the rendered page.",
+        "status": "defect",
+        "suggested_fix_surface": "Correct `is_bold` to `false` for this block."
+      },
+      {
+        "candidate_id": "cand:p0076:0012:text",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The 'Discussion' text is correctly extracted as 'text' with the semantic role 'discussion', and `is_bold` is correctly false in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0013:text",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The 'Related Controls' line is correctly extracted as 'text' with the semantic role 'related_controls', and `is_bold` is correctly false in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0014:section_heading",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0015:list",
+        "evidence": "The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.",
+        "rationale": "The `is_bold` attribute in the extracted JSON is incorrect. The list item text is not bold on the rendered page.",
+        "status": "defect",
+        "suggested_fix_surface": "Correct `is_bold` to `false` for this block."
+      },
+      {
+        "candidate_id": "cand:p0076:0016:list",
+        "evidence": "The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.",
+        "rationale": "The `is_bold` attribute in the extracted JSON is incorrect. The list item text is not bold on the rendered page.",
+        "status": "defect",
+        "suggested_fix_surface": "Correct `is_bold` to `false` for this block."
+      },
+      {
+        "candidate_id": "cand:p0076:0017:text",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The 'Discussion' text is correctly extracted as 'text' with the semantic role 'discussion', and `is_bold` is correctly false in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0018:text",
+        "evidence": "The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.",
+        "rationale": "The `is_bold` attribute in the extracted JSON is incorrect. The 'Related Controls' text is not bold on the rendered page.",
+        "status": "defect",
+        "suggested_fix_surface": "Correct `is_bold` to `false` for this block."
+      },
+      {
+        "candidate_id": "cand:p0076:0019:section_heading",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0020:text",
+        "evidence": "The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.",
+        "rationale": "The `is_bold` attribute in the extracted JSON is incorrect. The '[Withdrawn: Incorporated into SI-4.]' text is not bold on the rendered page.",
+        "status": "defect",
+        "suggested_fix_surface": "Correct `is_bold` to `false` for this block."
+      },
+      {
+        "candidate_id": "cand:p0076:0021:section_heading",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0022:text",
+        "evidence": "The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.",
+        "rationale": "The `is_bold` attribute in the extracted JSON is incorrect. The text 'Protect information about remote access mechanisms from unauthorized use and disclosure.' is not bold on the rendered page.",
+        "status": "defect",
+        "suggested_fix_surface": "Correct `is_bold` to `false` for this block."
+      },
+      {
+        "candidate_id": "cand:p0076:0023:text",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The 'Discussion' text is correctly extracted as 'text' with the semantic role 'discussion', and `is_bold` is correctly false in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0024:text",
+        "evidence": "The extracted JSON incorrectly marks the text as bold (`is_bold: true`), but the text is not bold on the rendered page.",
+        "rationale": "The `is_bold` attribute in the extracted JSON is incorrect. The 'Related Controls' text is not bold on the rendered page.",
+        "status": "defect",
+        "suggested_fix_surface": "Correct `is_bold` to `false` for this block."
+      },
+      {
+        "candidate_id": "cand:p0076:0025:section_heading",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0026:text",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The '[Withdrawn: Incorporated into AC-3(10).]' text is correctly identified as 'text' with the semantic role 'nist_withdrawn_note', and `is_bold` is correctly false matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0027:section_heading",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0028:text",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The '[Withdrawn: Incorporated into CM-7.]' text is correctly identified as 'text' with the semantic role 'nist_withdrawn_note', and `is_bold` is correctly false matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0076:0029:section_heading",
+        "evidence": "The extracted JSON's type, semantic role, text, and bounding box are all consistent with the rendered page.",
+        "rationale": "The section heading is correctly identified, and `is_bold` is correctly true in the JSON matching the rendered page.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      }
+    ],
+    "page_rationale": "Multiple candidates (7, 8, 11, 15, 16, 18, 20, 22, 24) have an incorrect `is_bold: true` attribute in the extracted JSON; the corresponding text on the rendered page is not bold. Additionally, candidate 2 has a text ordering defect in the footer.",
+    "page_status": "defect",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0002_p0076",
+    "item_id": "page_case_0002_p0076:37f62c0669f14db2",
+    "request_sha256": "37f62c0669f14db23bbef0ee752fe8c42260f13fcc1b7c49fb3b5b5cffd4899b"
+  }
+}

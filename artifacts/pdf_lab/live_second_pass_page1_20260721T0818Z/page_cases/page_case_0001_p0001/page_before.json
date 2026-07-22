@@ -1,0 +1,303 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.5555882173426011,
+        0.08938735422461924,
+        0.8528550091911765,
+        0.11388766163527364
+      ],
+      "font_name": "TT0",
+      "font_size": 13.979999542236328,
+      "id": "actual:p1:block:0",
+      "is_bold": true,
+      "page": 1,
+      "pdf_page_index": 0,
+      "raw": {
+        "bbox": [
+          340.0199890136719,
+          706.6799926757812,
+          185.13711547851562,
+          13.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT0",
+        "font_size": 13.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 13.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 31,
+            "title_case_ratio": 0.75,
+            "word_count": 4
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "NIST Special Publication 800-53"
+        },
+        "is_bold": true,
+        "text": "NIST Special Publication 800-53"
+      },
+      "source_type": "Body",
+      "text": "NIST Special Publication 800-53",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.7559681811363869,
+        0.11097514990604285,
+        0.8528322706035539,
+        0.13547545731669725
+      ],
+      "font_name": "TT0",
+      "font_size": 12.989999771118164,
+      "id": "actual:p1:block:1",
+      "is_bold": true,
+      "page": 1,
+      "pdf_page_index": 0,
+      "raw": {
+        "bbox": [
+          462.65252685546875,
+          689.5800170898438,
+          62.0594482421875,
+          13.982421875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 12.989999771118164,
+        "header_level": null,
+        "is_bold": true,
+        "text": "Revision 5"
+      },
+      "source_type": "Boilerplate",
+      "text": "Revision 5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.30803922266741984,
+        0.22879644837042298,
+        0.8538059409147774,
+        0.27432705657650724
+      ],
+      "font_name": "TT0",
+      "font_size": 25.979997634887695,
+      "id": "actual:p1:block:2",
+      "is_bold": true,
+      "page": 1,
+      "pdf_page_index": 0,
+      "raw": {
+        "bbox": [
+          188.52000427246094,
+          583.7999877929688,
+          339.3507080078125,
+          25.97998046875
+        ],
+        "block_type": "Title",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 25.979997634887695,
+        "header_level": 0,
+        "is_bold": true,
+        "text": "Security and Privacy Controls for"
+      },
+      "source_type": "Title",
+      "text": "Security and Privacy Controls for",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.192657470703125,
+        0.2688817496251578,
+        0.8537084043415544,
+        0.3144123578312421
+      ],
+      "font_name": "TT0",
+      "font_size": 25.979997634887695,
+      "id": "actual:p1:block:3",
+      "is_bold": true,
+      "page": 1,
+      "pdf_page_index": 0,
+      "raw": {
+        "bbox": [
+          117.9063720703125,
+          552.0524291992188,
+          409.96435546875,
+          25.97998046875
+        ],
+        "block_type": "Title",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 25.979997634887695,
+        "header_level": 0,
+        "is_bold": true,
+        "text": "Information Systems and Organizations"
+      },
+      "source_type": "Title",
+      "text": "Information Systems and Organizations",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.7016666387420853,
+        0.42478792595140863,
+        0.8530020121655433,
+        0.4458181978476168
+      ],
+      "font_name": "TT0",
+      "font_size": 12.0,
+      "id": "actual:p1:block:4",
+      "is_bold": true,
+      "page": 1,
+      "pdf_page_index": 0,
+      "raw": {
+        "bbox": [
+          429.41998291015625,
+          443.0999755859375,
+          95.2919921875,
+          12.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT0",
+        "font_size": 12.0,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 12.0,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.8583691120147705,
+            "text_len": 16,
+            "title_case_ratio": 1.0,
+            "word_count": 3
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "all_caps_medium"
+          ],
+          "title_text": "JOINT TASK FORCE"
+        },
+        "is_bold": true,
+        "text": "JOINT TASK FORCE"
+      },
+      "source_type": "Body",
+      "text": "JOINT TASK FORCE",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.5349019368489584,
+        0.5145195469711766,
+        0.8529021817874285,
+        0.5314472853535354
+      ],
+      "font_name": "TT3",
+      "font_size": 10.020000457763672,
+      "id": "actual:p1:block:5",
+      "is_bold": false,
+      "page": 1,
+      "pdf_page_index": 0,
+      "raw": {
+        "bbox": [
+          327.3599853515625,
+          374.2200012207031,
+          196.90301513671875,
+          10.019989013671875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT3",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from:"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from:",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.573230020361009,
+        0.5299037971881905,
+        0.8530090930415135,
+        0.5468315355705492
+      ],
+      "font_name": "TT3",
+      "font_size": 10.180000305175781,
+      "id": "actual:p1:block:6",
+      "is_bold": false,
+      "page": 1,
+      "pdf_page_index": 0,
+      "raw": {
+        "bbox": [
+          350.8167724609375,
+          362.0356750488281,
+          178.16473388671875,
+          10.984344482421875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT3",
+        "font_size": 10.180000305175781,
+        "header_level": null,
+        "is_bold": false,
+        "text": "https://doi.org/10.6028/NIST.SP.800-53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "https://doi.org/10.6028/NIST.SP.800-53r5",
+      "type": "header_footer_noise"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 1,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 0
+}

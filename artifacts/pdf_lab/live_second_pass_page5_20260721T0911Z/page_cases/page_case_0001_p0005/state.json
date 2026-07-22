@@ -1,0 +1,17 @@
+{
+  "case_id": "page_case_0001_p0005",
+  "code_root": "/tmp/pdf_oxide_page45b_1784600709",
+  "created_at": "2026-07-21T08:56:48.947404+00:00",
+  "opencode_model": null,
+  "page_extract_timeout_s": 90.0,
+  "page_number": 5,
+  "page_orchestrator_mode": "live",
+  "page_orchestrator_transport_run_id": "otr-6dc3d6271dfb",
+  "patch_prompt_profile": "plan_only",
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "repair_strategy": "single",
+  "requested_opencode_model": null,
+  "schema": "pdf_lab.second_pass.page_state.v1",
+  "terminal_status": "reviewed_clean",
+  "updated_at": "2026-07-21T08:57:06.506046+00:00"
+}

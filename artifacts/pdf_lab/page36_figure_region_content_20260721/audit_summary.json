@@ -1,0 +1,55 @@
+{
+  "candidate": "Figure 1 remaining diagram-region content",
+  "candidate_count": 16,
+  "current_snapshot": "artifacts/pdf_lab/page36_figure_region_content_20260721/current_page36_snapshot.json",
+  "live": false,
+  "mocked": false,
+  "offender_count": 0,
+  "offenders": [],
+  "page": 36,
+  "page36_type_counts": {
+    "caption": 1,
+    "figure": 19,
+    "header_footer_noise": 4,
+    "paragraph_block": 5
+  },
+  "proof_commands": {
+    "broad_nist_regression_first": "pytest -q <22-test broad NIST set> > pytest_broad_nist_regression.log",
+    "broad_nist_regression_rerun": "pytest -q <22-test broad NIST set> > pytest_broad_nist_regression_rerun.log",
+    "focused_page36": "pytest -q tests/test_nist_page36_figure_region_content.py tests/test_nist_page36_figure_control_heading.py tests/test_nist_page36_figure_intro_sentence.py",
+    "green": "pytest -q tests/test_nist_page36_figure_region_content.py",
+    "json_schema": "python -m json.tool python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+    "page36_page104_repair_check": "pytest -q tests/test_nist_page104_control_enhancements_subtitle.py tests/test_nist_page36_figure_region_content.py tests/test_nist_page36_figure_control_heading.py tests/test_nist_page36_figure_intro_sentence.py",
+    "red": "pytest -q tests/test_nist_page36_figure_region_content.py"
+  },
+  "proof_results": {
+    "broad_nist_regression_first": "1 failed, 21 passed, 5 warnings in 442.21s; page104 Control Enhancements was caught by over-broad page36 bbox rule",
+    "broad_nist_regression_rerun": "22 passed, 5 warnings in 451.33s",
+    "focused_page36": "3 passed, 5 warnings in 8.01s",
+    "green": "1 passed, 5 warnings in 10.73s",
+    "page36_page104_repair_check": "4 passed, 5 warnings in 56.11s after adding page: 36 guards to page36 rules",
+    "red": "1 failed, 5 warnings in 2.78s; 15 remaining offenders before patch"
+  },
+  "repair_note": "Initial Figure 1 region rule used normalized bbox guards without page scoping; broad regression caught page104 collateral. Added page=36 to all page36 Figure 1 rules and reran focused repair plus broad regression.",
+  "schema": "pdf_lab.page36_figure_region_content_audit.v1",
+  "selection_receipt": "artifacts/pdf_lab/page36_figure_region_content_20260721/selection_receipt.json",
+  "sha256": {
+    "current_page36_snapshot": "9d14c76c10259f6fbc1b92703da5123a5ca2f45824a1de6bf95bc8363d2357c4",
+    "selection_receipt": "a4ac6f304d7ab73f83befa410678b9ad65bd11b39d86f4f4945384e1098fdda0",
+    "visual_receipt": "ea99731f1a636fa5d8c1cf7eb5125b37065ddf018f08fc31dc6911f5edf88a41"
+  },
+  "source_reviewer_page_label": "page35 rows 13-23",
+  "status": "passing_current_contract",
+  "test_logs": {
+    "broad_nist_regression_first": "artifacts/pdf_lab/page36_figure_region_content_20260721/test_logs/pytest_broad_nist_regression.log",
+    "broad_nist_regression_rerun": "artifacts/pdf_lab/page36_figure_region_content_20260721/test_logs/pytest_broad_nist_regression_rerun.log",
+    "focused_page36": "artifacts/pdf_lab/page36_figure_region_content_20260721/test_logs/pytest_page36_focused.log",
+    "green": "artifacts/pdf_lab/page36_figure_region_content_20260721/test_logs/green_test_page36_figure_region_content.log",
+    "page36_page104_repair_check": "artifacts/pdf_lab/page36_figure_region_content_20260721/test_logs/pytest_page36_page104_repair_check.log",
+    "red": "artifacts/pdf_lab/page36_figure_region_content_20260721/test_logs/red_test_page36_figure_region_content.log",
+    "snapshot": "artifacts/pdf_lab/page36_figure_region_content_20260721/test_logs/current_snapshot_page36.log"
+  },
+  "visual_receipt": "artifacts/pdf_lab/page36_figure_region_content_20260721/visual_receipt.json",
+  "what_remains_unverified": "live model-backed second-pass repair lifecycle and Criterion 6 live GitHub apply",
+  "what_was_exercised": "deterministic local extraction of NIST SP 800-53r5 page 36 with release promotion ledger"
+}

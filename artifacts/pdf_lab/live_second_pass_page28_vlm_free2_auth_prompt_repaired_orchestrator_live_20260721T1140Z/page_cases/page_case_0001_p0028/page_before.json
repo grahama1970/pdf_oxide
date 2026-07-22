@@ -1,0 +1,675 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p28:block:0",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p28:block:1",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528853273080066,
+        0.9549618345318418
+      ],
+      "font_name": "TT0",
+      "font_size": 8.271428108215332,
+      "id": "actual:p28:block:2",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 8.271428108215332,
+        "header_level": null,
+        "is_bold": false,
+        "text": "CHAPTER ONE  PAGE 1"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Footer",
+      "text": "CHAPTER ONE  PAGE 1",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p28:block:3",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.09307097425364484,
+        0.27232949250663807,
+        0.11588885567405006
+      ],
+      "font_name": "TT2",
+      "font_size": 14.520000457763672,
+      "id": "actual:p28:block:4",
+      "is_bold": true,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          704.760009765625,
+          80.24050903320312,
+          16.02001953125
+        ],
+        "block_type": "Title",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 14.520000457763672,
+        "header_level": 1,
+        "header_validation": {
+          "confidence": 0.8999999761581421,
+          "depth_level": 1,
+          "disposition": "Accept",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 14.520000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": true,
+            "has_number_prefix": true,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 1,
+            "size_ratio": 1.3224045038223267,
+            "text_len": 11,
+            "title_case_ratio": 1.0,
+            "word_count": 2
+          },
+          "has_numbering": true,
+          "is_header": true,
+          "level": 1,
+          "number_text": "ONE",
+          "reasons": [
+            "numbering",
+            "bold_large_font",
+            "formal_prefix",
+            "title_case_like",
+            "all_caps_medium"
+          ],
+          "title_text": ""
+        },
+        "is_bold": true,
+        "text": "CHAPTER ONE"
+      },
+      "source_type": "Title",
+      "text": "CHAPTER ONE",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.1470528272242328,
+        0.12898307376437718,
+        0.31880975860396243,
+        0.15705853279190835
+      ],
+      "font_name": "TT2",
+      "font_size": 16.020000457763672,
+      "id": "actual:p28:block:5",
+      "is_bold": true,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          89.99633026123047,
+          673.2006225585938,
+          108.67967987060547,
+          16.02001953125
+        ],
+        "block_type": "Title",
+        "confidence": 0.30000001192092896,
+        "font_name": "TT2",
+        "font_size": 16.020000457763672,
+        "header_level": 2,
+        "header_validation": {
+          "confidence": 0.30000001192092896,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 16.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.4590164422988892,
+            "text_len": 12,
+            "title_case_ratio": 1.0,
+            "word_count": 1
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "bold_large_font",
+            "all_caps_medium",
+            "single_word_negative"
+          ],
+          "title_text": "INTRODUCTION"
+        },
+        "is_bold": true,
+        "text": "INTRODUCTION"
+      },
+      "source_type": "Title",
+      "text": "INTRODUCTION",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.15823163889875316,
+        0.7191140667285795,
+        0.1751593580149641
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p28:block:6",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          656.4000244140625,
+          352.313232421875,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS"
+      },
+      "source_type": "Body",
+      "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
+      "type": "section_subtitle"
+    },
+    {
+      "bbox": [
+        0.14697116029028798,
+        0.18873045179578993,
+        0.8469282162734886,
+        0.30902521538011957
+      ],
+      "font_name": "TT0",
+      "font_size": 10.61999797821045,
+      "id": "actual:p28:block:7",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          89.94635009765625,
+          550.6777954101562,
+          430.8662109375,
+          91.62225341796875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.61999797821045,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Modern information systems1 can include a variety of computing platforms (e.g., industrial control systems, general purpose computing systems, cyber-physical systems, super computers, weapons systems, communications systems, environmental control systems, medical devices, embedded devices, sensors, and mobile devices such as smart phones and tablets). These platforms all share a common foundation\u2014computers with complex hardware, software and firmware providing a capability that supports the essential mission and business functions of organizations.2"
+      },
+      "source_type": "Body",
+      "text": "Modern information systems1 can include a variety of computing platforms (e.g., industrial control systems, general purpose computing systems, cyber-physical systems, super computers, weapons systems, communications systems, environmental control systems, medical devices, embedded devices, sensors, and mobile devices such as smart phones and tablets). These platforms all share a common foundation\u2014computers with complex hardware, software and firmware providing a capability that supports the essential mission and business functions of organizations.2",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14703897713056577,
+        0.32259496053059894,
+        0.845089781518076,
+        0.4937227422540838
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979998588562012,
+      "id": "actual:p28:block:8",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          89.98785400390625,
+          404.3973388671875,
+          429.68865966796875,
+          131.82196044921875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979998588562012,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Security controls are the safeguards or countermeasures employed within a system or an organization to protect the confidentiality, integrity, and availability of the system and its information and to manage information security3 risk. Privacy controls are the administrative, technical, and physical safeguards employed within a system or an organization to manage privacy risks and to ensure compliance with applicable privacy requirements.4 Security and privacy controls are selected and implemented to satisfy security and privacy requirements levied on a system or organization. Security and privacy requirements are derived from applicable laws, executive orders, directives, regulations, policies, standards, and mission needs to ensure the confidentiality, integrity, and availability of information processed, stored, or transmitted and to manage risks to individual privacy."
+      },
+      "source_type": "Body",
+      "text": "Security controls are the safeguards or countermeasures employed within a system or an organization to protect the confidentiality, integrity, and availability of the system and its information and to manage information security3 risk. Privacy controls are the administrative, technical, and physical safeguards employed within a system or an organization to manage privacy risks and to ensure compliance with applicable privacy requirements.4 Security and privacy controls are selected and implemented to satisfy security and privacy requirements levied on a system or organization. Security and privacy requirements are derived from applicable laws, executive orders, directives, regulations, policies, standards, and mission needs to ensure the confidentiality, integrity, and availability of information processed, stored, or transmitted and to manage risks to individual privacy.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.1470541361889808,
+        0.5072910809757734,
+        0.8428934134689032,
+        0.5766791526717369
+      ],
+      "font_name": "TT0",
+      "font_size": 10.539998054504395,
+      "id": "actual:p28:block:9",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          89.99713134765625,
+          338.69586181640625,
+          428.34063720703125,
+          51.30413818359375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.539998054504395,
+        "header_level": null,
+        "is_bold": false,
+        "text": "The selection, design, and implementation of security and privacy controls5 are important tasks that have significant implications for the operations6 and assets of organizations as well as the welfare of individuals and the Nation. Organizations should answer several key questions when addressing information security and privacy controls:"
+      },
+      "source_type": "Body",
+      "text": "The selection, design, and implementation of security and privacy controls5 are important tasks that have significant implications for the operations6 and assets of organizations as well as the welfare of individuals and the Nation. Organizations should answer several key questions when addressing information security and privacy controls:",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14708595026552287,
+        0.583430781508937,
+        0.8394090241076899,
+        0.686382178104285
+      ],
+      "font_name": "C2_0",
+      "font_size": 10.979998588562012,
+      "id": "actual:p28:block:10",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0166015625,
+          251.81109619140625,
+          426.265625,
+          77.82626342773438
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "C2_0",
+        "font_size": 10.979998588562012,
+        "header_level": null,
+        "is_bold": false,
+        "text": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals? \u2022 Have the selected controls been implemented or is there a plan in place to do so? \u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective?7"
+      },
+      "source_type": "List",
+      "text": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals? \u2022 Have the selected controls been implemented or is there a plan in place to do so? \u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective?7",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7266742436572758,
+        0.7791440377827563,
+        0.7557423909505209
+      ],
+      "font_name": "TT0",
+      "font_size": 8.5,
+      "id": "actual:p28:block:11",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          207.24000549316406,
+          388.8495178222656,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "continuation_ids": [
+          "actual:p28:block:12"
+        ],
+        "font_name": "TT0",
+        "font_size": 8.5,
+        "header_level": null,
+        "is_bold": false,
+        "text": "1 An information system is a discrete set of information resources organized for the collection, processing,"
+      },
+      "source_type": "Footnote",
+      "text": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [OMB A-130].",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7569015194671322,
+        0.8381487279156454,
+        0.7859696667603772
+      ],
+      "font_name": "TT0",
+      "font_size": 8.571428298950195,
+      "id": "actual:p28:block:13",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          183.3000030517578,
+          425.00787353515625,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "continuation_ids": [
+          "actual:p28:block:14"
+        ],
+        "font_name": "TT0",
+        "font_size": 8.571428298950195,
+        "header_level": null,
+        "is_bold": false,
+        "text": "2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure"
+      },
+      "source_type": "Footnote",
+      "text": "2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements).",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7872045497701625,
+        0.6981442021388634,
+        0.8024090853604403
+      ],
+      "font_name": "TT0",
+      "font_size": 8.769230842590332,
+      "id": "actual:p28:block:15",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          159.3000030517578,
+          339.36297607421875,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.769230842590332,
+        "header_level": null,
+        "is_bold": false,
+        "text": "3 The two terms information security and security are used synonymously in this publication."
+      },
+      "source_type": "Footnote",
+      "text": "3 The two terms information security and security are used synonymously in this publication.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8035682138770518,
+        0.45684804480060254,
+        0.8187727494673296
+      ],
+      "font_name": "TT0",
+      "font_size": 8.75,
+      "id": "actual:p28:block:16",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          146.33999633789062,
+          193.677001953125,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.75,
+        "header_level": null,
+        "is_bold": false,
+        "text": "4 [OMB A-130] defines security and privacy controls."
+      },
+      "source_type": "Footnote",
+      "text": "4 [OMB A-130] defines security and privacy controls.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14704900006063623,
+        0.8200075554125237,
+        0.8403667375153187,
+        0.8490757027057686
+      ],
+      "font_name": "TT0",
+      "font_size": 8.399999618530273,
+      "id": "actual:p28:block:17",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          133.32000732421875,
+          426.36541748046875,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "continuation_ids": [
+          "actual:p28:block:18"
+        ],
+        "font_name": "TT0",
+        "font_size": 8.399999618530273,
+        "header_level": null,
+        "is_bold": false,
+        "text": "5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce"
+      },
+      "source_type": "Footnote",
+      "text": "5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8502348312223801,
+        0.6120427449544271,
+        0.8654393668126579
+      ],
+      "font_name": "TT0",
+      "font_size": 8.399999618530273,
+      "id": "actual:p28:block:19",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          109.37999725341797,
+          286.6131591796875,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.399999618530273,
+        "header_level": null,
+        "is_bold": false,
+        "text": "6 Organizational operations include mission, functions, image, and reputation."
+      },
+      "source_type": "Footnote",
+      "text": "6 Organizational operations include mission, functions, image, and reputation.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8666742498224432,
+        0.8278501922009038,
+        0.9096060088186553
+      ],
+      "font_name": "TT0",
+      "font_size": 8.0,
+      "id": "actual:p28:block:20",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          96.36000061035156,
+          418.657470703125,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "continuation_ids": [
+          "actual:p28:block:21"
+        ],
+        "font_name": "TT0",
+        "font_size": 8.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly,"
+      },
+      "source_type": "Footnote",
+      "text": "7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [SP 800-53A].",
+      "type": "footnote"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 28,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 27
+}

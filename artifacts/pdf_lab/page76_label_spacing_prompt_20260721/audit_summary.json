@@ -1,0 +1,81 @@
+{
+  "schema": "pdf_lab.page_candidate_audit_summary.v1",
+  "status": "passed_current_gate",
+  "page": 76,
+  "candidate": "field-label text/roles, footer chrome role, and model-review prompt evidence contract",
+  "mocked": false,
+  "live": true,
+  "what_was_exercised": [
+    "forced one-page page76 candidate selection from the current candidate manifest",
+    "live scillm second-pass page review before patch",
+    "focused red regression for page76 label spacing, semantic roles, and footer page-chrome role",
+    "NIST ledger rule repair for Discussion/Related Controls label normalization and footer PAGE-number shape",
+    "review-request prompt sanitization so live model judges normalized top-level page JSON, not raw debug metadata",
+    "live scillm second-pass page review after patch"
+  ],
+  "what_remains_unverified": [
+    "the full page-DAG unit suite has pre-existing broad harness-test drift around subprocess extraction and patch-prompt expectations; targeted prompt-builder tests passed",
+    "remaining active candidates beyond page 76 are not covered by this receipt"
+  ],
+  "proof": {
+    "selection": {
+      "forced_selection": "artifacts/pdf_lab/forced_candidate_selection_page76_20260721T0753Z/sampled_page_cases.json",
+      "selected_pages": [
+        15,
+        76
+      ],
+      "forced_page": 76
+    },
+    "live_second_pass_before_patch": {
+      "case_dir": "artifacts/pdf_lab/live_second_pass_page76_20260721T0753Z/page_case_0002_p0076",
+      "terminal_status": "still_open",
+      "reason": "patch_delegate_dry_run"
+    },
+    "live_second_pass_after_ledger_patch": {
+      "case_dir": "artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/page_case_0002_p0076",
+      "terminal_status": "still_open",
+      "reason": "model reviewed raw/debug metadata after normalized fields were repaired"
+    },
+    "unblock_attempts": {
+      "brave_search": "artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/brave_raw_vs_normalized_review_search.json",
+      "webgpt_bundle": "artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/unblock/webgpt_page76_raw_metadata_bundle.md",
+      "webgpt_result": "artifacts/pdf_lab/live_second_pass_page76_after_patch_20260721T0757Z/unblock/webgpt_submit_skill.stderr",
+      "webgpt_status": "blocked_tab_identity_missing"
+    },
+    "live_second_pass_after_prompt_sanitize": {
+      "case_dir": "artifacts/pdf_lab/live_second_pass_page76_after_prompt_sanitize_20260721T0801Z/page_case_0002_p0076",
+      "terminal_ledger": "artifacts/pdf_lab/live_second_pass_page76_after_prompt_sanitize_20260721T0801Z/page_case_0002_p0076/terminal_ledger.json",
+      "terminal_status": "reviewed_clean",
+      "reason": "scillm_review_validated_clean",
+      "review_validation": "artifacts/pdf_lab/live_second_pass_page76_after_prompt_sanitize_20260721T0801Z/page_case_0002_p0076/review_validation.json",
+      "review_response": "artifacts/pdf_lab/live_second_pass_page76_after_prompt_sanitize_20260721T0801Z/page_case_0002_p0076/review_response.json",
+      "review_html": "artifacts/pdf_lab/live_second_pass_page76_after_prompt_sanitize_20260721T0801Z/page_case_0002_p0076/review.html",
+      "review_bundle": "artifacts/pdf_lab/live_second_pass_page76_after_prompt_sanitize_20260721T0801Z/page_case_0002_p0076/review_bundle.zip"
+    },
+    "deterministic_tests": {
+      "targeted_page76_and_prompt": {
+        "command": "pytest -q tests/test_nist_page76_label_spacing_roles.py tests/test_pdf_lab_page_second_pass_dag.py::test_review_request_prompt_uses_sanitized_page_json_without_raw_metadata tests/test_pdf_lab_page_second_pass_dag.py::test_validate_review_request_contract_rejects_stale_prompt_evidence tests/test_pdf_lab_page_second_pass_dag.py::test_validate_review_request_contract_rejects_stale_page_json_identity tests/test_pdf_lab_page_second_pass_dag.py::test_validate_review_request_contract_rejects_stale_payload_model_identity tests/test_pdf_lab_second_pass_candidate_manifest.py",
+        "result": "17 passed, 5 warnings in 2.94s"
+      },
+      "full_nist": {
+        "command": "pytest -q $(rg --files tests | rg 'test_nist_' | sort)",
+        "result": "54 passed, 5 warnings in 601.97s",
+        "log": "artifacts/pdf_lab/page76_label_spacing_prompt_20260721/test_logs/pytest_full_nist_after_page76.log"
+      },
+      "full_page_dag_contract": {
+        "command": "pytest -q tests/test_pdf_lab_page_second_pass_dag.py",
+        "result": "21 failed, 194 passed in 8.59s",
+        "log": "artifacts/pdf_lab/page76_label_spacing_prompt_20260721/test_logs/pytest_page_second_pass_dag.log",
+        "interpreted_as": "residual broad harness-test drift outside this page76 gate; first failure reaches page_extraction_failed because older tests monkeypatch extract_page while the current runner uses subprocess extraction"
+      }
+    }
+  },
+  "campaign_status": {
+    "passed": 1,
+    "failed": 0,
+    "blocked_by_systemic_failure": 0,
+    "not_run": "remaining active candidate queue",
+    "active_family": "NIST SP 800-53r5 current-extraction page candidates",
+    "latest_failure_signature": "none for page76 after prompt sanitization; residual full page-DAG unit drift recorded separately"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "pdf_lab.review_cdp_render_receipt.v1",
+  "created_at": "2026-07-21T10:48:32.925901+00:00",
+  "mocked": false,
+  "live": true,
+  "browser": "chromium_headless_cdp",
+  "served_by": "python -m http.server 58195 --bind 127.0.0.1",
+  "remote_debugging_url": "http://127.0.0.1:54985",
+  "source_html": "artifacts/pdf_lab/live_second_pass_page23_vlm_free2_orchestrator_live_20260721T1050Z/page_cases/page_case_0001_p0023/review.html",
+  "source_url": "http://127.0.0.1:58195/artifacts/pdf_lab/live_second_pass_page23_vlm_free2_orchestrator_live_20260721T1050Z/page_cases/page_case_0001_p0023/review.html",
+  "screenshot": "artifacts/pdf_lab/live_second_pass_page23_vlm_free2_orchestrator_live_20260721T1050Z/page_cases/page_case_0001_p0023/review_cdp_screenshot.png",
+  "viewport": {
+    "width": 1440,
+    "height": 1800,
+    "deviceScaleFactor": 1,
+    "mobile": false
+  },
+  "content_size": {
+    "x": 0,
+    "y": 0,
+    "width": 1425,
+    "height": 5092
+  },
+  "visible_evaluation": {
+    "title": "PDF Lab Second-Pass Review page_case_0001_p0023",
+    "url": "http://127.0.0.1:58195/artifacts/pdf_lab/live_second_pass_page23_vlm_free2_orchestrator_live_20260721T1050Z/page_cases/page_case_0001_p0023/review.html",
+    "bodyTextLength": 7861,
+    "textHead": "PDF Lab Second-Pass Page Review\nCASE\npage_case_0001_p0023\nPAGE\n23\nSTATUS\nreviewed_clean\nREASON\nscillm_review_validated_clean\nCOMMIT\nnone\nBefore Evidence\nRendered page before review\nAnnotated candidate bounding boxes\nSelected Candidates\ncand:p0023:0000:side_chrome\nside_chrome\n{\n  \"bbox\": [\n    0.14705882352941177,\n    0.04473802296802251,\n    0.8507378272760927,\n    0.05821938948197798\n  ],\n  \"block_id\": \"actual:p23:block:0\",\n  \"block_index\": 0,\n  \"candidate_id\": \"cand:p0023:0000:side_chrome\",\n  ",
+    "hasPageText": true,
+    "candidateMentions": 20,
+    "images": [
+      {
+        "src": "page_before.png",
+        "complete": true,
+        "naturalWidth": 612,
+        "naturalHeight": 792,
+        "rect": {
+          "x": 123.5,
+          "y": 200.21875,
+          "width": 580,
+          "height": 750.578125,
+          "top": 200.21875,
+          "left": 123.5,
+          "bottom": 950.796875,
+          "right": 703.5
+        }
+      },
+      {
+        "src": "page_candidates.png",
+        "complete": true,
+        "naturalWidth": 612,
+        "naturalHeight": 792,
+        "rect": {
+          "x": 721.5,
+          "y": 200.21875,
+          "width": 580,
+          "height": 750.578125,
+          "top": 200.21875,
+          "left": 721.5,
+          "bottom": 950.796875,
+          "right": 1301.5
+        }
+      }
+    ],
+    "bodyRect": {
+      "x": 0,
+      "y": 0,
+      "width": 1425,
+      "height": 5091.59375,
+      "top": 0,
+      "left": 0,
+      "bottom": 5091.59375,
+      "right": 1425
+    }
+  },
+  "bitmap_check": {
+    "width": 1425,
+    "height": 5092,
+    "rgb_extrema": [
+      [
+        0,
+        255
+      ],
+      [
+        0,
+        255
+      ],
+      [
+        0,
+        255
+      ]
+    ],
+    "variance_sum": 2092.2688511357946,
+    "nonblank": true
+  },
+  "checks": {
+    "document_ready_complete": true,
+    "body_text_present": true,
+    "page_identity_visible": true,
+    "candidate_content_visible": true,
+    "all_images_loaded": true,
+    "screenshot_nonblank": true
+  },
+  "ok": true
+}

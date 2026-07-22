@@ -1,0 +1,32 @@
+{
+  "query": "OpenAI compatible chat completions ReadTimeout local model retry timeout prompt payload",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Timeout for OpenAI chat completion in Python - API - OpenAI Developer Community",
+      "description": "I\u2019m using the OpenAI API in a Python 3.10 program using the python client library, the model is \u2018gpt-3.5-turbo\u2019. I\u2019ve noticed that periodically the openai.chatcompletion call randomly takes a very long time to complete. I want to protect my users from having to wait for completion by ...",
+      "url": "https://community.openai.com/t/timeout-for-openai-chat-completion-in-python/411252"
+    },
+    {
+      "title": "Openai.base_client retrying request to chat/completions in x seconds - Bugs - OpenAI Developer Community",
+      "description": "Hi there, Using gpt-5-chat and gpt-5-mini via Azure, as well as gemini-2.5-flash via the openai python sdk. I\u2019m seeing a lot in my logs that openai._base_client:Retrying request to /chat/completions in 0.405102 seconds I really can\u2019t seem to figure out why and it does seem completely transient, but we are getting questions from customers on this so it\u2019d be good to understand if this is an internal openAI issue or otherwise.",
+      "url": "https://community.openai.com/t/openai-base-client-retrying-request-to-chat-completions-in-x-seconds/1355000"
+    },
+    {
+      "title": "openai._base_client:Retrying request to /chat/completions in xxxx seconds - Microsoft Q&A",
+      "description": "They mean <strong>the client is auto-retrying your /chat/completions call with exponential backoff after a transient error</strong> (it retries on timeouts and 5xx too, not just 429), which is why latency grows even when you don\u2019t see rate-limit errors.",
+      "url": "https://learn.microsoft.com/en-us/answers/questions/5537197/openai-base-client-retrying-request-to-chat-comple"
+    },
+    {
+      "title": "Configuring timeout for ChatCompletion Python - API - OpenAI Developer Community",
+      "description": "I, like many of the rest of us, are running into the random 600s read_timeout error with the ChatCompletions api using gpt-3.5-turbo. I have looked through the python code and see that there is a timeout parameter that d\u2026",
+      "url": "https://community.openai.com/t/configuring-timeout-for-chatcompletion-python/107226"
+    },
+    {
+      "title": "Undesired 'Retrying request to /chat/completions' when making an API request to OpenAI in an Azure function. - Microsoft Q&A",
+      "description": "An Azure service that provides access to OpenAI\u2019s GPT-3 models with enterprise capabilities. ... Welcome to Microsoft QnA! Hera are some possible solutions but you have to try : <strong>set the timeout of your Azure Function</strong>.",
+      "url": "https://learn.microsoft.com/en-us/answers/questions/1458781/undesired-retrying-request-to-chat-completions-whe"
+    }
+  ]
+}

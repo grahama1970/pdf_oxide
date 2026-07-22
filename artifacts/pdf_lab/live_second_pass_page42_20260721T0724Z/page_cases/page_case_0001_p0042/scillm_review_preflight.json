@@ -1,0 +1,50 @@
+{
+  "base_url": "http://localhost:4001",
+  "caller_skill": "pdf-lab",
+  "checks": [
+    {
+      "http_status": 200,
+      "path": "/health/liveliness",
+      "payload": {
+        "status": "ok"
+      }
+    },
+    {
+      "http_status": 401,
+      "include_caller_skill": false,
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "payload": {
+        "error": {
+          "advice": "Add the X-Caller-Skill header so proxy failures can be traced back to the calling skill.",
+          "analysis": "deterministic",
+          "code": 401,
+          "message": "Invalid API key",
+          "recommendation": "headers = {\"Authorization\": \"Bearer sk-dev-proxy-123\", \"X-Caller-Skill\": \"your-skill-name\"}",
+          "skill": "/best-practices-scillm",
+          "type": "authentication_error"
+        }
+      }
+    },
+    {
+      "http_status": 401,
+      "path": "/v1/scillm/health",
+      "payload": {
+        "error": {
+          "advice": "Auth failed. Use 'Authorization: Bearer sk-dev-proxy-123' header. Check that the scillm proxy is running on :4001.",
+          "code": 401,
+          "message": "Invalid API key",
+          "skill": "/best-practices-scillm",
+          "type": "authentication_error"
+        }
+      }
+    }
+  ],
+  "errors": [
+    "missing-caller chat contract did not return caller_skill_required",
+    "scillm preflight failed: HTTPStatusError: Client error '401 Unauthorized' for url 'http://localhost:4001/v1/scillm/health'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"
+  ],
+  "ok": false,
+  "schema": "pdf_lab.second_pass.scillm_preflight.v1",
+  "surface": "chat"
+}

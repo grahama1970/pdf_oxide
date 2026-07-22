@@ -1,0 +1,708 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p25:block:0",
+      "is_bold": false,
+      "page": 25,
+      "pdf_page_index": 24,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p25:block:1",
+      "is_bold": false,
+      "page": 25,
+      "pdf_page_index": 24,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.48852942971622243,
+        0.939856018682923,
+        0.5113088071735856,
+        0.9550605542732008
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p25:block:2",
+      "is_bold": false,
+      "page": 25,
+      "pdf_page_index": 24,
+      "raw": {
+        "bbox": [
+          298.9800109863281,
+          38.400001525878906,
+          16.010986328125,
+          9.0
+        ],
+        "block_type": "PageNumber",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "xxiii"
+      },
+      "source_type": "PageNumber",
+      "text": "xxiii",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p25:block:3",
+      "is_bold": false,
+      "page": 25,
+      "pdf_page_index": 24,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490355647467,
+        0.8338636340516986
+      ],
+      "id": "actual:p25:table:0",
+      "page": 25,
+      "pdf_page_index": 24,
+      "raw": {
+        "accuracy": 100.0,
+        "bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          660.4199981689453
+        ],
+        "cols": 4,
+        "column_count": 4,
+        "data": [
+          [
+            "DATE",
+            "TYPE",
+            "REVISION",
+            "PAGE"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SR-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "363"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SR-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "363"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SR-1 References: Add \u201c[CNSSD 505],\u201d",
+            "364"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SR-2 References: Add \u201c[SP 800-181],\u201d",
+            "365"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control SR-2 References: Add \u201c[CNSSD 505],\u201d",
+            "365"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement SR-5(2) Related Controls: Delete \u201cSR-9\u201d",
+            "369"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "Control Enhancement SR-6(1): Change \u201c organizational analysis,\nindependent third-party analysis, organizational testing,\nindependent third-party testing\u201d to \u201corganizational analysis;\nindependent third-party analysis; organizational testing;\nindependent third-party testing\u201d",
+            "370"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References [ATOM54]: Change \u201cAtomic Energy Act (P.L. 107)\u201d to",
+            "374"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References [ISO 15026-1]: Change \u201cInternational Organization for\nStandardization/International Electrotechnical Commission\n(ISO/IEC) 15026-1:2013, Systems and software engineering \u2014\nSystems and software assurance \u2014 Part 1: Concepts and\nvocabulary, November 2013.\nhttps://www.iso.org/standard/62526.html\u201d to \u201cInternational\nOrganization for Standardization/International Electrotechnical\nCommission/Institute of Electrical and Electronics Engineers\n(ISO/IEC/IEEE) 15026-1:2019, Systems and software engineering \u2014\nvocabulary, March 2019.\nhttps://www.iso.org/standard/73567.html\u201d",
+            "377"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References: Delete \u201c[ISO 28001]\u201d",
+            "378"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References [ISO 29148]: Change \u201cInternational Organization for\nStandardization/International Electrotechnical\nCommission/Institute of Electrical and Electronics Engineers\n(ISO/IEC/IEEE) 29148:2011, Systems and software engineering\u2014Life\ncycle processes\u2014Requirements engineering, December 2011.\nhttps://www.iso.org/standard/45171.html\u201d to \u201cInternational\nOrganization for Standardization/International Electrotechnical\n(ISO/IEC/IEEE) 29148:2018, Systems and software engineering\u2014Life\ncycle processes\u2014Requirements engineering, November 2018.\nhttps://www.iso.org/standard/72089.html\u201d",
+            "379"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References [SP 800-53B]: Change \u201cDraft NIST\u201d to \u201cNIST\u201d",
+            "381"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References [SP 800-53B]: Change",
+            "381"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References: Delete \u201c[SP 800-58]\u201d",
+            "382"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References: Add \u201c[SP 800-137A] Dempsey KL,  Pillitteri VY, Baer C,\nNiemeyer R,  Rudman R, Urban S (2020) Assessing Information\nSecurity Continuous Monitoring (ISCM) Programs: Developing an\nISCM Program Assessment. (National Institute of Standards and\nTechnology, Gaithersburg, MD), NIST Special Publication (SP) 800-",
+            "387"
+          ],
+          [
+            "12-10-2020",
+            "Editorial",
+            "References: Delete \u201c[SP 800-161-1]\u201d",
+            "387"
+          ]
+        ],
+        "df_data": [
+          {
+            "0": "DATE",
+            "1": "TYPE",
+            "2": "REVISION",
+            "3": "PAGE"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SR-1a.1.: Change \u201c organization-level; mission/business\nprocess-level; system-level\u201d to \u201cOrganization-level; Mission/business\nprocess-level; System-level\u201d",
+            "3": "363"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SR-1 Discussion: Change \u201csecurity or privacy incidents\u201d to\n\u201csecurity incidents or breaches\u201d",
+            "3": "363"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SR-1 References: Add \u201c[CNSSD 505],\u201d",
+            "3": "364"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SR-2 References: Add \u201c[SP 800-181],\u201d",
+            "3": "365"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control SR-2 References: Add \u201c[CNSSD 505],\u201d",
+            "3": "365"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement SR-5(2) Related Controls: Delete \u201cSR-9\u201d",
+            "3": "369"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "Control Enhancement SR-6(1): Change \u201c organizational analysis,\nindependent third-party analysis, organizational testing,\nindependent third-party testing\u201d to \u201corganizational analysis;\nindependent third-party analysis; organizational testing;\nindependent third-party testing\u201d",
+            "3": "370"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References [ATOM54]: Change \u201cAtomic Energy Act (P.L. 107)\u201d to",
+            "3": "374"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References [ISO 15026-1]: Change \u201cInternational Organization for\nStandardization/International Electrotechnical Commission\n(ISO/IEC) 15026-1:2013, Systems and software engineering \u2014\nSystems and software assurance \u2014 Part 1: Concepts and\nvocabulary, November 2013.\nhttps://www.iso.org/standard/62526.html\u201d to \u201cInternational\nOrganization for Standardization/International Electrotechnical\nCommission/Institute of Electrical and Electronics Engineers\n(ISO/IEC/IEEE) 15026-1:2019, Systems and software engineering \u2014\nvocabulary, March 2019.\nhttps://www.iso.org/standard/73567.html\u201d",
+            "3": "377"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References: Delete \u201c[ISO 28001]\u201d",
+            "3": "378"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References [ISO 29148]: Change \u201cInternational Organization for\nStandardization/International Electrotechnical\nCommission/Institute of Electrical and Electronics Engineers\n(ISO/IEC/IEEE) 29148:2011, Systems and software engineering\u2014Life\ncycle processes\u2014Requirements engineering, December 2011.\nhttps://www.iso.org/standard/45171.html\u201d to \u201cInternational\nOrganization for Standardization/International Electrotechnical\n(ISO/IEC/IEEE) 29148:2018, Systems and software engineering\u2014Life\ncycle processes\u2014Requirements engineering, November 2018.\nhttps://www.iso.org/standard/72089.html\u201d",
+            "3": "379"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References [SP 800-53B]: Change \u201cDraft NIST\u201d to \u201cNIST\u201d",
+            "3": "381"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References [SP 800-53B]: Change",
+            "3": "381"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References: Delete \u201c[SP 800-58]\u201d",
+            "3": "382"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References: Add \u201c[SP 800-137A] Dempsey KL,  Pillitteri VY, Baer C,\nNiemeyer R,  Rudman R, Urban S (2020) Assessing Information\nSecurity Continuous Monitoring (ISCM) Programs: Developing an\nISCM Program Assessment. (National Institute of Standards and\nTechnology, Gaithersburg, MD), NIST Special Publication (SP) 800-",
+            "3": "387"
+          },
+          {
+            "0": "12-10-2020",
+            "1": "Editorial",
+            "2": "References: Delete \u201c[SP 800-161-1]\u201d",
+            "3": "387"
+          }
+        ],
+        "flavor": "Lattice",
+        "order": 0,
+        "page": 24,
+        "row_count": 17,
+        "rows": [
+          {
+            "cells": [
+              {
+                "text": "DATE"
+              },
+              {
+                "text": "TYPE"
+              },
+              {
+                "text": "REVISION"
+              },
+              {
+                "text": "PAGE"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SR-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d"
+              },
+              {
+                "text": "363"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SR-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d"
+              },
+              {
+                "text": "363"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SR-1 References: Add \u201c[CNSSD 505],\u201d"
+              },
+              {
+                "text": "364"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SR-2 References: Add \u201c[SP 800-181],\u201d"
+              },
+              {
+                "text": "365"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control SR-2 References: Add \u201c[CNSSD 505],\u201d"
+              },
+              {
+                "text": "365"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement SR-5(2) Related Controls: Delete \u201cSR-9\u201d"
+              },
+              {
+                "text": "369"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "Control Enhancement SR-6(1): Change \u201c organizational analysis, independent third-party analysis, organizational testing, independent third-party testing\u201d to \u201corganizational analysis; independent third-party analysis; organizational testing; independent third-party testing\u201d"
+              },
+              {
+                "text": "370"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References [ATOM54]: Change \u201cAtomic Energy Act (P.L. 107)\u201d to"
+              },
+              {
+                "text": "374"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References [ISO 15026-1]: Change \u201cInternational Organization for Standardization/International Electrotechnical Commission (ISO/IEC) 15026-1:2013, Systems and software engineering \u2014 Systems and software assurance \u2014 Part 1: Concepts and vocabulary, November 2013. https://www.iso.org/standard/62526.html\u201d to \u201cInternational Organization for Standardization/International Electrotechnical Commission/Institute of Electrical and Electronics Engineers (ISO/IEC/IEEE) 15026-1:2019, Systems and software engineering \u2014 vocabulary, March 2019. https://www.iso.org/standard/73567.html\u201d"
+              },
+              {
+                "text": "377"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References: Delete \u201c[ISO 28001]\u201d"
+              },
+              {
+                "text": "378"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References [ISO 29148]: Change \u201cInternational Organization for Standardization/International Electrotechnical Commission/Institute of Electrical and Electronics Engineers (ISO/IEC/IEEE) 29148:2011, Systems and software engineering\u2014Life cycle processes\u2014Requirements engineering, December 2011. https://www.iso.org/standard/45171.html\u201d to \u201cInternational Organization for Standardization/International Electrotechnical (ISO/IEC/IEEE) 29148:2018, Systems and software engineering\u2014Life cycle processes\u2014Requirements engineering, November 2018. https://www.iso.org/standard/72089.html\u201d"
+              },
+              {
+                "text": "379"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References [SP 800-53B]: Change \u201cDraft NIST\u201d to \u201cNIST\u201d"
+              },
+              {
+                "text": "381"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References [SP 800-53B]: Change"
+              },
+              {
+                "text": "381"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References: Delete \u201c[SP 800-58]\u201d"
+              },
+              {
+                "text": "382"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References: Add \u201c[SP 800-137A] Dempsey KL, Pillitteri VY, Baer C, Niemeyer R, Rudman R, Urban S (2020) Assessing Information Security Continuous Monitoring (ISCM) Programs: Developing an ISCM Program Assessment. (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800-"
+              },
+              {
+                "text": "387"
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "text": "12-10-2020"
+              },
+              {
+                "text": "Editorial"
+              },
+              {
+                "text": "References: Delete \u201c[SP 800-161-1]\u201d"
+              },
+              {
+                "text": "387"
+              }
+            ]
+          }
+        ],
+        "table_geometry": {
+          "bbox_clipped_to_page": false,
+          "full_normalized_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8338636340516986
+          ],
+          "off_page_extent": {
+            "bottom": 0.0,
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0
+          },
+          "raw_bbox": [
+            89.76000213623047,
+            72.47998046875,
+            521.760009765625,
+            660.4199981689453
+          ],
+          "visible_bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8338636340516986
+          ]
+        },
+        "whitespace": 0.0
+      },
+      "source_type": "table",
+      "table_geometry": {
+        "bbox_clipped_to_page": false,
+        "full_normalized_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8338636340516986
+        ],
+        "off_page_extent": {
+          "bottom": 0.0,
+          "left": 0.0,
+          "right": 0.0,
+          "top": 0.0
+        },
+        "raw_bbox": [
+          89.76000213623047,
+          72.47998046875,
+          521.760009765625,
+          660.4199981689453
+        ],
+        "visible_bbox": [
+          0.14666667015723933,
+          0.09151512685448232,
+          0.8525490355647467,
+          0.8338636340516986
+        ]
+      },
+      "text": "DATE | TYPE | REVISION | PAGE\n12-10-2020 | Editorial | Control SR-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 363\n12-10-2020 | Editorial | Control SR-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 363\n12-10-2020 | Editorial | Control SR-1 References: Add \u201c[CNSSD 505],\u201d | 364\n12-10-2020 | Editorial | Control SR-2 References: Add \u201c[SP 800-181],\u201d | 365\n12-10-2020 | Editorial | Control SR-2 References: Add \u201c[CNSSD 505],\u201d | 365\n12-10-2020 | Editorial | Control Enhancement SR-5(2) Related Controls: Delete \u201cSR-9\u201d | 369\n12-10-2020 | Editorial | Control Enhancement SR-6(1): Change \u201c organizational analysis, independent third-party analysis, organizational testing, independent third-party testing\u201d to \u201corganizational analysis; independent third-party analysis; organizational testing; independent third-party testing\u201d | 370\n12-10-2020 | Editorial | References [ATOM54]: Change \u201cAtomic Energy Act (P.L. 107)\u201d to | 374\n12-10-2020 | Editorial | References [ISO 15026-1]: Change \u201cInternational Organization for Standardization/International Electrotechnical Commission (ISO/IEC) 15026-1:2013, Systems and software engineering \u2014 Systems and software assurance \u2014 Part 1: Concepts and vocabulary, November 2013. https://www.iso.org/standard/62526.html\u201d to \u201cInternational Organization for Standardization/International Electrotechnical Commission/Institute of Electrical and Electronics Engineers (ISO/IEC/IEEE) 15026-1:2019, Systems and software engineering \u2014 vocabulary, March 2019. https://www.iso.org/standard/73567.html\u201d | 377\n12-10-2020 | Editorial | References: Delete \u201c[ISO 28001]\u201d | 378\n12-10-2020 | Editorial | References [ISO 29148]: Change \u201cInternational Organization for Standardization/International Electrotechnical Commission/Institute of Electrical and Electronics Engineers (ISO/IEC/IEEE) 29148:2011, Systems and software engineering\u2014Life cycle processes\u2014Requirements engineering, December 2011. https://www.iso.org/standard/45171.html\u201d to \u201cInternational Organization for Standardization/International Electrotechnical (ISO/IEC/IEEE) 29148:2018, Systems and software engineering\u2014Life cycle processes\u2014Requirements engineering, November 2018. https://www.iso.org/standard/72089.html\u201d | 379\n12-10-2020 | Editorial | References [SP 800-53B]: Change \u201cDraft NIST\u201d to \u201cNIST\u201d | 381\n12-10-2020 | Editorial | References [SP 800-53B]: Change | 381\n12-10-2020 | Editorial | References: Delete \u201c[SP 800-58]\u201d | 382\n12-10-2020 | Editorial | References: Add \u201c[SP 800-137A] Dempsey KL, Pillitteri VY, Baer C, Niemeyer R, Rudman R, Urban S (2020) Assessing Information Security Continuous Monitoring (ISCM) Programs: Developing an ISCM Program Assessment. (National Institute of Standards and Technology, Gaithersburg, MD), NIST Special Publication (SP) 800- | 387\n12-10-2020 | Editorial | References: Delete \u201c[SP 800-161-1]\u201d | 387",
+      "type": "table"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 25,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 24
+}

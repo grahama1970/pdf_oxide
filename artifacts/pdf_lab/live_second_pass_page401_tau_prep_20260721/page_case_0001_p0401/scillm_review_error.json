@@ -1,0 +1,20 @@
+{
+  "case_id": "page_case_0001_p0401",
+  "endpoint": "POST /v1/chat/completions",
+  "error": "Tau scillm-chat-review timed out at request_timeout_s=120 with the same signature as page39 systemic timeout family; no retry because Tau issue #123 is open.",
+  "error_type": "TimeoutError",
+  "latest_review_request_bytes": 854883,
+  "latest_tau_alert_codes": [
+    "scillm_chat_review_timeout",
+    "review_response_not_parseable"
+  ],
+  "latest_tau_duration_seconds": 120.099221,
+  "node_id": "scillm_one_shot_page_review",
+  "page_number": 401,
+  "preflight_artifact": null,
+  "schema": "pdf_lab.second_pass.substrate_error.v1",
+  "tau_attempt_receipts": [
+    "tau_attempt1_receipt.json"
+  ],
+  "tau_issue": "https://github.com/grahama1970/tau/issues/123"
+}

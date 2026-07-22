@@ -1,0 +1,16 @@
+{
+  "banned_weasel_words": [],
+  "errors": [],
+  "live_patch_required": false,
+  "max_chars": 8000,
+  "metrics": {
+    "char_count": 5251,
+    "line_count": 97,
+    "word_count": 543
+  },
+  "missing_markers": [],
+  "ok": true,
+  "prompt_profile": "plan_only",
+  "schema": "pdf_lab.second_pass.patch_prompt_contract.v1",
+  "warnings": []
+}

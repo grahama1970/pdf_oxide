@@ -1,0 +1,56 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0006:0000:side_chrome",
+      "evidence": "The extracted text, bounding box, and preset type for this candidate accurately represent the header text 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS' as shown on the rendered page. The extracted JSON block type is 'header_footer_noise' with 'semantic_role: page_chrome' and 'source_type: Header', which is consistent with the visual evidence.",
+      "rationale": "The candidate correctly identifies and extracts the top-left header text as side chrome.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0006:0001:side_chrome",
+      "evidence": "The extracted text, bounding box, and preset type for this candidate accurately represent the horizontal line under the header on the rendered page. The extracted JSON block type is 'header_footer_noise' with 'semantic_role: page_chrome' and 'source_type: Header', which is consistent with the visual evidence.",
+      "rationale": "The candidate correctly identifies and extracts the header separator line as side chrome.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0006:0002:side_chrome",
+      "evidence": "The extracted text, bounding box, and preset type for this candidate accurately represent the page number 'iv' at the bottom center of the rendered page. The extracted JSON block type is 'header_footer_noise' with 'source_type: PageNumber', which is consistent with the visual evidence.",
+      "rationale": "The candidate correctly identifies and extracts the page number as side chrome.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0006:0003:side_chrome",
+      "evidence": "The extracted text, bounding box, and preset type for this candidate accurately represent the rotated boilerplate text 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5' on the left margin of the rendered page. The extracted JSON block type is 'header_footer_noise' with 'source_type: Boilerplate', which is consistent with the visual evidence.",
+      "rationale": "The candidate correctly identifies and extracts the rotated boilerplate text as side chrome.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0006:0004:text",
+      "evidence": "The extracted text, bounding box, and preset type for this candidate accurately represent the main body paragraph at the top of the page. The extracted JSON block type is 'paragraph_block' with 'source_type: Body', which is consistent with the visual evidence.",
+      "rationale": "The candidate correctly identifies and extracts the body text.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    },
+    {
+      "candidate_id": "cand:p0006:0005:reference",
+      "evidence": "The extracted text 'HISTORICAL CONTRIBUTIONS TO NIST SPECIAL PUBLICATION 800-53' is a bold, centered section heading on the rendered page. While the bounding box and text content are correct, its classification as 'preset_type: reference' and 'semantic_role: reference_continuation' in the extracted JSON is semantically incorrect. It functions as a section title, not a direct reference citation.",
+      "rationale": "The candidate is a section heading or title, not a reference citation. Although the JSON block itself is typed as 'reference', this semantic classification is inappropriate for a heading.",
+      "status": "defect",
+      "suggested_fix_surface": "Adjust the model to classify section headings, especially in front matter, with a more appropriate semantic role and preset type, such as 'section_title' or 'heading', rather than 'reference'."
+    },
+    {
+      "candidate_id": "cand:p0006:0006:text",
+      "evidence": "The extracted text, bounding box, and preset type for this candidate accurately represent the main body paragraph below the 'Historical Contributions' heading. The extracted JSON block type is 'paragraph_block' with 'source_type: Body', which is consistent with the visual evidence.",
+      "rationale": "The candidate correctly identifies and extracts the body text.",
+      "status": "clean",
+      "suggested_fix_surface": null
+    }
+  ],
+  "page_rationale": "One candidate (cand:p0006:0005:reference) was incorrectly classified. It is a section heading, not a reference, despite being extracted with 'type: reference' and 'semantic_role: reference_continuation'. All other candidates on the page are clean.",
+  "page_status": "defect",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

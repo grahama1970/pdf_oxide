@@ -1,0 +1,820 @@
+{
+  "candidate_count": 30,
+  "candidates": [
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "candidate_id": "cand:p0076:0000:side_chrome",
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/75/blocks/0",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "candidate_id": "cand:p0076:0001:side_chrome",
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/75/blocks/1",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528988906760621,
+        0.9549618345318418
+      ],
+      "candidate_id": "cand:p0076:0002:side_chrome",
+      "features": {
+        "bbox_area": 0.009516,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 21
+      },
+      "json_pointer": "/pages/75/blocks/2",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "CHAPTER THREE PAGE 49"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "candidate_id": "cand:p0076:0003:side_chrome",
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/75/blocks/3",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529401791641136,
+        0.08989831173058713,
+        0.8199332742130055,
+        0.12228619931924223
+      ],
+      "candidate_id": "cand:p0076:0004:text",
+      "features": {
+        "bbox_area": 0.018935,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 148
+      },
+      "json_pointer": "/pages/75/blocks/4",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "notebook computers, workstations, smart phones, and tablets. Audit logging for remote access is enforced by AU-2. Audit events are defined in AU-2a."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.12459533383147885,
+        0.5344200383603962,
+        0.1415230625807637
+      ],
+      "candidate_id": "cand:p0076:0005:text",
+      "features": {
+        "bbox_area": 0.005064,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 43
+      },
+      "json_pointer": "/pages/75/blocks/5",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Related Controls: AU-2, AU-6, AU-12, AU-14."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.20588235294117646,
+        0.14751830245509293,
+        0.7769657708460989,
+        0.16615777063851406
+      ],
+      "candidate_id": "cand:p0076:0006:section_heading",
+      "features": {
+        "bbox_area": 0.010645,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": "nist_control_heading",
+        "source_type": "Body",
+        "text_length": 80
+      },
+      "json_pointer": "/pages/75/blocks/6",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "(2) REMOTE ACCESS | PROTECTION OF CONFIDENTIALITY AND INTEGRITY USING ENCRYPTION"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.16806721928143742,
+        0.8037800508386949,
+        0.20116359055644334
+      ],
+      "candidate_id": "cand:p0076:0007:text",
+      "features": {
+        "bbox_area": 0.018815,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 106
+      },
+      "json_pointer": "/pages/75/blocks/7",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Implement cryptographic mechanisms to protect the confidentiality and integrity of remote access sessions."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.2028528849283854,
+        0.8436374040990094,
+        0.26607970035437384
+      ],
+      "candidate_id": "cand:p0076:0008:text",
+      "features": {
+        "bbox_area": 0.038464,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 321
+      },
+      "json_pointer": "/pages/75/blocks/8",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Discussion: Virtual private networks can be used to protect the confidentiality and integrity of remote access sessions. Transport Layer Security (TLS) is an example of a cryptographic protocol that provides end-to-end communications security over networks and is used for Internet communications and online transactions."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.2683832187845249,
+        0.48226315367455574,
+        0.28531093790073586
+      ],
+      "candidate_id": "cand:p0076:0009:text",
+      "features": {
+        "bbox_area": 0.004181,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 37
+      },
+      "json_pointer": "/pages/75/blocks/9",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Related Controls: SC-8, SC-12, SC-13."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.20588235294117646,
+        0.2913061970412129,
+        0.5723613664215687,
+        0.3099456555915601
+      ],
+      "candidate_id": "cand:p0076:0010:section_heading",
+      "features": {
+        "bbox_area": 0.006831,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": "nist_control_heading",
+        "source_type": "Body",
+        "text_length": 49
+      },
+      "json_pointer": "/pages/75/blocks/10",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "(3) REMOTE ACCESS | MANAGED ACCESS CONTROL POINTS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.3119308587276574,
+        0.8325973710203483,
+        0.3294911625409367
+      ],
+      "candidate_id": "cand:p0076:0011:text",
+      "features": {
+        "bbox_area": 0.010489,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 83
+      },
+      "json_pointer": "/pages/75/blocks/11",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Route remote accesses through authorized and managed network access control points."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.33126199125039457,
+        0.824968774334278,
+        0.3790230413880011
+      ],
+      "candidate_id": "cand:p0076:0012:text",
+      "features": {
+        "bbox_area": 0.028163,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 234
+      },
+      "json_pointer": "/pages/75/blocks/12",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Discussion: Organizations consider the Trusted Internet Connections (TIC) initiative [DHS TIC] requirements for external network connections since limiting the number of access control points for remote access reduces attack surfaces."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.381337714917732,
+        0.3910866780997881,
+        0.3982654533000908
+      ],
+      "candidate_id": "cand:p0076:0013:text",
+      "features": {
+        "bbox_area": 0.002637,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 23
+      },
+      "json_pointer": "/pages/75/blocks/13",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Related Controls: SC-7."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.20588235294117646,
+        0.4042607702390112,
+        0.5788023206922743,
+        0.4229002287893584
+      ],
+      "candidate_id": "cand:p0076:0014:section_heading",
+      "features": {
+        "bbox_area": 0.006951,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": "nist_control_heading",
+        "source_type": "Body",
+        "text_length": 50
+      },
+      "json_pointer": "/pages/75/blocks/14",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "(4) REMOTE ACCESS | PRIVILEGED COMMANDS AND ACCESS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.4248096196338384,
+        0.8446132684844772,
+        0.47329022185971037
+      ],
+      "candidate_id": "cand:p0076:0015:list",
+      "features": {
+        "bbox_area": 0.02954,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": "nist_list_item",
+        "source_type": "Body",
+        "text_length": 238
+      },
+      "json_pointer": "/pages/75/blocks/15",
+      "preset_type": "list",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "(a) Authorize the execution of privileged commands and access to security-relevant information via remote access only in a format that provides assessable evidence and for the following needs: [Assignment: organization-defined needs]; and"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2353268292994281,
+        0.47489698005445075,
+        0.7899319019192964,
+        0.49245726460158223
+      ],
+      "candidate_id": "cand:p0076:0016:list",
+      "features": {
+        "bbox_area": 0.009739,
+        "block_type": "list",
+        "has_toc_entries": false,
+        "semantic_role": "nist_list_item",
+        "source_type": "Body",
+        "text_length": 81
+      },
+      "json_pointer": "/pages/75/blocks/16",
+      "preset_type": "list",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "(b) Document the rationale for remote access in the security plan for the system."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.4942165336223564,
+        0.845989950342116,
+        0.5574433683144926
+      ],
+      "candidate_id": "cand:p0076:0017:text",
+      "features": {
+        "bbox_area": 0.038612,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 366
+      },
+      "json_pointer": "/pages/75/blocks/17",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Discussion: Remote access to systems represents a significant potential vulnerability that can be exploited by adversaries. As such, restricting the execution of privileged commands and access to security-relevant information via remote access reduces the exposure of the organization and the susceptibility to threats by adversaries to the remote access capability."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.5597468289462003,
+        0.48422395793441075,
+        0.576674567328559
+      ],
+      "candidate_id": "cand:p0076:0018:text",
+      "features": {
+        "bbox_area": 0.004214,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 37
+      },
+      "json_pointer": "/pages/75/blocks/18",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Related Controls: AC-6, SC-12, SC-13."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.20588235294117646,
+        0.5826698457351839,
+        0.6536257376078687,
+        0.6013093042855311
+      ],
+      "candidate_id": "cand:p0076:0019:section_heading",
+      "features": {
+        "bbox_area": 0.008346,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": "nist_control_heading",
+        "source_type": "Body",
+        "text_length": 59
+      },
+      "json_pointer": "/pages/75/blocks/19",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "(5) REMOTE ACCESS | MONITORING FOR UNAUTHORIZED CONNECTIONS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.6034589439931543,
+        0.4777633068608303,
+        0.620386682375513
+      ],
+      "candidate_id": "cand:p0076:0020:text",
+      "features": {
+        "bbox_area": 0.004104,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": "nist_withdrawn_note",
+        "source_type": "Body",
+        "text_length": 36
+      },
+      "json_pointer": "/pages/75/blocks/20",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[Withdrawn: Incorporated into SI-4.]"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.20588235294117646,
+        0.6263819607821378,
+        0.6209789600247652,
+        0.645021419332485
+      ],
+      "candidate_id": "cand:p0076:0021:section_heading",
+      "features": {
+        "bbox_area": 0.007737,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": "nist_control_heading",
+        "source_type": "Body",
+        "text_length": 55
+      },
+      "json_pointer": "/pages/75/blocks/21",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "(6) REMOTE ACCESS | PROTECTION OF MECHANISM INFORMATION"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.6469308872415562,
+        0.7898485270980137,
+        0.6800272777827099
+      ],
+      "candidate_id": "cand:p0076:0022:text",
+      "features": {
+        "bbox_area": 0.018354,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 88
+      },
+      "json_pointer": "/pages/75/blocks/22",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Protect information about remote access mechanisms from unauthorized use and disclosure."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.2352940677817351,
+        0.6817165336223564,
+        0.8522201238893995,
+        0.7604033344923847
+      ],
+      "candidate_id": "cand:p0076:0023:text",
+      "features": {
+        "bbox_area": 0.048544,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 433
+      },
+      "json_pointer": "/pages/75/blocks/23",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Discussion: Remote access to organizational information by non-organizational entities can increase the risk of unauthorized use and disclosure about remote access mechanisms. The organization considers including remote access requirements in the information exchange agreements with other organizations, as applicable. Remote access requirements can also be included in rules of behavior (see PL-4) and access agreements (see PS-6)."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.7626256461095329,
+        0.4677533417745353,
+        0.7795533459595959
+      ],
+      "candidate_id": "cand:p0076:0024:text",
+      "features": {
+        "bbox_area": 0.003935,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 35
+      },
+      "json_pointer": "/pages/75/blocks/24",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "Related Controls: AT-2, AT-3, PS-6."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.20588235294117646,
+        0.7856243403270992,
+        0.7098026150971456,
+        0.8042638759420375
+      ],
+      "candidate_id": "cand:p0076:0025:section_heading",
+      "features": {
+        "bbox_area": 0.009393,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": "nist_control_heading",
+        "source_type": "Body",
+        "text_length": 70
+      },
+      "json_pointer": "/pages/75/blocks/25",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "(7) REMOTE ACCESS | ADDITIONAL PROTECTION FOR SECURITY FUNCTION ACCESS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.8064135156496607,
+        0.5108025245417177,
+        0.8233412154997238
+      ],
+      "candidate_id": "cand:p0076:0026:text",
+      "features": {
+        "bbox_area": 0.004664,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": "nist_withdrawn_note",
+        "source_type": "Body",
+        "text_length": 40
+      },
+      "json_pointer": "/pages/75/blocks/26",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[Withdrawn: Incorporated into AC-3(10).]"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.20588235294117646,
+        0.829336455374053,
+        0.6196037242615146,
+        0.8479759909889915
+      ],
+      "candidate_id": "cand:p0076:0027:section_heading",
+      "features": {
+        "bbox_area": 0.007712,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": "nist_control_heading",
+        "source_type": "Body",
+        "text_length": 55
+      },
+      "json_pointer": "/pages/75/blocks/27",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "(8) REMOTE ACCESS | DISABLE NONSECURE NETWORK PROTOCOLS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.23529411764705882,
+        0.8501256306966146,
+        0.48884173623876637,
+        0.8670533305466778
+      ],
+      "candidate_id": "cand:p0076:0028:text",
+      "features": {
+        "bbox_area": 0.004292,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": "nist_withdrawn_note",
+        "source_type": "Body",
+        "text_length": 36
+      },
+      "json_pointer": "/pages/75/blocks/28",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "[Withdrawn: Incorporated into CM-7.]"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.20588235294117646,
+        0.8730485704210069,
+        0.550396688623366,
+        0.8916881060359454
+      ],
+      "candidate_id": "cand:p0076:0029:section_heading",
+      "features": {
+        "bbox_area": 0.006422,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": "nist_control_heading",
+        "source_type": "Body",
+        "text_length": 48
+      },
+      "json_pointer": "/pages/75/blocks/29",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "(9) REMOTE ACCESS | DISCONNECT OR DISABLE ACCESS"
+    }
+  ],
+  "page_case": {
+    "case_id": "page_case_0002_p0076",
+    "page_number": 76
+  },
+  "schema": "pdf_lab.second_pass.candidate_presets.v1"
+}

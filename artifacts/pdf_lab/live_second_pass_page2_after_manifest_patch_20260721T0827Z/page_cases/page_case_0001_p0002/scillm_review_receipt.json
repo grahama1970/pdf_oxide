@@ -1,0 +1,161 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"clean\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0002:0000:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'NIST Special Publication 800-53', which is correctly classified as a section_heading.\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'Revision 5', which is correctly classified as side_chrome (header/footer noise).\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0002:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'Security and Privacy Controls for', which is correctly classified as a section_heading.\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0003:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'Information Systems and Organizations', which is correctly classified as a section_heading.\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0004:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'JOINT TASK FORCE', which is correctly classified as general text.\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0005:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'This publication is available free of charge from:', which is correctly classified as side_chrome (boilerplate).\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0006:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'https://doi.org/10.6028/NIST.SP.800-53r5', which is correctly classified as side_chrome (boilerplate).\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0007:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'September 2020', which is correctly classified as general text.\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0008:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'INCLUDES UPDATES AS OF 12-10-2020; SEE PAGE XVII', which is correctly classified as general text.\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0009:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'U.S. Department of Commerce', which is correctly classified as general text with a semantic role of 'frontmatter_attribution'.\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    },\n    {\n      \"candidate_id\": \"cand:p0002:0010:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON block and its bounding box perfectly match the visual evidence for the multi-line text 'Wilbur L. Ross, Jr., Secretary National Institute of Standards and Technology Walter Copan, NIST Director and Under Secretary of Commerce for Standards and Technology', which is correctly classified as general text.\",\n      \"rationale\": \"The text, bounding box, and classification are accurate.\",\n      \"suggested_fix_surface\": null\n    }\n  ],\n  \"page_rationale\": \"All candidates on page 2 are accurately extracted and correctly classified according to the provided preset types and visual evidence. No defects were found.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784622482,
+    "id": "fy1faq2kB6Ot_uMPyabQwQc",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0002",
+      "item_id": "page_case_0001_p0002:200a3e0d1a8d8096",
+      "request_sha256": "200a3e0d1a8d8096e2fdba817a217110cb2187933a9d8500c38fefae8dea74ec"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 1332,
+      "completion_tokens_details": null,
+      "prompt_tokens": 7621,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 7075
+      },
+      "total_tokens": 12165
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0002:0000:section_heading",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'NIST Special Publication 800-53', which is correctly classified as a section_heading.",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0001:side_chrome",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'Revision 5', which is correctly classified as side_chrome (header/footer noise).",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0002:section_heading",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'Security and Privacy Controls for', which is correctly classified as a section_heading.",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0003:section_heading",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'Information Systems and Organizations', which is correctly classified as a section_heading.",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0004:text",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'JOINT TASK FORCE', which is correctly classified as general text.",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0005:side_chrome",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'This publication is available free of charge from:', which is correctly classified as side_chrome (boilerplate).",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0006:side_chrome",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'https://doi.org/10.6028/NIST.SP.800-53r5', which is correctly classified as side_chrome (boilerplate).",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0007:text",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'September 2020', which is correctly classified as general text.",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0008:text",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'INCLUDES UPDATES AS OF 12-10-2020; SEE PAGE XVII', which is correctly classified as general text.",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0009:text",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the text 'U.S. Department of Commerce', which is correctly classified as general text with a semantic role of 'frontmatter_attribution'.",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      },
+      {
+        "candidate_id": "cand:p0002:0010:text",
+        "evidence": "The extracted JSON block and its bounding box perfectly match the visual evidence for the multi-line text 'Wilbur L. Ross, Jr., Secretary National Institute of Standards and Technology Walter Copan, NIST Director and Under Secretary of Commerce for Standards and Technology', which is correctly classified as general text.",
+        "rationale": "The text, bounding box, and classification are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": null
+      }
+    ],
+    "page_rationale": "All candidates on page 2 are accurately extracted and correctly classified according to the provided preset types and visual evidence. No defects were found.",
+    "page_status": "clean",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0002",
+    "item_id": "page_case_0001_p0002:200a3e0d1a8d8096",
+    "request_sha256": "200a3e0d1a8d8096e2fdba817a217110cb2187933a9d8500c38fefae8dea74ec"
+  }
+}

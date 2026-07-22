@@ -1,0 +1,1196 @@
+{
+  "generated_at": "2026-07-21T02:11:57.006611+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04473802296802251,
+            0.8507378272760927,
+            0.05821938948197798
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p104:block:0",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05679397390346334,
+            0.8517353332120609,
+            0.07054738324097913
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p104:block:1",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.9417424250130702,
+            0.8396249409594567,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 7.9800004959106445,
+          "id": "actual:p104:block:2",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              423.8504638671875,
+              7.979999542236328
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 7.9800004959106445,
+            "header_level": null,
+            "is_bold": false,
+            "text": "CHAPTER THREE   77 PAGE"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Body",
+          "text": "CHAPTER THREE   77 PAGE",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.5297058735018462,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p104:block:3",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              303.1199951171875,
+              349.6199951171875
+            ],
+            "block_type": "Boilerplate",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+          },
+          "source_type": "Boilerplate",
+          "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.08989831173058713,
+            0.8388205135569853,
+            0.12228619931924223
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p104:block:4",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              144.0,
+              698.2755737304688,
+              371.66278076171875,
+              22.26446533203125
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "the organization with the means to identify who reviewed and released the information. In the case of automated reviews, it ensures that only approved review functions are used."
+          },
+          "source_type": "Body",
+          "text": "the organization with the means to identify who reviewed and released the information. In the case of automated reviews, it ensures that only approved review functions are used.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529421737770628,
+            0.12459533383147885,
+            0.4404984517814287,
+            0.14152915068347044
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020001411437988,
+          "id": "actual:p104:block:5",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              144.00006103515625,
+              683.03515625,
+              127.84951782226562,
+              10.02484130859375
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020001411437988,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  AC-4, AC-16."
+          },
+          "source_type": "Body",
+          "text": "Related Controls:  AC-4, AC-16.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.14751830245509293,
+            0.7184535506504034,
+            0.16615777063851406
+          ],
+          "font_name": "TT2",
+          "font_size": 9.886666297912598,
+          "id": "actual:p104:block:6",
+          "is_bold": true,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              126.0,
+              663.9000244140625,
+              316.1614685058594,
+              10.97998046875
+            ],
+            "block_type": "Body",
+            "confidence": 0.3499999940395355,
+            "font_name": "TT2",
+            "font_size": 9.886666297912598,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.3499999940395355,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.886666297912598,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9866932034492493,
+                "text_len": 71,
+                "title_case_ratio": 0.7777777910232544,
+                "word_count": 9
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like",
+                "parentheses_negative"
+              ],
+              "title_text": "(4) NON-REPUDIATION | VALIDATE BINDING OF INFORMATION REVIEWER IDENTITY"
+            },
+            "is_bold": true,
+            "text": "(4) NON-REPUDIATION | VALIDATE BINDING OF INFORMATION REVIEWER IDENTITY"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "(4) NON-REPUDIATION | VALIDATE BINDING OF INFORMATION REVIEWER IDENTITY",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.16806721928143742,
+            0.8245008880016851,
+            0.21654784077345723
+          ],
+          "font_name": "TT2",
+          "font_size": 10.020000457763672,
+          "id": "actual:p104:block:7",
+          "is_bold": true,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              144.0,
+              623.9910888671875,
+              362.8793029785156,
+              34.5089111328125
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0,
+                "text_len": 87,
+                "title_case_ratio": 0.0714285746216774,
+                "word_count": 14
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "parentheses_negative"
+              ],
+              "title_text": "(a) Validate the binding of the information reviewer identity to the information at the"
+            },
+            "is_bold": true,
+            "text": "(a) Validate the binding of the information reviewer identity to the information at the transfer or release points prior to release or transfer between [Assignment: organization-defined security domains]; and"
+          },
+          "semantic_role": "nist_list_item",
+          "source_type": "Body",
+          "text": "(a) Validate the binding of the information reviewer identity to the information at the transfer or release points prior to release or transfer between [Assignment: organization-defined security domains]; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23529409271439697,
+            0.2181545797020498,
+            0.8458412519467422,
+            0.23571488351532907
+          ],
+          "font_name": "TT2",
+          "font_size": 10.020000457763672,
+          "id": "actual:p104:block:8",
+          "is_bold": true,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              143.99998474121094,
+              608.810791015625,
+              375.8902587890625,
+              10.02001953125
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": true,
+                "font_size": 10.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0,
+                "text_len": 90,
+                "title_case_ratio": 0.0833333358168602,
+                "word_count": 12
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "sentence_negative",
+                "parentheses_negative"
+              ],
+              "title_text": "(b) Perform [Assignment: organization-defined actions] in the event of a validation error."
+            },
+            "is_bold": true,
+            "text": "(b) Perform [Assignment: organization-defined actions] in the event of a validation error."
+          },
+          "semantic_role": "nist_list_item",
+          "source_type": "Body",
+          "text": "(b) Perform [Assignment: organization-defined actions] in the event of a validation error.",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23529409271439697,
+            0.237474075471512,
+            0.8484250735613256,
+            0.31616104973687065
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p104:block:9",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              143.99998474121094,
+              544.7266845703125,
+              377.52056884765625,
+              58.933349609375
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Validating the binding of the information reviewer identity to the information at transfer or release points prevents the unauthorized modification of information between review and the transfer or release. The validation of bindings can be achieved by using cryptographic checksums. Organizations determine if validations are in response to user requests or generated automatically."
+          },
+          "source_type": "Body",
+          "text": "Discussion:  Validating the binding of the information reviewer identity to the information at transfer or release points prevents the unauthorized modification of information between review and the transfer or release. The validation of bindings can be achieved by using cryptographic checksums. Organizations determine if validations are in response to user requests or generated automatically.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.3183831879586885,
+            0.4404984517814287,
+            0.3353109263410472
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020001411437988,
+          "id": "actual:p104:block:10",
+          "is_bold": true,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              144.0,
+              529.5599975585938,
+              127.84957885742188,
+              10.02001953125
+            ],
+            "block_type": "Body",
+            "confidence": 0.10000000149011612,
+            "font_name": "TT0",
+            "font_size": 10.020001411437988,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.10000000149011612,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": true,
+                "font_size": 10.020001411437988,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0000001192092896,
+                "text_len": 31,
+                "title_case_ratio": 1.0,
+                "word_count": 4
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like",
+                "sentence_negative"
+              ],
+              "title_text": "Related Controls:  AC-4, AC-16."
+            },
+            "is_bold": true,
+            "text": "Related Controls:  AC-4, AC-16."
+          },
+          "source_type": "Body",
+          "text": "Related Controls:  AC-4, AC-16.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.3413819977731416,
+            0.49508866453482436,
+            0.3600214563234888
+          ],
+          "font_name": "TT2",
+          "font_size": 9.886666297912598,
+          "id": "actual:p104:block:11",
+          "is_bold": true,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              126.0,
+              510.3599853515625,
+              181.521484375,
+              10.97998046875
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 9.886666297912598,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.886666297912598,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9866932034492493,
+                "text_len": 40,
+                "title_case_ratio": 0.6000000238418579,
+                "word_count": 5
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "parentheses_negative"
+              ],
+              "title_text": "(5) NON-REPUDIATION | DIGITAL SIGNATURES"
+            },
+            "is_bold": true,
+            "text": "(5) NON-REPUDIATION | DIGITAL SIGNATURES"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "(5) NON-REPUDIATION | DIGITAL SIGNATURES",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.36209530300564235,
+            0.4777633068608303,
+            0.3790230413880011
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p104:block:12",
+          "is_bold": true,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              144.0,
+              494.94000244140625,
+              150.64566040039062,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0,
+                "text_len": 36,
+                "title_case_ratio": 0.5,
+                "word_count": 4
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "[Withdrawn: Incorporated into SI-7.]"
+            },
+            "is_bold": true,
+            "text": "[Withdrawn: Incorporated into SI-7.]"
+          },
+          "semantic_role": "nist_withdrawn_note",
+          "source_type": "Body",
+          "text": "[Withdrawn: Incorporated into SI-7.]",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.3851255937056108,
+            0.7156881693921058,
+            0.40205333208796956
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020002365112305,
+          "id": "actual:p104:block:13",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              126.0,
+              476.70001220703125,
+              314.20556640625,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020002365112305,
+            "header_level": null,
+            "is_bold": false,
+            "text": "References:  [FIPS 140-3], [FIPS 180-4], [FIPS 186-4], [FIPS 202], [SP 800-177]."
+          },
+          "semantic_role": "reference_lead",
+          "source_type": "Body",
+          "text": "References:  [FIPS 140-3], [FIPS 180-4], [FIPS 186-4], [FIPS 202], [SP 800-177].",
+          "type": "reference"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.41544415252377287,
+            0.4096708609387765,
+            0.43468691122652303
+          ],
+          "font_name": "TT2",
+          "font_size": 10.979999542236328,
+          "id": "actual:p104:block:14",
+          "is_bold": true,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              90.0,
+              451.55999755859375,
+              163.22537231445312,
+              10.980010986328125
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT2",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0958082675933838,
+                "text_len": 28,
+                "title_case_ratio": 1.0,
+                "word_count": 4
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "AU-11 AUDIT RECORD RETENTION"
+            },
+            "is_bold": true,
+            "text": "AU-11 AUDIT RECORD RETENTION"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "AU-11 AUDIT RECORD RETENTION",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.20586599711499182,
+            0.44012559062302714,
+            0.8404839210260927,
+            0.48796805950126265
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p104:block:15",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              125.989990234375,
+              408.6555480957031,
+              390.62066650390625,
+              34.50445556640625
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control:  Retain audit records for [Assignment: organization-defined time period consistent with records retention policy] to provide support for after-the-fact investigations of incidents and to meet regulatory and organizational information retention requirements."
+          },
+          "source_type": "Body",
+          "text": "Control:  Retain audit records for [Assignment: organization-defined time period consistent with records retention policy] to provide support for after-the-fact investigations of incidents and to meet regulatory and organizational information retention requirements.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588227814319088,
+            0.49391347711736505,
+            0.8523167628867954,
+            0.6034447641083689
+          ],
+          "font_name": "TT0",
+          "font_size": 10.019999504089355,
+          "id": "actual:p104:block:16",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              125.99995422363281,
+              317.197998046875,
+              397.85711669921875,
+              83.36199951171875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.019999504089355,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Organizations retain audit records until it is determined that the records are no longer needed for administrative, legal, audit, or other operational purposes. This includes the retention and availability of audit records relative to Freedom of Information Act (FOIA) requests, subpoenas, and law enforcement actions. Organizations develop standard categories of audit records relative to such types of actions and standard response processes for each type of action. The National Archives and Records Administration (NARA) General Records Schedules provide federal policy on records retention."
+          },
+          "source_type": "Body",
+          "text": "Discussion:  Organizations retain audit records until it is determined that the records are no longer needed for administrative, legal, audit, or other operational purposes. This includes the retention and availability of audit records relative to Freedom of Information Act (FOIA) requests, subpoenas, and law enforcement actions. Organizations develop standard categories of audit records relative to such types of actions and standard response processes for each type of action. The National Archives and Records Administration (NARA) General Records Schedules provide federal policy on records retention.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.609519534640842,
+            0.7024592480628319,
+            0.6264472730232008
+          ],
+          "font_name": "TT0",
+          "font_size": 10.019998550415039,
+          "id": "actual:p104:block:17",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              126.0,
+              298.9800109863281,
+              306.1695861816406,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.019998550415039,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  AU-2, AU-4, AU-5, AU-6, AU-9, AU-14, MP-6, RA-5, SI-12."
+          },
+          "source_type": "Body",
+          "text": "Related Controls:  AU-2, AU-4, AU-5, AU-6, AU-9, AU-14, MP-6, RA-5, SI-12.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.6324741093799321,
+            0.3617490381976358,
+            0.6494018092299952
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p104:block:18",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              126.0,
+              280.79998779296875,
+              97.60482788085938,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control Enhancements:"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "Control Enhancements:",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.6554728806620896,
+            0.6279395109687755,
+            0.6741124162770281
+          ],
+          "font_name": "TT2",
+          "font_size": 9.725454330444336,
+          "id": "actual:p104:block:19",
+          "is_bold": true,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              126.0,
+              261.6000061035156,
+              262.82147216796875,
+              10.980010986328125
+            ],
+            "block_type": "Body",
+            "confidence": 0.3499999940395355,
+            "font_name": "TT2",
+            "font_size": 9.725454330444336,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.3499999940395355,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.725454330444336,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9706041812896729,
+                "text_len": 59,
+                "title_case_ratio": 0.75,
+                "word_count": 8
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like",
+                "parentheses_negative"
+              ],
+              "title_text": "(1) AUDIT RECORD RETENTION | LONG-TERM RETRIEVAL CAPABILITY"
+            },
+            "is_bold": true,
+            "text": "(1) AUDIT RECORD RETENTION | LONG-TERM RETRIEVAL CAPABILITY"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "(1) AUDIT RECORD RETENTION | LONG-TERM RETRIEVAL CAPABILITY",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.23527776182087418,
+            0.6759460140960385,
+            0.8090029448465584,
+            0.7090424046371923
+          ],
+          "font_name": "TT2",
+          "font_size": 10.019999504089355,
+          "id": "actual:p104:block:20",
+          "is_bold": true,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              143.989990234375,
+              233.93544006347656,
+              353.40740966796875,
+              22.324569702148438
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 10.019999504089355,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.019999504089355,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9999998807907104,
+                "text_len": 81,
+                "title_case_ratio": 0.1111111119389534,
+                "word_count": 9
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Employ [Assignment: organization-defined measures] to ensure that long-term audit"
+            },
+            "is_bold": true,
+            "text": "Employ [Assignment: organization-defined measures] to ensure that long-term audit records generated by the system can be retrieved."
+          },
+          "source_type": "Body",
+          "text": "Employ [Assignment: organization-defined measures] to ensure that long-term audit records generated by the system can be retrieved.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.7107316604768387,
+            0.8509282130821079,
+            0.7894184613468671
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p104:block:21",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              144.0,
+              169.9067840576172,
+              379.0426025390625,
+              58.9332275390625
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Organizations need to access and read audit records requiring long-term storage (on the order of years). Measures employed to help facilitate the retrieval of audit records include converting records to newer formats, retaining equipment capable of reading the records, and retaining the necessary documentation to help personnel understand how to interpret the records."
+          },
+          "source_type": "Body",
+          "text": "Discussion:  Organizations need to access and read audit records requiring long-term storage (on the order of years). Measures employed to help facilitate the retrieval of audit records include converting records to newer formats, retaining equipment capable of reading the records, and retaining the necessary documentation to help personnel understand how to interpret the records.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.7917165274571891,
+            0.3974674698574091,
+            0.8086442273072522
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p104:block:22",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              144.0,
+              154.67999267578125,
+              101.44248962402344,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  None."
+          },
+          "source_type": "Body",
+          "text": "Related Controls:  None.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.8146710636639836,
+            0.382452846352571,
+            0.8315987635140467
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020001411437988,
+          "id": "actual:p104:block:23",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              126.0,
+              136.5,
+              110.26554870605469,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020001411437988,
+            "header_level": null,
+            "is_bold": false,
+            "text": "References:  [OMB A-130]."
+          },
+          "semantic_role": "reference_lead",
+          "source_type": "Body",
+          "text": "References:  [OMB A-130].",
+          "type": "reference"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.8449896610144413,
+            0.4232110914841197,
+            0.8642323811848959
+          ],
+          "font_name": "TT2",
+          "font_size": 10.980000495910645,
+          "id": "actual:p104:block:24",
+          "is_bold": true,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              90.0,
+              111.36000061035156,
+              171.50430297851562,
+              10.979995727539062
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT2",
+            "font_size": 10.980000495910645,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.980000495910645,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0958083868026733,
+                "text_len": 29,
+                "title_case_ratio": 1.0,
+                "word_count": 4
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "AU-12 AUDIT RECORD GENERATION"
+            },
+            "is_bold": true,
+            "text": "AU-12 AUDIT RECORD GENERATION"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "AU-12 AUDIT RECORD GENERATION",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.8697468150745739,
+            0.25978078405841504,
+            0.886674514924637
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p104:block:25",
+          "is_bold": false,
+          "page": 104,
+          "pdf_page_index": 103,
+          "raw": {
+            "bbox": [
+              126.0,
+              92.87999725341797,
+              35.20025634765625,
+              10.019996643066406
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control:"
+          },
+          "semantic_role": "nist_field_label",
+          "source_type": "Body",
+          "text": "Control:",
+          "type": "paragraph_block"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 104,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 103
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

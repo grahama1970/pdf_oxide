@@ -1,0 +1,18 @@
+{
+  "schema": "pdf_lab.visual_receipt.v1",
+  "page": 45,
+  "candidate_id": "actual:p45:block:19",
+  "original_image": "artifacts/pdf_lab/page45_control_enhancements_none_20260721/page45_original.png",
+  "overlay_image": "artifacts/pdf_lab/page45_control_enhancements_none_20260721/page45_control_enhancements_none_overlay.png",
+  "bbox": [
+    0.20588235294117646,
+    0.8212619357638888,
+    0.40904774385340076,
+    0.838189635613952
+  ],
+  "expected_visible_text": "Control Enhancements: None.",
+  "sha256": {
+    "original_image": "a6f6b63a10eb8f9673ea4f4fe48c7f8f58f1227c6a8c6cdbbeb758c4a4887ec6",
+    "overlay_image": "378c761661ed540d14d36f1e0ed6364308acee0666c9b58d572ac7fefe731349"
+  }
+}

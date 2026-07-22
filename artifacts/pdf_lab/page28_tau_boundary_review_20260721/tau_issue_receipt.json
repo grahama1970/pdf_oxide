@@ -1,0 +1,16 @@
+{
+  "schema": "pdf_lab.external_issue_receipt.v1",
+  "created_at": "2026-07-21T11:59:27Z",
+  "external_owner": "tau",
+  "repo": "grahama1970/tau",
+  "issue_number": 120,
+  "issue_url": "https://github.com/grahama1970/tau/issues/120",
+  "title": "Own PDF Lab page28 large live-review timeout orchestration",
+  "reason": "page28 live second-pass review timed out at SciLLM model-review call after Tau transport registration succeeded; human boundary assigns DAG/model transport orchestration to Tau",
+  "source_artifacts": [
+    "artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/page_cases/page_case_0001_p0028/scillm_review_error.json",
+    "artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/tau-receipts/dag-receipt.json"
+  ],
+  "blocked_page": 28,
+  "blocked_case_id": "page_case_0001_p0028"
+}

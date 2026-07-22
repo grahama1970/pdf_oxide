@@ -1,0 +1,108 @@
+{
+  "campaign_status": {
+    "active_family": "nist_control_summary_table_suppression",
+    "blocked_by_systemic_failure": [],
+    "failed": [],
+    "latest_failure_signature": null,
+    "not_run": [
+      "page34_body_lines_as_headings",
+      "page45_leftover_c_d_title",
+      "page104_remaining_findings",
+      "page421_remaining_findings"
+    ],
+    "passed": [
+      "page456_control_table_header_cell_leakage_current_main"
+    ]
+  },
+  "candidate": {
+    "defect_class": "control-table column header/cell leakage",
+    "handoff_claim": "CONTROL NUMBER, CONTROL NAME, IMPLEMENTED extract as section_heading/paragraph_block instead of table",
+    "next_action": "advance candidate as currently passing on main; keep focused regression to prevent recurrence",
+    "owner": "nist_preset/export suppression",
+    "page_id": "nist_phase54_page_0456",
+    "page_number": 456,
+    "pdf_page_index": 455,
+    "selection_source": "/home/graham/workspace/experiments/pdf_oxide-gs001/local/HANDOFF.md section 5 plus source candidate bundle",
+    "source_fix_error_count": 95
+  },
+  "current_main_audit": {
+    "block_count": 6,
+    "snapshot": "artifacts/pdf_lab/page456_control_table_headers_20260721/baseline_page456_snapshot.json",
+    "snapshot_sha256": "42e70f1bd7c31810da8e1ddec93b9392245c705e582eece30eb2c31ce8044ef4",
+    "standalone_table_cell_leak_count": 0,
+    "standalone_table_cell_leaks": [],
+    "table_count": 1,
+    "table_text_contains": [
+      "CONTROL NUMBER",
+      "CONTROL NAME",
+      "CONTROL ENHANCEMENT NAME",
+      "IMPLEMENTED BY",
+      "ASSURANCE",
+      "AC-1",
+      "Policy and Procedures"
+    ]
+  },
+  "generated_at": "2026-07-21T01:44:33.696567+00:00",
+  "goal": "all PDF Lab page candidates, one page/checklist item at a time",
+  "proof": {
+    "commands": [
+      "uv run maturin develop",
+      "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page456_control_table_headers_20260721/baseline_page456_snapshot.json --max-pages 456 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+      "pytest -q tests/test_nist_page456_control_table_headers.py"
+    ],
+    "does_not_prove": "remaining page34/page45/page104/page421 or live model-backed repair lifecycle",
+    "live": "yes",
+    "logs": [
+      "artifacts/pdf_lab/page456_control_table_headers_20260721/test_logs/baseline_maturin_develop.log",
+      "artifacts/pdf_lab/page456_control_table_headers_20260721/test_logs/baseline_snapshot_page456.log",
+      "artifacts/pdf_lab/page456_control_table_headers_20260721/test_logs/pytest_page456_control_table_headers.log"
+    ],
+    "mocked": "no",
+    "result": "page456 selected candidate is already passing on current main; regression added and receipt preserved"
+  },
+  "schema": "pdf_lab.page_candidate_selection_receipt.v1",
+  "source_artifacts": [
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/candidate_bundle.json",
+      "sha256": "170a1c4d3630309b8740f18d97d64561d0ce5a3150b9dc184c5d68e6f47c9bd3",
+      "size": 63674
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/release_extraction_blocks.json",
+      "sha256": "43d8914eec90fc9c8cdb6fe32ee662d689b47e08a7fe98c3c15df774dc8a9b9d",
+      "size": 128066
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/expected_elements.json",
+      "sha256": "afa63c36db020f97221bef03a4331bbbb3663924578dd24775d476a40e220ba7",
+      "size": 34884
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/agent_second_pass.json",
+      "sha256": "a4f01118b70f3336f8dc7608e4f97debaee9adfc5123197ac1214b1f376ad7eb",
+      "size": 70297
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/page.png",
+      "sha256": "d88a847accd498d08e9e31f40ec5812a13445d54172deccbc2a3b3cc8150a255",
+      "size": 164374
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/bbox_overlay.png",
+      "sha256": "7b69385695e9ff2229e98c39e6f40026461c85d1cc464305555a40bcdc94b292",
+      "size": 193169
+    },
+    {
+      "exists": true,
+      "path": "artifacts/pdf_lab/project_agent_hardening/page_0456_release_after_hardening.json",
+      "sha256": "ad35bb02aefe4b30738739378db7542b1ee1551952fb8e5769f8a440bf48c64d",
+      "size": 71626
+    }
+  ]
+}

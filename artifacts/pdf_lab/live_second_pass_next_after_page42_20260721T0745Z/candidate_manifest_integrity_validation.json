@@ -1,0 +1,20 @@
+{
+  "actual_candidate_count": 1274,
+  "candidate_count": 1274,
+  "errors": [],
+  "ok": true,
+  "page_count_with_candidates": 80,
+  "preset_counts": {
+    "figure": 22,
+    "footnote": 33,
+    "list": 125,
+    "reference": 57,
+    "section_heading": 165,
+    "side_chrome": 312,
+    "table": 15,
+    "text": 544,
+    "toc": 1
+  },
+  "schema": "pdf_lab.second_pass.candidate_manifest_integrity_validation.v1",
+  "unique_candidate_id_count": 1274
+}

@@ -1,0 +1,19 @@
+{
+  "artifact_paths": {
+    "annotated_image": "page_candidates.png",
+    "candidate_presets": "candidate_presets.json",
+    "original_image": "page_before.png",
+    "page_json": "page_before.json"
+  },
+  "errors": [],
+  "image_part_count": 2,
+  "ok": true,
+  "schema": "pdf_lab.second_pass.review_request_validation.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0042",
+    "item_id": "page_case_0001_p0042:487ca72b3cf53e62",
+    "request_sha256": "487ca72b3cf53e62f97332f46c0b62f92062ce27e3bda2b1e73c97fc5637fd2d"
+  },
+  "text_part_count": 1
+}

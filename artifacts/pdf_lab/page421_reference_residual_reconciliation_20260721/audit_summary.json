@@ -1,0 +1,41 @@
+{
+  "candidate": "GS001 stale standalone glossary citation reference residuals",
+  "current_snapshot": "artifacts/pdf_lab/page421_reference_residual_reconciliation_20260721/current_page421_snapshot.json",
+  "existing_visual_receipt": "artifacts/pdf_lab/page421_glossary_term_audit_20260721/visual_receipt.json",
+  "glossary_table_count": 1,
+  "glossary_table_ids": [
+    "actual:p421:definition_table:glossary"
+  ],
+  "live": false,
+  "mocked": false,
+  "page": 421,
+  "page421_block_count": 9,
+  "page421_type_counts": {
+    "header_footer_noise": 4,
+    "paragraph_block": 1,
+    "section_heading": 3,
+    "table": 1
+  },
+  "proof_commands": {
+    "current_snapshot": "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --out artifacts/pdf_lab/page421_residual_current_20260721/current_page421_snapshot.json --max-pages 421 --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release",
+    "focused_page421": "pytest -q tests/test_nist_page421_glossary_terms.py"
+  },
+  "proof_results": {
+    "focused_page421": "1 passed, 5 warnings in 26.89s"
+  },
+  "schema": "pdf_lab.page421_reference_residual_reconciliation_audit.v1",
+  "selection_receipt": "artifacts/pdf_lab/page421_reference_residual_reconciliation_20260721/selection_receipt.json",
+  "sha256": {
+    "current_page421_snapshot": "2b94fd83a4f5f45f492623a19c30f34e4bf04def5efaeed41939a5dcde1a7342",
+    "selection_receipt": "2de8cc99f5da6560df38d42eb01a0c456c474951a25563b5104f61dca84a2ddb"
+  },
+  "standalone_citation_reference_count": 0,
+  "standalone_citation_references": [],
+  "status": "passing_current_contract_no_code_patch",
+  "test_logs": {
+    "focused_page421": "artifacts/pdf_lab/page421_reference_residual_reconciliation_20260721/test_logs/pytest_page421_glossary_terms.log",
+    "snapshot": "artifacts/pdf_lab/page421_reference_residual_reconciliation_20260721/test_logs/snapshot_page421.log"
+  },
+  "what_remains_unverified": "live model-backed second-pass repair lifecycle and Criterion 6 live GitHub apply",
+  "what_was_exercised": "deterministic local extraction of NIST SP 800-53r5 page 421 with release promotion ledger"
+}

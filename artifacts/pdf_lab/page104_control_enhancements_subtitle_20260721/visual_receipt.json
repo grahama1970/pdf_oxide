@@ -1,0 +1,25 @@
+{
+  "image_size_px": [
+    1275,
+    1650
+  ],
+  "original_image": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/page104_original.png",
+  "overlay_bbox_normalized": [
+    0.20588235294117646,
+    0.6324741093799321,
+    0.3617490381976358,
+    0.6494018092299952
+  ],
+  "overlay_block_id": "actual:p104:block:18",
+  "overlay_image": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/page104_control_enhancements_subtitle_overlay.png",
+  "overlay_source_snapshot": "artifacts/pdf_lab/page104_control_enhancements_subtitle_20260721/current_page104_snapshot.json",
+  "page": 104,
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_page_index": 103,
+  "schema": "pdf_lab.visual_receipt.v1",
+  "sha256": {
+    "current_page104_snapshot": "bc0579c764a712416400e8c61fca19bfbe3688455e80132dc1e2550114f15baa",
+    "original_image": "a2c08a8863b6759674132677dd5eebe13e2de96ed88aeb6c3cf949e095129cf1",
+    "overlay_image": "538eabe35d2781828937dcc28e64c67beb62a8c08449f9b7158f28d99e85211f"
+  }
+}

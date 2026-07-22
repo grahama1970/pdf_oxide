@@ -1,0 +1,101 @@
+{
+  "changed_files": [
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/candidate_census_events.jsonl",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/candidate_census_progress.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/candidate_manifest.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/candidate_manifest_integrity_validation.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/candidate_sample_linkage_validation.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/deterministic_execution_plan.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/forced_pages_input.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/human_forced_pages.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/candidate_presets.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/page_before.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/page_before.png",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/page_candidates.png",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/patch_evidence_workspace.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/build_model_ready_payload.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/extract_page_json.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/initialize_page_case.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/inject_candidate_presets.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/load_sampled_candidate_manifest.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/register_page_orchestrator_run.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/render_annotated_candidates.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/render_original_page.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/scillm_one_shot_page_review.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/scillm_review_preflight.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/select_page_candidates.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/receipts/validate_review_response.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/review_request.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/review_request_validation.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/review_response.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/review_validation.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/sampled_candidate_manifest.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/scillm_orchestrator_page_dag_spec.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/scillm_orchestrator_page_dag_spec_validation.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/scillm_orchestrator_page_submission.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/scillm_orchestrator_page_submission_validation.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/scillm_page_orchestrator_run_receipt.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/scillm_page_orchestrator_run_request.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/scillm_page_orchestrator_run_validation.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/scillm_review_preflight.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/scillm_review_receipt.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/selected_candidates.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/state.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/sampled_page_cases.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/sampling_gate.json",
+    "artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/scillm_code_root_visibility.json"
+  ],
+  "dirty": true,
+  "patch_evidence_workspace": {
+    "case_id": "page_case_0001_p0006",
+    "code_root": "/tmp/pdf_oxide_page45b_1784600709",
+    "copied": [
+      {
+        "artifact": "page_before.json",
+        "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/page_before.json",
+        "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0006/page_before.json"
+      },
+      {
+        "artifact": "page_before.png",
+        "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/page_before.png",
+        "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0006/page_before.png"
+      },
+      {
+        "artifact": "page_candidates.png",
+        "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/page_candidates.png",
+        "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0006/page_candidates.png"
+      },
+      {
+        "artifact": "candidate_presets.json",
+        "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/candidate_presets.json",
+        "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0006/candidate_presets.json"
+      },
+      {
+        "artifact": "review_response.json",
+        "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/review_response.json",
+        "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0006/review_response.json"
+      },
+      {
+        "artifact": "review_validation.json",
+        "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/review_validation.json",
+        "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0006/review_validation.json"
+      },
+      {
+        "artifact": "selected_candidates.json",
+        "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/selected_candidates.json",
+        "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0006/selected_candidates.json"
+      },
+      {
+        "artifact": "sampled_candidate_manifest.json",
+        "source": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page6_20260721T0916Z/page_cases/page_case_0001_p0006/sampled_candidate_manifest.json",
+        "workspace_path": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0006/sampled_candidate_manifest.json"
+      }
+    ],
+    "git_info_exclude_pattern": ".pdf_lab_runtime/",
+    "missing": [],
+    "ok": true,
+    "schema": "pdf_lab.second_pass.patch_evidence_workspace.v1",
+    "workspace_case_dir": "/tmp/pdf_oxide_page45b_1784600709/.pdf_lab_runtime/page_cases/page_case_0001_p0006"
+  },
+  "schema": "pdf_lab.second_pass.patch_baseline.v1"
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": "pdf_lab.promotion_verdict.v1",
+  "verdict": "PASS",
+  "blockers": [],
+  "page_scoped": {
+    "matched": 1,
+    "total": 1,
+    "passed": true,
+    "defect_vector": {
+      "blocking_class_increased": false,
+      "issue_signature_after": 0,
+      "issue_signature_before": 1,
+      "repaired_signature_after": 1
+    }
+  },
+  "document_wide": {
+    "type_changes": 0,
+    "pages_touched": 0,
+    "structural_change": false,
+    "transitions": {},
+    "off_pattern_changes": 0,
+    "damaging_transitions_found": {},
+    "damaging_total": 0,
+    "char_retention": 1.000138
+  },
+  "policy": {
+    "damaging_transitions": [
+      "header_footer_noise->Body",
+      "header_footer_noise->table",
+      "table->header_footer_noise"
+    ],
+    "max_damaging": 0,
+    "max_off_pattern": 0,
+    "min_char_retention": 0.999,
+    "cross_page_evidence_required": true
+  },
+  "note": "A large blast radius is not damage. A repair that corrects the same defect class on many pages is generalising, which is the anti-overfit signal. Collateral -- changes outside the declared pattern, or transitions named as harmful -- is what blocks promotion."
+}

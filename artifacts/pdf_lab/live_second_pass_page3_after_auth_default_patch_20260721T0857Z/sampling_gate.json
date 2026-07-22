@@ -1,0 +1,53 @@
+{
+  "accepted_forced_page_count": 1,
+  "adequate_for_priority_strata": true,
+  "adequate_sample_size": true,
+  "candidate_count": 17,
+  "covered_priority_strata": [
+    "geometry:boundary",
+    "position:first_20",
+    "position:frontmatter",
+    "preset:reference",
+    "preset:side_chrome",
+    "preset:text",
+    "risk:high"
+  ],
+  "duplicate_accepted_forced_pages": [],
+  "duplicate_probabilistic_selected_pages": [],
+  "duplicate_selected_pages": [],
+  "errors": [],
+  "forced_pages_are_additive": true,
+  "missed_priority_strata": [],
+  "ok": true,
+  "probabilistic_selected_count": 0,
+  "recommended_min_sample_size": 1,
+  "sampling_audit_schema": "pdf_lab.second_pass.sampling_audit.v1",
+  "sampling_audit_seed": 3,
+  "schema": "pdf_lab.second_pass.sampling_gate.v1",
+  "seed": 3,
+  "selected_count": 1,
+  "selected_pages": [
+    3
+  ],
+  "statistical_significance_adequate": true,
+  "statistical_significance_basis": {
+    "accepted_forced_page_count": 1,
+    "adequacy_rule": "adequate_sample_size && adequate_for_priority_strata && selected_count >= recommended_min_sample_size",
+    "adequate": true,
+    "candidate_page_population": 1,
+    "finite_population_fraction": 1.0,
+    "forced_pages_are_additive": true,
+    "large_document_floor": 1,
+    "method": "stratified_priority_coverage_plus_weighted_random_reserve",
+    "priority_stratum_count": 7,
+    "probabilistic_selected_page_count": 0,
+    "random_reserve_fraction": 0.2,
+    "random_reserve_record_count": 0,
+    "recommended_min_sample_size": 1,
+    "seed": 3,
+    "selected_page_count": 1,
+    "sqrt_population_floor": 1
+  },
+  "statistical_significance_seed": 3,
+  "warnings": []
+}

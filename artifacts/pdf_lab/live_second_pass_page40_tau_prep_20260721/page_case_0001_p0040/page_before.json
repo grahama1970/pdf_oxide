@@ -1,0 +1,404 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p40:block:0",
+      "is_bold": false,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p40:block:1",
+      "is_bold": false,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528974944469976,
+        0.9549618345318418
+      ],
+      "font_name": "TT0",
+      "font_size": 7.9800004959106445,
+      "id": "actual:p40:block:2",
+      "is_bold": false,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          433.8087158203125,
+          7.979999542236328
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 7.9800004959106445,
+        "header_level": null,
+        "is_bold": false,
+        "text": "CHAPTER TWO  PAGE 13"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Footer",
+      "text": "CHAPTER TWO  PAGE 13",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p40:block:3",
+      "is_bold": false,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14704087201286764,
+        0.08994257570517183,
+        0.8465639002182904,
+        0.159330088682849
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p40:block:4",
+      "is_bold": false,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          89.989013671875,
+          669.236328125,
+          430.5631103515625,
+          51.24365234375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "control. Identifying the control implementation approach can result in significant savings to organizations in implementation and assessment costs and a more consistent application of the controls organization- wide.Typically, the identification of the control implementation approach is straightforward. However, the implementation takes significant planning and coordination."
+      },
+      "source_type": "Body",
+      "text": "control. Identifying the control implementation approach can result in significant savings to organizations in implementation and assessment costs and a more consistent application of the controls organization-wide. Typically, the identification of the control implementation approach is straightforward. However, the implementation takes significant planning and coordination.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14704092187819137,
+        0.1729026177916864,
+        0.8518099317363664,
+        0.32712782272184737
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979998588562012,
+      "id": "actual:p40:block:5",
+      "is_bold": false,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          89.98904418945312,
+          536.3405151367188,
+          433.8308410644531,
+          118.43511962890625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979998588562012,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Planning for the implementation approach of a control (i.e., common, hybrid, or system-)specific is best carried out early in the system development life cycle and coordinated with the entities providing the control [SP 800-37]. Similarly, if a control is to be inheritable, coordination is required with the inheriting entity to ensure that the control meets its needs. This is especially important given the nature of control parameters. An inheriting entity cannot assume that controls are the same and mitigate the appropriate risk to the system just because the control identifiers (e.g., AC-1) are the same. It is essential to examine the control parameters (e.g., assignment or selection operations) when determining if a common control is adequate to mitigate system-specific risks."
+      },
+      "source_type": "Body",
+      "text": "Planning for the implementation approach of a control (i.e., common, hybrid, or system-specific) is best carried out early in the system development life cycle and coordinated with the entities providing the control [SP 800-37]. Similarly, if a control is to be inheritable, coordination is required with the inheriting entity to ensure that the control meets its needs. This is especially important given the nature of control parameters. An inheriting entity cannot assume that controls are the same and mitigate the appropriate risk to the system just because the control identifiers (e.g., AC-1) are the same. It is essential to examine the control parameters (e.g., assignment or selection operations) when determining if a common control is adequate to mitigate system-specific risks.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.3400691639293324,
+        0.520607792474086,
+        0.3645694617069129
+      ],
+      "font_name": "TT2",
+      "font_size": 12.889089584350586,
+      "id": "actual:p40:block:6",
+      "is_bold": true,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          90.0,
+          508.1400146484375,
+          231.7574462890625,
+          13.97998046875
+        ],
+        "block_type": "Title",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 12.889089584350586,
+        "header_level": 2,
+        "header_validation": {
+          "confidence": 0.8999999761581421,
+          "depth_level": 2,
+          "disposition": "Accept",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 12.889089584350586,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": true,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 2,
+            "size_ratio": 1.1738697290420532,
+            "text_len": 35,
+            "title_case_ratio": 0.800000011920929,
+            "word_count": 5
+          },
+          "has_numbering": true,
+          "is_header": true,
+          "level": 2,
+          "number_text": "2.4",
+          "reasons": [
+            "numbering",
+            "title_case_like"
+          ],
+          "title_text": "SECURITY AND PRIVACY CONTROLS"
+        },
+        "is_bold": true,
+        "text": "2.4   SECURITY AND PRIVACY CONTROLS"
+      },
+      "source_type": "Title",
+      "text": "2.4   SECURITY AND PRIVACY CONTROLS",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14704079721488206,
+        0.3697910886822325,
+        0.8488242953431373,
+        0.6426621639367306
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p40:block:7",
+      "is_bold": false,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          89.98896789550781,
+          286.43731689453125,
+          431.9949951171875,
+          212.40267944335938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "The selection and implementation of security and privacy controls reflect the objectives of information security and privacy programs and how those programs manage their respective risks. Depending on the circumstances, these objectives and risks can be independent or overlapping. Federal information security programs are responsible for protecting information and information systems from unauthorized access, use, disclosure, disruption, modification, or destruction (i.e., unauthorized activity or system behavior) to provide confidentiality, integrity, and availability. Those programs are also responsible for managing security risk and for ensuring compliance with applicable security requirements. Federal privacy programs are responsible for managing risks to individuals associated with the creation, collection, use, processing, storage, maintenance, dissemination, disclosure, or disposal (collectively referred to as \u201cprocessing\u201d) of PII and for ensuring compliance with applicable privacy requirements.28 When a system processes PII, the information security program and the privacy program have a shared responsibility for managing the security risks for the PII in the system. Due to this overlap in responsibilities, the controls that organizations select to manage these security risks will generally be the same regardless of their designation as security or privacy controls in control baselines or program or system plans."
+      },
+      "source_type": "Body",
+      "text": "The selection and implementation of security and privacy controls reflect the objectives of information security and privacy programs and how those programs manage their respective risks. Depending on the circumstances, these objectives and risks can be independent or overlapping. Federal information security programs are responsible for protecting information and information systems from unauthorized access, use, disclosure, disruption, modification, or destruction (i.e., unauthorized activity or system behavior) to provide confidentiality, integrity, and availability. Those programs are also responsible for managing security risk and for ensuring compliance with applicable security requirements. Federal privacy programs are responsible for managing risks to individuals associated with the creation, collection, use, processing, storage, maintenance, dissemination, disclosure, or disposal (collectively referred to as \u201cprocessing\u201d) of PII and for ensuring compliance with applicable privacy requirements.28 When a system processes PII, the information security program and the privacy program have a shared responsibility for managing the security risks for the PII in the system. Due to this overlap in responsibilities, the controls that organizations select to manage these security risks will generally be the same regardless of their designation as security or privacy controls in control baselines or program or system plans.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14704870086869384,
+        0.6562346641463462,
+        0.8513655319712521,
+        0.7595603249289773
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p40:block:8",
+      "is_bold": false,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          89.99380493164062,
+          193.85397338867188,
+          433.5343322753906,
+          78.1226806640625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "There also may be circumstances in which the selection and/or implementation of the control or control enhancement affects the ability of a program to achieve its objectives and manage its respective risks. The control discussion section may highlight specific security and/or privacy considerations so that organizations can take these considerations into account as they determine the most effective method to implement the control. However, these considerations are not exhaustive."
+      },
+      "source_type": "Body",
+      "text": "There also may be circumstances in which the selection and/or implementation of the control or control enhancement affects the ability of a program to achieve its objectives and manage its respective risks. The control discussion section may highlight specific security and/or privacy considerations so that organizations can take these considerations into account as they determine the most effective method to implement the control. However, these considerations are not exhaustive.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14704870086869384,
+        0.7730486320726799,
+        0.8375248129850899,
+        0.8085679333619397
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p40:block:9",
+      "is_bold": false,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          89.99380493164062,
+          155.0399932861328,
+          425.0199279785156,
+          24.419998168945312
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "For example, an organization might select AU-3 (Content of Audit Records) to support monitoring for unauthorized access to an information asset that does not include PII. Since the"
+      },
+      "source_type": "Body",
+      "text": "For example, an organization might select AU-3 (Content of Audit Records) to support monitoring for unauthorized access to an information asset that does not include PII. Since the",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8388711948587437,
+        0.8317108154296875,
+        0.9096098620482166
+      ],
+      "font_name": "TT0",
+      "font_size": 8.25,
+      "id": "actual:p40:block:10",
+      "is_bold": false,
+      "page": 40,
+      "pdf_page_index": 39,
+      "raw": {
+        "bbox": [
+          90.0,
+          118.37999725341797,
+          419.69708251953125,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "continuation_ids": [
+          "actual:p40:block:11"
+        ],
+        "font_name": "TT0",
+        "font_size": 8.25,
+        "header_level": null,
+        "is_bold": false,
+        "text": "28 Privacy programs may also choose to consider the risks to individuals that may arise from their interactions with"
+      },
+      "source_type": "Footnote",
+      "text": "28 Privacy programs may also choose to consider the risks to individuals that may arise from their interactions with information systems, where the processing of personally identifiable information may be less impactful than the effect that the system has on individuals\u2019 behavior or activities. Such effects would constitute risks to individual autonomy, and organizations may need to take steps to manage those risks in addition to information security and privacy risks.",
+      "type": "footnote"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 40,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 39
+}
