@@ -23,8 +23,10 @@ use crate::extractors::figure_detector::DetectedFigure;
 use crate::layout::TextSpan;
 use crate::tables::Table;
 
-/// Minimum fraction of a text block's area that must lie inside a figure.
-const BLOCK_CONTAINMENT_THRESHOLD: f64 = 0.98;
+/// Callout labels can straddle an image XObject edge while their leader and
+/// visual center remain inside the illustration. Require the block centroid
+/// and a majority of its area to be inside the figure region.
+const BLOCK_CONTAINMENT_THRESHOLD: f64 = 0.5;
 /// Table rules can protrude beyond an image XObject (for example, leader lines
 /// attached to a callout). Require the table centroid and a strict majority of
 /// its region to be inside the figure.
@@ -99,6 +101,10 @@ impl PageRect {
         (self.x1 - self.x0).max(0.0) * (self.y1 - self.y0).max(0.0)
     }
 
+    fn height(&self) -> f64 {
+        (self.y1 - self.y0).max(0.0)
+    }
+
     fn intersection_area(&self, other: &Self) -> f64 {
         let width = self.x1.min(other.x1) - self.x0.max(other.x0);
         let height = self.y1.min(other.y1) - self.y0.max(other.y0);
@@ -145,6 +151,13 @@ fn non_whitespace_multiset(text: &str) -> HashMap<char, usize> {
         *counts.entry(character).or_insert(0) += 1;
     }
     counts
+}
+
+fn is_page_furniture(type_label: &str) -> bool {
+    matches!(
+        type_label,
+        "Header" | "Footer" | "PageNumber" | "Boilerplate" | "Caption" | "Footnote"
+    )
 }
 
 /// Reconcile block and table views against detected figure regions.
@@ -199,6 +212,11 @@ pub fn reconcile_views(
         .collect();
 
     for (block_index, block) in blocks.iter().enumerate() {
+        // Page furniture remains part of the document stream even when a
+        // marginal image happens to overlap it. It is not figure content.
+        if is_page_furniture(&block.type_label) {
+            continue;
+        }
         let containing_figures: Vec<usize> = figure_rects
             .iter()
             .enumerate()
@@ -225,11 +243,25 @@ pub fn reconcile_views(
         let has_ambiguous_member = span_block_memberships.iter().any(|memberships| {
             memberships.contains(&block_index) && memberships.as_slice() != [block_index]
         });
+        let contributing_member_spans: Vec<usize> = member_spans
+            .iter()
+            .copied()
+            .filter(|&span_index| {
+                spans[span_index]
+                    .text
+                    .chars()
+                    .any(|character| !character.is_whitespace())
+            })
+            .collect();
         let spans_are_unambiguous = !has_ambiguous_member
-            && !member_spans.is_empty()
-            && member_spans.iter().all(|&span_index| {
-                figure_rects[figure_index]
-                    .covers_object(&span_rects[span_index], BLOCK_CONTAINMENT_THRESHOLD)
+            && !contributing_member_spans.is_empty()
+            && contributing_member_spans.iter().all(|&span_index| {
+                let span_rect = &span_rects[span_index];
+                let (cx, cy) = span_rect.centroid();
+                // A label line immediately adjacent to the XObject edge can
+                // still belong to a majority-contained callout block. Bound
+                // that allowance to one source-span height.
+                figure_rects[figure_index].contains_point(cx, cy, span_rect.height())
             });
 
         let block_characters = non_whitespace_multiset(block.text);
@@ -346,6 +378,115 @@ mod tests {
         assert_eq!(result.consumed.len(), 1);
         assert_eq!(result.consumed[0].text, "Alpha Beta");
         assert_eq!(result.consumed[0].original_type, "Body");
+        assert!(result.retained_ambiguous.is_empty());
+    }
+
+    #[test]
+    fn edge_callout_with_majority_overlap_and_centroid_inside_is_absorbed() {
+        let spans = vec![span("Callout", 70.0, 220.0, 50.0, 10.0)];
+        let blocks = vec![BlockView {
+            // The figure starts at x=90: 60% of this block and its centroid
+            // are inside, matching a callout label that straddles the edge.
+            bbox: (70.0, 220.0, 50.0, 10.0),
+            text: "Callout",
+            type_label: "Body".to_string(),
+        }];
+
+        let result = reconcile_views(
+            &blocks,
+            &[figure(90.0, 200.0, 300.0, 300.0)],
+            &[],
+            &spans,
+            PAGE_HEIGHT,
+        );
+
+        assert_eq!(result.consumed.len(), 1);
+        assert_eq!(result.consumed[0].text, "Callout");
+    }
+
+    #[test]
+    fn edge_callout_accepts_member_span_within_one_line_of_figure_edge() {
+        let spans = vec![span("Top label", 120.0, 502.0, 50.0, 8.0)];
+        let blocks = vec![BlockView {
+            // 10/18 points are inside the figure and the centroid is inside;
+            // the source line itself starts two points above the top edge.
+            bbox: (115.0, 490.0, 60.0, 18.0),
+            text: "Top label",
+            type_label: "Body".to_string(),
+        }];
+
+        let result = reconcile_views(
+            &blocks,
+            &[figure(100.0, 200.0, 300.0, 300.0)],
+            &[],
+            &spans,
+            PAGE_HEIGHT,
+        );
+
+        assert_eq!(result.consumed.len(), 1);
+        assert_eq!(result.consumed[0].text, "Top label");
+    }
+
+    #[test]
+    fn member_span_beyond_one_line_from_figure_edge_is_retained_fail_open() {
+        let spans = vec![span("Too far", 120.0, 508.0, 50.0, 2.0)];
+        let blocks = vec![BlockView {
+            bbox: (115.0, 480.0, 60.0, 30.0),
+            text: "Too far",
+            type_label: "Body".to_string(),
+        }];
+
+        let result = reconcile_views(
+            &blocks,
+            &[figure(100.0, 200.0, 300.0, 300.0)],
+            &[],
+            &spans,
+            PAGE_HEIGHT,
+        );
+
+        assert!(result.consumed.is_empty());
+        assert_eq!(result.retained_ambiguous, vec![0]);
+    }
+
+    #[test]
+    fn overlapping_page_furniture_is_never_absorbed() {
+        let spans = vec![span("Margin note", 70.0, 220.0, 50.0, 10.0)];
+        let blocks = vec![BlockView {
+            bbox: (70.0, 220.0, 50.0, 10.0),
+            text: "Margin note",
+            type_label: "Boilerplate".to_string(),
+        }];
+
+        let result = reconcile_views(
+            &blocks,
+            &[figure(90.0, 200.0, 300.0, 300.0)],
+            &[],
+            &spans,
+            PAGE_HEIGHT,
+        );
+
+        assert!(result.consumed.is_empty());
+        assert!(result.retained_ambiguous.is_empty());
+    }
+
+    #[test]
+    fn edge_block_without_centroid_containment_is_not_absorbed() {
+        let spans = vec![span("Outside", 50.0, 220.0, 50.0, 10.0)];
+        let blocks = vec![BlockView {
+            bbox: (50.0, 220.0, 50.0, 10.0),
+            text: "Outside",
+            type_label: "Body".to_string(),
+        }];
+
+        let result = reconcile_views(
+            &blocks,
+            &[figure(90.0, 200.0, 300.0, 300.0)],
+            &[],
+            &spans,
+            PAGE_HEIGHT,
+        );
+
+        assert!(result.consumed.is_empty());
         assert!(result.retained_ambiguous.is_empty());
     }
 
