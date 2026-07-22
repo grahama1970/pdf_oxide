@@ -233,6 +233,7 @@ pub struct BlockClassifier {
     max_font_size: f32,
     header_ratio: f32,
     repeated_margin_origins: Vec<MarginOrigin>,
+    underline_rects: Vec<Rect>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -310,7 +311,18 @@ impl BlockClassifier {
             max_font_size,
             header_ratio: header_ratio_override.unwrap_or(1.2),
             repeated_margin_origins,
+            underline_rects: Vec::new(),
         }
+    }
+
+    /// Supply painted page rectangles that may represent text underlines.
+    ///
+    /// Callers may pass all filled or stroked path bounding boxes. Strict
+    /// thinness, baseline, and overlap checks are applied before a rectangle
+    /// is accepted as an underline.
+    pub fn with_underline_rects(mut self, underline_rects: Vec<Rect>) -> Self {
+        self.underline_rects = underline_rects;
+        self
     }
 
     /// Classify all spans on a page into typed blocks.
@@ -318,15 +330,23 @@ impl BlockClassifier {
         let lines = group_spans_into_lines(spans);
 
         let mut blocks = Vec::new();
+        let mut underlined = Vec::new();
         for line_spans in &lines {
             if line_spans.is_empty() {
                 continue;
             }
             let mut block = self.classify_line(line_spans);
             block.lines = vec![BlockLine::from_spans(line_spans)];
+            underlined.push(self.has_text_underline(&block.bbox, block.font_size));
             blocks.push(block);
         }
 
+        promote_control_catalog_headings(
+            &mut blocks,
+            &underlined,
+            self.page_width,
+            self.page_height,
+        );
         merge_consecutive_body(&mut blocks);
         promote_isolated_heading_blocks(&mut blocks);
         // WebGPT 2026-05-13 R8 — suppress empty-text classified blocks
@@ -338,6 +358,30 @@ impl BlockClassifier {
         merge_list_runs_and_continuations(&mut blocks);
 
         blocks
+    }
+
+    fn has_text_underline(&self, text_bbox: &Rect, font_size: f32) -> bool {
+        if text_bbox.width <= 0.0 {
+            return false;
+        }
+
+        self.underline_rects.iter().any(|rule| {
+            let rule_thickness = rule.height.max(0.0);
+            if rule.width < font_size * 0.5
+                || rule.width > self.page_width * 0.70
+                || rule_thickness > (font_size * 0.15).max(1.5)
+            {
+                return false;
+            }
+
+            let overlap = (text_bbox.x + text_bbox.width).min(rule.x + rule.width)
+                - text_bbox.x.max(rule.x);
+            let covers_text = overlap.max(0.0) / text_bbox.width >= 0.60;
+            let rule_top = rule.y + rule.height;
+            let lies_at_baseline = rule_top <= text_bbox.y + font_size * 0.15
+                && rule.y >= text_bbox.y - font_size * 0.35;
+            covers_text && lies_at_baseline
+        })
     }
 
     fn is_repeated_margin_chrome(&self, bbox: &Rect, size_ratio: f32) -> bool {
@@ -1450,6 +1494,198 @@ fn merge_consecutive_body(blocks: &mut Vec<ClassifiedBlock>) {
     }
 }
 
+/// Promote the recurring control-catalog heading pair before body lines merge:
+/// a compact control identifier plus title, followed by a styled colon label.
+///
+/// The rule is deliberately structural. It requires page chrome earlier in
+/// source order, a short heading in the page body, a generic identifier shape,
+/// and tight vertical geometry. The optional lead-in must be bold or
+/// visibly underlined and sit immediately below the promoted heading.
+fn promote_control_catalog_headings(
+    blocks: &mut [ClassifiedBlock],
+    underlined: &[bool],
+    page_width: f32,
+    page_height: f32,
+) {
+    use BlockType::{Body, Boilerplate, Caption, Footer, Header, PageNumber, Subtitle, Title};
+
+    if blocks.len() != underlined.len() || page_width <= 0.0 || page_height <= 0.0 {
+        return;
+    }
+
+    let mut seen_chrome = false;
+    let mut heading_indices = Vec::new();
+
+    for (index, block) in blocks.iter().enumerate() {
+        if matches!(block.block_type, Header | Footer | PageNumber | Boilerplate) {
+            seen_chrome = true;
+            continue;
+        }
+
+        // Hard negative guard: a block already classified as Caption is never
+        // eligible for this promotion, regardless of its text or geometry.
+        if block.block_type == Caption {
+            continue;
+        }
+        if block.block_type != Body {
+            continue;
+        }
+
+        // Hard negative guard: URLs and link-like lead-ins never become
+        // headings, even when another typographic signal happens to match.
+        if starts_with_url_scheme_or_link_phrase(&block.text) {
+            continue;
+        }
+
+        let top_ratio = 1.0 - (block.bbox.y + block.bbox.height) / page_height;
+        if seen_chrome
+            && (0.08..=0.92).contains(&top_ratio)
+            && block.text.trim().chars().count() <= 120
+            && block.bbox.width <= page_width * 0.75
+            && has_compact_control_id_prefix(&block.text)
+        {
+            heading_indices.push(index);
+        }
+    }
+
+    for &index in &heading_indices {
+        blocks[index].block_type = Title;
+        blocks[index].header_level = Some(2);
+
+        let label_index = index + 1;
+        if label_index >= blocks.len() {
+            continue;
+        }
+
+        let label = &blocks[label_index];
+        // Repeat both hard guards for the paired lead-in; the heading match
+        // must never authorize retyping protected or link-shaped content.
+        if label.block_type == Caption
+            || label.block_type != Body
+            || starts_with_url_scheme_or_link_phrase(&label.text)
+            || !(label.is_bold || underlined[label_index])
+            || !is_compact_colon_label(&label.text)
+        {
+            continue;
+        }
+
+        let heading = &blocks[index];
+        let vertical_gap = heading.bbox.y - (label.bbox.y + label.bbox.height);
+        let font_ratio = label.font_size / heading.font_size.max(1.0);
+        let indent = label.bbox.x - heading.bbox.x;
+        if (-heading.font_size..=heading.font_size * 1.75).contains(&vertical_gap)
+            && (0.72..=1.15).contains(&font_ratio)
+            && (-heading.font_size * 0.5..=heading.font_size * 4.0).contains(&indent)
+            && label.bbox.width <= page_width * 0.35
+        {
+            blocks[label_index].block_type = Subtitle;
+            blocks[label_index].header_level = Some(3);
+        }
+    }
+}
+
+/// Generic compact control identifier: 2-5 uppercase ASCII letters, a dash,
+/// digits, and optional parenthesized numeric suffixes, followed by a title.
+fn has_compact_control_id_prefix(text: &str) -> bool {
+    let trimmed = text.trim();
+    let Some((token, title)) = trimmed.split_once(char::is_whitespace) else {
+        return false;
+    };
+    if !title.chars().any(char::is_alphabetic) {
+        return false;
+    }
+
+    let Some((family, number)) = token.split_once('-') else {
+        return false;
+    };
+    if !(2..=5).contains(&family.len())
+        || !family.bytes().all(|byte| byte.is_ascii_uppercase())
+    {
+        return false;
+    }
+
+    let digit_count = number.bytes().take_while(u8::is_ascii_digit).count();
+    if digit_count == 0 {
+        return false;
+    }
+
+    let mut suffix = &number[digit_count..];
+    while !suffix.is_empty() {
+        let Some(rest) = suffix.strip_prefix('(') else {
+            return false;
+        };
+        let Some(close) = rest.find(')') else {
+            return false;
+        };
+        let inner = &rest[..close];
+        if inner.is_empty() || !inner.bytes().all(|byte| byte.is_ascii_digit()) {
+            return false;
+        }
+        suffix = &rest[close + 1..];
+    }
+    true
+}
+
+/// A short standalone colon label such as a one- or two-word lead-in.
+fn is_compact_colon_label(text: &str) -> bool {
+    let trimmed = text.trim();
+    let Some(stem) = trimmed.strip_suffix(':') else {
+        return false;
+    };
+    let words: Vec<&str> = stem.split_whitespace().collect();
+    !stem.is_empty()
+        && stem.chars().count() <= 40
+        && (1..=3).contains(&words.len())
+        && words.iter().all(|word| {
+            word.chars()
+                .all(|character| character.is_alphabetic() || character == '-')
+        })
+}
+
+/// True for a leading RFC-style URL scheme or generic link-like wording.
+fn starts_with_url_scheme_or_link_phrase(text: &str) -> bool {
+    let trimmed = text.trim_start();
+    let first_token = trimmed.split_whitespace().next().unwrap_or_default();
+    if first_token.to_ascii_lowercase().starts_with("www.") {
+        return true;
+    }
+    if let Some((scheme, remainder)) = first_token.split_once(':') {
+        if !scheme.is_empty()
+            && (remainder.starts_with("//")
+                || matches!(
+                    scheme.to_ascii_lowercase().as_str(),
+                    "mailto" | "tel" | "urn" | "doi" | "data" | "file"
+                ))
+            && scheme
+                .bytes()
+                .enumerate()
+                .all(|(index, byte)| {
+                    if index == 0 {
+                        byte.is_ascii_alphabetic()
+                    } else {
+                        byte.is_ascii_alphanumeric() || matches!(byte, b'+' | b'-' | b'.')
+                    }
+                })
+        {
+            return true;
+        }
+    }
+
+    let words: Vec<String> = trimmed
+        .split_whitespace()
+        .take(3)
+        .map(|word| {
+            word.trim_matches(|character: char| !character.is_alphanumeric())
+                .to_ascii_lowercase()
+        })
+        .collect();
+    matches!(words.first().map(String::as_str), Some("link" | "hyperlink" | "url"))
+        || matches!(
+            (words.first().map(String::as_str), words.get(1).map(String::as_str)),
+            (Some("quick" | "direct"), Some("link")) | (Some("click"), Some("here"))
+        )
+}
+
 /// Subtitle-shaped neighbor check for `promote_isolated_heading_blocks`.
 ///
 /// True for uppercase-dominant, alphabetic-dominant blocks without sentence-
@@ -2292,6 +2528,129 @@ mod tests {
         assert!(is_caption("Figure 1: System architecture", 0.9));
         assert!(is_caption("Table 3.2 — Results summary", 0.95));
         assert!(!is_caption("The figure shows that...", 1.0));
+    }
+
+    #[test]
+    fn test_control_catalog_heading_shape_and_negative_guards() {
+        assert!(has_compact_control_id_prefix("ZX-7 Retention Overview"));
+        assert!(has_compact_control_id_prefix(
+            "QRS-42(3) Alternate Processing"
+        ));
+        assert!(!has_compact_control_id_prefix("ZX-7"));
+        assert!(!has_compact_control_id_prefix(
+            "zx-7 Retention Overview"
+        ));
+        assert!(!has_compact_control_id_prefix(
+            "TABLE C-7: Retention Overview"
+        ));
+
+        assert!(starts_with_url_scheme_or_link_phrase(
+            "https://example.invalid/reference"
+        ));
+        assert!(starts_with_url_scheme_or_link_phrase(
+            "Quick link to a summary"
+        ));
+        assert!(!starts_with_url_scheme_or_link_phrase(
+            "ZX-7 Retention Overview"
+        ));
+        assert!(!starts_with_url_scheme_or_link_phrase("Control:"));
+
+        let spans = vec![make_span("body", 90.0, 500.0, 11.0, false)];
+        let classifier = BlockClassifier::new_with_overrides(
+            612.0,
+            792.0,
+            &spans,
+            Some(11.0),
+            None,
+        );
+        let block = |block_type, text: &str, bbox, font_size, is_bold| {
+            classifier.make_block(
+                block_type,
+                text.to_string(),
+                bbox,
+                font_size,
+                "TestFont".to_string(),
+                is_bold,
+                0.8,
+                None,
+                None,
+            )
+        };
+
+        let mut blocks = vec![
+            block(
+                BlockType::Header,
+                "RUNNING HEADER",
+                Rect::new(90.0, 750.0, 180.0, 8.0),
+                8.0,
+                false,
+            ),
+            block(
+                BlockType::Body,
+                "ZX-7 RETENTION OVERVIEW",
+                Rect::new(90.0, 650.0, 190.0, 11.0),
+                11.0,
+                false,
+            ),
+            block(
+                BlockType::Body,
+                "Control:",
+                Rect::new(126.0, 632.0, 40.0, 10.0),
+                10.0,
+                false,
+            ),
+            // Deliberately control-ID-shaped: its existing Caption type is the
+            // decisive guard and must survive unchanged.
+            block(
+                BlockType::Caption,
+                "ZX-8 TABLE CAPTION",
+                Rect::new(180.0, 600.0, 150.0, 9.0),
+                9.0,
+                true,
+            ),
+            block(
+                BlockType::Body,
+                "https://example.invalid/reference",
+                Rect::new(90.0, 580.0, 180.0, 10.0),
+                10.0,
+                true,
+            ),
+            block(
+                BlockType::Body,
+                "Quick link to a summary",
+                Rect::new(90.0, 560.0, 160.0, 10.0),
+                10.0,
+                true,
+            ),
+            block(
+                BlockType::Body,
+                "QZ-8 ALTERNATE PROCESSING",
+                Rect::new(90.0, 530.0, 190.0, 11.0),
+                11.0,
+                true,
+            ),
+            block(
+                BlockType::Body,
+                "Plain Label:",
+                Rect::new(126.0, 512.0, 64.0, 10.0),
+                10.0,
+                false,
+            ),
+        ];
+        let original_text: String = blocks.iter().map(|item| item.text.as_str()).collect();
+        let underlined = vec![false, false, true, false, false, false, false, false];
+
+        promote_control_catalog_headings(&mut blocks, &underlined, 612.0, 792.0);
+
+        assert_eq!(blocks[1].block_type, BlockType::Title);
+        assert_eq!(blocks[2].block_type, BlockType::Subtitle);
+        assert_eq!(blocks[3].block_type, BlockType::Caption);
+        assert_eq!(blocks[4].block_type, BlockType::Body);
+        assert_eq!(blocks[5].block_type, BlockType::Body);
+        assert_eq!(blocks[6].block_type, BlockType::Title);
+        assert_eq!(blocks[7].block_type, BlockType::Body);
+        let final_text: String = blocks.iter().map(|item| item.text.as_str()).collect();
+        assert_eq!(final_text, original_text, "promotion must not delete text");
     }
 
     #[test]

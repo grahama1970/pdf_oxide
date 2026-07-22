@@ -3608,11 +3608,19 @@ impl PyPdfDocument {
         let info = doc
             .get_page_info(page)
             .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
+        let underline_rects = doc
+            .extract_paths(page)
+            .unwrap_or_default()
+            .into_iter()
+            .filter(|path| path.has_fill() || path.has_stroke())
+            .map(|path| path.bbox)
+            .collect();
         let classifier = crate::extractors::block_classifier::BlockClassifier::new(
             info.media_box.width,
             info.media_box.height,
             &spans,
-        );
+        )
+        .with_underline_rects(underline_rects);
         let blocks = classifier.classify_spans(&spans);
         let list = pyo3::types::PyList::empty(py);
         for b in &blocks {
@@ -3685,11 +3693,20 @@ impl PyPdfDocument {
                 .map_err(|e| PyRuntimeError::new_err(format!("Stream extraction failed: {}", e)))?;
         }
 
+        let underline_rects = self
+            .inner
+            .extract_paths(page)
+            .unwrap_or_default()
+            .into_iter()
+            .filter(|path| path.has_fill() || path.has_stroke())
+            .map(|path| path.bbox)
+            .collect();
         let classifier = crate::extractors::block_classifier::BlockClassifier::new(
             info.media_box.width,
             info.media_box.height,
             &spans,
-        );
+        )
+        .with_underline_rects(underline_rects);
         let mut blocks = classifier.classify_spans(&spans);
         let reconciliation = crate::extractors::table_block_reconciler::reconcile_page(
             &mut blocks,

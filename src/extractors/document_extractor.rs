@@ -237,13 +237,21 @@ pub fn extract_document_with_config(
             .map(|info| (info.media_box.width, info.media_box.height))
             .unwrap_or((612.0, 792.0));
 
+        let underline_rects = doc
+            .extract_paths(pg)
+            .unwrap_or_default()
+            .into_iter()
+            .filter(|path| path.has_fill() || path.has_stroke())
+            .map(|path| path.bbox)
+            .collect();
         let classifier = BlockClassifier::new_with_overrides(
             width,
             height,
             &spans,
             config.body_font_size_override,
             config.header_ratio_override,
-        );
+        )
+        .with_underline_rects(underline_rects);
         let classified = classifier.classify_spans(&spans);
         let mut merged = merge_blocks(&classified, height);
 
