@@ -342,6 +342,7 @@ impl BlockClassifier {
         }
 
         promote_repeated_reference_entries(&mut blocks, self.page_width, self.page_height);
+        merge_reference_continuations(&mut blocks, self.page_width);
         promote_control_catalog_headings(
             &mut blocks,
             &underlined,
@@ -1424,19 +1425,19 @@ fn group_spans_into_lines(spans: &[TextSpan]) -> Vec<Vec<&TextSpan>> {
 }
 
 /// Promote citation-shaped body lines only when page geometry shows that they
-/// belong to a repeated reference stream.
+/// belong to a repeated hanging-indent stream.
 ///
 /// The two signals are deliberately conjunctive:
 ///
 /// 1. the line begins with a compact bracketed citation token; and
 /// 2. another candidate in the page's content band has the same left anchor
-///    and a compatible font size.
+///    and a compatible font size; and
+/// 3. a wide candidate does not continue as flush-left running prose.
 ///
 /// The shared anchor defines a page-local column/region. This covers both
-/// bibliography entries (including same-line author text and hanging-indent
-/// continuations) and glossary source tags, without relying on publication
-/// names or page numbers. A bracketed line isolated from every such stream is
-/// left as Body.
+/// bibliography entries and glossary source tags without relying on author,
+/// venue, section-title, or page-number vocabulary. A bracketed line isolated
+/// from every such stream, or embedded in flush-left prose, is left as Body.
 fn promote_repeated_reference_entries(
     blocks: &mut [ClassifiedBlock],
     page_width: f32,
@@ -1475,7 +1476,18 @@ fn promote_repeated_reference_entries(
             (other.bbox.x - anchor.bbox.x).abs() <= x_tolerance
                 && (0.85..=1.18).contains(&font_ratio)
         });
-        if has_regional_repetition {
+        let continues_as_running_prose = anchor.bbox.width >= page_width * 0.40
+            && blocks.get(index + 1).is_some_and(|next| {
+                let font_ratio = next.font_size / anchor.font_size.max(1.0);
+                let vertical_gap = anchor.bbox.y - (next.bbox.y + next.bbox.height);
+                !has_leading_citation_token(&next.text)
+                    && (next.bbox.x - anchor.bbox.x).abs() <= x_tolerance
+                    && (0.85..=1.18).contains(&font_ratio)
+                    && next.bbox.y <= anchor.bbox.y
+                    && vertical_gap >= -anchor.font_size * 0.5
+                    && vertical_gap <= anchor.font_size * 1.5
+            });
+        if has_regional_repetition && !continues_as_running_prose {
             promote.push(index);
         }
     }
@@ -1484,6 +1496,94 @@ fn promote_repeated_reference_entries(
         blocks[index].block_type = BlockType::Reference;
         blocks[index].confidence = 0.8;
     }
+}
+
+/// Merge tightly led hanging-indent lines into their reference anchor.
+///
+/// This is a core layout operation rather than a document preset: continuation
+/// membership is decided only by font metrics, line geometry, and column
+/// membership. The content classifier may initially label a continuation as
+/// Body, List, or Boilerplate; those labels do not override the source layout.
+fn merge_reference_continuations(blocks: &mut Vec<ClassifiedBlock>, page_width: f32) {
+    use BlockType::{Body, Boilerplate, List, Reference};
+
+    let mut index = 0;
+    while index < blocks.len() {
+        if blocks[index].block_type != Reference {
+            index += 1;
+            continue;
+        }
+
+        loop {
+            let Some(next) = blocks.get(index + 1) else {
+                break;
+            };
+            if !matches!(next.block_type, Body | List | Boilerplate) {
+                break;
+            }
+
+            let previous_line = blocks[index].lines.last().cloned().unwrap_or(BlockLine {
+                bbox: blocks[index].bbox,
+                text: blocks[index].text.clone(),
+                font_size: blocks[index].font_size,
+                font_name: blocks[index].font_name.clone(),
+                is_bold: blocks[index].is_bold,
+            });
+            if !is_hanging_indent_continuation(&blocks[index], &previous_line, next, page_width) {
+                break;
+            }
+
+            let absorbed = blocks.remove(index + 1);
+            blocks[index].text.push(' ');
+            blocks[index].text.push_str(&absorbed.text);
+            blocks[index].bbox = blocks[index].bbox.union(&absorbed.bbox);
+            blocks[index].lines.extend(absorbed.lines);
+        }
+        index += 1;
+    }
+}
+
+fn is_hanging_indent_continuation(
+    anchor: &ClassifiedBlock,
+    previous_line: &BlockLine,
+    next: &ClassifiedBlock,
+    page_width: f32,
+) -> bool {
+    if page_width <= 0.0 || anchor.font_size <= 0.0 || next.font_size <= 0.0 {
+        return false;
+    }
+
+    let anchor_font_ratio = next.font_size / anchor.font_size;
+    let leading_font_ratio = next.font_size / previous_line.font_size.max(1.0);
+    if !(0.85..=1.18).contains(&anchor_font_ratio)
+        || (anchor.lines.len() > 1 && !(0.97..=1.03).contains(&leading_font_ratio))
+    {
+        return false;
+    }
+
+    // Bibliographic titles and venues may switch between roman and italic
+    // faces while preserving the same metrics. Exact font identity is ideal;
+    // equal size and emphasis admit that face-only variation.
+    let compatible_face = next.font_name == previous_line.font_name
+        || ((leading_font_ratio - 1.0).abs() <= 0.03 && next.is_bold == previous_line.is_bold);
+    if !compatible_face {
+        return false;
+    }
+
+    let indent = next.bbox.x - anchor.bbox.x;
+    if indent <= 0.5 || indent > anchor.font_size * 4.0 {
+        return false;
+    }
+
+    let page_midpoint = page_width / 2.0;
+    let crosses_column_boundary = (anchor.bbox.x < page_midpoint && next.bbox.x >= page_midpoint)
+        || (anchor.bbox.x >= page_midpoint && next.bbox.x < page_midpoint);
+    if crosses_column_boundary || next.bbox.y > previous_line.bbox.y {
+        return false;
+    }
+
+    let vertical_gap = previous_line.bbox.y - (next.bbox.y + next.bbox.height);
+    vertical_gap >= -anchor.font_size * 0.5 && vertical_gap <= anchor.font_size * 1.5
 }
 
 /// A compact citation token at the beginning of a line. Token recognition is
@@ -2605,7 +2705,7 @@ mod tests {
             ),
             make_span(
                 "hanging-indent continuation for the first entry.",
-                176.0,
+                113.0,
                 685.0,
                 10.8,
                 false,
@@ -2619,7 +2719,7 @@ mod tests {
             ),
             make_span(
                 "hanging-indent continuation for the long-form entry.",
-                176.0,
+                113.0,
                 635.0,
                 10.8,
                 false,
@@ -2635,7 +2735,20 @@ mod tests {
                 .find(|block| block.text.starts_with(token))
                 .unwrap_or_else(|| panic!("missing reference entry {token}"));
             assert_eq!(entry.block_type, BlockType::Reference);
+            assert!(
+                entry.text.contains("hanging-indent continuation"),
+                "continuation must merge into its reference anchor: {:?}",
+                entry.text
+            );
         }
+        assert_eq!(
+            blocks
+                .iter()
+                .filter(|block| block.block_type == BlockType::Reference)
+                .count(),
+            2,
+            "two anchors must produce exactly two merged reference blocks"
+        );
         let actual_text: String = blocks.iter().map(|block| block.text.as_str()).collect();
         assert_eq!(
             actual_text.chars().filter(|c| !c.is_whitespace()).collect::<String>(),
@@ -2698,6 +2811,92 @@ mod tests {
             .find(|block| block.text.contains("[RS 300]"))
             .expect("isolated bracketed line must be retained");
         assert_eq!(isolated.block_type, BlockType::Body);
+    }
+
+    #[test]
+    fn test_reference_continuation_does_not_cross_column_boundary() {
+        let spans = vec![
+            make_span("[ZX 100] First entry", 290.0, 700.0, 10.0, false),
+            make_span("opposite-column text", 310.0, 685.0, 10.0, false),
+            make_span("[QY 200] Second entry", 290.0, 650.0, 10.0, false),
+            make_span("more opposite-column text", 310.0, 635.0, 10.0, false),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        let references: Vec<_> = blocks
+            .iter()
+            .filter(|block| block.block_type == BlockType::Reference)
+            .collect();
+        assert_eq!(references.len(), 2);
+        assert!(
+            references
+                .iter()
+                .all(|block| !block.text.contains("opposite-column")),
+            "cross-column neighbors must not merge into reference anchors: {blocks:?}"
+        );
+        assert!(
+            blocks
+                .iter()
+                .any(|block| block.text.contains("opposite-column text")),
+            "cross-column text must remain present as a separate block: {blocks:?}"
+        );
+    }
+
+    #[test]
+    fn test_bracket_prefixed_running_paragraph_lines_remain_body() {
+        let spans = vec![
+            make_span(
+                "[12] continues the running paragraph across nearly the full text column",
+                50.0,
+                700.0,
+                10.0,
+                false,
+            ),
+            make_span(
+                "with a flush-left continuation on the following line",
+                50.0,
+                685.0,
+                10.0,
+                false,
+            ),
+            make_span(
+                "[34] another running paragraph line spanning nearly the full text column",
+                50.0,
+                650.0,
+                10.0,
+                false,
+            ),
+            make_span(
+                "and this continuation also remains flush left",
+                50.0,
+                635.0,
+                10.0,
+                false,
+            ),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        assert!(
+            blocks
+                .iter()
+                .all(|block| block.block_type != BlockType::Reference),
+            "flush-left running prose must not become references: {blocks:?}"
+        );
+        let actual_text: String = blocks.iter().map(|block| block.text.as_str()).collect();
+        let expected_text: String = spans.iter().map(|span| span.text.as_str()).collect();
+        assert_eq!(
+            actual_text
+                .chars()
+                .filter(|character| !character.is_whitespace())
+                .collect::<String>(),
+            expected_text
+                .chars()
+                .filter(|character| !character.is_whitespace())
+                .collect::<String>(),
+            "running-prose guard must not delete text"
+        );
     }
 
     #[test]
