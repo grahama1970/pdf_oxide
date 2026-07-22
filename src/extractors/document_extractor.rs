@@ -9,7 +9,9 @@ use serde::Serialize;
 use crate::document::PdfDocument;
 use crate::error::Result;
 use crate::extractors::block_classifier::{BlockClassifier, BlockType, ClassifiedBlock};
-use crate::extractors::block_merger::{mark_running_headers_footers, merge_blocks, MergedBlock};
+use crate::extractors::block_merger::{
+    mark_running_headers_footers, merge_blocks, promote_repeated_bottom_center_notes, MergedBlock,
+};
 use crate::extractors::document_profiler::{profile_document_with_cache, DocumentProfile};
 use crate::extractors::engineering::{detect_engineering_features_from_spans, EngineeringProfile};
 use crate::extractors::figure_detector::detect_figures_from_blocks;
@@ -428,8 +430,35 @@ pub fn extract_document_with_config(
     };
     let profile = profile_document_with_cache(doc, &all_spans, first_page_blocks)?;
 
-    // Step 3: Mark running headers/footers across pages
+    // Step 3: Promote and mark running headers/footers across pages.  The
+    // promotion is deliberately document-wide so repeated margin physics,
+    // rather than document-family vocabulary, decides the block type.
+    promote_repeated_bottom_center_notes(&mut all_page_blocks, &all_dims);
     mark_running_headers_footers(&mut all_page_blocks);
+
+    // PageResult summaries were built while each page was reconciled.  Sync
+    // the document-wide promotion back into that public page-level output and
+    // rebuild its content-only text view.  Blocks and their text are retained.
+    for (page, blocks) in pages.iter_mut().zip(&all_page_blocks) {
+        for (summary, block) in page.blocks.iter_mut().zip(blocks) {
+            summary.block_type = format!("{:?}", block.block_type);
+            summary.confidence = block.confidence;
+        }
+        page.text = blocks
+            .iter()
+            .filter(|block| {
+                matches!(block.block_type, BlockType::Body | BlockType::Title | BlockType::List)
+            })
+            .map(|block| {
+                if config.normalize_text {
+                    full_normalize(&block.text)
+                } else {
+                    block.text.clone()
+                }
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
+    }
 
     let mut running_headers: Vec<String> = Vec::new();
     let mut running_footers: Vec<String> = Vec::new();

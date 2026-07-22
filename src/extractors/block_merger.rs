@@ -102,6 +102,71 @@ pub fn mark_running_headers_footers(page_blocks: &mut [Vec<MergedBlock>]) {
     }
 }
 
+/// Promote a repeated, small bottom-center body block to footer chrome.
+///
+/// Some PDFs place a source note just above the conventional running footer,
+/// outside the classifier's strict bottom 8% band.  Keep this document-wide:
+/// geometry alone is not enough to demote legitimate last-line body content.
+/// A candidate must have compact footer-like geometry and repeat verbatim on
+/// at least three distinct pages.
+pub fn promote_repeated_bottom_center_notes(
+    page_blocks: &mut [Vec<MergedBlock>],
+    page_dims: &[(f32, f32)],
+) {
+    use std::collections::{HashMap, HashSet};
+
+    if page_blocks.len() != page_dims.len() {
+        return;
+    }
+
+    let mut page_counts: HashMap<String, usize> = HashMap::new();
+    for (blocks, &(page_width, page_height)) in page_blocks.iter().zip(page_dims) {
+        let mut seen_on_page = HashSet::new();
+        for block in blocks {
+            if is_bottom_centered_small_body(block, page_width, page_height) {
+                seen_on_page.insert(block.text.trim().to_lowercase());
+            }
+        }
+        for text in seen_on_page {
+            *page_counts.entry(text).or_default() += 1;
+        }
+    }
+
+    for (blocks, &(page_width, page_height)) in page_blocks.iter_mut().zip(page_dims) {
+        for block in blocks {
+            if !is_bottom_centered_small_body(block, page_width, page_height) {
+                continue;
+            }
+            let normalized = block.text.trim().to_lowercase();
+            if page_counts.get(&normalized).copied().unwrap_or(0) >= 3 {
+                block.block_type = BlockType::Footer;
+                block.confidence = block.confidence.max(0.9);
+                block.is_running_footer = true;
+            }
+        }
+    }
+}
+
+fn is_bottom_centered_small_body(block: &MergedBlock, page_width: f32, page_height: f32) -> bool {
+    if block.block_type != BlockType::Body || page_width <= 0.0 || page_height <= 0.0 {
+        return false;
+    }
+
+    let text = block.text.trim();
+    if text.is_empty() || text.chars().count() >= 200 {
+        return false;
+    }
+
+    let top_from_top = 1.0 - (block.bbox.y + block.bbox.height) / page_height;
+    let center = block.bbox.x + block.bbox.width / 2.0;
+    let centered = (center - page_width / 2.0).abs() <= page_width * 0.10;
+    let compact_width = block.bbox.width <= page_width * 0.50;
+    let compact_height = block.bbox.height <= page_height * 0.035;
+    let small_font = block.font_size <= page_height * 0.013;
+
+    top_from_top >= 0.90 && centered && compact_width && compact_height && small_font
+}
+
 /// Compute IOU (Intersection over Union) of two rectangles.
 fn bbox_iou(a: &Rect, b: &Rect) -> f32 {
     let ax1 = a.x;
@@ -402,5 +467,67 @@ mod tests {
         for page in &pages {
             assert!(page[0].is_running_header);
         }
+    }
+
+    #[test]
+    fn test_repeated_bottom_center_note_is_promoted_without_text_loss() {
+        let note = "Reference produced from public source data";
+        let mut pages: Vec<Vec<MergedBlock>> = (0..3)
+            .map(|_| {
+                vec![MergedBlock {
+                    block_type: BlockType::Body,
+                    text: note.to_string(),
+                    bbox: Rect::new(235.0, 55.6, 142.0, 17.6),
+                    font_size: 8.0,
+                    font_name: "TestFont".to_string(),
+                    is_bold: false,
+                    confidence: 0.6,
+                    header_level: None,
+                    paragraph_id: 0,
+                    is_running_header: false,
+                    is_running_footer: false,
+                }]
+            })
+            .collect();
+        let dims = vec![(612.0, 792.0); 3];
+
+        promote_repeated_bottom_center_notes(&mut pages, &dims);
+
+        for page in &pages {
+            assert_eq!(page[0].block_type, BlockType::Footer);
+            assert!(page[0].is_running_footer);
+            assert_eq!(page[0].text, note);
+        }
+    }
+
+    #[test]
+    fn test_bottom_center_body_requires_repetition_and_small_font() {
+        let make_body = |text: &str, font_size: f32| MergedBlock {
+            block_type: BlockType::Body,
+            text: text.to_string(),
+            bbox: Rect::new(210.0, 55.0, 192.0, 12.0),
+            font_size,
+            font_name: "TestFont".to_string(),
+            is_bold: false,
+            confidence: 0.6,
+            header_level: None,
+            paragraph_id: 0,
+            is_running_header: false,
+            is_running_footer: false,
+        };
+        let mut pages = vec![
+            vec![make_body("Unique final body line", 8.0)],
+            vec![make_body("Repeated body-sized line", 11.0)],
+            vec![make_body("Repeated body-sized line", 11.0)],
+            vec![make_body("Repeated body-sized line", 11.0)],
+        ];
+        let dims = vec![(612.0, 792.0); 4];
+
+        promote_repeated_bottom_center_notes(&mut pages, &dims);
+
+        assert!(pages
+            .iter()
+            .flatten()
+            .all(|block| block.block_type == BlockType::Body));
     }
 }
