@@ -341,6 +341,7 @@ impl BlockClassifier {
             blocks.push(block);
         }
 
+        promote_repeated_reference_entries(&mut blocks, self.page_width, self.page_height);
         promote_control_catalog_headings(
             &mut blocks,
             &underlined,
@@ -551,21 +552,6 @@ impl BlockClassifier {
                     None,
                 );
             }
-        }
-
-        // Reference/bibliography detection
-        if is_reference_entry(trimmed) {
-            return self.make_block(
-                BlockType::Reference,
-                text,
-                bbox,
-                avg_font_size,
-                font_name,
-                is_bold,
-                0.7,
-                None,
-                None,
-            );
         }
 
         // TOC entry detection
@@ -1434,6 +1420,87 @@ fn group_spans_into_lines(spans: &[TextSpan]) -> Vec<Vec<&TextSpan>> {
     lines
 }
 
+/// Promote citation-shaped body lines only when page geometry shows that they
+/// belong to a repeated reference stream.
+///
+/// The two signals are deliberately conjunctive:
+///
+/// 1. the line begins with a compact bracketed citation token; and
+/// 2. another candidate in the page's content band has the same left anchor
+///    and a compatible font size.
+///
+/// The shared anchor defines a page-local column/region. This covers both
+/// bibliography entries (including same-line author text and hanging-indent
+/// continuations) and glossary source tags, without relying on publication
+/// names or page numbers. A bracketed line isolated from every such stream is
+/// left as Body.
+fn promote_repeated_reference_entries(
+    blocks: &mut [ClassifiedBlock],
+    page_width: f32,
+    page_height: f32,
+) {
+    if page_width <= 0.0 || page_height <= 0.0 {
+        return;
+    }
+
+    let candidates: Vec<usize> = blocks
+        .iter()
+        .enumerate()
+        .filter_map(|(index, block)| {
+            if block.block_type != BlockType::Body || !has_leading_citation_token(&block.text) {
+                return None;
+            }
+
+            let top_ratio = 1.0 - (block.bbox.y + block.bbox.height) / page_height;
+            let inside_content_band = (0.08..=0.92).contains(&top_ratio);
+            let inside_content_width = block.bbox.x >= page_width * 0.06
+                && block.bbox.x <= page_width * 0.94;
+            (inside_content_band && inside_content_width).then_some(index)
+        })
+        .collect();
+
+    let x_tolerance = (page_width * 0.01).max(2.0);
+    let mut promote = Vec::new();
+    for &index in &candidates {
+        let anchor = &blocks[index];
+        let has_regional_repetition = candidates.iter().copied().any(|other_index| {
+            if other_index == index {
+                return false;
+            }
+            let other = &blocks[other_index];
+            let font_ratio = other.font_size / anchor.font_size.max(1.0);
+            (other.bbox.x - anchor.bbox.x).abs() <= x_tolerance
+                && (0.85..=1.18).contains(&font_ratio)
+        });
+        if has_regional_repetition {
+            promote.push(index);
+        }
+    }
+
+    for index in promote {
+        blocks[index].block_type = BlockType::Reference;
+        blocks[index].confidence = 0.8;
+    }
+}
+
+/// A compact citation token at the beginning of a line. Token recognition is
+/// intentionally shape-only; regional geometry decides whether it is a
+/// reference entry rather than an isolated inline citation.
+fn has_leading_citation_token(text: &str) -> bool {
+    let trimmed = text.trim_start();
+    let Some(close) = trimmed.find(']') else {
+        return false;
+    };
+    if !trimmed.starts_with('[') || !(2..=24).contains(&close) {
+        return false;
+    }
+
+    let token = &trimmed[1..close];
+    token.chars().any(char::is_alphanumeric)
+        && !token.contains('[')
+        && !token.chars().any(char::is_control)
+}
+
 /// Heuristic: does this block's text look like a section heading?
 ///
 /// True for short, mostly-uppercase, alphabetic-dominant text. Used as a
@@ -1748,6 +1815,11 @@ fn promote_isolated_heading_blocks(blocks: &mut Vec<ClassifiedBlock>) {
     for i in 0..n {
         let b = &blocks[i];
         if b.block_type != Body {
+            continue;
+        }
+        // A citation-shaped line that lacked regional repetition must remain
+        // excluded; its uppercase token is not heading evidence.
+        if has_leading_citation_token(&b.text) {
             continue;
         }
         if !looks_like_heading(b) {
@@ -2146,18 +2218,6 @@ fn is_strict_caption_pattern(text: &str) -> bool {
     false
 }
 
-fn is_reference_entry(text: &str) -> bool {
-    let trimmed = text.trim();
-    if trimmed.starts_with('[') {
-        if let Some(close) = trimmed.find(']') {
-            if close < 20 {
-                return true;
-            }
-        }
-    }
-    false
-}
-
 fn is_toc_entry(text: &str) -> bool {
     if text.contains("....") || text.contains(". . .") {
         let last_word = text.split_whitespace().last().unwrap_or("");
@@ -2528,6 +2588,113 @@ mod tests {
         assert!(is_caption("Figure 1: System architecture", 0.9));
         assert!(is_caption("Table 3.2 — Results summary", 0.95));
         assert!(!is_caption("The figure shows that...", 1.0));
+    }
+
+    #[test]
+    fn test_repeated_reference_stream_covers_hanging_and_same_line_entries() {
+        let spans = vec![
+            make_span(
+                "[ZX 100] First standard entry begins here",
+                95.0,
+                700.0,
+                10.5,
+                false,
+            ),
+            make_span(
+                "hanging-indent continuation for the first entry.",
+                176.0,
+                685.0,
+                10.8,
+                false,
+            ),
+            make_span(
+                "[QY 200] Cooper DA, Example H, Sample R (2020) Long-form entry",
+                95.0,
+                650.0,
+                10.4,
+                false,
+            ),
+            make_span(
+                "hanging-indent continuation for the long-form entry.",
+                176.0,
+                635.0,
+                10.8,
+                false,
+            ),
+        ];
+        let expected_text: String = spans.iter().map(|span| span.text.as_str()).collect();
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        for token in ["[ZX 100]", "[QY 200]"] {
+            let entry = blocks
+                .iter()
+                .find(|block| block.text.starts_with(token))
+                .unwrap_or_else(|| panic!("missing reference entry {token}"));
+            assert_eq!(entry.block_type, BlockType::Reference);
+        }
+        let actual_text: String = blocks.iter().map(|block| block.text.as_str()).collect();
+        assert_eq!(
+            actual_text.chars().filter(|c| !c.is_whitespace()).collect::<String>(),
+            expected_text.chars().filter(|c| !c.is_whitespace()).collect::<String>(),
+            "reference promotion must not delete text"
+        );
+    }
+
+    #[test]
+    fn test_repeated_reference_stream_covers_short_source_tags() {
+        let spans = vec![
+            make_span("[ZX 100]", 95.0, 700.0, 10.2, false),
+            make_span(
+                "A definition set to the right of the source column.",
+                226.0,
+                680.0,
+                11.0,
+                false,
+            ),
+            make_span("[QY 200]", 95.0, 430.0, 10.0, false),
+            make_span(
+                "Another definition in the same glossary layout.",
+                226.0,
+                410.0,
+                11.0,
+                false,
+            ),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        let source_tags: Vec<&ClassifiedBlock> = blocks
+            .iter()
+            .filter(|block| block.block_type == BlockType::Reference)
+            .collect();
+        assert_eq!(source_tags.len(), 2);
+        assert!(source_tags.iter().any(|block| block.text == "[ZX 100]"));
+        assert!(source_tags.iter().any(|block| block.text == "[QY 200]"));
+    }
+
+    #[test]
+    fn test_isolated_bracketed_line_cannot_borrow_from_another_column() {
+        let spans = vec![
+            make_span("[ZX 100] First entry", 95.0, 700.0, 10.2, false),
+            make_span("[QY 200] Second entry", 95.0, 650.0, 10.2, false),
+            make_span("[RS 300]", 330.0, 500.0, 10.2, false),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        assert_eq!(
+            blocks
+                .iter()
+                .filter(|block| block.block_type == BlockType::Reference)
+                .count(),
+            2
+        );
+        let isolated = blocks
+            .iter()
+            .find(|block| block.text.contains("[RS 300]"))
+            .expect("isolated bracketed line must be retained");
+        assert_eq!(isolated.block_type, BlockType::Body);
     }
 
     #[test]
