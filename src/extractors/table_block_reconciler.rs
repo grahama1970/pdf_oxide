@@ -105,6 +105,14 @@ fn non_ws_chars(text: &str) -> usize {
     text.chars().filter(|c| !c.is_whitespace()).count()
 }
 
+fn non_ws_multiset(text: &str) -> std::collections::BTreeMap<char, usize> {
+    let mut chars = std::collections::BTreeMap::new();
+    for ch in text.chars().filter(|ch| !ch.is_whitespace()) {
+        *chars.entry(ch).or_insert(0) += 1;
+    }
+    chars
+}
+
 /// One span assigned to one cell during reconciliation.
 struct AssignedRun {
     row: usize,
@@ -186,6 +194,7 @@ pub fn reconcile_views(
         }
         let Some(tb) = table_bbox(table) else { continue };
         let mut assigned_runs: Vec<AssignedRun> = Vec::new();
+        let mut cells_to_clear = std::collections::BTreeSet::new();
 
         for (block_index, block) in blocks.iter().enumerate() {
             if consumed_indices.contains(&block_index) {
@@ -258,7 +267,12 @@ pub fn reconcile_views(
             // block text must be represented by the assigned runs.
             let block_chars = non_ws_chars(block.text);
             let run_chars: usize = block_runs.iter().map(|r| non_ws_chars(&r.text)).sum();
-            if ambiguous || block_chars == 0 || run_chars != block_chars {
+            let run_text: String = block_runs.iter().map(|run| run.text.as_str()).collect();
+            if ambiguous
+                || block_chars == 0
+                || run_chars != block_chars
+                || non_ws_multiset(block.text) != non_ws_multiset(&run_text)
+            {
                 result.retained_ambiguous.push(block_index);
                 continue;
             }
@@ -277,12 +291,31 @@ pub fn reconcile_views(
                     cells
                 },
             });
+            for (row, cells) in table.cells.iter().enumerate() {
+                for (col, cell) in cells.iter().enumerate() {
+                    let cell_rect = TopRect {
+                        x0: cell.x0,
+                        y0: cell.y0,
+                        x1: cell.x1,
+                        y1: cell.y1,
+                    };
+                    if cell_rect.intersection_area(&br) > 0.0 {
+                        cells_to_clear.insert((row, col));
+                    }
+                }
+            }
             consumed_indices.push(block_index);
             assigned_runs.extend(block_runs);
         }
 
         // Rebuild text for every cell that received runs from consumed blocks.
         if !assigned_runs.is_empty() {
+            // Remove lossy detector fragments only where an exactly-accounted
+            // consumed block geometrically touched the cell. Ambiguous blocks
+            // never reach this set and therefore always fail open unchanged.
+            for (row, col) in cells_to_clear {
+                table.cells[row][col].text.clear();
+            }
             assigned_runs.sort_by(|a, b| {
                 (a.row, a.col)
                     .cmp(&(b.row, b.col))
@@ -470,5 +503,27 @@ mod tests {
 
         assert!(result.consumed.is_empty());
         assert_eq!(blocks.len(), n);
+    }
+
+    /// Equal character counts are insufficient: different characters must
+    /// fail open so reconciliation can never authorize text deletion.
+    #[test]
+    fn same_length_character_mismatch_fails_open() {
+        let spans = vec![span("TABLE DATA", 100.0, 110.0, 70.0, 10.0)];
+        let mut blocks = classify(&spans);
+        assert!(!blocks.is_empty());
+        blocks[0].text = "TABLF DATA".to_string();
+        let n = blocks.len();
+        let mut tables = vec![Table::new(
+            vec![(90.0, 400.0)],
+            vec![(100.0, 130.0)],
+            Flavor::Lattice,
+        )];
+
+        let result = reconcile_page(&mut blocks, &mut tables, &spans, PAGE_H);
+
+        assert!(result.consumed.is_empty());
+        assert_eq!(blocks.len(), n, "same-length mismatch must retain the block");
+        assert!(!result.retained_ambiguous.is_empty());
     }
 }

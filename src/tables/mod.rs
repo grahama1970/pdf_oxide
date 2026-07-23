@@ -145,8 +145,20 @@ fn extract_page(
             let paths = doc.extract_paths(page_num).unwrap_or_default();
             let (h_segs, v_segs) = lattice::paths_to_segments(&paths, page_height, 5.0);
 
+            // Horizontal-rule-delimited tables (for example booktabs) may
+            // contain only a few vertical rules. Detect their full geometric
+            // regions alongside lattice so a tiny lattice fragment cannot
+            // prevent recovery of the real table.
+            let ruled_tables = lattice::extract_ruled_regions_from_paths(
+                &h_segs,
+                &v_segs,
+                &elements,
+                page_width,
+                config,
+            );
+
             if h_segs.len() >= 2 && v_segs.len() >= 2 {
-                let tables = lattice::extract_lattice_from_paths(
+                let lattice_tables = lattice::extract_lattice_from_paths(
                     &h_segs,
                     &v_segs,
                     &elements,
@@ -154,9 +166,14 @@ fn extract_page(
                     page_height,
                     config,
                 );
+                let tables = merge_lattice_and_ruled(lattice_tables, ruled_tables.clone());
                 if !tables.is_empty() {
                     return Ok(tables);
                 }
+            }
+
+            if !ruled_tables.is_empty() {
+                return Ok(ruled_tables);
             }
 
             // Hybrid fallback: if we have horizontal lines but no vertical lines,
@@ -226,5 +243,93 @@ fn extract_page(
                 Ok(stream::extract_stream(&elements, page_width, page_height, config))
             }
         },
+    }
+}
+
+fn table_bbox(table: &Table) -> Option<BBox> {
+    Some(BBox::new(
+        table.cols.first()?.0,
+        table.rows.first()?.0,
+        table.cols.last()?.1,
+        table.rows.last()?.1,
+    ))
+}
+
+fn intersection_area(a: BBox, b: BBox) -> f64 {
+    let width = (a.x1.min(b.x1) - a.x0.max(b.x0)).max(0.0);
+    let height = (a.y1.min(b.y1) - a.y0.max(b.y0)).max(0.0);
+    width * height
+}
+
+fn bbox_area(bbox: BBox) -> f64 {
+    bbox.width().max(0.0) * bbox.height().max(0.0)
+}
+
+/// Prefer a complete lattice grid when it covers the ruled region. Otherwise
+/// retain the larger horizontal-rule region and suppress lattice fragments it
+/// geometrically contains, preventing duplicate table output.
+fn merge_lattice_and_ruled(lattice_tables: Vec<Table>, ruled_tables: Vec<Table>) -> Vec<Table> {
+    let mut accepted_ruled = Vec::new();
+    for ruled in ruled_tables {
+        let Some(ruled_bbox) = table_bbox(&ruled) else {
+            continue;
+        };
+        let covered_by_lattice = lattice_tables.iter().any(|lattice| {
+            table_bbox(lattice).is_some_and(|lattice_bbox| {
+                intersection_area(ruled_bbox, lattice_bbox) / bbox_area(ruled_bbox).max(1.0) >= 0.90
+            })
+        });
+        if !covered_by_lattice {
+            accepted_ruled.push(ruled);
+        }
+    }
+
+    let mut merged: Vec<Table> = lattice_tables
+        .into_iter()
+        .filter(|lattice| {
+            let Some(lattice_bbox) = table_bbox(lattice) else {
+                return true;
+            };
+            !accepted_ruled.iter().any(|ruled| {
+                table_bbox(ruled).is_some_and(|ruled_bbox| {
+                    intersection_area(lattice_bbox, ruled_bbox)
+                        / bbox_area(lattice_bbox).max(1.0)
+                        >= 0.90
+                })
+            })
+        })
+        .collect();
+    merged.extend(accepted_ruled);
+    merged.sort_by(|a, b| {
+        let ay = a.rows.first().map(|row| row.0).unwrap_or(f64::INFINITY);
+        let by = b.rows.first().map(|row| row.0).unwrap_or(f64::INFINITY);
+        ay.partial_cmp(&by).unwrap_or(std::cmp::Ordering::Equal)
+    });
+    merged
+}
+
+#[cfg(test)]
+mod ruled_merge_tests {
+    use super::*;
+
+    #[test]
+    fn full_ruled_region_supersedes_enclosed_lattice_fragment() {
+        let fragment = Table::new(
+            vec![(120.0, 180.0), (180.0, 240.0)],
+            vec![(110.0, 130.0), (130.0, 150.0)],
+            Flavor::Lattice,
+        );
+        let ruled = Table::new(
+            vec![(50.0, 150.0), (150.0, 250.0), (250.0, 350.0)],
+            vec![(100.0, 125.0), (125.0, 150.0), (150.0, 175.0)],
+            Flavor::Lattice,
+        );
+
+        let merged = merge_lattice_and_ruled(vec![fragment], vec![ruled]);
+
+        assert_eq!(merged.len(), 1, "enclosed fragment must not be duplicated");
+        assert_eq!(merged[0].num_rows(), 3);
+        assert_eq!(merged[0].num_cols(), 3);
+        assert_eq!(table_bbox(&merged[0]).unwrap().x0, 50.0);
     }
 }

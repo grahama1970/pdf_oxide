@@ -1003,6 +1003,296 @@ pub fn extract_lattice_from_paths(
     tables
 }
 
+#[derive(Debug, Clone, Copy)]
+struct RuledRun {
+    x0: f64,
+    x1: f64,
+    font_size: f64,
+}
+
+fn ruled_rows<'a>(
+    elements: &'a [TextElement],
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    row_tol: f64,
+) -> Vec<Vec<&'a TextElement>> {
+    let mut selected: Vec<&TextElement> = elements
+        .iter()
+        .filter(|element| {
+            !element.text.trim().is_empty()
+                && element.x_mid() >= x0
+                && element.x_mid() <= x1
+                && element.y_mid() > y0
+                && element.y_mid() < y1
+        })
+        .collect();
+    selected.sort_by(|a, b| {
+        a.y0.partial_cmp(&b.y0)
+            .unwrap_or(std::cmp::Ordering::Equal)
+            .then_with(|| a.x0.partial_cmp(&b.x0).unwrap_or(std::cmp::Ordering::Equal))
+    });
+
+    let mut rows: Vec<Vec<&TextElement>> = Vec::new();
+    for element in selected {
+        if let Some(row) = rows.last_mut() {
+            let anchor = row.iter().map(|item| item.y0).sum::<f64>() / row.len() as f64;
+            if (element.y0 - anchor).abs() <= row_tol {
+                row.push(element);
+                continue;
+            }
+        }
+        rows.push(vec![element]);
+    }
+    for row in &mut rows {
+        row.sort_by(|a, b| a.x0.partial_cmp(&b.x0).unwrap_or(std::cmp::Ordering::Equal));
+    }
+    rows
+}
+
+fn ruled_runs(row: &[&TextElement]) -> Vec<RuledRun> {
+    let mut runs: Vec<RuledRun> = Vec::new();
+    for element in row {
+        let next = RuledRun {
+            x0: element.x0,
+            x1: element.x1,
+            font_size: element.font_size,
+        };
+        if let Some(current) = runs.last_mut() {
+            // Words in one cell are normally separated by a PDF word-space,
+            // while adjacent cells have a visibly larger geometric gap.
+            let join_gap = current.font_size.max(next.font_size) * 0.55;
+            if next.x0 - current.x1 <= join_gap {
+                current.x1 = current.x1.max(next.x1);
+                current.font_size = current.font_size.max(next.font_size);
+                continue;
+            }
+        }
+        runs.push(next);
+    }
+    runs
+}
+
+fn similar_horizontal_rules(a: &Segment, b: &Segment) -> bool {
+    let a0 = a.x0.min(a.x1);
+    let a1 = a.x0.max(a.x1);
+    let b0 = b.x0.min(b.x1);
+    let b1 = b.x0.max(b.x1);
+    let a_len = a1 - a0;
+    let b_len = b1 - b0;
+    let overlap = (a1.min(b1) - a0.max(b0)).max(0.0);
+    let min_len = a_len.min(b_len);
+    let max_len = a_len.max(b_len);
+    min_len > 0.0 && overlap / min_len >= 0.80 && min_len / max_len >= 0.75
+}
+
+fn build_ruled_table(
+    rules: &[Segment],
+    elements: &[TextElement],
+    vertical_segments: &[Segment],
+    config: &ExtractConfig,
+) -> Option<Table> {
+    let x0 = rules
+        .iter()
+        .map(|rule| rule.x0.min(rule.x1))
+        .fold(f64::INFINITY, f64::min);
+    let raw_x1 = rules
+        .iter()
+        .map(|rule| rule.x0.max(rule.x1))
+        .fold(f64::NEG_INFINITY, f64::max);
+    // TeX booktabs rules are sometimes intentionally inset from the final
+    // narrow numeric columns. Admit a bounded right-edge overflow while
+    // keeping the left edge fixed so neighboring-column prose cannot enter.
+    let x1 = raw_x1 + (raw_x1 - x0) * 0.08;
+    let y0 = rules
+        .iter()
+        .map(|rule| (rule.y0 + rule.y1) / 2.0)
+        .fold(f64::INFINITY, f64::min);
+    let y1 = rules
+        .iter()
+        .map(|rule| (rule.y0 + rule.y1) / 2.0)
+        .fold(f64::NEG_INFINITY, f64::max);
+
+    let rows = ruled_rows(elements, x0, y0, x1, y1, config.row_tol.max(2.0));
+    if rows.len() < 2 {
+        return None;
+    }
+    let row_runs: Vec<Vec<RuledRun>> = rows.iter().map(|row| ruled_runs(row)).collect();
+    let column_count = row_runs.iter().map(Vec::len).max().unwrap_or(0);
+    if !(2..=64).contains(&column_count) {
+        return None;
+    }
+
+    let reference_rows: Vec<&Vec<RuledRun>> = row_runs
+        .iter()
+        .filter(|runs| runs.len() == column_count)
+        .collect();
+    if reference_rows.is_empty() {
+        return None;
+    }
+
+    let mut boundaries = vec![x0];
+    for column in 0..column_count - 1 {
+        let mut samples: Vec<f64> = reference_rows
+            .iter()
+            .map(|runs| (runs[column].x1 + runs[column + 1].x0) / 2.0)
+            .collect();
+        samples.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+        boundaries.push(samples[samples.len() / 2]);
+    }
+    boundaries.push(x1);
+    if boundaries.windows(2).any(|pair| pair[1] - pair[0] <= 1.0) {
+        return None;
+    }
+    let cols = boundaries.windows(2).map(|pair| (pair[0], pair[1])).collect();
+
+    let mut row_bounds = Vec::with_capacity(rows.len());
+    for (index, row) in rows.iter().enumerate() {
+        let top = if index == 0 {
+            y0 - config.line_tol
+        } else {
+            let previous_bottom = rows[index - 1]
+                .iter()
+                .map(|element| element.y1)
+                .fold(f64::NEG_INFINITY, f64::max);
+            let current_top = row
+                .iter()
+                .map(|element| element.y0)
+                .fold(f64::INFINITY, f64::min);
+            (previous_bottom + current_top) / 2.0
+        };
+        let bottom = if index + 1 == rows.len() {
+            y1 + config.line_tol
+        } else {
+            let current_bottom = row
+                .iter()
+                .map(|element| element.y1)
+                .fold(f64::NEG_INFINITY, f64::max);
+            let next_top = rows[index + 1]
+                .iter()
+                .map(|element| element.y0)
+                .fold(f64::INFINITY, f64::min);
+            (current_bottom + next_top) / 2.0
+        };
+        if bottom <= top {
+            return None;
+        }
+        row_bounds.push((top, bottom));
+    }
+
+    let area_elements: Vec<TextElement> = elements
+        .iter()
+        .filter(|element| {
+            element.x_mid() >= x0
+                && element.x_mid() <= x1
+                && element.y_mid() > y0
+                && element.y_mid() < y1
+        })
+        .cloned()
+        .collect();
+    let mut table = Table::new(cols, row_bounds, Flavor::Lattice);
+    table.set_border();
+    set_edges_from_segments(&mut table, rules, vertical_segments, config.line_tol);
+    let errors = assign_text_to_cells(&mut table, &area_elements);
+    table.accuracy = compute_accuracy(&errors);
+    table.compute_whitespace();
+    Some(table)
+}
+
+/// Detect horizontally ruled (booktabs-style) table regions.
+///
+/// This path is geometric: repeated coextensive horizontal rules define a
+/// candidate region, prose-only gaps split adjacent regions, and aligned text
+/// runs define rows and columns. It deliberately uses no caption or vocabulary
+/// heuristics. Returned tables retain `Flavor::Lattice` because every accepted
+/// region is backed by line geometry and is therefore safe for the reconciler's
+/// fail-open absorption contract.
+pub fn extract_ruled_regions_from_paths(
+    h_segments: &[Segment],
+    v_segments: &[Segment],
+    elements: &[TextElement],
+    page_width: f64,
+    config: &ExtractConfig,
+) -> Vec<Table> {
+    let min_rule_length = page_width * 0.15;
+    let mut groups: Vec<Vec<Segment>> = Vec::new();
+    for rule in h_segments
+        .iter()
+        .copied()
+        .filter(|rule| rule.length() >= min_rule_length)
+    {
+        if let Some(group) = groups
+            .iter_mut()
+            .find(|group| similar_horizontal_rules(&group[0], &rule))
+        {
+            group.push(rule);
+        } else {
+            groups.push(vec![rule]);
+        }
+    }
+
+    let mut tables = Vec::new();
+    for mut group in groups {
+        if group.len() < 2 {
+            continue;
+        }
+        group.sort_by(|a, b| {
+            a.y0.partial_cmp(&b.y0)
+                .unwrap_or(std::cmp::Ordering::Equal)
+        });
+        let x0 = group
+            .iter()
+            .map(|rule| rule.x0.min(rule.x1))
+            .fold(f64::INFINITY, f64::min);
+        let raw_x1 = group
+            .iter()
+            .map(|rule| rule.x0.max(rule.x1))
+            .fold(f64::NEG_INFINITY, f64::max);
+        let x1 = raw_x1 + (raw_x1 - x0) * 0.08;
+
+        let mut region_start: Option<usize> = None;
+        for index in 0..group.len() - 1 {
+            let band_top = group[index].y0;
+            let band_bottom = group[index + 1].y0;
+            let band_rows = ruled_rows(
+                elements,
+                x0,
+                band_top,
+                x1,
+                band_bottom,
+                config.row_tol.max(2.0),
+            );
+            let table_like = band_rows
+                .iter()
+                .map(|row| ruled_runs(row).len())
+                .max()
+                .unwrap_or(0)
+                >= 2;
+            let close_double_rule = band_rows.is_empty() && band_bottom - band_top <= 4.0;
+
+            if table_like || close_double_rule {
+                region_start.get_or_insert(index);
+                continue;
+            }
+
+            if let Some(start) = region_start.take() {
+                if let Some(table) =
+                    build_ruled_table(&group[start..=index], elements, v_segments, config)
+                {
+                    tables.push(table);
+                }
+            }
+        }
+        if let Some(start) = region_start {
+            if let Some(table) = build_ruled_table(&group[start..], elements, v_segments, config) {
+                tables.push(table);
+            }
+        }
+    }
+    tables
+}
+
 /// Convert PathContent elements into horizontal and vertical Segments.
 ///
 /// Examines each path's operations and bounding box to identify
@@ -1408,6 +1698,40 @@ mod tests {
                 row_tol
             );
         }
+    }
+
+    #[test]
+    fn detects_horizontal_rule_delimited_region_without_vertical_rules() {
+        let elements = vec![
+            TextElement { text: "method".into(), x0: 60.0, y0: 102.0, x1: 90.0, y1: 110.0, font_size: 8.0, is_bold: false, chars: None },
+            TextElement { text: "top-1".into(), x0: 150.0, y0: 102.0, x1: 175.0, y1: 110.0, font_size: 8.0, is_bold: false, chars: None },
+            TextElement { text: "top-5".into(), x0: 250.0, y0: 102.0, x1: 275.0, y1: 110.0, font_size: 8.0, is_bold: false, chars: None },
+            TextElement { text: "model-a".into(), x0: 60.0, y0: 118.0, x1: 95.0, y1: 126.0, font_size: 8.0, is_bold: false, chars: None },
+            TextElement { text: "1.0".into(), x0: 150.0, y0: 118.0, x1: 165.0, y1: 126.0, font_size: 8.0, is_bold: false, chars: None },
+            TextElement { text: "2.0".into(), x0: 250.0, y0: 118.0, x1: 265.0, y1: 126.0, font_size: 8.0, is_bold: false, chars: None },
+            TextElement { text: "model-b".into(), x0: 60.0, y0: 132.0, x1: 95.0, y1: 140.0, font_size: 8.0, is_bold: false, chars: None },
+            TextElement { text: "3.0".into(), x0: 150.0, y0: 132.0, x1: 165.0, y1: 140.0, font_size: 8.0, is_bold: false, chars: None },
+            TextElement { text: "4.0".into(), x0: 250.0, y0: 132.0, x1: 265.0, y1: 140.0, font_size: 8.0, is_bold: false, chars: None },
+        ];
+        let horizontal = vec![
+            Segment { x0: 50.0, y0: 100.0, x1: 300.0, y1: 100.0 },
+            Segment { x0: 50.0, y0: 112.0, x1: 300.0, y1: 112.0 },
+            Segment { x0: 50.0, y0: 150.0, x1: 300.0, y1: 150.0 },
+        ];
+
+        let tables = extract_ruled_regions_from_paths(
+            &horizontal,
+            &[],
+            &elements,
+            612.0,
+            &ExtractConfig::default(),
+        );
+
+        assert_eq!(tables.len(), 1);
+        assert_eq!(tables[0].num_rows(), 3);
+        assert_eq!(tables[0].num_cols(), 3);
+        assert_eq!(tables[0].flavor, Flavor::Lattice);
+        assert_eq!(tables[0].cells[2][2].text, "4.0");
     }
 
     /// twotables_1.pdf: Two separate tables should be split into 2 groups.
