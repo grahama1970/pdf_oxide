@@ -258,15 +258,8 @@ pub fn extract_document_with_config(
         let classified = classifier.classify_spans(&spans);
         let mut merged = merge_blocks(&classified, height);
 
-        // Detect figures before either asset stream is reconciled so figure
-        // geometry can absorb contained blocks and veto enclosed table regions.
-        let detected_figures = if config.detect_figures {
-            detect_figures_from_blocks_and_paths(doc, pg, &classified, &page_paths)
-                .unwrap_or_default()
-        } else {
-            Vec::new()
-        };
-
+        // Detect raw table candidates first, then make one shared geometric
+        // table-vs-figure decision before either asset stream is materialized.
         let mut page_tables = Vec::new();
         if config.reconcile_tables {
             let mut table_config = crate::tables::ExtractConfig::default();
@@ -274,6 +267,20 @@ pub fn extract_document_with_config(
             table_config.flavor = crate::tables::Flavor::Lattice;
             page_tables = crate::tables::extract_tables(doc, &table_config).unwrap_or_default();
         }
+
+        let detected_figures = if config.detect_figures {
+            detect_figures_from_blocks_and_paths(
+                doc,
+                pg,
+                &classified,
+                &page_paths,
+                &page_tables,
+                height,
+            )
+            .unwrap_or_default()
+        } else {
+            Vec::new()
+        };
 
         let mut figure_content = vec![Vec::new(); detected_figures.len()];
         let mut suppressed_table_orders = vec![Vec::new(); detected_figures.len()];

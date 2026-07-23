@@ -3,12 +3,77 @@ from __future__ import annotations
 
 import asyncio
 import warnings
+from collections import Counter, defaultdict
 
 import pytest
 
+from pdf_oxide.pipeline_extract import _build_figures
 from pdf_oxide.plugins import list_plugins, registry
 from pdf_oxide.plugins.base import Plugin, PluginRegistry
 from pdf_oxide.pipeline_types import PipelineConfig, PipelineResult
+
+
+def _non_whitespace_characters(text):
+    return Counter(character for character in text if not character.isspace())
+
+
+def test_figure_adapter_conserves_page_level_character_multisets():
+    """Absorbed figure blocks remain present in the public pipeline result."""
+    baseline_blocks = [
+        {"page": 0, "text": "retained alpha"},
+        {"page": 0, "text": "absorbed beta"},
+        {"page": 1, "text": "retained gamma"},
+        {"page": 1, "text": "table delta"},
+    ]
+    retained_blocks = [
+        {"page": 0, "text": "retained alpha"},
+        {"page": 1, "text": "retained gamma"},
+    ]
+    tables = [{"page": 1, "data": [["table delta"]]}]
+    raw = {
+        "figures": [
+            {
+                "page": 0,
+                "bbox": [10.0, 20.0, 100.0, 80.0],
+                "caption": "Figure 1. Example",
+                "caption_number": 1,
+                "content_blocks": [
+                    {
+                        "block_index": 1,
+                        "figure_index": 0,
+                        "original_type": "Body",
+                        "text": "absorbed beta",
+                        "bbox": [20.0, 30.0, 30.0, 10.0],
+                    }
+                ],
+                "suppressed_table_orders": [2],
+            }
+        ]
+    }
+
+    figures = _build_figures(
+        raw,
+        doc=None,
+        config=PipelineConfig(sync_to_arango=False),
+        sections=[],
+    )
+    expected = defaultdict(Counter)
+    actual = defaultdict(Counter)
+    for block in baseline_blocks:
+        expected[block["page"]].update(_non_whitespace_characters(block["text"]))
+    for block in retained_blocks:
+        actual[block["page"]].update(_non_whitespace_characters(block["text"]))
+    for table in tables:
+        for row in table["data"]:
+            for cell in row:
+                actual[table["page"]].update(_non_whitespace_characters(cell))
+    for figure in figures:
+        for block in figure["content_blocks"]:
+            actual[figure["page"]].update(_non_whitespace_characters(block["text"]))
+
+    for page in expected:
+        assert expected[page] - actual[page] == Counter()
+    assert figures[0]["suppressed_table_orders"] == [2]
 
 
 # ---------------------------------------------------------------------------

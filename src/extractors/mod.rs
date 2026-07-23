@@ -21,6 +21,7 @@ pub mod page_labels;
 pub mod paths;
 pub mod pattern_detector;
 pub mod prediction;
+pub mod region_discriminator;
 pub mod section_hierarchy;
 pub mod structured;
 pub mod synthetic_structure;

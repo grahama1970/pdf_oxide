@@ -193,8 +193,15 @@ def _build_figures(
             "page": page_num,
             "bbox": fig.get("bbox"),
             "caption": fig.get("caption"),
+            "caption_number": fig.get("caption_number"),
             "context_above": fig.get("context_above", ""),
             "context_below": fig.get("context_below", ""),
+            # Figure reconciliation removes these blocks from the page stream.
+            # Keep their verbatim text and suppression provenance in the public
+            # pipeline result so every absorption remains auditable and
+            # character-conserving.
+            "content_blocks": fig.get("content_blocks", []),
+            "suppressed_table_orders": fig.get("suppressed_table_orders", []),
             "section_id": assign_section(fig, sections, page_num),
         }
         # Render figure image for VLM (if describe plugin enabled)

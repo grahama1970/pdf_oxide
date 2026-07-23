@@ -428,6 +428,44 @@ mod tests {
         assert_eq!(tables[0].cells[1][0].text, "AC-4(11) CONFIGURATION");
     }
 
+    #[test]
+    fn reconciliation_conserves_characters_across_blocks_and_table_cells() {
+        let spans = vec![
+            span("TABLE VALUE", 100.0, 110.0, 70.0, 10.0),
+            span("outside prose", 450.0, 300.0, 80.0, 10.0),
+        ];
+        let mut blocks = classify(&spans);
+        let expected = non_ws_multiset(
+            &blocks
+                .iter()
+                .map(|block| block.text.as_str())
+                .collect::<Vec<_>>()
+                .join(""),
+        );
+        let mut tables = vec![Table::new(
+            vec![(90.0, 400.0)],
+            vec![(100.0, 130.0)],
+            Flavor::Lattice,
+        )];
+
+        let result = reconcile_page(&mut blocks, &mut tables, &spans, PAGE_H);
+        let reachable = blocks
+            .iter()
+            .map(|block| block.text.as_str())
+            .chain(
+                tables
+                    .iter()
+                    .flat_map(|table| table.cells.iter())
+                    .flat_map(|row| row.iter())
+                    .map(|cell| cell.text.as_str()),
+            )
+            .collect::<Vec<_>>()
+            .join("");
+
+        assert_eq!(non_ws_multiset(&reachable), expected);
+        assert_eq!(result.consumed.len(), 1);
+    }
+
     /// A block outside every table region is untouched.
     #[test]
     fn blocks_outside_tables_are_untouched() {

@@ -645,6 +645,54 @@ mod tests {
     }
 
     #[test]
+    fn reconciliation_conserves_characters_across_retained_and_figure_content() {
+        let spans = vec![
+            span("diagram label", 120.0, 220.0, 70.0, 10.0),
+            span("retained prose", 450.0, 220.0, 80.0, 10.0),
+        ];
+        let blocks = vec![
+            BlockView {
+                bbox: (115.0, 215.0, 85.0, 20.0),
+                text: "diagram label",
+                type_label: "Body".to_string(),
+            },
+            BlockView {
+                bbox: (445.0, 215.0, 90.0, 20.0),
+                text: "retained prose",
+                type_label: "Body".to_string(),
+            },
+        ];
+        let expected = non_whitespace_multiset(
+            &blocks
+                .iter()
+                .map(|block| block.text)
+                .collect::<Vec<_>>()
+                .join(""),
+        );
+
+        let result = reconcile_views(
+            &blocks,
+            &[figure(100.0, 200.0, 300.0, 300.0)],
+            &[],
+            &spans,
+            PAGE_HEIGHT,
+        );
+        let consumed: std::collections::BTreeSet<usize> =
+            result.consumed.iter().map(|block| block.block_index).collect();
+        let reachable = blocks
+            .iter()
+            .enumerate()
+            .filter(|(index, _)| !consumed.contains(index))
+            .map(|(_, block)| block.text)
+            .chain(result.consumed.iter().map(|block| block.text.as_str()))
+            .collect::<Vec<_>>()
+            .join("");
+
+        assert_eq!(non_whitespace_multiset(&reachable), expected);
+        assert_eq!(result.consumed.len(), 1);
+    }
+
+    #[test]
     fn no_figures_is_strict_no_op() {
         let spans = vec![span("Plain prose", 100.0, 300.0, 60.0, 10.0)];
         let blocks = vec![BlockView {
