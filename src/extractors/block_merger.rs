@@ -253,9 +253,10 @@ fn is_standfirst_candidate(text: &str) -> bool {
 
 /// Block types that participate in vertical run merging.
 ///
-/// Body and Footnote flow together: a footnote's continuation lines are
-/// classified Body (no leading marker), so restricting merging to Body alone
-/// leaves footnote runs fragmented once footnotes are typed correctly.
+/// Body and Footnote are candidates for directional flow merging. A footnote's
+/// continuation lines are classified Body (no leading marker), but a Footnote
+/// encountered after a Body block starts a new run; it must never retroactively
+/// retype the main-column paragraph as a footnote.
 fn is_flowable(block_type: BlockType) -> bool {
     matches!(block_type, BlockType::Body | BlockType::Footnote)
 }
@@ -263,12 +264,37 @@ fn is_flowable(block_type: BlockType) -> bool {
 fn merge_paragraphs(blocks: &[ClassifiedBlock]) -> Vec<MergedBlock> {
     let mut result: Vec<MergedBlock> = Vec::new();
     let mut paragraph_id: usize = 0;
+    let content_left = blocks
+        .iter()
+        .filter(|block| is_flowable(block.block_type))
+        .map(|block| block.bbox.x)
+        .fold(f32::INFINITY, f32::min);
+    let content_right = blocks
+        .iter()
+        .filter(|block| is_flowable(block.block_type))
+        .map(|block| block.bbox.x + block.bbox.width)
+        .fold(f32::NEG_INFINITY, f32::max);
+    let content_width = (content_right - content_left).max(1.0);
 
     for block in blocks {
         if is_flowable(block.block_type) {
             // Check if we can merge with the previous block
             if let Some(prev) = result.last_mut() {
-                if is_flowable(prev.block_type) {
+                let same_body_flow =
+                    prev.block_type == BlockType::Body && block.block_type == BlockType::Body;
+                let footnote_continuation = prev.block_type == BlockType::Footnote
+                    && matches!(block.block_type, BlockType::Body | BlockType::Footnote);
+                // In a narrow multi-column flow, a Footnote encountered after
+                // Body starts a distinct bottom-band note. Wide single-column
+                // publications retain the legacy merge behavior until their
+                // own paragraph/footnote boundary has equally strong geometry.
+                let narrow_body_to_footnote = prev.block_type == BlockType::Body
+                    && block.block_type == BlockType::Footnote
+                    && prev.bbox.width / content_width <= 0.60;
+                let legacy_flow = is_flowable(prev.block_type)
+                    && is_flowable(block.block_type)
+                    && !narrow_body_to_footnote;
+                if same_body_flow || footnote_continuation || legacy_flow {
                     // Footnote runs need the true inter-line gap. Body paragraph
                     // merging keeps its legacy measure deliberately: with the true
                     // gap, this document's paragraph breaks (min 5.37pt) and
@@ -290,11 +316,6 @@ fn merge_paragraphs(blocks: &[ClassifiedBlock]) -> Vec<MergedBlock> {
                         prev.text.push(' ');
                         prev.text.push_str(&block.text);
                         prev.bbox = prev.bbox.union(&block.bbox);
-                        // A run that contains any footnote line IS a footnote block:
-                        // continuation lines of a footnote classify as Body because
-                        // they carry no leading marker, and the first footnote can
-                        // fall just outside the footnote band. Merging them back
-                        // into one block is what makes the run addressable.
                         if block.block_type == BlockType::Footnote {
                             prev.block_type = BlockType::Footnote;
                         }
@@ -440,6 +461,69 @@ mod tests {
         let result = merge_paragraphs(&blocks);
         assert_eq!(result.len(), 2);
         assert_eq!(result[0].block_type, BlockType::Title);
+    }
+
+    #[test]
+    fn test_main_body_is_not_retyped_by_following_footnote() {
+        let blocks = vec![
+            make_block("Main-column paragraph.", 50.0, 100.0, 260.0, 40.0, BlockType::Body),
+            make_block("1 A short bottom-band note.", 50.0, 82.0, 200.0, 8.0, BlockType::Footnote),
+            make_block("Right-column paragraph.", 310.0, 500.0, 260.0, 40.0, BlockType::Body),
+        ];
+
+        let result = merge_paragraphs(&blocks);
+
+        assert_eq!(result.len(), 3);
+        assert_eq!(result[0].block_type, BlockType::Body);
+        assert_eq!(result[1].block_type, BlockType::Footnote);
+    }
+
+    #[test]
+    fn test_wide_single_column_body_joins_footnote_flow() {
+        let blocks = vec![
+            make_block(
+                "Wide single-column paragraph.",
+                50.0,
+                100.0,
+                400.0,
+                40.0,
+                BlockType::Body,
+            ),
+            make_block(
+                "1 Continuation classified as a footnote.",
+                50.0,
+                140.0,
+                400.0,
+                8.0,
+                BlockType::Footnote,
+            ),
+        ];
+
+        let result = merge_paragraphs(&blocks);
+
+        assert_eq!(result.len(), 1);
+        assert_eq!(result[0].block_type, BlockType::Footnote);
+    }
+
+    #[test]
+    fn test_footnote_absorbs_its_body_typed_continuation() {
+        let blocks = vec![
+            make_block("1 A short bottom-band note", 50.0, 92.0, 200.0, 8.0, BlockType::Footnote),
+            make_block(
+                "continues on the next tightly led line.",
+                50.0,
+                82.0,
+                210.0,
+                8.0,
+                BlockType::Body,
+            ),
+        ];
+
+        let result = merge_paragraphs(&blocks);
+
+        assert_eq!(result.len(), 1);
+        assert_eq!(result[0].block_type, BlockType::Footnote);
+        assert!(result[0].text.contains("continues"));
     }
 
     #[test]

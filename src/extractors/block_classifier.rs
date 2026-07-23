@@ -341,6 +341,12 @@ impl BlockClassifier {
             blocks.push(block);
         }
 
+        refine_caption_flow(
+            &mut blocks,
+            self.page_width,
+            self.page_height,
+            self.median_font_size,
+        );
         promote_repeated_reference_entries(&mut blocks, self.page_width, self.page_height);
         merge_reference_continuations(&mut blocks, self.page_width);
         promote_control_catalog_headings(
@@ -350,6 +356,7 @@ impl BlockClassifier {
             self.page_height,
         );
         merge_consecutive_body(&mut blocks);
+        promote_compact_heading_roles(&mut blocks, self.page_width);
         promote_isolated_heading_blocks(&mut blocks);
         // WebGPT 2026-05-13 R8 — suppress empty-text classified blocks
         // before they reach the release element list. PDFs occasionally
@@ -1664,6 +1671,210 @@ fn merge_consecutive_body(blocks: &mut Vec<ClassifiedBlock>) {
     }
 }
 
+/// Correct caption typing from line-flow geometry before paragraph merging.
+///
+/// Caption anchors and their continuations are a core layout concern: the
+/// decision uses type, leading, font metrics, and column geometry only. Text
+/// beginning with "Figure" or "Table" is demoted when it is sandwiched inside
+/// a same-face running-text flow. Conversely, a same-face line immediately
+/// below a surviving caption anchor is absorbed into that caption.
+fn refine_caption_flow(
+    blocks: &mut Vec<ClassifiedBlock>,
+    page_width: f32,
+    page_height: f32,
+    fallback_body_font_size: f32,
+) {
+    demote_running_text_caption_mentions(blocks, page_width);
+    let body_font_size = blocks
+        .iter()
+        .filter(|block| {
+            block.block_type == BlockType::Body
+                && block.font_size > 0.0
+                && block.bbox.y >= page_height * 0.25
+        })
+        .map(|block| block.font_size)
+        .max_by(f32::total_cmp)
+        .unwrap_or(fallback_body_font_size);
+    merge_caption_continuations(blocks, page_width, body_font_size);
+}
+
+fn demote_running_text_caption_mentions(blocks: &mut [ClassifiedBlock], page_width: f32) {
+    if blocks.len() < 3 || page_width <= 0.0 {
+        return;
+    }
+
+    let mut demotions = Vec::new();
+    for index in 1..blocks.len() - 1 {
+        let previous = &blocks[index - 1];
+        let caption = &blocks[index];
+        let next = &blocks[index + 1];
+        if caption.block_type != BlockType::Caption
+            || previous.block_type != BlockType::Body
+            || next.block_type != BlockType::Body
+        {
+            continue;
+        }
+
+        let previous_font_ratio = caption.font_size / previous.font_size.max(1.0);
+        let next_font_ratio = caption.font_size / next.font_size.max(1.0);
+        let same_running_face = (0.97..=1.03).contains(&previous_font_ratio)
+            && (0.97..=1.03).contains(&next_font_ratio);
+        let same_column = in_same_column(previous, caption, page_width)
+            && in_same_column(caption, next, page_width);
+        let aligned_flow = (caption.bbox.x - previous.bbox.x).abs() <= caption.font_size * 1.5
+            && (next.bbox.x - caption.bbox.x).abs() <= caption.font_size * 1.5;
+        let tight_above =
+            downward_gap(previous, caption).is_some_and(|gap| gap <= caption.font_size * 0.75);
+        let tight_below =
+            downward_gap(caption, next).is_some_and(|gap| gap <= caption.font_size * 0.75);
+
+        if same_running_face && same_column && aligned_flow && tight_above && tight_below {
+            demotions.push(index);
+        }
+    }
+
+    for index in demotions {
+        blocks[index].block_type = BlockType::Body;
+        blocks[index].confidence = blocks[index].confidence.max(0.9);
+    }
+}
+
+fn merge_caption_continuations(
+    blocks: &mut Vec<ClassifiedBlock>,
+    page_width: f32,
+    body_font_size: f32,
+) {
+    if page_width <= 0.0 || body_font_size <= 0.0 {
+        return;
+    }
+
+    let mut index = 0;
+    while index < blocks.len() {
+        if blocks[index].block_type != BlockType::Caption {
+            index += 1;
+            continue;
+        }
+        // A hanging caption continuation is set below the running body face.
+        // Body-sized "Figure N illustrates..." prose in single-column
+        // standards remains a standalone block.
+        if blocks[index].font_size > body_font_size * 0.95 {
+            index += 1;
+            continue;
+        }
+
+        loop {
+            let Some(next) = blocks.get(index + 1) else {
+                break;
+            };
+            if !matches!(next.block_type, BlockType::Body | BlockType::List) {
+                break;
+            }
+
+            let anchor = &blocks[index];
+            let font_ratio = next.font_size / anchor.font_size.max(1.0);
+            let compatible_font = (0.94..=1.06).contains(&font_ratio);
+            // A caption spanning most of the printable width is the shared
+            // anchor for a continuation that may itself occupy one column.
+            // Otherwise require both lines to resolve to the same column.
+            let spans_columns = anchor.bbox.width >= page_width * 0.70;
+            let same_column = spans_columns || in_same_column(anchor, next, page_width);
+            let aligned_left = (next.bbox.x - anchor.bbox.x).abs() <= anchor.font_size * 1.5;
+            let overlap = horizontal_overlap_ratio(&anchor.bbox, &next.bbox);
+            let tight_leading =
+                downward_gap(anchor, next).is_some_and(|gap| gap <= anchor.font_size * 0.75);
+
+            if !compatible_font || !same_column || !aligned_left || overlap < 0.55 || !tight_leading
+            {
+                break;
+            }
+
+            let absorbed = blocks.remove(index + 1);
+            blocks[index].text.push(' ');
+            blocks[index].text.push_str(&absorbed.text);
+            blocks[index].bbox = blocks[index].bbox.union(&absorbed.bbox);
+            blocks[index].lines.extend(absorbed.lines);
+        }
+        index += 1;
+    }
+}
+
+fn in_same_column(left: &ClassifiedBlock, right: &ClassifiedBlock, page_width: f32) -> bool {
+    let midpoint = page_width / 2.0;
+    let left_center = left.bbox.x + left.bbox.width / 2.0;
+    let right_center = right.bbox.x + right.bbox.width / 2.0;
+    (left_center < midpoint) == (right_center < midpoint)
+}
+
+fn horizontal_overlap_ratio(left: &Rect, right: &Rect) -> f32 {
+    let overlap = (left.x + left.width).min(right.x + right.width) - left.x.max(right.x);
+    overlap.max(0.0) / left.width.min(right.width).max(1.0)
+}
+
+/// Return the visual gap when `below` is below `above` in bottom-origin PDF
+/// coordinates. Negative overlap is normalized to zero.
+fn downward_gap(above: &ClassifiedBlock, below: &ClassifiedBlock) -> Option<f32> {
+    if below.bbox.y > above.bbox.y {
+        return None;
+    }
+    Some((above.bbox.y - (below.bbox.y + below.bbox.height)).max(0.0))
+}
+
+/// Promote compact standalone labels after body-line merging.
+///
+/// A centered, enlarged bold label above a wide paragraph is a section
+/// heading. A left-aligned, body-size bold all-caps label between paragraph
+/// flows is a subsection subtitle. Both decisions are structural and
+/// typography-based; no document vocabulary or page number is consulted.
+fn promote_compact_heading_roles(blocks: &mut [ClassifiedBlock], page_width: f32) {
+    if blocks.len() < 2 || page_width <= 0.0 {
+        return;
+    }
+
+    for index in 0..blocks.len() - 1 {
+        let label = &blocks[index];
+        let next = &blocks[index + 1];
+        if label.block_type != BlockType::Body
+            || next.block_type != BlockType::Body
+            || !label.is_bold
+            || label.lines.len() > 1
+            || !in_same_column(label, next, page_width)
+        {
+            continue;
+        }
+
+        let text = label.text.trim();
+        let char_count = text.chars().count();
+        let no_sentence_punctuation =
+            !matches!(text.chars().last(), Some('.') | Some(',') | Some(';') | Some(':'));
+        let close_below = downward_gap(label, next).is_some_and(|gap| gap <= label.font_size * 2.5);
+        if !(3..=60).contains(&char_count) || !no_sentence_punctuation || !close_below {
+            continue;
+        }
+
+        let label_center = label.bbox.x + label.bbox.width / 2.0;
+        let next_center = next.bbox.x + next.bbox.width / 2.0;
+        let centered_over_paragraph = (label_center - next_center).abs() <= label.font_size * 1.5
+            && label.bbox.width <= next.bbox.width * 0.40
+            && label.font_size >= next.font_size * 1.05;
+        if centered_over_paragraph {
+            blocks[index].block_type = BlockType::Title;
+            blocks[index].header_level = Some(1);
+            blocks[index].confidence = blocks[index].confidence.max(0.9);
+            continue;
+        }
+
+        let body_sized = (0.90..=1.15).contains(&(label.font_size / next.font_size.max(1.0)));
+        let left_aligned = (label.bbox.x - next.bbox.x).abs() <= label.font_size * 1.5;
+        let paragraph_width = next.bbox.width / page_width;
+        let column_paragraph = (0.25..=0.48).contains(&paragraph_width);
+        if body_sized && left_aligned && column_paragraph && looks_like_heading(label) {
+            blocks[index].block_type = BlockType::Subtitle;
+            blocks[index].header_level = Some(3);
+            blocks[index].confidence = blocks[index].confidence.max(0.9);
+        }
+    }
+}
+
 /// Promote the recurring control-catalog heading pair before body lines merge:
 /// a compact control identifier plus title, followed by a styled colon label.
 ///
@@ -2456,6 +2667,27 @@ mod tests {
         }
     }
 
+    fn test_block(
+        block_type: BlockType,
+        text: &str,
+        bbox: Rect,
+        font_size: f32,
+        is_bold: bool,
+    ) -> ClassifiedBlock {
+        ClassifiedBlock {
+            block_type,
+            text: text.to_string(),
+            bbox,
+            font_size,
+            font_name: "TestFont".to_string(),
+            is_bold,
+            confidence: 0.8,
+            header_level: None,
+            header_validation: None,
+            lines: Vec::new(),
+        }
+    }
+
     // --- Numbering Analysis Tests ---
 
     #[test]
@@ -2587,6 +2819,198 @@ mod tests {
     fn test_not_boilerplate() {
         assert!(!is_boilerplate("1.2 Introduction"));
         assert!(!is_boilerplate("The system architecture consists of three main components."));
+    }
+
+    #[test]
+    fn test_caption_continuation_merges_without_character_loss() {
+        let mut blocks = vec![
+            test_block(
+                BlockType::Caption,
+                "Table 10. Detection results on the test set.",
+                Rect::new(50.0, 500.0, 250.0, 9.0),
+                9.0,
+                false,
+            ),
+            test_block(
+                BlockType::Body,
+                "The baseline includes refinement and context.",
+                Rect::new(50.0, 489.0, 245.0, 9.0),
+                9.0,
+                false,
+            ),
+        ];
+        let expected: String = blocks.iter().map(|block| block.text.as_str()).collect();
+
+        merge_caption_continuations(&mut blocks, 612.0, 10.0);
+
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].block_type, BlockType::Caption);
+        assert_eq!(
+            blocks[0]
+                .text
+                .chars()
+                .filter(|character| !character.is_whitespace())
+                .collect::<String>(),
+            expected
+                .chars()
+                .filter(|character| !character.is_whitespace())
+                .collect::<String>()
+        );
+    }
+
+    #[test]
+    fn test_full_width_caption_absorbs_column_width_continuation() {
+        let mut blocks = vec![
+            test_block(
+                BlockType::Caption,
+                "Table 10. Detection results on the test set using the baseline.",
+                Rect::new(36.0, 500.0, 540.0, 9.0),
+                9.0,
+                false,
+            ),
+            test_block(
+                BlockType::Body,
+                "The baseline includes box refinement and context.",
+                Rect::new(36.0, 489.0, 260.0, 9.0),
+                9.0,
+                false,
+            ),
+        ];
+
+        merge_caption_continuations(&mut blocks, 612.0, 10.0);
+
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].block_type, BlockType::Caption);
+        assert!(blocks[0].text.contains("box refinement"));
+    }
+
+    #[test]
+    fn test_body_sized_caption_prefix_does_not_absorb_prose() {
+        let mut blocks = vec![
+            test_block(
+                BlockType::Caption,
+                "Figure 2 illustrates the organization of the control families.",
+                Rect::new(50.0, 500.0, 500.0, 10.0),
+                10.0,
+                false,
+            ),
+            test_block(
+                BlockType::Body,
+                "The following material describes the applicable requirements.",
+                Rect::new(50.0, 488.0, 500.0, 10.0),
+                10.0,
+                false,
+            ),
+        ];
+
+        merge_caption_continuations(&mut blocks, 612.0, 10.0);
+
+        assert_eq!(blocks.len(), 2);
+    }
+
+    #[test]
+    fn test_caption_vocabulary_inside_running_text_is_demoted() {
+        let mut blocks = vec![
+            test_block(
+                BlockType::Body,
+                "The preceding sentence introduces the comparison.",
+                Rect::new(309.0, 520.0, 255.0, 10.0),
+                10.0,
+                false,
+            ),
+            test_block(
+                BlockType::Caption,
+                "Table 8 shows the results on the validation set.",
+                Rect::new(321.0, 508.0, 245.0, 10.0),
+                10.0,
+                false,
+            ),
+            test_block(
+                BlockType::Body,
+                "The following sentence explains the improvement.",
+                Rect::new(309.0, 496.0, 255.0, 10.0),
+                10.0,
+                false,
+            ),
+        ];
+
+        demote_running_text_caption_mentions(&mut blocks, 612.0);
+
+        assert_eq!(blocks[1].block_type, BlockType::Body);
+    }
+
+    #[test]
+    fn test_centered_abstract_label_promotes_to_section_heading() {
+        let mut blocks = vec![
+            test_block(
+                BlockType::Body,
+                "Abstract",
+                Rect::new(146.0, 558.0, 45.0, 12.0),
+                12.0,
+                true,
+            ),
+            test_block(
+                BlockType::Body,
+                "Deeper neural networks are more difficult to train.",
+                Rect::new(50.0, 536.0, 259.0, 10.0),
+                10.0,
+                false,
+            ),
+        ];
+
+        promote_compact_heading_roles(&mut blocks, 612.0);
+
+        assert_eq!(blocks[0].block_type, BlockType::Title);
+        assert_eq!(blocks[0].header_level, Some(1));
+    }
+
+    #[test]
+    fn test_left_aligned_bold_all_caps_label_promotes_to_subtitle() {
+        let mut blocks = vec![
+            test_block(
+                BlockType::Body,
+                "PASCAL VOC",
+                Rect::new(50.0, 314.0, 66.0, 10.0),
+                10.0,
+                true,
+            ),
+            test_block(
+                BlockType::Body,
+                "Following prior work, we evaluate the test set.",
+                Rect::new(50.0, 292.0, 264.0, 20.0),
+                10.0,
+                false,
+            ),
+        ];
+
+        promote_compact_heading_roles(&mut blocks, 612.0);
+
+        assert_eq!(blocks[0].block_type, BlockType::Subtitle);
+        assert_eq!(blocks[0].header_level, Some(3));
+    }
+
+    #[test]
+    fn test_narrow_table_label_does_not_promote_to_subtitle() {
+        let mut blocks = vec![
+            test_block(
+                BlockType::Body,
+                "SELECTED PARAMETER",
+                Rect::new(50.0, 314.0, 100.0, 10.0),
+                10.0,
+                true,
+            ),
+            test_block(
+                BlockType::Body,
+                "VALUE",
+                Rect::new(50.0, 292.0, 70.0, 10.0),
+                10.0,
+                false,
+            ),
+        ];
+
+        promote_compact_heading_roles(&mut blocks, 612.0);
+
+        assert_eq!(blocks[0].block_type, BlockType::Body);
     }
 
     // --- Content Exception Tests ---
