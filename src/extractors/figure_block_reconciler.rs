@@ -196,8 +196,24 @@ pub fn reconcile_views(
         })
         .collect();
 
-    // A span centroid must belong to only one merged block. Overlapping block
-    // membership makes source-character attribution ambiguous.
+    let block_figure_memberships: Vec<Vec<usize>> = block_rects
+        .iter()
+        .map(|block_rect| {
+            figure_rects
+                .iter()
+                .enumerate()
+                .filter(|(_, figure_rect)| {
+                    figure_rect.covers_object(block_rect, BLOCK_CONTAINMENT_THRESHOLD)
+                })
+                .map(|(index, _)| index)
+                .collect()
+        })
+        .collect();
+
+    // A span centroid must belong to only one figure-eligible merged block.
+    // Large column/body unions can geometrically overlap an illustration while
+    // being far too large to be absorbed; those ineligible boxes must not
+    // poison attribution for a small, provenance-matched figure label.
     let span_block_memberships: Vec<Vec<usize>> = span_rects
         .iter()
         .map(|span_rect| {
@@ -205,7 +221,10 @@ pub fn reconcile_views(
             block_rects
                 .iter()
                 .enumerate()
-                .filter(|(_, block_rect)| block_rect.contains_point(cx, cy, EDGE_EPSILON))
+                .filter(|(index, block_rect)| {
+                    block_figure_memberships[*index].len() == 1
+                        && block_rect.contains_point(cx, cy, EDGE_EPSILON)
+                })
                 .map(|(index, _)| index)
                 .collect()
         })
@@ -217,14 +236,7 @@ pub fn reconcile_views(
         if is_page_furniture(&block.type_label) {
             continue;
         }
-        let containing_figures: Vec<usize> = figure_rects
-            .iter()
-            .enumerate()
-            .filter(|(_, figure_rect)| {
-                figure_rect.covers_object(&block_rects[block_index], BLOCK_CONTAINMENT_THRESHOLD)
-            })
-            .map(|(index, _)| index)
-            .collect();
+        let containing_figures = &block_figure_memberships[block_index];
         if containing_figures.is_empty() {
             continue;
         }
@@ -488,6 +500,44 @@ mod tests {
 
         assert!(result.consumed.is_empty());
         assert!(result.retained_ambiguous.is_empty());
+    }
+
+    #[test]
+    fn large_body_bbox_does_not_poison_contained_label_or_get_absorbed() {
+        let spans = vec![
+            span("label", 120.0, 220.0, 30.0, 10.0),
+            span("body prose", 300.0, 450.0, 60.0, 10.0),
+        ];
+        let blocks = vec![
+            BlockView {
+                bbox: (115.0, 215.0, 45.0, 20.0),
+                text: "label",
+                type_label: "Body".to_string(),
+            },
+            BlockView {
+                // A merged column bbox overlaps the figure but is not itself
+                // majority-contained by it.
+                bbox: (50.0, 100.0, 400.0, 400.0),
+                text: "body prose",
+                type_label: "Body".to_string(),
+            },
+        ];
+
+        let result = reconcile_views(
+            &blocks,
+            &[figure(100.0, 200.0, 200.0, 100.0)],
+            &[],
+            &spans,
+            PAGE_HEIGHT,
+        );
+
+        assert_eq!(result.consumed.len(), 1);
+        assert_eq!(result.consumed[0].block_index, 0);
+        assert_eq!(result.consumed[0].text, "label");
+        assert!(!result
+            .consumed
+            .iter()
+            .any(|record| record.text == "body prose"));
     }
 
     #[test]

@@ -14,7 +14,9 @@ use crate::extractors::block_merger::{
 };
 use crate::extractors::document_profiler::{profile_document_with_cache, DocumentProfile};
 use crate::extractors::engineering::{detect_engineering_features_from_spans, EngineeringProfile};
-use crate::extractors::figure_detector::detect_figures_from_blocks;
+use crate::extractors::figure_detector::{
+    detect_figures_from_blocks, detect_figures_from_blocks_and_paths,
+};
 use crate::extractors::section_hierarchy::{build_section_hierarchy_from_classified, SectionTree};
 use crate::extractors::text_normalizer::full_normalize;
 use crate::layout::text_block::TextSpan;
@@ -239,10 +241,9 @@ pub fn extract_document_with_config(
             .map(|info| (info.media_box.width, info.media_box.height))
             .unwrap_or((612.0, 792.0));
 
-        let underline_rects = doc
-            .extract_paths(pg)
-            .unwrap_or_default()
-            .into_iter()
+        let page_paths = doc.extract_paths(pg).unwrap_or_default();
+        let underline_rects = page_paths
+            .iter()
             .filter(|path| path.has_fill() || path.has_stroke())
             .map(|path| path.bbox)
             .collect();
@@ -260,7 +261,8 @@ pub fn extract_document_with_config(
         // Detect figures before either asset stream is reconciled so figure
         // geometry can absorb contained blocks and veto enclosed table regions.
         let detected_figures = if config.detect_figures {
-            detect_figures_from_blocks(doc, pg, &classified).unwrap_or_default()
+            detect_figures_from_blocks_and_paths(doc, pg, &classified, &page_paths)
+                .unwrap_or_default()
         } else {
             Vec::new()
         };
