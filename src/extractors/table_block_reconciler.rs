@@ -113,6 +113,56 @@ fn non_ws_multiset(text: &str) -> std::collections::BTreeMap<char, usize> {
     chars
 }
 
+fn provenance_explains_geometric_surplus(
+    geometric_indices: &[usize],
+    exact_indices: &[usize],
+    spans: &[TextSpan],
+    all_block_sequences: &[Vec<usize>],
+    block_index: usize,
+) -> bool {
+    if !exact_indices
+        .iter()
+        .all(|index| geometric_indices.contains(index))
+    {
+        return false;
+    }
+    let mut found_bracket_part = false;
+    for span_index in geometric_indices
+        .iter()
+        .filter(|index| !exact_indices.contains(index))
+    {
+        let span = &spans[*span_index];
+        let characters: Vec<char> = span
+            .text
+            .chars()
+            .filter(|character| !character.is_whitespace())
+            .collect();
+        if characters.is_empty() {
+            continue;
+        }
+        let bracket_only = characters
+            .iter()
+            .all(|character| matches!(*character, '\u{f8ee}' | '\u{f8fb}'));
+        found_bracket_part |= characters
+            .iter()
+            .any(|character| matches!(*character, '\u{f8ee}' | '\u{f8fb}'));
+        if bracket_only {
+            continue;
+        }
+        let other_owner_count = all_block_sequences
+            .iter()
+            .enumerate()
+            .filter(|(owner_index, sequences)| {
+                *owner_index != block_index && sequences.contains(&span.sequence)
+            })
+            .count();
+        if other_owner_count != 1 {
+            return false;
+        }
+    }
+    found_bracket_part
+}
+
 /// One span assigned to one cell during reconciliation.
 struct AssignedRun {
     row: usize,
@@ -148,6 +198,16 @@ pub fn reconcile_page(
     spans: &[TextSpan],
     page_height: f64,
 ) -> ReconciliationResult {
+    let span_sequences: Vec<Vec<usize>> = blocks
+        .iter()
+        .map(|block| {
+            block
+                .lines
+                .iter()
+                .flat_map(|line| line.span_sequences.iter().copied())
+                .collect()
+        })
+        .collect();
     let views: Vec<BlockView> = blocks
         .iter()
         .map(|b| BlockView {
@@ -156,7 +216,8 @@ pub fn reconcile_page(
             type_label: format!("{:?}", b.block_type),
         })
         .collect();
-    let result = reconcile_views(&views, tables, spans, page_height);
+    let result =
+        reconcile_views_with_provenance(&views, tables, spans, page_height, &span_sequences);
     let mut consumed: Vec<usize> = result.consumed.iter().map(|c| c.block_index).collect();
     consumed.sort_unstable_by(|a, b| b.cmp(a));
     for index in consumed {
@@ -172,6 +233,32 @@ pub fn reconcile_views(
     tables: &mut [Table],
     spans: &[TextSpan],
     page_height: f64,
+) -> ReconciliationResult {
+    reconcile_views_inner(blocks, tables, spans, page_height, None)
+}
+
+/// Reconcile using the classifier's exact source-span provenance.
+///
+/// Geometry still decides whether a block belongs to a table and which cell
+/// receives each run. Provenance only replaces the lossy centroid-based
+/// reconstruction of which source spans created the block. Exact character
+/// equality remains mandatory before consumption.
+pub fn reconcile_views_with_provenance(
+    blocks: &[BlockView<'_>],
+    tables: &mut [Table],
+    spans: &[TextSpan],
+    page_height: f64,
+    block_span_sequences: &[Vec<usize>],
+) -> ReconciliationResult {
+    reconcile_views_inner(blocks, tables, spans, page_height, Some(block_span_sequences))
+}
+
+fn reconcile_views_inner(
+    blocks: &[BlockView<'_>],
+    tables: &mut [Table],
+    spans: &[TextSpan],
+    page_height: f64,
+    block_span_sequences: Option<&[Vec<usize>]>,
 ) -> ReconciliationResult {
     let mut result = ReconciliationResult::default();
     if tables.is_empty() || blocks.is_empty() {
@@ -216,7 +303,7 @@ pub fn reconcile_views(
             // Recover the block's spans geometrically: span centroid inside
             // the block rect (small epsilon for rounding at block edges).
             let eps = 0.5;
-            let member_spans: Vec<usize> = span_rects
+            let geometric_member_spans: Vec<usize> = span_rects
                 .iter()
                 .enumerate()
                 .filter(|(_, sr)| {
@@ -229,6 +316,32 @@ pub fn reconcile_views(
                 })
                 .map(|(i, _)| i)
                 .collect();
+            let member_spans: Vec<usize> =
+                if let Some(sequences) = block_span_sequences.and_then(|all| all.get(block_index)) {
+                    match exact_span_indices(spans, sequences) {
+                        Some(indices) => {
+                            if geometric_member_spans == indices
+                                || provenance_explains_geometric_surplus(
+                                    &geometric_member_spans,
+                                    &indices,
+                                    spans,
+                                    block_span_sequences.unwrap_or_default(),
+                                    block_index,
+                                )
+                            {
+                                indices
+                            } else {
+                                geometric_member_spans.clone()
+                            }
+                        },
+                        None => {
+                            result.retained_ambiguous.push(block_index);
+                            continue;
+                        },
+                    }
+                } else {
+                    geometric_member_spans.clone()
+                };
 
             // Assign each member span to exactly one grid cell by centroid.
             let mut block_runs: Vec<AssignedRun> = Vec::new();
@@ -360,6 +473,30 @@ pub fn reconcile_views(
     result
 }
 
+fn exact_span_indices(spans: &[TextSpan], sequences: &[usize]) -> Option<Vec<usize>> {
+    if sequences.is_empty() {
+        return None;
+    }
+    let requested: std::collections::BTreeSet<usize> = sequences.iter().copied().collect();
+    if requested.len() != sequences.len() {
+        return None;
+    }
+    let mut indices = Vec::with_capacity(sequences.len());
+    for sequence in sequences {
+        let mut matches = spans
+            .iter()
+            .enumerate()
+            .filter(|(_, span)| span.sequence == *sequence)
+            .map(|(index, _)| index);
+        let index = matches.next()?;
+        if matches.next().is_some() {
+            return None;
+        }
+        indices.push(index);
+    }
+    Some(indices)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -385,7 +522,7 @@ mod tests {
             is_italic: false,
             color: Color { r: 0.0, g: 0.0, b: 0.0 },
             mcid: None,
-            sequence: 0,
+            sequence: y_top.round() as usize,
             split_boundary_before: false,
             offset_semantic: false,
             char_spacing: 0.0,
@@ -464,6 +601,154 @@ mod tests {
 
         assert_eq!(non_ws_multiset(&reachable), expected);
         assert_eq!(result.consumed.len(), 1);
+    }
+
+    #[test]
+    fn exact_provenance_excludes_neighbor_bracket_fragments() {
+        let mut upper = span("\u{f8ee}", 100.0, 110.0, 5.0, 8.0);
+        upper.sequence = 10;
+        let mut middle = span("\u{f8f0} 1x1 \u{f8f9}", 100.0, 120.0, 50.0, 8.0);
+        middle.sequence = 11;
+        let mut lower = span("\u{f8fb}", 100.0, 130.0, 5.0, 8.0);
+        lower.sequence = 12;
+        let spans = vec![upper, middle, lower];
+        let blocks = vec![BlockView {
+            bbox: (95.0, 650.0, 65.0, 35.0),
+            text: "\u{f8f0} 1x1 \u{f8f9}",
+            type_label: "Body".to_string(),
+        }];
+        let table = || {
+            vec![Table::new(
+                vec![(90.0, 200.0)],
+                vec![(100.0, 160.0)],
+                Flavor::Lattice,
+            )]
+        };
+
+        let geometric = reconcile_views(&blocks, &mut table(), &spans, PAGE_H);
+        assert!(geometric.consumed.is_empty());
+
+        let mut tables = table();
+        let exact =
+            reconcile_views_with_provenance(&blocks, &mut tables, &spans, PAGE_H, &[vec![11]]);
+        assert_eq!(exact.consumed.len(), 1);
+        assert_eq!(tables[0].cells[0][0].text, "\u{f8f0} 1x1 \u{f8f9}");
+    }
+
+    #[test]
+    fn exact_provenance_still_fails_open_on_character_mismatch() {
+        let mut owned = span("SHORT", 100.0, 120.0, 40.0, 8.0);
+        owned.sequence = 17;
+        let spans = vec![owned];
+        let blocks = vec![BlockView {
+            bbox: (95.0, 650.0, 65.0, 35.0),
+            text: "SHORT EXTRA",
+            type_label: "Body".to_string(),
+        }];
+        let mut tables = vec![Table::new(
+            vec![(90.0, 200.0)],
+            vec![(100.0, 160.0)],
+            Flavor::Lattice,
+        )];
+
+        let result =
+            reconcile_views_with_provenance(&blocks, &mut tables, &spans, PAGE_H, &[vec![17]]);
+
+        assert!(result.consumed.is_empty());
+        assert_eq!(result.retained_ambiguous, vec![0]);
+    }
+
+    #[test]
+    fn exact_provenance_does_not_override_ordinary_geometry_disagreement() {
+        let mut owned = span("OWNED", 100.0, 120.0, 40.0, 8.0);
+        owned.sequence = 21;
+        let mut neighboring = span("NEIGHBOR", 100.0, 130.0, 50.0, 8.0);
+        neighboring.sequence = 22;
+        let spans = vec![owned, neighboring];
+        let blocks = vec![BlockView {
+            bbox: (95.0, 650.0, 65.0, 35.0),
+            text: "OWNED",
+            type_label: "Body".to_string(),
+        }];
+        let mut tables = vec![Table::new(
+            vec![(90.0, 200.0)],
+            vec![(100.0, 160.0)],
+            Flavor::Lattice,
+        )];
+
+        let result =
+            reconcile_views_with_provenance(&blocks, &mut tables, &spans, PAGE_H, &[vec![21]]);
+
+        assert!(result.consumed.is_empty());
+        assert_eq!(result.retained_ambiguous, vec![0]);
+    }
+
+    #[test]
+    fn bracket_surplus_does_not_mask_unrelated_geometry_disagreement() {
+        let mut owned = span("OWNED", 100.0, 120.0, 40.0, 8.0);
+        owned.sequence = 31;
+        let mut bracket = span("\u{f8ee}", 100.0, 130.0, 5.0, 8.0);
+        bracket.sequence = 32;
+        let mut neighboring = span("NEIGHBOR", 110.0, 130.0, 50.0, 8.0);
+        neighboring.sequence = 33;
+        let spans = vec![owned, bracket, neighboring];
+        let blocks = vec![BlockView {
+            bbox: (95.0, 650.0, 70.0, 35.0),
+            text: "OWNED",
+            type_label: "Body".to_string(),
+        }];
+        let mut tables = vec![Table::new(
+            vec![(90.0, 200.0)],
+            vec![(100.0, 160.0)],
+            Flavor::Lattice,
+        )];
+
+        let result =
+            reconcile_views_with_provenance(&blocks, &mut tables, &spans, PAGE_H, &[vec![31]]);
+
+        assert!(result.consumed.is_empty());
+        assert_eq!(result.retained_ambiguous, vec![0]);
+    }
+
+    #[test]
+    fn bracket_surplus_can_exclude_span_uniquely_owned_by_neighbor() {
+        let mut owned = span("OWNED", 100.0, 120.0, 40.0, 8.0);
+        owned.sequence = 41;
+        let mut bracket = span("\u{f8ee}", 100.0, 130.0, 5.0, 8.0);
+        bracket.sequence = 42;
+        let mut neighboring = span("NEIGHBOR", 110.0, 130.0, 50.0, 8.0);
+        neighboring.sequence = 43;
+        let spans = vec![owned, bracket, neighboring];
+        let blocks = vec![
+            BlockView {
+                bbox: (95.0, 650.0, 70.0, 35.0),
+                text: "OWNED",
+                type_label: "Body".to_string(),
+            },
+            BlockView {
+                bbox: (108.0, 650.0, 55.0, 15.0),
+                text: "NEIGHBOR",
+                type_label: "Body".to_string(),
+            },
+        ];
+        let mut tables = vec![Table::new(
+            vec![(90.0, 200.0)],
+            vec![(100.0, 160.0)],
+            Flavor::Lattice,
+        )];
+
+        let result = reconcile_views_with_provenance(
+            &blocks,
+            &mut tables,
+            &spans,
+            PAGE_H,
+            &[vec![41], vec![43]],
+        );
+
+        assert!(result
+            .consumed
+            .iter()
+            .any(|consumed| consumed.block_index == 0));
     }
 
     /// A block outside every table region is untouched.

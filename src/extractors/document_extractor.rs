@@ -285,6 +285,10 @@ pub fn extract_document_with_config(
         let mut figure_content = vec![Vec::new(); detected_figures.len()];
         let mut suppressed_table_orders = vec![Vec::new(); detected_figures.len()];
         if !detected_figures.is_empty() {
+            let span_sequences: Vec<Vec<usize>> = merged
+                .iter()
+                .map(|block| block.span_sequences.clone())
+                .collect();
             let views: Vec<crate::extractors::figure_block_reconciler::BlockView> = merged
                 .iter()
                 .map(|block| crate::extractors::figure_block_reconciler::BlockView {
@@ -293,13 +297,15 @@ pub fn extract_document_with_config(
                     type_label: format!("{:?}", block.block_type),
                 })
                 .collect();
-            let reconciliation = crate::extractors::figure_block_reconciler::reconcile_views(
-                &views,
-                &detected_figures,
-                &page_tables,
-                &spans,
-                height as f64,
-            );
+            let reconciliation =
+                crate::extractors::figure_block_reconciler::reconcile_views_with_provenance(
+                    &views,
+                    &detected_figures,
+                    &page_tables,
+                    &spans,
+                    height as f64,
+                    &span_sequences,
+                );
 
             let mut consumed_indices: Vec<usize> = reconciliation
                 .consumed
@@ -333,6 +339,10 @@ pub fn extract_document_with_config(
         // BEFORE normalization: character accounting compares raw block
         // text against the raw span text that built it.
         if !page_tables.is_empty() {
+            let span_sequences: Vec<Vec<usize>> = merged
+                .iter()
+                .map(|block| block.span_sequences.clone())
+                .collect();
             let views: Vec<crate::extractors::table_block_reconciler::BlockView> = merged
                 .iter()
                 .map(|b| crate::extractors::table_block_reconciler::BlockView {
@@ -341,12 +351,14 @@ pub fn extract_document_with_config(
                     type_label: format!("{:?}", b.block_type),
                 })
                 .collect();
-            let reconciliation = crate::extractors::table_block_reconciler::reconcile_views(
-                &views,
-                &mut page_tables,
-                &spans,
-                height as f64,
-            );
+            let reconciliation =
+                crate::extractors::table_block_reconciler::reconcile_views_with_provenance(
+                    &views,
+                    &mut page_tables,
+                    &spans,
+                    height as f64,
+                    &span_sequences,
+                );
             let mut consumed: Vec<usize> = reconciliation
                 .consumed
                 .iter()

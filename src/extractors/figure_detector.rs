@@ -101,11 +101,11 @@ pub(crate) fn detect_figures_from_blocks_and_paths(
         });
     }
 
-    for vector_bbox in discriminate_vector_regions(blocks, paths, tables, page_height)
+    for decision in discriminate_vector_regions(blocks, paths, tables, page_height)
         .into_iter()
         .filter(|decision| decision.class == RegionClass::Figure)
-        .map(|decision| decision.bbox)
     {
+        let vector_bbox = decision.bbox;
         // Vector marks commonly overlay raster figures. Preserve the raster
         // detector's single region rather than emitting a duplicate.
         if figures
@@ -115,15 +115,14 @@ pub(crate) fn detect_figures_from_blocks_and_paths(
             continue;
         }
 
-        let (caption, caption_number) = find_caption(blocks, &vector_bbox);
         let context_above = find_context(blocks, &vector_bbox, true);
         let context_below = find_context(blocks, &vector_bbox, false);
         let section_title = find_section(blocks, &vector_bbox);
         figures.push(DetectedFigure {
             bbox: vector_bbox,
             page,
-            caption,
-            caption_number,
+            caption: Some(decision.caption),
+            caption_number: Some(decision.caption_number),
             context_above,
             context_below,
             section_title,

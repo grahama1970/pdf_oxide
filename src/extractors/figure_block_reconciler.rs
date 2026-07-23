@@ -33,6 +33,10 @@ const BLOCK_CONTAINMENT_THRESHOLD: f64 = 0.5;
 const TABLE_OVERLAP_THRESHOLD: f64 = 0.5;
 /// Tolerance for centroid membership at block edges.
 const EDGE_EPSILON: f64 = 0.5;
+/// Page-scale figure regions can enclose structured prose or table content.
+/// Preserve geometric ambiguity there; exact provenance is only authoritative
+/// for compact visual regions.
+const MAX_EXACT_PROVENANCE_HEIGHT_RATIO: f64 = 0.4;
 
 /// Borrowed geometric/text view of one merged block.
 pub struct BlockView<'a> {
@@ -171,6 +175,40 @@ pub fn reconcile_views(
     spans: &[TextSpan],
     page_height: f64,
 ) -> ReconciliationResult {
+    reconcile_views_inner(blocks, figures, tables, spans, page_height, None)
+}
+
+/// Reconcile using the classifier's exact source-span provenance.
+///
+/// Figure geometry and exact character equality remain unchanged. Provenance
+/// replaces centroid inference only for identifying which raw spans built a
+/// merged block, avoiding false ambiguity from overlapping union rectangles.
+pub fn reconcile_views_with_provenance(
+    blocks: &[BlockView<'_>],
+    figures: &[DetectedFigure],
+    tables: &[Table],
+    spans: &[TextSpan],
+    page_height: f64,
+    block_span_sequences: &[Vec<usize>],
+) -> ReconciliationResult {
+    reconcile_views_inner(
+        blocks,
+        figures,
+        tables,
+        spans,
+        page_height,
+        Some(block_span_sequences),
+    )
+}
+
+fn reconcile_views_inner(
+    blocks: &[BlockView<'_>],
+    figures: &[DetectedFigure],
+    tables: &[Table],
+    spans: &[TextSpan],
+    page_height: f64,
+    block_span_sequences: Option<&[Vec<usize>]>,
+) -> ReconciliationResult {
     let mut result = ReconciliationResult::default();
     if figures.is_empty() {
         return result;
@@ -214,16 +252,38 @@ pub fn reconcile_views(
     // Large column/body unions can geometrically overlap an illustration while
     // being far too large to be absorbed; those ineligible boxes must not
     // poison attribution for a small, provenance-matched figure label.
+    let provenance_indices: Option<Vec<Option<Vec<usize>>>> =
+        block_span_sequences.map(|all_sequences| {
+            (0..blocks.len())
+                .map(|block_index| {
+                    all_sequences
+                        .get(block_index)
+                        .and_then(|sequences| exact_span_indices(spans, sequences))
+                })
+                .collect()
+        });
     let span_block_memberships: Vec<Vec<usize>> = span_rects
         .iter()
-        .map(|span_rect| {
+        .enumerate()
+        .map(|(span_index, span_rect)| {
             let (cx, cy) = span_rect.centroid();
             block_rects
                 .iter()
                 .enumerate()
                 .filter(|(index, block_rect)| {
-                    block_figure_memberships[*index].len() == 1
-                        && block_rect.contains_point(cx, cy, EDGE_EPSILON)
+                    if block_figure_memberships[*index].len() != 1 {
+                        return false;
+                    }
+                    let figure_index = block_figure_memberships[*index][0];
+                    let use_exact_provenance =
+                        figure_rects[figure_index].height() / page_height
+                            <= MAX_EXACT_PROVENANCE_HEIGHT_RATIO;
+                    match &provenance_indices {
+                        Some(indices) if use_exact_provenance => indices[*index]
+                            .as_ref()
+                            .is_some_and(|members| members.contains(&span_index)),
+                        _ => block_rect.contains_point(cx, cy, EDGE_EPSILON),
+                    }
                 })
                 .map(|(index, _)| index)
                 .collect()
@@ -320,6 +380,30 @@ pub fn reconcile_views(
     }
 
     result
+}
+
+fn exact_span_indices(spans: &[TextSpan], sequences: &[usize]) -> Option<Vec<usize>> {
+    if sequences.is_empty() {
+        return None;
+    }
+    let requested: std::collections::BTreeSet<usize> = sequences.iter().copied().collect();
+    if requested.len() != sequences.len() {
+        return None;
+    }
+    let mut indices = Vec::with_capacity(sequences.len());
+    for sequence in sequences {
+        let mut matches = spans
+            .iter()
+            .enumerate()
+            .filter(|(_, span)| span.sequence == *sequence)
+            .map(|(index, _)| index);
+        let index = matches.next()?;
+        if matches.next().is_some() {
+            return None;
+        }
+        indices.push(index);
+    }
+    Some(indices)
 }
 
 #[cfg(test)]
@@ -602,6 +686,99 @@ mod tests {
             &[],
             &spans,
             PAGE_HEIGHT,
+        );
+
+        assert!(result.consumed.is_empty());
+        assert_eq!(result.retained_ambiguous, vec![0, 1]);
+    }
+
+    #[test]
+    fn exact_provenance_disambiguates_overlapping_merged_rectangles() {
+        let mut alpha = span("Alpha", 120.0, 220.0, 30.0, 10.0);
+        alpha.sequence = 20;
+        let mut beta = span("Beta", 160.0, 220.0, 25.0, 10.0);
+        beta.sequence = 21;
+        let spans = vec![alpha, beta];
+        let blocks = vec![
+            BlockView {
+                bbox: (110.0, 215.0, 90.0, 20.0),
+                text: "Alpha",
+                type_label: "Body".to_string(),
+            },
+            BlockView {
+                bbox: (110.0, 215.0, 90.0, 20.0),
+                text: "Beta",
+                type_label: "Body".to_string(),
+            },
+        ];
+        let figures = [figure(100.0, 200.0, 300.0, 300.0)];
+
+        let geometric = reconcile_views(&blocks, &figures, &[], &spans, PAGE_HEIGHT);
+        assert!(geometric.consumed.is_empty());
+
+        let exact = reconcile_views_with_provenance(
+            &blocks,
+            &figures,
+            &[],
+            &spans,
+            PAGE_HEIGHT,
+            &[vec![20], vec![21]],
+        );
+        assert_eq!(exact.consumed.len(), 2);
+        assert!(exact.retained_ambiguous.is_empty());
+    }
+
+    #[test]
+    fn exact_provenance_still_fails_open_on_character_mismatch() {
+        let mut alpha = span("Alpha", 120.0, 220.0, 30.0, 10.0);
+        alpha.sequence = 30;
+        let spans = vec![alpha];
+        let blocks = vec![BlockView {
+            bbox: (115.0, 215.0, 75.0, 20.0),
+            text: "Alpha Extra",
+            type_label: "Body".to_string(),
+        }];
+
+        let result = reconcile_views_with_provenance(
+            &blocks,
+            &[figure(100.0, 200.0, 300.0, 300.0)],
+            &[],
+            &spans,
+            PAGE_HEIGHT,
+            &[vec![30]],
+        );
+
+        assert!(result.consumed.is_empty());
+        assert_eq!(result.retained_ambiguous, vec![0]);
+    }
+
+    #[test]
+    fn page_scale_region_preserves_geometric_ambiguity() {
+        let mut alpha = span("Alpha", 120.0, 220.0, 30.0, 10.0);
+        alpha.sequence = 40;
+        let mut beta = span("Beta", 160.0, 220.0, 25.0, 10.0);
+        beta.sequence = 41;
+        let spans = vec![alpha, beta];
+        let blocks = vec![
+            BlockView {
+                bbox: (110.0, 215.0, 90.0, 20.0),
+                text: "Alpha",
+                type_label: "Title".to_string(),
+            },
+            BlockView {
+                bbox: (110.0, 215.0, 90.0, 20.0),
+                text: "Beta",
+                type_label: "Title".to_string(),
+            },
+        ];
+
+        let result = reconcile_views_with_provenance(
+            &blocks,
+            &[figure(50.0, 180.0, 500.0, 400.0)],
+            &[],
+            &spans,
+            PAGE_HEIGHT,
+            &[vec![40], vec![41]],
         );
 
         assert!(result.consumed.is_empty());

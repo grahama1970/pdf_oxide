@@ -40,6 +40,8 @@ pub(crate) enum RegionClass {
 pub(crate) struct RegionDecision {
     pub bbox: Rect,
     pub class: RegionClass,
+    pub caption: String,
+    pub caption_number: u32,
 }
 
 #[derive(Debug, Default)]
@@ -103,9 +105,15 @@ pub(crate) fn discriminate_vector_regions(
             let region = connected_region_for_caption(caption, blocks, &painted, page_height)?;
             let evidence =
                 collect_evidence(&region, caption, &painted, tables, blocks, page_height);
+            let class = classify(anchor, &evidence, region);
+            let caption_number = match anchor {
+                CaptionAnchor::Figure(number) | CaptionAnchor::Table(number) => number,
+            };
             Some(RegionDecision {
                 bbox: region,
-                class: classify(anchor, &evidence, region),
+                class,
+                caption: caption.text.clone(),
+                caption_number,
             })
         })
         .collect()
@@ -312,7 +320,20 @@ fn collect_evidence(
     for block in blocks.iter().filter(|block| region.intersects(&block.bbox)) {
         if block.font_size <= caption.font_size * 0.8 {
             evidence.tiny_label_blocks += 1;
-            evidence.tiny_label_area += block.bbox.area();
+            // A merged label block can have a large union rectangle spanning
+            // sparse ticks or legends. Measure its exact source-line boxes,
+            // clipped to the candidate region, instead of charging the empty
+            // space between them as label ink.
+            evidence.tiny_label_area += if block.lines.is_empty() {
+                block.bbox.intersection(region).map_or(0.0, |bbox| bbox.area())
+            } else {
+                block
+                    .lines
+                    .iter()
+                    .filter_map(|line| line.bbox.intersection(region))
+                    .map(|bbox| bbox.area())
+                    .sum()
+            };
         }
     }
     evidence
@@ -433,6 +454,7 @@ fn horizontal_overlap_ratio(left: &Rect, right: &Rect) -> f32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::extractors::block_classifier::BlockLine;
     use crate::layout::Color;
     use crate::tables::Flavor;
 
@@ -479,6 +501,61 @@ mod tests {
 
         assert_eq!(decisions.len(), 1);
         assert_eq!(decisions[0].class, RegionClass::Figure);
+        assert_eq!(decisions[0].caption_number, 3);
+        assert_eq!(decisions[0].caption, "Figure 3. Architecture");
+    }
+
+    #[test]
+    fn sparse_label_area_uses_source_lines_not_merged_union_rectangles() {
+        let caption = block(
+            BlockType::Caption,
+            "Figure 6. Training curves",
+            Rect::new(50.0, 100.0, 240.0, 10.0),
+            9.0,
+        );
+        let mut first = block(
+            BlockType::Body,
+            "0 10 20",
+            Rect::new(60.0, 120.0, 180.0, 50.0),
+            5.0,
+        );
+        first.lines = vec![BlockLine {
+            bbox: Rect::new(60.0, 120.0, 20.0, 5.0),
+            text: "0 10 20".to_string(),
+            font_size: 5.0,
+            font_name: "Helvetica".to_string(),
+            is_bold: false,
+            span_sequences: Vec::new(),
+        }];
+        let mut second = block(
+            BlockType::Body,
+            "legend",
+            Rect::new(70.0, 125.0, 170.0, 45.0),
+            5.0,
+        );
+        second.lines = vec![BlockLine {
+            bbox: Rect::new(210.0, 160.0, 20.0, 5.0),
+            text: "legend".to_string(),
+            font_size: 5.0,
+            font_name: "Helvetica".to_string(),
+            is_bold: false,
+            span_sequences: Vec::new(),
+        }];
+        let paths = vec![
+            PathContent::line(70.0, 120.0, 100.0, 140.0),
+            PathContent::line(90.0, 120.0, 120.0, 145.0),
+            PathContent::line(110.0, 125.0, 140.0, 150.0),
+            PathContent::line(130.0, 130.0, 160.0, 155.0),
+            PathContent::line(150.0, 135.0, 180.0, 160.0),
+            PathContent::line(170.0, 140.0, 200.0, 165.0),
+        ];
+
+        let decisions =
+            discriminate_vector_regions(&[caption, first, second], &paths, &[], 792.0);
+
+        assert_eq!(decisions.len(), 1);
+        assert_eq!(decisions[0].class, RegionClass::Figure);
+        assert_eq!(decisions[0].caption_number, 6);
     }
 
     #[test]

@@ -20,6 +20,8 @@ pub struct MergedBlock {
     pub paragraph_id: usize,
     pub is_running_header: bool,
     pub is_running_footer: bool,
+    /// Content-stream sequence identifiers of the exact source spans.
+    pub span_sequences: Vec<usize>,
 }
 
 impl MergedBlock {
@@ -36,6 +38,11 @@ impl MergedBlock {
             paragraph_id,
             is_running_header: false,
             is_running_footer: false,
+            span_sequences: block
+                .lines
+                .iter()
+                .flat_map(|line| line.span_sequences.iter().copied())
+                .collect(),
         }
     }
 }
@@ -316,6 +323,12 @@ fn merge_paragraphs(blocks: &[ClassifiedBlock]) -> Vec<MergedBlock> {
                         prev.text.push(' ');
                         prev.text.push_str(&block.text);
                         prev.bbox = prev.bbox.union(&block.bbox);
+                        prev.span_sequences.extend(
+                            block
+                                .lines
+                                .iter()
+                                .flat_map(|line| line.span_sequences.iter().copied()),
+                        );
                         if block.block_type == BlockType::Footnote {
                             prev.block_type = BlockType::Footnote;
                         }
@@ -542,6 +555,7 @@ mod tests {
                     paragraph_id: 0,
                     is_running_header: false,
                     is_running_footer: false,
+                    span_sequences: Vec::new(),
                 }]
             })
             .collect();
@@ -570,6 +584,7 @@ mod tests {
                     paragraph_id: 0,
                     is_running_header: false,
                     is_running_footer: false,
+                    span_sequences: Vec::new(),
                 }]
             })
             .collect();
@@ -598,6 +613,7 @@ mod tests {
             paragraph_id: 0,
             is_running_header: false,
             is_running_footer: false,
+            span_sequences: Vec::new(),
         };
         let mut pages = vec![
             vec![make_body("Unique final body line", 8.0)],

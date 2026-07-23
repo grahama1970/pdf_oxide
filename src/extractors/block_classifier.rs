@@ -174,6 +174,8 @@ pub struct BlockLine {
     pub font_name: String,
     /// Whether any span on this line is bold.
     pub is_bold: bool,
+    /// Content-stream sequence identifiers of the exact source spans.
+    pub span_sequences: Vec<usize>,
 }
 
 impl BlockLine {
@@ -190,12 +192,14 @@ impl BlockLine {
         let is_bold = spans
             .iter()
             .any(|s| s.font_weight == crate::layout::text_block::FontWeight::Bold);
+        let span_sequences = spans.iter().map(|span| span.sequence).collect();
         Self {
             bbox,
             text: text.trim().to_string(),
             font_size: avg_font_size,
             font_name,
             is_bold,
+            span_sequences,
         }
     }
 }
@@ -1535,6 +1539,7 @@ fn merge_reference_continuations(blocks: &mut Vec<ClassifiedBlock>, page_width: 
                 font_size: blocks[index].font_size,
                 font_name: blocks[index].font_name.clone(),
                 is_bold: blocks[index].is_bold,
+                span_sequences: Vec::new(),
             });
             if !is_hanging_indent_continuation(&blocks[index], &previous_line, next, page_width) {
                 break;
@@ -1766,7 +1771,10 @@ fn merge_caption_continuations(
             let Some(next) = blocks.get(index + 1) else {
                 break;
             };
-            if !matches!(next.block_type, BlockType::Body | BlockType::List) {
+            if !matches!(
+                next.block_type,
+                BlockType::Body | BlockType::List | BlockType::Boilerplate
+            ) {
                 break;
             }
 
@@ -2882,6 +2890,40 @@ mod tests {
         assert_eq!(blocks.len(), 1);
         assert_eq!(blocks[0].block_type, BlockType::Caption);
         assert!(blocks[0].text.contains("box refinement"));
+    }
+
+    #[test]
+    fn test_caption_absorbs_geometry_matched_boilerplate_continuation() {
+        let mut blocks = vec![
+            test_block(
+                BlockType::Caption,
+                "Figure 4. Training curves. Left: plain",
+                Rect::new(50.0, 500.0, 530.0, 9.0),
+                9.0,
+                false,
+            ),
+            test_block(
+                BlockType::Boilerplate,
+                "networks of 18 and 34 layers. Right: residual networks.",
+                Rect::new(50.0, 489.0, 520.0, 9.0),
+                9.0,
+                false,
+            ),
+            test_block(
+                BlockType::Body,
+                "Their plain counterparts.",
+                Rect::new(50.0, 478.0, 120.0, 9.0),
+                9.0,
+                false,
+            ),
+        ];
+
+        merge_caption_continuations(&mut blocks, 612.0, 10.0);
+
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].block_type, BlockType::Caption);
+        assert!(blocks[0].text.contains("residual networks"));
+        assert!(blocks[0].text.ends_with("Their plain counterparts."));
     }
 
     #[test]
