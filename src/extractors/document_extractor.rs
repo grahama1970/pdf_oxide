@@ -8,7 +8,10 @@ use serde::Serialize;
 
 use crate::document::PdfDocument;
 use crate::error::Result;
-use crate::extractors::block_classifier::{BlockClassifier, BlockType, ClassifiedBlock};
+use crate::extractors::block_classifier::{
+    major_section_boundary_y, reference_section_anchor_geometry, BlockClassifier, BlockType,
+    ClassifiedBlock,
+};
 use crate::extractors::block_merger::{
     mark_running_headers_footers, merge_blocks, promote_repeated_bottom_center_notes, MergedBlock,
 };
@@ -199,6 +202,8 @@ pub fn extract_document_with_config(
         usize,
         crate::extractors::table_block_reconciler::ConsumedBlock,
     )> = Vec::new();
+    let mut reference_section_active = false;
+    let mut reference_heading_font_size = None;
 
     for pg in 0..max_pages {
         let spans = doc.extract_spans_unsorted(pg).unwrap_or_default();
@@ -255,7 +260,32 @@ pub fn extract_document_with_config(
             config.header_ratio_override,
         )
         .with_underline_rects(underline_rects);
-        let classified = classifier.classify_spans(&spans);
+        let reference_anchor = reference_section_anchor_geometry(&spans, width, height);
+        if let Some((font_size, _)) = reference_anchor {
+            reference_section_active = true;
+            reference_heading_font_size = Some(font_size);
+        }
+        let reference_boundary_y = reference_section_active
+            .then(|| reference_heading_font_size)
+            .flatten()
+            .and_then(|font_size| {
+                major_section_boundary_y(
+                    &spans,
+                    width,
+                    height,
+                    font_size,
+                    reference_anchor.map(|(_, anchor_y)| anchor_y),
+                )
+            });
+        let classified = classifier.classify_spans_with_reference_context_until(
+            &spans,
+            reference_section_active,
+            reference_boundary_y,
+        );
+        if reference_boundary_y.is_some() {
+            reference_section_active = false;
+            reference_heading_font_size = None;
+        }
         let mut merged = merge_blocks(&classified, height);
 
         // Detect raw table candidates first, then make one shared geometric

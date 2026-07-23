@@ -181,7 +181,9 @@ pub struct BlockLine {
 impl BlockLine {
     /// Build one `BlockLine` from the spans that share a line.
     fn from_spans(spans: &[&TextSpan]) -> Self {
-        let bbox = spans.iter().fold(spans[0].bbox, |acc, s| acc.union(&s.bbox));
+        let bbox = spans
+            .iter()
+            .fold(spans[0].bbox, |acc, s| acc.union(&s.bbox));
         let text: String = spans
             .iter()
             .map(|s| s.text.as_str())
@@ -285,10 +287,7 @@ impl BlockClassifier {
                 (span.font_size, visible_chars.max(1))
             })
             .collect();
-        size_weights.sort_by(|a, b| {
-            a.0.partial_cmp(&b.0)
-                .unwrap_or(std::cmp::Ordering::Equal)
-        });
+        size_weights.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal));
         let auto_median = if size_weights.is_empty() {
             12.0
         } else {
@@ -331,6 +330,39 @@ impl BlockClassifier {
 
     /// Classify all spans on a page into typed blocks.
     pub fn classify_spans(&self, spans: &[TextSpan]) -> Vec<ClassifiedBlock> {
+        let reference_anchor =
+            reference_section_anchor_geometry(spans, self.page_width, self.page_height);
+        let reference_boundary_y = reference_anchor.and_then(|(font_size, anchor_y)| {
+            major_section_boundary_y(
+                spans,
+                self.page_width,
+                self.page_height,
+                font_size,
+                Some(anchor_y),
+            )
+        });
+        self.classify_spans_with_reference_context_until(
+            spans,
+            reference_anchor.is_some(),
+            reference_boundary_y,
+        )
+    }
+
+    /// Classify a reference-section page up to an optional later major heading.
+    ///
+    /// `classify_spans` recognizes an anchor on the current page. The document
+    /// extractor uses this entry point to carry that context onto continuation
+    /// pages, where entry typing remains geometry-gated rather than
+    /// vocabulary-gated.
+    ///
+    /// PDF coordinates descend down the page, so blocks with `y` below the
+    /// boundary belong to the following section and cannot be promoted.
+    pub(crate) fn classify_spans_with_reference_context_until(
+        &self,
+        spans: &[TextSpan],
+        reference_section_context: bool,
+        reference_boundary_y: Option<f32>,
+    ) -> Vec<ClassifiedBlock> {
         let lines = group_spans_into_lines(spans);
 
         let mut blocks = Vec::new();
@@ -345,12 +377,7 @@ impl BlockClassifier {
             blocks.push(block);
         }
 
-        refine_caption_flow(
-            &mut blocks,
-            self.page_width,
-            self.page_height,
-            self.median_font_size,
-        );
+        refine_caption_flow(&mut blocks, self.page_width, self.page_height, self.median_font_size);
         promote_repeated_reference_entries(&mut blocks, self.page_width, self.page_height);
         merge_reference_continuations(&mut blocks, self.page_width);
         promote_control_catalog_headings(
@@ -360,6 +387,14 @@ impl BlockClassifier {
             self.page_height,
         );
         merge_consecutive_body(&mut blocks);
+        if reference_section_context {
+            promote_unnumbered_reference_streams(
+                &mut blocks,
+                self.page_width,
+                self.page_height,
+                reference_boundary_y,
+            );
+        }
         promote_compact_heading_roles(&mut blocks, self.page_width);
         promote_isolated_heading_blocks(&mut blocks);
         // WebGPT 2026-05-13 R8 — suppress empty-text classified blocks
@@ -387,8 +422,8 @@ impl BlockClassifier {
                 return false;
             }
 
-            let overlap = (text_bbox.x + text_bbox.width).min(rule.x + rule.width)
-                - text_bbox.x.max(rule.x);
+            let overlap =
+                (text_bbox.x + text_bbox.width).min(rule.x + rule.width) - text_bbox.x.max(rule.x);
             let covers_text = overlap.max(0.0) / text_bbox.width >= 0.60;
             let rule_top = rule.y + rule.height;
             let lies_at_baseline = rule_top <= text_bbox.y + font_size * 0.15
@@ -1435,6 +1470,81 @@ fn group_spans_into_lines(spans: &[TextSpan]) -> Vec<Vec<&TextSpan>> {
     lines
 }
 
+/// Return the font size of a structurally valid References/Bibliography
+/// section anchor.
+///
+/// The literal vocabulary is deliberately confined to section-context
+/// discovery. It never decides whether an entry is a reference. The heading
+/// must also be a standalone bold line in the page content band.
+pub(crate) fn reference_section_anchor_geometry(
+    spans: &[TextSpan],
+    page_width: f32,
+    page_height: f32,
+) -> Option<(f32, f32)> {
+    if page_width <= 0.0 || page_height <= 0.0 {
+        return None;
+    }
+
+    group_spans_into_lines(spans).into_iter().find_map(|line| {
+        let block = BlockLine::from_spans(&line);
+        let normalized = block
+            .text
+            .split_whitespace()
+            .collect::<Vec<_>>()
+            .join(" ")
+            .to_ascii_lowercase();
+        let is_reference_heading =
+            matches!(normalized.as_str(), "references" | "references cited" | "bibliography");
+        let top_ratio = 1.0 - (block.bbox.y + block.bbox.height) / page_height;
+        (is_reference_heading
+            && block.is_bold
+            && block.bbox.width <= page_width * 0.45
+            && (0.05..=0.90).contains(&top_ratio))
+        .then_some((block.font_size, block.bbox.y))
+    })
+}
+
+/// A later bold heading at least as prominent as the reference-section anchor
+/// closes propagated document context. This is typography/geometry only; its
+/// wording is irrelevant. When an anchor ordinate is supplied, headings above
+/// that anchor cannot close the section it opens.
+pub(crate) fn major_section_boundary_y(
+    spans: &[TextSpan],
+    page_width: f32,
+    page_height: f32,
+    reference_heading_font_size: f32,
+    below_y: Option<f32>,
+) -> Option<f32> {
+    if page_width <= 0.0 || page_height <= 0.0 || reference_heading_font_size <= 0.0 {
+        return None;
+    }
+
+    group_spans_into_lines(spans)
+        .into_iter()
+        .filter_map(|line| {
+            let block = BlockLine::from_spans(&line);
+            let text = block.text.trim();
+            let normalized = text
+                .split_whitespace()
+                .collect::<Vec<_>>()
+                .join(" ")
+                .to_ascii_lowercase();
+            let is_reference_heading =
+                matches!(normalized.as_str(), "references" | "references cited" | "bibliography");
+            let top_ratio = 1.0 - (block.bbox.y + block.bbox.height) / page_height;
+            (block.is_bold
+                && !is_reference_heading
+                && block.font_size >= reference_heading_font_size * 0.98
+                && block.bbox.width <= page_width * 0.80
+                && (0.05..=0.90).contains(&top_ratio)
+                && (2..=160).contains(&text.chars().count())
+                && !matches!(text.chars().last(), Some('.') | Some(',') | Some(';') | Some(':'))
+                && below_y.is_none_or(|anchor_y| block.bbox.y < anchor_y))
+            .then_some(block.bbox.y)
+        })
+        .max_by(f32::total_cmp)
+}
+
 /// Promote citation-shaped body lines only when page geometry shows that they
 /// belong to a repeated hanging-indent stream.
 ///
@@ -1468,8 +1578,8 @@ fn promote_repeated_reference_entries(
 
             let top_ratio = 1.0 - (block.bbox.y + block.bbox.height) / page_height;
             let inside_content_band = (0.08..=0.92).contains(&top_ratio);
-            let inside_content_width = block.bbox.x >= page_width * 0.06
-                && block.bbox.x <= page_width * 0.94;
+            let inside_content_width =
+                block.bbox.x >= page_width * 0.06 && block.bbox.x <= page_width * 0.94;
             (inside_content_band && inside_content_width).then_some(index)
         })
         .collect();
@@ -1596,6 +1706,189 @@ fn is_hanging_indent_continuation(
 
     let vertical_gap = previous_line.bbox.y - (next.bbox.y + next.bbox.height);
     vertical_gap >= -anchor.font_size * 0.5 && vertical_gap <= anchor.font_size * 1.5
+}
+
+/// Promote unnumbered bibliography entries only inside a previously anchored
+/// References/Bibliography section.
+///
+/// The primary positive is the mirror image of numbered references: repeated
+/// flush-left entry blocks whose preserved continuation lines hang to the
+/// right. Some producer PDFs flatten those continuations back to the entry
+/// anchor; for them, a fallback requires a homogeneous page-local rhythm:
+/// repeated same-anchor, same-face blocks separated by entry-sized whitespace.
+/// Neither path inspects author names, years, venues, punctuation, or citation
+/// vocabulary.
+fn promote_unnumbered_reference_streams(
+    blocks: &mut Vec<ClassifiedBlock>,
+    page_width: f32,
+    page_height: f32,
+    reference_boundary_y: Option<f32>,
+) {
+    use BlockType::{Body, Boilerplate, List, Reference, Subtitle, Title};
+
+    if page_width <= 0.0 || page_height <= 0.0 {
+        return;
+    }
+
+    let anchor_index = blocks.iter().position(|block| {
+        let normalized = block
+            .text
+            .split_whitespace()
+            .collect::<Vec<_>>()
+            .join(" ")
+            .to_ascii_lowercase();
+        matches!(normalized.as_str(), "references" | "references cited" | "bibliography")
+            && block.is_bold
+    });
+    if let Some(index) = anchor_index {
+        blocks[index].block_type = Title;
+        blocks[index].header_level = Some(1);
+        blocks[index].confidence = blocks[index].confidence.max(0.95);
+    }
+
+    // Alphabetic bibliography dividers are typography-defined: exactly one
+    // bold alphabetic glyph, body-sized, on the entry anchor.
+    for block in blocks.iter_mut() {
+        let text = block.text.trim();
+        if block.block_type == Body
+            && block.is_bold
+            && text.chars().count() == 1
+            && text.chars().all(char::is_alphabetic)
+            && block.bbox.x >= page_width * 0.06
+            && block.bbox.x <= page_width * 0.20
+            && reference_boundary_y.is_none_or(|boundary_y| block.bbox.y > boundary_y)
+        {
+            block.block_type = Subtitle;
+            block.header_level = Some(2);
+            block.confidence = block.confidence.max(0.95);
+        }
+    }
+
+    // On the section-anchor page, an explanatory paragraph may precede the
+    // first body-sized subheading ("Preface", "A", etc.). The no-indent
+    // fallback starts below that structural divider. Explicit hanging-indent
+    // entries remain eligible immediately below the main heading.
+    let fallback_ceiling_y = anchor_index.and_then(|anchor| {
+        let anchor_font_size = blocks[anchor].font_size;
+        blocks.iter().skip(anchor + 1).find_map(|block| {
+            let compact_bold_subheading = block.is_bold
+                && block.font_size <= anchor_font_size * 0.95
+                && block.text.trim().chars().count() <= 80
+                && matches!(block.block_type, Body | Subtitle | Title);
+            compact_bold_subheading.then_some(block.bbox.y)
+        })
+    });
+
+    let eligible: Vec<usize> = blocks
+        .iter()
+        .enumerate()
+        .filter_map(|(index, block)| {
+            let top_ratio = 1.0 - (block.bbox.y + block.bbox.height) / page_height;
+            (matches!(block.block_type, Body | List | Boilerplate)
+                && !block.is_bold
+                && block.font_size > 0.0
+                && (0.07..=0.89).contains(&top_ratio)
+                && block.bbox.x >= page_width * 0.06
+                && block.bbox.x <= page_width * 0.90
+                && reference_boundary_y.is_none_or(|boundary_y| block.bbox.y > boundary_y))
+            .then_some(index)
+        })
+        .collect();
+
+    let x_tolerance = (page_width * 0.01).max(2.0);
+    let mut best_cluster: Vec<usize> = Vec::new();
+    for &seed_index in &eligible {
+        let seed = &blocks[seed_index];
+        let cluster: Vec<usize> = eligible
+            .iter()
+            .copied()
+            .filter(|&index| {
+                let block = &blocks[index];
+                let font_ratio = block.font_size / seed.font_size.max(1.0);
+                (block.bbox.x - seed.bbox.x).abs() <= x_tolerance
+                    && (0.97..=1.03).contains(&font_ratio)
+            })
+            .collect();
+        if cluster.len() > best_cluster.len() {
+            best_cluster = cluster;
+        }
+    }
+    if best_cluster.len() < 2 {
+        return;
+    }
+
+    let has_hanging_indent = |block: &ClassifiedBlock| {
+        let Some(first) = block.lines.first() else {
+            return false;
+        };
+        block.lines.iter().skip(1).any(|line| {
+            let indent = line.bbox.x - first.bbox.x;
+            indent > 0.5 && indent <= block.font_size * 4.0
+        })
+    };
+    let hanging_entries = best_cluster
+        .iter()
+        .filter(|&&index| has_hanging_indent(&blocks[index]))
+        .count();
+
+    let rhythmic_cluster: Vec<usize> = best_cluster
+        .iter()
+        .copied()
+        .filter(|&index| {
+            fallback_ceiling_y.is_none_or(|ceiling_y| blocks[index].bbox.y < ceiling_y)
+        })
+        .collect();
+    let rhythmic_entry_gaps = rhythmic_cluster
+        .windows(2)
+        .filter(|pair| {
+            let above = &blocks[pair[0]];
+            let below = &blocks[pair[1]];
+            downward_gap(above, below)
+                .is_some_and(|gap| gap >= above.font_size * 0.75 && gap <= above.font_size * 1.50)
+        })
+        .count();
+    let homogeneous_rhythm = rhythmic_cluster.len() >= 2 && rhythmic_entry_gaps >= 1;
+
+    let promote_indices: Vec<usize> = if hanging_entries >= 2 {
+        best_cluster
+    } else if homogeneous_rhythm {
+        rhythmic_cluster
+    } else {
+        return;
+    };
+
+    for index in promote_indices {
+        blocks[index].block_type = Reference;
+        blocks[index].confidence = blocks[index].confidence.max(0.9);
+    }
+
+    // A line classifier may have typed a flush-left continuation as List or
+    // Boilerplate. Once both neighbors belong to the validated stream, tight
+    // leading (not entry-sized whitespace) merges them without character loss.
+    let mut index = 0;
+    while index + 1 < blocks.len() {
+        if blocks[index].block_type != Reference || blocks[index + 1].block_type != Reference {
+            index += 1;
+            continue;
+        }
+        let font_ratio = blocks[index + 1].font_size / blocks[index].font_size.max(1.0);
+        let dx = blocks[index + 1].bbox.x - blocks[index].bbox.x;
+        let tight_continuation = downward_gap(&blocks[index], &blocks[index + 1])
+            .is_some_and(|gap| gap <= blocks[index].font_size * 0.50);
+        if !(0.97..=1.03).contains(&font_ratio)
+            || !(-x_tolerance..=blocks[index].font_size * 4.0).contains(&dx)
+            || !tight_continuation
+        {
+            index += 1;
+            continue;
+        }
+
+        let absorbed = blocks.remove(index + 1);
+        blocks[index].text.push(' ');
+        blocks[index].text.push_str(&absorbed.text);
+        blocks[index].bbox = blocks[index].bbox.union(&absorbed.bbox);
+        blocks[index].lines.extend(absorbed.lines);
+    }
 }
 
 /// A compact citation token at the beginning of a line. Token recognition is
@@ -1987,9 +2280,7 @@ fn has_compact_control_id_prefix(text: &str) -> bool {
     let Some((family, number)) = token.split_once('-') else {
         return false;
     };
-    if !(2..=5).contains(&family.len())
-        || !family.bytes().all(|byte| byte.is_ascii_uppercase())
-    {
+    if !(2..=5).contains(&family.len()) || !family.bytes().all(|byte| byte.is_ascii_uppercase()) {
         return false;
     }
 
@@ -2045,16 +2336,13 @@ fn starts_with_url_scheme_or_link_phrase(text: &str) -> bool {
                     scheme.to_ascii_lowercase().as_str(),
                     "mailto" | "tel" | "urn" | "doi" | "data" | "file"
                 ))
-            && scheme
-                .bytes()
-                .enumerate()
-                .all(|(index, byte)| {
-                    if index == 0 {
-                        byte.is_ascii_alphabetic()
-                    } else {
-                        byte.is_ascii_alphanumeric() || matches!(byte, b'+' | b'-' | b'.')
-                    }
-                })
+            && scheme.bytes().enumerate().all(|(index, byte)| {
+                if index == 0 {
+                    byte.is_ascii_alphabetic()
+                } else {
+                    byte.is_ascii_alphanumeric() || matches!(byte, b'+' | b'-' | b'.')
+                }
+            })
         {
             return true;
         }
@@ -2154,8 +2442,7 @@ fn promote_isolated_heading_blocks(blocks: &mut Vec<ClassifiedBlock>) {
             true
         } else {
             let p = &blocks[i - 1];
-            p.block_type == Title
-                || (p.block_type == Body && heading_shaped_subtitle(p))
+            p.block_type == Title || (p.block_type == Body && heading_shaped_subtitle(p))
         };
 
         let next_ok = if i + 1 >= n {
@@ -2260,8 +2547,7 @@ fn merge_list_runs_and_continuations(blocks: &mut Vec<ClassifiedBlock>) {
 
             // Indentation classification.
             let dx = next.bbox.x - anchor_x;
-            let is_continuation =
-                next.block_type == Body && dx > 0.5 && dx <= anchor_fs * 4.0;
+            let is_continuation = next.block_type == Body && dx > 0.5 && dx <= anchor_fs * 4.0;
             let is_sibling_list = next.block_type == List && dx.abs() <= 2.0;
             if !is_continuation && !is_sibling_list {
                 break;
@@ -3041,13 +3327,7 @@ mod tests {
                 10.0,
                 true,
             ),
-            test_block(
-                BlockType::Body,
-                "VALUE",
-                Rect::new(50.0, 292.0, 70.0, 10.0),
-                10.0,
-                false,
-            ),
+            test_block(BlockType::Body, "VALUE", Rect::new(50.0, 292.0, 70.0, 10.0), 10.0, false),
         ];
 
         promote_compact_heading_roles(&mut blocks, 612.0);
@@ -3162,13 +3442,7 @@ mod tests {
     #[test]
     fn test_repeated_reference_stream_covers_hanging_and_same_line_entries() {
         let spans = vec![
-            make_span(
-                "[ZX 100] First standard entry begins here",
-                95.0,
-                700.0,
-                10.5,
-                false,
-            ),
+            make_span("[ZX 100] First standard entry begins here", 95.0, 700.0, 10.5, false),
             make_span(
                 "hanging-indent continuation for the first entry.",
                 113.0,
@@ -3217,8 +3491,14 @@ mod tests {
         );
         let actual_text: String = blocks.iter().map(|block| block.text.as_str()).collect();
         assert_eq!(
-            actual_text.chars().filter(|c| !c.is_whitespace()).collect::<String>(),
-            expected_text.chars().filter(|c| !c.is_whitespace()).collect::<String>(),
+            actual_text
+                .chars()
+                .filter(|c| !c.is_whitespace())
+                .collect::<String>(),
+            expected_text
+                .chars()
+                .filter(|c| !c.is_whitespace())
+                .collect::<String>(),
             "reference promotion must not delete text"
         );
     }
@@ -3235,13 +3515,7 @@ mod tests {
                 false,
             ),
             make_span("[QY 200]", 95.0, 430.0, 10.0, false),
-            make_span(
-                "Another definition in the same glossary layout.",
-                226.0,
-                410.0,
-                11.0,
-                false,
-            ),
+            make_span("Another definition in the same glossary layout.", 226.0, 410.0, 11.0, false),
         ];
         let classifier = BlockClassifier::new(612.0, 792.0, &spans);
         let blocks = classifier.classify_spans(&spans);
@@ -3333,13 +3607,7 @@ mod tests {
                 10.0,
                 false,
             ),
-            make_span(
-                "and this continuation also remains flush left",
-                50.0,
-                635.0,
-                10.0,
-                false,
-            ),
+            make_span("and this continuation also remains flush left", 50.0, 635.0, 10.0, false),
         ];
         let classifier = BlockClassifier::new(612.0, 792.0, &spans);
         let blocks = classifier.classify_spans(&spans);
@@ -3366,38 +3634,154 @@ mod tests {
     }
 
     #[test]
+    fn test_unnumbered_hanging_indent_entries_in_bibliography_context() {
+        let spans = vec![
+            make_span("Bibliography", 72.0, 720.0, 14.0, true),
+            make_span("First unnumbered entry begins at the page anchor", 72.0, 680.0, 12.0, false),
+            make_span("and its continuation uses a hanging indent", 96.0, 665.0, 12.0, false),
+            make_span(
+                "Second unnumbered entry begins at the same anchor",
+                72.0,
+                630.0,
+                12.0,
+                false,
+            ),
+            make_span("with the same continuation geometry", 96.0, 615.0, 12.0, false),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        let references: Vec<_> = blocks
+            .iter()
+            .filter(|block| block.block_type == BlockType::Reference)
+            .collect();
+        assert_eq!(references.len(), 2, "expected two unnumbered entries: {blocks:?}");
+        assert!(
+            references
+                .iter()
+                .all(|block| block.lines.len() == 2 && block.text.contains("continuation")),
+            "each hanging continuation must stay with its entry: {blocks:?}"
+        );
+        let actual_text: String = blocks.iter().map(|block| block.text.as_str()).collect();
+        let expected_text: String = spans.iter().map(|span| span.text.as_str()).collect();
+        assert_eq!(
+            actual_text
+                .chars()
+                .filter(|character| !character.is_whitespace())
+                .collect::<String>(),
+            expected_text
+                .chars()
+                .filter(|character| !character.is_whitespace())
+                .collect::<String>(),
+            "promotion must not lose source characters"
+        );
+    }
+
+    #[test]
+    fn test_unnumbered_hanging_prose_without_section_context_remains_body() {
+        let spans = vec![
+            make_span(
+                "A running paragraph begins at the page anchor and continues",
+                50.0,
+                700.0,
+                10.0,
+                false,
+            ),
+            make_span(
+                "with an occasional visual indent in ordinary prose.",
+                68.0,
+                687.0,
+                10.0,
+                false,
+            ),
+            make_span(
+                "Another paragraph also begins flush left and continues",
+                50.0,
+                650.0,
+                10.0,
+                false,
+            ),
+            make_span(
+                "with the same incidental indent but no bibliography anchor.",
+                68.0,
+                637.0,
+                10.0,
+                false,
+            ),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        assert!(
+            blocks
+                .iter()
+                .all(|block| block.block_type != BlockType::Reference),
+            "hanging-looking prose must not promote without section context: {blocks:?}"
+        );
+    }
+
+    #[test]
+    fn test_unnumbered_references_stop_at_later_same_page_section_boundary() {
+        let spans = vec![
+            make_span("Bibliography", 72.0, 720.0, 14.0, true),
+            make_span("First entry begins at the bibliography anchor", 72.0, 680.0, 12.0, false),
+            make_span("and continues with the hanging indent", 96.0, 665.0, 12.0, false),
+            make_span("Second entry begins at the bibliography anchor", 72.0, 630.0, 12.0, false),
+            make_span("and also continues with the hanging indent", 96.0, 615.0, 12.0, false),
+            make_span("Appendix Notes", 72.0, 570.0, 14.0, true),
+            make_span(
+                "Running prose below the closing heading begins flush left",
+                72.0,
+                530.0,
+                12.0,
+                false,
+            ),
+            make_span("with an incidental hanging-looking continuation", 96.0, 515.0, 12.0, false),
+            make_span("A second prose paragraph has matching geometry", 72.0, 480.0, 12.0, false),
+            make_span("and the same incidental continuation indent", 96.0, 465.0, 12.0, false),
+        ];
+        let classifier = BlockClassifier::new(612.0, 792.0, &spans);
+        let blocks = classifier.classify_spans(&spans);
+
+        let references: Vec<_> = blocks
+            .iter()
+            .filter(|block| block.block_type == BlockType::Reference)
+            .collect();
+        assert_eq!(
+            references.len(),
+            2,
+            "only entries above the later major heading may promote: {blocks:?}"
+        );
+        assert!(
+            references
+                .iter()
+                .all(|block| block.bbox.y > 570.0 && !block.text.contains("Running prose")),
+            "reference context must close at the heading ordinate: {blocks:?}"
+        );
+        assert!(
+            blocks.iter().any(|block| {
+                block.text.contains("Running prose") && block.block_type != BlockType::Reference
+            }),
+            "prose below the boundary must retain a non-reference type: {blocks:?}"
+        );
+    }
+
+    #[test]
     fn test_control_catalog_heading_shape_and_negative_guards() {
         assert!(has_compact_control_id_prefix("ZX-7 Retention Overview"));
-        assert!(has_compact_control_id_prefix(
-            "QRS-42(3) Alternate Processing"
-        ));
+        assert!(has_compact_control_id_prefix("QRS-42(3) Alternate Processing"));
         assert!(!has_compact_control_id_prefix("ZX-7"));
-        assert!(!has_compact_control_id_prefix(
-            "zx-7 Retention Overview"
-        ));
-        assert!(!has_compact_control_id_prefix(
-            "TABLE C-7: Retention Overview"
-        ));
+        assert!(!has_compact_control_id_prefix("zx-7 Retention Overview"));
+        assert!(!has_compact_control_id_prefix("TABLE C-7: Retention Overview"));
 
-        assert!(starts_with_url_scheme_or_link_phrase(
-            "https://example.invalid/reference"
-        ));
-        assert!(starts_with_url_scheme_or_link_phrase(
-            "Quick link to a summary"
-        ));
-        assert!(!starts_with_url_scheme_or_link_phrase(
-            "ZX-7 Retention Overview"
-        ));
+        assert!(starts_with_url_scheme_or_link_phrase("https://example.invalid/reference"));
+        assert!(starts_with_url_scheme_or_link_phrase("Quick link to a summary"));
+        assert!(!starts_with_url_scheme_or_link_phrase("ZX-7 Retention Overview"));
         assert!(!starts_with_url_scheme_or_link_phrase("Control:"));
 
         let spans = vec![make_span("body", 90.0, 500.0, 11.0, false)];
-        let classifier = BlockClassifier::new_with_overrides(
-            612.0,
-            792.0,
-            &spans,
-            Some(11.0),
-            None,
-        );
+        let classifier =
+            BlockClassifier::new_with_overrides(612.0, 792.0, &spans, Some(11.0), None);
         let block = |block_type, text: &str, bbox, font_size, is_bold| {
             classifier.make_block(
                 block_type,
@@ -3427,13 +3811,7 @@ mod tests {
                 11.0,
                 false,
             ),
-            block(
-                BlockType::Body,
-                "Control:",
-                Rect::new(126.0, 632.0, 40.0, 10.0),
-                10.0,
-                false,
-            ),
+            block(BlockType::Body, "Control:", Rect::new(126.0, 632.0, 40.0, 10.0), 10.0, false),
             // Deliberately control-ID-shaped: its existing Caption type is the
             // decisive guard and must survive unchanged.
             block(
@@ -3523,17 +3901,13 @@ mod tests {
             spans.push(chrome);
         }
 
-        let prose = "ordinary body prose continues across nearly the full text column without ending here";
-        let continuation = "and this following line completes the same paragraph in the normal body face.";
+        let prose =
+            "ordinary body prose continues across nearly the full text column without ending here";
+        let continuation =
+            "and this following line completes the same paragraph in the normal body face.";
         spans.push(make_span(prose, 90.0, 700.0, 11.0, true));
         spans.push(make_span(continuation, 90.0, 685.0, 11.0, false));
-        spans.push(make_span(
-            "2.2 CONTROL STRUCTURE AND ORGANIZATION",
-            90.0,
-            650.0,
-            14.0,
-            true,
-        ));
+        spans.push(make_span("2.2 CONTROL STRUCTURE AND ORGANIZATION", 90.0, 650.0, 14.0, true));
 
         let expected_chars: String = spans.iter().map(|span| span.text.as_str()).collect();
         let classifier = BlockClassifier::new(612.0, 792.0, &spans);
@@ -3774,10 +4148,10 @@ mod tests {
         assert_eq!(block.lines.len(), 3, "expected 3 lines preserved after merge");
 
         // Each line bbox stays within the block bbox (line union == block bbox).
-        let line_union = block.lines.iter().fold(
-            block.lines[0].bbox,
-            |acc, line| acc.union(&line.bbox),
-        );
+        let line_union = block
+            .lines
+            .iter()
+            .fold(block.lines[0].bbox, |acc, line| acc.union(&line.bbox));
         let drift_x = (block.bbox.x - line_union.x).abs();
         let drift_y = (block.bbox.y - line_union.y).abs();
         let drift_w = (block.bbox.width - line_union.width).abs();
@@ -3814,7 +4188,12 @@ mod tests {
         let block = classifier.make_block(
             BlockType::Body,
             "x".to_string(),
-            Rect { x: 0.0, y: 0.0, width: 1.0, height: 1.0 },
+            Rect {
+                x: 0.0,
+                y: 0.0,
+                width: 1.0,
+                height: 1.0,
+            },
             11.0,
             "F".to_string(),
             false,
@@ -3869,13 +4248,8 @@ mod tests {
         n_rest.sequence = 59;
         let mut sup_one = make_span("1", 220.6, 635.3, 7.02, false);
         sup_one.sequence = 60; // superscript footnote marker
-        let mut can_include = make_span(
-            " can include a variety of computing platforms",
-            224.1,
-            631.3,
-            10.98,
-            false,
-        );
+        let mut can_include =
+            make_span(" can include a variety of computing platforms", 224.1, 631.3, 10.98, false);
         can_include.sequence = 61;
         let spans = vec![der, mo, n_rest, sup_one, can_include];
 
@@ -3939,7 +4313,10 @@ mod tests {
             list_blocks.len(),
             blocks
                 .iter()
-                .map(|b| (format!("{:?}", b.block_type), b.text.chars().take(40).collect::<String>()))
+                .map(|b| (
+                    format!("{:?}", b.block_type),
+                    b.text.chars().take(40).collect::<String>()
+                ))
                 .collect::<Vec<_>>()
         );
         let list = list_blocks[0];
@@ -3988,10 +4365,7 @@ mod tests {
         let classifier = BlockClassifier::new(612.0, 792.0, &spans);
         let blocks = classifier.classify_spans(&spans);
         for b in &blocks {
-            assert!(
-                !b.text.trim().is_empty(),
-                "empty-text block leaked through the filter: {b:?}"
-            );
+            assert!(!b.text.trim().is_empty(), "empty-text block leaked through the filter: {b:?}");
         }
         // We should still see both real paragraphs (possibly merged into one body block)
         let total_text: String = blocks.iter().map(|b| b.text.as_str()).collect();
