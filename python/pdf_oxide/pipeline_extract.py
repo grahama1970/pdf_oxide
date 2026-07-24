@@ -9,8 +9,20 @@ import time
 from typing import Any, Dict, List
 
 from .pdf_oxide import PdfDocument
+from .pipeline_hierarchy import (
+    attach_block_ids,
+    build_section_tree,
+    provenance,
+    section_path,
+)
 from .pipeline_types import PipelineConfig, PipelineResult
-from .pipeline_util import assign_section, data_to_csv, data_to_html, md5
+from .pipeline_util import (
+    assign_section,
+    data_to_csv,
+    data_to_html,
+    md5,
+    sha256_file,
+)
 
 
 def extract_content(pdf_path: str, config: PipelineConfig) -> PipelineResult:
@@ -26,16 +38,18 @@ def extract_content(pdf_path: str, config: PipelineConfig) -> PipelineResult:
         reconcile_tables=config.reconcile_tables,
     )
 
-    sections = _build_sections(raw)
-    blocks = _build_blocks(raw, sections)
+    pdf_sha256 = sha256_file(pdf_path)
+    sections = _build_sections(raw, pdf_sha256)
+    blocks = _build_blocks(raw, sections, pdf_sha256)
+    attach_block_ids(sections, blocks)
     if config.reconcile_tables and raw.get("tables") is not None:
         # Engine already extracted and reconciled tables against the block
         # stream; consuming them here keeps one source of truth (a separate
         # read_pdf pass would resurface the lossy un-reconciled cell text).
-        tables = _tables_from_engine(raw, sections, config)
+        tables = _tables_from_engine(raw, sections, config, pdf_sha256)
     else:
-        tables = _extract_tables(doc, config, sections)
-    figures = _build_figures(raw, doc, config, sections)
+        tables = _extract_tables(doc, config, sections, pdf_sha256)
+    figures = _build_figures(raw, doc, config, sections, pdf_sha256)
 
     elapsed = time.monotonic() - t0
 
@@ -50,12 +64,16 @@ def extract_content(pdf_path: str, config: PipelineConfig) -> PipelineResult:
             "profile": raw.get("profile", {}),
             "engineering": raw.get("engineering", {}),
             "page_count": doc.page_count(),
+            "pdf_sha256": pdf_sha256,
         },
         timings={"extraction": elapsed},
     )
 
 
-def _build_sections(raw: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _build_sections(
+    raw: Dict[str, Any],
+    pdf_sha256: str = "",
+) -> List[Dict[str, Any]]:
     """Build sections from Rust-detected sections only.
 
     Sections come from:
@@ -65,36 +83,23 @@ def _build_sections(raw: Dict[str, Any]) -> List[Dict[str, Any]]:
     Control IDs (AC-1, SI-7, etc.) are NOT sections - they are entities.
     Use /extract-entities for control ID extraction.
     """
-    sections = []
-
-    for s in raw.get("sections", []):
-        title = s.get("title", "")
-        sections.append(
-            {
-                "id": md5(f"sec_{title}_{s.get('page', 0)}"),
-                "title": title,
-                "level": s.get("level", 1),
-                "page_start": s.get("page", 0),
-                "page_end": s.get("page", 0),
-                "numbering": s.get("numbering"),
-            }
-        )
-
-    # Sort by page then title
-    sections.sort(key=lambda s: (s["page_start"], s["title"]))
-    return sections
+    return build_section_tree(raw, pdf_sha256)
 
 
 def _build_blocks(
-    raw: Dict[str, Any], sections: List[Dict]
+    raw: Dict[str, Any],
+    sections: List[Dict],
+    pdf_sha256: str = "",
 ) -> List[Dict[str, Any]]:
     blocks = []
     for page_data in raw.get("pages", []):
         page_num = page_data.get("page", 0)
         for blk in page_data.get("blocks", []):
+            block_id = md5(f"blk_{page_num}_{blk.get('bbox', ())}")
+            assigned_section = assign_section(blk, sections, page_num)
             blocks.append(
                 {
-                    "id": md5(f"blk_{page_num}_{blk.get('bbox', ())}"),
+                    "id": block_id,
                     "page": page_num,
                     "text": blk.get("text", ""),
                     "type": blk.get("block_type", "text"),
@@ -107,23 +112,33 @@ def _build_blocks(
                     # default.
                     "confidence": blk.get("confidence"),
                     "header_level": blk.get("header_level"),
-                    "section_id": assign_section(blk, sections, page_num),
+                    "section_id": assigned_section,
+                    "section_path": section_path(assigned_section, sections),
+                    "provenance": provenance(
+                        pdf_sha256, page_num, blk.get("bbox")
+                    ),
                 }
             )
     return blocks
 
 
 def _tables_from_engine(
-    raw: Dict[str, Any], sections: List[Dict], config: PipelineConfig
+    raw: Dict[str, Any],
+    sections: List[Dict],
+    config: PipelineConfig,
+    pdf_sha256: str = "",
 ) -> List[Dict[str, Any]]:
     """Build table dicts from the engine's reconciled extract_document result."""
     tables = []
     for t in raw.get("tables", []):
         page_num = t.get("page", 0)
         order = t.get("order", 0)
+        table_id = md5(f"tbl_{page_num}_{order}_{t.get('bbox', ())}")
+        assigned_section = assign_section(t, sections, page_num)
+        table_text = data_to_csv(t.get("data", [])) or f"Table page {page_num}"
         tables.append(
             {
-                "id": md5(f"tbl_{page_num}_{order}_{t.get('bbox', ())}"),
+                "id": table_id,
                 "page": page_num,
                 "order": order,
                 "bbox": t.get("bbox"),
@@ -136,7 +151,16 @@ def _tables_from_engine(
                 "df_data": t.get("df_data", []),
                 "csv_data": data_to_csv(t.get("data", [])),
                 "html_data": data_to_html(t.get("data", [])),
-                "section_id": assign_section(t, sections, page_num),
+                "text": table_text,
+                "section_id": assigned_section,
+                "section_path": section_path(assigned_section, sections),
+                "provenance": provenance(
+                    pdf_sha256, page_num, t.get("bbox")
+                ),
+                "render_ref": {
+                    "page": page_num,
+                    "bbox": t.get("bbox"),
+                },
                 "extraction_method": "pdf_oxide",
             }
         )
@@ -144,7 +168,10 @@ def _tables_from_engine(
 
 
 def _extract_tables(
-    doc: PdfDocument, config: PipelineConfig, sections: List[Dict]
+    doc: PdfDocument,
+    config: PipelineConfig,
+    sections: List[Dict],
+    pdf_sha256: str = "",
 ) -> List[Dict[str, Any]]:
     tables = []
     for page_idx in range(doc.page_count()):
@@ -155,8 +182,10 @@ def _extract_tables(
         )
         for i, t in enumerate(page_tables):
             page_num = t.get("page", page_idx)
+            table_id = md5(f"tbl_{page_num}_{i}_{t.get('bbox', ())}")
+            assigned_section = assign_section(t, sections, page_num)
             tbl = {
-                "id": md5(f"tbl_{page_num}_{i}_{t.get('bbox', ())}"),
+                "id": table_id,
                 "page": page_num,
                 "order": t.get("order", i),
                 "bbox": t.get("bbox"),
@@ -169,7 +198,19 @@ def _extract_tables(
                 "df_data": t.get("df_data", []),
                 "csv_data": data_to_csv(t.get("data", [])),
                 "html_data": data_to_html(t.get("data", [])),
-                "section_id": assign_section(t, sections, page_num),
+                "text": (
+                    data_to_csv(t.get("data", []))
+                    or f"Table page {page_num}"
+                ),
+                "section_id": assigned_section,
+                "section_path": section_path(assigned_section, sections),
+                "provenance": provenance(
+                    pdf_sha256, page_num, t.get("bbox")
+                ),
+                "render_ref": {
+                    "page": page_num,
+                    "bbox": t.get("bbox"),
+                },
                 "extraction_method": "pdf_oxide",
             }
             # Render table image for VLM description (if describe plugin enabled)
@@ -190,12 +231,31 @@ def _build_figures(
     doc: PdfDocument,
     config: PipelineConfig,
     sections: List[Dict],
+    pdf_sha256: str = "",
 ) -> List[Dict[str, Any]]:
     figures = []
     for fig in raw.get("figures", []):
         page_num = fig.get("page", 0)
+        figure_id = md5(f"fig_{page_num}_{fig.get('bbox', ())}")
+        assigned_section = assign_section(fig, sections, page_num)
+        figure_text_parts = [
+            str(value).strip()
+            for value in (
+                fig.get("caption"),
+                fig.get("context_above"),
+                fig.get("context_below"),
+            )
+            if value
+        ]
+        figure_text_parts.extend(
+            str(block.get("text", "")).strip()
+            for block in fig.get("content_blocks", [])
+            if block.get("text")
+        )
+        if not figure_text_parts:
+            figure_text_parts.append(f"Figure page {page_num}")
         fig_dict = {
-            "id": md5(f"fig_{page_num}_{fig.get('bbox', ())}"),
+            "id": figure_id,
             "page": page_num,
             "bbox": fig.get("bbox"),
             "caption": fig.get("caption"),
@@ -208,7 +268,16 @@ def _build_figures(
             # character-conserving.
             "content_blocks": fig.get("content_blocks", []),
             "suppressed_table_orders": fig.get("suppressed_table_orders", []),
-            "section_id": assign_section(fig, sections, page_num),
+            "text": "\n".join(figure_text_parts),
+            "section_id": assigned_section,
+            "section_path": section_path(assigned_section, sections),
+            "provenance": provenance(
+                pdf_sha256, page_num, fig.get("bbox")
+            ),
+            "render_ref": {
+                "page": page_num,
+                "bbox": fig.get("bbox"),
+            },
         }
         # Render figure image for VLM (if describe plugin enabled)
         if fig.get("bbox") and "describe" in config.features:
