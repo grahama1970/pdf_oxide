@@ -1,0 +1,1512 @@
+commit 11b9982cb04cec836707f623c145fa4453a83938
+Author: Claude <claude@anthropic.com>
+Date:   Fri Jul 24 08:57:23 2026 -0400
+
+    contest entry 1 (codex, three-seat PASS): S2 calibrate route — adapters + calibrate mode + archive per panel architecture [NOT PROMOTED: awaiting contest judging]
+
+diff --git a/ui/src/components/pdf-lab/InitialSweepStaticProof.css b/ui/archive/InitialSweepStaticProof.css
+similarity index 100%
+rename from ui/src/components/pdf-lab/InitialSweepStaticProof.css
+rename to ui/archive/InitialSweepStaticProof.css
+diff --git a/ui/src/components/pdf-lab/InitialSweepStaticProof.tsx b/ui/archive/InitialSweepStaticProof.tsx
+similarity index 99%
+rename from ui/src/components/pdf-lab/InitialSweepStaticProof.tsx
+rename to ui/archive/InitialSweepStaticProof.tsx
+index 53ee70a1..52c782ab 100644
+--- a/ui/src/components/pdf-lab/InitialSweepStaticProof.tsx
++++ b/ui/archive/InitialSweepStaticProof.tsx
+@@ -1,5 +1,5 @@
+ import { useState } from 'react'
+-import { useRegisterAction } from '../../hooks/useRegisterAction'
++import { useRegisterAction } from '../src/hooks/useRegisterAction'
+ import './InitialSweepStaticProof.css'
+ 
+ type CandidatePage = {
+diff --git a/ui/src/components/pdf-lab/ParityAuditStaticProof.css b/ui/archive/ParityAuditStaticProof.css
+similarity index 100%
+rename from ui/src/components/pdf-lab/ParityAuditStaticProof.css
+rename to ui/archive/ParityAuditStaticProof.css
+diff --git a/ui/src/components/pdf-lab/ParityAuditStaticProof.tsx b/ui/archive/ParityAuditStaticProof.tsx
+similarity index 99%
+rename from ui/src/components/pdf-lab/ParityAuditStaticProof.tsx
+rename to ui/archive/ParityAuditStaticProof.tsx
+index 109144d1..0cf2827f 100644
+--- a/ui/src/components/pdf-lab/ParityAuditStaticProof.tsx
++++ b/ui/archive/ParityAuditStaticProof.tsx
+@@ -1,4 +1,4 @@
+-import { useRegisterAction } from '../../hooks/useRegisterAction'
++import { useRegisterAction } from '../src/hooks/useRegisterAction'
+ import './ParityAuditStaticProof.css'
+ 
+ type RunItem = {
+diff --git a/ui/src/components/pdf-lab/PdfLabProductionWorkflow.css b/ui/archive/PdfLabProductionWorkflow.css
+similarity index 100%
+rename from ui/src/components/pdf-lab/PdfLabProductionWorkflow.css
+rename to ui/archive/PdfLabProductionWorkflow.css
+diff --git a/ui/src/components/pdf-lab/PdfLabProductionWorkflow.tsx b/ui/archive/PdfLabProductionWorkflow.tsx
+similarity index 99%
+rename from ui/src/components/pdf-lab/PdfLabProductionWorkflow.tsx
+rename to ui/archive/PdfLabProductionWorkflow.tsx
+index 6b375324..44f0ef37 100644
+--- a/ui/src/components/pdf-lab/PdfLabProductionWorkflow.tsx
++++ b/ui/archive/PdfLabProductionWorkflow.tsx
+@@ -15,9 +15,9 @@ import {
+   Table2,
+   type LucideIcon,
+ } from 'lucide-react'
+-import { useRegisterAction } from '../../hooks/useRegisterAction'
+-import { PdfLabEvidenceQA } from './PdfLabEvidenceQA'
+-import { PdfLabLabelingPage } from './PdfLabLabelingPage'
++import { useRegisterAction } from '../src/hooks/useRegisterAction'
++import { PdfLabEvidenceQA } from '../src/components/pdf-lab/PdfLabEvidenceQA'
++import { PdfLabLabelingPage } from '../src/components/pdf-lab/PdfLabLabelingPage'
+ import { SurgicalTriageCleanRoom, type SurgicalTriageCleanRoomTask } from './SurgicalTriageCleanRoom'
+ import './PdfLabProductionWorkflow.css'
+ 
+diff --git a/ui/src/components/pdf-lab/SurgicalTriageCleanRoom.css b/ui/archive/SurgicalTriageCleanRoom.css
+similarity index 100%
+rename from ui/src/components/pdf-lab/SurgicalTriageCleanRoom.css
+rename to ui/archive/SurgicalTriageCleanRoom.css
+diff --git a/ui/src/components/pdf-lab/SurgicalTriageCleanRoom.tsx b/ui/archive/SurgicalTriageCleanRoom.tsx
+similarity index 99%
+rename from ui/src/components/pdf-lab/SurgicalTriageCleanRoom.tsx
+rename to ui/archive/SurgicalTriageCleanRoom.tsx
+index fbc4e587..57aa3aed 100644
+--- a/ui/src/components/pdf-lab/SurgicalTriageCleanRoom.tsx
++++ b/ui/archive/SurgicalTriageCleanRoom.tsx
+@@ -1,8 +1,8 @@
+ import { useEffect, useMemo, useRef, useState } from 'react'
+ import * as pdfjsLib from 'pdfjs-dist'
+ import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist'
+-import { ReviewBundleButton } from '../common/ReviewBundleButton'
+-import { useRegisterAction } from '../../hooks/useRegisterAction'
++import { ReviewBundleButton } from '../src/components/common/ReviewBundleButton'
++import { useRegisterAction } from '../src/hooks/useRegisterAction'
+ import './SurgicalTriageCleanRoom.css'
+ 
+ pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
+diff --git a/ui/src/components/pdf-lab/SurgicalTriageFixture.tsx b/ui/archive/SurgicalTriageFixture.tsx
+similarity index 99%
+rename from ui/src/components/pdf-lab/SurgicalTriageFixture.tsx
+rename to ui/archive/SurgicalTriageFixture.tsx
+index a381261c..e1661eaa 100644
+--- a/ui/src/components/pdf-lab/SurgicalTriageFixture.tsx
++++ b/ui/archive/SurgicalTriageFixture.tsx
+@@ -1,5 +1,5 @@
+ import { useEffect, useRef } from 'react'
+-import { useRegisterAction } from '../../hooks/useRegisterAction'
++import { useRegisterAction } from '../src/hooks/useRegisterAction'
+ 
+ export function SurgicalTriageFixture() {
+   const inputRef = useRef<HTMLInputElement>(null)
+diff --git a/ui/src/components/pdf-lab/SurgicalTriageStaticProof.css b/ui/archive/SurgicalTriageStaticProof.css
+similarity index 100%
+rename from ui/src/components/pdf-lab/SurgicalTriageStaticProof.css
+rename to ui/archive/SurgicalTriageStaticProof.css
+diff --git a/ui/src/components/pdf-lab/SurgicalTriageStaticProof.tsx b/ui/archive/SurgicalTriageStaticProof.tsx
+similarity index 99%
+rename from ui/src/components/pdf-lab/SurgicalTriageStaticProof.tsx
+rename to ui/archive/SurgicalTriageStaticProof.tsx
+index 5b3a0b87..8362714b 100644
+--- a/ui/src/components/pdf-lab/SurgicalTriageStaticProof.tsx
++++ b/ui/archive/SurgicalTriageStaticProof.tsx
+@@ -1,5 +1,5 @@
+ import { useEffect, useRef, useState } from 'react'
+-import { useRegisterAction } from '../../hooks/useRegisterAction'
++import { useRegisterAction } from '../src/hooks/useRegisterAction'
+ import './SurgicalTriageStaticProof.css'
+ 
+ export function SurgicalTriageStaticProof() {
+diff --git a/ui/src/components/pdf-lab/SurgicalTriageViewport.tsx b/ui/archive/SurgicalTriageViewport.tsx
+similarity index 97%
+rename from ui/src/components/pdf-lab/SurgicalTriageViewport.tsx
+rename to ui/archive/SurgicalTriageViewport.tsx
+index 2db4cf57..3c032a30 100644
+--- a/ui/src/components/pdf-lab/SurgicalTriageViewport.tsx
++++ b/ui/archive/SurgicalTriageViewport.tsx
+@@ -1,7 +1,7 @@
+ import { useEffect, useMemo, useRef } from 'react'
+-import PdfCanvas from '../datalake-explorer/PdfCanvas'
+-import { ReviewBundleButton } from '../common/ReviewBundleButton'
+-import { useRegisterAction } from '../../hooks/useRegisterAction'
++import PdfCanvas from '../src/components/datalake-explorer/PdfCanvas'
++import { ReviewBundleButton } from '../src/components/common/ReviewBundleButton'
++import { useRegisterAction } from '../src/hooks/useRegisterAction'
+ 
+ interface SurgicalTriageTask {
+   id: string
+diff --git a/ui/src/components/pdf-lab/surgical-triage.design-manifest.yml b/ui/archive/surgical-triage.design-manifest.yml
+similarity index 100%
+rename from ui/src/components/pdf-lab/surgical-triage.design-manifest.yml
+rename to ui/archive/surgical-triage.design-manifest.yml
+diff --git a/ui/package.json b/ui/package.json
+index 63b60375..fe8ee961 100644
+--- a/ui/package.json
++++ b/ui/package.json
+@@ -11,7 +11,9 @@
+     "preview": "vite preview --host 127.0.0.1 --port 3012",
+     "preview:all": "PDF_LAB_API_PORT=3012 tsx server/index.ts",
+     "start": "PDF_LAB_API_PORT=3012 tsx server/index.ts",
+-    "typecheck": "tsc --noEmit"
++    "typecheck": "tsc --noEmit",
++    "test:contracts": "tsx --test tests/contracts.test.ts",
++    "test:e2e": "npm run build && node --test tests/calibrate.playwright.test.mjs"
+   },
+   "dependencies": {
+     "express": "^4.19.2",
+diff --git a/ui/server/index.ts b/ui/server/index.ts
+index 30e70757..4db3b9b0 100644
+--- a/ui/server/index.ts
++++ b/ui/server/index.ts
+@@ -1,8 +1,14 @@
+ import express from 'express'
+-import { createReadStream, existsSync, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'fs'
++import { createHash } from 'crypto'
++import { appendFileSync, createReadStream, existsSync, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'fs'
+ import { cp, mkdir, readFile, readdir, stat, writeFile } from 'fs/promises'
+ import { dirname, resolve } from 'path'
+ import { fileURLToPath } from 'url'
++import {
++  PAGE_IMAGE_NAMING,
++  type CalibrationPageImageIndex,
++  assertCalibrationPageImageIndex,
++} from '../src/adapters/pageImageRefs'
+ 
+ type JsonRecord = Record<string, unknown>
+ 
+@@ -33,6 +39,10 @@ const SIGNOFFS_DIR = resolve(process.env.PDF_LAB_SIGNOFFS_DIR ?? '/tmp/pdf-lab-u
+ const SIGNOFFS_PATH = resolve(SIGNOFFS_DIR, 'current.json')
+ const IN_PROGRESS_PATH = resolve(SIGNOFFS_DIR, 'in_progress.json')
+ const REVIEW_SAVE_DIR = resolve(process.env.PDF_LAB_REVIEW_SAVE_DIR ?? '/tmp/pdf-lab-ui/review-saves')
++const CALIBRATION_DIR = resolve(ARTIFACTS_ROOT, 'calibration')
++const CALIBRATION_SAMPLE_PATH = resolve(CALIBRATION_DIR, 'sample_v1.jsonl')
++const CALIBRATION_PAGE_IMAGES_PATH = resolve(CALIBRATION_DIR, 'page_images_v1.json')
++const CALIBRATION_LABELS_PATH = resolve(CALIBRATION_DIR, 'labels_v1.jsonl')
+ 
+ app.use(express.json({ limit: '25mb' }))
+ 
+@@ -110,6 +120,158 @@ app.get('/api/pdf-lab/status', (_req, res) => {
+   })
+ })
+ 
++function calibrationSampleEntries(): Array<{ item_sha: string; item: JsonRecord }> {
++  if (!existsSync(CALIBRATION_SAMPLE_PATH)) return []
++  return readFileSync(CALIBRATION_SAMPLE_PATH, 'utf-8')
++    .split(/\r?\n/)
++    .map(line => line.trim())
++    .filter(Boolean)
++    .map((line, index) => {
++      const item = JSON.parse(line) as JsonRecord
++      const required = ['doc', 'quintile', 'page', 'bbox', 'type', 'confidence', 'text', 'label']
++      if (!required.every(field => Object.hasOwn(item, field)) || item.label !== null) {
++        throw new Error(`invalid calibration sample row ${index + 1}`)
++      }
++      return {
++        item_sha: createHash('sha256').update(line).digest('hex'),
++        item,
++      }
++    })
++}
++
++function verifiedCalibrationPageImages(
++  entries: Array<{ item_sha: string; item: JsonRecord }>,
++): CalibrationPageImageIndex {
++  const value: unknown = JSON.parse(readFileSync(CALIBRATION_PAGE_IMAGES_PATH, 'utf-8'))
++  assertCalibrationPageImageIndex(value)
++  const requestedPages = new Map<string, Set<number>>()
++  for (const entry of entries) {
++    if (typeof entry.item.doc !== 'string' || !Number.isInteger(entry.item.page)) {
++      throw new Error(`calibration sample item ${entry.item_sha} has invalid doc/page`)
++    }
++    const pages = requestedPages.get(entry.item.doc) ?? new Set<number>()
++    pages.add(Number(entry.item.page))
++    requestedPages.set(entry.item.doc, pages)
++  }
++
++  const documents: CalibrationPageImageIndex['documents'] = {}
++  for (const [doc, pages] of requestedPages) {
++    const manifest = value.documents[doc]
++    if (!manifest) throw new Error(`missing page-image manifest for ${doc}`)
++    const requestedImages = manifest.images.filter(image => pages.has(image.page))
++    if (requestedImages.length !== pages.size) {
++      throw new Error(`page-image manifest does not cover every sampled page for ${doc}`)
++    }
++    for (const image of requestedImages) {
++      const imagePath = resolve(CALIBRATION_DIR, manifest.directory, image.filename)
++      if (!isPathInside(CALIBRATION_DIR, imagePath) || !existsSync(imagePath) || !statSync(imagePath).isFile()) {
++        throw new Error(`missing page image for ${doc} page ${image.page}`)
++      }
++      const imageBytes = readFileSync(imagePath)
++      const byteSha256 = createHash('sha256').update(imageBytes).digest('hex')
++      if (byteSha256 !== image.byte_sha256) {
++        throw new Error(`page-image byte hash mismatch for ${doc} page ${image.page}`)
++      }
++      // Keep keys in Python's sort_keys=True order; see
++      // pipeline_page_images.py::canonical_page_image_filename.
++      const canonicalInputs = JSON.stringify({
++        dpi: manifest.dpi,
++        format: manifest.format,
++        page_index: image.page,
++        pdf_sha256: manifest.pdf_sha256,
++        schema: manifest.schema,
++      })
++      const canonicalSha256 = createHash('sha256')
++        .update(canonicalInputs)
++        .update(Buffer.from([0]))
++        .update(imageBytes)
++        .digest('hex')
++      if (image.filename !== `${canonicalSha256}.png` || manifest.naming !== PAGE_IMAGE_NAMING) {
++        throw new Error(`page-image content identity mismatch for ${doc} page ${image.page}`)
++      }
++    }
++    documents[doc] = { ...manifest, images: requestedImages }
++  }
++  return { schema: value.schema, documents }
++}
++
++app.get('/api/pdf-lab/calibration/sample', (_req, res) => {
++  if (!existsSync(CALIBRATION_SAMPLE_PATH)) {
++    res.status(404).json({ ok: false, error: 'missing_calibration_sample', path: CALIBRATION_SAMPLE_PATH })
++    return
++  }
++  if (!existsSync(CALIBRATION_PAGE_IMAGES_PATH)) {
++    res.status(404).json({ ok: false, error: 'missing_calibration_page_images', path: CALIBRATION_PAGE_IMAGES_PATH })
++    return
++  }
++  try {
++    const entries = calibrationSampleEntries()
++    res.json({
++      schema: 'pdf_oxide.calibration_sample_response.v1',
++      items: entries,
++      page_images: verifiedCalibrationPageImages(entries),
++    })
++  } catch (err) {
++    res.status(422).json({ ok: false, error: 'invalid_calibration_contract', detail: String(err) })
++  }
++})
++
++app.post('/api/pdf-lab/calibration/labels', (req, res) => {
++  const row = req.body && typeof req.body === 'object' ? req.body as JsonRecord : {}
++  const allowedFields = new Set(['item_sha', 'label', 'corrected_type', 'ts'])
++  const labels = new Set(['correct', 'wrong_type', 'wrong_bounds', 'not_an_element'])
++  const keys = Object.keys(row)
++  if (keys.some(key => !allowedFields.has(key))) {
++    res.status(400).json({ ok: false, error: 'unexpected_label_field' })
++    return
++  }
++  if (typeof row.item_sha !== 'string' || !/^[0-9a-f]{64}$/.test(row.item_sha)) {
++    res.status(400).json({ ok: false, error: 'invalid_item_sha' })
++    return
++  }
++  if (typeof row.label !== 'string' || !labels.has(row.label)) {
++    res.status(400).json({ ok: false, error: 'invalid_label' })
++    return
++  }
++  if (
++    typeof row.ts !== 'string'
++    || Number.isNaN(Date.parse(row.ts))
++    || new Date(row.ts).toISOString() !== row.ts
++  ) {
++    res.status(400).json({ ok: false, error: 'invalid_timestamp' })
++    return
++  }
++  if (
++    row.corrected_type !== undefined
++    && (
++      row.label !== 'wrong_type'
++      || typeof row.corrected_type !== 'string'
++      || !row.corrected_type.trim()
++    )
++  ) {
++    res.status(400).json({ ok: false, error: 'invalid_corrected_type' })
++    return
++  }
++  try {
++    const knownItems = new Set(calibrationSampleEntries().map(entry => entry.item_sha))
++    if (!knownItems.has(row.item_sha)) {
++      res.status(400).json({ ok: false, error: 'unknown_item_sha' })
++      return
++    }
++    mkdirSync(CALIBRATION_DIR, { recursive: true })
++    const normalizedRow = {
++      item_sha: row.item_sha,
++      label: row.label,
++      ...(row.corrected_type === undefined ? {} : { corrected_type: row.corrected_type.trim() }),
++      ts: row.ts,
++    }
++    appendFileSync(CALIBRATION_LABELS_PATH, `${JSON.stringify(normalizedRow)}\n`, 'utf-8')
++    res.status(201).json({ ok: true, row: normalizedRow })
++  } catch (err) {
++    res.status(422).json({ ok: false, error: 'calibration_label_write_failed', detail: String(err) })
++  }
++})
++
+ // --- Transparent tau-loop artifacts (read-only) -------------------------
+ // One loop run directory holds the evidence chain the loop viewer renders:
+ // comparison.json (pdf-lab.comparison.v2), pdf-lab-second-pass-backlog.json,
+diff --git a/ui/src/App.tsx b/ui/src/App.tsx
+index a4fb4d5d..27610e2f 100644
+--- a/ui/src/App.tsx
++++ b/ui/src/App.tsx
+@@ -1,7 +1,13 @@
+ import React, { useMemo } from 'react'
+ 
+-const PdfLabView = React.lazy(() =>
+-  import('./components/pdf-lab/PdfLabView').then((module) => ({ default: module.PdfLabView })),
++const PdfLabLabelingPage = React.lazy(() =>
++  import('./components/pdf-lab/PdfLabLabelingPage').then((module) => ({ default: module.PdfLabLabelingPage })),
++)
++const TauLoopView = React.lazy(() =>
++  import('./components/pdf-lab/TauLoopView').then((module) => ({ default: module.TauLoopView })),
++)
++const PdfLabEvidenceQA = React.lazy(() =>
++  import('./components/pdf-lab/PdfLabEvidenceQA').then((module) => ({ default: module.PdfLabEvidenceQA })),
+ )
+ 
+ function resolvePdfLabSubpath(): string | undefined {
+@@ -13,17 +19,17 @@ function resolvePdfLabSubpath(): string | undefined {
+ }
+ 
+ export default function App() {
+-  const params = useMemo(() => new URLSearchParams(window.location.hash.split('?')[1] || window.location.search), [])
+   const initialSubpath = useMemo(() => resolvePdfLabSubpath(), [])
++  const content = initialSubpath === 'loop' || initialSubpath === 'tau-loop'
++    ? <TauLoopView />
++    : initialSubpath === 'evidence-qa' || initialSubpath === 'nico-qa'
++      ? <PdfLabEvidenceQA />
++      : <PdfLabLabelingPage mode={initialSubpath === 'calibrate' ? 'calibrate' : 'label'} />
+ 
+   return (
+     <div className="pdf-lab-app-shell">
+       <React.Suspense fallback={<div className="pdf-lab-loading">Loading PDF Lab...</div>}>
+-        <PdfLabView
+-          initialSubpath={initialSubpath}
+-          pdfUrl={params.get('pdf') || undefined}
+-          extractionUrl={params.get('extraction') || undefined}
+-        />
++        {content}
+       </React.Suspense>
+     </div>
+   )
+diff --git a/ui/src/adapters/annotationCall.ts b/ui/src/adapters/annotationCall.ts
+new file mode 100644
+index 00000000..0188fc39
+--- /dev/null
++++ b/ui/src/adapters/annotationCall.ts
+@@ -0,0 +1,162 @@
++import type { BreadcrumbNode } from '../components/pdf-lab/PdfLabLabelingExport'
++import {
++  type CalibrationPageImageIndex,
++  type ResolvedPageImage,
++  resolvePageImageRef,
++} from './pageImageRefs'
++import { type SectionTreeV2, normalizeSectionPath } from './sectionTree'
++
++export type NormalizedBBox = [number, number, number, number]
++
++export interface AnnotationCallItemV1 {
++  page: number
++  kind: string
++  bbox: NormalizedBBox
++  reason: string
++  confidence: number
++  text_excerpt: string
++  section_id?: string
++}
++
++export interface AnnotationCallV1 {
++  schema: 'pdf_oxide.annotation_call.v1'
++  items: AnnotationCallItemV1[]
++}
++
++export interface CalibrationSampleItem {
++  doc: string
++  quintile: number
++  page: number
++  bbox: NormalizedBBox
++  type: string
++  confidence: number
++  text: string
++  label: null
++  section_id?: string
++}
++
++export interface LabelingRegionProps {
++  id: string
++  page: number
++  family: string
++  bbox: NormalizedBBox
++  text_hint: string
++  notes?: string
++  breadcrumb?: string[]
++  breadcrumb_nodes?: BreadcrumbNode[]
++  origin: 'agent_dispatcher'
++}
++
++export interface NormalizedLabelingItem {
++  itemSha: string
++  doc: string
++  page: number
++  image: ResolvedPageImage
++  region: LabelingRegionProps
++  provenance: unknown[]
++}
++
++export const OLD_FLOW_ONLY_FIELDS = Object.freeze([
++  'crop_uri',
++  'page_image_uri',
++  'json_pointer',
++  'page_image_hash',
++  'task_id',
++] as const)
++
++export function normalizeBBox(value: unknown, owner: string): NormalizedBBox {
++  if (
++    !Array.isArray(value)
++    || value.length !== 4
++    || !value.every(coordinate => typeof coordinate === 'number' && Number.isFinite(coordinate))
++  ) {
++    throw new Error(`${owner} bbox must contain four finite numbers`)
++  }
++  const [x0, y0, x1, y1] = value
++  if (x0 < 0 || y0 < 0 || x1 > 1 || y1 > 1 || x0 >= x1 || y0 >= y1) {
++    throw new Error(`${owner} bbox must be normalized xyxy coordinates with positive area`)
++  }
++  return [x0, y0, x1, y1]
++}
++
++function assertOpaqueConfidence(value: unknown, owner: string): void {
++  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > 1) {
++    throw new Error(`${owner} confidence must be a finite number in [0, 1]`)
++  }
++}
++
++function sha256(value: unknown): string {
++  if (typeof value !== 'string' || !/^[0-9a-f]{64}$/.test(value)) {
++    throw new Error('calibration item_sha must be a lowercase SHA-256')
++  }
++  return value
++}
++
++export function normalizeAnnotationCall(value: unknown): LabelingRegionProps[] {
++  if (!value || typeof value !== 'object') throw new Error('annotation call must be an object')
++  const call = value as Partial<AnnotationCallV1>
++  if (call.schema !== 'pdf_oxide.annotation_call.v1') {
++    throw new Error('annotation call schema must be pdf_oxide.annotation_call.v1')
++  }
++  if (!Array.isArray(call.items)) throw new Error('annotation call items must be an array')
++  return call.items.map((item, index) => {
++    if (!item || typeof item !== 'object') throw new Error(`annotation item ${index} must be an object`)
++    if (!Number.isInteger(item.page) || item.page < 0) throw new Error(`annotation item ${index} page is invalid`)
++    if (typeof item.kind !== 'string' || !item.kind) throw new Error(`annotation item ${index} kind is required`)
++    if (typeof item.reason !== 'string' || !item.reason) throw new Error(`annotation item ${index} reason is required`)
++    if (typeof item.text_excerpt !== 'string') throw new Error(`annotation item ${index} text_excerpt is required`)
++    assertOpaqueConfidence(item.confidence, `annotation item ${index}`)
++    return {
++      id: `annotation-call-${index}`,
++      page: item.page,
++      family: item.kind,
++      bbox: normalizeBBox(item.bbox, `annotation item ${index}`),
++      text_hint: item.text_excerpt,
++      notes: item.reason,
++      origin: 'agent_dispatcher',
++    }
++  })
++}
++
++export function normalizeCalibrationItem(
++  itemValue: unknown,
++  itemShaValue: unknown,
++  pageImages: CalibrationPageImageIndex,
++  sectionTree?: SectionTreeV2,
++): NormalizedLabelingItem {
++  if (!itemValue || typeof itemValue !== 'object') throw new Error('calibration item must be an object')
++  const item = itemValue as Partial<CalibrationSampleItem>
++  if (typeof item.doc !== 'string' || !item.doc) throw new Error('calibration item doc is required')
++  if (!Number.isInteger(item.quintile) || Number(item.quintile) < 0 || Number(item.quintile) > 4) {
++    throw new Error('calibration item quintile must be an integer in [0, 4]')
++  }
++  if (!Number.isInteger(item.page) || Number(item.page) < 0) throw new Error('calibration item page is invalid')
++  if (typeof item.type !== 'string' || !item.type) throw new Error('calibration item type is required')
++  if (typeof item.text !== 'string') throw new Error('calibration item text is required')
++  if (item.label !== null) throw new Error('calibration sample item label must be null')
++  assertOpaqueConfidence(item.confidence, 'calibration item')
++
++  const itemSha = sha256(itemShaValue)
++  const page = Number(item.page)
++  const bbox = normalizeBBox(item.bbox, 'calibration item')
++  const normalizedPath = item.section_id && sectionTree
++    ? normalizeSectionPath(sectionTree, item.section_id)
++    : undefined
++  return {
++    itemSha,
++    doc: item.doc,
++    page,
++    image: resolvePageImageRef(pageImages, item.doc, page),
++    region: {
++      id: `calibration-${itemSha}`,
++      page,
++      family: item.type,
++      bbox,
++      text_hint: item.text,
++      breadcrumb: normalizedPath?.breadcrumb,
++      breadcrumb_nodes: normalizedPath?.breadcrumbNodes,
++      origin: 'agent_dispatcher',
++    },
++    provenance: normalizedPath?.provenance ?? [],
++  }
++}
+diff --git a/ui/src/adapters/pageImageRefs.ts b/ui/src/adapters/pageImageRefs.ts
+new file mode 100644
+index 00000000..52b9213f
+--- /dev/null
++++ b/ui/src/adapters/pageImageRefs.ts
+@@ -0,0 +1,109 @@
++export const PAGE_IMAGE_SCHEMA = 'pdf_oxide.page_image.v1'
++export const PAGE_IMAGE_NAMING = 'sha256(canonical JSON of schema,pdf_sha256,page_index,dpi,format + NUL + PNG bytes)'
++
++export interface PageImageRef {
++  page: number
++  filename: string
++  byte_sha256: string
++}
++
++export interface PageImageManifest {
++  schema: typeof PAGE_IMAGE_SCHEMA
++  pdf_sha256: string
++  directory: string
++  dpi: number
++  format: string
++  naming: typeof PAGE_IMAGE_NAMING
++  images: PageImageRef[]
++}
++
++export interface CalibrationPageImageIndex {
++  schema: 'pdf_oxide.calibration_page_images.v1'
++  documents: Record<string, PageImageManifest>
++}
++
++export interface ResolvedPageImage {
++  src: string
++  filename: string
++  byteSha256: string
++}
++
++function isLowerSha256(value: unknown): value is string {
++  return typeof value === 'string' && /^[0-9a-f]{64}$/.test(value)
++}
++
++function encodedPath(path: string): string {
++  return path
++    .split('/')
++    .filter(Boolean)
++    .map(encodeURIComponent)
++    .join('/')
++}
++
++export function assertPageImageManifest(value: unknown): asserts value is PageImageManifest {
++  if (!value || typeof value !== 'object') throw new Error('page-image manifest must be an object')
++  const manifest = value as Partial<PageImageManifest>
++  if (manifest.schema !== PAGE_IMAGE_SCHEMA) {
++    throw new Error(`page-image manifest schema must be ${PAGE_IMAGE_SCHEMA}`)
++  }
++  if (typeof manifest.pdf_sha256 !== 'string' || !isLowerSha256(manifest.pdf_sha256)) {
++    throw new Error('page-image manifest pdf_sha256 must be a lowercase SHA-256')
++  }
++  if (typeof manifest.directory !== 'string' || !manifest.directory || manifest.directory.startsWith('/')) {
++    throw new Error('page-image manifest directory must be a non-empty relative path')
++  }
++  if (!Number.isInteger(manifest.dpi) || Number(manifest.dpi) <= 0) {
++    throw new Error('page-image manifest dpi must be a positive integer')
++  }
++  if (manifest.format !== 'png') throw new Error('page-image manifest format must be png')
++  if (manifest.naming !== PAGE_IMAGE_NAMING) {
++    throw new Error('page-image manifest naming must match pipeline_page_images.py')
++  }
++  if (!Array.isArray(manifest.images) || manifest.images.length === 0) {
++    throw new Error('page-image manifest images must be a non-empty array')
++  }
++  const seenPages = new Set<number>()
++  for (const image of manifest.images) {
++    if (!image || typeof image !== 'object') throw new Error('page-image entry must be an object')
++    if (!Number.isInteger(image.page) || image.page < 0 || seenPages.has(image.page)) {
++      throw new Error('page-image entry page must be a unique non-negative integer')
++    }
++    seenPages.add(image.page)
++    if (typeof image.filename !== 'string' || !/^[0-9a-f]{64}\.png$/.test(image.filename)) {
++      throw new Error('page-image filename must be a content-addressed lowercase SHA-256 PNG name')
++    }
++    if (!isLowerSha256(image.byte_sha256)) {
++      throw new Error('page-image byte_sha256 must be a lowercase SHA-256')
++    }
++  }
++}
++
++export function assertCalibrationPageImageIndex(value: unknown): asserts value is CalibrationPageImageIndex {
++  if (!value || typeof value !== 'object') throw new Error('calibration page-image index must be an object')
++  const index = value as Partial<CalibrationPageImageIndex>
++  if (index.schema !== 'pdf_oxide.calibration_page_images.v1') {
++    throw new Error('calibration page-image index schema must be pdf_oxide.calibration_page_images.v1')
++  }
++  if (!index.documents || typeof index.documents !== 'object' || Array.isArray(index.documents)) {
++    throw new Error('calibration page-image index documents must be an object')
++  }
++  for (const manifest of Object.values(index.documents)) assertPageImageManifest(manifest)
++}
++
++export function resolvePageImageRef(
++  indexValue: unknown,
++  doc: string,
++  page: number,
++  baseUrl = '/artifacts/pdf-lab/calibration',
++): ResolvedPageImage {
++  assertCalibrationPageImageIndex(indexValue)
++  const manifest = indexValue.documents[doc]
++  if (!manifest) throw new Error(`no content-addressed page-image manifest for document ${doc}`)
++  const image = manifest.images.find(candidate => candidate.page === page)
++  if (!image) throw new Error(`no content-addressed page image for ${doc} page ${page}`)
++  return {
++    src: `${baseUrl.replace(/\/+$/, '')}/${encodedPath(manifest.directory)}/${encodeURIComponent(image.filename)}`,
++    filename: image.filename,
++    byteSha256: image.byte_sha256,
++  }
++}
+diff --git a/ui/src/adapters/sectionTree.ts b/ui/src/adapters/sectionTree.ts
+new file mode 100644
+index 00000000..5325a5a2
+--- /dev/null
++++ b/ui/src/adapters/sectionTree.ts
+@@ -0,0 +1,117 @@
++import type { BreadcrumbNode } from '../components/pdf-lab/PdfLabLabelingExport'
++
++export interface SectionProvenance {
++  pdf_sha256: string
++  page: number
++  bbox: [number, number, number, number] | null
++}
++
++export interface SectionTreeNodeV2 {
++  id: string
++  title: string
++  parent_id: string | null
++  children: string[]
++  doc_order: number
++  provenance: SectionProvenance
++}
++
++export interface SectionTreeV2 {
++  schema: 'pdf_oxide.section_tree.v2'
++  sections: SectionTreeNodeV2[]
++}
++
++export interface NormalizedSectionPath {
++  breadcrumb: string[]
++  breadcrumbNodes: BreadcrumbNode[]
++  provenance: SectionProvenance[]
++}
++
++function isFiniteBBox(value: unknown): value is [number, number, number, number] {
++  return Array.isArray(value)
++    && value.length === 4
++    && value.every(coordinate => typeof coordinate === 'number' && Number.isFinite(coordinate))
++}
++
++export function assertSectionTreeV2(value: unknown): asserts value is SectionTreeV2 {
++  if (!value || typeof value !== 'object') throw new Error('section tree must be an object')
++  const tree = value as Partial<SectionTreeV2>
++  if (tree.schema !== 'pdf_oxide.section_tree.v2') {
++    throw new Error('section tree schema must be pdf_oxide.section_tree.v2')
++  }
++  if (!Array.isArray(tree.sections)) throw new Error('section tree sections must be an array')
++
++  const ids = new Set<string>()
++  const orders = new Set<number>()
++  for (const section of tree.sections) {
++    if (!section || typeof section !== 'object') throw new Error('section tree node must be an object')
++    if (typeof section.id !== 'string' || !section.id || ids.has(section.id)) {
++      throw new Error('section tree node id must be unique and non-empty')
++    }
++    ids.add(section.id)
++    if (typeof section.title !== 'string' || !section.title.trim()) {
++      throw new Error(`section ${section.id} title must be non-empty`)
++    }
++    if (section.parent_id !== null && typeof section.parent_id !== 'string') {
++      throw new Error(`section ${section.id} parent_id must be a string or null`)
++    }
++    if (!Array.isArray(section.children) || !section.children.every(child => typeof child === 'string')) {
++      throw new Error(`section ${section.id} children must be an array of ids`)
++    }
++    if (!Number.isInteger(section.doc_order) || section.doc_order < 0 || orders.has(section.doc_order)) {
++      throw new Error(`section ${section.id} doc_order must be a unique non-negative integer`)
++    }
++    orders.add(section.doc_order)
++    const provenance = section.provenance
++    if (
++      !provenance
++      || typeof provenance !== 'object'
++      || typeof provenance.pdf_sha256 !== 'string'
++      || !/^[0-9a-f]{64}$/.test(provenance.pdf_sha256)
++      || !Number.isInteger(provenance.page)
++      || provenance.page < 0
++      || (provenance.bbox !== null && !isFiniteBBox(provenance.bbox))
++    ) {
++      throw new Error(`section ${section.id} provenance is invalid`)
++    }
++  }
++
++  for (const section of tree.sections) {
++    if (section.parent_id !== null && !ids.has(section.parent_id)) {
++      throw new Error(`section ${section.id} has unknown parent ${section.parent_id}`)
++    }
++    for (const child of section.children) {
++      if (!ids.has(child)) throw new Error(`section ${section.id} has unknown child ${child}`)
++    }
++  }
++}
++
++export function normalizeSectionPath(treeValue: unknown, sectionId: string): NormalizedSectionPath {
++  assertSectionTreeV2(treeValue)
++  const byId = new Map(treeValue.sections.map(section => [section.id, section]))
++  const path: SectionTreeNodeV2[] = []
++  const visited = new Set<string>()
++  let current = byId.get(sectionId)
++  if (!current) throw new Error(`unknown section ${sectionId}`)
++
++  while (current) {
++    if (visited.has(current.id)) throw new Error(`section tree cycle at ${current.id}`)
++    visited.add(current.id)
++    path.unshift(current)
++    current = current.parent_id === null ? undefined : byId.get(current.parent_id)
++  }
++
++  return {
++    breadcrumb: path.map(section => section.title),
++    breadcrumbNodes: path.map((section, level) => ({
++      level,
++      kind: level === 0 ? 'document' : 'section',
++      label: section.title,
++      id: section.id,
++      node_id: section.id,
++      parent_node_id: section.parent_id ?? undefined,
++      source: 'section_hierarchy',
++      page: section.provenance.page,
++    })),
++    provenance: path.map(section => section.provenance),
++  }
++}
+diff --git a/ui/src/components/pdf-lab/PdfLabLabelingPage.css b/ui/src/components/pdf-lab/PdfLabLabelingPage.css
+index 1abe92da..307adb7b 100644
+--- a/ui/src/components/pdf-lab/PdfLabLabelingPage.css
++++ b/ui/src/components/pdf-lab/PdfLabLabelingPage.css
+@@ -1,5 +1,149 @@
+ /* PdfLabLabelingPage — 3-pane layout, NVIS dark palette. */
+ 
++.pdf-lab-calibrate-root {
++  min-height: 100vh;
++  padding: 24px;
++  color: #e6edf7;
++  background: #091019;
++  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
++}
++
++.pdf-lab-calibrate-header {
++  display: flex;
++  align-items: flex-end;
++  justify-content: space-between;
++  max-width: 1440px;
++  margin: 0 auto 20px;
++}
++
++.pdf-lab-calibrate-header h1 {
++  margin: 4px 0 0;
++  font-size: 24px;
++}
++
++.pdf-lab-calibrate-kicker,
++.pdf-lab-calibrate-progress {
++  color: #91a2b8;
++  font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
++  letter-spacing: 0.08em;
++  text-transform: uppercase;
++}
++
++.pdf-lab-calibrate-main {
++  display: grid;
++  grid-template-columns: minmax(0, 1fr) 320px;
++  gap: 20px;
++  max-width: 1440px;
++  margin: 0 auto;
++}
++
++.pdf-lab-calibrate-canvas,
++.pdf-lab-calibrate-controls {
++  border: 1px solid #243246;
++  border-radius: 10px;
++  background: #111b28;
++}
++
++.pdf-lab-calibrate-canvas {
++  display: grid;
++  min-height: calc(100vh - 130px);
++  padding: 20px;
++  place-items: start center;
++  overflow: auto;
++}
++
++.pdf-lab-calibrate-image-wrap {
++  position: relative;
++  width: min(100%, 980px);
++  line-height: 0;
++  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.38);
++}
++
++.pdf-lab-calibrate-image-wrap img {
++  display: block;
++  width: 100%;
++  height: auto;
++}
++
++.pdf-lab-calibrate-bbox {
++  position: absolute;
++  box-sizing: border-box;
++  border: 3px solid #ffbf3f;
++  background: rgba(255, 191, 63, 0.08);
++  pointer-events: none;
++}
++
++.pdf-lab-calibrate-controls {
++  align-self: start;
++  padding: 18px;
++}
++
++.pdf-lab-calibrate-source {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 8px;
++  color: #aebed2;
++  font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
++}
++
++.pdf-lab-calibrate-source span {
++  padding: 4px 7px;
++  border: 1px solid #314158;
++  border-radius: 4px;
++}
++
++.pdf-lab-calibrate-controls blockquote {
++  margin: 18px 0;
++  padding: 14px;
++  border-left: 3px solid #5e7594;
++  color: #d9e3ef;
++  background: #0b1420;
++  line-height: 1.5;
++}
++
++.pdf-lab-calibrate-controls label {
++  display: grid;
++  gap: 7px;
++  color: #c3d0df;
++  font-size: 13px;
++}
++
++.pdf-lab-calibrate-controls input {
++  box-sizing: border-box;
++  width: 100%;
++  padding: 9px 10px;
++  border: 1px solid #354860;
++  border-radius: 5px;
++  color: #eef5fc;
++  background: #0a131e;
++}
++
++.pdf-lab-calibrate-actions {
++  display: grid;
++  gap: 9px;
++  margin-top: 18px;
++}
++
++.pdf-lab-calibrate-actions button {
++  padding: 11px 12px;
++  border: 1px solid #415671;
++  border-radius: 6px;
++  color: #eef5fc;
++  background: #182538;
++  cursor: pointer;
++}
++
++.pdf-lab-calibrate-actions button:hover:not(:disabled) {
++  border-color: #7694b9;
++  background: #21334b;
++}
++
++@media (max-width: 900px) {
++  .pdf-lab-calibrate-main {
++    grid-template-columns: 1fr;
++  }
++}
++
+ .pdf-lab-labeling-root {
+   display: grid;
+   grid-template-columns: 220px 1fr 440px;
+diff --git a/ui/src/components/pdf-lab/PdfLabLabelingPage.tsx b/ui/src/components/pdf-lab/PdfLabLabelingPage.tsx
+index becd860b..a0bc1e61 100644
+--- a/ui/src/components/pdf-lab/PdfLabLabelingPage.tsx
++++ b/ui/src/components/pdf-lab/PdfLabLabelingPage.tsx
+@@ -36,6 +36,15 @@ import {
+   regionsToExpected,
+ } from './PdfLabLabelingExport'
+ import { LeftPane } from '../common/LeftPane'
++import {
++  type CalibrationSampleItem,
++  type NormalizedLabelingItem,
++  normalizeCalibrationItem,
++} from '../../adapters/annotationCall'
++import {
++  type CalibrationPageImageIndex,
++  assertCalibrationPageImageIndex,
++} from '../../adapters/pageImageRefs'
+ import './PdfLabLabelingPage.css'
+ 
+ /** Human-labeling vocabulary. Link annotations (control_link /
+@@ -1589,7 +1598,179 @@ const KNOWN_SLICES: KnownSlice[] = [
+   },
+ ]
+ 
+-export function PdfLabLabelingPage() {
++type CalibrationLabel = 'correct' | 'wrong_type' | 'wrong_bounds' | 'not_an_element'
++
++interface CalibrationSampleResponse {
++  schema: 'pdf_oxide.calibration_sample_response.v1'
++  items: Array<{ item_sha: string; item: CalibrationSampleItem }>
++  page_images: CalibrationPageImageIndex
++}
++
++interface CalibrationLabelRow {
++  item_sha: string
++  label: CalibrationLabel
++  corrected_type?: string
++  ts: string
++}
++
++function PdfLabCalibrationMode() {
++  const [sample, setSample] = useState<CalibrationSampleResponse | null>(null)
++  const [activeIndex, setActiveIndex] = useState(0)
++  const [correctedType, setCorrectedType] = useState('')
++  const [saving, setSaving] = useState(false)
++  const [error, setError] = useState<string | null>(null)
++
++  useEffect(() => {
++    let cancelled = false
++    void fetch('/api/pdf-lab/calibration/sample')
++      .then(async response => {
++        if (!response.ok) throw new Error(`calibration sample fetch returned HTTP ${response.status}`)
++        const payload = await response.json() as CalibrationSampleResponse
++        if (payload.schema !== 'pdf_oxide.calibration_sample_response.v1' || !Array.isArray(payload.items)) {
++          throw new Error('calibration sample response contract is invalid')
++        }
++        assertCalibrationPageImageIndex(payload.page_images)
++        if (!cancelled) setSample(payload)
++      })
++      .catch(reason => {
++        if (!cancelled) setError(reason instanceof Error ? reason.message : String(reason))
++      })
++    return () => { cancelled = true }
++  }, [])
++
++  let active: NormalizedLabelingItem | null = null
++  let normalizationError: string | null = null
++  if (sample && activeIndex < sample.items.length) {
++    const entry = sample.items[activeIndex]
++    try {
++      active = normalizeCalibrationItem(entry.item, entry.item_sha, sample.page_images)
++    } catch (reason) {
++      normalizationError = reason instanceof Error ? reason.message : String(reason)
++    }
++  }
++
++  const adjudicate = useCallback(async (label: CalibrationLabel) => {
++    if (!active || saving) return
++    const row: CalibrationLabelRow = {
++      item_sha: active.itemSha,
++      label,
++      ...(label === 'wrong_type' && correctedType.trim() ? { corrected_type: correctedType.trim() } : {}),
++      ts: new Date().toISOString(),
++    }
++    setSaving(true)
++    setError(null)
++    try {
++      const response = await fetch('/api/pdf-lab/calibration/labels', {
++        method: 'POST',
++        headers: { 'Content-Type': 'application/json' },
++        body: JSON.stringify(row),
++      })
++      if (!response.ok) {
++        const detail = await response.text()
++        throw new Error(`label write returned HTTP ${response.status}: ${detail}`)
++      }
++      setCorrectedType('')
++      setActiveIndex(index => index + 1)
++    } catch (reason) {
++      setError(reason instanceof Error ? reason.message : String(reason))
++    } finally {
++      setSaving(false)
++    }
++  }, [active, correctedType, saving])
++
++  if (error || normalizationError) {
++    return (
++      <div className="pdf-lab-calibrate-root" data-confidence-hidden="true" role="alert">
++        <h1>Calibration unavailable</h1>
++        <p>{error || normalizationError}</p>
++      </div>
++    )
++  }
++  if (!sample) {
++    return <div className="pdf-lab-calibrate-root" data-confidence-hidden="true">Loading calibration sample…</div>
++  }
++  if (!active) {
++    return (
++      <div className="pdf-lab-calibrate-root" data-confidence-hidden="true">
++        <h1>Calibration sample complete</h1>
++        <p>{sample.items.length} adjudications submitted.</p>
++      </div>
++    )
++  }
++
++  const [x0, y0, x1, y1] = active.region.bbox
++  return (
++    <div className="pdf-lab-calibrate-root" data-confidence-hidden="true">
++      <header className="pdf-lab-calibrate-header">
++        <div>
++          <div className="pdf-lab-calibrate-kicker">PDF Lab · Calibrate</div>
++          <h1>Is this extracted element correct?</h1>
++        </div>
++        <div className="pdf-lab-calibrate-progress" aria-label="Calibration progress">
++          {activeIndex + 1} / {sample.items.length}
++        </div>
++      </header>
++
++      <main className="pdf-lab-calibrate-main">
++        <section className="pdf-lab-calibrate-canvas" aria-label="Calibration page evidence">
++          <div className="pdf-lab-calibrate-image-wrap">
++            <img
++              data-testid="page-image"
++              src={active.image.src}
++              alt={`Rendered source page ${active.page + 1} from ${active.doc}`}
++              draggable={false}
++            />
++            <div
++              data-testid="bbox-overlay"
++              className="pdf-lab-calibrate-bbox"
++              style={{
++                left: `${x0 * 100}%`,
++                top: `${y0 * 100}%`,
++                width: `${(x1 - x0) * 100}%`,
++                height: `${(y1 - y0) * 100}%`,
++              }}
++            />
++          </div>
++        </section>
++
++        <aside className="pdf-lab-calibrate-controls">
++          <div className="pdf-lab-calibrate-source">
++            <span>{active.doc}</span>
++            <span>Page {active.page + 1}</span>
++            <span>{active.region.family}</span>
++          </div>
++          <blockquote>{active.region.text_hint || '(No extracted text)'}</blockquote>
++          <label>
++            Corrected type <small>(optional for wrong type)</small>
++            <input
++              value={correctedType}
++              onChange={event => setCorrectedType(event.target.value)}
++              placeholder="corrected_type"
++              disabled={saving}
++            />
++          </label>
++          <div className="pdf-lab-calibrate-actions" aria-label="Adjudication labels">
++            <button disabled={saving} onClick={() => void adjudicate('correct')}>Correct</button>
++            <button disabled={saving} onClick={() => void adjudicate('wrong_type')}>Wrong type</button>
++            <button disabled={saving} onClick={() => void adjudicate('wrong_bounds')}>Wrong bounds</button>
++            <button disabled={saving} onClick={() => void adjudicate('not_an_element')}>Not an element</button>
++          </div>
++        </aside>
++      </main>
++    </div>
++  )
++}
++
++export interface PdfLabLabelingPageProps {
++  mode?: 'label' | 'calibrate'
++}
++
++export function PdfLabLabelingPage({ mode = 'label' }: PdfLabLabelingPageProps) {
++  if (mode === 'calibrate') return <PdfLabCalibrationMode />
++  return <PdfLabStandardLabelingPage />
++}
++
++function PdfLabStandardLabelingPage() {
+   const [activeFamily, setActiveFamily] = useState<FamilyId>('paragraph_block')
+   const [imageUrl, setImageUrl] = useState<string | null>(null)
+   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null)
+diff --git a/ui/src/components/pdf-lab/PdfLabView.tsx b/ui/src/components/pdf-lab/PdfLabView.tsx
+index 52321bd1..dce46867 100644
+--- a/ui/src/components/pdf-lab/PdfLabView.tsx
++++ b/ui/src/components/pdf-lab/PdfLabView.tsx
+@@ -9,11 +9,11 @@ import { ContextMenu, type ContextMenuItem } from '../common/ContextMenu'
+ import { SharedRightPane } from '../common/SharedRightPane'
+ import { EMBRY } from '../common/EmbryStyle'
+ import { ReviewBundleButton } from '../common/ReviewBundleButton'
+-import { SurgicalTriageFixture } from './SurgicalTriageFixture'
++import { SurgicalTriageFixture } from '../../../archive/SurgicalTriageFixture'
+ import { TauLoopView } from './TauLoopView'
+-import { SurgicalTriageCleanRoom } from './SurgicalTriageCleanRoom'
+-import { SurgicalTriageStaticProof } from './SurgicalTriageStaticProof'
+-import { PdfLabProductionWorkflow } from './PdfLabProductionWorkflow'
++import { SurgicalTriageCleanRoom } from '../../../archive/SurgicalTriageCleanRoom'
++import { SurgicalTriageStaticProof } from '../../../archive/SurgicalTriageStaticProof'
++import { PdfLabProductionWorkflow } from '../../../archive/PdfLabProductionWorkflow'
+ import { PdfLabEvidenceQA } from './PdfLabEvidenceQA'
+ import { useRegisterAction } from '../../hooks/useRegisterAction'
+ import './PdfLabView.css'
+diff --git a/ui/tests/calibrate.playwright.test.mjs b/ui/tests/calibrate.playwright.test.mjs
+new file mode 100644
+index 00000000..4bb763b6
+--- /dev/null
++++ b/ui/tests/calibrate.playwright.test.mjs
+@@ -0,0 +1,197 @@
++import assert from 'node:assert/strict'
++import { createHash } from 'node:crypto'
++import { spawn } from 'node:child_process'
++import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
++import { tmpdir } from 'node:os'
++import { join, resolve } from 'node:path'
++import test from 'node:test'
++import { fileURLToPath } from 'node:url'
++import net from 'node:net'
++
++import { chromium } from 'playwright'
++
++const UI_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)))
++const SCREENSHOT_PATH = '/tmp/pdf-lab-calibrate-acceptance.png'
++
++async function waitFor(url, timeoutMs = 30_000) {
++  const deadline = Date.now() + timeoutMs
++  while (Date.now() < deadline) {
++    try {
++      const response = await fetch(url)
++      if (response.ok) return
++    } catch {
++      // The child server is still starting.
++    }
++    await new Promise(resolveWait => setTimeout(resolveWait, 150))
++  }
++  throw new Error(`timed out waiting for ${url}`)
++}
++
++async function freePort() {
++  return await new Promise((resolvePort, reject) => {
++    const server = net.createServer()
++    server.once('error', reject)
++    server.listen(0, '127.0.0.1', () => {
++      const address = server.address()
++      if (!address || typeof address === 'string') {
++        server.close()
++        reject(new Error('failed to allocate a local test port'))
++        return
++      }
++      server.close(error => error ? reject(error) : resolvePort(address.port))
++    })
++  })
++}
++
++function start(command, args, env = {}) {
++  const child = spawn(command, args, {
++    cwd: UI_ROOT,
++    env: { ...process.env, ...env },
++    detached: true,
++    stdio: ['ignore', 'pipe', 'pipe'],
++  })
++  let output = ''
++  child.stdout.on('data', chunk => { output += chunk })
++  child.stderr.on('data', chunk => { output += chunk })
++  return { child, output: () => output }
++}
++
++async function stop(child) {
++  if (!child.killed) {
++    try {
++      process.kill(-child.pid, 'SIGTERM')
++    } catch {
++      // Process already exited.
++    }
++  }
++  await new Promise(resolveWait => setTimeout(resolveWait, 200))
++}
++
++test('calibrate route renders evidence and persists a labels_v1 row', { timeout: 60_000 }, async () => {
++  const artifactRoot = await mkdtemp(join(tmpdir(), 'pdf-lab-calibrate-e2e-'))
++  const calibrationDir = join(artifactRoot, 'calibration')
++  const pageImageDir = join(calibrationDir, 'page_images')
++  await mkdir(pageImageDir, { recursive: true })
++
++  const sample = {
++    doc: 'fixture-doc',
++    quintile: 0,
++    page: 2,
++    bbox: [0.125, 0.25, 0.625, 0.75],
++    type: 'table',
++    confidence: 0.123456,
++    text: 'Fixture table candidate',
++    label: null,
++  }
++  const sampleLine = JSON.stringify(sample)
++  const expectedItemSha = createHash('sha256').update(sampleLine).digest('hex')
++  const png = Buffer.from(
++    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
++    'base64',
++  )
++  const pdfSha = 'd'.repeat(64)
++  const naming = 'sha256(canonical JSON of schema,pdf_sha256,page_index,dpi,format + NUL + PNG bytes)'
++  const canonicalInputs = JSON.stringify({
++    dpi: 150,
++    format: 'png',
++    page_index: 2,
++    pdf_sha256: pdfSha,
++    schema: 'pdf_oxide.page_image.v1',
++  })
++  const filename = `${createHash('sha256')
++    .update(canonicalInputs)
++    .update(Buffer.from([0]))
++    .update(png)
++    .digest('hex')}.png`
++  const byteSha = createHash('sha256').update(png).digest('hex')
++  await writeFile(join(calibrationDir, 'sample_v1.jsonl'), `${sampleLine}\n`)
++  await writeFile(join(pageImageDir, filename), png)
++  await writeFile(join(calibrationDir, 'page_images_v1.json'), JSON.stringify({
++    schema: 'pdf_oxide.calibration_page_images.v1',
++    documents: {
++      'fixture-doc': {
++        schema: 'pdf_oxide.page_image.v1',
++        pdf_sha256: pdfSha,
++        directory: 'page_images',
++        dpi: 150,
++        format: 'png',
++        naming,
++        images: [{ page: 2, filename, byte_sha256: byteSha }],
++      },
++    },
++  }))
++
++  const port = await freePort()
++  const api = start('npm', ['run', 'dev:api'], {
++    PDF_LAB_API_PORT: String(port),
++    PDF_LAB_ARTIFACTS_ROOT: artifactRoot,
++    PDF_LAB_PUBLIC_ROOT: artifactRoot,
++  })
++  let browser
++  try {
++    await waitFor(`http://127.0.0.1:${port}/api/pdf-lab/status`)
++    browser = await chromium.launch({ headless: true })
++    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } })
++    await page.goto(`http://127.0.0.1:${port}/#pdf-lab/calibrate`)
++
++    const image = page.locator('[data-testid="page-image"]')
++    await image.waitFor({ state: 'visible' })
++    assert.equal(await page.locator('[data-confidence-hidden="true"]').count(), 1)
++    assert.equal((await page.locator('body').innerText()).includes('0.123456'), false)
++
++    const overlayStyle = await page.locator('[data-testid="bbox-overlay"]').evaluate(element => ({
++      left: element.style.left,
++      top: element.style.top,
++      width: element.style.width,
++      height: element.style.height,
++    }))
++    assert.deepEqual(overlayStyle, {
++      left: '12.5%',
++      top: '25%',
++      width: '50%',
++      height: '50%',
++    })
++
++    await page.screenshot({ path: SCREENSHOT_PATH, fullPage: true })
++    await page.getByRole('button', { name: 'Correct', exact: true }).click()
++    await page.getByRole('heading', { name: 'Calibration sample complete' }).waitFor()
++
++    const rows = (await readFile(join(calibrationDir, 'labels_v1.jsonl'), 'utf-8'))
++      .trim()
++      .split('\n')
++      .map(line => JSON.parse(line))
++    assert.equal(rows.length, 1)
++    assert.deepEqual(Object.keys(rows[0]).sort(), ['item_sha', 'label', 'ts'])
++    assert.equal(rows[0].item_sha, expectedItemSha)
++    assert.equal(rows[0].label, 'correct')
++    assert.equal(new Date(rows[0].ts).toISOString(), rows[0].ts)
++
++    await writeFile(join(calibrationDir, 'page_images_v1.json'), JSON.stringify({
++      schema: 'pdf_oxide.calibration_page_images.v1',
++      documents: {
++        'fixture-doc': {
++          schema: 'pdf_oxide.page_image.v1',
++          pdf_sha256: pdfSha,
++          directory: 'page_images',
++          dpi: 150,
++          format: 'png',
++          naming,
++          images: [{ page: 2, filename: `${'f'.repeat(64)}.png`, byte_sha256: byteSha }],
++        },
++      },
++    }))
++    const invalidManifestResponse = await fetch(`http://127.0.0.1:${port}/api/pdf-lab/calibration/sample`)
++    assert.equal(invalidManifestResponse.status, 422)
++    assert.equal((await invalidManifestResponse.json()).error, 'invalid_calibration_contract')
++
++    console.log(`labels_v1 row: ${JSON.stringify(rows[0])}`)
++    console.log(`screenshot: ${SCREENSHOT_PATH}`)
++  } catch (error) {
++    console.error('API output:', api.output())
++    throw error
++  } finally {
++    if (browser) await browser.close()
++    await stop(api.child)
++    await rm(artifactRoot, { recursive: true, force: true })
++  }
++})
+diff --git a/ui/tests/contracts.test.ts b/ui/tests/contracts.test.ts
+new file mode 100644
+index 00000000..efcf725c
+--- /dev/null
++++ b/ui/tests/contracts.test.ts
+@@ -0,0 +1,132 @@
++import assert from 'node:assert/strict'
++import test from 'node:test'
++
++import {
++  OLD_FLOW_ONLY_FIELDS,
++  normalizeAnnotationCall,
++  normalizeCalibrationItem,
++} from '../src/adapters/annotationCall'
++import type { CalibrationPageImageIndex } from '../src/adapters/pageImageRefs'
++import { normalizeSectionPath } from '../src/adapters/sectionTree'
++
++const sha = 'a'.repeat(64)
++const naming = 'sha256(canonical JSON of schema,pdf_sha256,page_index,dpi,format + NUL + PNG bytes)'
++const imageIndex: CalibrationPageImageIndex = {
++  schema: 'pdf_oxide.calibration_page_images.v1',
++  documents: {
++    fixture: {
++      schema: 'pdf_oxide.page_image.v1',
++      pdf_sha256: 'd'.repeat(64),
++      directory: 'page_images',
++      dpi: 150,
++      format: 'png',
++      naming,
++      images: [{ page: 2, filename: `${'b'.repeat(64)}.png`, byte_sha256: 'c'.repeat(64) }],
++    },
++  },
++}
++
++test('new annotation-call fields map without old-flow-only dependencies', () => {
++  const regions = normalizeAnnotationCall({
++    schema: 'pdf_oxide.annotation_call.v1',
++    items: [{
++      page: 2,
++      kind: 'block',
++      bbox: [0.1, 0.2, 0.4, 0.6],
++      reason: 'low_confidence',
++      confidence: 0.125,
++      text_excerpt: 'fixture excerpt',
++    }],
++  })
++  assert.deepEqual(regions, [{
++    id: 'annotation-call-0',
++    page: 2,
++    family: 'block',
++    bbox: [0.1, 0.2, 0.4, 0.6],
++    text_hint: 'fixture excerpt',
++    notes: 'low_confidence',
++    origin: 'agent_dispatcher',
++  }])
++  assert.deepEqual(OLD_FLOW_ONLY_FIELDS, [
++    'crop_uri',
++    'page_image_uri',
++    'json_pointer',
++    'page_image_hash',
++    'task_id',
++  ])
++})
++
++test('legacy-only payload cannot satisfy the new annotation contract', () => {
++  assert.throws(
++    () => normalizeAnnotationCall({
++      schema: 'pdf_oxide.annotation_call.v1',
++      items: [{
++        crop_uri: '/old/crop.png',
++        page_image_uri: '/old/page.png',
++        json_pointer: '/elements/1',
++        page_image_hash: sha,
++        task_id: 'legacy-task',
++      }],
++    }),
++    /page is invalid/,
++  )
++})
++
++test('calibration mapping preserves the exact bbox and requires a content-addressed page image', () => {
++  const normalized = normalizeCalibrationItem({
++    doc: 'fixture',
++    quintile: 0,
++    page: 2,
++    bbox: [0.125, 0.25, 0.625, 0.75],
++    type: 'table',
++    confidence: 0.123456,
++    text: 'A table candidate',
++    label: null,
++  }, sha, imageIndex)
++  assert.deepEqual(normalized.region.bbox, [0.125, 0.25, 0.625, 0.75])
++  assert.equal(normalized.region.family, 'table')
++  assert.equal(normalized.region.page, 2)
++  assert.equal(normalized.image.filename, `${'b'.repeat(64)}.png`)
++  assert.equal('confidence' in normalized.region, false)
++
++  assert.throws(
++    () => normalizeCalibrationItem({
++      doc: 'fixture',
++      quintile: 0,
++      page: 2,
++      type: 'table',
++      confidence: 0.123456,
++      text: 'No bbox',
++      label: null,
++    }, sha, imageIndex),
++    /bbox must contain four finite numbers/,
++  )
++})
++
++test('section tree v2 parent, children, order, and provenance map to existing breadcrumbs', () => {
++  const tree = {
++    schema: 'pdf_oxide.section_tree.v2',
++    sections: [
++      {
++        id: 'root',
++        title: 'Document',
++        parent_id: null,
++        children: ['child'],
++        doc_order: 0,
++        provenance: { pdf_sha256: sha, page: 0, bbox: null },
++      },
++      {
++        id: 'child',
++        title: 'Section 1',
++        parent_id: 'root',
++        children: [],
++        doc_order: 1,
++        provenance: { pdf_sha256: sha, page: 2, bbox: [0.1, 0.1, 0.9, 0.2] },
++      },
++    ],
++  } as const
++  const normalized = normalizeSectionPath(tree, 'child')
++  assert.deepEqual(normalized.breadcrumb, ['Document', 'Section 1'])
++  assert.equal(normalized.breadcrumbNodes[1].parent_node_id, 'root')
++  assert.deepEqual(normalized.provenance[1].bbox, [0.1, 0.1, 0.9, 0.2])
++})
