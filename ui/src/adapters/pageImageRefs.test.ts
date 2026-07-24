@@ -6,6 +6,7 @@ import {
   normalizePdfBboxXywh,
   normalizePageImageRef,
   parsePageImageIndex,
+  lookupPageImageRefs,
 } from './pageImageRefs'
 
 const SHA = 'a'.repeat(64)
@@ -26,6 +27,18 @@ describe('page image refs', () => {
 
   it('rejects non-content-addressed filenames', () => {
     expect(() => normalizePageImageRef('/page_images/page-7.png')).toThrow(/not content addressed/)
+  })
+
+  it('never falls back to another document with the same page number', () => {
+    const index = parsePageImageIndex({
+      pages: [{
+        doc: 'arxiv',
+        page: 0,
+        page_image_refs: [{ sha256: SHA, href: `/page_images/${SHA}.png` }],
+      }],
+    })
+    expect(lookupPageImageRefs(index, 'nist', 0)).toEqual([])
+    expect(lookupPageImageRefs(index, undefined, 0)).toHaveLength(1)
   })
 
   it('projects normalized xywh rectangles as percentages', () => {

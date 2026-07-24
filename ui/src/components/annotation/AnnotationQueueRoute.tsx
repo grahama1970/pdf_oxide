@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useMemo, useState, type ChangeEvent, type UIEvent } from 'react'
+import { useDeferredValue, useEffect, useMemo, useRef, useState, type ChangeEvent, type UIEvent } from 'react'
 import { AlertTriangle, ChevronRight, FileWarning, Filter, Loader2, Search } from 'lucide-react'
 import {
   ANNOTATION_CALL_SCHEMA,
@@ -45,7 +45,13 @@ async function loadAnnotationCallsFromUrl(url: string, fetchImpl: typeof fetch):
   if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}`)
   const raw = await response.json() as unknown
   const record = asRecord(raw)
-  if (record?.schema === ANNOTATION_CALL_SCHEMA) return [normalizeAnnotationCall(raw, url)]
+  if (record?.schema === ANNOTATION_CALL_SCHEMA) {
+    const sourceUrl = new URL(response.url || url, window.location.href)
+    const pathParts = sourceUrl.pathname.split('/').filter(Boolean).map(decodeURIComponent)
+    const filenameIndex = pathParts.lastIndexOf('annotation_call.json')
+    const sourceName = filenameIndex > 0 ? pathParts[filenameIndex - 1] : url
+    return [normalizeAnnotationCall(raw, sourceName)]
+  }
 
   const callEntries = record?.calls ?? record?.annotation_calls
   if (Array.isArray(callEntries) && callEntries.every((entry) => typeof entry === 'string')) {
@@ -63,7 +69,12 @@ function selectedPageImage(item: AnnotationQueueItem, index: PageImageIndex | nu
           page: item.page,
           pdfSha256: item.pdfSha256,
         })
-    const indexed = lookupPageImageRefs(index, item.documentId, item.page)[0] ?? null
+    const indexed = lookupPageImageRefs(index, item.documentId, item.page)[0]
+      ?? index?.all.find((candidate) => (
+        candidate.page === item.page
+        && candidate.pdfSha256 === item.pdfSha256
+      ))
+      ?? null
     if (direct[0] && indexed && direct[0].sha256 === indexed.sha256) {
       return {
         ...indexed,
@@ -86,14 +97,21 @@ interface VirtualRowsProps {
 
 function VirtualRows({ rows, selectedId, onSelect }: VirtualRowsProps) {
   const [scrollTop, setScrollTop] = useState(0)
+  const viewportRef = useRef<HTMLDivElement>(null)
   const viewportHeight = 640
   const visibleCount = Math.ceil(viewportHeight / ROW_HEIGHT)
   const start = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - OVERSCAN)
   const end = Math.min(rows.length, start + visibleCount + OVERSCAN * 2)
   const visible = rows.slice(start, end)
 
+  useEffect(() => {
+    setScrollTop(0)
+    if (viewportRef.current) viewportRef.current.scrollTop = 0
+  }, [rows])
+
   return (
     <div
+      ref={viewportRef}
       className="pdf-verify-virtual"
       style={{ height: viewportHeight }}
       onScroll={(event: UIEvent<HTMLDivElement>) => setScrollTop(event.currentTarget.scrollTop)}

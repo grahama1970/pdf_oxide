@@ -233,9 +233,8 @@ export function lookupPageImageRefs(
   page: number,
 ): readonly PageImageRef[] {
   if (!index) return []
-  return index.byDocAndPage.get(pageKey(doc, page))
-    ?? index.byDocAndPage.get(pageKey(undefined, page))
-    ?? []
+  if (doc) return index.byDocAndPage.get(pageKey(doc, page)) ?? []
+  return index.byDocAndPage.get(pageKey(undefined, page)) ?? []
 }
 
 export function resolvePageImageRefs(
