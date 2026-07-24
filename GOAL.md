@@ -17,3 +17,11 @@ caches). There is NO "minor bug fixes only" boundary. Work orders from
 the project agent carry operator authority; gates (determinism smoke,
 108 hash-pinned fixtures, char parity, cross-doc stability) are the
 constraint, not feature size.
+
+PURPOSE (operator, 2026-07-24): a user/agent asks about a SPECIFIC
+section, table, or figure and receives a TRACEABLE answer — every
+element addressable by stable id with provenance (pdf sha, page, bbox),
+the section tree as the address space (section > child > block/table/
+figure), and multi-modal retrieval: text chunks AND rendered table/
+figure images embedded in Qdrant. The trace chain query -> embedding ->
+element id -> section path -> page/bbox -> source pdf must never break.
