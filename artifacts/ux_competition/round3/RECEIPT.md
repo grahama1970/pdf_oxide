@@ -136,3 +136,40 @@ Evidence classification:
   post-label progress
 - remains unverified: this UX proof does not claim that the engine's extraction
   classifications are semantically correct
+
+## Evidence round 3b
+
+Fresh read-back of the four real evidence-repository files:
+
+```text
+$ sha256sum /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/annotation-calls/1512.03385v1/annotation_call.json /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/annotation-calls/NASA_SP-2016-6105/annotation_call.json /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/annotation-calls/NIST.SP.800-53Ar5/annotation_call.json /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/annotation-calls/NIST_SP_800-53r5/annotation_call.json
+b19b7167f6147ca03fb954ec77557d9f021c473da54385733b4d5fca7a84c05f  /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/annotation-calls/1512.03385v1/annotation_call.json
+5853b2c9c33c134d0dad0b216ef9b7c5f994080a0b78abc9a28ccb4605d22069  /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/annotation-calls/NASA_SP-2016-6105/annotation_call.json
+21e8ebc715f9b3ca53d51a5aaf0b2ed2665aeed384e620b8b95c56238b78d059  /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/annotation-calls/NIST.SP.800-53Ar5/annotation_call.json
+b074093d80d515f1d1f2318f69393bc85b886d1cd3ff9144b7f79c92b811b491  /home/graham/workspace/experiments/pdf_oxide-gs001/artifacts/pdf-lab/annotation-calls/NIST_SP_800-53r5/annotation_call.json
+```
+
+The file contents independently read back as:
+
+| Document | Items | Reason breakdown |
+| --- | ---: | --- |
+| `1512.03385v1` | 23 | `low_confidence`: 17; `char_parity_deficit`: 1; `reviewer_flagged`: 5 |
+| `NASA_SP-2016-6105` | 604 | `low_confidence`: 598; `char_parity_deficit`: 6 |
+| `NIST.SP.800-53Ar5` | 315 | `low_confidence`: 268; `char_parity_deficit`: 47 |
+| `NIST_SP_800-53r5` | 1,219 | `low_confidence`: 1,219 |
+
+These totals reconcile to 2,161 items: 2,102 `low_confidence`, 54
+`char_parity_deficit`, and 5 `reviewer_flagged`.
+
+The round-2 arXiv count of 17 was the `low_confidence` subset of the same
+23-item `1512.03385v1` annotation call. The complete reason breakdown is
+17 + 1 + 5 = 23. This is not a scope change: the source file is unchanged at
+SHA-256
+`b19b7167f6147ca03fb954ec77557d9f021c473da54385733b4d5fca7a84c05f`.
+
+Verbatim `artifacts/ux_competition/round3/labels_v1.jsonl`:
+
+```jsonl
+{"item_sha":"951e03dc706069b804b93797f06af4adf4840c64aaa647a2bd61a921123a37d8","label":"correct","ts":"2026-07-24T15:08:23.150Z"}
+{"item_sha":"9dc2f9efb688e0a82cb4f47da5c31aaa8b725060e266287907941fed97147091","label":"wrong_type","corrected_type":"figure","ts":"2026-07-24T15:08:23.247Z"}
+```
