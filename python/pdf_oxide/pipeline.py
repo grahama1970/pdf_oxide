@@ -16,6 +16,7 @@ Usage:
         features=["arango", "describe", "requirements"]
     ))
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -24,13 +25,14 @@ import time
 from pathlib import Path
 from typing import Optional
 
+from . import plugins as _plugins  # noqa: F401 — auto-register all plugins
+from .annotation_call import write_annotation_call
 from .pipeline_decrypt import maybe_decrypt
 from .pipeline_extract import extract_content
 from .pipeline_flatten import flatten
 from .pipeline_types import PipelineConfig, PipelineResult
 from .pipeline_util import log
 from .plugins.base import registry
-from . import plugins as _plugins  # noqa: F401 — auto-register all plugins
 
 
 def extract_pdf(
@@ -111,6 +113,17 @@ def _extract_and_process(
             )
         )
         log(f"Output: {out_path}")
+        extra_items = (
+            config.annotation_call_hook(result)
+            if config.annotation_call_hook is not None
+            else ()
+        )
+        annotation_path = write_annotation_call(
+            result,
+            out_dir / "annotation_call.json",
+            extra_items=extra_items,
+        )
+        log(f"Annotation call: {annotation_path}")
 
     return result
 

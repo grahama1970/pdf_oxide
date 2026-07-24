@@ -1,10 +1,14 @@
 """Pipeline data types and configuration."""
+
 from __future__ import annotations
 
 import os
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, List, Mapping, Optional
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 @dataclass
@@ -48,6 +52,12 @@ class PipelineConfig:
 
     # Output
     output_dir: Optional[Path] = None
+    # Optional downstream evidence hook. The harness may return contract items
+    # such as char_parity_deficit or unadjudicated_residual; the core emitter
+    # validates and appends them after its engine-confidence items.
+    annotation_call_hook: Optional[
+        Callable[["PipelineResult"], Iterable[Mapping[str, Any]]]
+    ] = None
 
 
 @dataclass
