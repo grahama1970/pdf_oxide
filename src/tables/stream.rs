@@ -293,7 +293,10 @@ fn detect_columns(rows: &[Vec<&TextElement>], page_width: f64) -> Vec<(f64, f64)
     }
     let mode_count = count_freq
         .into_iter()
-        .max_by_key(|&(_, freq)| freq)
+        // A frequency tie is decision-relevant: choosing one-column rejects
+        // the candidate while choosing the larger row shape can accept it.
+        // HashMap iteration order must never decide that gate.
+        .max_by_key(|&(count, freq)| (freq, count))
         .map(|(count, _)| count)
         .unwrap_or(1);
 
@@ -394,7 +397,9 @@ fn filter_title_footer_rows<'a>(rows: &[Vec<&'a TextElement>]) -> Vec<Vec<&'a Te
     }
     let mode = count_freq
         .into_iter()
-        .max_by_key(|&(_, freq)| freq)
+        // Prefer the denser row shape on equal frequency. This is an explicit
+        // pre-decision tie-break, not output sorting after a lossy gate.
+        .max_by_key(|&(count, freq)| (freq, count))
         .map(|(count, _)| count)
         .unwrap_or(1);
 

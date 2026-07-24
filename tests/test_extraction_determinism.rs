@@ -1,5 +1,7 @@
 use pdf_oxide::document::PdfDocument;
+use pdf_oxide::tables::{self, ExtractConfig, Flavor};
 use pdf_oxide::{clear_global_font_cache, global_font_cache_stats, set_global_font_cache_capacity};
+use std::collections::BTreeMap;
 use std::io::Write;
 
 fn write_temp_pdf(data: &[u8], name: &str) -> std::path::PathBuf {
@@ -9,6 +11,151 @@ fn write_temp_pdf(data: &[u8], name: &str) -> std::path::PathBuf {
     let mut f = std::fs::File::create(&path).unwrap();
     f.write_all(data).unwrap();
     path
+}
+
+fn append_pdf_object(pdf: &mut Vec<u8>, offsets: &mut Vec<usize>, id: usize, body: &[u8]) {
+    assert_eq!(offsets.len(), id);
+    offsets.push(pdf.len());
+    pdf.extend_from_slice(format!("{id} 0 obj\n").as_bytes());
+    pdf.extend_from_slice(body);
+    pdf.extend_from_slice(b"\nendobj\n");
+}
+
+fn stream_object(data: &[u8]) -> Vec<u8> {
+    let mut object = format!("<< /Length {} >>\nstream\n", data.len()).into_bytes();
+    object.extend_from_slice(data);
+    object.extend_from_slice(b"\nendstream");
+    object
+}
+
+fn build_page_order_cache_regression_pdf() -> Vec<u8> {
+    let mut pdf = b"%PDF-1.4\n".to_vec();
+    let mut offsets = vec![0];
+
+    append_pdf_object(&mut pdf, &mut offsets, 1, b"<< /Type /Catalog /Pages 2 0 R >>");
+    append_pdf_object(
+        &mut pdf,
+        &mut offsets,
+        2,
+        b"<< /Type /Pages /Kids [3 0 R 4 0 R] /Count 2 >>",
+    );
+    append_pdf_object(
+        &mut pdf,
+        &mut offsets,
+        3,
+        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 600] \
+          /Resources << /Font << /F1 5 0 R >> >> /Contents 7 0 R >>",
+    );
+    append_pdf_object(
+        &mut pdf,
+        &mut offsets,
+        4,
+        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 600] \
+          /Resources << /Font << /F1 8 0 R >> >> /Contents 10 0 R >>",
+    );
+    append_pdf_object(
+        &mut pdf,
+        &mut offsets,
+        5,
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /SharedSubset+Helvetica \
+          /Encoding /WinAnsiEncoding /ToUnicode 6 0 R >>",
+    );
+    let cmap_x = b"/CIDInit /ProcSet findresource begin\n12 dict begin\nbegincmap\n\
+        1 begincodespacerange\n<00> <FF>\nendcodespacerange\n\
+        1 beginbfchar\n<41> <0058>\nendbfchar\nendcmap\nend\nend";
+    append_pdf_object(&mut pdf, &mut offsets, 6, &stream_object(cmap_x));
+
+    let page_content = b"0.5 w \
+        50 400 m 250 400 l S 50 450 m 250 450 l S 50 500 m 250 500 l S \
+        50 400 m 50 500 l S 150 400 m 150 500 l S 250 400 m 250 500 l S \
+        BT /F1 12 Tf 60 470 Td (A) Tj ET \
+        BT /F1 12 Tf 160 470 Td (A) Tj ET \
+        BT /F1 12 Tf 60 420 Td (A) Tj ET \
+        BT /F1 12 Tf 160 420 Td (A) Tj ET";
+    append_pdf_object(&mut pdf, &mut offsets, 7, &stream_object(page_content));
+    append_pdf_object(
+        &mut pdf,
+        &mut offsets,
+        8,
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /SharedSubset+Helvetica \
+          /Encoding /WinAnsiEncoding /ToUnicode 9 0 R >>",
+    );
+    let cmap_y = b"/CIDInit /ProcSet findresource begin\n12 dict begin\nbegincmap\n\
+        1 begincodespacerange\n<00> <FF>\nendcodespacerange\n\
+        1 beginbfchar\n<41> <0059>\nendbfchar\nendcmap\nend\nend";
+    append_pdf_object(&mut pdf, &mut offsets, 9, &stream_object(cmap_y));
+    append_pdf_object(&mut pdf, &mut offsets, 10, &stream_object(page_content));
+
+    let xref_offset = pdf.len();
+    pdf.extend_from_slice(format!("xref\n0 {}\n", offsets.len()).as_bytes());
+    pdf.extend_from_slice(b"0000000000 65535 f \n");
+    for offset in offsets.iter().skip(1) {
+        pdf.extend_from_slice(format!("{offset:010} 00000 n \n").as_bytes());
+    }
+    pdf.extend_from_slice(
+        format!(
+            "trailer\n<< /Size {} /Root 1 0 R >>\nstartxref\n{xref_offset}\n%%EOF\n",
+            offsets.len()
+        )
+        .as_bytes(),
+    );
+    pdf
+}
+
+fn cache_regression_inventory(pdf: &[u8], order: &[usize]) -> BTreeMap<usize, (String, Vec<char>)> {
+    let mut doc = PdfDocument::open_from_bytes(pdf.to_vec()).unwrap();
+    let mut inventory = BTreeMap::new();
+    for &page in order {
+        let config = ExtractConfig {
+            pages: Some(vec![page]),
+            flavor: Flavor::Lattice,
+            ..Default::default()
+        };
+        let extracted = tables::extract_tables(&mut doc, &config).unwrap();
+        let table_inventory = extracted
+            .iter()
+            .map(|table| {
+                let cells: Vec<Vec<&str>> = table
+                    .cells
+                    .iter()
+                    .map(|row| row.iter().map(|cell| cell.text.as_str()).collect())
+                    .collect();
+                format!(
+                    "{}x{}:{:?}:{:?}:{:?}",
+                    table.num_rows(),
+                    table.num_cols(),
+                    table.rows,
+                    table.cols,
+                    cells
+                )
+            })
+            .collect::<Vec<_>>()
+            .join("|");
+        let mut chars: Vec<char> = doc
+            .extract_chars(page)
+            .unwrap()
+            .into_iter()
+            .map(|ch| ch.char)
+            .collect();
+        chars.sort_unstable();
+        inventory.insert(page, (table_inventory, chars));
+    }
+    inventory
+}
+
+#[test]
+fn test_shuffled_page_order_has_identical_table_inventories_and_char_multisets() {
+    let pdf = build_page_order_cache_regression_pdf();
+    let sequential = cache_regression_inventory(&pdf, &[0, 1]);
+    let shuffled = cache_regression_inventory(&pdf, &[1, 0]);
+
+    assert_eq!(sequential, shuffled);
+    assert!(
+        sequential.values().all(|(tables, _)| !tables.is_empty()),
+        "the fixture must exercise accepted table inventories"
+    );
+    assert!(sequential[&0].1.contains(&'X'));
+    assert!(sequential[&1].1.contains(&'Y'));
 }
 
 #[test]

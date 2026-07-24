@@ -133,21 +133,11 @@ pub struct PdfDocument {
     /// Cached font sets keyed by /Font dictionary ObjectRef.
     /// Pages sharing the same /Font dict skip the entire load_fonts() loop.
     font_set_cache: HashMap<ObjectRef, Vec<(String, Arc<crate::fonts::FontInfo>)>>,
-    /// Fingerprint-based font set cache for direct /Font dictionaries.
-    /// Keyed by sorted font ObjectRefs hash, catches pages with different
-    /// /Resources but same font references.
-    font_fingerprint_cache: HashMap<u64, Vec<(String, Arc<crate::fonts::FontInfo>)>>,
-    /// Name-based font set cache keyed by hash of sorted font names.
-    /// Catches pages with different font ObjectRefs but the same font name→base font
-    /// mapping (common in PDFs that create new font objects per page).
-    /// Stores the resolved font set (Arc-wrapped to avoid cloning) plus a spot-check
-    /// (font_name, content_hash) pair for verification before reuse.
-    font_name_set_cache:
-        HashMap<u64, (Arc<Vec<(String, Arc<crate::fonts::FontInfo>)>>, String, u64)>,
-    /// Per-font identity cache keyed by font_identity_hash (BaseFont + Subtype + Encoding +
-    /// ToUnicode + FontDescriptor + DescendantFonts references). Skips expensive
-    /// `FontInfo::from_dict()` when a structurally identical font was already parsed.
-    font_identity_cache: HashMap<u64, Arc<crate::fonts::FontInfo>>,
+    /// Font set cache keyed by the exact resource-name → font-ObjectRef mapping.
+    /// Inline font objects are excluded because they have no collision-free
+    /// identity short of hashing their complete resolved contents.
+    font_fingerprint_cache:
+        HashMap<Vec<(String, ObjectRef)>, Vec<(String, Arc<crate::fonts::FontInfo>)>>,
     /// Cached structure tree (None = not yet checked, Some(None) = untagged, Some(Some) = tagged).
     /// Uses Arc to avoid expensive deep clones on every page extraction.
     structure_tree_cache: Option<Option<Arc<crate::structure::StructTreeRoot>>>,
@@ -175,9 +165,6 @@ pub struct PdfDocument {
     /// Avoids repeated FlateDecode decompression of shared Form XObjects.
     pub(crate) xobject_stream_cache: HashMap<ObjectRef, std::sync::Arc<Vec<u8>>>,
     pub(crate) xobject_stream_cache_bytes: usize,
-    /// Cache of extracted TextSpan results from self-contained Form XObjects
-    /// (those with own /Resources/Font). None = processed but no spans.
-    pub(crate) xobject_spans_cache: HashMap<ObjectRef, Option<Vec<crate::layout::TextSpan>>>,
     /// Cache of extracted images from Form XObjects (keyed by ObjectRef).
     /// Images are stored without CTM applied — caller applies its own CTM.
     pub(crate) form_xobject_images_cache: HashMap<ObjectRef, Vec<crate::extractors::PdfImage>>,
@@ -400,8 +387,6 @@ impl PdfDocument {
             font_cache: HashMap::new(),
             font_set_cache: HashMap::new(),
             font_fingerprint_cache: HashMap::new(),
-            font_name_set_cache: HashMap::new(),
-            font_identity_cache: HashMap::new(),
             structure_tree_cache: None,
             structure_content_cache: None,
             page_cache: HashMap::new(),
@@ -411,7 +396,6 @@ impl PdfDocument {
             xobject_text_free_cache: HashSet::new(),
             xobject_stream_cache: HashMap::new(),
             xobject_stream_cache_bytes: 0,
-            xobject_spans_cache: HashMap::new(),
             form_xobject_images_cache: HashMap::new(),
             page_content_cache: HashMap::new(),
         };
@@ -7764,54 +7748,6 @@ impl PdfDocument {
         }
     }
 
-    /// Compute a cheap content-based font identity hash from a loaded font object.
-    /// Uses only inline fields (no reference resolution / load_object calls) to keep
-    /// the cost at ~200ns. Relies on BaseFont + Subtype + Encoding (when inline) to
-    /// uniquely identify fonts within a document. For reference-only fields (ToUnicode,
-    /// FontDescriptor, DescendantFonts), hashes their presence to avoid false positives
-    /// between fonts with vs without these features.
-    fn font_identity_hash_cheap(font_obj: &Object) -> u64 {
-        use std::hash::{Hash, Hasher};
-        let mut hasher = std::collections::hash_map::DefaultHasher::new();
-
-        if let Some(d) = font_obj.as_dict() {
-            // BaseFont: primary identity — unique per font within a document
-            if let Some(Object::Name(n)) = d.get("BaseFont") {
-                1u8.hash(&mut hasher);
-                n.hash(&mut hasher);
-            }
-            // Subtype: Type1, TrueType, Type0, CIDFontType0, CIDFontType2
-            if let Some(Object::Name(n)) = d.get("Subtype") {
-                2u8.hash(&mut hasher);
-                n.hash(&mut hasher);
-            }
-            // Encoding: hash inline name or presence of reference
-            if let Some(enc) = d.get("Encoding") {
-                3u8.hash(&mut hasher);
-                match enc {
-                    Object::Name(n) => n.hash(&mut hasher),
-                    Object::Reference(_) => b"enc_ref".hash(&mut hasher),
-                    Object::Dictionary(_) => b"enc_dict".hash(&mut hasher),
-                    _ => {},
-                }
-            }
-            // ToUnicode: hash presence (BaseFont already differentiates content)
-            if d.get("ToUnicode").is_some() {
-                4u8.hash(&mut hasher);
-            }
-            // FontDescriptor: hash presence
-            if d.get("FontDescriptor").is_some() {
-                5u8.hash(&mut hasher);
-            }
-            // DescendantFonts: hash count for Type0 fonts
-            if let Some(Object::Array(arr)) = d.get("DescendantFonts") {
-                6u8.hash(&mut hasher);
-                arr.len().hash(&mut hasher);
-            }
-        }
-        hasher.finish()
-    }
-
     /// Load fonts from a Resources dictionary into the extractor.
     pub(crate) fn load_fonts(
         &mut self,
@@ -7862,65 +7798,32 @@ impl PdfDocument {
 
             if let Some(font_dict) = font_dict_obj.as_dict() {
                 // Compute font fingerprint from (name → ObjectRef) pairs.
-                // Hash the MAPPING between font names and their object refs,
-                // not just the sets separately. This prevents false cache hits
-                // when two font dicts have the same set of refs and names but
-                // different name-to-ref assignments.
-                let fingerprint = {
-                    use std::hash::{Hash, Hasher};
-                    let mut hasher = std::collections::hash_map::DefaultHasher::new();
-                    let mut name_ref_pairs: Vec<(&str, Option<ObjectRef>)> = font_dict
-                        .iter()
-                        .map(|(name, fo)| (name.as_str(), fo.as_reference()))
-                        .collect();
-                    name_ref_pairs.sort_by(|a, b| a.0.cmp(b.0));
-                    for (name, obj_ref) in &name_ref_pairs {
-                        name.hash(&mut hasher);
-                        if let Some(r) = obj_ref {
-                            r.id.hash(&mut hasher);
-                            r.gen.hash(&mut hasher);
-                        }
-                    }
-                    hasher.finish()
-                };
+                // Reuse only an exact resource-name → ObjectRef mapping. A direct
+                // inline font has no stable identity here, so any such entry disables
+                // this cache path and is parsed in its own resource context.
+                let fingerprint: Option<Vec<(String, ObjectRef)>> = font_dict
+                    .iter()
+                    .map(|(name, font)| {
+                        font.as_reference()
+                            .map(|font_ref| (name.clone(), font_ref))
+                    })
+                    .collect::<Option<Vec<_>>>()
+                    .map(|mut entries| {
+                        entries.sort_by(|a, b| a.0.cmp(&b.0));
+                        entries
+                    });
 
-                if let Some(cached_set) = self.font_fingerprint_cache.get(&fingerprint) {
+                if let Some(cached_set) = fingerprint
+                    .as_ref()
+                    .and_then(|key| self.font_fingerprint_cache.get(key))
+                {
                     for (name, font_arc) in cached_set {
                         extractor.add_font_shared(name.clone(), Arc::clone(font_arc));
                     }
                     return Ok(());
                 }
 
-                // Layer 4: Name-based font set cache with spot-check verification.
-                // Pages in the same document often use the same font names mapped to
-                // different ObjectRefs but identical base fonts (e.g., 764 pages each
-                // creating T1_0→Helvetica, T1_1→Times-Roman with unique object numbers).
-                // Cache the resolved font set by sorted font names, then on subsequent
-                // pages verify ONE font via load+hash to confirm the mapping is the same.
-                let name_hash = {
-                    use std::hash::{Hash, Hasher};
-                    let mut font_names: Vec<&str> = font_dict.keys().map(|k| k.as_str()).collect();
-                    font_names.sort();
-                    let mut hasher = std::collections::hash_map::DefaultHasher::new();
-                    font_names.hash(&mut hasher);
-                    hasher.finish()
-                };
-
-                if let Some((cached_set, _check_name, _check_hash)) =
-                    self.font_name_set_cache.get(&name_hash)
-                {
-                    // Layer 4: Same font names within a document virtually always map
-                    // to the same underlying fonts. Trust the name-based cache to avoid
-                    // expensive load_object calls for spot-check verification.
-                    for (name, font_arc) in cached_set.iter() {
-                        extractor.add_font_shared(name.clone(), Arc::clone(font_arc));
-                    }
-                    return Ok(());
-                }
-
                 let mut all_from_cache = true;
-                // Track spot-check data: first font name and its content hash
-                let mut spot_check: Option<(String, u64)> = None;
 
                 // Sort font entries by name for deterministic processing order.
                 // HashMap iteration order is randomized per-process, which causes
@@ -7939,44 +7842,9 @@ impl PdfDocument {
                         all_from_cache = false;
                         let font = self.load_object(font_ref)?;
 
-                        // Compute identity hash (cheap: 3-6 dict lookups, ~200ns)
-                        let id_hash = Self::font_identity_hash_cheap(&font);
-
-                        // Collect spot-check data (first font only) for name cache
-                        if spot_check.is_none() {
-                            spot_check = Some((name.clone(), id_hash));
-                        }
-
-                        // Layer 5: Per-font identity cache — skip from_dict when a
-                        // structurally identical font was already parsed elsewhere.
-                        if let Some(cached) = self.font_identity_cache.get(&id_hash) {
-                            let arc = Arc::clone(cached);
-                            self.font_cache.insert(font_ref, Arc::clone(&arc));
-                            extractor.add_font_shared(name.clone(), arc);
-                            continue;
-                        }
-
-                        // Layer 6: Global cross-document font cache — reuse fonts
-                        // parsed by previous PdfDocument instances in this process.
-                        if let Some(cached) =
-                            crate::fonts::global_cache::global_font_cache_get(id_hash)
-                        {
-                            self.font_identity_cache
-                                .insert(id_hash, Arc::clone(&cached));
-                            self.font_cache.insert(font_ref, Arc::clone(&cached));
-                            extractor.add_font_shared(name.clone(), cached);
-                            continue;
-                        }
-
                         match FontInfo::from_dict(&font, self) {
                             Ok(font_info) => {
                                 let arc = Arc::new(font_info);
-                                // Populate both document-level and global caches
-                                crate::fonts::global_cache::global_font_cache_insert(
-                                    id_hash,
-                                    Arc::clone(&arc),
-                                );
-                                self.font_identity_cache.insert(id_hash, Arc::clone(&arc));
                                 self.font_cache.insert(font_ref, Arc::clone(&arc));
                                 extractor.add_font_shared(name.clone(), arc);
                             },
@@ -8015,18 +7883,15 @@ impl PdfDocument {
                     extractor.share_truetype_cmaps();
                 }
 
-                // Cache font set by both ObjectRef and fingerprint
+                // Cache font set by exact resource ObjectRef and, when every font
+                // is indirect, by the collision-free exact name → ObjectRef mapping.
                 let font_set = extractor.get_font_set();
                 if let Some(fdr) = font_dict_ref {
                     self.font_set_cache.insert(fdr, font_set.clone());
                 }
-                self.font_fingerprint_cache
-                    .insert(fingerprint, font_set.clone());
-
-                // Cache by font names with spot-check data for Layer 4
-                if let Some((check_name, check_hash)) = spot_check {
-                    self.font_name_set_cache
-                        .insert(name_hash, (Arc::new(font_set), check_name, check_hash));
+                if let Some(fingerprint) = fingerprint {
+                    self.font_fingerprint_cache
+                        .insert(fingerprint, font_set.clone());
                 }
 
                 return Ok(());
@@ -11562,45 +11427,6 @@ mod tests {
     }
 
     // ========================================================================
-    // font_identity_hash_cheap tests
-    // ========================================================================
-
-    #[test]
-    fn test_font_identity_hash_same_font() {
-        let mut dict1 = std::collections::HashMap::new();
-        dict1.insert("BaseFont".to_string(), Object::Name("Helvetica".to_string()));
-        dict1.insert("Subtype".to_string(), Object::Name("Type1".to_string()));
-
-        let mut dict2 = std::collections::HashMap::new();
-        dict2.insert("BaseFont".to_string(), Object::Name("Helvetica".to_string()));
-        dict2.insert("Subtype".to_string(), Object::Name("Type1".to_string()));
-
-        let hash1 = PdfDocument::font_identity_hash_cheap(&Object::Dictionary(dict1));
-        let hash2 = PdfDocument::font_identity_hash_cheap(&Object::Dictionary(dict2));
-        assert_eq!(hash1, hash2);
-    }
-
-    #[test]
-    fn test_font_identity_hash_different_fonts() {
-        let mut dict1 = std::collections::HashMap::new();
-        dict1.insert("BaseFont".to_string(), Object::Name("Helvetica".to_string()));
-
-        let mut dict2 = std::collections::HashMap::new();
-        dict2.insert("BaseFont".to_string(), Object::Name("Times-Roman".to_string()));
-
-        let hash1 = PdfDocument::font_identity_hash_cheap(&Object::Dictionary(dict1));
-        let hash2 = PdfDocument::font_identity_hash_cheap(&Object::Dictionary(dict2));
-        assert_ne!(hash1, hash2);
-    }
-
-    #[test]
-    fn test_font_identity_hash_null_object() {
-        let hash = PdfDocument::font_identity_hash_cheap(&Object::Null);
-        // Should not panic, returns some hash
-        let _ = hash;
-    }
-
-    // ========================================================================
     // check_for_circular_references tests
     // ========================================================================
 
@@ -12685,54 +12511,6 @@ mod tests {
         let refs = PdfDocument::find_references(&Object::Dictionary(dict));
         assert_eq!(refs.len(), 1);
         assert_eq!(refs[0].id, 10);
-    }
-
-    // ========================================================================
-    // NEW COVERAGE TESTS — Batch 9: font_identity_hash_cheap
-    // ========================================================================
-
-    #[test]
-    fn test_font_identity_hash_with_encoding_dict() {
-        let mut font_dict = std::collections::HashMap::new();
-        font_dict.insert("BaseFont".to_string(), Object::Name("Helvetica".to_string()));
-        font_dict.insert("Subtype".to_string(), Object::Name("Type1".to_string()));
-        let mut enc = std::collections::HashMap::new();
-        enc.insert("Type".to_string(), Object::Name("Encoding".to_string()));
-        font_dict.insert("Encoding".to_string(), Object::Dictionary(enc));
-        assert_ne!(PdfDocument::font_identity_hash_cheap(&Object::Dictionary(font_dict)), 0);
-    }
-
-    #[test]
-    fn test_font_identity_hash_with_encoding_ref() {
-        let mut font_dict = std::collections::HashMap::new();
-        font_dict.insert("BaseFont".to_string(), Object::Name("Helvetica".to_string()));
-        font_dict.insert("Encoding".to_string(), Object::Reference(ObjectRef::new(99, 0)));
-        assert_ne!(PdfDocument::font_identity_hash_cheap(&Object::Dictionary(font_dict)), 0);
-    }
-
-    #[test]
-    fn test_font_identity_hash_tounicode_changes_hash() {
-        let mut d1 = std::collections::HashMap::new();
-        d1.insert("BaseFont".to_string(), Object::Name("Arial".to_string()));
-        d1.insert("ToUnicode".to_string(), Object::Reference(ObjectRef::new(50, 0)));
-        let h1 = PdfDocument::font_identity_hash_cheap(&Object::Dictionary(d1));
-
-        let mut d2 = std::collections::HashMap::new();
-        d2.insert("BaseFont".to_string(), Object::Name("Arial".to_string()));
-        let h2 = PdfDocument::font_identity_hash_cheap(&Object::Dictionary(d2));
-        assert_ne!(h1, h2);
-    }
-
-    #[test]
-    fn test_font_identity_hash_with_descendant_fonts() {
-        let mut d = std::collections::HashMap::new();
-        d.insert("BaseFont".to_string(), Object::Name("CIDFont".to_string()));
-        d.insert("Subtype".to_string(), Object::Name("Type0".to_string()));
-        d.insert(
-            "DescendantFonts".to_string(),
-            Object::Array(vec![Object::Reference(ObjectRef::new(20, 0))]),
-        );
-        assert_ne!(PdfDocument::font_identity_hash_cheap(&Object::Dictionary(d)), 0);
     }
 
     // ========================================================================

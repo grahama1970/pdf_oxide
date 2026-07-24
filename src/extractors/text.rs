@@ -1870,8 +1870,10 @@ pub struct TextExtractor {
     resources: Option<Object>,
     /// Reference to the document (for loading XObjects)
     document: Option<*mut crate::document::PdfDocument>,
-    /// Set of processed XObject references to avoid duplicates
-    processed_xobjects: HashSet<ObjectRef>,
+    /// Form XObjects currently being executed. This is a recursion guard only:
+    /// completed invocations are removed so every placement is re-executed in
+    /// its caller's complete graphics/resource context.
+    active_xobjects: HashSet<ObjectRef>,
     /// Cached XObject name → ObjectRef mapping for current resources context.
     /// Avoids expensive repeated resolution of the resources/XObject dict chain.
     cached_xobject_refs: HashMap<String, Option<ObjectRef>>,
@@ -1978,7 +1980,7 @@ impl TextExtractor {
             chars: Vec::new(),
             resources: None,
             document: None,
-            processed_xobjects: HashSet::new(),
+            active_xobjects: HashSet::new(),
             cached_xobject_refs: HashMap::new(),
             xobject_depth: 0,
             xobject_decode_count: 0,
@@ -2654,7 +2656,7 @@ impl TextExtractor {
         // Enable character extraction mode
         self.extract_spans = false;
         self.chars.clear();
-        self.spans.clear(); // Ensure spans are clear so they don't poison xobject_spans_cache
+        self.spans.clear();
 
         // Parse content stream into operators
         let operators = parse_content_stream_text_only(content_stream)?;
@@ -4785,13 +4787,12 @@ impl TextExtractor {
             None => return Ok(()),
         };
 
-        // Skip already-processed XObjects (permanent set — each unique XObject
-        // is processed at most once per page for text extraction)
-        if self.processed_xobjects.contains(&xobject_ref) {
+        // Break direct and indirect Form recursion, but do not treat a completed
+        // invocation as reusable: placement, inherited color/text state, and
+        // nested resource context all belong to the caller.
+        if self.active_xobjects.contains(&xobject_ref) {
             return Ok(());
         }
-
-        self.processed_xobjects.insert(xobject_ref);
 
         // Get document reference for loading objects
         let doc = match self.document {
@@ -4812,17 +4813,6 @@ impl TextExtractor {
             return Ok(());
         }
 
-        // Span result cache: reuse extracted spans from self-contained Form XObjects.
-        // Only works for XObjects with own /Resources (font context is self-contained).
-        if self.extract_spans {
-            if let Some(cached_spans) = doc.xobject_spans_cache.get(&xobject_ref) {
-                if let Some(spans) = cached_spans {
-                    self.spans.extend(spans.iter().cloned());
-                }
-                return Ok(());
-            }
-        }
-
         // Load the XObject (now known to be Form or unknown — worth the full load)
         let xobject = doc.load_object(xobject_ref)?;
 
@@ -4841,7 +4831,6 @@ impl TextExtractor {
             Some("Form") => {
                 // Form XObject - extract text from it
                 log::debug!("Processing Form XObject: {}", name);
-
                 // Pre-decode resource check: if the XObject's own /Resources has
                 // neither /Font nor /XObject entries, it cannot render text directly
                 // and cannot invoke nested XObjects. Skip it without decoding the
@@ -4958,31 +4947,19 @@ impl TextExtractor {
                     saved_xobj_cache = None;
                 }
 
-                // Track span count for result caching
-                let spans_before = self.spans.len();
-
                 // Streaming parse+execute: avoids allocating Vec<Operator>
+                self.active_xobjects.insert(xobject_ref);
                 self.xobject_depth += 1;
                 let parse_result =
                     parse_and_execute_text_only(&stream_data, |op| self.execute_operator(op));
                 self.xobject_depth -= 1;
+                self.active_xobjects.remove(&xobject_ref);
                 if let Err(e) = parse_result {
                     log::debug!(
                         "Error parsing Form XObject '{}' content stream: {}, partial text may be extracted",
                         name,
                         e
                     );
-                }
-
-                // Cache span results for self-contained Form XObjects.
-                // Only safe when XObject has own /Resources (font context is independent of page).
-                if has_own_resources && self.extract_spans {
-                    let new_spans = if self.spans.len() > spans_before {
-                        Some(self.spans[spans_before..].to_vec())
-                    } else {
-                        None
-                    };
-                    doc.xobject_spans_cache.insert(xobject_ref, new_spans);
                 }
 
                 // Restore fonts, resources, and XObject cache only if saved
@@ -4995,11 +4972,6 @@ impl TextExtractor {
                 if let Some(cache) = saved_xobj_cache {
                     self.cached_xobject_refs = cache;
                 }
-
-                // Keep xobject_ref in processed_xobjects permanently.
-                // For text extraction, re-processing the same Form XObject produces
-                // identical text. Keeping it prevents O(n!) fan-out in pages with
-                // deep XObject trees (e.g., 4000+ nested chart elements).
 
                 Ok(())
             },

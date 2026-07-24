@@ -39,7 +39,7 @@ startxref
     pdf.extend_from_slice(trailer.as_bytes());
 }
 
-fn build_test_pdf_with_xobject() -> Vec<u8> {
+fn build_test_pdf_with_xobject_content(content: &[u8]) -> Vec<u8> {
     let mut pdf = Vec::new();
     pdf.extend_from_slice(
         b"%PDF-1.4
@@ -106,7 +106,6 @@ endobj
     );
 
     let obj6 = pdf.len();
-    let content = b"BT /F1 12 Tf 10 50 Td (PageContent) Tj ET /X0 Do";
     let header = format!(
         "6 0 obj
 << /Length {} >>
@@ -126,6 +125,12 @@ endobj
 
     finalize_pdf(&mut pdf, &[0, obj1, obj2, obj3, obj4, obj5, obj6]);
     pdf
+}
+
+fn build_test_pdf_with_xobject() -> Vec<u8> {
+    build_test_pdf_with_xobject_content(
+        b"BT /F1 12 Tf 10 50 Td (PageContent) Tj ET /X0 Do q 1 0 0 1 200 0 cm /X0 Do Q",
+    )
 }
 
 fn write_temp_pdf(data: &[u8], name: &str) -> std::path::PathBuf {
@@ -150,7 +155,7 @@ fn test_synthetic_repeated_extraction_consistency() {
     let has_xobj_text = spans1.iter().any(|s| s.text.contains("XObjectContent"));
     assert!(has_xobj_text, "Should contain text from XObject");
 
-    // 2. extract_spans again (should use cache)
+    // 2. extract_spans again
     let spans2 = doc.extract_spans(0).unwrap();
     assert_eq!(spans1.len(), spans2.len(), "Second spans call should match first");
 
@@ -162,7 +167,7 @@ fn test_synthetic_repeated_extraction_consistency() {
     let chars2 = doc.extract_chars(0).unwrap();
     assert_eq!(chars1.len(), chars2.len(), "Second chars call should match first");
 
-    // 5. extract_spans again (should still use cache and NOT be empty)
+    // 5. extract_spans again (must remain non-empty and stable)
     let spans3 = doc.extract_spans(0).unwrap();
     assert_eq!(spans1.len(), spans3.len(), "Third spans call should match first");
 }
@@ -191,4 +196,29 @@ fn test_synthetic_chars_then_spans_consistency() {
     // 4. extract_spans again
     let spans2 = doc.extract_spans(0).unwrap();
     assert_eq!(spans1.len(), spans2.len(), "Second spans call should match first");
+}
+
+#[test]
+fn test_form_xobject_reexecutes_distinct_invoking_transforms() {
+    let data = build_test_pdf_with_xobject();
+    let path = write_temp_pdf(&data, "xobject_transform_cache.pdf");
+    let mut doc = PdfDocument::open(&path).unwrap();
+
+    let spans = doc.extract_spans(0).unwrap();
+    let mut placements: Vec<f32> = spans
+        .iter()
+        .filter(|span| span.text.contains("XObjectContent"))
+        .map(|span| span.bbox.x)
+        .collect();
+    placements.sort_by(f32::total_cmp);
+
+    assert_eq!(
+        placements.len(),
+        2,
+        "the same Form invoked under two CTMs must produce two placements"
+    );
+    assert!(
+        placements[1] - placements[0] > 150.0,
+        "re-executed placements must retain the invoking translation: {placements:?}"
+    );
 }

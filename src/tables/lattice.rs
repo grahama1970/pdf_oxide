@@ -700,7 +700,22 @@ fn cluster_joints_by_distance(joints: &[(f64, f64)], gap: f64) -> Vec<Vec<(f64, 
         groups.entry(root).or_default().push(joints[i]);
     }
 
-    groups.into_values().collect()
+    let mut groups: Vec<Vec<(f64, f64)>> = groups.into_values().collect();
+    for group in &mut groups {
+        group.sort_by(|a, b| a.1.total_cmp(&b.1).then_with(|| a.0.total_cmp(&b.0)));
+    }
+    groups.sort_by(|a, b| {
+        a.first()
+            .map(|point| (point.1, point.0))
+            .unwrap_or((f64::INFINITY, f64::INFINITY))
+            .partial_cmp(
+                &b.first()
+                    .map(|point| (point.1, point.0))
+                    .unwrap_or((f64::INFINITY, f64::INFINITY)),
+            )
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
+    groups
 }
 
 /// Cluster joints into groups by segment connectivity using union-find.
@@ -766,7 +781,22 @@ fn cluster_joints(
         groups.entry(root).or_default().push(joints[i].0);
     }
 
-    groups.into_values().collect()
+    let mut groups: Vec<Vec<(f64, f64)>> = groups.into_values().collect();
+    for group in &mut groups {
+        group.sort_by(|a, b| a.1.total_cmp(&b.1).then_with(|| a.0.total_cmp(&b.0)));
+    }
+    groups.sort_by(|a, b| {
+        a.first()
+            .map(|point| (point.1, point.0))
+            .unwrap_or((f64::INFINITY, f64::INFINITY))
+            .partial_cmp(
+                &b.first()
+                    .map(|point| (point.1, point.0))
+                    .unwrap_or((f64::INFINITY, f64::INFINITY)),
+            )
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
+    groups
 }
 
 /// Convert image pixel coordinates to PDF page coordinates.
