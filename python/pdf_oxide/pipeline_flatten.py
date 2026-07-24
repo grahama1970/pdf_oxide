@@ -53,6 +53,8 @@ def _flatten_blocks(
                 "section_id": section_id,
                 "section_path": path,
                 "provenance": blk.get("provenance"),
+                "page_image_refs": blk.get("page_image_refs", []),
+                "page_image_sha256": blk.get("page_image_sha256", {}),
                 "source_meta": {
                     "element_id": element_id,
                     "page": blk.get("page", 0),
@@ -60,6 +62,8 @@ def _flatten_blocks(
                     "section_id": section_id,
                     "section_path": path,
                     "provenance": blk.get("provenance"),
+                    "page_image_refs": blk.get("page_image_refs", []),
+                    "page_image_sha256": blk.get("page_image_sha256", {}),
                     "block_type": blk.get("type"),
                     "font_size": blk.get("font_size"),
                 },
@@ -94,6 +98,8 @@ def _flatten_tables(
                 "section_id": section_id,
                 "section_path": path,
                 "provenance": tbl.get("provenance"),
+                "page_image_refs": tbl.get("page_image_refs", []),
+                "page_image_sha256": tbl.get("page_image_sha256", {}),
                 "render_ref": render_ref,
                 "source_meta": {
                     "element_id": element_id,
@@ -110,6 +116,8 @@ def _flatten_tables(
                     "section_id": section_id,
                     "section_path": path,
                     "provenance": tbl.get("provenance"),
+                    "page_image_refs": tbl.get("page_image_refs", []),
+                    "page_image_sha256": tbl.get("page_image_sha256", {}),
                     "render_ref": render_ref,
                     "ai_description": tbl.get("ai_description"),
                 },
@@ -148,6 +156,8 @@ def _flatten_figures(
                 "section_id": section_id,
                 "section_path": path,
                 "provenance": fig.get("provenance"),
+                "page_image_refs": fig.get("page_image_refs", []),
+                "page_image_sha256": fig.get("page_image_sha256", {}),
                 "render_ref": render_ref,
                 "source_meta": {
                     "element_id": element_id,
@@ -158,6 +168,8 @@ def _flatten_figures(
                     "section_id": section_id,
                     "section_path": path,
                     "provenance": fig.get("provenance"),
+                    "page_image_refs": fig.get("page_image_refs", []),
+                    "page_image_sha256": fig.get("page_image_sha256", {}),
                     "render_ref": render_ref,
                     "ai_description": desc,
                 },
@@ -188,6 +200,8 @@ def _flatten_requirements(
                 "section_id": section_id,
                 "section_path": path,
                 "provenance": req.get("provenance"),
+                "page_image_refs": req.get("page_image_refs", []),
+                "page_image_sha256": req.get("page_image_sha256", {}),
                 "source_meta": {
                     "element_id": element_id,
                     "req_id": req_id,
@@ -198,6 +212,8 @@ def _flatten_requirements(
                     "section_id": section_id,
                     "section_path": path,
                     "provenance": req.get("provenance"),
+                    "page_image_refs": req.get("page_image_refs", []),
+                    "page_image_sha256": req.get("page_image_sha256", {}),
                 },
             }
         )

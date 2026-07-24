@@ -30,6 +30,7 @@ from .annotation_call import write_annotation_call
 from .pipeline_decrypt import maybe_decrypt
 from .pipeline_extract import extract_content
 from .pipeline_flatten import flatten
+from .pipeline_page_images import render_page_images
 from .pipeline_types import PipelineConfig, PipelineResult
 from .pipeline_util import log
 from .plugins.base import registry
@@ -84,15 +85,41 @@ def _extract_and_process(
         f"{len(result.figures)} figures in {result.timings['extraction']:.1f}s"
     )
 
-    # Step 2: Flatten into datalake_chunks format (sync)
+    # Step 2: Materialize source pixels before records are flattened or synced.
+    page_images_dir = None
+    if config.output_dir and config.render_page_images:
+        out_dir = Path(config.output_dir)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        page_images_dir = render_page_images(pdf_path, result, out_dir)
+        log(f"Page images: {result.page_count} in {page_images_dir}")
+        result.metadata["retrieval_contract"] = {
+            "version": "v1",
+            "compliant": True,
+        }
+    elif config.output_dir:
+        resolved_plugins = {
+            plugin.name for plugin in registry.resolve(config.features)
+        }
+        if config.sync_to_arango or "arango" in resolved_plugins:
+            raise ValueError(
+                "render_page_images=False is extraction-only and cannot be "
+                "combined with Arango/embedding retrieval sync"
+            )
+        result.metadata["retrieval_contract"] = {
+            "version": "v1",
+            "compliant": False,
+            "reason": "page_images_explicitly_disabled",
+        }
+
+    # Step 3: Flatten into datalake_chunks format (sync)
     result.flattened = flatten(result)
     log(f"Flattened: {len(result.flattened)} chunks")
 
-    # Step 3: Auto-enable arango plugin if sync_to_arango is set
+    # Step 4: Auto-enable arango plugin if sync_to_arango is set
     if config.sync_to_arango and "arango" not in config.features:
         config.features.insert(0, "arango")
 
-    # Step 4: Run enabled plugins — single asyncio.run() for all async work
+    # Step 5: Run enabled plugins — single asyncio.run() for all async work
     if config.features:
         log(f"Running plugins: {config.features}")
         report = asyncio.run(
@@ -102,7 +129,7 @@ def _extract_and_process(
         for name, status in report.items():
             log(f"  {name}: {status}")
 
-    # Step 5: Write output JSON if output_dir set
+    # Step 6: Write output JSON if output_dir set
     if config.output_dir:
         out_dir = Path(config.output_dir)
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -118,12 +145,19 @@ def _extract_and_process(
             if config.annotation_call_hook is not None
             else ()
         )
-        annotation_path = write_annotation_call(
-            result,
-            out_dir / "annotation_call.json",
-            extra_items=extra_items,
-        )
-        log(f"Annotation call: {annotation_path}")
+        if page_images_dir is not None:
+            annotation_path = write_annotation_call(
+                result,
+                out_dir / "annotation_call.json",
+                extra_items=extra_items,
+                page_images_dir=page_images_dir,
+            )
+            log(f"Annotation call: {annotation_path}")
+        else:
+            log(
+                "Annotation call skipped: extraction-only output has no "
+                "page images"
+            )
 
     return result
 
@@ -146,6 +180,11 @@ if __name__ == "__main__":
         "--no-arango", action="store_true", help="Skip ArangoDB sync"
     )
     parser.add_argument(
+        "--no-page-images",
+        action="store_true",
+        help="Do not render 150-DPI PNG page images",
+    )
+    parser.add_argument(
         "--flavor", default="auto", help="Table extraction flavor: lattice, stream, or auto"
     )
     parser.add_argument(
@@ -160,6 +199,7 @@ if __name__ == "__main__":
     cfg = PipelineConfig(
         output_dir=Path(args.output_dir) if args.output_dir else None,
         sync_to_arango=not args.no_arango,
+        render_page_images=not args.no_page_images,
         table_flavor=args.flavor,
         features=features,
     )

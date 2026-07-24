@@ -95,6 +95,33 @@ def _validate_item(
         raise ValueError("annotation-call item page must be an integer")
     if item.get("kind") not in {"block", "region", "page"}:
         raise ValueError("annotation-call item kind must be block, region, or page")
+    if "page_image_refs" in item:
+        refs = item["page_image_refs"]
+        if (
+            not isinstance(refs, list)
+            or not refs
+            or not all(isinstance(ref, str) and ref for ref in refs)
+            or len(refs) != len(set(refs))
+        ):
+            raise ValueError(
+                "annotation-call item page_image_refs must be a non-empty "
+                "list of unique filenames"
+            )
+        hashes = item.get("page_image_sha256")
+        if (
+            not isinstance(hashes, Mapping)
+            or set(hashes) != set(refs)
+            or not all(
+                isinstance(value, str)
+                and len(value) == 64
+                and all(character in "0123456789abcdef" for character in value)
+                for value in hashes.values()
+            )
+        ):
+            raise ValueError(
+                "annotation-call item page_image_sha256 must map every ref "
+                "to a lowercase SHA-256"
+            )
 
     reason = item["reason"]
     if reason == "low_confidence":
@@ -189,6 +216,8 @@ def build_annotation_call(
     if not 0.0 <= threshold <= 1.0:
         raise ValueError("confidence threshold must be in [0, 1]")
 
+    from .pipeline_page_images import page_image_refs_for_page
+
     items = []
     at_or_above = 0
     for block in result.blocks:
@@ -209,11 +238,33 @@ def build_annotation_call(
             "current_type": block.get("type"),
             "text_excerpt": (block.get("text") or "")[:200],
         }
+        page_image_refs = block.get("page_image_refs") or (
+            page_image_refs_for_page(result, block.get("page", 0))
+        )
+        if page_image_refs:
+            item["page_image_refs"] = list(page_image_refs)
+            item["page_image_sha256"] = {
+                ref: block["page_image_sha256"][ref]
+                for ref in page_image_refs
+            }
         _validate_item(item, threshold=threshold)
         items.append(item)
 
     for extra_item in extra_items:
         item = dict(extra_item)
+        page_image_refs = item.get("page_image_refs") or (
+            page_image_refs_for_page(result, item.get("page", 0))
+        )
+        if page_image_refs:
+            item["page_image_refs"] = list(page_image_refs)
+            manifest = result.metadata.get("page_images", {})
+            hashes = {
+                image["filename"]: image["byte_sha256"]
+                for image in manifest.get("images", [])
+            }
+            item["page_image_sha256"] = {
+                ref: hashes[ref] for ref in page_image_refs
+            }
         _validate_item(item, threshold=threshold)
         items.append(item)
 
@@ -239,6 +290,7 @@ def write_annotation_call(
     threshold: float = DEFAULT_CONFIDENCE_THRESHOLD,
     extra_items: Iterable[Mapping[str, Any]] = (),
     engine_commit: Optional[str] = None,
+    page_images_dir: Optional[Path] = None,
 ) -> Path:
     """Write a deterministic v1 report and return its path."""
     payload = build_annotation_call(
@@ -247,6 +299,16 @@ def write_annotation_call(
         extra_items=extra_items,
         engine_commit=engine_commit,
     )
+    if page_images_dir is not None:
+        from .pipeline_page_images import validate_page_image_ref_list
+
+        for index, item in enumerate(payload["items"]):
+            validate_page_image_ref_list(
+                item.get("page_image_refs"),
+                page_images_dir,
+                owner=f"annotation-call item {index}",
+                sha256_by_ref=item.get("page_image_sha256"),
+            )
     output_path.write_text(
         json.dumps(payload, indent=2, ensure_ascii=False, allow_nan=False) + "\n",
         encoding="utf-8",
