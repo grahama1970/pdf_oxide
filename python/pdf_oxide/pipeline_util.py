@@ -4,7 +4,8 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from typing import Any, Dict, List, Optional
+from pathlib import Path
+from typing import Dict, List, Optional, Union
 
 
 def md5(s: str) -> str:
@@ -12,17 +13,22 @@ def md5(s: str) -> str:
     return hashlib.md5(str(s).encode()).hexdigest()
 
 
+def sha256_file(path: Union[str, Path]) -> str:
+    """Return the lowercase SHA-256 of a file without loading it all at once."""
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def assign_section(
     item: Dict, sections: List[Dict], page: int
 ) -> Optional[str]:
-    """Assign an item to the best-matching section by page proximity."""
-    if not sections:
-        return None
-    best = None
-    for s in sections:
-        if s["page_start"] <= page:
-            best = s["id"]
-    return best
+    """Assign an item to the nearest preceding geometric section."""
+    from .pipeline_hierarchy import section_for_item
+
+    return section_for_item(item, sections, page)
 
 
 def data_to_csv(data: List[List[str]]) -> str:
