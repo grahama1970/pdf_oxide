@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { bboxStyle, type BboxXywh, type PageImageRef } from '../../adapters/pageImageRefs'
 
 export type LabelAnchor = 'top-outside' | 'top-inside' | 'bottom-inside' | 'bottom-outside'
@@ -37,6 +37,11 @@ export function NormalizedPageOverlay({
   compact = false,
 }: NormalizedPageOverlayProps) {
   const [anchor, setAnchor] = useState<LabelAnchor>(labelAnchor)
+  const [imageError, setImageError] = useState(false)
+
+  useEffect(() => {
+    setImageError(false)
+  }, [pageImage.href])
 
   return (
     <figure
@@ -45,13 +50,22 @@ export function NormalizedPageOverlay({
       data-page-sha256={pageImage.sha256}
     >
       <div className="pdf-verify-page__stage">
-        <img
-          data-testid={imageTestId}
-          src={pageImage.href}
-          alt={alt ?? `Original PDF page${pageImage.page == null ? '' : ` ${pageImage.page}`}`}
-          draggable={false}
-        />
-        {bbox && (
+        {imageError ? (
+          <div className="pdf-verify-contract-blocker" data-testid="page-image-error" role="alert">
+            <strong>Original page image unavailable</strong>
+            <p>The evidence view failed closed because the content-addressed source image could not be loaded.</p>
+            <code>{pageImage.filename}</code>
+          </div>
+        ) : (
+          <img
+            data-testid={imageTestId}
+            src={pageImage.href}
+            alt={alt ?? `Original PDF page${pageImage.page == null ? '' : ` ${pageImage.page}`}`}
+            draggable={false}
+            onError={() => setImageError(true)}
+          />
+        )}
+        {!imageError && bbox && (
           <div
             className="pdf-verify-page__bbox"
             data-testid={overlayTestId}

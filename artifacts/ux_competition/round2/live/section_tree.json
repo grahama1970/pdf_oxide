@@ -1,0 +1,1013 @@
+{
+  "schema": "pdf_oxide.section_tree.v2",
+  "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+  "sections": [
+    {
+      "id": "1e5a2ce78989f92db5e9001a1d1e89b9",
+      "title": "Deep Residual Learning for Image Recognition",
+      "text": "Deep Residual Learning for Image Recognition",
+      "level": 1,
+      "hierarchy_level": 1,
+      "page_start": 0,
+      "page_end": 0,
+      "numbering": null,
+      "bbox": [
+        153.447998046875,
+        675.0670166015625,
+        306.2626953125,
+        14.34619140625
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 0,
+        "bbox": [
+          153.447998046875,
+          675.0670166015625,
+          306.2626953125,
+          14.34619140625
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [],
+      "depth": 0,
+      "doc_order": 0,
+      "block_ids": [
+        "f862f63ef88c4c30163993049dcdc0a5",
+        "6b42bcd6dc407b7e9542a7dde41d2b8a"
+      ],
+      "section_path": "Deep Residual Learning for Image Recognition",
+      "page_image_refs": [
+        "ab3fed9e734c1202bb2a74dc8774e2c5827f7ba6f83a574469a1aec5f3888e9a.png"
+      ],
+      "page_image_sha256": {
+        "ab3fed9e734c1202bb2a74dc8774e2c5827f7ba6f83a574469a1aec5f3888e9a.png": "7a312c00ca5dc2bb3a9c8d70a5cd58a65e1feb49c605df4c31266ce9ba6f3e2c"
+      },
+      "children": []
+    },
+    {
+      "id": "eac87e4ebfab18b0f13ee62e6cedb53d",
+      "title": "Abstract",
+      "text": "Abstract",
+      "level": 1,
+      "hierarchy_level": 1,
+      "page_start": 0,
+      "page_end": 0,
+      "numbering": null,
+      "bbox": [
+        145.99497985839844,
+        557.5780029296875,
+        44.48530578613281,
+        11.9552001953125
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 0,
+        "bbox": [
+          145.99497985839844,
+          557.5780029296875,
+          44.48530578613281,
+          11.9552001953125
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [],
+      "depth": 0,
+      "doc_order": 1,
+      "block_ids": [
+        "9407fb9723ed90863250fa0d8de63104",
+        "1c001eab6e3e3ec2bda983b0a65ac1a7",
+        "4f3d29ea04e43db59e458fcb2ed7247d"
+      ],
+      "section_path": "Abstract",
+      "page_image_refs": [
+        "ab3fed9e734c1202bb2a74dc8774e2c5827f7ba6f83a574469a1aec5f3888e9a.png"
+      ],
+      "page_image_sha256": {
+        "ab3fed9e734c1202bb2a74dc8774e2c5827f7ba6f83a574469a1aec5f3888e9a.png": "7a312c00ca5dc2bb3a9c8d70a5cd58a65e1feb49c605df4c31266ce9ba6f3e2c"
+      },
+      "children": []
+    },
+    {
+      "id": "e0a7f51b59a185321b4b31701371893b",
+      "title": "1. Introduction",
+      "text": "1. Introduction",
+      "level": 2,
+      "hierarchy_level": 1,
+      "page_start": 0,
+      "page_end": 0,
+      "numbering": null,
+      "bbox": [
+        50.111961364746094,
+        247.5981903076172,
+        79.82486724853516,
+        11.955215454101562
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 0,
+        "bbox": [
+          50.111961364746094,
+          247.5981903076172,
+          79.82486724853516,
+          11.955215454101562
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [],
+      "depth": 0,
+      "doc_order": 2,
+      "block_ids": [
+        "e7fa3bbb0f8ae51bb928a77ba513b885",
+        "7d15b1e1f19cebc056f19a667d83979f",
+        "34afbf3e9e5e418cd526b1c45c77b27d",
+        "a37f2718d3122984427c8e3eb5cf6d4a",
+        "01341b9675b3acd2c32c143bf02987c1",
+        "15d4e1937d8c0315ff7bd27047ceec47",
+        "6a54537e4823513ced83c8206e5bd603"
+      ],
+      "section_path": "1. Introduction",
+      "page_image_refs": [
+        "ab3fed9e734c1202bb2a74dc8774e2c5827f7ba6f83a574469a1aec5f3888e9a.png"
+      ],
+      "page_image_sha256": {
+        "ab3fed9e734c1202bb2a74dc8774e2c5827f7ba6f83a574469a1aec5f3888e9a.png": "7a312c00ca5dc2bb3a9c8d70a5cd58a65e1feb49c605df4c31266ce9ba6f3e2c"
+      },
+      "children": []
+    },
+    {
+      "id": "75d6254def97a8e934b78878cf84d8aa",
+      "title": "2. Related Work",
+      "text": "2. Related Work",
+      "level": 2,
+      "hierarchy_level": 1,
+      "page_start": 1,
+      "page_end": 1,
+      "numbering": null,
+      "bbox": [
+        308.8619384765625,
+        587.7539672851562,
+        89.09014892578125,
+        11.9552001953125
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 1,
+        "bbox": [
+          308.8619384765625,
+          587.7539672851562,
+          89.09014892578125,
+          11.9552001953125
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [],
+      "depth": 0,
+      "doc_order": 3,
+      "block_ids": [
+        "2ca862d9307d7275f3a4aa3ba45adea2",
+        "e921d8644c1568b3bc65b360fd2ea643",
+        "766fa8c31d1c015d0482da025a179fe7",
+        "38e31f606213317b205af1ff2039e300",
+        "b58e0b5468846dffef3501045e2ad5b1",
+        "16f8a820a1aa35562be8296690c48e1b"
+      ],
+      "section_path": "2. Related Work",
+      "page_image_refs": [
+        "2f8f37894a27d62952f863de7cd639b4038b735c5853267a644177cd22804ac0.png"
+      ],
+      "page_image_sha256": {
+        "2f8f37894a27d62952f863de7cd639b4038b735c5853267a644177cd22804ac0.png": "f96a1a2fcb5af78f4d7d88eaa267f988274e710c671a095a6d4a2e808b5eabc9"
+      },
+      "children": []
+    },
+    {
+      "id": "1f1a5b44a779f62f392b8b04525ed719",
+      "title": "3. Deep Residual Learning",
+      "text": "3. Deep Residual Learning",
+      "level": 2,
+      "hierarchy_level": 1,
+      "page_start": 2,
+      "page_end": 2,
+      "numbering": null,
+      "bbox": [
+        50.11199951171875,
+        673.8599853515625,
+        144.2873077392578,
+        11.9552001953125
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 2,
+        "bbox": [
+          50.11199951171875,
+          673.8599853515625,
+          144.2873077392578,
+          11.9552001953125
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [
+        "e8e0de2d20b6de318f982907df1dbdad",
+        "097f2729dbd979bc82807391b64431a4",
+        "dc4a55be7d3cc046d985b428e974f54f",
+        "c52fcb0529834dfb3a4118e3d1b31f70"
+      ],
+      "depth": 0,
+      "doc_order": 4,
+      "block_ids": [
+        "291e2326b2d0d8b58c8db5d8a129b7a3"
+      ],
+      "section_path": "3. Deep Residual Learning",
+      "page_image_refs": [
+        "ade43a4d5b223a46ec4187a5a5bf0dbe5a0280814d84b223cae7ce3269a9a4c4.png"
+      ],
+      "page_image_sha256": {
+        "ade43a4d5b223a46ec4187a5a5bf0dbe5a0280814d84b223cae7ce3269a9a4c4.png": "2c62b334bf7acd2898808a995d5b2e731bcf2b57348f6134bea2cbc4e7d7f052"
+      },
+      "children": [
+        "e8e0de2d20b6de318f982907df1dbdad",
+        "097f2729dbd979bc82807391b64431a4",
+        "dc4a55be7d3cc046d985b428e974f54f",
+        "c52fcb0529834dfb3a4118e3d1b31f70"
+      ]
+    },
+    {
+      "id": "e8e0de2d20b6de318f982907df1dbdad",
+      "title": "3.1. Residual Learning",
+      "text": "3.1. Residual Learning",
+      "level": 3,
+      "hierarchy_level": 2,
+      "page_start": 2,
+      "page_end": 2,
+      "numbering": null,
+      "bbox": [
+        50.11199951171875,
+        654.8269653320312,
+        111.26571655273438,
+        10.95892333984375
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 2,
+        "bbox": [
+          50.11199951171875,
+          654.8269653320312,
+          111.26571655273438,
+          10.95892333984375
+        ]
+      },
+      "parent_id": "1f1a5b44a779f62f392b8b04525ed719",
+      "children_ids": [],
+      "depth": 1,
+      "doc_order": 5,
+      "block_ids": [
+        "91e6076ffc1d97102df1f0958e66e5df",
+        "3cd269230fe7dddc0be27369d0bcfb58",
+        "4657a91eaf52b3c26ec3e55566622e36",
+        "beb95b337a304f3bea2b4dcc2be966a9"
+      ],
+      "section_path": "3. Deep Residual Learning > 3.1. Residual Learning",
+      "page_image_refs": [
+        "ade43a4d5b223a46ec4187a5a5bf0dbe5a0280814d84b223cae7ce3269a9a4c4.png"
+      ],
+      "page_image_sha256": {
+        "ade43a4d5b223a46ec4187a5a5bf0dbe5a0280814d84b223cae7ce3269a9a4c4.png": "2c62b334bf7acd2898808a995d5b2e731bcf2b57348f6134bea2cbc4e7d7f052"
+      },
+      "children": []
+    },
+    {
+      "id": "097f2729dbd979bc82807391b64431a4",
+      "title": "3.3. Network Architectures",
+      "text": "3.3. Network Architectures",
+      "level": 3,
+      "hierarchy_level": 2,
+      "page_start": 2,
+      "page_end": 2,
+      "numbering": null,
+      "bbox": [
+        308.8617248535156,
+        320.82794189453125,
+        131.57254028320312,
+        10.958892822265625
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 2,
+        "bbox": [
+          308.8617248535156,
+          320.82794189453125,
+          131.57254028320312,
+          10.958892822265625
+        ]
+      },
+      "parent_id": "1f1a5b44a779f62f392b8b04525ed719",
+      "children_ids": [],
+      "depth": 1,
+      "doc_order": 6,
+      "block_ids": [
+        "ce5235df20915fa770a69494fc007434",
+        "740b0a8b4ab2806cba80621358da6cbb",
+        "9bb84ca9bc7630c038ca8b793daf3a2b"
+      ],
+      "section_path": "3. Deep Residual Learning > 3.3. Network Architectures",
+      "page_image_refs": [
+        "ade43a4d5b223a46ec4187a5a5bf0dbe5a0280814d84b223cae7ce3269a9a4c4.png"
+      ],
+      "page_image_sha256": {
+        "ade43a4d5b223a46ec4187a5a5bf0dbe5a0280814d84b223cae7ce3269a9a4c4.png": "2c62b334bf7acd2898808a995d5b2e731bcf2b57348f6134bea2cbc4e7d7f052"
+      },
+      "children": []
+    },
+    {
+      "id": "dc4a55be7d3cc046d985b428e974f54f",
+      "title": "3.2. Identity Mapping by Shortcuts",
+      "text": "3.2. Identity Mapping by Shortcuts",
+      "level": 3,
+      "hierarchy_level": 2,
+      "page_start": 2,
+      "page_end": 2,
+      "numbering": null,
+      "bbox": [
+        50.11192321777344,
+        221.82508850097656,
+        174.7506561279297,
+        10.958908081054688
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 2,
+        "bbox": [
+          50.11192321777344,
+          221.82508850097656,
+          174.7506561279297,
+          10.958908081054688
+        ]
+      },
+      "parent_id": "1f1a5b44a779f62f392b8b04525ed719",
+      "children_ids": [],
+      "depth": 1,
+      "doc_order": 7,
+      "block_ids": [
+        "9f7fe326b12bd052a111ed6613953ab7",
+        "769c0cd0aa6170c40722465adca4c806",
+        "1041983fa1a2330b689247cf70ae53d3",
+        "b3d56c5e2fa1b2165c59a6d2fffcd79f",
+        "6bebbe5406c67d577dd83927d27e48fc",
+        "ceb5d89aaf31b5e7491a33bdeb9d73a3",
+        "7d221fbd01c82923b7fabbeea3d3c38e",
+        "f1f8a9c4891c74ba0be3bfb1c71997c0"
+      ],
+      "section_path": "3. Deep Residual Learning > 3.2. Identity Mapping by Shortcuts",
+      "page_image_refs": [
+        "ade43a4d5b223a46ec4187a5a5bf0dbe5a0280814d84b223cae7ce3269a9a4c4.png"
+      ],
+      "page_image_sha256": {
+        "ade43a4d5b223a46ec4187a5a5bf0dbe5a0280814d84b223cae7ce3269a9a4c4.png": "2c62b334bf7acd2898808a995d5b2e731bcf2b57348f6134bea2cbc4e7d7f052"
+      },
+      "children": []
+    },
+    {
+      "id": "c52fcb0529834dfb3a4118e3d1b31f70",
+      "title": "3.4. Implementation",
+      "text": "3.4. Implementation",
+      "level": 3,
+      "hierarchy_level": 2,
+      "page_start": 3,
+      "page_end": 3,
+      "numbering": null,
+      "bbox": [
+        308.86199951171875,
+        547.4488525390625,
+        96.79995727539062,
+        10.95892333984375
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 3,
+        "bbox": [
+          308.86199951171875,
+          547.4488525390625,
+          96.79995727539062,
+          10.95892333984375
+        ]
+      },
+      "parent_id": "1f1a5b44a779f62f392b8b04525ed719",
+      "children_ids": [],
+      "depth": 1,
+      "doc_order": 8,
+      "block_ids": [
+        "928cd7d17e8fb19851361baa3547afc2",
+        "054d141b2a06b9fdb5045f69aaccb7fa"
+      ],
+      "section_path": "3. Deep Residual Learning > 3.4. Implementation",
+      "page_image_refs": [
+        "0185c68f4d5a887be9e3983676f05ab9e3a629b39e7cc3e2e0c16204f3a7be74.png"
+      ],
+      "page_image_sha256": {
+        "0185c68f4d5a887be9e3983676f05ab9e3a629b39e7cc3e2e0c16204f3a7be74.png": "c8cf98a83247df07dd7b5368ec62502146b2809ec34bf85df2cf7440d43ee23b"
+      },
+      "children": []
+    },
+    {
+      "id": "ace16537fff819f916fc99b12fbb333a",
+      "title": "4. Experiments",
+      "text": "4. Experiments",
+      "level": 2,
+      "hierarchy_level": 1,
+      "page_start": 3,
+      "page_end": 3,
+      "numbering": null,
+      "bbox": [
+        308.86199951171875,
+        291.2120666503906,
+        80.02810668945312,
+        11.9552001953125
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 3,
+        "bbox": [
+          308.86199951171875,
+          291.2120666503906,
+          80.02810668945312,
+          11.9552001953125
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [
+        "3af0223dc511e3aef02f5927e1c16b02"
+      ],
+      "depth": 0,
+      "doc_order": 9,
+      "block_ids": [
+        "cc5f482aa27748b080208faac3dab817"
+      ],
+      "section_path": "4. Experiments",
+      "page_image_refs": [
+        "0185c68f4d5a887be9e3983676f05ab9e3a629b39e7cc3e2e0c16204f3a7be74.png"
+      ],
+      "page_image_sha256": {
+        "0185c68f4d5a887be9e3983676f05ab9e3a629b39e7cc3e2e0c16204f3a7be74.png": "c8cf98a83247df07dd7b5368ec62502146b2809ec34bf85df2cf7440d43ee23b"
+      },
+      "children": [
+        "3af0223dc511e3aef02f5927e1c16b02"
+      ]
+    },
+    {
+      "id": "3af0223dc511e3aef02f5927e1c16b02",
+      "title": "4.1. ImageNet Classification",
+      "text": "4.1. ImageNet Classification",
+      "level": 3,
+      "hierarchy_level": 2,
+      "page_start": 3,
+      "page_end": 3,
+      "numbering": null,
+      "bbox": [
+        308.86199951171875,
+        272.2820739746094,
+        135.75881958007812,
+        10.958892822265625
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 3,
+        "bbox": [
+          308.86199951171875,
+          272.2820739746094,
+          135.75881958007812,
+          10.958892822265625
+        ]
+      },
+      "parent_id": "ace16537fff819f916fc99b12fbb333a",
+      "children_ids": [],
+      "depth": 1,
+      "doc_order": 10,
+      "block_ids": [
+        "d5576043664a5b785f7e4b3256acf980",
+        "6fa1019db0e107441432d9d94a314632",
+        "d8eee94568ac2ec9c5df15a4f88af6c5",
+        "8d8c636967e6210ecc6bbbf7af4aaa8f",
+        "5a09017019aeae5aef9bc38c8ae79a33",
+        "817fd2576d795b6a143aa5edc4ee5cca",
+        "60a03d87c0ce2ae9690d8e1e0704fff8",
+        "464293b16a1ab41fcd426505abcca218",
+        "c2bb151b072ab9afdd1e81414499c2e2",
+        "a1b3f7794f5fd19f0e981f14de943fc7",
+        "ebd4af3640f732628c0e14a84f3b9fbf",
+        "5a7b5320d8caa550cd95e76caea4ff76",
+        "33fd068450c10b464cc721bc9a89bae6",
+        "2251d157677ead25571c6b22e2ea9bcf"
+      ],
+      "section_path": "4. Experiments > 4.1. ImageNet Classification",
+      "page_image_refs": [
+        "0185c68f4d5a887be9e3983676f05ab9e3a629b39e7cc3e2e0c16204f3a7be74.png"
+      ],
+      "page_image_sha256": {
+        "0185c68f4d5a887be9e3983676f05ab9e3a629b39e7cc3e2e0c16204f3a7be74.png": "c8cf98a83247df07dd7b5368ec62502146b2809ec34bf85df2cf7440d43ee23b"
+      },
+      "children": []
+    },
+    {
+      "id": "cc9515484529ad0abb6c52f3ab77af9f",
+      "title": "34 layers28.5425.03",
+      "text": "34 layers28.5425.03",
+      "level": 1,
+      "hierarchy_level": 1,
+      "page_start": 4,
+      "page_end": 4,
+      "numbering": "34",
+      "bbox": null,
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 4,
+        "bbox": null
+      },
+      "parent_id": null,
+      "children_ids": [],
+      "depth": 0,
+      "doc_order": 11,
+      "block_ids": [
+        "9dea30dc6c71b7019ae0ee4aec95123c",
+        "ce7d4fcea3b6840f6dd39bd199b338cc",
+        "48d3de7f92d893f42551dd8f488899ef",
+        "19e31a5b7bc4a91a63661b3ace316e4d",
+        "e42c66ca141887dcde7fd57a82a58b06",
+        "d08095eb442cedd0a0911b1bc7c00aee"
+      ],
+      "section_path": "34 layers28.5425.03",
+      "page_image_refs": [
+        "e36d622718eda17c035e30185e76649a6e38b68b5c30cca5c48f0281fad60e43.png"
+      ],
+      "page_image_sha256": {
+        "e36d622718eda17c035e30185e76649a6e38b68b5c30cca5c48f0281fad60e43.png": "dfde7f7eca5d959139990e2f6676c8edf6a9a6f90a2f5919b1ea20df5588ecbe"
+      },
+      "children": []
+    },
+    {
+      "id": "5c878e8a88584719f8a0971fd5ae2e13",
+      "title": "50-layer ResNet:We replace each 2-layer block in the",
+      "text": "50-layer ResNet:We replace each 2-layer block in the",
+      "level": 1,
+      "hierarchy_level": 1,
+      "page_start": 5,
+      "page_end": 5,
+      "numbering": null,
+      "bbox": [
+        320.81695556640625,
+        139.7071990966797,
+        239.2373046875,
+        9.962600708007812
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 5,
+        "bbox": [
+          320.81695556640625,
+          139.7071990966797,
+          239.2373046875,
+          9.962600708007812
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [
+        "e0cd0ee9aa3818c939074e910728c2bb",
+        "657dfcfd8b5a7d1a81d61c7d8bc864ae",
+        "115d1f6b1b452a4a94fdc74ba9d2fbf7"
+      ],
+      "depth": 0,
+      "doc_order": 12,
+      "block_ids": [
+        "be30edae854faac606f7a2b56309a735",
+        "fdec5343980633861438b738364fc87d",
+        "31ddd57e7b0478f7160fdcdebd2277cc",
+        "9dd3e0dbda932f71cf62bc14cce742c3",
+        "0ef15c1509afb1101012458486f5d6a5",
+        "c6caaafceb85587e5538d4075d3b867c",
+        "e4d6cdbecc2338143d78d9097c21d4bc",
+        "38a5f5d53e5eff4c3d286b538d2d419c",
+        "2bf7d45c8a781686a38dd3ec336e82fc",
+        "a5b0b243672273a95600c788af1fe6ef"
+      ],
+      "section_path": "50-layer ResNet:We replace each 2-layer block in the",
+      "page_image_refs": [
+        "0104aa9c9fbec870d94ac76d523f4ad69f95e9a62ef241950a79b2511c171090.png"
+      ],
+      "page_image_sha256": {
+        "0104aa9c9fbec870d94ac76d523f4ad69f95e9a62ef241950a79b2511c171090.png": "7348e0f2dfec8d0b6656bfe01716c13d5800943e820a727f686f4af9f7634a19"
+      },
+      "children": [
+        "e0cd0ee9aa3818c939074e910728c2bb",
+        "657dfcfd8b5a7d1a81d61c7d8bc864ae",
+        "115d1f6b1b452a4a94fdc74ba9d2fbf7"
+      ]
+    },
+    {
+      "id": "e0cd0ee9aa3818c939074e910728c2bb",
+      "title": "4.2. CIFAR-10 and Analysis",
+      "text": "4.2. CIFAR-10 and Analysis",
+      "level": 3,
+      "hierarchy_level": 2,
+      "page_start": 6,
+      "page_end": 6,
+      "numbering": null,
+      "bbox": [
+        50.11199951171875,
+        394.4559020996094,
+        138.4438018798828,
+        10.958892822265625
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 6,
+        "bbox": [
+          50.11199951171875,
+          394.4559020996094,
+          138.4438018798828,
+          10.958892822265625
+        ]
+      },
+      "parent_id": "5c878e8a88584719f8a0971fd5ae2e13",
+      "children_ids": [],
+      "depth": 1,
+      "doc_order": 13,
+      "block_ids": [
+        "f3084b7c14e5d5c28ebb7fbc4b3ac76a",
+        "2b960b34c1989836a2a584a9ce67a806",
+        "365c1c0af8883cada05cecaef6f1afe0",
+        "3f8d7e259e425a749f8fbfcc90a67942",
+        "7dc69caf28a32bd2e01edcacfe299248",
+        "cb1ab6a707ae7a948e893e4798ba9400"
+      ],
+      "section_path": "50-layer ResNet:We replace each 2-layer block in the > 4.2. CIFAR-10 and Analysis",
+      "page_image_refs": [
+        "f43094850eb5a178a7abfa1da22b70fdf87d08d0b41071af41ffd9fcbae53249.png"
+      ],
+      "page_image_sha256": {
+        "f43094850eb5a178a7abfa1da22b70fdf87d08d0b41071af41ffd9fcbae53249.png": "2835171eef3a5142024f98c847c5f787934c2dfdd73bdf9472f5a5abbbb0bcd9"
+      },
+      "children": []
+    },
+    {
+      "id": "657dfcfd8b5a7d1a81d61c7d8bc864ae",
+      "title": "DSN [24]8.22",
+      "text": "DSN [24]8.22",
+      "level": 2,
+      "hierarchy_level": 2,
+      "page_start": 6,
+      "page_end": 6,
+      "numbering": null,
+      "bbox": null,
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 6,
+        "bbox": null
+      },
+      "parent_id": "5c878e8a88584719f8a0971fd5ae2e13",
+      "children_ids": [],
+      "depth": 1,
+      "doc_order": 14,
+      "block_ids": [
+        "237511d524d950b2aa1e230469f86386",
+        "1ed8f2b88cead640cb7a21273d53b8d7",
+        "324d8993cd11549688f25006cbfca6b5",
+        "fe0b6f93cfe473b5c331c80987a80920",
+        "53b637c5c844594240234a43aadd0ae0",
+        "8da068612e09a2d059c2c35f9e0d035a"
+      ],
+      "section_path": "50-layer ResNet:We replace each 2-layer block in the > DSN [24]8.22",
+      "page_image_refs": [
+        "f43094850eb5a178a7abfa1da22b70fdf87d08d0b41071af41ffd9fcbae53249.png"
+      ],
+      "page_image_sha256": {
+        "f43094850eb5a178a7abfa1da22b70fdf87d08d0b41071af41ffd9fcbae53249.png": "2835171eef3a5142024f98c847c5f787934c2dfdd73bdf9472f5a5abbbb0bcd9"
+      },
+      "children": []
+    },
+    {
+      "id": "115d1f6b1b452a4a94fdc74ba9d2fbf7",
+      "title": "4.3. Object Detection on PASCAL and MS COCO",
+      "text": "4.3. Object Detection on PASCAL and MS COCO",
+      "level": 3,
+      "hierarchy_level": 2,
+      "page_start": 7,
+      "page_end": 7,
+      "numbering": null,
+      "bbox": [
+        308.86199951171875,
+        278.4510803222656,
+        252.44915771484375,
+        10.958892822265625
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 7,
+        "bbox": [
+          308.86199951171875,
+          278.4510803222656,
+          252.44915771484375,
+          10.958892822265625
+        ]
+      },
+      "parent_id": "5c878e8a88584719f8a0971fd5ae2e13",
+      "children_ids": [],
+      "depth": 1,
+      "doc_order": 15,
+      "block_ids": [
+        "f7bd183baad2c96e0a16761b2d7c1761",
+        "b25c8f2419a9f76515a4ddc86e07711d",
+        "8c6020ad305909ef93ba9647419e7e59",
+        "d5ff4ace25fd757a0c1d9767caaa3b06",
+        "854dd858cef81ee215397bbbab5a3a11"
+      ],
+      "section_path": "50-layer ResNet:We replace each 2-layer block in the > 4.3. Object Detection on PASCAL and MS COCO",
+      "page_image_refs": [
+        "0efde944c518a462a073b3c221b7d1ec945a09b63ae976db62417479fa0b8305.png"
+      ],
+      "page_image_sha256": {
+        "0efde944c518a462a073b3c221b7d1ec945a09b63ae976db62417479fa0b8305.png": "4acf1034c1dd02451a6565df8b79e5098d82add92a16056af04554c00e9d4bf3"
+      },
+      "children": []
+    },
+    {
+      "id": "b231199fa24d533800784593bdea605d",
+      "title": "References",
+      "text": "References",
+      "level": 1,
+      "hierarchy_level": 1,
+      "page_start": 8,
+      "page_end": 8,
+      "numbering": null,
+      "bbox": [
+        50.11199951171875,
+        710.0369873046875,
+        55.543861389160156,
+        11.9552001953125
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 8,
+        "bbox": [
+          50.11199951171875,
+          710.0369873046875,
+          55.543861389160156,
+          11.9552001953125
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [],
+      "depth": 0,
+      "doc_order": 16,
+      "block_ids": [
+        "24b6a859ca50d42a4571b94fa37b3e1e",
+        "c199a1b7f1fee211f403a227aabc209f",
+        "c78af76bf84e61be4154f30ca7cbab0f",
+        "558e0f347878c6cc6bf54645fcbc0c2c",
+        "c26028b6cbb3e66e583743e6842f0134",
+        "d5e3017f35bb785adb2b22dd65dc02b6",
+        "a8dad3b150bef77932d0126501e6fafb",
+        "a8fe1d4dc448dd4123acba4977dde492",
+        "98307226c10b3a8719343c5b8654561e",
+        "106a18a39153f9aafcbbae9686c4e3f2",
+        "e747ed9a3f42d4cc7e8e11a7a83a4bb5",
+        "7fe63b31580ddde19679e1ef54ee3870",
+        "ad84fa0f033c4460ad3ea5b503992f77",
+        "139a4e7e60549333ec1a3993fefe07e2",
+        "f9ef66ed2ea5182c9af4e1399bd8584b",
+        "a71ea087e6ed7d75bc14bf597ee501fa",
+        "0adf6b9d158374a4506357586be52ada",
+        "b4e4ae058632f33e396d5abb94d034f5",
+        "147c0bddc05b09346b39df8cdd70a62e",
+        "3c604a5fc05bd8554b213aab797fdbf7",
+        "5e6db71f785fee39bfbac4dabb80bc67",
+        "dd518f7982963fd526c839aa516697d1",
+        "9d77ca18f39bee1c89f894129b3de4fc",
+        "93287c5581e03a6e77c4895a0b45d403",
+        "695a6035225a65416b8fe183a6024b3a",
+        "6191dabfac509a369c46e365c89238f5",
+        "41f790dd369e6c01e77d0bffa7dcc836",
+        "a9c3701de891da4cb518634a6e749c3a",
+        "d0f28bef8530cfe726c08d0ccdf8a42e",
+        "9bc819e6ab40f491838a5b827c15bd1a",
+        "e015bb23e95a96e80aa91e5b1d675228",
+        "f4adfab06115c6e3f91735d0f568597c",
+        "80bdf2e9b73c4a2622335f55d67d86c9",
+        "dd289a65c80dcfd59f3dfdbc34ef5072",
+        "20d6ade525c0c80df8179012d31e88db",
+        "b92f76cceea623259cf706dbe995f342",
+        "fefa38df1e0fd899c53fc4da591f6f09",
+        "8e7c1af2ac3830608cafa6121c8d46c3",
+        "aaae8fb92095c7421fd03f178f819cc6",
+        "81aa2bfbc557dae41fbc2d059ea084f1",
+        "def3faef2e81ade77bba1643ea5660ad",
+        "87adaf2589e033f566a603f3b7f43254",
+        "6e24bea89dc287ef9831323bbddd8d03",
+        "5c26d75569eab26d00665855da7e1734",
+        "6d49a037a7a037a7cf0ea8bedcc552e4",
+        "cbc1e55c34dd9c218084a32b502db821",
+        "41eb1de38ed72eb149e399c0b1ab8fe1",
+        "a7a5a65219e0c722025c0f214c06f7b5",
+        "cd46a3604dacd6254f1c65a784ae4720",
+        "993cedfe1ce4b2b120300a694c38891c",
+        "dfe7fe44b41306a8171a870622347951",
+        "597d48f886416e3e3aabbedfcd09d2f7"
+      ],
+      "section_path": "References",
+      "page_image_refs": [
+        "fc080bb97fbd7e5ef65d2e4d430fbc3de1864abd6290a18dd49e0f199cc6ce59.png"
+      ],
+      "page_image_sha256": {
+        "fc080bb97fbd7e5ef65d2e4d430fbc3de1864abd6290a18dd49e0f199cc6ce59.png": "1492f562bfb4f131475c3fb26798ec04c2c7c6d3aae2e60889b2f77cc51b02af"
+      },
+      "children": []
+    },
+    {
+      "id": "42918976eaf28f26744776e5320e376a",
+      "title": "A. Object Detection Baselines",
+      "text": "A. Object Detection Baselines",
+      "level": 1,
+      "hierarchy_level": 1,
+      "page_start": 9,
+      "page_end": 9,
+      "numbering": null,
+      "bbox": [
+        50.11199951171875,
+        710.0369873046875,
+        159.7095184326172,
+        11.9552001953125
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 9,
+        "bbox": [
+          50.11199951171875,
+          710.0369873046875,
+          159.7095184326172,
+          11.9552001953125
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [],
+      "depth": 0,
+      "doc_order": 17,
+      "block_ids": [
+        "16931a83ae349fb26be947739f1b4ee5",
+        "697ac7484f90876506a414d212c9b7e9"
+      ],
+      "section_path": "A. Object Detection Baselines",
+      "page_image_refs": [
+        "273bb83a2183c8a1fc056693534af6793d7cdce731ac5d586c2bc3c9cb6284b5.png"
+      ],
+      "page_image_sha256": {
+        "273bb83a2183c8a1fc056693534af6793d7cdce731ac5d586c2bc3c9cb6284b5.png": "9a1aa96c83d20342a30d415bbafc4ebcd52a382d132b1028ca82d93805da341d"
+      },
+      "children": []
+    },
+    {
+      "id": "8f1c5c28a5cfecb344bcf79ff10ec2a6",
+      "title": "B. Object Detection Improvements",
+      "text": "B. Object Detection Improvements",
+      "level": 1,
+      "hierarchy_level": 1,
+      "page_start": 9,
+      "page_end": 9,
+      "numbering": null,
+      "bbox": [
+        308.8619689941406,
+        550.4590454101562,
+        185.80770874023438,
+        11.9552001953125
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 9,
+        "bbox": [
+          308.8619689941406,
+          550.4590454101562,
+          185.80770874023438,
+          11.9552001953125
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [],
+      "depth": 0,
+      "doc_order": 18,
+      "block_ids": [
+        "fb86421841c65e041e6b06d5a11411b8",
+        "544fcb486eec49867797026c9c4590ef",
+        "065d1e25f916e09d7642d02e9fdb902e",
+        "3346bf7b872f033441a04e6445a673f9",
+        "a36bf2976bbd9e73fb46b5824f8821a4",
+        "8199a7bc0b62546cde7b779012fc47c7",
+        "eec4716a9916e2c8708a6ac8aeb07aa4",
+        "9db19d174890f834ed7bf064c62d67dd",
+        "84ec353bbf0af4f5c8d6ab0d5787b8fb",
+        "e85fe3c24192de2ecf933567cbc875dc",
+        "c8b4e88f136e9bc03ed7b1b286c7a50a",
+        "94fe0505c2c72e1cda778f573e644bb2",
+        "68e7a3152bc3aa9c0526a84fb6e1c06f",
+        "d430bef13370fdef6cc1d8d808cca814",
+        "2669a31ef8a98e1be46d2e0caaddb256",
+        "b691dfaadd8fd8de85579a91941ad7ac",
+        "fd731c05c99dbbed245e2671c7c8621d",
+        "1c0fe5cc1ae17681c95e09a6146a35a6",
+        "3276a04993ddd0f30f4e2b84b23f1567",
+        "6ff8b87fb2740016d5dea1329b18a889",
+        "096338675bf0aea7b6e07c620f32ace6",
+        "0de7e7b3ed34ce250863014fde916c5a",
+        "18dd31c598c693e7a2ab5b099a8673a1",
+        "f61bb38381821d497d1b3070c159dcb6",
+        "5f775cfb533d70278d49b4a371e2bb88",
+        "40988f25651334dcd1b70ea6c537a31e",
+        "a5acd6a142641288606dbe19616481af",
+        "53fea96a0fbc377e953d925deaece06e",
+        "82ecb17b9eebbd0f14ad524f656b3f64",
+        "2e5f1f7a3172eaa413473e929c084b35"
+      ],
+      "section_path": "B. Object Detection Improvements",
+      "page_image_refs": [
+        "273bb83a2183c8a1fc056693534af6793d7cdce731ac5d586c2bc3c9cb6284b5.png"
+      ],
+      "page_image_sha256": {
+        "273bb83a2183c8a1fc056693534af6793d7cdce731ac5d586c2bc3c9cb6284b5.png": "9a1aa96c83d20342a30d415bbafc4ebcd52a382d132b1028ca82d93805da341d"
+      },
+      "children": []
+    },
+    {
+      "id": "736d14bda788987972611c343a88fe31",
+      "title": "C. ImageNet Localization",
+      "text": "C. ImageNet Localization",
+      "level": 1,
+      "hierarchy_level": 1,
+      "page_start": 11,
+      "page_end": 11,
+      "numbering": null,
+      "bbox": [
+        50.11198425292969,
+        497.72601318359375,
+        136.46861267089844,
+        11.9552001953125
+      ],
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 11,
+        "bbox": [
+          50.11198425292969,
+          497.72601318359375,
+          136.46861267089844,
+          11.9552001953125
+        ]
+      },
+      "parent_id": null,
+      "children_ids": [
+        "48855020ab2a7d2e729f4c0536a1022b"
+      ],
+      "depth": 0,
+      "doc_order": 19,
+      "block_ids": [
+        "ebb22f260ffe362bf1da7f790c747a86",
+        "a950ca9fa4f5226d79d31d69cea29e39",
+        "c405f077996a7b0fe909cbb06f682493",
+        "e4c2049814d6808f9261bf0ab1953d8b"
+      ],
+      "section_path": "C. ImageNet Localization",
+      "page_image_refs": [
+        "d0906ff6e9fcd280e39c295dfaeb3e070e2a3eb634b8af4caceb7dd6c5448e81.png"
+      ],
+      "page_image_sha256": {
+        "d0906ff6e9fcd280e39c295dfaeb3e070e2a3eb634b8af4caceb7dd6c5448e81.png": "ac27dabe8d1df275c64838eb7d8d03acd87a4aed4b09a7c24ca11ff5532bcd1f"
+      },
+      "children": [
+        "48855020ab2a7d2e729f4c0536a1022b"
+      ]
+    },
+    {
+      "id": "48855020ab2a7d2e729f4c0536a1022b",
+      "title": "LOC",
+      "text": "LOC",
+      "level": 2,
+      "hierarchy_level": 2,
+      "page_start": 11,
+      "page_end": 11,
+      "numbering": null,
+      "bbox": null,
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 11,
+        "bbox": null
+      },
+      "parent_id": "736d14bda788987972611c343a88fe31",
+      "children_ids": [],
+      "depth": 1,
+      "doc_order": 20,
+      "block_ids": [],
+      "section_path": "C. ImageNet Localization > LOC",
+      "page_image_refs": [
+        "d0906ff6e9fcd280e39c295dfaeb3e070e2a3eb634b8af4caceb7dd6c5448e81.png"
+      ],
+      "page_image_sha256": {
+        "d0906ff6e9fcd280e39c295dfaeb3e070e2a3eb634b8af4caceb7dd6c5448e81.png": "ac27dabe8d1df275c64838eb7d8d03acd87a4aed4b09a7c24ca11ff5532bcd1f"
+      },
+      "children": []
+    }
+  ]
+}

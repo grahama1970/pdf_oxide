@@ -3,6 +3,7 @@ import {
   assertOriginalPageImages,
   bboxStyle,
   normalizeBboxXyxy,
+  normalizePdfBboxXywh,
   normalizePageImageRef,
   parsePageImageIndex,
 } from './pageImageRefs'
@@ -34,6 +35,18 @@ describe('page image refs', () => {
       width: '30%',
       height: '40%',
     })
+  })
+
+  it('projects bottom-left PDF-space xywh boxes into top-left browser space', () => {
+    expect(normalizePdfBboxXywh(
+      [153, 594, 306, 54],
+      { width: 612, height: 792 },
+    )).toEqual([
+      0.25,
+      (792 - 594 - 54) / 792,
+      0.5,
+      54 / 792,
+    ])
   })
 
   it('adapts extraction xyxy boxes and calibration manifests without field drift', () => {

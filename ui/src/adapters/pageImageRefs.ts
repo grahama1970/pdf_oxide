@@ -287,6 +287,41 @@ export function normalizeBboxXywh(
   return [x, y, width, height]
 }
 
+/**
+ * Convert pdf_oxide's PDF-space [x,y,width,height] rectangle into the
+ * top-left normalized coordinates used by the browser overlay.
+ *
+ * PDF coordinates have their origin at the bottom left. Page images and CSS
+ * have their origin at the top left, so the vertical axis must be inverted.
+ */
+export function normalizePdfBboxXywh(
+  raw: unknown,
+  pageImage: Pick<PageImageRef, 'width' | 'height'>,
+): BboxXywh {
+  if (!pageImage.width || !pageImage.height) {
+    throw new Error('PDF bbox requires page width and height')
+  }
+  if (!Array.isArray(raw) || raw.length !== 4) throw new Error('bbox must contain four numbers')
+  const [x, y, width, height] = raw.map(Number)
+  if (![x, y, width, height].every(Number.isFinite)) throw new Error('bbox values must be finite')
+  if (
+    x < 0
+    || y < 0
+    || width <= 0
+    || height <= 0
+    || x + width > pageImage.width
+    || y + height > pageImage.height
+  ) {
+    throw new Error('PDF bbox must fit inside the source page')
+  }
+  return [
+    x / pageImage.width,
+    (pageImage.height - y - height) / pageImage.height,
+    width / pageImage.width,
+    height / pageImage.height,
+  ]
+}
+
 /** Convert the mature extraction renderer's [x0,y0,x1,y1] box to UI xywh. */
 export function normalizeBboxXyxy(
   raw: unknown,

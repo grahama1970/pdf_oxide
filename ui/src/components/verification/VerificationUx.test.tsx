@@ -74,6 +74,15 @@ describe('verification-first UX', () => {
     })
   })
 
+  it('fails closed when a referenced source image cannot be loaded', () => {
+    render(<NormalizedPageOverlay pageImage={PAGE_IMAGE} bbox={[0.1, 0.2, 0.3, 0.4]} label="figure" />)
+    fireEvent.error(screen.getByTestId('page-image'))
+    expect(screen.queryByTestId('page-image')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('bbox-overlay')).not.toBeInTheDocument()
+    expect(screen.getByTestId('page-image-error')).toHaveTextContent('failed closed')
+    expect(screen.getByTestId('page-image-error')).toHaveTextContent(PAGE_IMAGE.filename)
+  })
+
   it('keeps confidence opaque and writes an exact labels_v1 row', async () => {
     const [sample] = parseCalibrationSample(JSON.stringify({
       doc: 'sample-doc',

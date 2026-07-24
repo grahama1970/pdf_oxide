@@ -1,0 +1,31 @@
+{
+  "answer": "The current engine extraction is supported by this exact source element and original PDF page.",
+  "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+  "evidence": [
+    {
+      "element_id": "6b42bcd6dc407b7e9542a7dde41d2b8a",
+      "type": "Body",
+      "page": 0,
+      "bbox": [
+        0.22286109674989787,
+        0.18876362810231218,
+        0.7839155010148591,
+        0.24310479982934816
+      ],
+      "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+      "section_id": "1e5a2ce78989f92db5e9001a1d1e89b9",
+      "text": "Kaiming He Xiangyu Zhang Shaoqing Ren Jian Sun Microsoft Research {kahe, v-xiangz, v-shren, jiansun}@microsoft.com",
+      "provenance": {
+        "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+        "page": 0,
+        "bbox": [
+          136.3909912109375,
+          599.4609985351562,
+          343.36529541015625,
+          43.0382080078125
+        ]
+      },
+      "doc": "1512.03385v1"
+    }
+  ]
+}

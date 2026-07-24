@@ -15,7 +15,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:contracts": "tsx --test tests/contracts.test.ts",
-    "test:e2e": "npm run build && node --test tests/calibrate.playwright.test.mjs"
+    "test:e2e": "npm run build && node --test tests/calibrate.playwright.test.mjs",
+    "test:e2e:live": "npm run build && node --test tests/round2-live.playwright.test.mjs"
   },
   "dependencies": {
     "express": "^4.19.2",

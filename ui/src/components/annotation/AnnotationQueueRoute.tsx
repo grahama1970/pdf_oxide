@@ -13,7 +13,7 @@ import {
 } from '../../adapters/annotationCall'
 import {
   lookupPageImageRefs,
-  normalizeBboxXywh,
+  normalizePdfBboxXywh,
   normalizePageImageRefs,
   parsePageImageIndex,
   type PageImageIndex,
@@ -63,7 +63,16 @@ function selectedPageImage(item: AnnotationQueueItem, index: PageImageIndex | nu
           page: item.page,
           pdfSha256: item.pdfSha256,
         })
-    return direct[0] ?? lookupPageImageRefs(index, item.documentId, item.page)[0] ?? null
+    const indexed = lookupPageImageRefs(index, item.documentId, item.page)[0] ?? null
+    if (direct[0] && indexed && direct[0].sha256 === indexed.sha256) {
+      return {
+        ...indexed,
+        ...direct[0],
+        width: direct[0].width ?? indexed.width,
+        height: direct[0].height ?? indexed.height,
+      }
+    }
+    return direct[0] ?? indexed
   } catch {
     return null
   }
@@ -198,7 +207,7 @@ export function AnnotationQueueRoute({
     if (selected.normalizedBbox) return selected.normalizedBbox
     if (!pageImage) return undefined
     try {
-      return normalizeBboxXywh(selected.bbox, pageImage)
+      return normalizePdfBboxXywh(selected.bbox, pageImage)
     } catch {
       return undefined
     }

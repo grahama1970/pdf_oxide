@@ -1,0 +1,20 @@
+{
+  "schema": "pdf_oxide.calibration_page_images.v1",
+  "documents": {
+    "1512.03385v1": {
+      "schema": "pdf_oxide.page_image.v1",
+      "directory": "page_images",
+      "dpi": 150,
+      "format": "png",
+      "naming": "sha256(canonical JSON of schema,pdf_sha256,page_index,dpi,format + NUL + PNG bytes)",
+      "images": [
+        {
+          "page": 0,
+          "filename": "ab3fed9e734c1202bb2a74dc8774e2c5827f7ba6f83a574469a1aec5f3888e9a.png",
+          "byte_sha256": "7a312c00ca5dc2bb3a9c8d70a5cd58a65e1feb49c605df4c31266ce9ba6f3e2c"
+        }
+      ],
+      "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a"
+    }
+  }
+}
