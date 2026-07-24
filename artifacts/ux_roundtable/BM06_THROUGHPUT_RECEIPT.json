@@ -1,0 +1,44 @@
+{
+  "schema": "pdf_oxide.ux_throughput_receipt.v1",
+  "generated_at": "2026-07-24T22:31:06.396Z",
+  "fixture_sha256": "902694d863cb52844ff69905f2dd7cacf5ccbf2c11c93d6ca5f676de64204c52",
+  "ui_commit": "282a2c4d204674d8f08101ac57af4d4768db05bf",
+  "workload_size": 50,
+  "workloads": [
+    {
+      "workload_id": "bm06-accept-defer-50",
+      "kind": "accept-defer",
+      "item_count": 50,
+      "correction_count": 0,
+      "elapsed_ms": 4387.557245,
+      "items_per_hour": 41025.10575904748,
+      "decision_writes": 50,
+      "timing_writes": 50,
+      "duplicate_event_ids": 0,
+      "dropped_writes": 0,
+      "threshold_items_per_hour": 120,
+      "pass": true
+    },
+    {
+      "workload_id": "bm06-mixed-50",
+      "kind": "mixed",
+      "item_count": 50,
+      "correction_count": 10,
+      "elapsed_ms": 5173.285632,
+      "items_per_hour": 34794.1352564389,
+      "decision_writes": 50,
+      "timing_writes": 50,
+      "duplicate_event_ids": 0,
+      "dropped_writes": 0,
+      "threshold_items_per_hour": 60,
+      "pass": true
+    }
+  ],
+  "totals": {
+    "decision_writes": 100,
+    "timing_writes": 100,
+    "duplicate_event_ids": 0,
+    "dropped_writes": 0
+  },
+  "pass": true
+}
