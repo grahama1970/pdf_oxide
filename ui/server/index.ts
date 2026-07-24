@@ -9,6 +9,7 @@ import {
   type CalibrationPageImageIndex,
   assertCalibrationPageImageIndex,
 } from '../src/adapters/pageImageRefs'
+import { nearestArtifactMount } from '../src/adapters/artifactMountPairing'
 
 type JsonRecord = Record<string, unknown>
 
@@ -146,6 +147,13 @@ interface DiscoveredPageImageIndex {
   pageCount: number
 }
 
+interface DiscoveredSectionTree {
+  path: string
+  url: string
+  documentIds: string[]
+  pdfSha256s: string[]
+}
+
 function summarizePageImageIndex(path: string): DiscoveredPageImageIndex {
   const value = jsonRecordAt(path)
   const documentIds = new Set<string>()
@@ -195,19 +203,19 @@ function summarizePageImageIndex(path: string): DiscoveredPageImageIndex {
   }
 }
 
-function nearestPageImageIndex(
-  artifactPath: string,
-  indexes: readonly DiscoveredPageImageIndex[],
-  documentIds: readonly string[] = [],
-  pdfSha256?: string,
-): DiscoveredPageImageIndex | undefined {
-  const sameDirectory = indexes.find((index) => dirname(index.path) === dirname(artifactPath))
-  if (sameDirectory) return sameDirectory
-  if (pdfSha256) {
-    const samePdf = indexes.find((index) => index.pdfSha256s.includes(pdfSha256))
-    if (samePdf) return samePdf
+function summarizeSectionTree(path: string): DiscoveredSectionTree {
+  const value = jsonRecordAt(path)
+  const documentIds = new Set<string>()
+  const pdfSha256s = new Set<string>()
+  if (typeof value?.doc === 'string') documentIds.add(value.doc)
+  if (typeof value?.document_id === 'string') documentIds.add(value.document_id)
+  if (typeof value?.pdf_sha256 === 'string') pdfSha256s.add(value.pdf_sha256)
+  return {
+    path,
+    url: artifactUrl(path),
+    documentIds: [...documentIds].sort(),
+    pdfSha256s: [...pdfSha256s].sort(),
   }
-  return indexes.find((index) => documentIds.some((doc) => index.documentIds.includes(doc)))
 }
 
 app.get('/api/pdf-lab/mounts', (_req, res) => {
@@ -215,6 +223,9 @@ app.get('/api/pdf-lab/mounts', (_req, res) => {
   const pageImageIndexes = files
     .filter((path) => basename(path).endsWith('page_images_v1.json'))
     .map(summarizePageImageIndex)
+  const sectionTrees = files
+    .filter((path) => basename(path).endsWith('section_tree.json'))
+    .map(summarizeSectionTree)
   const indexedDocuments = new Set(pageImageIndexes.flatMap((index) => index.documentIds))
 
   const annotationCalls = files
@@ -245,11 +256,19 @@ app.get('/api/pdf-lab/mounts', (_req, res) => {
     .map((path) => {
       const value = jsonRecordAt(path)
       const pdfSha256 = typeof value?.pdf_sha256 === 'string' ? value.pdf_sha256 : undefined
-      const pageImageIndex = nearestPageImageIndex(path, pageImageIndexes, [], pdfSha256)
+      const evidence = Array.isArray(value?.evidence) ? value.evidence : []
+      const documentIds = [...new Set(evidence.flatMap((row) => (
+        row && typeof row === 'object' && !Array.isArray(row) && typeof (row as JsonRecord).doc === 'string'
+          ? [String((row as JsonRecord).doc)]
+          : []
+      )))]
+      const pageImageIndex = nearestArtifactMount(path, pageImageIndexes, { documentIds, pdfSha256 })
+      const sectionTree = nearestArtifactMount(path, sectionTrees, { documentIds, pdfSha256 })
       return {
         url: artifactUrl(path),
         label: relative(ARTIFACTS_ROOT, path),
         ...(pageImageIndex ? { page_image_index_url: pageImageIndex.url } : {}),
+        ...(sectionTree ? { section_tree_url: sectionTree.url } : {}),
       }
     })
 
@@ -268,7 +287,9 @@ app.get('/api/pdf-lab/mounts', (_req, res) => {
           // Discovery reports the mount; the calibration route remains fail-closed.
         }
       }
-      const pageImageIndex = nearestPageImageIndex(path, pageImageIndexes, [...documents])
+      const pageImageIndex = nearestArtifactMount(path, pageImageIndexes, {
+        documentIds: [...documents],
+      })
       return {
         url: artifactUrl(path),
         item_count: rows.length,

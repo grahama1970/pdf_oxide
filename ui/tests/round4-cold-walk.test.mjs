@@ -10,6 +10,7 @@ import { chromium } from 'playwright'
 const UI_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)))
 const REPO_ROOT = resolve(UI_ROOT, '..')
 const SCREENSHOT_ROOT = join(REPO_ROOT, 'artifacts/ux_competition/round4')
+const ROUND6_SCREENSHOT_ROOT = join(REPO_ROOT, 'artifacts/ux_competition/round6')
 const ORIGIN = 'http://127.0.0.1:3013'
 const TRUE_TOTAL = 2_161
 const RAW_PARSE_ERROR = /Unexpected token|JSON\.parse|SyntaxError|is not valid JSON/i
@@ -60,6 +61,7 @@ async function assertNoRawParseError(page) {
 
 test('round 4 cold walk discovers the front-door artifact mounts', { timeout: 120_000 }, async () => {
   await mkdir(SCREENSHOT_ROOT, { recursive: true })
+  await mkdir(ROUND6_SCREENSHOT_ROOT, { recursive: true })
   const server = startServer()
   let serverOutput = ''
   server.stdout.on('data', (chunk) => { serverOutput += chunk })
@@ -83,6 +85,9 @@ test('round 4 cold walk discovers the front-door artifact mounts', { timeout: 12
         'NIST_SP_800-53r5': 363,
       },
     )
+    assert.equal(mounts.retrieval_results.length, 1)
+    assert.match(mounts.retrieval_results[0].page_image_index_url, /round2-live\/page_images_v1\.json$/)
+    assert.match(mounts.retrieval_results[0].section_tree_url, /round2-live\/section_tree\.json$/)
 
     browser = await chromium.launch({ headless: true })
     const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } })
@@ -120,7 +125,12 @@ test('round 4 cold walk discovers the front-door artifact mounts', { timeout: 12
     await page.getByRole('heading', { name: 'Traceable answer' }).waitFor()
     await page.locator('.pdf-verify-evidence-card img').waitFor()
     await assertNoRawParseError(page)
+    assert.doesNotMatch(
+      await page.locator('body').innerText(),
+      /Retrieval evidence withheld|Retrieval evidence needs attention/,
+    )
     await page.screenshot({ path: join(SCREENSHOT_ROOT, 'evidence.png'), fullPage: true })
+    await page.screenshot({ path: join(ROUND6_SCREENSHOT_ROOT, 'evidence-bare.png'), fullPage: true })
 
     await page.goto(`${ORIGIN}/#unknown-route`)
     await page.locator('[data-testid="annotation-queue-route"]').waitFor()

@@ -15,6 +15,7 @@ export interface RetrievalResultMount {
   url: string
   label: string
   page_image_index_url?: string
+  section_tree_url?: string
 }
 
 export interface CalibrationSampleMount {
@@ -62,6 +63,9 @@ export function parsePdfLabMounts(value: unknown): PdfLabMounts {
       label: String(entry.label ?? entry.url ?? 'Retrieval result'),
       ...(typeof entry.page_image_index_url === 'string'
         ? { page_image_index_url: entry.page_image_index_url }
+        : {}),
+      ...(typeof entry.section_tree_url === 'string'
+        ? { section_tree_url: entry.section_tree_url }
         : {}),
     })).filter((entry) => entry.url),
     calibration_samples: calibrationSamples.filter(isRecord).map((entry) => ({

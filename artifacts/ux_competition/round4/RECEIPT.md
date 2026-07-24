@@ -105,3 +105,116 @@ The test explicitly rejects visible `Unexpected token`, `JSON.parse`,
   artifact HTTP serving, native wheel page renderer, page-image URL resolution,
   calibration label write, and fresh Playwright browser context
 - remains unverified: no requested Round 4R behavior remains unverified
+
+## Evidence round 6
+
+### Retrieval auto-discovery repair
+
+The bare `#pdf-lab/evidence` route now receives a complete, co-located evidence
+mount. Artifact pairing selects a candidate in the retrieval result's own
+directory first, then falls back to matching PDF SHA-256 and explicit document
+identity. The mounts contract now carries both sibling URLs, and `App.tsx`
+passes the discovered section tree to the retrieval route:
+
+```json
+{
+  "url": "/artifacts/pdf-lab/round2-live/retrieval_result.json",
+  "page_image_index_url": "/artifacts/pdf-lab/round2-live/page_images_v1.json",
+  "section_tree_url": "/artifacts/pdf-lab/round2-live/section_tree.json"
+}
+```
+
+Focused unit coverage exercises co-location priority over an earlier
+same-document/same-PDF candidate and both PDF/document fallback paths:
+
+```text
+$ cd ui && npm test
+Test Files  5 passed (5)
+Tests       19 passed (19)
+```
+
+The extended cold walk requires the discovered retrieval mount to contain the
+co-located page-image index and section tree, then requires the bare evidence
+route to show `Traceable answer`, load the original-page image, and contain
+neither `Retrieval evidence withheld` nor `Retrieval evidence needs attention`.
+
+```text
+$ cd ui && node --test tests/round4-cold-walk.test.mjs
+tests 1, pass 1, fail 0
+```
+
+Full output: `../round6/cold-walk.txt`.
+Visual proof: `../round6/evidence-bare.png`. The inspected screenshot shows the
+traceable answer, `Deep Residual Learning for Image Recognition` section path,
+source element `6b42bcd6dc407b7e9542a7dde41d2b8a`, original page 0, and its visible
+bounding-box overlay.
+
+### Live read-backs after rebuild on port 3013
+
+`GET /api/pdf-lab/mounts` returned:
+
+```json
+{
+  "annotation_calls": 4,
+  "annotation_items": 2161,
+  "page_image_indexes": 5,
+  "retrieval_results": 1,
+  "calibration_samples": 1
+}
+```
+
+The live cold walk also read back:
+
+- bare `/`: the populated **2,161-item** queue with an original page and bbox;
+- bare `#pdf-lab/calibrate`: blinded adjudication with a mounted page image;
+- bare `#pdf-lab/evidence`: the discovered traceable result, section tree,
+  original page, and bbox, without the fail-closed withheld state.
+
+The active round2-live calibration directory was exposed at the server's
+existing `/calibration` fixture path so the unchanged cold-walk label-write
+assertion could receive its expected HTTP **201**.
+
+### Round 5 primary-source re-verification
+
+Commit `8047af0e3a03173312ff13fee97818e38653ade4` was read directly.
+At that commit, the five component sources contain:
+
+| Component | interactive | `data-qid` | `data-qs-action` | `useRegisterAction` |
+|---|---:|---:|---:|---:|
+| `App.tsx` | 1 | 1 | 1 | 1 |
+| `AnnotationQueueRoute.tsx` | 6 | 6 | 6 | 6 |
+| `CalibrateRoute.tsx` | 8 | 8 | 8 | 8 |
+| `RetrievalEvidenceView.tsx` | 1 | 1 | 1 | 1 |
+| `NormalizedPageOverlay.tsx` | 1 | 1 | 1 | 1 |
+
+Every counted control has a `title`; every component imports and calls
+`useRegisterAction`. `RetrievalEvidenceView.tsx` retains five
+`data-testid` occurrences. The committed Round 5 manifest contains **134**
+literal `data-qid` references; all **33** recursively enumerated `selector`
+fields begin with `[data-qid=`, with **0** non-qid selector fields.
+
+### Round 4R primary-source re-verification
+
+Commit `de3011990e56d5e95147f166f3b640e55ac21b13` was read directly:
+
+- commit stat: **677 files**, **42,068 insertions**, 92 deletions;
+- mounts endpoint: `ui/server/index.ts:213`;
+- relative href resolution: `ui/src/adapters/pageImageRefs.ts:64-66`,
+  using `new URL(filename, normalizedBase)` for absolute bases and `new URL`
+  against the normalized local base for relative paths;
+- cold-walk raw parse rejection: `ui/tests/round4-cold-walk.test.mjs:15`,
+  asserted by `assertNoRawParseError`;
+- bounded renderer: `scripts/render_annotation_page_images.py`, **307 lines**;
+- NASA receipt: **195/195** referenced pages rendered from source SHA-256
+  `b8e28d127226e12fa758cd90ecdd1d0831fe4db20647d0fb5c1fc6e40f4c9657`.
+
+### Round 6 proof scope
+
+- mocked: **no**
+- live: **yes**
+- exercised: co-located and identity-fallback artifact pairing, mounts JSON
+  parsing, production build, the real Express scanner on `:3013`, real mounted
+  Round 2 artifacts, full browser cold walk, original image load, visible bbox,
+  and screenshot inspection
+- remains unverified: none of the requested Round 6 bugfix or Rounds 5/4R
+  evidence-closure checks

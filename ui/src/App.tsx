@@ -205,7 +205,7 @@ function EvidenceMountedRoute({
       <RetrievalEvidenceRoute
         resultUrl={selected.url}
         pageImageIndexUrl={pageImageIndexOverride ?? selected.page_image_index_url}
-        sectionTreeUrl={sectionTreeUrl}
+        sectionTreeUrl={sectionTreeUrl ?? selected.section_tree_url}
         artifactsRoot={artifactsRoot}
       />
     </>
