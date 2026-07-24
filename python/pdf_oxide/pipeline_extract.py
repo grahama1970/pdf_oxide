@@ -2,6 +2,7 @@
 
 Calls pdf_oxide's Rust core for text, tables, figures, sections.
 """
+
 from __future__ import annotations
 
 import time
@@ -99,7 +100,12 @@ def _build_blocks(
                     "type": blk.get("block_type", "text"),
                     "bbox": blk.get("bbox"),
                     "font_size": blk.get("font_size"),
+                    "font_name": blk.get("font_name"),
                     "is_bold": blk.get("is_bold", False),
+                    # The engine owns this value.  Preserve a missing value as
+                    # None rather than laundering it into a high-confidence
+                    # default.
+                    "confidence": blk.get("confidence"),
                     "header_level": blk.get("header_level"),
                     "section_id": assign_section(blk, sections, page_num),
                 }
