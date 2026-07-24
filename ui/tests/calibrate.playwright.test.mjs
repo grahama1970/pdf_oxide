@@ -12,6 +12,7 @@ import { chromium } from 'playwright'
 
 const UI_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)))
 const SCREENSHOT_PATH = '/tmp/pdf-lab-calibrate-acceptance.png'
+const RETRIEVAL_SCREENSHOT_PATH = '/tmp/pdf-lab-retrieval-acceptance.png'
 
 async function waitFor(url, timeoutMs = 30_000) {
   const deadline = Date.now() + timeoutMs
@@ -136,7 +137,7 @@ test('calibrate route renders evidence and persists a labels_v1 row', { timeout:
 
     const image = page.locator('[data-testid="page-image"]')
     await image.waitFor({ state: 'visible' })
-    assert.equal(await page.locator('[data-confidence-hidden="true"]').count(), 1)
+    assert.equal(await page.locator('[data-confidence-hidden="true"]').count() >= 1, true)
     assert.equal((await page.locator('body').innerText()).includes('0.123456'), false)
 
     const overlayStyle = await page.locator('[data-testid="bbox-overlay"]').evaluate(element => ({
@@ -153,8 +154,8 @@ test('calibrate route renders evidence and persists a labels_v1 row', { timeout:
     })
 
     await page.screenshot({ path: SCREENSHOT_PATH, fullPage: true })
-    await page.getByRole('button', { name: 'Correct', exact: true }).click()
-    await page.getByRole('heading', { name: 'Calibration sample complete' }).waitFor()
+    await page.getByRole('button', { name: /Correct/ }).click()
+    await page.getByRole('status').filter({ hasText: 'Saved correct' }).waitFor()
 
     const rows = (await readFile(join(calibrationDir, 'labels_v1.jsonl'), 'utf-8'))
       .trim()
@@ -165,6 +166,59 @@ test('calibrate route renders evidence and persists a labels_v1 row', { timeout:
     assert.equal(rows[0].item_sha, expectedItemSha)
     assert.equal(rows[0].label, 'correct')
     assert.equal(new Date(rows[0].ts).toISOString(), rows[0].ts)
+
+    await writeFile(join(artifactRoot, 'retrieval_result.json'), JSON.stringify({
+      answer: 'The fixture table is supported by the original PDF page.',
+      pdf_sha256: pdfSha,
+      section_path: ['Fixture document', 'Evidence table'],
+      evidence: [{
+        element_id: 'fixture-table-1',
+        type: 'table',
+        page: 2,
+        bbox: [0.125, 0.25, 0.625, 0.75],
+        section_path: ['Fixture document', 'Evidence table'],
+        page_image_refs: [{
+          sha256: filename.replace(/\.png$/, ''),
+          href: `/artifacts/pdf-lab/calibration/page_images/${filename}`,
+          page: 2,
+        }],
+      }],
+    }))
+    await page.goto(
+      `http://127.0.0.1:${port}/#pdf-lab/evidence?result=/artifacts/pdf-lab/retrieval_result.json`,
+    )
+    await page.locator('[data-testid="page-image"]').waitFor({ state: 'visible' })
+    assert.match(await page.locator('[data-testid="section-breadcrumb"]').first().innerText(), /Evidence table/)
+    assert.match(await page.locator('[data-testid="provenance-chain"]').innerText(), /fixture-table-1/)
+    assert.deepEqual(
+      await page.locator('[data-testid="bbox-overlay"]').evaluate(element => ({
+        left: element.style.left,
+        top: element.style.top,
+        width: element.style.width,
+        height: element.style.height,
+      })),
+      { left: '12.5%', top: '25%', width: '50%', height: '50%' },
+    )
+    await page.screenshot({ path: RETRIEVAL_SCREENSHOT_PATH, fullPage: true })
+
+    await writeFile(join(artifactRoot, 'retrieval_missing_image.json'), JSON.stringify({
+      answer: 'This answer must be withheld.',
+      pdf_sha256: pdfSha,
+      section_path: ['Fixture document'],
+      evidence: [{
+        element_id: 'missing-image',
+        type: 'table',
+        page: 2,
+        bbox: [0.125, 0.25, 0.625, 0.75],
+        section_path: ['Fixture document'],
+      }],
+    }))
+    await page.goto(
+      `http://127.0.0.1:${port}/#pdf-lab/evidence?result=/artifacts/pdf-lab/retrieval_missing_image.json`,
+    )
+    await page.locator('[data-testid="retrieval-contract-failure"]').waitFor({ state: 'visible' })
+    assert.equal(await page.locator('[data-testid="page-image"]').count(), 0)
+    assert.match(await page.locator('[data-testid="page-image-error"]').innerText(), /Original page images/)
 
     await writeFile(join(calibrationDir, 'page_images_v1.json'), JSON.stringify({
       schema: 'pdf_oxide.calibration_page_images.v1',
@@ -186,6 +240,7 @@ test('calibrate route renders evidence and persists a labels_v1 row', { timeout:
 
     console.log(`labels_v1 row: ${JSON.stringify(rows[0])}`)
     console.log(`screenshot: ${SCREENSHOT_PATH}`)
+    console.log(`retrieval screenshot: ${RETRIEVAL_SCREENSHOT_PATH}`)
   } catch (error) {
     console.error('API output:', api.output())
     throw error

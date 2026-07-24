@@ -2,7 +2,6 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import {
-  OLD_FLOW_ONLY_FIELDS,
   normalizeAnnotationCall,
   normalizeCalibrationItem,
 } from '../src/adapters/annotationCall'
@@ -26,9 +25,12 @@ const imageIndex: CalibrationPageImageIndex = {
   },
 }
 
-test('new annotation-call fields map without old-flow-only dependencies', () => {
-  const regions = normalizeAnnotationCall({
+test('annotation_call.v1 maps exact fields without old-flow-only dependencies', () => {
+  const call = normalizeAnnotationCall({
     schema: 'pdf_oxide.annotation_call.v1',
+    pdf_sha256: sha,
+    engine_commit: 'fixture-commit',
+    accuracy_estimate: { basis: 'fixture', value: 0.95 },
     items: [{
       page: 2,
       kind: 'block',
@@ -38,28 +40,24 @@ test('new annotation-call fields map without old-flow-only dependencies', () => 
       text_excerpt: 'fixture excerpt',
     }],
   })
-  assert.deepEqual(regions, [{
-    id: 'annotation-call-0',
-    page: 2,
-    family: 'block',
-    bbox: [0.1, 0.2, 0.4, 0.6],
-    text_hint: 'fixture excerpt',
-    notes: 'low_confidence',
-    origin: 'agent_dispatcher',
-  }])
-  assert.deepEqual(OLD_FLOW_ONLY_FIELDS, [
-    'crop_uri',
-    'page_image_uri',
-    'json_pointer',
-    'page_image_hash',
-    'task_id',
-  ])
+  assert.equal(call.schema, 'pdf_oxide.annotation_call.v1')
+  assert.equal(call.pdfSha256, sha)
+  assert.equal(call.engineCommit, 'fixture-commit')
+  assert.equal(call.accuracyBasis, 'fixture')
+  assert.equal(call.items[0].kind, 'block')
+  assert.equal(call.items[0].reason, 'low_confidence')
+  assert.deepEqual(call.items[0].bbox, [0.1, 0.2, 0.4, 0.6])
+  assert.equal(call.items[0].textExcerpt, 'fixture excerpt')
+  assert.equal(call.items[0].confidence, 0.125)
 })
 
 test('legacy-only payload cannot satisfy the new annotation contract', () => {
   assert.throws(
     () => normalizeAnnotationCall({
       schema: 'pdf_oxide.annotation_call.v1',
+      pdf_sha256: sha,
+      engine_commit: 'fixture-commit',
+      accuracy_estimate: { basis: 'fixture', value: 0.95 },
       items: [{
         crop_uri: '/old/crop.png',
         page_image_uri: '/old/page.png',
@@ -68,7 +66,7 @@ test('legacy-only payload cannot satisfy the new annotation contract', () => {
         task_id: 'legacy-task',
       }],
     }),
-    /page is invalid/,
+    /kind is invalid/,
   )
 })
 
