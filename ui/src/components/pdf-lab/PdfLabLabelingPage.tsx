@@ -36,6 +36,15 @@ import {
   regionsToExpected,
 } from './PdfLabLabelingExport'
 import { LeftPane } from '../common/LeftPane'
+import {
+  type CalibrationSampleItem,
+  type NormalizedLabelingItem,
+  normalizeCalibrationItem,
+} from '../../adapters/annotationCall'
+import {
+  type CalibrationPageImageIndex,
+  assertCalibrationPageImageIndex,
+} from '../../adapters/pageImageRefs'
 import './PdfLabLabelingPage.css'
 
 /** Human-labeling vocabulary. Link annotations (control_link /
@@ -1589,7 +1598,179 @@ const KNOWN_SLICES: KnownSlice[] = [
   },
 ]
 
-export function PdfLabLabelingPage() {
+type CalibrationLabel = 'correct' | 'wrong_type' | 'wrong_bounds' | 'not_an_element'
+
+interface CalibrationSampleResponse {
+  schema: 'pdf_oxide.calibration_sample_response.v1'
+  items: Array<{ item_sha: string; item: CalibrationSampleItem }>
+  page_images: CalibrationPageImageIndex
+}
+
+interface CalibrationLabelRow {
+  item_sha: string
+  label: CalibrationLabel
+  corrected_type?: string
+  ts: string
+}
+
+function PdfLabCalibrationMode() {
+  const [sample, setSample] = useState<CalibrationSampleResponse | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [correctedType, setCorrectedType] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    void fetch('/api/pdf-lab/calibration/sample')
+      .then(async response => {
+        if (!response.ok) throw new Error(`calibration sample fetch returned HTTP ${response.status}`)
+        const payload = await response.json() as CalibrationSampleResponse
+        if (payload.schema !== 'pdf_oxide.calibration_sample_response.v1' || !Array.isArray(payload.items)) {
+          throw new Error('calibration sample response contract is invalid')
+        }
+        assertCalibrationPageImageIndex(payload.page_images)
+        if (!cancelled) setSample(payload)
+      })
+      .catch(reason => {
+        if (!cancelled) setError(reason instanceof Error ? reason.message : String(reason))
+      })
+    return () => { cancelled = true }
+  }, [])
+
+  let active: NormalizedLabelingItem | null = null
+  let normalizationError: string | null = null
+  if (sample && activeIndex < sample.items.length) {
+    const entry = sample.items[activeIndex]
+    try {
+      active = normalizeCalibrationItem(entry.item, entry.item_sha, sample.page_images)
+    } catch (reason) {
+      normalizationError = reason instanceof Error ? reason.message : String(reason)
+    }
+  }
+
+  const adjudicate = useCallback(async (label: CalibrationLabel) => {
+    if (!active || saving) return
+    const row: CalibrationLabelRow = {
+      item_sha: active.itemSha,
+      label,
+      ...(label === 'wrong_type' && correctedType.trim() ? { corrected_type: correctedType.trim() } : {}),
+      ts: new Date().toISOString(),
+    }
+    setSaving(true)
+    setError(null)
+    try {
+      const response = await fetch('/api/pdf-lab/calibration/labels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(row),
+      })
+      if (!response.ok) {
+        const detail = await response.text()
+        throw new Error(`label write returned HTTP ${response.status}: ${detail}`)
+      }
+      setCorrectedType('')
+      setActiveIndex(index => index + 1)
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : String(reason))
+    } finally {
+      setSaving(false)
+    }
+  }, [active, correctedType, saving])
+
+  if (error || normalizationError) {
+    return (
+      <div className="pdf-lab-calibrate-root" data-confidence-hidden="true" role="alert">
+        <h1>Calibration unavailable</h1>
+        <p>{error || normalizationError}</p>
+      </div>
+    )
+  }
+  if (!sample) {
+    return <div className="pdf-lab-calibrate-root" data-confidence-hidden="true">Loading calibration sample…</div>
+  }
+  if (!active) {
+    return (
+      <div className="pdf-lab-calibrate-root" data-confidence-hidden="true">
+        <h1>Calibration sample complete</h1>
+        <p>{sample.items.length} adjudications submitted.</p>
+      </div>
+    )
+  }
+
+  const [x0, y0, x1, y1] = active.region.bbox
+  return (
+    <div className="pdf-lab-calibrate-root" data-confidence-hidden="true">
+      <header className="pdf-lab-calibrate-header">
+        <div>
+          <div className="pdf-lab-calibrate-kicker">PDF Lab · Calibrate</div>
+          <h1>Is this extracted element correct?</h1>
+        </div>
+        <div className="pdf-lab-calibrate-progress" aria-label="Calibration progress">
+          {activeIndex + 1} / {sample.items.length}
+        </div>
+      </header>
+
+      <main className="pdf-lab-calibrate-main">
+        <section className="pdf-lab-calibrate-canvas" aria-label="Calibration page evidence">
+          <div className="pdf-lab-calibrate-image-wrap">
+            <img
+              data-testid="page-image"
+              src={active.image.src}
+              alt={`Rendered source page ${active.page + 1} from ${active.doc}`}
+              draggable={false}
+            />
+            <div
+              data-testid="bbox-overlay"
+              className="pdf-lab-calibrate-bbox"
+              style={{
+                left: `${x0 * 100}%`,
+                top: `${y0 * 100}%`,
+                width: `${(x1 - x0) * 100}%`,
+                height: `${(y1 - y0) * 100}%`,
+              }}
+            />
+          </div>
+        </section>
+
+        <aside className="pdf-lab-calibrate-controls">
+          <div className="pdf-lab-calibrate-source">
+            <span>{active.doc}</span>
+            <span>Page {active.page + 1}</span>
+            <span>{active.region.family}</span>
+          </div>
+          <blockquote>{active.region.text_hint || '(No extracted text)'}</blockquote>
+          <label>
+            Corrected type <small>(optional for wrong type)</small>
+            <input
+              value={correctedType}
+              onChange={event => setCorrectedType(event.target.value)}
+              placeholder="corrected_type"
+              disabled={saving}
+            />
+          </label>
+          <div className="pdf-lab-calibrate-actions" aria-label="Adjudication labels">
+            <button disabled={saving} onClick={() => void adjudicate('correct')}>Correct</button>
+            <button disabled={saving} onClick={() => void adjudicate('wrong_type')}>Wrong type</button>
+            <button disabled={saving} onClick={() => void adjudicate('wrong_bounds')}>Wrong bounds</button>
+            <button disabled={saving} onClick={() => void adjudicate('not_an_element')}>Not an element</button>
+          </div>
+        </aside>
+      </main>
+    </div>
+  )
+}
+
+export interface PdfLabLabelingPageProps {
+  mode?: 'label' | 'calibrate'
+}
+
+export function PdfLabLabelingPage({ mode = 'label' }: PdfLabLabelingPageProps) {
+  if (mode === 'calibrate') return <PdfLabCalibrationMode />
+  return <PdfLabStandardLabelingPage />
+}
+
+function PdfLabStandardLabelingPage() {
   const [activeFamily, setActiveFamily] = useState<FamilyId>('paragraph_block')
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null)

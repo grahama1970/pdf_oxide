@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
-import PdfCanvas from '../datalake-explorer/PdfCanvas'
-import { ReviewBundleButton } from '../common/ReviewBundleButton'
-import { useRegisterAction } from '../../hooks/useRegisterAction'
+import PdfCanvas from '../src/components/datalake-explorer/PdfCanvas'
+import { ReviewBundleButton } from '../src/components/common/ReviewBundleButton'
+import { useRegisterAction } from '../src/hooks/useRegisterAction'
 
 interface SurgicalTriageTask {
   id: string

@@ -1,8 +1,14 @@
 import express from 'express'
-import { createReadStream, existsSync, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'fs'
+import { createHash } from 'crypto'
+import { appendFileSync, createReadStream, existsSync, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'fs'
 import { cp, mkdir, readFile, readdir, stat, writeFile } from 'fs/promises'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
+import {
+  PAGE_IMAGE_NAMING,
+  type CalibrationPageImageIndex,
+  assertCalibrationPageImageIndex,
+} from '../src/adapters/pageImageRefs'
 
 type JsonRecord = Record<string, unknown>
 
@@ -33,6 +39,10 @@ const SIGNOFFS_DIR = resolve(process.env.PDF_LAB_SIGNOFFS_DIR ?? '/tmp/pdf-lab-u
 const SIGNOFFS_PATH = resolve(SIGNOFFS_DIR, 'current.json')
 const IN_PROGRESS_PATH = resolve(SIGNOFFS_DIR, 'in_progress.json')
 const REVIEW_SAVE_DIR = resolve(process.env.PDF_LAB_REVIEW_SAVE_DIR ?? '/tmp/pdf-lab-ui/review-saves')
+const CALIBRATION_DIR = resolve(ARTIFACTS_ROOT, 'calibration')
+const CALIBRATION_SAMPLE_PATH = resolve(CALIBRATION_DIR, 'sample_v1.jsonl')
+const CALIBRATION_PAGE_IMAGES_PATH = resolve(CALIBRATION_DIR, 'page_images_v1.json')
+const CALIBRATION_LABELS_PATH = resolve(CALIBRATION_DIR, 'labels_v1.jsonl')
 
 app.use(express.json({ limit: '25mb' }))
 
@@ -108,6 +118,158 @@ app.get('/api/pdf-lab/status', (_req, res) => {
     servedRoots: staticRoots,
     signoffsPath: SIGNOFFS_PATH,
   })
+})
+
+function calibrationSampleEntries(): Array<{ item_sha: string; item: JsonRecord }> {
+  if (!existsSync(CALIBRATION_SAMPLE_PATH)) return []
+  return readFileSync(CALIBRATION_SAMPLE_PATH, 'utf-8')
+    .split(/\r?\n/)
+    .map(line => line.trim())
+    .filter(Boolean)
+    .map((line, index) => {
+      const item = JSON.parse(line) as JsonRecord
+      const required = ['doc', 'quintile', 'page', 'bbox', 'type', 'confidence', 'text', 'label']
+      if (!required.every(field => Object.hasOwn(item, field)) || item.label !== null) {
+        throw new Error(`invalid calibration sample row ${index + 1}`)
+      }
+      return {
+        item_sha: createHash('sha256').update(line).digest('hex'),
+        item,
+      }
+    })
+}
+
+function verifiedCalibrationPageImages(
+  entries: Array<{ item_sha: string; item: JsonRecord }>,
+): CalibrationPageImageIndex {
+  const value: unknown = JSON.parse(readFileSync(CALIBRATION_PAGE_IMAGES_PATH, 'utf-8'))
+  assertCalibrationPageImageIndex(value)
+  const requestedPages = new Map<string, Set<number>>()
+  for (const entry of entries) {
+    if (typeof entry.item.doc !== 'string' || !Number.isInteger(entry.item.page)) {
+      throw new Error(`calibration sample item ${entry.item_sha} has invalid doc/page`)
+    }
+    const pages = requestedPages.get(entry.item.doc) ?? new Set<number>()
+    pages.add(Number(entry.item.page))
+    requestedPages.set(entry.item.doc, pages)
+  }
+
+  const documents: CalibrationPageImageIndex['documents'] = {}
+  for (const [doc, pages] of requestedPages) {
+    const manifest = value.documents[doc]
+    if (!manifest) throw new Error(`missing page-image manifest for ${doc}`)
+    const requestedImages = manifest.images.filter(image => pages.has(image.page))
+    if (requestedImages.length !== pages.size) {
+      throw new Error(`page-image manifest does not cover every sampled page for ${doc}`)
+    }
+    for (const image of requestedImages) {
+      const imagePath = resolve(CALIBRATION_DIR, manifest.directory, image.filename)
+      if (!isPathInside(CALIBRATION_DIR, imagePath) || !existsSync(imagePath) || !statSync(imagePath).isFile()) {
+        throw new Error(`missing page image for ${doc} page ${image.page}`)
+      }
+      const imageBytes = readFileSync(imagePath)
+      const byteSha256 = createHash('sha256').update(imageBytes).digest('hex')
+      if (byteSha256 !== image.byte_sha256) {
+        throw new Error(`page-image byte hash mismatch for ${doc} page ${image.page}`)
+      }
+      // Keep keys in Python's sort_keys=True order; see
+      // pipeline_page_images.py::canonical_page_image_filename.
+      const canonicalInputs = JSON.stringify({
+        dpi: manifest.dpi,
+        format: manifest.format,
+        page_index: image.page,
+        pdf_sha256: manifest.pdf_sha256,
+        schema: manifest.schema,
+      })
+      const canonicalSha256 = createHash('sha256')
+        .update(canonicalInputs)
+        .update(Buffer.from([0]))
+        .update(imageBytes)
+        .digest('hex')
+      if (image.filename !== `${canonicalSha256}.png` || manifest.naming !== PAGE_IMAGE_NAMING) {
+        throw new Error(`page-image content identity mismatch for ${doc} page ${image.page}`)
+      }
+    }
+    documents[doc] = { ...manifest, images: requestedImages }
+  }
+  return { schema: value.schema, documents }
+}
+
+app.get('/api/pdf-lab/calibration/sample', (_req, res) => {
+  if (!existsSync(CALIBRATION_SAMPLE_PATH)) {
+    res.status(404).json({ ok: false, error: 'missing_calibration_sample', path: CALIBRATION_SAMPLE_PATH })
+    return
+  }
+  if (!existsSync(CALIBRATION_PAGE_IMAGES_PATH)) {
+    res.status(404).json({ ok: false, error: 'missing_calibration_page_images', path: CALIBRATION_PAGE_IMAGES_PATH })
+    return
+  }
+  try {
+    const entries = calibrationSampleEntries()
+    res.json({
+      schema: 'pdf_oxide.calibration_sample_response.v1',
+      items: entries,
+      page_images: verifiedCalibrationPageImages(entries),
+    })
+  } catch (err) {
+    res.status(422).json({ ok: false, error: 'invalid_calibration_contract', detail: String(err) })
+  }
+})
+
+app.post('/api/pdf-lab/calibration/labels', (req, res) => {
+  const row = req.body && typeof req.body === 'object' ? req.body as JsonRecord : {}
+  const allowedFields = new Set(['item_sha', 'label', 'corrected_type', 'ts'])
+  const labels = new Set(['correct', 'wrong_type', 'wrong_bounds', 'not_an_element'])
+  const keys = Object.keys(row)
+  if (keys.some(key => !allowedFields.has(key))) {
+    res.status(400).json({ ok: false, error: 'unexpected_label_field' })
+    return
+  }
+  if (typeof row.item_sha !== 'string' || !/^[0-9a-f]{64}$/.test(row.item_sha)) {
+    res.status(400).json({ ok: false, error: 'invalid_item_sha' })
+    return
+  }
+  if (typeof row.label !== 'string' || !labels.has(row.label)) {
+    res.status(400).json({ ok: false, error: 'invalid_label' })
+    return
+  }
+  if (
+    typeof row.ts !== 'string'
+    || Number.isNaN(Date.parse(row.ts))
+    || new Date(row.ts).toISOString() !== row.ts
+  ) {
+    res.status(400).json({ ok: false, error: 'invalid_timestamp' })
+    return
+  }
+  if (
+    row.corrected_type !== undefined
+    && (
+      row.label !== 'wrong_type'
+      || typeof row.corrected_type !== 'string'
+      || !row.corrected_type.trim()
+    )
+  ) {
+    res.status(400).json({ ok: false, error: 'invalid_corrected_type' })
+    return
+  }
+  try {
+    const knownItems = new Set(calibrationSampleEntries().map(entry => entry.item_sha))
+    if (!knownItems.has(row.item_sha)) {
+      res.status(400).json({ ok: false, error: 'unknown_item_sha' })
+      return
+    }
+    mkdirSync(CALIBRATION_DIR, { recursive: true })
+    const normalizedRow = {
+      item_sha: row.item_sha,
+      label: row.label,
+      ...(row.corrected_type === undefined ? {} : { corrected_type: row.corrected_type.trim() }),
+      ts: row.ts,
+    }
+    appendFileSync(CALIBRATION_LABELS_PATH, `${JSON.stringify(normalizedRow)}\n`, 'utf-8')
+    res.status(201).json({ ok: true, row: normalizedRow })
+  } catch (err) {
+    res.status(422).json({ ok: false, error: 'calibration_label_write_failed', detail: String(err) })
+  }
 })
 
 // --- Transparent tau-loop artifacts (read-only) -------------------------

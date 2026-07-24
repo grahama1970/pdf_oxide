@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useRegisterAction } from '../../hooks/useRegisterAction'
+import { useRegisterAction } from '../src/hooks/useRegisterAction'
 
 export function SurgicalTriageFixture() {
   const inputRef = useRef<HTMLInputElement>(null)

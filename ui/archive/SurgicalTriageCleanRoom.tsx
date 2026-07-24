@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist'
-import { ReviewBundleButton } from '../common/ReviewBundleButton'
-import { useRegisterAction } from '../../hooks/useRegisterAction'
+import { ReviewBundleButton } from '../src/components/common/ReviewBundleButton'
+import { useRegisterAction } from '../src/hooks/useRegisterAction'
 import './SurgicalTriageCleanRoom.css'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'

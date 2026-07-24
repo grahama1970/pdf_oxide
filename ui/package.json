@@ -11,7 +11,9 @@
     "preview": "vite preview --host 127.0.0.1 --port 3012",
     "preview:all": "PDF_LAB_API_PORT=3012 tsx server/index.ts",
     "start": "PDF_LAB_API_PORT=3012 tsx server/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:contracts": "tsx --test tests/contracts.test.ts",
+    "test:e2e": "npm run build && node --test tests/calibrate.playwright.test.mjs"
   },
   "dependencies": {
     "express": "^4.19.2",

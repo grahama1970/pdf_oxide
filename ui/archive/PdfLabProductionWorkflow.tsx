@@ -15,9 +15,9 @@ import {
   Table2,
   type LucideIcon,
 } from 'lucide-react'
-import { useRegisterAction } from '../../hooks/useRegisterAction'
-import { PdfLabEvidenceQA } from './PdfLabEvidenceQA'
-import { PdfLabLabelingPage } from './PdfLabLabelingPage'
+import { useRegisterAction } from '../src/hooks/useRegisterAction'
+import { PdfLabEvidenceQA } from '../src/components/pdf-lab/PdfLabEvidenceQA'
+import { PdfLabLabelingPage } from '../src/components/pdf-lab/PdfLabLabelingPage'
 import { SurgicalTriageCleanRoom, type SurgicalTriageCleanRoomTask } from './SurgicalTriageCleanRoom'
 import './PdfLabProductionWorkflow.css'
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useRegisterAction } from '../../hooks/useRegisterAction'
+import { useRegisterAction } from '../src/hooks/useRegisterAction'
 import './InitialSweepStaticProof.css'
 
 type CandidatePage = {

@@ -1,4 +1,4 @@
-import { useRegisterAction } from '../../hooks/useRegisterAction'
+import { useRegisterAction } from '../src/hooks/useRegisterAction'
 import './ParityAuditStaticProof.css'
 
 type RunItem = {

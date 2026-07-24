@@ -1,7 +1,13 @@
 import React, { useMemo } from 'react'
 
-const PdfLabView = React.lazy(() =>
-  import('./components/pdf-lab/PdfLabView').then((module) => ({ default: module.PdfLabView })),
+const PdfLabLabelingPage = React.lazy(() =>
+  import('./components/pdf-lab/PdfLabLabelingPage').then((module) => ({ default: module.PdfLabLabelingPage })),
+)
+const TauLoopView = React.lazy(() =>
+  import('./components/pdf-lab/TauLoopView').then((module) => ({ default: module.TauLoopView })),
+)
+const PdfLabEvidenceQA = React.lazy(() =>
+  import('./components/pdf-lab/PdfLabEvidenceQA').then((module) => ({ default: module.PdfLabEvidenceQA })),
 )
 
 function resolvePdfLabSubpath(): string | undefined {
@@ -13,17 +19,17 @@ function resolvePdfLabSubpath(): string | undefined {
 }
 
 export default function App() {
-  const params = useMemo(() => new URLSearchParams(window.location.hash.split('?')[1] || window.location.search), [])
   const initialSubpath = useMemo(() => resolvePdfLabSubpath(), [])
+  const content = initialSubpath === 'loop' || initialSubpath === 'tau-loop'
+    ? <TauLoopView />
+    : initialSubpath === 'evidence-qa' || initialSubpath === 'nico-qa'
+      ? <PdfLabEvidenceQA />
+      : <PdfLabLabelingPage mode={initialSubpath === 'calibrate' ? 'calibrate' : 'label'} />
 
   return (
     <div className="pdf-lab-app-shell">
       <React.Suspense fallback={<div className="pdf-lab-loading">Loading PDF Lab...</div>}>
-        <PdfLabView
-          initialSubpath={initialSubpath}
-          pdfUrl={params.get('pdf') || undefined}
-          extractionUrl={params.get('extraction') || undefined}
-        />
+        {content}
       </React.Suspense>
     </div>
   )
