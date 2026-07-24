@@ -1,0 +1,91 @@
+{
+ "schema": "pdf_oxide.promotion_manifest.v1",
+ "frozen_at": "engine 928b9705",
+ "commits": [
+  {
+   "sha": "928b9705ff57a8c1f64078812c778be4759356cb",
+   "subject": "fix(engine): deterministic extraction \u2014 content-keyed caches (closes #7)",
+   "diffstat": "6 files changed, 260 insertions(+), 298 deletions(-)"
+  },
+  {
+   "sha": "66f45558839ed94e7cbf5b1a29b2c081f30143ad",
+   "subject": "feat(classifier): un-anchored hanging-indent bibliography detection (core)",
+   "diffstat": "2 files changed, 527 insertions(+), 123 deletions(-)"
+  },
+  {
+   "sha": "959d158f6870f1d175333228e4460b484f05a3d8",
+   "subject": "fix(reconciler): complete absorption accounting + multi-figure page coverage (core)",
+   "diffstat": "7 files changed, 635 insertions(+), 27 deletions(-)"
+  },
+  {
+   "sha": "520572da75e0fa73b33e67832aa01b7949ab0ce7",
+   "subject": "fix(classifier): caption continuations, caption FPs, standalone labels, footnote guards (core)",
+   "diffstat": "2 files changed, 517 insertions(+), 9 deletions(-)"
+  },
+  {
+   "sha": "5f793daeaf02b8e79e470e42fb480ec2056a11ad",
+   "subject": "feat(regions): shared geometric figure/table discriminator (core)",
+   "diffstat": "8 files changed, 738 insertions(+), 153 deletions(-)"
+  },
+  {
+   "sha": "1d443d55c0bd2d593d3a37601a3ea5f9127a9597",
+   "subject": "feat(figures): vector-graphics figure region detection (core)",
+   "diffstat": "3 files changed, 393 insertions(+), 27 deletions(-)"
+  },
+  {
+   "sha": "888c612a04277c504c3814981d8589b0d308a3b9",
+   "subject": "feat(tables): geometric ruled-region detector for borderless booktabs tables (core)",
+   "diffstat": "3 files changed, 486 insertions(+), 2 deletions(-)"
+  },
+  {
+   "sha": "fbf7053492346f89aebce895199b4a89a0d4758a",
+   "subject": "fix(classifier): merge hanging-indent reference continuations (core)",
+   "diffstat": "1 file changed, 208 insertions(+), 9 deletions(-)"
+  },
+  {
+   "sha": "cfe09c1486b96a930778705c6a7638b2e05c71c4",
+   "subject": "fix(chrome): promote repeated bottom-center source notes to footer (core)",
+   "diffstat": "2 files changed, 158 insertions(+), 2 deletions(-)"
+  },
+  {
+   "sha": "5fb0565b4fdfbfedd1d730626faac5c8d051bd4a",
+   "subject": "fix(text): reassemble rotated-text glyph runs into coherent spans (core)",
+   "diffstat": "2 files changed, 244 insertions(+), 6 deletions(-)"
+  },
+  {
+   "sha": "3f85b5fbb74dfc67ec73ea147ae2b11e67295be7",
+   "subject": "fix(classifier): reference typing third pass -- conjunctive dual-signal, all real shapes covered",
+   "diffstat": "1 file changed, 194 insertions(+), 27 deletions(-)"
+  },
+  {
+   "sha": "4005962a25e9281e19cafe1ff25656b3709a8ec4",
+   "subject": "fix(classifier): control-ID headings + Control: labels with caption/URL guards",
+   "diffstat": "3 files changed, 387 insertions(+), 3 deletions(-)"
+  },
+  {
+   "sha": "523e9670cce4d01c3cf06de2dc1824dba73e857a",
+   "subject": "fix(classifier): generalize margin-watermark and running-footer routing",
+   "diffstat": "1 file changed, 168 insertions(+), 5 deletions(-)"
+  },
+  {
+   "sha": "d5558c137fcd8329f545ee90f1a381941ac5a8e1",
+   "subject": "fix(extractors): absorb figure callout labels adjacent to figure region",
+   "diffstat": "1 file changed, 147 insertions(+), 6 deletions(-)"
+  },
+  {
+   "sha": "5ed3a42cccd2f262a3594afe47c2807003b2a0f8",
+   "subject": "feat(extractors): reconcile detected figure regions with the block stream",
+   "diffstat": "4 files changed, 658 insertions(+), 61 deletions(-)"
+  },
+  {
+   "sha": "3e2d7c571fe11e616a049bfd9f9a9aa37da91058",
+   "subject": "fix(classifier): complete-token list markers up to 1.20 size ratio",
+   "diffstat": "1 file changed, 123 insertions(+), 51 deletions(-)"
+  },
+  {
+   "sha": "13268bda2ecdb68a32bfd46c760ac69a60a38e2c",
+   "subject": "fix(classifier): weight body-font median by character count + callout-heading rule",
+   "diffstat": "1 file changed, 167 insertions(+), 5 deletions(-)"
+  }
+ ]
+}
