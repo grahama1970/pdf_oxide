@@ -63,6 +63,7 @@ export interface RetrievalEvidenceViewProps {
   result: RetrievalAnswerInput
   pageImageIndex?: PageImageIndex | null
   sectionTree?: SectionTree | null
+  artifactsRoot?: string
 }
 
 function asString(value: unknown): string | null {
@@ -227,7 +228,12 @@ function RetrievalEvidenceCard({ item }: { item: RetrievalEvidenceItem }) {
   )
 }
 
-export function RetrievalEvidenceView({ result, pageImageIndex, sectionTree }: RetrievalEvidenceViewProps) {
+export function RetrievalEvidenceView({
+  result,
+  pageImageIndex,
+  sectionTree,
+  artifactsRoot = '(the configured PDF Lab artifact root)',
+}: RetrievalEvidenceViewProps) {
   const normalized = useMemo(() => {
     try {
       return { value: normalizeRetrievalEvidence(result, pageImageIndex, sectionTree), error: null }
@@ -241,10 +247,11 @@ export function RetrievalEvidenceView({ result, pageImageIndex, sectionTree }: R
       <main className="pdf-verify-route pdf-verify-route--center" data-confidence-hidden="true" data-testid="retrieval-contract-failure">
         <AlertTriangle aria-hidden="true" />
         <h1>Answer withheld</h1>
-        <p>{normalized.error}</p>
+        <p>The retrieval result is missing valid original-page evidence, a section path, or a complete provenance chain.</p>
         <strong data-testid="page-image-error">
           Original page images, section path, and provenance are mandatory.
         </strong>
+        <p>The server looked under <code>{artifactsRoot}</code>.</p>
       </main>
     )
   }
@@ -287,6 +294,7 @@ export interface RetrievalEvidenceRouteProps {
   pageImageIndexUrl?: string
   sectionTreeUrl?: string
   fetchImpl?: typeof fetch
+  artifactsRoot?: string
 }
 
 export function RetrievalEvidenceRoute({
@@ -294,6 +302,7 @@ export function RetrievalEvidenceRoute({
   pageImageIndexUrl,
   sectionTreeUrl,
   fetchImpl = fetch,
+  artifactsRoot = '(the configured PDF Lab artifact root)',
 }: RetrievalEvidenceRouteProps) {
   const [result, setResult] = useState<RetrievalAnswerInput | null>(null)
   const [pageImageIndex, setPageImageIndex] = useState<PageImageIndex | null>(null)
@@ -302,6 +311,8 @@ export function RetrievalEvidenceRoute({
 
   useEffect(() => {
     let cancelled = false
+    setResult(null)
+    setError(null)
     const loadJson = async (url: string): Promise<unknown> => {
       const response = await fetchImpl(url)
       if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}`)
@@ -314,7 +325,7 @@ export function RetrievalEvidenceRoute({
     ]).then(([rawResult, rawImages, rawTree]) => {
       if (cancelled) return
       setResult(rawResult as RetrievalAnswerInput)
-      setPageImageIndex(rawImages ? parsePageImageIndex(rawImages) : null)
+      setPageImageIndex(rawImages ? parsePageImageIndex(rawImages, { indexUrl: pageImageIndexUrl }) : null)
       setSectionTree(rawTree ? normalizeSectionTree(rawTree) : null)
     }).catch((loadError) => {
       if (!cancelled) setError(loadError instanceof Error ? loadError.message : String(loadError))
@@ -326,8 +337,9 @@ export function RetrievalEvidenceRoute({
     return (
       <main className="pdf-verify-route pdf-verify-route--center" data-confidence-hidden="true">
         <AlertTriangle />
-        <h1>Retrieval evidence failed to load</h1>
-        <p>{error}</p>
+        <h1>Retrieval evidence needs attention</h1>
+        <p>PDF Lab found a retrieval result but could not read it safely. Check the retrieval_result.json and its page_images_v1.json.</p>
+        <p>The server looked under <code>{artifactsRoot}</code>.</p>
       </main>
     )
   }
@@ -339,5 +351,12 @@ export function RetrievalEvidenceRoute({
       </main>
     )
   }
-  return <RetrievalEvidenceView result={result} pageImageIndex={pageImageIndex} sectionTree={sectionTree} />
+  return (
+    <RetrievalEvidenceView
+      result={result}
+      pageImageIndex={pageImageIndex}
+      sectionTree={sectionTree}
+      artifactsRoot={artifactsRoot}
+    />
+  )
 }

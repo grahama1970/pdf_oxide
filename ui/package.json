@@ -17,7 +17,8 @@
     "test:contracts": "tsx --test tests/contracts.test.ts",
     "test:e2e": "npm run build && node --test tests/calibrate.playwright.test.mjs",
     "test:e2e:live": "npm run build && node --test tests/round2-live.playwright.test.mjs",
-    "test:e2e:round3": "npm run build && node --test tests/round3-live.playwright.test.mjs"
+    "test:e2e:round3": "npm run build && node --test tests/round3-live.playwright.test.mjs",
+    "test:e2e:round4": "npm run build && node --test tests/round4-cold-walk.test.mjs"
   },
   "dependencies": {
     "express": "^4.19.2",

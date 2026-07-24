@@ -13,6 +13,7 @@ import {
 } from '../../adapters/annotationCall'
 import {
   lookupPageImageRefs,
+  mergePageImageIndexes,
   normalizePdfBboxXywh,
   normalizePageImageRefs,
   parsePageImageIndex,
@@ -29,6 +30,7 @@ export interface AnnotationQueueRouteProps {
   initialCalls?: readonly NormalizedAnnotationCall[]
   initialPageImageIndex?: PageImageIndex
   fetchImpl?: typeof fetch
+  artifactsRoot?: string
 }
 
 const DEFAULT_CALLS_URL = '/artifacts/pdf-lab/annotation_call.json'
@@ -221,6 +223,7 @@ export function AnnotationQueueRoute({
   initialCalls,
   initialPageImageIndex,
   fetchImpl = fetch,
+  artifactsRoot = '(the configured PDF Lab artifact root)',
 }: AnnotationQueueRouteProps) {
   useRegisterAction('annotation-queue:search:query', {
     app: 'pdf-lab',
@@ -266,10 +269,11 @@ export function AnnotationQueueRoute({
     void Promise.all([
       Promise.all(urls.map((url) => loadAnnotationCallsFromUrl(url, fetchImpl))).then((groups) => groups.flat()),
       pageImageIndexUrl
-        ? fetchImpl(pageImageIndexUrl).then(async (response) => {
-            if (!response.ok) throw new Error(`${pageImageIndexUrl} returned HTTP ${response.status}`)
-            return parsePageImageIndex(await response.json())
-          })
+        ? Promise.all(pageImageIndexUrl.split(',').map((url) => url.trim()).filter(Boolean).map(async (url) => {
+            const response = await fetchImpl(url)
+            if (!response.ok) throw new Error('page image index unavailable')
+            return parsePageImageIndex(await response.json(), { indexUrl: url })
+          })).then(mergePageImageIndexes)
         : Promise.resolve(null),
     ]).then(([loadedCalls, loadedImages]) => {
       if (cancelled) return
@@ -335,8 +339,20 @@ export function AnnotationQueueRoute({
     return (
       <main className="pdf-verify-route pdf-verify-route--center" data-confidence-hidden="true">
         <AlertTriangle />
-        <h1>Annotation queue failed to load</h1>
-        <p>{error}</p>
+        <h1>Annotation files need attention</h1>
+        <p>PDF Lab found annotation data but could not read it safely. Confirm each annotation_call.json and page_images_v1.json is valid and readable.</p>
+        <p>The server looked under <code>{artifactsRoot}</code>.</p>
+      </main>
+    )
+  }
+
+  if (allItems.length === 0) {
+    return (
+      <main className="pdf-verify-route pdf-verify-route--center" data-confidence-hidden="true" data-testid="annotation-guided-empty">
+        <FileWarning />
+        <h1>No annotation calls are mounted</h1>
+        <p>Add annotation-calls/&lt;document&gt;/annotation_call.json beneath the artifact root, then reload this route.</p>
+        <p>The server looked under <code>{artifactsRoot}</code>.</p>
       </main>
     )
   }

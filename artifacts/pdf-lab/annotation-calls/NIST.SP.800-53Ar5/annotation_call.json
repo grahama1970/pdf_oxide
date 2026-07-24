@@ -1,0 +1,4045 @@
+{
+  "schema": "pdf_oxide.annotation_call.v1",
+  "pdf_sha256": "75665570048b969ad465a4f4f1db425ce505c374951c2c64e462949c6b21be47",
+  "engine_commit": "e24cca69350b075c3d259d45ca1438e4dc54b18e",
+  "accuracy_estimate": {
+    "basis": "confidence_threshold",
+    "value": 0.9360534478644715
+  },
+  "items": [
+    {
+      "page": 0,
+      "kind": "block",
+      "bbox": [
+        331.55999755859375,
+        706.6799926757812,
+        193.59503173828125,
+        13.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "NIST Special Publication 800-53A"
+    },
+    {
+      "page": 0,
+      "kind": "block",
+      "bbox": [
+        429.41998291015625,
+        442.0799865722656,
+        95.2919921875,
+        12.0
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Subtitle",
+      "text_excerpt": "JOINT TASK FORCE"
+    },
+    {
+      "page": 0,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        257.1000061035156,
+        434.71197509765625,
+        182.3399658203125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53Ar5"
+    },
+    {
+      "page": 1,
+      "kind": "block",
+      "bbox": [
+        429.4200134277344,
+        520.9199829101562,
+        95.29196166992188,
+        12.0
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Subtitle",
+      "text_excerpt": "JOINT TASK FORCE"
+    },
+    {
+      "page": 1,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        304.5558776855469,
+        434.71197509765625,
+        213.72409057617188
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53Ar5 January 2022"
+    },
+    {
+      "page": 2,
+      "kind": "block",
+      "bbox": [
+        171.18089294433594,
+        177.77999877929688,
+        272.12060546875,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Submit comments on this publication to: sec-cert@nist.gov"
+    },
+    {
+      "page": 4,
+      "kind": "block",
+      "bbox": [
+        89.98905944824219,
+        613.25732421875,
+        432.45068359375,
+        78.1226806640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "This publication was developed by the Joint Task Force Interagency Working Group. The group includes representatives from the civil, defense, and intelligence communities. The National Institute of St"
+    },
+    {
+      "page": 4,
+      "kind": "block",
+      "bbox": [
+        213.89999389648438,
+        236.63999938964844,
+        185.75399780273438,
+        12.0
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.3499999940395355,
+      "current_type": "Body",
+      "text_excerpt": "Joint Task Force (JTF) Working Group"
+    },
+    {
+      "page": 17,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        80.4000015258789,
+        423.553466796875,
+        68.34000396728516
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "15 [-SP 800137] provides guidance on the continuous monitoring of security controls as part of an ISCM Program. Continuous monitoring can be applied effectively to privacy controls consistent with the"
+    },
+    {
+      "page": 18,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        80.4000015258789,
+        433.91180419921875,
+        148.67999267578125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Footnote",
+      "text_excerpt": "16 Organizations may also provide security and privacy control assessment plans, including tailored assessment procedures, to external service providers who are operating systems on behalf of those or"
+    },
+    {
+      "page": 19,
+      "kind": "block",
+      "bbox": [
+        89.96709442138672,
+        176.70663452148438,
+        309.8006896972656,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Assurance Evidence from Developmental and Operational Activities"
+    },
+    {
+      "page": 21,
+      "kind": "block",
+      "bbox": [
+        89.99688720703125,
+        509.6358642578125,
+        431.72247314453125,
+        118.38409423828125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "An assessment procedure consists of a set of assessment objectives, each with an associated set of potential assessment methods and assessment objects. An assessment objective includes one or more det"
+    },
+    {
+      "page": 21,
+      "kind": "block",
+      "bbox": [
+        89.99998474121094,
+        345.1219482421875,
+        430.07421875,
+        131.8780517578125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Assessment objects identify the specific items being assessed as part of a given control and include specifications, mechanisms, activities, and individuals. Specifications are the document- based art"
+    },
+    {
+      "page": 21,
+      "kind": "block",
+      "bbox": [
+        89.99998474121094,
+        288.06048583984375,
+        426.644287109375,
+        24.419525146484375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Assessment methods define the nature of the assessor actions and include examine, interview, and test."
+    },
+    {
+      "page": 23,
+      "kind": "block",
+      "bbox": [
+        89.99999237060547,
+        602.0972900390625,
+        425.34326171875,
+        104.94317626953125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "control AC--17. The assessment objective for AC17 is derived from the base control statement d[escribed in SP 800-53]. AC-17a.[01] is an example of a determination statement for a control item that is"
+    },
+    {
+      "page": 24,
+      "kind": "block",
+      "bbox": [
+        89.9962158203125,
+        642.3604736328125,
+        424.82000732421875,
+        78.1195068359375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Another example of granularization to support control assessments is the case of a privacy control requirement not being applicable to a particular system (e.g., the system does not process personally"
+    },
+    {
+      "page": 24,
+      "kind": "block",
+      "bbox": [
+        90.00117492675781,
+        223.01626586914062,
+        432.76788330078125,
+        78.1226806640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Additionally, determination statements for organization-defined parameters (ODPs) are listed first and separately from the determination statements for each control item within each control or control"
+    },
+    {
+      "page": 24,
+      "kind": "block",
+      "bbox": [
+        107.99739074707031,
+        162.1651153564453,
+        379.72021484375,
+        51.84754943847656
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.05000000074505806,
+      "current_type": "Body",
+      "text_excerpt": "• Assignment operations, where the organization defines a value (e.g., frequency, circumstances, personnel, or roles) • Selection operations, where the organization selects one or more of the options "
+    },
+    {
+      "page": 24,
+      "kind": "block",
+      "bbox": [
+        89.99020385742188,
+        129.29100036621094,
+        413.1927795410156,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "abbreviation, and nn is the control number (with a leading zero for single digits) followed by"
+    },
+    {
+      "page": 24,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        80.4000015258789,
+        412.1916198730469,
+        34.13999938964844
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "25 Note that the control identifiers (e.g., CM-4), as published in [-SP 80053], do not include a leading zero. Future revisions of SP 800-53 control identifiers will include a leading zero (e.g., CM-0"
+    },
+    {
+      "page": 24,
+      "kind": "block",
+      "bbox": [
+        143.95440673828125,
+        427.869384765625,
+        364.197021484375,
+        84.08612060546875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "CM-04-Examine[SELECT FROM: ConfiguraƟon management policy; procedures addressing security impact analyses for changes to the system; procedures addressing privacy impact analyses for changes to the sy"
+    },
+    {
+      "page": 24,
+      "kind": "block",
+      "bbox": [
+        328.96771240234375,
+        477.7604064941406,
+        84.12240600585938,
+        26.9075927734375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Granularized to address privacy impacts separate from security impacts"
+    },
+    {
+      "page": 25,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        628.9177856445312,
+        431.9664306640625,
+        91.56219482421875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "“_ODP”. If there is more than one ODP for the assessment procedure, “_ODP” is followed by square-bracketed sequential numbers starting from “01”. The ODP value is referenced in subsequent determinatio"
+    },
+    {
+      "page": 25,
+      "kind": "block",
+      "bbox": [
+        89.989013671875,
+        590.103515625,
+        280.08880615234375,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assignment operations: CM-02_ODP[01] and CM-02_ODP[02]."
+    },
+    {
+      "page": 25,
+      "kind": "block",
+      "bbox": [
+        169.60369873046875,
+        457.5119934082031,
+        345.39678955078125,
+        18.299285888671875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "CM-02a.[02]a current baseline configuraƟon of the system is maintained under configuraƟon control;"
+    },
+    {
+      "page": 25,
+      "kind": "block",
+      "bbox": [
+        169.60369873046875,
+        406.27398681640625,
+        345.920654296875,
+        18.299285888671875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "CM-02b.02the baseline configuraƟon of the system is reviewed and updated when required due to<CM-02_ODP[02] circumstances>;"
+    },
+    {
+      "page": 25,
+      "kind": "block",
+      "bbox": [
+        169.60369873046875,
+        380.6549987792969,
+        341.9372863769531,
+        18.299285888671875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "CM-02b.03the baseline configuraƟon of the system is reviewed and updated when system components are installed or upgraded."
+    },
+    {
+      "page": 26,
+      "kind": "block",
+      "bbox": [
+        89.97801208496094,
+        628.9177856445312,
+        430.36767578125,
+        78.1226806640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assignment operations and a selection operation. Selection operations include a list of potential parameter values that the organization chooses from and instructions to select one or more parameters."
+    },
+    {
+      "page": 26,
+      "kind": "block",
+      "bbox": [
+        169.69200134277344,
+        478.151611328125,
+        331.70465087890625,
+        18.287994384765625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "MP-07_ODP[04]controls to restrict or prohibit the use of specific types of system media on systems or system components are defined;"
+    },
+    {
+      "page": 26,
+      "kind": "block",
+      "bbox": [
+        169.69200134277344,
+        442.6203918457031,
+        345.3736572265625,
+        28.21600341796875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "MP-07a.the use of<MP-07_ODP[01] types of system media>is <MP-07_ODP[02] SELECTED PARAMETER VALUE> on <MP-07_ODP[03] systems or system components>using <MP-07_ODP[04] controls>;"
+    },
+    {
+      "page": 26,
+      "kind": "block",
+      "bbox": [
+        445.5873107910156,
+        438.9627990722656,
+        46.36773681640625,
+        33.9635009765625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Reference to ODP in determinaƟon statement"
+    },
+    {
+      "page": 27,
+      "kind": "block",
+      "bbox": [
+        89.98905944824219,
+        615.478271484375,
+        433.89892578125,
+        91.56219482421875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "ODP that consists of a selection operation with an embedded assignment operation. The selection operation, CA-03(01)_ODP[01], identifies a list of parameters to choose from, including another ODP. The"
+    },
+    {
+      "page": 27,
+      "kind": "block",
+      "bbox": [
+        168.82620239257812,
+        424.523193359375,
+        347.7635192871094,
+        18.339019775390625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "CA-03a.the exchange of informaƟon between system and other systems is approved and managed using<CA-03_ODP[01] SELECTED PARAMETER VALUE(S)>;"
+    },
+    {
+      "page": 27,
+      "kind": "block",
+      "bbox": [
+        168.82620239257812,
+        398.8485107421875,
+        313.4627990722656,
+        18.339080810546875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "CA-03b.[01]the interface characterisƟcs are documented as part of each exchange agreement;"
+    },
+    {
+      "page": 27,
+      "kind": "block",
+      "bbox": [
+        168.82620239257812,
+        383.1293029785156,
+        333.2397766113281,
+        8.38360595703125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "CA-03b.[02]security requirements are documented as part of each exchange agreement;"
+    },
+    {
+      "page": 27,
+      "kind": "block",
+      "bbox": [
+        168.82620239257812,
+        366.8861999511719,
+        330.61865234375,
+        8.38360595703125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "CA-03b.[03]privacy requirements are documented as part of each exchange agreement;"
+    },
+    {
+      "page": 27,
+      "kind": "block",
+      "bbox": [
+        213.8282928466797,
+        408.8039855957031,
+        72.86186218261719,
+        25.150726318359375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Embedded Assignment Statement, defined only ifselected"
+    },
+    {
+      "page": 27,
+      "kind": "block",
+      "bbox": [
+        368.5903015136719,
+        382.0813903808594,
+        70.24252319335938,
+        7.335601806640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "SELECTED PARAMETER"
+    },
+    {
+      "page": 27,
+      "kind": "block",
+      "bbox": [
+        362.7322082519531,
+        364.26629638671875,
+        82.64523315429688,
+        16.24310302734375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "VALUE(S) in determinaƟon statement"
+    },
+    {
+      "page": 29,
+      "kind": "block",
+      "bbox": [
+        95.63999938964844,
+        299.760009765625,
+        418.6116943359375,
+        22.259979248046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Purpose Address a range of issues pertaining to the cost, schedule, scope, and performance of the control assessment."
+    },
+    {
+      "page": 29,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        80.39999389648438,
+        420.080810546875,
+        57.360015869140625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "27 A security and privacy capability is a combination of mutually reinforcing security and privacy controls (i.e., safeguards and countermeasures) implemented by technical means (i.e., functionality i"
+    },
+    {
+      "page": 33,
+      "kind": "block",
+      "bbox": [
+        95.63999938964844,
+        496.20001220703125,
+        421.9901123046875,
+        97.5
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Purpose Provide the objectives for the security and privacy control assessments, as well as a detailed roadmap of how to conduct such assessments based on the security and privacy plan(s). Primary Rol"
+    },
+    {
+      "page": 46,
+      "kind": "block",
+      "bbox": [
+        72.0,
+        513.9599609375,
+        110.69999694824219,
+        12.0
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "after the assessment."
+    },
+    {
+      "page": 46,
+      "kind": "block",
+      "bbox": [
+        554.4799194335938,
+        268.5710144042969,
+        115.94732666015625,
+        16.71087646484375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Assessment Report(s) Plans of AcƟon and Milestones"
+    },
+    {
+      "page": 46,
+      "kind": "block",
+      "bbox": [
+        120.08789825439453,
+        244.59449768066406,
+        603.56689453125,
+        85.73408508300781
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Authorization Package 1.Initial draft report 2.Final report with organizational annotations Approved Security and Privacy Plans"
+    },
+    {
+      "page": 46,
+      "kind": "block",
+      "bbox": [
+        322.58990478515625,
+        266.39129638671875,
+        36.529754638671875,
+        15.984405517578125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Assessment Plan(s)"
+    },
+    {
+      "page": 48,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        80.4000015258789,
+        331.9109802246094,
+        23.159996032714844
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "51 For additional information on optimizing assessment procedures, refer to Section 3.2.5."
+    },
+    {
+      "page": 49,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        578.4000244140625,
+        423.73358154296875,
+        46.67999267578125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "TIP #2: The assessment procedures selected from Chapter 4 are example procedures that serve as a starting point for organizations preparing for assessments. These assessment procedures are tailored as"
+    },
+    {
+      "page": 259,
+      "kind": "block",
+      "bbox": [
+        147.89999389648438,
+        559.8749389648438,
+        352.2605285644531,
+        49.300048828125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "IA-02(12)-Examine[SELECT FROM: Idenficaon and authencaon policy; system security plan; procedures addressing user idenficaon and authencaon; system design documentaon; system configuraon se"
+    },
+    {
+      "page": 372,
+      "kind": "block",
+      "bbox": [
+        147.89999389648438,
+        578.375,
+        320.0865173339844,
+        18.70001220703125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "PL-01c.02[02]the current planning procedures are reviewed and updated following <PL-01_ODP[08] events>."
+    },
+    {
+      "page": 699,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        510.241455078125,
+        422.39886474609375,
+        51.29852294921875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "activities An assessment object that includes specific protection-related pursuits or actions supporting a system that involves people (e.g., conducting system backup operations, monitoring network tr"
+    },
+    {
+      "page": 699,
+      "kind": "block",
+      "bbox": [
+        94.56822204589844,
+        490.8068542480469,
+        86.97257995605469,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "adequate security"
+    },
+    {
+      "page": 699,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        377.3985900878906,
+        34.40034484863281,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "agency"
+    },
+    {
+      "page": 699,
+      "kind": "block",
+      "bbox": [
+        94.55726623535156,
+        287.82000732421875,
+        324.447998046875,
+        12.0
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assessment See control assessment or risk assessment."
+    },
+    {
+      "page": 699,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        201.24273681640625,
+        413.0160217285156,
+        78.1226806640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assessment findings Assessment results produced by the application of an assessment procedure to a security control, privacy control, or control enhancement to achieve an assessment objective; the exe"
+    },
+    {
+      "page": 699,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        168.42352294921875,
+        416.7239074707031,
+        24.419509887695312
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assessment method One of three types of actions (i.e., examine, interview, test) taken by assessors in obtaining evidence during an assessment."
+    },
+    {
+      "page": 699,
+      "kind": "block",
+      "bbox": [
+        94.56817626953125,
+        122.1098861694336,
+        420.65374755859375,
+        37.859031677246094
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assessment object The item (i.e., specifications, mechanisms, activities, individuals) upon which an assessment method is applied during an assessment."
+    },
+    {
+      "page": 700,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        679.6209716796875,
+        407.71600341796875,
+        37.8590087890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assessment objective A set of determination statements that expresses the desired outcome for the assessment of a security control, privacy control, or control enhancement."
+    },
+    {
+      "page": 700,
+      "kind": "block",
+      "bbox": [
+        94.57098388671875,
+        646.8017578125,
+        415.527099609375,
+        24.41949462890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assessment plan The objectives for the security and privacy control assessments and a detailed roadmap of how to conduct such assessments."
+    },
+    {
+      "page": 700,
+      "kind": "block",
+      "bbox": [
+        94.57098388671875,
+        613.9276733398438,
+        379.6456298828125,
+        24.41949462890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assessment procedure A set of assessment objectives and an associated set of assessment methods and assessment objects."
+    },
+    {
+      "page": 700,
+      "kind": "block",
+      "bbox": [
+        94.57098388671875,
+        594.4931030273438,
+        270.6899108886719,
+        11.03485107421875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assessment report See control assessment report."
+    },
+    {
+      "page": 700,
+      "kind": "block",
+      "bbox": [
+        94.58193969726562,
+        561.6738891601562,
+        422.6894226074219,
+        24.41949462890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assessor The individual, group, or organization responsible for conducting a security or privacy control assessment."
+    },
+    {
+      "page": 700,
+      "kind": "block",
+      "bbox": [
+        94.58197021484375,
+        485.53857421875,
+        409.5759582519531,
+        67.68072509765625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assignment operation A control parameter that allows an organization to assign a specific, organization-defined value to the control or control enhancement (e.g., assigning a list of roles to be notif"
+    },
+    {
+      "page": 700,
+      "kind": "block",
+      "bbox": [
+        94.57101440429688,
+        466.1039733886719,
+        47.96063232421875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "assurance"
+    },
+    {
+      "page": 700,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        326.041259765625,
+        64.1671142578125,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "authorization"
+    },
+    {
+      "page": 700,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        293.1658935546875,
+        110.72232055664062,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "authorization boundary"
+    },
+    {
+      "page": 700,
+      "kind": "block",
+      "bbox": [
+        94.55722045898438,
+        233.46176147460938,
+        114.92764282226562,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "authorization to operate"
+    },
+    {
+      "page": 701,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        706.5,
+        87.74559020996094,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "authorizing official"
+    },
+    {
+      "page": 701,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        590.0983276367188,
+        225.86956787109375,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "baseline See control baseline."
+    },
+    {
+      "page": 701,
+      "kind": "block",
+      "bbox": [
+        94.5682373046875,
+        557.2242431640625,
+        415.3690490722656,
+        24.41949462890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "basic testing A test methodology that assumes no knowledge of the internal structure and implementation detail of the assessment object."
+    },
+    {
+      "page": 701,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        537.7896728515625,
+        46.588134765625,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "boundary"
+    },
+    {
+      "page": 701,
+      "kind": "block",
+      "bbox": [
+        94.5682373046875,
+        501.9632568359375,
+        33.74153137207031,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "breach"
+    },
+    {
+      "page": 701,
+      "kind": "block",
+      "bbox": [
+        94.55726623535156,
+        388.5036926269531,
+        397.46063232421875,
+        37.859039306640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "breadth An attribute associated with an assessment method that addresses the scope or coverage of the assessment objects included with the assessment."
+    },
+    {
+      "page": 701,
+      "kind": "block",
+      "bbox": [
+        94.56826782226562,
+        328.8054504394531,
+        423.5458068847656,
+        51.298553466796875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "capability A combination of mutually reinforcing security and/or privacy controls implemented by technical, physical, and procedural means. Such controls are typically selected to achieve a common inf"
+    },
+    {
+      "page": 701,
+      "kind": "block",
+      "bbox": [
+        94.56829833984375,
+        309.4257507324219,
+        113.96142578125,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "chief information officer"
+    },
+    {
+      "page": 701,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        144.1199951171875,
+        339.8062744140625,
+        37.68000793457031
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "chief information security officer See senior agency information security officer. chief privacy officer See senior agency official for privacy."
+    },
+    {
+      "page": 701,
+      "kind": "block",
+      "bbox": [
+        94.5682373046875,
+        124.68539428710938,
+        77.96896362304688,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "common control"
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        706.5,
+        119.429443359375,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "common control provider"
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.56817626953125,
+        660.2412719726562,
+        106.34129333496094,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "compensating controls"
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.5682373046875,
+        600.4868774414062,
+        239.1334228515625,
+        11.03485107421875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "component See system component."
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.57923889160156,
+        554.2281494140625,
+        413.99871826171875,
+        37.8590087890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "comprehensive testing A test methodology that assumes explicit and substantial knowledge of the internal structure and implementation detail of the assessment object."
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.5682373046875,
+        488.5212707519531,
+        106.82440185546875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "continuous monitoring"
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        455.6458740234375,
+        304.3546142578125,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "control See security control or privacy control."
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.5682373046875,
+        436.26617431640625,
+        90.4422607421875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "control assessment"
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        349.67999267578125,
+        121.94387817382812,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "control assessment report"
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.55722045898438,
+        289.98175048828125,
+        192.5123291015625,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "control assessor See assessor."
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        270.5471496582031,
+        75.86080932617188,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "control baseline"
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.5682373046875,
+        210.84176635742188,
+        414.00860595703125,
+        24.419509887695312
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "control effectiveness A measure of whether a security or privacy control contributes to the reduction of information security or privacy risk."
+    },
+    {
+      "page": 702,
+      "kind": "block",
+      "bbox": [
+        94.5682373046875,
+        164.52813720703125,
+        413.6934814453125,
+        37.85902404785156
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "control enhancement Augmentation of a security or privacy control to build in additional but related functionality to the control, increase the strength of the control, or add assurance to the control"
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        625.9177856445312,
+        416.4263916015625,
+        91.56219482421875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "control inheritance A situation in which a system or application receives protection from security or privacy controls (or portions of controls) that are developed, implemented, assessed, authorized, "
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.57096862792969,
+        606.4832153320312,
+        303.0919189453125,
+        11.03485107421875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "control parameter See organization-defined l parameter."
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.58197021484375,
+        587.103515625,
+        82.10842895507812,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "countermeasures"
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.56822204589844,
+        473.6436767578125,
+        419.7664794921875,
+        78.1226806640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "coverage An attribute associated with an assessment method that addresses the scope or breadth of the assessment objects included in the assessment (e.g., types of objects to be assessed and the numbe"
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        427.38494873046875,
+        390.77490234375,
+        37.859039306640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "depth An attribute associated with an assessment method that addresses the rigor and level of detail associated with the application of the method."
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.57917785644531,
+        407.9503479003906,
+        121.16429138183594,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "environment of operation"
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        307.9781188964844,
+        415.6754455566406,
+        78.1226806640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "examine A type of assessment method that is characterized by the process of checking, inspecting, reviewing, observing, studying, or analyzing one or more assessment objects to facilitate understandin"
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.55722045898438,
+        288.54351806640625,
+        80.72494506835938,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "executive agency"
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        215.40225219726562,
+        231.13995361328125,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "federal agency See executive agency."
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.56819152832031,
+        182.52813720703125,
+        92.06729125976562,
+        24.419509887695312
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "federal information system"
+    },
+    {
+      "page": 703,
+      "kind": "block",
+      "bbox": [
+        94.5682373046875,
+        122.8222427368164,
+        416.737060546875,
+        37.859031677246094
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "focused testing A test methodology that assumes some knowledge of the internal structure and implementation detail of the assessment object."
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        706.5,
+        44.60075378417969,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "firmware"
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        633.3622436523438,
+        46.70890808105469,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "hardware"
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        600.540771484375,
+        91.77082824707031,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "high-impact system"
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        554.2153930664062,
+        67.28543090820312,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "hybrid control"
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        451.255859375,
+        411.11431884765625,
+        37.80413818359375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "impact The effect on organizational operations, organizational assets, individuals, other organizations, or the Nation (including the national security interests of the United States) of a loss of"
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.57096862792969,
+        404.9422302246094,
+        61.15858459472656,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "impact value"
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.56826782226562,
+        358.6812744140625,
+        57.08502197265625,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information"
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        298.98175048828125,
+        89.05877685546875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information owner"
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        252.6663818359375,
+        103.70608520507812,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information resources"
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        219.84078979492188,
+        95.65774536132812,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information security"
+    },
+    {
+      "page": 704,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        160.14175415039062,
+        95.68081665039062,
+        24.364608764648438
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information security architecture"
+    },
+    {
+      "page": 705,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        697.2000122070312,
+        95.66148376464844,
+        22.01995849609375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information security policy"
+    },
+    {
+      "page": 705,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        650.8800048828125,
+        95.665283203125,
+        22.0799560546875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information security program plan"
+    },
+    {
+      "page": 705,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        587.1022338867188,
+        114.44453430175781,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information security risk"
+    },
+    {
+      "page": 705,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        513.9622192382812,
+        91.88063049316406,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information system"
+    },
+    {
+      "page": 705,
+      "kind": "block",
+      "bbox": [
+        94.55722045898438,
+        467.6463928222656,
+        110.30506896972656,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information technology"
+    },
+    {
+      "page": 705,
+      "kind": "block",
+      "bbox": [
+        94.55726623535156,
+        179.68963623046875,
+        80.00027465820312,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "information type"
+    },
+    {
+      "page": 705,
+      "kind": "block",
+      "bbox": [
+        94.55722045898438,
+        120.00175476074219,
+        41.3067626953125,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "integrity"
+    },
+    {
+      "page": 706,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        639.3572998046875,
+        418.85186767578125,
+        78.1226806640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "interview A type of assessment method that is characterized by the process of conducting discussions with individuals or groups within an organization to facilitate understanding, achieve clarificatio"
+    },
+    {
+      "page": 706,
+      "kind": "block",
+      "bbox": [
+        94.56002807617188,
+        619.9227294921875,
+        88.81721496582031,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "l-owimpact system"
+    },
+    {
+      "page": 706,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        560.2217407226562,
+        411.4930725097656,
+        24.41949462890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "mechanisms An assessment object that includes specific protection-related items (e.g., hardware, software, or firmware)."
+    },
+    {
+      "page": 706,
+      "kind": "block",
+      "bbox": [
+        94.5462646484375,
+        540.7871704101562,
+        117.02482604980469,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "moderate-impact system"
+    },
+    {
+      "page": 706,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        481.0817565917969,
+        113.61004638671875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "national security system"
+    },
+    {
+      "page": 706,
+      "kind": "block",
+      "bbox": [
+        94.55722045898438,
+        233.39324951171875,
+        409.748291015625,
+        51.24365234375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "ongoing assessment The continuous evaluation of the effectiveness of security control or privacy control implementation; with respect to security controls, a subset of Information Security Continuous "
+    },
+    {
+      "page": 706,
+      "kind": "block",
+      "bbox": [
+        94.57916259765625,
+        213.95864868164062,
+        59.665313720703125,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "organization"
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        636.3597412109375,
+        410.81671142578125,
+        81.1202392578125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "organization-defined parameter The variable part of a control or control enhancement that is instantiated by an organization during the tailoring process by either assigning an organization-defined va"
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.57098388671875,
+        616.9251708984375,
+        300.63238525390625,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "parameter See organization-defined parameter."
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.58197021484375,
+        570.6664428710938,
+        424.05975341796875,
+        37.8590087890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "penetration testing A test methodology in which assessors, typically working under specific constraints, attempt to circumvent or defeat the security features of a system."
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.59294128417969,
+        537.7923583984375,
+        104.83262634277344,
+        24.41949462890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "personally identifiable information"
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        491.521728515625,
+        108.07612609863281,
+        24.41949462890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "personally identifiable information processing"
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        404.9432067871094,
+        108.04537963867188,
+        37.859039306640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "personally identifiable information processing permissions"
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.57918548583984,
+        355.6869201660156,
+        84.86441802978516,
+        40.80169677734375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "plan of action and milestones"
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.57919311523438,
+        325.81036376953125,
+        78.08975219726562,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "potential impact"
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.5682373046875,
+        239.27761840820312,
+        93.62644958496094,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "privacy architecture"
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.55718994140625,
+        166.08734130859375,
+        198.46347045898438,
+        11.034896850585938
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "privacy capability See capability."
+    },
+    {
+      "page": 707,
+      "kind": "block",
+      "bbox": [
+        94.57913208007812,
+        146.7076416015625,
+        70.711181640625,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "privacy control"
+    },
+    {
+      "page": 708,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        679.6209716796875,
+        408.9369812011719,
+        37.8590087890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "privacy control baseline The set of privacy controls selected based on the privacy selection criteria that provide a starting point for the tailoring process."
+    },
+    {
+      "page": 708,
+      "kind": "block",
+      "bbox": [
+        94.58195495605469,
+        646.8017578125,
+        69.30026245117188,
+        24.41949462890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "privacy impact assessment"
+    },
+    {
+      "page": 708,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        519.9595336914062,
+        57.864593505859375,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "privacy plan"
+    },
+    {
+      "page": 708,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        433.38275146484375,
+        99.56661987304688,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "privacy program plan"
+    },
+    {
+      "page": 708,
+      "kind": "block",
+      "bbox": [
+        94.55722045898438,
+        199.08145141601562,
+        417.9570617675781,
+        121.43856811523438
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "privacy requirements Requirements of an organization, information program, or system that are derived from applicable laws, Executive Orders, directives, policies, standards, instructions, regulations"
+    },
+    {
+      "page": 708,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        179.70175170898438,
+        51.26560974121094,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "reciprocity"
+    },
+    {
+      "page": 709,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        706.5,
+        36.6182861328125,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "records"
+    },
+    {
+      "page": 709,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        593.0985717773438,
+        18.74286651611328,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "risk"
+    },
+    {
+      "page": 709,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        519.9622192382812,
+        73.93931579589844,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "risk assessment"
+    },
+    {
+      "page": 709,
+      "kind": "block",
+      "bbox": [
+        94.55296325683594,
+        390.12176513671875,
+        112.69871520996094,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "risk executive (function)"
+    },
+    {
+      "page": 709,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        249.83956909179688,
+        81.86688232421875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "risk management"
+    },
+    {
+      "page": 709,
+      "kind": "block",
+      "bbox": [
+        94.55726623535156,
+        163.26272583007812,
+        68.36146545410156,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "risk mitigation"
+    },
+    {
+      "page": 709,
+      "kind": "block",
+      "bbox": [
+        94.55726623535156,
+        117.00126647949219,
+        62.71775817871094,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "risk response"
+    },
+    {
+      "page": 710,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        706.5,
+        62.10728454589844,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "r isk tolerance"
+    },
+    {
+      "page": 710,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        593.0985717773438,
+        421.14227294921875,
+        91.56219482421875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "scoping considerations A part of tailoring guidance that provides organizations with specific considerations on the applicability and implementation of security and privacy controls in the control bas"
+    },
+    {
+      "page": 710,
+      "kind": "block",
+      "bbox": [
+        94.55722045898438,
+        573.6640014648438,
+        38.539794921875,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "security"
+    },
+    {
+      "page": 710,
+      "kind": "block",
+      "bbox": [
+        94.55996704101562,
+        473.6480407714844,
+        198.4415283203125,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "security capability See capability."
+    },
+    {
+      "page": 710,
+      "kind": "block",
+      "bbox": [
+        94.55996704101562,
+        397.5127258300781,
+        425.3015441894531,
+        67.73562622070312
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "security categorization The process of determining the security category for information or a system. Security categorization methodologies are described in CNSS Instruction 1253 for national security"
+    },
+    {
+      "page": 710,
+      "kind": "block",
+      "bbox": [
+        94.57096862792969,
+        378.1330261230469,
+        80.65907287597656,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "security category"
+    },
+    {
+      "page": 710,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        304.98223876953125,
+        73.81854248046875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "security control"
+    },
+    {
+      "page": 710,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        245.28176879882812,
+        114.37864685058594,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "security control baseline"
+    },
+    {
+      "page": 710,
+      "kind": "block",
+      "bbox": [
+        94.55728149414062,
+        172.08734130859375,
+        414.4511413574219,
+        51.29853820800781
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "security functionality The security-related features, functions, mechanisms, services, procedures, and architectures implemented within organizational information systems or the environments in which "
+    },
+    {
+      "page": 710,
+      "kind": "block",
+      "bbox": [
+        94.55734252929688,
+        152.7076416015625,
+        83.06369018554688,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "security objective"
+    },
+    {
+      "page": 711,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        596.0961303710938,
+        421.31903076171875,
+        121.38385009765625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "security plan A formal document that provides an overview of the security requirements for an information system or an information security program and describes the security controls in place or plan"
+    },
+    {
+      "page": 711,
+      "kind": "block",
+      "bbox": [
+        94.57095336914062,
+        576.6615600585938,
+        98.66627502441406,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "security requirement"
+    },
+    {
+      "page": 711,
+      "kind": "block",
+      "bbox": [
+        94.55780029296875,
+        397.4427185058594,
+        424.259521484375,
+        67.68072509765625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "selection operation A control parameter that allows an organization to select a value from a list of predefined values provided as part of the control or control enhancement (e.g., selecting to either"
+    },
+    {
+      "page": 711,
+      "kind": "block",
+      "bbox": [
+        94.56881713867188,
+        337.7444763183594,
+        98.16116333007812,
+        51.24365234375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "s enior agency information security officer"
+    },
+    {
+      "page": 711,
+      "kind": "block",
+      "bbox": [
+        94.55513000488281,
+        244.49880981445312,
+        114.47747802734375,
+        24.419525146484375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "senior agency official for privacy"
+    },
+    {
+      "page": 711,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        128.04342651367188,
+        339.8062744140625,
+        40.8565673828125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "senior information security officer See senior agency information security officer. software"
+    },
+    {
+      "page": 712,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        666.236328125,
+        422.98809814453125,
+        51.24365234375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "specification An assessment object that includes document-based artifacts (e.g., policies, procedures, plans, system security requirements, functional specifications, architectural designs) associated"
+    },
+    {
+      "page": 712,
+      "kind": "block",
+      "bbox": [
+        94.56001281738281,
+        633.3622436523438,
+        420.23748779296875,
+        24.41949462890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "subject An individual, process, or device that causes information to flow among objects or change to the system state. Also see object."
+    },
+    {
+      "page": 712,
+      "kind": "block",
+      "bbox": [
+        94.57100677490234,
+        573.6640014648438,
+        420.6558532714844,
+        51.24365234375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "supply chain Linked set of resources and processes between and among multiple tiers of organizations, each of which is an acquirer, that begins with the sourcing of products and services and extends t"
+    },
+    {
+      "page": 712,
+      "kind": "block",
+      "bbox": [
+        94.58198547363281,
+        487.0772705078125,
+        413.9608154296875,
+        78.1226806640625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "supply chain risk The potential for harm or compromise that arises as a result of security risks from suppliers, their supply chains, and their products or services. Supply chain risks include exposur"
+    },
+    {
+      "page": 712,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        454.2031555175781,
+        405.59136962890625,
+        24.419525146484375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "supply chain risk assessment A systematic examination of supply chain risks, likelihoods of their occurrence, and potential impacts."
+    },
+    {
+      "page": 712,
+      "kind": "block",
+      "bbox": [
+        94.5462646484375,
+        393.7756652832031,
+        78.24676513671875,
+        52.027801513671875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "supply chain risk management"
+    },
+    {
+      "page": 712,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        361.6822509765625,
+        34.76268005371094,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "system"
+    },
+    {
+      "page": 712,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        119.69999694824219,
+        89.66267395019531,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "system component"
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        679.6210327148438,
+        413.9339294433594,
+        39.59893798828125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "system owner (or program manager) Official responsible for the overall procurement, development, integration, modification, operation, and maintenance of a system."
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        650.8800048828125,
+        70.64643859863281,
+        22.0799560546875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "system security officer"
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        613.9263916015625,
+        214.23077392578125,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "system security plan See security plan."
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        580.7353515625,
+        106.37643432617188,
+        24.3646240234375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "system-related privacy risk"
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        538.6753540039062,
+        109.500244140625,
+        24.3646240234375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "system-related security risk"
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.56820678710938,
+        478.9222106933594,
+        107.29653930664062,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "system-specific control"
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.55723571777344,
+        419.2217712402344,
+        400.59429931640625,
+        24.419525146484375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "tailored control baseline A set of controls that result from the application of tailoring guidance to a control baseline. See tailoring."
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        399.78717041015625,
+        40.75776672363281,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "tailoring"
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.55722045898438,
+        232.67544555664062,
+        417.4705505371094,
+        64.68316650390625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "tailoring assessment procedures The process by which assessment procedures defined in SP 800- 53A are adjusted or scoped to match the characteristics of a system under assessment, providing organizati"
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        159.53684997558594,
+        417.10992431640625,
+        67.68315124511719
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "test A type of assessment method that is characterized by the process of exercising one or more assessment objects under specified conditions to compare actual with expected behavior, the results of w"
+    },
+    {
+      "page": 713,
+      "kind": "block",
+      "bbox": [
+        94.54623413085938,
+        140.1022491455078,
+        30.853805541992188,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "threat"
+    },
+    {
+      "page": 714,
+      "kind": "block",
+      "bbox": [
+        94.55999755859375,
+        706.5,
+        86.06123352050781,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "threat assessment"
+    },
+    {
+      "page": 714,
+      "kind": "block",
+      "bbox": [
+        94.56822204589844,
+        673.6807861328125,
+        63.61811828613281,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "threat source"
+    },
+    {
+      "page": 714,
+      "kind": "block",
+      "bbox": [
+        94.55728149414062,
+        627.3663940429688,
+        74.96044921875,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "trustworthiness"
+    },
+    {
+      "page": 714,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        446.8158264160156,
+        422.3775634765625,
+        131.82583618164062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "trustworthiness (system) The degree to which an information system (including the information technology components that are used to build the system) can be expected to preserve the confidentiality, "
+    },
+    {
+      "page": 714,
+      "kind": "block",
+      "bbox": [
+        94.55726623535156,
+        427.3800048828125,
+        22.00725555419922,
+        10.981231689453125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "user"
+    },
+    {
+      "page": 714,
+      "kind": "block",
+      "bbox": [
+        94.57098388671875,
+        378.12078857421875,
+        60.07157897949219,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "vulnerability"
+    },
+    {
+      "page": 714,
+      "kind": "block",
+      "bbox": [
+        94.5572509765625,
+        331.8063659667969,
+        264.13482666015625,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "vulnerability analysis See vulnerability assessment."
+    },
+    {
+      "page": 714,
+      "kind": "block",
+      "bbox": [
+        94.54623413085938,
+        312.4266662597656,
+        115.33392333984375,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "vulnerability assessment"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.73999786376953,
+        616.260009765625,
+        234.4449462890625,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "CDM Continuous Diagnostics and Mitigation"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.739990234375,
+        596.825439453125,
+        173.71456909179688,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "CIO Chief Information Officer"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.72901916503906,
+        577.390869140625,
+        280.2205810546875,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "CISA Cybersecurity and Infrastructure Security Agency"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.72903442382812,
+        557.956298828125,
+        212.1884765625,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "CISO Chief Information Security Officer"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.74000549316406,
+        538.521728515625,
+        295.08746337890625,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "CNSSI Committee on National Security Systems Instruction"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.72903442382812,
+        519.1420288085938,
+        162.74554443359375,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "CONOPS Concept of Operations"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.72903442382812,
+        499.7074279785156,
+        220.82098388671875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "CUI Controlled Unclassified Information"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.7290267944336,
+        480.2728271484375,
+        160.6922607421875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "DNS Domain Name System"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.71803283691406,
+        460.8382263183594,
+        167.12657165527344,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "DoD Department of Defense"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.71803283691406,
+        441.40362548828125,
+        160.8789520263672,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "EMP Electromagnetic pulse"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.71803283691406,
+        422.02392578125,
+        300.7861328125,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "FICAM Federal Identity, Credential, and Access Management"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.70706176757812,
+        402.5893249511719,
+        248.3675537109375,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "FIPS Federal Information Processing Standards"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.718017578125,
+        383.15472412109375,
+        275.3015441894531,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "FISMA Federal Information Security Modernization Act"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.71804809570312,
+        363.7201232910156,
+        186.802734375,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "FOIA Freedom of Information Act"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.71804809570312,
+        344.2855224609375,
+        205.04052734375,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "GSA General Services Administration"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.71806335449219,
+        324.90582275390625,
+        244.3379364013672,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "HSPD Homeland Security Presidential Directive"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.71806335449219,
+        305.4712219238281,
+        121.94387817382812,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "I/O Input/Output"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.71807098388672,
+        286.03662109375,
+        251.178466796875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "IEC International Electrotechnical Commission"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.71807861328125,
+        266.6020202636719,
+        270.7997131347656,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "IEEE Institute of Electrical and Electronics Engineers"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.71807861328125,
+        247.16741943359375,
+        230.54702758789062,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "IR Interagency Report or Internal Report"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.72903442382812,
+        227.7877197265625,
+        224.36529541015625,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "ISA Interconnection Security Agreement"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.72901916503906,
+        208.35311889648438,
+        268.16455078125,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "ISO International Organization for Standardization"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.72903442382812,
+        188.91851806640625,
+        262.586669921875,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "ISCM Information Security Continuous Monitoring"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.72903442382812,
+        169.48391723632812,
+        169.10296630859375,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "IT Information Technology"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.72903442382812,
+        150.04931640625,
+        220.4564208984375,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "ITL Information Technology Laboratory"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.72903442382812,
+        130.66961669921875,
+        206.9071044921875,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "MOU Memorandum of Understanding"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.74000549316406,
+        111.23501586914062,
+        159.8029022216797,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "MTTF Mean Time to Failure"
+    },
+    {
+      "page": 715,
+      "kind": "block",
+      "bbox": [
+        94.739990234375,
+        91.8004150390625,
+        258.38134765625,
+        10.979995727539062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "NIAP National Information Assurance Partnership"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.73999786376953,
+        706.5,
+        267.7912292480469,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "NICE National Initiative for Cybersecurity Education"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.72903442382812,
+        687.0654296875,
+        272.00750732421875,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "NIST National Institute of Standards and Technology"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.739990234375,
+        667.630859375,
+        173.18753051757812,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "NSA National Security Agency"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.7509765625,
+        648.2511596679688,
+        263.0588073730469,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "ODNI Office of the Director of National Intelligence"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.75094604492188,
+        628.8165893554688,
+        207.50003051757812,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "ODP Organization-Defined Parameter"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.75094604492188,
+        609.3820190429688,
+        216.437744140625,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "OMB Office of Management and Budget"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.75094604492188,
+        589.9474487304688,
+        145.75949096679688,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "OPSEC Operation Security"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.75094604492188,
+        570.5128784179688,
+        260.7091064453125,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "OSCAL Open Security Control Assessment Language"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.739990234375,
+        551.1331787109375,
+        184.0247802734375,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "PDF Portable Document Format"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.71803283691406,
+        531.6986083984375,
+        217.28321838378906,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "PII Personally Identifiable Information"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.71804809570312,
+        512.2640380859375,
+        191.81842041015625,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "PIV Personal Identity Verification"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.70706176757812,
+        492.8294372558594,
+        254.13653564453125,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "PIV-I Personal Identity Verification- Interoperable"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.70706176757812,
+        473.39483642578125,
+        171.96875,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "PKI Public Key Infrastructure"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.69607543945312,
+        454.01513671875,
+        195.61968994140625,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "RMF Risk Management Framework"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.69609069824219,
+        434.5805358886719,
+        202.28453063964844,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "SCRM Supply Chain Risk Management"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.69609069824219,
+        415.14593505859375,
+        201.6916046142578,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "SDLC System Development Life Cycle"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.70706176757812,
+        395.7113342285156,
+        145.6398162841797,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "SP Special Publication"
+    },
+    {
+      "page": 716,
+      "kind": "block",
+      "bbox": [
+        94.69607543945312,
+        376.2767333984375,
+        186.31195068359375,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "UTC Coordinated Universal Time"
+    },
+    {
+      "page": 718,
+      "kind": "block",
+      "bbox": [
+        95.4000015258789,
+        709.5,
+        161.72149658203125,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Assessment Method Examine"
+    },
+    {
+      "page": 718,
+      "kind": "block",
+      "bbox": [
+        95.4000015258789,
+        670.6199951171875,
+        367.4803161621094,
+        24.41998291015625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Assessment Objects: Specifications (e.g., policies, plans, procedures, system requirements, designs)"
+    },
+    {
+      "page": 718,
+      "kind": "block",
+      "bbox": [
+        90.00570678710938,
+        527.2269897460938,
+        433.9560241699219,
+        51.29852294921875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Definition: The process of checking, inspecting, reviewing, observing, studying, or analyzing one or more assessment objects to facilitate understanding, achieve clarification, or obtain evidence, the"
+    },
+    {
+      "page": 718,
+      "kind": "block",
+      "bbox": [
+        90.00570678710938,
+        421.2041320800781,
+        431.2823181152344,
+        91.56216430664062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Supplemental guidance: Typical assessor actions may include reviewing information security and privacy policies, plans, and procedures; analyzing system design documentation and interface specificatio"
+    },
+    {
+      "page": 718,
+      "kind": "block",
+      "bbox": [
+        90.0057373046875,
+        395.829345703125,
+        129.08087158203125,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Attributes: Depth, Coverage"
+    },
+    {
+      "page": 719,
+      "kind": "block",
+      "bbox": [
+        162.0,
+        696.0604858398438,
+        330.43548583984375,
+        24.41949462890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "grounds for confidence that the controls are implemented correctly and operating as intended."
+    },
+    {
+      "page": 719,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        80.39999389648438,
+        429.04541015625,
+        149.82000732421875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Footnote",
+      "text_excerpt": "Comprehensive examination: Examination that uses a sufficiently large sample of assessment objects (by type and number within type) and other specific assessment objects deemed particularly important "
+    },
+    {
+      "page": 720,
+      "kind": "block",
+      "bbox": [
+        162.0,
+        709.5,
+        348.7555847167969,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "the security and privacy controls are implemented and free of obvious errors,"
+    },
+    {
+      "page": 720,
+      "kind": "block",
+      "bbox": [
+        162.0,
+        655.7968139648438,
+        204.32147216796875,
+        10.983154296875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "the controls."
+    },
+    {
+      "page": 721,
+      "kind": "block",
+      "bbox": [
+        95.4000015258789,
+        709.5,
+        166.10147094726562,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Assessment Method Interview"
+    },
+    {
+      "page": 721,
+      "kind": "block",
+      "bbox": [
+        95.4000015258789,
+        684.0599975585938,
+        278.9014892578125,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Assessment Objects: Individuals or groups of individuals"
+    },
+    {
+      "page": 721,
+      "kind": "block",
+      "bbox": [
+        89.99999237060547,
+        604.9219360351562,
+        431.44586181640625,
+        64.738037109375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Definition: The process of conducting discussions with individuals or groups within an organization to facilitate understanding, achieve clarification, or lead to the location of evidence, the results"
+    },
+    {
+      "page": 721,
+      "kind": "block",
+      "bbox": [
+        90.0,
+        473.5242919921875,
+        129.08087158203125,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Attributes: Depth, Coverage"
+    },
+    {
+      "page": 721,
+      "kind": "block",
+      "bbox": [
+        162.0,
+        75.83317565917969,
+        360.39105224609375,
+        118.38682556152344
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Comprehensive interview: Interview that consists of broad-based, high-level discussions and more in-depth, probing discussions in specific areas with individuals or groups of individuals. The comprehe"
+    },
+    {
+      "page": 722,
+      "kind": "block",
+      "bbox": [
+        161.98904418945312,
+        682.6209716796875,
+        361.0191345214844,
+        37.8590087890625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "implemented correctly and operating as intended on an ongoing and consistent basis, and there is support for continuous improvement in the effectiveness of the controls."
+    },
+    {
+      "page": 722,
+      "kind": "block",
+      "bbox": [
+        162.0,
+        431.2173156738281,
+        358.0611572265625,
+        91.56265258789062
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Focused interview: Interview that uses a representative sample of individuals in key organizational roles and other specific individuals deemed particularly important to achieving the assessment objec"
+    },
+    {
+      "page": 722,
+      "kind": "block",
+      "bbox": [
+        162.0,
+        311.81781005859375,
+        454.1400146484375,
+        104.94219970703125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Comprehensive interview: Interview that uses a sufficiently large sample of individuals in key organizational roles and other specific individuals deemed particularly important to achieving the assess"
+    },
+    {
+      "page": 723,
+      "kind": "block",
+      "bbox": [
+        95.4000015258789,
+        709.5,
+        142.58148193359375,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Assessment Method Test"
+    },
+    {
+      "page": 723,
+      "kind": "block",
+      "bbox": [
+        95.4000015258789,
+        637.7963256835938,
+        412.15313720703125,
+        57.24365234375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.10000000149011612,
+      "current_type": "Body",
+      "text_excerpt": "Assessment Objects: Mechanisms (e.g., hardware, software, firmware) Activities (e.g., system operations, administration, management, exercises)"
+    },
+    {
+      "page": 723,
+      "kind": "block",
+      "bbox": [
+        89.99468994140625,
+        566.096923828125,
+        433.11273193359375,
+        51.24365234375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Definition: The process of exercising one or more assessment objects under specified conditions to compare actual with expected/desired behavior, the results of which are used to support the determina"
+    },
+    {
+      "page": 723,
+      "kind": "block",
+      "bbox": [
+        89.99993896484375,
+        492.9622497558594,
+        430.90582275390625,
+        64.68313598632812
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Supplemental guidance: Typical assessor actions may include testing access control, identification and authentication, and audit mechanisms; testing security and privacy configuration settings; testin"
+    },
+    {
+      "page": 723,
+      "kind": "block",
+      "bbox": [
+        89.99993896484375,
+        473.52764892578125,
+        129.08087158203125,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Attributes: Depth, Coverage"
+    },
+    {
+      "page": 723,
+      "kind": "block",
+      "bbox": [
+        161.97804260253906,
+        195.23370361328125,
+        359.00653076171875,
+        131.8262939453125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Focused testing: Test methodology that assumes some knowledge of the internal structure and implementation detail of the assessment object. Focused testing is conducted using a functional specificatio"
+    },
+    {
+      "page": 723,
+      "kind": "block",
+      "bbox": [
+        162.0,
+        142.9753875732422,
+        361.46038818359375,
+        37.80461120605469
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Comprehensive testing: Test methodology that assumes explicit and substantial knowledge of the internal structure and implementation detail of the assessment object. Comprehensive testing is conducted"
+    },
+    {
+      "page": 724,
+      "kind": "block",
+      "bbox": [
+        162.0,
+        588.6541137695312,
+        361.90740966796875,
+        131.82586669921875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "specification, extensive system architectural information (e.g., high-level design, low-level design), implementation representation (e.g., source code, schematics) for mechanisms, and a high-level pr"
+    },
+    {
+      "page": 724,
+      "kind": "block",
+      "bbox": [
+        161.99998474121094,
+        217.79830932617188,
+        361.00933837890625,
+        118.44171142578125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Comprehensive testing: Testing that uses a sufficiently large sample of assessment objects (by type and number within type) and other specific assessment objects deemed particularly important to achie"
+    },
+    {
+      "page": 726,
+      "kind": "block",
+      "bbox": [
+        89.99899291992188,
+        590.105224609375,
+        163.04200744628906,
+        10.97998046875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Penetration Testing Considerations"
+    },
+    {
+      "page": 728,
+      "kind": "block",
+      "bbox": [
+        89.9912109375,
+        277.562744140625,
+        183.73928833007812,
+        10.980010986328125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Key Elements for Assessment Reporting"
+    },
+    {
+      "page": 730,
+      "kind": "block",
+      "bbox": [
+        115.90859985351562,
+        490.5227966308594,
+        85.08760070800781,
+        8.4613037109375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.30000001192092896,
+      "current_type": "Title",
+      "text_excerpt": "ASSESSMENTOBJECTIVE"
+    },
+    {
+      "page": 730,
+      "kind": "block",
+      "bbox": [
+        423.2807922363281,
+        477.54888916015625,
+        257.9834899902344,
+        12.409912109375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Title",
+      "text_excerpt": "FINDINGASSESSOR COMMENTS AND RECOMMENDATIONS"
+    },
+    {
+      "page": 23,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 18
+    },
+    {
+      "page": 24,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 19
+    },
+    {
+      "page": 25,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 30
+    },
+    {
+      "page": 26,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 21
+    },
+    {
+      "page": 27,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 26
+    },
+    {
+      "page": 28,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 7
+    },
+    {
+      "page": 46,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 25
+    },
+    {
+      "page": 116,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 9
+    },
+    {
+      "page": 192,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 7
+    },
+    {
+      "page": 210,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 7
+    },
+    {
+      "page": 221,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 7
+    },
+    {
+      "page": 224,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 9
+    },
+    {
+      "page": 261,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 8
+    },
+    {
+      "page": 305,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 14
+    },
+    {
+      "page": 306,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 8
+    },
+    {
+      "page": 310,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 7
+    },
+    {
+      "page": 378,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 6
+    },
+    {
+      "page": 386,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 8
+    },
+    {
+      "page": 400,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 12
+    },
+    {
+      "page": 401,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 6
+    },
+    {
+      "page": 402,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 6
+    },
+    {
+      "page": 403,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 14
+    },
+    {
+      "page": 422,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 11
+    },
+    {
+      "page": 423,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 14
+    },
+    {
+      "page": 425,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 10
+    },
+    {
+      "page": 429,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 8
+    },
+    {
+      "page": 431,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 10
+    },
+    {
+      "page": 433,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 8
+    },
+    {
+      "page": 448,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 7
+    },
+    {
+      "page": 501,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 6
+    },
+    {
+      "page": 512,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 9
+    },
+    {
+      "page": 519,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 6
+    },
+    {
+      "page": 552,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 9
+    },
+    {
+      "page": 564,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 6
+    },
+    {
+      "page": 566,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 7
+    },
+    {
+      "page": 592,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 7
+    },
+    {
+      "page": 601,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 14
+    },
+    {
+      "page": 602,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 13
+    },
+    {
+      "page": 610,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 6
+    },
+    {
+      "page": 611,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 9
+    },
+    {
+      "page": 613,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 6
+    },
+    {
+      "page": 654,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 7
+    },
+    {
+      "page": 655,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 10
+    },
+    {
+      "page": 664,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 11
+    },
+    {
+      "page": 665,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 10
+    },
+    {
+      "page": 668,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 8
+    },
+    {
+      "page": 730,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 16
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "href_base": "relative_to_index",
+  "pages": [
+    {
+      "doc": "NIST_SP_800-53r5",
+      "page": 0,
+      "page_image_refs": [
+        {
+          "byte_sha256": "60ddbbd0ba150d5a82ae16a1bae44d9203954630610b511a771b31c626872ae1",
+          "height": 1056,
+          "href": "../annotation-calls/NIST_SP_800-53r5/page_images/55bd6d7ea7f87a3aca6158f2f3af28060b66c5757cda8492b2cab8170d68904f.png",
+          "mime_type": "image/png",
+          "page": 0,
+          "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+          "sha256": "55bd6d7ea7f87a3aca6158f2f3af28060b66c5757cda8492b2cab8170d68904f",
+          "width": 816
+        }
+      ],
+      "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6"
+    }
+  ],
+  "schema": "pdf_oxide.page_images_index.v1"
+}

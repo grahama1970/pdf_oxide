@@ -1,0 +1,285 @@
+{
+  "schema": "pdf_oxide.annotation_call.v1",
+  "pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+  "engine_commit": "e24cca69350b075c3d259d45ca1438e4dc54b18e",
+  "accuracy_estimate": {
+    "basis": "confidence_threshold",
+    "value": 0.9011627906976745
+  },
+  "items": [
+    {
+      "page": 0,
+      "kind": "block",
+      "bbox": [
+        136.3909912109375,
+        599.4609985351562,
+        343.36529541015625,
+        43.0382080078125
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "Kaiming He Xiangyu Zhang Shaoqing Ren Jian Sun Microsoft Research {kahe, v-xiangz, v-shren, jiansun}@microsoft.com"
+    },
+    {
+      "page": 1,
+      "kind": "block",
+      "bbox": [
+        308.8619384765625,
+        339.8561096191406,
+        261.1597900390625,
+        238.02145385742188
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Residual Representations.In image recognition, VLAD [18] is a representation that encodes by the residual vectors with respect to a dictionary, and Fisher Vector [30] can be formulated as a probabilis"
+    },
+    {
+      "page": 1,
+      "kind": "block",
+      "bbox": [
+        308.8619384765625,
+        81.00016784667969,
+        263.65032958984375,
+        249.9755401611328
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Shortcut Connections.Practices and theories that lead to shortcut connections [2, 34, 49] have been studied for a long time. An early practice of training multi-layer perceptrons (MLPs) is to add a li"
+    },
+    {
+      "page": 2,
+      "kind": "block",
+      "bbox": [
+        50.11192321777344,
+        242.0620880126953,
+        263.65032958984375,
+        404.69146728515625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Let us considerH(x)as an underlying mapping to be fit by a few stacked layers (not necessarily the entire net), withxdenoting the inputs to the first of these layers. If one hypothesizes that multiple"
+    },
+    {
+      "page": 2,
+      "kind": "block",
+      "bbox": [
+        123.4659194946289,
+        156.2581024169922,
+        162.89639282226562,
+        11.457595825195312
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "y=F(x,{Wi}) +x.(1)"
+    },
+    {
+      "page": 2,
+      "kind": "block",
+      "bbox": [
+        50.11187744140625,
+        98.26709747314453,
+        261.1596374511719,
+        47.322608947753906
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Herexandyare the input and output vectors of the lay- ers considered. The functionF(x,{Wi})represents the residual mapping to be learned. For the example in Fig. 2 that has two layers,F=W2σ(W1x)in whi"
+    },
+    {
+      "page": 2,
+      "kind": "block",
+      "bbox": [
+        375.3819274902344,
+        518.2857666015625,
+        169.73031616210938,
+        11.45660400390625
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "y=F(x,{Wi}) +Wsx.(2)"
+    },
+    {
+      "page": 2,
+      "kind": "block",
+      "bbox": [
+        308.8616943359375,
+        80.99996185302734,
+        263.6505126953125,
+        189.53158569335938
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Plain Network.Our plain baselines (Fig. 3, middle) are mainly inspired by the philosophy of VGG nets [41] (Fig. 3, left). The convolutional layers mostly have× 33 filters and follow two simple design "
+    },
+    {
+      "page": 3,
+      "kind": "block",
+      "bbox": [
+        308.86199951171875,
+        566.5748291015625,
+        261.15966796875,
+        153.42474365234375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Residual Network.Based on the above plain network, we insert shortcut connections (Fig. 3, right) which turn the network into its counterpart residual version. The identity shortcuts (Eqn.(1)) can be "
+    },
+    {
+      "page": 3,
+      "kind": "block",
+      "bbox": [
+        308.86199951171875,
+        81.00006103515625,
+        266.14111328125,
+        105.60360717773438
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Plain Networks.We first evaluate 18-layer and 34-layer plain nets. The 34-layer plain net is in Fig. 3 (middle). The 18-layer plain net is of a similar form. See Table 1 for de- tailed architectures. "
+    },
+    {
+      "page": 4,
+      "kind": "block",
+      "bbox": [
+        308.8620300292969,
+        117.91104125976562,
+        263.6502990722656,
+        201.24554443359375
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Residual Networks.Next we evaluate 18-layer and 34- layer residual nets ResNets(). The baseline architectures are the same as the above plain nets, expect that a shortcut connection is added to each p"
+    },
+    {
+      "page": 5,
+      "kind": "block",
+      "bbox": [
+        50.11199188232422,
+        81.00001525878906,
+        243.71942138671875,
+        9.962600708007812
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Identityvs. Projection Shortcuts.We have shown that"
+    },
+    {
+      "page": 5,
+      "kind": "block",
+      "bbox": [
+        308.8619689941406,
+        152.3721923828125,
+        268.6317443847656,
+        201.95449829101562
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Deeper Bottleneck Architectures.Next we describe our deeper nets for ImageNet. Because of concerns on the train- ing time that we can afford, we modify the building block as abottleneckdesign4. For ea"
+    },
+    {
+      "page": 6,
+      "kind": "block",
+      "bbox": [
+        50.11199951171875,
+        415.7589111328125,
+        258.6689453125,
+        117.5584716796875
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Comparisons with State-of-the-art Methods.In Table 4 we compare with the previous best single-model results. Our baseline 34-layer ResNets have achieved very compet- itive accuracy. Our 152-layer ResN"
+    },
+    {
+      "page": 7,
+      "kind": "block",
+      "bbox": [
+        50.11200714111328,
+        206.66610717773438,
+        261.1595764160156,
+        165.37948608398438
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Analysis of Layer Responses.Fig. 7 shows the standard deviations (std) of the layer responses. The responses are the outputs of each ×33 layer, after BN and before other nonlinearity (ReLU/addition). "
+    },
+    {
+      "page": 7,
+      "kind": "block",
+      "bbox": [
+        50.11198425292969,
+        81.00009155273438,
+        261.15765380859375,
+        117.62760925292969
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.0,
+      "current_type": "Body",
+      "text_excerpt": "Exploring Over 1000 layers.We explore an aggressively deep model of over 1000 layers. We nset= 200that leads to a 1202-layer network, which is trained as described above. Our method showsno optimizati"
+    },
+    {
+      "page": 10,
+      "kind": "block",
+      "bbox": [
+        308.86199951171875,
+        107.48700714111328,
+        266.14111328125,
+        129.64059448242188
+      ],
+      "reason": "low_confidence",
+      "confidence": 0.44999998807907104,
+      "current_type": "Body",
+      "text_excerpt": "ImageNet Detection The ImageNet Detection (DET) task involves 200 object categories. The accuracy is evaluated by mAP@.5. Our object detection algorithm for ImageNet DET is the same as that for MS COC"
+    },
+    {
+      "page": 4,
+      "kind": "region",
+      "reason": "char_parity_deficit",
+      "missing_chars": 16
+    },
+    {
+      "page": 2,
+      "kind": "page",
+      "reason": "reviewer_flagged",
+      "note": "2 displayed equations typed paragraph"
+    },
+    {
+      "page": 5,
+      "kind": "page",
+      "reason": "reviewer_flagged",
+      "note": "run-in bold lead vs heading"
+    },
+    {
+      "page": 6,
+      "kind": "page",
+      "reason": "reviewer_flagged",
+      "note": "run-in bold lead vs heading"
+    },
+    {
+      "page": 10,
+      "kind": "page",
+      "reason": "reviewer_flagged",
+      "note": "heading-level taxonomy x2"
+    },
+    {
+      "page": 11,
+      "kind": "page",
+      "reason": "reviewer_flagged",
+      "note": "small appendix table as paragraphs x2"
+    }
+  ]
+}

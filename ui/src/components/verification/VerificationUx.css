@@ -988,3 +988,23 @@
   .pdf-verify-inspector__footer { align-items: stretch; flex-direction: column; }
   .pdf-verify-secondary { justify-content: center; }
 }
+.pdf-verify-artifact-picker {
+  align-items: center;
+  background: var(--surface-raised, #fff);
+  border-bottom: 1px solid var(--border-subtle, #d9dee8);
+  display: flex;
+  gap: 12px;
+  padding: 10px 24px;
+}
+
+.pdf-verify-artifact-picker span {
+  color: var(--text-muted, #566273);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pdf-verify-artifact-picker select {
+  max-width: min(720px, 70vw);
+}

@@ -1,7 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AnnotationQueueRoute } from './components/annotation/AnnotationQueueRoute'
 import { CalibrateRoute } from './components/calibration/CalibrateRoute'
 import { RetrievalEvidenceRoute } from './components/retrieval/RetrievalEvidenceView'
+import {
+  parsePdfLabMounts,
+  type PdfLabMounts,
+  type RetrievalResultMount,
+} from './adapters/mounts'
 import { useRegisterAction } from './hooks/useRegisterAction'
 import './components/verification/VerificationUx.css'
 
@@ -27,9 +32,17 @@ interface HashLocation {
 
 function readHashLocation(): HashLocation {
   const hash = window.location.hash.replace(/^#/, '')
-  const [rawRoute = 'pdf-lab', rawQuery = ''] = hash.split('?', 2)
-  const route = rawRoute || 'pdf-lab'
-  const subpath = route.startsWith('pdf-lab/') ? route.slice('pdf-lab/'.length) || undefined : undefined
+  const [rawRoute = '', rawQuery = ''] = hash.split('?', 2)
+  const route = rawRoute || 'pdf-lab/annotations'
+  let subpath: string | undefined = 'annotations'
+  if (route === 'pdf-lab') {
+    subpath = 'annotations'
+  } else if (route.startsWith('pdf-lab/legacy')) {
+    subpath = route.slice('pdf-lab/'.length) || 'legacy'
+  } else if (route.startsWith('pdf-lab/')) {
+    const requested = route.slice('pdf-lab/'.length)
+    subpath = ['annotations', 'calibrate', 'evidence'].includes(requested) ? requested : 'annotations'
+  }
   return {
     route,
     subpath,
@@ -104,13 +117,6 @@ function VerificationNav({ active }: { active?: VerificationRoute }) {
   ]
   return (
     <nav className="pdf-verify-mode-nav" aria-label="PDF Lab verification modes">
-      <VerificationNavLink
-        active={false}
-        route="loop"
-        label="Loop viewer"
-        action="VERIFICATION_NAV_OPEN_LOOP"
-        description="Open the PDF Lab loop viewer"
-      />
       {links.map((link) => (
         <VerificationNavLink
           key={link.route}
@@ -125,82 +131,202 @@ function VerificationNav({ active }: { active?: VerificationRoute }) {
   )
 }
 
-function MissingRouteInput({ title, detail, example }: { title: string; detail: string; example: string }) {
+function GuidedMountState({
+  title,
+  detail,
+  artifactsRoot,
+  testId,
+}: {
+  title: string
+  detail: string
+  artifactsRoot: string
+  testId: string
+}) {
   return (
-    <main className="pdf-verify-route pdf-verify-route--center" data-confidence-hidden="true">
+    <main
+      className="pdf-verify-route pdf-verify-route--center"
+      data-confidence-hidden="true"
+      data-testid={testId}
+    >
       <h1>{title}</h1>
       <p>{detail}</p>
-      <code>{example}</code>
+      <p>The server looked under <code>{artifactsRoot}</code>.</p>
     </main>
+  )
+}
+
+function siblingPageImageIndex(sampleUrl: string): string {
+  const clean = sampleUrl.split(/[?#]/, 1)[0]
+  return `${clean.slice(0, clean.lastIndexOf('/') + 1)}page_images_v1.json`
+}
+
+function EvidenceMountedRoute({
+  options,
+  pageImageIndexOverride,
+  sectionTreeUrl,
+  artifactsRoot,
+}: {
+  options: readonly RetrievalResultMount[]
+  pageImageIndexOverride?: string
+  sectionTreeUrl?: string
+  artifactsRoot: string
+}) {
+  const [selectedUrl, setSelectedUrl] = useState(options[0]?.url ?? '')
+  useEffect(() => {
+    if (!options.some((option) => option.url === selectedUrl)) setSelectedUrl(options[0]?.url ?? '')
+  }, [options, selectedUrl])
+  const selected = options.find((option) => option.url === selectedUrl) ?? options[0]
+  if (!selected) {
+    return (
+      <GuidedMountState
+        title="No retrieval result is mounted"
+        detail="Add a file ending in retrieval_result.json beneath the artifact root, then reload this route."
+        artifactsRoot={artifactsRoot}
+        testId="evidence-guided-empty"
+      />
+    )
+  }
+  return (
+    <>
+      {options.length > 1 && (
+        <label className="pdf-verify-artifact-picker">
+          <span>Retrieval result</span>
+          <select
+            aria-label="Choose retrieval result"
+            value={selected.url}
+            onChange={(event) => setSelectedUrl(event.target.value)}
+          >
+            {options.map((option) => (
+              <option key={option.url} value={option.url}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+      )}
+      <RetrievalEvidenceRoute
+        resultUrl={selected.url}
+        pageImageIndexUrl={pageImageIndexOverride ?? selected.page_image_index_url}
+        sectionTreeUrl={sectionTreeUrl}
+        artifactsRoot={artifactsRoot}
+      />
+    </>
   )
 }
 
 export default function App() {
   const location = useHashLocation()
-  const route = location.subpath as VerificationRoute | undefined
+  const route = location.subpath as VerificationRoute | `legacy${string}` | undefined
   const pdfUrl = location.params.get('pdf') || undefined
   const extractionUrl = location.params.get('extraction') || undefined
+  const [mounts, setMounts] = useState<PdfLabMounts | null>(null)
+  const [mountsFailed, setMountsFailed] = useState(false)
 
-  const verificationView = useMemo(() => {
-    switch (route) {
-      case 'calibrate':
-        return (
-          <CalibrateRoute
-            sampleUrl={location.params.get('sample') || undefined}
-            pageImageIndexUrl={location.params.get('pageImages') || undefined}
-            labelsEndpoint={location.params.get('labelsEndpoint') || undefined}
-          />
-        )
-      case 'annotations':
-        return (
-          <AnnotationQueueRoute
-            callsUrl={location.params.get('calls') || undefined}
-            pageImageIndexUrl={location.params.get('pageImages') || undefined}
-          />
-        )
-      case 'evidence': {
-        const resultUrl = location.params.get('result')
-        if (!resultUrl) {
-          return (
-            <MissingRouteInput
-              title="Retrieval result URL required"
-              detail="The evidence view fails closed until an answer artifact is supplied."
-              example="#pdf-lab/evidence?result=/artifacts/pdf-lab/retrieval_result.json&pageImages=/artifacts/pdf-lab/page_images/index.json&tree=/artifacts/pdf-lab/section_tree_v2.json"
-            />
-          )
-        }
-        return (
-          <RetrievalEvidenceRoute
-            resultUrl={resultUrl}
-            pageImageIndexUrl={location.params.get('pageImages') || undefined}
-            sectionTreeUrl={location.params.get('tree') || undefined}
-          />
-        )
-      }
-      default:
-        return null
-    }
-  }, [location.params, route])
+  useEffect(() => {
+    let cancelled = false
+    void fetch('/api/pdf-lab/mounts')
+      .then(async (response) => {
+        if (!response.ok) throw new Error('mount discovery unavailable')
+        return parsePdfLabMounts(await response.json())
+      })
+      .then((value) => {
+        if (!cancelled) setMounts(value)
+      })
+      .catch(() => {
+        if (!cancelled) setMountsFailed(true)
+      })
+    return () => { cancelled = true }
+  }, [])
 
-  if (verificationView) {
+  if (route?.startsWith('legacy')) {
+    const legacySubpath = route.replace(/^legacy\/?/, '') || undefined
     return (
       <div className="pdf-lab-app-shell">
-        <VerificationNav active={route} />
-        {verificationView}
+        <React.Suspense fallback={<div className="pdf-lab-loading">Loading PDF Lab legacy view…</div>}>
+          <PdfLabView
+            initialSubpath={legacySubpath}
+            pdfUrl={pdfUrl}
+            extractionUrl={extractionUrl}
+          />
+        </React.Suspense>
       </div>
+    )
+  }
+
+  const verificationRoute: VerificationRoute = route === 'calibrate' || route === 'evidence'
+    ? route
+    : 'annotations'
+  const artifactsRoot = mounts?.artifacts_root ?? '(the configured PDF Lab artifact root)'
+  const callsOverride = location.params.get('calls') || undefined
+  const pageImagesOverride = location.params.get('pageImages') || undefined
+  const sampleOverride = location.params.get('sample') || undefined
+  const resultOverride = location.params.get('result') || undefined
+  const requiresMounts = (
+    (verificationRoute === 'annotations' && !callsOverride)
+    || (verificationRoute === 'calibrate' && !sampleOverride)
+    || (verificationRoute === 'evidence' && !resultOverride)
+  )
+
+  let verificationView: React.ReactNode
+  if (requiresMounts && !mounts && !mountsFailed) {
+    verificationView = <div className="pdf-lab-loading">Discovering PDF Lab artifacts…</div>
+  } else if (mountsFailed && requiresMounts) {
+    verificationView = (
+      <GuidedMountState
+        title="Artifact discovery is unavailable"
+        detail="Start the PDF Lab server on port 3013 and confirm GET /api/pdf-lab/mounts is reachable."
+        artifactsRoot={artifactsRoot}
+        testId="mounts-guided-empty"
+      />
+    )
+  } else if (verificationRoute === 'calibrate') {
+    const sample = mounts?.calibration_samples[0]
+    const sampleUrl = sampleOverride ?? sample?.url
+    const pageImageIndexUrl = pageImagesOverride
+      ?? (sampleOverride ? siblingPageImageIndex(sampleOverride) : sample?.page_image_index_url)
+    verificationView = sampleUrl && pageImageIndexUrl ? (
+      <CalibrateRoute
+        sampleUrl={sampleUrl}
+        pageImageIndexUrl={pageImageIndexUrl}
+        labelsEndpoint={location.params.get('labelsEndpoint') || sample?.labels_endpoint || undefined}
+        artifactsRoot={artifactsRoot}
+      />
+    ) : (
+      <GuidedMountState
+        title="No complete calibration mount was found"
+        detail="Add calibration/sample_v1.jsonl beside calibration/page_images_v1.json, then reload this route."
+        artifactsRoot={artifactsRoot}
+        testId="calibration-guided-empty"
+      />
+    )
+  } else if (verificationRoute === 'evidence') {
+    const options: RetrievalResultMount[] = resultOverride
+      ? [{
+          url: resultOverride,
+          label: resultOverride.split('/').pop() || 'Retrieval result',
+          ...(pageImagesOverride ? { page_image_index_url: pageImagesOverride } : {}),
+        }]
+      : mounts?.retrieval_results ?? []
+    verificationView = (
+      <EvidenceMountedRoute
+        options={options}
+        pageImageIndexOverride={pageImagesOverride}
+        sectionTreeUrl={location.params.get('tree') || undefined}
+        artifactsRoot={artifactsRoot}
+      />
+    )
+  } else {
+    verificationView = (
+      <AnnotationQueueRoute
+        callsUrl={callsOverride ?? mounts?.annotation_calls.map((entry) => entry.url).join(',') ?? ''}
+        pageImageIndexUrl={pageImagesOverride ?? mounts?.page_image_indexes.map((entry) => entry.url).join(',')}
+        artifactsRoot={artifactsRoot}
+      />
     )
   }
 
   return (
     <div className="pdf-lab-app-shell">
-      <VerificationNav />
-      <React.Suspense fallback={<div className="pdf-lab-loading">Loading PDF Lab…</div>}>
-        <PdfLabView
-          initialSubpath={location.subpath}
-          pdfUrl={pdfUrl}
-          extractionUrl={extractionUrl}
-        />
-      </React.Suspense>
+      <VerificationNav active={verificationRoute} />
+      {verificationView}
     </div>
   )
 }

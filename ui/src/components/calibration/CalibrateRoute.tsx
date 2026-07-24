@@ -30,6 +30,7 @@ export interface CalibrateRouteProps {
   initialPageImageIndex?: PageImageIndex
   fetchImpl?: typeof fetch
   persistLabel?: (row: CalibrationLabelRow) => Promise<void>
+  artifactsRoot?: string
 }
 
 const DEFAULT_SAMPLE_URL = '/artifacts/pdf-lab/calibration/sample_v1.jsonl'
@@ -86,6 +87,7 @@ export function CalibrateRoute({
   initialPageImageIndex,
   fetchImpl = fetch,
   persistLabel,
+  artifactsRoot = '(the configured PDF Lab artifact root)',
 }: CalibrateRouteProps) {
   useRegisterAction('calibrate:input:corrected-type', {
     app: 'pdf-lab',
@@ -159,7 +161,7 @@ export function CalibrateRoute({
       fetchImpl(pageImageIndexUrl).then(async (response) => {
         if (!response.ok) throw new Error(`page image index returned HTTP ${response.status}`)
         return parsePageImageIndex(await response.json(), {
-          baseUrl: '/artifacts/pdf-lab/calibration',
+          indexUrl: pageImageIndexUrl,
         })
       }),
       fetchImpl(labelsEndpoint).then(async (response) => {
@@ -275,8 +277,9 @@ export function CalibrateRoute({
     return (
       <main className="pdf-verify-route pdf-verify-route--center" data-confidence-hidden="true">
         <OctagonX aria-hidden="true" />
-        <h1>Calibration input failed closed</h1>
-        <p>{error}</p>
+        <h1>Calibration files need attention</h1>
+        <p>PDF Lab could not safely pair the discovered sample with its original page-image index. Check sample_v1.jsonl and page_images_v1.json.</p>
+        <p>The server looked under <code>{artifactsRoot}</code>.</p>
       </main>
     )
   }
@@ -285,8 +288,9 @@ export function CalibrateRoute({
     return (
       <main className="pdf-verify-route pdf-verify-route--center" data-confidence-hidden="true">
         <OctagonX aria-hidden="true" />
-        <h1>No calibration rows</h1>
-        <p>The sample must contain at least one valid sample_v1.jsonl row.</p>
+        <h1>No calibration sample is mounted</h1>
+        <p>Add calibration/sample_v1.jsonl and its page_images_v1.json beneath the artifact root, then reload this route.</p>
+        <p>The server looked under <code>{artifactsRoot}</code>.</p>
       </main>
     )
   }

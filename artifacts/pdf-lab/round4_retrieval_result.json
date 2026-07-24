@@ -1,0 +1,22 @@
+{
+  "answer": "The mounted annotation evidence identifies this extracted element.",
+  "evidence": [
+    {
+      "doc": "NIST_SP_800-53r5",
+      "element_id": "NIST_SP_800-53r5-page-0-annotation-0",
+      "page": 0,
+      "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+      "section_path": [
+        "NIST SP 800-53 Revision 5",
+        "Mounted annotation evidence"
+      ],
+      "text": "NIST Special Publication 800-53",
+      "type": "Body"
+    }
+  ],
+  "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "section_path": [
+    "NIST SP 800-53 Revision 5",
+    "Mounted annotation evidence"
+  ]
+}

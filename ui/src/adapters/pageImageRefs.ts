@@ -17,6 +17,7 @@ export interface PageImageLookupContext {
   page?: number
   pdfSha256?: string
   baseUrl?: string
+  indexUrl?: string
   strictContentAddressed?: boolean
 }
 
@@ -57,11 +58,27 @@ function basenameFromHref(href: string): string {
 }
 
 function joinUrl(baseUrl: string, filename: string): string {
-  return `${baseUrl.replace(/\/+$/, '')}/${filename.replace(/^\/+/, '')}`
+  const normalizedBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`
+  try {
+    if (/^[a-z][a-z0-9+.-]*:/i.test(normalizedBase)) {
+      return new URL(filename, normalizedBase).toString()
+    }
+    const resolved = new URL(filename, `http://pdf-lab.local${normalizedBase.startsWith('/') ? '' : '/'}${normalizedBase}`)
+    return `${resolved.pathname}${resolved.search}${resolved.hash}`
+  } catch {
+    return `${baseUrl.replace(/\/+$/, '')}/${filename.replace(/^\/+/, '')}`
+  }
 }
 
 function isDirectHref(value: string): boolean {
   return /^(?:https?:|data:|blob:|\/)/i.test(value)
+}
+
+function indexBaseUrl(indexUrl: string | undefined): string | undefined {
+  if (!indexUrl) return undefined
+  const clean = indexUrl.split(/[?#]/, 1)[0]
+  const slash = clean.lastIndexOf('/')
+  return slash >= 0 ? clean.slice(0, slash + 1) : './'
 }
 
 export function normalizePageImageRef(
@@ -69,7 +86,7 @@ export function normalizePageImageRef(
   context: PageImageLookupContext = {},
 ): PageImageRef {
   const strict = context.strictContentAddressed ?? true
-  const baseUrl = context.baseUrl ?? '/artifacts/pdf-lab/page_images'
+  const baseUrl = context.baseUrl ?? indexBaseUrl(context.indexUrl) ?? '/artifacts/pdf-lab/page_images'
 
   let hrefCandidate: string | undefined
   let explicitSha: string | undefined
@@ -196,7 +213,7 @@ function rowsFromIndexPayload(raw: unknown): unknown[] {
 
 export function parsePageImageIndex(
   raw: unknown,
-  options: Pick<PageImageLookupContext, 'baseUrl' | 'strictContentAddressed'> = {},
+  options: Pick<PageImageLookupContext, 'baseUrl' | 'indexUrl' | 'strictContentAddressed'> = {},
 ): PageImageIndex {
   const map = new Map<string, PageImageRef[]>()
   const all: PageImageRef[] = []
@@ -224,6 +241,16 @@ export function parsePageImageIndex(
     all.push(...refs)
   }
 
+  return { byDocAndPage: map, all }
+}
+
+export function mergePageImageIndexes(indexes: readonly PageImageIndex[]): PageImageIndex {
+  const map = new Map<string, readonly PageImageRef[]>()
+  const all: PageImageRef[] = []
+  for (const index of indexes) {
+    for (const [key, refs] of index.byDocAndPage) map.set(key, refs)
+    all.push(...index.all)
+  }
   return { byDocAndPage: map, all }
 }
 

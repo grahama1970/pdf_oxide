@@ -108,7 +108,7 @@ export async function prepareRound2LiveArtifacts(liveRoot = DEFAULT_LIVE_ROOT) {
         page: image.page,
         pdf_sha256: pdfSha256,
         page_image_refs: [{
-          href: `/artifacts/pdf-lab/page_images/${image.filename}`,
+          href: `page_images/${image.filename}`,
           sha256: image.filename.replace(/\.png$/, ''),
           page: image.page,
           width: dimensionsForPage.width,
@@ -144,7 +144,7 @@ export async function prepareRound2LiveArtifacts(liveRoot = DEFAULT_LIVE_ROOT) {
     text: calibrationSource.text_excerpt ?? '',
     label: null,
     page_image_refs: [{
-      href: `/artifacts/pdf-lab/page_images/${calibrationImage.filename}`,
+      href: `../page_images/${calibrationImage.filename}`,
       sha256: calibrationImage.filename.replace(/\.png$/, ''),
       page: calibrationSource.page,
       width: calibrationDimensions.width,

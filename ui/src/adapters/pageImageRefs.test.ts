@@ -81,4 +81,20 @@ describe('page image refs', () => {
       `/artifacts/pdf-lab/calibration/page_images/${SHA}.png`,
     )
   })
+
+  it('resolves relative hrefs from the page-image index location', () => {
+    const index = parsePageImageIndex({
+      pages: [{
+        doc: 'nist',
+        page: 7,
+        page_image_refs: [{
+          sha256: SHA,
+          href: `page_images/${SHA}.png`,
+        }],
+      }],
+    }, { indexUrl: '/artifacts/pdf-lab/annotation-calls/nist/page_images_v1.json' })
+    expect(index.byDocAndPage.get('nist::7')?.[0].href).toBe(
+      `/artifacts/pdf-lab/annotation-calls/nist/page_images/${SHA}.png`,
+    )
+  })
 })

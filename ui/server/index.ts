@@ -1,8 +1,8 @@
 import express from 'express'
 import { createHash } from 'crypto'
-import { appendFileSync, createReadStream, existsSync, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'fs'
+import { appendFileSync, createReadStream, existsSync, mkdirSync, readFileSync, readdirSync, realpathSync, statSync, writeFileSync } from 'fs'
 import { cp, mkdir, readFile, readdir, stat, writeFile } from 'fs/promises'
-import { dirname, resolve } from 'path'
+import { basename, dirname, relative, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import {
   PAGE_IMAGE_NAMING,
@@ -108,6 +108,187 @@ function sortBlocks(blocks: JsonRecord[]): JsonRecord[] {
 function safeKey(value: string): string {
   return value.replace(/[^a-zA-Z0-9._:-]+/g, '_').slice(0, 180)
 }
+
+function artifactFiles(root: string): string[] {
+  if (!existsSync(root) || !statSync(root).isDirectory()) return []
+  const files: string[] = []
+  const pending = [root]
+  while (pending.length > 0) {
+    const current = pending.pop()
+    if (!current) continue
+    for (const entry of readdirSync(current, { withFileTypes: true })) {
+      const path = resolve(current, entry.name)
+      if (entry.isDirectory()) pending.push(path)
+      else if (entry.isFile()) files.push(path)
+    }
+  }
+  return files.sort()
+}
+
+function artifactUrl(path: string): string {
+  return pdfLabPublicUrl(relative(ARTIFACTS_ROOT, path))
+}
+
+function jsonRecordAt(path: string): JsonRecord | null {
+  try {
+    const value: unknown = JSON.parse(readFileSync(path, 'utf-8'))
+    return value && typeof value === 'object' && !Array.isArray(value) ? value as JsonRecord : null
+  } catch {
+    return null
+  }
+}
+
+interface DiscoveredPageImageIndex {
+  path: string
+  url: string
+  documentIds: string[]
+  pdfSha256s: string[]
+  pageCount: number
+}
+
+function summarizePageImageIndex(path: string): DiscoveredPageImageIndex {
+  const value = jsonRecordAt(path)
+  const documentIds = new Set<string>()
+  const pdfSha256s = new Set<string>()
+  const pages = new Set<string>()
+  const rows = Array.isArray(value?.pages)
+    ? value.pages
+    : Array.isArray(value?.page_images)
+      ? value.page_images
+      : []
+  for (const rowValue of rows) {
+    if (!rowValue || typeof rowValue !== 'object' || Array.isArray(rowValue)) continue
+    const row = rowValue as JsonRecord
+    const doc = typeof row.doc === 'string'
+      ? row.doc
+      : typeof row.document === 'string'
+        ? row.document
+        : ''
+    const page = Number(row.page ?? row.page_index)
+    const pdfSha256 = typeof row.pdf_sha256 === 'string' ? row.pdf_sha256 : ''
+    if (doc) documentIds.add(doc)
+    if (pdfSha256) pdfSha256s.add(pdfSha256)
+    if (Number.isInteger(page) && page >= 0) pages.add(`${doc}::${page}`)
+  }
+  const documents = value?.documents
+  if (documents && typeof documents === 'object' && !Array.isArray(documents)) {
+    for (const [doc, manifestValue] of Object.entries(documents)) {
+      if (!manifestValue || typeof manifestValue !== 'object' || Array.isArray(manifestValue)) continue
+      const manifest = manifestValue as JsonRecord
+      documentIds.add(doc)
+      if (typeof manifest.pdf_sha256 === 'string') pdfSha256s.add(manifest.pdf_sha256)
+      if (Array.isArray(manifest.images)) {
+        for (const imageValue of manifest.images) {
+          if (!imageValue || typeof imageValue !== 'object' || Array.isArray(imageValue)) continue
+          const page = Number((imageValue as JsonRecord).page)
+          if (Number.isInteger(page) && page >= 0) pages.add(`${doc}::${page}`)
+        }
+      }
+    }
+  }
+  return {
+    path,
+    url: artifactUrl(path),
+    documentIds: [...documentIds].sort(),
+    pdfSha256s: [...pdfSha256s].sort(),
+    pageCount: pages.size,
+  }
+}
+
+function nearestPageImageIndex(
+  artifactPath: string,
+  indexes: readonly DiscoveredPageImageIndex[],
+  documentIds: readonly string[] = [],
+  pdfSha256?: string,
+): DiscoveredPageImageIndex | undefined {
+  const sameDirectory = indexes.find((index) => dirname(index.path) === dirname(artifactPath))
+  if (sameDirectory) return sameDirectory
+  if (pdfSha256) {
+    const samePdf = indexes.find((index) => index.pdfSha256s.includes(pdfSha256))
+    if (samePdf) return samePdf
+  }
+  return indexes.find((index) => documentIds.some((doc) => index.documentIds.includes(doc)))
+}
+
+app.get('/api/pdf-lab/mounts', (_req, res) => {
+  const files = artifactFiles(ARTIFACTS_ROOT)
+  const pageImageIndexes = files
+    .filter((path) => basename(path).endsWith('page_images_v1.json'))
+    .map(summarizePageImageIndex)
+  const indexedDocuments = new Set(pageImageIndexes.flatMap((index) => index.documentIds))
+
+  const annotationCalls = files
+    .filter((path) => /(?:^|\/)annotation-calls\/[^/]+\/annotation_call\.json$/.test(path))
+    .flatMap((path) => {
+      const value = jsonRecordAt(path)
+      if (!value || !Array.isArray(value.items)) return []
+      const reasons: Record<string, number> = {}
+      for (const itemValue of value.items) {
+        if (!itemValue || typeof itemValue !== 'object' || Array.isArray(itemValue)) continue
+        const reason = String((itemValue as JsonRecord).reason ?? 'unspecified')
+        reasons[reason] = (reasons[reason] ?? 0) + 1
+      }
+      return [{
+        url: artifactUrl(path),
+        doc_id: basename(dirname(path)),
+        item_count: value.items.length,
+        reasons,
+      }]
+    })
+    .sort((left, right) => {
+      return Number(!indexedDocuments.has(left.doc_id)) - Number(!indexedDocuments.has(right.doc_id))
+        || left.doc_id.localeCompare(right.doc_id)
+    })
+
+  const retrievalResults = files
+    .filter((path) => basename(path).endsWith('retrieval_result.json'))
+    .map((path) => {
+      const value = jsonRecordAt(path)
+      const pdfSha256 = typeof value?.pdf_sha256 === 'string' ? value.pdf_sha256 : undefined
+      const pageImageIndex = nearestPageImageIndex(path, pageImageIndexes, [], pdfSha256)
+      return {
+        url: artifactUrl(path),
+        label: relative(ARTIFACTS_ROOT, path),
+        ...(pageImageIndex ? { page_image_index_url: pageImageIndex.url } : {}),
+      }
+    })
+
+  const calibrationSamples = files
+    .filter((path) => /(?:^|\/)calibration\/sample_v1\.jsonl$/.test(path))
+    .map((path) => {
+      const rows = readFileSync(path, 'utf-8').split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
+      const documents = new Set<string>()
+      for (const row of rows) {
+        try {
+          const value: unknown = JSON.parse(row)
+          if (value && typeof value === 'object' && !Array.isArray(value) && typeof (value as JsonRecord).doc === 'string') {
+            documents.add(String((value as JsonRecord).doc))
+          }
+        } catch {
+          // Discovery reports the mount; the calibration route remains fail-closed.
+        }
+      }
+      const pageImageIndex = nearestPageImageIndex(path, pageImageIndexes, [...documents])
+      return {
+        url: artifactUrl(path),
+        item_count: rows.length,
+        ...(pageImageIndex ? { page_image_index_url: pageImageIndex.url } : {}),
+        labels_endpoint: '/api/pdf-lab/calibration/labels',
+      }
+    })
+
+  res.json({
+    artifacts_root: ARTIFACTS_ROOT,
+    annotation_calls: annotationCalls,
+    page_image_indexes: pageImageIndexes.map((index) => ({
+      url: index.url,
+      document_ids: index.documentIds,
+      page_count: index.pageCount,
+    })),
+    retrieval_results: retrievalResults,
+    calibration_samples: calibrationSamples,
+  })
+})
 
 app.get('/api/pdf-lab/status', (_req, res) => {
   res.json({
