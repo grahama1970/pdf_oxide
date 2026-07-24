@@ -28,6 +28,9 @@
 }
 
 .pdf-verify-mode-nav a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   color: var(--pdf-verify-muted);
   text-decoration: none;
   border: 1px solid transparent;
@@ -36,6 +39,12 @@
   font-size: 12px;
   font-weight: 700;
   letter-spacing: .02em;
+}
+
+[data-qid="pdf-lab:production:evidence-qa-open-triage"],
+[data-qid="pdf-lab:production:evidence-qa-open-parity"],
+[data-qid^="pdf-lab:production:stage:"] {
+  min-height: 44px;
 }
 
 .pdf-verify-mode-nav a:hover,
@@ -289,6 +298,7 @@
 .pdf-verify-search input,
 .pdf-verify-filters select {
   width: 100%;
+  min-height: 44px;
   min-width: 0;
   border: 1px solid var(--pdf-verify-line);
   border-radius: 8px;
@@ -410,8 +420,8 @@
 }
 
 .pdf-verify-pager button {
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-content: center;
 }
@@ -428,6 +438,7 @@
 }
 
 .pdf-verify-secondary {
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -488,6 +499,11 @@
 .pdf-verify-page__tag {
   position: absolute;
   z-index: 2;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   max-width: 220px;
   border: 1px solid #001d16;
   border-radius: 4px;
@@ -925,6 +941,9 @@
 }
 
 .pdf-verify-excerpt summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
   padding: 8px 10px;
   color: var(--pdf-verify-muted);
   font-size: 11px;

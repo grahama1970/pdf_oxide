@@ -1,0 +1,55 @@
+{
+  "schema": "pdf-lab.qid-coverage-audit.v1",
+  "interactive_tags": [
+    "a",
+    "button",
+    "input",
+    "select",
+    "summary",
+    "textarea"
+  ],
+  "components": {
+    "ui/src/App.tsx": {
+      "interactive_elements": 1,
+      "dom_three_attributes": 1,
+      "useRegisterAction_registrations": 1,
+      "all_four_covered": 1,
+      "misses": []
+    },
+    "ui/src/components/annotation/AnnotationQueueRoute.tsx": {
+      "interactive_elements": 6,
+      "dom_three_attributes": 6,
+      "useRegisterAction_registrations": 6,
+      "all_four_covered": 6,
+      "misses": []
+    },
+    "ui/src/components/calibration/CalibrateRoute.tsx": {
+      "interactive_elements": 8,
+      "dom_three_attributes": 8,
+      "useRegisterAction_registrations": 8,
+      "all_four_covered": 8,
+      "misses": []
+    },
+    "ui/src/components/retrieval/RetrievalEvidenceView.tsx": {
+      "interactive_elements": 1,
+      "dom_three_attributes": 1,
+      "useRegisterAction_registrations": 1,
+      "all_four_covered": 1,
+      "misses": []
+    },
+    "ui/src/components/verification/NormalizedPageOverlay.tsx": {
+      "interactive_elements": 1,
+      "dom_three_attributes": 1,
+      "useRegisterAction_registrations": 1,
+      "all_four_covered": 1,
+      "misses": []
+    }
+  },
+  "totals": {
+    "interactive_elements": 17,
+    "dom_three_attributes": 17,
+    "useRegisterAction_registrations": 17,
+    "all_four_covered": 17
+  },
+  "pass": true
+}

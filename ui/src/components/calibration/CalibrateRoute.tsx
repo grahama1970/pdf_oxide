@@ -18,6 +18,7 @@ import {
   type PageImageIndex,
   type PageImageRef,
 } from '../../adapters/pageImageRefs'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 import { NormalizedPageOverlay } from '../verification/NormalizedPageOverlay'
 import '../verification/VerificationUx.css'
 
@@ -86,6 +87,54 @@ export function CalibrateRoute({
   fetchImpl = fetch,
   persistLabel,
 }: CalibrateRouteProps) {
+  useRegisterAction('calibrate:input:corrected-type', {
+    app: 'pdf-lab',
+    action: 'CALIBRATE_SET_CORRECTED_TYPE',
+    label: 'Set corrected element type',
+    description: 'Enter the corrected element type before marking an extraction as the wrong type',
+  })
+  useRegisterAction('calibrate:decision:correct', {
+    app: 'pdf-lab',
+    action: 'CALIBRATE_LABEL_CORRECT',
+    label: 'Mark extraction correct',
+    description: 'Persist a correct calibration label for the current extracted element',
+  })
+  useRegisterAction('calibrate:decision:wrong-type', {
+    app: 'pdf-lab',
+    action: 'CALIBRATE_LABEL_WRONG_TYPE',
+    label: 'Mark extraction wrong type',
+    description: 'Persist a wrong-type calibration label and the corrected element type',
+  })
+  useRegisterAction('calibrate:decision:wrong-bounds', {
+    app: 'pdf-lab',
+    action: 'CALIBRATE_LABEL_WRONG_BOUNDS',
+    label: 'Mark extraction wrong bounds',
+    description: 'Persist a wrong-bounds calibration label for the current extracted element',
+  })
+  useRegisterAction('calibrate:decision:not-element', {
+    app: 'pdf-lab',
+    action: 'CALIBRATE_LABEL_NOT_ELEMENT',
+    label: 'Mark as not an element',
+    description: 'Persist a not-an-element calibration label for the current extraction',
+  })
+  useRegisterAction('calibrate:navigation:previous', {
+    app: 'pdf-lab',
+    action: 'CALIBRATE_PREVIOUS_ITEM',
+    label: 'Previous calibration item',
+    description: 'Move to the previous item in the frozen calibration sample',
+  })
+  useRegisterAction('calibrate:navigation:next', {
+    app: 'pdf-lab',
+    action: 'CALIBRATE_NEXT_ITEM',
+    label: 'Next calibration item',
+    description: 'Move to the next item in the frozen calibration sample',
+  })
+  useRegisterAction('calibrate:export:labels', {
+    app: 'pdf-lab',
+    action: 'CALIBRATE_EXPORT_LABELS',
+    label: 'Export calibration labels',
+    description: 'Download the persisted calibration decisions as labels_v1.jsonl',
+  })
   const [rows, setRows] = useState<CalibrationSampleItem[]>(initialRows ? [...initialRows] : [])
   const [pageImages, setPageImages] = useState<PageImageIndex | null>(initialPageImageIndex ?? null)
   const [itemShas, setItemShas] = useState<(string | null)[]>([])
@@ -296,23 +345,54 @@ export function CalibrateRoute({
               onChange={(event: ChangeEvent<HTMLInputElement>) => setCorrectedType(event.target.value)}
               placeholder="e.g. figure, table, caption"
               autoComplete="off"
+              data-qid="calibrate:input:corrected-type"
+              data-qs-action="CALIBRATE_SET_CORRECTED_TYPE"
+              title="Enter the corrected element type"
             />
           </label>
 
           <div className="pdf-verify-decision-grid">
-            <button type="button" onClick={() => void adjudicate('correct')} disabled={!currentPageImage || saving}>
+            <button
+              type="button"
+              onClick={() => void adjudicate('correct')}
+              disabled={!currentPageImage || saving}
+              data-qid="calibrate:decision:correct"
+              data-qs-action="CALIBRATE_LABEL_CORRECT"
+              title="Mark the current extraction as correct"
+            >
               <Check aria-hidden="true" />
               <span><kbd>1</kbd> Correct</span>
             </button>
-            <button type="button" onClick={() => void adjudicate('wrong_type')} disabled={!currentPageImage || saving || !correctedType.trim()}>
+            <button
+              type="button"
+              onClick={() => void adjudicate('wrong_type')}
+              disabled={!currentPageImage || saving || !correctedType.trim()}
+              data-qid="calibrate:decision:wrong-type"
+              data-qs-action="CALIBRATE_LABEL_WRONG_TYPE"
+              title="Mark the current extraction as the wrong type"
+            >
               <Tags aria-hidden="true" />
               <span><kbd>2</kbd> Wrong type</span>
             </button>
-            <button type="button" onClick={() => void adjudicate('wrong_bounds')} disabled={!currentPageImage || saving}>
+            <button
+              type="button"
+              onClick={() => void adjudicate('wrong_bounds')}
+              disabled={!currentPageImage || saving}
+              data-qid="calibrate:decision:wrong-bounds"
+              data-qs-action="CALIBRATE_LABEL_WRONG_BOUNDS"
+              title="Mark the current extraction bounds as wrong"
+            >
               <SquareDashed aria-hidden="true" />
               <span><kbd>3</kbd> Wrong bounds</span>
             </button>
-            <button type="button" onClick={() => void adjudicate('not_an_element')} disabled={!currentPageImage || saving}>
+            <button
+              type="button"
+              onClick={() => void adjudicate('not_an_element')}
+              disabled={!currentPageImage || saving}
+              data-qid="calibrate:decision:not-element"
+              data-qs-action="CALIBRATE_LABEL_NOT_ELEMENT"
+              title="Mark the current extraction as not an element"
+            >
               <OctagonX aria-hidden="true" />
               <span><kbd>4</kbd> Not an element</span>
             </button>
@@ -330,15 +410,39 @@ export function CalibrateRoute({
 
           <footer className="pdf-verify-inspector__footer">
             <div className="pdf-verify-pager">
-              <button type="button" onClick={() => setIndex((value) => Math.max(0, value - 1))} disabled={index === 0} aria-label="Previous calibration item">
+              <button
+                type="button"
+                onClick={() => setIndex((value) => Math.max(0, value - 1))}
+                disabled={index === 0}
+                aria-label="Previous calibration item"
+                data-qid="calibrate:navigation:previous"
+                data-qs-action="CALIBRATE_PREVIOUS_ITEM"
+                title="Go to the previous calibration item"
+              >
                 <ChevronLeft />
               </button>
               <span>{index + 1} / {rows.length}</span>
-              <button type="button" onClick={() => setIndex((value) => Math.min(rows.length - 1, value + 1))} disabled={index >= rows.length - 1} aria-label="Next calibration item">
+              <button
+                type="button"
+                onClick={() => setIndex((value) => Math.min(rows.length - 1, value + 1))}
+                disabled={index >= rows.length - 1}
+                aria-label="Next calibration item"
+                data-qid="calibrate:navigation:next"
+                data-qs-action="CALIBRATE_NEXT_ITEM"
+                title="Go to the next calibration item"
+              >
                 <ChevronRight />
               </button>
             </div>
-            <button type="button" className="pdf-verify-secondary" onClick={() => downloadLabels([...labels.values()])} disabled={labels.size === 0}>
+            <button
+              type="button"
+              className="pdf-verify-secondary"
+              onClick={() => downloadLabels([...labels.values()])}
+              disabled={labels.size === 0}
+              data-qid="calibrate:export:labels"
+              data-qs-action="CALIBRATE_EXPORT_LABELS"
+              title="Export calibration labels as labels_v1.jsonl"
+            >
               <Download /> Export labels_v1.jsonl
             </button>
           </footer>

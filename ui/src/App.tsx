@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { AnnotationQueueRoute } from './components/annotation/AnnotationQueueRoute'
 import { CalibrateRoute } from './components/calibration/CalibrateRoute'
 import { RetrievalEvidenceRoute } from './components/retrieval/RetrievalEvidenceView'
+import { useRegisterAction } from './hooks/useRegisterAction'
 import './components/verification/VerificationUx.css'
 
 const PdfLabView = React.lazy(() =>
@@ -9,6 +10,14 @@ const PdfLabView = React.lazy(() =>
 )
 
 type VerificationRoute = 'calibrate' | 'annotations' | 'evidence'
+
+interface VerificationNavLinkProps {
+  active: boolean
+  action: string
+  description: string
+  label: string
+  route: string
+}
 
 interface HashLocation {
   route: string
@@ -38,19 +47,79 @@ function useHashLocation(): HashLocation {
   return location
 }
 
+function VerificationNavLink({
+  active,
+  action,
+  description,
+  label,
+  route,
+}: VerificationNavLinkProps) {
+  const qid = `verification-nav:tab:${route}`
+  useRegisterAction(qid, {
+    app: 'pdf-lab',
+    action,
+    label,
+    description,
+  })
+
+  return (
+    <a
+      className={active ? 'is-active' : ''}
+      href={`#pdf-lab/${route}`}
+      aria-current={active ? 'page' : undefined}
+      data-qid={qid}
+      data-qs-action={action}
+      title={`Open ${label}`}
+    >
+      {label}
+    </a>
+  )
+}
+
 function VerificationNav({ active }: { active?: VerificationRoute }) {
-  const links: Array<{ route: VerificationRoute; label: string }> = [
-    { route: 'annotations', label: 'Annotation queue' },
-    { route: 'calibrate', label: 'Calibrate' },
-    { route: 'evidence', label: 'Retrieval evidence' },
+  const links: Array<{
+    route: VerificationRoute
+    label: string
+    action: string
+    description: string
+  }> = [
+    {
+      route: 'annotations',
+      label: 'Annotation queue',
+      action: 'VERIFICATION_NAV_OPEN_ANNOTATIONS',
+      description: 'Open the PDF Lab extraction uncertainty annotation queue',
+    },
+    {
+      route: 'calibrate',
+      label: 'Calibrate',
+      action: 'VERIFICATION_NAV_OPEN_CALIBRATE',
+      description: 'Open the PDF Lab blinded calibration workflow',
+    },
+    {
+      route: 'evidence',
+      label: 'Retrieval evidence',
+      action: 'VERIFICATION_NAV_OPEN_EVIDENCE',
+      description: 'Open the PDF Lab traceable retrieval evidence view',
+    },
   ]
   return (
     <nav className="pdf-verify-mode-nav" aria-label="PDF Lab verification modes">
-      <a href="#pdf-lab/loop">Loop viewer</a>
+      <VerificationNavLink
+        active={false}
+        route="loop"
+        label="Loop viewer"
+        action="VERIFICATION_NAV_OPEN_LOOP"
+        description="Open the PDF Lab loop viewer"
+      />
       {links.map((link) => (
-        <a key={link.route} className={active === link.route ? 'is-active' : ''} href={`#pdf-lab/${link.route}`}>
-          {link.label}
-        </a>
+        <VerificationNavLink
+          key={link.route}
+          active={active === link.route}
+          route={link.route}
+          label={link.label}
+          action={link.action}
+          description={link.description}
+        />
       ))}
     </nav>
   )

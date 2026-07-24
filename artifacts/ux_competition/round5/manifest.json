@@ -1,0 +1,440 @@
+{
+  "version": 1,
+  "app": "PDF Lab UX competition round 5",
+  "base_url": "http://127.0.0.1:3013",
+  "surfaces": [
+    {
+      "name": "root",
+      "path": "/",
+      "wait_ready": "[data-qid='verification-nav:tab:loop']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "root-overview",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Capture the live PDF Lab root"
+            }
+          ]
+        },
+        {
+          "name": "verification-navigation",
+          "interactions": [
+            {
+              "action": "hover",
+              "target": "[data-qid='verification-nav:tab:loop']",
+              "description": "Hover the Loop viewer navigation tab",
+              "assert_title": "[data-qid='verification-nav:tab:loop']",
+              "assert_qs_action": "[data-qid='verification-nav:tab:loop']",
+              "assert_min_size": {
+                "selector": "[data-qid='verification-nav:tab:loop']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='verification-nav:tab:annotations']",
+              "description": "Hover the Annotation queue navigation tab",
+              "assert_title": "[data-qid='verification-nav:tab:annotations']",
+              "assert_qs_action": "[data-qid='verification-nav:tab:annotations']",
+              "assert_min_size": {
+                "selector": "[data-qid='verification-nav:tab:annotations']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='verification-nav:tab:calibrate']",
+              "description": "Hover the Calibrate navigation tab",
+              "assert_title": "[data-qid='verification-nav:tab:calibrate']",
+              "assert_qs_action": "[data-qid='verification-nav:tab:calibrate']",
+              "assert_min_size": {
+                "selector": "[data-qid='verification-nav:tab:calibrate']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='verification-nav:tab:evidence']",
+              "description": "Hover the Retrieval evidence navigation tab",
+              "assert_title": "[data-qid='verification-nav:tab:evidence']",
+              "assert_qs_action": "[data-qid='verification-nav:tab:evidence']",
+              "assert_min_size": {
+                "selector": "[data-qid='verification-nav:tab:evidence']",
+                "min_width": 44,
+                "min_height": 44
+              }
+            }
+          ]
+        },
+        {
+          "name": "root-production-controls",
+          "interactions": [
+            {
+              "action": "hover",
+              "target": "[data-qid='pdf-lab:production:evidence-qa-open-triage']",
+              "description": "Verify the root triage control",
+              "assert_title": "[data-qid='pdf-lab:production:evidence-qa-open-triage']",
+              "assert_qs_action": "[data-qid='pdf-lab:production:evidence-qa-open-triage']",
+              "assert_min_size": {
+                "selector": "[data-qid='pdf-lab:production:evidence-qa-open-triage']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='pdf-lab:production:evidence-qa-open-parity']",
+              "description": "Verify the root parity control",
+              "assert_title": "[data-qid='pdf-lab:production:evidence-qa-open-parity']",
+              "assert_qs_action": "[data-qid='pdf-lab:production:evidence-qa-open-parity']",
+              "assert_min_size": {
+                "selector": "[data-qid='pdf-lab:production:evidence-qa-open-parity']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='pdf-lab:production:stage:initial-sweep']",
+              "description": "Verify the Initial Sweep stage control",
+              "assert_title": "[data-qid='pdf-lab:production:stage:initial-sweep']",
+              "assert_qs_action": "[data-qid='pdf-lab:production:stage:initial-sweep']",
+              "assert_min_size": {
+                "selector": "[data-qid='pdf-lab:production:stage:initial-sweep']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='pdf-lab:production:stage:parity-audit']",
+              "description": "Verify the Parity Audit stage control",
+              "assert_title": "[data-qid='pdf-lab:production:stage:parity-audit']",
+              "assert_qs_action": "[data-qid='pdf-lab:production:stage:parity-audit']",
+              "assert_min_size": {
+                "selector": "[data-qid='pdf-lab:production:stage:parity-audit']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='pdf-lab:production:stage:surgical-triage']",
+              "description": "Verify the Surgical Triage stage control",
+              "assert_title": "[data-qid='pdf-lab:production:stage:surgical-triage']",
+              "assert_qs_action": "[data-qid='pdf-lab:production:stage:surgical-triage']",
+              "assert_min_size": {
+                "selector": "[data-qid='pdf-lab:production:stage:surgical-triage']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='pdf-lab:production:stage:evidence-qa']",
+              "description": "Verify the Evidence QA stage control",
+              "assert_title": "[data-qid='pdf-lab:production:stage:evidence-qa']",
+              "assert_qs_action": "[data-qid='pdf-lab:production:stage:evidence-qa']",
+              "assert_min_size": {
+                "selector": "[data-qid='pdf-lab:production:stage:evidence-qa']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='pdf-lab:production:stage:coverage']",
+              "description": "Verify the Coverage stage control",
+              "assert_title": "[data-qid='pdf-lab:production:stage:coverage']",
+              "assert_qs_action": "[data-qid='pdf-lab:production:stage:coverage']",
+              "assert_min_size": {
+                "selector": "[data-qid='pdf-lab:production:stage:coverage']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='pdf-lab:production:stage:labeling']",
+              "description": "Verify the Labeling stage control",
+              "assert_title": "[data-qid='pdf-lab:production:stage:labeling']",
+              "assert_qs_action": "[data-qid='pdf-lab:production:stage:labeling']",
+              "assert_min_size": {
+                "selector": "[data-qid='pdf-lab:production:stage:labeling']"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "annotations",
+      "path": "/#pdf-lab/annotations?calls=/artifacts/pdf-lab/round2-live/annotation_call.json&pageImages=/artifacts/pdf-lab/round2-live/page_images_v1.json",
+      "wait_ready": "[data-qid='annotation-queue:search:query']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "annotation-overview",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Capture the live annotation queue with source evidence"
+            }
+          ]
+        },
+        {
+          "name": "annotation-filters",
+          "interactions": [
+            {
+              "action": "type",
+              "target": "[data-qid='annotation-queue:search:query']",
+              "value": "round2-live",
+              "description": "Search the live annotation queue",
+              "assert_value": {
+                "selector": "[data-qid='annotation-queue:search:query']",
+                "value": "round2-live"
+              },
+              "assert_title": "[data-qid='annotation-queue:search:query']",
+              "assert_qs_action": "[data-qid='annotation-queue:search:query']",
+              "assert_min_size": {
+                "selector": "[data-qid='annotation-queue:search:query']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='annotation-queue:filter:document']",
+              "description": "Verify the document filter",
+              "assert_title": "[data-qid='annotation-queue:filter:document']",
+              "assert_qs_action": "[data-qid='annotation-queue:filter:document']",
+              "assert_min_size": {
+                "selector": "[data-qid='annotation-queue:filter:document']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='annotation-queue:filter:reason']",
+              "description": "Verify the reason filter",
+              "assert_title": "[data-qid='annotation-queue:filter:reason']",
+              "assert_qs_action": "[data-qid='annotation-queue:filter:reason']",
+              "assert_min_size": {
+                "selector": "[data-qid='annotation-queue:filter:reason']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='annotation-queue:filter:kind']",
+              "description": "Verify the kind filter",
+              "assert_title": "[data-qid='annotation-queue:filter:kind']",
+              "assert_qs_action": "[data-qid='annotation-queue:filter:kind']",
+              "assert_min_size": {
+                "selector": "[data-qid='annotation-queue:filter:kind']"
+              }
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='annotation-queue:reason:low_confidence']",
+              "description": "Toggle the live low-confidence reason filter",
+              "assert_title": "[data-qid='annotation-queue:reason:low_confidence']",
+              "assert_qs_action": "[data-qid='annotation-queue:reason:low_confidence']",
+              "assert_min_size": {
+                "selector": "[data-qid='annotation-queue:reason:low_confidence']"
+              }
+            }
+          ]
+        },
+        {
+          "name": "annotation-detail",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='annotation-queue:row:1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1']",
+              "description": "Select a different live annotation row",
+              "assert_aria": {
+                "selector": "[data-qid='annotation-queue:row:1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1']",
+                "attribute": "aria-selected",
+                "value": "true"
+              },
+              "assert_title": "[data-qid='annotation-queue:row:1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1']",
+              "assert_qs_action": "[data-qid='annotation-queue:row:1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1']",
+              "assert_min_size": {
+                "selector": "[data-qid='annotation-queue:row:1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1']"
+              }
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='normalized-page-overlay:label:annotation-1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1']",
+              "description": "Move the selected annotation evidence label",
+              "assert_title": "[data-qid='normalized-page-overlay:label:annotation-1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1']",
+              "assert_qs_action": "[data-qid='normalized-page-overlay:label:annotation-1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1']",
+              "assert_min_size": {
+                "selector": "[data-qid='normalized-page-overlay:label:annotation-1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1']"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "calibrate",
+      "path": "/#pdf-lab/calibrate?sample=/artifacts/pdf-lab/round2-live/calibration/sample_v1.jsonl&pageImages=/artifacts/pdf-lab/round2-live/calibration/page_images_v1.json",
+      "wait_ready": "[data-qid='calibrate:input:corrected-type']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "calibration-overview",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Capture the live blinded calibration workbench"
+            }
+          ]
+        },
+        {
+          "name": "calibration-decision-controls",
+          "interactions": [
+            {
+              "action": "type",
+              "target": "[data-qid='calibrate:input:corrected-type']",
+              "value": "figure",
+              "description": "Enter a corrected element type",
+              "assert_value": {
+                "selector": "[data-qid='calibrate:input:corrected-type']",
+                "value": "figure"
+              },
+              "assert_title": "[data-qid='calibrate:input:corrected-type']",
+              "assert_qs_action": "[data-qid='calibrate:input:corrected-type']",
+              "assert_min_size": {
+                "selector": "[data-qid='calibrate:input:corrected-type']"
+              }
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='normalized-page-overlay:label:ab3fed9e734c1202']",
+              "description": "Move the calibration evidence label",
+              "assert_title": "[data-qid='normalized-page-overlay:label:ab3fed9e734c1202']",
+              "assert_qs_action": "[data-qid='normalized-page-overlay:label:ab3fed9e734c1202']",
+              "assert_min_size": {
+                "selector": "[data-qid='normalized-page-overlay:label:ab3fed9e734c1202']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='calibrate:decision:correct']",
+              "description": "Verify the Correct decision",
+              "assert_enabled": "[data-qid='calibrate:decision:correct']",
+              "assert_title": "[data-qid='calibrate:decision:correct']",
+              "assert_qs_action": "[data-qid='calibrate:decision:correct']",
+              "assert_min_size": {
+                "selector": "[data-qid='calibrate:decision:correct']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='calibrate:decision:wrong-type']",
+              "description": "Verify the Wrong type decision after corrected-type input",
+              "assert_enabled": "[data-qid='calibrate:decision:wrong-type']",
+              "assert_title": "[data-qid='calibrate:decision:wrong-type']",
+              "assert_qs_action": "[data-qid='calibrate:decision:wrong-type']",
+              "assert_min_size": {
+                "selector": "[data-qid='calibrate:decision:wrong-type']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='calibrate:decision:wrong-bounds']",
+              "description": "Verify the Wrong bounds decision",
+              "assert_enabled": "[data-qid='calibrate:decision:wrong-bounds']",
+              "assert_title": "[data-qid='calibrate:decision:wrong-bounds']",
+              "assert_qs_action": "[data-qid='calibrate:decision:wrong-bounds']",
+              "assert_min_size": {
+                "selector": "[data-qid='calibrate:decision:wrong-bounds']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='calibrate:decision:not-element']",
+              "description": "Verify the Not an element decision",
+              "assert_enabled": "[data-qid='calibrate:decision:not-element']",
+              "assert_title": "[data-qid='calibrate:decision:not-element']",
+              "assert_qs_action": "[data-qid='calibrate:decision:not-element']",
+              "assert_min_size": {
+                "selector": "[data-qid='calibrate:decision:not-element']"
+              }
+            }
+          ]
+        },
+        {
+          "name": "calibration-navigation",
+          "interactions": [
+            {
+              "action": "hover",
+              "target": "[data-qid='calibrate:navigation:previous']",
+              "description": "Verify the disabled previous-item control for a one-row sample",
+              "assert_disabled": "[data-qid='calibrate:navigation:previous']",
+              "assert_title": "[data-qid='calibrate:navigation:previous']",
+              "assert_qs_action": "[data-qid='calibrate:navigation:previous']",
+              "assert_min_size": {
+                "selector": "[data-qid='calibrate:navigation:previous']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='calibrate:navigation:next']",
+              "description": "Verify the disabled next-item control for a one-row sample",
+              "assert_disabled": "[data-qid='calibrate:navigation:next']",
+              "assert_title": "[data-qid='calibrate:navigation:next']",
+              "assert_qs_action": "[data-qid='calibrate:navigation:next']",
+              "assert_min_size": {
+                "selector": "[data-qid='calibrate:navigation:next']"
+              }
+            },
+            {
+              "action": "hover",
+              "target": "[data-qid='calibrate:export:labels']",
+              "description": "Verify export remains disabled before any labels are written",
+              "assert_disabled": "[data-qid='calibrate:export:labels']",
+              "assert_title": "[data-qid='calibrate:export:labels']",
+              "assert_qs_action": "[data-qid='calibrate:export:labels']",
+              "assert_min_size": {
+                "selector": "[data-qid='calibrate:export:labels']"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "evidence",
+      "path": "/#pdf-lab/evidence?result=/artifacts/pdf-lab/round2-live/retrieval_result.json&pageImages=/artifacts/pdf-lab/round2-live/page_images_v1.json&tree=/artifacts/pdf-lab/round2-live/section_tree.json",
+      "wait_ready": "[data-qid='retrieval-evidence:excerpt:6b42bcd6dc407b7e9542a7dde41d2b8a']",
+      "qid_compliance": true,
+      "elements": [
+        {
+          "name": "retrieval-overview",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Capture the live traceable retrieval evidence view"
+            }
+          ]
+        },
+        {
+          "name": "retrieval-evidence-controls",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-qid='normalized-page-overlay:label:evidence-6b42bcd6dc407b7e9542a7dde41d2b8a']",
+              "description": "Move the retrieval source-element label",
+              "assert_title": "[data-qid='normalized-page-overlay:label:evidence-6b42bcd6dc407b7e9542a7dde41d2b8a']",
+              "assert_qs_action": "[data-qid='normalized-page-overlay:label:evidence-6b42bcd6dc407b7e9542a7dde41d2b8a']",
+              "assert_min_size": {
+                "selector": "[data-qid='normalized-page-overlay:label:evidence-6b42bcd6dc407b7e9542a7dde41d2b8a']"
+              }
+            },
+            {
+              "action": "click",
+              "target": "[data-qid='retrieval-evidence:excerpt:6b42bcd6dc407b7e9542a7dde41d2b8a']",
+              "description": "Expand the extracted-text provenance detail",
+              "assert_title": "[data-qid='retrieval-evidence:excerpt:6b42bcd6dc407b7e9542a7dde41d2b8a']",
+              "assert_qs_action": "[data-qid='retrieval-evidence:excerpt:6b42bcd6dc407b7e9542a7dde41d2b8a']",
+              "assert_min_size": {
+                "selector": "[data-qid='retrieval-evidence:excerpt:6b42bcd6dc407b7e9542a7dde41d2b8a']"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

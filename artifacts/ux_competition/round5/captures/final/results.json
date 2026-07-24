@@ -1,0 +1,914 @@
+{
+  "app": "PDF Lab UX competition round 5",
+  "total": 34,
+  "passed": 34,
+  "failed": 0,
+  "warned": 0,
+  "skipped": 0,
+  "interactions": [
+    {
+      "surface": "root",
+      "element": "root-overview",
+      "action": "screenshot",
+      "description": "Capture the live PDF Lab root",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0001_root-overview_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0001_root-overview_screenshot.png",
+      "duration_ms": 547,
+      "assertions": []
+    },
+    {
+      "surface": "root",
+      "element": "verification-navigation",
+      "action": "hover",
+      "description": "Hover the Loop viewer navigation tab",
+      "status": "PASS",
+      "evidence": "hovered <A> 'Loop viewer' at (61, 27)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0002_verification-navigation_hover.png",
+      "duration_ms": 841,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='verification-nav:tab:loop'], 44x44)",
+          "status": "PASS",
+          "evidence": "97x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='verification-nav:tab:loop'])",
+          "status": "PASS",
+          "evidence": "title='Open Loop viewer'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='verification-nav:tab:loop'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='VERIFICATION_NAV_OPEN_LOOP'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "verification-navigation",
+      "action": "hover",
+      "description": "Hover the Annotation queue navigation tab",
+      "status": "PASS",
+      "evidence": "hovered <A> 'Annotation queue' at (180, 27)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0003_verification-navigation_hover.png",
+      "duration_ms": 814,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='verification-nav:tab:annotations'], 44x44)",
+          "status": "PASS",
+          "evidence": "135x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='verification-nav:tab:annotations'])",
+          "status": "PASS",
+          "evidence": "title='Open Annotation queue'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='verification-nav:tab:annotations'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='VERIFICATION_NAV_OPEN_ANNOTATIONS'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "verification-navigation",
+      "action": "hover",
+      "description": "Hover the Calibrate navigation tab",
+      "status": "PASS",
+      "evidence": "hovered <A> 'Calibrate' at (291, 27)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0004_verification-navigation_hover.png",
+      "duration_ms": 797,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='verification-nav:tab:calibrate'], 44x44)",
+          "status": "PASS",
+          "evidence": "79x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='verification-nav:tab:calibrate'])",
+          "status": "PASS",
+          "evidence": "title='Open Calibrate'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='verification-nav:tab:calibrate'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='VERIFICATION_NAV_OPEN_CALIBRATE'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "verification-navigation",
+      "action": "hover",
+      "description": "Hover the Retrieval evidence navigation tab",
+      "status": "PASS",
+      "evidence": "hovered <A> 'Retrieval evidence' at (403, 27)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0005_verification-navigation_hover.png",
+      "duration_ms": 844,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='verification-nav:tab:evidence'], 44x44)",
+          "status": "PASS",
+          "evidence": "137x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='verification-nav:tab:evidence'])",
+          "status": "PASS",
+          "evidence": "title='Open Retrieval evidence'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='verification-nav:tab:evidence'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='VERIFICATION_NAV_OPEN_EVIDENCE'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "root-production-controls",
+      "action": "hover",
+      "description": "Verify the root triage control",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> 'Open Triage Deck' at (1387, 84)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0006_root-production-controls_hover.png",
+      "duration_ms": 835,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='pdf-lab:production:evidence-qa-open-triage'], 44x44)",
+          "status": "PASS",
+          "evidence": "124x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='pdf-lab:production:evidence-qa-open-triage'])",
+          "status": "PASS",
+          "evidence": "title='Open the final human ambiguity deck'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='pdf-lab:production:evidence-qa-open-triage'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='PDF_LAB_PRODUCTION_STAGE_SURGICAL_TRIAGE'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "root-production-controls",
+      "action": "hover",
+      "description": "Verify the root parity control",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> 'Open Parity Audit' at (1519, 84)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0007_root-production-controls_hover.png",
+      "duration_ms": 838,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='pdf-lab:production:evidence-qa-open-parity'], 44x44)",
+          "status": "PASS",
+          "evidence": "125x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='pdf-lab:production:evidence-qa-open-parity'])",
+          "status": "PASS",
+          "evidence": "title='Open parity audit'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='pdf-lab:production:evidence-qa-open-parity'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='PDF_LAB_PRODUCTION_STAGE_PARITY_AUDIT'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "root-production-controls",
+      "action": "hover",
+      "description": "Verify the Initial Sweep stage control",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '1 \u00b7 Initial Sweep' at (75, 134)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0008_root-production-controls_hover.png",
+      "duration_ms": 814,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='pdf-lab:production:stage:initial-sweep'], 44x44)",
+          "status": "PASS",
+          "evidence": "114x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='pdf-lab:production:stage:initial-sweep'])",
+          "status": "PASS",
+          "evidence": "title='Open 1 \u00b7 Initial Sweep'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='pdf-lab:production:stage:initial-sweep'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='PDF_LAB_PRODUCTION_STAGE_INITIAL_SWEEP'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "root-production-controls",
+      "action": "hover",
+      "description": "Verify the Parity Audit stage control",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '2 \u00b7 Parity Audit' at (194, 134)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0009_root-production-controls_hover.png",
+      "duration_ms": 837,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='pdf-lab:production:stage:parity-audit'], 44x44)",
+          "status": "PASS",
+          "evidence": "108x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='pdf-lab:production:stage:parity-audit'])",
+          "status": "PASS",
+          "evidence": "title='Open 2 \u00b7 Parity Audit'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='pdf-lab:production:stage:parity-audit'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='PDF_LAB_PRODUCTION_STAGE_PARITY_AUDIT'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "root-production-controls",
+      "action": "hover",
+      "description": "Verify the Surgical Triage stage control",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '3 \u00b7 Surgical Triage' at (318, 134)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0010_root-production-controls_hover.png",
+      "duration_ms": 805,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='pdf-lab:production:stage:surgical-triage'], 44x44)",
+          "status": "PASS",
+          "evidence": "124x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='pdf-lab:production:stage:surgical-triage'])",
+          "status": "PASS",
+          "evidence": "title='Open 3 \u00b7 Surgical Triage'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='pdf-lab:production:stage:surgical-triage'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='PDF_LAB_PRODUCTION_STAGE_SURGICAL_TRIAGE'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "root-production-controls",
+      "action": "hover",
+      "description": "Verify the Evidence QA stage control",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '4 \u00b7 Evidence QA' at (443, 134)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0011_root-production-controls_hover.png",
+      "duration_ms": 791,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='pdf-lab:production:stage:evidence-qa'], 44x44)",
+          "status": "PASS",
+          "evidence": "110x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='pdf-lab:production:stage:evidence-qa'])",
+          "status": "PASS",
+          "evidence": "title='Open 4 \u00b7 Evidence QA'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='pdf-lab:production:stage:evidence-qa'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='PDF_LAB_PRODUCTION_STAGE_EVIDENCE_QA'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "root-production-controls",
+      "action": "hover",
+      "description": "Verify the Coverage stage control",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '5 \u00b7 Coverage' at (553, 134)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0012_root-production-controls_hover.png",
+      "duration_ms": 812,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='pdf-lab:production:stage:coverage'], 44x44)",
+          "status": "PASS",
+          "evidence": "93x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='pdf-lab:production:stage:coverage'])",
+          "status": "PASS",
+          "evidence": "title='Open 5 \u00b7 Coverage'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='pdf-lab:production:stage:coverage'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='PDF_LAB_PRODUCTION_STAGE_COVERAGE'"
+        }
+      ]
+    },
+    {
+      "surface": "root",
+      "element": "root-production-controls",
+      "action": "hover",
+      "description": "Verify the Labeling stage control",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '6 \u00b7 Labeling' at (652, 134)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/root/0013_root-production-controls_hover.png",
+      "duration_ms": 834,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='pdf-lab:production:stage:labeling'], 44x44)",
+          "status": "PASS",
+          "evidence": "89x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='pdf-lab:production:stage:labeling'])",
+          "status": "PASS",
+          "evidence": "title='Open 6 \u00b7 Labeling'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='pdf-lab:production:stage:labeling'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='PDF_LAB_PRODUCTION_STAGE_LABELING'"
+        }
+      ]
+    },
+    {
+      "surface": "annotations",
+      "element": "annotation-overview",
+      "action": "screenshot",
+      "description": "Capture the live annotation queue with source evidence",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/annotations/0001_annotation-overview_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/annotations/0001_annotation-overview_screenshot.png",
+      "duration_ms": 921,
+      "assertions": []
+    },
+    {
+      "surface": "annotations",
+      "element": "annotation-filters",
+      "action": "type",
+      "description": "Search the live annotation queue",
+      "status": "PASS",
+      "evidence": "typed 'round2-live', value='round2-live'",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/annotations/0002_annotation-filters_type.png",
+      "duration_ms": 1211,
+      "assertions": [
+        {
+          "check": "assert_value([data-qid='annotation-queue:search:query'])",
+          "status": "PASS",
+          "evidence": "value='round2-live' == 'round2-live'"
+        },
+        {
+          "check": "assert_min_size([data-qid='annotation-queue:search:query'], 44x44)",
+          "status": "PASS",
+          "evidence": "199x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='annotation-queue:search:query'])",
+          "status": "PASS",
+          "evidence": "title='Search annotation calls'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='annotation-queue:search:query'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='ANNOTATION_QUEUE_SEARCH'"
+        }
+      ]
+    },
+    {
+      "surface": "annotations",
+      "element": "annotation-filters",
+      "action": "hover",
+      "description": "Verify the document filter",
+      "status": "PASS",
+      "evidence": "hovered <SELECT> 'All documentsround2-live' at (365, 278)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/annotations/0003_annotation-filters_hover.png",
+      "duration_ms": 1227,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='annotation-queue:filter:document'], 44x44)",
+          "status": "PASS",
+          "evidence": "141x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='annotation-queue:filter:document'])",
+          "status": "PASS",
+          "evidence": "title='Filter annotation calls by document'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='annotation-queue:filter:document'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='ANNOTATION_QUEUE_FILTER_DOCUMENT'"
+        }
+      ]
+    },
+    {
+      "surface": "annotations",
+      "element": "annotation-filters",
+      "action": "hover",
+      "description": "Verify the reason filter",
+      "status": "PASS",
+      "evidence": "hovered <SELECT> 'All reasonsLow confidenceChar parity deficitResidualReviewer' at (512, 278)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/annotations/0004_annotation-filters_hover.png",
+      "duration_ms": 1220,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='annotation-queue:filter:reason'], 44x44)",
+          "status": "PASS",
+          "evidence": "140x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='annotation-queue:filter:reason'])",
+          "status": "PASS",
+          "evidence": "title='Filter annotation calls by reason'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='annotation-queue:filter:reason'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='ANNOTATION_QUEUE_FILTER_REASON'"
+        }
+      ]
+    },
+    {
+      "surface": "annotations",
+      "element": "annotation-filters",
+      "action": "hover",
+      "description": "Verify the kind filter",
+      "status": "PASS",
+      "evidence": "hovered <SELECT> 'All kindsBlockRegionPage' at (644, 278)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/annotations/0005_annotation-filters_hover.png",
+      "duration_ms": 1211,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='annotation-queue:filter:kind'], 44x44)",
+          "status": "PASS",
+          "evidence": "110x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='annotation-queue:filter:kind'])",
+          "status": "PASS",
+          "evidence": "title='Filter annotation calls by element kind'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='annotation-queue:filter:kind'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='ANNOTATION_QUEUE_FILTER_KIND'"
+        }
+      ]
+    },
+    {
+      "surface": "annotations",
+      "element": "annotation-filters",
+      "action": "click",
+      "description": "Toggle the live low-confidence reason filter",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> '17Low-confidence classification'",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/annotations/0006_annotation-filters_click.png",
+      "duration_ms": 1204,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='annotation-queue:reason:low_confidence'], 44x44)",
+          "status": "PASS",
+          "evidence": "379x45px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='annotation-queue:reason:low_confidence'])",
+          "status": "PASS",
+          "evidence": "title='Toggle Low-confidence classification filter'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='annotation-queue:reason:low_confidence'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='ANNOTATION_QUEUE_FILTER_REASON'"
+        }
+      ]
+    },
+    {
+      "surface": "annotations",
+      "element": "annotation-detail",
+      "action": "click",
+      "description": "Select a different live annotation row",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'round2-livePage 1 \u00b7 block \u00b7 BodyResidual Representations.In '",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/annotations/0007_annotation-detail_click.png",
+      "duration_ms": 1301,
+      "assertions": [
+        {
+          "check": "assert_aria([data-qid='annotation-queue:row:1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1'], aria-selected=true)",
+          "status": "PASS",
+          "evidence": "aria-selected='true' == 'true'"
+        },
+        {
+          "check": "assert_min_size([data-qid='annotation-queue:row:1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1'], 44x44)",
+          "status": "PASS",
+          "evidence": "671x82px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='annotation-queue:row:1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1'])",
+          "status": "PASS",
+          "evidence": "title='Inspect annotation call for round2-live page 1'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='annotation-queue:row:1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='ANNOTATION_QUEUE_SELECT_ROW'"
+        }
+      ]
+    },
+    {
+      "surface": "annotations",
+      "element": "annotation-detail",
+      "action": "click",
+      "description": "Move the selected annotation evidence label",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Body'",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/annotations/0008_annotation-detail_click.png",
+      "duration_ms": 1227,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='normalized-page-overlay:label:annotation-1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1'], 44x44)",
+          "status": "PASS",
+          "evidence": "44x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='normalized-page-overlay:label:annotation-1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1'])",
+          "status": "PASS",
+          "evidence": "title='Move label to the next anchored position'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='normalized-page-overlay:label:annotation-1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a-1-block-low_confidence-1'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='NORMALIZED_PAGE_OVERLAY_MOVE_LABEL'"
+        }
+      ]
+    },
+    {
+      "surface": "calibrate",
+      "element": "calibration-overview",
+      "action": "screenshot",
+      "description": "Capture the live blinded calibration workbench",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0001_calibration-overview_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0001_calibration-overview_screenshot.png",
+      "duration_ms": 921,
+      "assertions": []
+    },
+    {
+      "surface": "calibrate",
+      "element": "calibration-decision-controls",
+      "action": "type",
+      "description": "Enter a corrected element type",
+      "status": "PASS",
+      "evidence": "typed 'figure', value='figure'",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0002_calibration-decision-controls_type.png",
+      "duration_ms": 1222,
+      "assertions": [
+        {
+          "check": "assert_value([data-qid='calibrate:input:corrected-type'])",
+          "status": "PASS",
+          "evidence": "value='figure' == 'figure'"
+        },
+        {
+          "check": "assert_min_size([data-qid='calibrate:input:corrected-type'], 44x44)",
+          "status": "PASS",
+          "evidence": "396x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='calibrate:input:corrected-type'])",
+          "status": "PASS",
+          "evidence": "title='Enter the corrected element type'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='calibrate:input:corrected-type'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='CALIBRATE_SET_CORRECTED_TYPE'"
+        }
+      ]
+    },
+    {
+      "surface": "calibrate",
+      "element": "calibration-decision-controls",
+      "action": "click",
+      "description": "Move the calibration evidence label",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Body'",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0003_calibration-decision-controls_click.png",
+      "duration_ms": 1199,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='normalized-page-overlay:label:ab3fed9e734c1202'], 44x44)",
+          "status": "PASS",
+          "evidence": "44x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='normalized-page-overlay:label:ab3fed9e734c1202'])",
+          "status": "PASS",
+          "evidence": "title='Move label to the next anchored position'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='normalized-page-overlay:label:ab3fed9e734c1202'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='NORMALIZED_PAGE_OVERLAY_MOVE_LABEL'"
+        }
+      ]
+    },
+    {
+      "surface": "calibrate",
+      "element": "calibration-decision-controls",
+      "action": "hover",
+      "description": "Verify the Correct decision",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '1 Correct' at (1247, 484)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0004_calibration-decision-controls_hover.png",
+      "duration_ms": 1187,
+      "assertions": [
+        {
+          "check": "assert_enabled([data-qid='calibrate:decision:correct'])",
+          "status": "PASS",
+          "evidence": "enabled"
+        },
+        {
+          "check": "assert_min_size([data-qid='calibrate:decision:correct'], 44x44)",
+          "status": "PASS",
+          "evidence": "194x64px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='calibrate:decision:correct'])",
+          "status": "PASS",
+          "evidence": "title='Mark the current extraction as correct'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='calibrate:decision:correct'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='CALIBRATE_LABEL_CORRECT'"
+        }
+      ]
+    },
+    {
+      "surface": "calibrate",
+      "element": "calibration-decision-controls",
+      "action": "hover",
+      "description": "Verify the Wrong type decision after corrected-type input",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '2 Wrong type' at (1449, 484)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0005_calibration-decision-controls_hover.png",
+      "duration_ms": 1189,
+      "assertions": [
+        {
+          "check": "assert_enabled([data-qid='calibrate:decision:wrong-type'])",
+          "status": "PASS",
+          "evidence": "enabled"
+        },
+        {
+          "check": "assert_min_size([data-qid='calibrate:decision:wrong-type'], 44x44)",
+          "status": "PASS",
+          "evidence": "194x64px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='calibrate:decision:wrong-type'])",
+          "status": "PASS",
+          "evidence": "title='Mark the current extraction as the wrong type'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='calibrate:decision:wrong-type'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='CALIBRATE_LABEL_WRONG_TYPE'"
+        }
+      ]
+    },
+    {
+      "surface": "calibrate",
+      "element": "calibration-decision-controls",
+      "action": "hover",
+      "description": "Verify the Wrong bounds decision",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '3 Wrong bounds' at (1247, 484)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0006_calibration-decision-controls_hover.png",
+      "duration_ms": 1149,
+      "assertions": [
+        {
+          "check": "assert_enabled([data-qid='calibrate:decision:wrong-bounds'])",
+          "status": "PASS",
+          "evidence": "enabled"
+        },
+        {
+          "check": "assert_min_size([data-qid='calibrate:decision:wrong-bounds'], 44x44)",
+          "status": "PASS",
+          "evidence": "194x64px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='calibrate:decision:wrong-bounds'])",
+          "status": "PASS",
+          "evidence": "title='Mark the current extraction bounds as wrong'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='calibrate:decision:wrong-bounds'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='CALIBRATE_LABEL_WRONG_BOUNDS'"
+        }
+      ]
+    },
+    {
+      "surface": "calibrate",
+      "element": "calibration-decision-controls",
+      "action": "hover",
+      "description": "Verify the Not an element decision",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '4 Not an element' at (1449, 484)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0007_calibration-decision-controls_hover.png",
+      "duration_ms": 1146,
+      "assertions": [
+        {
+          "check": "assert_enabled([data-qid='calibrate:decision:not-element'])",
+          "status": "PASS",
+          "evidence": "enabled"
+        },
+        {
+          "check": "assert_min_size([data-qid='calibrate:decision:not-element'], 44x44)",
+          "status": "PASS",
+          "evidence": "194x64px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='calibrate:decision:not-element'])",
+          "status": "PASS",
+          "evidence": "title='Mark the current extraction as not an element'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='calibrate:decision:not-element'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='CALIBRATE_LABEL_NOT_ELEMENT'"
+        }
+      ]
+    },
+    {
+      "surface": "calibrate",
+      "element": "calibration-navigation",
+      "action": "hover",
+      "description": "Verify the disabled previous-item control for a one-row sample",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '' at (1172, 852)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0008_calibration-navigation_hover.png",
+      "duration_ms": 1203,
+      "assertions": [
+        {
+          "check": "assert_disabled([data-qid='calibrate:navigation:previous'])",
+          "status": "PASS",
+          "evidence": "disabled"
+        },
+        {
+          "check": "assert_min_size([data-qid='calibrate:navigation:previous'], 44x44)",
+          "status": "PASS",
+          "evidence": "44x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='calibrate:navigation:previous'])",
+          "status": "PASS",
+          "evidence": "title='Go to the previous calibration item'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='calibrate:navigation:previous'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='CALIBRATE_PREVIOUS_ITEM'"
+        }
+      ]
+    },
+    {
+      "surface": "calibrate",
+      "element": "calibration-navigation",
+      "action": "hover",
+      "description": "Verify the disabled next-item control for a one-row sample",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> '' at (1256, 852)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0009_calibration-navigation_hover.png",
+      "duration_ms": 1188,
+      "assertions": [
+        {
+          "check": "assert_disabled([data-qid='calibrate:navigation:next'])",
+          "status": "PASS",
+          "evidence": "disabled"
+        },
+        {
+          "check": "assert_min_size([data-qid='calibrate:navigation:next'], 44x44)",
+          "status": "PASS",
+          "evidence": "44x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='calibrate:navigation:next'])",
+          "status": "PASS",
+          "evidence": "title='Go to the next calibration item'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='calibrate:navigation:next'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='CALIBRATE_NEXT_ITEM'"
+        }
+      ]
+    },
+    {
+      "surface": "calibrate",
+      "element": "calibration-navigation",
+      "action": "hover",
+      "description": "Verify export remains disabled before any labels are written",
+      "status": "PASS",
+      "evidence": "hovered <BUTTON> ' Export labels_v1.jsonl' at (1465, 852)",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/calibrate/0010_calibration-navigation_hover.png",
+      "duration_ms": 1167,
+      "assertions": [
+        {
+          "check": "assert_disabled([data-qid='calibrate:export:labels'])",
+          "status": "PASS",
+          "evidence": "disabled"
+        },
+        {
+          "check": "assert_min_size([data-qid='calibrate:export:labels'], 44x44)",
+          "status": "PASS",
+          "evidence": "162x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='calibrate:export:labels'])",
+          "status": "PASS",
+          "evidence": "title='Export calibration labels as labels_v1.jsonl'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='calibrate:export:labels'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='CALIBRATE_EXPORT_LABELS'"
+        }
+      ]
+    },
+    {
+      "surface": "evidence",
+      "element": "retrieval-overview",
+      "action": "screenshot",
+      "description": "Capture the live traceable retrieval evidence view",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/evidence/0001_retrieval-overview_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/evidence/0001_retrieval-overview_screenshot.png",
+      "duration_ms": 764,
+      "assertions": []
+    },
+    {
+      "surface": "evidence",
+      "element": "retrieval-evidence-controls",
+      "action": "click",
+      "description": "Move the retrieval source-element label",
+      "status": "PASS",
+      "evidence": "clicked <BUTTON> 'Body'",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/evidence/0002_retrieval-evidence-controls_click.png",
+      "duration_ms": 976,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='normalized-page-overlay:label:evidence-6b42bcd6dc407b7e9542a7dde41d2b8a'], 44x44)",
+          "status": "PASS",
+          "evidence": "44x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='normalized-page-overlay:label:evidence-6b42bcd6dc407b7e9542a7dde41d2b8a'])",
+          "status": "PASS",
+          "evidence": "title='Move label to the next anchored position'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='normalized-page-overlay:label:evidence-6b42bcd6dc407b7e9542a7dde41d2b8a'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='NORMALIZED_PAGE_OVERLAY_MOVE_LABEL'"
+        }
+      ]
+    },
+    {
+      "surface": "evidence",
+      "element": "retrieval-evidence-controls",
+      "action": "click",
+      "description": "Expand the extracted-text provenance detail",
+      "status": "PASS",
+      "evidence": "clicked <SUMMARY> 'Extracted text'",
+      "screenshot": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/ux_competition/round5/captures/final/evidence/0003_retrieval-evidence-controls_click.png",
+      "duration_ms": 1133,
+      "assertions": [
+        {
+          "check": "assert_min_size([data-qid='retrieval-evidence:excerpt:6b42bcd6dc407b7e9542a7dde41d2b8a'], 44x44)",
+          "status": "PASS",
+          "evidence": "1509x44px >= 44x44px"
+        },
+        {
+          "check": "assert_title([data-qid='retrieval-evidence:excerpt:6b42bcd6dc407b7e9542a7dde41d2b8a'])",
+          "status": "PASS",
+          "evidence": "title='Show or hide extracted text for 6b42bcd6dc407b7e9542a7dde41d2b8a'"
+        },
+        {
+          "check": "assert_qs_action([data-qid='retrieval-evidence:excerpt:6b42bcd6dc407b7e9542a7dde41d2b8a'])",
+          "status": "PASS",
+          "evidence": "data-qs-action='RETRIEVAL_EVIDENCE_TOGGLE_EXCERPT'"
+        }
+      ]
+    }
+  ]
+}

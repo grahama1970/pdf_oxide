@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { bboxStyle, type BboxXywh, type PageImageRef } from '../../adapters/pageImageRefs'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 
 export type LabelAnchor = 'top-outside' | 'top-inside' | 'bottom-inside' | 'bottom-outside'
 
@@ -23,6 +24,7 @@ export interface NormalizedPageOverlayProps {
   alt?: string
   imageTestId?: string
   overlayTestId?: string
+  actionQualifier?: string
   compact?: boolean
 }
 
@@ -34,8 +36,20 @@ export function NormalizedPageOverlay({
   alt,
   imageTestId = 'page-image',
   overlayTestId = 'bbox-overlay',
+  actionQualifier,
   compact = false,
 }: NormalizedPageOverlayProps) {
+  const qualifier = (actionQualifier ?? pageImage.sha256.slice(0, 16))
+    .trim()
+    .replace(/[^a-zA-Z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'unknown'
+  const labelQid = `normalized-page-overlay:label:${qualifier}`
+  useRegisterAction(labelQid, {
+    app: 'pdf-lab',
+    action: 'NORMALIZED_PAGE_OVERLAY_MOVE_LABEL',
+    label: 'Move evidence label',
+    description: 'Move the evidence label to the next anchored position around its normalized bounds',
+  })
   const [anchor, setAnchor] = useState<LabelAnchor>(labelAnchor)
   const [imageError, setImageError] = useState(false)
 
@@ -78,6 +92,8 @@ export function NormalizedPageOverlay({
                 className={`pdf-verify-page__tag is-${anchor}`}
                 onClick={() => setAnchor((current) => nextAnchor(current))}
                 title="Move label to the next anchored position"
+                data-qid={labelQid}
+                data-qs-action="NORMALIZED_PAGE_OVERLAY_MOVE_LABEL"
               >
                 {label}
               </button>

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "app": "PDF Lab",
+  "base_url": "http://127.0.0.1:3013/#pdf-lab/calibrate?sample=/artifacts/pdf-lab/round2-live/calibration/sample_v1.jsonl&pageImages=/artifacts/pdf-lab/round2-live/calibration/page_images_v1.json",
+  "surfaces": [
+    {
+      "name": "main",
+      "path": "/",
+      "elements": [
+        {
+          "name": "full-page",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Full page of http://127.0.0.1:3013/#pdf-lab/calibrate?sample=/artifacts/pdf-lab/round2-live/calibration/sample_v1.jsonl&pageImages=/artifacts/pdf-lab/round2-live/calibration/page_images_v1.json"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -19,6 +19,7 @@ import {
   type PageImageIndex,
   type PageImageRef,
 } from '../../adapters/pageImageRefs'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 import { NormalizedPageOverlay } from '../verification/NormalizedPageOverlay'
 import '../verification/VerificationUx.css'
 
@@ -33,6 +34,10 @@ export interface AnnotationQueueRouteProps {
 const DEFAULT_CALLS_URL = '/artifacts/pdf-lab/annotation_call.json'
 const ROW_HEIGHT = 82
 const OVERSCAN = 8
+
+function qidQualifier(value: string): string {
+  return value.trim().replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || 'unknown'
+}
 
 function asRecord(value: unknown): Record<string, unknown> | null {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
@@ -95,6 +100,46 @@ interface VirtualRowsProps {
   onSelect: (item: AnnotationQueueItem) => void
 }
 
+interface AnnotationRowProps {
+  item: AnnotationQueueItem
+  rowIndex: number
+  selected: boolean
+  onSelect: (item: AnnotationQueueItem) => void
+}
+
+function AnnotationRow({ item, rowIndex, selected, onSelect }: AnnotationRowProps) {
+  const qid = `annotation-queue:row:${qidQualifier(item.id)}`
+  useRegisterAction(qid, {
+    app: 'pdf-lab',
+    action: 'ANNOTATION_QUEUE_SELECT_ROW',
+    label: `Select ${item.documentId} page ${item.page}`,
+    description: 'Select an annotation call and show its extraction evidence in the detail inspector',
+  })
+
+  return (
+    <button
+      type="button"
+      role="option"
+      aria-selected={selected}
+      data-testid="annotation-row"
+      data-qid={qid}
+      data-qs-action="ANNOTATION_QUEUE_SELECT_ROW"
+      title={`Inspect annotation call for ${item.documentId} page ${item.page}`}
+      className={`pdf-verify-annotation-row ${selected ? 'is-selected' : ''}`}
+      style={{ transform: `translateY(${rowIndex * ROW_HEIGHT}px)`, height: ROW_HEIGHT }}
+      onClick={() => onSelect(item)}
+    >
+      <span className={`pdf-verify-reason-dot is-${item.reason}`} aria-hidden="true" />
+      <span className="pdf-verify-annotation-row__body">
+        <strong>{item.documentId}</strong>
+        <em>Page {item.page} · {item.kind}{item.currentType ? ` · ${item.currentType}` : ''}</em>
+        <small>{item.textExcerpt || annotationReasonLabel(item.reason)}</small>
+      </span>
+      <ChevronRight aria-hidden="true" />
+    </button>
+  )
+}
+
 function VirtualRows({ rows, selectedId, onSelect }: VirtualRowsProps) {
   const [scrollTop, setScrollTop] = useState(0)
   const viewportRef = useRef<HTMLDivElement>(null)
@@ -123,28 +168,50 @@ function VirtualRows({ rows, selectedId, onSelect }: VirtualRowsProps) {
         {visible.map((item, offset) => {
           const rowIndex = start + offset
           return (
-            <button
-              type="button"
-              role="option"
-              aria-selected={selectedId === item.id}
-              data-testid="annotation-row"
+            <AnnotationRow
               key={item.id}
-              className={`pdf-verify-annotation-row ${selectedId === item.id ? 'is-selected' : ''}`}
-              style={{ transform: `translateY(${rowIndex * ROW_HEIGHT}px)`, height: ROW_HEIGHT }}
-              onClick={() => onSelect(item)}
-            >
-              <span className={`pdf-verify-reason-dot is-${item.reason}`} aria-hidden="true" />
-              <span className="pdf-verify-annotation-row__body">
-                <strong>{item.documentId}</strong>
-                <em>Page {item.page} · {item.kind}{item.currentType ? ` · ${item.currentType}` : ''}</em>
-                <small>{item.textExcerpt || annotationReasonLabel(item.reason)}</small>
-              </span>
-              <ChevronRight aria-hidden="true" />
-            </button>
+              item={item}
+              rowIndex={rowIndex}
+              selected={selectedId === item.id}
+              onSelect={onSelect}
+            />
           )
         })}
       </div>
     </div>
+  )
+}
+
+interface ReasonFilterButtonProps {
+  active: boolean
+  count: number
+  onToggle: () => void
+  reason: AnnotationReason
+}
+
+function ReasonFilterButton({ active, count, onToggle, reason }: ReasonFilterButtonProps) {
+  const qid = `annotation-queue:reason:${qidQualifier(reason)}`
+  const label = annotationReasonLabel(reason)
+  useRegisterAction(qid, {
+    app: 'pdf-lab',
+    action: 'ANNOTATION_QUEUE_FILTER_REASON',
+    label: `Filter by ${label}`,
+    description: `Toggle the ${label} annotation reason filter`,
+  })
+
+  return (
+    <button
+      type="button"
+      className={active ? 'is-active' : ''}
+      onClick={onToggle}
+      data-qid={qid}
+      data-qs-action="ANNOTATION_QUEUE_FILTER_REASON"
+      title={`Toggle ${label} filter`}
+    >
+      <span className={`pdf-verify-reason-dot is-${reason}`} />
+      <strong>{count.toLocaleString()}</strong>
+      <em>{label}</em>
+    </button>
   )
 }
 
@@ -155,6 +222,30 @@ export function AnnotationQueueRoute({
   initialPageImageIndex,
   fetchImpl = fetch,
 }: AnnotationQueueRouteProps) {
+  useRegisterAction('annotation-queue:search:query', {
+    app: 'pdf-lab',
+    action: 'ANNOTATION_QUEUE_SEARCH',
+    label: 'Search annotation calls',
+    description: 'Filter annotation calls by page, type, reason, or extracted text',
+  })
+  useRegisterAction('annotation-queue:filter:document', {
+    app: 'pdf-lab',
+    action: 'ANNOTATION_QUEUE_FILTER_DOCUMENT',
+    label: 'Filter by document',
+    description: 'Show annotation calls for one source document',
+  })
+  useRegisterAction('annotation-queue:filter:reason', {
+    app: 'pdf-lab',
+    action: 'ANNOTATION_QUEUE_FILTER_REASON',
+    label: 'Filter by reason',
+    description: 'Show annotation calls for one engine-raised reason',
+  })
+  useRegisterAction('annotation-queue:filter:kind', {
+    app: 'pdf-lab',
+    action: 'ANNOTATION_QUEUE_FILTER_KIND',
+    label: 'Filter by element kind',
+    description: 'Show annotation calls for block, region, or page elements',
+  })
   const [calls, setCalls] = useState<NormalizedAnnotationCall[]>(initialCalls ? [...initialCalls] : [])
   const [pageImages, setPageImages] = useState<PageImageIndex | null>(initialPageImageIndex ?? null)
   const [loading, setLoading] = useState(!initialCalls)
@@ -263,16 +354,13 @@ export function AnnotationQueueRoute({
 
       <section className="pdf-verify-reason-strip" aria-label="Reason counts">
         {([...reasonCounts.entries()] as Array<[AnnotationReason, number]>).map(([reason, count]) => (
-          <button
-            type="button"
+          <ReasonFilterButton
             key={reason}
-            className={reasonFilter === reason ? 'is-active' : ''}
-            onClick={() => setReasonFilter((current) => current === reason ? '*' : reason)}
-          >
-            <span className={`pdf-verify-reason-dot is-${reason}`} />
-            <strong>{count.toLocaleString()}</strong>
-            <em>{annotationReasonLabel(reason)}</em>
-          </button>
+            reason={reason}
+            count={count}
+            active={reasonFilter === reason}
+            onToggle={() => setReasonFilter((current) => current === reason ? '*' : reason)}
+          />
         ))}
       </section>
 
@@ -281,17 +369,38 @@ export function AnnotationQueueRoute({
           <div className="pdf-verify-filters">
             <label className="pdf-verify-search">
               <Search aria-hidden="true" />
-              <input value={searchText} onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchText(event.target.value)} placeholder="Search page, type, or excerpt" />
+              <input
+                value={searchText}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchText(event.target.value)}
+                placeholder="Search page, type, or excerpt"
+                data-qid="annotation-queue:search:query"
+                data-qs-action="ANNOTATION_QUEUE_SEARCH"
+                title="Search annotation calls"
+              />
             </label>
             <label>
               <Filter aria-hidden="true" />
-              <select value={documentFilter} onChange={(event: ChangeEvent<HTMLSelectElement>) => setDocumentFilter(event.target.value)} aria-label="Filter by document">
+              <select
+                value={documentFilter}
+                onChange={(event: ChangeEvent<HTMLSelectElement>) => setDocumentFilter(event.target.value)}
+                aria-label="Filter by document"
+                data-qid="annotation-queue:filter:document"
+                data-qs-action="ANNOTATION_QUEUE_FILTER_DOCUMENT"
+                title="Filter annotation calls by document"
+              >
                 <option value="*">All documents</option>
                 {documents.map((document) => <option key={document} value={document}>{document}</option>)}
               </select>
             </label>
             <label>
-              <select value={reasonFilter} onChange={(event: ChangeEvent<HTMLSelectElement>) => setReasonFilter(event.target.value as '*' | AnnotationReason)} aria-label="Filter by reason">
+              <select
+                value={reasonFilter}
+                onChange={(event: ChangeEvent<HTMLSelectElement>) => setReasonFilter(event.target.value as '*' | AnnotationReason)}
+                aria-label="Filter by reason"
+                data-qid="annotation-queue:filter:reason"
+                data-qs-action="ANNOTATION_QUEUE_FILTER_REASON"
+                title="Filter annotation calls by reason"
+              >
                 <option value="*">All reasons</option>
                 <option value="low_confidence">Low confidence</option>
                 <option value="char_parity_deficit">Char parity deficit</option>
@@ -300,7 +409,14 @@ export function AnnotationQueueRoute({
               </select>
             </label>
             <label>
-              <select value={kindFilter} onChange={(event: ChangeEvent<HTMLSelectElement>) => setKindFilter(event.target.value as '*' | AnnotationKind)} aria-label="Filter by kind">
+              <select
+                value={kindFilter}
+                onChange={(event: ChangeEvent<HTMLSelectElement>) => setKindFilter(event.target.value as '*' | AnnotationKind)}
+                aria-label="Filter by kind"
+                data-qid="annotation-queue:filter:kind"
+                data-qs-action="ANNOTATION_QUEUE_FILTER_KIND"
+                title="Filter annotation calls by element kind"
+              >
                 <option value="*">All kinds</option>
                 <option value="block">Block</option>
                 <option value="region">Region</option>
@@ -336,6 +452,7 @@ export function AnnotationQueueRoute({
                   bbox={bbox}
                   label={selected.currentType || selected.kind}
                   alt={`Original PDF page ${selected.page} for annotation call`}
+                  actionQualifier={`annotation-${qidQualifier(selected.id)}`}
                   compact
                 />
               ) : (

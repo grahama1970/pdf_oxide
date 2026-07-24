@@ -10,6 +10,7 @@ import {
   type PageImageRef,
 } from '../../adapters/pageImageRefs'
 import { normalizeSectionTree, sectionForElement, type SectionTree } from '../../adapters/sectionTree'
+import { useRegisterAction } from '../../hooks/useRegisterAction'
 import { NormalizedPageOverlay } from '../verification/NormalizedPageOverlay'
 import '../verification/VerificationUx.css'
 
@@ -157,6 +158,75 @@ function formatBbox(bbox: BboxXywh | undefined): string {
   return bbox ? `[${bbox.map((value) => value.toFixed(4)).join(', ')}]` : '(page-level evidence)'
 }
 
+function qidQualifier(value: string): string {
+  return value.trim().replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || 'unknown'
+}
+
+function RetrievalEvidenceCard({ item }: { item: RetrievalEvidenceItem }) {
+  const qualifier = qidQualifier(item.elementId)
+  const excerptQid = `retrieval-evidence:excerpt:${qualifier}`
+  useRegisterAction(excerptQid, {
+    app: 'pdf-lab',
+    action: 'RETRIEVAL_EVIDENCE_TOGGLE_EXCERPT',
+    label: `Toggle extracted text for ${item.elementId}`,
+    description: 'Expand or collapse the extracted source text attached to this provenance chain',
+  })
+
+  return (
+    <article className="pdf-verify-evidence-card">
+      <header>
+        <div>
+          <span>{item.type}</span>
+          <strong>{item.elementId}</strong>
+        </div>
+        <em>Page {item.page}</em>
+      </header>
+
+      <nav data-testid="section-breadcrumb" className="pdf-verify-breadcrumb is-compact" aria-label={`Section path for ${item.elementId}`}>
+        {item.sectionPath.map((part, index) => (
+          <span key={`${item.elementId}-${part}-${index}`}>
+            {index > 0 && <i aria-hidden="true">›</i>}
+            {part}
+          </span>
+        ))}
+      </nav>
+
+      {item.pageImages.map((pageImage) => (
+        <NormalizedPageOverlay
+          key={pageImage.sha256}
+          pageImage={pageImage}
+          bbox={item.bbox}
+          label={item.type}
+          alt={`Original PDF page ${item.page} supporting element ${item.elementId}`}
+          actionQualifier={`evidence-${qualifier}`}
+          compact
+        />
+      ))}
+
+      <ol className="pdf-verify-provenance" data-testid="provenance-chain" aria-label={`Provenance chain for ${item.elementId}`}>
+        <li><span>PDF</span><code>{item.pdfSha256}</code></li>
+        <li><span>Page</span><code>{item.page}</code></li>
+        <li><span>Bounds</span><code>{formatBbox(item.bbox)}</code></li>
+        <li><span>Element</span><code>{item.elementId}</code></li>
+        {item.sectionId && <li><span>Section</span><code>{item.sectionId}</code></li>}
+      </ol>
+
+      {item.text && (
+        <details className="pdf-verify-excerpt">
+          <summary
+            data-qid={excerptQid}
+            data-qs-action="RETRIEVAL_EVIDENCE_TOGGLE_EXCERPT"
+            title={`Show or hide extracted text for ${item.elementId}`}
+          >
+            Extracted text
+          </summary>
+          <p>{item.text}</p>
+        </details>
+      )}
+    </article>
+  )
+}
+
 export function RetrievalEvidenceView({ result, pageImageIndex, sectionTree }: RetrievalEvidenceViewProps) {
   const normalized = useMemo(() => {
     try {
@@ -205,50 +275,7 @@ export function RetrievalEvidenceView({ result, pageImageIndex, sectionTree }: R
 
       <section className="pdf-verify-evidence-grid" aria-label="Source evidence">
         {answer.evidence.map((item) => (
-          <article className="pdf-verify-evidence-card" key={item.elementId}>
-            <header>
-              <div>
-                <span>{item.type}</span>
-                <strong>{item.elementId}</strong>
-              </div>
-              <em>Page {item.page}</em>
-            </header>
-
-            <nav data-testid="section-breadcrumb" className="pdf-verify-breadcrumb is-compact" aria-label={`Section path for ${item.elementId}`}>
-              {item.sectionPath.map((part, index) => (
-                <span key={`${item.elementId}-${part}-${index}`}>
-                  {index > 0 && <i aria-hidden="true">›</i>}
-                  {part}
-                </span>
-              ))}
-            </nav>
-
-            {item.pageImages.map((pageImage) => (
-              <NormalizedPageOverlay
-                key={pageImage.sha256}
-                pageImage={pageImage}
-                bbox={item.bbox}
-                label={item.type}
-                alt={`Original PDF page ${item.page} supporting element ${item.elementId}`}
-                compact
-              />
-            ))}
-
-            <ol className="pdf-verify-provenance" data-testid="provenance-chain" aria-label={`Provenance chain for ${item.elementId}`}>
-              <li><span>PDF</span><code>{item.pdfSha256}</code></li>
-              <li><span>Page</span><code>{item.page}</code></li>
-              <li><span>Bounds</span><code>{formatBbox(item.bbox)}</code></li>
-              <li><span>Element</span><code>{item.elementId}</code></li>
-              {item.sectionId && <li><span>Section</span><code>{item.sectionId}</code></li>}
-            </ol>
-
-            {item.text && (
-              <details className="pdf-verify-excerpt">
-                <summary>Extracted text</summary>
-                <p>{item.text}</p>
-              </details>
-            )}
-          </article>
+          <RetrievalEvidenceCard key={item.elementId} item={item} />
         ))}
       </section>
     </main>
