@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pdf-oxide.local/contracts/annotation_decision_event_v1.schema.json",
+  "title": "PDF Oxide annotation decision event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "event_id",
+    "idempotency_key",
+    "item_id",
+    "item_sha256",
+    "call_sha256",
+    "decision",
+    "ts",
+    "request_sha256"
+  ],
+  "properties": {
+    "schema": { "const": "pdf_oxide.annotation_decision_event.v1" },
+    "event_id": { "$ref": "#/$defs/sha256" },
+    "idempotency_key": { "type": "string", "minLength": 8, "maxLength": 200 },
+    "item_id": { "type": "string", "minLength": 1 },
+    "item_sha256": { "$ref": "#/$defs/sha256" },
+    "call_sha256": { "$ref": "#/$defs/sha256" },
+    "decision": { "enum": ["accept", "defer", "correct_type", "correct_bounds"] },
+    "corrected_type": { "$ref": "#/$defs/element_type" },
+    "corrected_bounds": { "$ref": "bbox_space_v1.schema.json#/$defs/pdf_xywh" },
+    "bbox_space": { "const": "pdf_points_bottom_left_xywh" },
+    "revision_of": { "$ref": "#/$defs/sha256" },
+    "ts": { "type": "string", "format": "date-time" },
+    "request_sha256": { "$ref": "#/$defs/sha256" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "decision": { "const": "correct_type" } } },
+      "then": { "required": ["corrected_type"] },
+      "else": { "not": { "required": ["corrected_type"] } }
+    },
+    {
+      "if": { "properties": { "decision": { "const": "correct_bounds" } } },
+      "then": { "required": ["corrected_bounds", "bbox_space"] },
+      "else": {
+        "not": {
+          "anyOf": [{ "required": ["corrected_bounds"] }, { "required": ["bbox_space"] }]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "element_type": {
+      "enum": [
+        "Body",
+        "Caption",
+        "Code",
+        "Equation",
+        "Figure",
+        "Footnote",
+        "Form",
+        "Header",
+        "List",
+        "Reference",
+        "Section",
+        "Subtitle",
+        "Table",
+        "Title",
+        "block",
+        "page",
+        "region"
+      ]
+    }
+  }
+}

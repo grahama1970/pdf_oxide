@@ -32,8 +32,26 @@ export interface RetrievalEvidenceItemInput {
 
 export interface RetrievalAnswerInput {
   answer: string
+  schema?: string
+  section_id?: string
   pdf_sha256?: string
   section_path?: string[] | string
+  vector_provenance?: unknown
+  evidence_groups?: Array<{
+    page: number
+    page_image: {
+      href: string
+      sha256: string
+      byte_sha256?: string
+      verified: boolean
+      width?: number
+      height?: number
+    }
+    evidence: Array<Omit<RetrievalEvidenceItemInput, 'page'> & {
+      page?: number
+      overlay_number: number
+    }>
+  }>
   evidence?: RetrievalEvidenceItemInput[]
   citations?: RetrievalEvidenceItemInput[]
   elements?: RetrievalEvidenceItemInput[]
@@ -41,6 +59,7 @@ export interface RetrievalAnswerInput {
 }
 
 export interface RetrievalEvidenceItem {
+  overlayNumber: number
   elementId: string
   type: string
   page: number
@@ -57,6 +76,11 @@ export interface NormalizedRetrievalAnswer {
   pdfSha256: string
   sectionPath: readonly string[]
   evidence: readonly RetrievalEvidenceItem[]
+  evidenceGroups: readonly {
+    page: number
+    pageImage: PageImageRef
+    evidence: readonly RetrievalEvidenceItem[]
+  }[]
 }
 
 export interface RetrievalEvidenceViewProps {
@@ -95,6 +119,74 @@ export function normalizeRetrievalEvidence(
 ): NormalizedRetrievalAnswer {
   const answer = asString(result.answer)
   if (!answer) throw new Error('retrieval answer text is required')
+  if (Array.isArray(result.answers) || Array.isArray(result.alternatives) || Array.isArray(result.ranked_answers)) {
+    throw new Error('retrieval contract permits exactly one answer')
+  }
+  if (Array.isArray(result.evidence_groups)) {
+    if (result.schema !== 'pdf_oxide.retrieval_answer.v1') throw new Error('unsupported retrieval answer schema')
+    const resultPdfSha = normalizePdfSha(result.pdf_sha256)
+    const topLevelPath = normalizePath(result.section_path)
+    const sectionId = asString(result.section_id)
+    if (!sectionId || topLevelPath.length === 0) throw new Error('retrieval answer requires exact section binding')
+    if (result.evidence_groups.length === 0) throw new Error('retrieval answer has no evidence groups')
+    const pages = new Set<number>()
+    const evidenceGroups = result.evidence_groups.map((group, groupIndex) => {
+      const page = Number(group.page)
+      if (!Number.isInteger(page) || page < 0 || pages.has(page)) {
+        throw new Error(`evidence_groups[${groupIndex}] page must be unique and non-negative`)
+      }
+      pages.add(page)
+      const image = group.page_image
+      if (!image || image.verified !== true) throw new Error(`evidence_groups[${groupIndex}] lacks a verified page image`)
+      const imageSha = normalizePdfSha(image.sha256)
+      const href = asString(image.href)
+      if (!href) throw new Error(`evidence_groups[${groupIndex}] page image href is required`)
+      const pageImage: PageImageRef = {
+        sha256: imageSha,
+        filename: href.split('/').pop() ?? `${imageSha}.png`,
+        href,
+        mimeType: 'image/png',
+        page,
+        width: image.width,
+        height: image.height,
+        pdfSha256: resultPdfSha,
+      }
+      const overlayNumbers = new Set<number>()
+      const evidence = group.evidence.map((row, index): RetrievalEvidenceItem => {
+        const overlayNumber = Number(row.overlay_number)
+        if (!Number.isInteger(overlayNumber) || overlayNumber < 1 || overlayNumbers.has(overlayNumber)) {
+          throw new Error(`evidence_groups[${groupIndex}].evidence[${index}] overlay number is invalid`)
+        }
+        overlayNumbers.add(overlayNumber)
+        const elementId = asString(row.element_id ?? row.id)
+        if (!elementId) throw new Error(`evidence_groups[${groupIndex}].evidence[${index}] is missing element id`)
+        const rowSectionId = asString(row.section_id)
+        const rowSectionPath = normalizePath(row.section_path)
+        if (!rowSectionId || rowSectionPath.length === 0) throw new Error(`evidence ${elementId} lacks exact section binding`)
+        return {
+          overlayNumber,
+          elementId,
+          type: asString(row.type) ?? 'element',
+          page,
+          bbox: normalizeBboxXyxy(row.bbox, pageImage),
+          pdfSha256: resultPdfSha,
+          sectionId: rowSectionId,
+          sectionPath: rowSectionPath,
+          text: asString(row.text ?? row.excerpt),
+          pageImages: [pageImage],
+        }
+      })
+      if (evidence.length === 0) throw new Error(`evidence_groups[${groupIndex}] contains no evidence`)
+      return { page, pageImage, evidence }
+    })
+    return {
+      answer,
+      pdfSha256: resultPdfSha,
+      sectionPath: topLevelPath,
+      evidence: evidenceGroups.flatMap((group) => group.evidence),
+      evidenceGroups,
+    }
+  }
   const rows = evidenceRows(result)
   if (rows.length === 0) throw new Error('retrieval contract violation: answer has no evidence elements')
   const resultPdfSha = normalizePdfSha(result.pdf_sha256 ?? rows[0]?.pdf_sha256 ?? sectionTree?.pdfSha256)
@@ -127,6 +219,7 @@ export function normalizeRetrievalEvidence(
     if (finalPath.length === 0) throw new Error(`evidence[${index}] is missing section_path`)
 
     return {
+      overlayNumber: index + 1,
       elementId,
       type: asString(row.type) ?? 'element',
       page,
@@ -139,11 +232,24 @@ export function normalizeRetrievalEvidence(
     }
   })
 
+  const grouped = new Map<string, RetrievalEvidenceItem[]>()
+  for (const item of evidence) {
+    const key = `${item.page}:${item.pageImages[0].sha256}`
+    const items = grouped.get(key) ?? []
+    items.push(item)
+    grouped.set(key, items)
+  }
   return {
     answer,
     pdfSha256: resultPdfSha,
     sectionPath: topLevelPath.length > 0 ? topLevelPath : evidence[0].sectionPath,
     evidence,
+    evidenceGroups: [...grouped.values()]
+      .map((items) => ({
+        page: items[0].page,
+        pageImage: items[0].pageImages[0],
+        evidence: items,
+      })),
   }
 }
 
@@ -192,18 +298,6 @@ function RetrievalEvidenceCard({ item }: { item: RetrievalEvidenceItem }) {
         ))}
       </nav>
 
-      {item.pageImages.map((pageImage) => (
-        <NormalizedPageOverlay
-          key={pageImage.sha256}
-          pageImage={pageImage}
-          bbox={item.bbox}
-          label={item.type}
-          alt={`Original PDF page ${item.page} supporting element ${item.elementId}`}
-          actionQualifier={`evidence-${qualifier}`}
-          compact
-        />
-      ))}
-
       <ol className="pdf-verify-provenance" data-testid="provenance-chain" aria-label={`Provenance chain for ${item.elementId}`}>
         <li><span>PDF</span><code>{item.pdfSha256}</code></li>
         <li><span>Page</span><code>{item.page}</code></li>
@@ -225,6 +319,31 @@ function RetrievalEvidenceCard({ item }: { item: RetrievalEvidenceItem }) {
         </details>
       )}
     </article>
+  )
+}
+
+function RetrievalEvidenceGroup({
+  group,
+}: {
+  group: NormalizedRetrievalAnswer['evidenceGroups'][number]
+}) {
+  return (
+    <section className="pdf-verify-evidence-group" data-testid="evidence-group">
+      <NormalizedPageOverlay
+        pageImage={group.pageImage}
+        overlays={group.evidence.flatMap((item) => item.bbox
+          ? [{ bbox: item.bbox, label: String(item.overlayNumber) }]
+          : [])}
+        alt={`Original PDF page ${group.page} supporting ${group.evidence.length} evidence items`}
+        actionQualifier={`evidence-page-${group.page}`}
+        compact
+      />
+      <div className="pdf-verify-evidence-grid">
+        {group.evidence.map((item) => (
+          <RetrievalEvidenceCard key={item.elementId} item={item} />
+        ))}
+      </div>
+    </section>
   )
 }
 
@@ -280,9 +399,9 @@ export function RetrievalEvidenceView({
         <p>{answer.answer}</p>
       </article>
 
-      <section className="pdf-verify-evidence-grid" aria-label="Source evidence">
-        {answer.evidence.map((item) => (
-          <RetrievalEvidenceCard key={item.elementId} item={item} />
+      <section aria-label="Source evidence">
+        {answer.evidenceGroups.map((group) => (
+          <RetrievalEvidenceGroup key={`${group.page}:${group.pageImage.sha256}`} group={group} />
         ))}
       </section>
     </main>

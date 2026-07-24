@@ -1,0 +1,20 @@
+{
+  "schema": "pdf_oxide.document_mount_manifest.v1",
+  "documents": [
+    {
+      "doc_id": "NASA_SP-2016-6105",
+      "pdf_path": "/mnt/storage12tb/extractor_corpus/engineering/12 NASA_SP-2016-6105 Rev 2.pdf",
+      "pdf_sha256": "b8e28d127226e12fa758cd90ecdd1d0831fe4db20647d0fb5c1fc6e40f4c9657"
+    },
+    {
+      "doc_id": "NIST.SP.800-53Ar5",
+      "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53Ar5.pdf",
+      "pdf_sha256": "75665570048b969ad465a4f4f1db425ce505c374951c2c64e462949c6b21be47"
+    },
+    {
+      "doc_id": "NIST_SP_800-53r5",
+      "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+      "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pdf-oxide.local/contracts/page_image_manifest_v1.schema.json",
+  "title": "PDF Oxide page image manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "content_sha256",
+    "byte_sha256",
+    "pdf_sha256",
+    "page",
+    "crop_box",
+    "rotation",
+    "dpi",
+    "pixel_width",
+    "pixel_height",
+    "renderer_version",
+    "filename"
+  ],
+  "properties": {
+    "schema": { "const": "pdf_oxide.page_image_manifest.v1" },
+    "content_sha256": { "$ref": "#/$defs/sha256" },
+    "byte_sha256": { "$ref": "#/$defs/sha256" },
+    "pdf_sha256": { "$ref": "#/$defs/sha256" },
+    "page": { "type": "integer", "minimum": 0 },
+    "crop_box": { "$ref": "bbox_space_v1.schema.json#/$defs/pdf_xywh" },
+    "rotation": { "enum": [0, 90, 180, 270] },
+    "dpi": { "type": "integer", "minimum": 1 },
+    "pixel_width": { "type": "integer", "minimum": 1 },
+    "pixel_height": { "type": "integer", "minimum": 1 },
+    "renderer_version": { "type": "string", "minLength": 1 },
+    "filename": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}\\.png$"
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

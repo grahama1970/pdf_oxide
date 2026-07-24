@@ -10,6 +10,21 @@ import {
   assertCalibrationPageImageIndex,
 } from '../src/adapters/pageImageRefs'
 import { nearestArtifactMount } from '../src/adapters/artifactMountPairing'
+import {
+  ContractError,
+  appendAnnotationDecision,
+  appendCalibrationEvent,
+  appendTimingEvent,
+  getAnnotationDecisions,
+  getCalibrationContract,
+  prioritizedQueueResponse,
+  verifyAnnotationQueueManifest,
+} from './beforeMainContracts'
+import {
+  ensurePageImage,
+  resolveContentAddressedPageImage,
+  verifyDocumentMountManifest,
+} from './pageImageService'
 
 type JsonRecord = Record<string, unknown>
 
@@ -44,8 +59,22 @@ const CALIBRATION_DIR = resolve(ARTIFACTS_ROOT, 'calibration')
 const CALIBRATION_SAMPLE_PATH = resolve(CALIBRATION_DIR, 'sample_v1.jsonl')
 const CALIBRATION_PAGE_IMAGES_PATH = resolve(CALIBRATION_DIR, 'page_images_v1.json')
 const CALIBRATION_LABELS_PATH = resolve(CALIBRATION_DIR, 'labels_v1.jsonl')
+const CALIBRATION_EVENTS_PATH = resolve(CALIBRATION_DIR, 'events_v1.jsonl')
+const ANNOTATION_QUEUE_MANIFEST_PATH = resolve(ARTIFACTS_ROOT, 'annotation_queue_manifest_v1.json')
+const ANNOTATION_DECISIONS_PATH = resolve(ARTIFACTS_ROOT, 'annotation_decisions_v1.jsonl')
+const UX_TIMING_EVENTS_PATH = resolve(ARTIFACTS_ROOT, 'ux_timing_event_v1.jsonl')
+const DOCUMENT_MOUNTS_PATH = resolve(ARTIFACTS_ROOT, 'document_mount_manifest_v1.json')
+const PAGE_IMAGE_CACHE_ROOT = resolve(ARTIFACTS_ROOT, 'page-image-cache')
 
 app.use(express.json({ limit: '25mb' }))
+
+function sendContractError(res: express.Response, error: unknown): void {
+  if (error instanceof ContractError) {
+    res.status(error.status).json({ ok: false, error: error.code, detail: error.message })
+    return
+  }
+  res.status(500).json({ ok: false, error: 'internal_contract_error', detail: String(error) })
+}
 
 function isPathInside(root: string, candidate: string): boolean {
   const relative = resolve(candidate).slice(resolve(root).length)
@@ -265,7 +294,9 @@ app.get('/api/pdf-lab/mounts', (_req, res) => {
       const pageImageIndex = nearestArtifactMount(path, pageImageIndexes, { documentIds, pdfSha256 })
       const sectionTree = nearestArtifactMount(path, sectionTrees, { documentIds, pdfSha256 })
       return {
-        url: artifactUrl(path),
+        url: value?.schema === 'pdf_oxide.retrieval_answer.v1'
+          ? `/api/pdf-lab/retrieval-answers/${encodeURIComponent(basename(path))}`
+          : artifactUrl(path),
         label: relative(ARTIFACTS_ROOT, path),
         ...(pageImageIndex ? { page_image_index_url: pageImageIndex.url } : {}),
         ...(sectionTree ? { section_tree_url: sectionTree.url } : {}),
@@ -294,7 +325,7 @@ app.get('/api/pdf-lab/mounts', (_req, res) => {
         url: artifactUrl(path),
         item_count: rows.length,
         ...(pageImageIndex ? { page_image_index_url: pageImageIndex.url } : {}),
-        labels_endpoint: '/api/pdf-lab/calibration/labels',
+        labels_endpoint: '/api/pdf-lab/calibration/events',
       }
     })
 
@@ -418,59 +449,192 @@ app.get('/api/pdf-lab/calibration/sample', (_req, res) => {
   }
 })
 
-app.post('/api/pdf-lab/calibration/labels', (req, res) => {
-  const row = req.body && typeof req.body === 'object' ? req.body as JsonRecord : {}
-  const allowedFields = new Set(['item_sha', 'label', 'corrected_type', 'ts'])
-  const labels = new Set(['correct', 'wrong_type', 'wrong_bounds', 'not_an_element'])
-  const keys = Object.keys(row)
-  if (keys.some(key => !allowedFields.has(key))) {
-    res.status(400).json({ ok: false, error: 'unexpected_label_field' })
-    return
-  }
-  if (typeof row.item_sha !== 'string' || !/^[0-9a-f]{64}$/.test(row.item_sha)) {
-    res.status(400).json({ ok: false, error: 'invalid_item_sha' })
-    return
-  }
-  if (typeof row.label !== 'string' || !labels.has(row.label)) {
-    res.status(400).json({ ok: false, error: 'invalid_label' })
-    return
-  }
-  if (
-    typeof row.ts !== 'string'
-    || Number.isNaN(Date.parse(row.ts))
-    || new Date(row.ts).toISOString() !== row.ts
-  ) {
-    res.status(400).json({ ok: false, error: 'invalid_timestamp' })
-    return
-  }
-  if (
-    row.corrected_type !== undefined
-    && (
-      row.label !== 'wrong_type'
-      || typeof row.corrected_type !== 'string'
-      || !row.corrected_type.trim()
-    )
-  ) {
-    res.status(400).json({ ok: false, error: 'invalid_corrected_type' })
-    return
-  }
+app.get('/api/pdf-lab/calibration/events', (_req, res) => {
   try {
-    const knownItems = new Set(calibrationSampleEntries().map(entry => entry.item_sha))
-    if (!knownItems.has(row.item_sha)) {
-      res.status(400).json({ ok: false, error: 'unknown_item_sha' })
-      return
+    res.json(getCalibrationContract(
+      CALIBRATION_EVENTS_PATH,
+      CALIBRATION_LABELS_PATH,
+      calibrationSampleEntries(),
+    ))
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.post('/api/pdf-lab/calibration/events', (req, res) => {
+  try {
+    const result = appendCalibrationEvent(
+      req.body,
+      CALIBRATION_EVENTS_PATH,
+      CALIBRATION_LABELS_PATH,
+      calibrationSampleEntries(),
+    )
+    res.status(result.duplicate ? 200 : 201).json({
+      ok: true,
+      duplicate: result.duplicate,
+      event: result.event,
+      ...result.response,
+    })
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.get('/api/pdf-lab/calibration/labels', (_req, res) => {
+  try {
+    const contract = getCalibrationContract(
+      CALIBRATION_EVENTS_PATH,
+      CALIBRATION_LABELS_PATH,
+      calibrationSampleEntries(),
+    )
+    res.json({ schema: 'pdf_oxide.calibration_labels_response.v1', rows: contract.labels })
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.get('/api/pdf-lab/annotation-queue', (_req, res) => {
+  try {
+    res.json(prioritizedQueueResponse(ARTIFACTS_ROOT, ANNOTATION_QUEUE_MANIFEST_PATH))
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.get('/api/pdf-lab/annotation-decisions', (_req, res) => {
+  try {
+    res.json(getAnnotationDecisions(ANNOTATION_DECISIONS_PATH))
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.post('/api/pdf-lab/annotation-decisions', (req, res) => {
+  try {
+    const result = appendAnnotationDecision(
+      req.body,
+      ANNOTATION_DECISIONS_PATH,
+      ARTIFACTS_ROOT,
+      ANNOTATION_QUEUE_MANIFEST_PATH,
+    )
+    res.status(result.duplicate ? 200 : 201).json({
+      ok: true,
+      duplicate: result.duplicate,
+      event: result.event,
+      ...result.response,
+    })
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.post('/api/pdf-lab/ux-timing-events', (req, res) => {
+  try {
+    res.status(201).json({ ok: true, event: appendTimingEvent(req.body, UX_TIMING_EVENTS_PATH) })
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.get('/api/pdf-lab/document-mounts', (_req, res) => {
+  try {
+    const documents = verifyDocumentMountManifest(DOCUMENT_MOUNTS_PATH)
+    res.json({ schema: 'pdf_oxide.document_mounts_response.v1', documents })
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.get('/api/pdf-lab/page-images/:pdfSha256/:page', (req, res) => {
+  try {
+    const result = ensurePageImage(
+      DOCUMENT_MOUNTS_PATH,
+      PAGE_IMAGE_CACHE_ROOT,
+      req.params.pdfSha256,
+      Number(req.params.page),
+      Number(req.query.dpi ?? 150),
+    )
+    res.setHeader('Content-Type', 'image/png')
+    res.setHeader('Content-Location', `/api/pdf-lab/page-image-content/${result.manifest.filename}`)
+    res.setHeader('Content-SHA256', result.manifest.byte_sha256)
+    res.sendFile(result.path)
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.get('/api/pdf-lab/page-image-content/:filename', (req, res) => {
+  try {
+    const result = resolveContentAddressedPageImage(PAGE_IMAGE_CACHE_ROOT, req.params.filename)
+    res.setHeader('Content-Type', 'image/png')
+    res.setHeader('Content-SHA256', result.manifest.byte_sha256)
+    res.sendFile(result.path)
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.get('/api/pdf-lab/retrieval-answers/:filename', (req, res) => {
+  try {
+    if (!/^[A-Za-z0-9._-]+_retrieval_result\.json$/.test(req.params.filename)) {
+      throw new ContractError(400, 'invalid_retrieval_answer_filename')
     }
-    mkdirSync(CALIBRATION_DIR, { recursive: true })
-    const normalizedRow = {
-      item_sha: row.item_sha,
-      label: row.label,
-      ...(row.corrected_type === undefined ? {} : { corrected_type: row.corrected_type.trim() }),
-      ts: row.ts,
+    const answerPath = resolve(ARTIFACTS_ROOT, req.params.filename)
+    if (!isPathInside(ARTIFACTS_ROOT, answerPath) || !existsSync(answerPath)) {
+      throw new ContractError(422, 'retrieval_answer_missing')
     }
-    appendFileSync(CALIBRATION_LABELS_PATH, `${JSON.stringify(normalizedRow)}\n`, 'utf-8')
-    res.status(201).json({ ok: true, row: normalizedRow })
-  } catch (err) {
-    res.status(422).json({ ok: false, error: 'calibration_label_write_failed', detail: String(err) })
+    const raw: unknown = JSON.parse(readFileSync(answerPath, 'utf-8'))
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+      throw new ContractError(422, 'invalid_retrieval_answer')
+    }
+    const answer = raw as JsonRecord
+    if (answer.schema !== 'pdf_oxide.retrieval_answer.v1' || !Array.isArray(answer.evidence_groups)) {
+      throw new ContractError(422, 'invalid_retrieval_answer')
+    }
+    for (const [groupIndex, groupValue] of answer.evidence_groups.entries()) {
+      if (!groupValue || typeof groupValue !== 'object' || Array.isArray(groupValue)) {
+        throw new ContractError(422, 'invalid_retrieval_evidence_group')
+      }
+      const image = (groupValue as JsonRecord).page_image
+      if (!image || typeof image !== 'object' || Array.isArray(image)) {
+        throw new ContractError(422, 'retrieval_page_image_missing')
+      }
+      const imageRecord = image as JsonRecord
+      if (
+        imageRecord.verified !== true
+        || typeof imageRecord.href !== 'string'
+        || typeof imageRecord.sha256 !== 'string'
+        || typeof imageRecord.byte_sha256 !== 'string'
+      ) {
+        throw new ContractError(422, 'retrieval_page_image_unverified')
+      }
+      const prefix = '/artifacts/pdf-lab/'
+      if (!imageRecord.href.startsWith(prefix)) throw new ContractError(422, 'retrieval_page_image_href_invalid')
+      const imagePath = resolve(ARTIFACTS_ROOT, decodeURIComponent(imageRecord.href.slice(prefix.length)))
+      if (!isPathInside(ARTIFACTS_ROOT, imagePath) || !existsSync(imagePath)) {
+        throw new ContractError(422, 'retrieval_page_image_missing', `group ${groupIndex}`)
+      }
+      const byteSha256 = createHash('sha256').update(readFileSync(imagePath)).digest('hex')
+      if (
+        byteSha256 !== imageRecord.byte_sha256
+        || basename(imagePath) !== `${imageRecord.sha256}.png`
+      ) {
+        throw new ContractError(422, 'retrieval_page_image_hash_mismatch', `group ${groupIndex}`)
+      }
+    }
+    const answerBytes = readFileSync(answerPath)
+    res.setHeader('Content-SHA256', createHash('sha256').update(answerBytes).digest('hex'))
+    res.type('application/json').send(answerBytes)
+  } catch (error) {
+    sendContractError(res, error)
+  }
+})
+
+app.get('/api/pdf-lab/annotation-queue-manifest', (_req, res) => {
+  try {
+    res.json(verifyAnnotationQueueManifest(ARTIFACTS_ROOT, ANNOTATION_QUEUE_MANIFEST_PATH).manifest)
+  } catch (error) {
+    sendContractError(res, error)
   }
 })
 

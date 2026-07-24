@@ -1,22 +1,60 @@
 {
-  "answer": "The mounted annotation evidence identifies this extracted element.",
-  "evidence": [
-    {
-      "doc": "NIST_SP_800-53r5",
-      "element_id": "NIST_SP_800-53r5-page-0-annotation-0",
-      "page": 0,
-      "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
-      "section_path": [
-        "NIST SP 800-53 Revision 5",
-        "Mounted annotation evidence"
-      ],
-      "text": "NIST Special Publication 800-53",
-      "type": "Body"
-    }
-  ],
+  "schema": "pdf_oxide.retrieval_answer.v1",
+  "answer": "The mounted annotation evidence identifies the publication and its issuing task force.",
   "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "section_id": "mounted-annotation-evidence",
   "section_path": [
     "NIST SP 800-53 Revision 5",
     "Mounted annotation evidence"
+  ],
+  "vector_provenance": null,
+  "evidence_groups": [
+    {
+      "page": 0,
+      "page_image": {
+        "href": "/artifacts/pdf-lab/annotation-calls/NIST_SP_800-53r5/page_images/55bd6d7ea7f87a3aca6158f2f3af28060b66c5757cda8492b2cab8170d68904f.png",
+        "sha256": "55bd6d7ea7f87a3aca6158f2f3af28060b66c5757cda8492b2cab8170d68904f",
+        "byte_sha256": "60ddbbd0ba150d5a82ae16a1bae44d9203954630610b511a771b31c626872ae1",
+        "verified": true,
+        "width": 816,
+        "height": 1056
+      },
+      "evidence": [
+        {
+          "overlay_number": 1,
+          "element_id": "NIST_SP_800-53r5-page-0-annotation-0",
+          "type": "Body",
+          "bbox": [
+            0.5556,
+            0.0901,
+            0.8581,
+            0.1077
+          ],
+          "section_id": "mounted-annotation-evidence",
+          "section_path": [
+            "NIST SP 800-53 Revision 5",
+            "Mounted annotation evidence"
+          ],
+          "text": "NIST Special Publication 800-53"
+        },
+        {
+          "overlay_number": 2,
+          "element_id": "NIST_SP_800-53r5-page-0-annotation-1",
+          "type": "Subtitle",
+          "bbox": [
+            0.7017,
+            0.4254,
+            0.8574,
+            0.4405
+          ],
+          "section_id": "mounted-annotation-evidence",
+          "section_path": [
+            "NIST SP 800-53 Revision 5",
+            "Mounted annotation evidence"
+          ],
+          "text": "JOINT TASK FORCE"
+        }
+      ]
+    }
   ]
 }

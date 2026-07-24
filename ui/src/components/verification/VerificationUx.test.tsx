@@ -42,6 +42,46 @@ function retrievalResult(withImage: boolean) {
   }
 }
 
+function groupedRetrievalResult() {
+  return {
+    schema: 'pdf_oxide.retrieval_answer.v1',
+    answer: 'One answer with two elements from one page.',
+    pdf_sha256: PDF_SHA,
+    section_id: 'results',
+    section_path: ['Results'],
+    vector_provenance: null,
+    evidence_groups: [{
+      page: 3,
+      page_image: {
+        href: `/page_images/${IMAGE_SHA}.png`,
+        sha256: IMAGE_SHA,
+        byte_sha256: 'f'.repeat(64),
+        verified: true,
+        width: 1000,
+        height: 1400,
+      },
+      evidence: [
+        {
+          overlay_number: 1,
+          element_id: 'figure-7',
+          type: 'figure',
+          bbox: [0.1, 0.2, 0.3, 0.4] as [number, number, number, number],
+          section_id: 'results',
+          section_path: ['Results'],
+        },
+        {
+          overlay_number: 2,
+          element_id: 'caption-7',
+          type: 'caption',
+          bbox: [0.1, 0.5, 0.4, 0.6] as [number, number, number, number],
+          section_id: 'results',
+          section_path: ['Results'],
+        },
+      ],
+    }],
+  }
+}
+
 describe('verification-first UX', () => {
   it('renders the original page, section breadcrumb, and provenance chain', () => {
     render(<RetrievalEvidenceView result={retrievalResult(true)} />)
@@ -62,6 +102,15 @@ describe('verification-first UX', () => {
     render(<RetrievalEvidenceView result={retrievalResult(false)} />)
     expect(screen.getByTestId('retrieval-contract-failure')).toHaveTextContent('Answer withheld')
     expect(screen.getByTestId('page-image-error')).toHaveTextContent('Original page images')
+  })
+
+  it('renders a grouped retrieval page image once with numbered overlays', () => {
+    render(<RetrievalEvidenceView result={groupedRetrievalResult()} />)
+    expect(screen.getAllByTestId('page-image')).toHaveLength(1)
+    expect(screen.getAllByTestId('evidence-group')).toHaveLength(1)
+    expect(screen.getByTestId('bbox-overlay')).toHaveTextContent('1')
+    expect(screen.getByTestId('bbox-overlay-2')).toHaveTextContent('2')
+    expect(screen.getAllByTestId('provenance-chain')).toHaveLength(2)
   })
 
   it('projects normalized bbox coordinates onto the page image', () => {

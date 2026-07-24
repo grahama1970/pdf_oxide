@@ -44,6 +44,8 @@ export interface RawAnnotationCall {
 
 export interface AnnotationQueueItem {
   id: string
+  itemSha256: string
+  callSha256: string
   sourceIndex: number
   documentId: string
   pdfSha256: string
@@ -169,8 +171,17 @@ export function normalizeAnnotationCall(raw: unknown, sourceName?: string): Norm
 
     const kind = item.kind as AnnotationKind
     const reason = item.reason as AnnotationReason
+    const itemId = stringOrNull(item.item_id) ?? `${pdfSha256}:${page}:${kind}:${reason}:${index}`
+    const itemSha256 = item.item_sha256 == null
+      ? pdfSha256
+      : normalizePdfSha(item.item_sha256)
+    const callSha256 = item.call_sha256 == null && record.call_sha256 == null
+      ? pdfSha256
+      : normalizePdfSha(item.call_sha256 ?? record.call_sha256)
     return {
-      id: `${pdfSha256}:${page}:${kind}:${reason}:${index}`,
+      id: itemId,
+      itemSha256,
+      callSha256,
       sourceIndex: index,
       documentId,
       pdfSha256,

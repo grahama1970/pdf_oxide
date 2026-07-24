@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pdf-oxide.local/contracts/document_mount_manifest_v1.schema.json",
+  "title": "PDF Oxide document mount manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "documents"],
+  "properties": {
+    "schema": { "const": "pdf_oxide.document_mount_manifest.v1" },
+    "documents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["doc_id", "pdf_path", "pdf_sha256"],
+        "properties": {
+          "doc_id": { "type": "string", "minLength": 1 },
+          "pdf_path": { "type": "string", "minLength": 1 },
+          "pdf_sha256": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

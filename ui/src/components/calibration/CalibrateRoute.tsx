@@ -35,7 +35,26 @@ export interface CalibrateRouteProps {
 
 const DEFAULT_SAMPLE_URL = '/artifacts/pdf-lab/calibration/sample_v1.jsonl'
 const DEFAULT_PAGE_IMAGE_INDEX_URL = '/artifacts/pdf-lab/calibration/page_images_v1.json'
-const DEFAULT_LABELS_ENDPOINT = '/api/pdf-lab/calibration/labels'
+const DEFAULT_LABELS_ENDPOINT = '/api/pdf-lab/calibration/events'
+
+interface CalibrationProjectionRow extends CalibrationLabelRow {
+  event_id: string
+}
+
+interface CalibrationEventsResponse {
+  labels?: CalibrationProjectionRow[]
+  cursor?: { index?: number }
+}
+
+function isProjectionRow(value: unknown): value is CalibrationProjectionRow {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false
+  const { event_id: eventId, ...label } = value as Record<string, unknown>
+  return typeof eventId === 'string' && isCalibrationLabelRow(label)
+}
+
+function eventKey(prefix: string): string {
+  return `calibration:${prefix}:${Date.now().toString(36)}:${globalThis.crypto.randomUUID()}`
+}
 
 function downloadLabels(rows: readonly CalibrationLabelRow[]): void {
   const blob = new Blob([serializeLabelRows(rows)], { type: 'application/x-ndjson' })
@@ -140,7 +159,7 @@ export function CalibrateRoute({
   const [rows, setRows] = useState<CalibrationSampleItem[]>(initialRows ? [...initialRows] : [])
   const [pageImages, setPageImages] = useState<PageImageIndex | null>(initialPageImageIndex ?? null)
   const [itemShas, setItemShas] = useState<(string | null)[]>([])
-  const [labels, setLabels] = useState<Map<string, CalibrationLabelRow>>(new Map())
+  const [labels, setLabels] = useState<Map<string, CalibrationProjectionRow>>(new Map())
   const [index, setIndex] = useState(0)
   const [correctedType, setCorrectedType] = useState('')
   const [loading, setLoading] = useState(!initialRows)
@@ -165,16 +184,16 @@ export function CalibrateRoute({
         })
       }),
       fetchImpl(labelsEndpoint).then(async (response) => {
-        if (response.status === 404) return [] as CalibrationLabelRow[]
+        if (response.status === 404) return { labels: [] } as CalibrationEventsResponse
         if (!response.ok) throw new Error(`labels_v1.jsonl returned HTTP ${response.status}`)
-        const payload = await response.json() as { rows?: unknown[] }
-        return (payload.rows ?? []).filter(isCalibrationLabelRow)
-      }).catch(() => [] as CalibrationLabelRow[]),
-    ]).then(([loadedRows, loadedImages, loadedLabels]) => {
+        return await response.json() as CalibrationEventsResponse
+      }).catch(() => ({ labels: [] }) as CalibrationEventsResponse),
+    ]).then(([loadedRows, loadedImages, eventsResponse]) => {
       if (cancelled) return
       setRows(loadedRows)
       setPageImages(loadedImages)
-      setLabels(new Map(loadedLabels.map((row) => [row.item_sha, row])))
+      setLabels(new Map((eventsResponse.labels ?? []).filter(isProjectionRow).map((row) => [row.item_sha, row])))
+      if (Number.isInteger(eventsResponse.cursor?.index)) setIndex(Number(eventsResponse.cursor?.index))
     }).catch((loadError) => {
       if (!cancelled) setError(loadError instanceof Error ? loadError.message : String(loadError))
     }).finally(() => {
@@ -208,20 +227,29 @@ export function CalibrateRoute({
   const complete = labels.size
   const remaining = Math.max(0, rows.length - complete)
 
-  const persist = useCallback(async (row: CalibrationLabelRow) => {
+  const persist = useCallback(async (
+    row: CalibrationLabelRow,
+    revisionOf?: string,
+  ): Promise<CalibrationEventsResponse | null> => {
     if (persistLabel) {
       await persistLabel(row)
-      return
+      return null
     }
     const response = await fetchImpl(labelsEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(row),
+      body: JSON.stringify({
+        idempotency_key: eventKey('label'),
+        action: 'label',
+        ...row,
+        ...(revisionOf ? { revision_of: revisionOf } : {}),
+      }),
     })
     if (!response.ok) {
       const detail = await response.text()
       throw new Error(`label write failed (${response.status}): ${detail.slice(0, 240)}`)
     }
+    return await response.json() as CalibrationEventsResponse
   }, [fetchImpl, labelsEndpoint, persistLabel])
 
   const adjudicate = useCallback(async (label: CalibrationLabel) => {
@@ -234,21 +262,56 @@ export function CalibrateRoute({
         label,
         label === 'wrong_type' ? correctedType : undefined,
       )
-      await persist(row)
-      setLabels((previous) => new Map(previous).set(row.item_sha, row))
+      const response = await persist(row, currentLabel?.event_id)
+      const nextLabels = response?.labels
+        ? new Map(response.labels.filter(isProjectionRow).map((entry) => [entry.item_sha, entry]))
+        : new Map(labels).set(row.item_sha, { ...row, event_id: eventKey('local') })
+      setLabels(nextLabels)
       setStatus(`Saved ${label.replaceAll('_', ' ')} for ${current.doc} page ${current.page}`)
       setIndex((currentIndex) => nextUnlabeledIndex(
         currentIndex,
         rows,
         itemShas,
-        new Map(labels).set(row.item_sha, row),
+        nextLabels,
       ))
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : String(saveError))
     } finally {
       setSaving(false)
     }
-  }, [correctedType, current, currentPageImage, currentSha, itemShas, labels, persist, rows, saving])
+  }, [correctedType, current, currentLabel?.event_id, currentPageImage, currentSha, itemShas, labels, persist, rows, saving])
+
+  const undo = useCallback(async () => {
+    if (!currentSha || !currentLabel?.event_id || saving || persistLabel) return
+    setSaving(true)
+    setError(null)
+    try {
+      const response = await fetchImpl(labelsEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          idempotency_key: eventKey('undo'),
+          action: 'undo',
+          item_sha: currentSha,
+          revision_of: currentLabel.event_id,
+          ts: new Date().toISOString(),
+        }),
+      })
+      if (!response.ok) throw new Error(`undo failed (${response.status}): ${(await response.text()).slice(0, 240)}`)
+      const payload = await response.json() as CalibrationEventsResponse
+      setLabels(new Map((payload.labels ?? []).filter(isProjectionRow).map((row) => [row.item_sha, row])))
+      setStatus('Undo restored the prior label')
+    } catch (undoError) {
+      setError(undoError instanceof Error ? undoError.message : String(undoError))
+    } finally {
+      setSaving(false)
+    }
+  }, [currentLabel?.event_id, currentSha, fetchImpl, labelsEndpoint, persistLabel, saving])
+
+  const skip = useCallback(() => {
+    setStatus('Skipped without writing')
+    setIndex((currentIndex) => Math.min(rows.length - 1, currentIndex + 1))
+  }, [rows.length])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -296,7 +359,13 @@ export function CalibrateRoute({
   }
 
   return (
-    <main className="pdf-verify-route pdf-verify-calibrate" data-testid="calibrate-route" data-confidence-hidden="true" data-item-sha-ready={currentSha ? "true" : "false"}>
+    <main
+      className="pdf-verify-route pdf-verify-calibrate"
+      data-testid="calibrate-route"
+      data-confidence-hidden="true"
+      data-item-sha-ready={currentSha ? 'true' : 'false'}
+      data-current-item-sha={currentSha ?? undefined}
+    >
       <header className="pdf-verify-header">
         <div>
           <span className="pdf-verify-kicker">Calibration · blinded review</span>
@@ -399,6 +468,19 @@ export function CalibrateRoute({
             >
               <OctagonX aria-hidden="true" />
               <span><kbd>4</kbd> Not an element</span>
+            </button>
+          </div>
+          <div className="pdf-verify-decision-grid">
+            <button
+              type="button"
+              onClick={() => void undo()}
+              disabled={!currentLabel?.event_id || saving || Boolean(persistLabel)}
+              data-testid="calibration-undo"
+            >
+              Undo
+            </button>
+            <button type="button" onClick={skip} disabled={saving} data-testid="calibration-skip">
+              Skip
             </button>
           </div>
 

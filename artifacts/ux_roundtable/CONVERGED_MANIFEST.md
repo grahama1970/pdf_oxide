@@ -44,3 +44,16 @@ Claude round-2 (M-slices) and Kimi round-2 (P/A-slices) concur on all before-mai
    Sparta shim iteration); confirm numbered-overlay legibility above ~5 elements/page
    (zoom/pagination if exceeded).
 3. gpt: none.
+
+## OPERATOR CORRECTION
+
+This section supersedes every conflicting statement above.
+
+Design law: “this is for agents with humans as the last 5% in the pipeline. there is no goldstandard.” “pdfs are too chaotic to have gold standards.”
+
+- Remove all gold-standard machinery, signed-denominator gates, calibration-report gates, and claim-certification paths.
+- Calibration labels are lightweight engine feedback and never gate annotation service.
+- Replace the actionable/held partition with one prioritized queue containing all 2,161 human-slice items.
+- Priority order is `char_parity_deficit` (54), `reviewer_flagged` (5), then `low_confidence` (2,102).
+- Every item is servable; there is no hold state.
+- BM01–BM08 follow the operator-corrected request contract, including durable separate event stores, resume/undo/skip, cross-view state, throughput receipts, integrity schemas, and grouped retrieval evidence.

@@ -1,5 +1,5 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState, type ChangeEvent, type UIEvent } from 'react'
-import { AlertTriangle, ChevronRight, FileWarning, Filter, Loader2, Search } from 'lucide-react'
+import { AlertTriangle, Check, ChevronRight, FileWarning, Filter, Loader2, Search } from 'lucide-react'
 import {
   ANNOTATION_CALL_SCHEMA,
   annotationReasonLabel,
@@ -20,6 +20,14 @@ import {
   type PageImageIndex,
   type PageImageRef,
 } from '../../adapters/pageImageRefs'
+import {
+  ELEMENT_TYPES,
+  buildAnnotationDecisionInput,
+  isAnnotationDecisionEvent,
+  type AnnotationDecision,
+  type AnnotationDecisionEvent,
+  type ElementType,
+} from '../../adapters/annotationDecision'
 import { useRegisterAction } from '../../hooks/useRegisterAction'
 import { NormalizedPageOverlay } from '../verification/NormalizedPageOverlay'
 import '../verification/VerificationUx.css'
@@ -34,6 +42,9 @@ export interface AnnotationQueueRouteProps {
 }
 
 const DEFAULT_CALLS_URL = '/artifacts/pdf-lab/annotation_call.json'
+const DECISIONS_ENDPOINT = '/api/pdf-lab/annotation-decisions'
+const TIMING_ENDPOINT = '/api/pdf-lab/ux-timing-events'
+const QUEUE_STATE_KEY = 'pdf-oxide.annotation-queue-state.v1'
 const ROW_HEIGHT = 82
 const OVERSCAN = 8
 
@@ -99,6 +110,7 @@ function selectedPageImage(item: AnnotationQueueItem, index: PageImageIndex | nu
 interface VirtualRowsProps {
   rows: readonly AnnotationQueueItem[]
   selectedId: string | null
+  decisions: ReadonlyMap<string, AnnotationDecisionEvent>
   onSelect: (item: AnnotationQueueItem) => void
 }
 
@@ -106,10 +118,11 @@ interface AnnotationRowProps {
   item: AnnotationQueueItem
   rowIndex: number
   selected: boolean
+  decision?: AnnotationDecisionEvent
   onSelect: (item: AnnotationQueueItem) => void
 }
 
-function AnnotationRow({ item, rowIndex, selected, onSelect }: AnnotationRowProps) {
+function AnnotationRow({ item, rowIndex, selected, decision, onSelect }: AnnotationRowProps) {
   const qid = `annotation-queue:row:${qidQualifier(item.id)}`
   useRegisterAction(qid, {
     app: 'pdf-lab',
@@ -136,13 +149,18 @@ function AnnotationRow({ item, rowIndex, selected, onSelect }: AnnotationRowProp
         <strong>{item.documentId}</strong>
         <em>Page {item.page} · {item.kind}{item.currentType ? ` · ${item.currentType}` : ''}</em>
         <small>{item.textExcerpt || annotationReasonLabel(item.reason)}</small>
+        {decision && (
+          <small data-testid="queue-decision-badge">
+            {decision.decision.replaceAll('_', ' ')}
+          </small>
+        )}
       </span>
       <ChevronRight aria-hidden="true" />
     </button>
   )
 }
 
-function VirtualRows({ rows, selectedId, onSelect }: VirtualRowsProps) {
+function VirtualRows({ rows, selectedId, decisions, onSelect }: VirtualRowsProps) {
   const [scrollTop, setScrollTop] = useState(0)
   const viewportRef = useRef<HTMLDivElement>(null)
   const viewportHeight = 640
@@ -175,6 +193,7 @@ function VirtualRows({ rows, selectedId, onSelect }: VirtualRowsProps) {
               item={item}
               rowIndex={rowIndex}
               selected={selectedId === item.id}
+              decision={decisions.get(item.id)}
               onSelect={onSelect}
             />
           )
@@ -251,14 +270,38 @@ export function AnnotationQueueRoute({
   })
   const [calls, setCalls] = useState<NormalizedAnnotationCall[]>(initialCalls ? [...initialCalls] : [])
   const [pageImages, setPageImages] = useState<PageImageIndex | null>(initialPageImageIndex ?? null)
+  const [decisions, setDecisions] = useState<Map<string, AnnotationDecisionEvent>>(new Map())
   const [loading, setLoading] = useState(!initialCalls)
   const [error, setError] = useState<string | null>(null)
-  const [documentFilter, setDocumentFilter] = useState('*')
-  const [reasonFilter, setReasonFilter] = useState<'*' | AnnotationReason>('*')
-  const [kindFilter, setKindFilter] = useState<'*' | AnnotationKind>('*')
-  const [searchText, setSearchText] = useState('')
+  const cachedState = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem(QUEUE_STATE_KEY) ?? '{}') as Record<string, unknown>
+    } catch {
+      return {}
+    }
+  }, [])
+  const [documentFilter, setDocumentFilter] = useState(
+    typeof cachedState.documentFilter === 'string' ? cachedState.documentFilter : '*',
+  )
+  const [reasonFilter, setReasonFilter] = useState<'*' | AnnotationReason>(
+    typeof cachedState.reasonFilter === 'string' ? cachedState.reasonFilter as '*' | AnnotationReason : '*',
+  )
+  const [kindFilter, setKindFilter] = useState<'*' | AnnotationKind>(
+    typeof cachedState.kindFilter === 'string' ? cachedState.kindFilter as '*' | AnnotationKind : '*',
+  )
+  const [searchText, setSearchText] = useState(
+    typeof cachedState.searchText === 'string' ? cachedState.searchText : '',
+  )
   const deferredSearch = useDeferredValue(searchText.trim().toLowerCase())
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [selectedId, setSelectedId] = useState<string | null>(
+    typeof cachedState.selectedId === 'string' ? cachedState.selectedId : null,
+  )
+  const [status, setStatus] = useState<string | null>(
+    typeof cachedState.status === 'string' ? cachedState.status : null,
+  )
+  const [saving, setSaving] = useState(false)
+  const [correctedType, setCorrectedType] = useState<ElementType>('Body')
+  const [correctedBounds, setCorrectedBounds] = useState<[string, string, string, string]>(['', '', '', ''])
 
   useEffect(() => {
     if (initialCalls) return
@@ -275,10 +318,17 @@ export function AnnotationQueueRoute({
             return parsePageImageIndex(await response.json(), { indexUrl: url })
           })).then(mergePageImageIndexes)
         : Promise.resolve(null),
-    ]).then(([loadedCalls, loadedImages]) => {
+      fetchImpl(DECISIONS_ENDPOINT).then(async (response) => {
+        if (response.status === 404) return [] as AnnotationDecisionEvent[]
+        if (!response.ok) throw new Error(`annotation decisions returned HTTP ${response.status}`)
+        const payload = await response.json() as { active?: unknown[] }
+        return (payload.active ?? []).filter(isAnnotationDecisionEvent)
+      }),
+    ]).then(([loadedCalls, loadedImages, loadedDecisions]) => {
       if (cancelled) return
       setCalls(loadedCalls)
       setPageImages(loadedImages)
+      setDecisions(new Map(loadedDecisions.map((event) => [event.item_id, event])))
     }).catch((loadError) => {
       if (!cancelled) setError(loadError instanceof Error ? loadError.message : String(loadError))
     }).finally(() => {
@@ -286,6 +336,17 @@ export function AnnotationQueueRoute({
     })
     return () => { cancelled = true }
   }, [callsUrl, fetchImpl, initialCalls, pageImageIndexUrl])
+
+  useEffect(() => {
+    localStorage.setItem(QUEUE_STATE_KEY, JSON.stringify({
+      documentFilter,
+      reasonFilter,
+      kindFilter,
+      searchText,
+      selectedId,
+      status,
+    }))
+  }, [documentFilter, kindFilter, reasonFilter, searchText, selectedId, status])
 
   const allItems = useMemo(() => flattenAnnotationItems(calls), [calls])
   const documents = useMemo(() => [...new Set(allItems.map((item) => item.documentId))].sort(), [allItems])
@@ -310,8 +371,9 @@ export function AnnotationQueueRoute({
   }), [allItems, deferredSearch, documentFilter, kindFilter, reasonFilter])
 
   useEffect(() => {
+    if (loading || filtered.length === 0) return
     if (!filtered.some((item) => item.id === selectedId)) setSelectedId(filtered[0]?.id ?? null)
-  }, [filtered, selectedId])
+  }, [filtered, loading, selectedId])
 
   const selected = filtered.find((item) => item.id === selectedId) ?? null
   const pageImage = selected ? selectedPageImage(selected, pageImages) : null
@@ -325,6 +387,78 @@ export function AnnotationQueueRoute({
       return undefined
     }
   }, [pageImage, selected])
+
+  const saveDecision = async (decision: AnnotationDecision) => {
+    if (!selected || !pageImage || saving) return
+    setSaving(true)
+    setError(null)
+    const startedAt = new Date()
+    try {
+      const bounds = correctedBounds.map(Number) as [number, number, number, number]
+      const input = buildAnnotationDecisionInput(selected, decision, {
+        ...(decision === 'correct_type' ? { correctedType } : {}),
+        ...(decision === 'correct_bounds' ? { correctedBounds: bounds } : {}),
+        ...(decisions.get(selected.id) ? { revisionOf: decisions.get(selected.id)?.event_id } : {}),
+      })
+      const response = await fetchImpl(DECISIONS_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input),
+      })
+      if (!response.ok) throw new Error(`decision write failed (${response.status}): ${(await response.text()).slice(0, 240)}`)
+      const payload = await response.json() as { event?: unknown; active?: unknown[] }
+      if (!isAnnotationDecisionEvent(payload.event)) throw new Error('decision response omitted its event')
+      const nextDecisions = payload.active
+        ? new Map(payload.active.filter(isAnnotationDecisionEvent).map((event) => [event.item_id, event]))
+        : new Map(decisions).set(selected.id, payload.event)
+      setDecisions(nextDecisions)
+      const displayDecision = decision.replaceAll('_', ' ')
+      setStatus(`Saved ${displayDecision}`)
+
+      const params = new URLSearchParams(window.location.hash.split('?', 2)[1] ?? window.location.search)
+      const workloadId = params.get('workload')
+      const fixtureSha256 = params.get('fixtureHash')
+      const uiCommit = params.get('uiCommit')
+      if (workloadId && fixtureSha256 && uiCommit) {
+        const completedAt = new Date()
+        const seed = JSON.stringify({
+          workloadId,
+          itemId: selected.id,
+          decision,
+          completedAt: completedAt.toISOString(),
+        })
+        const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(seed))
+        const eventId = [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('')
+        const timingResponse = await fetchImpl(TIMING_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event_id: eventId,
+            workload_id: workloadId,
+            fixture_sha256: fixtureSha256,
+            ui_commit: uiCommit,
+            item_id: selected.id,
+            action: decision,
+            started_at: startedAt.toISOString(),
+            completed_at: completedAt.toISOString(),
+            duration_ms: Math.max(0, completedAt.getTime() - startedAt.getTime()),
+          }),
+        })
+        if (!timingResponse.ok) {
+          throw new Error(`timing write failed (${timingResponse.status}): ${(await timingResponse.text()).slice(0, 240)}`)
+        }
+      }
+
+      const selectedIndex = filtered.findIndex((item) => item.id === selected.id)
+      const next = filtered.find((item, index) => index > selectedIndex && !nextDecisions.has(item.id))
+        ?? filtered.find((item) => !nextDecisions.has(item.id))
+      if (next) setSelectedId(next.id)
+    } catch (saveError) {
+      setError(saveError instanceof Error ? saveError.message : String(saveError))
+    } finally {
+      setSaving(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -358,12 +492,17 @@ export function AnnotationQueueRoute({
   }
 
   return (
-    <main className="pdf-verify-route pdf-verify-queue" data-confidence-hidden="true" data-testid="annotation-queue-route">
+    <main
+      className="pdf-verify-route pdf-verify-queue"
+      data-confidence-hidden="true"
+      data-testid="annotation-queue-route"
+      data-selected-id={selectedId ?? undefined}
+    >
       <header className="pdf-verify-header">
         <div>
           <span className="pdf-verify-kicker">Human annotation calls</span>
           <h1>Extraction uncertainty queue</h1>
-          <p>{allItems.length.toLocaleString()} engine-raised items. Confidence values remain blinded until calibration is accepted.</p>
+          <p>{allItems.length.toLocaleString()} engine-raised items, prioritized for human feedback. Every item remains servable.</p>
         </div>
         <div className="pdf-verify-proof-chip"><FileWarning /> {filtered.length.toLocaleString()} visible</div>
       </header>
@@ -441,7 +580,12 @@ export function AnnotationQueueRoute({
             </label>
           </div>
           {filtered.length > 0 ? (
-            <VirtualRows rows={filtered} selectedId={selectedId} onSelect={(item) => setSelectedId(item.id)} />
+            <VirtualRows
+              rows={filtered}
+              selectedId={selectedId}
+              decisions={decisions}
+              onSelect={(item) => setSelectedId(item.id)}
+            />
           ) : (
             <div className="pdf-verify-empty">No annotation calls match the current filters.</div>
           )}
@@ -478,6 +622,70 @@ export function AnnotationQueueRoute({
                   <p>Queue triage may inspect metadata, but no visual adjudication should be accepted without the page image.</p>
                 </div>
               )}
+              <div className="pdf-verify-decision-grid">
+                <button
+                  type="button"
+                  onClick={() => void saveDecision('accept')}
+                  disabled={!pageImage || saving}
+                  data-testid="annotation-accept"
+                >
+                  <Check /> Accept
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void saveDecision('defer')}
+                  disabled={!pageImage || saving}
+                  data-testid="annotation-defer"
+                >
+                  Defer
+                </button>
+              </div>
+              <label className="pdf-verify-field">
+                <span>Corrected type</span>
+                <select
+                  value={correctedType}
+                  onChange={(event) => setCorrectedType(event.target.value as ElementType)}
+                  data-testid="annotation-corrected-type"
+                >
+                  {ELEMENT_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}
+                </select>
+              </label>
+              <button
+                type="button"
+                onClick={() => void saveDecision('correct_type')}
+                disabled={!pageImage || saving}
+                data-testid="annotation-save-type"
+              >
+                Save corrected type
+              </button>
+              <div className="pdf-verify-filters" aria-label="Corrected bounds in PDF points">
+                {(['x', 'y', 'width', 'height'] as const).map((name, boundIndex) => (
+                  <label key={name}>
+                    <span>{name}</span>
+                    <input
+                      type="number"
+                      min={0}
+                      value={correctedBounds[boundIndex]}
+                      onChange={(event) => setCorrectedBounds((previous) => {
+                        const next = [...previous] as [string, string, string, string]
+                        next[boundIndex] = event.target.value
+                        return next
+                      })}
+                      data-testid={`annotation-bound-${name}`}
+                    />
+                  </label>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => void saveDecision('correct_bounds')}
+                disabled={!pageImage || saving || correctedBounds.some((value) => !value)}
+                data-testid="annotation-save-bounds"
+              >
+                Save corrected bounds
+              </button>
+              {status && <div className="pdf-verify-status is-success" role="status">{status}</div>}
+              {error && <div className="pdf-verify-status is-error" role="alert">{error}</div>}
               <dl className="pdf-verify-details">
                 <div><dt>Reason</dt><dd>{selected.reason}</dd></div>
                 <div><dt>Engine</dt><dd><code>{selected.engineCommit}</code></dd></div>

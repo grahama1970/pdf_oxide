@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pdf-oxide.local/contracts/bbox_space_v1.schema.json",
+  "title": "PDF Oxide bounding-box coordinate space v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "space", "crop_box", "rotation"],
+  "properties": {
+    "schema": { "const": "pdf_oxide.bbox_space.v1" },
+    "space": { "const": "pdf_points_bottom_left_xywh" },
+    "crop_box": { "$ref": "#/$defs/pdf_xywh" },
+    "rotation": { "enum": [0, 90, 180, 270] }
+  },
+  "$defs": {
+    "pdf_xywh": {
+      "type": "array",
+      "prefixItems": [
+        { "type": "number", "minimum": 0 },
+        { "type": "number", "minimum": 0 },
+        { "type": "number", "exclusiveMinimum": 0 },
+        { "type": "number", "exclusiveMinimum": 0 }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    }
+  }
+}

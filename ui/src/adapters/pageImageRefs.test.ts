@@ -3,6 +3,7 @@ import {
   assertOriginalPageImages,
   bboxStyle,
   normalizeBboxXyxy,
+  normalizePdfBboxWithGeometry,
   normalizePdfBboxXywh,
   normalizePageImageRef,
   parsePageImageIndex,
@@ -60,6 +61,29 @@ describe('page image refs', () => {
       0.5,
       54 / 792,
     ])
+  })
+
+  it('projects cropped and rotated overlay fixtures within two rendered pixels', () => {
+    const bbox = [30, 40, 50, 20]
+    const cropBox = [10, 20, 200, 100] as const
+    const fixtures = [
+      { rotation: 0 as const, pixelWidth: 400, pixelHeight: 200, expected: [40, 120, 100, 40] },
+      { rotation: 90 as const, pixelWidth: 200, pixelHeight: 400, expected: [40, 40, 40, 100] },
+      { rotation: 180 as const, pixelWidth: 400, pixelHeight: 200, expected: [260, 40, 100, 40] },
+      { rotation: 270 as const, pixelWidth: 200, pixelHeight: 400, expected: [120, 260, 40, 100] },
+    ]
+    for (const fixture of fixtures) {
+      const normalized = normalizePdfBboxWithGeometry(bbox, { cropBox, ...fixture })
+      const pixels = [
+        normalized[0] * fixture.pixelWidth,
+        normalized[1] * fixture.pixelHeight,
+        normalized[2] * fixture.pixelWidth,
+        normalized[3] * fixture.pixelHeight,
+      ]
+      pixels.forEach((value, index) => {
+        expect(Math.abs(value - fixture.expected[index])).toBeLessThanOrEqual(2)
+      })
+    }
   })
 
   it('adapts extraction xyxy boxes and calibration manifests without field drift', () => {

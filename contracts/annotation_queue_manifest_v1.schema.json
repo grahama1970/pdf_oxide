@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pdf-oxide.local/contracts/annotation_queue_manifest_v1.schema.json",
+  "title": "PDF Oxide prioritized annotation queue manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "priority_order", "counts", "source_hashes", "items"],
+  "properties": {
+    "schema": { "const": "pdf_oxide.annotation_queue_manifest.v1" },
+    "priority_order": {
+      "const": ["char_parity_deficit", "reviewer_flagged", "low_confidence"]
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "char_parity_deficit", "reviewer_flagged", "low_confidence"],
+      "properties": {
+        "total": { "const": 2161 },
+        "char_parity_deficit": { "const": 54 },
+        "reviewer_flagged": { "const": 5 },
+        "low_confidence": { "const": 2102 }
+      }
+    },
+    "source_hashes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/sha256" }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 2161,
+      "maxItems": 2161,
+      "items": { "$ref": "#/$defs/item" }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_id",
+        "item_sha256",
+        "call_sha256",
+        "source_path",
+        "source_index",
+        "doc_id",
+        "page",
+        "reason"
+      ],
+      "properties": {
+        "item_id": { "type": "string", "minLength": 1 },
+        "item_sha256": { "$ref": "#/$defs/sha256" },
+        "call_sha256": { "$ref": "#/$defs/sha256" },
+        "source_path": { "type": "string", "minLength": 1 },
+        "source_index": { "type": "integer", "minimum": 0 },
+        "doc_id": { "type": "string", "minLength": 1 },
+        "page": { "type": "integer", "minimum": 0 },
+        "reason": {
+          "enum": ["char_parity_deficit", "reviewer_flagged", "low_confidence"]
+        }
+      }
+    }
+  }
+}

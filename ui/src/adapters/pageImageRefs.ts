@@ -348,6 +348,74 @@ export function normalizePdfBboxXywh(
   ]
 }
 
+export interface PdfPageGeometry {
+  cropBox: readonly [number, number, number, number]
+  rotation: 0 | 90 | 180 | 270
+  pixelWidth: number
+  pixelHeight: number
+}
+
+/**
+ * Project a PDF-space rectangle through an explicit crop box and page rotation.
+ * The returned rectangle is normalized in the rendered image's top-left space.
+ */
+export function normalizePdfBboxWithGeometry(
+  raw: unknown,
+  geometry: PdfPageGeometry,
+): BboxXywh {
+  if (!Array.isArray(raw) || raw.length !== 4) throw new Error('bbox must contain four numbers')
+  const [x, y, width, height] = raw.map(Number)
+  const [cropX, cropY, cropWidth, cropHeight] = geometry.cropBox.map(Number)
+  if (
+    ![x, y, width, height, cropX, cropY, cropWidth, cropHeight, geometry.pixelWidth, geometry.pixelHeight]
+      .every(Number.isFinite)
+    || width <= 0
+    || height <= 0
+    || cropWidth <= 0
+    || cropHeight <= 0
+    || geometry.pixelWidth <= 0
+    || geometry.pixelHeight <= 0
+    || x < cropX
+    || y < cropY
+    || x + width > cropX + cropWidth
+    || y + height > cropY + cropHeight
+  ) {
+    throw new Error('PDF bbox must fit inside the explicit crop box')
+  }
+  const localX = x - cropX
+  const localY = y - cropY
+  switch (geometry.rotation) {
+    case 0:
+      return [
+        localX / cropWidth,
+        (cropHeight - localY - height) / cropHeight,
+        width / cropWidth,
+        height / cropHeight,
+      ]
+    case 90:
+      return [
+        localY / cropHeight,
+        localX / cropWidth,
+        height / cropHeight,
+        width / cropWidth,
+      ]
+    case 180:
+      return [
+        (cropWidth - localX - width) / cropWidth,
+        localY / cropHeight,
+        width / cropWidth,
+        height / cropHeight,
+      ]
+    case 270:
+      return [
+        (cropHeight - localY - height) / cropHeight,
+        (cropWidth - localX - width) / cropWidth,
+        height / cropHeight,
+        width / cropWidth,
+      ]
+  }
+}
+
 /** Convert the mature extraction renderer's [x0,y0,x1,y1] box to UI xywh. */
 export function normalizeBboxXyxy(
   raw: unknown,

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pdf-oxide.local/contracts/calibration_label_event_v1.schema.json",
+  "title": "PDF Oxide calibration label event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "event_id",
+    "idempotency_key",
+    "action",
+    "item_sha",
+    "ts",
+    "request_sha256"
+  ],
+  "properties": {
+    "schema": { "const": "pdf_oxide.calibration_label_event.v1" },
+    "event_id": { "$ref": "#/$defs/sha256" },
+    "idempotency_key": { "type": "string", "minLength": 8, "maxLength": 200 },
+    "action": { "enum": ["label", "undo"] },
+    "item_sha": { "$ref": "#/$defs/sha256" },
+    "label": {
+      "enum": ["correct", "wrong_type", "wrong_bounds", "not_an_element"]
+    },
+    "corrected_type": { "type": "string", "minLength": 1 },
+    "revision_of": { "$ref": "#/$defs/sha256" },
+    "ts": { "type": "string", "format": "date-time" },
+    "request_sha256": { "$ref": "#/$defs/sha256" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "action": { "const": "undo" } } },
+      "then": {
+        "required": ["revision_of"],
+        "not": { "anyOf": [{ "required": ["label"] }, { "required": ["corrected_type"] }] }
+      },
+      "else": { "required": ["label"] }
+    },
+    {
+      "if": { "properties": { "label": { "const": "wrong_type" } }, "required": ["label"] },
+      "then": { "required": ["corrected_type"] },
+      "else": { "not": { "required": ["corrected_type"] } }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

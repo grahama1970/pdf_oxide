@@ -316,7 +316,7 @@ export default function App() {
   } else {
     verificationView = (
       <AnnotationQueueRoute
-        callsUrl={callsOverride ?? mounts?.annotation_calls.map((entry) => entry.url).join(',') ?? ''}
+        callsUrl={callsOverride ?? '/api/pdf-lab/annotation-queue'}
         pageImageIndexUrl={pageImagesOverride ?? mounts?.page_image_indexes.map((entry) => entry.url).join(',')}
         artifactsRoot={artifactsRoot}
       />

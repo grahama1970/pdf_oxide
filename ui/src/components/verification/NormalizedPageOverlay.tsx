@@ -19,6 +19,7 @@ function nextAnchor(anchor: LabelAnchor): LabelAnchor {
 export interface NormalizedPageOverlayProps {
   pageImage: PageImageRef
   bbox?: BboxXywh
+  overlays?: readonly { bbox: BboxXywh; label: string }[]
   label?: string
   labelAnchor?: LabelAnchor
   alt?: string
@@ -31,6 +32,7 @@ export interface NormalizedPageOverlayProps {
 export function NormalizedPageOverlay({
   pageImage,
   bbox,
+  overlays,
   label,
   labelAnchor = 'top-outside',
   alt,
@@ -79,27 +81,28 @@ export function NormalizedPageOverlay({
             onError={() => setImageError(true)}
           />
         )}
-        {!imageError && bbox && (
-          <div
-            className="pdf-verify-page__bbox"
-            data-testid={overlayTestId}
-            style={bboxStyle(bbox)}
-            aria-label={label ? `Evidence bounds: ${label}` : 'Evidence bounds'}
-          >
-            {label && (
-              <button
-                type="button"
-                className={`pdf-verify-page__tag is-${anchor}`}
-                onClick={() => setAnchor((current) => nextAnchor(current))}
-                title="Move label to the next anchored position"
-                data-qid={labelQid}
-                data-qs-action="NORMALIZED_PAGE_OVERLAY_MOVE_LABEL"
-              >
-                {label}
-              </button>
-            )}
-          </div>
-        )}
+        {!imageError && (overlays ?? (bbox ? [{ bbox, label: label ?? '' }] : [])).map((overlay, index) => (
+            <div
+              key={`${overlay.label}-${index}`}
+              className="pdf-verify-page__bbox"
+              data-testid={index === 0 ? overlayTestId : `${overlayTestId}-${index + 1}`}
+              style={bboxStyle(overlay.bbox)}
+              aria-label={overlay.label ? `Evidence bounds: ${overlay.label}` : 'Evidence bounds'}
+            >
+              {overlay.label && (
+                <button
+                  type="button"
+                  className={`pdf-verify-page__tag is-${anchor}`}
+                  onClick={() => setAnchor((current) => nextAnchor(current))}
+                  title="Move label to the next anchored position"
+                  data-qid={labelQid}
+                  data-qs-action="NORMALIZED_PAGE_OVERLAY_MOVE_LABEL"
+                >
+                  {overlay.label}
+                </button>
+              )}
+            </div>
+          ))}
       </div>
       <figcaption>
         <span>Original PDF page image</span>
