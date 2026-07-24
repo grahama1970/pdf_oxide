@@ -114,6 +114,15 @@ class PdfDocument:
         """
         ...
 
+    def render_page(
+        self,
+        page: int,
+        dpi: Optional[int] = None,
+        format: Optional[str] = None,
+    ) -> bytes:
+        """Render one zero-based PDF page as PNG or JPEG bytes."""
+        ...
+
     def extract_text_ocr(self, page: int, engine: Optional[OcrEngine] = None) -> str:
         """
         Extract text from a page using OCR (optical character recognition).

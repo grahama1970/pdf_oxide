@@ -52,6 +52,9 @@ class PipelineConfig:
 
     # Output
     output_dir: Optional[Path] = None
+    # Render deterministic 150-DPI PNGs when output_dir is set.  Set False
+    # explicitly to opt out for extraction-only consumers.
+    render_page_images: bool = True
     # Optional downstream evidence hook. The harness may return contract items
     # such as char_parity_deficit or unadjudicated_residual; the core emitter
     # validates and appends them after its engine-confidence items.

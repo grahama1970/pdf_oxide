@@ -99,6 +99,7 @@ def _build_graph_records(
         "figure_count": len(result.figures),
         "requirement_count": len(result.requirements),
         "extraction_engine": "pdf_oxide",
+        "page_images": result.metadata.get("page_images"),
     }
 
     section_keys = {
@@ -157,6 +158,8 @@ def _build_graph_records(
                     "section_id": element.get("section_id"),
                     "section_path": element.get("section_path", ""),
                     "provenance": element.get("provenance"),
+                    "page_image_refs": element.get("page_image_refs", []),
+                    "page_image_sha256": element.get("page_image_sha256", {}),
                     "render_ref": element.get("render_ref"),
                 }
             )
