@@ -1,0 +1,56 @@
+{
+  "schema_version": "pdf_lab.selection_receipt.v1",
+  "created_at": "2026-07-26T00:20:00-04:00",
+  "immutable_goal_source": "GOAL.md",
+  "active_candidate": {
+    "page": "page_0456",
+    "pdf_page_index": 455,
+    "defect_class": "page header/footer chrome should not be semantic content",
+    "selected_checklist_item": "Top NIST running header and bottom APPENDIX C / PAGE 429 footer must be page chrome/noise, not section headings, paragraphs, or list content.",
+    "owner": "nist_preset_or_materialization",
+    "selection_reason": "After page27 page-chrome, page456_page_chrome remained as the next clustered page-chrome candidate with source visual evidence and a stale reviewed request that needed a durable regression receipt under current code."
+  },
+  "visual_evidence": {
+    "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/page.png",
+    "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/bbox_overlay.png",
+    "overlay_inspection": "Visible page has top running-header chrome, bottom APPENDIX C / PAGE 429 footer chrome, left DOI/sidebar chrome, and a central control table."
+  },
+  "source_artifacts": {
+    "cluster_bundle": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/candidate_bundle.json",
+    "expected_elements": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/expected_elements.json",
+    "agent_second_pass": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/agent_second_pass.json",
+    "current_release_after_hardening": "artifacts/pdf_lab/project_agent_hardening/page_0456_release_after_hardening.json",
+    "cluster_bug_report": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456_page_chrome/bug_report.json",
+    "cluster_bug_bundle": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456_page_chrome/candidate_bundle.json"
+  },
+  "source_evidence_summary": {
+    "cluster_fix_error_request_count": 2,
+    "cluster_bug_report_count": 2,
+    "cluster_issue_family": "page_chrome",
+    "current_release_block_count": 6,
+    "current_release_type_counts": {
+      "caption": 1,
+      "header_footer_noise": 4,
+      "table": 1
+    },
+    "current_top_page_chrome_count": 1,
+    "current_footer_page_chrome_count": 1,
+    "current_section_heading_count": 0,
+    "current_table_count": 1
+  },
+  "focused_regression": {
+    "path": "tests/test_nist_page456_page_chrome.py",
+    "test": "test_nist_page_456_running_header_and_footer_are_page_chrome_noise",
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page456_page_chrome.py",
+    "result": "1 passed, 5 warnings in 9.05s"
+  },
+  "worktree_limitations": {
+    "mocked": false,
+    "live": false,
+    "proof_scope": "local deterministic extraction/regression against origin/main-derived code and the local NIST PDF fixture",
+    "not_proven": [
+      "all active candidate queue items are hardened"
+    ]
+  },
+  "next_action": "Commit and push the page456 page-chrome regression and regenerated receipt artifacts, then inspect the remaining active candidate queue."
+}

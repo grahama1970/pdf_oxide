@@ -1,0 +1,69 @@
+{
+  "body": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_oxide.scillm_visual_bug_report.v2\",\n  \"page\": 456,\n  \"cluster_id\": \"page_chrome\",\n  \"fix_error_source\": \"expected_elements.json\",\n  \"bug_reports\": [\n    {\n      \"source_id\": \"human:p456:page_chrome_grouping:0\",\n      \"bug_present\": false,\n      \"current_family\": \"running_header\",\n      \"expected_family\": \"page_chrome_noise\",\n      \"visual_observation\": \"The top page chrome consists of a left running header reading NIST SP 800-53, Rev. 5, a right running header with the document title, and a horizontal rule below them. The overlay shows separate bboxes on the two visible running-header text regions.\",\n      \"extraction_error\": \"The reviewed request is stale: the current extraction already identifies the visible top running-header chrome as non-body page chrome via running_header blocks. The human text hint also mentions APPENDIX C, but that text is visually in the footer, not inside this top-header bbox.\",\n      \"evidence_block_ids\": [\n        \"actual:p456:line:0+actual:p456:line:49\",\n        \"actual:p456:line:50+actual:p456:line:97\"\n      ],\n      \"recommended_code_area\": \"unclear\",\n      \"patch_hint\": \"No code change indicated for this source_id; current extraction already treats the visible top header as page chrome.\",\n      \"confidence\": \"high\",\n      \"abstain_reason\": \"\"\n    },\n    {\n      \"source_id\": \"human:p456:page_chrome_noise:4\",\n      \"bug_present\": false,\n      \"current_family\": \"footer_page_chrome\",\n      \"expected_family\": \"page_chrome_noise\",\n      \"visual_observation\": \"The bottom page chrome consists of APPENDIX C at the lower left and PAGE 429 at the lower right. The overlay shows bboxes around both footer/page-number text regions.\",\n      \"extraction_error\": \"The reviewed request is stale based on the overlay: the visible footer/page-number chrome is already boxed separately as page chrome. The supplied current_extracted_blocks excerpt does not include the footer block ids, so no evidence ids can be cited from the provided block list.\",\n      \"evidence_block_ids\": [],\n      \"recommended_code_area\": \"unclear\",\n      \"patch_hint\": \"No code change indicated for this source_id; current overlay already shows the footer/page-number chrome captured.\",\n      \"confidence\": \"medium\",\n      \"abstain_reason\": \"\"\n    }\n  ],\n  \"missing_or_ambiguous\": [],\n  \"bug_clusters\": [],\n  \"overall_confidence\": \"medium\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1780245500,
+    "id": "chatcmpl-codex-2464dec9",
+    "model": "gpt-5.5",
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-bug-report-pilot-20260531T123310",
+      "item_id": "page_0456_page_chrome"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": "codex-oauth",
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "gpt-5.5",
+      "model_served": "gpt-5.5",
+      "routed_to_provider": "codex-oauth"
+    },
+    "scillm_reasoning": {
+      "applied_effort": "high",
+      "forwarded": true,
+      "ignored_reason": null,
+      "provider_field": "reasoning.effort",
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 4190,
+      "completion_tokens_details": null,
+      "prompt_tokens": 8285,
+      "prompt_tokens_details": null,
+      "total_tokens": 12475
+    }
+  },
+  "headers": {
+    "x-cost-usd": "unknown",
+    "x-scillm-timeout-ms": "248135",
+    "x-scillm-timeout-samples": "130",
+    "x-scillm-timeout-source": "estimated"
+  },
+  "ok": true,
+  "status_code": 200
+}

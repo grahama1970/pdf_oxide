@@ -1,0 +1,614 @@
+{
+  "artifact_dir": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456",
+  "blocks": [
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.11371211812953756,
+        0.8525490230984158,
+        0.9040908813476562
+      ],
+      "blockType": "table",
+      "id": "actual:p456:table:0",
+      "page": 456,
+      "text": "CONTROL NUMBER | CONTROL NAME CONTROL NHANCEMENT AME | IMPLEMENTED BY | ASSURANCE AC-1 | Policy and Procedures | O | \u221a AC-2 | Account Management | O AC-2(1) | AUTOMATED YSTEM CCOUNT ANAGEMENT | O AC-2(2) | AUTOMATED EMPORARY ND MERGENCY CCOUNT ANAGEMENT | S AC"
+    },
+    {
+      "bbox": [
+        0.37752,
+        0.088879,
+        0.618762,
+        0.103848
+      ],
+      "blockType": "caption",
+      "id": "actual:p456:line:51",
+      "page": 456,
+      "text": "TABLE C-1: ACCESS CONTROL FAMILY"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "blockType": "running_header",
+      "id": "actual:p456:line:0+actual:p456:line:49",
+      "page": 456,
+      "text": "NIST SP 800-53, REV. 5"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "blockType": "running_header",
+      "id": "actual:p456:line:50+actual:p456:line:97",
+      "page": 456,
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.158784,
+        0.137015,
+        0.221608,
+        0.152379
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:2",
+      "page": 456,
+      "text": "CONTROL"
+    },
+    {
+      "bbox": [
+        0.355647,
+        0.137394,
+        0.483136,
+        0.155258
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:52",
+      "page": 456,
+      "text": "CONTROL NAME"
+    },
+    {
+      "bbox": [
+        0.756039,
+        0.142091,
+        0.826005,
+        0.156167
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:106",
+      "page": 456,
+      "text": "ASSURANCE"
+    },
+    {
+      "bbox": [
+        0.624471,
+        0.142091,
+        0.709261,
+        0.156167
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:98",
+      "page": 456,
+      "text": "IMPLEMENTED"
+    },
+    {
+      "bbox": [
+        0.160451,
+        0.149667,
+        0.220216,
+        0.16503
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:3",
+      "page": 456,
+      "text": "NUMBER"
+    },
+    {
+      "bbox": [
+        0.658098,
+        0.154742,
+        0.676272,
+        0.168818
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:99",
+      "page": 456,
+      "text": "BY"
+    },
+    {
+      "bbox": [
+        0.340451,
+        0.158,
+        0.499671,
+        0.170864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:53",
+      "page": 456,
+      "text": "CONTROL ENHANCEMENT NAME"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.186985,
+        0.182943,
+        0.201349
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:4",
+      "page": 456,
+      "text": "AC-1"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.186985,
+        0.370487,
+        0.201349
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:54",
+      "page": 456,
+      "text": "Policy and Procedures"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.188985,
+        0.672927,
+        0.201849
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:100",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.20403,
+        0.182943,
+        0.218394
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:5",
+      "page": 456,
+      "text": "AC-2"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.20403,
+        0.375464,
+        0.218394
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:55",
+      "page": 456,
+      "text": "Account Management"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.20603,
+        0.672927,
+        0.218894
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:101",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.221,
+        0.202088,
+        0.235364
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:6",
+      "page": 456,
+      "text": "AC-2(1)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.223,
+        0.672927,
+        0.235864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:102",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.223,
+        0.469728,
+        0.235864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:56",
+      "page": 456,
+      "text": "AUTOMATED SYSTEM ACCOUNT MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.238045,
+        0.202088,
+        0.252409
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:7",
+      "page": 456,
+      "text": "AC-2(2)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.240045,
+        0.671677,
+        0.252909
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:103",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.240045,
+        0.577196,
+        0.252909
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:57",
+      "page": 456,
+      "text": "AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.255091,
+        0.202088,
+        0.269455
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:8",
+      "page": 456,
+      "text": "AC-2(3)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.257091,
+        0.671677,
+        0.269955
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:104",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.257091,
+        0.338206,
+        0.269955
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:58",
+      "page": 456,
+      "text": "DISABLE ACCOUNTS"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.272136,
+        0.345618,
+        0.289303
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:9",
+      "page": 456,
+      "text": "This publication is available AC-2(4) free of charge from:"
+    },
+    {
+      "bbox": [
+        0.154,
+        0.272136,
+        0.212,
+        0.289303
+      ],
+      "blockType": "control_reference",
+      "id": "actual:p456:line:9:embedded:requirement:0",
+      "page": 456,
+      "text": "AC-2(4)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.274136,
+        0.671677,
+        0.287
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:105",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.274136,
+        0.382368,
+        0.287
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:59",
+      "page": 456,
+      "text": "AUTOMATED AUDIT ACTIONS"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.288682,
+        0.678441,
+        0.304045
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:107",
+      "page": 456,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.289182,
+        0.202088,
+        0.303545
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:10",
+      "page": 456,
+      "text": "AC-2(5)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.291182,
+        0.340306,
+        0.304045
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:60",
+      "page": 456,
+      "text": "INACTIVITY LOGOUT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.306151,
+        0.202088,
+        0.320515
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:11",
+      "page": 456,
+      "text": "AC-2(6)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.308151,
+        0.671677,
+        0.321015
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:108",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.308151,
+        0.413385,
+        0.321015
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:61",
+      "page": 456,
+      "text": "DYNAMIC PRIVILEGE MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.323197,
+        0.202088,
+        0.337561
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:12",
+      "page": 456,
+      "text": "AC-2(7)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.325197,
+        0.672927,
+        0.338061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:109",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.325197,
+        0.380682,
+        0.338061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:62",
+      "page": 456,
+      "text": "PRIVILEGED USER ACCOUNTS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.340242,
+        0.202088,
+        0.354606
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:13",
+      "page": 456,
+      "text": "AC-2(8)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.342242,
+        0.671677,
+        0.355106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:110",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.342242,
+        0.413706,
+        0.355106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:63",
+      "page": 456,
+      "text": "DYNAMIC ACCOUNT MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.357288,
+        0.202088,
+        0.371652
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:14",
+      "page": 456,
+      "text": "AC-2(9)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.359288,
+        0.672927,
+        0.372152
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:111",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.359288,
+        0.518719,
+        0.372152
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:64",
+      "page": 456,
+      "text": "RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS"
+    }
+  ],
+  "cluster_id": "page_chrome",
+  "copied_files": [
+    "page.png",
+    "bbox_overlay.png",
+    "release_extraction_blocks.json",
+    "expected_elements.json",
+    "agent_second_pass.json"
+  ],
+  "fix_error_count": 2,
+  "fix_error_request_sample": [
+    {
+      "current_family": null,
+      "reason": "Human adjusted running header chrome grouping; materialization should reflect visual page chrome without making it semantic content.",
+      "requested_family": "page_chrome_noise",
+      "source_ids": [
+        "human:p456:page_chrome_grouping:0"
+      ]
+    },
+    {
+      "current_family": null,
+      "reason": "Human marked footer/page-number chrome as one bottom page-chrome band.",
+      "requested_family": "page_chrome_noise",
+      "source_ids": [
+        "human:p456:page_chrome_noise:4"
+      ]
+    }
+  ],
+  "fix_error_requests": [
+    {
+      "current_type": null,
+      "human_bbox": [
+        0.0590023551198257,
+        0.043,
+        0.9166064466230937,
+        0.08008062626262635
+      ],
+      "owner": "nist_preset_or_materialization",
+      "reason": "Human adjusted running header chrome grouping; materialization should reflect visual page chrome without making it semantic content.",
+      "requested_family": "page_chrome_noise",
+      "source_id": "human:p456:page_chrome_grouping:0",
+      "text_hint": "NIST SP 800-53, REV. 5\nAPPENDIX C"
+    },
+    {
+      "current_type": null,
+      "human_bbox": [
+        0.12745876006294224,
+        0.9258604722181891,
+        0.8921650805949854,
+        0.9721568969558272
+      ],
+      "owner": "nist_preset_or_materialization",
+      "reason": "Human marked footer/page-number chrome as one bottom page-chrome band.",
+      "requested_family": "page_chrome_noise",
+      "source_id": "human:p456:page_chrome_noise:4",
+      "text_hint": ""
+    }
+  ],
+  "fix_error_source": "expected_elements.json",
+  "fix_error_source_ids": [
+    "human:p456:page_chrome_grouping:0",
+    "human:p456:page_chrome_noise:4"
+  ],
+  "issue_family": "page_chrome",
+  "item_id": "page_0456_page_chrome",
+  "mode": "cluster",
+  "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/bbox_overlay.png",
+  "page": 456,
+  "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/page.png",
+  "source_dir": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0456"
+}

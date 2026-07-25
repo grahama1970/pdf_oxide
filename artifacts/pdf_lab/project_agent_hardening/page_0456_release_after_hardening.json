@@ -1,4 +1,5 @@
 {
+  "apply_mode": "release",
   "blocks": [
     {
       "bbox": [
@@ -28,9 +29,10 @@
         "is_bold": false,
         "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
       },
+      "semantic_role": "page_chrome",
       "source_type": "Header",
       "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
-      "type": "section_heading"
+      "type": "header_footer_noise"
     },
     {
       "bbox": [
@@ -60,9 +62,10 @@
         "is_bold": false,
         "text": "_________________________________________________________________________________________________"
       },
+      "semantic_role": "page_chrome",
       "source_type": "Header",
       "text": "_________________________________________________________________________________________________",
-      "type": "section_heading"
+      "type": "header_footer_noise"
     },
     {
       "bbox": [
@@ -1661,14 +1664,11 @@
       "type": "table"
     }
   ],
-  "hardening_source": "apply_ledger release with current nist_sp_800_53r5_promotion_ledger.json plus table-contained duplicate suppression in snapshot_current_extraction.py",
+  "ledger_path": "/tmp/pdf_oxide_page456_main_integrate_20260725/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
   "page": 456,
-  "pdf_page_index": 455,
-  "source_extraction": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
-  "table_materialization": {
-    "core_table_blocks_added": 1,
-    "existing_table_blocks": 0,
-    "table_extraction_error_count": 0
-  },
-  "toc_entries": []
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 455
 }

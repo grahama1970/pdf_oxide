@@ -1,0 +1,40 @@
+{
+  "bug_clusters": [],
+  "bug_reports": [
+    {
+      "abstain_reason": "",
+      "bug_present": false,
+      "confidence": "high",
+      "current_family": "running_header",
+      "evidence_block_ids": [
+        "actual:p456:line:0+actual:p456:line:49",
+        "actual:p456:line:50+actual:p456:line:97"
+      ],
+      "expected_family": "page_chrome_noise",
+      "extraction_error": "The reviewed request is stale: the current extraction already identifies the visible top running-header chrome as non-body page chrome via running_header blocks. The human text hint also mentions APPENDIX C, but that text is visually in the footer, not inside this top-header bbox.",
+      "patch_hint": "No code change indicated for this source_id; current extraction already treats the visible top header as page chrome.",
+      "recommended_code_area": "unclear",
+      "source_id": "human:p456:page_chrome_grouping:0",
+      "visual_observation": "The top page chrome consists of a left running header reading NIST SP 800-53, Rev. 5, a right running header with the document title, and a horizontal rule below them. The overlay shows separate bboxes on the two visible running-header text regions."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": false,
+      "confidence": "medium",
+      "current_family": "footer_page_chrome",
+      "evidence_block_ids": [],
+      "expected_family": "page_chrome_noise",
+      "extraction_error": "The reviewed request is stale based on the overlay: the visible footer/page-number chrome is already boxed separately as page chrome. The supplied current_extracted_blocks excerpt does not include the footer block ids, so no evidence ids can be cited from the provided block list.",
+      "patch_hint": "No code change indicated for this source_id; current overlay already shows the footer/page-number chrome captured.",
+      "recommended_code_area": "unclear",
+      "source_id": "human:p456:page_chrome_noise:4",
+      "visual_observation": "The bottom page chrome consists of APPENDIX C at the lower left and PAGE 429 at the lower right. The overlay shows bboxes around both footer/page-number text regions."
+    }
+  ],
+  "cluster_id": "page_chrome",
+  "fix_error_source": "expected_elements.json",
+  "missing_or_ambiguous": [],
+  "overall_confidence": "medium",
+  "page": 456,
+  "schema": "pdf_oxide.scillm_visual_bug_report.v2"
+}

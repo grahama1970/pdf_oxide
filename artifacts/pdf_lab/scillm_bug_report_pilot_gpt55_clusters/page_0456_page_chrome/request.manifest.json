@@ -1,0 +1,12 @@
+{
+  "messages": "[omitted: see prompt.txt and image files]",
+  "model": "gpt-5.5",
+  "reasoning_effort": "high",
+  "response_format": {
+    "type": "json_object"
+  },
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-bug-report-pilot-20260531T123310",
+    "item_id": "page_0456_page_chrome"
+  }
+}
