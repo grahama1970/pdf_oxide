@@ -21,6 +21,8 @@ export interface CanvasRegion {
   color?: string
   labelAnchor?: LabelAnchor
   editable?: boolean
+  /** Ghost-layer context region: dashed, muted, tooltip-only (operator spec 6). */
+  ghost?: boolean
 }
 
 export interface CanvasThumbnail {
@@ -404,12 +406,12 @@ export function PdfDocumentCanvas({
             />
             {regions.map((region, regionIndex) => {
               const selected = selectedRegionId === region.id
-              const editable = region.editable !== false
+              const editable = region.editable !== false && !region.ghost
               const labelAnchor = labelAnchors[region.id] ?? region.labelAnchor ?? 'top-outside'
               return (
                 <div
                   key={region.id}
-                  className={`pdf-document-canvas__region ${selected ? 'is-selected' : ''}`}
+                  className={`pdf-document-canvas__region ${selected ? 'is-selected' : ''} ${region.ghost ? 'is-ghost' : ''}`}
                   data-testid={regionIndex === 0 ? 'bbox-overlay' : `bbox-overlay-${regionIndex + 1}`}
                   data-region-id={region.id}
                   role={editable ? 'button' : undefined}

@@ -205,3 +205,24 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* --- operator spec 6: ghost layer --- */
+.pdf-document-canvas__region.is-ghost {
+  border-style: dashed;
+  border-width: 1px;
+  border-color: rgba(148, 163, 184, 0.4) !important;
+  background: rgba(148, 163, 184, 0.08);
+  pointer-events: auto;
+  cursor: help;
+}
+.pdf-document-canvas__region.is-ghost:hover {
+  border-color: rgba(203, 213, 225, 0.7) !important;
+  background: rgba(148, 163, 184, 0.18);
+}
+.pdf-document-canvas__region.is-ghost .pdf-document-canvas__tag {
+  opacity: 0;
+  pointer-events: none;
+}
+.pdf-document-canvas__region.is-ghost:hover .pdf-document-canvas__tag {
+  opacity: 1;
+}

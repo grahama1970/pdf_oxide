@@ -431,6 +431,8 @@ export function AnnotationQueueRoute({
   const [workbenchAction, setWorkbenchAction] = useState<WorkbenchAction>(null)
   const [railCollapsed, setRailCollapsed] = useState(false)
   const [canvasRegions, setCanvasRegions] = useState<CanvasRegion[]>([])
+  const [showContext, setShowContext] = useState(true)
+  const [contextItems, setContextItems] = useState<Array<{ page: number; type: string; bbox: number[]; label: string }> | null>(null)
 
   useEffect(() => {
     if (initialCalls) return
@@ -550,6 +552,27 @@ export function AnnotationQueueRoute({
       }))
   }, [pageImage, pageImages, selected])
 
+  const ghostRegions = useMemo<CanvasRegion[]>(() => {
+    if (!selected || !contextItems || !pageImage?.width || !pageImage.height) return []
+    const pageWidthPt = pageImage.width * (72 / 96)
+    const pageHeightPt = pageImage.height * (72 / 96)
+    return contextItems
+      .filter((item) => item.page === selected.page && Array.isArray(item.bbox) && item.bbox.length === 4)
+      .map((item, index) => ({
+        id: `ghost-${index}`,
+        // extraction context bboxes are top-left-origin xyxy points
+        bbox: [
+          Math.max(0, item.bbox[0] / pageWidthPt),
+          Math.max(0, item.bbox[1] / pageHeightPt),
+          Math.min(1, item.bbox[2] / pageWidthPt),
+          Math.min(1, item.bbox[3] / pageHeightPt),
+        ] as CanvasRegion['bbox'],
+        label: `${item.type}${item.label ? ` · ${item.label}` : ''}`,
+        ghost: true,
+        editable: false,
+      }))
+  }, [contextItems, pageImage, selected])
+
   const updateCanvasRegions = (nextRegions: CanvasRegion[]) => {
     const next = nextRegions[nextRegions.length - 1]
     if (!next || !pageImage?.width || !pageImage.height) {
@@ -644,6 +667,19 @@ export function AnnotationQueueRoute({
   }
 
   useEffect(() => {
+    if (!selected) return
+    let cancelled = false
+    fetch(`/artifacts/pdf-lab/extractions/${encodeURIComponent(selected.documentId)}.json`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        if (cancelled) return
+        setContextItems(payload && Array.isArray(payload.items) ? payload.items : null)
+      })
+      .catch(() => { if (!cancelled) setContextItems(null) })
+    return () => { cancelled = true }
+  }, [selected?.documentId])
+
+  useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return
       if (!selected || saving) return
@@ -653,6 +689,7 @@ export function AnnotationQueueRoute({
       if (event.key === '4') setWorkbenchAction('fix_bounds')
       if (event.key === '5') void saveDecision('not_an_element')
       if (event.key === '6') void saveDecision('defer')
+      if (event.key === 'v' || event.key === 'V') setShowContext((current) => !current)
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
@@ -816,7 +853,21 @@ export function AnnotationQueueRoute({
 
               <div className="pdf-verify-adjudication__columns">
                 <section className="pdf-verify-workbench-panel is-canvas" aria-labelledby="original-page-heading">
-                  <header><span>01</span><h2 id="original-page-heading">Original page</h2></header>
+                  <header>
+                    <span>01</span><h2 id="original-page-heading">Original page</h2>
+                    <button
+                      type="button"
+                      className={`pdf-verify-context-toggle ${showContext ? 'is-on' : ''}`}
+                      onClick={() => setShowContext((current) => !current)}
+                      aria-pressed={showContext}
+                      data-qid="annotation-queue:canvas:context-toggle"
+                      data-qs-action="ANNOTATION_QUEUE_TOGGLE_CONTEXT"
+                      title="Toggle surrounding extracted regions (Hotkey: V)"
+                      data-testid="context-toggle"
+                    >
+                      {showContext ? 'Context on' : 'Context off'}
+                    </button>
+                  </header>
                   {pageImage && !bbox && (
                     <p className="pdf-verify-canvas-note" data-testid="no-region-note">
                       No region localized for this flag yet — drag on the page to draw the annotation yourself.
@@ -825,7 +876,7 @@ export function AnnotationQueueRoute({
                   {pageImage ? (
                     <PdfDocumentCanvas
                       pageImage={pageImage}
-                      regions={canvasRegions}
+                      regions={ghostRegions.length && showContext ? [...ghostRegions, ...canvasRegions] : canvasRegions}
                       selectedRegionId={canvasRegions[0]?.id ?? null}
                       onSelectedRegionChange={() => undefined}
                       onRegionsChange={updateCanvasRegions}

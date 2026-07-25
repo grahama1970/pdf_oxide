@@ -1557,3 +1557,21 @@
   color: #bfdbfe;
   font-size: 12.5px;
 }
+
+/* --- operator spec 6: context toggle --- */
+.pdf-verify-context-toggle {
+  margin-left: auto;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  background: #111827;
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.pdf-verify-context-toggle.is-on {
+  border-color: rgba(59, 130, 246, 0.4);
+  background: rgba(30, 58, 138, 0.35);
+  color: #93c5fd;
+}
