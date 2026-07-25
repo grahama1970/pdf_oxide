@@ -1,0 +1,88 @@
+{
+  "candidate": {
+    "document": "NIST_SP_800-53r5.pdf",
+    "page": 455,
+    "pdf_index": 454,
+    "queue_slice": "page455_control_summaries_lineage",
+    "verified_toc_target": "toc:0038 APPENDIX C CONTROL SUMMARIES -> printed p.428",
+    "remaining_candidate_work_after_slice": [
+      "Audit body continuation classification for actual:p455:block:14 (`importance, or order...`) before treating page455 as fully closed."
+    ]
+  },
+  "objective": "Harden page455 Appendix C control summaries extraction by preserving TOC lineage on body headings, list, paragraphs, and footnotes.",
+  "source_evidence": {
+    "closure_report": "artifacts/pdf_lab/project_agent_hardening/page_0455_repair_closure_current/closure_report.json",
+    "agent_second_pass_before": "artifacts/pdf_lab/project_agent_hardening/page_0455_repair_closure_current/agent_second_pass.before.json",
+    "release_extraction_blocks_before": "artifacts/pdf_lab/project_agent_hardening/page_0455_repair_closure_current/release_extraction_blocks.before.json",
+    "closure_verdict": "closed",
+    "baseline_fix_error_count": 0,
+    "expected_element_count_after_rematerialize": 15,
+    "reviewer_questions": [
+      "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.",
+      "Mark nested/continued list items and distinguish bullets from prose line wraps.",
+      "Separate running headers, footers, printed page numbers, and side boilerplate from body content.",
+      "Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables."
+    ]
+  },
+  "pre_patch_regression": {
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page455_control_summaries.py",
+    "result": "1 failed, 5 warnings in 26.30s",
+    "failure_signature": "APPENDIX C block toc_path was None; expected ['toc:0038']"
+  },
+  "patch": {
+    "code": "scripts/pdf_lab/snapshot_current_extraction.py",
+    "test": "tests/test_nist_page455_control_summaries.py",
+    "change_summary": "Added page455 NIST Appendix C control summaries TOC lineage and regression coverage for headings plus body/footnote lineage.",
+    "toc_path": [
+      "toc:0038"
+    ],
+    "breadcrumb": [
+      "APPENDIX C CONTROL SUMMARIES"
+    ]
+  },
+  "post_patch_artifacts": {
+    "release_after_hardening": "artifacts/pdf_lab/project_agent_hardening/page_0455_release_after_hardening.json",
+    "regenerate_stderr": "/tmp/pdf_oxide_page455_regenerate.stderr",
+    "block_count": 17,
+    "type_counts": {
+      "footnote": 2,
+      "header_footer_noise": 5,
+      "list": 1,
+      "paragraph_block": 6,
+      "section_heading": 2,
+      "unknown_region": 1
+    },
+    "toc_path_samples": {
+      "actual:p455:block:6": [
+        "toc:0038"
+      ],
+      "actual:p455:block:7": [
+        "toc:0038"
+      ],
+      "actual:p455:block:8": [
+        "toc:0038"
+      ],
+      "actual:p455:block:10": [
+        "toc:0038"
+      ],
+      "actual:p455:block:15": [
+        "toc:0038"
+      ],
+      "actual:p455:block:17": [
+        "toc:0038"
+      ]
+    }
+  },
+  "focused_proof": {
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page455_control_summaries.py",
+    "result": "1 passed, 5 warnings in 19.17s",
+    "mocked": "no",
+    "live": "no",
+    "exercised": "Deterministic local extraction of NIST page455 through snapshot_current_extraction with the promotion ledger.",
+    "does_not_verify": "No paid model call, browser review, or human visual acceptance was performed for this slice."
+  },
+  "combined_regression": {
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page455_control_summaries.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page401_references_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page35_control_families_table.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page456_page_chrome.py",
+    "result": "10 passed, 5 warnings in 187.09s"
+  }
+}

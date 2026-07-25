@@ -1,0 +1,958 @@
+{
+  "source_extraction": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json",
+  "page": 455,
+  "pdf_page_index": 454,
+  "toc_entries": [
+    {
+      "toc_id": "toc:0038",
+      "title": "APPENDIX C CONTROL SUMMARIES",
+      "level": 1,
+      "target_page": 428,
+      "matched_pdf_page_index": 454,
+      "extraction_page": 455
+    }
+  ],
+  "table_materialization": {
+    "core_table_blocks_added": 0,
+    "existing_table_blocks": 0
+  },
+  "blocks": [
+    {
+      "bbox": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confidence": 1.0,
+      "id": "toc:section_anchor:0358",
+      "page": 455,
+      "review_role": "semantic_document_structure",
+      "semantic_role": "section_anchor",
+      "source": "pdf_outline.toc",
+      "text": "CONTROL SUMMARIES",
+      "toc_backed": true,
+      "toc_id": "toc:0358",
+      "toc_level": 1,
+      "type": "section_anchor"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:0",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:1",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.091712,
+        0.255708,
+        0.112152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:3",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "APPENDIX C",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145056,
+        0.127772,
+        0.388392,
+        0.152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:4",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONTROL SUMMARIES",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.156561,
+        0.599754,
+        0.173212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:5",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IMPLEMENTATION, WITHDRAWAL, AND ASSURANCE DESIGNATIONS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.187591,
+        0.812632,
+        0.204455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:6",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Tables C-1 through C-20 provide a summary of the security and privacy controls and control",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.20456,
+        0.737021,
+        0.221424
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:7",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "enhancements in Chapter Three. Each table focuses on a different control family.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.229864,
+        0.806975,
+        0.246727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:8",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 A control or control enhancement that has been withdrawn from the control catalog is",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174964,
+        0.246763,
+        0.842247,
+        0.263627
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:9",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "indicated by a \u201cW\u201d and an explanation of the control or control enhancement disposition in",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.263733,
+        0.345618,
+        0.289303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:10",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is available light gray free of text. charge from:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.289034,
+        0.847213,
+        0.483401
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:list:0:11-20",
+      "page": 455,
+      "preset_applied": {
+        "name": "nist_sp_800_53r5_pdf",
+        "path": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
+        "schema_version": "pdf-oxide.document-family-preset.v1"
+      },
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy",
+        "child_ids": [
+          "actual:p455:line:11",
+          "actual:p455:line:12",
+          "actual:p455:line:13",
+          "actual:p455:line:14",
+          "actual:p455:line:15",
+          "actual:p455:line:16",
+          "actual:p455:line:17",
+          "actual:p455:line:18",
+          "actual:p455:line:19",
+          "actual:p455:line:20"
+        ],
+        "grouping_rule": "adjacent_list_item_lines_with_indented_continuations",
+        "items": [
+          {
+            "line_ids": [
+              "actual:p455:line:11",
+              "actual:p455:line:12"
+            ],
+            "start_id": "actual:p455:line:11",
+            "text": "\u2022 A control or control enhancement that is typically implemented by an information system through technical means is indicated by an \u201cS\u201d in the implemented by column."
+          },
+          {
+            "line_ids": [
+              "actual:p455:line:13",
+              "actual:p455:line:14",
+              "actual:p455:line:15"
+            ],
+            "start_id": "actual:p455:line:13",
+            "text": "\u2022 A control or control enhancement that is typically implemented by an organization (i.e., by an individual through nontechnical means) is indicated by an \u201cO\u201d in the implemented by column. 35"
+          },
+          {
+            "line_ids": [
+              "actual:p455:line:16",
+              "actual:p455:line:17"
+            ],
+            "start_id": "actual:p455:line:16",
+            "text": "\u2022 A control or control enhancement that can be implemented by an organization, a system, or a combination of the two is indicated by an \u201cO/S.\u201d"
+          },
+          {
+            "line_ids": [
+              "actual:p455:line:18",
+              "actual:p455:line:19",
+              "actual:p455:line:20"
+            ],
+            "start_id": "actual:p455:line:18",
+            "text": "\u2022 A control or control enhancement marked with a \u201c\u221a\u201d in the assurance column indicates the control or control enhancement contributes to the grounds for confidence that a security or privacy claim has been or will be achieved. 36"
+          }
+        ],
+        "list_style": "bullet"
+      },
+      "source": "pdf_lab.second_pass.list_grouping",
+      "text": "\u2022 A control or control enhancement that is typically implemented by an information system through technical means is indicated by an \u201cS\u201d in the implemented by column.\n\u2022 A control or control enhancement that is typically implemented by an organization (i.e., by an individual through nontechnical means) is indicated by an \u201cO\u201d in the implemented by column. 35\n\u2022 A control or control enhancement that can be implemented by an organization, a system, or a combination of the two is indicated by an \u201cO/S.\u201d\n\u2022 A control or control enhancement marked with a \u201c\u221a\u201d in the assurance column indicates the control or control enhancement contributes to the grounds for confidence that a security or privacy claim has been or will be achieved. 36",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.289034,
+        0.829118,
+        0.305897
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:11",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 A control or control enhancement that is typically implemented by an information system",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174947,
+        0.306003,
+        0.744346,
+        0.322866
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:12",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "through technical means is indicated by an \u201cS\u201d in the implemented by column.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145541,
+        0.331235,
+        0.832727,
+        0.348098
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:13",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 A control or control enhancement that is typically implemented by an organization (i.e., by",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174947,
+        0.348204,
+        0.819218,
+        0.365067
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:14",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "an individual through nontechnical means) is indicated by an \u201cO\u201d in the implemented by",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.174965,
+        0.365091,
+        0.249337,
+        0.382036
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:15",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "column. 35",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145568,
+        0.390398,
+        0.847213,
+        0.407262
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:16",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 A control or control enhancement that can be implemented by an organization, a system, or",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174973,
+        0.407368,
+        0.541036,
+        0.424231
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:17",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "a combination of the two is indicated by an \u201cO/S.\u201d",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.14555,
+        0.432669,
+        0.839716,
+        0.449532
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:18",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "\u2022 A control or control enhancement marked with a \u201c\u221a\u201d in the assurance column indicates the",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.174955,
+        0.449568,
+        0.844483,
+        0.466432
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:19",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "control or control enhancement contributes to the grounds for confidence that a security or",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.174973,
+        0.466455,
+        0.500807,
+        0.483401
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:20",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "privacy claim has been or will be achieved. 36",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145557,
+        0.498652,
+        0.837315,
+        0.515516
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:21",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Each control and control enhancement in Tables C-1 through C-20 is hyperlinked to the text for",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145575,
+        0.515621,
+        0.555955,
+        0.532485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:23",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "that control and control enhancement in Chapter Three.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:22",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.540167,
+        0.844551,
+        0.55703
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:24",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Families of controls contain base controls and control enhancements, which are directly related",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.557066,
+        0.820259,
+        0.57393
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:25",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "to their base controls. Control enhancements either add functionality or specificity to a base",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.574036,
+        0.844638,
+        0.590899
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:26",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "control or increase the strength of a base control. In both cases, control enhancements are used",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.591005,
+        0.840748,
+        0.607868
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:27",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "in systems and environments of operation that require greater protection than provided by the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.607974,
+        0.853773,
+        0.624837
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:28",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "base control. This increased protection is required due to the potential adverse org anizational or",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.624943,
+        0.83201,
+        0.641806
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:29",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "individual impacts or when organizations require additions to the base control functionality or",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.641843,
+        0.852149,
+        0.658706
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:30",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "assurance based on organizational assessments of risk. The use of control enhancements always",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.658812,
+        0.410437,
+        0.675675
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:31",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "requires the use of the base control.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.690924,
+        0.826915,
+        0.707788
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:33",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "The families are arranged in alphabetical order, while the controls and control enhancements",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.701227,
+        0.040809,
+        0.715591
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:32",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "-",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.705015,
+        0.065162,
+        0.719379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:34",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "53r5",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.707893,
+        0.831278,
+        0.724757
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:35",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "within each family are arranged in numerical order. The alphabetical or numerical order of the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.724862,
+        0.834553,
+        0.741726
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:36",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "families, controls, and control enhancements does not imply any type of prioritization, level of",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.741832,
+        0.820797,
+        0.758695
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:37",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "importance, or order in which the controls or control enhancements are to be implemented.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.793576,
+        0.83779,
+        0.807939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:38",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "35 The indication that a certain control or control enhancement is implem ented by a system or by an organization in",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145573,
+        0.807439,
+        0.852166,
+        0.821803
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:39",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Tables C-1 through C-20 is notional. Organizations have the flexibility to implement their selected controls and control",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145573,
+        0.821303,
+        0.847241,
+        0.835667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:40",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "enhancements in the most cost-effective and efficient manner while simultaneously complying with the intent of the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145573,
+        0.835167,
+        0.835471,
+        0.84953
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:41",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "controls or control enhancements. In certain situations, a control or control enhancement may be implemented by",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145573,
+        0.84903,
+        0.539835,
+        0.863394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:42",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "the system, the organization, or a combination of the two entities.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.86547,
+        0.853866,
+        0.879833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:43",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "36 Assurance is a critical aspect in determining the trustworthiness of systems. Assurance is the measure of confidence",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.879333,
+        0.823471,
+        0.893697
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:44",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "that the security and privacy functions, features, practices, policies, procedures, mechanisms, and architecture of",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.893197,
+        0.720629,
+        0.907561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:45",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "organizational systems accurately mediate and enforce established security and privacy policies.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.939742,
+        0.209845,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:46",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "APPENDIX C",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.802283,
+        0.939742,
+        0.854755,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p455:line:47",
+      "page": 455,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE 428",
+      "type": "running_footer"
+    }
+  ]
+}

@@ -1,0 +1,1137 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p455:block:0",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p455:block:1",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528897154564951,
+        0.9549618345318418
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 8.107500076293945,
+      "id": "actual:p455:block:2",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ],
+        "block_type": "Footer",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 8.107500076293945,
+        "header_level": null,
+        "is_bold": false,
+        "text": "APPENDIX C   PAGE 428"
+      },
+      "source_type": "Footer",
+      "text": "APPENDIX C   PAGE 428",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "ArialMT",
+      "font_size": 9.0,
+      "id": "actual:p455:rotated_side_chrome:1",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "fragment_ids": [
+          "actual:p455:block:3",
+          "actual:p455:block:4",
+          "actual:p455:block:5"
+        ],
+        "fragments": [
+          {
+            "bbox": [
+              0.03441176383323919,
+              0.27643939702197756,
+              0.3498234998166951,
+              0.28780303338561397
+            ],
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "id": "actual:p455:block:3",
+            "is_bold": false,
+            "page": 455,
+            "pdf_page_index": 454,
+            "raw": {
+              "bbox": [
+                21.059999465942383,
+                564.0599975585938,
+                193.031982421875,
+                9.0
+              ],
+              "block_type": "Boilerplate",
+              "confidence": 0.800000011920929,
+              "font_name": "TT1",
+              "font_size": 9.0,
+              "header_level": null,
+              "is_bold": false,
+              "text": "This publication is available free of charge from:"
+            },
+            "source_type": "Boilerplate",
+            "text": "This publication is available free of charge from:",
+            "type": "unknown_region"
+          },
+          {
+            "bbox": [
+              0.03441176383323919,
+              0.5202272588556464,
+              0.2705250191532709,
+              0.5315908952192827
+            ],
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "id": "actual:p455:block:4",
+            "is_bold": false,
+            "page": 455,
+            "pdf_page_index": 454,
+            "raw": {
+              "bbox": [
+                21.059999465942383,
+                370.9800109863281,
+                144.50131225585938,
+                9.0
+              ],
+              "block_type": "Boilerplate",
+              "confidence": 0.800000011920929,
+              "font_name": "TT1",
+              "font_size": 9.0,
+              "header_level": null,
+              "is_bold": false,
+              "text": "https://doi.org/10.6028/NIST.SP.800"
+            },
+            "source_type": "Boilerplate",
+            "text": "https://doi.org/10.6028/NIST.SP.800",
+            "type": "unknown_region"
+          },
+          {
+            "bbox": [
+              0.03441176383323919,
+              0.7027272696446891,
+              0.06380882761836831,
+              0.7178787847962043
+            ],
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "id": "actual:p455:block:5",
+            "is_bold": false,
+            "page": 455,
+            "pdf_page_index": 454,
+            "raw": {
+              "bbox": [
+                21.059999465942383,
+                223.44000244140625,
+                17.991003036499023,
+                12.0
+              ],
+              "block_type": "Boilerplate",
+              "confidence": 0.800000011920929,
+              "font_name": "TT1",
+              "font_size": 9.0,
+              "header_level": null,
+              "is_bold": false,
+              "text": "-53r5"
+            },
+            "source_type": "Boilerplate",
+            "text": "-53r5",
+            "type": "unknown_region"
+          }
+        ],
+        "line_bbox": [
+          18.135000228881836,
+          227.94000244140625,
+          30.419998168945312,
+          586.5780029296875
+        ],
+        "line_dir": [
+          0.0,
+          1.0
+        ],
+        "source": "fitz_rawdict_rotated_margin_line"
+      },
+      "source_type": "RotatedSideChrome",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.09307097425364484,
+        0.25370793560751126,
+        0.11588885567405006
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT2",
+      "font_size": 14.020000457763672,
+      "id": "actual:p455:block:6",
+      "is_bold": true,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.0,
+          704.760009765625,
+          68.9005126953125,
+          16.02001953125
+        ],
+        "block_type": "ChapterLabel",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT2",
+        "font_size": 14.020000457763672,
+        "header_level": 0,
+        "is_bold": true,
+        "text": "APPENDIX C"
+      },
+      "source_type": "ChapterLabel",
+      "text": "APPENDIX C",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "unknown_region"
+    },
+    {
+      "bbox": [
+        0.14705636766221789,
+        0.12898307376437718,
+        0.39487270280426623,
+        0.1570593034378206
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT2",
+      "font_size": 15.270000457763672,
+      "id": "actual:p455:block:7",
+      "is_bold": true,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          89.99849700927734,
+          673.2000122070312,
+          155.26809692382812,
+          16.0206298828125
+        ],
+        "block_type": "Title",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT2",
+        "font_size": 15.270000457763672,
+        "header_level": 1,
+        "is_bold": true,
+        "text": "CONTROL SUMMARIES"
+      },
+      "source_type": "Title",
+      "text": "CONTROL SUMMARIES",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.15823163889875316,
+        0.6023285809685203,
+        0.1751593580149641
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p455:block:8",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.0,
+          656.4000244140625,
+          280.8495788574219,
+          10.02001953125
+        ],
+        "block_type": "Title",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": 2,
+        "is_bold": false,
+        "text": "IMPLEMENTATION, WITHDRAWAL, AND ASSURANCE DESIGNATIONS"
+      },
+      "source_type": "Title",
+      "text": "IMPLEMENTATION, WITHDRAWAL, AND ASSURANCE DESIGNATIONS",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.18873045179578993,
+        0.8154898749457465,
+        0.2242496952866063
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979998588562012,
+      "id": "actual:p455:block:9",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.0,
+          617.8200073242188,
+          411.5446472167969,
+          24.41998291015625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979998588562012,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Tables C-1 through C-20 provide a summary of the security and privacy controls and control enhancements in Chapter Three. Each table focuses on a different control family."
+      },
+      "source_type": "Body",
+      "text": "Tables C-1 through C-20 provide a summary of the security and privacy controls and control enhancements in Chapter Three. Each table focuses on a different control family.",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14704102160883883,
+        0.23100315440784802,
+        0.8492941264233558,
+        0.48622666946565263
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "C2_0",
+      "font_size": 10.979997634887695,
+      "id": "actual:p455:block:10",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          89.98910522460938,
+          410.334228515625,
+          432.2713928222656,
+          198.42578125
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "C2_0",
+        "font_size": 10.979997634887695,
+        "header_level": null,
+        "is_bold": false,
+        "text": "\u2022 A control or control enhancement that has been withdrawn from the control catalog is indicated by a \u201cW\u201d and an explanation of the control or control enhancement disposition in light gray text. \u2022 A control or control enhancement that is typically implemented by an information system through technical means is indicated by an \u201cS\u201d in the implemented by column. \u2022 A control or control enhancement that is typically implemented by an organization (i.e., by an individual through nontechnical means) is indicated by an \u201cO\u201d in the implemented by column.35 \u2022 A control or control enhancement that can be implemented by an organization, a system, or a combination of the two is indicated by an \u201cO/S.\u201d \u2022 A control or control enhancement marked with a \u201c\u221a\u201d in the assurance column indicates the control or control enhancement contributes to the grounds for confidence that a security or privacy claim has been or will be achieved.36"
+      },
+      "source_type": "List",
+      "text": "\u2022 A control or control enhancement that has been withdrawn from the control catalog is indicated by a \u201cW\u201d and an explanation of the control or control enhancement disposition in light gray text. \u2022 A control or control enhancement that is typically implemented by an information system through technical means is indicated by an \u201cS\u201d in the implemented by column. \u2022 A control or control enhancement that is typically implemented by an organization (i.e., by an individual through nontechnical means) is indicated by an \u201cO\u201d in the implemented by column.35 \u2022 A control or control enhancement that can be implemented by an organization, a system, or a combination of the two is indicated by an \u201cO/S.\u201d \u2022 A control or control enhancement marked with a \u201c\u221a\u201d in the assurance column indicates the control or control enhancement contributes to the grounds for confidence that a security or privacy claim has been or will be achieved.36",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.14705665438782936,
+        0.49979188707139754,
+        0.8399879605162377,
+        0.5353104947793363
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979997634887695,
+      "id": "actual:p455:block:11",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          89.99867248535156,
+          371.4598388671875,
+          426.54119873046875,
+          24.419525146484375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979997634887695,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Each control and control enhancement in Tables C-1 through C-20 is hyperlinked to the text for that control and control enhancement in Chapter Three."
+      },
+      "source_type": "Body",
+      "text": "Each control and control enhancement in Tables C-1 through C-20 is hyperlinked to the text for that control and control enhancement in Chapter Three.",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705881106308083,
+        0.5413062355735085,
+        0.8525221082899306,
+        0.6785007052951388
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p455:block:12",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          89.99999237060547,
+          258.0531921386719,
+          434.2117919921875,
+          104.94680786132812
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Families of controls contain base controls and control enhancements, which are directly related to their base controls. Control enhancements either add functionality or specificity to a base control or increase the strength of a base control. In both cases, control enhancements are used in systems and environments of operation that require greater protection than provided by the base control. This increased protection is required due to the potential adverse organizational or individual impacts or when organizations require additions to the base control functionality or assurance based on organizational assessments of risk. The use of control enhancements always requires the use of the base control."
+      },
+      "source_type": "Body",
+      "text": "Families of controls contain base controls and control enhancements, which are directly related to their base controls. Control enhancements either add functionality or specificity to a base control or increase the strength of a base control. In both cases, control enhancements are used in systems and environments of operation that require greater protection than provided by the base control. This increased protection is required due to the potential adverse organizational or individual impacts or when organizations require additions to the base control functionality or assurance based on organizational assessments of risk. The use of control enhancements always requires the use of the base control.",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.6920637650923296,
+        0.8356772030101103,
+        0.7450644753196023
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p455:block:13",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.0,
+          205.740966796875,
+          423.9268798828125,
+          37.85902404785156
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "The families are arranged in alphabetical order, while the controls and control enhancements within each family are arranged in numerical order. The alphabetical or numerical order of the families, controls, and control enhancements does not imply any type of prioritization, level of"
+      },
+      "source_type": "Body",
+      "text": "The families are arranged in alphabetical order, while the controls and control enhancements within each family are arranged in numerical order. The alphabetical or numerical order of the families, controls, and control enhancements does not imply any type of prioritization, level of",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705892326005923,
+        0.742971015698982,
+        0.8223504957809947,
+        0.7615206169359612
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 10.319999694824219,
+      "id": "actual:p455:block:14",
+      "is_bold": true,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.00006103515625,
+          192.3000030517578,
+          560.3323974609375,
+          10.9814453125
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 10.319999694824219,
+        "header_level": null,
+        "is_bold": true,
+        "text": "importance, or order in which the controls or control enhancements are to be implemented."
+      },
+      "source_type": "Boilerplate",
+      "text": "importance, or order in which the controls or control enhancements are to be implemented.",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7947803073459201,
+        0.8374455271203534,
+        0.8099848429361979
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 8.699999809265137,
+      "id": "actual:p455:block:15",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.0,
+          153.3000030517578,
+          424.56597900390625,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.699999809265137,
+        "header_level": null,
+        "is_bold": false,
+        "text": "35 The indication that a certain control or control enhancement is implemented by a system or by an organization in"
+      },
+      "semantic_role": "footnote_group",
+      "source_type": "Footnote",
+      "text": "35 The indication that a certain control or control enhancement is implemented by a system or by an organization in",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14707347146825853,
+        0.8086439190488873,
+        0.8517548804189644,
+        0.8654393668126579
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p455:block:16",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.00896453857422,
+          109.3800048828125,
+          433.28692626953125,
+          41.94000244140625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Tables C-1 through C-20 is notional. Organizations have the flexibility to implement their selected controls and control enhancements in the most cost-effective and efficient manner while simultaneously complying with the intent of the controls or control enhancements. In certain situations, a control or control enhancement may be implemented by the system, the organization, or a combination of the two entities."
+      },
+      "source_type": "Body",
+      "text": "Tables C-1 through C-20 is notional. Organizations have the flexibility to implement their selected controls and control enhancements in the most cost-effective and efficient manner while simultaneously complying with the intent of the controls or control enhancements. In certain situations, a control or control enhancement may be implemented by the system, the organization, or a combination of the two entities.",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8666742498224432,
+        0.8526942433874591,
+        0.8818787854127209
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 8.399999618530273,
+      "id": "actual:p455:block:17",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.0,
+          96.36000061035156,
+          433.9097900390625,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.399999618530273,
+        "header_level": null,
+        "is_bold": false,
+        "text": "36 Assurance is a critical aspect in determining the trustworthiness of systems. Assurance is the measure of confidence"
+      },
+      "semantic_role": "footnote_group",
+      "source_type": "Footnote",
+      "text": "36 Assurance is a critical aspect in determining the trustworthiness of systems. Assurance is the measure of confidence",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.1470588359957427,
+        0.8805378615254104,
+        0.8231472937889348,
+        0.9096060088186553
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "font_name": "TT0",
+      "font_size": 9.0,
+      "id": "actual:p455:block:18",
+      "is_bold": false,
+      "page": 455,
+      "pdf_page_index": 454,
+      "raw": {
+        "bbox": [
+          90.00000762939453,
+          74.39999389648438,
+          415.8234558105469,
+          19.980003356933594
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "that the security and privacy functions, features, practices, policies, procedures, mechanisms, and architecture of organizational systems accurately mediate and enforce established security and privacy policies."
+      },
+      "source_type": "Body",
+      "text": "that the security and privacy functions, features, practices, policies, procedures, mechanisms, and architecture of organizational systems accurately mediate and enforce established security and privacy policies.",
+      "toc_lineage": [
+        {
+          "id": "toc:0038",
+          "kind": "appendix",
+          "label": "APPENDIX C CONTROL SUMMARIES",
+          "level": 1,
+          "node_id": "toc:0038",
+          "page": 428,
+          "source": "toc"
+        }
+      ],
+      "toc_path": [
+        "toc:0038"
+      ],
+      "type": "paragraph_block"
+    }
+  ],
+  "ledger_path": "/tmp/pdf_oxide_page456_main_integrate_20260725/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 455,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 454
+}

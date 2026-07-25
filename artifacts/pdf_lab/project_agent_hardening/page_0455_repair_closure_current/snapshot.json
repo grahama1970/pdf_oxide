@@ -1,0 +1,571 @@
+{
+  "generated_at": "2026-05-31T20:01:20.963393+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04500001849550189,
+            1.0,
+            0.055075751410590276
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p455:block:0",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "source_type": "Footer",
+          "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05719703134864268,
+            0.8558836294934641,
+            0.06727276426373106
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p455:block:1",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Footer",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "source_type": "Footer",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.940454545647207,
+            0.8562647002974367,
+            0.9518181820108433
+          ],
+          "font_name": "TT0",
+          "font_size": 8.107500076293945,
+          "id": "actual:p455:block:2",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.107500076293945,
+            "header_level": null,
+            "is_bold": false,
+            "text": "APPENDIX C   PAGE 428"
+          },
+          "source_type": "Body",
+          "text": "APPENDIX C   PAGE 428",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.27643939702197756,
+            0.3498234998166951,
+            0.28780303338561397
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p455:block:3",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              564.0599975585938,
+              193.031982421875,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "This publication is available free of charge from:"
+          },
+          "source_type": "Body",
+          "text": "This publication is available free of charge from:",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.5202272588556464,
+            0.2705250191532709,
+            0.5315908952192827
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p455:block:4",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              370.9800109863281,
+              144.50131225585938,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "https://doi.org/10.6028/NIST.SP.800"
+          },
+          "source_type": "Body",
+          "text": "https://doi.org/10.6028/NIST.SP.800",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.7027272696446891,
+            0.06380882761836831,
+            0.7178787847962043
+          ],
+          "font_name": "TT1",
+          "font_size": 9.0,
+          "id": "actual:p455:block:5",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              21.059999465942383,
+              223.44000244140625,
+              17.991003036499023,
+              12.0
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": "-53r5"
+          },
+          "source_type": "List",
+          "text": "-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.08992420543323863,
+            0.2596413606132557,
+            0.11015150282118055
+          ],
+          "font_name": "TT2",
+          "font_size": 14.020000457763672,
+          "id": "actual:p455:block:6",
+          "is_bold": true,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              90.0,
+              704.760009765625,
+              68.9005126953125,
+              16.02001953125
+            ],
+            "block_type": "Title",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT2",
+            "font_size": 14.020000457763672,
+            "header_level": 1,
+            "header_validation": {
+              "confidence": 0.8999999761581421,
+              "depth_level": 1,
+              "disposition": "Accept",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 14.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": true,
+                "has_number_prefix": true,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 1,
+                "size_ratio": 1.276867151260376,
+                "text_len": 10,
+                "title_case_ratio": 1.0,
+                "word_count": 2
+              },
+              "has_numbering": true,
+              "is_header": true,
+              "level": 1,
+              "number_text": "C",
+              "reasons": [
+                "numbering",
+                "bold_large_font",
+                "formal_prefix",
+                "title_case_like",
+                "all_caps_medium"
+              ],
+              "title_text": ""
+            },
+            "is_bold": true,
+            "text": "APPENDIX C"
+          },
+          "source_type": "Title",
+          "text": "APPENDIX C",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.14705636766221789,
+            0.1297719165532276,
+            0.4007624083874272,
+            0.14999998458708175
+          ],
+          "font_name": "TT2",
+          "font_size": 15.270000457763672,
+          "id": "actual:p455:block:7",
+          "is_bold": true,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              89.99849700927734,
+              673.2000122070312,
+              155.26809692382812,
+              16.0206298828125
+            ],
+            "block_type": "Title",
+            "confidence": 0.75,
+            "font_name": "TT2",
+            "font_size": 15.270000457763672,
+            "header_level": 2,
+            "header_validation": {
+              "confidence": 0.75,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 15.270000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.390710473060608,
+                "text_len": 17,
+                "title_case_ratio": 1.0,
+                "word_count": 2
+              },
+              "has_numbering": false,
+              "is_header": true,
+              "level": 2,
+              "number_text": "",
+              "reasons": [
+                "bold_large_font",
+                "title_case_like",
+                "all_caps_medium"
+              ],
+              "title_text": "CONTROL SUMMARIES"
+            },
+            "is_bold": true,
+            "text": "CONTROL SUMMARIES"
+          },
+          "source_type": "Title",
+          "text": "CONTROL SUMMARIES",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.15856055057410037,
+            0.6059633641461142,
+            0.1712120903862847
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p455:block:8",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              90.0,
+              656.4000244140625,
+              280.8495788574219,
+              10.02001953125
+            ],
+            "block_type": "Title",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": 3,
+            "is_bold": false,
+            "text": "IMPLEMENTATION, WITHDRAWAL, AND ASSURANCE DESIGNATIONS"
+          },
+          "source_type": "Title",
+          "text": "IMPLEMENTATION, WITHDRAWAL, AND ASSURANCE DESIGNATIONS",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.18909092142124367,
+            0.8195173974130668,
+            0.21992423317649148
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979998588562012,
+          "id": "actual:p455:block:9",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              90.0,
+              617.8200073242188,
+              411.5446472167969,
+              24.41998291015625
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.979998588562012,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Tables C-1 through C-20 provide a summary of the security and privacy controls and control enhancements in Chapter Three. Each table focuses on a different control family."
+          },
+          "source_type": "Body",
+          "text": "Tables C-1 through C-20 provide a summary of the security and privacy controls and control enhancements in Chapter Three. Each table focuses on a different control family.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.14704102160883883,
+            0.23136362403330177,
+            0.8533668268739788,
+            0.4819012266216856
+          ],
+          "font_name": "C2_0",
+          "font_size": 10.979997634887695,
+          "id": "actual:p455:block:10",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              89.98910522460938,
+              410.334228515625,
+              432.2713928222656,
+              198.42578125
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "C2_0",
+            "font_size": 10.979997634887695,
+            "header_level": null,
+            "is_bold": false,
+            "text": "\u2022 A control or control enhancement that has been withdrawn from the control catalog is indicated by a \u201cW\u201d and an explanation of the control or control enhancement disposition in light gray text. \u2022 A control or control enhancement that is typically implemented by an information system through technical means is indicated by an \u201cS\u201d in the implemented by column. \u2022 A control or control enhancement that is typically implemented by an organization (i.e., by an individual through nontechnical means) is indicated by an \u201cO\u201d in the implemented by column.35 \u2022 A control or control enhancement that can be implemented by an organization, a system, or a combination of the two is indicated by an \u201cO/S.\u201d \u2022 A control or control enhancement marked with a \u201c\u221a\u201d in the assurance column indicates the control or control enhancement contributes to the grounds for confidence that a security or privacy claim has been or will be achieved.36"
+          },
+          "source_type": "List",
+          "text": "\u2022 A control or control enhancement that has been withdrawn from the control catalog is indicated by a \u201cW\u201d and an explanation of the control or control enhancement disposition in light gray text. \u2022 A control or control enhancement that is typically implemented by an information system through technical means is indicated by an \u201cS\u201d in the implemented by column. \u2022 A control or control enhancement that is typically implemented by an organization (i.e., by an individual through nontechnical means) is indicated by an \u201cO\u201d in the implemented by column.35 \u2022 A control or control enhancement that can be implemented by an organization, a system, or a combination of the two is indicated by an \u201cO/S.\u201d \u2022 A control or control enhancement marked with a \u201c\u221a\u201d in the assurance column indicates the control or control enhancement contributes to the grounds for confidence that a security or privacy claim has been or will be achieved.36",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.14705665438782936,
+            0.5001523181645557,
+            0.8440193974114711,
+            0.5309850519353693
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979997634887695,
+          "id": "actual:p455:block:11",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              89.99867248535156,
+              371.4598388671875,
+              426.54119873046875,
+              24.419525146484375
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.979997634887695,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Each control and control enhancement in Tables C-1 through C-20 is hyperlinked to the text for that control and control enhancement in Chapter Three."
+          },
+          "source_type": "Body",
+          "text": "Each control and control enhancement in Tables C-1 through C-20 is hyperlinked to the text for that control and control enhancement in Chapter Three.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.14705881106308083,
+            0.5416666666666666,
+            0.856555203207178,
+            0.6741752624511719
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979999542236328,
+          "id": "actual:p455:block:12",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              89.99999237060547,
+              258.0531921386719,
+              434.2117919921875,
+              104.94680786132812
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Families of controls contain base controls and control enhancements, which are directly related to their base controls. Control enhancements either add functionality or specificity to a base control or increase the strength of a base control. In both cases, control enhancements are used in systems and environments of operation that require greater protection than provided by the base control. This increased protection is required due to the potential adverse organizational or individual impacts or when organizations require additions to the base control functionality or assurance based on organizational assessments of risk. The use of control enhancements always requires the use of the base control."
+          },
+          "source_type": "Body",
+          "text": "Families of controls contain base controls and control enhancements, which are directly related to their base controls. Control enhancements either add functionality or specificity to a base control or increase the strength of a base control. In both cases, control enhancements are used in systems and environments of operation that require greater protection than provided by the base control. This increased protection is required due to the potential adverse organizational or individual impacts or when organizations require additions to the base control functionality or assurance based on organizational assessments of risk. The use of control enhancements always requires the use of the base control.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.6924242539839311,
+            1.0,
+            0.7571969658437402
+          ],
+          "font_name": "TT0",
+          "font_size": 10.979999542236328,
+          "id": "actual:p455:block:13",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              90.0,
+              192.3000030517578,
+              560.3324584960938,
+              51.29998779296875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "is_bold": false,
+            "text": "The families are arranged in alphabetical order, while the controls and control enhancements within each family are arranged in numerical order. The alphabetical or numerical order of the families, controls, and control enhancements does not imply any type of prioritization, level of importance, or order in which the controls or control enhancements are to be implemented."
+          },
+          "source_type": "Body",
+          "text": "The families are arranged in alphabetical order, while the controls and control enhancements within each family are arranged in numerical order. The alphabetical or numerical order of the families, controls, and control enhancements does not imply any type of prioritization, level of importance, or order in which the controls or control enhancements are to be implemented.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.7771969612198647,
+            0.8560617484298407,
+            0.9060606137670651
+          ],
+          "font_name": "TT5",
+          "font_size": 12.0,
+          "id": "actual:p455:block:14",
+          "is_bold": false,
+          "page": 455,
+          "pdf_page_index": 454,
+          "raw": {
+            "bbox": [
+              90.0,
+              74.39999389648438,
+              433.9097900390625,
+              102.06001281738281
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT5",
+            "font_size": 12.0,
+            "header_level": null,
+            "is_bold": false,
+            "text": " 35 The indication that a certain control or control enhancement is implemented by a system or by an organization in Tables C-1 through C-20 is notional. Organizations have the flexibility to implement their selected controls and control enhancements in the most cost-effective and efficient manner while simultaneously complying with the intent of the controls or control enhancements. In certain situations, a control or control enhancement may be implemented by the system, the organization, or a combination of the two entities. 36 Assurance is a critical aspect in determining the trustworthiness of systems. Assurance is the measure of confidence that the security and privacy functions, features, practices, policies, procedures, mechanisms, and architecture of organizational systems accurately mediate and enforce established security and privacy policies."
+          },
+          "source_type": "Body",
+          "text": "35 The indication that a certain control or control enhancement is implemented by a system or by an organization in Tables C-1 through C-20 is notional. Organizations have the flexibility to implement their selected controls and control enhancements in the most cost-effective and efficient manner while simultaneously complying with the intent of the controls or control enhancements. In certain situations, a control or control enhancement may be implemented by the system, the organization, or a combination of the two entities. 36 Assurance is a critical aspect in determining the trustworthiness of systems. Assurance is the measure of confidence that the security and privacy functions, features, practices, policies, procedures, mechanisms, and architecture of organizational systems accurately mediate and enforce established security and privacy policies.",
+          "type": "paragraph_block"
+        }
+      ],
+      "ledger_path": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 455,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 454
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

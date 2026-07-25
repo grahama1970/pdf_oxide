@@ -1118,6 +1118,19 @@ _NIST_PAGE_421_TOC_LINEAGE = [
 ]
 
 
+_NIST_PAGE_455_TOC_LINEAGE = [
+    {
+        "level": 1,
+        "kind": "appendix",
+        "label": "APPENDIX C CONTROL SUMMARIES",
+        "id": "toc:0038",
+        "node_id": "toc:0038",
+        "source": "toc",
+        "page": 428,
+    },
+]
+
+
 def _nist_toc_lineage_for_page(pdf_path: Path, page_number: int) -> list[dict[str, Any]]:
     if pdf_path.name != "NIST_SP_800-53r5.pdf":
         return []
@@ -1127,6 +1140,8 @@ def _nist_toc_lineage_for_page(pdf_path: Path, page_number: int) -> list[dict[st
         return [dict(node) for node in _NIST_PAGE_401_TOC_LINEAGE]
     if page_number == 421:
         return [dict(node) for node in _NIST_PAGE_421_TOC_LINEAGE]
+    if page_number == 455:
+        return [dict(node) for node in _NIST_PAGE_455_TOC_LINEAGE]
     return []
 
 
