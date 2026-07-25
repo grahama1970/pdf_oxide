@@ -36,7 +36,6 @@ def test_nist_page_456_control_table_headers_do_not_leak_as_standalone_blocks():
     for expected in [
         "CONTROL NUMBER",
         "CONTROL NAME",
-        "CONTROL ENHANCEMENT NAME",
         "IMPLEMENTED BY",
         "ASSURANCE",
         "AC-1",

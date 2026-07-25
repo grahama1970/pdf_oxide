@@ -1,0 +1,2290 @@
+{
+  "schema_version": "pdf_lab.agent_second_pass.v1",
+  "slice_id": "nist_phase54_page_0456",
+  "captured_at": "2026-05-31T15:59:56.668415+00:00",
+  "source": "run_page_repair_closure rematerialize from release_extraction_blocks.json",
+  "agent_decision": {
+    "status": "closure_rematerialized",
+    "human_review_required": false,
+    "learned_bug_report_reason": "Appendix C table/chrome correction materialized from human feedback",
+    "selection_sources": [
+      "deterministic_equation_sweep",
+      "deterministic_page_scan"
+    ],
+    "rationale": [
+      "table/caption/grid signal: tables=0, captions=1, drawings=1005",
+      "figure/image/caption signal: captions=1, images=1",
+      "page chrome signal: running_headers=2, running_footers=2",
+      "control/requirement signal: requirements=41, control_refs=1",
+      "equation expected-absent canary from full-document equation sweep"
+    ],
+    "reviewer_questions": [
+      "Review table region, caption, row/column boundaries, merged/continued cells, and false-positive grid/table fragments.",
+      "Confirm captions belong to the table, and mark true non-table figures/images only if visibly present.",
+      "Separate running headers, footers, printed page numbers, and side boilerplate from body content.",
+      "Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables.",
+      "Confirm whether any true displayed equation exists; Appendix C sqrt/check marks are expected table notation unless visually contradicted."
+    ],
+    "fix_error_request_count": 0
+  },
+  "toc_entries": [],
+  "fix_error_requests": [],
+  "expected_elements": [
+    {
+      "family": "table",
+      "bbox_hint": [
+        0.146667,
+        0.113712,
+        0.852549,
+        0.904091
+      ],
+      "text_hint": "CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE\nAC-1 | Policy and Procedures | O | \u221a\nAC-2 | Account Management | O\nAC-2(1) | AUTOMATED YSTEM CCOUNT ANAGEMENT | O\nAC-2(2) | AUTOMATED EMPORARY ND MERGENCY CCO",
+      "label": "CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANC",
+      "allowed_types": [
+        "table"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: table; source id: actual:p456:table:0; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5",
+      "label": "NIST SP 800-53, REV. 5",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p456:line:0+actual:p456:line:49; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "text_hint": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "label": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "allowed_types": [
+        "running_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_header; source id: actual:p456:line:50+actual:p456:line:97; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "caption",
+      "bbox_hint": [
+        0.37752,
+        0.088879,
+        0.618762,
+        0.103848
+      ],
+      "text_hint": "TABLE C-1: ACCESS CONTROL FAMILY",
+      "label": "TABLE C-1: ACCESS CONTROL FAMILY",
+      "allowed_types": [
+        "caption"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: caption; source id: actual:p456:line:51; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.158784,
+        0.137015,
+        0.221608,
+        0.152379
+      ],
+      "text_hint": "CONTROL",
+      "label": "CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:2; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.355647,
+        0.137394,
+        0.483136,
+        0.155258
+      ],
+      "text_hint": "CONTROL NAME",
+      "label": "CONTROL NAME",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:52; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.756039,
+        0.142091,
+        0.826005,
+        0.156167
+      ],
+      "text_hint": "ASSURANCE",
+      "label": "ASSURANCE",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:106; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.624471,
+        0.142091,
+        0.709261,
+        0.156167
+      ],
+      "text_hint": "IMPLEMENTED",
+      "label": "IMPLEMENTED",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:98; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.160451,
+        0.149667,
+        0.220216,
+        0.16503
+      ],
+      "text_hint": "NUMBER",
+      "label": "NUMBER",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:3; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.658098,
+        0.154742,
+        0.676272,
+        0.168818
+      ],
+      "text_hint": "BY",
+      "label": "BY",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:99; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.340451,
+        0.158,
+        0.499671,
+        0.170864
+      ],
+      "text_hint": "CONTROL ENHANCEMENT NAME",
+      "label": "CONTROL ENHANCEMENT NAME",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:53; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.186985,
+        0.182943,
+        0.201349
+      ],
+      "text_hint": "AC-1",
+      "label": "AC-1",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:4; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.186985,
+        0.370487,
+        0.201349
+      ],
+      "text_hint": "Policy and Procedures",
+      "label": "Policy and Procedures",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p456:line:54; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.188985,
+        0.672927,
+        0.201849
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:100; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.20403,
+        0.182943,
+        0.218394
+      ],
+      "text_hint": "AC-2",
+      "label": "AC-2",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:5; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.20403,
+        0.375464,
+        0.218394
+      ],
+      "text_hint": "Account Management",
+      "label": "Account Management",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p456:line:55; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.20603,
+        0.672927,
+        0.218894
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:101; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.221,
+        0.202088,
+        0.235364
+      ],
+      "text_hint": "AC-2(1)",
+      "label": "AC-2(1)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:6; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.223,
+        0.672927,
+        0.235864
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:102; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.223,
+        0.469728,
+        0.235864
+      ],
+      "text_hint": "AUTOMATED SYSTEM ACCOUNT MANAGEMENT",
+      "label": "AUTOMATED SYSTEM ACCOUNT MANAGEMENT",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:56; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.238045,
+        0.202088,
+        0.252409
+      ],
+      "text_hint": "AC-2(2)",
+      "label": "AC-2(2)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:7; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.240045,
+        0.671677,
+        0.252909
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:103; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.240045,
+        0.577196,
+        0.252909
+      ],
+      "text_hint": "AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT",
+      "label": "AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:57; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.255091,
+        0.202088,
+        0.269455
+      ],
+      "text_hint": "AC-2(3)",
+      "label": "AC-2(3)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:8; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.257091,
+        0.671677,
+        0.269955
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:104; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.257091,
+        0.338206,
+        0.269955
+      ],
+      "text_hint": "DISABLE ACCOUNTS",
+      "label": "DISABLE ACCOUNTS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:58; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.272136,
+        0.345618,
+        0.289303
+      ],
+      "text_hint": "This publication is available AC-2(4) free of charge from:",
+      "label": "This publication is available AC-2(4) free of charge from:",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p456:line:9; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.154,
+        0.272136,
+        0.212,
+        0.289303
+      ],
+      "text_hint": "AC-2(4)",
+      "label": "AC-2(4)",
+      "allowed_types": [
+        "control_reference"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: control_reference; source id: actual:p456:line:9:embedded:requirement:0; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.274136,
+        0.671677,
+        0.287
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:105; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.274136,
+        0.382368,
+        0.287
+      ],
+      "text_hint": "AUTOMATED AUDIT ACTIONS",
+      "label": "AUTOMATED AUDIT ACTIONS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:59; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.655843,
+        0.288682,
+        0.678441,
+        0.304045
+      ],
+      "text_hint": "O / S",
+      "label": "O / S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:107; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.289182,
+        0.202088,
+        0.303545
+      ],
+      "text_hint": "AC-2(5)",
+      "label": "AC-2(5)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:10; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.291182,
+        0.340306,
+        0.304045
+      ],
+      "text_hint": "INACTIVITY LOGOUT",
+      "label": "INACTIVITY LOGOUT",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:60; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.306151,
+        0.202088,
+        0.320515
+      ],
+      "text_hint": "AC-2(6)",
+      "label": "AC-2(6)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:11; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.308151,
+        0.671677,
+        0.321015
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:108; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.308151,
+        0.413385,
+        0.321015
+      ],
+      "text_hint": "DYNAMIC PRIVILEGE MANAGEMENT",
+      "label": "DYNAMIC PRIVILEGE MANAGEMENT",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:61; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.323197,
+        0.202088,
+        0.337561
+      ],
+      "text_hint": "AC-2(7)",
+      "label": "AC-2(7)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:12; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.325197,
+        0.672927,
+        0.338061
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:109; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.325197,
+        0.380682,
+        0.338061
+      ],
+      "text_hint": "PRIVILEGED USER ACCOUNTS",
+      "label": "PRIVILEGED USER ACCOUNTS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:62; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.340242,
+        0.202088,
+        0.354606
+      ],
+      "text_hint": "AC-2(8)",
+      "label": "AC-2(8)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:13; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.342242,
+        0.671677,
+        0.355106
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:110; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.342242,
+        0.413706,
+        0.355106
+      ],
+      "text_hint": "DYNAMIC ACCOUNT MANAGEMENT",
+      "label": "DYNAMIC ACCOUNT MANAGEMENT",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:63; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.357288,
+        0.202088,
+        0.371652
+      ],
+      "text_hint": "AC-2(9)",
+      "label": "AC-2(9)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:14; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.359288,
+        0.672927,
+        0.372152
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:111; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.359288,
+        0.518719,
+        0.372152
+      ],
+      "text_hint": "RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS",
+      "label": "RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:64; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.374258,
+        0.206698,
+        0.388621
+      ],
+      "text_hint": "AC-2(10)",
+      "label": "AC-2(10)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:15; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.61252,
+        0.374333,
+        0.764369,
+        0.387409
+      ],
+      "text_hint": "W: Incorporated into AC-2k.",
+      "label": "W: Incorporated into AC-2k.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p456:line:112; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.376258,
+        0.495583,
+        0.389121
+      ],
+      "text_hint": "SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE",
+      "label": "SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:65; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.391303,
+        0.209544,
+        0.405667
+      ],
+      "text_hint": "AC-2(11)",
+      "label": "AC-2(11)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:16; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.393303,
+        0.671677,
+        0.406167
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:113; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.393303,
+        0.338321,
+        0.406167
+      ],
+      "text_hint": "USAGE CONDITIONS",
+      "label": "USAGE CONDITIONS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:66; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.655843,
+        0.407848,
+        0.678441,
+        0.423212
+      ],
+      "text_hint": "O / S",
+      "label": "O / S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:114; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.408348,
+        0.209544,
+        0.422712
+      ],
+      "text_hint": "AC-2(12)",
+      "label": "AC-2(12)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:17; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.410349,
+        0.460093,
+        0.423212
+      ],
+      "text_hint": "ACCOUNT MONITORING FOR ATYPICAL USAGE",
+      "label": "ACCOUNT MONITORING FOR ATYPICAL USAGE",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:67; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.424894,
+        0.474884,
+        0.440258
+      ],
+      "text_hint": "DISABLE ACCOUNTS FOR HIGH- RISK INDIVIDUALS",
+      "label": "DISABLE ACCOUNTS FOR HIGH- RISK INDIVIDUALS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:68+actual:p456:line:77; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.425394,
+        0.209544,
+        0.439758
+      ],
+      "text_hint": "AC-2(13)",
+      "label": "AC-2(13)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:18; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.427394,
+        0.672927,
+        0.440258
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:115; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.442364,
+        0.182943,
+        0.456727
+      ],
+      "text_hint": "AC-3",
+      "label": "AC-3",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:19; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.442364,
+        0.363204,
+        0.456727
+      ],
+      "text_hint": "Access Enforcement",
+      "label": "Access Enforcement",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p456:line:69; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.444364,
+        0.671677,
+        0.457227
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:116; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.459409,
+        0.202088,
+        0.473773
+      ],
+      "text_hint": "AC-3(1)",
+      "label": "AC-3(1)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:20; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.61252,
+        0.459485,
+        0.758475,
+        0.472561
+      ],
+      "text_hint": "W: Incorporated into AC-6.",
+      "label": "W: Incorporated into AC-6.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p456:line:117; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.461409,
+        0.46834,
+        0.474273
+      ],
+      "text_hint": "RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS",
+      "label": "RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:70; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.476455,
+        0.202088,
+        0.490818
+      ],
+      "text_hint": "AC-3(2)",
+      "label": "AC-3(2)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:21; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.478455,
+        0.671677,
+        0.491318
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:118; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.478455,
+        0.351134,
+        0.491318
+      ],
+      "text_hint": "DUAL AUTHORIZATION",
+      "label": "DUAL AUTHORIZATION",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:71; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.4935,
+        0.202088,
+        0.507864
+      ],
+      "text_hint": "AC-3(3)",
+      "label": "AC-3(3)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:22; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.4955,
+        0.671677,
+        0.508364
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:119; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.4955,
+        0.391774,
+        0.508364
+      ],
+      "text_hint": "MANDATORY ACCESS CONTROL",
+      "label": "MANDATORY ACCESS CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:72; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.510545,
+        0.202088,
+        0.524909
+      ],
+      "text_hint": "AC-3(4)",
+      "label": "AC-3(4)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:23; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.512545,
+        0.671677,
+        0.525409
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:120; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.512545,
+        0.406261,
+        0.525409
+      ],
+      "text_hint": "DISCRETIONARY ACCESS CONTROL",
+      "label": "DISCRETIONARY ACCESS CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:73; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "text_hint": "https://doi.org/10.6028/NIST.SP.800",
+      "label": "https://doi.org/10.6028/NIST.SP.800",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p456:line:24; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.527015,
+        0.412943,
+        0.542379
+      ],
+      "text_hint": "SECURITY-RELEVANT INFORMATION",
+      "label": "SECURITY-RELEVANT INFORMATION",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:74; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.527515,
+        0.202088,
+        0.541879
+      ],
+      "text_hint": "AC-3(5)",
+      "label": "AC-3(5)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:25; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.529515,
+        0.671677,
+        0.542379
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:121; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.544561,
+        0.202088,
+        0.558924
+      ],
+      "text_hint": "AC-3(6)",
+      "label": "AC-3(6)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:26; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.61252,
+        0.544636,
+        0.817875,
+        0.557712
+      ],
+      "text_hint": "W: Incorporated into MP-4 and SC-28.",
+      "label": "W: Incorporated into MP-4 and SC-28.",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p456:line:122; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.546561,
+        0.481004,
+        0.559424
+      ],
+      "text_hint": "PROTECTION OF USER AND SYSTEM INFORMATION",
+      "label": "PROTECTION OF USER AND SYSTEM INFORMATION",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:75; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.655843,
+        0.561106,
+        0.678441,
+        0.57647
+      ],
+      "text_hint": "O / S",
+      "label": "O / S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:123; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.561106,
+        0.388887,
+        0.57647
+      ],
+      "text_hint": "ROLE-BASED ACCESS CONTROL",
+      "label": "ROLE-BASED ACCESS CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:76; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.561606,
+        0.202088,
+        0.57597
+      ],
+      "text_hint": "AC-3(7)",
+      "label": "AC-3(7)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:27; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.655843,
+        0.578152,
+        0.678441,
+        0.593515
+      ],
+      "text_hint": "O / S",
+      "label": "O / S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:124; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.578652,
+        0.202088,
+        0.593015
+      ],
+      "text_hint": "AC-3(8)",
+      "label": "AC-3(8)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:28; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.580652,
+        0.44494,
+        0.593515
+      ],
+      "text_hint": "REVOCATION OF ACCESS AUTHORIZATIONS",
+      "label": "REVOCATION OF ACCESS AUTHORIZATIONS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:78; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.655843,
+        0.596333,
+        0.678441,
+        0.611697
+      ],
+      "text_hint": "O / S",
+      "label": "O / S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:125; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.596833,
+        0.202088,
+        0.611197
+      ],
+      "text_hint": "AC-3(9)",
+      "label": "AC-3(9)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:29; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.598833,
+        0.349264,
+        0.611697
+      ],
+      "text_hint": "CONTROLLED RELEASE",
+      "label": "CONTROLLED RELEASE",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:79; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.613803,
+        0.209544,
+        0.628167
+      ],
+      "text_hint": "AC-3(10)",
+      "label": "AC-3(10)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:30; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.661333,
+        0.615803,
+        0.672927,
+        0.628667
+      ],
+      "text_hint": "O",
+      "label": "O",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:126; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.615803,
+        0.506308,
+        0.628667
+      ],
+      "text_hint": "AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS",
+      "label": "AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:80; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.630848,
+        0.209544,
+        0.645212
+      ],
+      "text_hint": "AC-3(11)",
+      "label": "AC-3(11)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:31; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.632849,
+        0.671677,
+        0.645712
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:127; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.632849,
+        0.484468,
+        0.645712
+      ],
+      "text_hint": "RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES",
+      "label": "RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:81; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.647894,
+        0.209544,
+        0.662258
+      ],
+      "text_hint": "AC-3(12)",
+      "label": "AC-3(12)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:32; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.649894,
+        0.671677,
+        0.662758
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:128; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.649894,
+        0.453188,
+        0.662758
+      ],
+      "text_hint": "ASSERT AND ENFORCE APPLICATION ACCESS",
+      "label": "ASSERT AND ENFORCE APPLICATION ACCESS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:82; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.664439,
+        0.416239,
+        0.679803
+      ],
+      "text_hint": "ATTRIBUTE-BASED ACCESS CONTROL",
+      "label": "ATTRIBUTE-BASED ACCESS CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:83; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.664939,
+        0.209544,
+        0.679303
+      ],
+      "text_hint": "AC-3(13)",
+      "label": "AC-3(13)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:33; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.666939,
+        0.671677,
+        0.679803
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:129; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.681909,
+        0.206698,
+        0.696273
+      ],
+      "text_hint": "AC-3(14)",
+      "label": "AC-3(14)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:34; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.683909,
+        0.671677,
+        0.696773
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:130; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.683909,
+        0.338528,
+        0.696773
+      ],
+      "text_hint": "INDIVIDUAL ACCESS",
+      "label": "INDIVIDUAL ACCESS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:84; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.698955,
+        0.206698,
+        0.713318
+      ],
+      "text_hint": "AC-3(15)",
+      "label": "AC-3(15)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:36; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.700955,
+        0.671677,
+        0.713818
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:131; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.700955,
+        0.49556,
+        0.713818
+      ],
+      "text_hint": "DISCRETIONARY AND MANDATORY ACCESS CONTROL",
+      "label": "DISCRETIONARY AND MANDATORY ACCESS CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:85; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.716,
+        0.182943,
+        0.730364
+      ],
+      "text_hint": "AC-4",
+      "label": "AC-4",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:37; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.241049,
+        0.716,
+        0.428718,
+        0.730364
+      ],
+      "text_hint": "Information Flow Enforcement",
+      "label": "Information Flow Enforcement",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: paragraph; source id: actual:p456:line:86; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.718,
+        0.671677,
+        0.730864
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:132; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.733045,
+        0.202088,
+        0.747409
+      ],
+      "text_hint": "AC-4(1)",
+      "label": "AC-4(1)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:38; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.735045,
+        0.671677,
+        0.747909
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:133; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.735045,
+        0.450983,
+        0.747909
+      ],
+      "text_hint": "OBJECT SECURITY AND PRIVACY ATTRIBUTES",
+      "label": "OBJECT SECURITY AND PRIVACY ATTRIBUTES",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:87; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.750091,
+        0.202088,
+        0.764455
+      ],
+      "text_hint": "AC-4(2)",
+      "label": "AC-4(2)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:39; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.752091,
+        0.671677,
+        0.764955
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:134; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.752091,
+        0.35251,
+        0.764955
+      ],
+      "text_hint": "PROCESSING DOMAINS",
+      "label": "PROCESSING DOMAINS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:88; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.767061,
+        0.202088,
+        0.781424
+      ],
+      "text_hint": "AC-4(3)",
+      "label": "AC-4(3)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:40; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.769061,
+        0.671677,
+        0.781924
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:135; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.769061,
+        0.438907,
+        0.781924
+      ],
+      "text_hint": "DYNAMIC INFORMATION FLOW CONTROL",
+      "label": "DYNAMIC INFORMATION FLOW CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:89; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.784106,
+        0.202088,
+        0.79847
+      ],
+      "text_hint": "AC-4(4)",
+      "label": "AC-4(4)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:41; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.786106,
+        0.671677,
+        0.79897
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:136; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.786106,
+        0.467136,
+        0.79897
+      ],
+      "text_hint": "FLOW CONTROL OF ENCRYPTED INFORMATION",
+      "label": "FLOW CONTROL OF ENCRYPTED INFORMATION",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:90; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.801152,
+        0.202088,
+        0.815515
+      ],
+      "text_hint": "AC-4(5)",
+      "label": "AC-4(5)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:42; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.803152,
+        0.671677,
+        0.816015
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:137; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.803152,
+        0.357534,
+        0.816015
+      ],
+      "text_hint": "EMBEDDED DATA TYPES",
+      "label": "EMBEDDED DATA TYPES",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:91; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.818197,
+        0.202088,
+        0.832561
+      ],
+      "text_hint": "AC-4(6)",
+      "label": "AC-4(6)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:43; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.820197,
+        0.671677,
+        0.833061
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:138; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.820197,
+        0.298105,
+        0.833061
+      ],
+      "text_hint": "METADATA",
+      "label": "METADATA",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:92; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.834667,
+        0.391006,
+        0.85003
+      ],
+      "text_hint": "ONE-WAY FLOW MECHANISMS",
+      "label": "ONE-WAY FLOW MECHANISMS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:93; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.835167,
+        0.202088,
+        0.84953
+      ],
+      "text_hint": "AC-4(7)",
+      "label": "AC-4(7)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:44; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.837167,
+        0.671677,
+        0.85003
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:139; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.852212,
+        0.202088,
+        0.866576
+      ],
+      "text_hint": "AC-4(8)",
+      "label": "AC-4(8)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:45; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.854212,
+        0.671677,
+        0.867076
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:140; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.854212,
+        0.42895,
+        0.867076
+      ],
+      "text_hint": "SECURITY AND PRIVACY POLICY FILTERS",
+      "label": "SECURITY AND PRIVACY POLICY FILTERS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:94; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.655843,
+        0.868758,
+        0.678441,
+        0.884121
+      ],
+      "text_hint": "O / S",
+      "label": "O / S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:141; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.869258,
+        0.202088,
+        0.883621
+      ],
+      "text_hint": "AC-4(9)",
+      "label": "AC-4(9)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:46; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.871258,
+        0.327619,
+        0.884121
+      ],
+      "text_hint": "HUMAN REVIEWS",
+      "label": "HUMAN REVIEWS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:95; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.154382,
+        0.886303,
+        0.209544,
+        0.900667
+      ],
+      "text_hint": "AC-4(10)",
+      "label": "AC-4(10)",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p456:line:47; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.662412,
+        0.888303,
+        0.671677,
+        0.901167
+      ],
+      "text_hint": "S",
+      "label": "S",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:142; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.240549,
+        0.888303,
+        0.525223,
+        0.901167
+      ],
+      "text_hint": "ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS",
+      "label": "ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: section_header; source id: actual:p456:line:96; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.802283,
+        0.939742,
+        0.854755,
+        0.953818
+      ],
+      "text_hint": "PAGE 429",
+      "label": "PAGE 429",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p456:line:143; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.209845,
+        0.953818
+      ],
+      "text_hint": "APPENDIX C",
+      "label": "APPENDIX C",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p456:line:48; human should amend if rendered page contradicts this row."
+    }
+  ]
+}

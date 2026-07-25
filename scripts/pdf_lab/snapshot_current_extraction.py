@@ -794,10 +794,12 @@ def _table_column_index_for_bbox(table: dict[str, Any], table_bbox: list[float],
 
 def _table_contained_text_fragments(
     raw_elements: list[dict[str, Any]],
+    table: dict[str, Any],
     table_bbox: list[float],
     page_number: int,
 ) -> list[dict[str, Any]]:
     fragments: list[dict[str, Any]] = []
+    table_text_compact = _compact_text(_table_text(table))
     for element in raw_elements:
         if element.get("type") == "table" or element.get("page") != page_number:
             continue
@@ -807,12 +809,12 @@ def _table_contained_text_fragments(
             continue
         width = max(0.0, float(bbox[2]) - float(bbox[0]))
         height = max(0.0, float(bbox[3]) - float(bbox[1]))
-        if height <= 0.0 or width < height * 2.0:
+        compact_text = _compact_text(text)
+        text_already_in_table = bool(compact_text and compact_text in table_text_compact)
+        if height <= 0.0 or (width < height * 2.0 and not text_already_in_table):
             continue
         contained = _bbox_coverage(bbox, table_bbox) >= 0.95
         if not contained:
-            continue
-        if element.get("type") != "header_footer_noise" and element.get("source_type") != "Boilerplate":
             continue
         fragments.append(element)
     fragments.sort(key=lambda item: ((item.get("bbox") or [0, 0, 0, 0])[1], (item.get("bbox") or [0, 0, 0, 0])[0]))
@@ -877,7 +879,7 @@ def _repair_table_with_contained_text(
 ) -> dict[str, Any]:
     repaired = table
     fragment_ids: list[str] = []
-    for fragment in _table_contained_text_fragments(raw_elements, table_bbox, page_number):
+    for fragment in _table_contained_text_fragments(raw_elements, table, table_bbox, page_number):
         bbox = fragment.get("bbox")
         if not isinstance(bbox, list):
             continue
@@ -885,9 +887,16 @@ def _repair_table_with_contained_text(
         column_index = _table_column_index_for_bbox(table, table_bbox, bbox)
         if row_index is None or column_index is None:
             continue
+        fragment_text = str(fragment.get("text") or "")
+        if (
+            fragment.get("type") != "header_footer_noise"
+            and fragment.get("source_type") != "Boilerplate"
+        ):
+            fragment_ids.append(str(fragment.get("id") or ""))
+            continue
         before = _table_text(repaired)
-        repaired = _append_text_to_table_cell(repaired, row_index, column_index, str(fragment.get("text") or ""))
-        if _table_text(repaired) != before:
+        repaired = _append_text_to_table_cell(repaired, row_index, column_index, fragment_text)
+        if _table_text(repaired) != before or _compact_text(fragment_text) in _compact_text(_table_text(repaired)):
             fragment_ids.append(str(fragment.get("id") or ""))
     if fragment_ids:
         repaired = dict(repaired)
