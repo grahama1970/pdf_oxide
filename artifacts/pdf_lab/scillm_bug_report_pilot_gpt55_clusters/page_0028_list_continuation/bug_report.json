@@ -1,0 +1,27 @@
+{
+  "bug_clusters": [],
+  "bug_reports": [
+    {
+      "abstain_reason": "",
+      "bug_present": false,
+      "confidence": "high",
+      "current_family": "list",
+      "evidence_block_ids": [
+        "block_189",
+        "block_191"
+      ],
+      "expected_family": "list_continuation",
+      "extraction_error": "The reviewed request is stale. Current deterministic extraction already groups the continuation text with the enclosing bullet list items: block_189 includes the continuation ending 'and to adequately manage mission/business risks or risks to individuals?', and block_191 includes the continuation 'controls, as designed and implemented, are effective? 7'.",
+      "patch_hint": "No code change indicated for this source_id; current extraction already represents the visible list continuations as list blocks.",
+      "recommended_code_area": "unclear",
+      "source_id": "actual:p28:line:29+actual:p28:line:32",
+      "visual_observation": "The clean page shows three bulleted list items. The first and third bullets wrap onto continuation lines, and the bbox overlay shows each wrapped continuation line enclosed within the same list-item region as its bullet."
+    }
+  ],
+  "cluster_id": "list_continuation",
+  "fix_error_source": "expected_elements.json",
+  "missing_or_ambiguous": [],
+  "overall_confidence": "high",
+  "page": 28,
+  "schema": "pdf_oxide.scillm_visual_bug_report.v2"
+}

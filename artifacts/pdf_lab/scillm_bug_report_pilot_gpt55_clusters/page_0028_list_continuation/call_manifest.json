@@ -1,0 +1,13 @@
+{
+  "bug_report_path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028_list_continuation/bug_report.json",
+  "cluster_id": "list_continuation",
+  "finished_at": "2026-05-31T16:34:53.159942+00:00",
+  "item_id": "page_0028_list_continuation",
+  "model": "gpt-5.5",
+  "ok": true,
+  "page": 28,
+  "parse_error": "",
+  "raw_ok": true,
+  "response_path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028_list_continuation/response.raw.json",
+  "started_at": "2026-05-31T16:33:10.305279+00:00"
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "pdf_lab.selection_receipt.v1",
+  "created_at": "2026-07-25T23:30:00-04:00",
+  "immutable_goal_source": "GOAL.md",
+  "active_candidate": {
+    "page": "page_0028",
+    "pdf_page_index": 27,
+    "defect_class": "wrapped bullet continuation lines split from enclosing list",
+    "selected_checklist_item": "Wrapped bullet continuation text must remain inside the single logical bullet-list block and must not leak as standalone paragraphs.",
+    "owner": "pdf_oxide_list_grouping",
+    "selection_reason": "After page28_page_chrome, page28_list_continuation is the next remaining clustered candidate with source visual evidence, a reviewed list-continuation request, and current release-after-hardening artifact inputs."
+  },
+  "visual_evidence": {
+    "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/page.png",
+    "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/bbox_overlay.png",
+    "overlay_inspection": "Visible page has a three-item bullet list where the first and third bullets wrap onto continuation lines inside the same list region."
+  },
+  "source_artifacts": {
+    "cluster_bundle": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/candidate_bundle.json",
+    "expected_elements": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/expected_elements.json",
+    "agent_second_pass": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/agent_second_pass.json",
+    "current_release_after_hardening": "artifacts/pdf_lab/project_agent_hardening/page_0028_release_after_hardening.json",
+    "cluster_bug_report": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028_list_continuation/bug_report.json",
+    "cluster_bug_bundle": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028_list_continuation/candidate_bundle.json"
+  },
+  "source_evidence_summary": {
+    "expected_fix_error_request_count": 4,
+    "cluster_fix_error_request_count": 1,
+    "cluster_bug_report_count": 1,
+    "cluster_issue_family": "list_continuation",
+    "current_list_block_count": 1,
+    "current_matching_list_block": {
+      "id": "actual:p28:block:12",
+      "type": "list",
+      "source_type": "List"
+    },
+    "current_paragraph_continuation_leak_count": 0
+  },
+  "focused_regression": {
+    "path": "tests/test_nist_page28_list_continuation.py",
+    "test": "test_nist_page_28_bullet_continuations_remain_in_single_list_block",
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page28_list_continuation.py",
+    "result": "1 passed, 5 warnings in 23.47s"
+  },
+  "worktree_limitations": {
+    "mocked": false,
+    "live": false,
+    "proof_scope": "local deterministic extraction/regression against origin/main-derived code and the local NIST PDF fixture",
+    "not_proven": [
+      "all page28 footnote checklist items are closed",
+      "all active candidate queue items are hardened"
+    ]
+  },
+  "next_action": "Commit and push the page28 list-continuation regression and receipt artifacts, then advance to the page28 footnote checklist item."
+}

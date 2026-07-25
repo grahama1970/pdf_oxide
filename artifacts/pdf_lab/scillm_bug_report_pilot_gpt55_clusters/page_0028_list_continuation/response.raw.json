@@ -1,0 +1,69 @@
+{
+  "body": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_oxide.scillm_visual_bug_report.v2\",\n  \"page\": 28,\n  \"cluster_id\": \"list_continuation\",\n  \"fix_error_source\": \"expected_elements.json\",\n  \"bug_reports\": [\n    {\n      \"source_id\": \"actual:p28:line:29+actual:p28:line:32\",\n      \"bug_present\": false,\n      \"current_family\": \"list\",\n      \"expected_family\": \"list_continuation\",\n      \"visual_observation\": \"The clean page shows three bulleted list items. The first and third bullets wrap onto continuation lines, and the bbox overlay shows each wrapped continuation line enclosed within the same list-item region as its bullet.\",\n      \"extraction_error\": \"The reviewed request is stale. Current deterministic extraction already groups the continuation text with the enclosing bullet list items: block_189 includes the continuation ending 'and to adequately manage mission/business risks or risks to individuals?', and block_191 includes the continuation 'controls, as designed and implemented, are effective? 7'.\",\n      \"evidence_block_ids\": [\n        \"block_189\",\n        \"block_191\"\n      ],\n      \"recommended_code_area\": \"unclear\",\n      \"patch_hint\": \"No code change indicated for this source_id; current extraction already represents the visible list continuations as list blocks.\",\n      \"confidence\": \"high\",\n      \"abstain_reason\": \"\"\n    }\n  ],\n  \"missing_or_ambiguous\": [],\n  \"bug_clusters\": [],\n  \"overall_confidence\": \"high\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1780245293,
+    "id": "chatcmpl-codex-81e62596",
+    "model": "gpt-5.5",
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-bug-report-pilot-20260531T123310",
+      "item_id": "page_0028_list_continuation"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": "codex-oauth",
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "gpt-5.5",
+      "model_served": "gpt-5.5",
+      "routed_to_provider": "codex-oauth"
+    },
+    "scillm_reasoning": {
+      "applied_effort": "high",
+      "forwarded": true,
+      "ignored_reason": null,
+      "provider_field": "reasoning.effort",
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 846,
+      "completion_tokens_details": null,
+      "prompt_tokens": 6129,
+      "prompt_tokens_details": null,
+      "total_tokens": 6975
+    }
+  },
+  "headers": {
+    "x-cost-usd": "unknown",
+    "x-scillm-timeout-ms": "176125",
+    "x-scillm-timeout-samples": "130",
+    "x-scillm-timeout-source": "estimated"
+  },
+  "ok": true,
+  "status_code": 200
+}
