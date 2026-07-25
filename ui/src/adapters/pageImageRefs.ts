@@ -330,9 +330,11 @@ export function normalizePdfBboxXywh(
   if (!Array.isArray(raw) || raw.length !== 4) throw new Error('bbox must contain four numbers')
   const [x, y, width, height] = raw.map(Number)
   if (![x, y, width, height].every(Number.isFinite)) throw new Error('bbox values must be finite')
-  // Engine bboxes are TOP-LEFT-origin PDF points (verified against the page-4
-  // architectures/Table-2 pair in the live arXiv extraction). Page images are
-  // rendered at 96 DPI, so the page size in points is pixel size * 72/96.
+  // Annotation-call bboxes are BOTTOM-LEFT-origin PDF points (standard PDF
+  // space; verified 2026-07-25 against the arXiv p4 architectures table:
+  // y=570.7pt with h=151.1 on a 792pt page puts the box 8.9% from the top,
+  // exactly where the table sits). Page images render at 96 DPI, so the page
+  // size in points is pixel size * 72/96 — never divide points by pixels.
   const pageWidthPt = pageImage.width * (72 / 96)
   const pageHeightPt = pageImage.height * (72 / 96)
   if (
@@ -347,7 +349,7 @@ export function normalizePdfBboxXywh(
   }
   return [
     x / pageWidthPt,
-    y / pageHeightPt,
+    (pageHeightPt - y - height) / pageHeightPt,
     width / pageWidthPt,
     height / pageHeightPt,
   ]
