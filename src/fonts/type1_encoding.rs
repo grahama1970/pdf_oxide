@@ -67,6 +67,12 @@ pub fn parse_type1_encoding(font_data: &[u8]) -> Option<HashMap<u8, char>> {
         if let Some((code, glyph_name, consumed)) = parse_dup_entry(remaining) {
             if let Some(unicode_char) = super::font_dict::glyph_name_to_unicode(&glyph_name) {
                 encoding_map.insert(code, unicode_char);
+            } else if glyph_name != ".notdef" {
+                // The embedded encoding positively identifies a glyph at this
+                // code, but the non-standard name has no Unicode mapping.
+                // Preserve the declared code as the deterministic fallback
+                // used by Poppler instead of treating it as an absent glyph.
+                encoding_map.insert(code, char::from(code));
             }
             pos += consumed;
         }
@@ -198,6 +204,19 @@ mod tests {
         assert_eq!(map.get(&11), Some(&'\u{FB00}')); // ff ligature
         assert_eq!(map.get(&12), Some(&'\u{FB01}')); // fi ligature
         assert_eq!(map.get(&14), Some(&'\u{FB03}')); // ffi ligature
+    }
+
+    #[test]
+    fn test_parse_type1_encoding_preserves_declared_unknown_glyph_codes() {
+        let font_data = b"/Encoding 256 array\n\
+            0 1 255 {1 index exch /.notdef put} for\n\
+            dup 20 /bracketleftbigg put\n\
+            dup 21 /bracketrightbigg put\n\
+            readonly def\n";
+
+        let map = parse_type1_encoding(font_data).unwrap();
+        assert_eq!(map.get(&20), Some(&'\u{0014}'));
+        assert_eq!(map.get(&21), Some(&'\u{0015}'));
     }
 
     #[test]
