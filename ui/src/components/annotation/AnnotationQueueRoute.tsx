@@ -49,6 +49,7 @@ import {
   type CanvasRegion,
   type CanvasThumbnail,
 } from '../canvas'
+import { FloatingLabelMenu, LABEL_HOTKEYS } from './FloatingLabelMenu'
 import '../verification/VerificationUx.css'
 
 export interface AnnotationQueueRouteProps {
@@ -580,6 +581,12 @@ export function AnnotationQueueRoute({
       }))
   }, [pageImage, pageImages, selected])
 
+  const selectedDrawnRegion = useMemo(() => {
+    if (!selectedDrawnId || !selected) return null
+    const region = canvasRegions.find((candidate) => candidate.id === selectedDrawnId)
+    return region && region.id !== selected.id && !region.ghost ? region : null
+  }, [canvasRegions, selectedDrawnId, selected])
+
   const ghostRegions = useMemo<CanvasRegion[]>(() => {
     if (!selected || !contextItems || !pageImage?.width || !pageImage.height) return []
     const pageWidthPt = pageImage.width * (72 / 96)
@@ -754,6 +761,17 @@ export function AnnotationQueueRoute({
       if (event.key === '5') void saveDecision('not_an_element')
       if (event.key === '6') void saveDecision('defer')
       if (event.key === 'v' || event.key === 'V') setShowContext((current) => !current)
+      if (event.key === 'Escape') { setSelectedDrawnId(null); return }
+      if ((event.key === 'd' || event.key === 'D') && event.target === document.body) { setWorkbenchAction('fix_bounds'); return }
+      if (selectedDrawnId && LABEL_HOTKEYS[event.key.toLowerCase()]) {
+        const type = LABEL_HOTKEYS[event.key.toLowerCase()]
+        setCanvasRegions((current) => {
+          const next = current.map((region) => (region.id === selectedDrawnId ? { ...region, label: type } : region))
+          if (selected) saveDrawnRegions(selected.id, next.filter((region) => region.id !== selected.id))
+          return next
+        })
+        return
+      }
       if ((event.key === 'Delete' || event.key === 'Backspace') && selectedDrawnId) {
         setCanvasRegions((current) => {
           const next = current.filter((region) => region.id !== selectedDrawnId)
@@ -945,52 +963,20 @@ export function AnnotationQueueRoute({
                       No region localized for this flag yet — drag on the page to draw the annotation yourself.
                     </p>
                   )}
-                  {pageImage && canvasRegions.length > 0 && (
-                    <div className="pdf-verify-type-chips" data-testid="region-type-chips">
-                      <span>Label region:</span>
-                      <button
-                        type="button"
-                        className="is-danger"
-                        onClick={() => {
-                          const targetId = selectedDrawnId ?? canvasRegions[canvasRegions.length - 1]?.id
-                          if (!targetId) return
-                          setCanvasRegions((current) => {
-                            const next = current.filter((region) => region.id !== targetId)
-                            saveDrawnRegions(selected.id, next.filter((region) => region.id !== selected.id))
-                            return next
-                          })
-                          setSelectedDrawnId(null)
-                        }}
-                        data-qid="annotation-queue:region:delete"
-                        data-qs-action="ANNOTATION_QUEUE_DELETE_REGION"
-                        title="Delete the selected drawn region (Del)"
-                        data-testid="delete-region"
-                      >
-                        ✕ Delete
-                      </button>
-                      {ELEMENT_TYPES.map((type) => (
-                        <button
-                          key={type}
-                          type="button"
-                          onClick={() => {
-                            const targetId = selectedDrawnId ?? canvasRegions[canvasRegions.length - 1]?.id
-                            if (!targetId) return
-                            setCanvasRegions((current) => {
-                              const next = current.map((region) => (
-                                region.id === targetId ? { ...region, label: type } : region
-                              ))
-                              saveDrawnRegions(selected.id, next.filter((region) => region.id !== selected.id))
-                              return next
-                            })
-                          }}
-                          data-qid={`annotation-queue:region-type:${type.toLowerCase()}`}
-                          data-qs-action="ANNOTATION_QUEUE_LABEL_REGION"
-                          title={`Label the selected drawn region as ${type}`}
-                        >
-                          {type}
-                        </button>
-                      ))}
-                    </div>
+                  {pageImage && selectedDrawnRegion && (
+                    <FloatingLabelMenu
+                      activeBox={{ bbox: selectedDrawnRegion.bbox }}
+                      onSelectLabel={(type) => {
+                        setCanvasRegions((current) => {
+                          const next = current.map((region) => (
+                            region.id === selectedDrawnRegion.id ? { ...region, label: type } : region
+                          ))
+                          if (selected) saveDrawnRegions(selected.id, next.filter((region) => region.id !== selected.id))
+                          return next
+                        })
+                      }}
+                      onClose={() => setSelectedDrawnId(null)}
+                    />
                   )}
                   {pageImage ? (
                     <PdfDocumentCanvas
