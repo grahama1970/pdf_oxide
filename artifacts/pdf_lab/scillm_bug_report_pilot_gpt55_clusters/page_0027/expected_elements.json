@@ -1,0 +1,1097 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "nist_phase54_page_0027",
+  "captured_at": "2026-05-29T15:43:22.339490+00:00",
+  "source": "phase-54 TOC-backed candidate packet release_extraction_blocks.json",
+  "ground_truth_policy": "Rendered page image is annotation ground truth; verified TOC spine supplies routing evidence only.",
+  "candidate_families": [
+    "tables",
+    "figures_images_captions",
+    "headers_footers"
+  ],
+  "toc_entries": [],
+  "reviewer_questions": [
+    "Review table region, caption, row/column boundaries, merged/continued cells, and false-positive grid/table fragments.",
+    "Confirm captions belong to the table, and mark true non-table figures/images only if visibly present.",
+    "Separate running headers, footers, printed page numbers, and side boilerplate from body content."
+  ],
+  "fix_error_requests": [
+    {
+      "source_id": "actual:p27:line:112",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PAGE",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:2",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "DATE",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:36",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "TYPE",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:69",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "REVISION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:113",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "427",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:3",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:70",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "Appendix B Acronyms: Add \u201cUPS Uninterruptible Power Supply\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:37",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:114",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "428",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:4",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:71",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "Appendix C Control Summaries: Change \u201cw\u201d to \u201cW\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:38",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:115",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "429",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:5",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:39",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:72",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -1 (AC-3(1)) Title: Change \u201cFUNCTION\u201d to \u201cFUNCTIONS\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:116",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "429",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:6",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:40",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:73",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -1 (AC-3(6)): Change \u201cMP-4, SC-28\u201d to \u201cMP-4 and SC-28\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:117",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "431",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:7",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:41",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:74",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -1 (AC-13): Change \u201cAC-2, AU-6\u201d to \u201cAC-2 and AU -6\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:75",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -3 (AU-7(2)) Title: Change \u201cSEARCH AND SORT\u201d to \u201cSORT",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:118",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "434",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:8",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:42",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:76",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "AND SEARCH\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:119",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "435",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:9",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:43",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:77",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -3 AU-15: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:78",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -4 (CA-3(1)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:10",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:120",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "436",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:44",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:79",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CONNECTIONS\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:80",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -5 (CM-7(4)) Title: Change \u201cUNAUTHORIZED SOFTWARE\u201d to",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:121",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "437",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:45",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:81",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "\u201cUNAUTHORIZED SOFTWARE \u2013 DENY -BY-EXCEPTION\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:82",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -5 (CM-7(5)) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:12",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:122",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "437",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:46",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:83",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "\u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:123",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "438",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:13",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:47",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:84",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -5: Delete duplicate row CM -8(5).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:85",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -6 (CP-9(7)) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:124",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "440",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:14",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:48",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:86",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "AUTHORIZATION FOR DELETION OR DESTRUCTION\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:125",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "441",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:15",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:49",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:87",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -7 (IA-5(11)): Change \u201cIA -2(1)(2)\u201d to \u201cIA -2(1) and IA -2(2)\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:88",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -8 (IR-10) Title: Change \u201cIntegrated Information Security",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:126",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "444",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:16",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:50",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:89",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Analysis\u201d to \u201cIntegrated Information Security Analysis Team\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:127",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "445",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:19",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:51",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:90",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -9 (MA-4(2)): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA -4\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:128",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "447",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:20",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:52",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:91",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -11 (PE-7): Change \u201cPE-2, PE-3\u201d to \u201cPE-2 and PE -3\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:129",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "448",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:21",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:53",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:92",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -11 (PE-19(1)) Title: Delete\u201dAND TEMPEST\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:130",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "451",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:22",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:54",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:93",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -14 (PS-3(1)) Title: Change \u201cI NFORMATION\u201d to \u201cINFORMATION\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:131",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "451",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:23",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:55",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:94",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -14 (PS-3(3)) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:132",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "454",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:24",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:56",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:95",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -17 (SA-6): Change \u201cCM-10, SI-7\u201d to \u201cCM-10 and SI -7\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:133",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "454",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:25",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:57",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:96",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -17 (SA-7): Change \u201cCM-11, SI-7\u201d to \u201cCM-11 and SI -7\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:17",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "https/d/:oi.org0.1/T.SIN/8206P.S008",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:134",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "456",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:26",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:58",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:97",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -17 (SA-12(13)): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA -9\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:135",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "456",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:27",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:59",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:98",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -17 (SA-12(14)): Change \u201cSR-4(1)(2)\u201d to \u201cSR-4(1) and SR -4(2)\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:136",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "456",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:28",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:60",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:99",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -17 (SA-12(15)) Title: Change \u201cPROCESS\u201d to \u201cPROCESSES\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:100",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -18 (SC-7(25)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:137",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "459",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:29",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:61",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:101",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CONNECTIONS\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:138",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "459",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:30",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:102",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -18 (SC-12(4)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:62",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:139",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "459",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:31",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:103",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -18 (SC-12(5)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:63",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:140",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "459",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:32",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:104",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -18 (SC-14): Change \u201cSI-7,\u201d to \u201cSI-7, and\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:64",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:105",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -18 (SC-19): Change \u201caddressed by other controls for",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:141",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "460",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:33",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:65",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:106",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "protocols\u201d to \u201caddressed as any other technology or protocol.\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:142",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "463",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:34",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:107",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -19 (SI-9): Change \u201cAC-5,\u201d to \u201cAC-5, and\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:66",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:108",
+      "current_type": "caption",
+      "requested_family": "table",
+      "text_hint": "Table C -19 (SI-19(7)) Title: Change \u201cSOFTWARE\u201d to \u201cAND",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:143",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "464",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:35",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "12-10-2020",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:67",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Editorial",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:18",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "3r55 -",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p27:line:109",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "SOFTWARE\u201d",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "human:p27:running_header_merged",
+      "current_type": "split_page_chrome_noise",
+      "requested_family": "page_chrome_noise",
+      "text_hint": "NIST SP 800-53, Rev. 5 + SECURITY AND PRIVACY CONTROLS...",
+      "reason": "Human adjusted page chrome grouping; recurring header/footer materialization should match the visual page chrome contract.",
+      "owner": "nist_preset_or_materialization",
+      "human_bbox": [
+        0.145059,
+        0.043,
+        0.8795694095860567,
+        0.07475276767676768
+      ]
+    },
+    {
+      "source_id": "human:p27:left_sidebar_watermark",
+      "current_type": "table",
+      "requested_family": "page_chrome_noise",
+      "text_hint": "This publication is available free of charge from...",
+      "reason": "Visible evidence shows this is the left rotated DOI/sidebar watermark, not a semantic table, even though the WIP region family is table. Treat as page-chrome extraction/materialization fix request.",
+      "owner": "nist_preset_or_materialization",
+      "human_bbox": [
+        0.015257898104331799,
+        0.07063076954420203,
+        0.11438680090296352,
+        0.91659222206501
+      ]
+    },
+    {
+      "source_id": "actual:p27:table:0",
+      "current_type": "table",
+      "requested_family": "table",
+      "text_hint": "Core extract_tables table bbox excludes visible table extent.",
+      "reason": "Human added a broader table/visible-content region than the core extract_tables bbox. Compare against rendered page and decide whether the table bbox should include header row/top continuation area or whether this is an over-broad WIP region.",
+      "owner": "materialization_or_table_postprocessor",
+      "human_bbox": [
+        0.13944137468695267,
+        0.0815735328222601,
+        0.855130182668656,
+        0.7263564220703551
+      ]
+    }
+  ],
+  "expected_elements": [
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.488294,
+        0.938152,
+        0.51275,
+        0.953515
+      ],
+      "text_hint": "xxv",
+      "label": "xxv",
+      "allowed_types": [
+        "running_footer"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: running_footer; source id: actual:p27:line:110; human should amend if rendered page contradicts this row."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.879569,
+        0.074753
+      ],
+      "text_hint": "Merged top running header from human p.27 correction.",
+      "label": "running_header_merged",
+      "allowed_types": [
+        "running_header",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "human_feedback_bbox",
+      "notes": "Human p.27 correction: the split left/right header should materialize as one page-chrome region."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.015258,
+        0.070631,
+        0.114387,
+        0.916592
+      ],
+      "text_hint": "Left rotated DOI/sidebar watermark.",
+      "label": "left_sidebar_watermark",
+      "allowed_types": [
+        "running_header",
+        "running_footer",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "human_feedback_bbox",
+      "notes": "Human p.27 correction routed by visible evidence: left vertical DOI/sidebar watermark is page chrome, not a semantic table."
+    },
+    {
+      "family": "table",
+      "bbox_hint": [
+        0.139441,
+        0.081574,
+        0.85513,
+        0.726356
+      ],
+      "text_hint": "Full visible revision table including DATE/TYPE/REVISION/PAGE columns.",
+      "label": "revision_table_full_bbox",
+      "allowed_types": [
+        "table"
+      ],
+      "match_strategy": "human_feedback_bbox",
+      "notes": "Human p.27 correction: the core table bbox is too narrow/cropped for the visible table; route to table bbox/postprocessor fix."
+    }
+  ]
+}

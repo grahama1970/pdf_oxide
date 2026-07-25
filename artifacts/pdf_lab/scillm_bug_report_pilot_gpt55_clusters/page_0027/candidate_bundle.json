@@ -1,0 +1,2708 @@
+{
+  "artifact_dir": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027",
+  "blocks": [
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490230984158,
+        0.7246212429470487
+      ],
+      "blockType": "table",
+      "id": "actual:p27:table:0",
+      "page": 27,
+      "text": "DATE | TYPE | REVISION | PAGE 12-10-2020 | Editorial | Appendix B Acronyms: Add UPS ninterruptible Power Supply\u201d | 427 12-10-2020 | Editorial | Appendix C Control Summaries: Change w\u201d to \u201cW\u201d | 428 12-10-2020 | Editorial | Table C-1 (AC-3(1)) Title: Change \u201cFUN"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "blockType": "running_header",
+      "id": "actual:p27:line:0",
+      "page": 27,
+      "text": "NIST SP 800-53, R EV. 5"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "blockType": "running_header",
+      "id": "actual:p27:line:68+actual:p27:line:111",
+      "page": 27,
+      "text": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.793784,
+        0.096485,
+        0.833581,
+        0.114348
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:112",
+      "page": 27,
+      "text": "PAGE"
+    },
+    {
+      "bbox": [
+        0.180255,
+        0.096485,
+        0.21942,
+        0.114348
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:2",
+      "page": 27,
+      "text": "DATE"
+    },
+    {
+      "bbox": [
+        0.284863,
+        0.096485,
+        0.315487,
+        0.114348
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:36",
+      "page": 27,
+      "text": "TYPE"
+    },
+    {
+      "bbox": [
+        0.528392,
+        0.096485,
+        0.599612,
+        0.114348
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:69",
+      "page": 27,
+      "text": "REVISION"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.119742,
+        0.826257,
+        0.135106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:113",
+      "page": 27,
+      "text": "427"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.119742,
+        0.235253,
+        0.135106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:3",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.119742,
+        0.745181,
+        0.135106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:70",
+      "page": 27,
+      "text": "Appendix B Acronyms: Add \u201cUPS Uninterruptible Power Supply\u201d"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.120242,
+        0.332725,
+        0.134606
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:37",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.1355,
+        0.826257,
+        0.150864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:114",
+      "page": 27,
+      "text": "428"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.1355,
+        0.235253,
+        0.150864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:4",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.1355,
+        0.649132,
+        0.150864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:71",
+      "page": 27,
+      "text": "Appendix C Control Summaries: Change \u201cw\u201d to \u201cW\u201d"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.136,
+        0.332725,
+        0.150364
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:38",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.151333,
+        0.826257,
+        0.166697
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:115",
+      "page": 27,
+      "text": "429"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.151333,
+        0.235253,
+        0.166697
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:5",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.151833,
+        0.332725,
+        0.166197
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:39",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.151833,
+        0.719304,
+        0.166197
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:72",
+      "page": 27,
+      "text": "Table C -1 (AC-3(1)) Title: Change \u201cFUNCTION\u201d to \u201cFUNCTIONS\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.167091,
+        0.826257,
+        0.182455
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:116",
+      "page": 27,
+      "text": "429"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.167091,
+        0.235253,
+        0.182455
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:6",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.167591,
+        0.332725,
+        0.181955
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:40",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.167591,
+        0.740143,
+        0.181955
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:73",
+      "page": 27,
+      "text": "Table C -1 (AC-3(6)): Change \u201cMP-4, SC-28\u201d to \u201cMP-4 and SC-28\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.182849,
+        0.826257,
+        0.198212
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:117",
+      "page": 27,
+      "text": "431"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.182849,
+        0.235253,
+        0.198212
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:7",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.183349,
+        0.332725,
+        0.197712
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:41",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.183349,
+        0.71664,
+        0.197712
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:74",
+      "page": 27,
+      "text": "Table C -1 (AC-13): Change \u201cAC-2, AU-6\u201d to \u201cAC-2 and AU -6\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.199182,
+        0.729669,
+        0.213545
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:75",
+      "page": 27,
+      "text": "Table C -3 (AU-7(2)) Title: Change \u201cSEARCH AND SORT\u201d to \u201cSORT"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.20497,
+        0.829368,
+        0.220333
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:118",
+      "page": 27,
+      "text": "434"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.20497,
+        0.235271,
+        0.220333
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:8",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.20547,
+        0.332725,
+        0.219833
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:42",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.211258,
+        0.443739,
+        0.226621
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:76",
+      "page": 27,
+      "text": "AND SEARCH\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.227091,
+        0.826257,
+        0.242455
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:119",
+      "page": 27,
+      "text": "435"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.227091,
+        0.235253,
+        0.242455
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:9",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.227591,
+        0.332725,
+        0.241955
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:43",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.227591,
+        0.702966,
+        0.241955
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:77",
+      "page": 27,
+      "text": "Table C -3 AU-15: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.243348,
+        0.71611,
+        0.257712
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:78",
+      "page": 27,
+      "text": "Table C -4 (CA-3(1)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.249136,
+        0.235271,
+        0.2645
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:10",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.249136,
+        0.829368,
+        0.2645
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:120",
+      "page": 27,
+      "text": "436"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.249636,
+        0.332725,
+        0.264
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:44",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.255424,
+        0.454163,
+        0.270788
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:79",
+      "page": 27,
+      "text": "CONNECTIONS\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.271758,
+        0.750708,
+        0.286121
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:80",
+      "page": 27,
+      "text": "Table C -5 (CM-7(4)) Title: Change \u201cUNAUTHORIZED SOFTWARE\u201d to"
+    },
+    {
+      "bbox": [
+        0.032868,
+        0.274939,
+        0.357353,
+        0.292409
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:11",
+      "page": 27,
+      "text": "This publication is available 12-10-2020 free of charge from:"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.277545,
+        0.829368,
+        0.292909
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:121",
+      "page": 27,
+      "text": "437"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.278045,
+        0.332725,
+        0.292409
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:45",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.283833,
+        0.679455,
+        0.299197
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:81",
+      "page": 27,
+      "text": "\u201cUNAUTHORIZED SOFTWARE \u2013 DENY -BY-EXCEPTION\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.300167,
+        0.734439,
+        0.31453
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:82",
+      "page": 27,
+      "text": "Table C -5 (CM-7(5)) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.305955,
+        0.235271,
+        0.321318
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:12",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.305955,
+        0.829368,
+        0.321318
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:122",
+      "page": 27,
+      "text": "437"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.306455,
+        0.332725,
+        0.320818
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:46",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.312242,
+        0.670759,
+        0.327606
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:83",
+      "page": 27,
+      "text": "\u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.328076,
+        0.826257,
+        0.343439
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:123",
+      "page": 27,
+      "text": "438"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.328076,
+        0.235253,
+        0.343439
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:13",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.328576,
+        0.332725,
+        0.342939
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:47",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.328576,
+        0.605063,
+        0.342939
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:84",
+      "page": 27,
+      "text": "Table C -5: Delete duplicate row CM -8(5)."
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.344333,
+        0.752696,
+        0.358697
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:85",
+      "page": 27,
+      "text": "Table C -6 (CP-9(7)) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.350197,
+        0.829368,
+        0.365561
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:124",
+      "page": 27,
+      "text": "440"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.350197,
+        0.235271,
+        0.365561
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:14",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.350697,
+        0.332725,
+        0.365061
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:48",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.356485,
+        0.667813,
+        0.371849
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:86",
+      "page": 27,
+      "text": "AUTHORIZATION FOR DELETION OR DESTRUCTION\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.372242,
+        0.826257,
+        0.387606
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:125",
+      "page": 27,
+      "text": "441"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.372242,
+        0.235253,
+        0.387606
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:15",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.372742,
+        0.332725,
+        0.387106
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:49",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.372742,
+        0.743452,
+        0.387106
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:87",
+      "page": 27,
+      "text": "Table C -7 (IA-5(11)): Change \u201cIA -2(1)(2)\u201d to \u201cIA -2(1) and IA -2(2)\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.388576,
+        0.73915,
+        0.402939
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:88",
+      "page": 27,
+      "text": "Table C -8 (IR-10) Title: Change \u201cIntegrated Information Security"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.394364,
+        0.829368,
+        0.409727
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:126",
+      "page": 27,
+      "text": "444"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.394364,
+        0.235271,
+        0.409727
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:16",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.394864,
+        0.332725,
+        0.409227
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:50",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.401152,
+        0.723525,
+        0.415515
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:89",
+      "page": 27,
+      "text": "Analysis\u201d to \u201cIntegrated Information Security Analysis Team\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.416485,
+        0.826257,
+        0.431848
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:127",
+      "page": 27,
+      "text": "445"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.416485,
+        0.235253,
+        0.431848
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:19",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.416985,
+        0.332725,
+        0.431348
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:51",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.416985,
+        0.746051,
+        0.431348
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:90",
+      "page": 27,
+      "text": "Table C -9 (MA-4(2)): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA -4\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.432242,
+        0.826257,
+        0.447606
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:128",
+      "page": 27,
+      "text": "447"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.432242,
+        0.235253,
+        0.447606
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:20",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.432742,
+        0.332725,
+        0.447106
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:52",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.432742,
+        0.705659,
+        0.447106
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:91",
+      "page": 27,
+      "text": "Table C -11 (PE-7): Change \u201cPE-2, PE-3\u201d to \u201cPE-2 and PE -3\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.448,
+        0.826257,
+        0.463364
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:129",
+      "page": 27,
+      "text": "448"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.448,
+        0.235253,
+        0.463364
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:21",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.4485,
+        0.332725,
+        0.462864
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:53",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.4485,
+        0.664096,
+        0.462864
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:92",
+      "page": 27,
+      "text": "Table C -11 (PE-19(1)) Title: Delete\u201dAND TEMPEST\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.463833,
+        0.826257,
+        0.479197
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:130",
+      "page": 27,
+      "text": "451"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.463833,
+        0.235253,
+        0.479197
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:22",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.464333,
+        0.332725,
+        0.478697
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:54",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.464333,
+        0.747574,
+        0.478697
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:93",
+      "page": 27,
+      "text": "Table C -14 (PS-3(1)) Title: Change \u201cI NFORMATION\u201d to \u201cINFORMATION\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.479591,
+        0.826257,
+        0.494955
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:131",
+      "page": 27,
+      "text": "451"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.479591,
+        0.235253,
+        0.494955
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:23",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.480091,
+        0.332725,
+        0.494455
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:55",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.480091,
+        0.690819,
+        0.494455
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:94",
+      "page": 27,
+      "text": "Table C -14 (PS-3(3)) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.495348,
+        0.826257,
+        0.510712
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:132",
+      "page": 27,
+      "text": "454"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.495348,
+        0.235253,
+        0.510712
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:24",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.495848,
+        0.332725,
+        0.510212
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:56",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.495848,
+        0.723698,
+        0.510212
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:95",
+      "page": 27,
+      "text": "Table C -17 (SA-6): Change \u201cCM-10, SI-7\u201d to \u201cCM-10 and SI -7\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.511182,
+        0.826257,
+        0.526545
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:133",
+      "page": 27,
+      "text": "454"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.511182,
+        0.235253,
+        0.526545
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:25",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.511682,
+        0.332725,
+        0.526045
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:57",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.511682,
+        0.723698,
+        0.526045
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:96",
+      "page": 27,
+      "text": "Table C -17 (SA-7): Change \u201cCM-11, SI-7\u201d to \u201cCM-11 and SI -7\u201d"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.130088,
+        0.533091
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:17",
+      "page": 27,
+      "text": "https/d/:oi.org0.1/T.SIN/8206P.S008"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.526939,
+        0.826257,
+        0.542303
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:134",
+      "page": 27,
+      "text": "456"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.526939,
+        0.235253,
+        0.542303
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:26",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.527439,
+        0.332725,
+        0.541803
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:58",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.527439,
+        0.753404,
+        0.541803
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:97",
+      "page": 27,
+      "text": "Table C -17 (SA-12(13)): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA -9\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.542697,
+        0.826257,
+        0.558061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:135",
+      "page": 27,
+      "text": "456"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.542697,
+        0.235253,
+        0.558061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:27",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.543197,
+        0.332725,
+        0.557561
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:59",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.543197,
+        0.764931,
+        0.557561
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:98",
+      "page": 27,
+      "text": "Table C -17 (SA-12(14)): Change \u201cSR-4(1)(2)\u201d to \u201cSR-4(1) and SR -4(2)\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.55853,
+        0.826257,
+        0.573894
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:136",
+      "page": 27,
+      "text": "456"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.55853,
+        0.235253,
+        0.573894
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:28",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.55903,
+        0.332725,
+        0.573394
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:60",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.55903,
+        0.726554,
+        0.573394
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:99",
+      "page": 27,
+      "text": "Table C -17 (SA-12(15)) Title: Change \u201cPROCESS\u201d to \u201cPROCESSES\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.574788,
+        0.730109,
+        0.589152
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:100",
+      "page": 27,
+      "text": "Table C -18 (SC-7(25)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.580576,
+        0.829368,
+        0.595939
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:137",
+      "page": 27,
+      "text": "459"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.580576,
+        0.235271,
+        0.595939
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:29",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.581076,
+        0.332725,
+        0.595439
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:61",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.586864,
+        0.454163,
+        0.602227
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:101",
+      "page": 27,
+      "text": "CONNECTIONS\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.602697,
+        0.826257,
+        0.618061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:138",
+      "page": 27,
+      "text": "459"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.602697,
+        0.235253,
+        0.618061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:30",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.603197,
+        0.669923,
+        0.617561
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:102",
+      "page": 27,
+      "text": "Table C -18 (SC-12(4)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.603197,
+        0.332725,
+        0.617561
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:62",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.618455,
+        0.826257,
+        0.633818
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:139",
+      "page": 27,
+      "text": "459"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.618455,
+        0.235253,
+        0.633818
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:31",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.618955,
+        0.669923,
+        0.633318
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:103",
+      "page": 27,
+      "text": "Table C -18 (SC-12(5)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.618955,
+        0.332725,
+        0.633318
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:63",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.634288,
+        0.826257,
+        0.649652
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:140",
+      "page": 27,
+      "text": "459"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.634288,
+        0.235253,
+        0.649652
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:32",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.634788,
+        0.647578,
+        0.649152
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:104",
+      "page": 27,
+      "text": "Table C -18 (SC-14): Change \u201cSI-7,\u201d to \u201cSI-7, and\u201d"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.634788,
+        0.332725,
+        0.649152
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:64",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.650545,
+        0.718718,
+        0.664909
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:105",
+      "page": 27,
+      "text": "Table C -18 (SC-19): Change \u201caddressed by other controls for"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.656333,
+        0.829368,
+        0.671697
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:141",
+      "page": 27,
+      "text": "460"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.656333,
+        0.235271,
+        0.671697
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:33",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.656833,
+        0.332725,
+        0.671197
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:65",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.663121,
+        0.729471,
+        0.677485
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:106",
+      "page": 27,
+      "text": "protocols\u201d to \u201caddressed as any other technology or protocol.\u201d"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.678455,
+        0.826257,
+        0.693818
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:142",
+      "page": 27,
+      "text": "463"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.678455,
+        0.235253,
+        0.693818
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:34",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.678955,
+        0.647142,
+        0.693318
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:107",
+      "page": 27,
+      "text": "Table C -19 (SI-9): Change \u201cAC-5,\u201d to \u201cAC-5, and\u201d"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.678955,
+        0.332725,
+        0.693318
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:66",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.694712,
+        0.702549,
+        0.709076
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:108",
+      "page": 27,
+      "text": "Table C -19 (SI-19(7)) Title: Change \u201cSOFTWARE\u201d to \u201cAND"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.700576,
+        0.829368,
+        0.715939
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:143",
+      "page": 27,
+      "text": "464"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.700576,
+        0.235271,
+        0.715939
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:35",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.701076,
+        0.332725,
+        0.715439
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:67",
+      "page": 27,
+      "text": "Editorial"
+    }
+  ],
+  "copied_files": [
+    "page.png",
+    "bbox_overlay.png",
+    "release_extraction_blocks.json",
+    "expected_elements.json",
+    "agent_second_pass.json"
+  ],
+  "fix_error_count": 141,
+  "fix_error_requests": [
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:112",
+      "text_hint": "PAGE"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:2",
+      "text_hint": "DATE"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:36",
+      "text_hint": "TYPE"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:69",
+      "text_hint": "REVISION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:113",
+      "text_hint": "427"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:3",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:70",
+      "text_hint": "Appendix B Acronyms: Add \u201cUPS Uninterruptible Power Supply\u201d"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:37",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:114",
+      "text_hint": "428"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:4",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:71",
+      "text_hint": "Appendix C Control Summaries: Change \u201cw\u201d to \u201cW\u201d"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:38",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:115",
+      "text_hint": "429"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:5",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:39",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:72",
+      "text_hint": "Table C -1 (AC-3(1)) Title: Change \u201cFUNCTION\u201d to \u201cFUNCTIONS\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:116",
+      "text_hint": "429"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:6",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:40",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:73",
+      "text_hint": "Table C -1 (AC-3(6)): Change \u201cMP-4, SC-28\u201d to \u201cMP-4 and SC-28\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:117",
+      "text_hint": "431"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:7",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:41",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:74",
+      "text_hint": "Table C -1 (AC-13): Change \u201cAC-2, AU-6\u201d to \u201cAC-2 and AU -6\u201d"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:75",
+      "text_hint": "Table C -3 (AU-7(2)) Title: Change \u201cSEARCH AND SORT\u201d to \u201cSORT"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:118",
+      "text_hint": "434"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:8",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:42",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:76",
+      "text_hint": "AND SEARCH\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:119",
+      "text_hint": "435"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:9",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:43",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:77",
+      "text_hint": "Table C -3 AU-15: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:78",
+      "text_hint": "Table C -4 (CA-3(1)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:10",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:120",
+      "text_hint": "436"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:44",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:79",
+      "text_hint": "CONNECTIONS\u201d"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:80",
+      "text_hint": "Table C -5 (CM-7(4)) Title: Change \u201cUNAUTHORIZED SOFTWARE\u201d to"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:121",
+      "text_hint": "437"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:45",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:81",
+      "text_hint": "\u201cUNAUTHORIZED SOFTWARE \u2013 DENY -BY-EXCEPTION\u201d"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:82",
+      "text_hint": "Table C -5 (CM-7(5)) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:12",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:122",
+      "text_hint": "437"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:46",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:83",
+      "text_hint": "\u201cAUTHORIZED SOFTWARE \u2013 ALLOW-BY-EXCEPTION\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:123",
+      "text_hint": "438"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:13",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:47",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:84",
+      "text_hint": "Table C -5: Delete duplicate row CM -8(5)."
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:85",
+      "text_hint": "Table C -6 (CP-9(7)) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:124",
+      "text_hint": "440"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:14",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:48",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:86",
+      "text_hint": "AUTHORIZATION FOR DELETION OR DESTRUCTION\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:125",
+      "text_hint": "441"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:15",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:49",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:87",
+      "text_hint": "Table C -7 (IA-5(11)): Change \u201cIA -2(1)(2)\u201d to \u201cIA -2(1) and IA -2(2)\u201d"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:88",
+      "text_hint": "Table C -8 (IR-10) Title: Change \u201cIntegrated Information Security"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:126",
+      "text_hint": "444"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:16",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:50",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:89",
+      "text_hint": "Analysis\u201d to \u201cIntegrated Information Security Analysis Team\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:127",
+      "text_hint": "445"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:19",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:51",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:90",
+      "text_hint": "Table C -9 (MA-4(2)): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA -4\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:128",
+      "text_hint": "447"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:20",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:52",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:91",
+      "text_hint": "Table C -11 (PE-7): Change \u201cPE-2, PE-3\u201d to \u201cPE-2 and PE -3\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:129",
+      "text_hint": "448"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:21",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:53",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:92",
+      "text_hint": "Table C -11 (PE-19(1)) Title: Delete\u201dAND TEMPEST\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:130",
+      "text_hint": "451"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:22",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:54",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:93",
+      "text_hint": "Table C -14 (PS-3(1)) Title: Change \u201cI NFORMATION\u201d to \u201cINFORMATION\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:131",
+      "text_hint": "451"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:23",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:55",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:94",
+      "text_hint": "Table C -14 (PS-3(3)) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:132",
+      "text_hint": "454"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:24",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:56",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:95",
+      "text_hint": "Table C -17 (SA-6): Change \u201cCM-10, SI-7\u201d to \u201cCM-10 and SI -7\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:133",
+      "text_hint": "454"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:25",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:57",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:96",
+      "text_hint": "Table C -17 (SA-7): Change \u201cCM-11, SI-7\u201d to \u201cCM-11 and SI -7\u201d"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:17",
+      "text_hint": "https/d/:oi.org0.1/T.SIN/8206P.S008"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:134",
+      "text_hint": "456"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:26",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:58",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:97",
+      "text_hint": "Table C -17 (SA-12(13)): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA -9\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:135",
+      "text_hint": "456"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:27",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:59",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:98",
+      "text_hint": "Table C -17 (SA-12(14)): Change \u201cSR-4(1)(2)\u201d to \u201cSR-4(1) and SR -4(2)\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:136",
+      "text_hint": "456"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:28",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:60",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:99",
+      "text_hint": "Table C -17 (SA-12(15)) Title: Change \u201cPROCESS\u201d to \u201cPROCESSES\u201d"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:100",
+      "text_hint": "Table C -18 (SC-7(25)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:137",
+      "text_hint": "459"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:29",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:61",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:101",
+      "text_hint": "CONNECTIONS\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:138",
+      "text_hint": "459"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:30",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:102",
+      "text_hint": "Table C -18 (SC-12(4)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:62",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:139",
+      "text_hint": "459"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:31",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:103",
+      "text_hint": "Table C -18 (SC-12(5)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:63",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:140",
+      "text_hint": "459"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:32",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:104",
+      "text_hint": "Table C -18 (SC-14): Change \u201cSI-7,\u201d to \u201cSI-7, and\u201d"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:64",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:105",
+      "text_hint": "Table C -18 (SC-19): Change \u201caddressed by other controls for"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:141",
+      "text_hint": "460"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:33",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:65",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:106",
+      "text_hint": "protocols\u201d to \u201caddressed as any other technology or protocol.\u201d"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:142",
+      "text_hint": "463"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:34",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:107",
+      "text_hint": "Table C -19 (SI-9): Change \u201cAC-5,\u201d to \u201cAC-5, and\u201d"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:66",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "caption",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:108",
+      "text_hint": "Table C -19 (SI-19(7)) Title: Change \u201cSOFTWARE\u201d to \u201cAND"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:143",
+      "text_hint": "464"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:35",
+      "text_hint": "12-10-2020"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:67",
+      "text_hint": "Editorial"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:18",
+      "text_hint": "3r55 -"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p27:line:109",
+      "text_hint": "SOFTWARE\u201d"
+    },
+    {
+      "current_type": "split_page_chrome_noise",
+      "human_bbox": [
+        0.145059,
+        0.043,
+        0.8795694095860567,
+        0.07475276767676768
+      ],
+      "owner": "nist_preset_or_materialization",
+      "reason": "Human adjusted page chrome grouping; recurring header/footer materialization should match the visual page chrome contract.",
+      "requested_family": "page_chrome_noise",
+      "source_id": "human:p27:running_header_merged",
+      "text_hint": "NIST SP 800-53, Rev. 5 + SECURITY AND PRIVACY CONTROLS..."
+    },
+    {
+      "current_type": "table",
+      "human_bbox": [
+        0.015257898104331799,
+        0.07063076954420203,
+        0.11438680090296352,
+        0.91659222206501
+      ],
+      "owner": "nist_preset_or_materialization",
+      "reason": "Visible evidence shows this is the left rotated DOI/sidebar watermark, not a semantic table, even though the WIP region family is table. Treat as page-chrome extraction/materialization fix request.",
+      "requested_family": "page_chrome_noise",
+      "source_id": "human:p27:left_sidebar_watermark",
+      "text_hint": "This publication is available free of charge from..."
+    },
+    {
+      "current_type": "table",
+      "human_bbox": [
+        0.13944137468695267,
+        0.0815735328222601,
+        0.855130182668656,
+        0.7263564220703551
+      ],
+      "owner": "materialization_or_table_postprocessor",
+      "reason": "Human added a broader table/visible-content region than the core extract_tables bbox. Compare against rendered page and decide whether the table bbox should include header row/top continuation area or whether this is an over-broad WIP region.",
+      "requested_family": "table",
+      "source_id": "actual:p27:table:0",
+      "text_hint": "Core extract_tables table bbox excludes visible table extent."
+    }
+  ],
+  "fix_error_source": "expected_elements.json",
+  "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/bbox_overlay.png",
+  "page": 27,
+  "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/page.png",
+  "source_dir": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0027"
+}
