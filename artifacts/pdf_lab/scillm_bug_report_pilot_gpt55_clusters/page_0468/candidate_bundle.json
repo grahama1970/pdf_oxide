@@ -1,0 +1,2337 @@
+{
+  "artifact_dir": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0468",
+  "blocks": [
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.11371211812953756,
+        0.8525490230984158,
+        0.9028788094568734
+      ],
+      "blockType": "table",
+      "id": "actual:p468:table:0",
+      "page": 468,
+      "text": "CONTROL NUMBER | CONTROL NAME CONTROL NHANCEMENT AME | IMPLEMENTED BY | ASSURANCE IA-1 | Policy and Procedures | O | \u221a IA-2 | Identification and Authentication (Organizational Users) | O/S IA-2(1) | MULTIFACTOR UTHENTIATIN O RIIEGED CCOUNTS | S IA-2(2) | MULTI"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "blockType": "running_header",
+      "id": "actual:p468:line:0+actual:p468:line:50",
+      "page": 468,
+      "text": "NIST SP 800-53, REV. 5"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "blockType": "running_header",
+      "id": "actual:p468:line:51+actual:p468:line:104",
+      "page": 468,
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.305461,
+        0.088879,
+        0.690689,
+        0.103848
+      ],
+      "blockType": "caption",
+      "id": "actual:p468:line:52",
+      "page": 468,
+      "text": "TABLE C-7: IDENTIFICATION AND AUTHENTICATION FAMILY"
+    },
+    {
+      "bbox": [
+        0.158784,
+        0.137015,
+        0.221608,
+        0.152379
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:2",
+      "page": 468,
+      "text": "CONTROL"
+    },
+    {
+      "bbox": [
+        0.355647,
+        0.137394,
+        0.483136,
+        0.155258
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:53",
+      "page": 468,
+      "text": "CONTROL NAME"
+    },
+    {
+      "bbox": [
+        0.624569,
+        0.142091,
+        0.70979,
+        0.156167
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:105",
+      "page": 468,
+      "text": "IMPLEMENTED"
+    },
+    {
+      "bbox": [
+        0.756039,
+        0.142167,
+        0.826005,
+        0.156242
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:109",
+      "page": 468,
+      "text": "ASSURANCE"
+    },
+    {
+      "bbox": [
+        0.160451,
+        0.149667,
+        0.220216,
+        0.16503
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:3",
+      "page": 468,
+      "text": "NUMBER"
+    },
+    {
+      "bbox": [
+        0.658098,
+        0.154742,
+        0.676272,
+        0.168818
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:106",
+      "page": 468,
+      "text": "BY"
+    },
+    {
+      "bbox": [
+        0.340451,
+        0.158,
+        0.499671,
+        0.170864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:54",
+      "page": 468,
+      "text": "CONTROL ENHANCEMENT NAME"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.186985,
+        0.179884,
+        0.201349
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:4",
+      "page": 468,
+      "text": "IA-1"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.186985,
+        0.37949,
+        0.201349
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:55",
+      "page": 468,
+      "text": "Policy and Procedures"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.188985,
+        0.672927,
+        0.201849
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:107",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.20353,
+        0.678441,
+        0.218894
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:108",
+      "page": 468,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.20403,
+        0.179884,
+        0.218394
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:5",
+      "page": 468,
+      "text": "IA-2"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.20403,
+        0.589122,
+        0.218394
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:56",
+      "page": 468,
+      "text": "Identification and Authentication (Organizational Users)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.2205,
+        0.533834,
+        0.235864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:57",
+      "page": 468,
+      "text": "MULTI-FACTOR AUTHENTICATION TO PRIVILEGED ACCOUNTS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.221,
+        0.197971,
+        0.235364
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:6",
+      "page": 468,
+      "text": "IA-2(1)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.223,
+        0.671677,
+        0.235864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:111",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.237545,
+        0.557322,
+        0.252909
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:58",
+      "page": 468,
+      "text": "MULTI-FACTOR AUTHENTICATION TO NON-PRIVILEGED ACCOUNTS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.238045,
+        0.197971,
+        0.252409
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:7",
+      "page": 468,
+      "text": "IA-2(2)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.240045,
+        0.671677,
+        0.252909
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:112",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.255091,
+        0.197971,
+        0.269455
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:8",
+      "page": 468,
+      "text": "IA-2(3)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.255167,
+        0.769304,
+        0.268242
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:113",
+      "page": 468,
+      "text": "W: Incorporated into IA-2(1)."
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.257091,
+        0.438666,
+        0.269955
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:59",
+      "page": 468,
+      "text": "LOCAL ACCESS TO PRIVILEGED ACCOUNTS"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.271636,
+        0.46596,
+        0.287
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:60",
+      "page": 468,
+      "text": "LOCAL ACCESS TO NON-PRIVILEGED ACCOUNTS"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.272136,
+        0.345618,
+        0.289303
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:9",
+      "page": 468,
+      "text": "This publication is available IA-2(4) free of charge from:"
+    },
+    {
+      "bbox": [
+        0.154,
+        0.272136,
+        0.212,
+        0.289303
+      ],
+      "blockType": "control_reference",
+      "id": "actual:p468:line:9:embedded:requirement:0",
+      "page": 468,
+      "text": "IA-2(4)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.272212,
+        0.769308,
+        0.285288
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:114",
+      "page": 468,
+      "text": "W: Incorporated into IA-2(2)."
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.288682,
+        0.678441,
+        0.304045
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:115",
+      "page": 468,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.289182,
+        0.195805,
+        0.303545
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:10",
+      "page": 468,
+      "text": "IA-2(5)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.291182,
+        0.53817,
+        0.304045
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:61",
+      "page": 468,
+      "text": "INDIVIDUAL AUTHENTICATION WITH GROUP AUTHENTICATION"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.305651,
+        0.451324,
+        0.321015
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:62",
+      "page": 468,
+      "text": "ACCESS TO ACCOUNTS \u2014 SEPARATE DEVICE"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.306151,
+        0.195805,
+        0.320515
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:11",
+      "page": 468,
+      "text": "IA-2(6)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.308151,
+        0.671677,
+        0.321015
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:116",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.322697,
+        0.587002,
+        0.338061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:63+actual:p468:line:66+actual:p468:line:69",
+      "page": 468,
+      "text": "NETWORK ACCESS TO NON- PRIVILEGED ACCOUNTS \u2014 SEPARATE DEVICE"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.323197,
+        0.195805,
+        0.337561
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:12",
+      "page": 468,
+      "text": "IA-2(7)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.323273,
+        0.769304,
+        0.336349
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:117",
+      "page": 468,
+      "text": "W: Incorporated into IA-2(6)."
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.339742,
+        0.456681,
+        0.355106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:64+actual:p468:line:67",
+      "page": 468,
+      "text": "ACCESS TO ACCOUNTS \u2014 REPLAY RESISTANT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.340242,
+        0.197971,
+        0.354606
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:13",
+      "page": 468,
+      "text": "IA-2(8)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.342242,
+        0.671677,
+        0.355106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:118",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.356788,
+        0.591877,
+        0.372152
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:65+actual:p468:line:68+actual:p468:line:70",
+      "page": 468,
+      "text": "NETWORK ACCESS TO NON- PRIVILEGED ACCOUNTS \u2014 REPLAY RESISTANT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.357288,
+        0.197971,
+        0.371652
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:14",
+      "page": 468,
+      "text": "IA-2(9)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.357364,
+        0.769304,
+        0.370439
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:119",
+      "page": 468,
+      "text": "W: Incorporated into IA-2(8)."
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.373758,
+        0.322608,
+        0.389121
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:71",
+      "page": 468,
+      "text": "SINGLE SIGN-ON"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.374258,
+        0.205426,
+        0.388621
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:15",
+      "page": 468,
+      "text": "IA-2(10)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.376258,
+        0.671677,
+        0.389121
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:120",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.390803,
+        0.424459,
+        0.406167
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:72+actual:p468:line:73",
+      "page": 468,
+      "text": "REMOTE ACCESS \u2014 SEPARATE DEVICE"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.391303,
+        0.205426,
+        0.405667
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:16",
+      "page": 468,
+      "text": "IA-2(11)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.391379,
+        0.769308,
+        0.404455
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:121",
+      "page": 468,
+      "text": "W: Incorporated into IA-2(6)."
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.408348,
+        0.205426,
+        0.422712
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:17",
+      "page": 468,
+      "text": "IA-2(12)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.410349,
+        0.671677,
+        0.423212
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:122",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.410349,
+        0.404128,
+        0.423212
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:74",
+      "page": 468,
+      "text": "ACCEPTANCE OF PIV CREDENTIALS"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.424894,
+        0.401252,
+        0.440258
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:75",
+      "page": 468,
+      "text": "OUT-OF-BAND AUTHENTICATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.425394,
+        0.203038,
+        0.439758
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:18",
+      "page": 468,
+      "text": "IA-2(13)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.427394,
+        0.671677,
+        0.440258
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:123",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.442364,
+        0.179884,
+        0.456727
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:19",
+      "page": 468,
+      "text": "IA-3"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.442364,
+        0.493343,
+        0.456727
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:76",
+      "page": 468,
+      "text": "Device Identification and Authentication"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.444364,
+        0.671677,
+        0.457227
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:124",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.459409,
+        0.197971,
+        0.473773
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:20",
+      "page": 468,
+      "text": "IA-3(1)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.461409,
+        0.671677,
+        0.474273
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:125",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.461409,
+        0.483447,
+        0.474273
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:77",
+      "page": 468,
+      "text": "CRYPTOGRAPHIC BIDIRECTIONAL AUTHENTICATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.476455,
+        0.197971,
+        0.490818
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:21",
+      "page": 468,
+      "text": "IA-3(2)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.47653,
+        0.769304,
+        0.489606
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:126",
+      "page": 468,
+      "text": "W: Incorporated into IA-3(1)."
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.478455,
+        0.534262,
+        0.491318
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:78",
+      "page": 468,
+      "text": "CRYPTOGRAPHIC BIDIRECTIONAL NETWORK AUTHENTICATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.4935,
+        0.197971,
+        0.507864
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:22",
+      "page": 468,
+      "text": "IA-3(3)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.4955,
+        0.672927,
+        0.508364
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:127",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.4955,
+        0.398358,
+        0.508364
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:79",
+      "page": 468,
+      "text": "DYNAMIC ADDRESS ALLOCATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.510545,
+        0.197971,
+        0.524909
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:23",
+      "page": 468,
+      "text": "IA-3(4)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.512545,
+        0.672927,
+        0.525409
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:128",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.512545,
+        0.345238,
+        0.525409
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:80",
+      "page": 468,
+      "text": "DEVICE ATTESTATION"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:24",
+      "page": 468,
+      "text": "https://doi.org/10.6028/NIST.SP.800"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.527515,
+        0.179884,
+        0.541879
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:25",
+      "page": 468,
+      "text": "IA-4"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.527515,
+        0.38699,
+        0.541879
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:81",
+      "page": 468,
+      "text": "Identifier Management"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.529515,
+        0.672927,
+        0.542379
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:129",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.544561,
+        0.197971,
+        0.558924
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:26",
+      "page": 468,
+      "text": "IA-4(1)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.546561,
+        0.672927,
+        0.559424
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:130",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.546561,
+        0.509806,
+        0.559424
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:82",
+      "page": 468,
+      "text": "PROHIBIT ACCOUNT IDENTIFIERS AS PUBLIC IDENTIFIERS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.561606,
+        0.197971,
+        0.57597
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:27",
+      "page": 468,
+      "text": "IA-4(2)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.561682,
+        0.775815,
+        0.574758
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:131",
+      "page": 468,
+      "text": "W: Incorporated into IA-12(1)."
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.563606,
+        0.383848,
+        0.57647
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:83",
+      "page": 468,
+      "text": "SUPERVISOR AUTHORIZATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.578652,
+        0.197971,
+        0.593015
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:28",
+      "page": 468,
+      "text": "IA-4(3)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.578727,
+        0.775811,
+        0.591803
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:132",
+      "page": 468,
+      "text": "W: Incorporated into IA-12(2)."
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.580652,
+        0.418432,
+        0.593515
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:84",
+      "page": 468,
+      "text": "MULTIPLE FORMS OF CERTIFICATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.595621,
+        0.197971,
+        0.609985
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:29",
+      "page": 468,
+      "text": "IA-4(4)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.597621,
+        0.672927,
+        0.610485
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:133",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.597621,
+        0.352086,
+        0.610485
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:85",
+      "page": 468,
+      "text": "IDENTIFY USER STATUS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.612667,
+        0.197971,
+        0.62703
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:30",
+      "page": 468,
+      "text": "IA-4(5)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.614667,
+        0.671677,
+        0.62753
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:134",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.614667,
+        0.364336,
+        0.62753
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:86",
+      "page": 468,
+      "text": "DYNAMIC MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.629212,
+        0.426217,
+        0.644576
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:87",
+      "page": 468,
+      "text": "CROSS-ORGANIZATION MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.629712,
+        0.197971,
+        0.644076
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:31",
+      "page": 468,
+      "text": "IA-4(6)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.631712,
+        0.672927,
+        0.644576
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:135",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.646258,
+        0.368353,
+        0.661621
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:88",
+      "page": 468,
+      "text": "IN-PERSON REGISTRATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.646758,
+        0.197971,
+        0.661121
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:32",
+      "page": 468,
+      "text": "IA-4(7)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.646833,
+        0.775811,
+        0.659909
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:136",
+      "page": 468,
+      "text": "W: Incorporated into IA-12(4)."
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.663803,
+        0.197971,
+        0.678167
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:33",
+      "page": 468,
+      "text": "IA-4(8)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.665803,
+        0.672927,
+        0.678667
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:137",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.665803,
+        0.43238,
+        0.678667
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:89",
+      "page": 468,
+      "text": "PAIRWISE PSEUDONYMOUS IDENTIFIERS"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.680273,
+        0.678441,
+        0.695636
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:138",
+      "page": 468,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.680773,
+        0.195805,
+        0.695136
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:34",
+      "page": 468,
+      "text": "IA-4(9)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.682773,
+        0.455493,
+        0.695636
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:90",
+      "page": 468,
+      "text": "ATTRIBUTE MAINTENANCE AND PROTECTION"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.697318,
+        0.678441,
+        0.712682
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:139",
+      "page": 468,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.697818,
+        0.179884,
+        0.712182
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:36",
+      "page": 468,
+      "text": "IA-5"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.697818,
+        0.411098,
+        0.712182
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:91",
+      "page": 468,
+      "text": "Authenticator Management"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.701227,
+        0.040809,
+        0.715591
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:35",
+      "page": 468,
+      "text": "-"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.705015,
+        0.065162,
+        0.719379
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:37",
+      "page": 468,
+      "text": "53r5"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.714364,
+        0.678441,
+        0.729727
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:140",
+      "page": 468,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.714364,
+        0.420979,
+        0.729727
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:92",
+      "page": 468,
+      "text": "PASSWORD-BASED AUTHENTICATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.714864,
+        0.197971,
+        0.729227
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:38",
+      "page": 468,
+      "text": "IA-5(1)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.731409,
+        0.418495,
+        0.746773
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:93",
+      "page": 468,
+      "text": "PUBLIC KEY-BASED AUTHENTICATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.731909,
+        0.197971,
+        0.746273
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:39",
+      "page": 468,
+      "text": "IA-5(2)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.733909,
+        0.671677,
+        0.746773
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:141",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.748379,
+        0.511838,
+        0.763742
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:94",
+      "page": 468,
+      "text": "IN-PERSON OR TRUSTED EXTERNAL PARTY REGISTRATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.748879,
+        0.197971,
+        0.763242
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:40",
+      "page": 468,
+      "text": "IA-5(3)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.748955,
+        0.775811,
+        0.76203
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:142",
+      "page": 468,
+      "text": "W: Incorporated into IA-12(4)."
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.765924,
+        0.197971,
+        0.780288
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:41",
+      "page": 468,
+      "text": "IA-5(4)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.766,
+        0.769308,
+        0.779076
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p468:line:143",
+      "page": 468,
+      "text": "W: Incorporated into IA-5(1)."
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.767924,
+        0.566678,
+        0.780788
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:95",
+      "page": 468,
+      "text": "AUTOMATED SUPPORT FOR PASSWORD STRENGTH DETERMINATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.78297,
+        0.197971,
+        0.797333
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:42",
+      "page": 468,
+      "text": "IA-5(5)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.78497,
+        0.672927,
+        0.797833
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:144",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.78497,
+        0.465255,
+        0.797833
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:96",
+      "page": 468,
+      "text": "CHANGE AUTHENTICATORS PRIOR TO DELIVERY"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.800015,
+        0.197971,
+        0.814379
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:43",
+      "page": 468,
+      "text": "IA-5(6)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.802015,
+        0.672927,
+        0.814879
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:145",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.802015,
+        0.405814,
+        0.814879
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:97",
+      "page": 468,
+      "text": "PROTECTION OF AUTHENTICATORS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.816985,
+        0.197971,
+        0.831348
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:44",
+      "page": 468,
+      "text": "IA-5(7)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.818985,
+        0.672927,
+        0.831848
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:146",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.818985,
+        0.511355,
+        0.831848
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:98",
+      "page": 468,
+      "text": "NO EMBEDDED UNENCRYPTED STATIC AUTHENTICATORS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.83403,
+        0.197971,
+        0.848394
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:45",
+      "page": 468,
+      "text": "IA-5(8)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.83603,
+        0.672927,
+        0.848894
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:147",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.83603,
+        0.385649,
+        0.848894
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:99",
+      "page": 468,
+      "text": "MULTIPLE SYSTEM ACCOUNTS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.851076,
+        0.197971,
+        0.865439
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:46",
+      "page": 468,
+      "text": "IA-5(9)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.853076,
+        0.433607,
+        0.865939
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:100",
+      "page": 468,
+      "text": "FEDERATED CREDENTIAL MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.853076,
+        0.672927,
+        0.865939
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:148",
+      "page": 468,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.868121,
+        0.205426,
+        0.882485
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:47",
+      "page": 468,
+      "text": "IA-5(10)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.870121,
+        0.393116,
+        0.882985
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:101",
+      "page": 468,
+      "text": "DYNAMIC CREDENTIAL BINDING"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.870121,
+        0.671677,
+        0.882985
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:149",
+      "page": 468,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.884667,
+        0.457712,
+        0.90003
+      ],
+      "blockType": "section_header",
+      "id": "actual:p468:line:102+actual:p468:line:103",
+      "page": 468,
+      "text": "HARDWARE TOKEN- BASED AUTHENTICATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.885167,
+        0.205426,
+        0.89953
+      ],
+      "blockType": "requirement",
+      "id": "actual:p468:line:48",
+      "page": 468,
+      "text": "IA-5(11)"
+    }
+  ],
+  "copied_files": [
+    "page.png",
+    "bbox_overlay.png",
+    "release_extraction_blocks.json",
+    "expected_elements.json",
+    "agent_second_pass.json"
+  ],
+  "fix_error_count": 91,
+  "fix_error_requests": [
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:2",
+      "text_hint": "CONTROL"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:53",
+      "text_hint": "CONTROL NAME"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:105",
+      "text_hint": "IMPLEMENTED"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:109",
+      "text_hint": "ASSURANCE"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:3",
+      "text_hint": "NUMBER"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:106",
+      "text_hint": "BY"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:54",
+      "text_hint": "CONTROL ENHANCEMENT NAME"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:55",
+      "text_hint": "Policy and Procedures"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:107",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:108",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:56",
+      "text_hint": "Identification and Authentication (Organizational Users)"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:57",
+      "text_hint": "MULTI-FACTOR AUTHENTICATION TO PRIVILEGED ACCOUNTS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:111",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:58",
+      "text_hint": "MULTI-FACTOR AUTHENTICATION TO NON-PRIVILEGED ACCOUNTS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:112",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:113",
+      "text_hint": "W: Incorporated into IA-2(1)."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:59",
+      "text_hint": "LOCAL ACCESS TO PRIVILEGED ACCOUNTS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:60",
+      "text_hint": "LOCAL ACCESS TO NON-PRIVILEGED ACCOUNTS"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:114",
+      "text_hint": "W: Incorporated into IA-2(2)."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:115",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:61",
+      "text_hint": "INDIVIDUAL AUTHENTICATION WITH GROUP AUTHENTICATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:62",
+      "text_hint": "ACCESS TO ACCOUNTS \u2014 SEPARATE DEVICE"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:116",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:63+actual:p468:line:66+actual:p468:line:69",
+      "text_hint": "NETWORK ACCESS TO NON- PRIVILEGED ACCOUNTS \u2014 SEPARATE DEVICE"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:117",
+      "text_hint": "W: Incorporated into IA-2(6)."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:64+actual:p468:line:67",
+      "text_hint": "ACCESS TO ACCOUNTS \u2014 REPLAY RESISTANT"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:118",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:65+actual:p468:line:68+actual:p468:line:70",
+      "text_hint": "NETWORK ACCESS TO NON- PRIVILEGED ACCOUNTS \u2014 REPLAY RESISTANT"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:119",
+      "text_hint": "W: Incorporated into IA-2(8)."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:71",
+      "text_hint": "SINGLE SIGN-ON"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:120",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:72+actual:p468:line:73",
+      "text_hint": "REMOTE ACCESS \u2014 SEPARATE DEVICE"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:121",
+      "text_hint": "W: Incorporated into IA-2(6)."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:122",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:74",
+      "text_hint": "ACCEPTANCE OF PIV CREDENTIALS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:75",
+      "text_hint": "OUT-OF-BAND AUTHENTICATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:123",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:76",
+      "text_hint": "Device Identification and Authentication"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:124",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:125",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:77",
+      "text_hint": "CRYPTOGRAPHIC BIDIRECTIONAL AUTHENTICATION"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:126",
+      "text_hint": "W: Incorporated into IA-3(1)."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:78",
+      "text_hint": "CRYPTOGRAPHIC BIDIRECTIONAL NETWORK AUTHENTICATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:127",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:79",
+      "text_hint": "DYNAMIC ADDRESS ALLOCATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:128",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:80",
+      "text_hint": "DEVICE ATTESTATION"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:81",
+      "text_hint": "Identifier Management"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:129",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:130",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:82",
+      "text_hint": "PROHIBIT ACCOUNT IDENTIFIERS AS PUBLIC IDENTIFIERS"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:131",
+      "text_hint": "W: Incorporated into IA-12(1)."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:83",
+      "text_hint": "SUPERVISOR AUTHORIZATION"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:132",
+      "text_hint": "W: Incorporated into IA-12(2)."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:84",
+      "text_hint": "MULTIPLE FORMS OF CERTIFICATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:133",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:85",
+      "text_hint": "IDENTIFY USER STATUS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:134",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:86",
+      "text_hint": "DYNAMIC MANAGEMENT"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:87",
+      "text_hint": "CROSS-ORGANIZATION MANAGEMENT"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:135",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:88",
+      "text_hint": "IN-PERSON REGISTRATION"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:136",
+      "text_hint": "W: Incorporated into IA-12(4)."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:137",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:89",
+      "text_hint": "PAIRWISE PSEUDONYMOUS IDENTIFIERS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:138",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:90",
+      "text_hint": "ATTRIBUTE MAINTENANCE AND PROTECTION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:139",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:91",
+      "text_hint": "Authenticator Management"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:140",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:92",
+      "text_hint": "PASSWORD-BASED AUTHENTICATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:93",
+      "text_hint": "PUBLIC KEY-BASED AUTHENTICATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:141",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:94",
+      "text_hint": "IN-PERSON OR TRUSTED EXTERNAL PARTY REGISTRATION"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:142",
+      "text_hint": "W: Incorporated into IA-12(4)."
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:143",
+      "text_hint": "W: Incorporated into IA-5(1)."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:95",
+      "text_hint": "AUTOMATED SUPPORT FOR PASSWORD STRENGTH DETERMINATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:144",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:96",
+      "text_hint": "CHANGE AUTHENTICATORS PRIOR TO DELIVERY"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:145",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:97",
+      "text_hint": "PROTECTION OF AUTHENTICATORS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:146",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:98",
+      "text_hint": "NO EMBEDDED UNENCRYPTED STATIC AUTHENTICATORS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:147",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:99",
+      "text_hint": "MULTIPLE SYSTEM ACCOUNTS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:100",
+      "text_hint": "FEDERATED CREDENTIAL MANAGEMENT"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:148",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:101",
+      "text_hint": "DYNAMIC CREDENTIAL BINDING"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:149",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:102+actual:p468:line:103",
+      "text_hint": "HARDWARE TOKEN- BASED AUTHENTICATION"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p468:line:150",
+      "text_hint": "W: Incorporated into IA-2(1) and IA-2(2)."
+    }
+  ],
+  "fix_error_source": "expected_elements.json",
+  "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0468/bbox_overlay.png",
+  "page": 468,
+  "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0468/page.png",
+  "source_dir": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0468"
+}

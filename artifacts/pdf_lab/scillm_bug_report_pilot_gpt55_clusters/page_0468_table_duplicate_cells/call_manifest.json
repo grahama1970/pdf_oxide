@@ -1,0 +1,13 @@
+{
+  "bug_report_path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0468_table_duplicate_cells/bug_report.json",
+  "cluster_id": "table_duplicate_cells",
+  "finished_at": "2026-05-31T16:40:58.191340+00:00",
+  "item_id": "page_0468_table_duplicate_cells",
+  "model": "gpt-5.5",
+  "ok": true,
+  "page": 468,
+  "parse_error": "",
+  "raw_ok": true,
+  "response_path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0468_table_duplicate_cells/response.raw.json",
+  "started_at": "2026-05-31T16:33:10.312725+00:00"
+}

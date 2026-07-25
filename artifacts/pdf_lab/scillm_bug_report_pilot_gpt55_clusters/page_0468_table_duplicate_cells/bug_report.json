@@ -1,0 +1,575 @@
+{
+  "bug_clusters": [
+    {
+      "cluster_id": "table_cell_blocks_duplicated_as_standalone_content",
+      "recommended_owner": "materializer",
+      "source_ids": [
+        "actual:p468:line:105",
+        "actual:p468:line:106",
+        "actual:p468:line:107",
+        "actual:p468:line:108",
+        "actual:p468:line:109",
+        "actual:p468:line:111",
+        "actual:p468:line:112",
+        "actual:p468:line:113",
+        "actual:p468:line:114",
+        "actual:p468:line:115",
+        "actual:p468:line:116",
+        "actual:p468:line:117",
+        "actual:p468:line:118",
+        "actual:p468:line:119",
+        "actual:p468:line:2",
+        "actual:p468:line:3",
+        "actual:p468:line:53",
+        "actual:p468:line:54",
+        "actual:p468:line:55",
+        "actual:p468:line:56",
+        "actual:p468:line:57",
+        "actual:p468:line:58",
+        "actual:p468:line:59",
+        "actual:p468:line:60",
+        "actual:p468:line:61",
+        "actual:p468:line:62",
+        "actual:p468:line:63+actual:p468:line:66+actual:p468:line:69",
+        "actual:p468:line:64+actual:p468:line:67",
+        "actual:p468:line:65+actual:p468:line:68+actual:p468:line:70"
+      ],
+      "summary": "A table block covers the visible TABLE C-7 grid, but overlapping table header and body cell OCR lines are also materialized as standalone paragraph or section_header blocks, creating duplicate non-table content."
+    }
+  ],
+  "bug_reports": [
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:105",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell text as a standalone section_header block in addition to the table block, duplicating table content outside the table structure.",
+      "patch_hint": "Suppress or attach line-level blocks that overlap an emitted table region so table cells are not materialized as standalone annotation blocks.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:105",
+      "visual_observation": "The overlay shows this text inside the header area of the visible TABLE C-7 grid, within the large table region."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:106",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell text as a standalone section_header block in addition to the table block.",
+      "patch_hint": "Keep table header cell text within the table representation rather than surfacing it as an independent section header.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:106",
+      "visual_observation": "The overlay shows this text as part of the table header, inside the implemented-by column of TABLE C-7."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:107",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits the table-cell value as a standalone section_header block instead of only as table content.",
+      "patch_hint": "Do not materialize overlapping table-cell OCR lines as standalone section headers when a table block already covers the cell.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:107",
+      "visual_observation": "The overlay shows this single-character value in a table cell, aligned under the implemented-by column."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:108",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell value as a standalone section_header block, duplicating content from the table region.",
+      "patch_hint": "Treat overlapping cell text as table content and suppress separate line-block emission.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:108",
+      "visual_observation": "The overlay shows this value inside a row cell of TABLE C-7."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:109",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table header cell as a standalone section_header block in addition to the table block.",
+      "patch_hint": "Keep table header text inside the table model rather than creating independent section-header blocks.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:109",
+      "visual_observation": "The overlay shows this text inside the rightmost table header cell labeled for assurance."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:111",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits the cell value as a standalone section_header block even though it is contained by the table.",
+      "patch_hint": "Suppress standalone line blocks that are wholly contained in an emitted table bbox.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:111",
+      "visual_observation": "The overlay shows this value in a body row cell of the table."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:112",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell value as a standalone section_header block.",
+      "patch_hint": "Attach cell text to the table structure and avoid separate annotation blocks for table contents.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:112",
+      "visual_observation": "The overlay shows this value in a body row cell of TABLE C-7."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "paragraph",
+      "evidence_block_ids": [
+        "actual:p468:line:113",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits the table-cell note as a standalone paragraph block in addition to the table block.",
+      "patch_hint": "Classify or retain note text inside table cells as table content rather than paragraph content.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:113",
+      "visual_observation": "The overlay shows this note text inside a table row cell, not as body paragraph text."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "paragraph",
+      "evidence_block_ids": [
+        "actual:p468:line:114",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell note as a standalone paragraph block, duplicating table content.",
+      "patch_hint": "Suppress paragraph materialization for OCR lines fully covered by a table region.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:114",
+      "visual_observation": "The overlay shows this note text inside a table row cell."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:115",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits the table-cell value as a standalone section_header block.",
+      "patch_hint": "Do not surface table cell values as section headers when they overlap an emitted table.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:115",
+      "visual_observation": "The overlay shows this value inside a table row cell."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:116",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this cell value as a standalone section_header block.",
+      "patch_hint": "Keep body-row cell values within the table representation and suppress duplicate standalone blocks.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:116",
+      "visual_observation": "The overlay shows this single-character value inside a body row cell of the table."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "paragraph",
+      "evidence_block_ids": [
+        "actual:p468:line:117",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this cell note as a standalone paragraph block in addition to the table block.",
+      "patch_hint": "Retain note text as table-cell content and avoid separate paragraph blocks for table interiors.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:117",
+      "visual_observation": "The overlay shows this note text in a table body cell, aligned within the table grid."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:118",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell value as a standalone section_header block.",
+      "patch_hint": "Suppress standalone section-header blocks wholly contained inside emitted table bboxes.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:118",
+      "visual_observation": "The overlay shows this value inside a table row cell."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "paragraph",
+      "evidence_block_ids": [
+        "actual:p468:line:119",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell note as a standalone paragraph block, duplicating the table extraction.",
+      "patch_hint": "Do not materialize table-interior note lines as independent paragraphs.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:119",
+      "visual_observation": "The overlay shows this note text inside the table grid."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:2",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table header text as a standalone section_header block in addition to the table block.",
+      "patch_hint": "Represent table header cell text as part of the table and suppress duplicate section-header blocks.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:2",
+      "visual_observation": "The overlay shows this text inside the left table header cell, within the TABLE C-7 grid."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:3",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits the table header cell text as a standalone section_header block.",
+      "patch_hint": "Prevent table-cell header fragments from being surfaced as independent section headers.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:3",
+      "visual_observation": "The overlay shows this text inside the same left table header cell, not as a document section heading."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:53",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table header as a standalone section_header block in addition to the table block.",
+      "patch_hint": "Keep table column headers within the table structure rather than emitting duplicate section headers.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:53",
+      "visual_observation": "The overlay shows this text inside the main table header cell for the control name column."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:54",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table header text as a standalone section_header block.",
+      "patch_hint": "Associate subordinate table header text with the table, not as a separate section header.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:54",
+      "visual_observation": "The overlay shows this smaller header text inside the table's control-name column header area."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "paragraph",
+      "evidence_block_ids": [
+        "actual:p468:line:55",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell text as a standalone paragraph block in addition to the table block.",
+      "patch_hint": "Suppress paragraph materialization for row labels located inside table cells.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:55",
+      "visual_observation": "The overlay shows this bold row label inside the first body row of the table."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "paragraph",
+      "evidence_block_ids": [
+        "actual:p468:line:56",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell row label as a standalone paragraph block.",
+      "patch_hint": "Keep table row labels inside the table representation and avoid duplicate paragraph blocks.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:56",
+      "visual_observation": "The overlay shows this row label inside a table body cell."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:57",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits the body-row cell text as a standalone section_header block.",
+      "patch_hint": "Do not infer section headers from all-caps table-cell text when a table bbox contains the line.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:57",
+      "visual_observation": "The overlay shows this all-caps entry as a table-cell value in a body row."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:58",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this cell text as a standalone section_header block, duplicating table content.",
+      "patch_hint": "Constrain section-header classification so table-interior text remains table content.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:58",
+      "visual_observation": "The overlay shows this all-caps entry inside a table row cell."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:59",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell text as a standalone section_header block.",
+      "patch_hint": "Suppress standalone heading blocks for OCR lines contained within a table region.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:59",
+      "visual_observation": "The overlay shows this entry inside the control-name column of the table."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:60",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits the table-cell text as a standalone section_header block.",
+      "patch_hint": "Avoid standalone section-header emission for table-interior row text.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:60",
+      "visual_observation": "The overlay shows this entry inside a table body row."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:61",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell row entry as an independent section_header block.",
+      "patch_hint": "Materialize table-interior text only through the table block or table-cell structure.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:61",
+      "visual_observation": "The overlay shows this row entry within the table grid."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:62",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell text as a standalone section_header block.",
+      "patch_hint": "Use table containment to suppress duplicate standalone heading blocks.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:62",
+      "visual_observation": "The overlay shows this entry inside a body row cell of TABLE C-7."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:63+actual:p468:line:66+actual:p468:line:69",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell content as a standalone section_header block, despite the containing table block.",
+      "patch_hint": "Do not merge and expose multi-line table-cell text as an independent section header outside the table.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:63+actual:p468:line:66+actual:p468:line:69",
+      "visual_observation": "The overlay shows this combined text inside the control-name column of the table."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:64+actual:p468:line:67",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell content as a standalone section_header block.",
+      "patch_hint": "Keep merged table-cell lines inside the table structure and suppress separate heading blocks.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:64+actual:p468:line:67",
+      "visual_observation": "The overlay shows this combined entry as table-cell text inside the grid."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "section_header",
+      "evidence_block_ids": [
+        "actual:p468:line:65+actual:p468:line:68+actual:p468:line:70",
+        "actual:p468:table:0"
+      ],
+      "expected_family": "table",
+      "extraction_error": "Current extraction emits this table-cell content as a standalone section_header block, duplicating table content.",
+      "patch_hint": "Suppress standalone blocks for multi-line table cell text when a table block covers the same region.",
+      "recommended_code_area": "materializer",
+      "source_id": "actual:p468:line:65+actual:p468:line:68+actual:p468:line:70",
+      "visual_observation": "The overlay shows this combined entry within a table body row cell."
+    }
+  ],
+  "cluster_id": "table_duplicate_cells",
+  "fix_error_source": "expected_elements.json",
+  "missing_or_ambiguous": [
+    "actual:p468:line:100",
+    "actual:p468:line:101",
+    "actual:p468:line:102+actual:p468:line:103",
+    "actual:p468:line:120",
+    "actual:p468:line:121",
+    "actual:p468:line:122",
+    "actual:p468:line:123",
+    "actual:p468:line:124",
+    "actual:p468:line:125",
+    "actual:p468:line:126",
+    "actual:p468:line:127",
+    "actual:p468:line:128",
+    "actual:p468:line:129",
+    "actual:p468:line:130",
+    "actual:p468:line:131",
+    "actual:p468:line:132",
+    "actual:p468:line:133",
+    "actual:p468:line:134",
+    "actual:p468:line:135",
+    "actual:p468:line:136",
+    "actual:p468:line:137",
+    "actual:p468:line:138",
+    "actual:p468:line:139",
+    "actual:p468:line:140",
+    "actual:p468:line:141",
+    "actual:p468:line:142",
+    "actual:p468:line:143",
+    "actual:p468:line:144",
+    "actual:p468:line:145",
+    "actual:p468:line:146",
+    "actual:p468:line:147",
+    "actual:p468:line:148",
+    "actual:p468:line:149",
+    "actual:p468:line:150",
+    "actual:p468:line:71",
+    "actual:p468:line:72+actual:p468:line:73",
+    "actual:p468:line:74",
+    "actual:p468:line:75",
+    "actual:p468:line:76",
+    "actual:p468:line:77",
+    "actual:p468:line:78",
+    "actual:p468:line:79",
+    "actual:p468:line:80",
+    "actual:p468:line:81",
+    "actual:p468:line:82",
+    "actual:p468:line:83",
+    "actual:p468:line:84",
+    "actual:p468:line:85",
+    "actual:p468:line:86",
+    "actual:p468:line:87",
+    "actual:p468:line:88",
+    "actual:p468:line:89",
+    "actual:p468:line:90",
+    "actual:p468:line:91",
+    "actual:p468:line:92",
+    "actual:p468:line:93",
+    "actual:p468:line:94",
+    "actual:p468:line:95",
+    "actual:p468:line:96",
+    "actual:p468:line:97",
+    "actual:p468:line:98",
+    "actual:p468:line:99"
+  ],
+  "overall_confidence": "high",
+  "page": 468,
+  "schema": "pdf_oxide.scillm_visual_bug_report.v2"
+}

@@ -1,0 +1,4775 @@
+{
+  "source_extraction": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json",
+  "page": 468,
+  "pdf_page_index": 467,
+  "toc_entries": [],
+  "table_materialization": {
+    "core_table_blocks_added": 1,
+    "table_extraction_error_count": 0,
+    "existing_table_blocks": 0
+  },
+  "blocks": [
+    {
+      "id": "actual:p468:table:0",
+      "page": 468,
+      "bbox": [
+        0.14666667015723933,
+        0.11371211812953756,
+        0.8525490230984158,
+        0.9028788094568734
+      ],
+      "type": "table",
+      "source_type": "table",
+      "source": "pdf_oxide.extract_tables",
+      "text": "CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE\nIA-1 | Policy and Procedures | O | \u221a\nIA-2 | Identification and Authentication (Organizational Users) | O/S\nIA-2(1) | MULTIFACTOR UTHENTIATIN O RIIEGED CCOUNTS | S\nIA-2(2) | MULTIFACTOR UTHENTIATIN O ON-PRIIEGED CCOUNTS | S\nIA-2(3) | LOCAL CCESS O RIIEGED CCOUNTS | W: ncorporated ntoA-2(1).\nIA-2(4)\nIA-2(4) | LOCAL CCESS O ON-PRIIEGED CCOUNTS\nLOCAL CCESS O ON | W: ncorporated ntoA-2(2).\nIA-2(5) | IDIIUAL UTHENTIATIN IH ROUP UTHENTIATIN | O/S\nIA-2(6) | ACCESS O CCOUNTS  EPARATE EVIE | S\nIA-2(7) | NETWORK CCESS O ON-PRIIEGED CCOUNTS  EPARATE EVIE | W: ncorporated ntoA-2(6).\nIA-2(8) | ACCESS O CCOUNTS  EPLAY ESITANT | S\nIA-2(9) | NETWORK CCESS O ON-PRIIEGED CCOUNTS  EPLAY ESITANT | W: ncorporated ntoA-2(8).\nIA-2(10) | SIGLE IN-ON | S\nIA-2(11) | REMOTE CCESS  EPARATE EVIE | W: ncorporated ntoA-2(6).\nIA-2(12) | ACCEPTANCE F I REDENTILS | S\nIA-2(13) | OUT-OF-BAND UTHENTIATIN | S\nIA-3 | Device Identification and Authentication | S\nIA-3(1) | CRYPTOGRAPHI IIECTINAL UTHENTIATIN | S\nIA-3(2) | CRYPTOGRAPHI IIECTINAL ETWORK UTHENTIATIN | W: ncorporated ntoA-3(1).\nIA-3(3) | DYNAMI DDRESS LLOCATIN | O\nIA-3(4) | DEVIE TTESTATIN\nDEVI | O\nIA-4 | Identifier Management | O\nIA-4(1) | PROHII CCOUNT DENTIIRS S UBLI DENTIIRS | O\nIA-4(2) | SUPERVIOR UTHORIATIN | W: ncorporated ntoA-12(1).\nIA-4(3) | MULTILE ORMS F ERTIIATIN | W: ncorporated ntoA-12(2).\nIA-4(4) | IENTIY SER TATUS | O\nIA-4(5) | DYNAMI ANAGEMENT | S\nIA-4(6) | CROSS-ORGANIATIN ANAGEMENT | O\nIA-4(7) | I-PERSON EGITRATIN | W: ncorporated ntoA-12(4).\nIA-4(8) | PAIWIE SEUDONYMOUS DENTIIRS | O\nIA-4(9) | ATTRIUTE AITENANCE ND ROTECTIN | O/S\nIA-5 | Authenticator anagement | O/S\nIA-5(1) | PASSWORD-BASED UTHENTIATIN | O/S\nIA-5(2) | PUBLI EY-BASED UTHENTIATIN | S\nIA-5(3) | I-PERSON R RUSTED XTERNAL ARTY EGITRATIN | W: ncorporated ntoA-12(4).\nIA-5(4) | AUTOMATED UPPORT OR ASSWORD TRENGTH ETERMIATIN | W: ncorporated ntoA-5(1).\nIA-5(5) | CHANGE UTHENTIATORS RIR O ELIERY | O\nIA-5(6) | PROTECTIN F UTHENTIATORS | O\nIA-5(7) | NO MBEDDED NENCRYPTED TATI UTHENTIATORS | O\nIA-5(8) | MULTILE YSTEM CCOUNTS | O\nIA-5(9) | FEDERATED REDENTIL ANAGEMENT | O\nIA-5(10) | DYNAMI REDENTIL IDIG | S\nIA-5(11) | HARDWARE OKEN-BASED UTHENTIATIN | W: ncorporated ntoA-2(1) nd A-2(2).",
+      "confidence": 1.0,
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy",
+        "source_bbox_space": "pdf_points_bottom_left_xywh",
+        "row_count": 43,
+        "col_count": 4,
+        "has_header": false,
+        "semantic_type": "table",
+        "rows": [
+          [
+            {
+              "text": "CONTROL\nNUMBER",
+              "bbox": [
+                0.14666667015723933,
+                0.11371211812953756,
+                0.23333333831986572,
+                0.1877272634795218
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "CONTROL NAME\nCONTROL NHANCEMENT AME",
+              "bbox": [
+                0.23333333831986572,
+                0.11371211812953756,
+                0.6048039455039829,
+                0.1877272634795218
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "IMPLEMENTED\nBY",
+              "bbox": [
+                0.6048039455039829,
+                0.11371211812953756,
+                0.728725508147595,
+                0.1877272634795218
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "ASSURANCE",
+              "bbox": [
+                0.728725508147595,
+                0.11371211812953756,
+                0.8525490355647467,
+                0.1877272634795218
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-1",
+              "bbox": [
+                0.14666667015723933,
+                0.1877272634795218,
+                0.23333333831986572,
+                0.2046969635318024
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "Policy and Procedures",
+              "bbox": [
+                0.23333333831986572,
+                0.1877272634795218,
+                0.6048039455039829,
+                0.2046969635318024
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.1877272634795218,
+                0.728725508147595,
+                0.2046969635318024
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "\u221a",
+              "bbox": [
+                0.728725508147595,
+                0.1877272634795218,
+                0.8525490355647467,
+                0.2046969635318024
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2",
+              "bbox": [
+                0.14666667015723933,
+                0.2046969635318024,
+                0.23333333831986572,
+                0.22174241807725695
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "Identification and Authentication (Organizational Users)",
+              "bbox": [
+                0.23333333831986572,
+                0.2046969635318024,
+                0.6048039455039829,
+                0.22174241807725695
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O/S",
+              "bbox": [
+                0.6048039455039829,
+                0.2046969635318024,
+                0.728725508147595,
+                0.22174241807725695
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.2046969635318024,
+                0.8525490355647467,
+                0.22174241807725695
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(1)",
+              "bbox": [
+                0.14666667015723933,
+                0.22174241807725695,
+                0.23333333831986572,
+                0.23878787262271148
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "MULTIFACTOR UTHENTIATIN O RIIEGED CCOUNTS",
+              "bbox": [
+                0.23333333831986572,
+                0.22174241807725695,
+                0.6048039455039829,
+                0.23878787262271148
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.22174241807725695,
+                0.728725508147595,
+                0.23878787262271148
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.22174241807725695,
+                0.8525490355647467,
+                0.23878787262271148
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(2)",
+              "bbox": [
+                0.14666667015723933,
+                0.23878787262271148,
+                0.23333333831986572,
+                0.25583332716816604
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "MULTIFACTOR UTHENTIATIN O ON-PRIIEGED CCOUNTS",
+              "bbox": [
+                0.23333333831986572,
+                0.23878787262271148,
+                0.6048039455039829,
+                0.25583332716816604
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.23878787262271148,
+                0.728725508147595,
+                0.25583332716816604
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.23878787262271148,
+                0.8525490355647467,
+                0.25583332716816604
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(3)",
+              "bbox": [
+                0.14666667015723933,
+                0.25583332716816604,
+                0.23333333831986572,
+                0.27280302722044664
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "LOCAL CCESS O RIIEGED CCOUNTS",
+              "bbox": [
+                0.23333333831986572,
+                0.25583332716816604,
+                0.6048039455039829,
+                0.27280302722044664
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-2(1).",
+              "bbox": [
+                0.6048039455039829,
+                0.25583332716816604,
+                0.728725508147595,
+                0.27280302722044664
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.25583332716816604,
+                0.8525490355647467,
+                0.27280302722044664
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(4)\nIA-2(4)",
+              "bbox": [
+                0.14666667015723933,
+                0.27280302722044664,
+                0.23333333831986572,
+                0.2898484817659012
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "LOCAL CCESS O ON-PRIIEGED CCOUNTS\nLOCAL CCESS O ON",
+              "bbox": [
+                0.23333333831986572,
+                0.27280302722044664,
+                0.6048039455039829,
+                0.2898484817659012
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-2(2).",
+              "bbox": [
+                0.6048039455039829,
+                0.27280302722044664,
+                0.728725508147595,
+                0.2898484817659012
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.27280302722044664,
+                0.8525490355647467,
+                0.2898484817659012
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(5)",
+              "bbox": [
+                0.14666667015723933,
+                0.2898484817659012,
+                0.23333333831986572,
+                0.30689393631135575
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "IDIIUAL UTHENTIATIN IH ROUP UTHENTIATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.2898484817659012,
+                0.6048039455039829,
+                0.30689393631135575
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O/S",
+              "bbox": [
+                0.6048039455039829,
+                0.2898484817659012,
+                0.728725508147595,
+                0.30689393631135575
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.2898484817659012,
+                0.8525490355647467,
+                0.30689393631135575
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(6)",
+              "bbox": [
+                0.14666667015723933,
+                0.30689393631135575,
+                0.23333333831986572,
+                0.3239393908568103
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "ACCESS O CCOUNTS  EPARATE EVIE",
+              "bbox": [
+                0.23333333831986572,
+                0.30689393631135575,
+                0.6048039455039829,
+                0.3239393908568103
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.30689393631135575,
+                0.728725508147595,
+                0.3239393908568103
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.30689393631135575,
+                0.8525490355647467,
+                0.3239393908568103
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(7)",
+              "bbox": [
+                0.14666667015723933,
+                0.3239393908568103,
+                0.23333333831986572,
+                0.3409090909090909
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "NETWORK CCESS O ON-PRIIEGED CCOUNTS  EPARATE EVIE",
+              "bbox": [
+                0.23333333831986572,
+                0.3239393908568103,
+                0.6048039455039829,
+                0.3409090909090909
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-2(6).",
+              "bbox": [
+                0.6048039455039829,
+                0.3239393908568103,
+                0.728725508147595,
+                0.3409090909090909
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.3239393908568103,
+                0.8525490355647467,
+                0.3409090909090909
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(8)",
+              "bbox": [
+                0.14666667015723933,
+                0.3409090909090909,
+                0.23333333831986572,
+                0.35795454545454547
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "ACCESS O CCOUNTS  EPLAY ESITANT",
+              "bbox": [
+                0.23333333831986572,
+                0.3409090909090909,
+                0.6048039455039829,
+                0.35795454545454547
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.3409090909090909,
+                0.728725508147595,
+                0.35795454545454547
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.3409090909090909,
+                0.8525490355647467,
+                0.35795454545454547
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(9)",
+              "bbox": [
+                0.14666667015723933,
+                0.35795454545454547,
+                0.23333333831986572,
+                0.375
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "NETWORK CCESS O ON-PRIIEGED CCOUNTS  EPLAY ESITANT",
+              "bbox": [
+                0.23333333831986572,
+                0.35795454545454547,
+                0.6048039455039829,
+                0.375
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-2(8).",
+              "bbox": [
+                0.6048039455039829,
+                0.35795454545454547,
+                0.728725508147595,
+                0.375
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.35795454545454547,
+                0.8525490355647467,
+                0.375
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(10)",
+              "bbox": [
+                0.14666667015723933,
+                0.375,
+                0.23333333831986572,
+                0.39204545454545453
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "SIGLE IN-ON",
+              "bbox": [
+                0.23333333831986572,
+                0.375,
+                0.6048039455039829,
+                0.39204545454545453
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.375,
+                0.728725508147595,
+                0.39204545454545453
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.375,
+                0.8525490355647467,
+                0.39204545454545453
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(11)",
+              "bbox": [
+                0.14666667015723933,
+                0.39204545454545453,
+                0.23333333831986572,
+                0.4090909090909091
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "REMOTE CCESS  EPARATE EVIE",
+              "bbox": [
+                0.23333333831986572,
+                0.39204545454545453,
+                0.6048039455039829,
+                0.4090909090909091
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-2(6).",
+              "bbox": [
+                0.6048039455039829,
+                0.39204545454545453,
+                0.728725508147595,
+                0.4090909090909091
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.39204545454545453,
+                0.8525490355647467,
+                0.4090909090909091
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(12)",
+              "bbox": [
+                0.14666667015723933,
+                0.4090909090909091,
+                0.23333333831986572,
+                0.4260606091431897
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "ACCEPTANCE F I REDENTILS",
+              "bbox": [
+                0.23333333831986572,
+                0.4090909090909091,
+                0.6048039455039829,
+                0.4260606091431897
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.4090909090909091,
+                0.728725508147595,
+                0.4260606091431897
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.4090909090909091,
+                0.8525490355647467,
+                0.4260606091431897
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-2(13)",
+              "bbox": [
+                0.14666667015723933,
+                0.4260606091431897,
+                0.23333333831986572,
+                0.44310606368864425
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "OUT-OF-BAND UTHENTIATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.4260606091431897,
+                0.6048039455039829,
+                0.44310606368864425
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.4260606091431897,
+                0.728725508147595,
+                0.44310606368864425
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.4260606091431897,
+                0.8525490355647467,
+                0.44310606368864425
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-3",
+              "bbox": [
+                0.14666667015723933,
+                0.44310606368864425,
+                0.23333333831986572,
+                0.4601515182340988
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "Device Identification and Authentication",
+              "bbox": [
+                0.23333333831986572,
+                0.44310606368864425,
+                0.6048039455039829,
+                0.4601515182340988
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.44310606368864425,
+                0.728725508147595,
+                0.4601515182340988
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.44310606368864425,
+                0.8525490355647467,
+                0.4601515182340988
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-3(1)",
+              "bbox": [
+                0.14666667015723933,
+                0.4601515182340988,
+                0.23333333831986572,
+                0.47719697277955336
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "CRYPTOGRAPHI IIECTINAL UTHENTIATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.4601515182340988,
+                0.6048039455039829,
+                0.47719697277955336
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.4601515182340988,
+                0.728725508147595,
+                0.47719697277955336
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.4601515182340988,
+                0.8525490355647467,
+                0.47719697277955336
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-3(2)",
+              "bbox": [
+                0.14666667015723933,
+                0.47719697277955336,
+                0.23333333831986572,
+                0.49416667283183396
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "CRYPTOGRAPHI IIECTINAL ETWORK UTHENTIATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.47719697277955336,
+                0.6048039455039829,
+                0.49416667283183396
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-3(1).",
+              "bbox": [
+                0.6048039455039829,
+                0.47719697277955336,
+                0.728725508147595,
+                0.49416667283183396
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.47719697277955336,
+                0.8525490355647467,
+                0.49416667283183396
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-3(3)",
+              "bbox": [
+                0.14666667015723933,
+                0.49416667283183396,
+                0.23333333831986572,
+                0.5112121273772885
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "DYNAMI DDRESS LLOCATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.49416667283183396,
+                0.6048039455039829,
+                0.5112121273772885
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.49416667283183396,
+                0.728725508147595,
+                0.5112121273772885
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.49416667283183396,
+                0.8525490355647467,
+                0.5112121273772885
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-3(4)",
+              "bbox": [
+                0.14666667015723933,
+                0.5112121273772885,
+                0.23333333831986572,
+                0.5282575819227431
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "DEVIE TTESTATIN\nDEVI",
+              "bbox": [
+                0.23333333831986572,
+                0.5112121273772885,
+                0.6048039455039829,
+                0.5282575819227431
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.5112121273772885,
+                0.728725508147595,
+                0.5282575819227431
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.5112121273772885,
+                0.8525490355647467,
+                0.5282575819227431
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-4",
+              "bbox": [
+                0.14666667015723933,
+                0.5282575819227431,
+                0.23333333831986572,
+                0.5453030364681976
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "Identifier Management",
+              "bbox": [
+                0.23333333831986572,
+                0.5282575819227431,
+                0.6048039455039829,
+                0.5453030364681976
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.5282575819227431,
+                0.728725508147595,
+                0.5453030364681976
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.5282575819227431,
+                0.8525490355647467,
+                0.5453030364681976
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-4(1)",
+              "bbox": [
+                0.14666667015723933,
+                0.5453030364681976,
+                0.23333333831986572,
+                0.5623484910136521
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "PROHII CCOUNT DENTIIRS S UBLI DENTIIRS",
+              "bbox": [
+                0.23333333831986572,
+                0.5453030364681976,
+                0.6048039455039829,
+                0.5623484910136521
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.5453030364681976,
+                0.728725508147595,
+                0.5623484910136521
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.5453030364681976,
+                0.8525490355647467,
+                0.5623484910136521
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-4(2)",
+              "bbox": [
+                0.14666667015723933,
+                0.5623484910136521,
+                0.23333333831986572,
+                0.5793181910659327
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "SUPERVIOR UTHORIATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.5623484910136521,
+                0.6048039455039829,
+                0.5793181910659327
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-12(1).",
+              "bbox": [
+                0.6048039455039829,
+                0.5623484910136521,
+                0.728725508147595,
+                0.5793181910659327
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.5623484910136521,
+                0.8525490355647467,
+                0.5793181910659327
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-4(3)",
+              "bbox": [
+                0.14666667015723933,
+                0.5793181910659327,
+                0.23333333831986572,
+                0.5963636456113873
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "MULTILE ORMS F ERTIIATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.5793181910659327,
+                0.6048039455039829,
+                0.5963636456113873
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-12(2).",
+              "bbox": [
+                0.6048039455039829,
+                0.5793181910659327,
+                0.728725508147595,
+                0.5963636456113873
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.5793181910659327,
+                0.8525490355647467,
+                0.5963636456113873
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-4(4)",
+              "bbox": [
+                0.14666667015723933,
+                0.5963636456113873,
+                0.23333333831986572,
+                0.6134091001568418
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "IENTIY SER TATUS",
+              "bbox": [
+                0.23333333831986572,
+                0.5963636456113873,
+                0.6048039455039829,
+                0.6134091001568418
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.5963636456113873,
+                0.728725508147595,
+                0.6134091001568418
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.5963636456113873,
+                0.8525490355647467,
+                0.6134091001568418
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-4(5)",
+              "bbox": [
+                0.14666667015723933,
+                0.6134091001568418,
+                0.23333333831986572,
+                0.6304545547022964
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "DYNAMI ANAGEMENT",
+              "bbox": [
+                0.23333333831986572,
+                0.6134091001568418,
+                0.6048039455039829,
+                0.6304545547022964
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.6134091001568418,
+                0.728725508147595,
+                0.6304545547022964
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.6134091001568418,
+                0.8525490355647467,
+                0.6304545547022964
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-4(6)",
+              "bbox": [
+                0.14666667015723933,
+                0.6304545547022964,
+                0.23333333831986572,
+                0.647424254754577
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "CROSS-ORGANIATIN ANAGEMENT",
+              "bbox": [
+                0.23333333831986572,
+                0.6304545547022964,
+                0.6048039455039829,
+                0.647424254754577
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.6304545547022964,
+                0.728725508147595,
+                0.647424254754577
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.6304545547022964,
+                0.8525490355647467,
+                0.647424254754577
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-4(7)",
+              "bbox": [
+                0.14666667015723933,
+                0.647424254754577,
+                0.23333333831986572,
+                0.6644697093000316
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "I-PERSON EGITRATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.647424254754577,
+                0.6048039455039829,
+                0.6644697093000316
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-12(4).",
+              "bbox": [
+                0.6048039455039829,
+                0.647424254754577,
+                0.728725508147595,
+                0.6644697093000316
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.647424254754577,
+                0.8525490355647467,
+                0.6644697093000316
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-4(8)",
+              "bbox": [
+                0.14666667015723933,
+                0.6644697093000316,
+                0.23333333831986572,
+                0.6815151638454862
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "PAIWIE SEUDONYMOUS DENTIIRS",
+              "bbox": [
+                0.23333333831986572,
+                0.6644697093000316,
+                0.6048039455039829,
+                0.6815151638454862
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.6644697093000316,
+                0.728725508147595,
+                0.6815151638454862
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.6644697093000316,
+                0.8525490355647467,
+                0.6815151638454862
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-4(9)",
+              "bbox": [
+                0.14666667015723933,
+                0.6815151638454862,
+                0.23333333831986572,
+                0.6985606183909406
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "ATTRIUTE AITENANCE ND ROTECTIN",
+              "bbox": [
+                0.23333333831986572,
+                0.6815151638454862,
+                0.6048039455039829,
+                0.6985606183909406
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O/S",
+              "bbox": [
+                0.6048039455039829,
+                0.6815151638454862,
+                0.728725508147595,
+                0.6985606183909406
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.6815151638454862,
+                0.8525490355647467,
+                0.6985606183909406
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5",
+              "bbox": [
+                0.14666667015723933,
+                0.6985606183909406,
+                0.23333333831986572,
+                0.7155303184432212
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "Authenticator anagement",
+              "bbox": [
+                0.23333333831986572,
+                0.6985606183909406,
+                0.6048039455039829,
+                0.7155303184432212
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O/S",
+              "bbox": [
+                0.6048039455039829,
+                0.6985606183909406,
+                0.728725508147595,
+                0.7155303184432212
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.6985606183909406,
+                0.8525490355647467,
+                0.7155303184432212
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(1)",
+              "bbox": [
+                0.14666667015723933,
+                0.7155303184432212,
+                0.23333333831986572,
+                0.7325757729886758
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "PASSWORD-BASED UTHENTIATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.7155303184432212,
+                0.6048039455039829,
+                0.7325757729886758
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O/S",
+              "bbox": [
+                0.6048039455039829,
+                0.7155303184432212,
+                0.728725508147595,
+                0.7325757729886758
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.7155303184432212,
+                0.8525490355647467,
+                0.7325757729886758
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(2)",
+              "bbox": [
+                0.14666667015723933,
+                0.7325757729886758,
+                0.23333333831986572,
+                0.7496212275341304
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "PUBLI EY-BASED UTHENTIATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.7325757729886758,
+                0.6048039455039829,
+                0.7496212275341304
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.7325757729886758,
+                0.728725508147595,
+                0.7496212275341304
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.7325757729886758,
+                0.8525490355647467,
+                0.7496212275341304
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(3)",
+              "bbox": [
+                0.14666667015723933,
+                0.7496212275341304,
+                0.23333333831986572,
+                0.7666666820795849
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "I-PERSON R RUSTED XTERNAL ARTY EGITRATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.7496212275341304,
+                0.6048039455039829,
+                0.7666666820795849
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-12(4).",
+              "bbox": [
+                0.6048039455039829,
+                0.7496212275341304,
+                0.728725508147595,
+                0.7666666820795849
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.7496212275341304,
+                0.8525490355647467,
+                0.7666666820795849
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(4)",
+              "bbox": [
+                0.14666667015723933,
+                0.7666666820795849,
+                0.23333333831986572,
+                0.7837121366250395
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "AUTOMATED UPPORT OR ASSWORD TRENGTH ETERMIATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.7666666820795849,
+                0.6048039455039829,
+                0.7837121366250395
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-5(1).",
+              "bbox": [
+                0.6048039455039829,
+                0.7666666820795849,
+                0.728725508147595,
+                0.7837121366250395
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.7666666820795849,
+                0.8525490355647467,
+                0.7837121366250395
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(5)",
+              "bbox": [
+                0.14666667015723933,
+                0.7837121366250395,
+                0.23333333831986572,
+                0.8006818366773201
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "CHANGE UTHENTIATORS RIR O ELIERY",
+              "bbox": [
+                0.23333333831986572,
+                0.7837121366250395,
+                0.6048039455039829,
+                0.8006818366773201
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.7837121366250395,
+                0.728725508147595,
+                0.8006818366773201
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.7837121366250395,
+                0.8525490355647467,
+                0.8006818366773201
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(6)",
+              "bbox": [
+                0.14666667015723933,
+                0.8006818366773201,
+                0.23333333831986572,
+                0.8177272912227747
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "PROTECTIN F UTHENTIATORS",
+              "bbox": [
+                0.23333333831986572,
+                0.8006818366773201,
+                0.6048039455039829,
+                0.8177272912227747
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.8006818366773201,
+                0.728725508147595,
+                0.8177272912227747
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.8006818366773201,
+                0.8525490355647467,
+                0.8177272912227747
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(7)",
+              "bbox": [
+                0.14666667015723933,
+                0.8177272912227747,
+                0.23333333831986572,
+                0.8347727457682291
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "NO MBEDDED NENCRYPTED TATI UTHENTIATORS",
+              "bbox": [
+                0.23333333831986572,
+                0.8177272912227747,
+                0.6048039455039829,
+                0.8347727457682291
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.8177272912227747,
+                0.728725508147595,
+                0.8347727457682291
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.8177272912227747,
+                0.8525490355647467,
+                0.8347727457682291
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(8)",
+              "bbox": [
+                0.14666667015723933,
+                0.8347727457682291,
+                0.23333333831986572,
+                0.8518182003136837
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "MULTILE YSTEM CCOUNTS",
+              "bbox": [
+                0.23333333831986572,
+                0.8347727457682291,
+                0.6048039455039829,
+                0.8518182003136837
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.8347727457682291,
+                0.728725508147595,
+                0.8518182003136837
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.8347727457682291,
+                0.8525490355647467,
+                0.8518182003136837
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(9)",
+              "bbox": [
+                0.14666667015723933,
+                0.8518182003136837,
+                0.23333333831986572,
+                0.8687879003659643
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "FEDERATED REDENTIL ANAGEMENT",
+              "bbox": [
+                0.23333333831986572,
+                0.8518182003136837,
+                0.6048039455039829,
+                0.8687879003659643
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "O",
+              "bbox": [
+                0.6048039455039829,
+                0.8518182003136837,
+                0.728725508147595,
+                0.8687879003659643
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.8518182003136837,
+                0.8525490355647467,
+                0.8687879003659643
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(10)",
+              "bbox": [
+                0.14666667015723933,
+                0.8687879003659643,
+                0.23333333831986572,
+                0.8858333549114189
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "DYNAMI REDENTIL IDIG",
+              "bbox": [
+                0.23333333831986572,
+                0.8687879003659643,
+                0.6048039455039829,
+                0.8858333549114189
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "S",
+              "bbox": [
+                0.6048039455039829,
+                0.8687879003659643,
+                0.728725508147595,
+                0.8858333549114189
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.8687879003659643,
+                0.8525490355647467,
+                0.8858333549114189
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ],
+          [
+            {
+              "text": "IA-5(11)",
+              "bbox": [
+                0.14666667015723933,
+                0.8858333549114189,
+                0.23333333831986572,
+                0.9028788094568734
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "HARDWARE OKEN-BASED UTHENTIATIN",
+              "bbox": [
+                0.23333333831986572,
+                0.8858333549114189,
+                0.6048039455039829,
+                0.9028788094568734
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "W: ncorporated ntoA-2(1) nd A-2(2).",
+              "bbox": [
+                0.6048039455039829,
+                0.8858333549114189,
+                0.728725508147595,
+                0.9028788094568734
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            },
+            {
+              "text": "",
+              "bbox": [
+                0.728725508147595,
+                0.8858333549114189,
+                0.8525490355647467,
+                0.9028788094568734
+              ],
+              "source_bbox_space": "pdf_points_bottom_left_xywh",
+              "row_span": null,
+              "col_span": null
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:0+actual:p468:line:50",
+      "merged_from": [
+        "actual:p468:line:0",
+        "actual:p468:line:50"
+      ],
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:51+actual:p468:line:104",
+      "merged_from": [
+        "actual:p468:line:51",
+        "actual:p468:line:104"
+      ],
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.305461,
+        0.088879,
+        0.690689,
+        0.103848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:52",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "TABLE C-7: IDENTIFICATION AND AUTHENTICATION FAMILY",
+      "type": "caption"
+    },
+    {
+      "bbox": [
+        0.158784,
+        0.137015,
+        0.221608,
+        0.152379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:2",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONTROL",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.355647,
+        0.137394,
+        0.483136,
+        0.155258
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:53",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONTROL NAME",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.624569,
+        0.142091,
+        0.70979,
+        0.156167
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:105",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IMPLEMENTED",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.756039,
+        0.142167,
+        0.826005,
+        0.156242
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:109",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "ASSURANCE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.160451,
+        0.149667,
+        0.220216,
+        0.16503
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:3",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NUMBER",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.658098,
+        0.154742,
+        0.676272,
+        0.168818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:106",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "BY",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.340451,
+        0.158,
+        0.499671,
+        0.170864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:54",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CONTROL ENHANCEMENT NAME",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.186985,
+        0.179884,
+        0.201349
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:4",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-1",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.186985,
+        0.37949,
+        0.201349
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:55",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Policy and Procedures",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.188985,
+        0.672927,
+        0.201849
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:107",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.20353,
+        0.678441,
+        0.218894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:108",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O / S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.20403,
+        0.179884,
+        0.218394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:5",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.20403,
+        0.589122,
+        0.218394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:56",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Identification and Authentication (Organizational Users)",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.2205,
+        0.533834,
+        0.235864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:57",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "MULTI-FACTOR AUTHENTICATION TO PRIVILEGED ACCOUNTS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.221,
+        0.197971,
+        0.235364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:6",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.223,
+        0.671677,
+        0.235864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:111",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.237545,
+        0.557322,
+        0.252909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:58",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "MULTI-FACTOR AUTHENTICATION TO NON-PRIVILEGED ACCOUNTS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.238045,
+        0.197971,
+        0.252409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:7",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(2)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.240045,
+        0.671677,
+        0.252909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:112",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.255091,
+        0.197971,
+        0.269455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:8",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(3)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.255167,
+        0.769304,
+        0.268242
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:113",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-2(1).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.257091,
+        0.438666,
+        0.269955
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:59",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "LOCAL ACCESS TO PRIVILEGED ACCOUNTS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.271636,
+        0.46596,
+        0.287
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:60",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "LOCAL ACCESS TO NON-PRIVILEGED ACCOUNTS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.272136,
+        0.345618,
+        0.289303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:9",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is available IA-2(4) free of charge from:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154,
+        0.272136,
+        0.212,
+        0.289303
+      ],
+      "confidence": 0.82,
+      "embedded_from": "actual:p468:line:9",
+      "id": "actual:p468:line:9:embedded:requirement:0",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "original_type": "requirement",
+        "repair_reason": "inline_control_id_reference_not_formal_requirement",
+        "repair_source": "pdf_lab.second_pass.control_reference_repair"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_embedded",
+      "text": "IA-2(4)",
+      "type": "control_reference"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.272212,
+        0.769308,
+        0.285288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:114",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-2(2).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.288682,
+        0.678441,
+        0.304045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:115",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O / S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.289182,
+        0.195805,
+        0.303545
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:10",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(5)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.291182,
+        0.53817,
+        0.304045
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:61",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "INDIVIDUAL AUTHENTICATION WITH GROUP AUTHENTICATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.305651,
+        0.451324,
+        0.321015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:62",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "ACCESS TO ACCOUNTS \u2014 SEPARATE DEVICE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.306151,
+        0.195805,
+        0.320515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:11",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(6)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.308151,
+        0.671677,
+        0.321015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:116",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.322697,
+        0.587002,
+        0.338061
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:63+actual:p468:line:66+actual:p468:line:69",
+      "merged_from": [
+        "actual:p468:line:63+actual:p468:line:66",
+        "actual:p468:line:69"
+      ],
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge+preset_merge",
+      "text": "NETWORK ACCESS TO NON- PRIVILEGED ACCOUNTS \u2014 SEPARATE DEVICE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.323197,
+        0.195805,
+        0.337561
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:12",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(7)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.323273,
+        0.769304,
+        0.336349
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:117",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-2(6).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.339742,
+        0.456681,
+        0.355106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:64+actual:p468:line:67",
+      "merged_from": [
+        "actual:p468:line:64",
+        "actual:p468:line:67"
+      ],
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "ACCESS TO ACCOUNTS \u2014 REPLAY RESISTANT",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.340242,
+        0.197971,
+        0.354606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:13",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(8)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.342242,
+        0.671677,
+        0.355106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:118",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.356788,
+        0.591877,
+        0.372152
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:65+actual:p468:line:68+actual:p468:line:70",
+      "merged_from": [
+        "actual:p468:line:65+actual:p468:line:68",
+        "actual:p468:line:70"
+      ],
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge+preset_merge",
+      "text": "NETWORK ACCESS TO NON- PRIVILEGED ACCOUNTS \u2014 REPLAY RESISTANT",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.357288,
+        0.197971,
+        0.371652
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:14",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(9)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.357364,
+        0.769304,
+        0.370439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:119",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-2(8).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.373758,
+        0.322608,
+        0.389121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:71",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SINGLE SIGN-ON",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.374258,
+        0.205426,
+        0.388621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:15",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(10)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.376258,
+        0.671677,
+        0.389121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:120",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.390803,
+        0.424459,
+        0.406167
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:72+actual:p468:line:73",
+      "merged_from": [
+        "actual:p468:line:72",
+        "actual:p468:line:73"
+      ],
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "REMOTE ACCESS \u2014 SEPARATE DEVICE",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.391303,
+        0.205426,
+        0.405667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:16",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(11)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.391379,
+        0.769308,
+        0.404455
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:121",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-2(6).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.408348,
+        0.205426,
+        0.422712
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:17",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(12)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.410349,
+        0.671677,
+        0.423212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:122",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.410349,
+        0.404128,
+        0.423212
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:74",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "ACCEPTANCE OF PIV CREDENTIALS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.424894,
+        0.401252,
+        0.440258
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:75",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "OUT-OF-BAND AUTHENTICATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.425394,
+        0.203038,
+        0.439758
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:18",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-2(13)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.427394,
+        0.671677,
+        0.440258
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:123",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.442364,
+        0.179884,
+        0.456727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:19",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-3",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.442364,
+        0.493343,
+        0.456727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:76",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Device Identification and Authentication",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.444364,
+        0.671677,
+        0.457227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:124",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.459409,
+        0.197971,
+        0.473773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:20",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-3(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.461409,
+        0.671677,
+        0.474273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:125",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.461409,
+        0.483447,
+        0.474273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:77",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CRYPTOGRAPHIC BIDIRECTIONAL AUTHENTICATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.476455,
+        0.197971,
+        0.490818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:21",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-3(2)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.47653,
+        0.769304,
+        0.489606
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:126",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-3(1).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.478455,
+        0.534262,
+        0.491318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:78",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CRYPTOGRAPHIC BIDIRECTIONAL NETWORK AUTHENTICATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.4935,
+        0.197971,
+        0.507864
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:22",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-3(3)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.4955,
+        0.672927,
+        0.508364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:127",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.4955,
+        0.398358,
+        0.508364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:79",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "DYNAMIC ADDRESS ALLOCATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.510545,
+        0.197971,
+        0.524909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:23",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-3(4)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.512545,
+        0.672927,
+        0.525409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:128",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.512545,
+        0.345238,
+        0.525409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:80",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "DEVICE ATTESTATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:24",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https://doi.org/10.6028/NIST.SP.800",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.527515,
+        0.179884,
+        0.541879
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:25",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-4",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.527515,
+        0.38699,
+        0.541879
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:81",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Identifier Management",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.529515,
+        0.672927,
+        0.542379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:129",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.544561,
+        0.197971,
+        0.558924
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:26",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-4(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.546561,
+        0.672927,
+        0.559424
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:130",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.546561,
+        0.509806,
+        0.559424
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:82",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PROHIBIT ACCOUNT IDENTIFIERS AS PUBLIC IDENTIFIERS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.561606,
+        0.197971,
+        0.57597
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:27",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-4(2)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.561682,
+        0.775815,
+        0.574758
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:131",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-12(1).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.563606,
+        0.383848,
+        0.57647
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:83",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SUPERVISOR AUTHORIZATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.578652,
+        0.197971,
+        0.593015
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:28",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-4(3)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.578727,
+        0.775811,
+        0.591803
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:132",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-12(2).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.580652,
+        0.418432,
+        0.593515
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:84",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "MULTIPLE FORMS OF CERTIFICATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.595621,
+        0.197971,
+        0.609985
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:29",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-4(4)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.597621,
+        0.672927,
+        0.610485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:133",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.597621,
+        0.352086,
+        0.610485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:85",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IDENTIFY USER STATUS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.612667,
+        0.197971,
+        0.62703
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:30",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-4(5)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.614667,
+        0.671677,
+        0.62753
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:134",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.614667,
+        0.364336,
+        0.62753
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:86",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "DYNAMIC MANAGEMENT",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.629212,
+        0.426217,
+        0.644576
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:87",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CROSS-ORGANIZATION MANAGEMENT",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.629712,
+        0.197971,
+        0.644076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:31",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-4(6)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.631712,
+        0.672927,
+        0.644576
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:135",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.646258,
+        0.368353,
+        0.661621
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:88",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IN-PERSON REGISTRATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.646758,
+        0.197971,
+        0.661121
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:32",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-4(7)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.646833,
+        0.775811,
+        0.659909
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:136",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-12(4).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.663803,
+        0.197971,
+        0.678167
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:33",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-4(8)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.665803,
+        0.672927,
+        0.678667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:137",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.665803,
+        0.43238,
+        0.678667
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:89",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAIRWISE PSEUDONYMOUS IDENTIFIERS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.680273,
+        0.678441,
+        0.695636
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:138",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O / S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.680773,
+        0.195805,
+        0.695136
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:34",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-4(9)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.682773,
+        0.455493,
+        0.695636
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:90",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "ATTRIBUTE MAINTENANCE AND PROTECTION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.697318,
+        0.678441,
+        0.712682
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:139",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O / S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.697818,
+        0.179884,
+        0.712182
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:36",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.697818,
+        0.411098,
+        0.712182
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:91",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Authenticator Management",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.701227,
+        0.040809,
+        0.715591
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:35",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "-",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.705015,
+        0.065162,
+        0.719379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:37",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "53r5",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.714364,
+        0.678441,
+        0.729727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:140",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O / S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.714364,
+        0.420979,
+        0.729727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:92",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PASSWORD-BASED AUTHENTICATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.714864,
+        0.197971,
+        0.729227
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:38",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(1)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.731409,
+        0.418495,
+        0.746773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:93",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PUBLIC KEY-BASED AUTHENTICATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.731909,
+        0.197971,
+        0.746273
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:39",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(2)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.733909,
+        0.671677,
+        0.746773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:141",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.748379,
+        0.511838,
+        0.763742
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:94",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IN-PERSON OR TRUSTED EXTERNAL PARTY REGISTRATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.748879,
+        0.197971,
+        0.763242
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:40",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(3)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.748955,
+        0.775811,
+        0.76203
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:142",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-12(4).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.765924,
+        0.197971,
+        0.780288
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:41",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(4)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.766,
+        0.769308,
+        0.779076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:143",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-5(1).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.767924,
+        0.566678,
+        0.780788
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:95",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "AUTOMATED SUPPORT FOR PASSWORD STRENGTH DETERMINATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.78297,
+        0.197971,
+        0.797333
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:42",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(5)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.78497,
+        0.672927,
+        0.797833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:144",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.78497,
+        0.465255,
+        0.797833
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:96",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHANGE AUTHENTICATORS PRIOR TO DELIVERY",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.800015,
+        0.197971,
+        0.814379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:43",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(6)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.802015,
+        0.672927,
+        0.814879
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:145",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.802015,
+        0.405814,
+        0.814879
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:97",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PROTECTION OF AUTHENTICATORS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.816985,
+        0.197971,
+        0.831348
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:44",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(7)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.818985,
+        0.672927,
+        0.831848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:146",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.818985,
+        0.511355,
+        0.831848
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:98",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NO EMBEDDED UNENCRYPTED STATIC AUTHENTICATORS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.83403,
+        0.197971,
+        0.848394
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:45",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(8)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.83603,
+        0.672927,
+        0.848894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:147",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.83603,
+        0.385649,
+        0.848894
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:99",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "MULTIPLE SYSTEM ACCOUNTS",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.851076,
+        0.197971,
+        0.865439
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:46",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(9)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.853076,
+        0.433607,
+        0.865939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:100",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "FEDERATED CREDENTIAL MANAGEMENT",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.853076,
+        0.672927,
+        0.865939
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:148",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "O",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.868121,
+        0.205426,
+        0.882485
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:47",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(10)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.870121,
+        0.393116,
+        0.882985
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:101",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "DYNAMIC CREDENTIAL BINDING",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.870121,
+        0.671677,
+        0.882985
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:149",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "S",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.884667,
+        0.457712,
+        0.90003
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:102+actual:p468:line:103",
+      "merged_from": [
+        "actual:p468:line:102",
+        "actual:p468:line:103"
+      ],
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_merge",
+      "text": "HARDWARE TOKEN- BASED AUTHENTICATION",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.885167,
+        0.205426,
+        0.89953
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:48",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "IA-5(11)",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.885242,
+        0.831214,
+        0.898318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:150",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "W: Incorporated into IA-2(1) and IA-2(2).",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.802283,
+        0.939742,
+        0.854755,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:151",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE 441",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.939742,
+        0.209845,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p468:line:49",
+      "page": 468,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "APPENDIX C",
+      "type": "running_footer"
+    }
+  ]
+}

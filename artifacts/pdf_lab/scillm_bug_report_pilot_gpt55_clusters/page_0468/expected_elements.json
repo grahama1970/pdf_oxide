@@ -1,0 +1,747 @@
+{
+  "schema_version": "pdf_lab.golden_slice.v2",
+  "slice_id": "nist_phase54_page_0468",
+  "captured_at": "2026-05-29T15:43:22.382434+00:00",
+  "source": "phase-54 TOC-backed candidate packet release_extraction_blocks.json",
+  "ground_truth_policy": "Rendered page image is annotation ground truth; verified TOC spine supplies routing evidence only.",
+  "candidate_families": [
+    "tables",
+    "figures_images_captions",
+    "headers_footers",
+    "controls_requirements",
+    "equations_or_expected_absent"
+  ],
+  "toc_entries": [],
+  "reviewer_questions": [
+    "Review table region, caption, row/column boundaries, merged/continued cells, and false-positive grid/table fragments.",
+    "Confirm captions belong to the table, and mark true non-table figures/images only if visibly present.",
+    "Separate running headers, footers, printed page numbers, and side boilerplate from body content.",
+    "Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables.",
+    "Confirm whether any true displayed equation exists; Appendix C sqrt/check marks are expected table notation unless visually contradicted."
+  ],
+  "fix_error_requests": [
+    {
+      "source_id": "actual:p468:line:2",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CONTROL",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:53",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CONTROL NAME",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:105",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "IMPLEMENTED",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:109",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "ASSURANCE",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:3",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "NUMBER",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:106",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "BY",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:54",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CONTROL ENHANCEMENT NAME",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:55",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Policy and Procedures",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:107",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:108",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O / S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:56",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Identification and Authentication (Organizational Users)",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:57",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "MULTI-FACTOR AUTHENTICATION TO PRIVILEGED ACCOUNTS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:111",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:58",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "MULTI-FACTOR AUTHENTICATION TO NON-PRIVILEGED ACCOUNTS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:112",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:113",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-2(1).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:59",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "LOCAL ACCESS TO PRIVILEGED ACCOUNTS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:60",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "LOCAL ACCESS TO NON-PRIVILEGED ACCOUNTS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:114",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-2(2).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:115",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O / S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:61",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "INDIVIDUAL AUTHENTICATION WITH GROUP AUTHENTICATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:62",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "ACCESS TO ACCOUNTS \u2014 SEPARATE DEVICE",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:116",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:63+actual:p468:line:66+actual:p468:line:69",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "NETWORK ACCESS TO NON- PRIVILEGED ACCOUNTS \u2014 SEPARATE DEVICE",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:117",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-2(6).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:64+actual:p468:line:67",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "ACCESS TO ACCOUNTS \u2014 REPLAY RESISTANT",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:118",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:65+actual:p468:line:68+actual:p468:line:70",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "NETWORK ACCESS TO NON- PRIVILEGED ACCOUNTS \u2014 REPLAY RESISTANT",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:119",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-2(8).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:71",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "SINGLE SIGN-ON",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:120",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:72+actual:p468:line:73",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "REMOTE ACCESS \u2014 SEPARATE DEVICE",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:121",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-2(6).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:122",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:74",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "ACCEPTANCE OF PIV CREDENTIALS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:75",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "OUT-OF-BAND AUTHENTICATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:123",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:76",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Device Identification and Authentication",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:124",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:125",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:77",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CRYPTOGRAPHIC BIDIRECTIONAL AUTHENTICATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:126",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-3(1).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:78",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CRYPTOGRAPHIC BIDIRECTIONAL NETWORK AUTHENTICATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:127",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:79",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "DYNAMIC ADDRESS ALLOCATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:128",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:80",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "DEVICE ATTESTATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:81",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Identifier Management",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:129",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:130",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:82",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PROHIBIT ACCOUNT IDENTIFIERS AS PUBLIC IDENTIFIERS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:131",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-12(1).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:83",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "SUPERVISOR AUTHORIZATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:132",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-12(2).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:84",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "MULTIPLE FORMS OF CERTIFICATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:133",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:85",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "IDENTIFY USER STATUS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:134",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:86",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "DYNAMIC MANAGEMENT",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:87",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CROSS-ORGANIZATION MANAGEMENT",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:135",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:88",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "IN-PERSON REGISTRATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:136",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-12(4).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:137",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:89",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PAIRWISE PSEUDONYMOUS IDENTIFIERS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:138",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O / S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:90",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "ATTRIBUTE MAINTENANCE AND PROTECTION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:139",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O / S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:91",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "Authenticator Management",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:140",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O / S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:92",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PASSWORD-BASED AUTHENTICATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:93",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PUBLIC KEY-BASED AUTHENTICATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:141",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:94",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "IN-PERSON OR TRUSTED EXTERNAL PARTY REGISTRATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:142",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-12(4).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:143",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-5(1).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:95",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "AUTOMATED SUPPORT FOR PASSWORD STRENGTH DETERMINATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:144",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:96",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "CHANGE AUTHENTICATORS PRIOR TO DELIVERY",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:145",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:97",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "PROTECTION OF AUTHENTICATORS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:146",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:98",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "NO EMBEDDED UNENCRYPTED STATIC AUTHENTICATORS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:147",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:99",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "MULTIPLE SYSTEM ACCOUNTS",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:100",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "FEDERATED CREDENTIAL MANAGEMENT",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:148",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "O",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:101",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "DYNAMIC CREDENTIAL BINDING",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:149",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "S",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:102+actual:p468:line:103",
+      "current_type": "section_header",
+      "requested_family": "table",
+      "text_hint": "HARDWARE TOKEN- BASED AUTHENTICATION",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    },
+    {
+      "source_id": "actual:p468:line:150",
+      "current_type": "paragraph",
+      "requested_family": "table",
+      "text_hint": "W: Incorporated into IA-2(1) and IA-2(2).",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks."
+    }
+  ],
+  "expected_elements": [
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.017,
+        0.072,
+        0.088,
+        0.916
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5\nAPPENDIX C\nThis publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "label": "left_sidebar_watermark",
+      "allowed_types": [
+        "running_header",
+        "running_footer",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "appendix_c_learned_chrome_group",
+      "notes": "Learned from p.456/p.468 human corrections: Appendix C table pages should group the left DOI/sidebar watermark as page chrome."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.128664,
+        0.043,
+        0.841671,
+        0.078962
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5\nSECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "running_header_merged",
+      "allowed_types": [
+        "running_header",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "appendix_c_learned_chrome_group",
+      "notes": "Learned from p.468 human correction: top running header materializes as one chrome band, not separate semantic regions."
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.127991,
+        0.939742,
+        0.854755,
+        0.953818
+      ],
+      "text_hint": "CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE\nIA-1 | Policy and Procedures | O | \u221a\nIA-2 | Identification and Authentication (Organizational Users) | O/S\nIA-2(1) | MULTIFACTOR UTHENTIATIN O RIIEGED CCOUNTS | S\nIA-2(2) | MULTIFACTOR UTHENTIATIN O ON-PRIIEGED CCOUNTS | S\nIA-2(3) | LOCAL CCESS O RIIEGED CCOUNTS | W: ncorporated ntoA-2(1).\nIA-2(4)\nIA-2(4) | LOCAL CCESS O ON-PRIIEGED CCOUNTS\nLOCAL CCESS O ON | W: ncorporated ntoA-2(2).\nIA-2(5) | IDIIUAL UTHENTIATIN IH ROUP UTHENTIATIN | O/S\nIA-2(6) | ACCESS O CCOUNTS  EPARATE EVIE | S\nIA-2(7) | NETWORK CCESS O ON-PRIIEGED CCOUNTS  EPARATE EVIE | W: ncorporated ntoA-2(6).\nIA-2(8) | ACCESS O CCOUNTS  EPLAY ESITANT | S\nIA-2(9) | NETWORK CCESS O ON-PRIIEGED CCOUNTS  EPLAY ESITANT | W: ncorporated ntoA-2(8).\nIA-2(10) | SIGLE IN-ON | S\nIA-2(11) | REMOTE CCESS  EPARATE EVIE | W: ncorporated ntoA-2(6).\nIA-2(12) | ACCEPTANCE F I REDENTILS | S\nIA-2(13) | OUT-OF-BAND UTHENTIATIN | S\nIA-3 | Device Identification and Authentication | S\nIA-3(1) | CRYPTOGRAPHI IIECTINAL UTHENTIATIN | S\nIA-3(2) | CRYPTOGRAPHI IIECTINAL ETWORK UTHENTIATIN | W: ncorporated ntoA-3(1).\nIA-3(3) | DYNAMI DDRESS LLOCATIN | O\nIA-3(4) | DEVIE TTESTATIN\nDEVI | O\nIA-4 | Identifier Management | O\nIA-4(1) | PROHII CCOUNT DENTIIRS S UBLI DENTIIRS | O\nIA-4(2) | SUPERVIOR UTHORIATIN | W: ncorporated ntoA-12(1).\nIA-4(3) | MULTILE ORMS F ERTIIATIN | W: ncorporated ntoA-12(2).\nIA-4(4) | IENTIY SER TATUS | O\nIA-4(5) | DYNAMI ANAGEMENT | S\nIA-4(6) | CROSS-ORGANIATIN ANAGEMENT | O\nIA-4(7) | I-PERSON EGITRATIN | W: ncorporated ntoA-12(4).\nIA-4(8) | PAIWIE SEUDONYMOUS DENTIIRS | O\nIA-4(9) | ATTRIUTE AITENANCE ND ROTECTIN | O/S\nIA-5 | Authenticator anagement | O/S\nIA-5(1) | PASSWORD-BASED UTHENTIATIN | O/S\nIA-5(2) | PUBLI EY-BASED UTHENTIATIN | S\nIA-5(3) | I-PERSON R RUSTED XTERNAL ARTY EGITRATIN | W: ncorporated ntoA-12(4).\nIA-5(4) | AUTOMATED UPPORT OR ASSWORD TRENGTH ETERMIATIN | W: ncorporated ntoA-5(1).\nIA-5(5) | CHANGE UTHENTIATORS RIR O ELIERY | O\nIA-5(6) | PROTECTIN F UTHENTIATORS | O\nIA-5(7) | NO MBEDDED NENCRYPTED TATI UTHENTIATORS | O\nIA-5(8) | MULTILE YSTEM CCOUNTS | O\nIA-5(9) | FEDERATED REDENTIL ANAGEMENT | O\nIA-5(10) | DYNAMI REDENTIL IDIG | S\nIA-5(11) | HARDWARE OKEN-BASED UTHENTIATIN | W: ncorporated ntoA-2(1) nd A-2(2). NIST SP 800-53, REV. 5 SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS TABLE C-7: IDENTIFICATION AND AUTHENTICATION FAMILY CONTROL CONTROL NAME IMPLEMENTED ASSURANCE NUMBER BY CONTROL ENHANCEMENT NAME IA-1 Policy and Procedures O O / S IA-2 Identification and Authentication (Organizational Users) MULTI-FACTOR AUTHENTICATION TO PRIVILEGED ACCOUNTS IA-2(1) S MULTI-FACTOR AUTHENTICATION TO NON-PRIVILEGED ACCOUNTS IA-2(2) S IA-2(3) W: Incorporated into IA-2(1). LOCAL ACCESS TO PRIVILEGED ACCOUNTS LOCAL ACCESS TO NON-PRIVILEGED ACCOUNTS This publication is available IA-2(4) free of charge from: IA-2(4) W: Incorporated into IA-2(2). O / S IA-2(5) INDIVIDUAL AUTHENTICATION WITH GROUP AUTHENTICATION ACCESS TO ACCOUNTS \u2014 SEPARATE DEVICE IA-2(6) S NETWORK ACCESS TO NON- PRIVILEGED ACCOUNTS \u2014 SEPARATE DEVICE IA-2(7) W: Incorporated into IA-2(6). ACCESS TO ACCOUNTS \u2014 REPLAY RESISTANT IA-2(8) S NETWORK ACCESS TO NON- PRIVILEGED ACCOUNTS \u2014 REPLAY RESISTANT IA-2(9) W: Incorporated into IA-2(8). SINGLE SIGN-ON IA-2(10) S REMOTE ACCESS \u2014 SEPARATE DEVICE IA-2(11) W: Incorporated into IA-2(6). IA-2(12) S ACCEPTANCE OF PIV CREDENTIALS OUT-OF-BAND AUTHENTICATION IA-2(13) S IA-3 Device Identification and Authentication S IA-3(1) S CRYPTOGRAPHIC BIDIRECTIONAL AUTHENTICATION IA-3(2) W: Incorporated into IA-3(1). CRYPTOGRAPHIC BIDIRECTIONAL NETWORK AUTHENTICATION IA-3(3) O DYNAMIC ADDRESS ALLOCATION IA-3(4) O DEVICE ATTESTATION https://doi.org/10.6028/NIST.SP.800 IA-4 Identifier Management O IA-4(1) O PROHIBIT ACCOUNT IDENTIFIERS AS PUBLIC IDENTIFIERS IA-4(2) W: Incorporated into IA-12(1). SUPERVISOR AUTHORIZATION IA-4(3) W: Incorporated into IA-12(2). MULTIPLE FORMS OF CERTIFICATION IA-4(4) O IDENTIFY USER STATUS IA-4(5) S DYNAMIC MANAGEMENT CROSS-ORGANIZATION MANAGEMENT IA-4(6) O IN-PERSON REGISTRATION IA-4(7) W: Incorporated into IA-12(4). IA-4(8) O PAIRWISE PSEUDONYMOUS IDENTIFIERS O / S IA-4(9) ATTRIBUTE MAINTENANCE AND PROTECTION O / S IA-5 Authenticator Management - 53r5 O / S PASSWORD-BASED AUTHENTICATION IA-5(1) PUBLIC KEY-BASED AUTHENTICATION IA-5(2) S IN-PERSON OR TRUSTED EXTERNAL PARTY REGISTRATION IA-5(3) W: Incorporated into IA-12(4). IA-5(4) W: Incorporated into IA-5(1). AUTOMATED SUPPORT FOR PASSWORD STRENGTH DETERMINATION IA-5(5) O CHANGE AUTHENTICATORS PRIOR TO DELIVERY IA-5(6) O PROTECTION OF AUTHENTICATORS IA-5(7) O NO EMBEDDED UNENCRYPTED STATIC AUTHENTICATORS IA-5(8) O MULTIPLE SYSTEM ACCOUNTS IA-5(9) FEDERATED CREDENTIAL MANAGEMENT O IA-5(10) DYNAMIC CREDENTIAL BINDING S HARDWARE TOKEN- BASED AUTHENTICATION IA-5(11) W: Incorporated into IA-2(1) and IA-2(2). PAGE 441 APPENDIX C",
+      "label": "footer_page_chrome",
+      "allowed_types": [
+        "running_footer",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "appendix_c_learned_chrome_group",
+      "notes": "Learned from p.468 human correction: footer appendix label and page number materialize as one chrome band."
+    },
+    {
+      "family": "caption",
+      "bbox_hint": [
+        0.305461,
+        0.088879,
+        0.690689,
+        0.103848
+      ],
+      "text_hint": "TABLE C-7: IDENTIFICATION AND AUTHENTICATION FAMILY",
+      "label": "TABLE C-7: IDENTIFICATION AND AUTHENTICATION FAMILY",
+      "allowed_types": [
+        "caption"
+      ],
+      "match_strategy": "table_caption_text",
+      "notes": "Phase 54 learned table-candidate contract: table titles/captions adjacent to extracted table regions materialize as caption regions. Source id: actual:p468:line:52."
+    },
+    {
+      "family": "table",
+      "bbox_hint": [
+        0.146667,
+        0.113712,
+        0.852549,
+        0.902879
+      ],
+      "text_hint": "CONTROL\nNUMBER | CONTROL NAME\nCONTROL NHANCEMENT AME | IMPLEMENTED\nBY | ASSURANCE\nIA-1 | Policy and Procedures | O | \u221a\nIA-2 | Identification and Authentication (Organizational Users) | O/S\nIA-2(1) | MULTIFACTOR UTHENTIATIN O RIIEGED CCOUNTS",
+      "label": "table_region rows=43 cols=4",
+      "allowed_types": [
+        "table"
+      ],
+      "match_strategy": "core_table_bbox",
+      "notes": "Phase 54 fix request source: pdf_oxide.extract_tables emitted this table region; source id: actual:p468:table:0. Non-table text fragments inside this region are reclassification fix-error requests, not standalone human tasks."
+    }
+  ]
+}
