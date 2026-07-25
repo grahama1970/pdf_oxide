@@ -32,6 +32,8 @@ export interface RawAnnotationCall {
   schema: typeof ANNOTATION_CALL_SCHEMA
   pdf_sha256: string
   engine_commit: string
+  engine_name?: string
+  engine_version?: string
   accuracy_estimate: {
     basis: string
     value: number
@@ -50,6 +52,8 @@ export interface AnnotationQueueItem {
   documentId: string
   pdfSha256: string
   engineCommit: string
+  engineName: string | null
+  engineVersion: string | null
   accuracyBasis: string
   accuracyValue: number
   page: number
@@ -59,6 +63,9 @@ export interface AnnotationQueueItem {
   normalizedBbox: BboxXywh | null
   currentType: string | null
   textExcerpt: string | null
+  oracleExcerpt: string | null
+  missingText: string | null
+  missingTextDerivationError: string | null
   /** Kept in the model for calibration work; never render this value. */
   confidence: number | null
   pageImageRefs: unknown
@@ -70,6 +77,8 @@ export interface NormalizedAnnotationCall {
   documentId: string
   pdfSha256: string
   engineCommit: string
+  engineName: string | null
+  engineVersion: string | null
   accuracyBasis: string
   accuracyValue: number
   items: AnnotationQueueItem[]
@@ -141,6 +150,8 @@ export function normalizeAnnotationCall(raw: unknown, sourceName?: string): Norm
   const pdfSha256 = normalizePdfSha(record.pdf_sha256)
   const engineCommit = stringOrNull(record.engine_commit)
   if (!engineCommit) throw new Error('annotation_call.engine_commit is required')
+  const engineName = stringOrNull(record.engine_name)
+  const engineVersion = stringOrNull(record.engine_version)
 
   const accuracy = asRecord(record.accuracy_estimate)
   if (!accuracy) throw new Error('annotation_call.accuracy_estimate is required')
@@ -186,6 +197,8 @@ export function normalizeAnnotationCall(raw: unknown, sourceName?: string): Norm
       documentId,
       pdfSha256,
       engineCommit,
+      engineName,
+      engineVersion,
       accuracyBasis,
       accuracyValue,
       page,
@@ -195,6 +208,9 @@ export function normalizeAnnotationCall(raw: unknown, sourceName?: string): Norm
       normalizedBbox: maybeNormalizedBbox(bbox),
       currentType: stringOrNull(item.current_type),
       textExcerpt: stringOrNull(item.text_excerpt),
+      oracleExcerpt: stringOrNull(item.oracle_excerpt),
+      missingText: typeof item.missing_text === 'string' ? item.missing_text : null,
+      missingTextDerivationError: stringOrNull(item.missing_text_derivation_error),
       confidence,
       pageImageRefs: item.page_image_refs,
       raw: item as RawAnnotationCallItem,
@@ -206,6 +222,8 @@ export function normalizeAnnotationCall(raw: unknown, sourceName?: string): Norm
     documentId,
     pdfSha256,
     engineCommit,
+    engineName,
+    engineVersion,
     accuracyBasis,
     accuracyValue,
     items,

@@ -6,9 +6,13 @@ import hashlib
 import json
 import math
 import os
+import re
 import subprocess
+from collections import Counter
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Mapping, Optional
+
+from .pdf_oxide import VERSION
 
 
 if TYPE_CHECKING:
@@ -25,13 +29,15 @@ CLOSED_REASONS = frozenset(
         "reviewer_flagged",
     }
 )
-_TOP_LEVEL_FIELDS = {
+_REQUIRED_TOP_LEVEL_FIELDS = {
     "schema",
     "pdf_sha256",
     "engine_commit",
     "accuracy_estimate",
     "items",
 }
+_OPTIONAL_TOP_LEVEL_FIELDS = {"engine_name", "engine_version"}
+_TEXT_EXCERPT_LIMIT = 20_000
 
 
 def _sha256_file(path: Path) -> str:
@@ -77,11 +83,110 @@ def _engine_commit() -> str:
 
 
 def _is_finite_number(value: Any) -> bool:
-    return (
-        isinstance(value, (int, float))
-        and not isinstance(value, bool)
-        and math.isfinite(value)
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
+def _normalized_accounting_text(value: Any) -> str:
+    return re.sub(r"\s+", "", str(value or ""))
+
+
+def _page_engine_text(result: PipelineResult, page: int) -> str:
+    parts = [str(block.get("text") or "") for block in result.blocks if block.get("page") == page]
+    parts.extend(
+        " ".join(str(cell) for row in table.get("data", []) for cell in row)
+        for table in result.tables
+        if table.get("page") == page
     )
+    for figure in result.figures:
+        if figure.get("page") != page:
+            continue
+        parts.extend(str(block.get("text") or "") for block in (figure.get("content_blocks") or []))
+    return "\n".join(part for part in parts if part)
+
+
+def _pdftotext_page(pdf_path: Path, page: int) -> tuple[Optional[str], Optional[str]]:
+    try:
+        completed = subprocess.run(
+            [
+                "pdftotext",
+                "-f",
+                str(page + 1),
+                "-l",
+                str(page + 1),
+                str(pdf_path),
+                "-",
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError as error:
+        return None, f"pdftotext_unavailable:{error}"
+    if completed.returncode != 0:
+        detail = completed.stderr.strip().replace("\n", " ")[:240]
+        return None, f"pdftotext_failed:{completed.returncode}:{detail}"
+    return completed.stdout, None
+
+
+def _missing_text_in_oracle_order(oracle_text: str, engine_text: str) -> str:
+    missing = Counter(_normalized_accounting_text(oracle_text)) - Counter(
+        _normalized_accounting_text(engine_text)
+    )
+    ordered = []
+    for character in _normalized_accounting_text(oracle_text):
+        if missing[character] > 0:
+            ordered.append(character)
+            missing[character] -= 1
+    return "".join(ordered)
+
+
+def _oracle_excerpt(oracle_text: str, missing_text: str) -> str:
+    if not oracle_text:
+        return ""
+    positions = [
+        index for index, character in enumerate(oracle_text) if character in set(missing_text)
+    ]
+    if not positions:
+        return oracle_text[:_TEXT_EXCERPT_LIMIT]
+    start = max(0, positions[0] - 500)
+    end = min(len(oracle_text), positions[-1] + 501)
+    if end - start > _TEXT_EXCERPT_LIMIT:
+        end = start + _TEXT_EXCERPT_LIMIT
+    return oracle_text[start:end]
+
+
+def _enrich_char_parity_item(
+    item: Dict[str, Any],
+    result: PipelineResult,
+    oracle_cache: Dict[int, tuple[Optional[str], Optional[str]]],
+) -> None:
+    page = item["page"]
+    engine_text = _page_engine_text(result, page)
+    item.setdefault("text_excerpt", engine_text[:_TEXT_EXCERPT_LIMIT])
+    if page not in oracle_cache:
+        oracle_cache[page] = _pdftotext_page(Path(result.source_pdf), page)
+    oracle_text, oracle_error = oracle_cache[page]
+    if oracle_text is None:
+        item.setdefault("oracle_excerpt", "")
+        item.setdefault(
+            "missing_text_derivation_error",
+            oracle_error or "pdftotext_returned_no_text",
+        )
+        return
+
+    missing_text = _missing_text_in_oracle_order(oracle_text, engine_text)
+    item.setdefault("oracle_excerpt", _oracle_excerpt(oracle_text, missing_text))
+    expected_count = item["missing_chars"]
+    if len(missing_text) == expected_count:
+        item.setdefault("missing_text", missing_text)
+    else:
+        item.setdefault(
+            "missing_text_derivation_error",
+            (
+                "char_accounting_count_mismatch:"
+                f"declared={expected_count}:derived={len(missing_text)}"
+            ),
+        )
 
 
 def _validate_item(
@@ -104,8 +209,7 @@ def _validate_item(
             or len(refs) != len(set(refs))
         ):
             raise ValueError(
-                "annotation-call item page_image_refs must be a non-empty "
-                "list of unique filenames"
+                "annotation-call item page_image_refs must be a non-empty list of unique filenames"
             )
         hashes = item.get("page_image_sha256")
         if (
@@ -119,8 +223,7 @@ def _validate_item(
             )
         ):
             raise ValueError(
-                "annotation-call item page_image_sha256 must map every ref "
-                "to a lowercase SHA-256"
+                "annotation-call item page_image_sha256 must map every ref to a lowercase SHA-256"
             )
 
     reason = item["reason"]
@@ -131,18 +234,14 @@ def _validate_item(
             raise ValueError(f"low_confidence annotation-call item missing {sorted(missing)}")
         confidence = item["confidence"]
         if not _is_finite_number(confidence) or not 0.0 <= confidence < threshold:
-            raise ValueError(
-                "low_confidence item confidence must be finite, in [0, threshold)"
-            )
+            raise ValueError("low_confidence item confidence must be finite, in [0, threshold)")
         bbox = item["bbox"]
         if (
             not isinstance(bbox, (list, tuple))
             or len(bbox) != 4
             or not all(_is_finite_number(coordinate) for coordinate in bbox)
         ):
-            raise ValueError(
-                "low_confidence item bbox must be four finite numeric coordinates"
-            )
+            raise ValueError("low_confidence item bbox must be four finite numeric coordinates")
         if not isinstance(item["current_type"], str):
             raise ValueError("low_confidence item current_type must be a string")
         if not isinstance(item["text_excerpt"], str):
@@ -157,6 +256,30 @@ def _validate_item(
             raise ValueError(
                 "char_parity_deficit item missing_chars must be a non-negative integer"
             )
+        for field in ("text_excerpt", "oracle_excerpt", "missing_text"):
+            if field in item and not isinstance(item[field], str):
+                raise ValueError(f"char_parity_deficit item {field} must be a string")
+        if "missing_text_derivation_error" in item and (
+            not isinstance(item["missing_text_derivation_error"], str)
+            or not item["missing_text_derivation_error"]
+        ):
+            raise ValueError(
+                "char_parity_deficit item missing_text_derivation_error must be a non-empty string"
+            )
+        if "missing_text" in item and len(item["missing_text"]) != missing_chars:
+            raise ValueError(
+                "char_parity_deficit item missing_text length must match missing_chars"
+            )
+        if "bbox" in item:
+            bbox = item["bbox"]
+            if (
+                not isinstance(bbox, (list, tuple))
+                or len(bbox) != 4
+                or not all(_is_finite_number(coordinate) for coordinate in bbox)
+            ):
+                raise ValueError(
+                    "char_parity_deficit item bbox must be four finite numeric coordinates"
+                )
 
 
 def validate_annotation_call(
@@ -166,10 +289,13 @@ def validate_annotation_call(
 ) -> None:
     """Raise ``ValueError`` unless *payload* matches contract v1."""
     fields = set(payload)
-    if fields != _TOP_LEVEL_FIELDS:
+    missing_fields = _REQUIRED_TOP_LEVEL_FIELDS - fields
+    unexpected_fields = fields - _REQUIRED_TOP_LEVEL_FIELDS - _OPTIONAL_TOP_LEVEL_FIELDS
+    if missing_fields or unexpected_fields:
         raise ValueError(
-            "annotation-call fields must be exactly "
-            f"{sorted(_TOP_LEVEL_FIELDS)}; got {sorted(fields)}"
+            "annotation-call fields must contain the required fields and only "
+            f"known optional fields; missing={sorted(missing_fields)}; "
+            f"unexpected={sorted(unexpected_fields)}"
         )
     if payload.get("schema") != ANNOTATION_CALL_SCHEMA:
         raise ValueError(f"annotation-call schema must be {ANNOTATION_CALL_SCHEMA!r}")
@@ -182,6 +308,12 @@ def validate_annotation_call(
         raise ValueError("annotation-call pdf_sha256 must be a lowercase SHA-256")
     if not isinstance(payload.get("engine_commit"), str) or not payload["engine_commit"]:
         raise ValueError("annotation-call engine_commit must be a non-empty string")
+    if "engine_name" in payload and payload["engine_name"] != "pdf-oxide":
+        raise ValueError("annotation-call engine_name must be 'pdf-oxide'")
+    if "engine_version" in payload and (
+        not isinstance(payload["engine_version"], str) or not payload["engine_version"]
+    ):
+        raise ValueError("annotation-call engine_version must be a non-empty string")
 
     accuracy = payload.get("accuracy_estimate")
     if not isinstance(accuracy, Mapping):
@@ -244,14 +376,16 @@ def build_annotation_call(
         if page_image_refs:
             item["page_image_refs"] = list(page_image_refs)
             item["page_image_sha256"] = {
-                ref: block["page_image_sha256"][ref]
-                for ref in page_image_refs
+                ref: block["page_image_sha256"][ref] for ref in page_image_refs
             }
         _validate_item(item, threshold=threshold)
         items.append(item)
 
+    oracle_cache: Dict[int, tuple[Optional[str], Optional[str]]] = {}
     for extra_item in extra_items:
         item = dict(extra_item)
+        if item.get("reason") == "char_parity_deficit":
+            _enrich_char_parity_item(item, result, oracle_cache)
         page_image_refs = item.get("page_image_refs") or (
             page_image_refs_for_page(result, item.get("page", 0))
         )
@@ -259,12 +393,9 @@ def build_annotation_call(
             item["page_image_refs"] = list(page_image_refs)
             manifest = result.metadata.get("page_images", {})
             hashes = {
-                image["filename"]: image["byte_sha256"]
-                for image in manifest.get("images", [])
+                image["filename"]: image["byte_sha256"] for image in manifest.get("images", [])
             }
-            item["page_image_sha256"] = {
-                ref: hashes[ref] for ref in page_image_refs
-            }
+            item["page_image_sha256"] = {ref: hashes[ref] for ref in page_image_refs}
         _validate_item(item, threshold=threshold)
         items.append(item)
 
@@ -272,6 +403,8 @@ def build_annotation_call(
     payload = {
         "schema": ANNOTATION_CALL_SCHEMA,
         "pdf_sha256": _sha256_file(Path(result.source_pdf)),
+        "engine_name": "pdf-oxide",
+        "engine_version": VERSION,
         "engine_commit": engine_commit or _engine_commit(),
         "accuracy_estimate": {
             "basis": "confidence_threshold",

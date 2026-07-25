@@ -581,6 +581,7 @@ export interface AnnotationDecisionEvent extends JsonRecord {
   decision: AnnotationDecision
   corrected_type?: string
   corrected_bounds?: [number, number, number, number]
+  corrected_text?: string
   bbox_space?: 'pdf_points_bottom_left_xywh'
   revision_of?: string
   ts: string
@@ -599,6 +600,10 @@ function parseAnnotationDecisionEvents(path: string): AnnotationDecisionEvent[] 
       || typeof row.decision !== 'string'
       || typeof row.ts !== 'string'
       || typeof row.request_sha256 !== 'string'
+      || (
+        row.corrected_text !== undefined
+        && (typeof row.corrected_text !== 'string' || row.corrected_text.length > 20_000)
+      )
     ) {
       throw new ContractError(422, 'invalid_annotation_decision_store', `invalid event row ${index + 1}`)
     }
@@ -637,6 +642,20 @@ function normalizeBounds(value: unknown): [number, number, number, number] {
   return [x, y, width, height]
 }
 
+function normalizeCorrectedText(value: unknown): string {
+  if (typeof value !== 'string') {
+    throw new ContractError(400, 'invalid_corrected_text', 'corrected_text must be a string')
+  }
+  if (value.length > 20_000) {
+    throw new ContractError(
+      400,
+      'invalid_corrected_text',
+      'corrected_text must not exceed 20000 characters',
+    )
+  }
+  return value
+}
+
 export function getAnnotationDecisions(path: string): JsonRecord {
   const events = parseAnnotationDecisionEvents(path)
   return {
@@ -657,6 +676,7 @@ export function appendAnnotationDecision(
     'bbox_space',
     'call_sha256',
     'corrected_bounds',
+    'corrected_text',
     'corrected_type',
     'decision',
     'idempotency_key',
@@ -679,6 +699,7 @@ export function appendAnnotationDecision(
   if (input.revision_of !== undefined) normalized.revision_of = lowerSha(input.revision_of, 'revision_of')
   if (input.corrected_type !== undefined) normalized.corrected_type = requiredString(input.corrected_type, 'corrected_type')
   if (input.corrected_bounds !== undefined) normalized.corrected_bounds = normalizeBounds(input.corrected_bounds)
+  if (input.corrected_text !== undefined) normalized.corrected_text = normalizeCorrectedText(input.corrected_text)
   if (input.bbox_space !== undefined) normalized.bbox_space = input.bbox_space
   const requestSha = sha256(canonicalJson(normalized))
 
