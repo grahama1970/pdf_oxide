@@ -14,7 +14,7 @@ const PdfLabView = React.lazy(() =>
   import('./components/pdf-lab/PdfLabView').then((module) => ({ default: module.PdfLabView })),
 )
 
-type VerificationRoute = 'calibrate' | 'annotations' | 'evidence'
+type VerificationRoute = 'calibrate' | 'annotations' | 'evidence' | 'annotate'
 
 interface VerificationNavLinkProps {
   active: boolean
@@ -41,7 +41,7 @@ function readHashLocation(): HashLocation {
     subpath = route.slice('pdf-lab/'.length) || 'legacy'
   } else if (route.startsWith('pdf-lab/')) {
     const requested = route.slice('pdf-lab/'.length)
-    subpath = ['annotations', 'calibrate', 'evidence'].includes(requested) ? requested : 'annotations'
+    subpath = ['annotations', 'annotate', 'calibrate', 'evidence'].includes(requested) ? requested : 'annotations'
   }
   return {
     route,
@@ -101,6 +101,12 @@ function VerificationNav({ active }: { active?: VerificationRoute }) {
       label: 'Annotation queue',
       action: 'VERIFICATION_NAV_OPEN_ANNOTATIONS',
       description: 'Open the PDF Lab extraction uncertainty annotation queue',
+    },
+    {
+      route: 'annotate',
+      label: 'Annotate',
+      action: 'VERIFICATION_NAV_OPEN_ANNOTATE',
+      description: 'Open the full manual PDF annotation tool (draw regions, assign families, edit type/text)',
     },
     {
       route: 'calibrate',
@@ -251,7 +257,7 @@ export default function App() {
     )
   }
 
-  const verificationRoute: VerificationRoute = route === 'calibrate' || route === 'evidence'
+  const verificationRoute: VerificationRoute = route === 'calibrate' || route === 'evidence' || route === 'annotate'
     ? route
     : 'annotations'
   const artifactsRoot = mounts?.artifacts_root ?? '(the configured PDF Lab artifact root)'
@@ -296,6 +302,14 @@ export default function App() {
         artifactsRoot={artifactsRoot}
         testId="calibration-guided-empty"
       />
+    )
+  } else if (verificationRoute === 'annotate') {
+    verificationView = (
+      <div className="pdf-lab-app-shell">
+        <React.Suspense fallback={<div className="pdf-lab-loading">Loading manual annotation tool…</div>}>
+          <PdfLabView initialSubpath="labeling" pdfUrl={pdfUrl} extractionUrl={extractionUrl} />
+        </React.Suspense>
+      </div>
     )
   } else if (verificationRoute === 'evidence') {
     const options: RetrievalResultMount[] = resultOverride
