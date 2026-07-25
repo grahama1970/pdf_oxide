@@ -607,20 +607,22 @@ export function AnnotationQueueRoute({
   }, [selected])
 
   const updateCanvasRegions = (nextRegions: CanvasRegion[]) => {
-    const next = nextRegions[nextRegions.length - 1]
-    if (!next || !pageImage?.width || !pageImage.height) {
-      setCanvasRegions(nextRegions)
-      return
-    }
+    // Keep every user-drawn region (multi-annotation); ghosts never persist.
+    const drawn = nextRegions.filter((region) => !region.ghost)
+    setCanvasRegions(drawn)
+    const next = drawn[drawn.length - 1]
+    if (!next || !pageImage?.width || !pageImage.height) return
+    const pageWidthPt = pageImage.width * (72 / 96)
+    const pageHeightPt = pageImage.height * (72 / 96)
     const [x0, y0, x1, y1] = next.bbox
+    // corrected bounds in bottom-left-origin PDF points, matching the ledger contract
     const bounds: [number, number, number, number] = [
-      x0 * pageImage.width,
-      (1 - y1) * pageImage.height,
-      (x1 - x0) * pageImage.width,
-      (y1 - y0) * pageImage.height,
+      x0 * pageWidthPt,
+      (1 - y1) * pageHeightPt,
+      (x1 - x0) * pageWidthPt,
+      (y1 - y0) * pageHeightPt,
     ]
     setCorrectedBounds(bounds.map((value) => value.toFixed(3)) as [string, string, string, string])
-    setCanvasRegions([{ ...next, id: selected?.id ?? next.id }])
   }
 
   const saveDecision = async (
