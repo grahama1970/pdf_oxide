@@ -67,3 +67,22 @@ def test_nist_page_455_control_summaries_blocks_keep_toc_lineage():
         or block.get("breadcrumb") != EXPECTED_BREADCRUMB
     ]
     assert missing_lineage == []
+
+
+def test_nist_page_455_paragraph_continuation_is_not_page_chrome():
+    page = _extract_page_455_with_ledger()
+    blocks = page.get("blocks") or []
+
+    continuation_blocks = [
+        block
+        for block in blocks
+        if _normalized(block.get("text"))
+        == "importance, or order in which the controls or control enhancements are to be implemented."
+    ]
+    assert len(continuation_blocks) == 1
+    continuation = continuation_blocks[0]
+    assert continuation.get("type") == "paragraph_block"
+    assert continuation.get("source_type") == "Body"
+    assert continuation.get("semantic_role") != "page_chrome"
+    assert continuation.get("toc_path") == EXPECTED_TOC_PATH
+    assert continuation.get("breadcrumb") == EXPECTED_BREADCRUMB

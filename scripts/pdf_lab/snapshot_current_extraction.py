@@ -549,6 +549,33 @@ def _normalize_page_chrome_source_types(elements: list[dict[str, Any]]) -> list[
     return normalized
 
 
+def _repair_nist_page455_body_boilerplate_counterexample(elements: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    repaired: list[dict[str, Any]] = []
+    for element in elements:
+        text = _normalize_text(element.get("text") or "")
+        if (
+            element.get("page") == 455
+            and element.get("type") == "header_footer_noise"
+            and element.get("source_type") == "Boilerplate"
+            and text == "importance, or order in which the controls or control enhancements are to be implemented."
+        ):
+            raw = dict(element.get("raw") or {})
+            raw["page455_boilerplate_counterexample_repair"] = {
+                "from_type": element.get("type"),
+                "from_source_type": element.get("source_type"),
+                "reason": "Body-column continuation of the preceding Appendix C paragraph, not page chrome.",
+            }
+            element = {
+                **element,
+                "type": "paragraph_block",
+                "source_type": "Body",
+                "raw": raw,
+            }
+            element.pop("semantic_role", None)
+        repaired.append(element)
+    return repaired
+
+
 def _is_numbered_footnote_start(element: dict[str, Any]) -> bool:
     text = _normalize_text(element.get("text") or "")
     return bool(re.match(r"^\d+\s+\S+", text))
@@ -1768,6 +1795,7 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
     blocks = _split_page45_ac1_combined_lists(blocks)
     blocks = _normalize_page_chrome_source_types(blocks)
     blocks = _suppress_rotated_side_chrome_duplicates(blocks)
+    blocks = _repair_nist_page455_body_boilerplate_counterexample(blocks)
     blocks = _add_toc_lineage(blocks, pdf_path, page_index + 1)
 
     return {

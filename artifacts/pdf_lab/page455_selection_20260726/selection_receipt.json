@@ -5,9 +5,7 @@
     "pdf_index": 454,
     "queue_slice": "page455_control_summaries_lineage",
     "verified_toc_target": "toc:0038 APPENDIX C CONTROL SUMMARIES -> printed p.428",
-    "remaining_candidate_work_after_slice": [
-      "Audit body continuation classification for actual:p455:block:14 (`importance, or order...`) before treating page455 as fully closed."
-    ]
+    "remaining_candidate_work_after_slice": []
   },
   "objective": "Harden page455 Appendix C control summaries extraction by preserving TOC lineage on body headings, list, paragraphs, and footnotes.",
   "source_evidence": {
@@ -32,7 +30,7 @@
   "patch": {
     "code": "scripts/pdf_lab/snapshot_current_extraction.py",
     "test": "tests/test_nist_page455_control_summaries.py",
-    "change_summary": "Added page455 NIST Appendix C control summaries TOC lineage and regression coverage for headings plus body/footnote lineage.",
+    "change_summary": "Added page455 NIST Appendix C control summaries TOC lineage, repaired the body-column Boilerplate counterexample, and covered headings, body/footnote lineage, and continuation classification.",
     "toc_path": [
       "toc:0038"
     ],
@@ -46,9 +44,9 @@
     "block_count": 17,
     "type_counts": {
       "footnote": 2,
-      "header_footer_noise": 5,
+      "header_footer_noise": 4,
       "list": 1,
-      "paragraph_block": 6,
+      "paragraph_block": 7,
       "section_heading": 2,
       "unknown_region": 1
     },
@@ -71,18 +69,35 @@
       "actual:p455:block:17": [
         "toc:0038"
       ]
+    },
+    "continuation_block": {
+      "id": "actual:p455:block:14",
+      "type": "paragraph_block",
+      "source_type": "Body",
+      "text": "importance, or order in which the controls or control enhancements are to be implemented.",
+      "toc_path": [
+        "toc:0038"
+      ],
+      "breadcrumb": [
+        "APPENDIX C CONTROL SUMMARIES"
+      ]
     }
   },
   "focused_proof": {
     "command": "PYTHONPATH=python pytest -q tests/test_nist_page455_control_summaries.py",
-    "result": "1 passed, 5 warnings in 19.17s",
+    "result": "2 passed, 5 warnings in 45.97s",
     "mocked": "no",
     "live": "no",
     "exercised": "Deterministic local extraction of NIST page455 through snapshot_current_extraction with the promotion ledger.",
     "does_not_verify": "No paid model call, browser review, or human visual acceptance was performed for this slice."
   },
+  "continuation_pre_patch_regression": {
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page455_control_summaries.py",
+    "result": "1 failed, 1 passed, 5 warnings in 46.15s",
+    "failure_signature": "actual:p455:block:14 was header_footer_noise; expected paragraph_block Body continuation."
+  },
   "combined_regression": {
     "command": "PYTHONPATH=python pytest -q tests/test_nist_page455_control_summaries.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page401_references_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page35_control_families_table.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page456_page_chrome.py",
-    "result": "10 passed, 5 warnings in 187.09s"
+    "result": "11 passed, 5 warnings in 207.02s"
   }
 }

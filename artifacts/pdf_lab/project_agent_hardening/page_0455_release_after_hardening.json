@@ -864,9 +864,14 @@
         "font_size": 10.319999694824219,
         "header_level": null,
         "is_bold": true,
+        "page455_boilerplate_counterexample_repair": {
+          "from_source_type": "Boilerplate",
+          "from_type": "header_footer_noise",
+          "reason": "Body-column continuation of the preceding Appendix C paragraph, not page chrome."
+        },
         "text": "importance, or order in which the controls or control enhancements are to be implemented."
       },
-      "source_type": "Boilerplate",
+      "source_type": "Body",
       "text": "importance, or order in which the controls or control enhancements are to be implemented.",
       "toc_lineage": [
         {
@@ -882,7 +887,7 @@
       "toc_path": [
         "toc:0038"
       ],
-      "type": "header_footer_noise"
+      "type": "paragraph_block"
     },
     {
       "bbox": [
