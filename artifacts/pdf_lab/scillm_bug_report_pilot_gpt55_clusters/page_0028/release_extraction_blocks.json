@@ -1,0 +1,293 @@
+{
+  "source_extraction": "codex_two_call_viability",
+  "page": 28,
+  "pdf_page_index": 27,
+  "toc_entries": [],
+  "blocks": [
+    {
+      "id": "block_180",
+      "page": 27,
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        1.0016105502259498,
+        0.07054738324097913
+      ],
+      "blockType": "boilerplate",
+      "text": "NIST SP 800-53, R EV . 5 S ECURITY AND P RIVACY C ONTROLS FOR I NFORMATION S YSTEMS AND O RGANIZATIONS\n_________________________________________________________________________________________________",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_181",
+      "page": 27,
+      "bbox": [
+        0.14705882352941177,
+        0.9401591137202099,
+        0.8562647002974367,
+        0.9553636493104877
+      ],
+      "blockType": "boilerplate",
+      "text": "CHAPTER ONE\nPAGE 1",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_182",
+      "page": 27,
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.743765166311553
+      ],
+      "blockType": "boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.9
+    },
+    {
+      "id": "block_183",
+      "page": 27,
+      "bbox": [
+        0.14705882352941177,
+        0.08913536264438822,
+        0.27817076639412275,
+        0.11721082167191939
+      ],
+      "blockType": "header",
+      "text": "CHAPTER ONE",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_184",
+      "page": 27,
+      "bbox": [
+        0.1470528272242328,
+        0.12898307376437718,
+        0.32463400348339205,
+        0.15705853279190835
+      ],
+      "blockType": "header",
+      "text": "INTRODUCTION",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_185",
+      "page": 27,
+      "bbox": [
+        0.14705882352941177,
+        0.15823163889875316,
+        0.7227340399050245,
+        0.1751593580149641
+      ],
+      "blockType": "text",
+      "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_186",
+      "page": 27,
+      "bbox": [
+        0.14697116029028798,
+        0.18873045179578993,
+        0.8510009167241115,
+        0.30902521538011957
+      ],
+      "blockType": "text",
+      "text": "Modern information systems 1 can include a variety of computing platforms (e.g., industrial\ncontrol systems, general purpose computing systems, cyber-physical systems, super computers,\nweapons systems, communications systems, environmental control systems, medical devices,\nembedded devices, sensors, and mobile devices such as smart phones and tablets). These\nplatforms all share a common foundation\u2014computers with complex hardware, software and\nfirmware providing a capability that supports the essential mission and business functions of\norganizations. 2",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_187",
+      "page": 27,
+      "bbox": [
+        0.14703897713056577,
+        0.32259496053059894,
+        0.8491804334852431,
+        0.4937227422540838
+      ],
+      "blockType": "text",
+      "text": "Security controls are the safeguards or countermeasures employed within a system or an\norganization to protect the confidentiality, integrity, and availability of the system and its\ninformation and to manage information security 3 risk. Privacy controls are the administrative,\ntechnical, and physical safeguards employed within a system or an organization to manage\nprivacy risks and to ensure compliance with applicable privacy requirements. 4 Security and\nprivacy controls are selected and implemented to satisfy security and privacy requirements\nlevied on a system or organization. Security and privacy requirements are derived from\napplicable laws, executive orders, directives, regulations, policies, standards, and mission needs\nto ensure the confidentiality, integrity, and availability of information processed, stored, or\ntransmitted and to manage risks to individual privacy.",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_188",
+      "page": 27,
+      "bbox": [
+        0.1470541361889808,
+        0.5072910809757734,
+        0.8469930411943423,
+        0.5766791526717369
+      ],
+      "blockType": "text",
+      "text": "The selection, design, and implementation of security and privacy controls 5 are important tasks\nthat have significant implications for the operations 6 and assets of organizations as well as the\nwelfare of individuals and the Nation. Organizations should answer several key questions when\naddressing information security and privacy controls:",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_189",
+      "page": 27,
+      "bbox": [
+        0.14708609986149407,
+        0.5832366943359375,
+        0.8435984094158496,
+        0.6189493892168758
+      ],
+      "blockType": "list",
+      "text": "\u2022\nWhat security and privacy controls are needed to satisfy security and privacy requirements\nand to adequately manage mission/business risks or risks to individuals?",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_190",
+      "page": 27,
+      "bbox": [
+        0.14708595026552287,
+        0.6255069308810763,
+        0.7765520382550807,
+        0.6444307963053385
+      ],
+      "blockType": "list",
+      "text": "\u2022\nHave the selected controls been implemented or is there a plan in place to do so?",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_191",
+      "page": 27,
+      "bbox": [
+        0.1471038020514195,
+        0.6507388028231534,
+        0.8084857417087928,
+        0.686382178104285
+      ],
+      "blockType": "list",
+      "text": "\u2022\nWhat is the required level of assurance (i.e., grounds for confidence) that the selected\ncontrols, as designed and implemented, are effective? 7",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_192",
+      "page": 27,
+      "bbox": [
+        0.14705882352941177,
+        0.7084848423196812,
+        0.7824190426496119,
+        0.7557423909505209
+      ],
+      "blockType": "footnote",
+      "text": "1 An information system is a discrete set of information resources organized for the collection, processing,\nmaintenance, use, sharing, dissemination, or disposition of information [ OMB A-130 ].",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_193",
+      "page": 27,
+      "bbox": [
+        0.14705882352941177,
+        0.7569015194671322,
+        0.8415016722834967,
+        0.7859696667603772
+      ],
+      "blockType": "footnote",
+      "text": "2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure\n(e.g., a federal agency or, as appropriate, any of its operational elements).",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_194",
+      "page": 27,
+      "bbox": [
+        0.14705882352941177,
+        0.7872045497701625,
+        0.701573490317351,
+        0.8024090853604403
+      ],
+      "blockType": "footnote",
+      "text": "3 The two terms information security and security are used synonymously in this publication.",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_195",
+      "page": 27,
+      "bbox": [
+        0.14705882352941177,
+        0.8035682138770518,
+        0.4635245129953023,
+        0.8187727494673296
+      ],
+      "blockType": "footnote",
+      "text": "4 [ OMB A-130 ] defines security and privacy controls .",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_196",
+      "page": 27,
+      "bbox": [
+        0.14704900006063623,
+        0.8200075554125237,
+        0.8437195821525225,
+        0.8490757027057686
+      ],
+      "blockType": "footnote",
+      "text": "5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce\nrisk during the system development life cycle.",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_197",
+      "page": 27,
+      "bbox": [
+        0.14705882352941177,
+        0.8502348312223801,
+        0.6153809790517769,
+        0.8654393668126579
+      ],
+      "blockType": "footnote",
+      "text": "6 Organizational operations include mission, functions, image, and reputation.",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    },
+    {
+      "id": "block_198",
+      "page": 27,
+      "bbox": [
+        0.14705882352941177,
+        0.8666742498224432,
+        0.8311251970677594,
+        0.9096060088186553
+      ],
+      "blockType": "footnote",
+      "text": "7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly,\noperating as intended, and producing the desired outcome with respect to meeting the designated security and\nprivacy requirements [ SP 800-53A ].",
+      "qids": null,
+      "tocEntries": null,
+      "confidence": 0.95
+    }
+  ]
+}

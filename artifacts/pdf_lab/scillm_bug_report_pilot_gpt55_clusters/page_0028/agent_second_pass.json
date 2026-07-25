@@ -1,0 +1,348 @@
+{
+  "schema_version": "pdf_lab.agent_second_pass.v1",
+  "slice_id": "nist_phase54_page_0028",
+  "captured_at": "2026-05-31T15:58:51.170765+00:00",
+  "source": "run_page_repair_closure rematerialize from release_extraction_blocks.json",
+  "agent_decision": {
+    "status": "closure_rematerialized",
+    "human_review_required": false,
+    "learned_bug_report_reason": "human-visible line-level body/list/footnote/sidebar correction materialized as grouping/chrome bug report",
+    "selection_sources": [
+      "deterministic_page_scan",
+      "verified_toc_spine"
+    ],
+    "rationale": [
+      "verified TOC target(s): toc:0001 CHAPTER ONE INTRODUCTION -> printed p.1",
+      "list signal: lists=1, list_items=3",
+      "page chrome signal: running_headers=2, running_footers=2"
+    ],
+    "reviewer_questions": [
+      "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.",
+      "Mark nested/continued list items and distinguish bullets from prose line wraps.",
+      "Separate running headers, footers, printed page numbers, and side boilerplate from body content."
+    ],
+    "fix_error_request_count": 0
+  },
+  "toc_entries": [
+    {
+      "toc_id": "toc:0001",
+      "title": "CHAPTER ONE INTRODUCTION",
+      "level": 1,
+      "target_page": 1,
+      "matched_pdf_page_index": 27,
+      "extraction_page": 28
+    }
+  ],
+  "fix_error_requests": [],
+  "expected_elements": [
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "text_hint": "",
+      "label": "running_header_merged",
+      "allowed_types": [
+        "running_header",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "learned_running_header_group",
+      "notes": "Learned from Phase 54 human-feedback loop: split NIST running-header text should materialize as one page-chrome region.",
+      "breadcrumb": [
+        "CHAPTER ONE INTRODUCTION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER ONE INTRODUCTION",
+          "id": "toc:0001",
+          "node_id": "toc:0001",
+          "source": "toc",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145053,
+        0.091712,
+        0.312974,
+        0.151999
+      ],
+      "text_hint": "CHAPTER ONE INTRODUCTION",
+      "label": "CHAPTER ONE INTRODUCTION",
+      "allowed_types": [
+        "section_header",
+        "section_heading"
+      ],
+      "match_strategy": "toc_verified_heading_group",
+      "notes": "TOC-backed section heading for printed page 1. Group chapter label and title instead of asking for line-level relabeling.",
+      "breadcrumb": [
+        "CHAPTER ONE INTRODUCTION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER ONE INTRODUCTION",
+          "id": "toc:0001",
+          "node_id": "toc:0001",
+          "source": "toc",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "family": "section_subtitle",
+      "bbox_hint": [
+        0.145059,
+        0.156561,
+        0.716848,
+        0.173212
+      ],
+      "text_hint": "",
+      "label": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS",
+      "allowed_types": [
+        "section_subtitle",
+        "section_header",
+        "section_heading",
+        "paragraph_block"
+      ],
+      "match_strategy": "nist_section_subtitle_heading_context",
+      "notes": "Visible NIST section subtitle/dek under CHAPTER ONE INTRODUCTION. This is not a caption; captions are reserved for table/figure titles.",
+      "breadcrumb": [
+        "CHAPTER ONE INTRODUCTION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER ONE INTRODUCTION",
+          "id": "toc:0001",
+          "node_id": "toc:0001",
+          "source": "toc",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145471,
+        0.187515,
+        0.844932,
+        0.3062
+      ],
+      "text_hint": " firmware providing a capability that supports the essential mission and business functions of organizations.",
+      "label": "body_paragraph_1",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from body lines 6-12. Source line 11 leaks sidebar DOI text into body text and is recorded as a fix-error request.",
+      "breadcrumb": [
+        "CHAPTER ONE INTRODUCTION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER ONE INTRODUCTION",
+          "id": "toc:0001",
+          "node_id": "toc:0001",
+          "source": "toc",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145539,
+        0.321455,
+        0.829412,
+        0.490897
+      ],
+      "text_hint": "",
+      "label": "body_paragraph_2",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous body paragraph lines 13-22; not a set of independent annotation tasks.",
+      "breadcrumb": [
+        "CHAPTER ONE INTRODUCTION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER ONE INTRODUCTION",
+          "id": "toc:0001",
+          "node_id": "toc:0001",
+          "source": "toc",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145554,
+        0.506076,
+        0.840385,
+        0.573854
+      ],
+      "text_hint": "",
+      "label": "body_paragraph_3",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from body paragraph lines 23 and 25-27. Source line 24 is DOI/sidebar chrome, not body content.",
+      "breadcrumb": [
+        "CHAPTER ONE INTRODUCTION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER ONE INTRODUCTION",
+          "id": "toc:0001",
+          "node_id": "toc:0001",
+          "source": "toc",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.145586,
+        0.582291,
+        0.837768,
+        0.683557
+      ],
+      "text_hint": "",
+      "label": "security_privacy_control_questions",
+      "allowed_types": [
+        "list",
+        "list_item"
+      ],
+      "match_strategy": "learned_list_group",
+      "notes": "The visible bullet list is one list region with continuation lines; do not ask the human to relabel continuation lines as paragraphs.",
+      "breadcrumb": [
+        "CHAPTER ONE INTRODUCTION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER ONE INTRODUCTION",
+          "id": "toc:0001",
+          "node_id": "toc:0001",
+          "source": "toc",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "family": "footnote",
+      "bbox_hint": [
+        0.145559,
+        0.72547,
+        0.839595,
+        0.907561
+      ],
+      "text_hint": "",
+      "label": "footnotes_1_7",
+      "allowed_types": [
+        "paragraph",
+        "footnote"
+      ],
+      "match_strategy": "learned_footnote_group",
+      "notes": "Footnotes 1-7 are footnote content. Raw section_header labels on lines 39 and 42 are extractor/materialization bugs.",
+      "breadcrumb": [
+        "CHAPTER ONE INTRODUCTION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER ONE INTRODUCTION",
+          "id": "toc:0001",
+          "node_id": "toc:0001",
+          "source": "toc",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.0305,
+        0.272367,
+        0.270618,
+        0.533091
+      ],
+      "text_hint": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "label": "left_sidebar_watermark",
+      "allowed_types": [
+        "page_chrome_noise",
+        "paragraph"
+      ],
+      "match_strategy": "learned_sidebar_chrome_group",
+      "notes": "The DOI/sidebar watermark is page chrome. Its text currently leaks into body extraction lines 11 and 24.",
+      "breadcrumb": [
+        "CHAPTER ONE INTRODUCTION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER ONE INTRODUCTION",
+          "id": "toc:0001",
+          "node_id": "toc:0001",
+          "source": "toc",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.854885,
+        0.953818
+      ],
+      "text_hint": "",
+      "label": "footer_page_chrome",
+      "allowed_types": [
+        "running_footer",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "learned_footer_group",
+      "notes": "Footer chapter label and printed page number are page chrome.",
+      "breadcrumb": [
+        "CHAPTER ONE INTRODUCTION"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "chapter",
+          "label": "CHAPTER ONE INTRODUCTION",
+          "id": "toc:0001",
+          "node_id": "toc:0001",
+          "source": "toc",
+          "page": 1
+        }
+      ]
+    }
+  ]
+}

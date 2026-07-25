@@ -1,0 +1,41 @@
+{
+  "bug_clusters": [],
+  "bug_reports": [
+    {
+      "abstain_reason": "",
+      "bug_present": false,
+      "confidence": "high",
+      "current_family": "paragraph_block+boilerplate_split",
+      "evidence_block_ids": [
+        "block_182"
+      ],
+      "expected_family": "paragraph_block+page_chrome_noise_split",
+      "extraction_error": "The reviewed request is stale. The current extraction has the sidebar DOI text isolated as boilerplate in block_182, so the page-chrome text is no longer interleaved into the body paragraph indicated by the text hint.",
+      "patch_hint": "No change indicated for this reviewed request.",
+      "recommended_code_area": "unclear",
+      "source_id": "actual:p28:line:11",
+      "visual_observation": "The clean page shows the rotated DOI/publication notice as a separate vertical sidebar in the left margin, while the main body paragraph remains in the central text column. The overlay shows a separate bbox for the rotated sidebar/page chrome rather than it being merged into the body text."
+    },
+    {
+      "abstain_reason": "",
+      "bug_present": false,
+      "confidence": "high",
+      "current_family": "boilerplate",
+      "evidence_block_ids": [
+        "block_182"
+      ],
+      "expected_family": "page_chrome_noise",
+      "extraction_error": "The reviewed request is stale. The current extraction classifies the DOI/sidebar text as boilerplate in block_182 rather than as a body paragraph fragment.",
+      "patch_hint": "No change indicated for this reviewed request.",
+      "recommended_code_area": "unclear",
+      "source_id": "actual:p28:line:24",
+      "visual_observation": "The DOI/publication notice is visible as rotated gray page chrome along the left margin. The overlay places it in its own narrow vertical bbox separate from the main content column."
+    }
+  ],
+  "cluster_id": "page_chrome",
+  "fix_error_source": "expected_elements.json",
+  "missing_or_ambiguous": [],
+  "overall_confidence": "high",
+  "page": 28,
+  "schema": "pdf_oxide.scillm_visual_bug_report.v2"
+}

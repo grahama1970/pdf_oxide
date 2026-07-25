@@ -1,0 +1,432 @@
+You are a visual PDF Lab second-pass reviewer.
+
+Base verification contract from prompts/verify_extraction_accuracy.md:
+# Extraction Accuracy Verification Prompt
+
+## Task
+
+Verify that PDF extraction classifications are accurate by visually inspecting bbox regions.
+
+## Input
+
+You are given:
+1. **PDF path**: `{pdf_path}`
+2. **Extraction JSON**: `{extraction_json_path}` containing blocks with:
+   - `id`: block identifier
+   - `page`: 0-indexed page number
+   - `bbox`: normalized [x0, y0, x1, y1] coordinates (0-1 range)
+   - `blockType`: claimed classification (header, text, table, boilerplate)
+   - `text`: extracted text content
+
+## Process
+
+For a sample of blocks (stratified by blockType and page):
+
+### Step 1: Render bbox region
+```python
+import fitz
+doc = fitz.open(pdf_path)
+page = doc[block['page']]
+width, height = page.rect.width, page.rect.height
+
+# Denormalize bbox
+bbox = block['bbox']
+rect = fitz.Rect(
+    bbox[0] * width,
+    bbox[1] * height,
+    bbox[2] * width,
+    bbox[3] * height
+)
+
+# Render with padding
+padding = 10
+clip = rect + (-padding, -padding, padding, padding)
+pix = page.get_pixmap(clip=clip, dpi=150)
+pix.save(f"/tmp/verify_{block['id']}.png")
+```
+
+### Step 2: Examine each rendered region
+
+For each screenshot, answer:
+
+1. **What type of content is this?**
+   - Header/title (large text, bold, section name)
+   - Body text (paragraph, normal font)
+   - Table (grid, rows/columns, data)
+   - Page number ("Page X of Y")
+   - Running header/boilerplate (repeated page chrome)
+   - List item (bullet, numbered)
+   - Control ID (e.g., "AC-1 POLICY AND PROCEDURES")
+   - TOC entry (title ... page number)
+
+2. **Does extracted text match what you see?**
+   - Exact match
+   - Partial match (truncated or extra content)
+   - Mismatch (wrong text entirely)
+
+3. **Is the bbox accurate?**
+   - Correct (fully contains the content)
+   - Too small (cuts off content)
+   - Too large (includes adjacent content)
+   - Wrong location
+
+### Step 3: Report findings
+
+For each block examined, output:
+
+```json
+{
+  "block_id": "block_123",
+  "page": 5,
+  "claimed_type": "header",
+  "actual_type": "body_text",
+  "classification_correct": false,
+  "text_match": "exact",
+  "bbox_accuracy": "correct",
+  "notes": "This is a paragraph that happens to start with a control ID, not a section header"
+}
+```
+
+## Sampling Strategy
+
+Don't examine all blocks (8,911 is too many). Sample:
+
+1. **By type**: 5 blocks per blockType (header, text, table, boilerplate)
+2. **By page region**:
+   - First 10 pages (front matter, TOC)
+   - Middle pages (body content)
+   - Last 10 pages (appendices, glossary)
+3. **Edge cases**:
+   - Shortest text blocks (<20 chars)
+   - Longest text blocks (>500 chars)
+   - Blocks with control IDs in text
+
+Total sample: ~50-100 blocks
+
+## Definition of Done
+
+Output a verification report:
+
+```json
+{
+  "pdf": "NIST_SP_800-53r5.pdf",
+  "total_blocks": 8911,
+  "blocks_verified": 75,
+  "accuracy": {
+    "classification_correct": 71,
+    "classification_incorrect": 4,
+    "accuracy_rate": 0.947
+  },
+  "errors": [
+    {
+      "block_id": "block_4246",
+      "claimed": "header",
+      "actual": "body_text",
+      "reason": "Paragraph starting with PL-8, not a section header"
+    }
+  ],
+  "bbox_issues": [],
+  "text_match_issues": []
+}
+```
+
+## Acceptance Criteria
+
+- Classification accuracy ≥ 95%
+- No bbox issues (content fully contained)
+- Text extraction matches visual content
+
+
+Current task:
+Compare deterministic pdf_oxide extraction output against the clean page image and bbox overlay image for one reviewed issue cluster. Produce a bug report only. Do not propose a repository patch.
+
+Grounding rules:
+- Use the clean page image and bbox overlay as the authority for visible page structure.
+- Use the deterministic extraction blocks below for ids, bbox coordinates, labels, and extracted text.
+- Use the reviewed fix_error request payload as the candidate issue ledger.
+- Account for every listed source_id exactly once in bug_reports or missing_or_ambiguous.
+- If a request is stale because current extraction already matches the page image, report bug_present false.
+- Do not use page-specific literal text hacks.
+
+Tiny example of the expected reasoning style:
+Input: source_id actual:p1:line:7 asks for page_chrome_noise; current blocks show a separate boilerplate bbox in the page margin.
+Output: bug_present false, evidence_block_ids includes the boilerplate block id, extraction_error says the reviewed request is stale.
+
+Candidate payload:
+{
+  "cluster_id": "page_chrome",
+  "current_extracted_blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        1.0016105502259498,
+        0.07054738324097913
+      ],
+      "blockType": "boilerplate",
+      "id": "block_180",
+      "page": 27,
+      "text": "NIST SP 800-53, R EV . 5 S ECURITY AND P RIVACY C ONTROLS FOR I NFORMATION S YSTEMS AND O RGANIZATIONS _________________________________________________________________________________________________"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9401591137202099,
+        0.8562647002974367,
+        0.9553636493104877
+      ],
+      "blockType": "boilerplate",
+      "id": "block_181",
+      "page": 27,
+      "text": "CHAPTER ONE PAGE 1"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.743765166311553
+      ],
+      "blockType": "boilerplate",
+      "id": "block_182",
+      "page": 27,
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.08913536264438822,
+        0.27817076639412275,
+        0.11721082167191939
+      ],
+      "blockType": "header",
+      "id": "block_183",
+      "page": 27,
+      "text": "CHAPTER ONE"
+    },
+    {
+      "bbox": [
+        0.1470528272242328,
+        0.12898307376437718,
+        0.32463400348339205,
+        0.15705853279190835
+      ],
+      "blockType": "header",
+      "id": "block_184",
+      "page": 27,
+      "text": "INTRODUCTION"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.15823163889875316,
+        0.7227340399050245,
+        0.1751593580149641
+      ],
+      "blockType": "text",
+      "id": "block_185",
+      "page": 27,
+      "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS"
+    },
+    {
+      "bbox": [
+        0.14708609986149407,
+        0.5832366943359375,
+        0.8435984094158496,
+        0.6189493892168758
+      ],
+      "blockType": "list",
+      "id": "block_189",
+      "page": 27,
+      "text": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals?"
+    },
+    {
+      "bbox": [
+        0.14708595026552287,
+        0.6255069308810763,
+        0.7765520382550807,
+        0.6444307963053385
+      ],
+      "blockType": "list",
+      "id": "block_190",
+      "page": 27,
+      "text": "\u2022 Have the selected controls been implemented or is there a plan in place to do so?"
+    },
+    {
+      "bbox": [
+        0.1471038020514195,
+        0.6507388028231534,
+        0.8084857417087928,
+        0.686382178104285
+      ],
+      "blockType": "list",
+      "id": "block_191",
+      "page": 27,
+      "text": "\u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective? 7"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7084848423196812,
+        0.7824190426496119,
+        0.7557423909505209
+      ],
+      "blockType": "footnote",
+      "id": "block_192",
+      "page": 27,
+      "text": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [ OMB A-130 ]."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7569015194671322,
+        0.8415016722834967,
+        0.7859696667603772
+      ],
+      "blockType": "footnote",
+      "id": "block_193",
+      "page": 27,
+      "text": "2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements)."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7872045497701625,
+        0.701573490317351,
+        0.8024090853604403
+      ],
+      "blockType": "footnote",
+      "id": "block_194",
+      "page": 27,
+      "text": "3 The two terms information security and security are used synonymously in this publication."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8035682138770518,
+        0.4635245129953023,
+        0.8187727494673296
+      ],
+      "blockType": "footnote",
+      "id": "block_195",
+      "page": 27,
+      "text": "4 [ OMB A-130 ] defines security and privacy controls ."
+    },
+    {
+      "bbox": [
+        0.14704900006063623,
+        0.8200075554125237,
+        0.8437195821525225,
+        0.8490757027057686
+      ],
+      "blockType": "footnote",
+      "id": "block_196",
+      "page": 27,
+      "text": "5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8502348312223801,
+        0.6153809790517769,
+        0.8654393668126579
+      ],
+      "blockType": "footnote",
+      "id": "block_197",
+      "page": 27,
+      "text": "6 Organizational operations include mission, functions, image, and reputation."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8666742498224432,
+        0.8311251970677594,
+        0.9096060088186553
+      ],
+      "blockType": "footnote",
+      "id": "block_198",
+      "page": 27,
+      "text": "7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [ SP 800-53A ]."
+    }
+  ],
+  "fix_error_requests": {
+    "count": 2,
+    "full_requests": [
+      {
+        "current_type": "paragraph",
+        "owner": "pdf_oxide_core_text_order_or_chrome_filter",
+        "reason": "Extractor interleaves rotated sidebar DOI/page-chrome text with body paragraph text.",
+        "requested_family": "paragraph_block+page_chrome_noise_split",
+        "source_id": "actual:p28:line:11",
+        "text_hint": "This publication is firmware available providing free of charge a capability from: that supports the essential mission and business functions of"
+      },
+      {
+        "current_type": "paragraph",
+        "owner": "pdf_oxide_core_chrome_filter",
+        "reason": "DOI/sidebar watermark fragment should be page chrome, not body paragraph.",
+        "requested_family": "page_chrome_noise",
+        "source_id": "actual:p28:line:24",
+        "text_hint": "https://doi.org/10.6028/NIST.SP.800"
+      }
+    ],
+    "sample": [
+      {
+        "current_family": null,
+        "reason": "Extractor interleaves rotated sidebar DOI/page-chrome text with body paragraph text.",
+        "requested_family": "paragraph_block+page_chrome_noise_split",
+        "source_ids": [
+          "actual:p28:line:11"
+        ]
+      },
+      {
+        "current_family": null,
+        "reason": "DOI/sidebar watermark fragment should be page chrome, not body paragraph.",
+        "requested_family": "page_chrome_noise",
+        "source_ids": [
+          "actual:p28:line:24"
+        ]
+      }
+    ],
+    "source": "expected_elements.json",
+    "source_ids": [
+      "actual:p28:line:11",
+      "actual:p28:line:24"
+    ]
+  },
+  "issue_family": "page_chrome",
+  "mode": "cluster",
+  "page": 28
+}
+
+Return one valid JSON object with this exact schema and no surrounding prose:
+{
+  "schema": "pdf_oxide.scillm_visual_bug_report.v2",
+  "page": 28,
+  "cluster_id": "page_chrome",
+  "fix_error_source": "expected_elements.json",
+  "bug_reports": [
+    {
+      "source_id": "string copied from fix_error_requests.source_ids",
+      "bug_present": true,
+      "current_family": "string",
+      "expected_family": "string",
+      "visual_observation": "what the page image/overlay shows",
+      "extraction_error": "what the current extracted block gets wrong, or why this reviewed request is stale",
+      "evidence_block_ids": ["block id strings"],
+      "recommended_code_area": "extractor | materializer | preset | second_pass_prompt | unclear",
+      "patch_hint": "short prose direction only, no diff",
+      "confidence": "low | medium | high",
+      "abstain_reason": ""
+    }
+  ],
+  "missing_or_ambiguous": ["source ids that cannot be assessed visually"],
+  "bug_clusters": [
+    {
+      "cluster_id": "short stable label",
+      "source_ids": ["string"],
+      "summary": "shared root cause",
+      "recommended_owner": "extractor | materializer | preset | second_pass_prompt | human_review"
+    }
+  ],
+  "overall_confidence": "low | medium | high"
+}

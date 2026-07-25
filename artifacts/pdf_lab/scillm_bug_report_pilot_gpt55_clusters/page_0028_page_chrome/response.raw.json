@@ -1,0 +1,69 @@
+{
+  "body": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_oxide.scillm_visual_bug_report.v2\",\n  \"page\": 28,\n  \"cluster_id\": \"page_chrome\",\n  \"fix_error_source\": \"expected_elements.json\",\n  \"bug_reports\": [\n    {\n      \"source_id\": \"actual:p28:line:11\",\n      \"bug_present\": false,\n      \"current_family\": \"paragraph_block+boilerplate_split\",\n      \"expected_family\": \"paragraph_block+page_chrome_noise_split\",\n      \"visual_observation\": \"The clean page shows the rotated DOI/publication notice as a separate vertical sidebar in the left margin, while the main body paragraph remains in the central text column. The overlay shows a separate bbox for the rotated sidebar/page chrome rather than it being merged into the body text.\",\n      \"extraction_error\": \"The reviewed request is stale. The current extraction has the sidebar DOI text isolated as boilerplate in block_182, so the page-chrome text is no longer interleaved into the body paragraph indicated by the text hint.\",\n      \"evidence_block_ids\": [\n        \"block_182\"\n      ],\n      \"recommended_code_area\": \"unclear\",\n      \"patch_hint\": \"No change indicated for this reviewed request.\",\n      \"confidence\": \"high\",\n      \"abstain_reason\": \"\"\n    },\n    {\n      \"source_id\": \"actual:p28:line:24\",\n      \"bug_present\": false,\n      \"current_family\": \"boilerplate\",\n      \"expected_family\": \"page_chrome_noise\",\n      \"visual_observation\": \"The DOI/publication notice is visible as rotated gray page chrome along the left margin. The overlay places it in its own narrow vertical bbox separate from the main content column.\",\n      \"extraction_error\": \"The reviewed request is stale. The current extraction classifies the DOI/sidebar text as boilerplate in block_182 rather than as a body paragraph fragment.\",\n      \"evidence_block_ids\": [\n        \"block_182\"\n      ],\n      \"recommended_code_area\": \"unclear\",\n      \"patch_hint\": \"No change indicated for this reviewed request.\",\n      \"confidence\": \"high\",\n      \"abstain_reason\": \"\"\n    }\n  ],\n  \"missing_or_ambiguous\": [],\n  \"bug_clusters\": [],\n  \"overall_confidence\": \"high\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1780245276,
+    "id": "chatcmpl-codex-fd5cde25",
+    "model": "gpt-5.5",
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-bug-report-pilot-20260531T123310",
+      "item_id": "page_0028_page_chrome"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": "codex-oauth",
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "gpt-5.5",
+      "model_served": "gpt-5.5",
+      "routed_to_provider": "codex-oauth"
+    },
+    "scillm_reasoning": {
+      "applied_effort": "high",
+      "forwarded": true,
+      "ignored_reason": null,
+      "provider_field": "reasoning.effort",
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 3074,
+      "completion_tokens_details": null,
+      "prompt_tokens": 6285,
+      "prompt_tokens_details": null,
+      "total_tokens": 9359
+    }
+  },
+  "headers": {
+    "x-cost-usd": "unknown",
+    "x-scillm-timeout-ms": "184552",
+    "x-scillm-timeout-samples": "130",
+    "x-scillm-timeout-source": "estimated"
+  },
+  "ok": true,
+  "status_code": 200
+}
