@@ -34,6 +34,7 @@ export interface AnnotationDecisionEvent {
   decision: AnnotationDecision
   corrected_type?: ElementType
   corrected_bounds?: [number, number, number, number]
+  corrected_text?: string
   bbox_space?: 'pdf_points_bottom_left_xywh'
   revision_of?: string
   ts: string
@@ -48,6 +49,7 @@ export interface AnnotationDecisionInput {
   decision: AnnotationDecision
   corrected_type?: ElementType
   corrected_bounds?: [number, number, number, number]
+  corrected_text?: string
   bbox_space?: 'pdf_points_bottom_left_xywh'
   revision_of?: string
   ts: string
@@ -63,16 +65,21 @@ export function buildAnnotationDecisionInput(
   options: {
     correctedType?: ElementType
     correctedBounds?: [number, number, number, number]
+    correctedText?: string
     revisionOf?: string
     timestamp?: string
   } = {},
 ): AnnotationDecisionInput {
   const correctedType = options.correctedType
   const correctedBounds = options.correctedBounds
+  const correctedText = options.correctedText
   if (decision === 'correct_type' && !correctedType) throw new Error('corrected type is required')
   if (decision !== 'correct_type' && correctedType) throw new Error('corrected type is not allowed')
   if (decision === 'correct_bounds' && !correctedBounds) throw new Error('corrected bounds are required')
   if (decision !== 'correct_bounds' && correctedBounds) throw new Error('corrected bounds are not allowed')
+  if (correctedText !== undefined && correctedText.length > 20_000) {
+    throw new Error('corrected text must not exceed 20000 characters')
+  }
   return {
     idempotency_key: idempotencyKey(),
     item_id: item.id,
@@ -83,6 +90,7 @@ export function buildAnnotationDecisionInput(
     ...(correctedBounds
       ? { corrected_bounds: correctedBounds, bbox_space: 'pdf_points_bottom_left_xywh' as const }
       : {}),
+    ...(correctedText !== undefined ? { corrected_text: correctedText } : {}),
     ...(options.revisionOf ? { revision_of: options.revisionOf } : {}),
     ts: options.timestamp ?? new Date().toISOString(),
   }
@@ -97,4 +105,8 @@ export function isAnnotationDecisionEvent(value: unknown): value is AnnotationDe
     && typeof event.item_sha256 === 'string'
     && typeof event.call_sha256 === 'string'
     && ANNOTATION_DECISIONS.includes(event.decision as AnnotationDecision)
+    && (
+      event.corrected_text === undefined
+      || (typeof event.corrected_text === 'string' && event.corrected_text.length <= 20_000)
+    )
 }
