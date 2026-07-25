@@ -1,0 +1,44 @@
+{
+  "artifacts_root": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/pdf-lab",
+  "documents": [
+    {
+      "annotation_items": 23,
+      "doc": "1512.03385v1",
+      "page_image_index": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/artifacts/pdf-lab/annotation-calls/1512.03385v1/page_images_v1.json",
+      "referenced_pages": 10,
+      "rendered_images": 10,
+      "source_pdf": "/mnt/storage12tb/extractor_corpus/inbox/arxiv/1512.03385v1.pdf",
+      "source_pdf_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a"
+    }
+  ],
+  "mounted_annotation_calls": {
+    "1512.03385v1": 23,
+    "NASA_SP-2016-6105": 604,
+    "NIST.SP.800-53Ar5": 315,
+    "NIST_SP_800-53r5": 1219
+  },
+  "not_rendered": [
+    {
+      "doc": "NASA_SP-2016-6105",
+      "reason": "not requested in this bounded run",
+      "referenced_pages": 195
+    },
+    {
+      "doc": "NIST.SP.800-53Ar5",
+      "reason": "not requested in this bounded run",
+      "referenced_pages": 88
+    },
+    {
+      "doc": "NIST_SP_800-53r5",
+      "reason": "not requested in this bounded run",
+      "referenced_pages": 363
+    }
+  ],
+  "renderer": {
+    "dpi": 96,
+    "format": "png",
+    "module": "/home/graham/workspace/experiments/pdf_oxide-p34-coder/.venv/lib/python3.14/site-packages/pdf_oxide/pdf_oxide.abi3.so",
+    "sha256": "9ce6c511e9d03f2354d2393570eee9e86cf793557b24340488378ffd6da073b7"
+  },
+  "schema": "pdf_oxide.round4_bounded_page_images.v1"
+}
