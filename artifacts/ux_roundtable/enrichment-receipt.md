@@ -87,7 +87,7 @@ The call carries:
 {
   "engine_name": "pdf-oxide",
   "engine_version": "0.3.14",
-  "engine_commit": "d6d4af7993248a88a0f002e1e2f76eef3385dc7d"
+  "engine_commit": "4d0d4e98adde29e86e1b73f79b1b317379792467"
 }
 ```
 
