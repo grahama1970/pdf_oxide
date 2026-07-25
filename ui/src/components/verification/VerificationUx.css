@@ -1445,3 +1445,115 @@
     grid-column: auto;
   }
 }
+
+/* --- operator spec 4: streamlined 48px app bar --- */
+.pdf-verify-appbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 48px;
+  padding: 0 16px;
+  background: #05070b;
+  border-bottom: 1px solid #1f2733;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+.pdf-verify-appbar__left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.pdf-verify-appbar__crumb {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #66707d;
+  white-space: nowrap;
+}
+.pdf-verify-appbar__divider { width: 1px; height: 16px; background: #2a3442; }
+.pdf-verify-appbar h1 { margin: 0; font-size: 14px; font-weight: 500; color: #d4dae2; white-space: nowrap; }
+.pdf-verify-appbar__info {
+  border: 0;
+  background: transparent;
+  color: #66707d;
+  font-size: 14px;
+  cursor: help;
+  padding: 2px 4px;
+}
+.pdf-verify-appbar__info:hover { color: #cbd4de; }
+.pdf-verify-appbar .pdf-verify-mode-nav {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 4px;
+  background: #0b0f16;
+  border: 1px solid #1f2733;
+  border-radius: 8px;
+}
+.pdf-verify-appbar .pdf-verify-mode-nav a {
+  padding: 4px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8a93a0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pdf-verify-appbar .pdf-verify-mode-nav a:hover { color: #d4dae2; }
+.pdf-verify-appbar .pdf-verify-mode-nav a.is-active { background: #2b3646; color: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+.pdf-verify-appbar__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border: 1px solid #2a3442;
+  border-radius: 999px;
+  background: #0b0f16;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  color: #cbd4de;
+  white-space: nowrap;
+}
+.pdf-verify-appbar__pulse { position: relative; display: inline-flex; width: 8px; height: 8px; }
+.pdf-verify-appbar__pulse::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #34d399;
+  opacity: 0.75;
+  animation: pdf-verify-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.pdf-verify-appbar__pulse::after { content: ''; position: relative; width: 8px; height: 8px; border-radius: 999px; background: #10b981; }
+@keyframes pdf-verify-ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
+
+/* --- operator spec 2: task summary banner --- */
+.pdf-verify-task-banner {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-left: 4px solid;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 14px;
+}
+.pdf-verify-task-banner svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+.pdf-verify-task-banner strong { display: block; font-size: 14px; margin-bottom: 3px; }
+.pdf-verify-task-banner p { margin: 0; font-size: 12.5px; line-height: 1.5; opacity: 0.85; }
+.pdf-verify-task-banner.is-danger { border-color: #ef4444; background: rgba(127, 29, 29, 0.2); color: #fecaca; }
+.pdf-verify-task-banner.is-danger svg { color: #f87171; }
+.pdf-verify-task-banner.is-warning { border-color: #eab308; background: rgba(113, 63, 18, 0.2); color: #fef08a; }
+.pdf-verify-task-banner.is-warning svg { color: #facc15; }
+.pdf-verify-task-banner.is-info { border-color: #3b82f6; background: rgba(30, 58, 138, 0.2); color: #bfdbfe; }
+.pdf-verify-task-banner.is-info svg { color: #60a5fa; }
+.pdf-verify-canvas-note {
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  border: 1px dashed #3b82f6;
+  border-radius: 8px;
+  background: rgba(30, 58, 138, 0.15);
+  color: #bfdbfe;
+  font-size: 12.5px;
+}

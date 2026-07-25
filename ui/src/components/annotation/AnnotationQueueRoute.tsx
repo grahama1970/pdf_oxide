@@ -130,6 +130,42 @@ function highlightedOracleText(oracleExcerpt: string | null, missingText: string
   )
 }
 
+const TASK_BANNERS: Record<string, { title: string; description: string; tone: string }> = {
+  char_parity_deficit: {
+    title: 'Missing Characters Detected',
+    description: 'The extracted text is missing characters compared to the original PDF. Please apply the suggested fix or type the missing text into the editor.',
+    tone: 'is-danger',
+  },
+  low_confidence: {
+    title: 'Low Engine Confidence',
+    description: 'The extraction engine is unsure about the highlighted region. Please verify it against the original document.',
+    tone: 'is-warning',
+  },
+  reviewer_flagged: {
+    title: 'Reviewer Flagged',
+    description: 'A second-pass reviewer flagged this element. Read the finding and verify against the original page.',
+    tone: 'is-info',
+  },
+  unadjudicated_residual: {
+    title: 'Unresolved Residual',
+    description: 'A prior sweep left this element unresolved. Verify it against the original page and decide.',
+    tone: 'is-info',
+  },
+}
+
+function TaskSummaryBanner({ reason }: { reason: string }) {
+  const banner = TASK_BANNERS[reason] ?? TASK_BANNERS.low_confidence
+  return (
+    <div className={`pdf-verify-task-banner ${banner.tone}`} data-testid="task-summary-banner" role="note">
+      <AlertTriangle aria-hidden="true" />
+      <div>
+        <strong>{banner.title}</strong>
+        <p>{banner.description}</p>
+      </div>
+    </div>
+  )
+}
+
 function EvidencePanel({ item }: { item: AnnotationQueueItem }) {
   if (item.reason === 'char_parity_deficit') {
     return (
@@ -781,6 +817,11 @@ export function AnnotationQueueRoute({
               <div className="pdf-verify-adjudication__columns">
                 <section className="pdf-verify-workbench-panel is-canvas" aria-labelledby="original-page-heading">
                   <header><span>01</span><h2 id="original-page-heading">Original page</h2></header>
+                  {pageImage && !bbox && (
+                    <p className="pdf-verify-canvas-note" data-testid="no-region-note">
+                      No region localized for this flag yet — drag on the page to draw the annotation yourself.
+                    </p>
+                  )}
                   {pageImage ? (
                     <PdfDocumentCanvas
                       pageImage={pageImage}
@@ -788,8 +829,8 @@ export function AnnotationQueueRoute({
                       selectedRegionId={canvasRegions[0]?.id ?? null}
                       onSelectedRegionChange={() => undefined}
                       onRegionsChange={updateCanvasRegions}
-                      allowDraw={workbenchAction === 'fix_bounds'}
-                      drawLabel="corrected bounds"
+                      allowDraw
+                      drawLabel={workbenchAction === 'fix_bounds' ? 'corrected bounds' : 'annotation'}
                       drawColor="#a8ff57"
                       thumbnails={thumbnails}
                       selectedThumbnailId={`${selected.documentId}:${selected.page}`}
@@ -929,10 +970,7 @@ export function AnnotationQueueRoute({
 
                 <section className="pdf-verify-workbench-panel is-evidence" aria-labelledby="flag-evidence-heading">
                   <header><span>03</span><h2 id="flag-evidence-heading">Flag evidence</h2></header>
-                  <div className={`pdf-verify-flag-badge is-${selected.reason}`}>
-                    <span className={`pdf-verify-reason-dot is-${selected.reason}`} aria-hidden="true" />
-                    {annotationReasonLabel(selected.reason)}
-                  </div>
+                  <TaskSummaryBanner reason={selected.reason} />
                   <EvidencePanel item={selected} />
                   <dl className="pdf-verify-details">
                     <div><dt>Reason</dt><dd>{selected.reason}</dd></div>

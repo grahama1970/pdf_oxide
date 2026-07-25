@@ -323,9 +323,34 @@ export default function App() {
     )
   }
 
+  const openItemsCount = mounts?.annotation_calls
+    ? mounts.annotation_calls.reduce((total, call) => total + (call.item_count ?? 0), 0)
+    : null
+
   return (
     <div className="pdf-lab-app-shell">
-      <VerificationNav active={verificationRoute} />
+      <header className="pdf-verify-appbar" data-testid="streamlined-appbar">
+        <div className="pdf-verify-appbar__left">
+          <span className="pdf-verify-appbar__crumb">Pdf Lab · Final 5%</span>
+          <span className="pdf-verify-appbar__divider" aria-hidden="true" />
+          <h1>Extraction Adjudication</h1>
+          <button
+            type="button"
+            className="pdf-verify-appbar__info"
+            data-qid="verification-appbar:info:help"
+            data-qs-action="VERIFICATION_APPBAR_HELP"
+            title="Compare the original page, pdf-oxide extraction, and exact flag evidence before writing a decision."
+            aria-label="Workbench help"
+          >
+            ⓘ
+          </button>
+        </div>
+        <VerificationNav active={verificationRoute} />
+        <div className="pdf-verify-appbar__status" data-testid="open-items-pill">
+          <span className="pdf-verify-appbar__pulse" aria-hidden="true" />
+          <span>{openItemsCount === null ? '…' : openItemsCount.toLocaleString('en-US')} open</span>
+        </div>
+      </header>
       {verificationView}
     </div>
   )
