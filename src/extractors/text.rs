@@ -1457,7 +1457,7 @@ impl TjBuffer {
                         if let Some(s) = font.char_to_unicode(byte as u32) {
                             if s != "\u{FFFD}" {
                                 for ch in s.chars() {
-                                    if ch >= '\x20' || ch == '\t' || ch == '\n' || ch == '\r' {
+                                    if ch != '\0' {
                                         self.unicode.push(ch);
                                     }
                                 }
@@ -5797,7 +5797,7 @@ impl TextExtractor {
                         if let Some(s) = font.char_to_unicode(byte as u32) {
                             if s != "\u{FFFD}" {
                                 for ch in s.chars() {
-                                    if ch >= '\x20' || ch == '\t' || ch == '\n' || ch == '\r' {
+                                    if ch != '\0' {
                                         buffer.unicode.push(ch);
                                     }
                                 }
@@ -5896,7 +5896,7 @@ impl TextExtractor {
                     } else if let Some(s) = font.char_to_unicode(byte as u32) {
                         if s != "\u{FFFD}" {
                             for ch in s.chars() {
-                                if ch >= '\x20' || ch == '\t' || ch == '\n' || ch == '\r' {
+                                if ch != '\0' {
                                     buffer.unicode.push(ch);
                                 }
                             }
