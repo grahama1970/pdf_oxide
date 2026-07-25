@@ -460,6 +460,7 @@ export function AnnotationQueueRoute({
   const [canvasRegions, setCanvasRegions] = useState<CanvasRegion[]>([])
   const [showContext, setShowContext] = useState(true)
   const [selectedDrawnId, setSelectedDrawnId] = useState<string | null>(null)
+  const [menuAnchor, setMenuAnchor] = useState<{ left: number; top: number; width: number } | null>(null)
   const [contextItems, setContextItems] = useState<Array<{ page: number; type: string; bbox: number[]; label: string; table_data?: string[][] }> | null>(null)
 
   useEffect(() => {
@@ -586,6 +587,23 @@ export function AnnotationQueueRoute({
     const region = canvasRegions.find((candidate) => candidate.id === selectedDrawnId)
     return region && region.id !== selected.id && !region.ghost ? region : null
   }, [canvasRegions, selectedDrawnId, selected])
+
+  useEffect(() => {
+    if (!selectedDrawnId) { setMenuAnchor(null); return }
+    const compute = () => {
+      const el = document.querySelector(`[data-region-id="${selectedDrawnId}"]`)
+      if (!el) { setMenuAnchor(null); return }
+      const rect = el.getBoundingClientRect()
+      setMenuAnchor({ left: rect.left, top: rect.top, width: rect.width })
+    }
+    compute()
+    window.addEventListener('scroll', compute, true)
+    window.addEventListener('resize', compute)
+    return () => {
+      window.removeEventListener('scroll', compute, true)
+      window.removeEventListener('resize', compute)
+    }
+  }, [selectedDrawnId, canvasRegions])
 
   const ghostRegions = useMemo<CanvasRegion[]>(() => {
     if (!selected || !contextItems || !pageImage?.width || !pageImage.height) return []
@@ -965,7 +983,7 @@ export function AnnotationQueueRoute({
                   )}
                   {pageImage && selectedDrawnRegion && (
                     <FloatingLabelMenu
-                      activeBox={{ bbox: selectedDrawnRegion.bbox }}
+                      anchor={menuAnchor}
                       onSelectLabel={(type) => {
                         setCanvasRegions((current) => {
                           const next = current.map((region) => (

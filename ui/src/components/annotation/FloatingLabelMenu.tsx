@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Image, Layout, Search, Type } from 'lucide-react'
 
-export interface FloatingLabelBox {
-  /** normalized 0..1 image-space corners [x0,y0,x1,y1] */
-  bbox: [number, number, number, number]
+export interface FloatingLabelAnchor {
+  /** viewport-space rect of the active region (getBoundingClientRect) */
+  left: number
+  top: number
+  width: number
 }
 
 interface LabelDef {
@@ -52,7 +55,6 @@ const LABEL_GROUPS: LabelGroup[] = [
   },
 ]
 
-// hotkey -> label name, for the parent's keydown routing
 export const LABEL_HOTKEYS: Record<string, string> = Object.fromEntries(
   LABEL_GROUPS.flatMap((group) => group.labels)
     .filter((label) => label.hotkey)
@@ -60,11 +62,11 @@ export const LABEL_HOTKEYS: Record<string, string> = Object.fromEntries(
 )
 
 export function FloatingLabelMenu({
-  activeBox,
+  anchor,
   onSelectLabel,
   onClose,
 }: {
-  activeBox: FloatingLabelBox | null
+  anchor: FloatingLabelAnchor | null
   onSelectLabel: (label: string) => void
   onClose: () => void
 }) {
@@ -74,7 +76,7 @@ export function FloatingLabelMenu({
   useEffect(() => {
     setQuery('')
     inputRef.current?.focus()
-  }, [activeBox])
+  }, [anchor])
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase()
@@ -84,19 +86,21 @@ export function FloatingLabelMenu({
     })).filter((group) => group.labels.length > 0)
   }, [query])
 
-  if (!activeBox) return null
+  if (!anchor || typeof document === 'undefined') return null
 
   const flatFirst = filtered[0]?.labels[0]
-
-  // anchor above the box's top-left corner, in image-percent space
-  const [x0, y0] = activeBox.bbox
+  const MENU_WIDTH = 256
+  // clamp to viewport so it is never off-screen; render above the box, front-most via portal.
+  const left = Math.max(8, Math.min(anchor.left, window.innerWidth - MENU_WIDTH - 8))
   const style: React.CSSProperties = {
-    left: `${x0 * 100}%`,
-    top: `calc(${y0 * 100}% - 10px)`,
+    position: 'fixed',
+    left,
+    top: anchor.top - 10,
     transform: 'translateY(-100%)',
+    width: MENU_WIDTH,
   }
 
-  return (
+  return createPortal(
     <div
       className="pdf-floating-label-menu"
       style={style}
@@ -112,11 +116,9 @@ export function FloatingLabelMenu({
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={(event) => {
-            if (event.key === 'Enter' && flatFirst) {
-              onSelectLabel(flatFirst.name)
-            } else if (event.key === 'Escape') {
-              onClose()
-            }
+            event.stopPropagation()
+            if (event.key === 'Enter' && flatFirst) onSelectLabel(flatFirst.name)
+            else if (event.key === 'Escape') onClose()
           }}
           placeholder="Filter labels…"
           aria-label="Filter labels"
@@ -150,6 +152,7 @@ export function FloatingLabelMenu({
           </div>
         ))}
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
