@@ -64,6 +64,32 @@ const DEFAULT_CALLS_URL = '/artifacts/pdf-lab/annotation_call.json'
 const DECISIONS_ENDPOINT = '/api/pdf-lab/annotation-decisions'
 const TIMING_ENDPOINT = '/api/pdf-lab/ux-timing-events'
 const QUEUE_STATE_KEY = 'pdf-oxide.annotation-queue-state.v1'
+const DRAWN_REGIONS_KEY = 'pdf-oxide.drawn-annotations.v1'
+
+function loadDrawnRegions(itemId: string): CanvasRegion[] {
+  try {
+    const store = JSON.parse(window.localStorage.getItem(DRAWN_REGIONS_KEY) ?? '{}')
+    const rows = store[itemId]
+    if (!Array.isArray(rows)) return []
+    return rows.filter((row) => Array.isArray(row?.bbox) && row.bbox.length === 4)
+  } catch {
+    return []
+  }
+}
+
+function saveDrawnRegions(itemId: string, regions: CanvasRegion[]): void {
+  try {
+    const store = JSON.parse(window.localStorage.getItem(DRAWN_REGIONS_KEY) ?? '{}')
+    if (regions.length) {
+      store[itemId] = regions.map(({ id, bbox, label }) => ({ id, bbox, label, editable: true }))
+    } else {
+      delete store[itemId]
+    }
+    window.localStorage.setItem(DRAWN_REGIONS_KEY, JSON.stringify(store))
+  } catch {
+    /* storage unavailable — annotations remain in-memory only */
+  }
+}
 const ROW_HEIGHT = 82
 const OVERSCAN = 8
 
@@ -526,13 +552,14 @@ export function AnnotationQueueRoute({
     )
     setCorrectedBounds(selected?.bbox ? selected.bbox.map(String) as [string, string, string, string] : ['', '', '', ''])
     setWorkbenchAction(selected?.reason === 'char_parity_deficit' ? 'fix_text' : null)
-    setCanvasRegions(bbox ? [{
+    const flagged: CanvasRegion[] = bbox ? [{
       id: selected?.id ?? 'selected',
       bbox: [bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]],
       label: selected?.currentType || selected?.kind || 'extraction',
       color: selected?.reason === 'char_parity_deficit' ? '#fb7185' : '#58b9ff',
       editable: true,
-    }] : [])
+    }] : []
+    setCanvasRegions(selected ? [...flagged, ...loadDrawnRegions(selected.id)] : flagged)
   }, [bbox, selected])
 
   const thumbnails = useMemo<CanvasThumbnail[]>(() => {
@@ -611,6 +638,7 @@ export function AnnotationQueueRoute({
     // Keep every user-drawn region (multi-annotation); ghosts never persist.
     const drawn = nextRegions.filter((region) => !region.ghost)
     setCanvasRegions(drawn)
+    if (selected) saveDrawnRegions(selected.id, drawn.filter((region) => region.id !== selected.id))
     const next = drawn[drawn.length - 1]
     if (!next || !pageImage?.width || !pageImage.height) return
     const pageWidthPt = pageImage.width * (72 / 96)
@@ -727,7 +755,11 @@ export function AnnotationQueueRoute({
       if (event.key === '6') void saveDecision('defer')
       if (event.key === 'v' || event.key === 'V') setShowContext((current) => !current)
       if ((event.key === 'Delete' || event.key === 'Backspace') && selectedDrawnId) {
-        setCanvasRegions((current) => current.filter((region) => region.id !== selectedDrawnId))
+        setCanvasRegions((current) => {
+          const next = current.filter((region) => region.id !== selectedDrawnId)
+          if (selected) saveDrawnRegions(selected.id, next.filter((region) => region.id !== selected.id))
+          return next
+        })
         setSelectedDrawnId(null)
       }
     }
@@ -922,7 +954,11 @@ export function AnnotationQueueRoute({
                         onClick={() => {
                           const targetId = selectedDrawnId ?? canvasRegions[canvasRegions.length - 1]?.id
                           if (!targetId) return
-                          setCanvasRegions((current) => current.filter((region) => region.id !== targetId))
+                          setCanvasRegions((current) => {
+                            const next = current.filter((region) => region.id !== targetId)
+                            saveDrawnRegions(selected.id, next.filter((region) => region.id !== selected.id))
+                            return next
+                          })
                           setSelectedDrawnId(null)
                         }}
                         data-qid="annotation-queue:region:delete"
@@ -939,9 +975,13 @@ export function AnnotationQueueRoute({
                           onClick={() => {
                             const targetId = selectedDrawnId ?? canvasRegions[canvasRegions.length - 1]?.id
                             if (!targetId) return
-                            setCanvasRegions((current) => current.map((region) => (
-                              region.id === targetId ? { ...region, label: type } : region
-                            )))
+                            setCanvasRegions((current) => {
+                              const next = current.map((region) => (
+                                region.id === targetId ? { ...region, label: type } : region
+                              ))
+                              saveDrawnRegions(selected.id, next.filter((region) => region.id !== selected.id))
+                              return next
+                            })
                           }}
                           data-qid={`annotation-queue:region-type:${type.toLowerCase()}`}
                           data-qs-action="ANNOTATION_QUEUE_LABEL_REGION"
