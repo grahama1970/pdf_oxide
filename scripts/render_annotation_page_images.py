@@ -37,6 +37,9 @@ SOURCE_PDFS = {
     "NASA_SP-2016-6105": Path(
         "/mnt/storage12tb/extractor_corpus/engineering/12 NASA_SP-2016-6105 Rev 2.pdf"
     ),
+    "1512.03385v1": Path(
+        "/mnt/storage12tb/extractor_corpus/inbox/arxiv/1512.03385v1.pdf"
+    ),
 }
 
 
