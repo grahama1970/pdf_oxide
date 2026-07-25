@@ -726,6 +726,10 @@ export function AnnotationQueueRoute({
       if (event.key === '5') void saveDecision('not_an_element')
       if (event.key === '6') void saveDecision('defer')
       if (event.key === 'v' || event.key === 'V') setShowContext((current) => !current)
+      if ((event.key === 'Delete' || event.key === 'Backspace') && selectedDrawnId) {
+        setCanvasRegions((current) => current.filter((region) => region.id !== selectedDrawnId))
+        setSelectedDrawnId(null)
+      }
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
@@ -912,6 +916,22 @@ export function AnnotationQueueRoute({
                   {pageImage && canvasRegions.length > 0 && (
                     <div className="pdf-verify-type-chips" data-testid="region-type-chips">
                       <span>Label region:</span>
+                      <button
+                        type="button"
+                        className="is-danger"
+                        onClick={() => {
+                          const targetId = selectedDrawnId ?? canvasRegions[canvasRegions.length - 1]?.id
+                          if (!targetId) return
+                          setCanvasRegions((current) => current.filter((region) => region.id !== targetId))
+                          setSelectedDrawnId(null)
+                        }}
+                        data-qid="annotation-queue:region:delete"
+                        data-qs-action="ANNOTATION_QUEUE_DELETE_REGION"
+                        title="Delete the selected drawn region (Del)"
+                        data-testid="delete-region"
+                      >
+                        ✕ Delete
+                      </button>
                       {ELEMENT_TYPES.map((type) => (
                         <button
                           key={type}

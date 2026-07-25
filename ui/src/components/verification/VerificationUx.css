@@ -1594,3 +1594,5 @@
 .pdf-verify-type-chips > span { font-size: 11px; color: #8a93a0; text-transform: uppercase; letter-spacing: 0.06em; }
 .pdf-verify-type-chips button { padding: 3px 10px; border-radius: 999px; border: 1px solid #2a3442; background: #131a24; color: #cbd4de; font-size: 11px; cursor: pointer; }
 .pdf-verify-type-chips button:hover { border-color: #3b82f6; color: #93c5fd; }
+.pdf-verify-type-chips button.is-danger { border-color: rgba(239,68,68,0.5); color: #fca5a5; }
+.pdf-verify-type-chips button.is-danger:hover { border-color: #ef4444; background: rgba(127,29,29,0.25); color: #fecaca; }
