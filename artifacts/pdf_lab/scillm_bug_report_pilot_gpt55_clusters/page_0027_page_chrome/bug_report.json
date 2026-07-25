@@ -1,0 +1,36 @@
+{
+  "bug_clusters": [
+    {
+      "cluster_id": "split_top_running_header",
+      "recommended_owner": "materializer",
+      "source_ids": [
+        "human:p27:running_header_merged"
+      ],
+      "summary": "Top running header page chrome is split into separate fragments instead of one merged page-chrome band."
+    }
+  ],
+  "bug_reports": [
+    {
+      "abstain_reason": "",
+      "bug_present": true,
+      "confidence": "high",
+      "current_family": "split_page_chrome_noise",
+      "evidence_block_ids": [
+        "actual:p27:line:0",
+        "actual:p27:line:68+actual:p27:line:111"
+      ],
+      "expected_family": "page_chrome_noise",
+      "extraction_error": "Current extraction materializes the running header as two separate running_header blocks instead of the reviewed merged page_chrome_noise element spanning the full visual header band.",
+      "patch_hint": "Merge same-band recurring running-header fragments into a single page chrome noise element when they form one visual header region.",
+      "recommended_code_area": "materializer",
+      "source_id": "human:p27:running_header_merged",
+      "visual_observation": "The top margin contains recurring page chrome: a left running header reading the document identifier and a right running header reading the document title on the same horizontal band, with the page rule below them. The overlay shows these as two separate cyan text boxes rather than one merged page-chrome region."
+    }
+  ],
+  "cluster_id": "page_chrome",
+  "fix_error_source": "expected_elements.json",
+  "missing_or_ambiguous": [],
+  "overall_confidence": "high",
+  "page": 27,
+  "schema": "pdf_oxide.scillm_visual_bug_report.v2"
+}

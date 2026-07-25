@@ -525,6 +525,10 @@ def _apply_structural_grouping_rule(
             synth["page_range"] = [first_page, last_page]
         if "entry_count" in fields_from_children:
             synth["entry_count"] = len(run)
+        if "child_ids" in fields_from_children:
+            synth["child_ids"] = [r.get("id") for r in run]
+        if "text" in fields_from_children:
+            synth["text"] = " ".join(str(r.get("text") or "").strip() for r in run if str(r.get("text") or "").strip())
         # Bbox union over first-page leaves
         first_page_bboxes = [r["bbox"] for r in run if r.get("page") == first_page and r.get("bbox")]
         if first_page_bboxes:
@@ -542,7 +546,8 @@ def _apply_structural_grouping_rule(
             leaf[leaf_link] = parent_id
 
         out.append(synth)
-        out.extend(run)
+        if not synth_spec.get("drop_children"):
+            out.extend(run)
         cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + 1
 
     return out

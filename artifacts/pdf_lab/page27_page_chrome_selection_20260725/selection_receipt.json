@@ -1,0 +1,63 @@
+{
+  "schema_version": "pdf_lab.selection_receipt.v1",
+  "created_at": "2026-07-25T23:59:00-04:00",
+  "immutable_goal_source": "GOAL.md",
+  "active_candidate": {
+    "page": "page_0027",
+    "pdf_page_index": 26,
+    "defect_class": "top running header page chrome emitted as section headings",
+    "selected_checklist_item": "NIST document identifier, title running header, and adjacent rule must be page chrome/noise, not section headings.",
+    "owner": "nist_preset_or_materialization",
+    "selection_reason": "After page28 clustered items, page27_page_chrome remained as a true bug-present clustered candidate with source visual evidence and a reviewed request for merged page-chrome materialization."
+  },
+  "visual_evidence": {
+    "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/page.png",
+    "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/bbox_overlay.png",
+    "overlay_inspection": "Visible top margin contains recurring page chrome: the NIST document identifier at left, the document title at right, and a horizontal page rule below them."
+  },
+  "source_artifacts": {
+    "cluster_bundle": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/candidate_bundle.json",
+    "expected_elements": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/expected_elements.json",
+    "agent_second_pass": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/agent_second_pass.json",
+    "current_release_after_hardening": "artifacts/pdf_lab/project_agent_hardening/page_0027_release_after_hardening.json",
+    "cluster_bug_report": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027_page_chrome/bug_report.json",
+    "cluster_bug_bundle": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027_page_chrome/candidate_bundle.json"
+  },
+  "source_evidence_summary": {
+    "cluster_fix_error_request_count": 1,
+    "cluster_bug_report_count": 1,
+    "cluster_issue_family": "page_chrome",
+    "current_release_block_count": 5,
+    "current_release_type_counts": {
+      "header_footer_noise": 4,
+      "table": 1
+    },
+    "current_top_page_chrome_count": 2,
+    "current_section_heading_count": 0,
+    "current_table_count": 1
+  },
+  "focused_regression": {
+    "paths": [
+      "tests/test_nist_running_header_merge.py",
+      "tests/test_nist_top_header_chrome_preset.py",
+      "tests/test_nist_page27_table_duplicate_cells.py"
+    ],
+    "commands": [
+      "PYTHONPATH=python pytest -q tests/test_nist_running_header_merge.py tests/test_nist_top_header_chrome_preset.py",
+      "PYTHONPATH=python pytest -q tests/test_nist_page27_table_duplicate_cells.py tests/test_nist_running_header_merge.py tests/test_nist_top_header_chrome_preset.py"
+    ],
+    "results": [
+      "3 passed, 5 warnings in 9.13s",
+      "4 passed, 5 warnings in 17.93s"
+    ]
+  },
+  "worktree_limitations": {
+    "mocked": false,
+    "live": false,
+    "proof_scope": "local deterministic extraction/regression against origin/main-derived code and the local NIST PDF fixture",
+    "not_proven": [
+      "all active candidate queue items are hardened"
+    ]
+  },
+  "next_action": "Commit and push the page27 page-chrome ledger/applier repair and receipt artifacts, then inspect the remaining active candidate queue."
+}

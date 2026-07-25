@@ -1964,6 +1964,116 @@
       "closed_by": "agent:claude-opus-4-7 (GS001 R4 \u2014 pinned by regression test tests/test_nist_page_28_regression.py::test_side_doi_chrome_routed_to_header_footer_noise)"
     },
     {
+      "entry_id": "nist-chrome-002",
+      "category": "semantic_enrichment",
+      "applier_rule_kind": "text_classifier_rule",
+      "status": "closed",
+      "revision": 1,
+      "added_at": "2026-07-25T23:58:00Z",
+      "added_by": "agent:codex (page27 page-chrome hardening)",
+      "checklist_item": "Route NIST 800-53r5 top running header and horizontal rule blocks on the page-27 revision-history page to header_footer_noise page chrome instead of section_heading.",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p27:block:0",
+          "actual:p27:block:1"
+        ],
+        "cluster_bug_report": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027_page_chrome/bug_report.json",
+        "regression_tests": [
+          "tests/test_nist_running_header_merge.py::test_nist_page_27_snapshot_routes_top_header_to_header_footer_noise",
+          "tests/test_nist_top_header_chrome_preset.py::test_nist_top_running_header_and_rule_are_page_chrome_after_header_remap"
+        ]
+      },
+      "evidence_and_intent": {
+        "deterministic_rule": "If source_type='Header' and the block is in the top page-chrome band, map NIST running-header text or the adjacent horizontal rule to type='header_footer_noise' with semantic_role='page_chrome'.",
+        "candidates_that_prove": [
+          "actual:p27:block:0 contains both NIST SP 800-53 and SECURITY AND PRIVACY CONTROLS in bbox y<0.06",
+          "actual:p27:block:1 is the horizontal page rule immediately below that header in bbox y<0.08"
+        ],
+        "candidates_that_could_disprove": [
+          "Any source_type='Header' block lower on the page that is a real control or section heading. The y_max_lt=0.08 guard prevents those blocks from matching."
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "source_type": "Header",
+          "bbox_constraints": {
+            "y_max_lt": 0.08
+          }
+        },
+        "extract": [
+          {
+            "regex": "^NIST\\s+SP\\s+800-53,?\\s+R\\s*EV\\.\\s*5.*SECURITY AND PRIVACY CONTROLS",
+            "fields": {
+              "type": "header_footer_noise",
+              "semantic_role": "page_chrome"
+            }
+          },
+          {
+            "regex": "^_+$",
+            "fields": {
+              "type": "header_footer_noise",
+              "semantic_role": "page_chrome"
+            }
+          }
+        ]
+      },
+      "release_conflict_waiver": true,
+      "verification": {
+        "allow_new_residuals": false,
+        "expected_regressions": [
+          "tests/test_nist_running_header_merge.py",
+          "tests/test_nist_top_header_chrome_preset.py"
+        ]
+      }
+    },
+    {
+      "entry_id": "nist-grouping-002",
+      "category": "structural_grouping",
+      "applier_rule_kind": "structural_grouping_rule",
+      "status": "closed",
+      "revision": 1,
+      "added_at": "2026-07-25T23:58:00Z",
+      "added_by": "agent:codex (page27 page-chrome hardening)",
+      "checklist_item": "Merge same-band NIST running_header fragments into one header_footer_noise page-chrome parent.",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p27:line:0",
+          "actual:p27:line:68+actual:p27:line:111"
+        ],
+        "regression_tests": [
+          "tests/test_nist_running_header_merge.py::test_nist_same_band_running_headers_merge_to_one_header_footer_noise_element"
+        ]
+      },
+      "evidence_and_intent": {
+        "deterministic_rule": "Contiguous source_type='running_header' fragments in the same top band are grouped into one header_footer_noise parent with semantic_role='page_chrome'.",
+        "candidates_that_could_disprove": [
+          "A non-contiguous running_header fragment sequence that spans unrelated page regions. The group_when bbox y_max_lt=0.08 guard limits this to the top chrome band."
+        ]
+      },
+      "rule": {
+        "group_when": {
+          "source_type": "running_header",
+          "type": "running_header",
+          "bbox_constraints": {
+            "y_max_lt": 0.08
+          }
+        },
+        "leaf_link_field": "parent_id",
+        "min_run_length": 2,
+        "synthesize_parent": {
+          "fields_from_children": [
+            "text",
+            "bbox",
+            "child_ids"
+          ],
+          "drop_children": true,
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "type": "header_footer_noise"
+        }
+      }
+    },
+    {
       "entry_id": "nist-subtitle-001",
       "category": "semantic_enrichment",
       "applier_rule_kind": "text_classifier_rule",

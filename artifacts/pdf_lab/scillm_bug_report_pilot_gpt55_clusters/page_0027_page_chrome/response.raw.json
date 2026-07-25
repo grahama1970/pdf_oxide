@@ -1,0 +1,69 @@
+{
+  "body": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_oxide.scillm_visual_bug_report.v2\",\n  \"page\": 27,\n  \"cluster_id\": \"page_chrome\",\n  \"fix_error_source\": \"expected_elements.json\",\n  \"bug_reports\": [\n    {\n      \"source_id\": \"human:p27:running_header_merged\",\n      \"bug_present\": true,\n      \"current_family\": \"split_page_chrome_noise\",\n      \"expected_family\": \"page_chrome_noise\",\n      \"visual_observation\": \"The top margin contains recurring page chrome: a left running header reading the document identifier and a right running header reading the document title on the same horizontal band, with the page rule below them. The overlay shows these as two separate cyan text boxes rather than one merged page-chrome region.\",\n      \"extraction_error\": \"Current extraction materializes the running header as two separate running_header blocks instead of the reviewed merged page_chrome_noise element spanning the full visual header band.\",\n      \"evidence_block_ids\": [\n        \"actual:p27:line:0\",\n        \"actual:p27:line:68+actual:p27:line:111\"\n      ],\n      \"recommended_code_area\": \"materializer\",\n      \"patch_hint\": \"Merge same-band recurring running-header fragments into a single page chrome noise element when they form one visual header region.\",\n      \"confidence\": \"high\",\n      \"abstain_reason\": \"\"\n    }\n  ],\n  \"missing_or_ambiguous\": [],\n  \"bug_clusters\": [\n    {\n      \"cluster_id\": \"split_top_running_header\",\n      \"source_ids\": [\n        \"human:p27:running_header_merged\"\n      ],\n      \"summary\": \"Top running header page chrome is split into separate fragments instead of one merged page-chrome band.\",\n      \"recommended_owner\": \"materializer\"\n    }\n  ],\n  \"overall_confidence\": \"high\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1780245219,
+    "id": "chatcmpl-codex-d69f1e4e",
+    "model": "gpt-5.5",
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-bug-report-pilot-20260531T123310",
+      "item_id": "page_0027_page_chrome"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": "codex-oauth",
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "gpt-5.5",
+      "model_served": "gpt-5.5",
+      "routed_to_provider": "codex-oauth"
+    },
+    "scillm_reasoning": {
+      "applied_effort": "high",
+      "forwarded": true,
+      "ignored_reason": null,
+      "provider_field": "reasoning.effort",
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 1429,
+      "completion_tokens_details": null,
+      "prompt_tokens": 8898,
+      "prompt_tokens_details": null,
+      "total_tokens": 10327
+    }
+  },
+  "headers": {
+    "x-cost-usd": "unknown",
+    "x-scillm-timeout-ms": "257688",
+    "x-scillm-timeout-samples": "130",
+    "x-scillm-timeout-source": "estimated"
+  },
+  "ok": true,
+  "status_code": 200
+}

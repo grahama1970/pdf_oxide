@@ -1,0 +1,591 @@
+{
+  "artifact_dir": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027",
+  "blocks": [
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490230984158,
+        0.7246212429470487
+      ],
+      "blockType": "table",
+      "id": "actual:p27:table:0",
+      "page": 27,
+      "text": "DATE | TYPE | REVISION | PAGE 12-10-2020 | Editorial | Appendix B Acronyms: Add UPS ninterruptible Power Supply\u201d | 427 12-10-2020 | Editorial | Appendix C Control Summaries: Change w\u201d to \u201cW\u201d | 428 12-10-2020 | Editorial | Table C-1 (AC-3(1)) Title: Change \u201cFUN"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.151833,
+        0.719304,
+        0.166197
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:72",
+      "page": 27,
+      "text": "Table C -1 (AC-3(1)) Title: Change \u201cFUNCTION\u201d to \u201cFUNCTIONS\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.167591,
+        0.740143,
+        0.181955
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:73",
+      "page": 27,
+      "text": "Table C -1 (AC-3(6)): Change \u201cMP-4, SC-28\u201d to \u201cMP-4 and SC-28\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.183349,
+        0.71664,
+        0.197712
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:74",
+      "page": 27,
+      "text": "Table C -1 (AC-13): Change \u201cAC-2, AU-6\u201d to \u201cAC-2 and AU -6\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.199182,
+        0.729669,
+        0.213545
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:75",
+      "page": 27,
+      "text": "Table C -3 (AU-7(2)) Title: Change \u201cSEARCH AND SORT\u201d to \u201cSORT"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.227591,
+        0.702966,
+        0.241955
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:77",
+      "page": 27,
+      "text": "Table C -3 AU-15: Change \u201cIncorporated into\u201d to \u201cMoved to\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.243348,
+        0.71611,
+        0.257712
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:78",
+      "page": 27,
+      "text": "Table C -4 (CA-3(1)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.271758,
+        0.750708,
+        0.286121
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:80",
+      "page": 27,
+      "text": "Table C -5 (CM-7(4)) Title: Change \u201cUNAUTHORIZED SOFTWARE\u201d to"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.300167,
+        0.734439,
+        0.31453
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:82",
+      "page": 27,
+      "text": "Table C -5 (CM-7(5)) Title: Change \u201cAUTHORIZED SOFTWARE\u201d to"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.328576,
+        0.605063,
+        0.342939
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:84",
+      "page": 27,
+      "text": "Table C -5: Delete duplicate row CM -8(5)."
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.344333,
+        0.752696,
+        0.358697
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:85",
+      "page": 27,
+      "text": "Table C -6 (CP-9(7)) Title: Change \u201cDUAL AUTHORIZATION\u201d to \u201cDUAL"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.372742,
+        0.743452,
+        0.387106
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:87",
+      "page": 27,
+      "text": "Table C -7 (IA-5(11)): Change \u201cIA -2(1)(2)\u201d to \u201cIA -2(1) and IA -2(2)\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.388576,
+        0.73915,
+        0.402939
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:88",
+      "page": 27,
+      "text": "Table C -8 (IR-10) Title: Change \u201cIntegrated Information Security"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.416985,
+        0.746051,
+        0.431348
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:90",
+      "page": 27,
+      "text": "Table C -9 (MA-4(2)): Change \u201cMA-1, MA-4\u201d to \u201cMA-1 and MA -4\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.432742,
+        0.705659,
+        0.447106
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:91",
+      "page": 27,
+      "text": "Table C -11 (PE-7): Change \u201cPE-2, PE-3\u201d to \u201cPE-2 and PE -3\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.4485,
+        0.664096,
+        0.462864
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:92",
+      "page": 27,
+      "text": "Table C -11 (PE-19(1)) Title: Delete\u201dAND TEMPEST\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.464333,
+        0.747574,
+        0.478697
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:93",
+      "page": 27,
+      "text": "Table C -14 (PS-3(1)) Title: Change \u201cI NFORMATION\u201d to \u201cINFORMATION\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.480091,
+        0.690819,
+        0.494455
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:94",
+      "page": 27,
+      "text": "Table C -14 (PS-3(3)) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.495848,
+        0.723698,
+        0.510212
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:95",
+      "page": 27,
+      "text": "Table C -17 (SA-6): Change \u201cCM-10, SI-7\u201d to \u201cCM-10 and SI -7\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.511682,
+        0.723698,
+        0.526045
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:96",
+      "page": 27,
+      "text": "Table C -17 (SA-7): Change \u201cCM-11, SI-7\u201d to \u201cCM-11 and SI -7\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.527439,
+        0.753404,
+        0.541803
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:97",
+      "page": 27,
+      "text": "Table C -17 (SA-12(13)): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA -9\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.543197,
+        0.764931,
+        0.557561
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:98",
+      "page": 27,
+      "text": "Table C -17 (SA-12(14)): Change \u201cSR-4(1)(2)\u201d to \u201cSR-4(1) and SR -4(2)\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.55903,
+        0.726554,
+        0.573394
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:99",
+      "page": 27,
+      "text": "Table C -17 (SA-12(15)) Title: Change \u201cPROCESS\u201d to \u201cPROCESSES\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.574788,
+        0.730109,
+        0.589152
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:100",
+      "page": 27,
+      "text": "Table C -18 (SC-7(25)) Title: Change \u201cCONNECTIONS\u201d to \u201cSYSTEM"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.603197,
+        0.669923,
+        0.617561
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:102",
+      "page": 27,
+      "text": "Table C -18 (SC-12(4)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.618955,
+        0.669923,
+        0.633318
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:103",
+      "page": 27,
+      "text": "Table C -18 (SC-12(5)): Change \u201cSC-12\u201d to \u201cSC-12(3)\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.634788,
+        0.647578,
+        0.649152
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:104",
+      "page": 27,
+      "text": "Table C -18 (SC-14): Change \u201cSI-7,\u201d to \u201cSI-7, and\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.650545,
+        0.718718,
+        0.664909
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:105",
+      "page": 27,
+      "text": "Table C -18 (SC-19): Change \u201caddressed by other controls for"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.678955,
+        0.647142,
+        0.693318
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:107",
+      "page": 27,
+      "text": "Table C -19 (SI-9): Change \u201cAC-5,\u201d to \u201cAC-5, and\u201d"
+    },
+    {
+      "bbox": [
+        0.360265,
+        0.694712,
+        0.702549,
+        0.709076
+      ],
+      "blockType": "caption",
+      "id": "actual:p27:line:108",
+      "page": 27,
+      "text": "Table C -19 (SI-19(7)) Title: Change \u201cSOFTWARE\u201d to \u201cAND"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "blockType": "running_header",
+      "id": "actual:p27:line:0",
+      "page": 27,
+      "text": "NIST SP 800-53, R EV. 5"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "blockType": "running_header",
+      "id": "actual:p27:line:68+actual:p27:line:111",
+      "page": 27,
+      "text": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.793784,
+        0.096485,
+        0.833581,
+        0.114348
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:112",
+      "page": 27,
+      "text": "PAGE"
+    },
+    {
+      "bbox": [
+        0.180255,
+        0.096485,
+        0.21942,
+        0.114348
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:2",
+      "page": 27,
+      "text": "DATE"
+    },
+    {
+      "bbox": [
+        0.284863,
+        0.096485,
+        0.315487,
+        0.114348
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:36",
+      "page": 27,
+      "text": "TYPE"
+    },
+    {
+      "bbox": [
+        0.528392,
+        0.096485,
+        0.599612,
+        0.114348
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:69",
+      "page": 27,
+      "text": "REVISION"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.119742,
+        0.826257,
+        0.135106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:113",
+      "page": 27,
+      "text": "427"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.119742,
+        0.235253,
+        0.135106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:3",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.119742,
+        0.745181,
+        0.135106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:70",
+      "page": 27,
+      "text": "Appendix B Acronyms: Add \u201cUPS Uninterruptible Power Supply\u201d"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.120242,
+        0.332725,
+        0.134606
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:37",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.1355,
+        0.826257,
+        0.150864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:114",
+      "page": 27,
+      "text": "428"
+    },
+    {
+      "bbox": [
+        0.165843,
+        0.1355,
+        0.235253,
+        0.150864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:4",
+      "page": 27,
+      "text": "12-10-2020"
+    },
+    {
+      "bbox": [
+        0.359765,
+        0.1355,
+        0.649132,
+        0.150864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:71",
+      "page": 27,
+      "text": "Appendix C Control Summaries: Change \u201cw\u201d to \u201cW\u201d"
+    },
+    {
+      "bbox": [
+        0.278696,
+        0.136,
+        0.332725,
+        0.150364
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p27:line:38",
+      "page": 27,
+      "text": "Editorial"
+    },
+    {
+      "bbox": [
+        0.803,
+        0.151333,
+        0.826257,
+        0.166697
+      ],
+      "blockType": "section_header",
+      "id": "actual:p27:line:115",
+      "page": 27,
+      "text": "429"
+    }
+  ],
+  "cluster_id": "page_chrome",
+  "copied_files": [
+    "page.png",
+    "bbox_overlay.png",
+    "release_extraction_blocks.json",
+    "expected_elements.json",
+    "agent_second_pass.json"
+  ],
+  "fix_error_count": 1,
+  "fix_error_request_sample": [
+    {
+      "current_family": null,
+      "reason": "Human adjusted page chrome grouping; recurring header/footer materialization should match the visual page chrome contract.",
+      "requested_family": "page_chrome_noise",
+      "source_ids": [
+        "human:p27:running_header_merged"
+      ]
+    }
+  ],
+  "fix_error_requests": [
+    {
+      "current_type": "split_page_chrome_noise",
+      "human_bbox": [
+        0.145059,
+        0.043,
+        0.8795694095860567,
+        0.07475276767676768
+      ],
+      "owner": "nist_preset_or_materialization",
+      "reason": "Human adjusted page chrome grouping; recurring header/footer materialization should match the visual page chrome contract.",
+      "requested_family": "page_chrome_noise",
+      "source_id": "human:p27:running_header_merged",
+      "text_hint": "NIST SP 800-53, Rev. 5 + SECURITY AND PRIVACY CONTROLS..."
+    }
+  ],
+  "fix_error_source": "expected_elements.json",
+  "fix_error_source_ids": [
+    "human:p27:running_header_merged"
+  ],
+  "issue_family": "page_chrome",
+  "item_id": "page_0027_page_chrome",
+  "mode": "cluster",
+  "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/bbox_overlay.png",
+  "page": 27,
+  "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/page.png",
+  "source_dir": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0027"
+}

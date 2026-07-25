@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-25T21:58:01.898805+00:00",
+  "generated_at": "2026-07-25T22:17:51.331594+00:00",
   "pages": [
     {
       "apply_mode": "release",
@@ -32,9 +32,10 @@
             "is_bold": false,
             "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
           },
+          "semantic_role": "page_chrome",
           "source_type": "Header",
           "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
-          "type": "section_heading"
+          "type": "header_footer_noise"
         },
         {
           "bbox": [
@@ -64,9 +65,10 @@
             "is_bold": false,
             "text": "_________________________________________________________________________________________________"
           },
+          "semantic_role": "page_chrome",
           "source_type": "Header",
           "text": "_________________________________________________________________________________________________",
-          "type": "section_heading"
+          "type": "header_footer_noise"
         },
         {
           "bbox": [

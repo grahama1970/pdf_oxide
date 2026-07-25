@@ -1,0 +1,13 @@
+{
+  "bug_report_path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027_page_chrome/bug_report.json",
+  "cluster_id": "page_chrome",
+  "finished_at": "2026-05-31T16:33:39.189782+00:00",
+  "item_id": "page_0027_page_chrome",
+  "model": "gpt-5.5",
+  "ok": true,
+  "page": 27,
+  "parse_error": "",
+  "raw_ok": true,
+  "response_path": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027_page_chrome/response.raw.json",
+  "started_at": "2026-05-31T16:33:10.295339+00:00"
+}
