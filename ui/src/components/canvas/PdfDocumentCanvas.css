@@ -1,0 +1,207 @@
+.pdf-document-canvas {
+  min-width: 0;
+  margin: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  border: 1px solid #253244;
+  border-radius: 10px;
+  background: #080b10;
+  color: #d9e4f2;
+}
+
+.pdf-document-canvas__toolbar {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-bottom: 1px solid #253244;
+  background: #101722;
+}
+
+.pdf-document-canvas__toolbar button {
+  min-width: 34px;
+  min-height: 30px;
+  padding: 5px 9px;
+  border: 1px solid #34465e;
+  border-radius: 6px;
+  background: #182232;
+  color: #d9e4f2;
+  cursor: pointer;
+}
+
+.pdf-document-canvas__toolbar button:hover,
+.pdf-document-canvas__toolbar button.is-active {
+  border-color: #58b9ff;
+  background: #15324a;
+}
+
+.pdf-document-canvas__toolbar output {
+  margin-left: auto;
+  color: #9fb0c5;
+  font: 11px ui-monospace, monospace;
+}
+
+.pdf-document-canvas__body {
+  min-height: 440px;
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+}
+
+.pdf-document-canvas.is-compact .pdf-document-canvas__body {
+  min-height: 320px;
+}
+
+.pdf-document-canvas__thumbnails {
+  min-width: 0;
+  padding: 7px;
+  overflow: auto;
+  border-right: 1px solid #253244;
+  background: #0d121a;
+}
+
+.pdf-document-canvas__thumbnails button {
+  width: 100%;
+  display: grid;
+  gap: 4px;
+  margin-bottom: 7px;
+  padding: 4px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: #9fb0c5;
+  cursor: pointer;
+}
+
+.pdf-document-canvas__thumbnails button.is-selected {
+  border-color: #58b9ff;
+  background: #152334;
+  color: #fff;
+}
+
+.pdf-document-canvas__thumbnails img {
+  width: 100%;
+  display: block;
+}
+
+.pdf-document-canvas__thumbnails span {
+  font: 10px ui-monospace, monospace;
+}
+
+.pdf-document-canvas__viewport {
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background-color: #151a22;
+  background-image:
+    linear-gradient(45deg, #1b222c 25%, transparent 25%),
+    linear-gradient(-45deg, #1b222c 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1b222c 75%),
+    linear-gradient(-45deg, transparent 75%, #1b222c 75%);
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  background-size: 16px 16px;
+}
+
+.pdf-document-canvas__viewport.is-panning {
+  cursor: grab;
+}
+
+.pdf-document-canvas__viewport.is-panning:active {
+  cursor: grabbing;
+}
+
+.pdf-document-canvas__page {
+  position: relative;
+  margin: 16px auto;
+  flex: 0 0 auto;
+  user-select: none;
+  box-shadow: 0 10px 36px rgb(0 0 0 / 45%);
+}
+
+.pdf-document-canvas__page > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.pdf-document-canvas__region {
+  position: absolute;
+  box-sizing: border-box;
+  border: 2px solid #fbbf24;
+  background: rgb(251 191 36 / 8%);
+  cursor: move;
+}
+
+.pdf-document-canvas__region.is-selected {
+  border-width: 3px;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 70%), 0 0 15px rgb(88 185 255 / 35%);
+}
+
+.pdf-document-canvas__region.is-preview {
+  pointer-events: none;
+  border-style: dashed;
+  background: rgb(88 185 255 / 12%);
+}
+
+.pdf-document-canvas__tag {
+  --canvas-region-color: #fbbf24;
+  position: absolute;
+  z-index: 2;
+  max-width: 180px;
+  padding: 2px 6px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 3px;
+  background: var(--canvas-region-color);
+  color: #061018;
+  font: 700 10px/1.4 ui-monospace, monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pdf-document-canvas__tag.is-top-outside { left: -2px; bottom: calc(100% + 3px); }
+.pdf-document-canvas__tag.is-top-inside { left: 2px; top: 2px; }
+.pdf-document-canvas__tag.is-bottom-inside { left: 2px; bottom: 2px; }
+.pdf-document-canvas__tag.is-bottom-outside { left: -2px; top: calc(100% + 3px); }
+
+.pdf-document-canvas__handle {
+  position: absolute;
+  z-index: 3;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 1px solid #07111a;
+  border-radius: 2px;
+  background: #fff;
+}
+
+.pdf-document-canvas__handle.h-nw { left: -6px; top: -6px; cursor: nwse-resize; }
+.pdf-document-canvas__handle.h-n { left: calc(50% - 5px); top: -6px; cursor: ns-resize; }
+.pdf-document-canvas__handle.h-ne { right: -6px; top: -6px; cursor: nesw-resize; }
+.pdf-document-canvas__handle.h-e { right: -6px; top: calc(50% - 5px); cursor: ew-resize; }
+.pdf-document-canvas__handle.h-se { right: -6px; bottom: -6px; cursor: nwse-resize; }
+.pdf-document-canvas__handle.h-s { left: calc(50% - 5px); bottom: -6px; cursor: ns-resize; }
+.pdf-document-canvas__handle.h-sw { left: -6px; bottom: -6px; cursor: nesw-resize; }
+.pdf-document-canvas__handle.h-w { left: -6px; top: calc(50% - 5px); cursor: ew-resize; }
+
+.pdf-document-canvas figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 9px;
+  border-top: 1px solid #253244;
+  color: #8191a6;
+  font-size: 10px;
+}
+
+.pdf-document-canvas figcaption code {
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -11,7 +11,7 @@ import {
 } from '../../adapters/pageImageRefs'
 import { normalizeSectionTree, sectionForElement, type SectionTree } from '../../adapters/sectionTree'
 import { useRegisterAction } from '../../hooks/useRegisterAction'
-import { NormalizedPageOverlay } from '../verification/NormalizedPageOverlay'
+import { PdfDocumentCanvas } from '../canvas'
 import '../verification/VerificationUx.css'
 
 export interface RetrievalEvidenceItemInput {
@@ -329,10 +329,21 @@ function RetrievalEvidenceGroup({
 }) {
   return (
     <section className="pdf-verify-evidence-group" data-testid="evidence-group">
-      <NormalizedPageOverlay
+      <PdfDocumentCanvas
         pageImage={group.pageImage}
-        overlays={group.evidence.flatMap((item) => item.bbox
-          ? [{ bbox: item.bbox, label: String(item.overlayNumber) }]
+        regions={group.evidence.flatMap((item) => item.bbox
+          ? [{
+              id: item.elementId,
+              bbox: [
+                item.bbox[0],
+                item.bbox[1],
+                item.bbox[0] + item.bbox[2],
+                item.bbox[1] + item.bbox[3],
+              ],
+              label: String(item.overlayNumber),
+              color: '#58b9ff',
+              editable: false,
+            }]
           : [])}
         alt={`Original PDF page ${group.page} supporting ${group.evidence.length} evidence items`}
         actionQualifier={`evidence-page-${group.page}`}

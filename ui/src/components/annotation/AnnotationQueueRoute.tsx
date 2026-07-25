@@ -1,5 +1,20 @@
-import { useDeferredValue, useEffect, useMemo, useRef, useState, type ChangeEvent, type UIEvent } from 'react'
-import { AlertTriangle, Check, ChevronRight, FileWarning, Filter, Loader2, Search } from 'lucide-react'
+import { Fragment, useDeferredValue, useEffect, useMemo, useRef, useState, type ChangeEvent, type UIEvent } from 'react'
+import {
+  AlertTriangle,
+  Ban,
+  BoxSelect,
+  Check,
+  ChevronRight,
+  Clock3,
+  FileWarning,
+  Filter,
+  Loader2,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Search,
+  Tags,
+  Type,
+} from 'lucide-react'
 import {
   ANNOTATION_CALL_SCHEMA,
   annotationReasonLabel,
@@ -29,7 +44,11 @@ import {
   type ElementType,
 } from '../../adapters/annotationDecision'
 import { useRegisterAction } from '../../hooks/useRegisterAction'
-import { NormalizedPageOverlay } from '../verification/NormalizedPageOverlay'
+import {
+  PdfDocumentCanvas,
+  type CanvasRegion,
+  type CanvasThumbnail,
+} from '../canvas'
 import '../verification/VerificationUx.css'
 
 export interface AnnotationQueueRouteProps {
@@ -47,6 +66,109 @@ const TIMING_ENDPOINT = '/api/pdf-lab/ux-timing-events'
 const QUEUE_STATE_KEY = 'pdf-oxide.annotation-queue-state.v1'
 const ROW_HEIGHT = 82
 const OVERSCAN = 8
+
+type WorkbenchAction = 'fix_text' | 'fix_type' | 'fix_bounds' | null
+
+function interactiveAttributes(qid: string, action: string, label: string) {
+  return {
+    'aria-label': label,
+    'data-qid': qid,
+    'data-qs-action': action,
+    title: label,
+  }
+}
+
+function hasExtractionData(item: AnnotationQueueItem): boolean {
+  return Boolean(item.currentType || item.textExcerpt || item.bbox)
+}
+
+function rawText(item: AnnotationQueueItem, ...keys: string[]): string | null {
+  for (const key of keys) {
+    const value = item.raw[key]
+    if (typeof value === 'string' && value.trim()) return value.trim()
+  }
+  return null
+}
+
+function visibleMissingCharacter(character: string): string {
+  return character.codePointAt(0)! < 0x20 ? '×' : character
+}
+
+function oracleEvidenceWindow(oracleExcerpt: string | null, missingText: string | null): string | null {
+  if (!oracleExcerpt || !missingText) return oracleExcerpt
+  const firstMissingIndex = [...missingText]
+    .map((character) => oracleExcerpt.indexOf(character))
+    .filter((index) => index >= 0)
+    .sort((a, b) => a - b)[0]
+  if (firstMissingIndex === undefined) return oracleExcerpt
+  const start = Math.max(0, firstMissingIndex - 36)
+  const end = Math.min(oracleExcerpt.length, firstMissingIndex + 320)
+  return `${start > 0 ? '…' : ''}${oracleExcerpt.slice(start, end)}${end < oracleExcerpt.length ? '…' : ''}`
+}
+
+function highlightedOracleText(oracleExcerpt: string | null, missingText: string | null) {
+  if (!oracleExcerpt) return <span className="pdf-verify-absent">Oracle excerpt was not supplied.</span>
+  if (!missingText) return <span>{oracleExcerpt}</span>
+  const remaining = new Map<string, number>()
+  for (const character of missingText) remaining.set(character, (remaining.get(character) ?? 0) + 1)
+  return (
+    <>
+      {[...oracleExcerpt].map((character, index) => {
+        const count = remaining.get(character) ?? 0
+        if (count <= 0) return <Fragment key={`${index}-${character}`}>{character}</Fragment>
+        remaining.set(character, count - 1)
+        return (
+          <mark
+            key={`${index}-${character}`}
+            title={`Missing from pdf-oxide extraction: U+${character.codePointAt(0)!.toString(16).toUpperCase().padStart(4, '0')}`}
+          >
+            {visibleMissingCharacter(character)}
+          </mark>
+        )
+      })}
+    </>
+  )
+}
+
+function EvidencePanel({ item }: { item: AnnotationQueueItem }) {
+  if (item.reason === 'char_parity_deficit') {
+    return (
+      <div className="pdf-verify-evidence-diff" data-testid="char-parity-evidence">
+        <div>
+          <span>pdf-oxide</span>
+          <p>{item.textExcerpt || <em className="pdf-verify-absent">text_excerpt was not supplied.</em>}</p>
+        </div>
+        <div>
+          <span>oracle</span>
+          <p>{highlightedOracleText(oracleEvidenceWindow(item.oracleExcerpt, item.missingText), item.missingText)}</p>
+        </div>
+        <small>
+          Missing text: {item.missingText
+            ? <code data-testid="missing-text-highlight">{[...item.missingText].map(visibleMissingCharacter).join('')}</code>
+            : item.missingTextDerivationError ?? 'missing_text was not supplied.'}
+        </small>
+      </div>
+    )
+  }
+  if (item.reason === 'reviewer_flagged') {
+    const finding = rawText(item, 'finding', 'reviewer_finding', 'reviewer_flag', 'review_notes')
+    return <p>{finding ?? <span className="pdf-verify-absent">Reviewer finding text was not supplied.</span>}</p>
+  }
+  if (item.reason === 'low_confidence') {
+    return (
+      <dl className="pdf-verify-signal-list">
+        <div><dt>Signal</dt><dd>Engine raised a low-confidence classification.</dd></div>
+        <div><dt>Basis</dt><dd>{item.accuracyBasis || 'Accuracy basis was not supplied.'}</dd></div>
+        <div><dt>Type</dt><dd>{item.currentType || 'No proposed type was supplied.'}</dd></div>
+        <div><dt>Privacy</dt><dd>The raw confidence value remains blinded.</dd></div>
+      </dl>
+    )
+  }
+  return (
+    <p>{rawText(item, 'finding', 'detail', 'message')
+      ?? <span className="pdf-verify-absent">No additional residual evidence was supplied.</span>}</p>
+  )
+}
 
 function qidQualifier(value: string): string {
   return value.trim().replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || 'unknown'
@@ -203,39 +325,6 @@ function VirtualRows({ rows, selectedId, decisions, onSelect }: VirtualRowsProps
   )
 }
 
-interface ReasonFilterButtonProps {
-  active: boolean
-  count: number
-  onToggle: () => void
-  reason: AnnotationReason
-}
-
-function ReasonFilterButton({ active, count, onToggle, reason }: ReasonFilterButtonProps) {
-  const qid = `annotation-queue:reason:${qidQualifier(reason)}`
-  const label = annotationReasonLabel(reason)
-  useRegisterAction(qid, {
-    app: 'pdf-lab',
-    action: 'ANNOTATION_QUEUE_FILTER_REASON',
-    label: `Filter by ${label}`,
-    description: `Toggle the ${label} annotation reason filter`,
-  })
-
-  return (
-    <button
-      type="button"
-      className={active ? 'is-active' : ''}
-      onClick={onToggle}
-      data-qid={qid}
-      data-qs-action="ANNOTATION_QUEUE_FILTER_REASON"
-      title={`Toggle ${label} filter`}
-    >
-      <span className={`pdf-verify-reason-dot is-${reason}`} />
-      <strong>{count.toLocaleString()}</strong>
-      <em>{label}</em>
-    </button>
-  )
-}
-
 export function AnnotationQueueRoute({
   callsUrl = DEFAULT_CALLS_URL,
   pageImageIndexUrl,
@@ -301,7 +390,11 @@ export function AnnotationQueueRoute({
   )
   const [saving, setSaving] = useState(false)
   const [correctedType, setCorrectedType] = useState<ElementType>('Body')
+  const [correctedText, setCorrectedText] = useState('')
   const [correctedBounds, setCorrectedBounds] = useState<[string, string, string, string]>(['', '', '', ''])
+  const [workbenchAction, setWorkbenchAction] = useState<WorkbenchAction>(null)
+  const [railCollapsed, setRailCollapsed] = useState(false)
+  const [canvasRegions, setCanvasRegions] = useState<CanvasRegion[]>([])
 
   useEffect(() => {
     if (initialCalls) return
@@ -350,12 +443,6 @@ export function AnnotationQueueRoute({
 
   const allItems = useMemo(() => flattenAnnotationItems(calls), [calls])
   const documents = useMemo(() => [...new Set(allItems.map((item) => item.documentId))].sort(), [allItems])
-  const reasonCounts = useMemo(() => {
-    const counts = new Map<AnnotationReason, number>()
-    allItems.forEach((item) => counts.set(item.reason, (counts.get(item.reason) ?? 0) + 1))
-    return counts
-  }, [allItems])
-
   const filtered = useMemo(() => allItems.filter((item) => {
     if (documentFilter !== '*' && item.documentId !== documentFilter) return false
     if (reasonFilter !== '*' && item.reason !== reasonFilter) return false
@@ -376,7 +463,10 @@ export function AnnotationQueueRoute({
   }, [filtered, loading, selectedId])
 
   const selected = filtered.find((item) => item.id === selectedId) ?? null
-  const pageImage = selected ? selectedPageImage(selected, pageImages) : null
+  const pageImage = useMemo(
+    () => selected ? selectedPageImage(selected, pageImages) : null,
+    [pageImages, selected],
+  )
   const bbox = useMemo(() => {
     if (!selected?.bbox) return undefined
     if (selected.normalizedBbox) return selected.normalizedBbox
@@ -388,7 +478,63 @@ export function AnnotationQueueRoute({
     }
   }, [pageImage, selected])
 
-  const saveDecision = async (decision: AnnotationDecision) => {
+  useEffect(() => {
+    setCorrectedText(selected?.textExcerpt ?? '')
+    setCorrectedType(
+      selected?.currentType && ELEMENT_TYPES.includes(selected.currentType as ElementType)
+        ? selected.currentType as ElementType
+        : 'Body',
+    )
+    setCorrectedBounds(selected?.bbox ? selected.bbox.map(String) as [string, string, string, string] : ['', '', '', ''])
+    setWorkbenchAction(selected?.reason === 'char_parity_deficit' ? 'fix_text' : null)
+    setCanvasRegions(bbox ? [{
+      id: selected?.id ?? 'selected',
+      bbox: [bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]],
+      label: selected?.currentType || selected?.kind || 'extraction',
+      color: selected?.reason === 'char_parity_deficit' ? '#fb7185' : '#58b9ff',
+      editable: true,
+    }] : [])
+  }, [bbox, selected])
+
+  const thumbnails = useMemo<CanvasThumbnail[]>(() => {
+    if (!selected) return []
+    if (!pageImages) return pageImage
+      ? [{ id: `${selected.documentId}:${selected.page}`, pageImage, label: `p${selected.page}` }]
+      : []
+    return pageImages.all
+      .filter((candidate) => (
+        candidate.pdfSha256 === selected.pdfSha256
+        && (candidate.doc == null || candidate.doc === selected.documentId)
+      ))
+      .sort((a, b) => (a.page ?? 0) - (b.page ?? 0))
+      .map((candidate) => ({
+        id: `${selected.documentId}:${candidate.page ?? candidate.sha256}`,
+        pageImage: candidate,
+        label: `p${candidate.page ?? ''}`,
+      }))
+  }, [pageImage, pageImages, selected])
+
+  const updateCanvasRegions = (nextRegions: CanvasRegion[]) => {
+    const next = nextRegions[nextRegions.length - 1]
+    if (!next || !pageImage?.width || !pageImage.height) {
+      setCanvasRegions(nextRegions)
+      return
+    }
+    const [x0, y0, x1, y1] = next.bbox
+    const bounds: [number, number, number, number] = [
+      x0 * pageImage.width,
+      (1 - y1) * pageImage.height,
+      (x1 - x0) * pageImage.width,
+      (y1 - y0) * pageImage.height,
+    ]
+    setCorrectedBounds(bounds.map((value) => value.toFixed(3)) as [string, string, string, string])
+    setCanvasRegions([{ ...next, id: selected?.id ?? next.id }])
+  }
+
+  const saveDecision = async (
+    decision: AnnotationDecision,
+    options: { correctedText?: string; correctedBounds?: [number, number, number, number] } = {},
+  ) => {
     if (!selected || !pageImage || saving) return
     setSaving(true)
     setError(null)
@@ -397,7 +543,8 @@ export function AnnotationQueueRoute({
       const bounds = correctedBounds.map(Number) as [number, number, number, number]
       const input = buildAnnotationDecisionInput(selected, decision, {
         ...(decision === 'correct_type' ? { correctedType } : {}),
-        ...(decision === 'correct_bounds' ? { correctedBounds: bounds } : {}),
+        ...(decision === 'correct_bounds' ? { correctedBounds: options.correctedBounds ?? bounds } : {}),
+        ...(options.correctedText !== undefined ? { correctedText: options.correctedText } : {}),
         ...(decisions.get(selected.id) ? { revisionOf: decisions.get(selected.id)?.event_id } : {}),
       })
       const response = await fetchImpl(DECISIONS_ENDPOINT, {
@@ -460,6 +607,21 @@ export function AnnotationQueueRoute({
     }
   }
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return
+      if (!selected || saving) return
+      if (event.key === '1' && hasExtractionData(selected)) void saveDecision('accept')
+      if (event.key === '2') setWorkbenchAction('fix_text')
+      if (event.key === '3') setWorkbenchAction('fix_type')
+      if (event.key === '4') setWorkbenchAction('fix_bounds')
+      if (event.key === '5') void saveDecision('not_an_element')
+      if (event.key === '6') void saveDecision('defer')
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  })
+
   if (loading) {
     return (
       <main className="pdf-verify-route pdf-verify-route--center" data-confidence-hidden="true">
@@ -492,210 +654,362 @@ export function AnnotationQueueRoute({
   }
 
   return (
+    <>
     <main
-      className="pdf-verify-route pdf-verify-queue"
+      className="pdf-verify-route pdf-verify-queue pdf-verify-adjudication"
       data-confidence-hidden="true"
       data-testid="annotation-queue-route"
       data-selected-id={selectedId ?? undefined}
     >
-      <header className="pdf-verify-header">
+      <header className="pdf-verify-header pdf-verify-adjudication__header">
         <div>
-          <span className="pdf-verify-kicker">Human annotation calls</span>
-          <h1>Extraction uncertainty queue</h1>
-          <p>{allItems.length.toLocaleString()} engine-raised items, prioritized for human feedback. Every item remains servable.</p>
+          <span className="pdf-verify-kicker">Salvaged canvas · final 5%</span>
+          <h1>Extraction adjudication workbench</h1>
+          <p>{allItems.length.toLocaleString()} engine-raised items. Compare the original page, pdf-oxide extraction, and exact flag evidence before writing a decision.</p>
         </div>
-        <div className="pdf-verify-proof-chip"><FileWarning /> {filtered.length.toLocaleString()} visible</div>
+        <div className="pdf-verify-proof-chip"><FileWarning aria-hidden="true" /> {filtered.length.toLocaleString()} open</div>
       </header>
 
-      <section className="pdf-verify-reason-strip" aria-label="Reason counts">
-        {([...reasonCounts.entries()] as Array<[AnnotationReason, number]>).map(([reason, count]) => (
-          <ReasonFilterButton
-            key={reason}
-            reason={reason}
-            count={count}
-            active={reasonFilter === reason}
-            onToggle={() => setReasonFilter((current) => current === reason ? '*' : reason)}
-          />
-        ))}
-      </section>
-
-      <section className="pdf-verify-queue-layout">
-        <div className="pdf-verify-queue-list">
-          <div className="pdf-verify-filters">
-            <label className="pdf-verify-search">
-              <Search aria-hidden="true" />
-              <input
-                value={searchText}
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchText(event.target.value)}
-                placeholder="Search page, type, or excerpt"
-                data-qid="annotation-queue:search:query"
-                data-qs-action="ANNOTATION_QUEUE_SEARCH"
-                title="Search annotation calls"
-              />
-            </label>
-            <label>
-              <Filter aria-hidden="true" />
-              <select
-                value={documentFilter}
-                onChange={(event: ChangeEvent<HTMLSelectElement>) => setDocumentFilter(event.target.value)}
-                aria-label="Filter by document"
-                data-qid="annotation-queue:filter:document"
-                data-qs-action="ANNOTATION_QUEUE_FILTER_DOCUMENT"
-                title="Filter annotation calls by document"
-              >
-                <option value="*">All documents</option>
-                {documents.map((document) => <option key={document} value={document}>{document}</option>)}
-              </select>
-            </label>
-            <label>
-              <select
-                value={reasonFilter}
-                onChange={(event: ChangeEvent<HTMLSelectElement>) => setReasonFilter(event.target.value as '*' | AnnotationReason)}
-                aria-label="Filter by reason"
-                data-qid="annotation-queue:filter:reason"
-                data-qs-action="ANNOTATION_QUEUE_FILTER_REASON"
-                title="Filter annotation calls by reason"
-              >
-                <option value="*">All reasons</option>
-                <option value="low_confidence">Low confidence</option>
-                <option value="char_parity_deficit">Char parity deficit</option>
-                <option value="unadjudicated_residual">Residual</option>
-                <option value="reviewer_flagged">Reviewer flagged</option>
-              </select>
-            </label>
-            <label>
-              <select
-                value={kindFilter}
-                onChange={(event: ChangeEvent<HTMLSelectElement>) => setKindFilter(event.target.value as '*' | AnnotationKind)}
-                aria-label="Filter by kind"
-                data-qid="annotation-queue:filter:kind"
-                data-qs-action="ANNOTATION_QUEUE_FILTER_KIND"
-                title="Filter annotation calls by element kind"
-              >
-                <option value="*">All kinds</option>
-                <option value="block">Block</option>
-                <option value="region">Region</option>
-                <option value="page">Page</option>
-              </select>
-            </label>
+      <section className={`pdf-verify-adjudication__layout ${railCollapsed ? 'is-rail-collapsed' : ''}`}>
+        <aside className="pdf-verify-item-rail" data-testid="annotation-item-rail">
+          <div className="pdf-verify-item-rail__head">
+            {!railCollapsed && <strong>Items</strong>}
+            <button
+              type="button"
+              onClick={() => setRailCollapsed((current) => !current)}
+              aria-expanded={!railCollapsed}
+              {...interactiveAttributes(
+                'annotation-queue:rail:toggle',
+                'ANNOTATION_QUEUE_TOGGLE_RAIL',
+                railCollapsed ? 'Expand item rail' : 'Collapse item rail',
+              )}
+              data-testid="annotation-rail-toggle"
+            >
+              {railCollapsed ? <PanelLeftOpen aria-hidden="true" /> : <PanelLeftClose aria-hidden="true" />}
+            </button>
           </div>
-          {filtered.length > 0 ? (
-            <VirtualRows
-              rows={filtered}
-              selectedId={selectedId}
-              decisions={decisions}
-              onSelect={(item) => setSelectedId(item.id)}
-            />
+          {railCollapsed ? (
+            <span className="pdf-verify-item-rail__collapsed-count">{filtered.length}</span>
           ) : (
-            <div className="pdf-verify-empty">No annotation calls match the current filters.</div>
+            <>
+              <div className="pdf-verify-item-rail__filters">
+                <label className="pdf-verify-search">
+                  <Search aria-hidden="true" />
+                  <input
+                    value={searchText}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchText(event.target.value)}
+                    placeholder="Search items"
+                    aria-label="Search annotation calls"
+                    data-qid="annotation-queue:search:query"
+                    data-qs-action="ANNOTATION_QUEUE_SEARCH"
+                    title="Search annotation calls"
+                  />
+                </label>
+                <label>
+                  <Filter aria-hidden="true" />
+                  <select
+                    value={documentFilter}
+                    onChange={(event: ChangeEvent<HTMLSelectElement>) => setDocumentFilter(event.target.value)}
+                    aria-label="Filter by document"
+                    data-qid="annotation-queue:filter:document"
+                    data-qs-action="ANNOTATION_QUEUE_FILTER_DOCUMENT"
+                    title="Filter annotation calls by document"
+                  >
+                    <option value="*">All documents</option>
+                    {documents.map((document) => <option key={document} value={document}>{document}</option>)}
+                  </select>
+                </label>
+                <label>
+                  <select
+                    value={reasonFilter}
+                    onChange={(event: ChangeEvent<HTMLSelectElement>) => setReasonFilter(event.target.value as '*' | AnnotationReason)}
+                    aria-label="Filter by reason"
+                    data-qid="annotation-queue:filter:reason"
+                    data-qs-action="ANNOTATION_QUEUE_FILTER_REASON"
+                    title="Filter annotation calls by flag"
+                  >
+                    <option value="*">All flags</option>
+                    <option value="low_confidence">Low confidence</option>
+                    <option value="char_parity_deficit">Char parity deficit</option>
+                    <option value="unadjudicated_residual">Residual</option>
+                    <option value="reviewer_flagged">Reviewer flagged</option>
+                  </select>
+                </label>
+                <label>
+                  <select
+                    value={kindFilter}
+                    onChange={(event: ChangeEvent<HTMLSelectElement>) => setKindFilter(event.target.value as '*' | AnnotationKind)}
+                    aria-label="Filter by kind"
+                    data-qid="annotation-queue:filter:kind"
+                    data-qs-action="ANNOTATION_QUEUE_FILTER_KIND"
+                    title="Filter annotation calls by kind"
+                  >
+                    <option value="*">All kinds</option>
+                    <option value="block">Block</option>
+                    <option value="region">Region</option>
+                    <option value="page">Page</option>
+                  </select>
+                </label>
+              </div>
+              {filtered.length > 0 ? (
+                <VirtualRows
+                  rows={filtered}
+                  selectedId={selectedId}
+                  decisions={decisions}
+                  onSelect={(item) => setSelectedId(item.id)}
+                />
+              ) : (
+                <div className="pdf-verify-empty">No items match.</div>
+              )}
+            </>
           )}
-        </div>
+        </aside>
 
-        <aside className="pdf-verify-queue-inspector">
+        <section className="pdf-verify-adjudication__workspace">
           {!selected ? (
             <div className="pdf-verify-empty">Select an annotation call.</div>
           ) : (
             <>
-              <div className="pdf-verify-item-meta">
-                <span>{selected.documentId}</span>
-                <strong>Page {selected.page} · {selected.kind}</strong>
-                <em>{annotationReasonLabel(selected.reason)}</em>
-              </div>
-              <div className="pdf-verify-proposal">
-                <span>Current extraction</span>
-                <strong>{selected.currentType || '(untyped)'}</strong>
-                <p>{selected.textExcerpt || '(No text excerpt supplied.)'}</p>
-              </div>
-              {pageImage ? (
-                <NormalizedPageOverlay
-                  pageImage={pageImage}
-                  bbox={bbox}
-                  label={selected.currentType || selected.kind}
-                  alt={`Original PDF page ${selected.page} for annotation call`}
-                  actionQualifier={`annotation-${qidQualifier(selected.id)}`}
-                  compact
-                />
-              ) : (
-                <div className="pdf-verify-contract-blocker is-small">
-                  <AlertTriangle />
-                  <strong>Original page image unavailable</strong>
-                  <p>Queue triage may inspect metadata, but no visual adjudication should be accepted without the page image.</p>
+              <div className="pdf-verify-adjudication__meta">
+                <div>
+                  <strong>{selected.documentId}</strong>
+                  <span>Page {selected.page} · {selected.kind} · {annotationReasonLabel(selected.reason)}</span>
                 </div>
-              )}
-              <div className="pdf-verify-decision-grid">
+                <span>{filtered.findIndex((item) => item.id === selected.id) + 1} / {filtered.length}</span>
+              </div>
+
+              <div className="pdf-verify-adjudication__columns">
+                <section className="pdf-verify-workbench-panel is-canvas" aria-labelledby="original-page-heading">
+                  <header><span>01</span><h2 id="original-page-heading">Original page</h2></header>
+                  {pageImage ? (
+                    <PdfDocumentCanvas
+                      pageImage={pageImage}
+                      regions={canvasRegions}
+                      selectedRegionId={canvasRegions[0]?.id ?? null}
+                      onSelectedRegionChange={() => undefined}
+                      onRegionsChange={updateCanvasRegions}
+                      allowDraw={workbenchAction === 'fix_bounds'}
+                      drawLabel="corrected bounds"
+                      drawColor="#a8ff57"
+                      thumbnails={thumbnails}
+                      selectedThumbnailId={`${selected.documentId}:${selected.page}`}
+                      onThumbnailSelect={(thumbnail) => {
+                        const candidate = allItems.find((item) => (
+                          item.documentId === selected.documentId
+                          && item.page === thumbnail.pageImage.page
+                        ))
+                        if (candidate) setSelectedId(candidate.id)
+                      }}
+                      alt={`Original PDF page ${selected.page} for ${selected.documentId}`}
+                      actionQualifier={`annotation-${qidQualifier(selected.id)}`}
+                    />
+                  ) : (
+                    <div className="pdf-verify-contract-blocker is-small">
+                      <AlertTriangle aria-hidden="true" />
+                      <strong>Original page image unavailable</strong>
+                      <p>Visual adjudication is disabled until this page image is mounted.</p>
+                    </div>
+                  )}
+                </section>
+
+                <section className="pdf-verify-workbench-panel is-extraction" aria-labelledby="extraction-heading">
+                  <header><span>02</span><h2 id="extraction-heading">Pdf-oxide extracted</h2></header>
+                  <dl className="pdf-verify-extraction-record">
+                    <div><dt>Type</dt><dd>{selected.currentType || <span className="pdf-verify-absent">No type supplied</span>}</dd></div>
+                    <div><dt>Text</dt><dd>{selected.textExcerpt || <span className="pdf-verify-absent">No text_excerpt supplied</span>}</dd></div>
+                    <div><dt>Bounds</dt><dd><code>{selected.bbox ? `[${selected.bbox.join(', ')}]` : 'No bbox supplied'}</code></dd></div>
+                    <div>
+                      <dt>Engine</dt>
+                      <dd>
+                        <span title={`Engine commit ${selected.engineCommit}`} data-testid="engine-attribution">
+                          {selected.engineName || 'Engine name missing'} {selected.engineVersion || 'version missing'}
+                        </span>
+                      </dd>
+                    </div>
+                  </dl>
+
+                  {(selected.reason === 'char_parity_deficit' || workbenchAction === 'fix_text') && (
+                    <label className="pdf-verify-field pdf-verify-corrected-text">
+                      <span>Corrected text</span>
+                      <textarea
+                        value={correctedText}
+                        onChange={(event) => setCorrectedText(event.target.value)}
+                        rows={6}
+                        aria-label="Corrected extraction text"
+                        data-qid="annotation-queue:input:corrected-text"
+                        data-qs-action="ANNOTATION_QUEUE_SET_CORRECTED_TEXT"
+                        title="Edit the extraction text that will be written to corrected_text"
+                        data-testid="annotation-corrected-text"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => void saveDecision('accept', { correctedText })}
+                        disabled={!pageImage || saving || !correctedText.trim()}
+                        {...interactiveAttributes(
+                          'annotation-queue:save:corrected-text',
+                          'ANNOTATION_QUEUE_SAVE_CORRECTED_TEXT',
+                          'Save corrected text to the decision ledger',
+                        )}
+                        data-testid="annotation-save-text"
+                      >
+                        Save corrected_text
+                      </button>
+                    </label>
+                  )}
+
+                  {workbenchAction === 'fix_type' && (
+                    <label className="pdf-verify-field">
+                      <span>Corrected type</span>
+                      <select
+                        value={correctedType}
+                        onChange={(event) => setCorrectedType(event.target.value as ElementType)}
+                        aria-label="Corrected element type"
+                        data-qid="annotation-queue:input:corrected-type"
+                        data-qs-action="ANNOTATION_QUEUE_SET_CORRECTED_TYPE"
+                        title="Choose the corrected element type"
+                        data-testid="annotation-corrected-type"
+                      >
+                        {ELEMENT_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}
+                      </select>
+                      <button
+                        type="button"
+                        onClick={() => void saveDecision('correct_type')}
+                        disabled={!pageImage || saving}
+                        {...interactiveAttributes(
+                          'annotation-queue:save:corrected-type',
+                          'ANNOTATION_QUEUE_SAVE_CORRECTED_TYPE',
+                          'Save corrected element type',
+                        )}
+                        data-testid="annotation-save-type"
+                      >
+                        Save type
+                      </button>
+                    </label>
+                  )}
+
+                  <fieldset className="pdf-verify-bounds-fields" disabled={workbenchAction !== 'fix_bounds' || saving}>
+                    <legend>Bounds · PDF points</legend>
+                    {(['x', 'y', 'width', 'height'] as const).map((name, boundIndex) => (
+                      <label key={name}>
+                        <span>{name}</span>
+                        <input
+                          type="number"
+                          min={0}
+                          value={correctedBounds[boundIndex]}
+                          onChange={(event) => setCorrectedBounds((previous) => {
+                            const next = [...previous] as [string, string, string, string]
+                            next[boundIndex] = event.target.value
+                            return next
+                          })}
+                          aria-label={`Corrected bounds ${name}`}
+                          data-qid={`annotation-queue:input:bound-${name}`}
+                          data-qs-action="ANNOTATION_QUEUE_SET_CORRECTED_BOUNDS"
+                          title={`Set corrected bounds ${name} in PDF points`}
+                          data-testid={`annotation-bound-${name}`}
+                        />
+                      </label>
+                    ))}
+                    {workbenchAction === 'fix_bounds' && (
+                      <button
+                        type="button"
+                        onClick={() => void saveDecision('correct_bounds')}
+                        disabled={!pageImage || saving || correctedBounds.some((value) => !value)}
+                        {...interactiveAttributes(
+                          'annotation-queue:save:corrected-bounds',
+                          'ANNOTATION_QUEUE_SAVE_CORRECTED_BOUNDS',
+                          'Save corrected bounds to the decision ledger',
+                        )}
+                        data-testid="annotation-save-bounds"
+                      >
+                        Save bounds
+                      </button>
+                    )}
+                  </fieldset>
+                </section>
+
+                <section className="pdf-verify-workbench-panel is-evidence" aria-labelledby="flag-evidence-heading">
+                  <header><span>03</span><h2 id="flag-evidence-heading">Flag evidence</h2></header>
+                  <div className={`pdf-verify-flag-badge is-${selected.reason}`}>
+                    <span className={`pdf-verify-reason-dot is-${selected.reason}`} aria-hidden="true" />
+                    {annotationReasonLabel(selected.reason)}
+                  </div>
+                  <EvidencePanel item={selected} />
+                  <dl className="pdf-verify-details">
+                    <div><dt>Reason</dt><dd>{selected.reason}</dd></div>
+                    <div><dt>Oracle</dt><dd>{selected.oracleExcerpt ? 'Supplied' : 'Not supplied'}</dd></div>
+                    <div>
+                      <dt>Missing text</dt>
+                      <dd>{selected.missingText
+                        ? [...selected.missingText].map(visibleMissingCharacter).join('')
+                        : 'Not supplied'}</dd>
+                    </div>
+                    <div><dt>Queue ID</dt><dd><code>{selected.id}</code></dd></div>
+                  </dl>
+                  {status && <div className="pdf-verify-status is-success" role="status">{status}</div>}
+                  {error && <div className="pdf-verify-status is-error" role="alert">{error}</div>}
+                </section>
+              </div>
+
+              <footer className="pdf-verify-action-bar" aria-label="Adjudication actions">
                 <button
                   type="button"
                   onClick={() => void saveDecision('accept')}
-                  disabled={!pageImage || saving}
+                  disabled={!pageImage || saving || !hasExtractionData(selected)}
+                  {...interactiveAttributes('annotation-queue:action:accept', 'ANNOTATION_QUEUE_ACCEPT', 'Accept extraction')}
                   data-testid="annotation-accept"
                 >
-                  <Check /> Accept
+                  <Check aria-hidden="true" /><span><kbd>1</kbd> Accept</span>
+                </button>
+                <button
+                  type="button"
+                  className={workbenchAction === 'fix_text' ? 'is-active' : ''}
+                  onClick={() => setWorkbenchAction('fix_text')}
+                  disabled={!pageImage || saving}
+                  {...interactiveAttributes('annotation-queue:action:fix-text', 'ANNOTATION_QUEUE_FIX_TEXT', 'Fix extraction text')}
+                >
+                  <Type aria-hidden="true" /><span><kbd>2</kbd> Fix text</span>
+                </button>
+                <button
+                  type="button"
+                  className={workbenchAction === 'fix_type' ? 'is-active' : ''}
+                  onClick={() => setWorkbenchAction('fix_type')}
+                  disabled={!pageImage || saving}
+                  {...interactiveAttributes('annotation-queue:action:fix-type', 'ANNOTATION_QUEUE_FIX_TYPE', 'Fix element type')}
+                >
+                  <Tags aria-hidden="true" /><span><kbd>3</kbd> Fix type</span>
+                </button>
+                <button
+                  type="button"
+                  className={workbenchAction === 'fix_bounds' ? 'is-active' : ''}
+                  onClick={() => setWorkbenchAction('fix_bounds')}
+                  disabled={!pageImage || saving}
+                  {...interactiveAttributes('annotation-queue:action:fix-bounds', 'ANNOTATION_QUEUE_FIX_BOUNDS', 'Fix element bounds')}
+                >
+                  <BoxSelect aria-hidden="true" /><span><kbd>4</kbd> Fix bounds</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void saveDecision('not_an_element')}
+                  disabled={!pageImage || saving}
+                  {...interactiveAttributes('annotation-queue:action:not-element', 'ANNOTATION_QUEUE_NOT_ELEMENT', 'Mark as not an element')}
+                >
+                  <Ban aria-hidden="true" /><span><kbd>5</kbd> Not an element</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => void saveDecision('defer')}
                   disabled={!pageImage || saving}
+                  {...interactiveAttributes('annotation-queue:action:defer', 'ANNOTATION_QUEUE_DEFER', 'Defer annotation item')}
                   data-testid="annotation-defer"
                 >
-                  Defer
+                  <Clock3 aria-hidden="true" /><span><kbd>6</kbd> Defer</span>
                 </button>
-              </div>
-              <label className="pdf-verify-field">
-                <span>Corrected type</span>
-                <select
-                  value={correctedType}
-                  onChange={(event) => setCorrectedType(event.target.value as ElementType)}
-                  data-testid="annotation-corrected-type"
-                >
-                  {ELEMENT_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}
-                </select>
-              </label>
-              <button
-                type="button"
-                onClick={() => void saveDecision('correct_type')}
-                disabled={!pageImage || saving}
-                data-testid="annotation-save-type"
-              >
-                Save corrected type
-              </button>
-              <div className="pdf-verify-filters" aria-label="Corrected bounds in PDF points">
-                {(['x', 'y', 'width', 'height'] as const).map((name, boundIndex) => (
-                  <label key={name}>
-                    <span>{name}</span>
-                    <input
-                      type="number"
-                      min={0}
-                      value={correctedBounds[boundIndex]}
-                      onChange={(event) => setCorrectedBounds((previous) => {
-                        const next = [...previous] as [string, string, string, string]
-                        next[boundIndex] = event.target.value
-                        return next
-                      })}
-                      data-testid={`annotation-bound-${name}`}
-                    />
-                  </label>
-                ))}
-              </div>
-              <button
-                type="button"
-                onClick={() => void saveDecision('correct_bounds')}
-                disabled={!pageImage || saving || correctedBounds.some((value) => !value)}
-                data-testid="annotation-save-bounds"
-              >
-                Save corrected bounds
-              </button>
-              {status && <div className="pdf-verify-status is-success" role="status">{status}</div>}
-              {error && <div className="pdf-verify-status is-error" role="alert">{error}</div>}
-              <dl className="pdf-verify-details">
-                <div><dt>Reason</dt><dd>{selected.reason}</dd></div>
-                <div><dt>Engine</dt><dd><code>{selected.engineCommit}</code></dd></div>
-                <div><dt>PDF</dt><dd><code>{selected.pdfSha256}</code></dd></div>
-                <div><dt>Queue ID</dt><dd><code>{selected.id}</code></dd></div>
-              </dl>
+              </footer>
             </>
           )}
-        </aside>
+        </section>
       </section>
     </main>
+    </>
   )
 }

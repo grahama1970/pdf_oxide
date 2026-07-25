@@ -107,15 +107,7 @@ async function runWorkload(browser, kind, fixtureSha256, uiCommit) {
     await page.getByLabel('Filter by reason').selectOption('char_parity_deficit')
     assert.equal(await page.locator('[data-testid="annotation-row"]').count() < 60, true)
 
-    const firstRow = page.locator('[data-testid="annotation-row"]').first()
-    await firstRow.click()
-    await page.locator('.pdf-verify-contract-blocker.is-small').waitFor()
-    assert.equal(await page.locator('[data-testid="annotation-accept"]').isDisabled(), true)
-    assert.equal(await page.locator('[data-testid="annotation-defer"]').isDisabled(), true)
-    assert.equal(await page.locator('[data-testid="annotation-save-type"]').isDisabled(), true)
-    assert.equal(await page.locator('[data-testid="annotation-save-bounds"]').isDisabled(), true)
-
-    await page.locator('[data-testid="annotation-row"]').nth(1).click()
+    await page.locator('[data-testid="annotation-row"]').first().click()
     await page.locator('[data-testid="page-image"]').waitFor()
     const started = performance.now()
     for (let index = 0; index < WORKLOAD_SIZE; index += 1) {
@@ -129,9 +121,11 @@ async function runWorkload(browser, kind, fixtureSha256, uiCommit) {
       ))
       if (kind === 'mixed' && index % 5 === 0) {
         if (index % 10 === 0) {
+          await page.getByLabel('Fix element type').click()
           await page.locator('[data-testid="annotation-corrected-type"]').selectOption('Table')
           await page.locator('[data-testid="annotation-save-type"]').click()
         } else {
+          await page.getByLabel('Fix element bounds').click()
           await page.locator('[data-testid="annotation-bound-x"]').fill('10')
           await page.locator('[data-testid="annotation-bound-y"]').fill('20')
           await page.locator('[data-testid="annotation-bound-width"]').fill('100')

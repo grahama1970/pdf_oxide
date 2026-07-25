@@ -1,6 +1,6 @@
 import type { AnnotationQueueItem } from './annotationCall'
 
-export const ANNOTATION_DECISIONS = ['accept', 'defer', 'correct_type', 'correct_bounds'] as const
+export const ANNOTATION_DECISIONS = ['accept', 'defer', 'correct_type', 'correct_bounds', 'not_an_element'] as const
 export type AnnotationDecision = typeof ANNOTATION_DECISIONS[number]
 
 export const ELEMENT_TYPES = [

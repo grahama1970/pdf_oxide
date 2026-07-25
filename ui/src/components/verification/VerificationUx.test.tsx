@@ -190,4 +190,68 @@ describe('verification-first UX', () => {
     expect(screen.getByTestId('annotation-queue-route')).toHaveAttribute('data-confidence-hidden', 'true')
     expect(screen.getByTestId('annotation-queue-route')).not.toHaveTextContent('0.5')
   })
+
+  it('renders char-parity evidence and writes corrected_text before auto-advancing', async () => {
+    const call = normalizeAnnotationCall({
+      schema: 'pdf_oxide.annotation_call.v1',
+      pdf_sha256: PDF_SHA,
+      engine_name: 'pdf-oxide',
+      engine_version: '0.3.14',
+      engine_commit: 'commit-hidden-in-tooltip',
+      accuracy_estimate: { basis: 'character parity', value: 0.91 },
+      doc: 'arxiv-resnet',
+      items: [
+        {
+          item_id: 'arxiv-p4-parity',
+          page: 3,
+          kind: 'region',
+          reason: 'char_parity_deficit',
+          bbox: [100, 200, 300, 400],
+          current_type: 'Table',
+          text_excerpt: 'conv1 112 112',
+          oracle_excerpt: `conv1 112\u0014112`,
+          missing_text: '\u0014',
+          page_image_refs: PAGE_IMAGE,
+        },
+        {
+          item_id: 'empty-extraction',
+          page: 3,
+          kind: 'page',
+          reason: 'reviewer_flagged',
+          page_image_refs: PAGE_IMAGE,
+        },
+      ],
+    })
+    const fetchMock = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      const request = JSON.parse(String(init?.body)) as Record<string, unknown>
+      return new Response(JSON.stringify({
+        event: {
+          schema: 'pdf_oxide.annotation_decision_event.v1',
+          event_id: 'event-1',
+          request_sha256: 'request-1',
+          ...request,
+        },
+      }), { status: 201, headers: { 'Content-Type': 'application/json' } })
+    })
+
+    render(<AnnotationQueueRoute initialCalls={[call]} fetchImpl={fetchMock as unknown as typeof fetch} />)
+
+    expect(screen.getByTestId('engine-attribution')).toHaveTextContent('pdf-oxide 0.3.14')
+    expect(screen.getByTestId('engine-attribution')).toHaveAttribute('title', 'Engine commit commit-hidden-in-tooltip')
+    expect(screen.getByTestId('annotation-queue-route')).not.toHaveTextContent('commit-hidden-in-tooltip')
+    expect(screen.getByTestId('missing-text-highlight')).toHaveTextContent('×')
+    expect(screen.getByTestId('char-parity-evidence').querySelector('mark')).toHaveTextContent('×')
+    expect(screen.getByTestId('annotation-corrected-text')).toHaveValue('conv1 112 112')
+
+    fireEvent.change(screen.getByTestId('annotation-corrected-text'), {
+      target: { value: 'conv1 112×112' },
+    })
+    fireEvent.click(screen.getByTestId('annotation-save-text'))
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1))
+    const written = JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body)) as Record<string, unknown>
+    expect(written.corrected_text).toBe('conv1 112×112')
+    await waitFor(() => expect(screen.getByTestId('annotation-queue-route')).toHaveAttribute('data-selected-id', 'empty-extraction'))
+    expect(screen.getByTestId('annotation-accept')).toBeDisabled()
+  })
 })

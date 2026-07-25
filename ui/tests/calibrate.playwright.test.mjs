@@ -162,7 +162,7 @@ test('calibrate route renders evidence and persists a labels_v1 row', { timeout:
       .split('\n')
       .map(line => JSON.parse(line))
     assert.equal(rows.length, 1)
-    assert.deepEqual(Object.keys(rows[0]).sort(), ['item_sha', 'label', 'ts'])
+    assert.deepEqual(Object.keys(rows[0]).sort(), ['event_id', 'item_sha', 'label', 'ts'])
     assert.equal(rows[0].item_sha, expectedItemSha)
     assert.equal(rows[0].label, 'correct')
     assert.equal(new Date(rows[0].ts).toISOString(), rows[0].ts)

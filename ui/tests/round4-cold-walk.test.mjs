@@ -94,6 +94,7 @@ test('round 4 cold walk discovers the front-door artifact mounts', { timeout: 12
         .filter((entry) => entry.url.includes('/annotation-calls/'))
         .map((entry) => [entry.document_ids[0], entry.page_count])),
       {
+        '1512.03385v1': 10,
         'NASA_SP-2016-6105': 195,
         'NIST.SP.800-53Ar5': 88,
         'NIST_SP_800-53r5': 363,
@@ -122,7 +123,7 @@ test('round 4 cold walk discovers the front-door artifact mounts', { timeout: 12
     await page.goto(`${origin}/#pdf-lab/calibrate`)
     const calibrate = page.locator('[data-testid="calibrate-route"]')
     await calibrate.waitFor()
-    await calibrate.locator('img').waitFor()
+    await calibrate.locator('[data-testid="page-image"]').waitFor()
     await assertNoRawParseError(page)
     await page.screenshot({ path: join(SCREENSHOT_ROOT, 'calibrate.png'), fullPage: true })
 
@@ -134,7 +135,7 @@ test('round 4 cold walk discovers the front-door artifact mounts', { timeout: 12
 
     await page.goto(`${origin}/#pdf-lab/evidence`)
     await page.getByRole('heading', { name: 'Traceable answer' }).waitFor()
-    await page.locator('[data-testid="evidence-group"] img').waitFor()
+    await page.locator('[data-testid="evidence-group"] [data-testid="page-image"]').waitFor()
     await assertNoRawParseError(page)
     assert.doesNotMatch(
       await page.locator('body').innerText(),
