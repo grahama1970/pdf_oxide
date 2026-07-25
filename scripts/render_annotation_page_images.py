@@ -80,6 +80,26 @@ def mount_calls(source_root: Path, artifacts_root: Path) -> dict[str, dict[str, 
     return mounted
 
 
+def render_page_pdftoppm(source_pdf: Path, page: int, dpi: int) -> bytes:
+    """Render one page (0-based) via poppler's pdftoppm reference renderer."""
+    import subprocess
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        prefix = Path(tmp) / "page"
+        subprocess.run(
+            [
+                "pdftoppm", "-f", str(page + 1), "-l", str(page + 1),
+                "-r", str(dpi), "-png", str(source_pdf), str(prefix),
+            ],
+            check=True,
+            capture_output=True,
+        )
+        outputs = sorted(Path(tmp).glob("page*.png"))
+        if not outputs:
+            raise ValueError(f"pdftoppm produced no PNG for page {page}")
+        return outputs[0].read_bytes()
+
+
 def render_document(
     doc: str,
     call: dict[str, Any],
@@ -103,7 +123,11 @@ def render_document(
     image_root.mkdir(parents=True, exist_ok=True)
     index_rows: list[dict[str, Any]] = []
     for page in pages:
-        image_bytes = bytes(document.render_page(page, dpi=DPI, format="png"))
+        # pdftoppm reference renderer: pdf_oxide's render_page double-draws text
+        # glyphs (verified against the arXiv p4 caption, 2026-07-25). The human's
+        # ground-truth surface must be faithful, so render via poppler until the
+        # engine renderer defect is fixed.
+        image_bytes = render_page_pdftoppm(pdf_path, page, DPI)
         width, height = png_dimensions(image_bytes)
         filename = canonical_page_image_filename(
             actual_pdf_sha,

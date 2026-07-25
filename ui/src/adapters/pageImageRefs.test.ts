@@ -51,14 +51,17 @@ describe('page image refs', () => {
     })
   })
 
-  it('projects bottom-left PDF-space xywh boxes into top-left browser space', () => {
+  it('projects top-left-origin PDF-point xywh boxes into normalized image space', () => {
+    // pageImage dimensions are 96-DPI pixels; a 612x792pt page renders 816x1056px.
+    // Engine bboxes are top-left-origin points (verified against the arXiv p4
+    // architectures table: y=70pt sits 8.9% from the TOP of the real page).
     expect(normalizePdfBboxXywh(
-      [153, 594, 306, 54],
-      { width: 612, height: 792 },
+      [153, 198, 306, 54],
+      { width: 816, height: 1056 },
     )).toEqual([
-      0.25,
-      (792 - 594 - 54) / 792,
-      0.5,
+      153 / 612,
+      198 / 792,
+      306 / 612,
       54 / 792,
     ])
   })

@@ -330,21 +330,26 @@ export function normalizePdfBboxXywh(
   if (!Array.isArray(raw) || raw.length !== 4) throw new Error('bbox must contain four numbers')
   const [x, y, width, height] = raw.map(Number)
   if (![x, y, width, height].every(Number.isFinite)) throw new Error('bbox values must be finite')
+  // Engine bboxes are TOP-LEFT-origin PDF points (verified against the page-4
+  // architectures/Table-2 pair in the live arXiv extraction). Page images are
+  // rendered at 96 DPI, so the page size in points is pixel size * 72/96.
+  const pageWidthPt = pageImage.width * (72 / 96)
+  const pageHeightPt = pageImage.height * (72 / 96)
   if (
     x < 0
     || y < 0
     || width <= 0
     || height <= 0
-    || x + width > pageImage.width
-    || y + height > pageImage.height
+    || x + width > pageWidthPt + 1
+    || y + height > pageHeightPt + 1
   ) {
     throw new Error('PDF bbox must fit inside the source page')
   }
   return [
-    x / pageImage.width,
-    (pageImage.height - y - height) / pageImage.height,
-    width / pageImage.width,
-    height / pageImage.height,
+    x / pageWidthPt,
+    y / pageHeightPt,
+    width / pageWidthPt,
+    height / pageHeightPt,
   ]
 }
 
