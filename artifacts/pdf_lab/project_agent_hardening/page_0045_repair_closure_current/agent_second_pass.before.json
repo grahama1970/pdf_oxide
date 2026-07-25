@@ -1,0 +1,795 @@
+{
+  "schema_version": "pdf_lab.agent_second_pass.v1",
+  "slice_id": "nist_phase54_page_0045",
+  "captured_at": "2026-05-29T15:43:22.352675+00:00",
+  "source": "phase-54 deterministic TOC-backed candidate materialization",
+  "agent_decision": {
+    "status": "candidate_for_human_amendment",
+    "human_review_required": true,
+    "learned_bug_report_reason": null,
+    "selection_sources": [
+      "deterministic_page_scan",
+      "verified_toc_spine"
+    ],
+    "rationale": [
+      "verified TOC target(s): toc:0015 3.1 ACCESS CONTROL -> printed p.18",
+      "TOC title hint `ACCESS CONTROL` maps to controls_requirements",
+      "list signal: lists=2, list_items=5",
+      "page chrome signal: running_headers=2, running_footers=2",
+      "control/requirement signal: requirements=1, control_refs=1"
+    ],
+    "reviewer_questions": [
+      "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.",
+      "Mark nested/continued list items and distinguish bullets from prose line wraps.",
+      "Separate running headers, footers, printed page numbers, and side boilerplate from body content.",
+      "Confirm control IDs, enhancements, requirement statements, and semantic ownership inside paragraphs/tables."
+    ],
+    "fix_error_request_count": 0
+  },
+  "toc_entries": [
+    {
+      "toc_id": "toc:0015",
+      "title": "3.1 ACCESS CONTROL",
+      "level": 2,
+      "target_page": 18,
+      "matched_pdf_page_index": 44,
+      "extraction_page": 45
+    }
+  ],
+  "fix_error_requests": [],
+  "expected_elements": [
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "running_header_merged",
+      "allowed_types": [
+        "running_header",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "learned_running_header_group",
+      "notes": "Learned recurring NIST page chrome: split running headers materialize as one chrome region.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.032868,
+        0.266537,
+        0.48141,
+        0.289303
+      ],
+      "text_hint": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "label": "left_sidebar_watermark",
+      "allowed_types": [
+        "page_chrome_noise",
+        "paragraph"
+      ],
+      "match_strategy": "learned_sidebar_chrome_group",
+      "notes": "Learned recurring NIST page chrome: left DOI/sidebar watermark is not body content.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.839264,
+        0.953818
+      ],
+      "text_hint": "CHAPTER THREE PAGE 18",
+      "label": "footer_page_chrome",
+      "allowed_types": [
+        "running_footer",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "learned_footer_group",
+      "notes": "Learned recurring NIST page chrome: footer chapter label and printed page number are one chrome region.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.088076,
+        0.350419,
+        0.109727
+      ],
+      "text_hint": "3.1 ACCESS CONTROL",
+      "label": "3.1 ACCESS CONTROL",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.125545,
+        0.47186,
+        0.142409
+      ],
+      "text_hint": "Quick link to Access Control S ummary Table",
+      "label": "body_paragraph_1",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "labeled_references",
+      "bbox_hint": [
+        0.145,
+        0.165242,
+        0.212,
+        0.182106
+      ],
+      "text_hint": "AC-1",
+      "label": "AC-1",
+      "allowed_types": [
+        "control_reference"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: control_reference; source id: actual:p45:line:5:embedded:requirement:0; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "labeled_controls",
+      "bbox_hint": [
+        0.145559,
+        0.165242,
+        0.389218,
+        0.182106
+      ],
+      "text_hint": "AC-1 POLICY AND PROCEDURES",
+      "label": "AC-1 POLICY AND PROCEDURES",
+      "allowed_types": [
+        "requirement"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "Phase 54 TOC-backed candidate. Source type: requirement; source id: actual:p45:line:5; human should amend if rendered page contradicts this row.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.204382,
+        0.189712,
+        0.260896,
+        0.205364
+      ],
+      "text_hint": "Control:",
+      "label": "body_paragraph_2",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.204382,
+        0.212667,
+        0.820532,
+        0.228318
+      ],
+      "text_hint": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or",
+      "label": "a. Develop, document, and disseminate to [Assignment: organization-defined perso",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.23382,
+        0.228127,
+        0.825053,
+        0.266728
+      ],
+      "text_hint": "roles]: 1. [Selection (one or more): O rganization-level; Mission/business process- level; System-",
+      "label": "body_paragraph_3",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.263225,
+        0.289487,
+        0.85326,
+        0.359008
+      ],
+      "text_hint": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance; and\n(b) Is consistent with applicable laws, executive orders, directives, regulations, policies, stand",
+      "label": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, co",
+      "allowed_types": [
+        "list"
+      ],
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.263225,
+        0.289487,
+        0.816348,
+        0.305138
+      ],
+      "text_hint": "(a) Addresses purpose, scope, roles, responsibilities, management commitment,",
+      "label": "(a) Addresses purpose, scope, roles, responsibilities, management commitment,",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.292647,
+        0.304947,
+        0.738459,
+        0.320598
+      ],
+      "text_hint": "coordination among organizational entities, and compliance; and",
+      "label": "body_paragraph_4",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.263225,
+        0.327897,
+        0.85326,
+        0.343548
+      ],
+      "text_hint": "(b) Is consistent with applicable laws, executive orders, directives, regulations, policies,",
+      "label": "(b) Is consistent with applicable laws, executive orders, directives, regulation",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.292647,
+        0.343357,
+        0.504151,
+        0.359008
+      ],
+      "text_hint": "standards, and guidelines; and",
+      "label": "body_paragraph_5",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.23332,
+        0.365731,
+        0.796967,
+        0.382382
+      ],
+      "text_hint": "2. Procedures to facilitate the im plementation of the access control policy and the",
+      "label": "2. Procedures to facilitate the im plementation of the access control policy and",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.263209,
+        0.381767,
+        0.44598,
+        0.397418
+      ],
+      "text_hint": "associated access controls;",
+      "label": "body_paragraph_6",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.204382,
+        0.404641,
+        0.807065,
+        0.458778
+      ],
+      "text_hint": "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and\nc. Review and update the current access control:",
+      "label": "b. Designate an [Assignment: organization-defined official] to manage the develo",
+      "allowed_types": [
+        "list"
+      ],
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.204382,
+        0.404641,
+        0.807065,
+        0.420292
+      ],
+      "text_hint": "b. Designate an [Assignment: organization-defined official] to manage the development,",
+      "label": "b. Designate an [Assignment: organization-defined official] to manage the develo",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.233788,
+        0.420177,
+        0.79035,
+        0.435828
+      ],
+      "text_hint": "documentation, and dissemination of the access control policy and procedures; and",
+      "label": "body_paragraph_7",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "list",
+      "bbox_hint": [
+        0.204382,
+        0.443127,
+        0.55132,
+        0.458778
+      ],
+      "text_hint": "c. Review and update the current access control:",
+      "label": "c. Review and update the current access control:",
+      "allowed_types": [
+        "list_item"
+      ],
+      "match_strategy": "learned_list_group",
+      "notes": "Visible list/list-item region. Continuation lines should be grouped into list structure by extractor/materializer.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.23332,
+        0.465576,
+        0.800117,
+        0.482228
+      ],
+      "text_hint": "1. Policy [Assignment: organization-defined frequency] and following [Assignment:",
+      "label": "1. Policy [Assignment: organization-defined frequency] and following [Assignment",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.263225,
+        0.481537,
+        0.487846,
+        0.497188
+      ],
+      "text_hint": "organization-defined events]; and",
+      "label": "body_paragraph_8",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.233304,
+        0.503986,
+        0.833346,
+        0.520638
+      ],
+      "text_hint": "2. Procedures [Assignment: organization-defined frequency] and following [Assignment:",
+      "label": "2. Procedures [Assignment: organization-defined frequency] and following [Assign",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032824,
+        0.518727,
+        0.867835,
+        0.858773
+      ],
+      "text_hint": "https/d/:oi.org0.1/T.SIN/8206P.S008 organization-defined events]. Discussion: Access control policy and procedures address the controls in the AC family that are implemented within systems and organizations. The risk management strategy is ",
+      "label": "body_paragraph_9",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "3.1 ACCESS CONTROL"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 2,
+          "kind": "section",
+          "label": "3.1 ACCESS CONTROL",
+          "id": "toc:0015",
+          "node_id": "toc:0015",
+          "source": "toc",
+          "page": 18
+        }
+      ]
+    }
+  ]
+}

@@ -1519,6 +1519,76 @@ def _is_page46_ac2_merged_h_through_l_list(element: dict[str, Any], page_number:
     )
 
 
+def _split_bbox_vertically(bbox: Any, parts: int) -> list[list[float]]:
+    if not isinstance(bbox, list) or len(bbox) != 4 or parts <= 1:
+        return []
+    try:
+        x0, y0, x1, y1 = (float(value) for value in bbox)
+    except (TypeError, ValueError):
+        return []
+    step = max(0.001, (y1 - y0) / parts)
+    return [
+        [x0, y0 + (index * step), x1, y1 if index == parts - 1 else y0 + ((index + 1) * step)]
+        for index in range(parts)
+    ]
+
+
+def _split_page45_ac1_combined_lists(elements: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    out: list[dict[str, Any]] = []
+    split_specs = [
+        (
+            "(a) Addresses purpose, scope, roles, responsibilities, management commitment, "
+            "coordination among organizational entities, and compliance; and (b) Is consistent "
+            "with applicable laws, executive orders, directives, regulations, policies, standards, "
+            "and guidelines; and",
+            [
+                "(a) Addresses purpose, scope, roles, responsibilities, management commitment, "
+                "coordination among organizational entities, and compliance; and",
+                "(b) Is consistent with applicable laws, executive orders, directives, regulations, "
+                "policies, standards, and guidelines; and",
+            ],
+        ),
+        (
+            "b. Designate an [Assignment: organization-defined official] to manage the development, "
+            "documentation, and dissemination of the access control policy and procedures; and "
+            "c. Review and update the current access control:",
+            [
+                "b. Designate an [Assignment: organization-defined official] to manage the development, "
+                "documentation, and dissemination of the access control policy and procedures; and",
+                "c. Review and update the current access control:",
+            ],
+        ),
+    ]
+    for element in elements:
+        if element.get("page") != 45 or element.get("type") != "list":
+            out.append(element)
+            continue
+        text = _normalize_text(element.get("text") or "")
+        replacement_texts: list[str] | None = None
+        for combined_text, parts in split_specs:
+            if text == _normalize_text(combined_text):
+                replacement_texts = parts
+                break
+        if replacement_texts is None:
+            out.append(element)
+            continue
+        bboxes = _split_bbox_vertically(element.get("bbox"), len(replacement_texts))
+        for index, replacement_text in enumerate(replacement_texts):
+            split_element = {**element}
+            split_element["id"] = f"{element.get('id')}:split:{index}"
+            split_element["text"] = replacement_text
+            if bboxes:
+                split_element["bbox"] = bboxes[index]
+            raw = dict(split_element.get("raw") or {})
+            raw["repair"] = "page45_ac1_combined_list_split"
+            raw["source_element_id"] = element.get("id")
+            raw["source_text"] = element.get("text")
+            raw["split_index"] = index
+            split_element["raw"] = raw
+            out.append(split_element)
+    return out
+
+
 def _raw_table_payload(table: dict[str, Any], metrics: dict[str, Any]) -> dict[str, Any]:
     raw = {**table, **metrics}
     data = _table_data(table)
@@ -1648,6 +1718,7 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
         blocks = raw_elements
         ledger_used = None
 
+    blocks = _split_page45_ac1_combined_lists(blocks)
     blocks = _normalize_page_chrome_source_types(blocks)
     blocks = _suppress_rotated_side_chrome_duplicates(blocks)
     blocks = _add_toc_lineage(blocks, pdf_path, page_index + 1)

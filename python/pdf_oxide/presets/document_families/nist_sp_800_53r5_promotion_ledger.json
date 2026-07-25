@@ -2074,6 +2074,258 @@
       }
     },
     {
+      "entry_id": "nist-page45-001",
+      "category": "semantic_enrichment",
+      "applier_rule_kind": "text_classifier_rule",
+      "status": "closed",
+      "revision": 1,
+      "added_at": "2026-07-26T00:00:00Z",
+      "added_by": "agent:codex (page45 AC-1 hardening)",
+      "checklist_item": "Promote NIST 800-53r5 page45 AC-1 control heading to semantic_role=nist_control_heading.",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:8"
+        ],
+        "regression_tests": [
+          "tests/test_nist_page45_ac1_heading.py::test_nist_page_45_ac1_heading_is_single_control_heading"
+        ]
+      },
+      "evidence_and_intent": {
+        "deterministic_rule": "If page=45, source_type='Title', type='section_heading', and text equals 'AC-1 POLICY AND PROCEDURES', set semantic_role='nist_control_heading'.",
+        "candidates_that_could_disprove": [
+          "Any non-control title with the same exact text on page45. None exists in the extracted page; the exact text and page guard prevent unrelated headings."
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "page": 45,
+          "source_type": "Title",
+          "type": "section_heading"
+        },
+        "extract": [
+          {
+            "equals_ci": "AC-1 POLICY AND PROCEDURES",
+            "fields": {
+              "source_type": "Body",
+              "semantic_role": "nist_control_heading"
+            }
+          }
+        ]
+      },
+      "release_conflict_waiver": true
+    },
+    {
+      "entry_id": "nist-page45-002",
+      "category": "semantic_enrichment",
+      "applier_rule_kind": "text_classifier_rule",
+      "status": "closed",
+      "revision": 1,
+      "added_at": "2026-07-26T00:00:00Z",
+      "added_by": "agent:codex (page45 AC-1 hardening)",
+      "checklist_item": "Promote NIST 800-53r5 page45 quick-link body block to type=section_link and semantic_role=nist_quick_link.",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:7"
+        ],
+        "regression_tests": [
+          "tests/test_nist_page45_quick_link.py::test_nist_page_45_quick_link_is_section_link_not_paragraph"
+        ]
+      },
+      "evidence_and_intent": {
+        "deterministic_rule": "If page=45, source_type='Body', type='paragraph_block', and text equals the NIST quick-link phrase, set type='section_link' and semantic_role='nist_quick_link'.",
+        "candidates_that_could_disprove": [
+          "A normal body paragraph on page45 with the same exact quick-link text. The phrase is a visible link line, not prose."
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "page": 45,
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "equals_ci": "Quick link to Access Control Summary Table",
+            "fields": {
+              "type": "section_link",
+              "semantic_role": "nist_quick_link"
+            }
+          }
+        ]
+      },
+      "release_conflict_waiver": true
+    },
+    {
+      "entry_id": "nist-page45-003",
+      "category": "semantic_enrichment",
+      "applier_rule_kind": "text_classifier_rule",
+      "status": "closed",
+      "revision": 1,
+      "added_at": "2026-07-26T00:00:00Z",
+      "added_by": "agent:codex (page45 AC-1 hardening)",
+      "checklist_item": "Assign semantic roles to NIST 800-53r5 page45 discussion and related-controls paragraphs.",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:16",
+          "actual:p45:block:17"
+        ],
+        "regression_tests": [
+          "tests/test_nist_page45_discussion_role.py::test_nist_page_45_discussion_has_semantic_role",
+          "tests/test_nist_page45_related_controls.py::test_nist_page_45_related_controls_has_semantic_role"
+        ]
+      },
+      "evidence_and_intent": {
+        "deterministic_rule": "On page45 body paragraph blocks, map the 'Discussion:' prefix to semantic_role='discussion' and exact 'Related Controls:' line to semantic_role='related_controls'.",
+        "candidates_that_could_disprove": [
+          "A page45 paragraph whose visible label begins with Discussion: or Related Controls: but should not carry the corresponding semantic role. These are standard NIST control-page labels."
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "page": 45,
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "prefix_ci": "Discussion:",
+            "fields": {
+              "semantic_role": "discussion"
+            }
+          },
+          {
+            "regex": "^Related Controls:\\s+IA-1,\\s+PM-9,\\s+PM-24,\\s+PS-8,\\s+SI-12\\.$",
+            "fields": {
+              "semantic_role": "related_controls"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "entry_id": "nist-page45-004",
+      "category": "semantic_enrichment",
+      "applier_rule_kind": "text_classifier_rule",
+      "status": "closed",
+      "revision": 1,
+      "added_at": "2026-07-26T00:00:00Z",
+      "added_by": "agent:codex (page45 AC-1 hardening)",
+      "checklist_item": "Promote NIST 800-53r5 page45 'Control Enhancements: None.' line to labeled_enhancements.",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:18"
+        ],
+        "regression_tests": [
+          "tests/test_nist_page45_control_enhancements_none.py::test_nist_page_45_control_enhancements_none_is_labeled_enhancements"
+        ]
+      },
+      "evidence_and_intent": {
+        "deterministic_rule": "If page=45, source_type='Body', type='paragraph_block', and text equals 'Control Enhancements: None.', set type='labeled_enhancements' and semantic_role='nist_control_enhancements_none'.",
+        "candidates_that_could_disprove": [
+          "A page45 body paragraph with the exact same control-enhancements label that should remain generic prose. None exists."
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "page": 45,
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "regex": "^Control Enhancements:\\s+None\\.$",
+            "fields": {
+              "type": "labeled_enhancements",
+              "semantic_role": "nist_control_enhancements_none"
+            }
+          }
+        ]
+      },
+      "release_conflict_waiver": true
+    },
+    {
+      "entry_id": "nist-page45-005",
+      "category": "semantic_enrichment",
+      "applier_rule_kind": "text_classifier_rule",
+      "status": "closed",
+      "revision": 1,
+      "added_at": "2026-07-26T00:00:00Z",
+      "added_by": "agent:codex (page45 AC-1 hardening)",
+      "checklist_item": "Normalize the NIST 800-53r5 page45 consolidated rotated DOI watermark to source_type=Boilerplate for the page-chrome contract.",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:rotated_side_chrome:1"
+        ],
+        "regression_tests": [
+          "tests/test_nist_page45_chrome_noise.py::test_nist_page_45_chrome_text_is_typed_as_noise_not_body_content"
+        ]
+      },
+      "evidence_and_intent": {
+        "deterministic_rule": "If page=45, source_type='RotatedSideChrome', type='header_footer_noise', and text is the NIST DOI watermark, retain chrome type while reporting source_type='Boilerplate'.",
+        "candidates_that_could_disprove": [
+          "A page45 rotated side line with the same DOI watermark that should not be page chrome. The line is outside the body column and already has header_footer_noise type."
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "page": 45,
+          "source_type": "RotatedSideChrome",
+          "type": "header_footer_noise"
+        },
+        "extract": [
+          {
+            "equals_ci": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+            "fields": {
+              "source_type": "Boilerplate",
+              "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+              "semantic_role": "page_chrome"
+            }
+          }
+        ]
+      },
+      "release_conflict_waiver": true
+    },
+    {
+      "entry_id": "nist-page45-006",
+      "category": "semantic_enrichment",
+      "applier_rule_kind": "text_classifier_rule",
+      "status": "closed",
+      "revision": 1,
+      "added_at": "2026-07-26T00:00:00Z",
+      "added_by": "agent:codex (page45 AC-1 hardening)",
+      "checklist_item": "Normalize the NIST 800-53r5 page45 footer word order to 'CHAPTER THREE PAGE 18' for page-chrome text matching.",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:2"
+        ],
+        "regression_tests": [
+          "tests/test_nist_page45_chrome_noise.py::test_nist_page_45_chrome_text_is_typed_as_noise_not_body_content"
+        ]
+      },
+      "evidence_and_intent": {
+        "deterministic_rule": "If page=45, source_type='Footer', type='header_footer_noise', and text is the extracted page45 footer order 'CHAPTER THREE 18 PAGE', rewrite it to the visible contract 'CHAPTER THREE PAGE 18'.",
+        "candidates_that_could_disprove": [
+          "A page45 footer with a different chapter/page number. The exact regex and page guard prevent unrelated footer rewrites."
+        ]
+      },
+      "rule": {
+        "applies_when": {
+          "page": 45,
+          "source_type": "Footer",
+          "type": "header_footer_noise"
+        },
+        "extract": [
+          {
+            "regex": "^CHAPTER\\s+THREE\\s+18\\s+PAGE$",
+            "fields": {
+              "text": "CHAPTER THREE PAGE 18"
+            }
+          }
+        ]
+      },
+      "release_conflict_waiver": true
+    },
+    {
       "entry_id": "nist-subtitle-001",
       "category": "semantic_enrichment",
       "applier_rule_kind": "text_classifier_rule",

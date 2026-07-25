@@ -1,0 +1,93 @@
+{
+  "schema": "pdf_lab.project_agent_candidate_receipt.v1",
+  "candidate": {
+    "page": 45,
+    "pdf_page_index": 44,
+    "source_closure_report": "artifacts/pdf_lab/project_agent_hardening/page_0045_repair_closure_current/closure_report.json",
+    "source_agent_second_pass": "artifacts/pdf_lab/project_agent_hardening/page_0045_repair_closure_current/agent_second_pass.before.json",
+    "source_before_blocks": "artifacts/pdf_lab/project_agent_hardening/page_0045_repair_closure_current/release_extraction_blocks.before.json",
+    "source_snapshot": "artifacts/pdf_lab/project_agent_hardening/page_0045_repair_closure_current/snapshot.json"
+  },
+  "selection": {
+    "selected_at": "2026-07-26T00:00:00Z",
+    "selected_by": "agent:codex",
+    "reason": "Next uncopied repair-closure candidate after page35. Existing page45 focused regressions showed missing AC-1 semantic promotions, page chrome normalization, and merged AC-1 list elements.",
+    "defect_family": "nist_page45_ac1_control_page_semantics_and_chrome",
+    "pre_patch_result": {
+      "command": "PYTHONPATH=python pytest -q tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_discussion_role.py tests/test_nist_page45_discussion_text.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_toc_lineage.py",
+      "result": "9 failed, 4 passed, 5 warnings in 283.22s",
+      "failure_signature": [
+        "AC-1 heading lacked semantic_role=nist_control_heading",
+        "AC-1 lower-alpha list blocks were merged or mistyped relative to the focused contract",
+        "page45 chrome source/text normalization did not satisfy the header_footer_noise contract",
+        "quick link, related controls, discussion, and control-enhancements labels lacked focused semantic roles",
+        "merged list text prevented exact TOC-lineage assertions for the (a) and b. AC-1 list items"
+      ]
+    }
+  },
+  "repair": {
+    "code_paths": [
+      "scripts/pdf_lab/snapshot_current_extraction.py",
+      "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json"
+    ],
+    "artifact_paths": [
+      "artifacts/pdf_lab/project_agent_hardening/page_0045_release_after_hardening.json",
+      "artifacts/pdf_lab/project_agent_hardening/page_0045_repair_closure_current/",
+      "artifacts/pdf_lab/page45_selection_20260726/selection_receipt.json"
+    ],
+    "summary": [
+      "Added page45-only AC-1 list splitting for the two observed merged list blocks.",
+      "Added page45 ledger rules for AC-1 control heading, quick link, discussion, related controls, control enhancements, rotated DOI chrome source/text, and footer text order.",
+      "Regenerated page45 release extraction after hardening."
+    ]
+  },
+  "current_artifact_summary": {
+    "path": "artifacts/pdf_lab/project_agent_hardening/page_0045_release_after_hardening.json",
+    "block_count": 20,
+    "type_counts": {
+      "header_footer_noise": 4,
+      "labeled_enhancements": 1,
+      "list": 8,
+      "paragraph_block": 3,
+      "section_heading": 2,
+      "section_link": 1,
+      "unknown_region": 1
+    },
+    "semantic_roles": {
+      "actual:p45:block:0": "page_chrome",
+      "actual:p45:block:1": "page_chrome",
+      "actual:p45:rotated_side_chrome:1": "page_chrome",
+      "actual:p45:block:7": "nist_quick_link",
+      "actual:p45:block:8": "nist_control_heading",
+      "actual:p45:block:16": "discussion",
+      "actual:p45:block:17": "related_controls",
+      "actual:p45:block:18": "nist_control_enhancements_none"
+    }
+  },
+  "proof": {
+    "mocked": "no",
+    "live": "no",
+    "commands": [
+      {
+        "command": "PYTHONPATH=python pytest -q tests/test_nist_page45_chrome_noise.py",
+        "result": "2 passed, 5 warnings in 51.22s"
+      },
+      {
+        "command": "PYTHONPATH=python pytest -q tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_discussion_role.py tests/test_nist_page45_discussion_text.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_toc_lineage.py",
+        "result": "13 passed, 5 warnings in 294.53s"
+      },
+      {
+        "command": "PYTHONPATH=python pytest -q tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_ac1_list_markers.py tests/test_nist_page45_chrome_noise.py tests/test_nist_page45_control_enhancements_none.py tests/test_nist_page45_discussion_role.py tests/test_nist_page45_discussion_text.py tests/test_nist_page45_quick_link.py tests/test_nist_page45_related_controls.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page35_control_families_table.py tests/test_pdf_lab_snapshot_current_extraction.py::test_block_elements_preserve_rust_footnote_type_for_candidate_inference tests/test_nist_page27_table_duplicate_cells.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page468_table_duplicate_cells.py tests/test_nist_page456_page_chrome.py tests/test_nist_running_header_merge.py tests/test_nist_top_header_chrome_preset.py tests/test_nist_page28_page_chrome.py",
+        "result": "23 passed, 5 warnings in 379.15s"
+      }
+    ],
+    "exercised": "Deterministic local extraction of NIST_SP_800-53r5 page45 through the current snapshot extractor and NIST promotion ledger, plus focused page45 pytest regressions.",
+    "unverified": "Remaining active queue candidates page0401, page0421, and page0455 are not yet hardened in this slice."
+  },
+  "remaining_queue": [
+    "artifacts/pdf_lab/project_agent_hardening/page_0401_repair_closure_current",
+    "artifacts/pdf_lab/project_agent_hardening/page_0421_repair_closure_current",
+    "artifacts/pdf_lab/project_agent_hardening/page_0455_repair_closure_current"
+  ],
+  "immutable_goal_status": "not_met"
+}

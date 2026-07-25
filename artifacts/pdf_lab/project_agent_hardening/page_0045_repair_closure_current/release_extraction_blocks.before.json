@@ -1,0 +1,1002 @@
+{
+  "source_extraction": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-nist-full-extraction.json",
+  "page": 45,
+  "pdf_page_index": 44,
+  "toc_entries": [
+    {
+      "toc_id": "toc:0015",
+      "title": "3.1 ACCESS CONTROL",
+      "level": 2,
+      "target_page": 18,
+      "matched_pdf_page_index": 44,
+      "extraction_page": 45
+    }
+  ],
+  "table_materialization": {
+    "core_table_blocks_added": 0,
+    "existing_table_blocks": 0
+  },
+  "blocks": [
+    {
+      "bbox": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confidence": 1.0,
+      "id": "toc:section_anchor:0019",
+      "page": 45,
+      "review_role": "semantic_document_structure",
+      "semantic_role": "section_anchor",
+      "source": "pdf_outline.toc",
+      "text": "3.1   ACCESS CONTROL",
+      "toc_backed": true,
+      "toc_id": "toc:0019",
+      "toc_level": 2,
+      "type": "section_anchor"
+    },
+    {
+      "bbox": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confidence": 1.0,
+      "id": "toc:section_anchor:0020",
+      "page": 45,
+      "review_role": "semantic_document_structure",
+      "semantic_role": "section_anchor",
+      "source": "pdf_outline.toc",
+      "text": "AC-1 POLICY AND PROCEDURES",
+      "toc_backed": true,
+      "toc_id": "toc:0020",
+      "toc_level": 3,
+      "type": "section_anchor"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:0",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "NIST SP 800-53, REV. 5",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:4",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "running_header"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.088076,
+        0.350419,
+        0.109727
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:2",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3.1 ACCESS CONTROL",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.125545,
+        0.47186,
+        0.142409
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:3",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Quick link to Access Control S ummary Table",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145559,
+        0.165242,
+        0.389218,
+        0.182106
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:5",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "AC-1 POLICY AND PROCEDURES",
+      "type": "requirement"
+    },
+    {
+      "bbox": [
+        0.145,
+        0.165242,
+        0.212,
+        0.182106
+      ],
+      "confidence": 0.9,
+      "embedded_from": "actual:p45:line:5",
+      "id": "actual:p45:line:5:embedded:requirement:0",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "original_type": "requirement",
+        "repair_reason": "inline_control_id_reference_not_formal_requirement",
+        "repair_source": "pdf_lab.second_pass.control_reference_repair"
+      },
+      "source": "pdf_oxide.extract_text_lines+preset_embedded",
+      "text": "AC-1",
+      "type": "control_reference"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.189712,
+        0.260896,
+        0.205364
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:6",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Control:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.212667,
+        0.820532,
+        0.228318
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:7",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "a. Develop, document, and disseminate to [Assignment: organization-defined personnel or",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.23382,
+        0.228127,
+        0.277457,
+        0.243778
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:8",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "roles]:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.23382,
+        0.251077,
+        0.825053,
+        0.266728
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:9",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "1. [Selection (one or more): O rganization-level; Mission/business process- level; System-",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032868,
+        0.266537,
+        0.48141,
+        0.289303
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:10",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "This publication is available free of level charge] access from: control policy that:",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.263225,
+        0.289487,
+        0.85326,
+        0.359008
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:list:0:11-14",
+      "page": 45,
+      "preset_applied": {
+        "name": "nist_sp_800_53r5_pdf",
+        "path": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
+        "schema_version": "pdf-oxide.document-family-preset.v1"
+      },
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy",
+        "child_ids": [
+          "actual:p45:line:11",
+          "actual:p45:line:12",
+          "actual:p45:line:13",
+          "actual:p45:line:14"
+        ],
+        "grouping_rule": "adjacent_list_item_lines_with_indented_continuations",
+        "items": [
+          {
+            "line_ids": [
+              "actual:p45:line:11",
+              "actual:p45:line:12"
+            ],
+            "start_id": "actual:p45:line:11",
+            "text": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance; and"
+          },
+          {
+            "line_ids": [
+              "actual:p45:line:13",
+              "actual:p45:line:14"
+            ],
+            "start_id": "actual:p45:line:13",
+            "text": "(b) Is consistent with applicable laws, executive orders, directives, regulations, policies, standards, and guidelines; and"
+          }
+        ],
+        "list_style": "alpha"
+      },
+      "source": "pdf_lab.second_pass.list_grouping",
+      "text": "(a) Addresses purpose, scope, roles, responsibilities, management commitment, coordination among organizational entities, and compliance; and\n(b) Is consistent with applicable laws, executive orders, directives, regulations, policies, standards, and guidelines; and",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.263225,
+        0.289487,
+        0.816348,
+        0.305138
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:11",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "(a) Addresses purpose, scope, roles, responsibilities, management commitment,",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.292647,
+        0.304947,
+        0.738459,
+        0.320598
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:12",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "coordination among organizational entities, and compliance; and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.263225,
+        0.327897,
+        0.85326,
+        0.343548
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:13",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "(b) Is consistent with applicable laws, executive orders, directives, regulations, policies,",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.292647,
+        0.343357,
+        0.504151,
+        0.359008
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:14",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "standards, and guidelines; and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.23332,
+        0.365731,
+        0.796967,
+        0.382382
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:15",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "2. Procedures to facilitate the im plementation of the access control policy and the",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.263209,
+        0.381767,
+        0.44598,
+        0.397418
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:16",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "associated access controls;",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.404641,
+        0.807065,
+        0.458778
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:list:1:17-19",
+      "page": 45,
+      "preset_applied": {
+        "name": "nist_sp_800_53r5_pdf",
+        "path": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
+        "schema_version": "pdf-oxide.document-family-preset.v1"
+      },
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy",
+        "child_ids": [
+          "actual:p45:line:17",
+          "actual:p45:line:18",
+          "actual:p45:line:19"
+        ],
+        "grouping_rule": "adjacent_list_item_lines_with_indented_continuations",
+        "items": [
+          {
+            "line_ids": [
+              "actual:p45:line:17",
+              "actual:p45:line:18"
+            ],
+            "start_id": "actual:p45:line:17",
+            "text": "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and"
+          },
+          {
+            "line_ids": [
+              "actual:p45:line:19"
+            ],
+            "start_id": "actual:p45:line:19",
+            "text": "c. Review and update the current access control:"
+          }
+        ],
+        "list_style": "alpha"
+      },
+      "source": "pdf_lab.second_pass.list_grouping",
+      "text": "b. Designate an [Assignment: organization-defined official] to manage the development, documentation, and dissemination of the access control policy and procedures; and\nc. Review and update the current access control:",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.404641,
+        0.807065,
+        0.420292
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:17",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "b. Designate an [Assignment: organization-defined official] to manage the development,",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.233788,
+        0.420177,
+        0.79035,
+        0.435828
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:18",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "documentation, and dissemination of the access control policy and procedures; and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.443127,
+        0.55132,
+        0.458778
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:19",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "c. Review and update the current access control:",
+      "type": "list_item"
+    },
+    {
+      "bbox": [
+        0.23332,
+        0.465576,
+        0.800117,
+        0.482228
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:20",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "1. Policy [Assignment: organization-defined frequency] and following [Assignment:",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.263225,
+        0.481537,
+        0.487846,
+        0.497188
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:21",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "organization-defined events]; and",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.233304,
+        0.503986,
+        0.833346,
+        0.520638
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:22",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "2. Procedures [Assignment: organization-defined frequency] and following [Assignment:",
+      "type": "section_header"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.130088,
+        0.533091
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:23",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "https/d/:oi.org0.1/T.SIN/8206P.S008",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.263209,
+        0.519947,
+        0.45988,
+        0.535598
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:24",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "organization-defined events].",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.542894,
+        0.839559,
+        0.558545
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:25",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Discussion: Access control policy and procedures address the controls in the AC family that are",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.558273,
+        0.847333,
+        0.573924
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:26",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "implemented within systems and organizations. The risk management strategy is an important",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.573657,
+        0.85513,
+        0.589308
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:27",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "factor in establishing such policies aP nd procedures. olicies and procedures contribute to security",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204366,
+        0.589117,
+        0.854573,
+        0.604769
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:28",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "and privacy assurance. Therefore, it is important that security and privacy programs collaborate",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204366,
+        0.604501,
+        0.812264,
+        0.620153
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:29",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "on the development of access control policy and procedures. Security and privacy program",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204366,
+        0.619962,
+        0.843593,
+        0.635613
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:30",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "policies and procedures at the organization level are preferable, in general, and may obviate the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204366,
+        0.635346,
+        0.841131,
+        0.650997
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:31",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "need for mission-or system-specific policies and procedures. The policy can be include d as part",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204366,
+        0.650806,
+        0.841381,
+        0.666457
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:32",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "of the general security and privacy policy or be represented by multiple policies reflectin g the",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204366,
+        0.66619,
+        0.798164,
+        0.681842
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:33",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "complex nature of organizations. Procedures can be established for security and privacy",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204366,
+        0.68165,
+        0.832535,
+        0.697302
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:34",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "programs, for mission or business processes, and for systems, if needed. Procedures describe",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.697035,
+        0.849062,
+        0.712686
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:36",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "how the policies or controls are implemented and can be directed at the individual or role that is",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.032824,
+        0.701227,
+        0.043132,
+        0.719379
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:35",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "3r55 -",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.712419,
+        0.867835,
+        0.72807
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:37",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "the object of the procedure. Procedures can be documented in system security and privacy plans",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.727879,
+        0.846631,
+        0.743531
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:38",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "or in one or more separate documents. Events that may precipitate an update to access control",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.743263,
+        0.826969,
+        0.758915
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:39",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "policy and procedures include assessment or audit findings, security incidents or breaches, or",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.758723,
+        0.821697,
+        0.774375
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:40",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "changes in laws, executive orders, directives, regulations, policies, standards, and guidelines.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204399,
+        0.774184,
+        0.774546,
+        0.789835
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:41",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Simply restating controls does not constitute an organizational policy or procedure.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.797136,
+        0.531089,
+        0.812788
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:42",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Related Controls: IA-1, PM-9, PM-24, PS-8, SI-12.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.820091,
+        0.411352,
+        0.835742
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:43",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "Control Enhancements: None.",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.204382,
+        0.843121,
+        0.793057,
+        0.858773
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:44",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "References: [OMB A -130], [SP 800-12], [SP 800-30], [SP 800-39], [SP 800-100], [IR 7874].",
+      "type": "paragraph"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.939742,
+        0.237034,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:45",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "CHAPTER THREE",
+      "type": "running_footer"
+    },
+    {
+      "bbox": [
+        0.805756,
+        0.939742,
+        0.839264,
+        0.953818
+      ],
+      "confidence": 1.0,
+      "id": "actual:p45:line:46",
+      "page": 45,
+      "preset_applied": "nist_sp_800_53r5_pdf",
+      "raw": {
+        "bbox_space": "normalized_top_left_xyxy"
+      },
+      "source": "pdf_oxide.extract_text_lines",
+      "text": "PAGE 18",
+      "type": "running_footer"
+    }
+  ]
+}
