@@ -8,6 +8,8 @@ import pytest
 REPO = Path(__file__).resolve().parents[1]
 NIST_PDF = Path("/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf")
 LEDGER = REPO / "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json"
+EXPECTED_TOC_PATH = ["toc:0036"]
+EXPECTED_BREADCRUMB = ["APPENDIX A GLOSSARY"]
 
 
 def _extract_page_421_with_ledger():
@@ -97,3 +99,36 @@ def test_nist_page_421_glossary_terms_materialize_as_definition_table():
         in {"[FIPS 201-2]", "[OMB A-130]", "[SP 800-39]"}
     ]
     assert standalone_citation_references == []
+
+
+def test_nist_page_421_glossary_blocks_keep_toc_lineage():
+    page = _extract_page_421_with_ledger()
+    blocks = page.get("blocks") or []
+
+    expected_blocks = [
+        ("APPENDIX A", "unknown_region"),
+        ("GLOSSARY", "section_heading"),
+        ("COMMON TERMS AND DEFINITIONS", "section_heading"),
+    ]
+    for expected_text, expected_type in expected_blocks:
+        matches = [
+            block
+            for block in blocks
+            if " ".join(str(block.get("text") or "").split()) == expected_text
+        ]
+        assert len(matches) == 1
+        block = matches[0]
+        assert block.get("type") == expected_type
+        assert block.get("toc_path") == EXPECTED_TOC_PATH
+        assert block.get("breadcrumb") == EXPECTED_BREADCRUMB
+
+    glossary_tables = [
+        block
+        for block in blocks
+        if block.get("type") == "table"
+        and block.get("table_kind") == "glossary"
+    ]
+    assert len(glossary_tables) == 1
+    table = glossary_tables[0]
+    assert table.get("toc_path") == EXPECTED_TOC_PATH
+    assert table.get("breadcrumb") == EXPECTED_BREADCRUMB

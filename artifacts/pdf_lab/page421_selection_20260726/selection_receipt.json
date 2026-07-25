@@ -1,0 +1,74 @@
+{
+  "candidate": {
+    "document": "NIST_SP_800-53r5.pdf",
+    "page": 421,
+    "pdf_index": 420,
+    "queue_slice": "page421_glossary_lineage",
+    "remaining_queue_after_slice": [
+      455
+    ]
+  },
+  "objective": "Harden page421 glossary extraction by preserving Appendix A TOC lineage on the appendix heading, section headings, and glossary definition table.",
+  "source_evidence": {
+    "closure_report": "artifacts/pdf_lab/project_agent_hardening/page_0421_repair_closure_current/closure_report.json",
+    "agent_second_pass_before": "artifacts/pdf_lab/project_agent_hardening/page_0421_repair_closure_current/agent_second_pass.before.json",
+    "release_extraction_blocks_before": "artifacts/pdf_lab/project_agent_hardening/page_0421_repair_closure_current/release_extraction_blocks.before.json",
+    "closure_verdict": "closed",
+    "baseline_fix_error_count": 0,
+    "expected_element_count_after_rematerialize": 25
+  },
+  "pre_patch_regression": {
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page421_glossary_terms.py",
+    "result": "1 failed, 1 passed, 5 warnings in 45.57s",
+    "failure_signature": "APPENDIX A block toc_path was None; expected ['toc:0036']"
+  },
+  "patch": {
+    "code": "scripts/pdf_lab/snapshot_current_extraction.py",
+    "test": "tests/test_nist_page421_glossary_terms.py",
+    "change_summary": "Added page421 NIST Appendix A glossary TOC lineage and regression coverage for headings plus glossary definition table lineage.",
+    "toc_path": [
+      "toc:0036"
+    ],
+    "breadcrumb": [
+      "APPENDIX A GLOSSARY"
+    ]
+  },
+  "post_patch_artifacts": {
+    "release_after_hardening": "artifacts/pdf_lab/project_agent_hardening/page_0421_release_after_hardening.json",
+    "regenerate_stderr": "/tmp/pdf_oxide_page421_regenerate.stderr",
+    "block_count": 9,
+    "type_counts": {
+      "header_footer_noise": 4,
+      "paragraph_block": 1,
+      "section_heading": 2,
+      "table": 1,
+      "unknown_region": 1
+    },
+    "toc_path_samples": {
+      "actual:p421:block:6": [
+        "toc:0036"
+      ],
+      "actual:p421:block:7": [
+        "toc:0036"
+      ],
+      "actual:p421:block:8": [
+        "toc:0036"
+      ],
+      "actual:p421:definition_table:glossary": [
+        "toc:0036"
+      ]
+    }
+  },
+  "focused_proof": {
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page421_glossary_terms.py",
+    "result": "2 passed, 5 warnings in 46.62s",
+    "mocked": "no",
+    "live": "no",
+    "exercised": "Deterministic local extraction of NIST page421 through snapshot_current_extraction with the promotion ledger.",
+    "does_not_verify": "No paid model call, browser review, or human visual acceptance was performed for this slice."
+  },
+  "combined_regression": {
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page421_glossary_terms.py tests/test_nist_page401_references_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page35_control_families_table.py tests/test_nist_page456_page_chrome.py",
+    "result": "8 passed, 5 warnings in 155.22s"
+  }
+}

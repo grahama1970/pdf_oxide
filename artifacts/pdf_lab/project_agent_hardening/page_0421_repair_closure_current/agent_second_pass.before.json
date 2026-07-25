@@ -1,0 +1,433 @@
+{
+  "schema_version": "pdf_lab.agent_second_pass.v1",
+  "slice_id": "nist_phase54_page_0421",
+  "captured_at": "2026-05-29T15:43:22.363047+00:00",
+  "source": "phase-54 deterministic TOC-backed candidate materialization",
+  "agent_decision": {
+    "status": "candidate_for_human_amendment",
+    "human_review_required": true,
+    "learned_bug_report_reason": null,
+    "selection_sources": [
+      "deterministic_page_scan",
+      "verified_toc_spine"
+    ],
+    "rationale": [
+      "verified TOC target(s): toc:0036 APPENDIX A GLOSSARY -> printed p.394",
+      "TOC title hint `GLOSSARY` maps to definitions_glossary",
+      "page chrome signal: running_headers=2, running_footers=2"
+    ],
+    "reviewer_questions": [
+      "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.",
+      "Separate running headers, footers, printed page numbers, and side boilerplate from body content.",
+      "Mark glossary/acronym term labels separately from descriptive definitions."
+    ],
+    "fix_error_request_count": 0
+  },
+  "toc_entries": [
+    {
+      "toc_id": "toc:0036",
+      "title": "APPENDIX A GLOSSARY",
+      "level": 1,
+      "target_page": 394,
+      "matched_pdf_page_index": 420,
+      "extraction_page": 421
+    }
+  ],
+  "fix_error_requests": [],
+  "expected_elements": [
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "running_header_merged",
+      "allowed_types": [
+        "running_header",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "learned_running_header_group",
+      "notes": "Learned recurring NIST page chrome: split running headers materialize as one chrome region.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.855381,
+        0.953818
+      ],
+      "text_hint": "APPENDIX A PAGE 394",
+      "label": "footer_page_chrome",
+      "allowed_types": [
+        "running_footer",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "learned_footer_group",
+      "notes": "Learned recurring NIST page chrome: footer chapter label and printed page number are one chrome region.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.091712,
+        0.256772,
+        0.112152
+      ],
+      "text_hint": "APPENDIX A",
+      "label": "APPENDIX A",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145054,
+        0.127772,
+        0.246536,
+        0.151999
+      ],
+      "text_hint": "GLOSSARY",
+      "label": "GLOSSARY",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "section_subtitle",
+      "bbox_hint": [
+        0.145059,
+        0.156561,
+        0.392862,
+        0.173212
+      ],
+      "text_hint": "COMMON TERMS AND DEFINITIONS",
+      "label": "COMMON TERMS AND DEFINITIONS",
+      "allowed_types": [
+        "section_subtitle",
+        "section_heading",
+        "paragraph_block"
+      ],
+      "match_strategy": "nist_section_subtitle_heading_context",
+      "notes": "NIST visual section subtitle/dek under the chapter title. This is not a caption; captions are reserved for table/figure titles.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.187091,
+        0.598467,
+        0.204955
+      ],
+      "text_hint": "Appendix A provides definitions for terminology used in NIST",
+      "label": "Appendix A provides definitions for terminology used in NIST",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032868,
+        0.187591,
+        0.858241,
+        0.366652
+      ],
+      "text_hint": "Special Publication 800 -53. Sources for terms used in this publication are cited as applicable. Where no citation is noted, the source of the definition is Special Publication 800 -53. access control The process of granting or denying spec",
+      "label": "body_paragraph_1",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.15251,
+        0.366182,
+        0.243596,
+        0.382833
+      ],
+      "text_hint": "[OMB A -130]",
+      "label": "[OMB A -130]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032824,
+        0.366688,
+        0.85729,
+        0.737793
+      ],
+      "text_hint": "the unauthorized access, use, disclosure, disruption, modification, or destruction of information. This includes ensuring that information hosted on behalf of an agency and information systems and applications used by the agency operate eff",
+      "label": "body_paragraph_2",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.15251,
+        0.737318,
+        0.243596,
+        0.75397
+      ],
+      "text_hint": "[OMB A -130]",
+      "label": "[OMB A -130]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.153005,
+        0.737893,
+        0.841018,
+        0.830136
+      ],
+      "text_hint": "Federal Government corporation, Federal Government - controlled corporation, or other establishment in the Executive Branch of the Federal Government, or any independent regulatory agency. See executive agency. all-source intelligence Intel",
+      "label": "body_paragraph_3",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.15251,
+        0.829667,
+        0.244184,
+        0.846318
+      ],
+      "text_hint": "[DODTERMS]",
+      "label": "[DODTERMS]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.367618,
+        0.830242,
+        0.852877,
+        0.898013
+      ],
+      "text_hint": "incorporate all sources of information, most frequently including human resources intelligence, imagery intelligence, measurement and signature intellig ence, signals intelligence, and open -source data in the production of finished intelli",
+      "label": "body_paragraph_4",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "APPENDIX A GLOSSARY"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "APPENDIX A GLOSSARY",
+          "id": "toc:0036",
+          "node_id": "toc:0036",
+          "source": "toc",
+          "page": 394
+        }
+      ]
+    }
+  ]
+}

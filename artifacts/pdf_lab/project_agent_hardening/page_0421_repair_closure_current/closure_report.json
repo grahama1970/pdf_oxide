@@ -1,0 +1,20 @@
+{
+  "schema": "pdf_oxide.page_repair_closure.v1",
+  "started_at": "2026-05-31T20:01:20.955608+00:00",
+  "page": 421,
+  "page_dir": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0421",
+  "artifact_dir": "artifacts/pdf_lab/project_agent_hardening/page_0421_repair_closure_current",
+  "baseline_fix_error_count": 0,
+  "release_extraction": {
+    "path": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0421/release_extraction_blocks.json",
+    "block_count": 25,
+    "backup": "artifacts/pdf_lab/project_agent_hardening/page_0421_repair_closure_current/release_extraction_blocks.before.json"
+  },
+  "after_rematerialize": {
+    "expected_element_count": 25,
+    "fix_error_request_count": 0,
+    "fix_error_delta": 0
+  },
+  "verdict": "closed",
+  "finished_at": "2026-05-31T20:01:21.258064+00:00"
+}
