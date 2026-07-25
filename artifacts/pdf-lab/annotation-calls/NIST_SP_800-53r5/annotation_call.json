@@ -3,7 +3,7 @@
   "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
   "engine_name": "pdf-oxide",
   "engine_version": "0.3.14",
-  "engine_commit": "4d0d4e98adde29e86e1b73f79b1b317379792467",
+  "engine_commit": "97d3114e4ce4da522f62cb1b713085f3c8756f68",
   "accuracy_estimate": {
     "basis": "confidence_threshold",
     "value": 0.8457938013915244

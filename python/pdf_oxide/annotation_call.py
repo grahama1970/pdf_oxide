@@ -8,7 +8,9 @@ import math
 import os
 import re
 import subprocess
+import unicodedata
 from collections import Counter
+from difflib import SequenceMatcher
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Mapping, Optional
 
@@ -155,6 +157,198 @@ def _oracle_excerpt(oracle_text: str, missing_text: str) -> str:
     return oracle_text[start:end]
 
 
+def _char_parity_bbox_union(
+    bboxes: list[list[float]],
+) -> list[float] | None:
+    """Return the smallest PDF-space xywh bbox containing all valid input boxes."""
+    valid = [
+        bbox
+        for bbox in bboxes
+        if len(bbox) == 4 and all(_is_finite_number(value) for value in bbox)
+    ]
+    if not valid:
+        return None
+    x0 = min(bbox[0] for bbox in valid)
+    y0 = min(bbox[1] for bbox in valid)
+    x1 = max(bbox[0] + bbox[2] for bbox in valid)
+    y1 = max(bbox[1] + bbox[3] for bbox in valid)
+    return [x0, y0, x1 - x0, y1 - y0]
+
+
+def _compact_match_text(value: Any) -> str:
+    return "".join(
+        character
+        for character in unicodedata.normalize("NFKC", str(value or "")).casefold()
+        if not character.isspace()
+    )
+
+
+def _table_text(table: Mapping[str, Any]) -> str:
+    return "\n".join(
+        "\t".join(str(cell or "") for cell in row) for row in table.get("data", [])
+    )
+
+
+def _top_left_xyxy_to_pdf_xywh(
+    bbox: Any,
+    page_height: float,
+) -> list[float] | None:
+    if (
+        not isinstance(bbox, (list, tuple))
+        or len(bbox) != 4
+        or not all(_is_finite_number(value) for value in bbox)
+    ):
+        return None
+    x0, y0, x1, y1 = bbox
+    if x1 <= x0 or y1 <= y0 or y1 > page_height:
+        return None
+    return [x0, page_height - y1, x1 - x0, y1 - y0]
+
+
+def _xywh_bbox(bbox: Any) -> list[float] | None:
+    if (
+        not isinstance(bbox, (list, tuple))
+        or len(bbox) != 4
+        or not all(_is_finite_number(value) for value in bbox)
+        or bbox[2] <= 0
+        or bbox[3] <= 0
+    ):
+        return None
+    return list(bbox)
+
+
+def _page_localization_candidates(
+    result: PipelineResult,
+    page: int,
+) -> list[Dict[str, Any]]:
+    candidates: list[Dict[str, Any]] = []
+    for block in result.blocks:
+        if block.get("page") != page:
+            continue
+        bbox = _xywh_bbox(block.get("bbox"))
+        text = str(block.get("text") or "")
+        if bbox is not None and text.strip():
+            candidates.append({"bbox": bbox, "text": text})
+
+    page_tables = [table for table in result.tables if table.get("page") == page]
+    if page_tables:
+        _, page_height = _page_dimensions(result.source_pdf, page)
+        # Table extraction uses top-left xyxy coordinates. annotation_call.v1
+        # uses bottom-left PDF-space xywh rectangles, matching text blocks.
+        for table in page_tables:
+            bbox = _top_left_xyxy_to_pdf_xywh(table.get("bbox"), page_height)
+            text = _table_text(table)
+            if bbox is not None and text.strip():
+                candidates.append({"bbox": bbox, "text": text})
+
+    for figure in result.figures:
+        if figure.get("page") != page:
+            continue
+        for content_block in figure.get("content_blocks") or []:
+            bbox = _xywh_bbox(content_block.get("bbox"))
+            text = str(content_block.get("text") or "")
+            if bbox is not None and text.strip():
+                candidates.append({"bbox": bbox, "text": text})
+    return candidates
+
+
+def _candidate_match(
+    oracle_text: str,
+    candidate: Mapping[str, Any],
+    missing_positions: set[int],
+) -> Dict[str, Any] | None:
+    oracle = _compact_match_text(oracle_text)
+    candidate_text = _compact_match_text(candidate.get("text"))
+    if not oracle or not candidate_text:
+        return None
+    matches = [
+        match
+        for match in SequenceMatcher(
+            None,
+            oracle,
+            candidate_text,
+            autojunk=False,
+        ).get_matching_blocks()
+        if match.size >= 4
+    ]
+    matched_characters = sum(match.size for match in matches)
+    if matched_characters < 12:
+        return None
+    start = min(match.a for match in matches)
+    end = max(match.a + match.size for match in matches)
+    covered_missing_positions = {
+        position for position in missing_positions if start <= position < end
+    }
+    return {
+        **candidate,
+        "covered_missing_positions": covered_missing_positions,
+        "matched_characters": matched_characters,
+        "coverage": matched_characters / len(candidate_text),
+    }
+
+
+def _page_dimensions(source_pdf: str, page: int) -> tuple[float, float]:
+    from .pdf_oxide import PdfDocument
+
+    return PdfDocument(source_pdf).page_dimensions(page)
+
+
+def _page_bbox(source_pdf: str, page: int) -> list[float]:
+    width, height = _page_dimensions(source_pdf, page)
+    return [0.0, 0.0, width, height]
+
+
+def _localize_char_parity_item(
+    item: Dict[str, Any],
+    result: PipelineResult,
+    oracle_text: str,
+    missing_text: str,
+) -> None:
+    oracle = _compact_match_text(oracle_text)
+    outstanding = Counter(_compact_match_text(missing_text))
+    missing_positions = set()
+    for index, character in enumerate(oracle):
+        if outstanding[character] > 0:
+            missing_positions.add(index)
+            outstanding[character] -= 1
+
+    matches = [
+        match
+        for candidate in _page_localization_candidates(result, item["page"])
+        if (match := _candidate_match(oracle_text, candidate, missing_positions)) is not None
+    ]
+    matches.sort(
+        key=lambda match: (
+            len(match["covered_missing_positions"]),
+            match["matched_characters"],
+            match["coverage"],
+        ),
+        reverse=True,
+    )
+
+    selected = []
+    covered: set[int] = set()
+    for match in matches:
+        new_positions = match["covered_missing_positions"] - covered
+        if missing_positions and not new_positions:
+            continue
+        selected.append(match)
+        covered.update(match["covered_missing_positions"])
+        if len(selected) == 3 or covered == missing_positions:
+            break
+    if not selected and matches:
+        selected = [matches[0]]
+
+    bbox = _char_parity_bbox_union([match["bbox"] for match in selected])
+    if bbox is not None:
+        item["bbox"] = bbox
+        item["localization"] = "block" if len(selected) == 1 else "blocks"
+        return
+
+    item["bbox"] = _page_bbox(result.source_pdf, item["page"])
+    item["localization"] = "page"
+
+
 def _enrich_char_parity_item(
     item: Dict[str, Any],
     result: PipelineResult,
@@ -172,6 +366,7 @@ def _enrich_char_parity_item(
             "missing_text_derivation_error",
             oracle_error or "pdftotext_returned_no_text",
         )
+        _localize_char_parity_item(item, result, "", "")
         return
 
     missing_text = _missing_text_in_oracle_order(oracle_text, engine_text)
@@ -187,6 +382,7 @@ def _enrich_char_parity_item(
                 f"declared={expected_count}:derived={len(missing_text)}"
             ),
         )
+    _localize_char_parity_item(item, result, oracle_text, missing_text)
 
 
 def _validate_item(
@@ -247,6 +443,10 @@ def _validate_item(
         if not isinstance(item["text_excerpt"], str):
             raise ValueError("low_confidence item text_excerpt must be a string")
     elif reason == "char_parity_deficit":
+        if item.get("localization") not in {"block", "blocks", "page"}:
+            raise ValueError(
+                "char_parity_deficit item localization must be block, blocks, or page"
+            )
         missing_chars = item.get("missing_chars")
         if (
             not isinstance(missing_chars, int)
@@ -270,16 +470,17 @@ def _validate_item(
             raise ValueError(
                 "char_parity_deficit item missing_text length must match missing_chars"
             )
-        if "bbox" in item:
-            bbox = item["bbox"]
-            if (
-                not isinstance(bbox, (list, tuple))
-                or len(bbox) != 4
-                or not all(_is_finite_number(coordinate) for coordinate in bbox)
-            ):
-                raise ValueError(
-                    "char_parity_deficit item bbox must be four finite numeric coordinates"
-                )
+        bbox = item.get("bbox")
+        if (
+            not isinstance(bbox, (list, tuple))
+            or len(bbox) != 4
+            or not all(_is_finite_number(coordinate) for coordinate in bbox)
+            or bbox[2] <= 0
+            or bbox[3] <= 0
+        ):
+            raise ValueError(
+                "char_parity_deficit item bbox must be a positive four-coordinate rectangle"
+            )
 
 
 def validate_annotation_call(

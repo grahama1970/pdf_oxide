@@ -106,7 +106,7 @@ def test_threshold_boundary_and_accuracy_estimate(tmp_path):
     }
 
 
-def test_schema_validation_and_extra_item_hook_payload(tmp_path):
+def test_schema_validation_and_extra_item_hook_payload(tmp_path, monkeypatch):
     pdf_path = tmp_path / "fixture.pdf"
     pdf_path.write_bytes(b"%PDF fixture")
     output_path = tmp_path / "annotation_call.json"
@@ -136,6 +136,10 @@ def test_schema_validation_and_extra_item_hook_payload(tmp_path):
             "reason": "unadjudicated_residual",
         },
     ]
+    monkeypatch.setattr(
+        "pdf_oxide.annotation_call._page_bbox",
+        lambda source_pdf, page: [0.0, 0.0, 612.0, 792.0],
+    )
 
     write_annotation_call(
         result,
@@ -148,6 +152,8 @@ def test_schema_validation_and_extra_item_hook_payload(tmp_path):
     assert payload["items"][0]["text_excerpt"] == "high confidence"
     assert payload["items"][0]["oracle_excerpt"] == ""
     assert payload["items"][0]["missing_text_derivation_error"].startswith("pdftotext_failed:")
+    assert payload["items"][0]["bbox"] == [0.0, 0.0, 612.0, 792.0]
+    assert payload["items"][0]["localization"] == "page"
     assert payload["items"][1] == extra_items[1]
 
     payload["items"][0]["reason"] = "invented_reason"
@@ -156,8 +162,7 @@ def test_schema_validation_and_extra_item_hook_payload(tmp_path):
 
 
 def test_char_parity_enrichment_derives_missing_text(tmp_path, monkeypatch):
-    pdf_path = tmp_path / "fixture.pdf"
-    pdf_path.write_bytes(b"%PDF fixture")
+    pdf_path = SIMPLE_PDF
     result = _result(
         pdf_path,
         [
@@ -198,6 +203,150 @@ def test_char_parity_enrichment_derives_missing_text(tmp_path, monkeypatch):
     assert item["oracle_excerpt"] == "a\u0014b\u0015"
     assert item["missing_text"] == "\u0014\u0015"
     assert "missing_text_derivation_error" not in item
+
+
+def test_char_parity_localizes_to_matching_block(tmp_path, monkeypatch):
+    pdf_path = tmp_path / "fixture.pdf"
+    pdf_path.write_bytes(b"%PDF fixture")
+    result = _result(
+        pdf_path,
+        [
+            {
+                "id": "target",
+                "page": 0,
+                "bbox": [10.0, 20.0, 30.0, 40.0],
+                "type": "Body",
+                "text": "alpha beta gamma",
+                "confidence": 0.9,
+            },
+            {
+                "id": "other",
+                "page": 0,
+                "bbox": [100.0, 200.0, 30.0, 40.0],
+                "type": "Body",
+                "text": "unrelated appendix",
+                "confidence": 0.9,
+            },
+        ],
+    )
+
+    class Completed:
+        returncode = 0
+        stdout = "alpha \u0014 beta gamma\nunrelated appendix"
+        stderr = ""
+
+    monkeypatch.setattr(
+        "pdf_oxide.annotation_call.subprocess.run", lambda *args, **kwargs: Completed()
+    )
+    item = build_annotation_call(
+        result,
+        extra_items=[
+            {
+                "page": 0,
+                "kind": "region",
+                "reason": "char_parity_deficit",
+                "missing_chars": 1,
+            }
+        ],
+        engine_commit="f" * 40,
+    )["items"][0]
+
+    assert item["bbox"] == [10.0, 20.0, 30.0, 40.0]
+    assert item["localization"] == "block"
+
+
+def test_char_parity_localizes_table_bbox_as_annotation_xywh(tmp_path, monkeypatch):
+    pdf_path = tmp_path / "fixture.pdf"
+    pdf_path.write_bytes(b"%PDF fixture")
+    result = _result(pdf_path, [])
+    result.tables = [
+        {
+            "page": 0,
+            "bbox": [125.0, 70.0, 497.0, 221.0],
+            "data": [
+                ["layer name", "18-layer", "34-layer"],
+                ["conv2 x", "\u00d7 2", "\u00d7 3"],
+            ],
+        }
+    ]
+
+    class Completed:
+        returncode = 0
+        stdout = "layer name 18-layer 34-layer\nconv2 x \u0014 \u0015 \u00d7 2 \u00d7 3"
+        stderr = ""
+
+    monkeypatch.setattr(
+        "pdf_oxide.annotation_call.subprocess.run", lambda *args, **kwargs: Completed()
+    )
+    monkeypatch.setattr(
+        "pdf_oxide.annotation_call._page_dimensions",
+        lambda source_pdf, page: (612.0, 792.0),
+    )
+    item = build_annotation_call(
+        result,
+        extra_items=[
+            {
+                "page": 0,
+                "kind": "region",
+                "reason": "char_parity_deficit",
+                "missing_chars": 2,
+            }
+        ],
+        engine_commit="1" * 40,
+    )["items"][0]
+
+    assert item["bbox"] == [125.0, 571.0, 372.0, 151.0]
+    assert item["localization"] == "block"
+
+
+def test_char_parity_localizes_spanning_deficit_to_block_union(tmp_path, monkeypatch):
+    pdf_path = tmp_path / "fixture.pdf"
+    pdf_path.write_bytes(b"%PDF fixture")
+    result = _result(
+        pdf_path,
+        [
+            {
+                "id": "first",
+                "page": 0,
+                "bbox": [10.0, 20.0, 30.0, 10.0],
+                "type": "Body",
+                "text": "alpha beta gamma",
+                "confidence": 0.9,
+            },
+            {
+                "id": "second",
+                "page": 0,
+                "bbox": [50.0, 40.0, 20.0, 15.0],
+                "type": "Body",
+                "text": "delta epsilon zeta",
+                "confidence": 0.9,
+            },
+        ],
+    )
+
+    class Completed:
+        returncode = 0
+        stdout = "alpha \u0014 beta gamma\ndelta \u0015 epsilon zeta"
+        stderr = ""
+
+    monkeypatch.setattr(
+        "pdf_oxide.annotation_call.subprocess.run", lambda *args, **kwargs: Completed()
+    )
+    item = build_annotation_call(
+        result,
+        extra_items=[
+            {
+                "page": 0,
+                "kind": "region",
+                "reason": "char_parity_deficit",
+                "missing_chars": 2,
+            }
+        ],
+        engine_commit="2" * 40,
+    )["items"][0]
+
+    assert item["bbox"] == [10.0, 20.0, 60.0, 35.0]
+    assert item["localization"] == "blocks"
 
 
 @pytest.mark.parametrize(
