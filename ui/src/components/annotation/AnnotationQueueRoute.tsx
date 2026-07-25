@@ -432,6 +432,7 @@ export function AnnotationQueueRoute({
   const [railCollapsed, setRailCollapsed] = useState(false)
   const [canvasRegions, setCanvasRegions] = useState<CanvasRegion[]>([])
   const [showContext, setShowContext] = useState(true)
+  const [selectedDrawnId, setSelectedDrawnId] = useState<string | null>(null)
   const [contextItems, setContextItems] = useState<Array<{ page: number; type: string; bbox: number[]; label: string; table_data?: string[][] }> | null>(null)
 
   useEffect(() => {
@@ -908,12 +909,35 @@ export function AnnotationQueueRoute({
                       No region localized for this flag yet — drag on the page to draw the annotation yourself.
                     </p>
                   )}
+                  {pageImage && canvasRegions.length > 0 && (
+                    <div className="pdf-verify-type-chips" data-testid="region-type-chips">
+                      <span>Label region:</span>
+                      {ELEMENT_TYPES.map((type) => (
+                        <button
+                          key={type}
+                          type="button"
+                          onClick={() => {
+                            const targetId = selectedDrawnId ?? canvasRegions[canvasRegions.length - 1]?.id
+                            if (!targetId) return
+                            setCanvasRegions((current) => current.map((region) => (
+                              region.id === targetId ? { ...region, label: type } : region
+                            )))
+                          }}
+                          data-qid={`annotation-queue:region-type:${type.toLowerCase()}`}
+                          data-qs-action="ANNOTATION_QUEUE_LABEL_REGION"
+                          title={`Label the selected drawn region as ${type}`}
+                        >
+                          {type}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                   {pageImage ? (
                     <PdfDocumentCanvas
                       pageImage={pageImage}
                       regions={ghostRegions.length && showContext ? [...ghostRegions, ...canvasRegions] : canvasRegions}
-                      selectedRegionId={canvasRegions[0]?.id ?? null}
-                      onSelectedRegionChange={() => undefined}
+                      selectedRegionId={selectedDrawnId ?? canvasRegions[0]?.id ?? null}
+                      onSelectedRegionChange={setSelectedDrawnId}
                       onRegionsChange={updateCanvasRegions}
                       allowDraw
                       drawLabel={workbenchAction === 'fix_bounds' ? 'corrected bounds' : 'annotation'}

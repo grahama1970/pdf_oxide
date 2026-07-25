@@ -1588,3 +1588,9 @@
 .pdf-verify-discrepancy p { margin: 0 0 10px; font-size: 13px; line-height: 1.5; color: #cbd4de; }
 .pdf-verify-discrepancy button { padding: 6px 12px; border-radius: 6px; border: 1px solid #2a3442; background: #131a24; color: #93c5fd; font-size: 12px; cursor: pointer; }
 .pdf-verify-discrepancy button:hover { border-color: #3b82f6; }
+
+/* --- region type chips (ux-lab-style labeling) --- */
+.pdf-verify-type-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px; }
+.pdf-verify-type-chips > span { font-size: 11px; color: #8a93a0; text-transform: uppercase; letter-spacing: 0.06em; }
+.pdf-verify-type-chips button { padding: 3px 10px; border-radius: 999px; border: 1px solid #2a3442; background: #131a24; color: #cbd4de; font-size: 11px; cursor: pointer; }
+.pdf-verify-type-chips button:hover { border-color: #3b82f6; color: #93c5fd; }
