@@ -1,0 +1,978 @@
+{
+  "schema_version": "pdf_lab.agent_second_pass.v1",
+  "slice_id": "nist_phase54_page_0401",
+  "captured_at": "2026-05-29T15:43:22.357288+00:00",
+  "source": "phase-54 deterministic TOC-backed candidate materialization",
+  "agent_decision": {
+    "status": "candidate_for_human_amendment",
+    "human_review_required": true,
+    "learned_bug_report_reason": null,
+    "selection_sources": [
+      "deterministic_page_scan",
+      "verified_toc_spine"
+    ],
+    "rationale": [
+      "verified TOC target(s): toc:0035 REFERENCES -> printed p.374",
+      "TOC title hint `REFERENCES` maps to footnotes_references",
+      "page chrome signal: running_headers=2, running_footers=2"
+    ],
+    "reviewer_questions": [
+      "Confirm the visible section heading(s) match the verified TOC target(s); do not re-annotate the TOC page.",
+      "Distinguish references, citation blocks, footnotes, and ordinary body paragraphs.",
+      "Separate running headers, footers, printed page numbers, and side boilerplate from body content."
+    ],
+    "fix_error_request_count": 0
+  },
+  "toc_entries": [
+    {
+      "toc_id": "toc:0035",
+      "title": "REFERENCES",
+      "level": 1,
+      "target_page": 374,
+      "matched_pdf_page_index": 400,
+      "extraction_page": 401
+    }
+  ],
+  "fix_error_requests": [],
+  "expected_elements": [
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.043,
+        0.854802,
+        0.057076
+      ],
+      "text_hint": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "label": "running_header_merged",
+      "allowed_types": [
+        "running_header",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "learned_running_header_group",
+      "notes": "Learned recurring NIST page chrome: split running headers materialize as one chrome region.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.032868,
+        0.274939,
+        0.357353,
+        0.289303
+      ],
+      "text_hint": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "label": "left_sidebar_watermark",
+      "allowed_types": [
+        "page_chrome_noise",
+        "paragraph"
+      ],
+      "match_strategy": "learned_sidebar_chrome_group",
+      "notes": "Learned recurring NIST page chrome: left DOI/sidebar watermark is not body content.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "page_chrome_noise",
+      "bbox_hint": [
+        0.145059,
+        0.939742,
+        0.852106,
+        0.953818
+      ],
+      "text_hint": "REFERENCES PAGE 374",
+      "label": "footer_page_chrome",
+      "allowed_types": [
+        "running_footer",
+        "page_chrome_noise"
+      ],
+      "match_strategy": "learned_footer_group",
+      "notes": "Learned recurring NIST page chrome: footer chapter label and printed page number are one chrome region.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.145059,
+        0.087924,
+        0.276488,
+        0.112152
+      ],
+      "text_hint": "REFERENCES",
+      "label": "REFERENCES",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_subtitle",
+      "bbox_hint": [
+        0.145059,
+        0.116788,
+        0.296526,
+        0.133439
+      ],
+      "text_hint": "LAWS, POLICIES, DIRE",
+      "label": "LAWS, POLICIES, DIRE",
+      "allowed_types": [
+        "section_subtitle",
+        "section_heading",
+        "paragraph_block"
+      ],
+      "match_strategy": "nist_section_subtitle_heading_context",
+      "notes": "NIST visual section subtitle/dek under the chapter title. This is not a caption; captions are reserved for table/figure titles.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_subtitle",
+      "bbox_hint": [
+        0.288581,
+        0.116788,
+        0.662975,
+        0.133439
+      ],
+      "text_hint": "CTIVES, REGULATIONS, STANDARDS, AND GUIDELINES 34",
+      "label": "CTIVES, REGULATIONS, STANDARDS, AND GUIDELINES 34",
+      "allowed_types": [
+        "section_subtitle",
+        "section_heading",
+        "paragraph_block"
+      ],
+      "match_strategy": "nist_section_subtitle_heading_context",
+      "notes": "NIST visual section subtitle/dek under the chapter title. This is not a caption; captions are reserved for table/figure titles.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_subtitle",
+      "bbox_hint": [
+        0.40251,
+        0.157394,
+        0.591466,
+        0.172758
+      ],
+      "text_hint": "LAWS AND EXECUTIVE ORDERS",
+      "label": "LAWS AND EXECUTIVE ORDERS",
+      "allowed_types": [
+        "section_subtitle",
+        "section_heading",
+        "paragraph_block"
+      ],
+      "match_strategy": "nist_section_subtitle_heading_context",
+      "notes": "NIST visual section subtitle/dek under the chapter title. This is not a caption; captions are reserved for table/figure titles.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.187015,
+        0.228792,
+        0.203667
+      ],
+      "text_hint": "[ATOM54]",
+      "label": "[ATOM54]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.187515,
+        0.817841,
+        0.220136
+      ],
+      "text_hint": "Atomic Energy Act (P.L. 83- 703), August 1954. https://www.govinfo.gov/content/pkg/STATUTE -68/pdf/STATUTE -68-Pg919.pdf",
+      "label": "body_paragraph_1",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.226939,
+        0.218608,
+        0.243591
+      ],
+      "text_hint": "[CMPPA]",
+      "label": "[CMPPA]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.227439,
+        0.807572,
+        0.292409
+      ],
+      "text_hint": "Computer Matching and Privacy Protection Act of 1988 (P.L. 100-503), October 1988. https://www.govinfo.gov/content/pkg/STATUTE -102/pdf/STATUTE -102- Pg2507.pdf",
+      "label": "body_paragraph_2",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.299288,
+        0.207982,
+        0.315939
+      ],
+      "text_hint": "[EGOV]",
+      "label": "[EGOV]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.299712,
+        0.782429,
+        0.332333
+      ],
+      "text_hint": "E-Government Act [includes FISMA] (P.L. 107 -347), December 2002. https://www.congress.gov/107/plaws/publ347/PLAW 107publ347.pdf -",
+      "label": "body_paragraph_3",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.339212,
+        0.222181,
+        0.355864
+      ],
+      "text_hint": "[EVID ACT]",
+      "label": "[EVID ACT]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.339712,
+        0.822619,
+        0.389227
+      ],
+      "text_hint": "Foundations for Evidence- Based Polic ymaking Act of 2018 (P.L. 115-435), January 2019. https://www.congress.gov/115/plaws/publ435/PLAW 115publ435.pdf -",
+      "label": "body_paragraph_4",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.396106,
+        0.21923,
+        0.412758
+      ],
+      "text_hint": "[FASC18]",
+      "label": "[FASC18]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286717,
+        0.396606,
+        0.835237,
+        0.446121
+      ],
+      "text_hint": "Secure Technology Act [includes Federal Acquisition Supply Chain Security Act] (P.L. 115 -390), December 2018. https://www.congress.gov/bill/115th -congress/senate -bill/3085",
+      "label": "body_paragraph_5",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.453,
+        0.212616,
+        0.469652
+      ],
+      "text_hint": "[FISMA]",
+      "label": "[FISMA]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.4535,
+        0.824992,
+        0.470364
+      ],
+      "text_hint": "Federal Information Security Moderni zation Act (P.L. 113 -283), December",
+      "label": "body_paragraph_6",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.286253,
+        0.4699,
+        0.32778,
+        0.487763
+      ],
+      "text_hint": "2014.",
+      "label": "2014.",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.487364,
+        0.761461,
+        0.503015
+      ],
+      "text_hint": "https://www.congress.gov/113/plaws/publ283/PLAW 113publ283.pdf -",
+      "label": "body_paragraph_7",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.509894,
+        0.218264,
+        0.526545
+      ],
+      "text_hint": "[FOIA96]",
+      "label": "[FOIA96]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032912,
+        0.510394,
+        0.829306,
+        0.592333
+      ],
+      "text_hint": "Freedom of Information Act (FOIA), 5 U.S.C. \u00a7 552, As Amended By Public https/d/:oi.org0.1/T.SIN/8206P.S008 Law No. 104- 231, 110 Stat. 3048, Electronic Freedom of Information Act Amendments of 1996. https://www.govinfo.gov/content/pkg/PLAW",
+      "label": "body_paragraph_8",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.599136,
+        0.227482,
+        0.615788
+      ],
+      "text_hint": "[PRIVACT]",
+      "label": "[PRIVACT]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.599636,
+        0.82998,
+        0.632258
+      ],
+      "text_hint": "Privacy Act (P.L. 93-579), December 1974. https://www.govinfo.gov/content/pkg/STATUTE -88/pdf/STATUTE -88-Pg1896.pdf",
+      "label": "body_paragraph_9",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.639061,
+        0.260505,
+        0.655712
+      ],
+      "text_hint": "[USA PATRIOT]",
+      "label": "[USA PATRIOT]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.286735,
+        0.639561,
+        0.744876,
+        0.672182
+      ],
+      "text_hint": "USA Patriot Act (P.L. 107 -56), October 2001. https://www.congress.gov/107/plaws/publ56/PLAW -107publ56.pdf",
+      "label": "body_paragraph_10",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.679061,
+        0.224519,
+        0.695712
+      ],
+      "text_hint": "[USC 552]",
+      "label": "[USC 552]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.032824,
+        0.679485,
+        0.819338,
+        0.74453
+      ],
+      "text_hint": "United States Code, 2006 Edition, Supplement 4, Title 5-Government Organization and Employees, January 2011. 3r55 - https://www.govinfo.gov/content/pkg/USCODE -2010-title5/pdf/USCODE -2010- title5 -partI -chap5-subchapII -sec552a.pdf",
+      "label": "body_paragraph_11",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "section_heading",
+      "bbox_hint": [
+        0.153882,
+        0.751333,
+        0.232852,
+        0.767985
+      ],
+      "text_hint": "[USC 2901]",
+      "label": "[USC 2901]",
+      "allowed_types": [
+        "section_header"
+      ],
+      "match_strategy": "text_contains",
+      "notes": "TOC-backed or visible section heading. Do not route as line-level paragraph annotation.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    },
+    {
+      "family": "paragraph_block",
+      "bbox_hint": [
+        0.145559,
+        0.751833,
+        0.857555,
+        0.907561
+      ],
+      "text_hint": "United States Code, 2008 Edition, Title 44-Public Printing and Documents, Chapters 29, 31, and 33, January 2012. https://www.govinfo.gov/content/pkg/USCODE -2011-title44/pdf/USCODE -2011- title44-chap29-sec2901.pdf 34 The references cited i",
+      "label": "body_paragraph_12",
+      "allowed_types": [
+        "paragraph"
+      ],
+      "match_strategy": "learned_paragraph_line_group",
+      "notes": "Grouped from contiguous paragraph lines. Human annotation corrections are bug reports for block grouping, not requests to relabel every text line.",
+      "breadcrumb": [
+        "REFERENCES"
+      ],
+      "breadcrumb_nodes": [
+        {
+          "level": 1,
+          "kind": "section",
+          "label": "REFERENCES",
+          "id": "toc:0035",
+          "node_id": "toc:0035",
+          "source": "toc",
+          "page": 374
+        }
+      ]
+    }
+  ]
+}

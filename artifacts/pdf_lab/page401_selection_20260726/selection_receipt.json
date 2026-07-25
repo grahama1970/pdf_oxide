@@ -1,0 +1,87 @@
+{
+  "schema": "pdf_lab.project_agent_candidate_receipt.v1",
+  "candidate": {
+    "page": 401,
+    "pdf_page_index": 400,
+    "source_closure_report": "artifacts/pdf_lab/project_agent_hardening/page_0401_repair_closure_current/closure_report.json",
+    "source_agent_second_pass": "artifacts/pdf_lab/project_agent_hardening/page_0401_repair_closure_current/agent_second_pass.before.json",
+    "source_before_blocks": "artifacts/pdf_lab/project_agent_hardening/page_0401_repair_closure_current/release_extraction_blocks.before.json",
+    "source_snapshot": "artifacts/pdf_lab/project_agent_hardening/page_0401_repair_closure_current/snapshot.json"
+  },
+  "selection": {
+    "selected_at": "2026-07-26T00:00:00Z",
+    "selected_by": "agent:codex",
+    "reason": "Next repair-closure candidate after page45. The second-pass evidence names verified TOC target toc:0035 REFERENCES, but current extraction did not attach TOC lineage to page401 blocks.",
+    "defect_family": "nist_page401_references_toc_lineage",
+    "pre_patch_result": {
+      "command": "PYTHONPATH=python pytest -q tests/test_nist_page401_references_toc_lineage.py",
+      "result": "3 failed, 5 warnings in 72.17s",
+      "failure_signature": [
+        "REFERENCES section heading had toc_path=None",
+        "[ATOM54] reference block had toc_path=None",
+        "references footnote had toc_path=None"
+      ]
+    }
+  },
+  "repair": {
+    "code_paths": [
+      "scripts/pdf_lab/snapshot_current_extraction.py",
+      "tests/test_nist_page401_references_toc_lineage.py"
+    ],
+    "artifact_paths": [
+      "artifacts/pdf_lab/project_agent_hardening/page_0401_release_after_hardening.json",
+      "artifacts/pdf_lab/project_agent_hardening/page_0401_repair_closure_current/",
+      "artifacts/pdf_lab/page401_selection_20260726/selection_receipt.json"
+    ],
+    "summary": [
+      "Added a focused page401 regression for REFERENCES TOC lineage on the visible heading, a representative reference entry, and the references footnote.",
+      "Added NIST page401 REFERENCES lineage data to the existing snapshot TOC-lineage hook.",
+      "Regenerated page401 release extraction after hardening."
+    ]
+  },
+  "current_artifact_summary": {
+    "path": "artifacts/pdf_lab/project_agent_hardening/page_0401_release_after_hardening.json",
+    "block_count": 32,
+    "type_counts": {
+      "footnote": 1,
+      "header_footer_noise": 4,
+      "list": 1,
+      "paragraph_block": 12,
+      "reference": 11,
+      "section_heading": 2,
+      "section_subtitle": 1
+    },
+    "toc_path_samples": {
+      "actual:p401:block:6": [
+        "toc:0035"
+      ],
+      "actual:p401:block:9": [
+        "toc:0035"
+      ],
+      "actual:p401:block:32": [
+        "toc:0035"
+      ]
+    }
+  },
+  "proof": {
+    "mocked": "no",
+    "live": "no",
+    "commands": [
+      {
+        "command": "PYTHONPATH=python pytest -q tests/test_nist_page401_references_toc_lineage.py",
+        "result": "3 passed, 5 warnings in 68.65s"
+      },
+      {
+        "command": "PYTHONPATH=python pytest -q tests/test_nist_page401_references_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page45_toc_lineage.py tests/test_nist_page35_control_families_table.py tests/test_nist_page456_page_chrome.py",
+        "result": "10 passed, 5 warnings in 176.68s"
+      }
+    ],
+    "exercised": "Deterministic local extraction of NIST_SP_800-53r5 page401 through the current snapshot extractor and NIST promotion ledger, plus focused page401 pytest regression.",
+    "unverified": "Remaining active queue candidates page0421 and page0455 are not yet hardened in this slice."
+  },
+  "remaining_queue": [
+    "artifacts/pdf_lab/project_agent_hardening/page_0421_repair_closure_current",
+    "artifacts/pdf_lab/project_agent_hardening/page_0455_repair_closure_current"
+  ],
+  "immutable_goal_status": "not_met"
+}

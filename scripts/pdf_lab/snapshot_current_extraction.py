@@ -1092,10 +1092,27 @@ _NIST_PAGE_45_TOC_LINEAGE = [
 ]
 
 
+_NIST_PAGE_401_TOC_LINEAGE = [
+    {
+        "level": 1,
+        "kind": "section",
+        "label": "REFERENCES",
+        "id": "toc:0035",
+        "node_id": "toc:0035",
+        "source": "toc",
+        "page": 374,
+    },
+]
+
+
 def _nist_toc_lineage_for_page(pdf_path: Path, page_number: int) -> list[dict[str, Any]]:
-    if pdf_path.name != "NIST_SP_800-53r5.pdf" or page_number != 45:
+    if pdf_path.name != "NIST_SP_800-53r5.pdf":
         return []
-    return [dict(node) for node in _NIST_PAGE_45_TOC_LINEAGE]
+    if page_number == 45:
+        return [dict(node) for node in _NIST_PAGE_45_TOC_LINEAGE]
+    if page_number == 401:
+        return [dict(node) for node in _NIST_PAGE_401_TOC_LINEAGE]
+    return []
 
 
 def _add_toc_lineage(blocks: list[dict[str, Any]], pdf_path: Path, page_number: int) -> list[dict[str, Any]]:
