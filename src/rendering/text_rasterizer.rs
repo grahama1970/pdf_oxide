@@ -96,12 +96,14 @@ impl TextRasterizer {
         _resources: &Object,
         _doc: &mut PdfDocument,
         clip_mask: Option<&tiny_skia::Mask>,
-    ) -> Result<()> {
+    ) -> Result<f32> {
         let paint = create_fill_paint(gs, "Normal");
         let font_size = gs.font_size;
         let text_matrix = &gs.text_matrix;
         let mut current_x = text_matrix.e;
+        let start_x = current_x;
         let y = text_matrix.f;
+        let h_scale = gs.horizontal_scaling / 100.0;
 
         for element in array {
             match element {
@@ -123,13 +125,13 @@ impl TextRasterizer {
                     current_x += advance;
                 },
                 TextElement::Offset(offset) => {
-                    let adjustment = -(*offset) / 1000.0 * font_size;
+                    let adjustment = -(*offset) / 1000.0 * font_size * h_scale;
                     current_x += adjustment;
                 },
             }
         }
 
-        Ok(())
+        Ok(current_x - start_x)
     }
 
     /// Compute text advance width using PDF font widths when available.
@@ -159,8 +161,14 @@ impl TextRasterizer {
             total
         } else {
             // Fallback: fixed-width estimate
-            let char_count = text.len() as f32;
-            char_count * font_size * 0.5
+            text.iter().fold(0.0, |total, byte| {
+                let word_adjustment = if *byte == b' ' {
+                    word_space * h_scale
+                } else {
+                    0.0
+                };
+                total + (font_size * 0.5 + char_space) * h_scale + word_adjustment
+            })
         }
     }
 
@@ -353,5 +361,18 @@ mod tests {
     fn test_text_rasterizer_new() {
         let rasterizer = TextRasterizer::new();
         assert!(rasterizer.fallback_font_id.is_some(), "Should find at least one system font");
+    }
+
+    #[test]
+    fn test_fallback_advance_includes_text_state_spacing() {
+        let rasterizer = TextRasterizer::new();
+        let mut gs = GraphicsState::default();
+        gs.horizontal_scaling = 50.0;
+        gs.char_space = 2.0;
+        gs.word_space = 4.0;
+
+        let advance = rasterizer.compute_text_advance(b"A A", None, 10.0, &gs);
+
+        assert_eq!(advance, 12.5);
     }
 }
