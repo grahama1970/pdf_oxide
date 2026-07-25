@@ -1,0 +1,27 @@
+{
+  "bug_clusters": [],
+  "bug_reports": [
+    {
+      "abstain_reason": "",
+      "bug_present": false,
+      "confidence": "high",
+      "current_family": "footnote",
+      "evidence_block_ids": [
+        "block_195",
+        "block_197"
+      ],
+      "expected_family": "footnote",
+      "extraction_error": "The reviewed request is stale. The current deterministic extraction classifies the referenced numbered footnote lines as footnote blocks, not section headers.",
+      "patch_hint": "No code change indicated for this issue; current extraction already matches the visible page structure.",
+      "recommended_code_area": "unclear",
+      "source_id": "actual:p28:line:39+actual:p28:line:42",
+      "visual_observation": "The referenced numbered items appear in the footnote region at the bottom of the page below the horizontal rule. The overlay shows separate footnote bboxes for footnote 4 and footnote 6 aligned with the visible footnote text."
+    }
+  ],
+  "cluster_id": "footnote",
+  "fix_error_source": "expected_elements.json",
+  "missing_or_ambiguous": [],
+  "overall_confidence": "high",
+  "page": 28,
+  "schema": "pdf_oxide.scillm_visual_bug_report.v2"
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": "pdf_lab.selection_receipt.v1",
+  "created_at": "2026-07-25T23:45:00-04:00",
+  "immutable_goal_source": "GOAL.md",
+  "active_candidate": {
+    "page": "page_0028",
+    "pdf_page_index": 27,
+    "defect_class": "numbered bottom footnotes misclassified as section headings",
+    "selected_checklist_item": "Numbered bottom notes 4 and 6 must be emitted as footnote blocks and must not leak as section headings or body paragraphs.",
+    "owner": "pdf_oxide_block_classifier",
+    "selection_reason": "After page28_list_continuation, page28_footnote is the remaining page28 clustered candidate with source visual evidence, one reviewed footnote request, and current release-after-hardening artifact inputs."
+  },
+  "visual_evidence": {
+    "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/page.png",
+    "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/bbox_overlay.png",
+    "overlay_inspection": "Visible page has numbered bottom notes below the horizontal rule, including footnote 4 for [OMB A-130] and footnote 6 for organizational operations."
+  },
+  "source_artifacts": {
+    "cluster_bundle": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/candidate_bundle.json",
+    "expected_elements": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/expected_elements.json",
+    "agent_second_pass": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/agent_second_pass.json",
+    "current_release_after_hardening": "artifacts/pdf_lab/project_agent_hardening/page_0028_release_after_hardening.json",
+    "cluster_bug_report": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028_footnote/bug_report.json",
+    "cluster_bug_bundle": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028_footnote/candidate_bundle.json"
+  },
+  "source_evidence_summary": {
+    "expected_fix_error_request_count": 4,
+    "cluster_fix_error_request_count": 1,
+    "cluster_bug_report_count": 1,
+    "cluster_issue_family": "footnote",
+    "current_footnote_count": 6,
+    "current_target_footnotes": [
+      {
+        "id": "actual:p28:block:17",
+        "type": "footnote",
+        "source_type": "Footnote",
+        "text": "4 [OMB A-130] defines security and privacy controls."
+      },
+      {
+        "id": "actual:p28:block:20",
+        "type": "footnote",
+        "source_type": "Footnote",
+        "text": "6 Organizational operations include mission, functions, image, and reputation."
+      }
+    ],
+    "current_section_or_paragraph_footnote_leak_count": 0
+  },
+  "focused_regression": {
+    "path": "tests/test_nist_page28_footnotes.py",
+    "test": "test_nist_page_28_numbered_bottom_notes_are_footnotes_not_section_headers",
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page28_footnotes.py",
+    "result": "1 passed, 5 warnings in 24.46s"
+  },
+  "worktree_limitations": {
+    "mocked": false,
+    "live": false,
+    "proof_scope": "local deterministic extraction/regression against origin/main-derived code and the local NIST PDF fixture",
+    "not_proven": [
+      "all active candidate queue items are hardened"
+    ]
+  },
+  "next_action": "Commit and push the page28 footnote regression and receipt artifacts, then inspect the remaining active candidate queue."
+}

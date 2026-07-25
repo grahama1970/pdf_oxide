@@ -1,0 +1,69 @@
+{
+  "body": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_oxide.scillm_visual_bug_report.v2\",\n  \"page\": 28,\n  \"cluster_id\": \"footnote\",\n  \"fix_error_source\": \"expected_elements.json\",\n  \"bug_reports\": [\n    {\n      \"source_id\": \"actual:p28:line:39+actual:p28:line:42\",\n      \"bug_present\": false,\n      \"current_family\": \"footnote\",\n      \"expected_family\": \"footnote\",\n      \"visual_observation\": \"The referenced numbered items appear in the footnote region at the bottom of the page below the horizontal rule. The overlay shows separate footnote bboxes for footnote 4 and footnote 6 aligned with the visible footnote text.\",\n      \"extraction_error\": \"The reviewed request is stale. The current deterministic extraction classifies the referenced numbered footnote lines as footnote blocks, not section headers.\",\n      \"evidence_block_ids\": [\n        \"block_195\",\n        \"block_197\"\n      ],\n      \"recommended_code_area\": \"unclear\",\n      \"patch_hint\": \"No code change indicated for this issue; current extraction already matches the visible page structure.\",\n      \"confidence\": \"high\",\n      \"abstain_reason\": \"\"\n    }\n  ],\n  \"missing_or_ambiguous\": [],\n  \"bug_clusters\": [],\n  \"overall_confidence\": \"high\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1780245340,
+    "id": "chatcmpl-codex-0a5b9a09",
+    "model": "gpt-5.5",
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-bug-report-pilot-20260531T123310",
+      "item_id": "page_0028_footnote"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": "codex-oauth",
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "gpt-5.5",
+      "model_served": "gpt-5.5",
+      "routed_to_provider": "codex-oauth"
+    },
+    "scillm_reasoning": {
+      "applied_effort": "high",
+      "forwarded": true,
+      "ignored_reason": null,
+      "provider_field": "reasoning.effort",
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 809,
+      "completion_tokens_details": null,
+      "prompt_tokens": 6129,
+      "prompt_tokens_details": null,
+      "total_tokens": 6938
+    }
+  },
+  "headers": {
+    "x-cost-usd": "unknown",
+    "x-scillm-timeout-ms": "175883",
+    "x-scillm-timeout-samples": "130",
+    "x-scillm-timeout-source": "estimated"
+  },
+  "ok": true,
+  "status_code": 200
+}

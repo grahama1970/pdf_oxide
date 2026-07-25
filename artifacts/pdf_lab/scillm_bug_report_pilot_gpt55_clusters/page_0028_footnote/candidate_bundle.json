@@ -1,0 +1,237 @@
+{
+  "artifact_dir": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        1.0016105502259498,
+        0.07054738324097913
+      ],
+      "blockType": "boilerplate",
+      "id": "block_180",
+      "page": 27,
+      "text": "NIST SP 800-53, R EV . 5 S ECURITY AND P RIVACY C ONTROLS FOR I NFORMATION S YSTEMS AND O RGANIZATIONS _________________________________________________________________________________________________"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9401591137202099,
+        0.8562647002974367,
+        0.9553636493104877
+      ],
+      "blockType": "boilerplate",
+      "id": "block_181",
+      "page": 27,
+      "text": "CHAPTER ONE PAGE 1"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.743765166311553
+      ],
+      "blockType": "boilerplate",
+      "id": "block_182",
+      "page": 27,
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.08913536264438822,
+        0.27817076639412275,
+        0.11721082167191939
+      ],
+      "blockType": "header",
+      "id": "block_183",
+      "page": 27,
+      "text": "CHAPTER ONE"
+    },
+    {
+      "bbox": [
+        0.1470528272242328,
+        0.12898307376437718,
+        0.32463400348339205,
+        0.15705853279190835
+      ],
+      "blockType": "header",
+      "id": "block_184",
+      "page": 27,
+      "text": "INTRODUCTION"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.15823163889875316,
+        0.7227340399050245,
+        0.1751593580149641
+      ],
+      "blockType": "text",
+      "id": "block_185",
+      "page": 27,
+      "text": "THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS"
+    },
+    {
+      "bbox": [
+        0.14708609986149407,
+        0.5832366943359375,
+        0.8435984094158496,
+        0.6189493892168758
+      ],
+      "blockType": "list",
+      "id": "block_189",
+      "page": 27,
+      "text": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals?"
+    },
+    {
+      "bbox": [
+        0.14708595026552287,
+        0.6255069308810763,
+        0.7765520382550807,
+        0.6444307963053385
+      ],
+      "blockType": "list",
+      "id": "block_190",
+      "page": 27,
+      "text": "\u2022 Have the selected controls been implemented or is there a plan in place to do so?"
+    },
+    {
+      "bbox": [
+        0.1471038020514195,
+        0.6507388028231534,
+        0.8084857417087928,
+        0.686382178104285
+      ],
+      "blockType": "list",
+      "id": "block_191",
+      "page": 27,
+      "text": "\u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective? 7"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7084848423196812,
+        0.7824190426496119,
+        0.7557423909505209
+      ],
+      "blockType": "footnote",
+      "id": "block_192",
+      "page": 27,
+      "text": "1 An information system is a discrete set of information resources organized for the collection, processing, maintenance, use, sharing, dissemination, or disposition of information [ OMB A-130 ]."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7569015194671322,
+        0.8415016722834967,
+        0.7859696667603772
+      ],
+      "blockType": "footnote",
+      "id": "block_193",
+      "page": 27,
+      "text": "2 The term organization describes an entity of any size, complexity, or positioning within an organizational structure (e.g., a federal agency or, as appropriate, any of its operational elements)."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7872045497701625,
+        0.701573490317351,
+        0.8024090853604403
+      ],
+      "blockType": "footnote",
+      "id": "block_194",
+      "page": 27,
+      "text": "3 The two terms information security and security are used synonymously in this publication."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8035682138770518,
+        0.4635245129953023,
+        0.8187727494673296
+      ],
+      "blockType": "footnote",
+      "id": "block_195",
+      "page": 27,
+      "text": "4 [ OMB A-130 ] defines security and privacy controls ."
+    },
+    {
+      "bbox": [
+        0.14704900006063623,
+        0.8200075554125237,
+        0.8437195821525225,
+        0.8490757027057686
+      ],
+      "blockType": "footnote",
+      "id": "block_196",
+      "page": 27,
+      "text": "5 Controls provide safeguards and countermeasures in systems security and privacy engineering processes to reduce risk during the system development life cycle."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8502348312223801,
+        0.6153809790517769,
+        0.8654393668126579
+      ],
+      "blockType": "footnote",
+      "id": "block_197",
+      "page": 27,
+      "text": "6 Organizational operations include mission, functions, image, and reputation."
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8666742498224432,
+        0.8311251970677594,
+        0.9096060088186553
+      ],
+      "blockType": "footnote",
+      "id": "block_198",
+      "page": 27,
+      "text": "7 Security and privacy control effectiveness addresses the extent to which the controls are implemented correctly, operating as intended, and producing the desired outcome with respect to meeting the designated security and privacy requirements [ SP 800-53A ]."
+    }
+  ],
+  "cluster_id": "footnote",
+  "copied_files": [
+    "page.png",
+    "bbox_overlay.png",
+    "release_extraction_blocks.json",
+    "expected_elements.json",
+    "agent_second_pass.json"
+  ],
+  "fix_error_count": 1,
+  "fix_error_request_sample": [
+    {
+      "current_family": null,
+      "reason": "Numbered footnote lines were misclassified as section headers.",
+      "requested_family": "footnote",
+      "source_ids": [
+        "actual:p28:line:39+actual:p28:line:42"
+      ]
+    }
+  ],
+  "fix_error_requests": [
+    {
+      "current_type": "section_header",
+      "owner": "pdf_oxide_block_classifier",
+      "reason": "Numbered footnote lines were misclassified as section headers.",
+      "requested_family": "footnote",
+      "source_id": "actual:p28:line:39+actual:p28:line:42",
+      "text_hint": "4 [OMB A-130] defines security and privacy controls. 6 Organizational operations include mission, functions, image, and re putation."
+    }
+  ],
+  "fix_error_source": "expected_elements.json",
+  "fix_error_source_ids": [
+    "actual:p28:line:39+actual:p28:line:42"
+  ],
+  "issue_family": "footnote",
+  "item_id": "page_0028_footnote",
+  "mode": "cluster",
+  "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/bbox_overlay.png",
+  "page": 28,
+  "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028/page.png",
+  "source_dir": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0028"
+}
