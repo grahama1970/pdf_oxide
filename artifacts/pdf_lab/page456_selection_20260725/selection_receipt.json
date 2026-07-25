@@ -1,0 +1,86 @@
+{
+  "schema_version": "pdf_lab.selection_receipt.v1",
+  "created_at": "2026-07-25T21:30:00-04:00",
+  "immutable_goal_source": "GOAL.md",
+  "active_candidate": {
+    "page": "page_0456",
+    "pdf_page_index": 455,
+    "defect_class": "control-table column headers",
+    "selected_checklist_item": "CONTROL NUMBER, CONTROL NAME, IMPLEMENTED BY, and ASSURANCE table header/cell text must remain inside one table block and must not leak as standalone section_header/paragraph/requirement blocks.",
+    "owner": "nist_preset",
+    "selection_reason": "GOAL.md names page456 as the next active candidate; source evidence shows Appendix C table cells previously surfaced as standalone headings/prose, while current hardening output materializes one table block plus page chrome."
+  },
+  "visual_evidence": {
+    "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/page.png",
+    "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/bbox_overlay.png",
+    "overlay_inspection": "Visible page is Appendix C TABLE C-1: ACCESS CONTROL FAMILY. It contains a single full-page four-column control table, a top running header, side DOI/page chrome, and footer chrome."
+  },
+  "source_artifacts": {
+    "cluster_bundle": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/candidate_bundle.json",
+    "expected_elements": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/expected_elements.json",
+    "agent_second_pass": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/agent_second_pass.json",
+    "stale_release_blocks": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/release_extraction_blocks.json",
+    "current_release_after_hardening": "artifacts/pdf_lab/project_agent_hardening/page_0456_release_after_hardening.json"
+  },
+  "source_evidence_summary": {
+    "stale_release_block_count": 141,
+    "stale_release_type_counts": {
+      "caption": 1,
+      "control_reference": 1,
+      "paragraph": 9,
+      "requirement": 41,
+      "running_footer": 2,
+      "running_header": 2,
+      "section_header": 84,
+      "table": 1
+    },
+    "expected_element_count": 6,
+    "fix_error_request_count": 95,
+    "current_release_block_count": 7,
+    "current_release_type_counts": {
+      "caption": 1,
+      "header_footer_noise": 2,
+      "running_footer": 2,
+      "running_header": 1,
+      "table": 1
+    },
+    "current_header_like_table_cell_count": 0,
+    "current_table_text_has_required_headers": true,
+    "current_table_materialization": {
+      "core_table_blocks_added": 1,
+      "existing_table_blocks": 0,
+      "table_extraction_error_count": 0
+    }
+  },
+  "focused_regression": {
+    "path": "tests/test_nist_page456_control_table_headers.py",
+    "test": "test_nist_page_456_control_table_headers_do_not_leak_as_standalone_blocks",
+    "command": "PYTHONPATH=python pytest -q tests/test_nist_page456_control_table_headers.py",
+    "result": "1 passed, 5 warnings in 1.65s"
+  },
+  "clean_head_probe": {
+    "worktree": "/tmp/pdf_oxide_page456_head_probe_20260725",
+    "head": "e24cca69350b075c3d259d45ca1438e4dc54b18e",
+    "setup": "Copied only tests/test_nist_page456_control_table_headers.py into detached HEAD worktree, built extension with uv run maturin develop, then ran the focused test.",
+    "build_command": "uv run maturin develop",
+    "build_result": "exit code 0",
+    "test_command": "PYTHONPATH=python pytest -q tests/test_nist_page456_control_table_headers.py",
+    "test_result": "1 passed, 5 warnings in 1.43s"
+  },
+  "worktree_limitations": {
+    "mocked": false,
+    "live": false,
+    "proof_scope": "local deterministic extraction/regression against the current dirty checkout and a clean detached HEAD probe with only the focused test file added; both used the local NIST PDF fixture",
+    "not_proven": [
+      "all page456 checklist items are closed",
+      "all active candidate queue items are hardened",
+      "remote main contains this proof state"
+    ],
+    "dirty_dependencies_observed": [
+      "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json is modified with 454 added and 6 removed lines versus HEAD",
+      "tests/test_nist_page456_control_table_headers.py is untracked",
+      "page456 evidence artifacts are untracked"
+    ]
+  },
+  "next_action": "Audit the page456-relevant ledger/test/artifact diff as a task-only set, then commit and push only the relevant proven files or produce a blocked receipt if the ledger contains unrelated same-file edits that cannot be safely separated."
+}

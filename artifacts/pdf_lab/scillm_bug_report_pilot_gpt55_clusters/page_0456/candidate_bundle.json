@@ -1,0 +1,2393 @@
+{
+  "artifact_dir": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456",
+  "blocks": [
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.11371211812953756,
+        0.8525490230984158,
+        0.9040908813476562
+      ],
+      "blockType": "table",
+      "id": "actual:p456:table:0",
+      "page": 456,
+      "text": "CONTROL NUMBER | CONTROL NAME CONTROL NHANCEMENT AME | IMPLEMENTED BY | ASSURANCE AC-1 | Policy and Procedures | O | \u221a AC-2 | Account Management | O AC-2(1) | AUTOMATED YSTEM CCOUNT ANAGEMENT | O AC-2(2) | AUTOMATED EMPORARY ND MERGENCY CCOUNT ANAGEMENT | S AC"
+    },
+    {
+      "bbox": [
+        0.145059,
+        0.043,
+        0.264101,
+        0.057076
+      ],
+      "blockType": "running_header",
+      "id": "actual:p456:line:0+actual:p456:line:49",
+      "page": 456,
+      "text": "NIST SP 800-53, REV. 5"
+    },
+    {
+      "bbox": [
+        0.464176,
+        0.043,
+        0.841671,
+        0.057076
+      ],
+      "blockType": "running_header",
+      "id": "actual:p456:line:50+actual:p456:line:97",
+      "page": 456,
+      "text": "SECURITY AND P RIVACY CONTROLS FOR I NFORMATION SYSTEMS AND O RGANIZATIONS"
+    },
+    {
+      "bbox": [
+        0.37752,
+        0.088879,
+        0.618762,
+        0.103848
+      ],
+      "blockType": "caption",
+      "id": "actual:p456:line:51",
+      "page": 456,
+      "text": "TABLE C-1: ACCESS CONTROL FAMILY"
+    },
+    {
+      "bbox": [
+        0.158784,
+        0.137015,
+        0.221608,
+        0.152379
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:2",
+      "page": 456,
+      "text": "CONTROL"
+    },
+    {
+      "bbox": [
+        0.355647,
+        0.137394,
+        0.483136,
+        0.155258
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:52",
+      "page": 456,
+      "text": "CONTROL NAME"
+    },
+    {
+      "bbox": [
+        0.756039,
+        0.142091,
+        0.826005,
+        0.156167
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:106",
+      "page": 456,
+      "text": "ASSURANCE"
+    },
+    {
+      "bbox": [
+        0.624471,
+        0.142091,
+        0.709261,
+        0.156167
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:98",
+      "page": 456,
+      "text": "IMPLEMENTED"
+    },
+    {
+      "bbox": [
+        0.160451,
+        0.149667,
+        0.220216,
+        0.16503
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:3",
+      "page": 456,
+      "text": "NUMBER"
+    },
+    {
+      "bbox": [
+        0.658098,
+        0.154742,
+        0.676272,
+        0.168818
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:99",
+      "page": 456,
+      "text": "BY"
+    },
+    {
+      "bbox": [
+        0.340451,
+        0.158,
+        0.499671,
+        0.170864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:53",
+      "page": 456,
+      "text": "CONTROL ENHANCEMENT NAME"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.186985,
+        0.182943,
+        0.201349
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:4",
+      "page": 456,
+      "text": "AC-1"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.186985,
+        0.370487,
+        0.201349
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:54",
+      "page": 456,
+      "text": "Policy and Procedures"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.188985,
+        0.672927,
+        0.201849
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:100",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.20403,
+        0.182943,
+        0.218394
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:5",
+      "page": 456,
+      "text": "AC-2"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.20403,
+        0.375464,
+        0.218394
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:55",
+      "page": 456,
+      "text": "Account Management"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.20603,
+        0.672927,
+        0.218894
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:101",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.221,
+        0.202088,
+        0.235364
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:6",
+      "page": 456,
+      "text": "AC-2(1)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.223,
+        0.672927,
+        0.235864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:102",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.223,
+        0.469728,
+        0.235864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:56",
+      "page": 456,
+      "text": "AUTOMATED SYSTEM ACCOUNT MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.238045,
+        0.202088,
+        0.252409
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:7",
+      "page": 456,
+      "text": "AC-2(2)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.240045,
+        0.671677,
+        0.252909
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:103",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.240045,
+        0.577196,
+        0.252909
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:57",
+      "page": 456,
+      "text": "AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.255091,
+        0.202088,
+        0.269455
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:8",
+      "page": 456,
+      "text": "AC-2(3)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.257091,
+        0.671677,
+        0.269955
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:104",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.257091,
+        0.338206,
+        0.269955
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:58",
+      "page": 456,
+      "text": "DISABLE ACCOUNTS"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.272136,
+        0.345618,
+        0.289303
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:9",
+      "page": 456,
+      "text": "This publication is available AC-2(4) free of charge from:"
+    },
+    {
+      "bbox": [
+        0.154,
+        0.272136,
+        0.212,
+        0.289303
+      ],
+      "blockType": "control_reference",
+      "id": "actual:p456:line:9:embedded:requirement:0",
+      "page": 456,
+      "text": "AC-2(4)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.274136,
+        0.671677,
+        0.287
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:105",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.274136,
+        0.382368,
+        0.287
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:59",
+      "page": 456,
+      "text": "AUTOMATED AUDIT ACTIONS"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.288682,
+        0.678441,
+        0.304045
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:107",
+      "page": 456,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.289182,
+        0.202088,
+        0.303545
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:10",
+      "page": 456,
+      "text": "AC-2(5)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.291182,
+        0.340306,
+        0.304045
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:60",
+      "page": 456,
+      "text": "INACTIVITY LOGOUT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.306151,
+        0.202088,
+        0.320515
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:11",
+      "page": 456,
+      "text": "AC-2(6)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.308151,
+        0.671677,
+        0.321015
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:108",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.308151,
+        0.413385,
+        0.321015
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:61",
+      "page": 456,
+      "text": "DYNAMIC PRIVILEGE MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.323197,
+        0.202088,
+        0.337561
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:12",
+      "page": 456,
+      "text": "AC-2(7)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.325197,
+        0.672927,
+        0.338061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:109",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.325197,
+        0.380682,
+        0.338061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:62",
+      "page": 456,
+      "text": "PRIVILEGED USER ACCOUNTS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.340242,
+        0.202088,
+        0.354606
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:13",
+      "page": 456,
+      "text": "AC-2(8)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.342242,
+        0.671677,
+        0.355106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:110",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.342242,
+        0.413706,
+        0.355106
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:63",
+      "page": 456,
+      "text": "DYNAMIC ACCOUNT MANAGEMENT"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.357288,
+        0.202088,
+        0.371652
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:14",
+      "page": 456,
+      "text": "AC-2(9)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.359288,
+        0.672927,
+        0.372152
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:111",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.359288,
+        0.518719,
+        0.372152
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:64",
+      "page": 456,
+      "text": "RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.374258,
+        0.206698,
+        0.388621
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:15",
+      "page": 456,
+      "text": "AC-2(10)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.374333,
+        0.764369,
+        0.387409
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:112",
+      "page": 456,
+      "text": "W: Incorporated into AC-2k."
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.376258,
+        0.495583,
+        0.389121
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:65",
+      "page": 456,
+      "text": "SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.391303,
+        0.209544,
+        0.405667
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:16",
+      "page": 456,
+      "text": "AC-2(11)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.393303,
+        0.671677,
+        0.406167
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:113",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.393303,
+        0.338321,
+        0.406167
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:66",
+      "page": 456,
+      "text": "USAGE CONDITIONS"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.407848,
+        0.678441,
+        0.423212
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:114",
+      "page": 456,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.408348,
+        0.209544,
+        0.422712
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:17",
+      "page": 456,
+      "text": "AC-2(12)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.410349,
+        0.460093,
+        0.423212
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:67",
+      "page": 456,
+      "text": "ACCOUNT MONITORING FOR ATYPICAL USAGE"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.424894,
+        0.474884,
+        0.440258
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:68+actual:p456:line:77",
+      "page": 456,
+      "text": "DISABLE ACCOUNTS FOR HIGH- RISK INDIVIDUALS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.425394,
+        0.209544,
+        0.439758
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:18",
+      "page": 456,
+      "text": "AC-2(13)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.427394,
+        0.672927,
+        0.440258
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:115",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.442364,
+        0.182943,
+        0.456727
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:19",
+      "page": 456,
+      "text": "AC-3"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.442364,
+        0.363204,
+        0.456727
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:69",
+      "page": 456,
+      "text": "Access Enforcement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.444364,
+        0.671677,
+        0.457227
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:116",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.459409,
+        0.202088,
+        0.473773
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:20",
+      "page": 456,
+      "text": "AC-3(1)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.459485,
+        0.758475,
+        0.472561
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:117",
+      "page": 456,
+      "text": "W: Incorporated into AC-6."
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.461409,
+        0.46834,
+        0.474273
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:70",
+      "page": 456,
+      "text": "RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.476455,
+        0.202088,
+        0.490818
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:21",
+      "page": 456,
+      "text": "AC-3(2)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.478455,
+        0.671677,
+        0.491318
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:118",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.478455,
+        0.351134,
+        0.491318
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:71",
+      "page": 456,
+      "text": "DUAL AUTHORIZATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.4935,
+        0.202088,
+        0.507864
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:22",
+      "page": 456,
+      "text": "AC-3(3)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.4955,
+        0.671677,
+        0.508364
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:119",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.4955,
+        0.391774,
+        0.508364
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:72",
+      "page": 456,
+      "text": "MANDATORY ACCESS CONTROL"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.510545,
+        0.202088,
+        0.524909
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:23",
+      "page": 456,
+      "text": "AC-3(4)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.512545,
+        0.671677,
+        0.525409
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:120",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.512545,
+        0.406261,
+        0.525409
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:73",
+      "page": 456,
+      "text": "DISCRETIONARY ACCESS CONTROL"
+    },
+    {
+      "bbox": [
+        0.032912,
+        0.518727,
+        0.270618,
+        0.533091
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:24",
+      "page": 456,
+      "text": "https://doi.org/10.6028/NIST.SP.800"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.527015,
+        0.412943,
+        0.542379
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:74",
+      "page": 456,
+      "text": "SECURITY-RELEVANT INFORMATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.527515,
+        0.202088,
+        0.541879
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:25",
+      "page": 456,
+      "text": "AC-3(5)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.529515,
+        0.671677,
+        0.542379
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:121",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.544561,
+        0.202088,
+        0.558924
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:26",
+      "page": 456,
+      "text": "AC-3(6)"
+    },
+    {
+      "bbox": [
+        0.61252,
+        0.544636,
+        0.817875,
+        0.557712
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:122",
+      "page": 456,
+      "text": "W: Incorporated into MP-4 and SC-28."
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.546561,
+        0.481004,
+        0.559424
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:75",
+      "page": 456,
+      "text": "PROTECTION OF USER AND SYSTEM INFORMATION"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.561106,
+        0.678441,
+        0.57647
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:123",
+      "page": 456,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.561106,
+        0.388887,
+        0.57647
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:76",
+      "page": 456,
+      "text": "ROLE-BASED ACCESS CONTROL"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.561606,
+        0.202088,
+        0.57597
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:27",
+      "page": 456,
+      "text": "AC-3(7)"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.578152,
+        0.678441,
+        0.593515
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:124",
+      "page": 456,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.578652,
+        0.202088,
+        0.593015
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:28",
+      "page": 456,
+      "text": "AC-3(8)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.580652,
+        0.44494,
+        0.593515
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:78",
+      "page": 456,
+      "text": "REVOCATION OF ACCESS AUTHORIZATIONS"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.596333,
+        0.678441,
+        0.611697
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:125",
+      "page": 456,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.596833,
+        0.202088,
+        0.611197
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:29",
+      "page": 456,
+      "text": "AC-3(9)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.598833,
+        0.349264,
+        0.611697
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:79",
+      "page": 456,
+      "text": "CONTROLLED RELEASE"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.613803,
+        0.209544,
+        0.628167
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:30",
+      "page": 456,
+      "text": "AC-3(10)"
+    },
+    {
+      "bbox": [
+        0.661333,
+        0.615803,
+        0.672927,
+        0.628667
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:126",
+      "page": 456,
+      "text": "O"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.615803,
+        0.506308,
+        0.628667
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:80",
+      "page": 456,
+      "text": "AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.630848,
+        0.209544,
+        0.645212
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:31",
+      "page": 456,
+      "text": "AC-3(11)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.632849,
+        0.671677,
+        0.645712
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:127",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.632849,
+        0.484468,
+        0.645712
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:81",
+      "page": 456,
+      "text": "RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.647894,
+        0.209544,
+        0.662258
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:32",
+      "page": 456,
+      "text": "AC-3(12)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.649894,
+        0.671677,
+        0.662758
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:128",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.649894,
+        0.453188,
+        0.662758
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:82",
+      "page": 456,
+      "text": "ASSERT AND ENFORCE APPLICATION ACCESS"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.664439,
+        0.416239,
+        0.679803
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:83",
+      "page": 456,
+      "text": "ATTRIBUTE-BASED ACCESS CONTROL"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.664939,
+        0.209544,
+        0.679303
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:33",
+      "page": 456,
+      "text": "AC-3(13)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.666939,
+        0.671677,
+        0.679803
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:129",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.681909,
+        0.206698,
+        0.696273
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:34",
+      "page": 456,
+      "text": "AC-3(14)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.683909,
+        0.671677,
+        0.696773
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:130",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.683909,
+        0.338528,
+        0.696773
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:84",
+      "page": 456,
+      "text": "INDIVIDUAL ACCESS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.698955,
+        0.206698,
+        0.713318
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:36",
+      "page": 456,
+      "text": "AC-3(15)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.700955,
+        0.671677,
+        0.713818
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:131",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.700955,
+        0.49556,
+        0.713818
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:85",
+      "page": 456,
+      "text": "DISCRETIONARY AND MANDATORY ACCESS CONTROL"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.716,
+        0.182943,
+        0.730364
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:37",
+      "page": 456,
+      "text": "AC-4"
+    },
+    {
+      "bbox": [
+        0.241049,
+        0.716,
+        0.428718,
+        0.730364
+      ],
+      "blockType": "paragraph",
+      "id": "actual:p456:line:86",
+      "page": 456,
+      "text": "Information Flow Enforcement"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.718,
+        0.671677,
+        0.730864
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:132",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.733045,
+        0.202088,
+        0.747409
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:38",
+      "page": 456,
+      "text": "AC-4(1)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.735045,
+        0.671677,
+        0.747909
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:133",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.735045,
+        0.450983,
+        0.747909
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:87",
+      "page": 456,
+      "text": "OBJECT SECURITY AND PRIVACY ATTRIBUTES"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.750091,
+        0.202088,
+        0.764455
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:39",
+      "page": 456,
+      "text": "AC-4(2)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.752091,
+        0.671677,
+        0.764955
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:134",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.752091,
+        0.35251,
+        0.764955
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:88",
+      "page": 456,
+      "text": "PROCESSING DOMAINS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.767061,
+        0.202088,
+        0.781424
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:40",
+      "page": 456,
+      "text": "AC-4(3)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.769061,
+        0.671677,
+        0.781924
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:135",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.769061,
+        0.438907,
+        0.781924
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:89",
+      "page": 456,
+      "text": "DYNAMIC INFORMATION FLOW CONTROL"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.784106,
+        0.202088,
+        0.79847
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:41",
+      "page": 456,
+      "text": "AC-4(4)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.786106,
+        0.671677,
+        0.79897
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:136",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.786106,
+        0.467136,
+        0.79897
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:90",
+      "page": 456,
+      "text": "FLOW CONTROL OF ENCRYPTED INFORMATION"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.801152,
+        0.202088,
+        0.815515
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:42",
+      "page": 456,
+      "text": "AC-4(5)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.803152,
+        0.671677,
+        0.816015
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:137",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.803152,
+        0.357534,
+        0.816015
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:91",
+      "page": 456,
+      "text": "EMBEDDED DATA TYPES"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.818197,
+        0.202088,
+        0.832561
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:43",
+      "page": 456,
+      "text": "AC-4(6)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.820197,
+        0.671677,
+        0.833061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:138",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.820197,
+        0.298105,
+        0.833061
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:92",
+      "page": 456,
+      "text": "METADATA"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.834667,
+        0.391006,
+        0.85003
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:93",
+      "page": 456,
+      "text": "ONE-WAY FLOW MECHANISMS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.835167,
+        0.202088,
+        0.84953
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:44",
+      "page": 456,
+      "text": "AC-4(7)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.837167,
+        0.671677,
+        0.85003
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:139",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.852212,
+        0.202088,
+        0.866576
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:45",
+      "page": 456,
+      "text": "AC-4(8)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.854212,
+        0.671677,
+        0.867076
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:140",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.854212,
+        0.42895,
+        0.867076
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:94",
+      "page": 456,
+      "text": "SECURITY AND PRIVACY POLICY FILTERS"
+    },
+    {
+      "bbox": [
+        0.655843,
+        0.868758,
+        0.678441,
+        0.884121
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:141",
+      "page": 456,
+      "text": "O / S"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.869258,
+        0.202088,
+        0.883621
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:46",
+      "page": 456,
+      "text": "AC-4(9)"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.871258,
+        0.327619,
+        0.884121
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:95",
+      "page": 456,
+      "text": "HUMAN REVIEWS"
+    },
+    {
+      "bbox": [
+        0.154382,
+        0.886303,
+        0.209544,
+        0.900667
+      ],
+      "blockType": "requirement",
+      "id": "actual:p456:line:47",
+      "page": 456,
+      "text": "AC-4(10)"
+    },
+    {
+      "bbox": [
+        0.662412,
+        0.888303,
+        0.671677,
+        0.901167
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:142",
+      "page": 456,
+      "text": "S"
+    },
+    {
+      "bbox": [
+        0.240549,
+        0.888303,
+        0.525223,
+        0.901167
+      ],
+      "blockType": "section_header",
+      "id": "actual:p456:line:96",
+      "page": 456,
+      "text": "ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS"
+    },
+    {
+      "bbox": [
+        0.802283,
+        0.939742,
+        0.854755,
+        0.953818
+      ],
+      "blockType": "running_footer",
+      "id": "actual:p456:line:143",
+      "page": 456,
+      "text": "PAGE 429"
+    }
+  ],
+  "copied_files": [
+    "page.png",
+    "bbox_overlay.png",
+    "release_extraction_blocks.json",
+    "expected_elements.json",
+    "agent_second_pass.json"
+  ],
+  "fix_error_count": 95,
+  "fix_error_requests": [
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:2",
+      "text_hint": "CONTROL"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:52",
+      "text_hint": "CONTROL NAME"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:106",
+      "text_hint": "ASSURANCE"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:98",
+      "text_hint": "IMPLEMENTED"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:3",
+      "text_hint": "NUMBER"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:99",
+      "text_hint": "BY"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:53",
+      "text_hint": "CONTROL ENHANCEMENT NAME"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:54",
+      "text_hint": "Policy and Procedures"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:100",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:55",
+      "text_hint": "Account Management"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:101",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:102",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:56",
+      "text_hint": "AUTOMATED SYSTEM ACCOUNT MANAGEMENT"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:103",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:57",
+      "text_hint": "AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:104",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:58",
+      "text_hint": "DISABLE ACCOUNTS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:105",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:59",
+      "text_hint": "AUTOMATED AUDIT ACTIONS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:107",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:60",
+      "text_hint": "INACTIVITY LOGOUT"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:108",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:61",
+      "text_hint": "DYNAMIC PRIVILEGE MANAGEMENT"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:109",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:62",
+      "text_hint": "PRIVILEGED USER ACCOUNTS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:110",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:63",
+      "text_hint": "DYNAMIC ACCOUNT MANAGEMENT"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:111",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:64",
+      "text_hint": "RESTRICTIONS ON USE OF SHARED AND GROUP ACCOUNTS"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:112",
+      "text_hint": "W: Incorporated into AC-2k."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:65",
+      "text_hint": "SHARED AND GROUP ACCOUNT CREDENTIAL CHANGE"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:113",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:66",
+      "text_hint": "USAGE CONDITIONS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:114",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:67",
+      "text_hint": "ACCOUNT MONITORING FOR ATYPICAL USAGE"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:68+actual:p456:line:77",
+      "text_hint": "DISABLE ACCOUNTS FOR HIGH- RISK INDIVIDUALS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:115",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:69",
+      "text_hint": "Access Enforcement"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:116",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:117",
+      "text_hint": "W: Incorporated into AC-6."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:70",
+      "text_hint": "RESTRICTED ACCESS TO PRIVILEGED FUNCTIONS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:118",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:71",
+      "text_hint": "DUAL AUTHORIZATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:119",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:72",
+      "text_hint": "MANDATORY ACCESS CONTROL"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:120",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:73",
+      "text_hint": "DISCRETIONARY ACCESS CONTROL"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:74",
+      "text_hint": "SECURITY-RELEVANT INFORMATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:121",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:122",
+      "text_hint": "W: Incorporated into MP-4 and SC-28."
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:75",
+      "text_hint": "PROTECTION OF USER AND SYSTEM INFORMATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:123",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:76",
+      "text_hint": "ROLE-BASED ACCESS CONTROL"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:124",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:78",
+      "text_hint": "REVOCATION OF ACCESS AUTHORIZATIONS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:125",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:79",
+      "text_hint": "CONTROLLED RELEASE"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:126",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:80",
+      "text_hint": "AUDITED OVERRIDE OF ACCESS CONTROL MECHANISMS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:127",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:81",
+      "text_hint": "RESTRICT ACCESS TO SPECIFIC INFORMATION TYPES"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:128",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:82",
+      "text_hint": "ASSERT AND ENFORCE APPLICATION ACCESS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:83",
+      "text_hint": "ATTRIBUTE-BASED ACCESS CONTROL"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:129",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:130",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:84",
+      "text_hint": "INDIVIDUAL ACCESS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:131",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:85",
+      "text_hint": "DISCRETIONARY AND MANDATORY ACCESS CONTROL"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:86",
+      "text_hint": "Information Flow Enforcement"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:132",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:133",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:87",
+      "text_hint": "OBJECT SECURITY AND PRIVACY ATTRIBUTES"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:134",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:88",
+      "text_hint": "PROCESSING DOMAINS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:135",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:89",
+      "text_hint": "DYNAMIC INFORMATION FLOW CONTROL"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:136",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:90",
+      "text_hint": "FLOW CONTROL OF ENCRYPTED INFORMATION"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:137",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:91",
+      "text_hint": "EMBEDDED DATA TYPES"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:138",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:92",
+      "text_hint": "METADATA"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:93",
+      "text_hint": "ONE-WAY FLOW MECHANISMS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:139",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:140",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:94",
+      "text_hint": "SECURITY AND PRIVACY POLICY FILTERS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:141",
+      "text_hint": "O / S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:95",
+      "text_hint": "HUMAN REVIEWS"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:142",
+      "text_hint": "S"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:96",
+      "text_hint": "ENABLE AND DISABLE SECURITY OR PRIVACY POLICY FILTERS"
+    },
+    {
+      "current_type": null,
+      "human_bbox": [
+        0.0590023551198257,
+        0.043,
+        0.9166064466230937,
+        0.08008062626262635
+      ],
+      "owner": "nist_preset_or_materialization",
+      "reason": "Human adjusted running header chrome grouping; materialization should reflect visual page chrome without making it semantic content.",
+      "requested_family": "page_chrome_noise",
+      "source_id": "human:p456:page_chrome_grouping:0",
+      "text_hint": "NIST SP 800-53, REV. 5\nAPPENDIX C"
+    },
+    {
+      "current_type": null,
+      "human_bbox": [
+        0.015257914038117326,
+        0.08961411494308148,
+        0.08279621567141393,
+        0.9229484034129377
+      ],
+      "owner": "nist_preset_or_materialization",
+      "reason": "Human marked the left DOI/sidebar watermark as page chrome; it must not be a table/figure/text candidate.",
+      "requested_family": "page_chrome_noise",
+      "source_id": "human:p456:page_chrome_noise:3",
+      "text_hint": ""
+    },
+    {
+      "current_type": null,
+      "human_bbox": [
+        0.12745876006294224,
+        0.9258604722181891,
+        0.8921650805949854,
+        0.9721568969558272
+      ],
+      "owner": "nist_preset_or_materialization",
+      "reason": "Human marked footer/page-number chrome as one bottom page-chrome band.",
+      "requested_family": "page_chrome_noise",
+      "source_id": "human:p456:page_chrome_noise:4",
+      "text_hint": ""
+    },
+    {
+      "current_type": null,
+      "human_bbox": [
+        0.34968179490822654,
+        0.08800713394037794,
+        0.6612297751324976,
+        0.10736745701248111
+      ],
+      "owner": "nist_preset_or_materialization",
+      "reason": "Human marked the visual table title/caption separately from the table body. Materialization must keep this as caption, not merge it into table JSON.",
+      "requested_family": "caption",
+      "source_id": "human:p456:table_caption:5",
+      "text_hint": ""
+    }
+  ],
+  "fix_error_source": "expected_elements.json",
+  "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/bbox_overlay.png",
+  "page": 456,
+  "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/page.png",
+  "source_dir": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/pdf-lab-projects/nist-phase54-toc-backed/pages/page_0456"
+}
