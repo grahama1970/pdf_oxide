@@ -1,0 +1,81 @@
+{
+  "schema": "pdf_lab.all_candidates_hardening_closure.v1",
+  "created_at": "2026-07-25T00:00:00-04:00",
+  "immutable_goal_source": "GOAL.md",
+  "verdict": "achieved_with_receipts",
+  "campaign_status": {
+    "passed": [
+      "page456_control_table_header_cell_leakage",
+      "page456_page_chrome",
+      "page35_control_families_table",
+      "page45_ac1_semantics_and_chrome",
+      "page401_references_toc_lineage",
+      "page421_glossary_lineage",
+      "page455_control_summaries_lineage",
+      "page455_body_continuation_counterexample"
+    ],
+    "failed": [],
+    "blocked_by_systemic_failure": [],
+    "not_run": [],
+    "active_family": "pdf_lab_active_candidate_queue",
+    "latest_failure_signature": null
+  },
+  "proof": {
+    "mocked": "no",
+    "live": "mixed",
+    "live_scope": "Historical page456 table-header receipt includes `uv run maturin develop`; 2026-07-25/26 page35, page45, page401, page421, and page455 slices used deterministic local extraction/pytest without paid model calls.",
+    "latest_combined_command": "PYTHONPATH=python pytest -q tests/test_nist_page455_control_summaries.py tests/test_nist_page421_glossary_terms.py tests/test_nist_page401_references_toc_lineage.py tests/test_nist_page45_ac1_heading.py tests/test_nist_page35_control_families_table.py tests/test_nist_page456_control_table_headers.py tests/test_nist_page456_page_chrome.py",
+    "latest_combined_result": "11 passed, 5 warnings in 207.02s",
+    "page456_focus_command": "PYTHONPATH=python pytest -q tests/test_nist_page456_control_table_headers.py tests/test_nist_page456_page_chrome.py",
+    "page456_focus_result": "2 passed, 5 warnings in 17.96s",
+    "remote_ref": {
+      "branch": "main",
+      "sha": "55331cfdb527366cbd617984174ff7a57ed81960"
+    }
+  },
+  "receipts": {
+    "page456_control_table_headers": "artifacts/pdf_lab/page456_control_table_headers_20260721/selection_receipt.json",
+    "page456_selection": "artifacts/pdf_lab/page456_selection_20260725/selection_receipt.json",
+    "page456_page_chrome": "artifacts/pdf_lab/page456_page_chrome_selection_20260725/selection_receipt.json",
+    "page35": "artifacts/pdf_lab/page35_selection_20260725/selection_receipt.json",
+    "page45": "artifacts/pdf_lab/page45_selection_20260726/selection_receipt.json",
+    "page401": "artifacts/pdf_lab/page401_selection_20260726/selection_receipt.json",
+    "page421": "artifacts/pdf_lab/page421_selection_20260726/selection_receipt.json",
+    "page455": "artifacts/pdf_lab/page455_selection_20260726/selection_receipt.json"
+  },
+  "commits": [
+    {
+      "sha": "d3f23bf7544f0b9769c869f5fc8e652f581e1091",
+      "summary": "pdf-lab: harden page35 control families table"
+    },
+    {
+      "sha": "cb208d59a5d858483272637184d6abb42f3fbec0",
+      "summary": "pdf-lab: harden page45 AC-1 semantics"
+    },
+    {
+      "sha": "439bd0515038729d01fd08db757cb4807b4e1841",
+      "summary": "pdf-lab: add page401 references lineage"
+    },
+    {
+      "sha": "3c3fbdf77efb2853f2952d15a1bdfc1e53ffbefe",
+      "summary": "pdf-lab: add page421 glossary lineage"
+    },
+    {
+      "sha": "749ea9e94a985d4343a4f71030803d0d46ae4173",
+      "summary": "pdf-lab: add page455 control summaries lineage"
+    },
+    {
+      "sha": "55331cfdb527366cbd617984174ff7a57ed81960",
+      "summary": "pdf-lab: repair page455 body continuation"
+    }
+  ],
+  "handoff_assessment": {
+    "path": "local/HANDOFF.md",
+    "status": "stale_for_this_goal",
+    "reason": "It describes a 2026-06-03 page-1 harness slice and warns not to claim the full project goal from that slice; it does not define the 2026-07 active page candidate queue."
+  },
+  "remaining_questions": [
+    "Should `local/HANDOFF.md` be replaced with this closure state, or kept as a historical page-1 harness handoff?",
+    "Should the next goal be a new candidate-discovery pass for pages outside this active queue, or stop at this active-queue closure receipt?"
+  ]
+}
