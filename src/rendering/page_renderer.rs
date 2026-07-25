@@ -544,9 +544,16 @@ impl PageRenderer {
                         let gs = gs_stack.current();
                         let transform = combine_transforms(base_transform, &gs.ctm);
                         let font_ref = current_font.as_deref();
-                        self.text_rasterizer.render_tj_array(
+                        let advance = self.text_rasterizer.render_tj_array(
                             pixmap, array, transform, gs, font_ref, resources, doc, clip,
                         )?;
+
+                        // PDF 1.7 §9.4.4: a TJ operation advances the text
+                        // matrix. Subsequent TJ operations (including ones
+                        // separated by colour/state operators) continue from
+                        // that position.
+                        let gs_mut = gs_stack.current_mut();
+                        gs_mut.text_matrix = advance_text_matrix(&gs_mut.text_matrix, advance);
                     }
                 },
                 Operator::DoubleQuote {
@@ -1039,6 +1046,14 @@ fn combine_transforms(base: Transform, matrix: &Matrix) -> Transform {
     base.pre_concat(pdf_transform)
 }
 
+/// Advance in text space before applying the existing text matrix.
+///
+/// PDF 1.7 §9.4.4 defines text-showing displacement as
+/// `[1 0 0 1 tx 0] × Tm`, which is significant for rotated or skewed text.
+fn advance_text_matrix(text_matrix: &Matrix, advance: f32) -> Matrix {
+    Matrix::translation(advance, 0.0).multiply(text_matrix)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1068,5 +1083,22 @@ mod tests {
         assert!((r - 0.0).abs() < 0.01);
         assert!((g - 0.0).abs() < 0.01);
         assert!((b - 0.0).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_text_advance_precedes_rotated_text_matrix() {
+        let rotated = Matrix {
+            a: 0.0,
+            b: 1.0,
+            c: -1.0,
+            d: 0.0,
+            e: 10.0,
+            f: 20.0,
+        };
+
+        let advanced = advance_text_matrix(&rotated, 5.0);
+
+        assert_eq!(advanced.e, 10.0);
+        assert_eq!(advanced.f, 25.0);
     }
 }
