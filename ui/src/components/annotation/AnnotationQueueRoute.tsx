@@ -432,7 +432,7 @@ export function AnnotationQueueRoute({
   const [railCollapsed, setRailCollapsed] = useState(false)
   const [canvasRegions, setCanvasRegions] = useState<CanvasRegion[]>([])
   const [showContext, setShowContext] = useState(true)
-  const [contextItems, setContextItems] = useState<Array<{ page: number; type: string; bbox: number[]; label: string }> | null>(null)
+  const [contextItems, setContextItems] = useState<Array<{ page: number; type: string; bbox: number[]; label: string; table_data?: string[][] }> | null>(null)
 
   useEffect(() => {
     if (initialCalls) return
@@ -572,6 +572,39 @@ export function AnnotationQueueRoute({
         editable: false,
       }))
   }, [contextItems, pageImage, selected])
+
+  const extractedTable = useMemo(() => {
+    if (!selected?.bbox || !contextItems || !pageImage?.height) return null
+    const pageHeightPt = pageImage.height * (72 / 96)
+    const [ix, iy, iw, ih] = selected.bbox
+    const itemTop = pageHeightPt - iy - ih
+    const itemBottom = pageHeightPt - iy
+    const tables = contextItems.filter((entry) => entry.page === selected.page && entry.type === 'Table' && entry.table_data?.length)
+    for (const table of tables) {
+      const [tx0, ty0, tx1, ty1] = table.bbox
+      const xOverlap = Math.min(ix + iw, tx1) - Math.max(ix, tx0)
+      const yOverlap = Math.min(itemBottom, ty1) - Math.max(itemTop, ty0)
+      if (xOverlap > 0 && yOverlap > 0) return table
+    }
+    return null
+  }, [contextItems, pageImage, selected])
+
+  const bugReportMarkdown = useMemo(() => {
+    if (!selected) return ''
+    const lines = [
+      `## Bug Report: ${annotationReasonLabel(selected.reason)} — ${selected.documentId} page ${selected.page}`,
+      `- Engine: ${selected.engineName ?? 'pdf-oxide'} ${selected.engineVersion ?? ''} (commit ${selected.engineCommit ?? 'unknown'})`,
+      `- PDF sha256: ${selected.pdfSha256}`,
+      `- Kind: ${selected.kind}${selected.bbox ? ` · bbox [${selected.bbox.map((value) => value.toFixed(1)).join(', ')}] (pdf points, bottom-left origin)` : ''}`,
+      selected.missingText
+        ? `- Missing characters (${[...selected.missingText].length}): ${[...new Set([...selected.missingText])].map((c) => `U+${c.codePointAt(0)!.toString(16).toUpperCase().padStart(4, '0')}`).join(' ')}`
+        : null,
+      selected.textExcerpt ? `- Engine extracted: ${selected.textExcerpt.slice(0, 200)}` : '- Engine extracted: (nothing supplied)',
+      selected.oracleExcerpt ? `- Oracle (pdftotext) saw: ${selected.oracleExcerpt.slice(0, 200)}` : null,
+      `- Queue item: ${selected.id}`,
+    ].filter(Boolean)
+    return lines.join('\n')
+  }, [selected])
 
   const updateCanvasRegions = (nextRegions: CanvasRegion[]) => {
     const next = nextRegions[nextRegions.length - 1]
@@ -920,6 +953,20 @@ export function AnnotationQueueRoute({
                     </div>
                   </dl>
 
+                  {extractedTable && (
+                    <div className="pdf-verify-extracted-table" data-testid="extracted-table">
+                      <span>Extracted table ({extractedTable.label})</span>
+                      <div className="pdf-verify-extracted-table__scroll">
+                        <table>
+                          <tbody>
+                            {extractedTable.table_data!.map((row, rowIndex) => (
+                              <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}</tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
                   {(selected.reason === 'char_parity_deficit' || workbenchAction === 'fix_text') && (
                     <label className="pdf-verify-field pdf-verify-corrected-text">
                       <span>Corrected text</span>
@@ -1020,7 +1067,7 @@ export function AnnotationQueueRoute({
                 </section>
 
                 <section className="pdf-verify-workbench-panel is-evidence" aria-labelledby="flag-evidence-heading">
-                  <header><span>03</span><h2 id="flag-evidence-heading">Flag evidence</h2></header>
+                  <header><span>03</span><h2 id="flag-evidence-heading">Agent analysis</h2></header>
                   <TaskSummaryBanner reason={selected.reason} />
                   <EvidencePanel item={selected} />
                   <dl className="pdf-verify-details">
@@ -1034,6 +1081,28 @@ export function AnnotationQueueRoute({
                     </div>
                     <div><dt>Queue ID</dt><dd><code>{selected.id}</code></dd></div>
                   </dl>
+                  <div className="pdf-verify-discrepancy" data-testid="discrepancy-comment">
+                    <strong>Discrepancy</strong>
+                    <p>
+                      {selected.reason === 'char_parity_deficit' && selected.missingText
+                        ? `The agent oracle found ${[...selected.missingText].length} character(s) in this region that pdf-oxide's extraction dropped${extractedTable ? ' — inspect the extracted table cells against the original page' : ''}.`
+                        : selected.reason === 'reviewer_flagged'
+                          ? 'A second-pass reviewer disputed this extraction; compare the finding with the original page.'
+                          : selected.reason === 'low_confidence'
+                            ? 'The engine itself is uncertain about this extraction; no oracle disagreement is recorded.'
+                            : 'A prior sweep left this element unresolved.'}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => { void navigator.clipboard.writeText(bugReportMarkdown); setStatus('Bug report copied to clipboard.') }}
+                      data-qid="annotation-queue:analysis:copy-bug-report"
+                      data-qs-action="ANNOTATION_QUEUE_COPY_BUG_REPORT"
+                      title="Copy a pre-filled bug report for this discrepancy"
+                      data-testid="copy-bug-report"
+                    >
+                      Copy bug report
+                    </button>
+                  </div>
                   {status && <div className="pdf-verify-status is-success" role="status">{status}</div>}
                   {error && <div className="pdf-verify-status is-error" role="alert">{error}</div>}
                 </section>
