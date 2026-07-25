@@ -389,6 +389,8 @@ def _block_elements(
         "is_bold": block.get("is_bold"),
         "raw": block,
     }
+    if source_type == "Footnote":
+        base["semantic_role"] = "footnote_group"
     if not _should_split_block(original_block_bbox, matched_lines):
         return [
             {
@@ -868,6 +870,118 @@ def _append_text_to_table_cell(table: dict[str, Any], row_index: int, column_ind
             row_copy[str(column_index)] = data[row_index][column_index]
             updated_df_data[row_index] = row_copy
             repaired["df_data"] = updated_df_data
+    return repaired
+
+
+def _table_line_rows_from_text_lines(
+    table: dict[str, Any],
+    table_bbox: list[float],
+    text_lines: list[dict[str, Any]],
+) -> list[list[str]]:
+    metrics = _table_metrics(table)
+    column_count = int(metrics.get("column_count") or 0)
+    if column_count <= 1 or len(table_bbox) != 4:
+        return []
+
+    candidates: list[dict[str, Any]] = []
+    for line in text_lines:
+        bbox = line.get("bbox")
+        text = _normalize_text(line.get("text") or "")
+        if not text or not isinstance(bbox, list) or len(bbox) != 4:
+            continue
+        x_anchor = float(bbox[0])
+        y_center = (float(bbox[1]) + float(bbox[3])) / 2.0
+        if not (float(table_bbox[0]) <= x_anchor <= float(table_bbox[2])):
+            continue
+        if not (float(table_bbox[1]) <= y_center <= float(table_bbox[3])):
+            continue
+        candidates.append({**line, "text": text, "x_anchor": x_anchor, "y_center": y_center})
+    if len(candidates) < column_count:
+        return []
+
+    centers = sorted(float(item["x_anchor"]) for item in candidates)
+    cluster_count = min(column_count, len(centers))
+    cluster_centers = [
+        centers[min(len(centers) - 1, round(index * (len(centers) - 1) / max(1, cluster_count - 1)))]
+        for index in range(cluster_count)
+    ]
+    for _ in range(8):
+        buckets: list[list[float]] = [[] for _ in cluster_centers]
+        for center in centers:
+            closest = min(range(len(cluster_centers)), key=lambda index: abs(center - cluster_centers[index]))
+            buckets[closest].append(center)
+        next_centers = [
+            (sum(bucket) / len(bucket)) if bucket else cluster_centers[index]
+            for index, bucket in enumerate(buckets)
+        ]
+        if all(abs(a - b) < 1e-6 for a, b in zip(cluster_centers, next_centers)):
+            break
+        cluster_centers = next_centers
+
+    ordered_centers = sorted(cluster_centers)
+    if len(ordered_centers) != column_count:
+        return []
+
+    row_groups: list[list[dict[str, Any]]] = []
+    for item in sorted(candidates, key=lambda value: (value["y_center"], value["x_anchor"])):
+        if row_groups and abs(float(item["y_center"]) - float(row_groups[-1][0]["y_center"])) <= 0.008:
+            row_groups[-1].append(item)
+        else:
+            row_groups.append([item])
+
+    rows: list[list[str]] = []
+    for group in row_groups:
+        if len(group) == column_count:
+            rows.append([
+                _normalize_text(item["text"])
+                for item in sorted(group, key=lambda value: value["x_anchor"])
+            ])
+            continue
+        cells: list[list[dict[str, Any]]] = [[] for _ in range(column_count)]
+        for item in sorted(group, key=lambda value: value["x_anchor"]):
+            column_index = min(
+                range(column_count),
+                key=lambda index: abs(float(item["x_anchor"]) - ordered_centers[index]),
+            )
+            cells[column_index].append(item)
+        row = [
+            _normalize_text(" ".join(str(item["text"]) for item in sorted(cell, key=lambda value: value["x_anchor"])))
+            for cell in cells
+        ]
+        if any(row):
+            rows.append(row)
+    return _drop_trailing_empty_table_rows(rows)
+
+
+def _repair_table_from_text_lines(
+    table: dict[str, Any],
+    table_bbox: list[float],
+    text_lines: list[dict[str, Any]],
+) -> dict[str, Any]:
+    existing = _table_data(table)
+    reconstructed = _table_line_rows_from_text_lines(table, table_bbox, text_lines)
+    if not existing or not reconstructed:
+        return table
+    existing_column_count = max((len(row) for row in existing), default=0)
+    reconstructed_column_count = max((len(row) for row in reconstructed), default=0)
+    if existing_column_count != reconstructed_column_count:
+        return table
+    if len(reconstructed) != len(existing):
+        return table
+    existing_non_empty = sum(1 for row in existing for cell in row if cell.strip())
+    reconstructed_non_empty = sum(1 for row in reconstructed for cell in row if cell.strip())
+    if reconstructed_non_empty < existing_non_empty:
+        return table
+
+    repaired = dict(table)
+    repaired["data"] = reconstructed
+    raw = dict(repaired.get("raw") or {})
+    raw["table_text_line_repair"] = {
+        "source": "fitz_text_lines",
+        "row_count": len(reconstructed),
+        "column_count": reconstructed_column_count,
+    }
+    repaired["raw"] = raw
     return repaired
 
 
@@ -1490,6 +1604,7 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
         if _is_tiny_empty_table_false_positive(table, metrics, bbox):
             continue
         table = _repair_table_with_qid_rows(table, raw_elements, bbox, page_index + 1)
+        table = _repair_table_from_text_lines(table, bbox, text_lines)
         table = _repair_table_with_contained_text(table, raw_elements, bbox, page_index + 1)
         metrics = _table_metrics(table)
         if _is_page46_ac2_control_table(table, page_index, bbox):
