@@ -25,6 +25,7 @@ export const ANNOTATION_DECISIONS = [
   'defer',
   'correct_type',
   'correct_bounds',
+  'not_an_element',
 ] as const
 export type AnnotationDecision = typeof ANNOTATION_DECISIONS[number]
 

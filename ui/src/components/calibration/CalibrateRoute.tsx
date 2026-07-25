@@ -19,7 +19,7 @@ import {
   type PageImageRef,
 } from '../../adapters/pageImageRefs'
 import { useRegisterAction } from '../../hooks/useRegisterAction'
-import { NormalizedPageOverlay } from '../verification/NormalizedPageOverlay'
+import { PdfDocumentCanvas } from '../canvas'
 import '../verification/VerificationUx.css'
 
 export interface CalibrateRouteProps {
@@ -389,11 +389,23 @@ export function CalibrateRoute({
               <code>{current.doc} · page {current.page}</code>
             </div>
           ) : (
-            <NormalizedPageOverlay
+            <PdfDocumentCanvas
               pageImage={currentPageImage}
-              bbox={current.bbox}
-              label={current.type}
+              regions={[{
+                id: currentSha ?? `${current.doc}:${current.page}:${index}`,
+                bbox: [
+                  current.bbox[0],
+                  current.bbox[1],
+                  current.bbox[0] + current.bbox[2],
+                  current.bbox[1] + current.bbox[3],
+                ],
+                label: current.type,
+                color: '#58b9ff',
+                editable: false,
+              }]}
+              selectedRegionId={currentSha}
               alt={`Original page ${current.page} from ${current.doc}`}
+              actionQualifier={`calibration-${currentSha ?? index}`}
             />
           )}
         </div>

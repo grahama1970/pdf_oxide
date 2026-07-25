@@ -49,6 +49,20 @@ async function waitForApi(url: string): Promise<void> {
 }
 
 describe('annotation decision corrected_text ledger', () => {
+  it('builds the workbench not-an-element decision without correction payloads', () => {
+    const item = {
+      id: 'item-not-element',
+      itemSha256: 'a'.repeat(64),
+      callSha256: 'b'.repeat(64),
+    } as AnnotationQueueItem
+    expect(buildAnnotationDecisionInput(item, 'not_an_element', {
+      timestamp: '2026-07-25T12:00:00.000Z',
+    })).toMatchObject({
+      item_id: 'item-not-element',
+      decision: 'not_an_element',
+    })
+  })
+
   it('round-trips corrected_text through the adapter input', () => {
     const item = {
       id: 'item-1',
