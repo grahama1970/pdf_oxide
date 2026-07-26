@@ -1,0 +1,43 @@
+{
+  "block_count": 5,
+  "header_footer_noise_count": 4,
+  "historical_bug_report": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027_page_chrome/bug_report.json",
+  "historical_bug_report_count": 1,
+  "running_header_count": 0,
+  "stale_fragment_count": 0,
+  "stale_fragments": [],
+  "top_header_text_band": {
+    "bbox": [
+      0.14705882352941177,
+      0.04473802296802251,
+      0.8507378272760927,
+      0.05821938948197798
+    ],
+    "font_name": "TT0",
+    "font_size": 7.3299994468688965,
+    "id": "actual:p27:block:0",
+    "is_bold": false,
+    "page": 27,
+    "pdf_page_index": 26,
+    "raw": {
+      "bbox": [
+        90.0,
+        748.3800048828125,
+        546.4834594726562,
+        7.97998046875
+      ],
+      "block_type": "Header",
+      "confidence": 0.800000011920929,
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "header_level": null,
+      "is_bold": false,
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    "semantic_role": "page_chrome",
+    "source_type": "Header",
+    "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+    "type": "header_footer_noise"
+  },
+  "top_header_text_band_count": 1
+}

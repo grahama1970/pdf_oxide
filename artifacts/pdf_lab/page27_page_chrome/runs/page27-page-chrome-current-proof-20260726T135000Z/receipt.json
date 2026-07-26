@@ -1,0 +1,87 @@
+{
+  "artifacts": {
+    "bbox_metrics": "artifacts/pdf_lab/page27_page_chrome/runs/page27-page-chrome-current-proof-20260726T135000Z/bbox-metrics.json",
+    "extraction_json": "artifacts/pdf_lab/page27_page_chrome/runs/page27-page-chrome-current-proof-20260726T135000Z/extraction.pdf_oxide.json",
+    "overlay_png": "artifacts/pdf_lab/page27_page_chrome/runs/page27-page-chrome-current-proof-20260726T135000Z/overlay.png",
+    "page_png": "artifacts/pdf_lab/page27_page_chrome/runs/page27-page-chrome-current-proof-20260726T135000Z/page.png",
+    "regression_stdout": "artifacts/pdf_lab/page27_page_chrome/runs/page27-page-chrome-current-proof-20260726T135000Z/regression.stdout.txt"
+  },
+  "created_at": "2026-07-26T13:48:45.239101+00:00",
+  "dpi": 108,
+  "extraction_command": "snapshot_current_extraction._extract_page(pdf, 26, ledger, 'release')",
+  "ledger": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "ledger_sha256": "fcc9ca7743a0c0185632b861a6437827141a0ca606fe8719f9701dc75576ceb7",
+  "overlay_command": "run_next30_agentic_second_pass.render_overlay(page_png, blocks, overlay_png)",
+  "page": 27,
+  "page_image_dimensions": [
+    918,
+    1188
+  ],
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "receipt_validation": {
+    "errors": [],
+    "extraction_json_sha256_actual": "a479cfd88a26500f84f6e86cbf4b3ce8bf64e382bec3baa68c97f53961c2ddb0",
+    "extraction_json_sha256_recorded": "a479cfd88a26500f84f6e86cbf4b3ce8bf64e382bec3baa68c97f53961c2ddb0",
+    "extraction_parent_run_id": "page27-page-chrome-current-proof-20260726T135000Z",
+    "ok": true,
+    "run_id": "page27-page-chrome-current-proof-20260726T135000Z"
+  },
+  "regression": {
+    "command": "python -m pytest -q /home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/tests/test_nist_page27_page_chrome.py",
+    "exit_code": 0,
+    "output": "artifacts/pdf_lab/page27_page_chrome/runs/page27-page-chrome-current-proof-20260726T135000Z/regression.stdout.txt"
+  },
+  "run_id": "page27-page-chrome-current-proof-20260726T135000Z",
+  "schema": "pdf_oxide.page27_page_chrome_evidence.v1",
+  "sha256": {
+    "bbox_metrics": "c6586c54b316bc658e920e79ecf2c4f31c636b8ca7dd319d4757798a374e9cdd",
+    "extraction_json": "a479cfd88a26500f84f6e86cbf4b3ce8bf64e382bec3baa68c97f53961c2ddb0",
+    "overlay_png": "76f3ff29da03935cf57e8ecd40bd7b1f93fbf0263b28a703648d4ee180fad4bf",
+    "page_png": "8a862b29f4ec4003673070c1441bda0b1c7b20dfe09fb119b3fd9857936faf2b",
+    "regression_stdout": "4c62b287a681a25baaa01fe530dab0aefa8c3c502352df64154babc07d53608c"
+  },
+  "target_summary": {
+    "block_count": 5,
+    "header_footer_noise_count": 4,
+    "historical_bug_report": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027_page_chrome/bug_report.json",
+    "historical_bug_report_count": 1,
+    "running_header_count": 0,
+    "stale_fragment_count": 0,
+    "stale_fragments": [],
+    "top_header_text_band": {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p27:block:0",
+      "is_bold": false,
+      "page": 27,
+      "pdf_page_index": 26,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    "top_header_text_band_count": 1
+  }
+}
