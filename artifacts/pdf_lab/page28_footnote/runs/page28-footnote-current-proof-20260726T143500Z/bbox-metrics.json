@@ -1,0 +1,79 @@
+{
+  "block_count": 18,
+  "footnote_count": 7,
+  "historical_bug_report": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028_footnote/bug_report.json",
+  "historical_bug_report_count": 1,
+  "missing_expected": [],
+  "missing_expected_count": 0,
+  "section_or_paragraph_footnote_leak_count": 0,
+  "section_or_paragraph_footnote_leaks": [],
+  "target_footnote_count": 2,
+  "target_footnotes": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8035682138770518,
+        0.45684804480060254,
+        0.8187727494673296
+      ],
+      "font_name": "TT0",
+      "font_size": 8.75,
+      "id": "actual:p28:block:16",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          146.33999633789062,
+          193.677001953125,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.75,
+        "header_level": null,
+        "is_bold": false,
+        "text": "4 [OMB A-130] defines security and privacy controls."
+      },
+      "semantic_role": "footnote_group",
+      "source_type": "Footnote",
+      "text": "4 [OMB A-130] defines security and privacy controls.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8502348312223801,
+        0.6120427449544271,
+        0.8654393668126579
+      ],
+      "font_name": "TT0",
+      "font_size": 8.399999618530273,
+      "id": "actual:p28:block:19",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0,
+          109.37999725341797,
+          286.6131591796875,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.399999618530273,
+        "header_level": null,
+        "is_bold": false,
+        "text": "6 Organizational operations include mission, functions, image, and reputation."
+      },
+      "semantic_role": "footnote_group",
+      "source_type": "Footnote",
+      "text": "6 Organizational operations include mission, functions, image, and reputation.",
+      "type": "footnote"
+    }
+  ]
+}
