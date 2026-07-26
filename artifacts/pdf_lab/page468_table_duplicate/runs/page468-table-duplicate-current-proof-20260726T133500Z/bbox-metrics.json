@@ -1,0 +1,103 @@
+{
+  "block_count": 6,
+  "historical_bug_report": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0468_table_duplicate_cells/bug_report.json",
+  "historical_bug_report_count": 29,
+  "historical_candidate": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0468/candidate_bundle.json",
+  "historical_fix_error_count": 91,
+  "leaks": [],
+  "non_table_count": 5,
+  "table": {
+    "bbox": [
+      0.14666667015723933,
+      0.11371211812953756,
+      0.8525490355647467,
+      0.9028787901907256
+    ],
+    "column_count": 4,
+    "header_row": {
+      "bbox": [
+        0.14666667015723933,
+        0.11371211812953756,
+        0.8525490355647467,
+        0.18712122753413038
+      ],
+      "bbox_source": "pdf_drawing_grid",
+      "cells": [
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.11371211812953756,
+            0.23372549169203816,
+            0.18712122753413038
+          ],
+          "bbox_source": "pdf_drawing_grid",
+          "role": "column_header",
+          "source_ids": [
+            "actual:p468:block:5",
+            "actual:p468:block:6"
+          ],
+          "text": "CONTROL NUMBER"
+        },
+        {
+          "bbox": [
+            0.23372549169203816,
+            0.11371211812953756,
+            0.6051960864098244,
+            0.18712122753413038
+          ],
+          "bbox_source": "pdf_drawing_grid",
+          "role": "column_header",
+          "source_ids": [
+            "actual:p468:block:7",
+            "actual:p468:block:8"
+          ],
+          "text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
+        },
+        {
+          "bbox": [
+            0.6051960864098244,
+            0.11371211812953756,
+            0.7290686065075445,
+            0.18712122753413038
+          ],
+          "bbox_source": "pdf_drawing_grid",
+          "role": "column_header",
+          "source_ids": [
+            "actual:p468:block:9",
+            "actual:p468:block:10"
+          ],
+          "text": "IMPLEMENTED BY"
+        },
+        {
+          "bbox": [
+            0.7290686065075445,
+            0.11371211812953756,
+            0.8525490355647467,
+            0.18712122753413038
+          ],
+          "bbox_source": "pdf_drawing_grid",
+          "role": "column_header",
+          "source_ids": [
+            "actual:p468:block:11"
+          ],
+          "text": "ASSURANCE"
+        }
+      ],
+      "role": "header_row",
+      "source_ids": [
+        "actual:p468:block:5",
+        "actual:p468:block:6",
+        "actual:p468:block:7",
+        "actual:p468:block:8",
+        "actual:p468:block:9",
+        "actual:p468:block:10",
+        "actual:p468:block:11"
+      ]
+    },
+    "id": "actual:p468:table:0",
+    "row_count": 43,
+    "table_contained_fragment_count": 49
+  },
+  "table_contained_leak_count": 0,
+  "table_count": 1
+}

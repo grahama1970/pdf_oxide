@@ -1,0 +1,147 @@
+{
+  "artifacts": {
+    "bbox_metrics": "artifacts/pdf_lab/page468_table_duplicate/runs/page468-table-duplicate-current-proof-20260726T133500Z/bbox-metrics.json",
+    "extraction_json": "artifacts/pdf_lab/page468_table_duplicate/runs/page468-table-duplicate-current-proof-20260726T133500Z/extraction.pdf_oxide.json",
+    "overlay_png": "artifacts/pdf_lab/page468_table_duplicate/runs/page468-table-duplicate-current-proof-20260726T133500Z/overlay.png",
+    "page_png": "artifacts/pdf_lab/page468_table_duplicate/runs/page468-table-duplicate-current-proof-20260726T133500Z/page.png",
+    "regression_stdout": "artifacts/pdf_lab/page468_table_duplicate/runs/page468-table-duplicate-current-proof-20260726T133500Z/regression.stdout.txt"
+  },
+  "created_at": "2026-07-26T13:34:04.630132+00:00",
+  "dpi": 108,
+  "extraction_command": "snapshot_current_extraction._extract_page(pdf, 467, ledger, 'release')",
+  "ledger": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "ledger_sha256": "fcc9ca7743a0c0185632b861a6437827141a0ca606fe8719f9701dc75576ceb7",
+  "overlay_command": "run_next30_agentic_second_pass.render_overlay(page_png, blocks, overlay_png)",
+  "page": 468,
+  "page_image_dimensions": [
+    918,
+    1188
+  ],
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "receipt_validation": {
+    "errors": [],
+    "extraction_json_sha256_actual": "772a8dc159c237646e0d1809356b1d33fe91f8dd44abb5703e8662fe0b294553",
+    "extraction_json_sha256_recorded": "772a8dc159c237646e0d1809356b1d33fe91f8dd44abb5703e8662fe0b294553",
+    "extraction_parent_run_id": "page468-table-duplicate-current-proof-20260726T133500Z",
+    "ok": true,
+    "run_id": "page468-table-duplicate-current-proof-20260726T133500Z"
+  },
+  "regression": {
+    "command": "python -m pytest -q /home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/tests/test_nist_page468_table_duplicate_suppression.py",
+    "exit_code": 0,
+    "output": "artifacts/pdf_lab/page468_table_duplicate/runs/page468-table-duplicate-current-proof-20260726T133500Z/regression.stdout.txt"
+  },
+  "run_id": "page468-table-duplicate-current-proof-20260726T133500Z",
+  "schema": "pdf_oxide.page468_table_duplicate_evidence.v1",
+  "sha256": {
+    "bbox_metrics": "cefbfda723a77dd11327d03cec3d4dc459168adfa609979ee91cb7a4645c9ea9",
+    "extraction_json": "772a8dc159c237646e0d1809356b1d33fe91f8dd44abb5703e8662fe0b294553",
+    "overlay_png": "a65e69d9d8e7399f042e41baf6365bdbdcbe6d70138d449ce1a70e866a0b3709",
+    "page_png": "d36513580b3cb6a4a86ac265aaa87fd086cfbe08c190968ae5840e298724f07c",
+    "regression_stdout": "5086bfc346da47e804899d6aa0ac558798dc8e77a596a63954accd7d9836176f"
+  },
+  "target_summary": {
+    "block_count": 6,
+    "historical_bug_report": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0468_table_duplicate_cells/bug_report.json",
+    "historical_bug_report_count": 29,
+    "historical_candidate": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0468/candidate_bundle.json",
+    "historical_fix_error_count": 91,
+    "leaks": [],
+    "non_table_count": 5,
+    "table": {
+      "bbox": [
+        0.14666667015723933,
+        0.11371211812953756,
+        0.8525490355647467,
+        0.9028787901907256
+      ],
+      "column_count": 4,
+      "header_row": {
+        "bbox": [
+          0.14666667015723933,
+          0.11371211812953756,
+          0.8525490355647467,
+          0.18712122753413038
+        ],
+        "bbox_source": "pdf_drawing_grid",
+        "cells": [
+          {
+            "bbox": [
+              0.14666667015723933,
+              0.11371211812953756,
+              0.23372549169203816,
+              0.18712122753413038
+            ],
+            "bbox_source": "pdf_drawing_grid",
+            "role": "column_header",
+            "source_ids": [
+              "actual:p468:block:5",
+              "actual:p468:block:6"
+            ],
+            "text": "CONTROL NUMBER"
+          },
+          {
+            "bbox": [
+              0.23372549169203816,
+              0.11371211812953756,
+              0.6051960864098244,
+              0.18712122753413038
+            ],
+            "bbox_source": "pdf_drawing_grid",
+            "role": "column_header",
+            "source_ids": [
+              "actual:p468:block:7",
+              "actual:p468:block:8"
+            ],
+            "text": "CONTROL NAME CONTROL ENHANCEMENT NAME"
+          },
+          {
+            "bbox": [
+              0.6051960864098244,
+              0.11371211812953756,
+              0.7290686065075445,
+              0.18712122753413038
+            ],
+            "bbox_source": "pdf_drawing_grid",
+            "role": "column_header",
+            "source_ids": [
+              "actual:p468:block:9",
+              "actual:p468:block:10"
+            ],
+            "text": "IMPLEMENTED BY"
+          },
+          {
+            "bbox": [
+              0.7290686065075445,
+              0.11371211812953756,
+              0.8525490355647467,
+              0.18712122753413038
+            ],
+            "bbox_source": "pdf_drawing_grid",
+            "role": "column_header",
+            "source_ids": [
+              "actual:p468:block:11"
+            ],
+            "text": "ASSURANCE"
+          }
+        ],
+        "role": "header_row",
+        "source_ids": [
+          "actual:p468:block:5",
+          "actual:p468:block:6",
+          "actual:p468:block:7",
+          "actual:p468:block:8",
+          "actual:p468:block:9",
+          "actual:p468:block:10",
+          "actual:p468:block:11"
+        ]
+      },
+      "id": "actual:p468:table:0",
+      "row_count": 43,
+      "table_contained_fragment_count": 49
+    },
+    "table_contained_leak_count": 0,
+    "table_count": 1
+  }
+}
