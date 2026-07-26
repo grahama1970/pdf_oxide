@@ -1,0 +1,43 @@
+{
+  "block_count": 18,
+  "historical_bug_report": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028_list_continuation/bug_report.json",
+  "historical_bug_report_count": 1,
+  "list_block_count": 1,
+  "matching_list_block": {
+    "bbox": [
+      0.14708595026552287,
+      0.583430781508937,
+      0.8394090241076899,
+      0.686382178104285
+    ],
+    "font_name": "C2_0",
+    "font_size": 10.979998588562012,
+    "id": "actual:p28:block:10",
+    "is_bold": false,
+    "page": 28,
+    "pdf_page_index": 27,
+    "raw": {
+      "bbox": [
+        90.0166015625,
+        251.81109619140625,
+        426.265625,
+        77.82626342773438
+      ],
+      "block_type": "List",
+      "confidence": 0.8500000238418579,
+      "font_name": "C2_0",
+      "font_size": 10.979998588562012,
+      "header_level": null,
+      "is_bold": false,
+      "text": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals? \u2022 Have the selected controls been implemented or is there a plan in place to do so? \u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective?7"
+    },
+    "source_type": "List",
+    "text": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals? \u2022 Have the selected controls been implemented or is there a plan in place to do so? \u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective?7",
+    "type": "list"
+  },
+  "matching_list_block_count": 1,
+  "missing_expected_phrase_count": 0,
+  "missing_expected_phrases": [],
+  "paragraph_continuation_leak_count": 0,
+  "paragraph_continuation_leaks": []
+}

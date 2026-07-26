@@ -1,0 +1,87 @@
+{
+  "artifacts": {
+    "bbox_metrics": "artifacts/pdf_lab/page28_list_continuation/runs/page28-list-continuation-current-proof-20260726T142500Z/bbox-metrics.json",
+    "extraction_json": "artifacts/pdf_lab/page28_list_continuation/runs/page28-list-continuation-current-proof-20260726T142500Z/extraction.pdf_oxide.json",
+    "overlay_png": "artifacts/pdf_lab/page28_list_continuation/runs/page28-list-continuation-current-proof-20260726T142500Z/overlay.png",
+    "page_png": "artifacts/pdf_lab/page28_list_continuation/runs/page28-list-continuation-current-proof-20260726T142500Z/page.png",
+    "regression_stdout": "artifacts/pdf_lab/page28_list_continuation/runs/page28-list-continuation-current-proof-20260726T142500Z/regression.stdout.txt"
+  },
+  "created_at": "2026-07-26T14:01:53.628309+00:00",
+  "dpi": 108,
+  "extraction_command": "snapshot_current_extraction._extract_page(pdf, 27, ledger, 'release')",
+  "ledger": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "ledger_sha256": "fcc9ca7743a0c0185632b861a6437827141a0ca606fe8719f9701dc75576ceb7",
+  "overlay_command": "run_next30_agentic_second_pass.render_overlay(page_png, blocks, overlay_png)",
+  "page": 28,
+  "page_image_dimensions": [
+    918,
+    1188
+  ],
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "receipt_validation": {
+    "errors": [],
+    "extraction_json_sha256_actual": "a129784d0c7b39b3584656df661fda8d0d18d2aafa2e0590239c873d83424dcc",
+    "extraction_json_sha256_recorded": "a129784d0c7b39b3584656df661fda8d0d18d2aafa2e0590239c873d83424dcc",
+    "extraction_parent_run_id": "page28-list-continuation-current-proof-20260726T142500Z",
+    "ok": true,
+    "run_id": "page28-list-continuation-current-proof-20260726T142500Z"
+  },
+  "regression": {
+    "command": "python -m pytest -q /home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/tests/test_nist_page28_list_continuation.py",
+    "exit_code": 0,
+    "output": "artifacts/pdf_lab/page28_list_continuation/runs/page28-list-continuation-current-proof-20260726T142500Z/regression.stdout.txt"
+  },
+  "run_id": "page28-list-continuation-current-proof-20260726T142500Z",
+  "schema": "pdf_oxide.page28_list_continuation_evidence.v1",
+  "sha256": {
+    "bbox_metrics": "d3f5beadf9d40bd1d7f19d133721fa29942f75023e42dd462478f8eb45d6631e",
+    "extraction_json": "a129784d0c7b39b3584656df661fda8d0d18d2aafa2e0590239c873d83424dcc",
+    "overlay_png": "aa6f631e296f868a9834a6ae6b2fbff426d4420d4a0e4d5687da46b7fff6a7c4",
+    "page_png": "c587921c8a3eaec9660a050220ca50947fe4e8bb21a73e7f742d6aeade838542",
+    "regression_stdout": "af0691385d35b3405245159b3bb2587ff9ed5f0e3dbd0c837efbf67499355e7b"
+  },
+  "target_summary": {
+    "block_count": 18,
+    "historical_bug_report": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028_list_continuation/bug_report.json",
+    "historical_bug_report_count": 1,
+    "list_block_count": 1,
+    "matching_list_block": {
+      "bbox": [
+        0.14708595026552287,
+        0.583430781508937,
+        0.8394090241076899,
+        0.686382178104285
+      ],
+      "font_name": "C2_0",
+      "font_size": 10.979998588562012,
+      "id": "actual:p28:block:10",
+      "is_bold": false,
+      "page": 28,
+      "pdf_page_index": 27,
+      "raw": {
+        "bbox": [
+          90.0166015625,
+          251.81109619140625,
+          426.265625,
+          77.82626342773438
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "C2_0",
+        "font_size": 10.979998588562012,
+        "header_level": null,
+        "is_bold": false,
+        "text": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals? \u2022 Have the selected controls been implemented or is there a plan in place to do so? \u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective?7"
+      },
+      "source_type": "List",
+      "text": "\u2022 What security and privacy controls are needed to satisfy security and privacy requirements and to adequately manage mission/business risks or risks to individuals? \u2022 Have the selected controls been implemented or is there a plan in place to do so? \u2022 What is the required level of assurance (i.e., grounds for confidence) that the selected controls, as designed and implemented, are effective?7",
+      "type": "list"
+    },
+    "matching_list_block_count": 1,
+    "missing_expected_phrase_count": 0,
+    "missing_expected_phrases": [],
+    "paragraph_continuation_leak_count": 0,
+    "paragraph_continuation_leaks": []
+  }
+}
