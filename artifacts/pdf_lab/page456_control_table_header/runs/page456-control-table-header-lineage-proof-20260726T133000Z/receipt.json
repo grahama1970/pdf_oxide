@@ -1,0 +1,138 @@
+{
+  "artifacts": {
+    "bbox_metrics": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-lineage-proof-20260726T133000Z/bbox-metrics.json",
+    "extraction_json": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-lineage-proof-20260726T133000Z/extraction.pdf_oxide.json",
+    "overlay_png": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-lineage-proof-20260726T133000Z/overlay.png",
+    "page_png": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-lineage-proof-20260726T133000Z/page.png",
+    "regression_stdout": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-lineage-proof-20260726T133000Z/regression.stdout.txt"
+  },
+  "created_at": "2026-07-26T13:28:24.236835+00:00",
+  "dpi": 108,
+  "extraction_command": "snapshot_current_extraction._extract_page(pdf, 455, ledger, 'release')",
+  "ledger": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "ledger_sha256": "fcc9ca7743a0c0185632b861a6437827141a0ca606fe8719f9701dc75576ceb7",
+  "overlay_command": "run_next30_agentic_second_pass.render_overlay(page_png, blocks, overlay_png)",
+  "page": 456,
+  "page_image_dimensions": [
+    918,
+    1188
+  ],
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "receipt_validation": {
+    "errors": [],
+    "extraction_json_sha256_actual": "f6dfebceeda594b7e402328ec0cdb03a811f013cb4c2b1edc8b502c4790bfccb",
+    "extraction_json_sha256_recorded": "f6dfebceeda594b7e402328ec0cdb03a811f013cb4c2b1edc8b502c4790bfccb",
+    "extraction_parent_run_id": "page456-control-table-header-lineage-proof-20260726T133000Z",
+    "missing_lineage_source_ids": [],
+    "ok": true,
+    "run_id": "page456-control-table-header-lineage-proof-20260726T133000Z"
+  },
+  "regression": {
+    "command": "python -m pytest -q /home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/tests/test_nist_page456_control_table_headers.py",
+    "exit_code": 0,
+    "output": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-lineage-proof-20260726T133000Z/regression.stdout.txt"
+  },
+  "run_id": "page456-control-table-header-lineage-proof-20260726T133000Z",
+  "schema": "pdf_oxide.page456_control_table_header_evidence.v1",
+  "sha256": {
+    "bbox_metrics": "37bc5c512a28bd1b3c0aafbcd1a67fbd2c2ee9f9c947d5b4cdfb9511ad77ca38",
+    "extraction_json": "f6dfebceeda594b7e402328ec0cdb03a811f013cb4c2b1edc8b502c4790bfccb",
+    "overlay_png": "18d3b19f22c419d2b2d72e56474d5b36a9d13433f20c1151b487ba1f0b6c098a",
+    "page_png": "d88a847accd498d08e9e31f40ec5812a13445d54172deccbc2a3b3cc8150a255",
+    "regression_stdout": "5109c4e75935a6188bd407645faab22bde8a4f4041a81c3d5093d38a54e22068"
+  },
+  "target_summary": {
+    "table_count": 1,
+    "tables": [
+      {
+        "bbox": [
+          0.14666667015723933,
+          0.11371211812953756,
+          0.8525490355647467,
+          0.9040909102468779
+        ],
+        "id": "actual:p456:table:0",
+        "text_preview": "CONTROL NUMBER | CONTROL NAME CONTROL ENHANCEMENT NAME | IMPLEMENTED BY | ASSURANCE AC-1 | Policy and Procedures | O | \u221a AC-2 | Account Management | O | AC-2(1) | AUTOMATED SYSTEM ACCOUNT MANAGEMENT | O | AC-2(2) | AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT | S | AC-2(3) | DISABLE ACCOUNTS | S | AC-2(4) | AUTOMATED AUDIT ACTIONS | S | AC-2(5) | INACTIVITY LOGOUT | O/S | AC-2(6) | DYNAMIC PRIVILEGE MANAGEMENT | S | AC-2(7) | PRIVILEGED USER ACCOUNTS | O | AC-2(8) | DYNAMIC ACCOUNT MANAG"
+      }
+    ],
+    "target_blocks": {
+      "actual:p456:line:106": {
+        "bbox": null,
+        "expected_text": "ASSURANCE",
+        "lineage_present": true,
+        "mapped_current_source_ids": [
+          "actual:p456:block:11"
+        ],
+        "mapped_header_cell_index": 3,
+        "mapped_header_cell_text": "ASSURANCE",
+        "present": false,
+        "source_type": null,
+        "text": "",
+        "type": null
+      },
+      "actual:p456:line:2": {
+        "bbox": null,
+        "expected_text": "CONTROL",
+        "lineage_present": true,
+        "mapped_current_source_ids": [
+          "actual:p456:block:5",
+          "actual:p456:block:6"
+        ],
+        "mapped_header_cell_index": 0,
+        "mapped_header_cell_text": "CONTROL NUMBER",
+        "present": false,
+        "source_type": null,
+        "text": "",
+        "type": null
+      },
+      "actual:p456:line:3": {
+        "bbox": null,
+        "expected_text": "NUMBER",
+        "lineage_present": true,
+        "mapped_current_source_ids": [
+          "actual:p456:block:5",
+          "actual:p456:block:6"
+        ],
+        "mapped_header_cell_index": 0,
+        "mapped_header_cell_text": "CONTROL NUMBER",
+        "present": false,
+        "source_type": null,
+        "text": "",
+        "type": null
+      },
+      "actual:p456:line:52": {
+        "bbox": null,
+        "expected_text": "CONTROL NAME",
+        "lineage_present": true,
+        "mapped_current_source_ids": [
+          "actual:p456:block:7",
+          "actual:p456:block:8"
+        ],
+        "mapped_header_cell_index": 1,
+        "mapped_header_cell_text": "CONTROL NAME CONTROL ENHANCEMENT NAME",
+        "present": false,
+        "source_type": null,
+        "text": "",
+        "type": null
+      },
+      "actual:p456:line:98": {
+        "bbox": null,
+        "expected_text": "IMPLEMENTED",
+        "lineage_present": true,
+        "mapped_current_source_ids": [
+          "actual:p456:block:9",
+          "actual:p456:block:10"
+        ],
+        "mapped_header_cell_index": 2,
+        "mapped_header_cell_text": "IMPLEMENTED BY",
+        "present": false,
+        "source_type": null,
+        "text": "",
+        "type": null
+      }
+    },
+    "target_leak_count": 0,
+    "target_lineage_count": 5
+  }
+}

@@ -26,6 +26,13 @@ TARGET_IDS = {
     "actual:p456:line:98": "IMPLEMENTED",
     "actual:p456:line:106": "ASSURANCE",
 }
+TARGET_HEADER_CELL_INDEX = {
+    "actual:p456:line:2": 0,
+    "actual:p456:line:3": 0,
+    "actual:p456:line:52": 1,
+    "actual:p456:line:98": 2,
+    "actual:p456:line:106": 3,
+}
 
 
 def utc_now() -> str:
@@ -105,12 +112,26 @@ def run_regression(test_path: Path, out: Path) -> dict[str, Any]:
     }
 
 
+def header_cells(extraction: dict[str, Any]) -> list[dict[str, Any]]:
+    for block in extraction.get("blocks") or []:
+        if block.get("type") != "table":
+            continue
+        rows = (block.get("raw") or {}).get("rows") or []
+        if rows and isinstance(rows[0], dict):
+            cells = rows[0].get("cells") or []
+            return [cell for cell in cells if isinstance(cell, dict)]
+    return []
+
+
 def summarize_targets(extraction: dict[str, Any]) -> dict[str, Any]:
     blocks = extraction.get("blocks") or []
     by_id = {str(block.get("id")): block for block in blocks if block.get("id")}
+    cells = header_cells(extraction)
     target_blocks = {}
     for block_id, expected_text in TARGET_IDS.items():
         block = by_id.get(block_id)
+        cell_index = TARGET_HEADER_CELL_INDEX[block_id]
+        cell = cells[cell_index] if cell_index < len(cells) else {}
         target_blocks[block_id] = {
             "expected_text": expected_text,
             "present": block is not None,
@@ -118,6 +139,10 @@ def summarize_targets(extraction: dict[str, Any]) -> dict[str, Any]:
             "source_type": block.get("source_type") if block else None,
             "text": " ".join(str((block or {}).get("text") or "").split()),
             "bbox": (block or {}).get("bbox"),
+            "mapped_header_cell_index": cell_index,
+            "mapped_header_cell_text": cell.get("text"),
+            "mapped_current_source_ids": cell.get("source_ids") or [],
+            "lineage_present": bool(cell.get("source_ids")),
         }
     tables = [block for block in blocks if block.get("type") == "table"]
     leaks = [
@@ -128,6 +153,7 @@ def summarize_targets(extraction: dict[str, Any]) -> dict[str, Any]:
     return {
         "target_blocks": target_blocks,
         "target_leak_count": len(leaks),
+        "target_lineage_count": sum(1 for block in target_blocks.values() if block["lineage_present"]),
         "table_count": len(tables),
         "tables": [
             {
@@ -137,6 +163,36 @@ def summarize_targets(extraction: dict[str, Any]) -> dict[str, Any]:
             }
             for table in tables
         ],
+    }
+
+
+def validate_receipt(receipt: dict[str, Any], extraction_json: Path) -> dict[str, Any]:
+    actual_hash = sha256(extraction_json)
+    recorded_hash = str((receipt.get("sha256") or {}).get("extraction_json") or "")
+    extraction_path = Path((receipt.get("artifacts") or {}).get("extraction_json") or "")
+    run_id = str(receipt.get("run_id") or "")
+    target_summary = receipt.get("target_summary") or {}
+    target_blocks = target_summary.get("target_blocks") or {}
+    missing_lineage = [
+        source_id
+        for source_id, payload in target_blocks.items()
+        if not payload.get("lineage_present")
+    ]
+    errors: list[str] = []
+    if actual_hash != recorded_hash:
+        errors.append("extraction_json_hash_mismatch")
+    if extraction_path.parent.name != run_id:
+        errors.append("receipt_run_id_mismatch")
+    if missing_lineage:
+        errors.append("target_source_lineage_missing")
+    return {
+        "ok": not errors,
+        "errors": errors,
+        "extraction_json_sha256_actual": actual_hash,
+        "extraction_json_sha256_recorded": recorded_hash,
+        "run_id": run_id,
+        "extraction_parent_run_id": extraction_path.parent.name,
+        "missing_lineage_source_ids": missing_lineage,
     }
 
 
@@ -190,13 +246,15 @@ def main() -> int:
         "artifacts": artifacts,
         "sha256": hashes,
     }
+    receipt["receipt_validation"] = validate_receipt(receipt, extraction_json)
     write_json(args.out / "receipt.json", receipt)
     (args.out / "SHA256SUMS").write_text(
         "".join(f"{digest}  {Path(artifacts[name]).name}\n" for name, digest in sorted(hashes.items())),
         encoding="utf-8",
     )
-    print(json.dumps({"ok": regression["exit_code"] == 0, "receipt": str(args.out / "receipt.json")}, indent=2))
-    return 0 if regression["exit_code"] == 0 else regression["exit_code"]
+    ok = regression["exit_code"] == 0 and receipt["receipt_validation"]["ok"]
+    print(json.dumps({"ok": ok, "receipt": str(args.out / "receipt.json")}, indent=2))
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":

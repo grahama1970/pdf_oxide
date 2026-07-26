@@ -83,15 +83,35 @@ def test_nist_page_456_control_table_headers_have_cell_bboxes_for_overlay():
     assert len(header.get("cells") or []) == 4
 
     expected = [
-        ("CONTROL NUMBER", [0.1466667, 0.1137121, 0.2338235, 0.1871212]),
-        ("CONTROL NAME CONTROL ENHANCEMENT NAME", [0.2338235, 0.1137121, 0.6053922, 0.1871212]),
-        ("IMPLEMENTED BY", [0.6053922, 0.1137121, 0.7299020, 0.1871212]),
-        ("ASSURANCE", [0.7299020, 0.1137121, 0.8525490, 0.1871212]),
+        (
+            "CONTROL NUMBER",
+            [0.1466667, 0.1137121, 0.2338235, 0.1871212],
+            ["actual:p456:block:5", "actual:p456:block:6"],
+        ),
+        (
+            "CONTROL NAME CONTROL ENHANCEMENT NAME",
+            [0.2338235, 0.1137121, 0.6053922, 0.1871212],
+            ["actual:p456:block:7", "actual:p456:block:8"],
+        ),
+        (
+            "IMPLEMENTED BY",
+            [0.6053922, 0.1137121, 0.7299020, 0.1871212],
+            ["actual:p456:block:9", "actual:p456:block:10"],
+        ),
+        (
+            "ASSURANCE",
+            [0.7299020, 0.1137121, 0.8525490, 0.1871212],
+            ["actual:p456:block:11"],
+        ),
     ]
 
-    for cell, (text, bbox) in zip(header["cells"], expected):
+    expected_row_source_ids = []
+    for cell, (text, bbox, source_ids) in zip(header["cells"], expected):
         assert cell.get("role") == "column_header"
         assert cell.get("text") == text
         assert cell.get("bbox") is not None
         assert cell.get("bbox_source") == "pdf_drawing_grid"
         assert cell["bbox"] == pytest.approx(bbox, abs=0.004)
+        assert cell.get("source_ids") == source_ids
+        expected_row_source_ids.extend(source_ids)
+    assert header.get("source_ids") == expected_row_source_ids

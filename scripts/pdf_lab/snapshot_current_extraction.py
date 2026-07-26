@@ -1724,11 +1724,35 @@ def _top_row_cell_bboxes_from_drawing_grid(
     ]
 
 
+def _header_cell_source_ids_from_fragments(
+    raw_elements: list[dict[str, Any]],
+    header_cell_bboxes: list[list[float]],
+    page_number: int,
+) -> list[list[str]]:
+    source_ids_by_cell: list[list[str]] = []
+    for cell_bbox in header_cell_bboxes:
+        matches: list[dict[str, Any]] = []
+        for element in raw_elements:
+            if element.get("type") == "table" or element.get("page") != page_number:
+                continue
+            source_id = str(element.get("id") or "")
+            bbox = element.get("bbox")
+            text = _normalize_text(element.get("text") or "")
+            if not source_id or not text or not isinstance(bbox, list) or len(bbox) != 4:
+                continue
+            if _bbox_coverage(bbox, cell_bbox) >= 0.75:
+                matches.append(element)
+        matches.sort(key=lambda item: ((item.get("bbox") or [0, 0, 0, 0])[1], (item.get("bbox") or [0, 0, 0, 0])[0]))
+        source_ids_by_cell.append([str(item.get("id")) for item in matches])
+    return source_ids_by_cell
+
+
 def _raw_table_payload(
     table: dict[str, Any],
     metrics: dict[str, Any],
     *,
     header_cell_bboxes: list[list[float]] | None = None,
+    header_cell_source_ids: list[list[str]] | None = None,
 ) -> dict[str, Any]:
     raw = {**table, **metrics}
     data = _table_data(table)
@@ -1746,12 +1770,20 @@ def _raw_table_payload(
                             "bbox_source": "pdf_drawing_grid",
                         }
                     )
+                    if header_cell_source_ids and column_index < len(header_cell_source_ids):
+                        cell_payload["source_ids"] = header_cell_source_ids[column_index]
                 cells.append(cell_payload)
             row_payload = {"cells": cells}
             if row_index == 0 and header_cell_bboxes and len(header_cell_bboxes) == len(row):
                 row_payload["role"] = "header_row"
                 row_payload["bbox"] = _bbox_union(header_cell_bboxes)
                 row_payload["bbox_source"] = "pdf_drawing_grid"
+                if header_cell_source_ids:
+                    row_payload["source_ids"] = [
+                        source_id
+                        for cell_source_ids in header_cell_source_ids
+                        for source_id in cell_source_ids
+                    ]
             rows.append(row_payload)
         raw["rows"] = rows
     return raw
@@ -1842,6 +1874,11 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
             page_h,
             int(metrics.get("column_count") or 0),
         )
+        header_cell_source_ids = _header_cell_source_ids_from_fragments(
+            raw_elements,
+            header_cell_bboxes,
+            page_index + 1,
+        )
         if _is_page46_ac2_control_table(table, page_index, bbox):
             merged_h_elements = [
                 element
@@ -1867,7 +1904,12 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
                 "text": _table_text(table),
                 "table_geometry": table_geometry,
                 "raw": {
-                    **_raw_table_payload(table, metrics, header_cell_bboxes=header_cell_bboxes),
+                    **_raw_table_payload(
+                        table,
+                        metrics,
+                        header_cell_bboxes=header_cell_bboxes,
+                        header_cell_source_ids=header_cell_source_ids,
+                    ),
                     "table_geometry": table_geometry,
                 },
             }

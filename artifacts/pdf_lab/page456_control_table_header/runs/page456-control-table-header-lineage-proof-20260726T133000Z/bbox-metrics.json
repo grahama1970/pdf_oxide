@@ -1,0 +1,93 @@
+{
+  "table_count": 1,
+  "tables": [
+    {
+      "bbox": [
+        0.14666667015723933,
+        0.11371211812953756,
+        0.8525490355647467,
+        0.9040909102468779
+      ],
+      "id": "actual:p456:table:0",
+      "text_preview": "CONTROL NUMBER | CONTROL NAME CONTROL ENHANCEMENT NAME | IMPLEMENTED BY | ASSURANCE AC-1 | Policy and Procedures | O | \u221a AC-2 | Account Management | O | AC-2(1) | AUTOMATED SYSTEM ACCOUNT MANAGEMENT | O | AC-2(2) | AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT | S | AC-2(3) | DISABLE ACCOUNTS | S | AC-2(4) | AUTOMATED AUDIT ACTIONS | S | AC-2(5) | INACTIVITY LOGOUT | O/S | AC-2(6) | DYNAMIC PRIVILEGE MANAGEMENT | S | AC-2(7) | PRIVILEGED USER ACCOUNTS | O | AC-2(8) | DYNAMIC ACCOUNT MANAG"
+    }
+  ],
+  "target_blocks": {
+    "actual:p456:line:106": {
+      "bbox": null,
+      "expected_text": "ASSURANCE",
+      "lineage_present": true,
+      "mapped_current_source_ids": [
+        "actual:p456:block:11"
+      ],
+      "mapped_header_cell_index": 3,
+      "mapped_header_cell_text": "ASSURANCE",
+      "present": false,
+      "source_type": null,
+      "text": "",
+      "type": null
+    },
+    "actual:p456:line:2": {
+      "bbox": null,
+      "expected_text": "CONTROL",
+      "lineage_present": true,
+      "mapped_current_source_ids": [
+        "actual:p456:block:5",
+        "actual:p456:block:6"
+      ],
+      "mapped_header_cell_index": 0,
+      "mapped_header_cell_text": "CONTROL NUMBER",
+      "present": false,
+      "source_type": null,
+      "text": "",
+      "type": null
+    },
+    "actual:p456:line:3": {
+      "bbox": null,
+      "expected_text": "NUMBER",
+      "lineage_present": true,
+      "mapped_current_source_ids": [
+        "actual:p456:block:5",
+        "actual:p456:block:6"
+      ],
+      "mapped_header_cell_index": 0,
+      "mapped_header_cell_text": "CONTROL NUMBER",
+      "present": false,
+      "source_type": null,
+      "text": "",
+      "type": null
+    },
+    "actual:p456:line:52": {
+      "bbox": null,
+      "expected_text": "CONTROL NAME",
+      "lineage_present": true,
+      "mapped_current_source_ids": [
+        "actual:p456:block:7",
+        "actual:p456:block:8"
+      ],
+      "mapped_header_cell_index": 1,
+      "mapped_header_cell_text": "CONTROL NAME CONTROL ENHANCEMENT NAME",
+      "present": false,
+      "source_type": null,
+      "text": "",
+      "type": null
+    },
+    "actual:p456:line:98": {
+      "bbox": null,
+      "expected_text": "IMPLEMENTED",
+      "lineage_present": true,
+      "mapped_current_source_ids": [
+        "actual:p456:block:9",
+        "actual:p456:block:10"
+      ],
+      "mapped_header_cell_index": 2,
+      "mapped_header_cell_text": "IMPLEMENTED BY",
+      "present": false,
+      "source_type": null,
+      "text": "",
+      "type": null
+    }
+  },
+  "target_leak_count": 0,
+  "target_lineage_count": 5
+}
