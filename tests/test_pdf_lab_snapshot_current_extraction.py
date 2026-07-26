@@ -469,6 +469,38 @@ def test_page28_footer_source_type_normalizes_body_to_footer() -> None:
     assert result[0]["raw"]["block_type"] == "Body"
 
 
+def test_page456_appendix_page_footer_normalizes_body_to_footer_without_semantic_role() -> None:
+    mod = _load_module()
+    element = {
+        "id": "actual:p456:block:2",
+        "page": 456,
+        "pdf_page_index": 455,
+        "type": "header_footer_noise",
+        "source_type": "Body",
+        "bbox": [
+            0.14705882352941177,
+            0.9414804632013495,
+            0.8528897154564951,
+            0.9549618345318418,
+        ],
+        "text": "APPENDIX C   PAGE 429",
+        "raw": {
+            "block_type": "Body",
+            "text": "APPENDIX C   PAGE 429",
+        },
+    }
+
+    result = mod._normalize_page_chrome_source_types([element])
+
+    assert result[0]["id"] == "actual:p456:block:2"
+    assert result[0]["bbox"] == element["bbox"]
+    assert result[0]["text"] == "APPENDIX C   PAGE 429"
+    assert result[0]["type"] == "header_footer_noise"
+    assert result[0]["source_type"] == "Footer"
+    assert result[0]["raw"]["block_type"] == "Body"
+    assert "semantic_role" not in result[0]
+
+
 def test_page28_left_margin_doi_boilerplate_normalizes_to_rotated_side_chrome() -> None:
     mod = _load_module()
     element = {

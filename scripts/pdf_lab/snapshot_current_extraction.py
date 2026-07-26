@@ -541,10 +541,17 @@ def _normalize_page_chrome_source_types(elements: list[dict[str, Any]]) -> list[
         bbox = element.get("bbox")
         if (
             element.get("type") == "header_footer_noise"
-            and element.get("semantic_role") == "page_chrome"
             and element.get("source_type") == "Body"
         ):
-            if isinstance(bbox, list) and len(bbox) == 4 and float(bbox[1]) >= 0.90:
+            if (
+                isinstance(bbox, list)
+                and len(bbox) == 4
+                and float(bbox[1]) >= 0.90
+                and (
+                    element.get("semantic_role") == "page_chrome"
+                    or re.match(r"^(CHAPTER|APPENDIX|REFERENCES)\b.*\bPAGE\s+\d+\b", text)
+                )
+            ):
                 element = {**element, "source_type": "Footer"}
         if (
             element.get("type") == "header_footer_noise"
