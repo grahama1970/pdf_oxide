@@ -1,0 +1,92 @@
+{
+  "page": 456,
+  "fix_error_count": 95,
+  "page_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/page.png",
+  "overlay_image": "artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0456/bbox_overlay.png",
+  "first_fix_errors": [
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:2",
+      "text_hint": "CONTROL"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:52",
+      "text_hint": "CONTROL NAME"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:106",
+      "text_hint": "ASSURANCE"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:98",
+      "text_hint": "IMPLEMENTED"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:3",
+      "text_hint": "NUMBER"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:99",
+      "text_hint": "BY"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:53",
+      "text_hint": "CONTROL ENHANCEMENT NAME"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:54",
+      "text_hint": "Policy and Procedures"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:100",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "paragraph",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:55",
+      "text_hint": "Account Management"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:101",
+      "text_hint": "O"
+    },
+    {
+      "current_type": "section_header",
+      "reason": "Visible p.27 structure is a table; cell text must not be surfaced as independent paragraph/section-heading annotation tasks.",
+      "requested_family": "table",
+      "source_id": "actual:p456:line:102",
+      "text_hint": "O"
+    }
+  ]
+}

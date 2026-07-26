@@ -1,0 +1,91 @@
+{
+  "active_submission_state": "terminal_finalization",
+  "agent_id": "surf-doctor",
+  "allowed_actions": [
+    "preserve_incident",
+    "classify_failure",
+    "read_only_reproduction",
+    "prepare_repair_packet"
+  ],
+  "browser_mutation_authorized": false,
+  "captured_at": "2026-07-26T12:50:07.595049+00:00",
+  "controlled_tab_id": null,
+  "conversation_url": null,
+  "dag_spec": {
+    "max_attempts": 3,
+    "mode": "bounded_dag",
+    "nodes": [
+      "preserve_incident",
+      "classify_failure",
+      "reproduce_or_bound",
+      "prepare_repair"
+    ],
+    "schema": "subagent_dag.v1",
+    "stop_conditions": [
+      "diagnosis_and_repair_packet_written",
+      "same_failure_repeated_twice",
+      "architectural_change_required",
+      "browser_mutation_required"
+    ]
+  },
+  "failure_class": "missing_controlled_tab_id_or_contaminated_clean_output",
+  "forbidden_actions": [
+    "webgpt_resubmit",
+    "tab_activate",
+    "tab_close",
+    "tab_navigate",
+    "page_refresh",
+    "extension_reload"
+  ],
+  "proof_status": "unknown_failure",
+  "requested_tab_id": "837361214",
+  "requested_url": null,
+  "schema": "surf_doctor.incident_request.v1",
+  "sentinel": "<<<WEBGPT_DONE:20260726T124550Z:de028e6b>>>",
+  "source_artifacts": [
+    {
+      "bytes": 4570,
+      "kind": "response_meta",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.meta.json",
+      "sha256": "636631d1a53a08fca1ae6e672cab6addcfe599e4f9b3ba17b8ab5ff99e05a12f"
+    },
+    {
+      "bytes": 1039,
+      "kind": "submit_receipt",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.receipt.json",
+      "sha256": "c7b2caf1fd4e2f5cfa3b1fd1fd16817f93d81ba7583a7c43d8c9279f56bee6b5"
+    },
+    {
+      "bytes": 2967,
+      "kind": "submitted_prompt",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.submitted.md",
+      "sha256": "cc9f15a7546e16491fa0319077c510878ec82d9d528c59078b43e99b57ee49ac"
+    },
+    {
+      "bytes": 16465,
+      "kind": "raw_response",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.raw.md",
+      "sha256": "de8d5e930bd3844391898a0f317565d962da6c263bdcbc7f78eecc1a24a2d161"
+    },
+    {
+      "bytes": 16420,
+      "kind": "clean_response",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.md",
+      "sha256": "6cd3538addf2f12568e6b006c1b5d3fd4d6a38e1acf85d395ba24c9f2e31cfb2"
+    },
+    {
+      "bytes": 673,
+      "kind": "heartbeat",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_heartbeat.json",
+      "sha256": "b3903ddb51177fa27a13bbb62d210ed4c5806483676d3d7d163efdb4bf7e4a01"
+    },
+    {
+      "bytes": 129,
+      "kind": "stderr",
+      "path": "/tmp/surf-webgpt-submit-stderr.Lq5qha.log",
+      "sha256": "1ebe4dd0efb00a4be28eb9af5b00e1998de03cb537102efc0a9821eab45ac9d6"
+    }
+  ],
+  "status": "PENDING_DIAGNOSIS",
+  "submitted_to_chatgpt": true
+}

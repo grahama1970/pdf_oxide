@@ -1,0 +1,46 @@
+{
+  "blocker": null,
+  "exit_code": 1,
+  "failure": "grok_submit_failed",
+  "finished_at": "2026-07-26T12:55:22Z",
+  "focus_after": {
+    "activeTabId": 837361217,
+    "activeTabUrl": "https://grok.com/",
+    "focusedWindowId": 837360027,
+    "id": 4934
+  },
+  "focus_before": {
+    "activeTabId": 837361217,
+    "activeTabUrl": "https://grok.com/",
+    "focusedWindowId": 837360027,
+    "id": 4516
+  },
+  "input": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/page456_round1_retry_min_prompt.md",
+  "no_activate": false,
+  "output": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgrok_round1_direct_response.md",
+  "proof_status": "failed",
+  "raw_output": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgrok_round1_direct_response.raw.md",
+  "requested_tab_id": "837361217",
+  "requested_url": "https://grok.com/",
+  "resolved_url": "https://grok.com/",
+  "sentinel": "<<<GROK_DONE:20260726T125233Z:fbfceb25>>>",
+  "started_at": "2026-07-26T12:52:33Z",
+  "status": "failed",
+  "stderr_log": "/tmp/surf-grok-submit-stderr.wFlVzt.log",
+  "submitted_output": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgrok_round1_direct_response.submitted.md",
+  "tab_identity_preflight": {
+    "expected_tab_id": "837361217",
+    "expected_url": "https://grok.com",
+    "live_url": "https://grok.com/",
+    "ok": true,
+    "provider_ok": true,
+    "tab": {
+      "active": true,
+      "id": 837361217,
+      "title": "Grok",
+      "url": "https://grok.com/",
+      "windowId": 837360027
+    },
+    "url_ok": true
+  }
+}

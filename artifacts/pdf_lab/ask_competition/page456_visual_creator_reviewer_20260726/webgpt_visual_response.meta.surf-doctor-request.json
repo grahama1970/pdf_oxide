@@ -1,0 +1,85 @@
+{
+  "active_submission_state": "terminal_finalization",
+  "agent_id": "surf-doctor",
+  "allowed_actions": [
+    "preserve_incident",
+    "classify_failure",
+    "read_only_reproduction",
+    "prepare_repair_packet"
+  ],
+  "browser_mutation_authorized": false,
+  "captured_at": "2026-07-26T12:31:21.754457+00:00",
+  "controlled_tab_id": null,
+  "conversation_url": null,
+  "dag_spec": {
+    "max_attempts": 3,
+    "mode": "bounded_dag",
+    "nodes": [
+      "preserve_incident",
+      "classify_failure",
+      "reproduce_or_bound",
+      "prepare_repair"
+    ],
+    "schema": "subagent_dag.v1",
+    "stop_conditions": [
+      "diagnosis_and_repair_packet_written",
+      "same_failure_repeated_twice",
+      "architectural_change_required",
+      "browser_mutation_required"
+    ]
+  },
+  "failure_class": "submit_failed",
+  "forbidden_actions": [
+    "webgpt_resubmit",
+    "tab_activate",
+    "tab_close",
+    "tab_navigate",
+    "page_refresh",
+    "extension_reload"
+  ],
+  "proof_status": "delivery_not_proven",
+  "requested_tab_id": "837361214",
+  "requested_url": null,
+  "schema": "surf_doctor.incident_request.v1",
+  "sentinel": "<<<WEBGPT_DONE:20260726T123031Z:5d77143a>>>",
+  "source_artifacts": [
+    {
+      "bytes": 3455,
+      "kind": "response_meta",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_visual_response.meta.json",
+      "sha256": "d434cf6a6180fbc3b9c56716edafd5f6f896b8018e471de4a3910f7b0e024289"
+    },
+    {
+      "bytes": 1009,
+      "kind": "submit_receipt",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_visual_response.receipt.json",
+      "sha256": "f2ab9c5fb69ee856c75292c39e24f1390fc8cae68be09399ef0fe5979a38f617"
+    },
+    {
+      "bytes": 4726,
+      "kind": "submitted_prompt",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_visual_response.submitted.md",
+      "sha256": "a6be7b1e91ccd281d89bff0da5b4cce209ff1df0aee07ad7b7811e729b7203b9"
+    },
+    {
+      "bytes": 0,
+      "kind": "raw_response",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_visual_response.raw.md",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 583,
+      "kind": "heartbeat",
+      "path": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_heartbeat.json",
+      "sha256": "a83378b187fd6208434c6cc8b391ce7131b40a2e5ec21874b579dd2ee4a1c67c"
+    },
+    {
+      "bytes": 370,
+      "kind": "stderr",
+      "path": "/tmp/surf-webgpt-submit-stderr.Su0QvD.log",
+      "sha256": "009bbd0c110fa30318c35b751a8cd011861bc99a783794eda4fb4d578e15bbf8"
+    }
+  ],
+  "status": "PENDING_DIAGNOSIS",
+  "submitted_to_chatgpt": false
+}

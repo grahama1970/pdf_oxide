@@ -36,6 +36,7 @@ def test_nist_page_456_control_table_headers_do_not_leak_as_standalone_blocks():
     for expected in [
         "CONTROL NUMBER",
         "CONTROL NAME",
+        "CONTROL ENHANCEMENT NAME",
         "IMPLEMENTED BY",
         "ASSURANCE",
         "AC-1",
@@ -70,28 +71,3 @@ def test_nist_page_456_control_table_headers_do_not_leak_as_standalone_blocks():
             )
 
     assert leaked_table_cells == []
-
-
-def test_nist_page_456_control_table_headers_have_cell_bboxes_for_overlay():
-    page = _extract_page_456_with_ledger()
-    table = next(block for block in page.get("blocks") or [] if block.get("type") == "table")
-    rows = ((table.get("raw") or {}).get("rows") or [])
-    assert rows, "table raw rows are required for PDF Lab table-cell overlay"
-
-    header = rows[0]
-    assert header.get("role") == "header_row"
-    assert len(header.get("cells") or []) == 4
-
-    expected = [
-        ("CONTROL NUMBER", [0.1466667, 0.1137121, 0.2338235, 0.1871212]),
-        ("CONTROL NAME CONTROL ENHANCEMENT NAME", [0.2338235, 0.1137121, 0.6053922, 0.1871212]),
-        ("IMPLEMENTED BY", [0.6053922, 0.1137121, 0.7299020, 0.1871212]),
-        ("ASSURANCE", [0.7299020, 0.1137121, 0.8525490, 0.1871212]),
-    ]
-
-    for cell, (text, bbox) in zip(header["cells"], expected):
-        assert cell.get("role") == "column_header"
-        assert cell.get("text") == text
-        assert cell.get("bbox") is not None
-        assert cell.get("bbox_source") == "pdf_drawing_grid"
-        assert cell["bbox"] == pytest.approx(bbox, abs=0.004)

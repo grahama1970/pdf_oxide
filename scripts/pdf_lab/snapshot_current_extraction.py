@@ -1663,14 +1663,97 @@ def _split_page45_ac1_combined_lists(elements: list[dict[str, Any]]) -> list[dic
     return out
 
 
-def _raw_table_payload(table: dict[str, Any], metrics: dict[str, Any]) -> dict[str, Any]:
+def _top_row_cell_bboxes_from_drawing_grid(
+    pdf_path: Path,
+    page_index: int,
+    raw_bbox: list[float],
+    page_w: float,
+    page_h: float,
+    column_count: int,
+) -> list[list[float]]:
+    if len(raw_bbox) != 4 or column_count <= 0:
+        return []
+
+    try:
+        import fitz  # noqa: PLC0415
+    except Exception:
+        return []
+
+    table_x0, table_y0, table_x1, table_y1 = raw_bbox
+    candidates: list[list[float]] = []
+    try:
+        with fitz.open(pdf_path) as source:
+            page = source[page_index]
+            for drawing in page.get_drawings():
+                for item in drawing.get("items", []):
+                    if item[0] != "re":
+                        continue
+                    rect = item[1]
+                    x0, y0, x1, y1 = float(rect.x0), float(rect.y0), float(rect.x1), float(rect.y1)
+                    if x1 <= table_x0 or x0 >= table_x1 or y1 <= table_y0 or y0 >= table_y1:
+                        continue
+                    if abs(y0 - table_y0) > 1.0:
+                        continue
+                    if x1 - x0 < 5.0 or y1 - y0 < 10.0:
+                        continue
+                    candidates.append([x0, y0, x1, y1])
+    except Exception:
+        return []
+
+    if len(candidates) < column_count:
+        return []
+
+    first_row_bottom = max(rect[3] for rect in candidates)
+    top_row_rects = [
+        rect
+        for rect in candidates
+        if abs(rect[3] - first_row_bottom) <= 1.0
+    ]
+    if len(top_row_rects) != column_count:
+        return []
+
+    top_row_rects.sort(key=lambda rect: rect[0])
+    boundaries = [table_x0]
+    for left, right in zip(top_row_rects, top_row_rects[1:]):
+        boundaries.append((left[2] + right[0]) / 2.0)
+    boundaries.append(table_x1)
+
+    return [
+        _norm_bbox_corners([boundaries[index], table_y0, boundaries[index + 1], first_row_bottom], page_w, page_h)
+        for index in range(column_count)
+    ]
+
+
+def _raw_table_payload(
+    table: dict[str, Any],
+    metrics: dict[str, Any],
+    *,
+    header_cell_bboxes: list[list[float]] | None = None,
+) -> dict[str, Any]:
     raw = {**table, **metrics}
     data = _table_data(table)
     if data:
-        raw["rows"] = [
-            {"cells": [{"text": cell} for cell in row]}
-            for row in data
-        ]
+        rows = []
+        for row_index, row in enumerate(data):
+            cells = []
+            for column_index, cell in enumerate(row):
+                cell_payload = {"text": cell}
+                if row_index == 0 and header_cell_bboxes and column_index < len(header_cell_bboxes):
+                    cell_payload.update(
+                        {
+                            "role": "column_header",
+                            "bbox": header_cell_bboxes[column_index],
+                            "bbox_source": "pdf_drawing_grid",
+                        }
+                    )
+                cells.append(cell_payload)
+            row_payload = {"cells": cells}
+            if row_index == 0 and header_cell_bboxes and len(header_cell_bboxes) == len(row):
+                row_payload["role"] = "header_row"
+                row_payload["bbox"] = _bbox_union(header_cell_bboxes)
+                row_payload["bbox_source"] = "pdf_drawing_grid"
+            rows.append(row_payload)
+        raw["rows"] = rows
     return raw
 
 
@@ -1751,6 +1834,14 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
         table = _repair_table_from_text_lines(table, bbox, text_lines)
         table = _repair_table_with_contained_text(table, raw_elements, bbox, page_index + 1)
         metrics = _table_metrics(table)
+        header_cell_bboxes = _top_row_cell_bboxes_from_drawing_grid(
+            pdf_path,
+            page_index,
+            raw_bbox,
+            page_w,
+            page_h,
+            int(metrics.get("column_count") or 0),
+        )
         if _is_page46_ac2_control_table(table, page_index, bbox):
             merged_h_elements = [
                 element
@@ -1775,7 +1866,10 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
                 "bbox": bbox,
                 "text": _table_text(table),
                 "table_geometry": table_geometry,
-                "raw": {**_raw_table_payload(table, metrics), "table_geometry": table_geometry},
+                "raw": {
+                    **_raw_table_payload(table, metrics, header_cell_bboxes=header_cell_bboxes),
+                    "table_geometry": table_geometry,
+                },
             }
         )
 

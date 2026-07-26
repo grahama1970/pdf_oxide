@@ -1,0 +1,17 @@
+{
+  "schema": "surf.webgpt_submit_receipt.v1",
+  "status": "submitted_to_chatgpt",
+  "submitted_to_chatgpt": true,
+  "prepared_prompt_is_transport_proof": false,
+  "input": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/page456_round1_retry_min_prompt.md",
+  "submitted_output": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.submitted.md",
+  "output": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.md",
+  "raw_output": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.raw.md",
+  "meta_output": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.meta.json",
+  "sentinel": "<<<WEBGPT_DONE:20260726T124550Z:de028e6b>>>",
+  "requested_tab_id": "837361214",
+  "requested_url": null,
+  "requested_model": null,
+  "requested_reasoning": "Pro",
+  "receipt_at": "2026-07-26T12:46:04Z"
+}
