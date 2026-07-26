@@ -1,0 +1,13 @@
+{
+  "schema": "surf.webgpt_heartbeat.v1",
+  "updated_at": "2026-07-26T12:50:07Z",
+  "submitted_at": "2026-07-26T12:45:52Z",
+  "last_browser_observation_at": "2026-07-26T12:50:07Z",
+  "phase": "completed",
+  "page_state": "response_detected",
+  "last_artifact_written": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.raw.md",
+  "next_expected_artifact": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webgpt_round1_direct_response.meta.json",
+  "timeout_remaining_seconds": 0,
+  "sentinel": "<<<WEBGPT_DONE:20260726T124550Z:de028e6b>>>",
+  "prepared_prompt_is_transport_proof": false
+}

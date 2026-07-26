@@ -1,0 +1,94 @@
+{
+  "artifacts": {
+    "bbox_metrics": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/bbox-metrics.json",
+    "extraction_json": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/extraction.pdf_oxide.json",
+    "overlay_png": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/overlay.png",
+    "page_png": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/page.png",
+    "regression_stdout": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/regression.stdout.txt"
+  },
+  "created_at": "2026-07-26T13:02:09.955489+00:00",
+  "dpi": 108,
+  "extraction_command": "snapshot_current_extraction._extract_page(pdf, 455, ledger, 'release')",
+  "ledger": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "ledger_sha256": "fcc9ca7743a0c0185632b861a6437827141a0ca606fe8719f9701dc75576ceb7",
+  "overlay_command": "run_next30_agentic_second_pass.render_overlay(page_png, blocks, overlay_png)",
+  "page": 456,
+  "page_image_dimensions": [
+    918,
+    1188
+  ],
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "regression": {
+    "command": "python -m pytest -q /home/graham/workspace/experiments/pdf_oxide/tests/test_nist_page456_control_table_headers.py",
+    "exit_code": 0,
+    "output": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/regression.stdout.txt"
+  },
+  "run_id": "page456-control-table-header-after-cellbbox-20260726T130204Z",
+  "schema": "pdf_oxide.page456_control_table_header_evidence.v1",
+  "sha256": {
+    "bbox_metrics": "ab212d19671c317e2212056cd29f22bb7e826cd94c557a24d464ad49ec72d019",
+    "extraction_json": "cff8d35279cdaa46144b77e6ff306445de2c999998129f81dfc4e44b359df0fe",
+    "overlay_png": "45259de0840e10681343fd39debd04efb4141d830f1817f8a67e868d14f0a253",
+    "page_png": "d88a847accd498d08e9e31f40ec5812a13445d54172deccbc2a3b3cc8150a255",
+    "regression_stdout": "f3246d9bcf588dc0079d3eba4a6d768b04316284e5a57fa2ef84e6c6d908df28"
+  },
+  "target_summary": {
+    "table_count": 1,
+    "tables": [
+      {
+        "bbox": [
+          0.14666667015723933,
+          0.11371211812953756,
+          0.8525490355647467,
+          0.9040909102468779
+        ],
+        "id": "actual:p456:table:0",
+        "text_preview": "CONTROL NUMBER | CONTROL NAME CONTROL ENHANCEMENT NAME | IMPLEMENTED BY | ASSURANCE AC-1 | Policy and Procedures | O | \u221a AC-2 | Account Management | O | AC-2(1) | AUTOMATED SYSTEM ACCOUNT MANAGEMENT | O | AC-2(2) | AUTOMATED TEMPORARY AND EMERGENCY ACCOUNT MANAGEMENT | S | AC-2(3) | DISABLE ACCOUNTS | S | AC-2(4) | AUTOMATED AUDIT ACTIONS | S | AC-2(5) | INACTIVITY LOGOUT | O/S | AC-2(6) | DYNAMIC PRIVILEGE MANAGEMENT | S | AC-2(7) | PRIVILEGED USER ACCOUNTS | O | AC-2(8) | DYNAMIC ACCOUNT MANAG"
+      }
+    ],
+    "target_blocks": {
+      "actual:p456:line:106": {
+        "bbox": null,
+        "expected_text": "ASSURANCE",
+        "present": false,
+        "source_type": null,
+        "text": "",
+        "type": null
+      },
+      "actual:p456:line:2": {
+        "bbox": null,
+        "expected_text": "CONTROL",
+        "present": false,
+        "source_type": null,
+        "text": "",
+        "type": null
+      },
+      "actual:p456:line:3": {
+        "bbox": null,
+        "expected_text": "NUMBER",
+        "present": false,
+        "source_type": null,
+        "text": "",
+        "type": null
+      },
+      "actual:p456:line:52": {
+        "bbox": null,
+        "expected_text": "CONTROL NAME",
+        "present": false,
+        "source_type": null,
+        "text": "",
+        "type": null
+      },
+      "actual:p456:line:98": {
+        "bbox": null,
+        "expected_text": "IMPLEMENTED",
+        "present": false,
+        "source_type": null,
+        "text": "",
+        "type": null
+      }
+    },
+    "target_leak_count": 0
+  }
+}

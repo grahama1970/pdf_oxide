@@ -1,0 +1,37 @@
+{
+  "attach_file": null,
+  "attachment": null,
+  "clean_chars": 0,
+  "clean_contains_sentinel": false,
+  "content_script_recovery": [],
+  "controlled_tab_id": "837361216",
+  "current_url": "https://claude.ai/new",
+  "failure": "Command '['/home/graham/workspace/experiments/agent-skills/skills/surf/run.sh', 'read', '--tab-id', '837361216']' timed out after 60 seconds",
+  "finished_at": "2026-07-26T12:51:48Z",
+  "input": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/page456_round1_retry_min_prompt.md",
+  "no_activate": false,
+  "output": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webclaude_round1_direct_response.md",
+  "raw_chars": 0,
+  "raw_contains_sentinel": false,
+  "raw_output": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webclaude_round1_direct_response.raw.md",
+  "requested_tab_id": "837361216",
+  "requested_url": "https://claude.ai/new",
+  "sentinel": "<<<CLAUDE_DONE:20260726T125047Z:bbb651a9>>>",
+  "started_at": "2026-07-26T12:50:47Z",
+  "status": "failed",
+  "submitted_output": "artifacts/pdf_lab/ask_competition/page456_visual_creator_reviewer_20260726/webclaude_round1_direct_response.submitted.md",
+  "tab_identity_preflight": {
+    "accepted_url_transition": false,
+    "expected_tab_id": "837361216",
+    "expected_url": "https://claude.ai/new",
+    "live_url": "https://claude.ai/new",
+    "ok": true,
+    "tab": {
+      "active": false,
+      "id": 837361216,
+      "title": "New chat - Claude",
+      "url": "https://claude.ai/new",
+      "windowId": 837360027
+    }
+  }
+}
