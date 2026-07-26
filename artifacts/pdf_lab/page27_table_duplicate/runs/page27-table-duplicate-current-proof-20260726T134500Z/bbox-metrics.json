@@ -1,0 +1,40 @@
+{
+  "block_count": 5,
+  "header_footer_noise_count": 4,
+  "historical_bug_report": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027_table_duplicate_cells/bug_report.json",
+  "historical_bug_report_count": 43,
+  "historical_candidate": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/candidate_bundle.json",
+  "historical_fix_error_count": 141,
+  "leaks": [],
+  "non_table_count": 4,
+  "table": {
+    "bbox": [
+      0.14666667015723933,
+      0.09151512685448232,
+      0.8525490355647467,
+      0.743409089367799
+    ],
+    "column_count": 4,
+    "header_row": {
+      "cells": [
+        {
+          "text": "DATE"
+        },
+        {
+          "text": "TYPE"
+        },
+        {
+          "text": "REVISION"
+        },
+        {
+          "text": "PAGE"
+        }
+      ]
+    },
+    "id": "actual:p27:table:0",
+    "row_count": 33,
+    "table_contained_fragment_count": 40
+  },
+  "table_contained_leak_count": 0,
+  "table_count": 1
+}

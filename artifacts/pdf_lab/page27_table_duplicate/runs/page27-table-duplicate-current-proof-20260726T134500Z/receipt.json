@@ -1,0 +1,84 @@
+{
+  "artifacts": {
+    "bbox_metrics": "artifacts/pdf_lab/page27_table_duplicate/runs/page27-table-duplicate-current-proof-20260726T134500Z/bbox-metrics.json",
+    "extraction_json": "artifacts/pdf_lab/page27_table_duplicate/runs/page27-table-duplicate-current-proof-20260726T134500Z/extraction.pdf_oxide.json",
+    "overlay_png": "artifacts/pdf_lab/page27_table_duplicate/runs/page27-table-duplicate-current-proof-20260726T134500Z/overlay.png",
+    "page_png": "artifacts/pdf_lab/page27_table_duplicate/runs/page27-table-duplicate-current-proof-20260726T134500Z/page.png",
+    "regression_stdout": "artifacts/pdf_lab/page27_table_duplicate/runs/page27-table-duplicate-current-proof-20260726T134500Z/regression.stdout.txt"
+  },
+  "created_at": "2026-07-26T13:45:03.315732+00:00",
+  "dpi": 108,
+  "extraction_command": "snapshot_current_extraction._extract_page(pdf, 26, ledger, 'release')",
+  "ledger": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "ledger_sha256": "fcc9ca7743a0c0185632b861a6437827141a0ca606fe8719f9701dc75576ceb7",
+  "overlay_command": "run_next30_agentic_second_pass.render_overlay(page_png, blocks, overlay_png)",
+  "page": 27,
+  "page_image_dimensions": [
+    918,
+    1188
+  ],
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "receipt_validation": {
+    "errors": [],
+    "extraction_json_sha256_actual": "a479cfd88a26500f84f6e86cbf4b3ce8bf64e382bec3baa68c97f53961c2ddb0",
+    "extraction_json_sha256_recorded": "a479cfd88a26500f84f6e86cbf4b3ce8bf64e382bec3baa68c97f53961c2ddb0",
+    "extraction_parent_run_id": "page27-table-duplicate-current-proof-20260726T134500Z",
+    "ok": true,
+    "run_id": "page27-table-duplicate-current-proof-20260726T134500Z"
+  },
+  "regression": {
+    "command": "python -m pytest -q /home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/tests/test_nist_page27_table_duplicate_suppression.py",
+    "exit_code": 0,
+    "output": "artifacts/pdf_lab/page27_table_duplicate/runs/page27-table-duplicate-current-proof-20260726T134500Z/regression.stdout.txt"
+  },
+  "run_id": "page27-table-duplicate-current-proof-20260726T134500Z",
+  "schema": "pdf_oxide.page27_table_duplicate_evidence.v1",
+  "sha256": {
+    "bbox_metrics": "328cc3ebb95a45d0ab3378446f3b1e46e691c4878746a7d290f6ac6c00679329",
+    "extraction_json": "a479cfd88a26500f84f6e86cbf4b3ce8bf64e382bec3baa68c97f53961c2ddb0",
+    "overlay_png": "76f3ff29da03935cf57e8ecd40bd7b1f93fbf0263b28a703648d4ee180fad4bf",
+    "page_png": "8a862b29f4ec4003673070c1441bda0b1c7b20dfe09fb119b3fd9857936faf2b",
+    "regression_stdout": "26347f3e477519c049e475c257d69660c03207c70261826284e0cda470a0f2f6"
+  },
+  "target_summary": {
+    "block_count": 5,
+    "header_footer_noise_count": 4,
+    "historical_bug_report": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027_table_duplicate_cells/bug_report.json",
+    "historical_bug_report_count": 43,
+    "historical_candidate": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0027/candidate_bundle.json",
+    "historical_fix_error_count": 141,
+    "leaks": [],
+    "non_table_count": 4,
+    "table": {
+      "bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490355647467,
+        0.743409089367799
+      ],
+      "column_count": 4,
+      "header_row": {
+        "cells": [
+          {
+            "text": "DATE"
+          },
+          {
+            "text": "TYPE"
+          },
+          {
+            "text": "REVISION"
+          },
+          {
+            "text": "PAGE"
+          }
+        ]
+      },
+      "id": "actual:p27:table:0",
+      "row_count": 33,
+      "table_contained_fragment_count": 40
+    },
+    "table_contained_leak_count": 0,
+    "table_count": 1
+  }
+}
