@@ -469,6 +469,40 @@ def test_page28_footer_source_type_normalizes_body_to_footer() -> None:
     assert result[0]["raw"]["block_type"] == "Body"
 
 
+def test_page28_left_margin_doi_boilerplate_normalizes_to_rotated_side_chrome() -> None:
+    mod = _load_module()
+    element = {
+        "id": "actual:p28:block:3",
+        "page": 28,
+        "pdf_page_index": 27,
+        "type": "header_footer_noise",
+        "source_type": "Boilerplate",
+        "bbox": [
+            0.0296323533151664,
+            0.28780303338561397,
+            0.049705879361021756,
+            0.7406287915778883,
+        ],
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+        "raw": {
+            "block_type": "Boilerplate",
+        },
+    }
+
+    result = mod._normalize_page_chrome_source_types([element])
+
+    assert result[0]["id"] == "actual:p28:block:3"
+    assert result[0]["bbox"] == element["bbox"]
+    assert result[0]["text"] == element["text"]
+    assert result[0]["type"] == "header_footer_noise"
+    assert result[0]["source_type"] == "RotatedSideChrome"
+    assert result[0]["raw"]["block_type"] == "Boilerplate"
+    assert result[0]["raw"]["page_chrome_source_type_normalization"] == {
+        "from_source_type": "Boilerplate",
+        "reason": "left-margin NIST DOI/publication sidebar chrome",
+    }
+
+
 def test_table_geometry_metadata_preserves_off_page_extent() -> None:
     mod = _load_module()
 

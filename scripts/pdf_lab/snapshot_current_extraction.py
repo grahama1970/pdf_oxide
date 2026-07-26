@@ -537,14 +537,32 @@ def _suppress_rotated_side_chrome_duplicates(elements: list[dict[str, Any]]) -> 
 def _normalize_page_chrome_source_types(elements: list[dict[str, Any]]) -> list[dict[str, Any]]:
     normalized: list[dict[str, Any]] = []
     for element in elements:
+        text = _normalize_text(element.get("text") or "")
+        bbox = element.get("bbox")
         if (
             element.get("type") == "header_footer_noise"
             and element.get("semantic_role") == "page_chrome"
             and element.get("source_type") == "Body"
         ):
-            bbox = element.get("bbox")
             if isinstance(bbox, list) and len(bbox) == 4 and float(bbox[1]) >= 0.90:
                 element = {**element, "source_type": "Footer"}
+        if (
+            element.get("type") == "header_footer_noise"
+            and element.get("source_type") == "Boilerplate"
+            and isinstance(bbox, list)
+            and len(bbox) == 4
+            and float(bbox[2]) <= 0.12
+            and (
+                "This publication is available free of charge" in text
+                or "doi.org/10.6028/NIST.SP.800" in text
+            )
+        ):
+            raw = dict(element.get("raw") or {})
+            raw["page_chrome_source_type_normalization"] = {
+                "from_source_type": element.get("source_type"),
+                "reason": "left-margin NIST DOI/publication sidebar chrome",
+            }
+            element = {**element, "source_type": "RotatedSideChrome", "raw": raw}
         normalized.append(element)
     return normalized
 

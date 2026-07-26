@@ -1,0 +1,53 @@
+{
+  "block_count": 18,
+  "body_doi_leak_count": 0,
+  "body_doi_leaks": [],
+  "doi_block_count": 1,
+  "doi_chrome_block": {
+    "bbox": [
+      0.0296323533151664,
+      0.28780303338561397,
+      0.049705879361021756,
+      0.7406287915778883
+    ],
+    "font_name": "TT1",
+    "font_size": 9.0,
+    "id": "actual:p28:block:3",
+    "is_bold": false,
+    "page": 28,
+    "pdf_page_index": 27,
+    "raw": {
+      "bbox": [
+        21.059999465942383,
+        223.44000244140625,
+        303.1199951171875,
+        349.6199951171875
+      ],
+      "block_type": "Boilerplate",
+      "confidence": 0.8999999761581421,
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "header_level": null,
+      "is_bold": false,
+      "page_chrome_source_type_normalization": {
+        "from_source_type": "Boilerplate",
+        "reason": "left-margin NIST DOI/publication sidebar chrome"
+      },
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    "source_type": "RotatedSideChrome",
+    "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+    "type": "header_footer_noise"
+  },
+  "doi_chrome_block_count": 1,
+  "historical_bug_report": "/home/graham/workspace/experiments/pdf_oxide_page456_push_20260726T130414Z/artifacts/pdf_lab/scillm_bug_report_pilot_gpt55_clusters/page_0028_page_chrome/bug_report.json",
+  "historical_bug_report_count": 2,
+  "type_counts": {
+    "footnote": 7,
+    "header_footer_noise": 4,
+    "list": 1,
+    "paragraph_block": 3,
+    "section_heading": 2,
+    "section_subtitle": 1
+  }
+}
