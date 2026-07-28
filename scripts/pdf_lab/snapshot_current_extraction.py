@@ -423,6 +423,76 @@ def _block_elements(
     return elements
 
 
+def _figure_text(fig: dict[str, Any]) -> str:
+    parts = [
+        str(value).strip()
+        for value in (
+            fig.get("caption"),
+            fig.get("context_above"),
+            fig.get("context_below"),
+        )
+        if value
+    ]
+    parts.extend(
+        str(block.get("text", "")).strip()
+        for block in fig.get("content_blocks", [])
+        if isinstance(block, dict) and block.get("text")
+    )
+    return "\n".join(part for part in parts if part)
+
+
+def _figure_elements_for_page(
+    doc: Any,
+    *,
+    page_index: int,
+    page_w: float,
+    page_h: float,
+) -> tuple[list[dict[str, Any]], set[str], set[int]]:
+    try:
+        extraction = doc.extract_document()
+    except Exception:
+        return [], set(), set()
+
+    page_number = page_index + 1
+    elements: list[dict[str, Any]] = []
+    consumed_block_ids: set[str] = set()
+    suppressed_table_orders: set[int] = set()
+    for figure_index, fig in enumerate(extraction.get("figures") or []):
+        if not isinstance(fig, dict) or int(fig.get("page", -1)) != page_index:
+            continue
+        content_blocks = [
+            block for block in (fig.get("content_blocks") or []) if isinstance(block, dict)
+        ]
+        for block in content_blocks:
+            if block.get("block_index") is not None:
+                consumed_block_ids.add(f"actual:p{page_number}:block:{int(block['block_index'])}")
+        suppressed_table_orders.update(
+            int(order)
+            for order in (fig.get("suppressed_table_orders") or [])
+            if isinstance(order, int)
+        )
+        text = _figure_text(fig)
+        if not text:
+            text = f"Figure page {page_number}"
+        elements.append(
+            {
+                "id": f"actual:p{page_number}:figure:{figure_index}",
+                "page": page_number,
+                "pdf_page_index": page_index,
+                "type": "figure",
+                "source_type": "figure",
+                "semantic_role": "figure",
+                "bbox": _norm_bbox_block(fig.get("bbox"), page_w, page_h),
+                "text": text,
+                "caption": fig.get("caption"),
+                "caption_number": fig.get("caption_number"),
+                "raw": fig,
+            }
+        )
+
+    return elements, consumed_block_ids, suppressed_table_orders
+
+
 def _is_vertical_margin_line(line: dict[str, Any]) -> bool:
     bbox = line.get("bbox")
     direction = line.get("dir")
@@ -1867,6 +1937,27 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
                 text_lines=text_lines,
             )
         )
+    has_figure_caption = any(
+        element.get("source_type") == "Caption"
+        and _normalize_text(element.get("text")).lower().startswith(("figure ", "fig. ", "fig "))
+        for element in raw_elements
+    )
+    if has_figure_caption:
+        figure_elements, consumed_figure_block_ids, suppressed_figure_table_orders = _figure_elements_for_page(
+            doc,
+            page_index=page_index,
+            page_w=page_w,
+            page_h=page_h,
+        )
+    else:
+        figure_elements, consumed_figure_block_ids, suppressed_figure_table_orders = [], set(), set()
+    if consumed_figure_block_ids:
+        raw_elements = [
+            element
+            for element in raw_elements
+            if str(element.get("id") or "") not in consumed_figure_block_ids
+        ]
+    raw_elements.extend(figure_elements)
     raw_elements = _consolidate_rotated_side_chrome_fragments(raw_elements, text_lines, page_index)
     raw_elements = _suppress_rotated_side_chrome_duplicates(raw_elements)
     raw_elements = _merge_footnote_continuations(raw_elements)
@@ -1880,7 +1971,13 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
     if definition_table:
         raw_elements.append(definition_table)
 
-    for index, table in enumerate(_extract_tables_for_snapshot(doc, page_index)):
+    # When the document extractor has reconciled figure content for this page,
+    # keep that engine stream authoritative. A separate legacy table pass can
+    # rediscover diagram rules as a spurious table and re-orphan figure labels.
+    snapshot_tables = [] if figure_elements else _extract_tables_for_snapshot(doc, page_index)
+    for index, table in enumerate(snapshot_tables):
+        if index in suppressed_figure_table_orders:
+            continue
         metrics = _table_metrics(table)
         bbox = _table_bbox(table, page_w, page_h)
         raw_bbox = _table_raw_bbox(table)

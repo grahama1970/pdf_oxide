@@ -1,0 +1,42 @@
+{
+  "schema": "pdf_oxide.issue22.figure_reconciliation.receipt.v1",
+  "issue": 22,
+  "pdf": "/mnt/storage12tb/extractor_corpus/engineering/12 NASA_SP-2016-6105 Rev 2.pdf",
+  "pdf_page_index": 17,
+  "printed_page": 18,
+  "caption": "Figure 2.0-1 SE in Context of Overall Project Management",
+  "focused_predicate": {
+    "figure_count_for_caption": 1,
+    "content_block_count": 14,
+    "missing_internal_labels": [],
+    "leaked_internal_labels": [],
+    "remaining_page_block_count": 5,
+    "figure_bbox": [
+      84.719970703125,
+      316.67999267578125,
+      448.08355712890625,
+      384.0447998046875
+    ]
+  },
+  "commands": [
+    {
+      "cmd": "uv run pytest tests/test_nasa_page18_figure_internal_content.py -q",
+      "result": "2 passed in 8.90s",
+      "mocked": false,
+      "live": true
+    },
+    {
+      "cmd": "cargo test --features python figure_detector --lib",
+      "result": "9 passed; 0 failed; 4594 filtered out",
+      "mocked": false,
+      "live": false
+    },
+    {
+      "cmd": "uv run pytest tests/test_nist_page456_control_table_headers.py -q",
+      "result": "1 passed, 1 failed: source_ids baseline mismatch on clean origin/main worktree",
+      "mocked": false,
+      "live": true
+    }
+  ],
+  "residual_risk": "Clean worktree from origin/main fails page456 source_ids guard; original dirty checkout previously passed this guard. Issue22 focused predicate is proven in the clean worktree."
+}
