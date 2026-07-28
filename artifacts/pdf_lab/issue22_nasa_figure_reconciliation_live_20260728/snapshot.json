@@ -1,0 +1,661 @@
+{
+  "generated_at": "2026-07-28T13:29:06.525894+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.4636274350234886,
+            0.9033332111859562,
+            0.8902118159275428,
+            0.9184847263374714
+          ],
+          "font_name": "TT2",
+          "font_size": 12.0,
+          "id": "actual:p18:block:0",
+          "is_bold": false,
+          "page": 18,
+          "pdf_page_index": 17,
+          "raw": {
+            "bbox": [
+              283.739990234375,
+              64.56009674072266,
+              261.06964111328125,
+              12.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT2",
+            "font_size": 12.0,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 12.0,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": false,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.3455177545547485,
+                "text_len": 45,
+                "title_case_ratio": 0.7142857313156128,
+                "word_count": 7
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "NASA Systems Engineering Handbook    Rev 2 <5"
+            },
+            "is_bold": false,
+            "text": "NASA Systems Engineering Handbook    Rev 2 <5"
+          },
+          "source_type": "Body",
+          "text": "NASA Systems Engineering Handbook    Rev 2 <5",
+          "type": "unknown_region"
+        },
+        {
+          "bbox": [
+            0.23196082021675857,
+            0.6257575834640349,
+            0.7680152444278493,
+            0.6426666722153173
+          ],
+          "font_name": "TT4",
+          "font_size": 12.0,
+          "id": "actual:p18:block:1",
+          "is_bold": true,
+          "page": 18,
+          "pdf_page_index": 17,
+          "raw": {
+            "bbox": [
+              141.96002197265625,
+              285.5400085449219,
+              331.42559814453125,
+              12.0
+            ],
+            "block_type": "Caption",
+            "confidence": 0.800000011920929,
+            "font_name": "TT4",
+            "font_size": 12.0,
+            "header_level": null,
+            "is_bold": true,
+            "text": "Figure 2.0-1 SE in Context of Overall Project Management"
+          },
+          "source_type": "Caption",
+          "text": "Figure 2.0-1 SE in Context of Overall Project Management",
+          "type": "unknown_region"
+        },
+        {
+          "bbox": [
+            0.11764705882352941,
+            0.6559950703322285,
+            0.741856294519761,
+            0.675694167011916
+          ],
+          "font_name": "TT4",
+          "font_size": 13.979999542236328,
+          "id": "actual:p18:block:2",
+          "is_bold": true,
+          "page": 18,
+          "pdf_page_index": 17,
+          "raw": {
+            "bbox": [
+              72.0,
+              259.79998779296875,
+              385.92767333984375,
+              13.980010986328125
+            ],
+            "block_type": "Title",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT4",
+            "font_size": 13.979999542236328,
+            "header_level": 2,
+            "header_validation": {
+              "confidence": 0.8999999761581421,
+              "depth_level": 2,
+              "disposition": "Accept",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 13.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": true,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 2,
+                "size_ratio": 1.5675281286239624,
+                "text_len": 52,
+                "title_case_ratio": 0.6666666865348816,
+                "word_count": 9
+              },
+              "has_numbering": true,
+              "is_header": true,
+              "level": 2,
+              "number_text": "2.1",
+              "reasons": [
+                "numbering",
+                "bold_large_font"
+              ],
+              "title_text": "The Common Technical Processes and the SE Engine"
+            },
+            "is_bold": true,
+            "text": "2.1 The Common Technical Processes and the SE Engine"
+          },
+          "source_type": "Title",
+          "text": "2.1 The Common Technical Processes and the SE Engine",
+          "type": "unknown_region"
+        },
+        {
+          "bbox": [
+            0.11764705882352941,
+            0.6837725398516414,
+            0.8783590279373468,
+            0.8573635371044429
+          ],
+          "font_name": "TT2",
+          "font_size": 12.0,
+          "id": "actual:p18:block:3",
+          "is_bold": false,
+          "page": 18,
+          "pdf_page_index": 17,
+          "raw": {
+            "bbox": [
+              72.0,
+              115.56007385253906,
+              468.6287841796875,
+              136.2000274658203
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 12.0,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 12.0,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": false,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.3455177545547485,
+                "text_len": 90,
+                "title_case_ratio": 0.3571428656578064,
+                "word_count": 14
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "There are three sets of common technical processes in NPR 7123.1, NASA Systems Engineering"
+            },
+            "is_bold": false,
+            "text": "There are three sets of common technical processes in NPR 7123.1, NASA Systems Engineering Processes and Requirements: system design, product realization, and technical management. The processes in each set and their interactions and flows are illustrated by the NPR systems engineering \u201cengine\u201d shown in Figure 2.1-1. The processes of the SE engine are used to develop and realize the end products. This chapter provides the application context of the 17 common technical processes required in NPR7123.1. The system design processes, the product realization processes, and the technical management processes are discussed in more detail in Chapters 4.0, 5.0, and 6.0, respectively. Processes 1 through 9 indicated in Figure 2.1-1 represent the tasks in the execution of a project. Processes 10 through17 are crosscutting tools for carrying out the processes."
+          },
+          "source_type": "Body",
+          "text": "There are three sets of common technical processes in NPR 7123.1, NASA Systems Engineering Processes and Requirements: system design, product realization, and technical management. The processes in each set and their interactions and flows are illustrated by the NPR systems engineering \u201cengine\u201d shown in Figure 2.1-1. The processes of the SE engine are used to develop and realize the end products. This chapter provides the application context of the 17 common technical processes required in NPR7123.1. The system design processes, the product realization processes, and the technical management processes are discussed in more detail in Chapters 4.0, 5.0, and 6.0, respectively. Processes 1 through 9 indicated in Figure 2.1-1 represent the tasks in the execution of a project. Processes 10 through17 are crosscutting tools for carrying out the processes.",
+          "type": "unknown_region"
+        },
+        {
+          "bbox": [
+            0.11764713362151501,
+            0.8649998674489031,
+            0.8758126053155637,
+            0.8835453071979561
+          ],
+          "font_name": "TT9",
+          "font_size": 12.0,
+          "id": "actual:p18:block:4",
+          "is_bold": true,
+          "page": 18,
+          "pdf_page_index": 17,
+          "raw": {
+            "bbox": [
+              72.00004577636719,
+              94.86007690429688,
+              466.99932861328125,
+              12.0
+            ],
+            "block_type": "Title",
+            "confidence": 0.75,
+            "font_name": "TT9",
+            "font_size": 12.0,
+            "header_level": 2,
+            "header_validation": {
+              "confidence": 0.75,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 12.0,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.3455177545547485,
+                "text_len": 92,
+                "title_case_ratio": 0.3333333432674408,
+                "word_count": 15
+              },
+              "has_numbering": false,
+              "is_header": true,
+              "level": 2,
+              "number_text": "",
+              "reasons": [
+                "bold_large_font"
+              ],
+              "title_text": "\uf0b7 System Design Processes: The four system design processes shown in Figure 2.1-1 are used"
+            },
+            "is_bold": true,
+            "text": "\uf0b7 System Design Processes: The four system design processes shown in Figure 2.1-1 are used"
+          },
+          "source_type": "Title",
+          "text": "\uf0b7 System Design Processes: The four system design processes shown in Figure 2.1-1 are used",
+          "type": "unknown_region"
+        },
+        {
+          "bbox": [
+            0.14705889832739735,
+            0.8840756657147648,
+            0.7711138257793352,
+            0.900848388671875
+          ],
+          "font_name": "TT2",
+          "font_size": 12.0,
+          "id": "actual:p18:block:5",
+          "is_bold": false,
+          "page": 18,
+          "pdf_page_index": 17,
+          "raw": {
+            "bbox": [
+              90.00004577636719,
+              81.12007904052734,
+              384.9251708984375,
+              12.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 12.0,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 12.0,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": false,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.3455177545547485,
+                "text_len": 80,
+                "title_case_ratio": 0.0,
+                "word_count": 10
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "to define and baseline stakeholder expectations, generate and baseline technical"
+            },
+            "is_bold": false,
+            "text": "to define and baseline stakeholder expectations, generate and baseline technical"
+          },
+          "source_type": "Body",
+          "text": "to define and baseline stakeholder expectations, generate and baseline technical",
+          "type": "unknown_region"
+        },
+        {
+          "bbox": [
+            0.13843132467830882,
+            0.11524647414082229,
+            0.8705939997255413,
+            0.6001515243992661
+          ],
+          "caption": "Figure 2.0-1 SE in Context of Overall Project Management",
+          "caption_number": 2,
+          "id": "actual:p18:figure:7",
+          "page": 18,
+          "pdf_page_index": 17,
+          "raw": {
+            "bbox": [
+              84.719970703125,
+              316.67999267578125,
+              448.08355712890625,
+              384.0447998046875
+            ],
+            "caption": "Figure 2.0-1 SE in Context of Overall Project Management",
+            "caption_number": 2,
+            "content_blocks": [
+              {
+                "bbox": [
+                  214.97999572753906,
+                  679.739990234375,
+                  182.73814392089844,
+                  20.98480224609375
+                ],
+                "block_index": 6,
+                "confidence": 0.8500000238418579,
+                "font_name": "TT15",
+                "font_size": 20.984800338745117,
+                "header_level": 0,
+                "is_bold": true,
+                "original_type": "Title",
+                "paragraph_id": 3,
+                "text": "Project Management"
+              },
+              {
+                "bbox": [
+                  172.3800048828125,
+                  548.8200073242188,
+                  119.934814453125,
+                  14.1646728515625
+                ],
+                "block_index": 7,
+                "confidence": 0.75,
+                "font_name": "TT15",
+                "font_size": 14.16469955444336,
+                "header_level": 2,
+                "is_bold": true,
+                "original_type": "Title",
+                "paragraph_id": 3,
+                "text": "Systems Engineering"
+              },
+              {
+                "bbox": [
+                  141.89999389648438,
+                  528.3599853515625,
+                  81.33639526367188,
+                  7.86907958984375
+                ],
+                "block_index": 8,
+                "confidence": 0.44999998807907104,
+                "font_name": "TT15",
+                "font_size": 7.869100093841553,
+                "header_level": null,
+                "is_bold": true,
+                "original_type": "Body",
+                "paragraph_id": 4,
+                "text": "System Design Processes"
+              },
+              {
+                "bbox": [
+                  141.89999389648438,
+                  490.6199951171875,
+                  123.59368896484375,
+                  36.189208984375
+                ],
+                "block_index": 9,
+                "confidence": 0.8500000238418579,
+                "font_name": "TT11",
+                "font_size": 7.869100093841553,
+                "header_level": null,
+                "is_bold": false,
+                "original_type": "List",
+                "paragraph_id": 4,
+                "text": "\u2022Stakeholder Expectations Definition \u2022Technical Requirement's Definition \u2022Logical Decomposition \u2022Design Solution Definition"
+              },
+              {
+                "bbox": [
+                  141.90081787109375,
+                  481.14007568359375,
+                  98.01097106933594,
+                  7.869110107421875
+                ],
+                "block_index": 10,
+                "confidence": 0.44999998807907104,
+                "font_name": "TT15",
+                "font_size": 7.869100093841553,
+                "header_level": null,
+                "is_bold": true,
+                "original_type": "Body",
+                "paragraph_id": 5,
+                "text": "Product Realization Processes"
+              },
+              {
+                "bbox": [
+                  141.89999389648438,
+                  433.9199523925781,
+                  87.8092041015625,
+                  45.669158935546875
+                ],
+                "block_index": 11,
+                "confidence": 0.8500000238418579,
+                "font_name": "TT11",
+                "font_size": 7.869100093841553,
+                "header_level": null,
+                "is_bold": false,
+                "original_type": "List",
+                "paragraph_id": 5,
+                "text": "\u2022Product Implementation \u2022Product Integration \u2022Product Verification \u2022Product Validation \u2022Product Transition"
+              },
+              {
+                "bbox": [
+                  141.90396118164062,
+                  424.4998474121094,
+                  110.13662719726562,
+                  7.869110107421875
+                ],
+                "block_index": 12,
+                "confidence": 0.44999998807907104,
+                "font_name": "TT15",
+                "font_size": 7.869100093841553,
+                "header_level": null,
+                "is_bold": true,
+                "original_type": "Body",
+                "paragraph_id": 6,
+                "text": "Technical Management Processes"
+              },
+              {
+                "bbox": [
+                  141.89999389648438,
+                  348.9596252441406,
+                  98.75534057617188,
+                  73.92947387695312
+                ],
+                "block_index": 13,
+                "confidence": 0.8500000238418579,
+                "font_name": "TT11",
+                "font_size": 7.869100093841553,
+                "header_level": null,
+                "is_bold": false,
+                "original_type": "List",
+                "paragraph_id": 6,
+                "text": "\u2022Technical Planning \u2022Requirements Management \u2022Interface Management \u2022Technical Risk Management \u2022Configuration Management \u2022Technical Data Management \u2022Technical Assessment \u2022Decision Analyses"
+              },
+              {
+                "bbox": [
+                  371.760009765625,
+                  542.7000732421875,
+                  31.96343994140625,
+                  14.1646728515625
+                ],
+                "block_index": 14,
+                "confidence": 0.25,
+                "font_name": "TT15",
+                "font_size": 14.16469955444336,
+                "header_level": null,
+                "is_bold": true,
+                "original_type": "Body",
+                "paragraph_id": 7,
+                "text": "PP&C"
+              },
+              {
+                "bbox": [
+                  371.75909423828125,
+                  418.50146484375,
+                  121.07293701171875,
+                  82.35702514648438
+                ],
+                "block_index": 15,
+                "confidence": 0.8500000238418579,
+                "font_name": "TT11",
+                "font_size": 8.918499946594238,
+                "header_level": null,
+                "is_bold": false,
+                "original_type": "List",
+                "paragraph_id": 7,
+                "text": "\u2022PP&C Integration \u2022Resource Management \u2022Scheduling \u2022Cost Estimation & Assessment \u2022Acquisition & Contract Management \u2022Risk Management \u2022CM/DM"
+              },
+              {
+                "bbox": [
+                  275.5201721191406,
+                  406.80303955078125,
+                  75.05850219726562,
+                  71.85726928710938
+                ],
+                "block_index": 16,
+                "confidence": 0.8500000238418579,
+                "font_name": "TT11",
+                "font_size": 8.918499946594238,
+                "header_level": null,
+                "is_bold": false,
+                "original_type": "List",
+                "paragraph_id": 7,
+                "text": "\u2022Stakeholders \u2022Risks \u2022Configuration Management \u2022Data Management \u2022Reviews \u2022Schedule"
+              },
+              {
+                "bbox": [
+                  84.719970703125,
+                  595.1400756835938,
+                  228.76535034179688,
+                  42.5029296875
+                ],
+                "block_index": 17,
+                "confidence": 0.8500000238418579,
+                "font_name": "TT11",
+                "font_size": 9.442999839782715,
+                "header_level": null,
+                "is_bold": false,
+                "original_type": "List",
+                "paragraph_id": 7,
+                "text": "\u2022Setting up Project Team \u2022Programmatic Stakeholders (non-technical, non-business) \u2022Programmatic Planning (non-technical, non-business) \u2022Identifying Programmatic (non-technical) requirements"
+              },
+              {
+                "bbox": [
+                  328.0201721191406,
+                  593.9398803710938,
+                  204.78335571289062,
+                  42.5029296875
+                ],
+                "block_index": 18,
+                "confidence": 0.8500000238418579,
+                "font_name": "TT11",
+                "font_size": 9.442999839782715,
+                "header_level": null,
+                "is_bold": false,
+                "original_type": "List",
+                "paragraph_id": 7,
+                "text": "\u2022Identifying Programmatic Risks \u2022Technology Transfer and Commercialization \u2022Integration of technical and non-technical activities \u2022Overall Approver/Decider"
+              },
+              {
+                "bbox": [
+                  231.0,
+                  651.780029296875,
+                  133.76242065429688,
+                  10.4923095703125
+                ],
+                "block_index": 19,
+                "confidence": 0.44999998807907104,
+                "font_name": "TT15",
+                "font_size": 10.492300033569336,
+                "header_level": null,
+                "is_bold": true,
+                "original_type": "Body",
+                "paragraph_id": 8,
+                "text": "Project Management Activities"
+              },
+              {
+                "bbox": [
+                  283.79998779296875,
+                  490.3798522949219,
+                  45.43951416015625,
+                  26.766204833984375
+                ],
+                "block_index": 20,
+                "confidence": 0.30000001192092896,
+                "font_name": "TT15",
+                "font_size": 12.066100120544434,
+                "header_level": null,
+                "is_bold": true,
+                "original_type": "Body",
+                "paragraph_id": 9,
+                "text": "Common Areas"
+              }
+            ],
+            "context_above": "Common Areas Product\u00a0Realization\u00a0Processes",
+            "context_below": "System\u00a0Design\u00a0Processes PP&C",
+            "page": 17,
+            "section_title": "\uf0b7 System Design Processes: The four system design processes shown in Figure 2.1-1 are used"
+          },
+          "semantic_role": "figure",
+          "source_type": "figure",
+          "text": "Figure 2.0-1 SE in Context of Overall Project Management\nCommon Areas Product\u00a0Realization\u00a0Processes\nSystem\u00a0Design\u00a0Processes PP&C\nProject Management\nSystems Engineering\nSystem Design Processes\n\u2022Stakeholder Expectations Definition \u2022Technical Requirement's Definition \u2022Logical Decomposition \u2022Design Solution Definition\nProduct Realization Processes\n\u2022Product Implementation \u2022Product Integration \u2022Product Verification \u2022Product Validation \u2022Product Transition\nTechnical Management Processes\n\u2022Technical Planning \u2022Requirements Management \u2022Interface Management \u2022Technical Risk Management \u2022Configuration Management \u2022Technical Data Management \u2022Technical Assessment \u2022Decision Analyses\nPP&C\n\u2022PP&C Integration \u2022Resource Management \u2022Scheduling \u2022Cost Estimation & Assessment \u2022Acquisition & Contract Management \u2022Risk Management \u2022CM/DM\n\u2022Stakeholders \u2022Risks \u2022Configuration Management \u2022Data Management \u2022Reviews \u2022Schedule\n\u2022Setting up Project Team \u2022Programmatic Stakeholders (non-technical, non-business) \u2022Programmatic Planning (non-technical, non-business) \u2022Identifying Programmatic (non-technical) requirements\n\u2022Identifying Programmatic Risks \u2022Technology Transfer and Commercialization \u2022Integration of technical and non-technical activities \u2022Overall Approver/Decider\nProject Management Activities\nCommon Areas",
+          "type": "figure"
+        }
+      ],
+      "ledger_path": null,
+      "page": 18,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 17
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/engineering/12 NASA_SP-2016-6105 Rev 2.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

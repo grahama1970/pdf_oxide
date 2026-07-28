@@ -85,7 +85,151 @@ pub fn detect_figures_from_blocks(
         });
     }
 
+    figures = consolidate_captioned_figure_stacks(figures, blocks);
+
     Ok(figures)
+}
+
+fn vertical_gap(a: &Rect, b: &Rect) -> f32 {
+    if a.bottom() < b.top() {
+        b.top() - a.bottom()
+    } else if b.bottom() < a.top() {
+        a.top() - b.bottom()
+    } else {
+        0.0
+    }
+}
+
+fn is_figure_expandable_block(block: &ClassifiedBlock) -> bool {
+    !matches!(
+        block.block_type,
+        BlockType::Header
+            | BlockType::Footer
+            | BlockType::PageNumber
+            | BlockType::Boilerplate
+            | BlockType::Caption
+            | BlockType::Footnote
+    )
+}
+
+fn horizontal_overlap_ratio(left: &Rect, right: &Rect) -> f32 {
+    let overlap = left.right().min(right.right()) - left.left().max(right.left());
+    overlap.max(0.0) / left.width.min(right.width).max(1.0)
+}
+
+fn same_caption(left: &DetectedFigure, right: &DetectedFigure) -> bool {
+    left.caption_number.is_some()
+        && left.caption_number == right.caption_number
+        && left.caption == right.caption
+}
+
+fn belongs_to_captioned_stack(
+    current_bbox: &Rect,
+    seed: &DetectedFigure,
+    candidate: &DetectedFigure,
+) -> bool {
+    if same_caption(seed, candidate) {
+        return true;
+    }
+    candidate.caption_number.is_none()
+        && horizontal_overlap_ratio(current_bbox, &candidate.bbox) >= 0.45
+        && vertical_gap(current_bbox, &candidate.bbox)
+            <= current_bbox.height.max(candidate.bbox.height) * 1.5 + 72.0
+}
+
+fn expand_bbox_over_captioned_content(
+    mut bbox: Rect,
+    caption_text: &str,
+    blocks: &[ClassifiedBlock],
+) -> Rect {
+    let Some(caption_block) = blocks
+        .iter()
+        .find(|block| block.block_type == BlockType::Caption && block.text == caption_text)
+    else {
+        return bbox;
+    };
+
+    let mut horizontal_envelope = bbox.union(&caption_block.bbox);
+    let caption_bottom = caption_block.bbox.bottom();
+    let current_bottom = bbox.bottom();
+    let expanded_bottom = caption_block.bbox.top()
+        + (current_bottom - caption_block.bbox.top())
+            .max(bbox.height)
+            .max(72.0)
+            * 1.75;
+
+    for block in blocks {
+        if !is_figure_expandable_block(block) {
+            continue;
+        }
+        if block.bbox.top() <= caption_bottom || block.bbox.top() > expanded_bottom {
+            continue;
+        }
+        if horizontal_overlap_ratio(&horizontal_envelope, &block.bbox) < 0.10 {
+            continue;
+        }
+        bbox = bbox.union(&block.bbox);
+        horizontal_envelope = horizontal_envelope.union(&block.bbox);
+    }
+
+    bbox
+}
+
+fn consolidate_captioned_figure_stacks(
+    figures: Vec<DetectedFigure>,
+    blocks: &[ClassifiedBlock],
+) -> Vec<DetectedFigure> {
+    let mut used = vec![false; figures.len()];
+    let mut consolidated = Vec::new();
+
+    for index in 0..figures.len() {
+        if used[index] {
+            continue;
+        }
+        let seed = &figures[index];
+        let Some(caption) = seed.caption.clone() else {
+            continue;
+        };
+        if seed.caption_number.is_none() {
+            continue;
+        }
+
+        used[index] = true;
+        let mut bbox = seed.bbox;
+        let mut changed = true;
+        while changed {
+            changed = false;
+            for candidate_index in 0..figures.len() {
+                if used[candidate_index] {
+                    continue;
+                }
+                if belongs_to_captioned_stack(&bbox, seed, &figures[candidate_index]) {
+                    used[candidate_index] = true;
+                    bbox = bbox.union(&figures[candidate_index].bbox);
+                    changed = true;
+                }
+            }
+        }
+
+        bbox = expand_bbox_over_captioned_content(bbox, &caption, blocks);
+        consolidated.push(DetectedFigure {
+            bbox,
+            page: seed.page,
+            caption: Some(caption),
+            caption_number: seed.caption_number,
+            context_above: find_context(blocks, &bbox, true),
+            context_below: find_context(blocks, &bbox, false),
+            section_title: find_section(blocks, &bbox),
+        });
+    }
+
+    for (index, figure) in figures.into_iter().enumerate() {
+        if !used[index] {
+            consolidated.push(figure);
+        }
+    }
+
+    consolidated
 }
 
 /// Find the closest Caption block to the figure bbox.
@@ -210,6 +354,7 @@ mod tests {
                 confidence: 0.9,
                 header_level: None,
                 header_validation: None,
+                lines: Vec::new(),
             },
             ClassifiedBlock {
                 block_type: BlockType::Caption,
@@ -221,6 +366,7 @@ mod tests {
                 confidence: 0.8,
                 header_level: None,
                 header_validation: None,
+                lines: Vec::new(),
             },
         ];
         let fig_bbox = Rect::new(50.0, 200.0, 200.0, 80.0);
@@ -242,6 +388,7 @@ mod tests {
                 confidence: 0.9,
                 header_level: Some(1),
                 header_validation: None,
+                lines: Vec::new(),
             },
             ClassifiedBlock {
                 block_type: BlockType::Body,
@@ -253,6 +400,7 @@ mod tests {
                 confidence: 0.9,
                 header_level: None,
                 header_validation: None,
+                lines: Vec::new(),
             },
         ];
         let fig_bbox = Rect::new(50.0, 200.0, 200.0, 80.0);
@@ -271,6 +419,7 @@ mod tests {
             confidence: 0.9,
             header_level: None,
             header_validation: None,
+            lines: Vec::new(),
         }];
         let fig_bbox = Rect::new(50.0, 200.0, 200.0, 80.0);
         let (caption, num) = find_caption(&blocks, &fig_bbox);

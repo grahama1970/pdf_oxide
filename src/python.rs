@@ -4346,6 +4346,25 @@ impl PyPdfDocument {
             f.set_item("context_above", &fig.context_above)?;
             f.set_item("context_below", &fig.context_below)?;
             f.set_item("section_title", fig.section_title.as_deref())?;
+            let content_blocks = pyo3::types::PyList::empty(py);
+            for block in &fig.content_blocks {
+                let b = pyo3::types::PyDict::new(py);
+                b.set_item("block_index", block.block_index)?;
+                b.set_item("original_type", &block.original_type)?;
+                b.set_item("text", &block.text)?;
+                b.set_item(
+                    "bbox",
+                    (block.bbox[0], block.bbox[1], block.bbox[2], block.bbox[3]),
+                )?;
+                b.set_item("font_size", block.font_size)?;
+                b.set_item("font_name", &block.font_name)?;
+                b.set_item("is_bold", block.is_bold)?;
+                b.set_item("confidence", block.confidence)?;
+                b.set_item("header_level", block.header_level)?;
+                b.set_item("paragraph_id", block.paragraph_id)?;
+                content_blocks.append(b)?;
+            }
+            f.set_item("content_blocks", content_blocks)?;
             figures_list.append(f)?;
         }
         dict.set_item("figures", figures_list)?;

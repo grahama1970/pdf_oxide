@@ -75,6 +75,20 @@ pub struct BlockSummary {
 }
 
 #[derive(Debug, Clone, Serialize)]
+pub struct FigureContentBlock {
+    pub block_index: usize,
+    pub original_type: String,
+    pub text: String,
+    pub bbox: [f32; 4],
+    pub font_size: f32,
+    pub font_name: String,
+    pub is_bold: bool,
+    pub confidence: f32,
+    pub header_level: Option<u8>,
+    pub paragraph_id: usize,
+}
+
+#[derive(Debug, Clone, Serialize)]
 pub struct FigureSummary {
     pub page: usize,
     pub bbox: [f32; 4],
@@ -83,6 +97,7 @@ pub struct FigureSummary {
     pub context_above: String,
     pub context_below: String,
     pub section_title: Option<String>,
+    pub content_blocks: Vec<FigureContentBlock>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -149,6 +164,108 @@ pub fn extract_document(doc: &mut PdfDocument) -> Result<ExtractionResult> {
     extract_document_with_config(doc, &ExtractionConfig::default())
 }
 
+fn block_summary_from_merged(block: &MergedBlock, normalize_text: bool) -> BlockSummary {
+    BlockSummary {
+        block_type: format!("{:?}", block.block_type),
+        text: if normalize_text {
+            full_normalize(&block.text)
+        } else {
+            block.text.clone()
+        },
+        bbox: [block.bbox.x, block.bbox.y, block.bbox.width, block.bbox.height],
+        font_size: block.font_size,
+        font_name: block.font_name.clone(),
+        is_bold: block.is_bold,
+        confidence: block.confidence,
+        header_level: block.header_level,
+        paragraph_id: block.paragraph_id,
+    }
+}
+
+fn figure_content_from_block(
+    block_index: usize,
+    block: &MergedBlock,
+    normalize_text: bool,
+) -> FigureContentBlock {
+    FigureContentBlock {
+        block_index,
+        original_type: format!("{:?}", block.block_type),
+        text: if normalize_text {
+            full_normalize(&block.text)
+        } else {
+            block.text.clone()
+        },
+        bbox: [block.bbox.x, block.bbox.y, block.bbox.width, block.bbox.height],
+        font_size: block.font_size,
+        font_name: block.font_name.clone(),
+        is_bold: block.is_bold,
+        confidence: block.confidence,
+        header_level: block.header_level,
+        paragraph_id: block.paragraph_id,
+    }
+}
+
+fn is_figure_absorbable_block(block: &MergedBlock) -> bool {
+    !matches!(
+        block.block_type,
+        BlockType::Header
+            | BlockType::Footer
+            | BlockType::PageNumber
+            | BlockType::Boilerplate
+            | BlockType::Caption
+            | BlockType::Footnote
+    )
+}
+
+fn bbox_overlap_ratio(outer: &[f32; 4], block: &MergedBlock) -> f32 {
+    let left = outer[0].max(block.bbox.left());
+    let top = outer[1].max(block.bbox.top());
+    let right = (outer[0] + outer[2]).min(block.bbox.right());
+    let bottom = (outer[1] + outer[3]).min(block.bbox.bottom());
+    let overlap_area = (right - left).max(0.0) * (bottom - top).max(0.0);
+    let block_area = block.bbox.area().max(1.0);
+    overlap_area / block_area
+}
+
+fn bbox_contains_block_centroid(outer: &[f32; 4], block: &MergedBlock) -> bool {
+    let cx = block.bbox.x + block.bbox.width / 2.0;
+    let cy = block.bbox.y + block.bbox.height / 2.0;
+    cx >= outer[0]
+        && cx <= outer[0] + outer[2]
+        && cy >= outer[1]
+        && cy <= outer[1] + outer[3]
+}
+
+fn uniquely_containing_figure_index(
+    block: &MergedBlock,
+    figures: &[DetectedFigure],
+) -> Option<usize> {
+    if !is_figure_absorbable_block(block) {
+        return None;
+    }
+
+    let matches: Vec<usize> = figures
+        .iter()
+        .enumerate()
+        .filter_map(|(index, figure)| {
+            let bbox = [
+                figure.bbox.x,
+                figure.bbox.y,
+                figure.bbox.width,
+                figure.bbox.height,
+            ];
+            (bbox_contains_block_centroid(&bbox, block) && bbox_overlap_ratio(&bbox, block) >= 0.5)
+                .then_some(index)
+        })
+        .collect();
+
+    if matches.len() == 1 {
+        Some(matches[0])
+    } else {
+        None
+    }
+}
+
 /// Run the full extraction pipeline with custom configuration.
 ///
 /// Optimized to extract spans ONCE per page and share cached data across all
@@ -170,10 +287,27 @@ pub fn extract_document_with_config(
     let mut all_dims: Vec<(f32, f32)> = Vec::with_capacity(max_pages);
     let mut all_page_blocks: Vec<Vec<MergedBlock>> = Vec::new();
     let mut pages: Vec<PageResult> = Vec::new();
+    let mut figures: Vec<FigureSummary> = Vec::new();
 
     for pg in 0..max_pages {
         let spans = doc.extract_spans_unsorted(pg).unwrap_or_default();
         if spans.is_empty() {
+            if config.detect_figures {
+                if let Ok(detected) = detect_figures_from_blocks(doc, pg, &[]) {
+                    for fig in detected {
+                        figures.push(FigureSummary {
+                            page: fig.page,
+                            bbox: [fig.bbox.x, fig.bbox.y, fig.bbox.width, fig.bbox.height],
+                            caption: fig.caption,
+                            caption_number: fig.caption_number,
+                            context_above: fig.context_above,
+                            context_below: fig.context_below,
+                            section_title: fig.section_title,
+                            content_blocks: Vec::new(),
+                        });
+                    }
+                }
+            }
             all_spans.push(vec![]);
             all_classified.push(vec![]);
             all_dims.push((612.0, 792.0));
@@ -200,7 +334,48 @@ pub fn extract_document_with_config(
             config.header_ratio_override,
         );
         let classified = classifier.classify_spans(&spans);
-        let merged = merge_blocks(&classified, height);
+        let mut merged = merge_blocks(&classified, height);
+        let detected_figures = if config.detect_figures {
+            detect_figures_from_blocks(doc, pg, &classified).unwrap_or_default()
+        } else {
+            Vec::new()
+        };
+        let mut figure_content = vec![Vec::new(); detected_figures.len()];
+        if !detected_figures.is_empty() {
+            let mut consumed_indices = Vec::new();
+            for (block_index, block) in merged.iter().enumerate() {
+                if let Some(figure_index) =
+                    uniquely_containing_figure_index(block, &detected_figures)
+                {
+                    figure_content[figure_index].push(figure_content_from_block(
+                        block_index,
+                        block,
+                        config.normalize_text,
+                    ));
+                    consumed_indices.push(block_index);
+                }
+            }
+            consumed_indices.sort_unstable_by(|a, b| b.cmp(a));
+            for index in consumed_indices {
+                merged.remove(index);
+            }
+        }
+
+        for (figure_index, fig) in detected_figures.into_iter().enumerate() {
+            figures.push(FigureSummary {
+                page: fig.page,
+                bbox: [fig.bbox.x, fig.bbox.y, fig.bbox.width, fig.bbox.height],
+                caption: fig.caption,
+                caption_number: fig.caption_number,
+                context_above: fig.context_above,
+                context_below: fig.context_below,
+                section_title: fig.section_title,
+                content_blocks: figure_content
+                    .get(figure_index)
+                    .cloned()
+                    .unwrap_or_default(),
+            });
+        }
 
         // Build page text from merged blocks
         let page_text: String = merged
@@ -220,21 +395,7 @@ pub fn extract_document_with_config(
 
         let block_summaries: Vec<BlockSummary> = merged
             .iter()
-            .map(|b| BlockSummary {
-                block_type: format!("{:?}", b.block_type),
-                text: if config.normalize_text {
-                    full_normalize(&b.text)
-                } else {
-                    b.text.clone()
-                },
-                bbox: [b.bbox.x, b.bbox.y, b.bbox.width, b.bbox.height],
-                font_size: b.font_size,
-                font_name: b.font_name.clone(),
-                is_bold: b.is_bold,
-                confidence: b.confidence,
-                header_level: b.header_level,
-                paragraph_id: b.paragraph_id,
-            })
+            .map(|b| block_summary_from_merged(b, config.normalize_text))
             .collect();
 
         all_spans.push(spans);
@@ -273,26 +434,6 @@ pub fn extract_document_with_config(
                 let text = block.text.trim().to_string();
                 if !running_footers.contains(&text) {
                     running_footers.push(text);
-                }
-            }
-        }
-    }
-
-    // Step 4: Detect figures using cached classified blocks (only extract_images is new)
-    let mut figures: Vec<FigureSummary> = Vec::new();
-    if config.detect_figures {
-        for pg in 0..max_pages {
-            if let Ok(detected) = detect_figures_from_blocks(doc, pg, &all_classified[pg]) {
-                for fig in detected {
-                    figures.push(FigureSummary {
-                        page: fig.page,
-                        bbox: [fig.bbox.x, fig.bbox.y, fig.bbox.width, fig.bbox.height],
-                        caption: fig.caption,
-                        caption_number: fig.caption_number,
-                        context_above: fig.context_above,
-                        context_below: fig.context_below,
-                        section_title: fig.section_title,
-                    });
                 }
             }
         }
