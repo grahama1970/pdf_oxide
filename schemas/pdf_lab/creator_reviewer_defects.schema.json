@@ -57,6 +57,7 @@
           "defect_class": {
             "type": "string",
             "enum": [
+              "REGION_LABEL_MISMATCH",
               "TABLE_CELL_TOP_LEVEL_LEAK"
             ]
           },

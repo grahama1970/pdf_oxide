@@ -1,0 +1,85 @@
+{
+  "artifacts": {
+    "extraction.pdf_oxide.json": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/extraction.pdf_oxide.json",
+    "extraction.wrapped.json": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/extraction.wrapped.json",
+    "extraction_debug.log": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/extraction_debug.log",
+    "historical_bbox_overlay.png": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/historical_bbox_overlay.png",
+    "overlay.png": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/overlay.png",
+    "page.png": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/page.png",
+    "proof-command.txt": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/proof-command.txt",
+    "proof.exit_code.txt": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/proof.exit_code.txt",
+    "proof.stdout.txt": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/proof.stdout.txt",
+    "validation.exit_code.txt": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/validation.exit_code.txt",
+    "validation.json": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/validation.json",
+    "validation.stdout.json": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/validation.stdout.json"
+  },
+  "claims": {
+    "does_not_prove": [
+      "the page27 footer label has been repaired",
+      "all page27 expected elements are correct",
+      "all PDF Lab candidates are hardened",
+      "external Ask providers produced a five-provider winner"
+    ],
+    "proves": [
+      "fresh current page27 extraction has a printed page number block at the expected bbox/text",
+      "that block currently has label header_footer_noise instead of expected running_footer",
+      "the creator-reviewer defect contract can represent this as a machine-executable failing check",
+      "the focused pytest suite detects the page27 open defect while preserving page456 passing checks"
+    ]
+  },
+  "commands": [
+    {
+      "command": "python scripts/pdf_lab/snapshot_current_extraction.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --max-pages 27 --out artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/extraction.wrapped.json",
+      "exit_code": 0,
+      "output": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/extraction_debug.log",
+      "result": "fresh current extraction materialized; 5 blocks; table_count 1"
+    },
+    {
+      "command": "python3 scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page27_creator_reviewer_defects.json --extraction-json artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/extraction.pdf_oxide.json --out artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/validation.json",
+      "exit_code": 1,
+      "output": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/validation.stdout.json",
+      "result": "status FAIL; summary {'check_count': 1, 'failed': 1, 'passed': 0}"
+    },
+    {
+      "command": "python3 -m py_compile scripts/pdf_lab/validate_creator_reviewer_defects.py && uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py tests/test_nist_page456_control_table_headers.py -q && uv run ruff check scripts/pdf_lab/validate_creator_reviewer_defects.py tests/test_pdf_lab_creator_reviewer_defects.py && uv run ruff format --check scripts/pdf_lab/validate_creator_reviewer_defects.py tests/test_pdf_lab_creator_reviewer_defects.py",
+      "exit_code": 0,
+      "output": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/proof.stdout.txt",
+      "result": "7 passed in 2.86s; ruff check passed; ruff format check passed"
+    }
+  ],
+  "created_at": "2026-07-29T16:09:29.584559+00:00",
+  "fresh_scan": "/tmp/pdf-lab-current-queue-scan.json",
+  "live": false,
+  "mocked": false,
+  "page": 27,
+  "proof_scope": "local deterministic extraction evidence plus executable creator-reviewer validator check for one current unresolved page27 label defect",
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_next_candidate_receipt.v1",
+  "selected_candidate": {
+    "actual_label": "header_footer_noise",
+    "defect_class": "REGION_LABEL_MISMATCH",
+    "expected_label": "running_footer",
+    "id": "page27-printed-page-number-xxv-is-running-footer",
+    "region_bbox": [
+      0.488294,
+      0.938152,
+      0.51275,
+      0.953515
+    ],
+    "text": "xxv"
+  },
+  "sha256": {
+    "extraction.pdf_oxide.json": "3a0e03cecc28371da585a5f45ed309e8aee257d0202f1166efc7883debb317a6",
+    "extraction.wrapped.json": "1118f74a4f9489ab1eef91f486f43c0d33f991deccbdd802c7e8ddcd5488d0d6",
+    "extraction_debug.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical_bbox_overlay.png": "fd137b3e209d7a3f295fd6a47c8c709d875e7bdd40abaea60dc2c7964e46ce6f",
+    "overlay.png": "51213314e71a8f5a408b7e3dbee12a4d53060ad3840e40f893b6b7cae96f9896",
+    "page.png": "8a862b29f4ec4003673070c1441bda0b1c7b20dfe09fb119b3fd9857936faf2b",
+    "proof-command.txt": "30d33ba7f27820ea43e94f948d8bac0efb3de34525aae6e501c53813ca51611e",
+    "proof.exit_code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "proof.stdout.txt": "77602e81f0746b85787898c2b8c94cbb7b459dc828679eeb3c6194dc67ca231a",
+    "validation.exit_code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "validation.json": "c8cbe44f697e38b700354d986adb790065a4e195bba36eb061435a179c6674c2",
+    "validation.stdout.json": "c8cbe44f697e38b700354d986adb790065a4e195bba36eb061435a179c6674c2"
+  },
+  "status": "OPEN_DEFECT_EXECUTABLE_CHECK_CREATED"
+}
