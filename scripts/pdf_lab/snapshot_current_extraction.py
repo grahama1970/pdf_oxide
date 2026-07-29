@@ -309,6 +309,29 @@ def _compact_text_for_spacing_repair(text: str) -> str:
     return re.sub(r"[^0-9A-Za-z]+", "", text).lower()
 
 
+def _join_text_lines_preserving_hyphen_wraps(lines: list[dict[str, Any]]) -> str:
+    parts = [str(line.get("text") or "").strip() for line in lines]
+    parts = [part for part in parts if part]
+    if not parts:
+        return ""
+    text = parts[0]
+    for part in parts[1:]:
+        if text.endswith("-") and re.match(r"^[0-9A-Za-z]", part):
+            text = f"{text}{part}"
+        else:
+            text = f"{text} {part}"
+    return _normalize_text(text)
+
+
+def _text_from_lines_if_only_spacing_differs(block_text: str, lines: list[dict[str, Any]]) -> str:
+    repaired = _join_text_lines_preserving_hyphen_wraps(lines)
+    if not repaired:
+        return block_text
+    if _compact_text_for_spacing_repair(block_text) != _compact_text_for_spacing_repair(repaired):
+        return block_text
+    return repaired
+
+
 def _text_from_overlapping_lines_if_only_spacing_differs(
     block_text: str, block_bbox: list[float], text_lines: list[dict[str, Any]]
 ) -> tuple[str, list[dict[str, Any]]]:
@@ -316,10 +339,8 @@ def _text_from_overlapping_lines_if_only_spacing_differs(
     if not overlapping:
         return block_text, []
 
-    repaired = _normalize_text(" ".join(str(line.get("text") or "") for line in overlapping))
-    if not repaired:
-        return block_text, []
-    if _compact_text_for_spacing_repair(block_text) != _compact_text_for_spacing_repair(repaired):
+    repaired = _text_from_lines_if_only_spacing_differs(block_text, overlapping)
+    if repaired == block_text:
         return block_text, []
     return repaired, overlapping
 
@@ -358,6 +379,8 @@ def _block_elements(
         text = _normalize_bracketed_citation_wraps(text)
     else:
         matched_lines = _match_text_lines(text, text_lines, original_block_bbox)
+        if matched_lines:
+            text = _text_from_lines_if_only_spacing_differs(text, matched_lines)
         if not matched_lines:
             text, matched_lines = _text_from_overlapping_lines_if_only_spacing_differs(
                 text,

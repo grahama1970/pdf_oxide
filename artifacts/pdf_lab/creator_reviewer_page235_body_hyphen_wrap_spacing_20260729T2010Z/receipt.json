@@ -1,0 +1,86 @@
+{
+  "schema": "pdf_oxide.pdf_lab.hardening_receipt.v1",
+  "created_at": "2026-07-29T20:07:00Z",
+  "slice": "page235-body-hyphen-wrap-spacing",
+  "immutable_goal": {
+    "status": "NOT_MET",
+    "reason": "This receipt proves one page/checklist hardening slice only; the all-candidates hardening queue remains active."
+  },
+  "candidate": {
+    "source_pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+    "page": 235,
+    "defect_class": "TEXT_CONTENT_MISMATCH",
+    "defect_id": "page235-body-organization-wide-risk-spacing",
+    "expected_text": "organization-wide risk management strategy",
+    "forbidden_text": "organization- wide risk management strategy"
+  },
+  "defect_contract": {
+    "bundle": "tests/fixtures/pdf_lab/page235_body_hyphen_wrap_spacing_defects.json",
+    "validation_result": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/validation_result.json",
+    "status": "PASS",
+    "check_count": 1,
+    "failed": 0,
+    "passed": 1
+  },
+  "visual_evidence": {
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/page.png",
+    "annotated_overlay": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/bbox_overlay_current.png"
+  },
+  "extraction_evidence": {
+    "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/release_extraction_blocks.json",
+    "manifest": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/manifest.json",
+    "block_id": "actual:p235:block:4",
+    "block_bbox": [
+      0.20588235294117646,
+      0.08989831173058713,
+      0.8474683574601716,
+      0.29182605550746726
+    ],
+    "contains_expected_after_repair": true,
+    "contains_forbidden_after_repair": false
+  },
+  "red_before_patch": {
+    "command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page235_body_hyphen_wrap_spacing_defects.json --extraction-json artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/pre_patch_evidence/pages/page_0235/release_extraction_blocks.json --out artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/failing_validation_result.json",
+    "stdout": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/failing_regression.stdout.txt",
+    "validation_result": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/failing_validation_result.json",
+    "exit_code_file": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/failing_regression.exit_code.txt",
+    "exit_code": 1,
+    "observed_status": "FAIL",
+    "observed_forbidden_text": "organization- wide risk management strategy"
+  },
+  "green_after_patch": {
+    "commands": [
+      {
+        "command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page235_body_hyphen_wrap_spacing_defects.json --out artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/validation_result.json",
+        "result": "PASS"
+      },
+      {
+        "command": "uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py::test_page235_current_extraction_satisfies_body_hyphen_wrap_contract tests/test_pdf_lab_creator_reviewer_defects.py::test_page235_validator_fails_if_body_hyphen_wrap_space_reappears tests/test_pdf_lab_snapshot_current_extraction.py::test_matched_line_text_removes_space_after_wrapped_hyphen -q",
+        "result": "3 passed in 0.09s"
+      },
+      {
+        "command": "uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_nist_table_duplicate_suppression.py tests/test_nist_ruled_table_materialization.py tests/test_nist_page456_control_table_headers.py tests/test_nist_top_header_chrome_preset.py -q",
+        "result": "62 passed in 1.67s"
+      },
+      {
+        "command": "uv run ruff check scripts/pdf_lab/snapshot_current_extraction.py scripts/pdf_lab/validate_creator_reviewer_defects.py python/pdf_oxide/presets/applier.py tests/test_pdf_lab_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_nist_table_duplicate_suppression.py",
+        "result": "All checks passed"
+      },
+      {
+        "command": "uv run ruff format --check scripts/pdf_lab/snapshot_current_extraction.py scripts/pdf_lab/validate_creator_reviewer_defects.py tests/test_pdf_lab_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_nist_table_duplicate_suppression.py",
+        "result": "5 files already formatted"
+      }
+    ]
+  },
+  "fresh_candidate_scan": {
+    "materialized_page_count": 55,
+    "blocked_page_count": 0,
+    "note": "Fresh local selector scan was generated before this slice and used only to select page235; the committed proof artifact is the page235 one-case bundle above."
+  },
+  "evidence_character": {
+    "mocked": false,
+    "live": false,
+    "actually_exercised": "Fresh local extraction for 55 historical candidate pages, real NIST page 235 image/overlay/extraction artifacts, creator-reviewer defect validation, focused failure mutation, and text reconstruction regression tests.",
+    "does_not_prove": "The full all-candidates queue, external Ask/browser reviewer behavior, or a live service path."
+  }
+}

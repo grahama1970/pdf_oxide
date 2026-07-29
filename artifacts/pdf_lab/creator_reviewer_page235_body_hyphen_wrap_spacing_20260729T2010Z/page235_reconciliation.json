@@ -1,0 +1,276 @@
+{
+  "allowed_statuses": [
+    "resolved_by_current_extraction",
+    "still_repro",
+    "false_positive",
+    "human_needed",
+    "blocked",
+    "unverified"
+  ],
+  "artifact_root": "artifacts/pdf_lab/project_agent_hardening",
+  "commands": [
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/historical_finding_reconciliation.json --out artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/current_evidence --page-timeout-seconds 90",
+    "python scripts/pdf_lab/reconcile_historical_findings_deterministic.py --reconciliation artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/historical_finding_reconciliation.json --evidence-root artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/current_evidence --report artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/deterministic_reconciliation_report.json",
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/current_candidate_reconciliation_after_page22_20260729T2005Z/historical_finding_reconciliation.seed.json --out artifacts/pdf_lab/current_candidate_reconciliation_after_page22_20260729T2005Z/current_evidence --page-timeout-seconds 90",
+    "python scripts/pdf_lab/reconcile_historical_findings_deterministic.py --reconciliation artifacts/pdf_lab/current_candidate_reconciliation_after_page22_20260729T2005Z/historical_finding_reconciliation.seed.json --evidence-root artifacts/pdf_lab/current_candidate_reconciliation_after_page22_20260729T2005Z/current_evidence --report artifacts/pdf_lab/current_candidate_reconciliation_after_page22_20260729T2005Z/deterministic_reconciliation_report.json",
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/page235_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence --page-timeout-seconds 90"
+  ],
+  "commit": "301ac39a803076f71de10a13126c6339e9cf872f",
+  "created_at": "2026-07-29T17:30:17.524471+00:00",
+  "current_evidence_commit": "1ff1a37348d780aa66e796923808411b05cb5a5f",
+  "current_evidence_generated_at": "2026-07-29T20:04:02.814803+00:00",
+  "current_evidence_out": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence",
+  "deterministic_reconciled_at": "2026-07-29T20:01:31.439038+00:00",
+  "deterministic_reconciled_commit": "1ff1a37348d780aa66e796923808411b05cb5a5f",
+  "entries": [
+    {
+      "block_ids": [
+        "actual:p235:block:13"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Classify as list, preferably as continuation of the PM-10 alphabetic list sequence.",
+      "extraction_defect": "The block is typed as paragraph_block even though it is visibly an alphabetic list item continuing the prior list block.",
+      "finding_id": "p235-alpha-list-c-demoted",
+      "next_action": "rerun",
+      "owner": "pdf_oxide_core",
+      "page": 235,
+      "patch_hint": "Strengthen alphabetic list continuation detection for same-indent single-line items following an existing a/b list sequence.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "medium",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_heading_rerun/pages/page_0235/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_heading_rerun/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_heading_rerun/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_heading_rerun/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_heading_rerun/summary.json"
+      ],
+      "source_count": 4,
+      "visible_evidence": "Under the PM-10 Control label, the line beginning 'c.' is aligned with the preceding alphabetic list items 'a.' and 'b.' and is part of the same enumerated control list."
+    },
+    {
+      "block_ids": [
+        "actual:p235:block:10",
+        "actual:p235:block:18"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "section_heading or NIST control_heading",
+      "extraction_defect": "Both visible section/control headings are classified as paragraph_block rather than a heading/control-heading structure.",
+      "finding_id": "p235-control-headings-as-paragraphs",
+      "next_action": "rerun",
+      "owner": "nist_preset_ledger",
+      "page": 235,
+      "patch_hint": "Add or strengthen NIST SP 800-53 control-heading detection for control identifiers followed by uppercase titles at the section-heading margin.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "medium",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_b/pages/page_0235/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_b/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_b/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_b/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_b/summary.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/summary.json"
+      ],
+      "source_count": 8,
+      "visible_evidence": "The page shows standalone bold control headings at the left body margin: \u201cPM-10 AUTHORIZATION PROCESS\u201d and \u201cPM-11 MISSION AND BUSINESS PROCESS DEFINITION.\u201d"
+    },
+    {
+      "block_ids": [
+        "actual:p235:block:12",
+        "actual:p235:block:13"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "list item or merge into the existing ordered list family",
+      "extraction_defect": "Block 13 is classified as paragraph_block even though it is the third item of the same enumerated list run as block 12.",
+      "finding_id": "p235-pm10-list-c-as-paragraph",
+      "next_action": "rerun",
+      "owner": "pdf_oxide_core",
+      "page": 235,
+      "patch_hint": "Extend ordered-list detection to classify singleton enumerators following an existing same-indent a./b. list as list items.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "medium",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_b/pages/page_0235/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_b/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_b/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_b/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_b/summary.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_fulltext_consolidated/summary.json"
+      ],
+      "source_count": 8,
+      "visible_evidence": "Under PM-10 Control, the visible ordered list contains items a., b., and c. Block 12 covers a. and b.; block 13 begins with \u201cc.\u201d at the same list indentation."
+    },
+    {
+      "block_ids": [
+        "actual:p235:block:12",
+        "actual:p235:block:13"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Treat all same-level alphabetic control enumerators in the PM-10 Control section as list/list-item content.",
+      "extraction_defect": "The c. enumerated control item is classified as paragraph_block while the preceding a./b. content is classified as list.",
+      "finding_id": "p235_alpha_list_item_c_paragraph",
+      "next_action": "rerun",
+      "owner": "pdf_oxide_core",
+      "page": 235,
+      "patch_hint": "Improve list-item classification for standalone alphabetic enumerators that follow same-level a./b. items.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "medium",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/summary.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/summary.json"
+      ],
+      "source_count": 8,
+      "visible_evidence": "Under PM-10 Control, the visible enumerated list contains items a., b., and c. at the same list indentation. Block 12 covers a. and b.; block 13 is the visible c. item."
+    },
+    {
+      "block_ids": [
+        "actual:p235:block:10",
+        "actual:p235:block:18"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Classify NIST control identifier plus uppercase title lines as section/control headings.",
+      "extraction_defect": "These section/control headings are typed as paragraph_block rather than a heading/control-heading family.",
+      "finding_id": "p235_control_headings_as_paragraphs",
+      "next_action": "rerun",
+      "owner": "nist_preset_ledger",
+      "page": 235,
+      "patch_hint": "Add or strengthen NIST control-heading recognition for control IDs followed by uppercase titles.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "medium",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/summary.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/summary.json"
+      ],
+      "source_count": 8,
+      "visible_evidence": "The page shows bold uppercase NIST control titles with control identifiers at the left: PM-10 AUTHORIZATION PROCESS and PM-11 MISSION AND BUSINESS PROCESS DEFINITION."
+    },
+    {
+      "block_ids": [
+        "actual:p235:block:12",
+        "actual:p235:block:14",
+        "actual:p235:block:20",
+        "actual:p235:block:6"
+      ],
+      "confidence": "medium",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Emit complete block text for multi-line paragraph and list blocks, not clipped previews or partial line aggregation.",
+      "extraction_defect": "Block text appears truncated during extraction or materialization even though the detected bbox covers the remaining visible lines.",
+      "finding_id": "p235_multiline_text_truncation",
+      "next_action": "rerun",
+      "owner": "pdf_oxide_core",
+      "page": 235,
+      "patch_hint": "Audit full-text serialization/aggregation for multi-line blocks so exported JSON text is not capped or cut mid-word.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "high",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_consolidated/summary.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/pages/page_0235/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/pages/page_0235/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/pages/page_0235/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/next30_agentic_second_pass_20260601Tnow_seq_c/summary.json"
+      ],
+      "source_count": 8,
+      "visible_evidence": "The overlay boxes for these multi-line discussion/list blocks span substantially more visible text than appears in the JSON text strings; the JSON strings end mid-word or mid-item while the page image continues within the same bbox."
+    }
+  ],
+  "finding_count": 6,
+  "owner_counts": {
+    "nist_preset_ledger": 121,
+    "pdf_oxide_core": 224,
+    "unknown": 1
+  },
+  "page_count": 1,
+  "pages": [
+    235
+  ],
+  "record_count_before_dedupe": 1951,
+  "schema": "pdf_oxide.nist_historical_finding_reconciliation.v1",
+  "source_file_counts": {
+    "findings.json": 1,
+    "model_review.json": 272,
+    "response.raw.attempt1.json": 258,
+    "response.raw.attempt2.json": 2,
+    "response.raw.json": 272,
+    "summary.json": 31
+  },
+  "status_counts": {
+    "resolved_by_current_extraction": 47,
+    "unverified": 299
+  }
+}

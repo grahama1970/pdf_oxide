@@ -1,0 +1,47 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page235_body_hyphen_wrap_spacing_defects.json",
+  "checks": [
+    {
+      "actual_label": "paragraph_block",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.08989831173058713,
+            0.8474683574601716,
+            0.29182605550746726
+          ],
+          "contains_expected_text": true,
+          "contains_forbidden_text": false,
+          "id": "actual:p235:block:4",
+          "iou": 1.0,
+          "matches_expected_label": true,
+          "source_type": "Body",
+          "text": "Discussion: An organization-wide risk management strategy includes an expression of the security and privacy risk tolerance for the organization, security and privacy risk mitigation strategies, acceptable risk assessment methodologies, a process for evaluating security and privacy risk across the organization with respect to the organization\u2019s risk tolerance, and approaches for monitoring risk over time. The senior accountable official for risk management (agency head or designated official) aligns information security management processes with strategic, operational, and budgetary planning processes. The risk executive function, led by the senior accountable official for risk management, can facilitate consistent application of the risk management strategy organization-wide. The risk management strategy can be informed by security and privacy risk-related inputs from other sources, both internal and external to the organization, to ensure that the strategy is broad-based and comprehensive. The supply chain risk management strategy described in PM-30 can also provide useful inputs to the organization-wide risk management strategy.",
+          "type": "paragraph_block"
+        }
+      ],
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "expected_text": "organization-wide risk management strategy",
+      "forbidden_text": "organization- wide risk management strategy",
+      "id": "page235-body-organization-wide-risk-spacing",
+      "matching_text_count": 1,
+      "status": "PASS",
+      "text": "The supply chain risk management strategy described in PM-30"
+    }
+  ],
+  "created_at": "2026-07-29T20:06:06.179107+00:00",
+  "errors": [],
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/release_extraction_blocks.json",
+  "page": 235,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "PASS",
+  "summary": {
+    "check_count": 1,
+    "failed": 0,
+    "passed": 1
+  }
+}

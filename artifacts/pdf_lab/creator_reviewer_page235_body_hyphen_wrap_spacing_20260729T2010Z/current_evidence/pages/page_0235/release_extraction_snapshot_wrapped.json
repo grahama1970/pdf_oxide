@@ -1,0 +1,836 @@
+{
+  "generated_at": "2026-07-29T20:04:01.531206+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04473802296802251,
+            0.8507378272760927,
+            0.05821938948197798
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p235:block:0",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05679397390346334,
+            0.8517353332120609,
+            0.07054738324097913
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p235:block:1",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.9414804632013495,
+            0.8528897154564951,
+            0.9549618345318418
+          ],
+          "font_name": "TT0",
+          "font_size": 8.107500076293945,
+          "id": "actual:p235:block:2",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.107500076293945,
+            "header_level": null,
+            "is_bold": false,
+            "text": "CHAPTER THREE    PAGE 208"
+          },
+          "source_type": "Body",
+          "text": "CHAPTER THREE PAGE 208",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.0296323533151664,
+            0.28780303338561397,
+            0.049705879361021756,
+            0.7406287915778883
+          ],
+          "font_name": "ArialMT",
+          "font_size": 9.0,
+          "id": "actual:p235:rotated_side_chrome:1",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "fragment_ids": [
+              "actual:p235:block:3"
+            ],
+            "fragments": [
+              {
+                "bbox": [
+                  0.03441176383323919,
+                  0.27643939702197756,
+                  0.5297058735018462,
+                  0.7178787847962043
+                ],
+                "font_name": "TT1",
+                "font_size": 9.0,
+                "id": "actual:p235:block:3",
+                "is_bold": false,
+                "page": 235,
+                "pdf_page_index": 234,
+                "raw": {
+                  "bbox": [
+                    21.059999465942383,
+                    223.44000244140625,
+                    303.1199951171875,
+                    349.6199951171875
+                  ],
+                  "block_type": "Boilerplate",
+                  "confidence": 0.8999999761581421,
+                  "font_name": "TT1",
+                  "font_size": 9.0,
+                  "header_level": null,
+                  "is_bold": false,
+                  "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+                },
+                "source_type": "Boilerplate",
+                "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+                "type": "unknown_region"
+              }
+            ],
+            "line_bbox": [
+              18.135000228881836,
+              227.94000244140625,
+              30.419998168945312,
+              586.5780029296875
+            ],
+            "line_dir": [
+              0.0,
+              1.0
+            ],
+            "source": "fitz_rawdict_rotated_margin_line"
+          },
+          "source_type": "RotatedSideChrome",
+          "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.08989831173058713,
+            0.8474683574601716,
+            0.29182605550746726
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p235:block:4",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              564.0,
+              392.650634765625,
+              156.5400390625
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  An organization-wide risk management strategy includes an expression of the security and privacy risk tolerance for the organization, security and privacy risk mitigation strategies, acceptable risk assessment methodologies, a process for evaluating security and privacy risk across the organization with respect to the organization\u2019s risk tolerance, and approaches for monitoring risk over time. The senior accountable official for risk management (agency head or designated official) aligns information security management processes with strategic, operational, and budgetary planning processes. The risk executive function, led by the senior accountable official for risk management, can facilitate consistent application of the risk management strategy organization-wide. The risk management strategy can be informed by security and privacy risk-related inputs from other sources, both internal and external to the organization, to ensure that the strategy is broad-based and comprehensive. The supply chain risk management strategy described in PM-30 can also provide useful inputs to the organization- wide risk management strategy."
+          },
+          "source_type": "Body",
+          "text": "Discussion: An organization-wide risk management strategy includes an expression of the security and privacy risk tolerance for the organization, security and privacy risk mitigation strategies, acceptable risk assessment methodologies, a process for evaluating security and privacy risk across the organization with respect to the organization\u2019s risk tolerance, and approaches for monitoring risk over time. The senior accountable official for risk management (agency head or designated official) aligns information security management processes with strategic, operational, and budgetary planning processes. The risk executive function, led by the senior accountable official for risk management, can facilitate consistent application of the risk management strategy organization-wide. The risk management strategy can be informed by security and privacy risk-related inputs from other sources, both internal and external to the organization, to ensure that the strategy is broad-based and comprehensive. The supply chain risk management strategy described in PM-30 can also provide useful inputs to the organization-wide risk management strategy.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.2978528725980508,
+            0.8341911664975235,
+            0.34568967722883126
+          ],
+          "font_name": "TT0",
+          "font_size": 10.019998550415039,
+          "id": "actual:p235:block:5",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              521.3400268554688,
+              386.8045654296875,
+              34.5
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.019998550415039,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  AC-1, AU-1, AT-1, CA-1, CA-2, CA-5, CA-6, CA-7, CM-1, CP-1, IA-1, IR-1, MA-1, MP-1, PE-1, PL-1, PL-2, PM-2, PM-8, PM-18, PM-28, PM-30, PS-1, PT-1, PT-2, PT-3, RA-1, RA-3, RA-9, SA-1, SA-4, SC-1, SC-38, SI-1, SI-12, SR-1, SR-2."
+          },
+          "source_type": "Body",
+          "text": "Related Controls: AC-1, AU-1, AT-1, CA-1, CA-2, CA-5, CA-6, CA-7, CM-1, CP-1, IA-1, IR-1, MA-1, MP-1, PE-1, PL-1, PL-2, PM-2, PM-8, PM-18, PM-28, PM-30, PS-1, PT-1, PT-2, PT-3, RA-1, RA-3, RA-9, SA-1, SA-4, SC-1, SC-38, SI-1, SI-12, SR-1, SR-2.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.35171651358556266,
+            0.4090395160749847,
+            0.3686442519679214
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p235:block:6",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              503.1600036621094,
+              126.58267211914062,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control Enhancements:  None."
+          },
+          "semantic_role": "nist_control_enhancements_none",
+          "source_type": "Body",
+          "text": "Control Enhancements: None.",
+          "type": "labeled_enhancements"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.3747468042855311,
+            0.793733933392693,
+            0.3916745426678898
+          ],
+          "font_name": "TT0",
+          "font_size": 10.083871841430664,
+          "id": "actual:p235:block:7",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              484.9200134277344,
+              362.4720153808594,
+              12.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.083871841430664,
+            "header_level": null,
+            "is_bold": false,
+            "text": "References:  [OMB A-130], [SP 800-30], [SP 800-37], [SP 800-39], [SP 800-161], [IR 8023]."
+          },
+          "semantic_role": "reference_lead",
+          "source_type": "Body",
+          "text": "References: [OMB A-130], [SP 800-30], [SP 800-37], [SP 800-39], [SP 800-161], [IR 8023].",
+          "type": "reference"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.4050653631036932,
+            0.40406141094132964,
+            0.42430812180644334
+          ],
+          "font_name": "TT2",
+          "font_size": 10.979999542236328,
+          "id": "actual:p235:block:8",
+          "is_bold": true,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              90.0,
+              459.7799987792969,
+              162.3133087158203,
+              10.980010986328125
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT2",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0958082675933838,
+                "text_len": 27,
+                "title_case_ratio": 1.0,
+                "word_count": 3
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "PM-10 AUTHORIZATION PROCESS"
+            },
+            "is_bold": true,
+            "text": "PM-10 AUTHORIZATION PROCESS"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "PM-10 AUTHORIZATION PROCESS",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.429822594228417,
+            0.25978078405841504,
+            0.44675033261077574
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p235:block:9",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              441.29998779296875,
+              35.20025634765625,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control:"
+          },
+          "semantic_role": "nist_field_label",
+          "source_type": "Body",
+          "text": "Control:",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.4527013759420376,
+            0.8272144093232996,
+            0.48516518178612295
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p235:block:10",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              410.87542724609375,
+              382.5587158203125,
+              22.324554443359375
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "a. Manage the security and privacy state of organizational systems and the environments in which those systems operate through authorization processes;"
+          },
+          "source_type": "List",
+          "text": "a. Manage the security and privacy state of organizational systems and the environments in which those systems operate through authorization processes;",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.49111137004813765,
+            0.848994535558364,
+            0.523575175892223
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p235:block:11",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              380.4547119140625,
+              395.86920166015625,
+              22.324554443359375
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "b. Designate individuals to fulfill specific roles and responsibilities within the organizational risk management process; and"
+          },
+          "source_type": "List",
+          "text": "b. Designate individuals to fulfill specific roles and responsibilities within the organizational risk management process; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.2058824028065002,
+            0.5295972727765941,
+            0.8420586679496017,
+            0.5465250111589528
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p235:block:12",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.00003051757812,
+              362.2784423828125,
+              391.6116638183594,
+              10.019989013671875
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "c. Integrate the authorization processes into an organization-wide risk management program."
+          },
+          "source_type": "List",
+          "text": "c. Integrate the authorization processes into an organization-wide risk management program.",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20583313586665133,
+            0.5525498438363123,
+            0.8359376994612949,
+            0.6774654195766256
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p235:block:13",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              125.96987915039062,
+              258.5735778808594,
+              387.9274597167969,
+              95.54641723632812
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Authorization processes for organizational systems and environments of operation require the implementation of an organization-wide risk management process and associated security and privacy standards and guidelines. Specific roles for risk management processes include a risk executive (function) and designated authorizing officials for each organizational system and common control provider. The authorization processes for the organization are integrated with continuous monitoring processes to facilitate ongoing understanding and acceptance of security and privacy risks to organizational operations, organizational assets, individuals, other organizations, and the Nation."
+          },
+          "source_type": "Body",
+          "text": "Discussion: Authorization processes for organizational systems and environments of operation require the implementation of an organization-wide risk management process and associated security and privacy standards and guidelines. Specific roles for risk management processes include a risk executive (function) and designated authorizing officials for each organizational system and common control provider. The authorization processes for the organization are integrated with continuous monitoring processes to facilitate ongoing understanding and acceptance of security and privacy risks to organizational operations, organizational assets, individuals, other organizations, and the Nation.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.6834589640299479,
+            0.4391259087456597,
+            0.700386663880011
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020002365112305,
+          "id": "actual:p235:block:14",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              240.4199981689453,
+              145.00958251953125,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020002365112305,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  CA-6, CA-7, PL-2."
+          },
+          "source_type": "Body",
+          "text": "Related Controls: CA-6, CA-7, PL-2.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.7064892547299163,
+            0.4090395160749847,
+            0.7234169545799795
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p235:block:15",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              222.17999267578125,
+              126.58267211914062,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control Enhancements:  None."
+          },
+          "semantic_role": "nist_control_enhancements_none",
+          "source_type": "Body",
+          "text": "Control Enhancements: None.",
+          "type": "labeled_enhancements"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.7294437909367109,
+            0.5478516123653238,
+            0.746371490786774
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020002365112305,
+          "id": "actual:p235:block:16",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              204.0,
+              211.5396728515625,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020002365112305,
+            "header_level": null,
+            "is_bold": false,
+            "text": "References:  [SP 800-37], [SP 800-39], [SP 800-181]."
+          },
+          "semantic_role": "reference_lead",
+          "source_type": "Body",
+          "text": "References: [SP 800-37], [SP 800-39], [SP 800-181].",
+          "type": "reference"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.7598381427803425,
+            0.5497528774286408,
+            0.779080862950797
+          ],
+          "font_name": "TT2",
+          "font_size": 10.979999542236328,
+          "id": "actual:p235:block:17",
+          "is_bold": true,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              90.0,
+              178.8000030517578,
+              248.89724731445312,
+              10.979995727539062
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT2",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0958082675933838,
+                "text_len": 45,
+                "title_case_ratio": 1.0,
+                "word_count": 6
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "PM-11 MISSION AND BUSINESS PROCESS DEFINITION"
+            },
+            "is_bold": true,
+            "text": "PM-11 MISSION AND BUSINESS PROCESS DEFINITION"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "PM-11 MISSION AND BUSINESS PROCESS DEFINITION",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.7845195423473011,
+            0.25978078405841504,
+            0.8014472421973643
+          ],
+          "font_name": "TT2",
+          "font_size": 9.510000228881836,
+          "id": "actual:p235:block:18",
+          "is_bold": true,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              90.0,
+              160.3800048828125,
+              71.20025634765625,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 9.510000228881836,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": true,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.510000228881836,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9491018056869507,
+                "text_len": 8,
+                "title_case_ratio": 1.0,
+                "word_count": 1
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "short_colon_negative",
+                "single_word_negative"
+              ],
+              "title_text": "Control:"
+            },
+            "is_bold": true,
+            "text": "Control:"
+          },
+          "semantic_role": "nist_field_label",
+          "source_type": "Body",
+          "text": "Control:",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.8074740785540957,
+            0.8526870627808415,
+            0.8553220960828993
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p235:block:19",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              117.71111297607422,
+              398.14373779296875,
+              34.508888244628906
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "a. Define organizational mission and business processes with consideration for information security and privacy and the resulting risk to organizational operations, organizational assets, individuals, other organizations, and the Nation; and"
+          },
+          "source_type": "List",
+          "text": "a. Define organizational mission and business processes with consideration for information security and privacy and the resulting risk to organizational operations, organizational assets, individuals, other organizations, and the Nation; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.8612683228772096,
+            0.8433459911471098,
+            0.8937320901889994
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p235:block:20",
+          "is_bold": false,
+          "page": 235,
+          "pdf_page_index": 234,
+          "raw": {
+            "bbox": [
+              126.0,
+              87.29039764404297,
+              392.395263671875,
+              22.324562072753906
+            ],
+            "block_type": "List",
+            "confidence": 0.8500000238418579,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "b. Determine information protection and personally identifiable information processing needs arising from the defined mission and business processes; and"
+          },
+          "source_type": "List",
+          "text": "b. Determine information protection and personally identifiable information processing needs arising from the defined mission and business processes; and",
+          "type": "list"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 235,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 234
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

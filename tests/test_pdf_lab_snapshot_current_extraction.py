@@ -231,6 +231,22 @@ def test_table_text_remove_space_inside_wrapped_bracketed_citation() -> None:
     assert "[OMB A- 130]" not in text
 
 
+def test_matched_line_text_removes_space_after_wrapped_hyphen() -> None:
+    mod = _load_module()
+    lines = [
+        {"text": "can also provide useful inputs to the organization-"},
+        {"text": "wide risk management strategy."},
+    ]
+
+    text = mod._text_from_lines_if_only_spacing_differs(
+        "can also provide useful inputs to the organization- wide risk management strategy.",
+        lines,
+    )
+
+    assert "organization-wide risk management strategy" in text
+    assert "organization- wide risk management strategy" not in text
+
+
 def test_merge_footnote_continuation_lines_into_numbered_note() -> None:
     mod = _load_module()
     elements = [
