@@ -1,0 +1,29 @@
+{
+  "commands": [
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z/page157_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z/current_evidence --page-timeout-seconds 90"
+  ],
+  "current_evidence_commit": "9f44c6d54a3cd42d25be83d7a5818ca34d3136e3",
+  "current_evidence_generated_at": "2026-07-29T20:53:42.657378+00:00",
+  "current_evidence_out": "artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z/current_evidence",
+  "entries": [
+    {
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z/current_evidence/pages/page_0157/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z/current_evidence/pages/page_0157/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z/current_evidence/pages/page_0157/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Suppress the parser-artifact table block while preserving ordinary non-table body text.",
+      "extraction_defect": "Current extraction emits a top-level table spanning page chrome and only Control Enhancements/References none boilerplate.",
+      "finding_id": "p157_full_page_chrome_false_table",
+      "page": 157,
+      "patch_hint": "Update the existing NIST page157 table_false_positive_suppression_rule to match current serialized table text while keeping raw-row content guards."
+    }
+  ],
+  "pages": [
+    157
+  ],
+  "schema": "pdf_oxide.nist_historical_finding_reconciliation.v1"
+}

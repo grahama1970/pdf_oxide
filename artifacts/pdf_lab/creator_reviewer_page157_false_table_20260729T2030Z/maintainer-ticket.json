@@ -1,0 +1,24 @@
+{
+  "schema_version": "skill.maintainer_ticket.v1",
+  "skill_id": "pdf-lab",
+  "title": "pdf-lab: job verify failed (known_artifact_present)",
+  "body": "## Ticket type\nbug\n\n## Target path\nskills/pdf-lab\nskills/pdf-lab/agents/pdf-lab/AGENTS.md\n\n## Maintainer route\nbackend_python_or_skill_runtime\n\n## Requested repair agent\ncoder\n\n## Labels\nskill-bug\nroute:backend_python_or_skill_runtime\nagent:skill-maintainer\n\n## Current state\nPost-run verifier returned **FAIL** for `job` job `/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z`.\n\nFailed checks:\n- `known_artifact_present`: no known pdf-lab artifacts found\n\nSummary: `{\"artifact_count\": 0}`\n\n## Requested outcome\nFix the skill/runtime so `./run.sh verify --job-dir <job>` passes on the repro job and `./sanity.sh` stays green.\n\n## Required proof\n```bash\ncd skills/pdf-lab\n./sanity.sh\n./run.sh verify --job-dir /home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z\n```\n\nReference repro:\n```bash\ncd skills/pdf-lab && ./run.sh verify --job-dir /home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z\n```\n\nAttach or reference `verify-receipt.json` from the failing job.\n\n## Non-goals\n- Do not change unrelated skills.\n- Runtime worker must not self-commit; `skill-maintainer` owns patch + push.\n- WebGPT review belongs in maintainer cycle, not in every runtime run.\n\n## Worker notes\npdf-lab runtime verifier failed; maintainers own code repair and commit.\n",
+  "labels": [
+    "skill-bug",
+    "route:backend_python_or_skill_runtime",
+    "agent:skill-maintainer"
+  ],
+  "verify_status": "FAIL",
+  "job_dir": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z",
+  "issue": {
+    "repo": "grahama1970/agent-skills",
+    "title": "pdf-lab: job verify failed (known_artifact_present)",
+    "labels": [
+      "skill-bug",
+      "route:backend_python_or_skill_runtime",
+      "agent:skill-maintainer"
+    ],
+    "dry_run": true,
+    "body_preview": "## Ticket type\nbug\n\n## Target path\nskills/pdf-lab\nskills/pdf-lab/agents/pdf-lab/AGENTS.md\n\n## Maintainer route\nbackend_python_or_skill_runtime\n\n## Requested repair agent\ncoder\n\n## Labels\nskill-bug\nroute:backend_python_or_skill_runtime\nagent:skill-maintainer\n\n## Current state\nPost-run verifier returned **FAIL** for `job` job `/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z`.\n\nFailed checks:\n- `known_artifact_present`: no known pdf"
+  }
+}

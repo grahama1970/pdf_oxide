@@ -3762,7 +3762,7 @@
       "fix_target": "nist_preset",
       "guards": {
         "do_not_apply_if": [
-          "table text is non-empty",
+          "raw rows contain content other than chrome plus Control Enhancements: None and References: None",
           "bbox height is less than 0.75 page height",
           "raw row_count < 20 or column_count < 10",
           "non-chrome raw content rows are not limited to Control Enhancements: None and References: None"
@@ -3786,7 +3786,7 @@
         "min_bbox_height": 0.75,
         "min_column_count": 10,
         "min_row_count": 20,
-        "require_empty_text": true,
+        "require_empty_text": false,
         "required_row_patterns": [
           "\\bControl\\s+Enhancements:\\s+None\\b",
           "\\bReferences:\\s+None\\.?\\b"

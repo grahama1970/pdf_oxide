@@ -358,10 +358,16 @@ def test_nist_false_positive_table_is_removed_before_body_suppression():
             "source_type": "table",
             "type": "table",
             "bbox": [0.034, 0.045, 0.853, 0.952],
-            "text": "",
+            "text": (
+                "| NIST | P | 00-53, | R EV | . | ECURI | Y | ND RI | ACY ONTROLS\n"
+                "| Control | Enhancements: | None |\n"
+                "| References: | None. |\n"
+                "T | h | si | p u | b | cil | a | t oi | n"
+            ),
             "raw": {
                 "row_count": 53,
-                "column_count": 19,
+                "column_count": 0,
+                "col_count": 19,
                 "rows": [
                     {"cells": [{"text": "NIST"}, {"text": "SP 800-53"}]},
                     {"cells": [{"text": "Control"}, {"text": "Enhancements:"}, {"text": "None"}]},

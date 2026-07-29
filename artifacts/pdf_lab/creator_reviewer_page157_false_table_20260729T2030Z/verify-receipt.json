@@ -1,0 +1,24 @@
+{
+  "schema_version": "skill.runtime_verify.v1",
+  "skill_id": "pdf-lab",
+  "mode": "job",
+  "job_dir": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z",
+  "verified_at": "2026-07-29T20:55:01.159376+00:00",
+  "status": "FAIL",
+  "stable": false,
+  "checks": [
+    {
+      "name": "job_dir_exists",
+      "passed": true,
+      "detail": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z"
+    },
+    {
+      "name": "known_artifact_present",
+      "passed": false,
+      "detail": "no known pdf-lab artifacts found"
+    }
+  ],
+  "summary": {
+    "artifact_count": 0
+  }
+}

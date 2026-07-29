@@ -1,0 +1,44 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page157_false_table_defects.json",
+  "checks": [
+    {
+      "actual_label": "table",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.03441176383323919,
+            0.044999984779743235,
+            0.8529026835572486,
+            0.9518181820108433
+          ],
+          "column_count": 0,
+          "id": "actual:p157:table:0",
+          "iou": 1.0,
+          "row_count": 53,
+          "source_type": "table",
+          "text": "| NIST | P | 00-53, | R EV | . | | | ECURI | Y | ND RI | ACY ONTROLS | OR | NFORMATI | N | YSTEMS ND | | RGANI | ATI NS | | | | | | | | | _________________________________________________________________________________________________ | | | | Control | | Enhancements: | None | | | | | | | | | | | | | | | References: | None. | | | | | | | | | | | | T | | | | | | | | | | | | | | | | | | h | | | | | | | | | | | | | | | | | | si | | | | | | | | | | | | | | | | | | p u | | | | | | | | | | | | | | | | | | b | | | | | | | | | | | | | | | | | | cil | | | | | | | | | | | | | | | | | | a | | | | | | | | | | | | | | | | | | t oi | | | | | | | | | | | | | | | | | | n | | | | | | | | | | | | | | | | | | si | | | | | | | | | | | | | | | | | | a | | | | | | | | | | | | | | | | | | v a | | | | | | | | | | | | | | | | | | ali | | | | | | | | | | | | | | | | | | b | | | | | | | | | | | | | | | | | | el | | | | | | | | | | | | | | | | | | f er | | | | | | | | | | | | | | | | | | e | | | | | | | | | | | | | | | | | | o f | | | | | | | | | | | | | | | | | | c h | | | | | | | | | | | | | | | | | | a | | | | | | | | | | | | | | | | | | gr | | | | | | | | | | | | | | | | | | e | | | | | | | | | | | | | | | | | | f or | | | | | | | | | | | | | | | | | | m | | | | | | | | | | | | | | | | | | : | | | | | | | | | | | | | | | | | | h | | | | | | | | | | | | | | | | | | t pt | | | | | | | | | | | | | | | | | | s | | | | | | | | | | | | | | | | | | /: | | | | | | | | | | | | | | | | | | d/ | | | | | | | | | | | | | | | | | | o | | | | | | | | | | | | | | | | | | i o. | | | | | | | | | | | | | | | | | | gr | | | | | | | | | | | | | | | | | | 1/ | | | | | | | | | | | | | | | | | | 0 | | | | | | | | | | | | | | | | | | 6. | | | | | | | | | | | | | | | | | | 0 2 | | | | | | | | | | | | | | | | | | 8 | | | | | | | | | | | | | | | | | | N/ | | | | | | | | | | | | | | | | | | SI | | | | | | | | | | | | | | | | | | T | | | | | | | | | | | | | | | | | | S. | | | | | | | | | | | | | | | | | | P | | | | | | | | | | | | | | | | | | 8. | | | | | | | | | | | | | | | | | | 0 0 | | | | | | | | | | | | | | | | | | 5- | | | | | | | | | | | | | | | | | | 3 | | | | | | | | | | | | | | | | | | 5r | | | | | | | | | | | | | | | | | | | | CHAPTER | HREE | | | | | | | | | | | | | | AGE | 30",
+          "type": "table"
+        }
+      ],
+      "defect_class": "TABLE_FALSE_POSITIVE",
+      "expected_label": "no_table",
+      "expected_state": "absent_top_level",
+      "id": "page157-full-page-chrome-artifact-is-not-table",
+      "spurious_table_count": 1,
+      "status": "FAIL",
+      "text": "Control Enhancements: None"
+    }
+  ],
+  "created_at": "2026-07-29T20:52:39.144327+00:00",
+  "errors": [],
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z/pre_patch_evidence/pages/page_0157/release_extraction_blocks.json",
+  "page": 157,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "FAIL",
+  "summary": {
+    "check_count": 1,
+    "failed": 1,
+    "passed": 0
+  }
+}

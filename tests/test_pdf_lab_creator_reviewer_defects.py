@@ -17,6 +17,7 @@ PAGE22_TABLE_TEXT_FIXTURE = (
 )
 PAGE186_TEXT_FIXTURE = REPO / "tests/fixtures/pdf_lab/page186_list_hyphen_wrap_spacing_defects.json"
 PAGE235_TEXT_FIXTURE = REPO / "tests/fixtures/pdf_lab/page235_body_hyphen_wrap_spacing_defects.json"
+PAGE157_TABLE_FIXTURE = REPO / "tests/fixtures/pdf_lab/page157_false_table_defects.json"
 PAGE403_TABLE_FIXTURE = (
     REPO / "tests/fixtures/pdf_lab/page403_reference_header_table_false_positive_defects.json"
 )
@@ -51,6 +52,10 @@ PAGE186_TEXT_EXTRACTION = (
 PAGE235_TEXT_EXTRACTION = (
     REPO
     / "artifacts/pdf_lab/creator_reviewer_page235_body_hyphen_wrap_spacing_20260729T2010Z/current_evidence/pages/page_0235/release_extraction_blocks.json"
+)
+PAGE157_TABLE_EXTRACTION = (
+    REPO
+    / "artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z/current_evidence/pages/page_0157/release_extraction_blocks.json"
 )
 PAGE403_TABLE_EXTRACTION = (
     REPO
@@ -323,6 +328,46 @@ def test_page403_current_extraction_suppresses_reference_header_false_table():
     assert check["id"] == "page403-reference-header-strip-is-not-table"
     assert check["candidate_count"] == 0
     assert check["spurious_table_count"] == 0
+
+
+def test_page157_current_extraction_suppresses_full_page_false_table():
+    result = validator.validate(PAGE157_TABLE_FIXTURE, PAGE157_TABLE_EXTRACTION)
+
+    assert result["status"] == "PASS"
+    assert result["summary"] == {"check_count": 1, "passed": 1, "failed": 0}
+    check = result["checks"][0]
+    assert check["id"] == "page157-full-page-chrome-artifact-is-not-table"
+    assert check["candidate_count"] == 0
+    assert check["spurious_table_count"] == 0
+
+
+def test_page157_validator_fails_if_full_page_false_table_reappears(tmp_path):
+    extraction = json.loads(PAGE157_TABLE_EXTRACTION.read_text())
+    extraction["blocks"].append(
+        {
+            "id": "actual:p157:table:synthetic-full-page-chrome",
+            "page": 157,
+            "source_type": "table",
+            "type": "table",
+            "bbox": [
+                0.03441176383323919,
+                0.044999984779743235,
+                0.8529026835572486,
+                0.9518181820108433,
+            ],
+            "text": "Control Enhancements: None\nReferences: None.",
+            "raw": {"row_count": 53, "column_count": 0, "col_count": 19},
+        }
+    )
+    false_table_path = tmp_path / "page157_full_page_false_table.json"
+    false_table_path.write_text(json.dumps(extraction), encoding="utf-8")
+
+    result = validator.validate(PAGE157_TABLE_FIXTURE, false_table_path)
+
+    assert result["status"] == "FAIL"
+    failed = [check for check in result["checks"] if check["status"] == "FAIL"]
+    assert [check["id"] for check in failed] == ["page157-full-page-chrome-artifact-is-not-table"]
+    assert failed[0]["spurious_table_count"] == 1
 
 
 def test_page403_validator_fails_if_reference_header_false_table_reappears(tmp_path):
