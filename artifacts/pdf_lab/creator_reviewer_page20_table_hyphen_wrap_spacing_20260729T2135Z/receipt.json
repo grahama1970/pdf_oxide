@@ -1,0 +1,67 @@
+{
+  "schema": "pdf_oxide.pdf_lab.page_hardening_receipt.v1",
+  "candidate": "page20_table_hyphen_wrap_spacing",
+  "created_at": "2026-07-29T21:16:00+00:00",
+  "immutable_goal_slice": "current unresolved extraction candidate hardening: repair table-cell hyphen-wrap spacing in page20 revision-history table",
+  "mocked": false,
+  "live": false,
+  "exercised": "local deterministic extraction materialization for NIST_SP_800-53r5 page 20 plus creator-reviewer text validator and targeted pytest/ruff gates",
+  "does_not_prove": "entire all-candidates queue complete or external ask/browser-provider behavior",
+  "code_changes": [
+    "scripts/pdf_lab/snapshot_current_extraction.py",
+    "tests/test_pdf_lab_snapshot_current_extraction.py",
+    "tests/test_pdf_lab_creator_reviewer_defects.py",
+    "tests/fixtures/pdf_lab/page20_table_hyphen_wrap_spacing_defects.json"
+  ],
+  "pre_patch_evidence": {
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/pre_patch_evidence/pages/page_0020/page.png",
+    "overlay_image": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/pre_patch_evidence/pages/page_0020/bbox_overlay_current.png",
+    "extraction_json": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/pre_patch_evidence/pages/page_0020/release_extraction_blocks.json",
+    "failing_validation": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/failing_validation_result.json",
+    "failing_exit_code": "1"
+  },
+  "post_patch_evidence": {
+    "manifest": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/current_evidence/manifest.json",
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/current_evidence/pages/page_0020/page.png",
+    "overlay_image": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/current_evidence/pages/page_0020/bbox_overlay_current.png",
+    "extraction_json": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/current_evidence/pages/page_0020/release_extraction_blocks.json",
+    "validation_result": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/validation_result.json",
+    "validation_exit_code": "0"
+  },
+  "commands": [
+    {
+      "cmd": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page20_table_hyphen_wrap_spacing_defects.json --extraction-json artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/pre_patch_evidence/pages/page_0020/release_extraction_blocks.json --out artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/failing_validation_result.json",
+      "exit_code": 1,
+      "proved": "pre-patch current extraction serialized page20 table cell text as DENY-BY- EXCEPTION"
+    },
+    {
+      "cmd": "uv run python scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/page20_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/current_evidence --page-timeout-seconds 90",
+      "exit_code": 0,
+      "proved": "fresh post-patch page20 evidence materialized"
+    },
+    {
+      "cmd": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page20_table_hyphen_wrap_spacing_defects.json --out artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/validation_result.json",
+      "exit_code": 0,
+      "proved": "post-patch creator-reviewer text check passes for page20"
+    },
+    {
+      "cmd": "python3 -m py_compile scripts/pdf_lab/snapshot_current_extraction.py scripts/pdf_lab/validate_creator_reviewer_defects.py python/pdf_oxide/presets/applier.py && uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_nist_field_split_preset.py tests/test_nist_table_duplicate_suppression.py tests/test_nist_ruled_table_materialization.py tests/test_nist_page456_control_table_headers.py tests/test_nist_top_header_chrome_preset.py -q",
+      "exit_code": 0,
+      "proved": "targeted regression suite passed: 75 passed"
+    },
+    {
+      "cmd": "uv run ruff check scripts/pdf_lab/snapshot_current_extraction.py scripts/pdf_lab/validate_creator_reviewer_defects.py python/pdf_oxide/presets/applier.py tests/test_pdf_lab_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_nist_field_split_preset.py tests/test_nist_table_duplicate_suppression.py && uv run ruff format --check scripts/pdf_lab/snapshot_current_extraction.py scripts/pdf_lab/validate_creator_reviewer_defects.py tests/test_pdf_lab_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_nist_field_split_preset.py tests/test_nist_table_duplicate_suppression.py",
+      "exit_code": 0,
+      "proved": "lint and format checks passed"
+    }
+  ],
+  "skill_runtime_verify": {
+    "status": "FAIL",
+    "blocks_local_page20_extraction_proof": false,
+    "command": "/home/graham/workspace/experiments/agent-skills/skills/pdf-lab/run.sh verify --job-dir /home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z",
+    "exit_code": 1,
+    "receipt": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/verify-receipt.json",
+    "maintainer_ticket_packet": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/maintainer-ticket.json",
+    "reason": "skill verifier does not recognize project creator-reviewer receipt/validation artifact layout"
+  }
+}

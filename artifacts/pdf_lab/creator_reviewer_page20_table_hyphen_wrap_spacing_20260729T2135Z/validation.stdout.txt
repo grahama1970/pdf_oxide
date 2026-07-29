@@ -1,0 +1,47 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page20_table_hyphen_wrap_spacing_defects.json",
+  "checks": [
+    {
+      "actual_label": "table",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.907727270415335
+          ],
+          "contains_expected_text": true,
+          "contains_forbidden_text": false,
+          "id": "actual:p20:table:0",
+          "iou": 1.0,
+          "matches_expected_label": true,
+          "source_type": "table",
+          "text": "DATE | TYPE | REVISION | PAGE 12-10-2020 | Editorial | Control AC-19 Discussion: Change \u201cMany controls for mobile devices are reflected in other controls allocated to the initial control baselines as starting points for the development of security plans and overlays using the tailoring process. There may also be some overlap by the security controls within the different families of controls.\u201d to \u201cMany safeguards for mobile devices are reflected in other controls.\u201d | 52 12-10-2020 | Editorial | Control AC-20 Discussion: Change \u201corganizational systems\u201d to \u201corganizational systems,\u201d | 53 12-10-2020 | Editorial | Control Enhancement AC-20(3) Discussion: Change \u201cAC-20(6)\u201d to \u201cAC-20 b.\u201d | 54 12-10-2020 | Editorial | Control AT-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 59 12-10-2020 | Editorial | Control AT-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 59 12-10-2020 | Editorial | Control AT-2d.: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 60 12-10-2020 | Editorial | Control AT-2 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 60 12-10-2020 | Editorial | Control AT-3c.: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 62 12-10-2020 | Editorial | Control AT-3 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 63 12-10-2020 | Editorial | Control AT-3 Related Controls: Change \u201cIR-10\u201d to \u201cIR-4\u201d | 63 12-10-2020 | Editorial | Control AT-6 Discussion: Change \u201cassessment and update\u201d to \u201cevaluation and update\u201d | 64 12-10-2020 | Editorial | Control AT-6 Discussion: Change \u201corganization training\u201d to \u201corganizational training\u201d | 64 12-10-2020 | Editorial | Control AU-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 65 12-10-2020 | Editorial | Control AU-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 65 12-10-2020 | Editorial | Control CA-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 83 12-10-2020 | Editorial | Control CA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 83 12-10-2020 | Editorial | Control CA-1 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 84 12-10-2020 | Editorial | Control CA-1 References: Add \u201c[SP 800-137A],\u201d | 84 12-10-2020 | Editorial | Control Enhancement CA-2(2): Change \u201c data loss assessment \u201d to \u201cdata loss assessment;\u201d | 86 12-10-2020 | Editorial | Control CA-3 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 88 12-10-2020 | Editorial | Control CA-7 Discussion: Change \u201cSC-18c\u201d to \u201cSC-18b\u201d | 91 12-10-2020 | Editorial | Control CM-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 96 12-10-2020 | Editorial | Control CM-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 96 12-10-2020 | Editorial | Control CM-2b.2.: Change \u201cAssignment\u201d to \u201cAssignment:\u201d | 97 12-10-2020 | Editorial | Control Enhancement CM-7(4) Title: Change \u201cUNAUTHORIZED SOFTWARE\u201d to \u201cUNAUTHORIZED SOFTWARE \u2013 DENY-BY-EXCEPTION\u201d | 106",
+          "type": "table"
+        }
+      ],
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "expected_label": "table",
+      "expected_state": "present",
+      "expected_text": "DENY-BY-EXCEPTION",
+      "forbidden_text": "DENY-BY- EXCEPTION",
+      "id": "page20-table-deny-by-exception-hyphen-wrap-spacing",
+      "matching_text_count": 1,
+      "status": "PASS",
+      "text": "Control Enhancement CM-7(4) Title"
+    }
+  ],
+  "created_at": "2026-07-29T21:14:18.243898+00:00",
+  "errors": [],
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/current_evidence/pages/page_0020/release_extraction_blocks.json",
+  "page": 20,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "PASS",
+  "summary": {
+    "check_count": 1,
+    "failed": 0,
+    "passed": 1
+  }
+}

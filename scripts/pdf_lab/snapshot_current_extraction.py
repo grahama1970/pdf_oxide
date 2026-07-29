@@ -704,7 +704,11 @@ def _bbox_values(bbox: Any) -> list[float]:
 def _clean_table_cell(value: Any) -> str:
     if value is None:
         return ""
-    return _normalize_bracketed_citation_wraps(" ".join(str(value).split()))
+    lines = [{"text": line} for line in str(value).splitlines()]
+    repaired = _join_text_lines_preserving_hyphen_wraps(lines)
+    if not repaired:
+        repaired = " ".join(str(value).split())
+    return _normalize_bracketed_citation_wraps(repaired)
 
 
 _QID_MARKER_RE = re.compile(r"\[QID_[^\]]+\]", re.IGNORECASE)

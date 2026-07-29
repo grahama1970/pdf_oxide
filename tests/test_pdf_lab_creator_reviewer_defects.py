@@ -12,6 +12,9 @@ PAGE30_TEXT_FIXTURE = REPO / "tests/fixtures/pdf_lab/page30_body_hyphen_word_joi
 PAGE19_TABLE_TEXT_FIXTURE = (
     REPO / "tests/fixtures/pdf_lab/page19_table_citation_hyphen_spacing_defects.json"
 )
+PAGE20_TABLE_TEXT_FIXTURE = (
+    REPO / "tests/fixtures/pdf_lab/page20_table_hyphen_wrap_spacing_defects.json"
+)
 PAGE22_TABLE_TEXT_FIXTURE = (
     REPO / "tests/fixtures/pdf_lab/page22_table_citation_hyphen_spacing_defects.json"
 )
@@ -42,6 +45,10 @@ PAGE30_TEXT_EXTRACTION = (
 PAGE19_TABLE_TEXT_EXTRACTION = (
     REPO
     / "artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/current_evidence/pages/page_0019/release_extraction_blocks.json"
+)
+PAGE20_TABLE_TEXT_EXTRACTION = (
+    REPO
+    / "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/current_evidence/pages/page_0020/release_extraction_blocks.json"
 )
 PAGE22_TABLE_TEXT_EXTRACTION = (
     REPO
@@ -215,6 +222,46 @@ def test_page19_validator_fails_if_table_citation_hyphen_space_reappears(tmp_pat
     assert result["status"] == "FAIL"
     failed = [check for check in result["checks"] if check["status"] == "FAIL"]
     assert [check["id"] for check in failed] == ["page19-table-omb-a130-citation-hyphen-spacing"]
+    assert failed[0]["matching_text_count"] == 0
+    assert failed[0]["candidates"][0]["contains_forbidden_text"] is True
+
+
+def test_page20_current_table_text_satisfies_hyphen_wrap_spacing_contract():
+    result = validator.validate(PAGE20_TABLE_TEXT_FIXTURE, PAGE20_TABLE_TEXT_EXTRACTION)
+
+    assert result["status"] == "PASS"
+    assert result["summary"] == {"check_count": 1, "passed": 1, "failed": 0}
+    check = result["checks"][0]
+    assert check["id"] == "page20-table-deny-by-exception-hyphen-wrap-spacing"
+    assert check["candidate_count"] == 1
+    assert check["matching_text_count"] == 1
+    assert check["candidates"][0]["contains_expected_text"] is True
+    assert check["candidates"][0]["contains_forbidden_text"] is False
+
+
+def test_page20_validator_fails_if_table_hyphen_wrap_space_reappears(tmp_path):
+    extraction = json.loads(PAGE20_TABLE_TEXT_EXTRACTION.read_text())
+    mutated = False
+    for block in extraction["blocks"]:
+        if block.get("id") == "actual:p20:table:0":
+            block["text"] = str(block["text"]).replace(
+                "DENY-BY-EXCEPTION",
+                "DENY-BY- EXCEPTION",
+                1,
+            )
+            mutated = True
+            break
+    assert mutated
+    corrupted_path = tmp_path / "page20_corrupted_table_text.json"
+    corrupted_path.write_text(json.dumps(extraction), encoding="utf-8")
+
+    result = validator.validate(PAGE20_TABLE_TEXT_FIXTURE, corrupted_path)
+
+    assert result["status"] == "FAIL"
+    failed = [check for check in result["checks"] if check["status"] == "FAIL"]
+    assert [check["id"] for check in failed] == [
+        "page20-table-deny-by-exception-hyphen-wrap-spacing"
+    ]
     assert failed[0]["matching_text_count"] == 0
     assert failed[0]["candidates"][0]["contains_forbidden_text"] is True
 

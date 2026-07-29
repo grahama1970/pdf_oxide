@@ -561,3 +561,15 @@ def test_block_elements_repairs_body_text_when_only_spacing_differs() -> None:
     assert elements[0]["id"] == "actual:p30:block:4"
     assert "organization-wide risk management process" in elements[0]["text"]
     assert "organization- widerisk management process" not in elements[0]["text"]
+
+
+def test_clean_table_cell_repairs_hyphen_wrapped_cell_lines() -> None:
+    mod = _load_module()
+
+    text = mod._clean_table_cell(
+        "Control Enhancement CM-7(4) Title: Change “UNAUTHORIZED SOFTWARE” to "
+        "“UNAUTHORIZED SOFTWARE – DENY-BY-\nEXCEPTION”"
+    )
+
+    assert "DENY-BY-EXCEPTION" in text
+    assert "DENY-BY- EXCEPTION" not in text

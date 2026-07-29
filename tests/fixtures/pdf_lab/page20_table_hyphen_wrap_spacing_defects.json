@@ -1,0 +1,32 @@
+{
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defects.v1",
+  "page": 20,
+  "evidence": {
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/current_evidence/pages/page_0020/page.png",
+    "overlay_image": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/current_evidence/pages/page_0020/bbox_overlay_current.png",
+    "extraction_json": "artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/current_evidence/pages/page_0020/release_extraction_blocks.json"
+  },
+  "checks": [
+    {
+      "id": "page20-table-deny-by-exception-hyphen-wrap-spacing",
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "page": 20,
+      "block_id": "actual:p20:table:0",
+      "region_bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490355647467,
+        0.907727270415335
+      ],
+      "actual_label": "table",
+      "expected_label": "table",
+      "expected_state": "present",
+      "text": "Control Enhancement CM-7(4) Title",
+      "expected_text": "DENY-BY-EXCEPTION",
+      "forbidden_text": "DENY-BY- EXCEPTION",
+      "owner": "pdf_oxide_core",
+      "evidence_reason": "PyMuPDF page text wraps the phrase after DENY-BY- and continues with EXCEPTION. The structured table serialization should dewrap the phrase as DENY-BY-EXCEPTION rather than inserting a post-hyphen space.",
+      "proof_command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page20_table_hyphen_wrap_spacing_defects.json"
+    }
+  ]
+}
