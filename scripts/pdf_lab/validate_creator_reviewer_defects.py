@@ -12,7 +12,11 @@ from typing import Any
 
 SCHEMA = "pdf_oxide.pdf_lab.creator_reviewer_defects.v1"
 RESULT_SCHEMA = "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1"
-SUPPORTED_DEFECT_CLASSES = {"REGION_LABEL_MISMATCH", "TABLE_CELL_TOP_LEVEL_LEAK"}
+SUPPORTED_DEFECT_CLASSES = {
+    "REGION_LABEL_MISMATCH",
+    "REGION_BBOX_MISMATCH",
+    "TABLE_CELL_TOP_LEVEL_LEAK",
+}
 SUPPORTED_EXPECTED_STATES = {"absent_top_level", "present"}
 OWNER_VALUES = {"pdf_oxide_core", "nist_preset", "export_schema", "ui", "external_harness"}
 IGNORED_TOP_LEVEL_TYPES = {"table"}
@@ -24,6 +28,20 @@ def utc_now() -> str:
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def resolve_path(path: Path | str, *, bundle_path: Path | None = None) -> Path:
+    candidate = Path(path)
+    if candidate.is_absolute():
+        return candidate
+
+    candidates = [Path.cwd() / candidate]
+    if bundle_path is not None:
+        candidates.append(bundle_path.parent / candidate)
+    for resolved in candidates:
+        if resolved.exists():
+            return resolved.resolve()
+    return candidates[0].resolve()
 
 
 def normalize_text(value: Any) -> str:
@@ -70,6 +88,15 @@ def bbox_matches_region(block_bbox: list[float], region_bbox: list[float]) -> bo
         bbox_contains(region_bbox, block_bbox, tolerance=0.005)
         or bbox_contains(block_bbox, region_bbox, tolerance=0.005)
         or bbox_iou(block_bbox, region_bbox) >= 0.5
+    )
+
+
+def bbox_edges_close(
+    block_bbox: list[float], region_bbox: list[float], *, tolerance: float = 0.012
+) -> bool:
+    return all(
+        abs(float(actual) - float(expected)) <= tolerance
+        for actual, expected in zip(block_bbox, region_bbox)
     )
 
 
@@ -125,6 +152,8 @@ def validate_bundle_shape(bundle: dict[str, Any]) -> list[str]:
         block_id = check.get("block_id")
         if block_id is not None and not isinstance(block_id, str):
             errors.append(f"{prefix}.block_id must be a string or null")
+        if "bbox_tolerance" in check and not isinstance(check.get("bbox_tolerance"), (int, float)):
+            errors.append(f"{prefix}.bbox_tolerance must be a number")
     return errors
 
 
@@ -213,6 +242,46 @@ def block_candidates_for_region_label_mismatch(
     return candidates
 
 
+def block_candidates_for_region_bbox_mismatch(
+    extraction: dict[str, Any],
+    check: dict[str, Any],
+) -> list[dict[str, Any]]:
+    blocks = extraction.get("blocks") or extraction.get("elements") or []
+    if not isinstance(blocks, list):
+        return []
+
+    text = normalize_text(check.get("text"))
+    block_id = check.get("block_id")
+    region_bbox = check["region_bbox"]
+    tolerance = float(check.get("bbox_tolerance") or 0.012)
+
+    candidates: list[dict[str, Any]] = []
+    for block in blocks:
+        block_bbox = block.get("bbox")
+        if not is_bbox(block_bbox):
+            continue
+        block_text = normalize_text(block.get("text"))
+        id_match = block_id is not None and block.get("id") == block_id
+        text_match = bool(text) and block_text == text
+        if not id_match and not text_match:
+            continue
+        candidates.append(
+            {
+                "id": block.get("id"),
+                "type": block.get("type"),
+                "source_type": block.get("source_type"),
+                "text": block_text,
+                "bbox": block_bbox,
+                "iou": bbox_iou(block_bbox, region_bbox),
+                "matches_expected_label": block.get("type") == check["expected_label"],
+                "matches_expected_bbox": bbox_edges_close(
+                    block_bbox, region_bbox, tolerance=tolerance
+                ),
+            }
+        )
+    return candidates
+
+
 def evaluate_check(extraction: dict[str, Any], check: dict[str, Any]) -> dict[str, Any]:
     if check["defect_class"] == "REGION_LABEL_MISMATCH":
         candidates = block_candidates_for_region_label_mismatch(extraction, check)
@@ -231,6 +300,28 @@ def evaluate_check(extraction: dict[str, Any], check: dict[str, Any]) -> dict[st
             "text": check["text"],
             "candidate_count": len(candidates),
             "matching_label_count": len(label_matches),
+            "candidates": candidates,
+        }
+
+    if check["defect_class"] == "REGION_BBOX_MISMATCH":
+        candidates = block_candidates_for_region_bbox_mismatch(extraction, check)
+        expected_state = check["expected_state"]
+        bbox_matches = [
+            candidate
+            for candidate in candidates
+            if candidate["matches_expected_label"] and candidate["matches_expected_bbox"]
+        ]
+        passed = bool(bbox_matches) if expected_state == "present" else not bbox_matches
+        return {
+            "id": check["id"],
+            "defect_class": check["defect_class"],
+            "status": "PASS" if passed else "FAIL",
+            "expected_state": expected_state,
+            "actual_label": check["actual_label"],
+            "expected_label": check["expected_label"],
+            "text": check["text"],
+            "candidate_count": len(candidates),
+            "matching_bbox_count": len(bbox_matches),
             "candidates": candidates,
         }
 
@@ -274,9 +365,9 @@ def validate(bundle_path: Path, extraction_path: Path | None = None) -> dict[str
         }
 
     evidence = bundle["evidence"]
-    resolved_extraction_path = extraction_path or (bundle_path.parent / evidence["extraction_json"])
-    if not resolved_extraction_path.is_absolute():
-        resolved_extraction_path = (Path.cwd() / resolved_extraction_path).resolve()
+    resolved_extraction_path = resolve_path(
+        extraction_path or evidence["extraction_json"], bundle_path=bundle_path
+    )
     if not resolved_extraction_path.exists():
         return {
             "schema": RESULT_SCHEMA,

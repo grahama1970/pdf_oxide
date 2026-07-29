@@ -450,3 +450,39 @@ def test_rotated_margin_line_fragments_consolidate_to_side_chrome() -> None:
         "actual:p15:block:4",
         "actual:p15:block:5",
     ]
+
+
+def test_rotated_margin_line_consolidates_when_rust_text_has_wrap_space() -> None:
+    mod = _load_module()
+    text_lines = [
+        {
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+            "bbox": [0.029, 0.288, 0.050, 0.741],
+            "raw_bbox": [18.1, 227.9, 30.4, 587.0],
+            "dir": [0.0, 1.0],
+            "font_name": "ArialMT",
+            "font_size": 9.0,
+            "is_bold": False,
+        }
+    ]
+    raw_elements = [
+        {
+            "id": "actual:p30:block:3",
+            "page": 30,
+            "pdf_page_index": 29,
+            "type": "header_footer_noise",
+            "source_type": "Boilerplate",
+            "bbox": [0.034, 0.276, 0.530, 0.718],
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+        }
+    ]
+
+    elements = mod._consolidate_rotated_side_chrome_fragments(
+        raw_elements, text_lines, page_index=29
+    )
+
+    assert len(elements) == 1
+    assert elements[0]["id"] == "actual:p30:rotated_side_chrome:1"
+    assert elements[0]["type"] == "header_footer_noise"
+    assert elements[0]["bbox"] == [0.029, 0.288, 0.050, 0.741]
+    assert elements[0]["bbox"][2] <= 0.07

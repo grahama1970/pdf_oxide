@@ -7,6 +7,7 @@ REPO = Path(__file__).resolve().parents[1]
 VALIDATOR_PATH = REPO / "scripts/pdf_lab/validate_creator_reviewer_defects.py"
 FIXTURE = REPO / "tests/fixtures/pdf_lab/page456_creator_reviewer_defects.json"
 PAGE27_FIXTURE = REPO / "tests/fixtures/pdf_lab/page27_creator_reviewer_defects.json"
+PAGE30_FIXTURE = REPO / "tests/fixtures/pdf_lab/page30_creator_reviewer_defects.json"
 EXTRACTION = (
     REPO
     / "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/extraction.pdf_oxide.json"
@@ -14,6 +15,10 @@ EXTRACTION = (
 PAGE27_EXTRACTION = (
     REPO
     / "artifacts/pdf_lab/creator_reviewer_page27_running_footer_repair_20260729T161228Z/extraction.pdf_oxide.json"
+)
+PAGE30_EXTRACTION = (
+    REPO
+    / "artifacts/pdf_lab/creator_reviewer_page30_rotated_side_chrome_bbox_repair_20260729T171712Z/extraction.pdf_oxide.json"
 )
 SCHEMA_PATH = REPO / "schemas/pdf_lab/creator_reviewer_defects.schema.json"
 
@@ -33,6 +38,7 @@ def test_creator_reviewer_defect_schema_names_required_contract():
     )
     check_props = schema["properties"]["checks"]["items"]["properties"]
     assert "REGION_LABEL_MISMATCH" in check_props["defect_class"]["enum"]
+    assert "REGION_BBOX_MISMATCH" in check_props["defect_class"]["enum"]
     assert "TABLE_CELL_TOP_LEVEL_LEAK" in check_props["defect_class"]["enum"]
     assert check_props["expected_state"]["enum"] == ["absent_top_level", "present"]
     for required in [
@@ -67,6 +73,52 @@ def test_page27_current_extraction_satisfies_running_footer_label_contract():
     assert check["expected_label"] == "running_footer"
     assert check["candidates"][0]["type"] == "running_footer"
     assert check["candidates"][0]["text"] == "xxv"
+
+
+def test_page30_current_extraction_satisfies_rotated_side_chrome_bbox_contract():
+    result = validator.validate(PAGE30_FIXTURE, PAGE30_EXTRACTION)
+
+    assert result["status"] == "PASS"
+    assert result["summary"] == {"check_count": 1, "passed": 1, "failed": 0}
+    check = result["checks"][0]
+    assert check["id"] == "page30-rotated-side-chrome-bbox-margin-constrained"
+    assert check["candidate_count"] == 1
+    assert check["matching_bbox_count"] == 1
+    assert check["candidates"][0]["type"] == "header_footer_noise"
+    assert check["candidates"][0]["bbox"][2] <= 0.07
+
+
+def test_page30_bundle_evidence_path_resolves_from_repo_root():
+    result = validator.validate(PAGE30_FIXTURE)
+
+    assert result["status"] == "PASS"
+    assert result["extraction_json"] == str(PAGE30_EXTRACTION)
+
+
+def test_page30_validator_fails_if_rotated_side_chrome_bbox_overlaps_body(tmp_path):
+    extraction = json.loads(PAGE30_EXTRACTION.read_text())
+    for block in extraction["blocks"]:
+        text = " ".join(str(block.get("text") or "").split())
+        if text.startswith("This publication is available free of charge from:"):
+            block["bbox"] = [
+                0.03441176383323919,
+                0.27643939702197756,
+                0.5297058735018462,
+                0.7178787847962043,
+            ]
+            break
+    leaked_path = tmp_path / "page30_wide_side_chrome_bbox.json"
+    leaked_path.write_text(json.dumps(extraction), encoding="utf-8")
+
+    result = validator.validate(PAGE30_FIXTURE, leaked_path)
+
+    assert result["status"] == "FAIL"
+    failed = [check for check in result["checks"] if check["status"] == "FAIL"]
+    assert [check["id"] for check in failed] == [
+        "page30-rotated-side-chrome-bbox-margin-constrained"
+    ]
+    assert failed[0]["matching_bbox_count"] == 0
+    assert failed[0]["candidates"][0]["bbox"][2] > 0.50
 
 
 def test_page456_validator_fails_if_table_header_reappears_as_top_level_block(tmp_path):

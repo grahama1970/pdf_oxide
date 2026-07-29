@@ -1,0 +1,17 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__ test_page30_current_extraction_satisfies_rotated_side_chrome_bbox_contract __
+
+    def test_page30_current_extraction_satisfies_rotated_side_chrome_bbox_contract():
+        result = validator.validate(PAGE30_FIXTURE, PAGE30_EXTRACTION)
+    
+>       assert result["status"] == "PASS"
+E       AssertionError: assert 'FAIL' == 'PASS'
+E         
+E         - PASS
+E         + FAIL
+
+tests/test_pdf_lab_creator_reviewer_defects.py:81: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_pdf_lab_creator_reviewer_defects.py::test_page30_current_extraction_satisfies_rotated_side_chrome_bbox_contract
+1 failed in 0.06s

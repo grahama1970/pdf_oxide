@@ -483,7 +483,9 @@ def _consolidate_rotated_side_chrome_fragments(
             if index in consumed:
                 continue
             text = _normalize_text(element.get("text") or "")
-            if not text or text not in line_text:
+            compact_text = text.replace(" ", "")
+            compact_line_text = line_text.replace(" ", "")
+            if not text or (text not in line_text and compact_text not in compact_line_text):
                 continue
             bbox = element.get("bbox")
             if not isinstance(bbox, list) or len(bbox) != 4:

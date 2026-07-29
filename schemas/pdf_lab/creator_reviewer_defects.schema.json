@@ -58,6 +58,7 @@
             "type": "string",
             "enum": [
               "REGION_LABEL_MISMATCH",
+              "REGION_BBOX_MISMATCH",
               "TABLE_CELL_TOP_LEVEL_LEAK"
             ]
           },
@@ -95,7 +96,8 @@
             ]
           },
           "evidence_reason": {"type": "string"},
-          "proof_command": {"type": "string", "minLength": 1}
+          "proof_command": {"type": "string", "minLength": 1},
+          "bbox_tolerance": {"type": "number", "minimum": 0}
         }
       }
     }
