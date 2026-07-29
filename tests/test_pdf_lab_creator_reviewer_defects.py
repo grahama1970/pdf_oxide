@@ -13,7 +13,7 @@ EXTRACTION = (
 )
 PAGE27_EXTRACTION = (
     REPO
-    / "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/extraction.pdf_oxide.json"
+    / "artifacts/pdf_lab/creator_reviewer_page27_running_footer_repair_20260729T161228Z/extraction.pdf_oxide.json"
 )
 SCHEMA_PATH = REPO / "schemas/pdf_lab/creator_reviewer_defects.schema.json"
 
@@ -55,17 +55,17 @@ def test_page456_current_receipt_satisfies_creator_reviewer_defect_checks():
     assert all(check["leaking_candidate_count"] == 0 for check in result["checks"])
 
 
-def test_page27_current_extraction_fails_running_footer_label_contract():
+def test_page27_current_extraction_satisfies_running_footer_label_contract():
     result = validator.validate(PAGE27_FIXTURE, PAGE27_EXTRACTION)
 
-    assert result["status"] == "FAIL"
-    assert result["summary"] == {"check_count": 1, "passed": 0, "failed": 1}
+    assert result["status"] == "PASS"
+    assert result["summary"] == {"check_count": 1, "passed": 1, "failed": 0}
     check = result["checks"][0]
     assert check["id"] == "page27-printed-page-number-xxv-is-running-footer"
     assert check["candidate_count"] == 1
-    assert check["matching_label_count"] == 0
+    assert check["matching_label_count"] == 1
     assert check["expected_label"] == "running_footer"
-    assert check["candidates"][0]["type"] == "header_footer_noise"
+    assert check["candidates"][0]["type"] == "running_footer"
     assert check["candidates"][0]["text"] == "xxv"
 
 
