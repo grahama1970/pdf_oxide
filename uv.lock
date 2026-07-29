@@ -2276,6 +2276,11 @@ wheels = [
 name = "pdf-oxide"
 version = "0.3.14"
 source = { editable = "." }
+dependencies = [
+    { name = "pymupdf", version = "1.24.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
+    { name = "pymupdf", version = "1.26.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
+    { name = "pymupdf", version = "1.26.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+]
 
 [package.optional-dependencies]
 ocr = [
@@ -2352,7 +2357,10 @@ test = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "onnxruntime", marker = "extra == 'ocr'", specifier = ">=1.20.1" }]
+requires-dist = [
+    { name = "onnxruntime", marker = "extra == 'ocr'", specifier = ">=1.20.1" },
+    { name = "pymupdf", specifier = ">=1.24.11" },
+]
 provides-extras = ["ocr"]
 
 [package.metadata.requires-dev]

@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import builtins
 import importlib.util
 from pathlib import Path
+
+import pytest
 
 
 def _load_module():
@@ -11,6 +14,40 @@ def _load_module():
     assert spec.loader is not None
     spec.loader.exec_module(module)
     return module
+
+
+def _hide_fitz_import(name, *args, **kwargs):
+    if name == "fitz":
+        raise ModuleNotFoundError("No module named 'fitz'")
+    return _hide_fitz_import.real_import(name, *args, **kwargs)
+
+
+_hide_fitz_import.real_import = builtins.__import__
+
+
+def test_snapshot_fails_loudly_when_pymupdf_missing_for_text_lines(monkeypatch) -> None:
+    mod = _load_module()
+
+    monkeypatch.setattr(builtins, "__import__", _hide_fitz_import)
+
+    with pytest.raises(RuntimeError, match="PyMuPDF is required for PDF Lab snapshot evidence"):
+        mod._extract_fitz_text_lines(Path("sample.pdf"), 0, 612.0, 792.0)
+
+
+def test_snapshot_fails_loudly_when_pymupdf_missing_for_table_grid(monkeypatch) -> None:
+    mod = _load_module()
+
+    monkeypatch.setattr(builtins, "__import__", _hide_fitz_import)
+
+    with pytest.raises(RuntimeError, match="PyMuPDF is required for PDF Lab snapshot evidence"):
+        mod._top_row_cell_bboxes_from_drawing_grid(
+            Path("sample.pdf"),
+            page_index=0,
+            raw_bbox=[10.0, 20.0, 110.0, 80.0],
+            page_w=612.0,
+            page_h=792.0,
+            column_count=2,
+        )
 
 
 def test_block_elements_use_trimmed_line_bbox_for_oversized_title() -> None:
@@ -212,7 +249,10 @@ def test_sparse_multiline_cover_block_splits_to_line_elements() -> None:
         "font_size": 12.0,
     }
     text_lines = [
-        {"text": "This publication is available free of charge from:", "bbox": [0.535, 0.476, 0.853, 0.494]},
+        {
+            "text": "This publication is available free of charge from:",
+            "bbox": [0.535, 0.476, 0.853, 0.494],
+        },
         {"text": "https://doi.org/10.6028/NIST.SP.800-53r5", "bbox": [0.573, 0.492, 0.853, 0.509]},
         {"text": "September 2020", "bbox": [0.719, 0.578, 0.857, 0.599]},
     ]
@@ -253,7 +293,10 @@ def test_tiny_empty_lattice_table_false_positive_is_suppressed() -> None:
         "whitespace": 10.0,
         "data": [["A", "B"], ["C", "D"]],
     }
-    assert mod._is_tiny_empty_table_false_positive(table_with_text, metrics, [0.1, 0.1, 0.4, 0.2]) is False
+    assert (
+        mod._is_tiny_empty_table_false_positive(table_with_text, metrics, [0.1, 0.1, 0.4, 0.2])
+        is False
+    )
 
 
 def test_nist_page45_snapshot_adds_toc_lineage() -> None:
@@ -392,7 +435,9 @@ def test_rotated_margin_line_fragments_consolidate_to_side_chrome() -> None:
         },
     ]
 
-    elements = mod._consolidate_rotated_side_chrome_fragments(raw_elements, text_lines, page_index=14)
+    elements = mod._consolidate_rotated_side_chrome_fragments(
+        raw_elements, text_lines, page_index=14
+    )
 
     assert len(elements) == 1
     assert elements[0]["id"] == "actual:p15:rotated_side_chrome:1"

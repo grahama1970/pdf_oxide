@@ -13,6 +13,9 @@ authors = [
     {name = "PDF Oxide Contributors", email = "yfedoseev@gmail.com"},
 ]
 keywords = ["pdf", "text-extraction", "pdf-parser", "pymupdf-alternative", "rag", "llm", "ocr", "markdown", "document-parser", "pdf-to-text", "pdf-to-markdown", "data-extraction"]
+dependencies = [
+    "pymupdf>=1.24.11",
+]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",

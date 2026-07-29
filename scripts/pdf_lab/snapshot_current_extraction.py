@@ -25,6 +25,17 @@ def _load_preset_applier() -> tuple[Any, Any]:
     return module.ApplierConfig, module.apply_ledger
 
 
+def _load_pymupdf() -> Any:
+    try:
+        import fitz  # noqa: PLC0415
+    except ModuleNotFoundError as exc:
+        raise RuntimeError(
+            "PyMuPDF is required for PDF Lab snapshot evidence. "
+            "Install project dependencies with `uv sync` or install `pymupdf>=1.24.11`."
+        ) from exc
+    return fitz
+
+
 def _normalize_bracketed_citation_wraps(text: str) -> str:
     return re.sub(
         r"(\[(?:OMB|SP|NIST\s+SP|FIPS|IR)\s+[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-)\s+([A-Za-z0-9])",
@@ -172,17 +183,16 @@ def _bbox_union(boxes: list[list[float]]) -> list[float]:
 def _extract_fitz_text_lines(
     pdf_path: Path, page_index: int, page_w: float, page_h: float
 ) -> list[dict[str, Any]]:
-    try:
-        import fitz  # noqa: PLC0415
-    except Exception:
-        return []
+    fitz = _load_pymupdf()
 
     try:
         with fitz.open(pdf_path) as doc:
             page = doc[page_index]
             raw = page.get_text("rawdict")
-    except Exception:
-        return []
+    except Exception as exc:
+        raise RuntimeError(
+            f"PyMuPDF text-line extraction failed for {pdf_path} page {page_index + 1}"
+        ) from exc
 
     lines: list[dict[str, Any]] = []
     for block in raw.get("blocks", []):
@@ -1008,10 +1018,7 @@ def _top_row_cell_bboxes_from_drawing_grid(
     if len(raw_bbox) != 4 or column_count <= 0:
         return []
 
-    try:
-        import fitz  # noqa: PLC0415
-    except Exception:
-        return []
+    fitz = _load_pymupdf()
 
     table_x0, table_y0, table_x1, table_y1 = raw_bbox
     candidates: list[list[float]] = []
@@ -1031,8 +1038,10 @@ def _top_row_cell_bboxes_from_drawing_grid(
                     if x1 - x0 < 5.0 or y1 - y0 < 10.0:
                         continue
                     candidates.append([x0, y0, x1, y1])
-    except Exception:
-        return []
+    except Exception as exc:
+        raise RuntimeError(
+            f"PyMuPDF drawing-grid extraction failed for {pdf_path} page {page_index + 1}"
+        ) from exc
 
     if len(candidates) < column_count:
         return []

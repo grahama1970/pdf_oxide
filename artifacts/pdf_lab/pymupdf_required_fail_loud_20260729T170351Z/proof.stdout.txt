@@ -1,0 +1,5 @@
+out_dir=artifacts/pdf_lab/pymupdf_required_fail_loud_20260729T170351Z
+........................                                                 [100%]
+24 passed in 0.67s
+All checks passed!
+2 files already formatted
