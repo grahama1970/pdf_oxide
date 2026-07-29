@@ -1,0 +1,47 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page22_table_citation_hyphen_spacing_defects.json",
+  "checks": [
+    {
+      "actual_label": "table",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8982575734456381
+          ],
+          "contains_expected_text": false,
+          "contains_forbidden_text": true,
+          "id": "actual:p22:table:0",
+          "iou": 1.0,
+          "matches_expected_label": true,
+          "source_type": "table",
+          "text": "DATE | TYPE | REVISION | PAGE 12-10-2020 | Editorial | Control PE-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 179 12-10-2020 | Editorial | Control PE-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 179 12-10-2020 | Editorial | Control Enhancement PE-3(8) Discussion: Delete \u201c, or mantrap,\u201d | 183 12-10-2020 | Editorial | Control Enhancement PE-3(8) Discussion: Change \u201cMantraps\u201d to \u201cVestibules\u201d | 183 12-10-2020 | Editorial | Control Enhancement PE-19(1) Title: Delete \u201dAND TEMPEST\u201d | 192 12-10-2020 | Editorial | Control PL-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 194 12-10-2020 | Editorial | Control PL-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 194 12-10-2020 | Editorial | Control PL-2 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 196 12-10-2020 | Editorial | Control PL-7 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 198 12-10-2020 | Editorial | Control PL-11 Discussion: Change \u201c[FISMA] and [PRIVACT]\u201d to \u201c[FISMA], [PRIVACT], and [OMB A-130]\u201d | 201 12-10-2020 | Editorial | Control PM-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 204 12-10-2020 | Editorial | Control PM-2 References: Add \u201c, [SP 800-181]\u201d | 204 12-10-2020 | Editorial | Control PM-5 References: Add \u201c[OMB A-130],\u201d | 206 12-10-2020 | Editorial | Control PM-8 References: Add \u201c[EO 13636],\u201d | 207 12-10-2020 | Editorial | Control PM-10 References: Add \u201c, [SP 800-181]\u201d | 208 12-10-2020 | Editorial | Control PM-11 Related Controls: Add \u201cRA-9,\u201d | 209 12-10-2020 | Editorial | Control PM-12 References: Add \u201c[NITP12],\u201d | 210 12-10-2020 | Editorial | Control PM-17 References: Add \u201c[SP 800-172],\u201d | 212 12-10-2020 | Editorial | Control PM-19 Related Controls: Add \u201c, PM-27\u201d | 213 12-10-2020 | Editorial | Control PM-22 References: Add \u201c[OMB M-19-15],\u201d | 216 12-10-2020 | Editorial | Control PM-24 Related Controls: Add \u201cPT-2,\u201d | 216 12-10-2020 | Editorial | Control PM-24 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 217 12-10-2020 | Editorial | Control PM-25 Related Controls: Add \u201c, SI-12\u201d | 217 12-10-2020 | Editorial | Control PM-25 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 217 12-10-2020 | Editorial | Control PM-29 References: Add \u201c, [SP 800-181]\u201d | 219 12-10-2020 | Editorial | Control PM-30 References: Add \u201c[CNSSD 505],\u201d | 220 12-10-2020 | Editorial | Control PM-31 Discussion: Change \u201cSC-18c\u201d to \u201cSC-18b\u201d | 220 12-10-2020 | Editorial | Control PM-31 References: Add \u201c, [SP 800-137A]\u201d | 221 12-10-2020 | Editorial | Control PM-32 References: Change \u201c[SP 800-137]\u201d to \u201c[SP 800-160- 1], [SP 800-160-2]\u201d | 221 12-10-2020 | Editorial | Control PS-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 222 12-10-2020 | Editorial | Control PS-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 222 12-10-2020 | Editorial | Control Enhancement PS-3(3) Title: Change \u201cWITH\u201d to \u201cREQUIRING\u201d | 224 12-10-2020 | Editorial | Control PT-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 229 12-10-2020 | Editorial | Control PT-1 Discussion: Change \u201cprivacy breaches\u201d to \u201cbreaches\u201d | 229",
+          "type": "table"
+        }
+      ],
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "expected_label": "table",
+      "expected_state": "present",
+      "expected_text": "[SP 800-160-1]",
+      "forbidden_text": "[SP 800-160- 1]",
+      "id": "page22-table-sp800-160-1-citation-hyphen-spacing",
+      "matching_text_count": 0,
+      "status": "FAIL",
+      "text": "Control PM-32 References"
+    }
+  ],
+  "created_at": "2026-07-29T18:13:09.275648+00:00",
+  "errors": [],
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/pre_patch_evidence/pages/page_0022/release_extraction_blocks.json",
+  "page": 22,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "FAIL",
+  "summary": {
+    "check_count": 1,
+    "failed": 1,
+    "passed": 0
+  }
+}

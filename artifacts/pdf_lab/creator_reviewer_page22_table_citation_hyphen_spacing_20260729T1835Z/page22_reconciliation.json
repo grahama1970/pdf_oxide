@@ -1,0 +1,301 @@
+{
+  "allowed_statuses": [
+    "resolved_by_current_extraction",
+    "still_repro",
+    "false_positive",
+    "human_needed",
+    "blocked",
+    "unverified"
+  ],
+  "artifact_root": "artifacts/pdf_lab/project_agent_hardening",
+  "commands": [
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/historical_finding_reconciliation.json --out artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/current_evidence --page-timeout-seconds 90",
+    "python scripts/pdf_lab/reconcile_historical_findings_deterministic.py --reconciliation artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/historical_finding_reconciliation.json --evidence-root artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/current_evidence --report artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/deterministic_reconciliation_report.json",
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/page22_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence --page-timeout-seconds 90"
+  ],
+  "commit": "301ac39a803076f71de10a13126c6339e9cf872f",
+  "created_at": "2026-07-29T17:30:17.524471+00:00",
+  "current_evidence_commit": "0b35ad1c2233fe751996ada43f246edf39fd0ba7",
+  "current_evidence_generated_at": "2026-07-29T18:11:16.756157+00:00",
+  "current_evidence_out": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence",
+  "deterministic_reconciled_at": "2026-07-29T17:31:18.997910+00:00",
+  "deterministic_reconciled_commit": "301ac39a803076f71de10a13126c6339e9cf872f",
+  "entries": [
+    {
+      "block_ids": [
+        "actual:p22:block:10",
+        "actual:p22:block:11",
+        "actual:p22:block:12",
+        "actual:p22:block:13",
+        "actual:p22:block:14",
+        "actual:p22:block:15",
+        "actual:p22:block:16",
+        "actual:p22:block:17",
+        "actual:p22:block:18",
+        "actual:p22:block:19",
+        "actual:p22:block:20",
+        "actual:p22:block:21",
+        "actual:p22:block:22",
+        "actual:p22:block:23",
+        "actual:p22:block:24",
+        "actual:p22:block:25",
+        "actual:p22:block:26",
+        "actual:p22:block:27",
+        "actual:p22:block:28",
+        "actual:p22:block:29",
+        "actual:p22:block:30",
+        "actual:p22:block:31",
+        "actual:p22:block:32",
+        "actual:p22:block:33",
+        "actual:p22:block:34",
+        "actual:p22:block:35",
+        "actual:p22:block:6",
+        "actual:p22:block:7",
+        "actual:p22:block:8",
+        "actual:p22:block:9"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Detect and emit this region as a table with column headers and row/cell structure, preserving wrapped text within the REVISION cell and PAGE values in their own column.",
+      "extraction_defect": "The extractor misses the visible table structure and flattens the table into prose-like blocks. Several paragraph blocks also merge multiple distinct table rows, while wrapped revision-cell continuation lines and page-number cells are sometimes split into separate paragraph blocks.",
+      "finding_id": "p22_missed_revision_table",
+      "next_action": "rerun",
+      "owner": "pdf_oxide_core",
+      "page": 22,
+      "patch_hint": "Strengthen table detection/reconstruction for NIST-style shaded, ruled revision-history tables; use grid lines and repeated DATE/TYPE/PAGE column alignment to segment rows and cells instead of paragraph materialization.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "high",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/pages/page_0022/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/pages/page_0022/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/pages/page_0022/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/pages/page_0022/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/summary.json"
+      ],
+      "source_count": 4,
+      "visible_evidence": "The clean page shows a ruled, blue-shaded table with column headers DATE, TYPE, REVISION, and PAGE, followed by many bordered table rows. The overlay boxes cover the table content but classify the header as a section heading and the row content as paragraph blocks."
+    },
+    {
+      "block_ids": [
+        "actual:p22:block:10",
+        "actual:p22:block:11",
+        "actual:p22:block:12",
+        "actual:p22:block:13",
+        "actual:p22:block:14",
+        "actual:p22:block:15",
+        "actual:p22:block:16",
+        "actual:p22:block:17",
+        "actual:p22:block:18",
+        "actual:p22:block:19",
+        "actual:p22:block:20",
+        "actual:p22:block:21",
+        "actual:p22:block:22",
+        "actual:p22:block:23",
+        "actual:p22:block:24",
+        "actual:p22:block:25",
+        "actual:p22:block:26",
+        "actual:p22:block:27",
+        "actual:p22:block:28",
+        "actual:p22:block:29",
+        "actual:p22:block:30",
+        "actual:p22:block:31",
+        "actual:p22:block:32",
+        "actual:p22:block:33",
+        "actual:p22:block:34",
+        "actual:p22:block:35",
+        "actual:p22:block:6",
+        "actual:p22:block:7",
+        "actual:p22:block:8",
+        "actual:p22:block:9"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Represent this region as a table with a table header row and table body rows/cells, preserving DATE, TYPE, REVISION, and PAGE columns rather than paragraph flow.",
+      "extraction_defect": "The table is flattened into a section_heading plus paragraph_block records. Multiple visible table rows are merged into single paragraph blocks, while wrapped revision cells and page-number cells are sometimes split into separate paragraph blocks. Column structure is lost.",
+      "finding_id": "p22_table_false_negative_revision_history",
+      "next_action": "rerun",
+      "owner": "pdf_oxide_core",
+      "page": 22,
+      "patch_hint": "Improve ruled/shaded table detection for full-page NIST revision-history grids; detect the vertical/horizontal ruling and shaded header row before paragraph/list classification.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "high",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/pages/page_0022/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/pages/page_0022/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/pages/page_0022/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/pages/page_0022/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/summary.json"
+      ],
+      "source_count": 4,
+      "visible_evidence": "The clean image shows a single blue shaded grid table with visible vertical and horizontal ruling, four columns labeled DATE, TYPE, REVISION, PAGE, and many body rows continuing down the page."
+    },
+    {
+      "block_ids": [
+        "actual:p22:block:10",
+        "actual:p22:block:11",
+        "actual:p22:block:12",
+        "actual:p22:block:13",
+        "actual:p22:block:14",
+        "actual:p22:block:15",
+        "actual:p22:block:16",
+        "actual:p22:block:17",
+        "actual:p22:block:18",
+        "actual:p22:block:19",
+        "actual:p22:block:20",
+        "actual:p22:block:21",
+        "actual:p22:block:22",
+        "actual:p22:block:23",
+        "actual:p22:block:24",
+        "actual:p22:block:25",
+        "actual:p22:block:26",
+        "actual:p22:block:27",
+        "actual:p22:block:28",
+        "actual:p22:block:29",
+        "actual:p22:block:30",
+        "actual:p22:block:31",
+        "actual:p22:block:32",
+        "actual:p22:block:33",
+        "actual:p22:block:34",
+        "actual:p22:block:35",
+        "actual:p22:block:6",
+        "actual:p22:block:7",
+        "actual:p22:block:8",
+        "actual:p22:block:9"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Detect and materialize the ruled table as a table, with a table header row and row/cell structure rather than section_heading/paragraph blocks.",
+      "extraction_defect": "The table header is classified as section_heading, and table rows/cells are emitted as paragraph_block objects. Several visible rows are merged into single paragraph blocks while wrapped revision cells and page-number cells are split into separate paragraph blocks, losing the table grid and row/cell relationships.",
+      "finding_id": "p22_table_not_materialized",
+      "next_action": "rerun",
+      "owner": "pdf_oxide_core",
+      "page": 22,
+      "patch_hint": "Improve table detection for full-page ruled/shaded NIST tables: use visible horizontal/vertical ruling plus repeated aligned DATE/TYPE/PAGE columns to classify the region as a table and preserve row/cell grouping, including wrapped revision-cell continuations.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "high",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun_v2/pages/page_0022/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun_v2/pages/page_0022/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun_v2/pages/page_0022/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun_v2/pages/page_0022/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun_v2/summary.json"
+      ],
+      "source_count": 4,
+      "visible_evidence": "The page body is a bordered, shaded table spanning the central page area. It has a blue header row labeled DATE, TYPE, REVISION, PAGE and many ruled data rows beneath it, with repeated date/type cells, revision text cells, and page-number cells."
+    },
+    {
+      "block_ids": [
+        "actual:p22:table:0"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Keep as table, but preserve all wrapped intra-cell continuation lines as part of the same row and column text.",
+      "extraction_defect": "The current table extraction preserves the table structure but omits wrapped continuation text from multiple REVISION cells. Examples visible on the page include continuation text after 'Organization-level; Mission/business' and reference target lines after 'to', while the JSON rows end prematurely before the PAGE column.",
+      "finding_id": "p22_table_wrapped_cell_loss",
+      "next_action": "rerun",
+      "owner": "pdf_oxide_core",
+      "page": 22,
+      "patch_hint": "Improve table cell text assembly for multi-line/wrapped cell content so continuation lines within a bordered row are merged into the correct REVISION cell before row serialization.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "high",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_watermark_filter_revision_rerun/pages/page_0022/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_watermark_filter_revision_rerun/pages/page_0022/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_watermark_filter_revision_rerun/pages/page_0022/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_watermark_filter_revision_rerun/pages/page_0022/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_watermark_filter_revision_rerun/summary.json"
+      ],
+      "source_count": 4,
+      "visible_evidence": "The visible table contains several REVISION cells spanning multiple lines, including rows where the continuation line contains essential text such as the remainder of quoted replacement strings or reference targets."
+    },
+    {
+      "block_ids": [
+        "actual:p22:table:0"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page22_table_citation_hyphen_spacing_20260729T1835Z/current_evidence/pages/page_0022/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Keep as table, but table cell text assembly should include all visible wrapped lines within each cell before serializing rows.",
+      "extraction_defect": "The current table block preserves the table structure but omits or truncates visible continuation lines from wrapped REVISION cells, especially continuation text after quoted replacement phrases and bracketed reference targets.",
+      "finding_id": "p22_table_wrapped_cell_truncation",
+      "next_action": "rerun",
+      "owner": "pdf_oxide_core",
+      "page": 22,
+      "patch_hint": "Improve table cell text aggregation for wrapped/multi-line cells so continuation lines inside the same grid cell are joined into the row text rather than dropped at row serialization boundaries.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "high",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_patch_target_rerun/pages/page_0022/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_patch_target_rerun/pages/page_0022/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_patch_target_rerun/pages/page_0022/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_patch_target_rerun/pages/page_0022/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_patch_target_rerun/summary.json"
+      ],
+      "source_count": 4,
+      "visible_evidence": "The table contains multiple REVISION cells whose text wraps onto two or more visible lines within the same row, including rows for PE-1a.1, PL-1a.1, PL-2 References, PL-7 References, PM-24 References, PM-25 References, PM-32 References, PS-1a.1, and PT-1a.1."
+    }
+  ],
+  "finding_count": 5,
+  "owner_counts": {
+    "nist_preset_ledger": 121,
+    "pdf_oxide_core": 224,
+    "unknown": 1
+  },
+  "page_count": 1,
+  "pages": [
+    22
+  ],
+  "record_count_before_dedupe": 1951,
+  "schema": "pdf_oxide.nist_historical_finding_reconciliation.v1",
+  "source_file_counts": {
+    "findings.json": 1,
+    "model_review.json": 272,
+    "response.raw.attempt1.json": 258,
+    "response.raw.attempt2.json": 2,
+    "response.raw.json": 272,
+    "summary.json": 31
+  },
+  "status_counts": {
+    "resolved_by_current_extraction": 47,
+    "unverified": 299
+  }
+}
