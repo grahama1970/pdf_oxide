@@ -1,0 +1,32 @@
+{
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defects.v1",
+  "page": 186,
+  "evidence": {
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page186_list_hyphen_wrap_spacing_20260729T2020Z/current_evidence/pages/page_0186/page.png",
+    "overlay_image": "artifacts/pdf_lab/creator_reviewer_page186_list_hyphen_wrap_spacing_20260729T2020Z/current_evidence/pages/page_0186/bbox_overlay_current.png",
+    "extraction_json": "artifacts/pdf_lab/creator_reviewer_page186_list_hyphen_wrap_spacing_20260729T2020Z/current_evidence/pages/page_0186/release_extraction_blocks.json"
+  },
+  "checks": [
+    {
+      "id": "page186-list-organization-defined-spacing",
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "page": 186,
+      "block_id": "actual:p186:block:8",
+      "region_bbox": [
+        0.23526133119670395,
+        0.21269372496942077,
+        0.8357492584029055,
+        0.24508160292500197
+      ],
+      "actual_label": "list",
+      "expected_label": "list",
+      "expected_state": "present",
+      "text": "Explicitly designates responsibility for incident response",
+      "expected_text": "organization-defined entities",
+      "forbidden_text": "organization- defined entities",
+      "owner": "pdf_oxide_core",
+      "evidence_reason": "PyMuPDF line evidence on page 186 has a visual line break after 'organization-' followed by 'defined entities'. The extracted list item must not insert a space after the hyphen.",
+      "proof_command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page186_list_hyphen_wrap_spacing_defects.json"
+    }
+  ]
+}

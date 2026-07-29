@@ -1,0 +1,84 @@
+{
+  "allowed_statuses": [
+    "resolved_by_current_extraction",
+    "still_repro",
+    "false_positive",
+    "human_needed",
+    "blocked",
+    "unverified"
+  ],
+  "artifact_root": "artifacts/pdf_lab/project_agent_hardening",
+  "commands": [
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/historical_finding_reconciliation.json --out artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/current_evidence --page-timeout-seconds 90",
+    "python scripts/pdf_lab/reconcile_historical_findings_deterministic.py --reconciliation artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/historical_finding_reconciliation.json --evidence-root artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/current_evidence --report artifacts/pdf_lab/current_candidate_reconciliation_20260729T1730Z/deterministic_reconciliation_report.json",
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/current_candidate_reconciliation_after_page22_20260729T2005Z/historical_finding_reconciliation.seed.json --out artifacts/pdf_lab/current_candidate_reconciliation_after_page22_20260729T2005Z/current_evidence --page-timeout-seconds 90",
+    "python scripts/pdf_lab/reconcile_historical_findings_deterministic.py --reconciliation artifacts/pdf_lab/current_candidate_reconciliation_after_page22_20260729T2005Z/historical_finding_reconciliation.seed.json --evidence-root artifacts/pdf_lab/current_candidate_reconciliation_after_page22_20260729T2005Z/current_evidence --report artifacts/pdf_lab/current_candidate_reconciliation_after_page22_20260729T2005Z/deterministic_reconciliation_report.json",
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page186_list_hyphen_wrap_spacing_20260729T2020Z/page186_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page186_list_hyphen_wrap_spacing_20260729T2020Z/current_evidence --page-timeout-seconds 90"
+  ],
+  "commit": "301ac39a803076f71de10a13126c6339e9cf872f",
+  "created_at": "2026-07-29T17:30:17.524471+00:00",
+  "current_evidence_commit": "e3217f6bcc9aa5ac651b92a01ed3a44b33ed984f",
+  "current_evidence_generated_at": "2026-07-29T20:09:22.456043+00:00",
+  "current_evidence_out": "artifacts/pdf_lab/creator_reviewer_page186_list_hyphen_wrap_spacing_20260729T2020Z/current_evidence",
+  "deterministic_reconciled_at": "2026-07-29T20:01:31.439038+00:00",
+  "deterministic_reconciled_commit": "1ff1a37348d780aa66e796923808411b05cb5a5f",
+  "entries": [
+    {
+      "block_ids": [
+        "actual:p186:block:25"
+      ],
+      "confidence": "high",
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page186_list_hyphen_wrap_spacing_20260729T2020Z/current_evidence/pages/page_0186/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page186_list_hyphen_wrap_spacing_20260729T2020Z/current_evidence/pages/page_0186/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page186_list_hyphen_wrap_spacing_20260729T2020Z/current_evidence/pages/page_0186/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Keep type as reference, but assign an initial references semantic role rather than reference_continuation.",
+      "extraction_defect": "The block is correctly typed as reference, but its semantic_role is marked as reference_continuation even though this is the initial References line, not a continuation line.",
+      "finding_id": "p186-reference-role-initial",
+      "next_action": "rerun",
+      "owner": "nist_preset_ledger",
+      "page": 186,
+      "patch_hint": "Adjust NIST reference semantic-role logic so blocks beginning with \u201cReferences:\u201d are not labeled as continuation lines.",
+      "reconciliation_evidence": [],
+      "reconciliation_reason": "requires visual/text-fidelity review beyond this deterministic structural pass",
+      "severity": "low",
+      "source_artifact": "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/pages/page_0186/model_review.json",
+      "source_artifacts": [
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/pages/page_0186/model_review.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/pages/page_0186/response.raw.attempt1.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/pages/page_0186/response.raw.json",
+        "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/summary.json"
+      ],
+      "source_count": 4,
+      "visible_evidence": "The line visibly begins with the label \u201cReferences:\u201d followed by three bracketed citations on the same line."
+    }
+  ],
+  "finding_count": 1,
+  "owner_counts": {
+    "nist_preset_ledger": 121,
+    "pdf_oxide_core": 224,
+    "unknown": 1
+  },
+  "page_count": 1,
+  "pages": [
+    186
+  ],
+  "record_count_before_dedupe": 1951,
+  "schema": "pdf_oxide.nist_historical_finding_reconciliation.v1",
+  "source_file_counts": {
+    "findings.json": 1,
+    "model_review.json": 272,
+    "response.raw.attempt1.json": 258,
+    "response.raw.attempt2.json": 2,
+    "response.raw.json": 272,
+    "summary.json": 31
+  },
+  "status_counts": {
+    "resolved_by_current_extraction": 47,
+    "unverified": 299
+  }
+}

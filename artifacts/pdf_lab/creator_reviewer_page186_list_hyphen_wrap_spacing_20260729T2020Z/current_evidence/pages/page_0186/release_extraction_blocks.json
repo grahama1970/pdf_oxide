@@ -1,0 +1,1151 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p186:block:0",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p186:block:1",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8529026804406659,
+        0.9549618345318418
+      ],
+      "font_name": "TT0",
+      "font_size": 8.125714302062988,
+      "id": "actual:p186:block:2",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 8.125714302062988,
+        "header_level": null,
+        "is_bold": false,
+        "text": "CHAPTER THREE   PAGE 159"
+      },
+      "source_type": "Body",
+      "text": "CHAPTER THREE PAGE 159",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "ArialMT",
+      "font_size": 9.0,
+      "id": "actual:p186:rotated_side_chrome:1",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "fragment_ids": [
+          "actual:p186:block:3"
+        ],
+        "fragments": [
+          {
+            "bbox": [
+              0.03441176383323919,
+              0.27643939702197756,
+              0.5297058735018462,
+              0.7178787847962043
+            ],
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "id": "actual:p186:block:3",
+            "is_bold": false,
+            "page": 186,
+            "pdf_page_index": 185,
+            "raw": {
+              "bbox": [
+                21.059999465942383,
+                223.44000244140625,
+                303.1199951171875,
+                349.6199951171875
+              ],
+              "block_type": "Boilerplate",
+              "confidence": 0.8999999761581421,
+              "font_name": "TT1",
+              "font_size": 9.0,
+              "header_level": null,
+              "is_bold": false,
+              "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+            },
+            "source_type": "Boilerplate",
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+            "type": "unknown_region"
+          }
+        ],
+        "line_bbox": [
+          18.135000228881836,
+          227.94000244140625,
+          30.419998168945312,
+          586.5780029296875
+        ],
+        "line_dir": [
+          0.0,
+          1.0
+        ],
+        "source": "fitz_rawdict_rotated_margin_line"
+      },
+      "source_type": "RotatedSideChrome",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.08997406622376104,
+        0.8485385670381433,
+        0.10690179497304589
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:4",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          144.0,
+          710.4600219726562,
+          377.56365966796875,
+          10.02001953125
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "6. Provides metrics for measuring the incident response capability within the organization;"
+      },
+      "source_type": "List",
+      "text": "6. Provides metrics for measuring the incident response capability within the organization;",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.11284799286813448,
+        0.8207750008776297,
+        0.14531178907914596
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:5",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          144.0,
+          680.039306640625,
+          360.59881591796875,
+          22.3245849609375
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "7. Defines the resources and management support needed to effectively maintain and mature an incident response capability;"
+      },
+      "source_type": "List",
+      "text": "7. Defines the resources and management support needed to effectively maintain and mature an incident response capability;",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.23529409271439697,
+        0.1513338955965909,
+        0.5724327735651552,
+        0.16826161471280185
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:6",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          143.99998474121094,
+          661.863037109375,
+          208.53627014160156,
+          10.02001953125
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "8. Addresses the sharing of incident information;"
+      },
+      "source_type": "List",
+      "text": "8. Addresses the sharing of incident information;",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.23527773688821232,
+        0.17428373086332072,
+        0.8154063006631689,
+        0.2066716088189019
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:7",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          143.98997497558594,
+          631.4423217773438,
+          357.2230224609375,
+          22.26446533203125
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "9. Is reviewed and approved by [Assignment: organization-defined personnel or roles] [Assignment: organization-defined frequency]; and"
+      },
+      "source_type": "List",
+      "text": "9. Is reviewed and approved by [Assignment: organization-defined personnel or roles] [Assignment: organization-defined frequency]; and",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.23526133119670395,
+        0.21269372496942077,
+        0.8357492584029055,
+        0.24508160292500197
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:8",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          143.9799346923828,
+          601.0216064453125,
+          367.49853515625,
+          22.26446533203125
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "10. Explicitly designates responsibility for incident response to [Assignment: organization- defined entities, personnel, or roles]."
+      },
+      "source_type": "List",
+      "text": "10. Explicitly designates responsibility for incident response to [Assignment: organization-defined entities, personnel, or roles].",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.20583996741600286,
+        0.2511037190755208,
+        0.8513244429444955,
+        0.28349159703110205
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:9",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          125.97406005859375,
+          570.6008911132812,
+          397.3240966796875,
+          22.26446533203125
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "b. Distribute copies of the incident response plan to [Assignment: organization-defined incident response personnel (identified by name and/or by role) and organizational elements];"
+      },
+      "source_type": "List",
+      "text": "b. Distribute copies of the incident response plan to [Assignment: organization-defined incident response personnel (identified by name and/or by role) and organizational elements];",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.20585637310751123,
+        0.2895137131816209,
+        0.7908392014846303,
+        0.3219015911372021
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:10",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          125.98410034179688,
+          540.18017578125,
+          360.2771911621094,
+          22.26446533203125
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "c. Update the incident response plan to address system and organizational changes or problems encountered during plan implementation, execution, or testing;"
+      },
+      "source_type": "List",
+      "text": "c. Update the incident response plan to address system and organizational changes or problems encountered during plan implementation, execution, or testing;",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.2058563232421875,
+        0.32784779866536456,
+        0.8466451806959763,
+        0.36031160450945
+      ],
+      "font_name": "TT0",
+      "font_size": 10.019999504089355,
+      "id": "actual:p186:block:11",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          125.98406982421875,
+          509.75946044921875,
+          394.42730712890625,
+          22.3245849609375
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.019999504089355,
+        "header_level": null,
+        "is_bold": false,
+        "text": "d. Communicate incident response plan changes to [Assignment: organization-defined incident response personnel (identified by name and/or by role) and organizational elements]; and"
+      },
+      "source_type": "List",
+      "text": "d. Communicate incident response plan changes to [Assignment: organization-defined incident response personnel (identified by name and/or by role) and organizational elements]; and",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.20585622351154004,
+        0.36633370139382104,
+        0.7835816526724622,
+        0.38326143977617977
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:12",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          125.9840087890625,
+          491.58319091796875,
+          355.7801513671875,
+          10.019989013671875
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "e. Protect the incident response plan from unauthorized disclosure and modification."
+      },
+      "source_type": "List",
+      "text": "e. Protect the incident response plan from unauthorized disclosure and modification.",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.20588230307585273,
+        0.38929228349165484,
+        0.8472525403390523,
+        0.5142079362965594
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:13",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          125.99996948242188,
+          387.8735656738281,
+          394.8030700683594,
+          95.54641723632812
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Discussion:  It is important that organizations develop and implement a coordinated approach to incident response. Organizational mission and business functions determine the structure of incident response capabilities. As part of the incident response capabilities, organizations consider the coordination and sharing of information with external organizations, including external service providers and other organizations involved in the supply chain. For incidents involving personally identifiable information (i.e., breaches), include a process to determine whether notice to oversight organizations or affected individuals is appropriate and provide that notice accordingly."
+      },
+      "source_type": "Body",
+      "text": "Discussion: It is important that organizations develop and implement a coordinated approach to incident response. Organizational mission and business functions determine the structure of incident response capabilities. As part of the incident response capabilities, organizations consider the coordination and sharing of information with external organizations, including external service providers and other organizations involved in the supply chain. For incidents involving personally identifiable information (i.e., breaches), include a process to determine whether notice to oversight organizations or affected individuals is appropriate and provide that notice accordingly.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5202013651529948,
+        0.7406945322074142,
+        0.5371291035353535
+      ],
+      "font_name": "TT0",
+      "font_size": 10.019996643066406,
+      "id": "actual:p186:block:14",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          126.0,
+          369.7200012207031,
+          329.50946044921875,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.019996643066406,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Related Controls:  AC-2, CP-2, CP-4, IR-4, IR-7, IR-9, PE-6, PL-2, SA-15, SI-12, SR-8."
+      },
+      "source_type": "Body",
+      "text": "Related Controls: AC-2, CP-2, CP-4, IR-4, IR-7, IR-9, PE-6, PL-2, SA-15, SI-12, SR-8.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5432316558529632,
+        0.3617490381976358,
+        0.560159394235322
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:15",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          126.0,
+          351.4800109863281,
+          97.60482788085938,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Control Enhancements:"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "Control Enhancements:",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5661547111742424,
+        0.47155976139642053,
+        0.5847941697245896
+      ],
+      "font_name": "TT3",
+      "font_size": 9.997499465942383,
+      "id": "actual:p186:block:16",
+      "is_bold": true,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          126.0,
+          332.3399963378906,
+          167.60687255859375,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT3",
+        "font_size": 9.997499465942383,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.997499465942383,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9977543950080872,
+            "text_len": 37,
+            "title_case_ratio": 0.6666666865348816,
+            "word_count": 6
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "parentheses_negative"
+          ],
+          "title_text": "(1) INCIDENT RESPONSE PLAN | BREACHES"
+        },
+        "is_bold": true,
+        "text": "(1) INCIDENT RESPONSE PLAN | BREACHES"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(1) INCIDENT RESPONSE PLAN | BREACHES",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.5867035605690696,
+        0.8105143628089256,
+        0.6197999125779278
+      ],
+      "font_name": "TT3",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:17",
+      "is_bold": true,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          144.0,
+          304.6154479980469,
+          354.3101806640625,
+          22.324554443359375
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT3",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 85,
+            "title_case_ratio": 0.3333333432674408,
+            "word_count": 12
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Include the following in the Incident Response Plan for breaches involving personally"
+        },
+        "is_bold": true,
+        "text": "Include the following in the Incident Response Plan for breaches involving personally identifiable information:"
+      },
+      "semantic_role": "control_statement",
+      "source_type": "Body",
+      "text": "Include the following in the Incident Response Plan for breaches involving personally identifiable information:",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23531042360791973,
+        0.6213307621503117,
+        0.8009325912575317,
+        0.6543512055368135
+      ],
+      "font_name": "TT3",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:18",
+      "is_bold": true,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          144.00997924804688,
+          277.2508239746094,
+          348.4364929199219,
+          22.264434814453125
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT3",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 85,
+            "title_case_ratio": 0.07692307978868484,
+            "word_count": 13
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "parentheses_negative"
+          ],
+          "title_text": "(a) A process to determine if notice to individuals or other organizations, including"
+        },
+        "is_bold": true,
+        "text": "(a) A process to determine if notice to individuals or other organizations, including oversight organizations, is needed;"
+      },
+      "semantic_role": "nist_list_item",
+      "source_type": "Body",
+      "text": "(a) A process to determine if notice to individuals or other organizations, including oversight organizations, is needed;",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.23531034880993412,
+        0.6559579251992582,
+        0.8387418260761336,
+        0.7044385659574258
+      ],
+      "font_name": "TT3",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:19",
+      "is_bold": true,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          144.0099334716797,
+          237.58163452148438,
+          371.4644775390625,
+          34.508880615234375
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT3",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": true,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 77,
+            "title_case_ratio": 0.0833333358168602,
+            "word_count": 12
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "trailing_comma_negative",
+            "parentheses_negative"
+          ],
+          "title_text": "(b) An assessment process to determine the extent of the harm, embarrassment,"
+        },
+        "is_bold": true,
+        "text": "(b) An assessment process to determine the extent of the harm, embarrassment, inconvenience, or unfairness to affected individuals and any mechanisms to mitigate such harms; and"
+      },
+      "semantic_role": "nist_list_item",
+      "source_type": "Body",
+      "text": "(b) An assessment process to determine the extent of the harm, embarrassment, inconvenience, or unfairness to affected individuals and any mechanisms to mitigate such harms; and",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.23532670463611877,
+        0.7060452856198706,
+        0.5995996013965482,
+        0.7236056086992977
+      ],
+      "font_name": "TT3",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:20",
+      "is_bold": true,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          144.0199432373047,
+          222.40133666992188,
+          229.66844177246094,
+          10.020004272460938
+        ],
+        "block_type": "Title",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT3",
+        "font_size": 10.020000457763672,
+        "header_level": 1,
+        "header_validation": {
+          "confidence": 0.8999999761581421,
+          "depth_level": 1,
+          "disposition": "Accept",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": true,
+            "has_parentheses": true,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 1,
+            "size_ratio": 1.0,
+            "text_len": 54,
+            "title_case_ratio": 0.1666666716337204,
+            "word_count": 6
+          },
+          "has_numbering": true,
+          "is_header": true,
+          "level": 1,
+          "number_text": "c",
+          "reasons": [
+            "numbering"
+          ],
+          "title_text": "Identification of applicable privacy requirements."
+        },
+        "is_bold": true,
+        "text": "(c) Identification of applicable privacy requirements."
+      },
+      "semantic_role": "nist_list_item",
+      "source_type": "Title",
+      "text": "(c) Identification of applicable privacy requirements.",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.7253528941761364,
+        0.8411539115157782,
+        0.773195440118963
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p186:block:21",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          144.0,
+          182.75543212890625,
+          373.030517578125,
+          34.50457763671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Discussion:  Organizations may be required by law, regulation, or policy to follow specific procedures relating to breaches, including notice to individuals, affected organizations, and oversight bodies; standards of harm; and mitigation or other specific requirements."
+      },
+      "source_type": "Body",
+      "text": "Discussion: Organizations may be required by law, regulation, or policy to follow specific procedures relating to breaches, including notice to individuals, affected organizations, and oversight bodies; standards of harm; and mitigation or other specific requirements.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.7754286178434738,
+        0.5786357206456801,
+        0.792356317693537
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020003318786621,
+      "id": "actual:p186:block:22",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          144.0,
+          167.5800018310547,
+          212.3294677734375,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020003318786621,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Related Controls:  PT-1, PT-2, PT-3, PT-4, PT-5, PT-7."
+      },
+      "source_type": "Body",
+      "text": "Related Controls: PT-1, PT-2, PT-3, PT-4, PT-5, PT-7.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.7983831540502683,
+        0.5786359201069751,
+        0.8153108539003314
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020002365112305,
+      "id": "actual:p186:block:23",
+      "is_bold": true,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          126.0,
+          149.39999389648438,
+          230.3255615234375,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT0",
+        "font_size": 10.020002365112305,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.020002365112305,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.000000238418579,
+            "text_len": 53,
+            "title_case_ratio": 0.4285714328289032,
+            "word_count": 7
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "sentence_negative"
+          ],
+          "title_text": "References:  [OMB A-130], [SP 800-61], [OMB M-17-12]."
+        },
+        "is_bold": true,
+        "text": "References:  [OMB A-130], [SP 800-61], [OMB M-17-12]."
+      },
+      "semantic_role": "reference_lead",
+      "source_type": "Body",
+      "text": "References: [OMB A-130], [SP 800-61], [OMB M-17-12].",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8287775058939,
+        0.4727666019614226,
+        0.8480202260643545
+      ],
+      "font_name": "TT3",
+      "font_size": 10.979999542236328,
+      "id": "actual:p186:block:24",
+      "is_bold": true,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          90.0,
+          124.19999694824219,
+          201.79928588867188,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT3",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0958082675933838,
+            "text_len": 34,
+            "title_case_ratio": 1.0,
+            "word_count": 4
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "IR-9 INFORMATION SPILLAGE RESPONSE"
+        },
+        "is_bold": true,
+        "text": "IR-9 INFORMATION SPILLAGE RESPONSE"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "IR-9 INFORMATION SPILLAGE RESPONSE",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.8535347370186237,
+        0.4856301101983762,
+        0.8704624368686869
+      ],
+      "font_name": "TT0",
+      "font_size": 9.437142372131348,
+      "id": "actual:p186:block:25",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          90.0,
+          105.72000122070312,
+          209.4361572265625,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 9.437142372131348,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Control:  Respond to information spills by:"
+      },
+      "source_type": "Body",
+      "text": "Control: Respond to information spills by:",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.8764135187322443,
+        0.8056002348856209,
+        0.9088772860440341
+      ],
+      "font_name": "TT0",
+      "font_size": 10.019999504089355,
+      "id": "actual:p186:block:26",
+      "is_bold": false,
+      "page": 186,
+      "pdf_page_index": 185,
+      "raw": {
+        "bbox": [
+          126.0,
+          75.29544067382812,
+          369.2920837402344,
+          22.324554443359375
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.019999504089355,
+        "header_level": null,
+        "is_bold": false,
+        "text": "a. Assigning [Assignment: organization-defined personnel or roles] with responsibility for responding to information spills;"
+      },
+      "source_type": "List",
+      "text": "a. Assigning [Assignment: organization-defined personnel or roles] with responsibility for responding to information spills;",
+      "type": "list"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 186,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 185
+}
