@@ -1,0 +1,1 @@
+uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py tests/test_nist_page456_control_table_headers.py -q

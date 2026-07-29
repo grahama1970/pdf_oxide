@@ -1,0 +1,57 @@
+{
+  "artifacts": {
+    "proof-command.txt": "artifacts/pdf_lab/creator_reviewer_mvp_page456_20260729T152127Z/proof-command.txt",
+    "proof-result.txt": "artifacts/pdf_lab/creator_reviewer_mvp_page456_20260729T152127Z/proof-result.txt",
+    "pytest.stdout.txt": "artifacts/pdf_lab/creator_reviewer_mvp_page456_20260729T152127Z/pytest.stdout.txt",
+    "validation.json": "artifacts/pdf_lab/creator_reviewer_mvp_page456_20260729T152127Z/validation.json",
+    "validation.stdout.json": "artifacts/pdf_lab/creator_reviewer_mvp_page456_20260729T152127Z/validation.stdout.json"
+  },
+  "claims": {
+    "does_not_prove": [
+      "all PDF Lab candidates are hardened",
+      "five-provider Ask competition has a clean winner",
+      "new extraction candidate has been selected"
+    ],
+    "proves": [
+      "page456 creator-reviewer TABLE_CELL_TOP_LEVEL_LEAK checks are machine-executable",
+      "current page456 extraction has no checked top-level table-header leaks",
+      "synthetic regression fails if IMPLEMENTED BY reappears as a top-level section_header inside the table"
+    ]
+  },
+  "commands": [
+    {
+      "command": "uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py tests/test_nist_page456_control_table_headers.py -q",
+      "exit_code": 0,
+      "output": "artifacts/pdf_lab/creator_reviewer_mvp_page456_20260729T152127Z/pytest.stdout.txt",
+      "result": "6 passed in 2.68s"
+    },
+    {
+      "command": "python3 scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page456_creator_reviewer_defects.json --extraction-json artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/extraction.pdf_oxide.json --out artifacts/pdf_lab/creator_reviewer_mvp_page456_20260729T152127Z/validation.json",
+      "exit_code": 0,
+      "output": "artifacts/pdf_lab/creator_reviewer_mvp_page456_20260729T152127Z/validation.stdout.json",
+      "result": "status PASS, 3 checks passed"
+    },
+    {
+      "command": "python3 -m py_compile scripts/pdf_lab/validate_creator_reviewer_defects.py",
+      "exit_code": 0,
+      "result": "py_compile passed"
+    },
+    {
+      "command": "uv run ruff check scripts/pdf_lab/validate_creator_reviewer_defects.py tests/test_pdf_lab_creator_reviewer_defects.py && uv run ruff format --check scripts/pdf_lab/validate_creator_reviewer_defects.py tests/test_pdf_lab_creator_reviewer_defects.py",
+      "exit_code": 0,
+      "result": "All checks passed; 2 files already formatted"
+    }
+  ],
+  "live": false,
+  "mocked": false,
+  "proof_scope": "local deterministic validator and focused pytest against current page456 receipt artifacts",
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_mvp_receipt.v1",
+  "sha256": {
+    "proof-command.txt": "74ceda8127b0d2c44f4bc5fa27f784feab49bfbf104d50077ea03c4678de0f51",
+    "proof-result.txt": "384e6fcea55615f388ca9865882195239dc5f35d99b861ed7278b4174c1654be",
+    "pytest.stdout.txt": "5639a9b9d8c960557c953f31aabf1c23f5d452cff69bdd4f80203afd12563fbe",
+    "validation.json": "69a928b02d7b8384d10355853b416b9e4f926c29687c1d3d8d5aa8f62acfeadf",
+    "validation.stdout.json": "69a928b02d7b8384d10355853b416b9e4f926c29687c1d3d8d5aa8f62acfeadf"
+  },
+  "status": "PASS"
+}

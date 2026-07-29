@@ -1,0 +1,54 @@
+{
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defects.v1",
+  "page": 456,
+  "evidence": {
+    "page_image": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/page.png",
+    "overlay_image": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/overlay.png",
+    "extraction_json": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/extraction.pdf_oxide.json",
+    "receipt": "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/receipt.json"
+  },
+  "checks": [
+    {
+      "id": "page456-control-number-header-not-top-level",
+      "defect_class": "TABLE_CELL_TOP_LEVEL_LEAK",
+      "page": 456,
+      "block_id": null,
+      "region_bbox": [0.14666667015723933, 0.11371211812953756, 0.23372549169203816, 0.18712122753413038],
+      "actual_label": "section_header",
+      "expected_label": "table.column_header",
+      "expected_state": "absent_top_level",
+      "text": "CONTROL NUMBER",
+      "owner": "nist_preset",
+      "evidence_reason": "The header text belongs to the first table cell and must not appear as a sibling heading/prose block.",
+      "proof_command": "uv run pytest tests/test_nist_page456_control_table_headers.py tests/test_pdf_lab_creator_reviewer_defects.py -q"
+    },
+    {
+      "id": "page456-implemented-by-header-not-top-level",
+      "defect_class": "TABLE_CELL_TOP_LEVEL_LEAK",
+      "page": 456,
+      "block_id": null,
+      "region_bbox": [0.6051960864098244, 0.11371211812953756, 0.7290686065075445, 0.18712122753413038],
+      "actual_label": "section_header",
+      "expected_label": "table.column_header",
+      "expected_state": "absent_top_level",
+      "text": "IMPLEMENTED BY",
+      "owner": "nist_preset",
+      "evidence_reason": "The header text belongs to the third table cell and must not appear as a sibling heading/prose block.",
+      "proof_command": "uv run pytest tests/test_nist_page456_control_table_headers.py tests/test_pdf_lab_creator_reviewer_defects.py -q"
+    },
+    {
+      "id": "page456-assurance-header-not-top-level",
+      "defect_class": "TABLE_CELL_TOP_LEVEL_LEAK",
+      "page": 456,
+      "block_id": null,
+      "region_bbox": [0.7290686065075445, 0.11371211812953756, 0.8525490355647467, 0.18712122753413038],
+      "actual_label": "section_header",
+      "expected_label": "table.column_header",
+      "expected_state": "absent_top_level",
+      "text": "ASSURANCE",
+      "owner": "nist_preset",
+      "evidence_reason": "The header text belongs to the fourth table cell and must not appear as a sibling heading/prose block.",
+      "proof_command": "uv run pytest tests/test_nist_page456_control_table_headers.py tests/test_pdf_lab_creator_reviewer_defects.py -q"
+    }
+  ]
+}

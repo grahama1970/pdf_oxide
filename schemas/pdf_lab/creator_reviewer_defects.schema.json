@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pdf-oxide.local/schemas/pdf_lab/creator_reviewer_defects.schema.json",
+  "title": "PDF Lab Creator-Reviewer Defect Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "page",
+    "evidence",
+    "checks"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "pdf_oxide.pdf_lab.creator_reviewer_defects.v1"
+    },
+    "page": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "page_image",
+        "overlay_image",
+        "extraction_json"
+      ],
+      "properties": {
+        "page_image": {"type": "string", "minLength": 1},
+        "overlay_image": {"type": "string", "minLength": 1},
+        "extraction_json": {"type": "string", "minLength": 1},
+        "receipt": {"type": "string", "minLength": 1}
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "defect_class",
+          "page",
+          "region_bbox",
+          "actual_label",
+          "expected_label",
+          "expected_state",
+          "text",
+          "owner",
+          "proof_command"
+        ],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "defect_class": {
+            "type": "string",
+            "enum": [
+              "TABLE_CELL_TOP_LEVEL_LEAK"
+            ]
+          },
+          "page": {"type": "integer", "minimum": 1},
+          "block_id": {
+            "anyOf": [
+              {"type": "string", "minLength": 1},
+              {"type": "null"}
+            ]
+          },
+          "region_bbox": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {"type": "number", "minimum": 0, "maximum": 1}
+          },
+          "actual_label": {"type": "string", "minLength": 1},
+          "expected_label": {"type": "string", "minLength": 1},
+          "expected_state": {
+            "type": "string",
+            "enum": [
+              "absent_top_level",
+              "present"
+            ]
+          },
+          "text": {"type": "string", "minLength": 1},
+          "owner": {
+            "type": "string",
+            "enum": [
+              "pdf_oxide_core",
+              "nist_preset",
+              "export_schema",
+              "ui",
+              "external_harness"
+            ]
+          },
+          "evidence_reason": {"type": "string"},
+          "proof_command": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

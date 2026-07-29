@@ -1,0 +1,52 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page456_creator_reviewer_defects.json",
+  "checks": [
+    {
+      "actual_label": "section_header",
+      "candidate_count": 0,
+      "candidates": [],
+      "defect_class": "TABLE_CELL_TOP_LEVEL_LEAK",
+      "expected_label": "table.column_header",
+      "expected_state": "absent_top_level",
+      "id": "page456-control-number-header-not-top-level",
+      "leaking_candidate_count": 0,
+      "status": "PASS",
+      "text": "CONTROL NUMBER"
+    },
+    {
+      "actual_label": "section_header",
+      "candidate_count": 0,
+      "candidates": [],
+      "defect_class": "TABLE_CELL_TOP_LEVEL_LEAK",
+      "expected_label": "table.column_header",
+      "expected_state": "absent_top_level",
+      "id": "page456-implemented-by-header-not-top-level",
+      "leaking_candidate_count": 0,
+      "status": "PASS",
+      "text": "IMPLEMENTED BY"
+    },
+    {
+      "actual_label": "section_header",
+      "candidate_count": 0,
+      "candidates": [],
+      "defect_class": "TABLE_CELL_TOP_LEVEL_LEAK",
+      "expected_label": "table.column_header",
+      "expected_state": "absent_top_level",
+      "id": "page456-assurance-header-not-top-level",
+      "leaking_candidate_count": 0,
+      "status": "PASS",
+      "text": "ASSURANCE"
+    }
+  ],
+  "created_at": "2026-07-29T15:23:09.473305+00:00",
+  "errors": [],
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/extraction.pdf_oxide.json",
+  "page": 456,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "PASS",
+  "summary": {
+    "check_count": 3,
+    "failed": 0,
+    "passed": 3
+  }
+}
