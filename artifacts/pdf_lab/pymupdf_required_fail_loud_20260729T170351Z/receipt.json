@@ -14,7 +14,7 @@
     "snapshot_failure_behavior": "raises RuntimeError with PDF path and 1-based page number for PyMuPDF extraction failures"
   },
   "proof": {
-    "mocked": false,
+    "mocked": true,
     "live": false,
     "exercised": [
       "direct missing-fitz import regression tests",
@@ -29,10 +29,18 @@
       "uv run ruff format --check scripts/pdf_lab/snapshot_current_extraction.py tests/test_pdf_lab_snapshot_current_extraction.py"
     ],
     "stdout": "artifacts/pdf_lab/pymupdf_required_fail_loud_20260729T170351Z/proof.stdout.txt",
-    "exit_code": 0
+    "exit_code": 0,
+    "mocked_scope": "missing-fitz import path is simulated with monkeypatch; page456/table-header snapshot tests use the real project uv environment and installed PyMuPDF dependency",
+    "clean_detached_worktree": {
+      "commit": "0afbd34c1120a2d42e9a7fcda0d1fa695d4a5d29",
+      "worktree": "/tmp/pdf_oxide_verify_pymupdf_20260729T170447Z",
+      "stdout": "/tmp/pdf_oxide_pymupdf_clean_verify.log",
+      "exit_code": 0
+    }
   },
   "does_not_prove": [
     "full PDF Lab all-candidate queue is hardened",
-    "all PDFs in corpus replay without regressions"
+    "all PDFs in corpus replay without regressions",
+    "a real host missing PyMuPDF package was observed; unavailable-import behavior is covered by a focused monkeypatch regression"
   ]
 }
