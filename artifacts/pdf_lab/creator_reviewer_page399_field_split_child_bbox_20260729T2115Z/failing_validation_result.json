@@ -1,0 +1,87 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page399_field_split_child_bbox_defects.json",
+  "checks": [
+    {
+      "actual_label": "paragraph_block",
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.6627771396829625,
+            0.35648535435495815,
+            0.6797048395330255
+          ],
+          "id": "actual:p399:block:19",
+          "iou": 0.0,
+          "matches_expected_bbox": false,
+          "matches_expected_label": true,
+          "source_type": "Body",
+          "text": "Discussion: None.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.7773376773102114,
+            0.8445478451797386,
+            0.7946197509765625
+          ],
+          "id": "actual:p399:block:22#discussion",
+          "iou": 0.17832461719869108,
+          "matches_expected_bbox": false,
+          "matches_expected_label": true,
+          "source_type": "Body",
+          "text": "Discussion: None.",
+          "type": "paragraph_block"
+        }
+      ],
+      "defect_class": "REGION_BBOX_MISMATCH",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "id": "page399-enhancement2-discussion-child-bbox",
+      "matching_bbox_count": 0,
+      "status": "FAIL",
+      "text": "Discussion: None."
+    },
+    {
+      "actual_label": "paragraph_block",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.7946197509765625,
+            0.8445478451797386,
+            0.8119018246429135
+          ],
+          "id": "actual:p399:block:22#related_controls",
+          "iou": 0.48222937631254814,
+          "matches_expected_bbox": false,
+          "matches_expected_label": true,
+          "source_type": "Body",
+          "text": "Related Controls: CM-3, MA-2, MA-4, SA-10.",
+          "type": "paragraph_block"
+        }
+      ],
+      "defect_class": "REGION_BBOX_MISMATCH",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "id": "page399-enhancement2-related-controls-child-bbox",
+      "matching_bbox_count": 0,
+      "status": "FAIL",
+      "text": "Related Controls: CM-3, MA-2, MA-4, SA-10."
+    }
+  ],
+  "created_at": "2026-07-29T21:01:33.757067+00:00",
+  "errors": [],
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/pre_patch_evidence/pages/page_0399/release_extraction_blocks.json",
+  "page": 399,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "FAIL",
+  "summary": {
+    "check_count": 2,
+    "failed": 2,
+    "passed": 0
+  }
+}

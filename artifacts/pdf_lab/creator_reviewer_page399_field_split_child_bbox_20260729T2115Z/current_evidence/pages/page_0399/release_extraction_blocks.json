@@ -1,0 +1,2353 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p399:block:0",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.04473802296802251,
+              0.8507378272760927,
+              0.05821938948197798
+            ],
+            "raw_bbox": [
+              90.0,
+              35.43251419067383,
+              520.6515502929688,
+              46.10975646972656
+            ],
+            "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          }
+        ],
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p399:block:1",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.05679397390346334,
+              0.8517353332120609,
+              0.07054738324097913
+            ],
+            "raw_bbox": [
+              90.0,
+              44.98082733154297,
+              521.2620239257812,
+              55.87352752685547
+            ],
+            "text": "_________________________________________________________________________________________________"
+          }
+        ],
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8529026804406659,
+        0.9549618345318418
+      ],
+      "font_name": "TT0",
+      "font_size": 8.125714302062988,
+      "id": "actual:p399:block:2",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 8.125714302062988,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.9414804632013495,
+              0.23353362239264194,
+              0.9549618345318418
+            ],
+            "raw_bbox": [
+              90.0,
+              745.6525268554688,
+              142.92257690429688,
+              756.3297729492188
+            ],
+            "text": "CHAPTER THREE"
+          },
+          {
+            "bbox": [
+              0.8011840620851205,
+              0.9414804632013495,
+              0.8529026804406659,
+              0.9549618345318418
+            ],
+            "raw_bbox": [
+              490.32464599609375,
+              745.6525268554688,
+              521.9764404296875,
+              756.3297729492188
+            ],
+            "text": "PAGE 372"
+          }
+        ],
+        "text": "CHAPTER THREE   PAGE 372"
+      },
+      "source_type": "Body",
+      "text": "CHAPTER THREE PAGE 372",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "ArialMT",
+      "font_size": 9.0,
+      "id": "actual:p399:rotated_side_chrome:1",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "fragment_ids": [
+          "actual:p399:block:3"
+        ],
+        "fragments": [
+          {
+            "bbox": [
+              0.03441176383323919,
+              0.27643939702197756,
+              0.5297058735018462,
+              0.7178787847962043
+            ],
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "id": "actual:p399:block:3",
+            "is_bold": false,
+            "page": 399,
+            "pdf_page_index": 398,
+            "raw": {
+              "bbox": [
+                21.059999465942383,
+                223.44000244140625,
+                303.1199951171875,
+                349.6199951171875
+              ],
+              "block_type": "Boilerplate",
+              "confidence": 0.8999999761581421,
+              "font_name": "TT1",
+              "font_size": 9.0,
+              "header_level": null,
+              "is_bold": false,
+              "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+            },
+            "source_type": "Boilerplate",
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+            "type": "unknown_region"
+          }
+        ],
+        "line_bbox": [
+          18.135000228881836,
+          227.94000244140625,
+          30.419998168945312,
+          586.5780029296875
+        ],
+        "line_dir": [
+          0.0,
+          1.0
+        ],
+        "source": "fitz_rawdict_rotated_margin_line"
+      },
+      "source_type": "RotatedSideChrome",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.08997406622376104,
+        0.37333519630182804,
+        0.10690179497304589
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p399:block:4",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          126.0,
+          710.4600219726562,
+          104.685546875,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.08997406622376104,
+              0.37333519630182804,
+              0.10690179497304589
+            ],
+            "raw_bbox": [
+              126.0,
+              71.25946044921875,
+              228.48114013671875,
+              84.66622161865234
+            ],
+            "text": "References: [ISO 20243]."
+          }
+        ],
+        "text": "References:  [ISO 20243]."
+      },
+      "semantic_role": "reference_lead",
+      "source_type": "Body",
+      "text": "References: [ISO 20243].",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.12029264430807095,
+        0.5325942195318882,
+        0.1395353644785255
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p399:block:5",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          90.0,
+          685.3200073242188,
+          238.4598388671875,
+          10.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0958082675933838,
+            "text_len": 41,
+            "title_case_ratio": 1.0,
+            "word_count": 6
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "SR-10 INSPECTION OF SYSTEMS OR COMPONENTS"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.12029264430807095,
+              0.5325942195318882,
+              0.1395353644785255
+            ],
+            "raw_bbox": [
+              90.0,
+              95.27177429199219,
+              325.9476623535156,
+              110.51200866699219
+            ],
+            "text": "SR-10 INSPECTION OF SYSTEMS OR COMPONENTS"
+          }
+        ],
+        "text": "SR-10 INSPECTION OF SYSTEMS OR COMPONENTS"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "SR-10 INSPECTION OF SYSTEMS OR COMPONENTS",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.20586594724966809,
+        0.1449740631411774,
+        0.812059639326108,
+        0.20827671012493096
+      ],
+      "font_name": "TT2",
+      "font_size": 10.012500762939453,
+      "id": "actual:p399:block:6",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          90.0,
+          630.1710815429688,
+          406.9804992675781,
+          48.72894287109375
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.012500762939453,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.012500762939453,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9992515444755554,
+            "text_len": 89,
+            "title_case_ratio": 0.1538461595773697,
+            "word_count": 13
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "parentheses_negative"
+          ],
+          "title_text": "Control:  Inspect the following systems or system components [Selection (one or more): at"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.1449740631411774,
+              0.8040877198861316,
+              0.16190178225738833
+            ],
+            "raw_bbox": [
+              126.0,
+              114.8194580078125,
+              492.1016845703125,
+              128.22621154785156
+            ],
+            "text": "Control: Inspect the following systems or system components [Selection (one or more): at"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.16042867332997948,
+              0.8104011186587265,
+              0.17735639244619042
+            ],
+            "raw_bbox": [
+              126.0,
+              127.05950927734375,
+              495.9654846191406,
+              140.4662628173828
+            ],
+            "text": "random; at [Assignment: organization-defined frequency], upon [Assignment: organization-"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.17581292354699338,
+              0.812059639326108,
+              0.19274064266320431
+            ],
+            "raw_bbox": [
+              126.0,
+              139.24383544921875,
+              496.9804992675781,
+              152.6505889892578
+            ],
+            "text": "defined indications of need for inspection]] to detect tampering: [Assignment: organization-"
+          },
+          {
+            "bbox": [
+              0.20586594724966809,
+              0.19134899100872002,
+              0.47358828276590587,
+              0.20827671012493096
+            ],
+            "raw_bbox": [
+              125.98995971679688,
+              151.54840087890625,
+              289.8360290527344,
+              164.9551544189453
+            ],
+            "text": "defined systems or system components]."
+          }
+        ],
+        "text": "Control:  Inspect the following systems or system components [Selection (one or more): at random; at [Assignment: organization-defined frequency], upon [Assignment: organization- defined indications of need for inspection]] to detect tampering: [Assignment: organization- defined systems or system components]."
+      },
+      "source_type": "Body",
+      "text": "Control: Inspect the following systems or system components [Selection (one or more): at random; at [Assignment: organization-defined frequency], upon [Assignment: organization-defined indications of need for inspection]] to detect tampering: [Assignment: organization-defined systems or system components].",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20586592231700623,
+        0.2142165212920218,
+        0.8292914995181015,
+        0.29290349555738043
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p399:block:7",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          125.98994445800781,
+          563.1466674804688,
+          383.84112548828125,
+          58.933349609375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.2142165212920218,
+              0.7951726477130566,
+              0.23114424040823273
+            ],
+            "raw_bbox": [
+              126.0,
+              169.65948486328125,
+              486.6456604003906,
+              183.0662384033203
+            ],
+            "text": "Discussion: The inspection of systems or systems components for tamper resistance and"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.22959529992305872,
+              0.7927204206878063,
+              0.24652301903926965
+            ],
+            "raw_bbox": [
+              126.0,
+              181.8394775390625,
+              485.1448974609375,
+              195.24623107910156
+            ],
+            "text": "detection addresses physical and logical tampering and is applied to systems and system"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.24505545876242898,
+              0.8292914995181015,
+              0.2619831778786399
+            ],
+            "raw_bbox": [
+              126.0,
+              194.08392333984375,
+              507.5263977050781,
+              207.4906768798828
+            ],
+            "text": "components removed from organization-controlled areas. Indications of a need for inspection"
+          },
+          {
+            "bbox": [
+              0.20586592231700623,
+              0.26043970897944285,
+              0.8024831534990298,
+              0.2773674280956538
+            ],
+            "raw_bbox": [
+              125.98994445800781,
+              206.26824951171875,
+              491.11968994140625,
+              219.6750030517578
+            ],
+            "text": "include changes in packaging, specifications, factory location, or entity in which the part is"
+          },
+          {
+            "bbox": [
+              0.20586592231700623,
+              0.2759757764411695,
+              0.6930981804342831,
+              0.29290349555738043
+            ],
+            "raw_bbox": [
+              125.98994445800781,
+              218.57281494140625,
+              424.17608642578125,
+              231.9795684814453
+            ],
+            "text": "purchased, and when individuals return from travel to high-risk locations."
+          }
+        ],
+        "text": "Discussion:  The inspection of systems or systems components for tamper resistance and detection addresses physical and logical tampering and is applied to systems and system components removed from organization-controlled areas. Indications of a need for inspection include changes in packaging, specifications, factory location, or entity in which the part is purchased, and when individuals return from travel to high-risk locations."
+      },
+      "source_type": "Body",
+      "text": "Discussion: The inspection of systems or systems components for tamper resistance and detection addresses physical and logical tampering and is applied to systems and system components removed from organization-controlled areas. Indications of a need for inspection include changes in packaging, specifications, factory location, or entity in which the part is purchased, and when individuals return from travel to high-risk locations.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.29891351256707704,
+        0.675400428522646,
+        0.315841231683288
+      ],
+      "font_name": "TT0",
+      "font_size": 10.019998550415039,
+      "id": "actual:p399:block:8",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          126.0,
+          544.97998046875,
+          291.8340148925781,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.019998550415039,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.29891351256707704,
+              0.675400428522646,
+              0.315841231683288
+            ],
+            "raw_bbox": [
+              126.0,
+              236.739501953125,
+              413.3450622558594,
+              250.14625549316406
+            ],
+            "text": "Related Controls: AT-3, PM-30, SI-4, SI-7, SR-3, SR-4, SR-5, SR-9, SR-11."
+          }
+        ],
+        "text": "Related Controls:  AT-3, PM-30, SI-4, SI-7, SR-3, SR-4, SR-5, SR-9, SR-11."
+      },
+      "source_type": "Body",
+      "text": "Related Controls: AT-3, PM-30, SI-4, SI-7, SR-3, SR-4, SR-5, SR-9, SR-11.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.32194380326704547,
+        0.37333519630182804,
+        0.3388715416494042
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p399:block:9",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          126.0,
+          526.739990234375,
+          104.685546875,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.32194380326704547,
+              0.37333519630182804,
+              0.3388715416494042
+            ],
+            "raw_bbox": [
+              126.0,
+              254.9794921875,
+              228.48114013671875,
+              268.3862609863281
+            ],
+            "text": "References: [ISO 20243]."
+          }
+        ],
+        "text": "References:  [ISO 20243]."
+      },
+      "semantic_role": "reference_lead",
+      "source_type": "Body",
+      "text": "References: [ISO 20243].",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.3522623235529119,
+        0.42012617323133683,
+        0.3715050822556621
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p399:block:10",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          90.0,
+          501.6000061035156,
+          169.58230590820312,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0958082675933838,
+            "text_len": 28,
+            "title_case_ratio": 1.0,
+            "word_count": 3
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "SR-11 COMPONENT AUTHENTICITY"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.3522623235529119,
+              0.42012617323133683,
+              0.3715050822556621
+            ],
+            "raw_bbox": [
+              90.0,
+              278.99176025390625,
+              257.1172180175781,
+              294.2320251464844
+            ],
+            "text": "SR-11 COMPONENT AUTHENTICITY"
+          }
+        ],
+        "text": "SR-11 COMPONENT AUTHENTICITY"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "SR-11 COMPONENT AUTHENTICITY",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.37701955467763576,
+        0.25978078405841504,
+        0.3939472930599945
+      ],
+      "font_name": "TT2",
+      "font_size": 9.510000228881836,
+      "id": "actual:p399:block:11",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          90.0,
+          483.1199951171875,
+          71.20025634765625,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 9.510000228881836,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": true,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.510000228881836,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9491018056869507,
+            "text_len": 8,
+            "title_case_ratio": 1.0,
+            "word_count": 1
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "short_colon_negative",
+            "single_word_negative"
+          ],
+          "title_text": "Control:"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.37701955467763576,
+              0.25978078405841504,
+              0.3939472930599945
+            ],
+            "raw_bbox": [
+              126.0,
+              298.5994873046875,
+              158.98583984375,
+              312.0062561035156
+            ],
+            "text": "Control:"
+          }
+        ],
+        "text": "Control:"
+      },
+      "semantic_role": "nist_field_label",
+      "source_type": "Body",
+      "text": "Control:",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.3998983363912563,
+        0.8282587886635774,
+        0.4323621422353417
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p399:block:12",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          126.0,
+          452.6954345703125,
+          383.1778564453125,
+          22.324554443359375
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.3998983363912563,
+              0.8282587886635774,
+              0.41682607477361505
+            ],
+            "raw_bbox": [
+              126.0,
+              316.719482421875,
+              506.8943786621094,
+              330.1262512207031
+            ],
+            "text": "a. Develop and implement anti-counterfeit policy and procedures that include the means to"
+          },
+          {
+            "bbox": [
+              0.23530379151986316,
+              0.41543440385298297,
+              0.7321470173355801,
+              0.4323621422353417
+            ],
+            "raw_bbox": [
+              144.00592041015625,
+              329.0240478515625,
+              448.073974609375,
+              342.4308166503906
+            ],
+            "text": "detect and prevent counterfeit components from entering the system; and"
+          }
+        ],
+        "text": "a. Develop and implement anti-counterfeit policy and procedures that include the means to detect and prevent counterfeit components from entering the system; and"
+      },
+      "source_type": "List",
+      "text": "a. Develop and implement anti-counterfeit policy and procedures that include the means to detect and prevent counterfeit components from entering the system; and",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.20588230307585273,
+        0.4383083304973564,
+        0.821166044746349,
+        0.48615638655845567
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p399:block:13",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          125.99996948242188,
+          410.09039306640625,
+          378.7810363769531,
+          34.508880615234375
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588230307585273,
+              0.4383083304973564,
+              0.821166044746349,
+              0.45523606887971513
+            ],
+            "raw_bbox": [
+              125.99996948242188,
+              347.14019775390625,
+              502.5536193847656,
+              360.5469665527344
+            ],
+            "text": "b. Report counterfeit system components to [Selection (one or more): source of counterfeit"
+          },
+          {
+            "bbox": [
+              0.23528741076101664,
+              0.45376848933672664,
+              0.7740752774905535,
+              0.47069622771908537
+            ],
+            "raw_bbox": [
+              143.9958953857422,
+              359.3846435546875,
+              473.73406982421875,
+              372.7914123535156
+            ],
+            "text": "component; [Assignment: organization-defined external reporting organizations];"
+          },
+          {
+            "bbox": [
+              0.23527103000217015,
+              0.4692286481760969,
+              0.6002774207420598,
+              0.48615638655845567
+            ],
+            "raw_bbox": [
+              143.98587036132812,
+              371.62908935546875,
+              367.3697814941406,
+              385.0358581542969
+            ],
+            "text": "[Assignment: organization-defined personnel or roles]]."
+          }
+        ],
+        "text": "b. Report counterfeit system components to [Selection (one or more): source of counterfeit component; [Assignment: organization-defined external reporting organizations]; [Assignment: organization-defined personnel or roles]]."
+      },
+      "source_type": "List",
+      "text": "b. Report counterfeit system components to [Selection (one or more): source of counterfeit component; [Assignment: organization-defined external reporting organizations]; [Assignment: organization-defined personnel or roles]].",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.20586597218232996,
+        0.4921710467097735,
+        0.8516534543504902,
+        0.5553979199342053
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p399:block:14",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          125.98997497558594,
+          355.2510986328125,
+          397.4473876953125,
+          46.68890380859375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.4921710467097735,
+              0.8494890001085069,
+              0.5090987850921322
+            ],
+            "raw_bbox": [
+              126.0,
+              389.7994689941406,
+              519.8872680664062,
+              403.20623779296875
+            ],
+            "text": "Discussion: Sources of counterfeit components include manufacturers, developers, vendors, and"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.5075498638731061,
+              0.8516534543504902,
+              0.5244776022554648
+            ],
+            "raw_bbox": [
+              126.0,
+              401.9794921875,
+              521.2119140625,
+              415.3862609863281
+            ],
+            "text": "contractors. Anti-counterfeiting policies and procedures support tamper resistance and provide a"
+          },
+          {
+            "bbox": [
+              0.20586597218232996,
+              0.5230100227124763,
+              0.8319493212731056,
+              0.539937761094835
+            ],
+            "raw_bbox": [
+              125.98997497558594,
+              414.22393798828125,
+              509.1529846191406,
+              427.6307067871094
+            ],
+            "text": "level of protection against the introduction of malicious code. External reporting organizations"
+          },
+          {
+            "bbox": [
+              0.20586597218232996,
+              0.5384701815518466,
+              0.2918546090718188,
+              0.5553979199342053
+            ],
+            "raw_bbox": [
+              125.98997497558594,
+              426.4683837890625,
+              178.61502075195312,
+              439.8751525878906
+            ],
+            "text": "include CISA."
+          }
+        ],
+        "text": "Discussion:  Sources of counterfeit components include manufacturers, developers, vendors, and contractors. Anti-counterfeiting policies and procedures support tamper resistance and provide a level of protection against the introduction of malicious code. External reporting organizations include CISA."
+      },
+      "source_type": "Body",
+      "text": "Discussion: Sources of counterfeit components include manufacturers, developers, vendors, and contractors. Anti-counterfeiting policies and procedures support tamper resistance and provide a level of protection against the introduction of malicious code. External reporting organizations include CISA.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5614892593537918,
+        0.5156945122612847,
+        0.5784169977361505
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020003318786621,
+      "id": "actual:p399:block:15",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          126.0,
+          337.0199890136719,
+          191.86956787109375,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020003318786621,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.5614892593537918,
+              0.5156945122612847,
+              0.5784169977361505
+            ],
+            "raw_bbox": [
+              126.0,
+              444.6994934082031,
+              315.60504150390625,
+              458.10626220703125
+            ],
+            "text": "Related Controls: PE-3, SA-4, SI-7, SR-9, SR-10."
+          }
+        ],
+        "text": "Related Controls:  PE-3, SA-4, SI-7, SR-9, SR-10."
+      },
+      "source_type": "Body",
+      "text": "Related Controls: PE-3, SA-4, SI-7, SR-9, SR-10.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5844437955605863,
+        0.3617490381976358,
+        0.6013715339429451
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p399:block:16",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          126.0,
+          318.8399963378906,
+          97.60482788085938,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.10000000149011612,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.10000000149011612,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": true,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 21,
+            "title_case_ratio": 1.0,
+            "word_count": 2
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "short_colon_negative"
+          ],
+          "title_text": "Control Enhancements:"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.5844437955605863,
+              0.3617490381976358,
+              0.6013715339429451
+            ],
+            "raw_bbox": [
+              126.0,
+              462.8794860839844,
+              221.39041137695312,
+              476.2862548828125
+            ],
+            "text": "Control Enhancements:"
+          }
+        ],
+        "text": "Control Enhancements:"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "Control Enhancements:",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.6073668123495699,
+        0.6028132220498876,
+        0.6260062708999171
+      ],
+      "font_name": "TT2",
+      "font_size": 9.886666297912598,
+      "id": "actual:p399:block:17",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          126.0,
+          299.70001220703125,
+          245.36148071289062,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 9.886666297912598,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.886666297912598,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9866932034492493,
+            "text_len": 54,
+            "title_case_ratio": 0.6666666865348816,
+            "word_count": 6
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "parentheses_negative"
+          ],
+          "title_text": "(1) COMPONENT AUTHENTICITY | ANTI-COUNTERFEIT TRAINING"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.6073668123495699,
+              0.6028132220498876,
+              0.6260062708999171
+            ],
+            "raw_bbox": [
+              126.0,
+              481.0345153808594,
+              368.92169189453125,
+              495.7969665527344
+            ],
+            "text": "(1) COMPONENT AUTHENTICITY | ANTI-COUNTERFEIT TRAINING"
+          }
+        ],
+        "text": "(1) COMPONENT AUTHENTICITY | ANTI-COUNTERFEIT TRAINING"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(1) COMPONENT AUTHENTICITY | ANTI-COUNTERFEIT TRAINING",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.6279157002766927,
+        0.8359555013818678,
+        0.6610120522855508
+      ],
+      "font_name": "TT2",
+      "font_size": 10.020000457763672,
+      "id": "actual:p399:block:18",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          144.0,
+          271.9754333496094,
+          369.7830810546875,
+          22.324554443359375
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 88,
+            "title_case_ratio": 0.10000000149011612,
+            "word_count": 10
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Train [Assignment: organization-defined personnel or roles] to detect counterfeit system"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.6279157002766927,
+              0.8359555013818678,
+              0.6454759848238242
+            ],
+            "raw_bbox": [
+              144.0,
+              497.3092346191406,
+              511.6047668457031,
+              511.21697998046875
+            ],
+            "text": "Train [Assignment: organization-defined personnel or roles] to detect counterfeit system"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.6434517292061237,
+              0.6371211132972069,
+              0.6610120522855508
+            ],
+            "raw_bbox": [
+              144.0,
+              509.61376953125,
+              389.9181213378906,
+              523.5215454101562
+            ],
+            "text": "components (including hardware, software, and firmware)."
+          }
+        ],
+        "text": "Train [Assignment: organization-defined personnel or roles] to detect counterfeit system components (including hardware, software, and firmware)."
+      },
+      "semantic_role": "control_statement",
+      "source_type": "Body",
+      "text": "Train [Assignment: organization-defined personnel or roles] to detect counterfeit system components (including hardware, software, and firmware).",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.6627771396829625,
+        0.35648535435495815,
+        0.6797048395330255
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p399:block:19",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          144.0,
+          256.79998779296875,
+          76.42254638671875,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.6627771396829625,
+              0.35648535435495815,
+              0.6797048395330255
+            ],
+            "raw_bbox": [
+              144.0,
+              524.9194946289062,
+              218.16903686523438,
+              538.3262329101562
+            ],
+            "text": "Discussion: None."
+          }
+        ],
+        "text": "Discussion:  None."
+      },
+      "source_type": "Body",
+      "text": "Discussion: None.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.6820195515950521,
+        0.3923611859090967,
+        0.6989472514451153
+      ],
+      "font_name": "TT0",
+      "font_size": 10.019999504089355,
+      "id": "actual:p399:block:20",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          144.0,
+          241.55999755859375,
+          98.32945251464844,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.10000000149011612,
+        "font_name": "TT0",
+        "font_size": 10.019999504089355,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.10000000149011612,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.019999504089355,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9999998807907104,
+            "text_len": 24,
+            "title_case_ratio": 1.0,
+            "word_count": 3
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "sentence_negative"
+          ],
+          "title_text": "Related Controls:  AT-3."
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.6820195515950521,
+              0.3923611859090967,
+              0.6989472514451153
+            ],
+            "raw_bbox": [
+              144.0,
+              540.1594848632812,
+              240.1250457763672,
+              553.5662231445312
+            ],
+            "text": "Related Controls: AT-3."
+          }
+        ],
+        "text": "Related Controls:  AT-3."
+      },
+      "source_type": "Body",
+      "text": "Related Controls: AT-3.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.7049425683840357,
+        0.8273275038775276,
+        0.7235821039989742
+      ],
+      "font_name": "TT2",
+      "font_size": 9.75,
+      "id": "actual:p399:block:21",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          126.0,
+          222.4199981689453,
+          382.761474609375,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.75,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.75,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9730538725852966,
+            "text_len": 83,
+            "title_case_ratio": 0.8181818127632141,
+            "word_count": 11
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(2) COMPONENT AUTHENTICITY | CONFIGURATION CONTROL FOR COMPONENT SERVICE AND REPAIR"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.7049425683840357,
+              0.8273275038775276,
+              0.7235821039989742
+            ],
+            "raw_bbox": [
+              126.0,
+              558.3145141601562,
+              506.3244323730469,
+              573.0770263671875
+            ],
+            "text": "(2) COMPONENT AUTHENTICITY | CONFIGURATION CONTROL FOR COMPONENT SERVICE AND REPAIR"
+          }
+        ],
+        "text": "(2) COMPONENT AUTHENTICITY | CONFIGURATION CONTROL FOR COMPONENT SERVICE AND REPAIR"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(2) COMPONENT AUTHENTICITY | CONFIGURATION CONTROL FOR COMPONENT SERVICE AND REPAIR",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.7254914563111584,
+        0.8445478451797386,
+        0.7739720970693261
+      ],
+      "child_ids": [
+        "actual:p399:block:22",
+        "actual:p399:block:22#discussion",
+        "actual:p399:block:22#related_controls"
+      ],
+      "font_name": "TT2",
+      "font_size": 10.416000366210938,
+      "id": "actual:p399:block:22",
+      "is_bold": true,
+      "page": 399,
+      "parent_id": "actual:p399:block:22",
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          144.0,
+          152.10000610351562,
+          375.130615234375,
+          66.89999389648438
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.416000366210938,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.416000366210938,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0395209789276123,
+            "text_len": 87,
+            "title_case_ratio": 0.09090909361839294,
+            "word_count": 11
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Maintain configuration control over the following system components awaiting service or"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.7254914563111584,
+              0.8445478451797386,
+              0.7430517793905855
+            ],
+            "raw_bbox": [
+              144.0,
+              574.5892333984375,
+              516.86328125,
+              588.4970092773438
+            ],
+            "text": "Maintain configuration control over the following system components awaiting service or"
+          },
+          {
+            "bbox": [
+              0.23530538721022262,
+              0.7408757065281724,
+              0.808542837504468,
+              0.7584360296075995
+            ],
+            "raw_bbox": [
+              144.00689697265625,
+              586.7735595703125,
+              494.8282165527344,
+              600.6813354492188
+            ],
+            "text": "repair and serviced or repaired components awaiting return to service: [Assignment:"
+          },
+          {
+            "bbox": [
+              0.23530538721022262,
+              0.756411773989899,
+              0.5252632190978604,
+              0.7739720970693261
+            ],
+            "raw_bbox": [
+              144.00689697265625,
+              599.078125,
+              321.4610900878906,
+              612.9859008789062
+            ],
+            "text": "organization-defined system components]."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.7757317128807607,
+              0.35648535435495815,
+              0.7926594127308239
+            ],
+            "raw_bbox": [
+              144.0,
+              614.3795166015625,
+              218.16903686523438,
+              627.7862548828125
+            ],
+            "text": "Discussion: None."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.7949741247928503,
+              0.532655304553462,
+              0.8119018246429135
+            ],
+            "raw_bbox": [
+              144.0,
+              629.6195068359375,
+              325.98504638671875,
+              643.0262451171875
+            ],
+            "text": "Related Controls: CM-3, MA-2, MA-4, SA-10."
+          }
+        ],
+        "text": "Maintain configuration control over the following system components awaiting service or repair and serviced or repaired components awaiting return to service: [Assignment: organization-defined system components]. Discussion:  None. Related Controls:  CM-3, MA-2, MA-4, SA-10."
+      },
+      "semantic_role": "control_statement",
+      "source_type": "Body",
+      "text": "Maintain configuration control over the following system components awaiting service or repair and serviced or repaired components awaiting return to service: [Assignment: organization-defined system components].",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.7757317128807607,
+        0.35648535435495815,
+        0.7926594127308239
+      ],
+      "font_name": "TT2",
+      "font_size": 10.416000366210938,
+      "id": "actual:p399:block:22#discussion",
+      "is_bold": true,
+      "page": 399,
+      "parent_id": "actual:p399:block:22",
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          144.0,
+          152.10000610351562,
+          375.130615234375,
+          66.89999389648438
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.416000366210938,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.416000366210938,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0395209789276123,
+            "text_len": 87,
+            "title_case_ratio": 0.09090909361839294,
+            "word_count": 11
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Maintain configuration control over the following system components awaiting service or"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.7254914563111584,
+              0.8445478451797386,
+              0.7430517793905855
+            ],
+            "raw_bbox": [
+              144.0,
+              574.5892333984375,
+              516.86328125,
+              588.4970092773438
+            ],
+            "text": "Maintain configuration control over the following system components awaiting service or"
+          },
+          {
+            "bbox": [
+              0.23530538721022262,
+              0.7408757065281724,
+              0.808542837504468,
+              0.7584360296075995
+            ],
+            "raw_bbox": [
+              144.00689697265625,
+              586.7735595703125,
+              494.8282165527344,
+              600.6813354492188
+            ],
+            "text": "repair and serviced or repaired components awaiting return to service: [Assignment:"
+          },
+          {
+            "bbox": [
+              0.23530538721022262,
+              0.756411773989899,
+              0.5252632190978604,
+              0.7739720970693261
+            ],
+            "raw_bbox": [
+              144.00689697265625,
+              599.078125,
+              321.4610900878906,
+              612.9859008789062
+            ],
+            "text": "organization-defined system components]."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.7757317128807607,
+              0.35648535435495815,
+              0.7926594127308239
+            ],
+            "raw_bbox": [
+              144.0,
+              614.3795166015625,
+              218.16903686523438,
+              627.7862548828125
+            ],
+            "text": "Discussion: None."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.7949741247928503,
+              0.532655304553462,
+              0.8119018246429135
+            ],
+            "raw_bbox": [
+              144.0,
+              629.6195068359375,
+              325.98504638671875,
+              643.0262451171875
+            ],
+            "text": "Related Controls: CM-3, MA-2, MA-4, SA-10."
+          }
+        ],
+        "text": "Maintain configuration control over the following system components awaiting service or repair and serviced or repaired components awaiting return to service: [Assignment: organization-defined system components]. Discussion:  None. Related Controls:  CM-3, MA-2, MA-4, SA-10."
+      },
+      "semantic_role": "discussion",
+      "source_type": "Body",
+      "text": "Discussion: None.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.7949741247928503,
+        0.532655304553462,
+        0.8119018246429135
+      ],
+      "font_name": "TT2",
+      "font_size": 10.416000366210938,
+      "id": "actual:p399:block:22#related_controls",
+      "is_bold": true,
+      "page": 399,
+      "parent_id": "actual:p399:block:22",
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          144.0,
+          152.10000610351562,
+          375.130615234375,
+          66.89999389648438
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.416000366210938,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.416000366210938,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0395209789276123,
+            "text_len": 87,
+            "title_case_ratio": 0.09090909361839294,
+            "word_count": 11
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Maintain configuration control over the following system components awaiting service or"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.7254914563111584,
+              0.8445478451797386,
+              0.7430517793905855
+            ],
+            "raw_bbox": [
+              144.0,
+              574.5892333984375,
+              516.86328125,
+              588.4970092773438
+            ],
+            "text": "Maintain configuration control over the following system components awaiting service or"
+          },
+          {
+            "bbox": [
+              0.23530538721022262,
+              0.7408757065281724,
+              0.808542837504468,
+              0.7584360296075995
+            ],
+            "raw_bbox": [
+              144.00689697265625,
+              586.7735595703125,
+              494.8282165527344,
+              600.6813354492188
+            ],
+            "text": "repair and serviced or repaired components awaiting return to service: [Assignment:"
+          },
+          {
+            "bbox": [
+              0.23530538721022262,
+              0.756411773989899,
+              0.5252632190978604,
+              0.7739720970693261
+            ],
+            "raw_bbox": [
+              144.00689697265625,
+              599.078125,
+              321.4610900878906,
+              612.9859008789062
+            ],
+            "text": "organization-defined system components]."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.7757317128807607,
+              0.35648535435495815,
+              0.7926594127308239
+            ],
+            "raw_bbox": [
+              144.0,
+              614.3795166015625,
+              218.16903686523438,
+              627.7862548828125
+            ],
+            "text": "Discussion: None."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.7949741247928503,
+              0.532655304553462,
+              0.8119018246429135
+            ],
+            "raw_bbox": [
+              144.0,
+              629.6195068359375,
+              325.98504638671875,
+              643.0262451171875
+            ],
+            "text": "Related Controls: CM-3, MA-2, MA-4, SA-10."
+          }
+        ],
+        "text": "Maintain configuration control over the following system components awaiting service or repair and serviced or repaired components awaiting return to service: [Assignment: organization-defined system components]. Discussion:  None. Related Controls:  CM-3, MA-2, MA-4, SA-10."
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls: CM-3, MA-2, MA-4, SA-10.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.8178970645172428,
+        0.6081176458620557,
+        0.8365366001321812
+      ],
+      "font_name": "TT2",
+      "font_size": 9.886666297912598,
+      "id": "actual:p399:block:23",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          126.0,
+          132.9600067138672,
+          248.60147094726562,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 9.886666297912598,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.886666297912598,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9866932034492493,
+            "text_len": 54,
+            "title_case_ratio": 0.6666666865348816,
+            "word_count": 6
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "parentheses_negative"
+          ],
+          "title_text": "(3) COMPONENT AUTHENTICITY | ANTI-COUNTERFEIT SCANNING"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.8178970645172428,
+              0.6081176458620557,
+              0.8365366001321812
+            ],
+            "raw_bbox": [
+              126.0,
+              647.7744750976562,
+              372.1679992675781,
+              662.5369873046875
+            ],
+            "text": "(3) COMPONENT AUTHENTICITY | ANTI-COUNTERFEIT SCANNING"
+          }
+        ],
+        "text": "(3) COMPONENT AUTHENTICITY | ANTI-COUNTERFEIT SCANNING"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(3) COMPONENT AUTHENTICITY | ANTI-COUNTERFEIT SCANNING",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.8385217840021307,
+        0.8291658389022927,
+        0.8560821070815577
+      ],
+      "font_name": "TT2",
+      "font_size": 10.019999504089355,
+      "id": "actual:p399:block:24",
+      "is_bold": true,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          144.0,
+          117.4800033569336,
+          365.74005126953125,
+          10.019996643066406
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.019999504089355,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.019999504089355,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9999998807907104,
+            "text_len": 84,
+            "title_case_ratio": 0.125,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "sentence_negative"
+          ],
+          "title_text": "Scan for counterfeit system components [Assignment: organization-defined frequency]."
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.8385217840021307,
+              0.8291658389022927,
+              0.8560821070815577
+            ],
+            "raw_bbox": [
+              144.0,
+              664.1092529296875,
+              507.4494934082031,
+              678.0170288085938
+            ],
+            "text": "Scan for counterfeit system components [Assignment: organization-defined frequency]."
+          }
+        ],
+        "text": "Scan for counterfeit system components [Assignment: organization-defined frequency]."
+      },
+      "semantic_role": "control_statement",
+      "source_type": "Body",
+      "text": "Scan for counterfeit system components [Assignment: organization-defined frequency].",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.8577771427655461,
+        0.8393398110383476,
+        0.890235130232994
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p399:block:25",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          144.0,
+          90.05999755859375,
+          371.9754638671875,
+          22.32000732421875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.8577771427655461,
+              0.8393398110383476,
+              0.8747048426156092
+            ],
+            "raw_bbox": [
+              144.0,
+              679.3594970703125,
+              513.6759643554688,
+              692.7662353515625
+            ],
+            "text": "Discussion: The type of component determines the type of scanning to be conducted (e.g.,"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.8733074303829309,
+              0.6655057520648233,
+              0.890235130232994
+            ],
+            "raw_bbox": [
+              144.0,
+              691.6594848632812,
+              407.2895202636719,
+              705.0662231445312
+            ],
+            "text": "web application scanning if the component is a web application)."
+          }
+        ],
+        "text": "Discussion:  The type of component determines the type of scanning to be conducted (e.g., web application scanning if the component is a web application)."
+      },
+      "source_type": "Body",
+      "text": "Discussion: The type of component determines the type of scanning to be conducted (e.g., web application scanning if the component is a web application).",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.8924740878018466,
+        0.39324352787990197,
+        0.9094017876519097
+      ],
+      "font_name": "TT0",
+      "font_size": 10.019999504089355,
+      "id": "actual:p399:block:26",
+      "is_bold": false,
+      "page": 399,
+      "pdf_page_index": 398,
+      "raw": {
+        "bbox": [
+          144.0,
+          74.87999725341797,
+          98.86944580078125,
+          10.019996643066406
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.019999504089355,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.8924740878018466,
+              0.39324352787990197,
+              0.9094017876519097
+            ],
+            "raw_bbox": [
+              144.0,
+              706.8394775390625,
+              240.6650390625,
+              720.2462158203125
+            ],
+            "text": "Related Controls: RA-5."
+          }
+        ],
+        "text": "Related Controls:  RA-5."
+      },
+      "source_type": "Body",
+      "text": "Related Controls: RA-5.",
+      "type": "paragraph_block"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 399,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 398
+}

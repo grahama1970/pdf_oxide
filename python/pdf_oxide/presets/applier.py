@@ -889,6 +889,42 @@ def _slice_bbox_by_weight(
     ]
 
 
+def _line_text_key(value: Any) -> str:
+    return " ".join(str(value or "").split())
+
+
+def _bbox_from_matching_raw_lines(el: dict[str, Any], segment_text: str) -> list[Any] | None:
+    raw = el.get("raw") if isinstance(el.get("raw"), dict) else {}
+    lines = raw.get("matched_lines")
+    if not isinstance(lines, list):
+        return None
+
+    segment_key = _line_text_key(segment_text)
+    if not segment_key:
+        return None
+    matched_boxes: list[list[float]] = []
+    for line in lines:
+        if not isinstance(line, dict):
+            continue
+        line_key = _line_text_key(line.get("text"))
+        bbox = line.get("bbox")
+        if not line_key or not isinstance(bbox, list) or len(bbox) != 4:
+            continue
+        if line_key in segment_key or segment_key in line_key:
+            try:
+                matched_boxes.append([float(value) for value in bbox])
+            except (TypeError, ValueError):
+                continue
+    if not matched_boxes:
+        return None
+    return [
+        min(box[0] for box in matched_boxes),
+        min(box[1] for box in matched_boxes),
+        max(box[2] for box in matched_boxes),
+        max(box[3] for box in matched_boxes),
+    ]
+
+
 def _apply_field_split_rule(
     elements: list[dict[str, Any]],
     rule: dict[str, Any],
@@ -942,6 +978,17 @@ def _apply_field_split_rule(
                 start_weight = cumulative_weight
                 cumulative_weight += float(weights[idx])
                 part["bbox"] = _slice_bbox_by_weight(
+                    el.get("bbox") or [],
+                    start_weight,
+                    cumulative_weight,
+                    total_weight,
+                )
+            elif bbox_strategy == "matching_line":
+                start_weight = cumulative_weight
+                cumulative_weight += float(weights[idx])
+                part["bbox"] = _bbox_from_matching_raw_lines(
+                    el, segment_text
+                ) or _slice_bbox_by_weight(
                     el.get("bbox") or [],
                     start_weight,
                     cumulative_weight,

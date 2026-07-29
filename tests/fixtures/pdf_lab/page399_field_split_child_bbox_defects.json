@@ -1,0 +1,49 @@
+{
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defects.v1",
+  "page": 399,
+  "evidence": {
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/current_evidence/pages/page_0399/page.png",
+    "overlay_image": "artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/current_evidence/pages/page_0399/bbox_overlay_current.png",
+    "extraction_json": "artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/current_evidence/pages/page_0399/release_extraction_blocks.json"
+  },
+  "checks": [
+    {
+      "id": "page399-enhancement2-discussion-child-bbox",
+      "defect_class": "REGION_BBOX_MISMATCH",
+      "page": 399,
+      "block_id": "actual:p399:block:22#discussion",
+      "region_bbox": [
+        0.23529411764705882,
+        0.7757323186337598,
+        0.3601675312693015,
+        0.7926600577505429
+      ],
+      "actual_label": "paragraph_block",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "text": "Discussion: None.",
+      "owner": "pdf_oxide_core",
+      "evidence_reason": "The synthetic field-split child has the right text and label, but its current bbox inherits the full parent x-span instead of the visible PyMuPDF line bbox for 'Discussion: None.'.",
+      "proof_command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page399_field_split_child_bbox_defects.json"
+    },
+    {
+      "id": "page399-enhancement2-related-controls-child-bbox",
+      "defect_class": "REGION_BBOX_MISMATCH",
+      "page": 399,
+      "block_id": "actual:p399:block:22#related_controls",
+      "region_bbox": [
+        0.23529411764705882,
+        0.7948104732108586,
+        0.5363563145983456,
+        0.8123707962902856
+      ],
+      "actual_label": "paragraph_block",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "text": "Related Controls: CM-3, MA-2, MA-4, SA-10.",
+      "owner": "pdf_oxide_core",
+      "evidence_reason": "The synthetic field-split child has the right text and label, but its current bbox inherits the full parent x-span instead of the visible PyMuPDF line bbox for the related-controls line.",
+      "proof_command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page399_field_split_child_bbox_defects.json"
+    }
+  ]
+}

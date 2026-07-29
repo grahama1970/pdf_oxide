@@ -1,0 +1,29 @@
+{
+  "commands": [
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/page399_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/current_evidence --page-timeout-seconds 90"
+  ],
+  "current_evidence_commit": "eddb87809604309c81e59bed3e4783c0d1dcb578",
+  "current_evidence_generated_at": "2026-07-29T21:02:20.079025+00:00",
+  "current_evidence_out": "artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/current_evidence",
+  "entries": [
+    {
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/current_evidence/pages/page_0399/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/current_evidence/pages/page_0399/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/current_evidence/pages/page_0399/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Keep the split child labels/text but assign child bboxes from the matching visible text lines.",
+      "extraction_defect": "Synthetic Discussion and Related Controls children created by the NIST field split rule inherit the parent x-span instead of matching the visible line bboxes.",
+      "finding_id": "p399_field_split_child_bbox_accuracy",
+      "page": 399,
+      "patch_hint": "Carry PyMuPDF matched line bboxes into raw block payloads and let the field_split_rule use matching line bboxes for synthetic children."
+    }
+  ],
+  "pages": [
+    399
+  ],
+  "schema": "pdf_oxide.nist_historical_finding_reconciliation.v1"
+}

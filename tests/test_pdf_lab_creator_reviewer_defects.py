@@ -18,6 +18,7 @@ PAGE22_TABLE_TEXT_FIXTURE = (
 PAGE186_TEXT_FIXTURE = REPO / "tests/fixtures/pdf_lab/page186_list_hyphen_wrap_spacing_defects.json"
 PAGE235_TEXT_FIXTURE = REPO / "tests/fixtures/pdf_lab/page235_body_hyphen_wrap_spacing_defects.json"
 PAGE157_TABLE_FIXTURE = REPO / "tests/fixtures/pdf_lab/page157_false_table_defects.json"
+PAGE399_BBOX_FIXTURE = REPO / "tests/fixtures/pdf_lab/page399_field_split_child_bbox_defects.json"
 PAGE403_TABLE_FIXTURE = (
     REPO / "tests/fixtures/pdf_lab/page403_reference_header_table_false_positive_defects.json"
 )
@@ -56,6 +57,10 @@ PAGE235_TEXT_EXTRACTION = (
 PAGE157_TABLE_EXTRACTION = (
     REPO
     / "artifacts/pdf_lab/creator_reviewer_page157_false_table_20260729T2030Z/current_evidence/pages/page_0157/release_extraction_blocks.json"
+)
+PAGE399_BBOX_EXTRACTION = (
+    REPO
+    / "artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/current_evidence/pages/page_0399/release_extraction_blocks.json"
 )
 PAGE403_TABLE_EXTRACTION = (
     REPO
@@ -368,6 +373,38 @@ def test_page157_validator_fails_if_full_page_false_table_reappears(tmp_path):
     failed = [check for check in result["checks"] if check["status"] == "FAIL"]
     assert [check["id"] for check in failed] == ["page157-full-page-chrome-artifact-is-not-table"]
     assert failed[0]["spurious_table_count"] == 1
+
+
+def test_page399_current_extraction_satisfies_field_split_child_bbox_contract():
+    result = validator.validate(PAGE399_BBOX_FIXTURE, PAGE399_BBOX_EXTRACTION)
+
+    assert result["status"] == "PASS"
+    assert result["summary"] == {"check_count": 2, "passed": 2, "failed": 0}
+    assert {check["id"] for check in result["checks"]} == {
+        "page399-enhancement2-discussion-child-bbox",
+        "page399-enhancement2-related-controls-child-bbox",
+    }
+    assert all(check["matching_bbox_count"] == 1 for check in result["checks"])
+
+
+def test_page399_validator_fails_if_field_split_child_bbox_reuses_parent_width(tmp_path):
+    extraction = json.loads(PAGE399_BBOX_EXTRACTION.read_text())
+    mutated = False
+    for block in extraction["blocks"]:
+        if block.get("id") == "actual:p399:block:22#related_controls":
+            block["bbox"][2] = 0.8445478451797386
+            mutated = True
+            break
+    assert mutated
+    wide_child_path = tmp_path / "page399_wide_field_split_child.json"
+    wide_child_path.write_text(json.dumps(extraction), encoding="utf-8")
+
+    result = validator.validate(PAGE399_BBOX_FIXTURE, wide_child_path)
+
+    assert result["status"] == "FAIL"
+    failed = [check for check in result["checks"] if check["status"] == "FAIL"]
+    assert [check["id"] for check in failed] == ["page399-enhancement2-related-controls-child-bbox"]
+    assert failed[0]["matching_bbox_count"] == 0
 
 
 def test_page403_validator_fails_if_reference_header_false_table_reappears(tmp_path):

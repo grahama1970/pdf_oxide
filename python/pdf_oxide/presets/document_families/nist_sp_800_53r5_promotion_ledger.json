@@ -3023,7 +3023,7 @@
           "source_type": "Body",
           "type": "paragraph_block"
         },
-        "bbox_strategy": "text_length_weighted",
+        "bbox_strategy": "matching_line",
         "segments": [
           {
             "fields": {

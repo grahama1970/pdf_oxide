@@ -389,6 +389,17 @@ def _block_elements(
             )
     if matched_lines:
         block_bbox = _bbox_union([line["bbox"] for line in matched_lines])
+    matched_line_payloads = [
+        {
+            "text": line["text"],
+            "bbox": line["bbox"],
+            "raw_bbox": line.get("raw_bbox"),
+        }
+        for line in matched_lines
+    ]
+    raw_payload = {**block}
+    if matched_line_payloads:
+        raw_payload["matched_lines"] = matched_line_payloads
 
     base = {
         "page": page_index + 1,
@@ -398,7 +409,7 @@ def _block_elements(
         "font_size": block.get("font_size"),
         "font_name": block.get("font_name"),
         "is_bold": block.get("is_bold"),
-        "raw": block,
+        "raw": raw_payload,
     }
     if not _should_split_block(original_block_bbox, matched_lines):
         return [
