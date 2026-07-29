@@ -1,6 +1,6 @@
+import contextlib
 import importlib.util
 import json
-import contextlib
 import sys
 import types
 from pathlib import Path
@@ -13,7 +13,9 @@ LEDGER = REPO / "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pro
 NIST_STYLE_FIXTURE = REPO / "tests/fixtures/generated/nist_style_fixtures.pdf"
 APPLIER_PATH = REPO / "python/pdf_oxide/presets/applier.py"
 
-_APPLIER_SPEC = importlib.util.spec_from_file_location("pdf_oxide_presets_applier_test", APPLIER_PATH)
+_APPLIER_SPEC = importlib.util.spec_from_file_location(
+    "pdf_oxide_presets_applier_test", APPLIER_PATH
+)
 if _APPLIER_SPEC is None or _APPLIER_SPEC.loader is None:
     raise RuntimeError(f"could not load applier module from {APPLIER_PATH}")
 _APPLIER = importlib.util.module_from_spec(_APPLIER_SPEC)
@@ -75,6 +77,7 @@ def test_off_page_table_bbox_preserves_text_and_marks_clipped_geometry(monkeypat
         fake_pdf_oxide = types.SimpleNamespace(open=lambda path: FakeDoc())
         monkeypatch.setitem(sys.modules, "pdf_oxide", fake_pdf_oxide)
         monkeypatch.setattr(snapshot, "_extract_fitz_text_lines", lambda *args: [])
+        monkeypatch.setattr(snapshot, "_top_row_cell_bboxes_from_drawing_grid", lambda *args: [])
 
         page = snapshot._extract_page(Path("/tmp/off-page-table.pdf"), 0, None, "release")
     finally:
@@ -112,8 +115,7 @@ def test_table_text_suppresses_trailing_all_empty_decorative_row():
         }
 
         assert snapshot._table_text(table) == (
-            "DATE | TYPE | REVISION | PAGE\n"
-            "12-10-2020 | Editorial | Table C-17 update | 454"
+            "DATE | TYPE | REVISION | PAGE\n12-10-2020 | Editorial | Table C-17 update | 454"
         )
         assert snapshot._raw_table_payload(table, snapshot._table_metrics(table))["rows"] == [
             {
@@ -163,8 +165,7 @@ def test_nist_style_page_1_real_extraction_suppresses_qid_table_row_duplicates()
             "text": block.get("text"),
         }
         for block in blocks
-        if block.get("type") != "table"
-        and str(block.get("text") or "").count("[QID_") >= 2
+        if block.get("type") != "table" and str(block.get("text") or "").count("[QID_") >= 2
     ]
     assert not duplicate_qid_rows, (
         "standalone non-table QID row blocks were emitted inside the control table: "
@@ -177,9 +178,7 @@ def test_nist_style_page_1_real_extraction_suppresses_qid_table_row_duplicates()
     assert "res[" not in table_text
 
     title_blocks = [
-        block
-        for block in blocks
-        if "Preset: requirements_matrix" in (block.get("text") or "")
+        block for block in blocks if "Preset: requirements_matrix" in (block.get("text") or "")
     ]
     assert title_blocks, "title/control heading block was not emitted"
     assert all(block.get("type") != "header_footer_noise" for block in title_blocks)
@@ -368,7 +367,14 @@ def test_nist_false_positive_table_is_removed_before_body_suppression():
                     {"cells": [{"text": "Control"}, {"text": "Enhancements:"}, {"text": "None"}]},
                     {"cells": [{"text": "References:"}, {"text": "None."}]},
                     {"cells": [{"text": "This publication is available free of charge from:"}]},
-                    {"cells": [{"text": "CHAPTER"}, {"text": "THREE"}, {"text": "PAGE"}, {"text": "130"}]},
+                    {
+                        "cells": [
+                            {"text": "CHAPTER"},
+                            {"text": "THREE"},
+                            {"text": "PAGE"},
+                            {"text": "130"},
+                        ]
+                    },
                 ],
             },
         },
@@ -382,7 +388,164 @@ def test_nist_false_positive_table_is_removed_before_body_suppression():
         "actual:p157:block:7",
     ]
     assert [element["type"] for element in result] == [
-        "section_heading",
+        "header_footer_noise",
         "paragraph_block",
         "paragraph_block",
     ]
+
+
+def test_nist_short_footnote_table_false_positives_are_removed():
+    elements = [
+        {
+            "id": "actual:p31:table:0",
+            "page": 31,
+            "source_type": "table",
+            "type": "table",
+            "bbox": [0.0, 0.7912878749346492, 1.0, 0.9543434345360958],
+            "text": (
+                "15 [- SP | 800-30] provides guidance on the risk assessment process.\n"
+                "20 [- SP | 800-53B] provides guidance for tailoring baselines.\n"
+                "CHAPT | ER NE | PAGE 4"
+            ),
+            "raw": {
+                "row_count": 3,
+                "column_count": 3,
+                "rows": [
+                    {"cells": [{"text": "15 [- SP"}, {"text": "800-30] provides guidance"}]},
+                    {"cells": [{"text": "20 [- SP"}, {"text": "800-53B] provides guidance"}]},
+                    {"cells": [{"text": "CHAPT"}, {"text": "ER NE"}, {"text": "PAGE 4"}]},
+                ],
+            },
+        },
+        {
+            "id": "actual:p33:table:0",
+            "page": 33,
+            "source_type": "table",
+            "type": "table",
+            "bbox": [0.0, 0.8871212101945973, 1.0, 0.9543434345360958],
+            "text": (
+                "23 Unless otherwise stated, all references to NIST publications refer to "
+                "the most recent version of those publications.\nPAGE 6 CHAPTER ONE"
+            ),
+            "raw": {
+                "row_count": 2,
+                "column_count": 2,
+                "rows": [
+                    {"cells": [{"text": "23 Unless otherwise stated, all references"}]},
+                    {"cells": [{"text": "PAGE 6 CHAPTER ONE"}]},
+                ],
+            },
+        },
+    ]
+
+    result = _apply(elements)
+
+    assert result == []
+
+
+def test_nist_short_reference_header_table_false_positive_is_removed():
+    elements = [
+        {
+            "id": "actual:p415:table:0",
+            "page": 415,
+            "source_type": "table",
+            "type": "table",
+            "bbox": [0.0, 0.0571970066638908, 1.0, 0.11047979797979798],
+            "text": (
+                "__________ | __________________________________________________\n"
+                "[SP 800-166] Cooper DA, Ferraiolo H, Chandramouli R"
+            ),
+            "raw": {
+                "row_count": 2,
+                "column_count": 2,
+                "rows": [
+                    {
+                        "cells": [
+                            {"text": "__________"},
+                            {"text": "__________________________________________________"},
+                        ]
+                    },
+                    {"cells": [{"text": "[SP 800-166]"}, {"text": "Cooper DA, Ferraiolo H"}]},
+                ],
+            },
+        }
+    ]
+
+    result = _apply(elements)
+
+    assert result == []
+
+
+def test_nist_short_reference_header_table_false_positive_with_split_cfr_label_is_removed():
+    elements = [
+        {
+            "id": "actual:p403:table:0",
+            "page": 403,
+            "source_type": "table",
+            "type": "table",
+            "bbox": [0.0, 0.0571970066638908, 1.0, 0.11047979797979798],
+            "text": (
+                "__________ | __________________________________________________\n"
+                "[5 CFR 73 | 1] Code of Federal Regulations, Title 5"
+            ),
+            "raw": {
+                "row_count": 2,
+                "column_count": 2,
+                "rows": [
+                    {
+                        "cells": [
+                            {"text": "__________"},
+                            {"text": "__________________________________________________"},
+                        ]
+                    },
+                    {
+                        "cells": [
+                            {"text": "[5 CFR 73"},
+                            {"text": "1] Code of Federal Regulations, Title 5"},
+                        ]
+                    },
+                ],
+            },
+        }
+    ]
+
+    result = _apply(elements)
+
+    assert result == []
+
+
+def test_nist_short_table_false_positive_rule_preserves_real_qid_table():
+    elements = [
+        {
+            "id": "actual:p1:table:0",
+            "page": 1,
+            "source_type": "table",
+            "type": "table",
+            "bbox": [0.0, 0.0924, 1.0, 0.2969],
+            "text": "[QID_001] Control | [QID_002] Requirement | [QID_003] Status",
+            "raw": {
+                "row_count": 2,
+                "column_count": 3,
+                "rows": [
+                    {
+                        "cells": [
+                            {"text": "[QID_001] Control"},
+                            {"text": "[QID_002] Requirement"},
+                            {"text": "[QID_003] Status"},
+                        ]
+                    },
+                    {
+                        "cells": [
+                            {"text": "[QID_004] AC-1"},
+                            {"text": "[QID_005] Policy"},
+                            {"text": "[QID_006] Implemented"},
+                        ]
+                    },
+                ],
+            },
+        }
+    ]
+
+    result = _apply(elements)
+
+    assert [element["id"] for element in result] == ["actual:p1:table:0"]

@@ -1,0 +1,29 @@
+{
+  "commands": [
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/page403_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/current_evidence --page-timeout-seconds 90"
+  ],
+  "current_evidence_commit": "3596ccf2a3c38dc475a7fd5e126dc93f0f475925",
+  "current_evidence_generated_at": "2026-07-29T17:52:35.149723+00:00",
+  "current_evidence_out": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/current_evidence",
+  "entries": [
+    {
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/current_evidence/pages/page_0403/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/current_evidence/pages/page_0403/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/current_evidence/pages/page_0403/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Suppress parser-artifact table blocks made from the reference-section underline and first bibliography entry.",
+      "extraction_defect": "Current extraction emits a top-level table for the page header underline plus [5 CFR 731] reference text.",
+      "finding_id": "p403_reference_header_table_false_positive",
+      "page": 403,
+      "patch_hint": "Extend NIST short table false-positive suppression for raw underscore rows joined without pipe separators."
+    }
+  ],
+  "pages": [
+    403
+  ],
+  "schema": "pdf_oxide.nist_historical_finding_reconciliation.v1"
+}

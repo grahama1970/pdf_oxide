@@ -1,0 +1,17 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___ test_page403_current_extraction_suppresses_reference_header_false_table ____
+
+    def test_page403_current_extraction_suppresses_reference_header_false_table():
+        result = validator.validate(PAGE403_TABLE_FIXTURE, PAGE403_TABLE_EXTRACTION)
+    
+>       assert result["status"] == "PASS"
+E       AssertionError: assert 'FAIL' == 'PASS'
+E         
+E         - PASS
+E         + FAIL
+
+tests/test_pdf_lab_creator_reviewer_defects.py:152: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_pdf_lab_creator_reviewer_defects.py::test_page403_current_extraction_suppresses_reference_header_false_table
+1 failed in 0.08s

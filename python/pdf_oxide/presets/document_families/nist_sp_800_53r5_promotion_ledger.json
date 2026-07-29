@@ -9,7 +9,7 @@
       "applied_at": "2026-05-11T17:56:00Z",
       "applier_rule_kind": "block_type_map",
       "category": "type_remap",
-      "checklist_item": "Map block_type=TableOfContents \u2192 element_type=reference and set semantic_role=toc_entry. Field-level enrichment (label, target_page, dot_leader) is a separate rule.",
+      "checklist_item": "Map block_type=TableOfContents \u2192 element_type=toc_entry and set semantic_role=toc_entry. Field-level enrichment (label, target_page, dot_leader) is a separate rule.",
       "closed_at": "2026-05-11T17:58:00Z",
       "closed_by": "agent:claude-opus-4-7 (B.2.0 \u2014 lifecycle proof complete)",
       "closure_notes": "Closed at ledger_only_single_extract scope: the applier reproduces the snapshot script's effect against a single PDF extraction. Full pipeline closure (preset+core only, no snapshot domain rules) is gated on B.3 retiring the snapshot rules; fixture provisional flag flips when that lands.",
@@ -49,7 +49,7 @@
           "actual:p14:block:10",
           "actual:p14:block:11"
         ],
-        "deterministic_rule": "If source_type='TableOfContents' \u2192 set type='reference' and semantic_role='toc_entry'. Per-element field enrichment (label, target_page, dot_leader) is handled by a separate text_classifier_rule entry; structural grouping under a toc parent is a separate structural_grouping_rule entry.",
+        "deterministic_rule": "If source_type='TableOfContents' \u2192 set type='toc_entry' and semantic_role='toc_entry'. Per-element field enrichment (label, target_page, dot_leader) is handled by a separate text_classifier_rule entry; structural grouping under a toc parent is a separate structural_grouping_rule entry.",
         "expected_residual_reduction": {
           "authoring_summary_keys_drained": [
             "TableOfContents__reference__type_mismatch",
@@ -87,7 +87,7 @@
           "semantic_role": "toc_entry"
         },
         "source_type": "TableOfContents",
-        "target_type": "reference"
+        "target_type": "toc_entry"
       },
       "rule_class": "baseline_adapter",
       "status": "closed",
@@ -2243,7 +2243,7 @@
       "applied_at": "2026-05-31T19:36:00Z",
       "applier_rule_kind": "same_band_merge_rule",
       "category": "structural_grouping",
-      "checklist_item": "Merge same-band NIST top running-header fragments into one page-chrome running_header element and suppress the child fragments, matching the compact PDF Lab candidate contract.",
+      "checklist_item": "Merge same-band NIST top running-header fragments into one page-chrome header_footer_noise element and suppress the child fragments, matching the compact PDF Lab candidate contract.",
       "closed_at": "2026-05-31T19:36:00Z",
       "closed_by": "agent:codex (validated by tests/test_nist_running_header_merge.py)",
       "entry_id": "nist-running-header-merge-001",
@@ -2278,7 +2278,7 @@
         "synthesize": {
           "semantic_role": "page_chrome",
           "source_type": "synthetic",
-          "type": "running_header"
+          "type": "header_footer_noise"
         }
       },
       "status": "closed"
@@ -3055,6 +3055,136 @@
       "status": "closed"
     },
     {
+      "added_at": "2026-06-04T13:20:00Z",
+      "added_by": "agent:codex (issue #2 page45 deliberate repair)",
+      "applied_at": "2026-06-04T13:20:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Classify NIST 'Control Enhancements: None.' field rows as NIST-specific labeled enhancements, not generic paragraph prose.",
+      "closed_at": "2026-06-04T13:20:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_control_heading_preset.py)",
+      "entry_id": "nist-control-enhancements-none-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:13"
+        ],
+        "source_issue": "https://github.com/grahama1970/pdf_oxide/issues/2"
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Standalone 'Control Enhancements:' heading without 'None.' must remain a section heading.",
+          "Non-NIST or off-main-column prose beginning with the same words must not be remapped."
+        ],
+        "candidates_that_prove": [
+          "Page 45 block 13 is a main-column NIST field row with exact text 'Control Enhancements:  None.'."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block in the main control column exactly matches 'Control Enhancements: None.', set type=labeled_enhancements and semantic_role=nist_control_enhancements_none."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block",
+          "bbox is outside the NIST main control column",
+          "font size is outside the normal NIST control text band",
+          "text is not exactly Control Enhancements: None."
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overrides the generic paragraph_block type only for exact NIST Control Enhancements: None field rows.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.19,
+            "x_min_lt": 0.22,
+            "y_max_lt": 0.9
+          },
+          "font_properties": {
+            "font_size_gt": 9.8,
+            "font_size_lt": 11.2
+          },
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "nist_control_enhancements_none",
+              "type": "labeled_enhancements"
+            },
+            "regex": "^Control Enhancements:\\s+None\\.$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-04T13:28:00Z",
+      "added_by": "agent:codex (issue #2 page45 deliberate repair)",
+      "applied_at": "2026-06-04T13:28:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Classify NIST page quick-link rows as section_link instead of generic paragraph prose.",
+      "closed_at": "2026-06-04T13:28:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_control_heading_preset.py)",
+      "entry_id": "nist-quick-link-section-link-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:7"
+        ],
+        "source_issue": "https://github.com/grahama1970/pdf_oxide/issues/2"
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Ordinary bold title-case body text in the same page column must not be remapped.",
+          "Other NIST main-column body paragraphs must not be remapped unless they match the exact quick-link text."
+        ],
+        "candidates_that_prove": [
+          "Page 45 block 7 is a bold main-column quick link with exact text 'Quick link to Access Control Summary Table'."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block in the observed quick-link top band exactly matches 'Quick link to Access Control Summary Table', set type=section_link and semantic_role=nist_quick_link."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block",
+          "bbox is outside the NIST quick-link top-band column",
+          "font size is outside the observed bold quick-link text band",
+          "text is not exactly Quick link to Access Control Summary Table"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overrides the generic paragraph_block type only for exact NIST quick-link rows in the observed top-band position.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.13,
+            "x_min_lt": 0.16,
+            "y_max_lt": 0.16
+          },
+          "font_properties": {
+            "font_size_gt": 10.6,
+            "font_size_lt": 11.2
+          },
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "nist_quick_link",
+              "type": "section_link"
+            },
+            "regex": "^Quick link to Access Control Summary Table$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
       "added_at": "2026-06-01T18:08:00Z",
       "added_by": "agent:codex (next-30 field-merge rerun)",
       "applied_at": "2026-06-01T18:08:00Z",
@@ -3283,6 +3413,69 @@
               "type": "list"
             },
             "regex": "^(?:[a-z]\\.\\s+\\S|\\d+\\.\\s+\\S|\\([a-z]\\)\\s+\\S|\\(\\d+\\)\\s+(?![A-Z0-9][A-Z0-9 /,;:'()&.\\-]+\\s+\\|\\s+)[\\s\\S]+)"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-30T14:42:00Z",
+      "added_by": "agent:codex (PDF Lab live 10-page reviewer)",
+      "applied_at": "2026-06-30T14:42:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Route NIST bullet-glyph body blocks to list semantics when the source classifier emits them as paragraph blocks.",
+      "closed_at": "2026-06-30T14:42:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_list_item_preset.py)",
+      "entry_id": "nist-bullet-list-item-typing-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p33:block:6",
+          "actual:p33:block:7",
+          "actual:p33:block:8"
+        ],
+        "second_pass_results": [
+          "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_ticket72_footnote_patch_20260630T1438/summary.json finding p33_bullets_as_paragraphs"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A main body paragraph at the same indent that does not begin with a bullet glyph must remain paragraph_block."
+        ],
+        "candidates_that_prove": [
+          "Page 33 blocks 6 through 8 visibly begin with bullet glyphs and are emitted as Body paragraph_block."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block starts with a bullet glyph in the main body/list column, set type=list and semantic_role=nist_list_item."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block",
+          "bbox x_min is outside the main body bullet column",
+          "text does not begin with a bullet glyph"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overwrites generic Body paragraph typing only for explicit bullet-glyph list items.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.13,
+            "x_min_lt": 0.18,
+            "y_max_lt": 0.92
+          },
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "nist_list_item",
+              "type": "list"
+            },
+            "regex": "^\\s*[•\\u2022]\\s+\\S"
           }
         ]
       },
@@ -3607,6 +3800,94 @@
       "status": "closed"
     },
     {
+      "added_at": "2026-06-30T14:18:00Z",
+      "added_by": "agent:codex (PDF Lab live 10-page reviewer)",
+      "applied_at": "2026-06-30T14:18:00Z",
+      "applier_rule_kind": "table_false_positive_suppression_rule",
+      "category": "bbox_refinement",
+      "checklist_item": "Suppress short NIST parser-artifact table strips that are actually footnotes, page chrome, or bibliography/reference text before table-contained duplicate suppression can treat them as real tables.",
+      "closed_at": "2026-06-30T14:18:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_table_duplicate_suppression.py against pages 31, 33, and 415 live-review findings)",
+      "entry_id": "nist-table-false-positive-002",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p31:table:0",
+          "actual:p33:table:0",
+          "actual:p415:table:0"
+        ],
+        "risk_reasons_observed": [
+          "footnote_region_materialized_as_table",
+          "footer_chrome_absorbed_into_table_text",
+          "running_header_rule_and_reference_text_materialized_as_table"
+        ],
+        "second_pass_results": [
+          "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_after_auth_fix/summary.json findings p31-footnotes-false-table, p33-footnote-false-table, p415_spurious_header_ref_table"
+        ],
+        "visual_evidence": [
+          "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_after_auth_fix/pages/page_0031/page.png",
+          "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_after_auth_fix/pages/page_0033/page.png",
+          "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_after_auth_fix/pages/page_0415/page.png"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A genuine NIST data table with a short full-width bbox and row text matching the configured footnote/reference/page-chrome signatures.",
+          "A genuine ruled table with column headers and multiple data rows; the any-row signatures alone should not remove that table unless it also fits the narrow bbox and row-count guards."
+        ],
+        "candidates_that_prove": [
+          "actual:p31:table:0 text consists of footnotes 15 through 20 plus footer chrome, with no visible table grid.",
+          "actual:p33:table:0 text consists of footnote 23 plus footer chrome, with no visible table grid.",
+          "actual:p415:table:0 text consists of a running header rule and first bibliography reference text, with no visible table grid."
+        ],
+        "deterministic_rule": "Before structural duplicate suppression, remove a NIST table block when it is a short full-width or near-full-width strip, has text, and at least one raw row matches footnote-number, footer/page-chrome, underscore-rule, or bracketed-reference signatures associated with the live false-positive artifacts.",
+        "expected_residual_reduction": {
+          "candidate_count_max": 3,
+          "candidate_count_min": 3,
+          "kinds_resolved": [
+            "false_positive_table",
+            "page_chrome_absorbed_into_table"
+          ]
+        },
+        "lives_in": "nist_preset; the rule is explicitly tied to NIST footnote/reference/page-chrome table parser artifacts."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "table text is empty",
+          "bbox width is less than 0.95 page width",
+          "bbox height is greater than 0.20 page height",
+          "raw row_count is greater than 12",
+          "no raw row matches a NIST footnote/reference/page-chrome false-table signature"
+        ]
+      },
+      "rule": {
+        "any_required_row_patterns": [
+          "^\\s*\\d{1,2}\\s+\\[[-\\s]*SP\\b",
+          "^\\s*\\d{1,2}\\s+Unless\\s+otherwise\\s+stated\\b",
+          "^\\s*\\[SP\\s+800-\\d+\\b",
+          "^_+\\s*\\|\\s*_+",
+          "^_+\\s+_+",
+          "\\bPAGE\\s+\\d+\\b\\s+CHAPTER\\b",
+          "\\bCHAPTER\\b.*\\bPAGE\\s+\\d+\\b"
+        ],
+        "max_content_rows": 12,
+        "min_column_count": 2,
+        "min_row_count": 1,
+        "require_empty_text": false,
+        "table_when": {
+          "bbox_constraints": {
+            "width_gt": 0.95,
+            "y_max_lt": 0.97,
+            "y_min_gt": 0.04
+          },
+          "source_type": "table",
+          "type": "table"
+        }
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
       "added_at": "2026-05-31T18:58:00Z",
       "added_by": "agent:codex (PDF Lab second-pass table duplicate hardening)",
       "applied_at": "2026-05-31T18:58:00Z",
@@ -3734,6 +4015,7 @@
             "font_size_lt": 11.1
           },
           "page": [
+            401,
             402,
             403,
             404,
@@ -3769,6 +4051,74 @@
               "type": "reference"
             },
             "regex": "^(?!\\d+\\.$).+$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-30T15:56:00Z",
+      "added_by": "agent:codex (PDF Lab live page 401 reviewer)",
+      "applied_at": "2026-06-30T15:56:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Classify the NIST References appendix top-level page title as a section heading.",
+      "closed_at": "2026-06-30T15:56:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_reference_continuation_preset.py)",
+      "entry_id": "nist-reference-appendix-page-title-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p401:block:6"
+        ],
+        "second_pass_results": [
+          "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_ticket73_residual_patch_20260630T1448/summary.json finding p401_top_references_title_role"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "The word REFERENCES outside the References appendix opening page should not be remapped by this rule."
+        ],
+        "candidates_that_prove": [
+          "Page 401 block 6 is the large bold all-caps top-level title 'REFERENCES' at the top of the references appendix."
+        ],
+        "deterministic_rule": "On NIST page 401 only, classify the large bold top-band Body paragraph with exact text REFERENCES as section_heading with semantic_role=reference_page_title."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "page is not 401",
+          "source_type is not Body",
+          "type is not paragraph_block",
+          "text is not exactly REFERENCES",
+          "font size is outside the large title range",
+          "bbox is outside the observed top title band"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overrides generic Body paragraph typing only for the exact NIST References appendix page title.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.13,
+            "x_min_lt": 0.17,
+            "y_max_lt": 0.14
+          },
+          "font_properties": {
+            "font_size_gt": 15.5,
+            "font_size_lt": 16.5
+          },
+          "page": 401,
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "reference_page_title",
+              "type": "section_heading"
+            },
+            "regex": "^REFERENCES$"
           }
         ]
       },
@@ -3826,7 +4176,7 @@
         "applies_when": {
           "bbox_constraints": {
             "x_min_gt": 0.33,
-            "x_min_lt": 0.4,
+            "x_min_lt": 0.42,
             "y_max_lt": 0.9
           },
           "font_properties": {
@@ -3834,6 +4184,7 @@
             "font_size_lt": 11.1
           },
           "page": [
+            401,
             402,
             403,
             404,
@@ -4098,6 +4449,104 @@
             "prefix_ci": "References:"
           }
         ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
+      "added_at": "2026-06-30T16:55:00Z",
+      "added_by": "agent:codex (PDF Lab reviewer-coder while loop)",
+      "applied_at": "2026-06-30T16:55:00Z",
+      "applier_rule_kind": "contextual_control_statement_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Restore NIST main-column control-statement continuation runs as paragraph_block control_statement text using heading/body context rather than candidate text.",
+      "closed_at": "2026-06-30T16:55:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_control_heading_preset.py)",
+      "entry_id": "nist-main-column-boilerplate-control-continuation-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p193:block:31"
+        ],
+        "risk_reasons_observed": [
+          "main_column_body_text_misclassified_as_boilerplate",
+          "control_statement_continuation_as_header_footer_noise",
+          "control_statement_split_with_inconsistent_semantic_role"
+        ],
+        "second_pass_results": [
+          "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/live_second_pass_review_sample20_stratified_20260630T1640/summary.json",
+          "/mnt/storage12tb/pi-mono/artifacts/pdf-lab/ten-page-random-toc-elements-20260630/while_loop_page193_context_rule_iter1_live_review_20260630T1330/summary.json"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "True top/bottom/side page chrome remains outside the main-column x/y/font/text guards.",
+          "Generic Boilerplate blocks outside a main-column NIST control-heading continuation run remain header_footer_noise.",
+          "Other bold body lines outside the control-heading-to-discussion context remain untagged."
+        ],
+        "candidates_that_prove": [
+          "Page 193 blocks 30, 31, and 32 are adjacent same-indent lines forming one numbered control statement before the Discussion paragraph."
+        ],
+        "deterministic_rule": "After a NIST numbered control/enhancement heading, classify the adjacent bold main-column Body/Boilerplate continuation run before Discussion or the next heading as paragraph_block with semantic_role=control_statement."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body or Boilerplate",
+          "type is not paragraph_block, header_footer_noise, or reference",
+          "bbox x_min is outside the observed main-column control statement band",
+          "block is outside the adjacent run after a NIST numbered control/enhancement heading",
+          "text starts with a bracketed withdrawn-note marker",
+          "bbox y_max is in the bottom footer band",
+          "font size is outside the observed 10.02pt body/control statement band",
+          "the next structural stop has already been reached"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally overwrites generic Boilerplate to header_footer_noise mapping only for tightly guarded main-column control-statement continuation runs; Body paragraph blocks keep paragraph_block type and gain only semantic_role.",
+      "rule": {
+        "candidate_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.23,
+            "x_min_lt": 0.24,
+            "y_max_lt": 0.9
+          },
+          "font_properties": {
+            "font_size_gt": 9.9,
+            "font_size_lt": 10.15,
+            "is_bold": true
+          },
+          "source_type": [
+            "Body",
+            "Boilerplate"
+          ],
+          "text_not_regex": "^\\s*\\[Withdrawn:",
+          "type": [
+            "paragraph_block",
+            "header_footer_noise",
+            "reference"
+          ]
+        },
+        "fields": {
+          "semantic_role": "control_statement",
+          "type": "paragraph_block"
+        },
+        "heading_text_regex": "^\\(\\d+\\)\\s+[A-Z0-9][A-Z0-9\\s|/,-]+$",
+        "heading_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.19,
+            "x_min_lt": 0.22,
+            "y_max_lt": 0.9
+          },
+          "semantic_role": "nist_control_heading",
+          "type": "section_heading"
+        },
+        "max_y_gap": 0.035,
+        "merge_run": true,
+        "min_run_length": 1,
+        "stop_text_regex": "^(?:Discussion|Related Controls):",
+        "stop_when": {
+          "type": "section_heading"
+        }
       },
       "rule_class": "document_family_adapter",
       "status": "closed"

@@ -1,0 +1,71 @@
+{
+  "schema": "pdf_oxide.pdf_lab.hardening_receipt.v1",
+  "created_at": "2026-07-29T18:00:00Z",
+  "slice": "page403-reference-header-false-table",
+  "immutable_goal": {
+    "status": "NOT_MET",
+    "reason": "This receipt proves one page/checklist hardening slice only; the all-candidates hardening queue remains active."
+  },
+  "candidate": {
+    "source_pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+    "page": 403,
+    "defect_class": "TABLE_FALSE_POSITIVE",
+    "defect_id": "page403-reference-header-strip-is-not-table",
+    "expected_state": "absent_top_level"
+  },
+  "defect_contract": {
+    "bundle": "tests/fixtures/pdf_lab/page403_reference_header_table_false_positive_defects.json",
+    "validation_result": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/validation_result.json",
+    "status": "PASS",
+    "check_count": 1,
+    "failed": 0,
+    "passed": 1
+  },
+  "visual_evidence": {
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/current_evidence/pages/page_0403/page.png",
+    "annotated_overlay": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/current_evidence/pages/page_0403/bbox_overlay_current.png"
+  },
+  "extraction_evidence": {
+    "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/current_evidence/pages/page_0403/release_extraction_blocks.json",
+    "manifest": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/current_evidence/manifest.json",
+    "table_count_after_repair": 0,
+    "first_reference_text_after_repair": "[5 CFR 731] Code of Federal Regulations, Title 5, Administrative Personnel, Section"
+  },
+  "red_before_patch": {
+    "command": "uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py::test_page403_current_extraction_suppresses_reference_header_false_table -q",
+    "stdout": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/failing_regression.stdout.txt",
+    "exit_code_file": "artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/failing_regression.exit_code.txt",
+    "exit_code": 1,
+    "observed_status": "FAIL"
+  },
+  "green_after_patch": {
+    "commands": [
+      {
+        "command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page403_reference_header_table_false_positive_defects.json --out artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/validation_result.json",
+        "result": "PASS"
+      },
+      {
+        "command": "uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py::test_page403_current_extraction_suppresses_reference_header_false_table tests/test_pdf_lab_creator_reviewer_defects.py::test_page403_validator_fails_if_reference_header_false_table_reappears tests/test_nist_table_duplicate_suppression.py::test_nist_short_reference_header_table_false_positive_with_split_cfr_label_is_removed -q",
+        "result": "3 passed in 0.06s"
+      },
+      {
+        "command": "uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_nist_table_duplicate_suppression.py tests/test_nist_ruled_table_materialization.py tests/test_nist_page456_control_table_headers.py tests/test_nist_top_header_chrome_preset.py -q",
+        "result": "54 passed in 2.00s"
+      },
+      {
+        "command": "uv run ruff check scripts/pdf_lab/validate_creator_reviewer_defects.py scripts/pdf_lab/snapshot_current_extraction.py tests/test_pdf_lab_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_nist_table_duplicate_suppression.py",
+        "result": "All checks passed"
+      },
+      {
+        "command": "uv run ruff format --check scripts/pdf_lab/validate_creator_reviewer_defects.py scripts/pdf_lab/snapshot_current_extraction.py tests/test_pdf_lab_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_nist_table_duplicate_suppression.py",
+        "result": "5 files already formatted"
+      }
+    ]
+  },
+  "evidence_character": {
+    "mocked": false,
+    "live": false,
+    "actually_exercised": "Local deterministic extraction artifacts, schema validation, focused regression tests, and preset duplicate-suppression unit coverage against real page403 evidence.",
+    "does_not_prove": "The full all-candidates queue, external Ask/browser reviewer behavior, or a live service path."
+  }
+}

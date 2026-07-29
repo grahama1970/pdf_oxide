@@ -60,6 +60,7 @@
               "REGION_LABEL_MISMATCH",
               "REGION_BBOX_MISMATCH",
               "TEXT_CONTENT_MISMATCH",
+              "TABLE_FALSE_POSITIVE",
               "TABLE_CELL_TOP_LEVEL_LEAK"
             ]
           },

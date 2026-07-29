@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Any, Callable, Iterable
+from typing import Any, Iterable
 
 
 # Status sets per mode (S4 of v6_ledger_schema_v2).
@@ -43,6 +43,7 @@ _RULE_KINDS = frozenset({
     "field_split_rule",
     "text_normalization_rule",
     "page_chrome_prefix_strip_rule",
+    "contextual_control_statement_rule",
 })
 
 
@@ -170,6 +171,11 @@ def _matches_when(el: dict[str, Any], when: dict[str, Any]) -> bool:
       passes if `el.type` is in the list.
     """
     for k, v in (when or {}).items():
+        if k == "text_not_regex":
+            text = str(el.get("text") or "")
+            if re.search(str(v), text):
+                return False
+            continue
         if k == "bbox_constraints":
             bbox = el.get("bbox")
             if not bbox or len(bbox) != 4:
@@ -179,25 +185,34 @@ def _matches_when(el: dict[str, Any], when: dict[str, Any]) -> bool:
             except (TypeError, ValueError):
                 return False
             width = x1 - x0
-            checks = {
-                "x_min_lt": lambda lim: x0 < lim,
-                "x_min_gt": lambda lim: x0 > lim,
-                "x_max_lt": lambda lim: x1 < lim,
-                "x_max_gt": lambda lim: x1 > lim,
-                "y_min_lt": lambda lim: y0 < lim,
-                "y_min_gt": lambda lim: y0 > lim,
-                "y_max_lt": lambda lim: y1 < lim,
-                "y_max_gt": lambda lim: y1 > lim,
-                "width_lt": lambda lim: width < lim,
-                "width_gt": lambda lim: width > lim,
-            }
             for ck, cv in (v or {}).items():
-                if ck not in checks:
-                    return False
                 try:
-                    if not checks[ck](float(cv)):
-                        return False
+                    limit = float(cv)
                 except (TypeError, ValueError):
+                    return False
+                if ck == "x_min_lt":
+                    passes = x0 < limit
+                elif ck == "x_min_gt":
+                    passes = x0 > limit
+                elif ck == "x_max_lt":
+                    passes = x1 < limit
+                elif ck == "x_max_gt":
+                    passes = x1 > limit
+                elif ck == "y_min_lt":
+                    passes = y0 < limit
+                elif ck == "y_min_gt":
+                    passes = y0 > limit
+                elif ck == "y_max_lt":
+                    passes = y1 < limit
+                elif ck == "y_max_gt":
+                    passes = y1 > limit
+                elif ck == "width_lt":
+                    passes = width < limit
+                elif ck == "width_gt":
+                    passes = width > limit
+                else:
+                    return False
+                if not passes:
                     return False
             continue
         if k == "font_properties":
@@ -452,6 +467,23 @@ def _bbox_coverage(inner: list[float], outer: list[float]) -> float:
     return intersection / inner_area
 
 
+def _bbox_axis_coverage(inner: list[float], outer: list[float], start: int, end: int) -> float:
+    if len(inner) != 4 or len(outer) != 4:
+        return 0.0
+    inner_span = max(0.0, float(inner[end]) - float(inner[start]))
+    if inner_span <= 0:
+        return 0.0
+    overlap = max(
+        0.0,
+        min(float(inner[end]), float(outer[end])) - max(float(inner[start]), float(outer[start])),
+    )
+    return overlap / inner_span
+
+
+def _looks_like_qid_table_row(text: str) -> bool:
+    return len(re.findall(r"\[QID_[^\]]+\]", text, flags=re.I)) >= 2
+
+
 def _bbox_y_center(bbox: list[float]) -> float:
     return (float(bbox[1]) + float(bbox[3])) / 2.0
 
@@ -671,11 +703,111 @@ def _apply_adjacent_text_merge_rule(
         lead["text"] = merged_text
         lead["bbox"] = _bbox_union([lead_bbox, tail_bbox])
         lead[child_ids_field] = [lead.get("id"), tail.get("id")]
-        for field, value in merged_fields.items():
-            lead[field] = value
+        for field_name, value in merged_fields.items():
+            lead[field_name] = value
         out.append(lead)
         fired += 1
         i += 2
+
+    cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
+    return out
+
+
+def _apply_contextual_control_statement_rule(
+    elements: list[dict[str, Any]],
+    rule: dict[str, Any],
+    entry_id: str,
+    cfg: ApplierConfig,
+) -> list[dict[str, Any]]:
+    """Restore NIST control-statement continuation lines using neighbor context.
+
+    This intentionally uses layout, typography, and local structure rather than
+    candidate/page text. A run starts after a matching control heading and ends
+    at a configured stop element, next heading, page break, or non-candidate.
+    """
+    heading_when = rule.get("heading_when") or {}
+    candidate_when = rule.get("candidate_when") or {}
+    stop_when = rule.get("stop_when") or {}
+    heading_text_regex = rule.get("heading_text_regex")
+    stop_text_regex = rule.get("stop_text_regex")
+    min_run_length = int(rule.get("min_run_length") or 1)
+    max_y_gap = float(rule.get("max_y_gap") or 0.035)
+    merge_run = bool(rule.get("merge_run"))
+    child_ids_field = rule.get("child_ids_field") or "child_ids"
+    fields = rule.get("fields") or {
+        "type": "paragraph_block",
+        "semantic_role": "control_statement",
+    }
+    heading_pattern = re.compile(heading_text_regex) if heading_text_regex else None
+    stop_pattern = re.compile(stop_text_regex) if stop_text_regex else None
+
+    out = [dict(el) for el in elements]
+    fired = 0
+    i = 0
+    while i < len(out):
+        heading = out[i]
+        if not _matches_when(heading, heading_when):
+            i += 1
+            continue
+        heading_text = str(heading.get("text") or "").strip()
+        if heading_pattern and not heading_pattern.search(heading_text):
+            i += 1
+            continue
+
+        run_indices: list[int] = []
+        prev_bbox = heading.get("bbox") or []
+        j = i + 1
+        while j < len(out):
+            candidate = out[j]
+            if candidate.get("page") != heading.get("page"):
+                break
+            candidate_text = str(candidate.get("text") or "").strip()
+            if stop_when and _matches_when(candidate, stop_when):
+                break
+            if stop_pattern and stop_pattern.search(candidate_text):
+                break
+            if candidate.get("semantic_role") == heading.get("semantic_role") and candidate.get("type") == heading.get("type"):
+                break
+            if not _matches_when(candidate, candidate_when):
+                break
+
+            candidate_bbox = candidate.get("bbox") or []
+            if len(prev_bbox) == 4 and len(candidate_bbox) == 4:
+                y_gap = float(candidate_bbox[1]) - float(prev_bbox[3])
+                if y_gap < -max_y_gap or y_gap > max_y_gap:
+                    break
+            run_indices.append(j)
+            prev_bbox = candidate_bbox
+            j += 1
+
+        if len(run_indices) >= min_run_length:
+            if merge_run and len(run_indices) > 1:
+                run = [out[idx] for idx in run_indices]
+                merged = dict(run[0])
+                merged["text"] = " ".join(
+                    str(el.get("text") or "").strip()
+                    for el in run
+                    if str(el.get("text") or "").strip()
+                )
+                merged["bbox"] = _bbox_union([el.get("bbox") or [] for el in run if el.get("bbox")])
+                merged[child_ids_field] = [el.get("id") for el in run]
+                for field_name, value in fields.items():
+                    merged[field_name] = value
+                first_idx = run_indices[0]
+                out[first_idx] = merged
+                for idx in reversed(run_indices[1:]):
+                    out.pop(idx)
+                fired += len(run_indices)
+                i = first_idx + 1
+                continue
+
+            for idx in run_indices:
+                for field_name, value in fields.items():
+                    out[idx][field_name] = value
+                fired += 1
+            i = run_indices[-1] + 1
+            continue
+        i += 1
 
     cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
     return out
@@ -817,8 +949,8 @@ def _apply_field_split_rule(
                 )
             else:
                 raise LedgerSchemaError(f"{entry_id}: unknown field_split_rule bbox_strategy {bbox_strategy!r}")
-            for field, value in (segment.get("fields") or {}).items():
-                part[field] = value
+            for field_name, value in (segment.get("fields") or {}).items():
+                part[field_name] = value
             split_parts.append(part)
             child_ids.append(part.get("id"))
         if len(split_parts) <= 1:
@@ -900,9 +1032,17 @@ def _apply_table_contained_suppression_rule(
             out.append(el)
             continue
         page = el.get("page")
+        text = str(el.get("text") or "")
         covered = any(
             table.get("page") == page
-            and _bbox_coverage(bbox, table.get("bbox") or []) >= min_coverage
+            and (
+                _bbox_coverage(bbox, table.get("bbox") or []) >= min_coverage
+                or (
+                    _looks_like_qid_table_row(text)
+                    and _bbox_axis_coverage(bbox, table.get("bbox") or [], 1, 3) >= min_coverage
+                    and _bbox_axis_coverage(table.get("bbox") or [], bbox, 0, 2) >= min_coverage
+                )
+            )
             for table in tables
         )
         if covered:
@@ -929,10 +1069,7 @@ def _iter_raw_table_rows(el: dict[str, Any]) -> Iterable[list[str]]:
             continue
         values: list[str] = []
         for cell in cells:
-            if isinstance(cell, dict):
-                text = cell.get("text")
-            else:
-                text = cell
+            text = cell.get("text") if isinstance(cell, dict) else cell
             if text is None:
                 continue
             cleaned = " ".join(str(text).split())
@@ -967,6 +1104,7 @@ def _raw_table_matches_false_positive_rule(el: dict[str, Any], rule: dict[str, A
 
     ignore_patterns = [re.compile(pattern, re.I) for pattern in rule.get("ignore_row_patterns") or []]
     required_patterns = [re.compile(pattern, re.I) for pattern in rule.get("required_row_patterns") or []]
+    any_required_patterns = [re.compile(pattern, re.I) for pattern in rule.get("any_required_row_patterns") or []]
     max_content_rows = int(rule.get("max_content_rows") or 0)
 
     content_rows: list[str] = []
@@ -979,6 +1117,12 @@ def _raw_table_matches_false_positive_rule(el: dict[str, Any], rule: dict[str, A
         content_rows.append(row_text)
 
     if max_content_rows and len(content_rows) > max_content_rows:
+        return False
+    if any_required_patterns and not any(
+        pattern.search(row)
+        for row in content_rows
+        for pattern in any_required_patterns
+    ):
         return False
     return all(any(pattern.search(row) for row in content_rows) for pattern in required_patterns)
 
@@ -1177,6 +1321,8 @@ def apply_ledger(
                 out = _apply_same_band_merge_rule(out, rule, eid, cfg)
             elif applier_kind == "adjacent_text_merge_rule":
                 out = _apply_adjacent_text_merge_rule(out, rule, eid, cfg)
+            elif applier_kind == "contextual_control_statement_rule":
+                out = _apply_contextual_control_statement_rule(out, rule, eid, cfg)
             elif applier_kind == "field_split_rule":
                 out = _apply_field_split_rule(out, rule, eid, cfg)
             elif applier_kind == "text_normalization_rule":

@@ -1,0 +1,926 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p403:block:0",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p403:block:1",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528897154564951,
+        0.9549618345318418
+      ],
+      "font_name": "TT0",
+      "font_size": 7.980000019073486,
+      "id": "actual:p403:block:2",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          433.79278564453125,
+          7.979999542236328
+        ],
+        "block_type": "Footer",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "REFERENCES   PAGE 376"
+      },
+      "source_type": "Footer",
+      "text": "REFERENCES   PAGE 376",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "ArialMT",
+      "font_size": 9.0,
+      "id": "actual:p403:rotated_side_chrome:1",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "fragment_ids": [
+          "actual:p403:block:3"
+        ],
+        "fragments": [
+          {
+            "bbox": [
+              0.03441176383323919,
+              0.27643939702197756,
+              0.5297058735018462,
+              0.7178787847962043
+            ],
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "id": "actual:p403:block:3",
+            "is_bold": false,
+            "page": 403,
+            "pdf_page_index": 402,
+            "raw": {
+              "bbox": [
+                21.059999465942383,
+                223.44000244140625,
+                303.1199951171875,
+                349.6199951171875
+              ],
+              "block_type": "Boilerplate",
+              "confidence": 0.8999999761581421,
+              "font_name": "TT1",
+              "font_size": 9.0,
+              "header_level": null,
+              "is_bold": false,
+              "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+            },
+            "source_type": "Boilerplate",
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+            "type": "unknown_region"
+          }
+        ],
+        "line_bbox": [
+          18.135000228881836,
+          227.94000244140625,
+          30.419998168945312,
+          586.5780029296875
+        ],
+        "line_dir": [
+          0.0,
+          1.0
+        ],
+        "source": "fitz_rawdict_rotated_margin_line"
+      },
+      "source_type": "RotatedSideChrome",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.15588235543444265,
+        0.09373045449305062,
+        0.7994116490183313,
+        0.11227999793158637
+      ],
+      "font_name": "TT0",
+      "font_size": 10.595999717712402,
+      "id": "actual:p403:block:4",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          95.4000015258789,
+          706.5,
+          396.2994689941406,
+          10.98004150390625
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.595999717712402,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[5 CFR 731] Code of Federal Regulations, Title 5, Administrative Personnel, Section"
+      },
+      "source_type": "Reference",
+      "text": "[5 CFR 731] Code of Federal Regulations, Title 5, Administrative Personnel, Section",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.2882352841445823,
+        0.11069953802860144,
+        0.7485126171236723,
+        0.1292490814671372
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:5",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.39999389648438,
+          693.0604858398438,
+          284.1206970214844,
+          10.97998046875
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "731.106, Designation of Public Trust Positions and Investigative"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "List",
+      "text": "731.106, Designation of Public Trust Positions and Investigative",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.2882352841445823,
+        0.1275993404966412,
+        0.8299046934040544,
+        0.17697754291572956
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:6",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.39999389648438,
+          654.9600219726562,
+          331.5016784667969,
+          35.69580078125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Requirements (5 C.F.R. 731.106). https://www.govinfo.gov/content/pkg/CFR-2012-title5-vol2/pdf/CFR-2012-title5- vol2-sec731-106.pdf"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "Requirements (5 C.F.R. 731.106). https://www.govinfo.gov/content/pkg/CFR-2012-title5-vol2/pdf/CFR-2012-title5-vol2-sec731-106.pdf",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.15588235543444265,
+        0.18297287912079782,
+        0.8214382595486112,
+        0.20152242255933356
+      ],
+      "font_name": "TT0",
+      "font_size": 10.595999717712402,
+      "id": "actual:p403:block:7",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          95.4000015258789,
+          635.8200073242188,
+          409.8839111328125,
+          10.98004150390625
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.595999717712402,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[32 CFR 2002] Code of Federal Regulations, Title 32, Controlled Unclassified Information"
+      },
+      "source_type": "Reference",
+      "text": "[32 CFR 2002] Code of Federal Regulations, Title 32, Controlled Unclassified Information",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.2882352841445823,
+        0.19994196265634864,
+        0.8358988045087827,
+        0.24925033492271345
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:8",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.39999389648438,
+          597.719970703125,
+          335.1700134277344,
+          35.6405029296875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "(32 C.F.R. 2002). https://www.federalregister.gov/documents/2016/09/14/2016-21665/controlled- unclassified-information"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "(32 C.F.R. 2002). https://www.federalregister.gov/documents/2016/09/14/2016-21665/controlled-unclassified-information",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.15588235543444265,
+        0.2553213485563644,
+        0.8222237879933875,
+        0.27387089199490017
+      ],
+      "font_name": "TT0",
+      "font_size": 10.34000015258789,
+      "id": "actual:p403:block:9",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          95.4000015258789,
+          578.52001953125,
+          410.26824951171875,
+          10.97998046875
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.34000015258789,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[41 CFR 201] \u201cFederal Acquisition Supply Chain Security Act; Rule,\u201d 85 Federal Register"
+      },
+      "source_type": "Reference",
+      "text": "[41 CFR 201] \u201cFederal Acquisition Supply Chain Security Act; Rule,\u201d 85 Federal Register",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.2882352841445823,
+        0.2722211510244042,
+        0.8391961989059947,
+        0.3215988043582801
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:10",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.39999389648438,
+          540.4199829101562,
+          339.4168395996094,
+          35.69537353515625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "54263 (September 1, 2020), pp 54263-54271. https://www.federalregister.gov/d/2020-18939 [or as published in Title 41 Code of Federal Regulations, Sec. 201 (forthcoming)]"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "54263 (September 1, 2020), pp 54263-54271. https://www.federalregister.gov/d/2020-18939 [or as published in Title 41 Code of Federal Regulations, Sec. 201 (forthcoming)]",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.15588235543444265,
+        0.3275940634987571,
+        0.8205284667170905,
+        0.34614358767114506
+      ],
+      "font_name": "TT0",
+      "font_size": 10.595999717712402,
+      "id": "actual:p403:block:11",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          95.4000015258789,
+          521.280029296875,
+          409.34588623046875,
+          10.97998046875
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.595999717712402,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[ODNI NITP] Office of the Director National Intelligence, National Insider Threat Policy"
+      },
+      "source_type": "Reference",
+      "text": "[ODNI NITP] Office of the Director National Intelligence, National Insider Threat Policy",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.2882352841445823,
+        0.3445195670079703,
+        0.8369052862030228,
+        0.3769775930077139
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p403:block:12",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.39999389648438,
+          496.55999755859375,
+          335.7662658691406,
+          22.32000732421875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "https://www.dni.gov/files/NCSC/documents/nittf/National_Insider_Threat_Policy. pdf"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "https://www.dni.gov/files/NCSC/documents/nittf/National_Insider_Threat_Policy.pdf",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.15588235543444265,
+        0.3829728714143387,
+        0.820680954877068,
+        0.40152239558672664
+      ],
+      "font_name": "TT0",
+      "font_size": 10.431428909301758,
+      "id": "actual:p403:block:13",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          95.4000015258789,
+          477.4200134277344,
+          409.34375,
+          10.980010986328125
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.431428909301758,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[OMB A-108] Office of Management and Budget Memorandum Circular A-108, Federal"
+      },
+      "source_type": "Reference",
+      "text": "[OMB A-108] Office of Management and Budget Memorandum Circular A-108, Federal",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.2882352841445823,
+        0.39994195494988954,
+        0.8420901828342013,
+        0.46622000800238717
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:14",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.39999389648438,
+          425.8800048828125,
+          338.9395446777344,
+          49.08050537109375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Agency Responsibilities for Review, Reporting, and Publication under the Privacy Act, December 2016. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/circulars/A108/omb _circular_a-108.pdf"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "Agency Responsibilities for Review, Reporting, and Publication under the Privacy Act, December 2016. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/circulars/A108/omb_circular_a-108.pdf",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.15588235543444265,
+        0.47221532494130763,
+        0.8413975534875409,
+        0.49076484911369556
+      ],
+      "font_name": "TT0",
+      "font_size": 10.5,
+      "id": "actual:p403:block:15",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          95.4000015258789,
+          406.739990234375,
+          422.0168762207031,
+          10.980010986328125
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.5,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[OMB A-130] Office of Management and Budget Memorandum Circular A-130, Managing"
+      },
+      "source_type": "Reference",
+      "text": "[OMB A-130] Office of Management and Budget Memorandum Circular A-130, Managing",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.2882352841445823,
+        0.4891844084768584,
+        0.836244171740962,
+        0.5384927229447798
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:16",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.39999389648438,
+          368.6400146484375,
+          335.34136962890625,
+          35.640472412109375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Information as a Strategic Resource, July 2016. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/circulars/A130/a13 0revised.pdf"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "Information as a Strategic Resource, July 2016. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/circulars/A130/a130revised.pdf",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.15588235543444265,
+        0.5445637943768742,
+        0.8354339599609375,
+        0.5631133185492622
+      ],
+      "font_name": "TT0",
+      "font_size": 10.44666576385498,
+      "id": "actual:p403:block:17",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          95.4000015258789,
+          349.44000244140625,
+          418.3165588378906,
+          10.980010986328125
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.44666576385498,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[OMB M-03-22] Office of Management and Budget Memorandum M-03-22, OMB Guidance"
+      },
+      "source_type": "Reference",
+      "text": "[OMB M-03-22] Office of Management and Budget Memorandum M-03-22, OMB Guidance",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.28821735756070005,
+        0.5614635583126184,
+        0.8364971883935866,
+        0.6277351764717487
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:18",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.38902282714844,
+          297.9599914550781,
+          335.52764892578125,
+          49.075408935546875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "for Implementing the Privacy Provisions of the E-Government Act of 2002, September 2003. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/memoranda/2003/ m03_22.pdf"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "for Implementing the Privacy Provisions of the E-Government Act of 2002, September 2003. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/memoranda/2003/m03_22.pdf",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.15588235543444265,
+        0.6300183305836687,
+        0.8424329570695466,
+        0.6485678932883523
+      ],
+      "font_name": "TT0",
+      "font_size": 10.44666576385498,
+      "id": "actual:p403:block:19",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          95.4000015258789,
+          281.760009765625,
+          422.7074890136719,
+          10.980010986328125
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.44666576385498,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[OMB M-08-05] Office of Management and Budget Memorandum M-08-05, Implementation"
+      },
+      "source_type": "Reference",
+      "text": "[OMB M-08-05] Office of Management and Budget Memorandum M-08-05, Implementation",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.28821738249336193,
+        0.6469873755869239,
+        0.8428760603362438,
+        0.6962956900548454
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:20",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.3890380859375,
+          243.66000366210938,
+          339.4315185546875,
+          35.6405029296875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "of Trusted Internet Connections (TIC), November 2007. https://obamawhitehouse.archives.gov/sites/default/files/omb/assets/omb/memo randa/fy2008/m08-05.pdf"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "of Trusted Internet Connections (TIC), November 2007. https://obamawhitehouse.archives.gov/sites/default/files/omb/assets/omb/memoranda/fy2008/m08-05.pdf",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.15588235543444265,
+        0.7022910069937658,
+        0.8047385620915033,
+        0.7208406082307449
+      ],
+      "font_name": "TT0",
+      "font_size": 10.44666576385498,
+      "id": "actual:p403:block:21",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          95.4000015258789,
+          224.52000427246094,
+          399.5726318359375,
+          10.979995727539062
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.44666576385498,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[OMB M-17-06] Office of Management and Budget Memorandum M-17-06, Policies for"
+      },
+      "source_type": "Reference",
+      "text": "[OMB M-17-06] Office of Management and Budget Memorandum M-17-06, Policies for",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.28821738249336193,
+        0.7192600905293166,
+        0.8364695131389144,
+        0.7686442365550031
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:22",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.3890380859375,
+          186.36000061035156,
+          335.51055908203125,
+          35.70048522949219
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "Federal Agency Public Websites and Digital Services, November 2016. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/memoranda/2017/ m-17-06.pdf"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "Federal Agency Public Websites and Digital Services, November 2016. https://www.whitehouse.gov/sites/whitehouse.gov/files/omb/memoranda/2017/m-17-06.pdf",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.15588235543444265,
+        0.7746395534939237,
+        0.8220355962616166,
+        0.7931891547309028
+      ],
+      "font_name": "TT0",
+      "font_size": 10.44666576385498,
+      "id": "actual:p403:block:23",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          95.4000015258789,
+          167.22000122070312,
+          410.1595458984375,
+          10.979995727539062
+        ],
+        "block_type": "Reference",
+        "confidence": 0.699999988079071,
+        "font_name": "TT0",
+        "font_size": 10.44666576385498,
+        "header_level": null,
+        "is_bold": false,
+        "text": "[OMB M-17-12] Office of Management and Budget Memorandum M-17-12, Preparing for"
+      },
+      "source_type": "Reference",
+      "text": "[OMB M-17-12] Office of Management and Budget Memorandum M-17-12, Preparing for",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.28821738249336193,
+        0.7916085599648832,
+        0.8321059981202767,
+        0.8101581612018623
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:24",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.3890380859375,
+          153.78048706054688,
+          335.37994384765625,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "and Responding to a Breach of Personally Identifiable Information, January"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "and Responding to a Breach of Personally Identifiable Information, January",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.28821738249336193,
+        0.808508362432923,
+        0.329194985184015,
+        0.8270579636699021
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p403:block:25",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.3890380859375,
+          140.3958740234375,
+          27.559799194335938,
+          10.979995727539062
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "2017."
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "List",
+      "text": "2017.",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.2882352841445823,
+        0.8254286640822285,
+        0.8373568665747549,
+        0.8578866515496765
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p403:block:26",
+      "is_bold": false,
+      "page": 403,
+      "pdf_page_index": 402,
+      "raw": {
+        "bbox": [
+          176.39999389648438,
+          115.68000030517578,
+          336.0428771972656,
+          22.31999969482422
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "text": "https://obamawhitehouse.archives.gov/sites/default/files/omb/memoranda/2017 /m-17-12_0.pdf"
+      },
+      "semantic_role": "reference_continuation",
+      "source_type": "Body",
+      "text": "https://obamawhitehouse.archives.gov/sites/default/files/omb/memoranda/2017/m-17-12_0.pdf",
+      "type": "reference"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 403,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 402
+}
