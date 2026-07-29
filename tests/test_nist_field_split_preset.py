@@ -104,3 +104,48 @@ def test_nist_standalone_field_label_is_not_heading():
     assert result[0]["semantic_role"] == "nist_field_label"
     assert result[1]["type"] == "section_heading"
     assert result[1]["semantic_role"] == "nist_control_heading"
+
+
+def test_nist_full_field_paragraphs_get_specific_semantic_roles():
+    ledger = json.loads(LEDGER.read_text())
+    elements = [
+        {
+            "id": "actual:p100:block:10",
+            "page": 100,
+            "source_type": "Body",
+            "type": "paragraph_block",
+            "bbox": [0.235, 0.322, 0.850, 0.416],
+            "font_size": 10.98,
+            "is_bold": False,
+            "text": "Discussion: Events of interest can be identified by the content of audit records.",
+        },
+        {
+            "id": "actual:p100:block:11",
+            "page": 100,
+            "source_type": "Body",
+            "type": "paragraph_block",
+            "bbox": [0.235, 0.418, 0.397, 0.435],
+            "font_size": 10.98,
+            "is_bold": False,
+            "text": "Related Controls: None.",
+        },
+        {
+            "id": "actual:p399:block:13",
+            "page": 399,
+            "source_type": "Body",
+            "type": "paragraph_block",
+            "bbox": [0.147, 0.377, 0.263, 0.390],
+            "font_size": 9.51,
+            "is_bold": True,
+            "text": "Discussion:",
+        },
+    ]
+
+    result = apply_ledger(elements, ledger, ApplierConfig(mode="release"))
+
+    assert result[0]["type"] == "paragraph_block"
+    assert result[0]["semantic_role"] == "discussion"
+    assert result[1]["type"] == "paragraph_block"
+    assert result[1]["semantic_role"] == "related_controls"
+    assert result[2]["type"] == "paragraph_block"
+    assert result[2]["semantic_role"] == "nist_field_label"

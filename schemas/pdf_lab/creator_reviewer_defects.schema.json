@@ -79,6 +79,18 @@
           },
           "actual_label": {"type": "string", "minLength": 1},
           "expected_label": {"type": "string", "minLength": 1},
+          "actual_semantic_role": {
+            "anyOf": [
+              {"type": "string", "minLength": 1},
+              {"type": "null"}
+            ]
+          },
+          "expected_semantic_role": {
+            "anyOf": [
+              {"type": "string", "minLength": 1},
+              {"type": "null"}
+            ]
+          },
           "expected_state": {
             "type": "string",
             "enum": [

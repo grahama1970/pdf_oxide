@@ -1,0 +1,53 @@
+{
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defects.v1",
+  "page": 100,
+  "evidence": {
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/current_evidence/pages/page_0100/page.png",
+    "overlay_image": "artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/current_evidence/pages/page_0100/bbox_overlay_current.png",
+    "extraction_json": "artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/current_evidence/pages/page_0100/release_extraction_blocks.json"
+  },
+  "checks": [
+    {
+      "id": "page100-discussion-paragraph-semantic-role",
+      "defect_class": "REGION_LABEL_MISMATCH",
+      "page": 100,
+      "block_id": "actual:p100:block:10",
+      "region_bbox": [
+        0.23529409271439697,
+        0.32209531225339333,
+        0.8502044677734375,
+        0.41616640187273124
+      ],
+      "actual_label": "paragraph_block",
+      "expected_label": "paragraph_block",
+      "actual_semantic_role": null,
+      "expected_semantic_role": "discussion",
+      "expected_state": "present",
+      "text": "Discussion: Events of interest can be identified by the content of audit records, including system resources involved, information objects accessed, identities of individuals, event types, event locations, event dates and times, Internet Protocol addresses involved, or event success or failure. Organizations may define event criteria to any degree of granularity required, such as locations selectable by a general networking location or by specific system component.",
+      "owner": "nist_preset",
+      "evidence_reason": "The page100 block is a full Discussion paragraph, not a bare field label. It keeps paragraph_block type, but needs semantic_role=discussion for accurate label overlays and downstream review.",
+      "proof_command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page100_field_paragraph_semantic_role_defects.json"
+    },
+    {
+      "id": "page100-related-controls-paragraph-semantic-role",
+      "defect_class": "REGION_LABEL_MISMATCH",
+      "page": 100,
+      "block_id": "actual:p100:block:11",
+      "region_bbox": [
+        0.23529411764705882,
+        0.4184589578647806,
+        0.3974674698574091,
+        0.4353866962471394
+      ],
+      "actual_label": "paragraph_block",
+      "expected_label": "paragraph_block",
+      "actual_semantic_role": null,
+      "expected_semantic_role": "related_controls",
+      "expected_state": "present",
+      "text": "Related Controls: None.",
+      "owner": "nist_preset",
+      "evidence_reason": "The page100 block is a full Related Controls paragraph, not a bare field label. It keeps paragraph_block type, but needs semantic_role=related_controls for accurate label overlays and downstream review.",
+      "proof_command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page100_field_paragraph_semantic_role_defects.json"
+    }
+  ]
+}

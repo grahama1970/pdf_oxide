@@ -21,6 +21,9 @@ PAGE22_TABLE_TEXT_FIXTURE = (
 PAGE23_TABLE_TEXT_FIXTURE = (
     REPO / "tests/fixtures/pdf_lab/page23_table_hyphen_wrap_spacing_defects.json"
 )
+PAGE100_SEMANTIC_ROLE_FIXTURE = (
+    REPO / "tests/fixtures/pdf_lab/page100_field_paragraph_semantic_role_defects.json"
+)
 PAGE186_TEXT_FIXTURE = REPO / "tests/fixtures/pdf_lab/page186_list_hyphen_wrap_spacing_defects.json"
 PAGE235_TEXT_FIXTURE = REPO / "tests/fixtures/pdf_lab/page235_body_hyphen_wrap_spacing_defects.json"
 PAGE157_TABLE_FIXTURE = REPO / "tests/fixtures/pdf_lab/page157_false_table_defects.json"
@@ -60,6 +63,10 @@ PAGE22_TABLE_TEXT_EXTRACTION = (
 PAGE23_TABLE_TEXT_EXTRACTION = (
     REPO
     / "artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/current_evidence/pages/page_0023/release_extraction_blocks.json"
+)
+PAGE100_SEMANTIC_ROLE_EXTRACTION = (
+    REPO
+    / "artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/current_evidence/pages/page_0100/release_extraction_blocks.json"
 )
 PAGE186_TEXT_EXTRACTION = (
     REPO
@@ -117,6 +124,8 @@ def test_creator_reviewer_defect_schema_names_required_contract():
         "proof_command",
     ]:
         assert required in schema["properties"]["checks"]["items"]["required"]
+    assert "actual_semantic_role" in check_props
+    assert "expected_semantic_role" in check_props
 
 
 def test_page456_current_receipt_satisfies_creator_reviewer_defect_checks():
@@ -345,6 +354,40 @@ def test_page23_validator_fails_if_table_hyphen_wrap_space_reappears(tmp_path):
     ]
     assert failed[0]["matching_text_count"] == 0
     assert failed[0]["candidates"][0]["contains_forbidden_text"] is True
+
+
+def test_page100_current_extraction_satisfies_field_paragraph_semantic_roles():
+    result = validator.validate(PAGE100_SEMANTIC_ROLE_FIXTURE, PAGE100_SEMANTIC_ROLE_EXTRACTION)
+
+    assert result["status"] == "PASS"
+    assert result["summary"] == {"check_count": 2, "passed": 2, "failed": 0}
+    assert {check["id"] for check in result["checks"]} == {
+        "page100-discussion-paragraph-semantic-role",
+        "page100-related-controls-paragraph-semantic-role",
+    }
+    assert all(check["matching_label_count"] == 1 for check in result["checks"])
+
+
+def test_page100_validator_fails_if_field_paragraph_semantic_role_is_missing(tmp_path):
+    extraction = json.loads(PAGE100_SEMANTIC_ROLE_EXTRACTION.read_text())
+    mutated = False
+    for block in extraction["blocks"]:
+        if block.get("id") == "actual:p100:block:11":
+            block["semantic_role"] = None
+            mutated = True
+            break
+    assert mutated
+    missing_role_path = tmp_path / "page100_missing_related_controls_semantic_role.json"
+    missing_role_path.write_text(json.dumps(extraction), encoding="utf-8")
+
+    result = validator.validate(PAGE100_SEMANTIC_ROLE_FIXTURE, missing_role_path)
+
+    assert result["status"] == "FAIL"
+    failed = [check for check in result["checks"] if check["status"] == "FAIL"]
+    assert [check["id"] for check in failed] == ["page100-related-controls-paragraph-semantic-role"]
+    assert failed[0]["matching_label_count"] == 0
+    assert failed[0]["candidates"][0]["matches_expected_label"] is True
+    assert failed[0]["candidates"][0]["matches_expected_semantic_role"] is False
 
 
 def test_page186_current_extraction_satisfies_list_hyphen_wrap_contract():

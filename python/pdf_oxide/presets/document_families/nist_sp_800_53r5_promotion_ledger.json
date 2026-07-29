@@ -3263,6 +3263,73 @@
       "status": "closed"
     },
     {
+      "added_at": "2026-07-29T21:55:00Z",
+      "added_by": "agent:codex (creator-reviewer page100 semantic-role hardening)",
+      "applied_at": "2026-07-29T21:55:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Mark standalone full NIST field paragraphs that start with 'Discussion:' or 'Related Controls:' with their semantic roles.",
+      "closed_at": "2026-07-29T21:55:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_field_split_preset.py and page100 creator-reviewer fixture)",
+      "entry_id": "nist-full-field-paragraph-roles-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p100:block:10",
+          "actual:p100:block:11",
+          "actual:p100:block:19",
+          "actual:p100:block:20"
+        ],
+        "risk_reasons_observed": [
+          "full_discussion_block_missing_semantic_role",
+          "full_related_controls_block_missing_semantic_role"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Bare standalone labels such as 'Discussion:' and 'Related Controls:' are handled by the exact-label field-label rule.",
+          "Merged field-split children already carry semantic_role values from the field_split_rule."
+        ],
+        "candidates_that_prove": [
+          "Page 100 block 10 starts with 'Discussion:' and is a full discussion paragraph but has semantic_role null.",
+          "Page 100 block 11 starts with 'Related Controls:' and is a full related-controls paragraph but has semantic_role null."
+        ],
+        "deterministic_rule": "If a NIST Body paragraph_block starts with Discussion: or Related Controls: and contains additional text, preserve its paragraph type and set semantic_role to discussion or related_controls."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not Body",
+          "type is not paragraph_block",
+          "text is exactly the bare standalone field label without body content"
+        ]
+      },
+      "release_conflict_waiver": false,
+      "rule": {
+        "applies_when": {
+          "source_type": "Body",
+          "type": "paragraph_block"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "discussion",
+              "type": "paragraph_block"
+            },
+            "regex": "^Discussion:\\s+.+"
+          },
+          {
+            "fields": {
+              "semantic_role": "related_controls",
+              "type": "paragraph_block"
+            },
+            "regex": "^Related Controls:\\s+.+"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
+    },
+    {
       "added_at": "2026-06-01T16:27:00Z",
       "added_by": "agent:codex (next-30 full-text agentic second pass)",
       "applied_at": "2026-06-01T16:27:00Z",

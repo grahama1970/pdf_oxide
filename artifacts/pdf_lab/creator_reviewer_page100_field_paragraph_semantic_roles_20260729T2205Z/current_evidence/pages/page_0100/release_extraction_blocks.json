@@ -1,0 +1,1792 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p100:block:0",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.04473802296802251,
+              0.8507378272760927,
+              0.05821938948197798
+            ],
+            "raw_bbox": [
+              90.0,
+              35.43251419067383,
+              520.6515502929688,
+              46.10975646972656
+            ],
+            "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          }
+        ],
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p100:block:1",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.05679397390346334,
+              0.8517353332120609,
+              0.07054738324097913
+            ],
+            "raw_bbox": [
+              90.0,
+              44.98082733154297,
+              521.2620239257812,
+              55.87352752685547
+            ],
+            "text": "_________________________________________________________________________________________________"
+          }
+        ],
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9417424250130702,
+        0.8396249409594567,
+        0.9518181820108433
+      ],
+      "font_name": "TT0",
+      "font_size": 7.9800004959106445,
+      "id": "actual:p100:block:2",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          423.8504638671875,
+          7.979999542236328
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 7.9800004959106445,
+        "header_level": null,
+        "is_bold": false,
+        "text": "CHAPTER THREE   73 PAGE"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Body",
+      "text": "CHAPTER THREE   73 PAGE",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "ArialMT",
+      "font_size": 9.0,
+      "id": "actual:p100:rotated_side_chrome:1",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "fragment_ids": [
+          "actual:p100:block:3"
+        ],
+        "fragments": [
+          {
+            "bbox": [
+              0.03441176383323919,
+              0.27643939702197756,
+              0.5297058735018462,
+              0.7178787847962043
+            ],
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "id": "actual:p100:block:3",
+            "is_bold": false,
+            "page": 100,
+            "pdf_page_index": 99,
+            "raw": {
+              "bbox": [
+                21.059999465942383,
+                223.44000244140625,
+                303.1199951171875,
+                349.6199951171875
+              ],
+              "block_type": "Boilerplate",
+              "confidence": 0.8999999761581421,
+              "font_name": "TT1",
+              "font_size": 9.0,
+              "header_level": null,
+              "is_bold": false,
+              "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+            },
+            "source_type": "Boilerplate",
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+            "type": "unknown_region"
+          }
+        ],
+        "line_bbox": [
+          18.135000228881836,
+          227.94000244140625,
+          30.419998168945312,
+          586.5780029296875
+        ],
+        "line_dir": [
+          0.0,
+          1.0
+        ],
+        "source": "fitz_rawdict_rotated_margin_line"
+      },
+      "source_type": "RotatedSideChrome",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.20588234047484555,
+        0.08989831173058713,
+        0.8394475201376124,
+        0.18397500779893664
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:4",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          125.99999237060547,
+          649.4180297851562,
+          390.0164794921875,
+          71.12200927734375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.08989831173058713,
+              0.8274683734170751,
+              0.10682604047987196
+            ],
+            "raw_bbox": [
+              126.0,
+              71.199462890625,
+              506.41064453125,
+              84.6062240600586
+            ],
+            "text": "reduction and report generation capabilities do not always emanate from the same system or"
+          },
+          {
+            "bbox": [
+              0.20588234047484555,
+              0.10528256194760101,
+              0.8128258698905995,
+              0.12221029069688585
+            ],
+            "raw_bbox": [
+              125.99999237060547,
+              83.3837890625,
+              497.4494323730469,
+              96.7905502319336
+            ],
+            "text": "from the same organizational entities that conduct audit logging activities. The audit record"
+          },
+          {
+            "bbox": [
+              0.20589865890203737,
+              0.12074272078697128,
+              0.8057858834858813,
+              0.13767044953625612
+            ],
+            "raw_bbox": [
+              126.00997924804688,
+              95.62823486328125,
+              493.1409606933594,
+              109.03499603271484
+            ],
+            "text": "reduction capability includes modern data mining techniques with advanced data filters to"
+          },
+          {
+            "bbox": [
+              0.20589865890203737,
+              0.13612697100398516,
+              0.8342837165383732,
+              0.15305469975327002
+            ],
+            "raw_bbox": [
+              126.00997924804688,
+              107.81256103515625,
+              510.5816345214844,
+              121.21932220458984
+            ],
+            "text": "identify anomalous behavior in audit records. The report generation capability provided by the"
+          },
+          {
+            "bbox": [
+              0.2058986713683683,
+              0.15158712984335543,
+              0.8394475201376124,
+              0.16851484895956637
+            ],
+            "raw_bbox": [
+              126.0099868774414,
+              120.0570068359375,
+              513.7418823242188,
+              133.46376037597656
+            ],
+            "text": "system can generate customizable reports. Time ordering of audit records can be an issue if the"
+          },
+          {
+            "bbox": [
+              0.20591506459354575,
+              0.1670472886827257,
+              0.5817209380904055,
+              0.18397500779893664
+            ],
+            "raw_bbox": [
+              126.02001953125,
+              132.30145263671875,
+              356.0132141113281,
+              145.7082061767578
+            ],
+            "text": "granularity of the timestamp in the record is insufficient."
+          }
+        ],
+        "text": "reduction and report generation capabilities do not always emanate from the same system or from the same organizational entities that conduct audit logging activities. The audit record reduction capability includes modern data mining techniques with advanced data filters to identify anomalous behavior in audit records. The report generation capability provided by the system can generate customizable reports. Time ordering of audit records can be an issue if the granularity of the timestamp in the record is insufficient."
+      },
+      "source_type": "Body",
+      "text": "reduction and report generation capabilities do not always emanate from the same system or from the same organizational entities that conduct audit logging activities. The audit record reduction capability includes modern data mining techniques with advanced data filters to identify anomalous behavior in audit records. The report generation capability provided by the system can generate customizable reports. Time ordering of audit records can be an issue if the granularity of the timestamp in the record is insufficient.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.18997408163667928,
+        0.8514875025531046,
+        0.22235633387710108
+      ],
+      "child_ids": [
+        "actual:p100:block:5",
+        "actual:p100:block:6"
+      ],
+      "font_name": "TT0",
+      "font_size": 10.019996643066406,
+      "id": "actual:p100:block:5",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.02001953125,
+          631.2417602539062,
+          395.09033203125,
+          10.03826904296875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.019996643066406,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20591506459354575,
+              0.18997408163667928,
+              0.8514875025531046,
+              0.20692484306566644
+            ],
+            "raw_bbox": [
+              126.02001953125,
+              150.45947265625,
+              521.1103515625,
+              163.8844757080078
+            ],
+            "text": "Related Controls: AC-2, AU-2, AU-3, AU-4, AU-5, AU-6, AU-12, AU-16, CM-5, IA-5, IR-4, PM-12, SI-"
+          }
+        ],
+        "text": "Related Controls:  AC-2, AU-2, AU-3, AU-4, AU-5, AU-6, AU-12, AU-16, CM-5, IA-5, IR-4, PM-12, SI-"
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls: AC-2, AU-2, AU-3, AU-4, AU-5, AU-6, AU-12, AU-16, CM-5, IA-5, IR-4, PM-12, SI-4.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.2284589054608586,
+        0.3617490381976358,
+        0.24538662457706953
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:7",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          600.780029296875,
+          97.60482788085938,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.2284589054608586,
+              0.3617490381976358,
+              0.24538662457706953
+            ],
+            "raw_bbox": [
+              126.0,
+              180.939453125,
+              221.39041137695312,
+              194.34620666503906
+            ],
+            "text": "Control Enhancements:"
+          }
+        ],
+        "text": "Control Enhancements:"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "Control Enhancements:",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.25138196078213776,
+        0.7348716586243873,
+        0.270021419332485
+      ],
+      "font_name": "TT2",
+      "font_size": 9.446666717529297,
+      "id": "actual:p100:block:8",
+      "is_bold": true,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          581.6400146484375,
+          325.79400634765625,
+          10.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.446666717529297,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.446666717529297,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9427810907363892,
+            "text_len": 71,
+            "title_case_ratio": 0.800000011920929,
+            "word_count": 10
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(1) AUDIT RECORD REDUCTION AND REPORT GENERATION | AUTOMATIC PROCESSING"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.25138196078213776,
+              0.7348716586243873,
+              0.270021419332485
+            ],
+            "raw_bbox": [
+              126.0,
+              199.09451293945312,
+              449.741455078125,
+              213.85696411132812
+            ],
+            "text": "(1) AUDIT RECORD REDUCTION AND REPORT GENERATION | AUTOMATIC PROCESSING"
+          }
+        ],
+        "text": "(1) AUDIT RECORD REDUCTION AND REPORT GENERATION | AUTOMATIC PROCESSING"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(1) AUDIT RECORD REDUCTION AND REPORT GENERATION | AUTOMATIC PROCESSING",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.2719308679754084,
+        0.8514029309640523,
+        0.3204114894674282
+      ],
+      "font_name": "TT2",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:9",
+      "is_bold": true,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          144.0,
+          541.7310791015625,
+          379.3431396484375,
+          34.5089111328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 90,
+            "title_case_ratio": 0.0714285746216774,
+            "word_count": 14
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Provide and implement the capability to process, sort, and search audit records for events"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.2719308679754084,
+              0.8456658257378472,
+              0.28949117178868766
+            ],
+            "raw_bbox": [
+              144.0,
+              215.36924743652344,
+              517.5474853515625,
+              229.27700805664062
+            ],
+            "text": "Provide and implement the capability to process, sort, and search audit records for events"
+          },
+          {
+            "bbox": [
+              0.23531047347324346,
+              0.2873151181924223,
+              0.8514029309640523,
+              0.30487542200570156
+            ],
+            "raw_bbox": [
+              144.010009765625,
+              227.55357360839844,
+              521.05859375,
+              241.46133422851562
+            ],
+            "text": "of interest based on the following content: [Assignment: organization-defined fields within"
+          },
+          {
+            "bbox": [
+              0.23532672956878065,
+              0.3028511856541489,
+              0.3342070984684564,
+              0.3204114894674282
+            ],
+            "raw_bbox": [
+              144.01995849609375,
+              239.85813903808594,
+              204.5347442626953,
+              253.76589965820312
+            ],
+            "text": "audit records]."
+          }
+        ],
+        "text": "Provide and implement the capability to process, sort, and search audit records for events of interest based on the following content: [Assignment: organization-defined fields within audit records]."
+      },
+      "semantic_role": "control_statement",
+      "source_type": "Body",
+      "text": "Provide and implement the capability to process, sort, and search audit records for events of interest based on the following content: [Assignment: organization-defined fields within audit records].",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529409271439697,
+        0.32209531225339333,
+        0.8502044677734375,
+        0.41616640187273124
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:10",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          143.99998474121094,
+          465.5224609375,
+          378.61273193359375,
+          71.1175537109375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.32209531225339333,
+              0.8257470224417892,
+              0.33902305063575205
+            ],
+            "raw_bbox": [
+              144.0,
+              255.0994873046875,
+              505.357177734375,
+              268.5062561035156
+            ],
+            "text": "Discussion: Events of interest can be identified by the content of audit records, including"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.3375498453776042,
+              0.8187917073567709,
+              0.3544775837599629
+            ],
+            "raw_bbox": [
+              144.0,
+              267.3394775390625,
+              501.10052490234375,
+              280.7462463378906
+            ],
+            "text": "system resources involved, information objects accessed, identities of individuals, event"
+          },
+          {
+            "bbox": [
+              0.23529409271439697,
+              0.3529340955946181,
+              0.8502044677734375,
+              0.3698618339769768
+            ],
+            "raw_bbox": [
+              143.99998474121094,
+              279.5238037109375,
+              520.3251342773438,
+              292.9305725097656
+            ],
+            "text": "types, event locations, event dates and times, Internet Protocol addresses involved, or event"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.3683942544339883,
+              0.8075458302217371,
+              0.38532199281634705
+            ],
+            "raw_bbox": [
+              144.0,
+              291.76824951171875,
+              494.2180480957031,
+              305.1750183105469
+            ],
+            "text": "success or failure. Organizations may define event criteria to any degree of granularity"
+          },
+          {
+            "bbox": [
+              0.23531047347324346,
+              0.3837785046510022,
+              0.8456544564440359,
+              0.40070624303336094
+            ],
+            "raw_bbox": [
+              144.010009765625,
+              303.95257568359375,
+              517.54052734375,
+              317.3593444824219
+            ],
+            "text": "required, such as locations selectable by a general networking location or by specific system"
+          },
+          {
+            "bbox": [
+              0.23532687916475184,
+              0.39923866349037246,
+              0.3161155850279565,
+              0.41616640187273124
+            ],
+            "raw_bbox": [
+              144.02005004882812,
+              316.197021484375,
+              193.46273803710938,
+              329.6037902832031
+            ],
+            "text": "component."
+          }
+        ],
+        "text": "Discussion:  Events of interest can be identified by the content of audit records, including system resources involved, information objects accessed, identities of individuals, event types, event locations, event dates and times, Internet Protocol addresses involved, or event success or failure. Organizations may define event criteria to any degree of granularity required, such as locations selectable by a general networking location or by specific system component."
+      },
+      "semantic_role": "discussion",
+      "source_type": "Body",
+      "text": "Discussion: Events of interest can be identified by the content of audit records, including system resources involved, information objects accessed, identities of individuals, event types, event locations, event dates and times, Internet Protocol addresses involved, or event success or failure. Organizations may define event criteria to any degree of granularity required, such as locations selectable by a general networking location or by specific system component.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.4184589578647806,
+        0.3974674698574091,
+        0.4353866962471394
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:11",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          144.0,
+          450.29998779296875,
+          101.44248962402344,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.4184589578647806,
+              0.3974674698574091,
+              0.4353866962471394
+            ],
+            "raw_bbox": [
+              144.0,
+              331.41949462890625,
+              243.25009155273438,
+              344.8262634277344
+            ],
+            "text": "Related Controls: None."
+          }
+        ],
+        "text": "Related Controls:  None."
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls: None.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.4413819746537642,
+        0.7712378408394608,
+        0.46002143320411143
+      ],
+      "font_name": "TT2",
+      "font_size": 9.666666984558105,
+      "id": "actual:p100:block:12",
+      "is_bold": true,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          431.1600036621094,
+          350.5414733886719,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.666666984558105,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.666666984558105,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9647371768951416,
+            "text_len": 76,
+            "title_case_ratio": 0.8333333134651184,
+            "word_count": 12
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(2) AUDIT RECORD REDUCTION AND REPORT GENERATION | AUTOMATIC SORT AND SEARCH"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.4413819746537642,
+              0.7712378408394608,
+              0.46002143320411143
+            ],
+            "raw_bbox": [
+              126.0,
+              349.57452392578125,
+              471.99755859375,
+              364.33697509765625
+            ],
+            "text": "(2) AUDIT RECORD REDUCTION AND REPORT GENERATION | AUTOMATIC SORT AND SEARCH"
+          }
+        ],
+        "text": "(2) AUDIT RECORD REDUCTION AND REPORT GENERATION | AUTOMATIC SORT AND SEARCH"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(2) AUDIT RECORD REDUCTION AND REPORT GENERATION | AUTOMATIC SORT AND SEARCH",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.46217107291173454,
+        0.5043319502687142,
+        0.47909881129409326
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:13",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          144.0,
+          415.67999267578125,
+          166.84555053710938,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.46217107291173454,
+              0.5043319502687142,
+              0.47909881129409326
+            ],
+            "raw_bbox": [
+              144.0,
+              366.03948974609375,
+              308.6511535644531,
+              379.4462585449219
+            ],
+            "text": "[Withdrawn: Incorporated into AU-7(1).]"
+          }
+        ],
+        "text": "[Withdrawn: Incorporated into AU-7(1).]"
+      },
+      "semantic_role": "nist_withdrawn_note",
+      "source_type": "Body",
+      "text": "[Withdrawn: Incorporated into AU-7(1).]",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.48520136361170296,
+        0.33167099796868615,
+        0.5021291019940617
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:14",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          397.44000244140625,
+          79.17803955078125,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.48520136361170296,
+              0.33167099796868615,
+              0.5021291019940617
+            ],
+            "raw_bbox": [
+              126.0,
+              384.27947998046875,
+              202.98265075683594,
+              397.6862487792969
+            ],
+            "text": "References: None."
+          }
+        ],
+        "text": "References:  None."
+      },
+      "semantic_role": "reference_lead",
+      "source_type": "Body",
+      "text": "References: None.",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.5155199224298651,
+        0.31013882705588747,
+        0.5347626811326153
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p100:block:15",
+      "is_bold": true,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          90.0,
+          372.29998779296875,
+          102.31715393066406,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0958082675933838,
+            "text_len": 16,
+            "title_case_ratio": 1.0,
+            "word_count": 3
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "AU-8 TIME STAMPS"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.5155199224298651,
+              0.18428675333658853,
+              0.5347626811326153
+            ],
+            "raw_bbox": [
+              90.0,
+              408.2917785644531,
+              112.78349304199219,
+              423.53204345703125
+            ],
+            "text": "AU-8"
+          },
+          {
+            "bbox": [
+              0.20587902443081724,
+              0.5155199224298651,
+              0.31013882705588747,
+              0.5347626811326153
+            ],
+            "raw_bbox": [
+              125.99796295166016,
+              408.2917785644531,
+              189.80496215820312,
+              423.53204345703125
+            ],
+            "text": "TIME STAMPS"
+          }
+        ],
+        "text": "AU-8 TIME STAMPS"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "AU-8 TIME STAMPS",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5402771150222933,
+        0.25978078405841504,
+        0.557204853404652
+      ],
+      "font_name": "TT2",
+      "font_size": 9.510000228881836,
+      "id": "actual:p100:block:16",
+      "is_bold": true,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          90.0,
+          353.82000732421875,
+          71.20025634765625,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 9.510000228881836,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": true,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.510000228881836,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9491018056869507,
+            "text_len": 8,
+            "title_case_ratio": 1.0,
+            "word_count": 1
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "short_colon_negative",
+            "single_word_negative"
+          ],
+          "title_text": "Control:"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.5402771150222933,
+              0.25978078405841504,
+              0.557204853404652
+            ],
+            "raw_bbox": [
+              126.0,
+              427.89947509765625,
+              158.98583984375,
+              441.3062438964844
+            ],
+            "text": "Control:"
+          }
+        ],
+        "text": "Control:"
+      },
+      "semantic_role": "nist_field_label",
+      "source_type": "Body",
+      "text": "Control:",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5632316512290878,
+        0.7243587518829147,
+        0.5801593896114465
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:17",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          335.6400146484375,
+          319.5478515625,
+          10.019989013671875
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.5632316512290878,
+              0.7243587518829147,
+              0.5801593896114465
+            ],
+            "raw_bbox": [
+              126.0,
+              446.0794677734375,
+              443.30755615234375,
+              459.4862365722656
+            ],
+            "text": "a. Use internal system clocks to generate time stamps for audit records; and"
+          }
+        ],
+        "text": "a. Use internal system clocks to generate time stamps for audit records; and"
+      },
+      "source_type": "List",
+      "text": "a. Use internal system clocks to generate time stamps for audit records; and",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5861814864958176,
+        0.8269296284594567,
+        0.649413754241635
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:18",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          280.79052734375,
+          382.3481750488281,
+          46.693206787109375
+        ],
+        "block_type": "List",
+        "confidence": 0.8500000238418579,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.5861814864958176,
+              0.7842738332312091,
+              0.6031092248781763
+            ],
+            "raw_bbox": [
+              126.0,
+              464.2557373046875,
+              479.9755859375,
+              477.6625061035156
+            ],
+            "text": "b. Record time stamps for audit records that meet [Assignment: organization-defined"
+          },
+          {
+            "bbox": [
+              0.23527107986749388,
+              0.6015657367128314,
+              0.8225540460324755,
+              0.6184934750951901
+            ],
+            "raw_bbox": [
+              143.98590087890625,
+              476.4400634765625,
+              503.403076171875,
+              489.8468322753906
+            ],
+            "text": "granularity of time measurement] and that use Coordinated Universal Time, have a fixed"
+          },
+          {
+            "bbox": [
+              0.23527103000217015,
+              0.6170258955522017,
+              0.8269296284594567,
+              0.6339536339345605
+            ],
+            "raw_bbox": [
+              143.98587036132812,
+              488.68450927734375,
+              506.0809326171875,
+              502.0912780761719
+            ],
+            "text": "local time offset from Coordinated Universal Time, or that include the local time offset as"
+          },
+          {
+            "bbox": [
+              0.23527103000217015,
+              0.632486054391572,
+              0.3894022025314032,
+              0.649413754241635
+            ],
+            "raw_bbox": [
+              143.98587036132812,
+              500.928955078125,
+              238.31414794921875,
+              514.335693359375
+            ],
+            "text": "part of the time stamp."
+          }
+        ],
+        "text": "b. Record time stamps for audit records that meet [Assignment: organization-defined granularity of time measurement] and that use Coordinated Universal Time, have a fixed local time offset from Coordinated Universal Time, or that include the local time offset as part of the time stamp."
+      },
+      "source_type": "List",
+      "text": "b. Record time stamps for audit records that meet [Assignment: organization-defined granularity of time measurement] and that use Coordinated Universal Time, have a fixed local time offset from Coordinated Universal Time, or that include the local time offset as part of the time stamp.",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.6554286455867266,
+        0.8507839028352226,
+        0.7803442598593355
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:19",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          177.09356689453125,
+          396.984375,
+          95.54641723632812
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.6554286455867266,
+              0.8159196641710069,
+              0.6723563454367898
+            ],
+            "raw_bbox": [
+              126.0,
+              519.0994873046875,
+              499.34283447265625,
+              532.5062255859375
+            ],
+            "text": "Discussion: Time stamps generated by the system include date and time. Time is commonly"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.6708074242177636,
+              0.8504186892041973,
+              0.6877351240678267
+            ],
+            "raw_bbox": [
+              126.0,
+              531.2794799804688,
+              520.4562377929688,
+              544.6862182617188
+            ],
+            "text": "expressed in Coordinated Universal Time (UTC), a modern continuation of Greenwich Mean Time"
+          },
+          {
+            "bbox": [
+              0.2058987087673611,
+              0.6861916744347775,
+              0.8250217313080831,
+              0.7031193742848406
+            ],
+            "raw_bbox": [
+              126.010009765625,
+              543.4638061523438,
+              504.9132995605469,
+              556.8705444335938
+            ],
+            "text": "(GMT), or local time with an offset from UTC. Granularity of time measurements refers to the"
+          },
+          {
+            "bbox": [
+              0.2058987087673611,
+              0.7016518332741477,
+              0.8507839028352226,
+              0.7185795331242109
+            ],
+            "raw_bbox": [
+              126.010009765625,
+              555.708251953125,
+              520.6797485351562,
+              569.114990234375
+            ],
+            "text": "degree of synchronization between system clocks and reference clocks (e.g., clocks synchronizing"
+          },
+          {
+            "bbox": [
+              0.20591501472822202,
+              0.7170360834911617,
+              0.8483560599532782,
+              0.7339637833412247
+            ],
+            "raw_bbox": [
+              126.01998901367188,
+              567.892578125,
+              519.1939086914062,
+              581.29931640625
+            ],
+            "text": "within hundreds of milliseconds or tens of milliseconds). Organizations may define different time"
+          },
+          {
+            "bbox": [
+              0.20591501472822202,
+              0.7324962423305319,
+              0.8112916634752859,
+              0.749423942180595
+            ],
+            "raw_bbox": [
+              126.01998901367188,
+              580.1370239257812,
+              496.510498046875,
+              593.5437622070312
+            ],
+            "text": "granularities for different system components. Time service can be critical to other security"
+          },
+          {
+            "bbox": [
+              0.20591501472822202,
+              0.7478804925475457,
+              0.806070514753753,
+              0.7648081923976089
+            ],
+            "raw_bbox": [
+              126.01998901367188,
+              592.3213500976562,
+              493.3151550292969,
+              605.7280883789062
+            ],
+            "text": "capabilities such as access control and identification and authentication, depending on the"
+          },
+          {
+            "bbox": [
+              0.20591501472822202,
+              0.7634165600092724,
+              0.6118771422143076,
+              0.7803442598593355
+            ],
+            "raw_bbox": [
+              126.01998901367188,
+              604.6259155273438,
+              374.46881103515625,
+              618.0326538085938
+            ],
+            "text": "nature of the mechanisms used to support those capabilities."
+          }
+        ],
+        "text": "Discussion:  Time stamps generated by the system include date and time. Time is commonly expressed in Coordinated Universal Time (UTC), a modern continuation of Greenwich Mean Time (GMT), or local time with an offset from UTC. Granularity of time measurements refers to the degree of synchronization between system clocks and reference clocks (e.g., clocks synchronizing within hundreds of milliseconds or tens of milliseconds). Organizations may define different time granularities for different system components. Time service can be critical to other security capabilities such as access control and identification and authentication, depending on the nature of the mechanisms used to support those capabilities."
+      },
+      "semantic_role": "discussion",
+      "source_type": "Body",
+      "text": "Discussion: Time stamps generated by the system include date and time. Time is commonly expressed in Coordinated Universal Time (UTC), a modern continuation of Greenwich Mean Time (GMT), or local time with an offset from UTC. Granularity of time measurements refers to the degree of synchronization between system clocks and reference clocks (e.g., clocks synchronizing within hundreds of milliseconds or tens of milliseconds). Organizations may define different time granularities for different system components. Time service can be critical to other security capabilities such as access control and identification and authentication, depending on the nature of the mechanisms used to support those capabilities.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.7863377272480666,
+        0.509420008441202,
+        0.8032654270981298
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020002365112305,
+      "id": "actual:p100:block:20",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          158.94000244140625,
+          188.02957153320312,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020002365112305,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.7863377272480666,
+              0.509420008441202,
+              0.8032654270981298
+            ],
+            "raw_bbox": [
+              126.0,
+              622.7794799804688,
+              311.7650451660156,
+              636.1862182617188
+            ],
+            "text": "Related Controls: AU-3, AU-12, AU-14, SC-45."
+          }
+        ],
+        "text": "Related Controls:  AU-3, AU-12, AU-14, SC-45."
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls: AU-3, AU-12, AU-14, SC-45.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.809368017948035,
+        0.3617490381976358,
+        0.8262957177980982
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p100:block:21",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          140.6999969482422,
+          97.60482788085938,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.809368017948035,
+              0.3617490381976358,
+              0.8262957177980982
+            ],
+            "raw_bbox": [
+              126.0,
+              641.0194702148438,
+              221.39041137695312,
+              654.4262084960938
+            ],
+            "text": "Control Enhancements:"
+          }
+        ],
+        "text": "Control Enhancements:"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "Control Enhancements:",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.8322910347370186,
+        0.6740519704382404,
+        0.8509305703519571
+      ],
+      "font_name": "TT2",
+      "font_size": 9.857142448425293,
+      "id": "actual:p100:block:22",
+      "is_bold": true,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          121.55999755859375,
+          289.0414733886719,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.857142448425293,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.857142448425293,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9837467074394226,
+            "text_len": 64,
+            "title_case_ratio": 0.7777777910232544,
+            "word_count": 9
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(1) TIME STAMPS | SYNCHRONIZATION WITH AUTHORITATIVE TIME SOURCE"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.8322910347370186,
+              0.6740519704382404,
+              0.8509305703519571
+            ],
+            "raw_bbox": [
+              126.0,
+              659.1744995117188,
+              412.5198059082031,
+              673.93701171875
+            ],
+            "text": "(1) TIME STAMPS | SYNCHRONIZATION WITH AUTHORITATIVE TIME SOURCE"
+          }
+        ],
+        "text": "(1) TIME STAMPS | SYNCHRONIZATION WITH AUTHORITATIVE TIME SOURCE"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(1) TIME STAMPS | SYNCHRONIZATION WITH AUTHORITATIVE TIME SOURCE",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.853080132994989,
+        0.45640718547347325,
+        0.8700078328450521
+      ],
+      "font_name": "TT0",
+      "font_size": 10.267499923706055,
+      "id": "actual:p100:block:23",
+      "is_bold": false,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          144.0,
+          106.08000183105469,
+          138.239990234375,
+          12.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.267499923706055,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.853080132994989,
+              0.45640718547347325,
+              0.8700078328450521
+            ],
+            "raw_bbox": [
+              144.0,
+              675.6394653320312,
+              279.3211975097656,
+              689.0462036132812
+            ],
+            "text": "[Withdrawn: Moved to SC-45(1).]"
+          }
+        ],
+        "text": "[Withdrawn: Moved to SC-45(1).]"
+      },
+      "semantic_role": "nist_withdrawn_note",
+      "source_type": "Body",
+      "text": "[Withdrawn: Moved to SC-45(1).]",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.8760031497839725,
+        0.5945386200948478,
+        0.894642685398911
+      ],
+      "font_name": "TT2",
+      "font_size": 9.857142448425293,
+      "id": "actual:p100:block:24",
+      "is_bold": true,
+      "page": 100,
+      "pdf_page_index": 99,
+      "raw": {
+        "bbox": [
+          126.0,
+          86.94000244140625,
+          240.3814697265625,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.3499999940395355,
+        "font_name": "TT2",
+        "font_size": 9.857142448425293,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.3499999940395355,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.857142448425293,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9837467074394226,
+            "text_len": 53,
+            "title_case_ratio": 0.75,
+            "word_count": 8
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "parentheses_negative"
+          ],
+          "title_text": "(2) TIME STAMPS | SECONDARY AUTHORITATIVE TIME SOURCE"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.8760031497839725,
+              0.5945386200948478,
+              0.894642685398911
+            ],
+            "raw_bbox": [
+              126.0,
+              693.7944946289062,
+              363.8576354980469,
+              708.5570068359375
+            ],
+            "text": "(2) TIME STAMPS | SECONDARY AUTHORITATIVE TIME SOURCE"
+          }
+        ],
+        "text": "(2) TIME STAMPS | SECONDARY AUTHORITATIVE TIME SOURCE"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(2) TIME STAMPS | SECONDARY AUTHORITATIVE TIME SOURCE",
+      "type": "section_heading"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 100,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 99
+}

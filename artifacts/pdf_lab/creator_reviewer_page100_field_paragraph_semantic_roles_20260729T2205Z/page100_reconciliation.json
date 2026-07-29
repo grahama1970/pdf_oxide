@@ -1,0 +1,30 @@
+{
+  "commands": [
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/page100_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/current_evidence --page-timeout-seconds 90",
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/page100_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/current_evidence --page-timeout-seconds 90"
+  ],
+  "current_evidence_commit": "c1e6a1b52d0e1b0a29bacfe968ad81c04f5fc601",
+  "current_evidence_generated_at": "2026-07-29T21:24:45.473046+00:00",
+  "current_evidence_out": "artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/current_evidence",
+  "entries": [
+    {
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/current_evidence/pages/page_0100/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/current_evidence/pages/page_0100/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/current_evidence/pages/page_0100/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Keep full field paragraphs as paragraph_block, but set semantic_role to discussion or related_controls.",
+      "extraction_defect": "Page100 full Discussion and Related Controls paragraphs have semantic_role null despite being field-specific content.",
+      "finding_id": "p100_field_paragraph_semantic_roles",
+      "page": 100,
+      "patch_hint": "Add a NIST preset text_classifier_rule for full paragraph blocks that start with Discussion: or Related Controls:."
+    }
+  ],
+  "pages": [
+    100
+  ],
+  "schema": "pdf_oxide.nist_historical_finding_reconciliation.v1"
+}

@@ -1,0 +1,78 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page100_field_paragraph_semantic_role_defects.json",
+  "checks": [
+    {
+      "actual_label": "paragraph_block",
+      "actual_semantic_role": null,
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.23529409271439697,
+            0.32209531225339333,
+            0.8502044677734375,
+            0.41616640187273124
+          ],
+          "id": "actual:p100:block:10",
+          "iou": 1.0,
+          "matches_expected_label": true,
+          "matches_expected_semantic_role": false,
+          "semantic_role": null,
+          "source_type": "Body",
+          "text": "Discussion: Events of interest can be identified by the content of audit records, including system resources involved, information objects accessed, identities of individuals, event types, event locations, event dates and times, Internet Protocol addresses involved, or event success or failure. Organizations may define event criteria to any degree of granularity required, such as locations selectable by a general networking location or by specific system component.",
+          "type": "paragraph_block"
+        }
+      ],
+      "defect_class": "REGION_LABEL_MISMATCH",
+      "expected_label": "paragraph_block",
+      "expected_semantic_role": "discussion",
+      "expected_state": "present",
+      "id": "page100-discussion-paragraph-semantic-role",
+      "matching_label_count": 0,
+      "status": "FAIL",
+      "text": "Discussion: Events of interest can be identified by the content of audit records, including system resources involved, information objects accessed, identities of individuals, event types, event locations, event dates and times, Internet Protocol addresses involved, or event success or failure. Organizations may define event criteria to any degree of granularity required, such as locations selectable by a general networking location or by specific system component."
+    },
+    {
+      "actual_label": "paragraph_block",
+      "actual_semantic_role": null,
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.4184589578647806,
+            0.3974674698574091,
+            0.4353866962471394
+          ],
+          "id": "actual:p100:block:11",
+          "iou": 1.0,
+          "matches_expected_label": true,
+          "matches_expected_semantic_role": false,
+          "semantic_role": null,
+          "source_type": "Body",
+          "text": "Related Controls: None.",
+          "type": "paragraph_block"
+        }
+      ],
+      "defect_class": "REGION_LABEL_MISMATCH",
+      "expected_label": "paragraph_block",
+      "expected_semantic_role": "related_controls",
+      "expected_state": "present",
+      "id": "page100-related-controls-paragraph-semantic-role",
+      "matching_label_count": 0,
+      "status": "FAIL",
+      "text": "Related Controls: None."
+    }
+  ],
+  "created_at": "2026-07-29T21:24:14.622205+00:00",
+  "errors": [],
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/pre_patch_evidence/pages/page_0100/release_extraction_blocks.json",
+  "page": 100,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "FAIL",
+  "summary": {
+    "check_count": 2,
+    "failed": 2,
+    "passed": 0
+  }
+}

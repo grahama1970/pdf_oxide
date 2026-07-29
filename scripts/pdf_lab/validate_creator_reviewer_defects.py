@@ -220,6 +220,7 @@ def block_candidates_for_region_label_mismatch(
     text = normalize_text(check.get("text"))
     block_id = check.get("block_id")
     region_bbox = check["region_bbox"]
+    expected_semantic_role = check.get("expected_semantic_role")
 
     candidates: list[dict[str, Any]] = []
     for block in blocks:
@@ -238,10 +239,15 @@ def block_candidates_for_region_label_mismatch(
                 "id": block.get("id"),
                 "type": block.get("type"),
                 "source_type": block.get("source_type"),
+                "semantic_role": block.get("semantic_role"),
                 "text": block_text,
                 "bbox": block_bbox,
                 "iou": bbox_iou(block_bbox, region_bbox),
                 "matches_expected_label": block.get("type") == check["expected_label"],
+                "matches_expected_semantic_role": (
+                    expected_semantic_role is None
+                    or block.get("semantic_role") == expected_semantic_role
+                ),
             }
         )
     return candidates
@@ -376,7 +382,9 @@ def evaluate_check(extraction: dict[str, Any], check: dict[str, Any]) -> dict[st
         candidates = block_candidates_for_region_label_mismatch(extraction, check)
         expected_state = check["expected_state"]
         label_matches = [
-            candidate for candidate in candidates if candidate["matches_expected_label"]
+            candidate
+            for candidate in candidates
+            if candidate["matches_expected_label"] and candidate["matches_expected_semantic_role"]
         ]
         passed = bool(label_matches) if expected_state == "present" else not label_matches
         return {
@@ -386,6 +394,8 @@ def evaluate_check(extraction: dict[str, Any], check: dict[str, Any]) -> dict[st
             "expected_state": expected_state,
             "actual_label": check["actual_label"],
             "expected_label": check["expected_label"],
+            "actual_semantic_role": check.get("actual_semantic_role"),
+            "expected_semantic_role": check.get("expected_semantic_role"),
             "text": check["text"],
             "candidate_count": len(candidates),
             "matching_label_count": len(label_matches),
