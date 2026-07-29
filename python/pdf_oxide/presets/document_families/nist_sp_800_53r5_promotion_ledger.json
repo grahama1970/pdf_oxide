@@ -4101,6 +4101,69 @@
       },
       "rule_class": "document_family_adapter",
       "status": "closed"
+    },
+    {
+      "added_at": "2026-07-29T16:18:00Z",
+      "added_by": "agent:codex (PDF Lab creator-reviewer page27 label defect)",
+      "applied_at": "2026-07-29T16:18:00Z",
+      "applier_rule_kind": "text_classifier_rule",
+      "category": "semantic_enrichment",
+      "checklist_item": "Classify the NIST front-matter printed page number xxv as running_footer instead of generic header_footer_noise.",
+      "closed_at": "2026-07-29T16:18:00Z",
+      "closed_by": "agent:codex (validated by tests/test_pdf_lab_creator_reviewer_defects.py and fresh page27 receipt)",
+      "entry_id": "nist-page27-running-footer-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p27:block:2"
+        ],
+        "receipt": "artifacts/pdf_lab/creator_reviewer_next_candidate_page27_20260729T160711Z/receipt.json",
+        "risk_reasons_observed": [
+          "bottom_band_page_number",
+          "source_type_PageNumber",
+          "type_header_footer_noise_after_baseline_adapter"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "A non-footer page number outside the bottom band must remain governed by the baseline adapter.",
+          "A non-page-number chrome block in the bottom band must not be promoted by this rule."
+        ],
+        "candidates_that_prove": [
+          "Page 27 block 2 is source_type PageNumber, text xxv, bbox y_min 0.939856, and is the visible printed page number in the footer band."
+        ],
+        "deterministic_rule": "If a NIST PageNumber block has already been baseline-mapped to header_footer_noise, sits in the bottom footer band, and is the roman numeral xxv, set type=running_footer and semantic_role=page_chrome."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "source_type is not PageNumber",
+          "type is not header_footer_noise",
+          "bbox y_min <= 0.9",
+          "text is not xxv"
+        ]
+      },
+      "release_conflict_waiver": true,
+      "release_conflict_waiver_rationale": "This rule intentionally narrows the earlier PageNumber baseline adapter only for the reviewed NIST page27 footer evidence.",
+      "rule": {
+        "applies_when": {
+          "bbox_constraints": {
+            "y_min_gt": 0.9
+          },
+          "source_type": "PageNumber",
+          "type": "header_footer_noise"
+        },
+        "extract": [
+          {
+            "fields": {
+              "semantic_role": "page_chrome",
+              "type": "running_footer"
+            },
+            "regex": "^\\s*xxv\\s*$"
+          }
+        ]
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
     }
   ],
   "preset_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",

@@ -1,0 +1,5 @@
+python3 scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page27_creator_reviewer_defects.json --extraction-json artifacts/pdf_lab/creator_reviewer_page27_running_footer_repair_20260729T161228Z/extraction.pdf_oxide.json --out artifacts/pdf_lab/creator_reviewer_page27_running_footer_repair_20260729T161228Z/validation.json
+python3 -m py_compile scripts/pdf_lab/validate_creator_reviewer_defects.py scripts/pdf_lab/snapshot_current_extraction.py
+uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py tests/test_nist_page456_control_table_headers.py tests/test_nist_top_header_chrome_preset.py -q
+uv run ruff check scripts/pdf_lab/validate_creator_reviewer_defects.py scripts/pdf_lab/snapshot_current_extraction.py tests/test_pdf_lab_creator_reviewer_defects.py tests/test_nist_top_header_chrome_preset.py
+uv run ruff format --check scripts/pdf_lab/validate_creator_reviewer_defects.py scripts/pdf_lab/snapshot_current_extraction.py tests/test_pdf_lab_creator_reviewer_defects.py tests/test_nist_top_header_chrome_preset.py

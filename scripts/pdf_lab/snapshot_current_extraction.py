@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import re
 import sys
@@ -11,6 +12,17 @@ from typing import Any
 
 def _normalize_text(text: str) -> str:
     return " ".join(str(text or "").split())
+
+
+def _load_preset_applier() -> tuple[Any, Any]:
+    applier_path = Path(__file__).resolve().parents[2] / "python/pdf_oxide/presets/applier.py"
+    spec = importlib.util.spec_from_file_location("pdf_oxide_preset_applier_direct", applier_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"could not load preset applier from {applier_path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module.ApplierConfig, module.apply_ledger
 
 
 def _normalize_bracketed_citation_wraps(text: str) -> str:
@@ -131,7 +143,9 @@ def _off_page_extent(full_bbox: list[float]) -> dict[str, float]:
     }
 
 
-def _table_geometry_metadata(raw_bbox: Any, visible_bbox: list[float], page_w: float, page_h: float) -> dict[str, Any]:
+def _table_geometry_metadata(
+    raw_bbox: Any, visible_bbox: list[float], page_w: float, page_h: float
+) -> dict[str, Any]:
     raw_values = _bbox_values(raw_bbox)
     full_bbox = _norm_bbox_corners_unclamped(raw_bbox, page_w, page_h)
     off_page_extent = _off_page_extent(full_bbox)
@@ -155,7 +169,9 @@ def _bbox_union(boxes: list[list[float]]) -> list[float]:
     ]
 
 
-def _extract_fitz_text_lines(pdf_path: Path, page_index: int, page_w: float, page_h: float) -> list[dict[str, Any]]:
+def _extract_fitz_text_lines(
+    pdf_path: Path, page_index: int, page_w: float, page_h: float
+) -> list[dict[str, Any]]:
     try:
         import fitz  # noqa: PLC0415
     except Exception:
@@ -185,7 +201,9 @@ def _extract_fitz_text_lines(pdf_path: Path, page_index: int, page_w: float, pag
             text = "".join(str(char.get("c") or "") for char in chars)
             if not _normalize_text(text):
                 continue
-            nonspace = [char for char in chars if str(char.get("c") or "").strip() and char.get("bbox")]
+            nonspace = [
+                char for char in chars if str(char.get("c") or "").strip() and char.get("bbox")
+            ]
             if not nonspace:
                 continue
             x0 = min(float(char["bbox"][0]) for char in nonspace)
@@ -216,7 +234,9 @@ def _bbox_center_distance(a: list[float], b: list[float]) -> float:
     return abs(ax - bx) + abs(ay - by)
 
 
-def _match_text_lines(block_text: str, text_lines: list[dict[str, Any]], block_bbox: list[float] | None = None) -> list[dict[str, Any]]:
+def _match_text_lines(
+    block_text: str, text_lines: list[dict[str, Any]], block_bbox: list[float] | None = None
+) -> list[dict[str, Any]]:
     target = _normalize_text(block_text)
     if not target:
         return []
@@ -237,10 +257,17 @@ def _match_text_lines(block_text: str, text_lines: list[dict[str, Any]], block_b
         return []
     if not block_bbox:
         return candidates[0]
-    return min(candidates, key=lambda candidate: _bbox_center_distance(_bbox_union([line["bbox"] for line in candidate]), block_bbox))
+    return min(
+        candidates,
+        key=lambda candidate: _bbox_center_distance(
+            _bbox_union([line["bbox"] for line in candidate]), block_bbox
+        ),
+    )
 
 
-def _overlapping_text_lines(block_bbox: list[float], text_lines: list[dict[str, Any]], min_y_coverage: float = 0.45) -> list[dict[str, Any]]:
+def _overlapping_text_lines(
+    block_bbox: list[float], text_lines: list[dict[str, Any]], min_y_coverage: float = 0.45
+) -> list[dict[str, Any]]:
     if len(block_bbox) != 4:
         return []
     matches: list[dict[str, Any]] = []
@@ -253,7 +280,9 @@ def _overlapping_text_lines(block_bbox: list[float], text_lines: list[dict[str, 
     return sorted(matches, key=lambda line: (float(line["bbox"][1]), float(line["bbox"][0])))
 
 
-def _footnote_text_from_lines(block_text: str, block_bbox: list[float], text_lines: list[dict[str, Any]]) -> tuple[str, list[dict[str, Any]]]:
+def _footnote_text_from_lines(
+    block_text: str, block_bbox: list[float], text_lines: list[dict[str, Any]]
+) -> tuple[str, list[dict[str, Any]]]:
     matched_lines = _match_text_lines(block_text, text_lines, block_bbox)
     if matched_lines:
         return block_text, matched_lines
@@ -277,7 +306,9 @@ def _should_split_block(block_bbox: list[float], matched_lines: list[dict[str, A
         max(0.0, float(next_line["bbox"][1]) - float(prev_line["bbox"][3]))
         for prev_line, next_line in zip(matched_lines, matched_lines[1:])
     ]
-    return _bbox_area(block_bbox) > _bbox_area(union) * 1.35 or any(gap > 0.018 for gap in vertical_gaps)
+    return _bbox_area(block_bbox) > _bbox_area(union) * 1.35 or any(
+        gap > 0.018 for gap in vertical_gaps
+    )
 
 
 def _block_elements(
@@ -489,7 +520,9 @@ def _consolidate_rotated_side_chrome_fragments(
     return consolidated
 
 
-def _suppress_rotated_side_chrome_duplicates(elements: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _suppress_rotated_side_chrome_duplicates(
+    elements: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
     rotated_side_texts = [
         _normalize_text(element.get("text") or "")
         for element in elements
@@ -546,7 +579,9 @@ def _merge_footnote_continuations(elements: list[dict[str, Any]]) -> list[dict[s
     for element in elements:
         if merged and _is_footnote_continuation(merged[-1], element):
             prior = merged[-1]
-            prior["text"] = _normalize_text(f"{prior.get('text') or ''} {element.get('text') or ''}")
+            prior["text"] = _normalize_text(
+                f"{prior.get('text') or ''} {element.get('text') or ''}"
+            )
             prior["bbox"] = _bbox_union([prior["bbox"], element["bbox"]])
             raw = prior.setdefault("raw", {})
             if isinstance(raw, dict):
@@ -617,7 +652,7 @@ def _qid_cells_from_row_text(text: str, expected_columns: int) -> list[str]:
     cells: list[str] = []
     for index, match in enumerate(matches):
         end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
-        cell = _clean_table_cell(text[match.start():end])
+        cell = _clean_table_cell(text[match.start() : end])
         if not cell:
             return []
         cells.append(cell)
@@ -733,7 +768,9 @@ def _nist_toc_lineage_for_page(pdf_path: Path, page_number: int) -> list[dict[st
     return [dict(node) for node in _NIST_PAGE_45_TOC_LINEAGE]
 
 
-def _add_toc_lineage(blocks: list[dict[str, Any]], pdf_path: Path, page_number: int) -> list[dict[str, Any]]:
+def _add_toc_lineage(
+    blocks: list[dict[str, Any]], pdf_path: Path, page_number: int
+) -> list[dict[str, Any]]:
     lineage = _nist_toc_lineage_for_page(pdf_path, page_number)
     if not lineage:
         return blocks
@@ -785,10 +822,7 @@ def _drop_trailing_empty_table_rows(rows: list[list[str]]) -> list[list[str]]:
 def _table_text(table: dict[str, Any]) -> str:
     rows = _table_data(table)
     if rows:
-        lines = [
-            " | ".join(cell for cell in row).strip()
-            for row in rows
-        ]
+        lines = [" | ".join(cell for cell in row).strip() for row in rows]
         return "\n".join(line for line in lines if line)
     explicit = table.get("text") or table.get("markdown")
     if explicit:
@@ -841,7 +875,9 @@ def _clean_page46_ac2_control_text(text: str) -> str:
     return _normalize_text(text)
 
 
-def _page46_ac2_line_bbox(line: str, text_lines: list[dict[str, Any]], fallback_bbox: list[float]) -> list[float]:
+def _page46_ac2_line_bbox(
+    line: str, text_lines: list[dict[str, Any]], fallback_bbox: list[float]
+) -> list[float]:
     target = _normalize_text(line)
     matched_lines = _match_text_lines(target, text_lines)
     if matched_lines:
@@ -923,7 +959,9 @@ def _page46_ac2_control_elements(
         else:
             element_type = "list_item"
             source_type = "List"
-        line_bbox = _page46_ac2_line_bbox(line, text_lines, [content_bbox[0], y0, content_bbox[2], y1])
+        line_bbox = _page46_ac2_line_bbox(
+            line, text_lines, [content_bbox[0], y0, content_bbox[2], y1]
+        )
         elements.append(
             {
                 "id": f"actual:p{page_index + 1}:ac2_control:{index}",
@@ -951,8 +989,10 @@ def _is_page46_ac2_merged_h_through_l_list(element: dict[str, Any], page_number:
     if not text.startswith("h. Notify account managers"):
         return False
     return (
-        "1. [Assignment: organization-defined time period] when accounts are no longer required" in text
-        and "3. [Assignment: organization-defined time period] when system usage or need-to-know changes" in text
+        "1. [Assignment: organization-defined time period] when accounts are no longer required"
+        in text
+        and "3. [Assignment: organization-defined time period] when system usage or need-to-know changes"
+        in text
         and "l. Align account management processes" in text
     )
 
@@ -998,11 +1038,7 @@ def _top_row_cell_bboxes_from_drawing_grid(
         return []
 
     first_row_bottom = max(rect[3] for rect in candidates)
-    top_row_rects = [
-        rect
-        for rect in candidates
-        if abs(rect[3] - first_row_bottom) <= 1.0
-    ]
+    top_row_rects = [rect for rect in candidates if abs(rect[3] - first_row_bottom) <= 1.0]
     if len(top_row_rects) != column_count:
         return []
 
@@ -1013,7 +1049,9 @@ def _top_row_cell_bboxes_from_drawing_grid(
     boundaries.append(table_x1)
 
     return [
-        _norm_bbox_corners([boundaries[index], table_y0, boundaries[index + 1], first_row_bottom], page_w, page_h)
+        _norm_bbox_corners(
+            [boundaries[index], table_y0, boundaries[index + 1], first_row_bottom], page_w, page_h
+        )
         for index in range(column_count)
     ]
 
@@ -1051,7 +1089,9 @@ def _raw_table_payload(
     return raw
 
 
-def _is_tiny_empty_table_false_positive(table: dict[str, Any], metrics: dict[str, Any], bbox: list[float]) -> bool:
+def _is_tiny_empty_table_false_positive(
+    table: dict[str, Any], metrics: dict[str, Any], bbox: list[float]
+) -> bool:
     row_count = int(metrics.get("row_count") or 0)
     column_count = int(metrics.get("column_count") or 0)
     whitespace = float(table.get("whitespace") or 0.0)
@@ -1082,7 +1122,9 @@ def _extract_tables_for_snapshot(doc: Any, page_index: int) -> list[dict[str, An
         return []
 
 
-def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, apply_mode: str) -> dict[str, Any]:
+def _extract_page(
+    pdf_path: Path, page_index: int, ledger_path: Path | None, apply_mode: str
+) -> dict[str, Any]:
     sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "python"))
     import pdf_oxide  # noqa: PLC0415
 
@@ -1161,7 +1203,9 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
                     for element in raw_elements
                     if not _is_page46_ac2_merged_h_through_l_list(element, page_index + 1)
                 ]
-                raw_elements.extend(_page46_ac2_control_elements(table, bbox, page_index, text_lines))
+                raw_elements.extend(
+                    _page46_ac2_control_elements(table, bbox, page_index, text_lines)
+                )
             continue
         raw_elements.append(
             {
@@ -1183,10 +1227,9 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
     raw_elements = _suppress_qid_table_row_duplicates(raw_elements)
 
     if ledger_path and ledger_path.exists():
-        from pdf_oxide.presets.applier import ApplierConfig, apply_ledger  # noqa: PLC0415
-
+        applier_config_cls, apply_ledger = _load_preset_applier()
         ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
-        blocks = apply_ledger(raw_elements, ledger, ApplierConfig(mode=apply_mode))
+        blocks = apply_ledger(raw_elements, ledger, applier_config_cls(mode=apply_mode))
         ledger_used = str(ledger_path)
     else:
         blocks = raw_elements
