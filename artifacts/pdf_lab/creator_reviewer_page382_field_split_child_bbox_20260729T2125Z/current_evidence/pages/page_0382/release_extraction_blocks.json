@@ -1,0 +1,2194 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p382:block:0",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.04473802296802251,
+              0.8507378272760927,
+              0.05821938948197798
+            ],
+            "raw_bbox": [
+              90.0,
+              35.43251419067383,
+              520.6515502929688,
+              46.10975646972656
+            ],
+            "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          }
+        ],
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p382:block:1",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.05679397390346334,
+              0.8517353332120609,
+              0.07054738324097913
+            ],
+            "raw_bbox": [
+              90.0,
+              44.98082733154297,
+              521.2620239257812,
+              55.87352752685547
+            ],
+            "text": "_________________________________________________________________________________________________"
+          }
+        ],
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8529026804406659,
+        0.9549618345318418
+      ],
+      "font_name": "TT0",
+      "font_size": 8.125714302062988,
+      "id": "actual:p382:block:2",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 8.125714302062988,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.9414804632013495,
+              0.23353362239264194,
+              0.9549618345318418
+            ],
+            "raw_bbox": [
+              90.0,
+              745.6525268554688,
+              142.92257690429688,
+              756.3297729492188
+            ],
+            "text": "CHAPTER THREE"
+          },
+          {
+            "bbox": [
+              0.8011840620851205,
+              0.9414804632013495,
+              0.8529026804406659,
+              0.9549618345318418
+            ],
+            "raw_bbox": [
+              490.32464599609375,
+              745.6525268554688,
+              521.9764404296875,
+              756.3297729492188
+            ],
+            "text": "PAGE 355"
+          }
+        ],
+        "text": "CHAPTER THREE   PAGE 355"
+      },
+      "source_type": "Body",
+      "text": "CHAPTER THREE PAGE 355",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "ArialMT",
+      "font_size": 9.0,
+      "id": "actual:p382:rotated_side_chrome:1",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "fragment_ids": [
+          "actual:p382:block:3"
+        ],
+        "fragments": [
+          {
+            "bbox": [
+              0.03441176383323919,
+              0.27643939702197756,
+              0.5297058735018462,
+              0.7178787847962043
+            ],
+            "font_name": "TT1",
+            "font_size": 9.0,
+            "id": "actual:p382:block:3",
+            "is_bold": false,
+            "page": 382,
+            "pdf_page_index": 381,
+            "raw": {
+              "bbox": [
+                21.059999465942383,
+                223.44000244140625,
+                303.1199951171875,
+                349.6199951171875
+              ],
+              "block_type": "Boilerplate",
+              "confidence": 0.8999999761581421,
+              "font_name": "TT1",
+              "font_size": 9.0,
+              "header_level": null,
+              "is_bold": false,
+              "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+            },
+            "source_type": "Boilerplate",
+            "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+            "type": "unknown_region"
+          }
+        ],
+        "line_bbox": [
+          18.135000228881836,
+          227.94000244140625,
+          30.419998168945312,
+          586.5780029296875
+        ],
+        "line_dir": [
+          0.0,
+          1.0
+        ],
+        "source": "fitz_rawdict_rotated_margin_line"
+      },
+      "source_type": "RotatedSideChrome",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.0897338366267657,
+        0.845690957861009,
+        0.12274867356425584
+      ],
+      "child_ids": [
+        "actual:p382:block:4",
+        "actual:p382:block:4#discussion",
+        "actual:p382:block:4#related_controls"
+      ],
+      "font_name": "TT2",
+      "font_size": 11.010000228881836,
+      "id": "actual:p382:block:4",
+      "is_bold": true,
+      "page": 382,
+      "parent_id": "actual:p382:block:4",
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          144.0,
+          655.6199951171875,
+          376.55999755859375,
+          66.9000244140625
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 11.010000228881836,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 11.010000228881836,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0988023281097412,
+            "text_len": 84,
+            "title_case_ratio": 0.0833333358168602,
+            "word_count": 12
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Obtain software and data employed during system component and service refreshes from"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.0897338366267657,
+              0.845690957861009,
+              0.10729414044004498
+            ],
+            "raw_bbox": [
+              144.0,
+              71.06919860839844,
+              517.5628662109375,
+              84.97695922851562
+            ],
+            "text": "Obtain software and data employed during system component and service refreshes from"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.10518836975097656,
+              0.7935882269167432,
+              0.12274867356425584
+            ],
+            "raw_bbox": [
+              144.0,
+              83.30918884277344,
+              485.6759948730469,
+              97.21694946289062
+            ],
+            "text": "the following trusted sources: [Assignment: organization-defined trusted sources]."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.12451957933830493,
+              0.8444396374272365,
+              0.14144730808758976
+            ],
+            "raw_bbox": [
+              144.0,
+              98.6195068359375,
+              516.7970581054688,
+              112.0262680053711
+            ],
+            "text": "Discussion: Trusted sources include software and data from write-once, read-only media or"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.1399741124625158,
+              0.5368223003312653,
+              0.15690184121180062
+            ],
+            "raw_bbox": [
+              144.0,
+              110.8594970703125,
+              328.5352478027344,
+              124.2662582397461
+            ],
+            "text": "from selected offline secure storage facilities."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.15921652437460543,
+              0.3974756727031633,
+              0.17614424349081637
+            ],
+            "raw_bbox": [
+              144.0,
+              126.0994873046875,
+              243.25511169433594,
+              139.50624084472656
+            ],
+            "text": "Related Controls: None."
+          }
+        ],
+        "text": "Obtain software and data employed during system component and service refreshes from the following trusted sources: [Assignment: organization-defined trusted sources]. Discussion:  Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities. Related Controls:  None."
+      },
+      "semantic_role": "control_statement",
+      "source_type": "Body",
+      "text": "Obtain software and data employed during system component and service refreshes from the following trusted sources: [Assignment: organization-defined trusted sources].",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.12451957933830493,
+        0.8444396374272365,
+        0.15690184121180062
+      ],
+      "font_name": "TT2",
+      "font_size": 11.010000228881836,
+      "id": "actual:p382:block:4#discussion",
+      "is_bold": true,
+      "page": 382,
+      "parent_id": "actual:p382:block:4",
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          144.0,
+          655.6199951171875,
+          376.55999755859375,
+          66.9000244140625
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 11.010000228881836,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 11.010000228881836,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0988023281097412,
+            "text_len": 84,
+            "title_case_ratio": 0.0833333358168602,
+            "word_count": 12
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Obtain software and data employed during system component and service refreshes from"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.0897338366267657,
+              0.845690957861009,
+              0.10729414044004498
+            ],
+            "raw_bbox": [
+              144.0,
+              71.06919860839844,
+              517.5628662109375,
+              84.97695922851562
+            ],
+            "text": "Obtain software and data employed during system component and service refreshes from"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.10518836975097656,
+              0.7935882269167432,
+              0.12274867356425584
+            ],
+            "raw_bbox": [
+              144.0,
+              83.30918884277344,
+              485.6759948730469,
+              97.21694946289062
+            ],
+            "text": "the following trusted sources: [Assignment: organization-defined trusted sources]."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.12451957933830493,
+              0.8444396374272365,
+              0.14144730808758976
+            ],
+            "raw_bbox": [
+              144.0,
+              98.6195068359375,
+              516.7970581054688,
+              112.0262680053711
+            ],
+            "text": "Discussion: Trusted sources include software and data from write-once, read-only media or"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.1399741124625158,
+              0.5368223003312653,
+              0.15690184121180062
+            ],
+            "raw_bbox": [
+              144.0,
+              110.8594970703125,
+              328.5352478027344,
+              124.2662582397461
+            ],
+            "text": "from selected offline secure storage facilities."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.15921652437460543,
+              0.3974756727031633,
+              0.17614424349081637
+            ],
+            "raw_bbox": [
+              144.0,
+              126.0994873046875,
+              243.25511169433594,
+              139.50624084472656
+            ],
+            "text": "Related Controls: None."
+          }
+        ],
+        "text": "Obtain software and data employed during system component and service refreshes from the following trusted sources: [Assignment: organization-defined trusted sources]. Discussion:  Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities. Related Controls:  None."
+      },
+      "semantic_role": "discussion",
+      "source_type": "Body",
+      "text": "Discussion: Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.15921652437460543,
+        0.3974756727031633,
+        0.17614424349081637
+      ],
+      "font_name": "TT2",
+      "font_size": 11.010000228881836,
+      "id": "actual:p382:block:4#related_controls",
+      "is_bold": true,
+      "page": 382,
+      "parent_id": "actual:p382:block:4",
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          144.0,
+          655.6199951171875,
+          376.55999755859375,
+          66.9000244140625
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 11.010000228881836,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 11.010000228881836,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0988023281097412,
+            "text_len": 84,
+            "title_case_ratio": 0.0833333358168602,
+            "word_count": 12
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Obtain software and data employed during system component and service refreshes from"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.0897338366267657,
+              0.845690957861009,
+              0.10729414044004498
+            ],
+            "raw_bbox": [
+              144.0,
+              71.06919860839844,
+              517.5628662109375,
+              84.97695922851562
+            ],
+            "text": "Obtain software and data employed during system component and service refreshes from"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.10518836975097656,
+              0.7935882269167432,
+              0.12274867356425584
+            ],
+            "raw_bbox": [
+              144.0,
+              83.30918884277344,
+              485.6759948730469,
+              97.21694946289062
+            ],
+            "text": "the following trusted sources: [Assignment: organization-defined trusted sources]."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.12451957933830493,
+              0.8444396374272365,
+              0.14144730808758976
+            ],
+            "raw_bbox": [
+              144.0,
+              98.6195068359375,
+              516.7970581054688,
+              112.0262680053711
+            ],
+            "text": "Discussion: Trusted sources include software and data from write-once, read-only media or"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.1399741124625158,
+              0.5368223003312653,
+              0.15690184121180062
+            ],
+            "raw_bbox": [
+              144.0,
+              110.8594970703125,
+              328.5352478027344,
+              124.2662582397461
+            ],
+            "text": "from selected offline secure storage facilities."
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.15921652437460543,
+              0.3974756727031633,
+              0.17614424349081637
+            ],
+            "raw_bbox": [
+              144.0,
+              126.0994873046875,
+              243.25511169433594,
+              139.50624084472656
+            ],
+            "text": "Related Controls: None."
+          }
+        ],
+        "text": "Obtain software and data employed during system component and service refreshes from the following trusted sources: [Assignment: organization-defined trusted sources]. Discussion:  Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities. Related Controls:  None."
+      },
+      "semantic_role": "related_controls",
+      "source_type": "Body",
+      "text": "Related Controls: None.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.18213957969588462,
+        0.5605790879991319,
+        0.20077903824623186
+      ],
+      "font_name": "TT2",
+      "font_size": 9.9054536819458,
+      "id": "actual:p382:block:5",
+      "is_bold": true,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          126.0,
+          636.47998046875,
+          219.56146240234375,
+          10.97998046875
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 9.9054536819458,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.9054536819458,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9885681867599487,
+            "text_len": 48,
+            "title_case_ratio": 0.6000000238418579,
+            "word_count": 5
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "parentheses_negative"
+          ],
+          "title_text": "(2) NON-PERSISTENCE | NON-PERSISTENT INFORMATION"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.18213957969588462,
+              0.5605790879991319,
+              0.20077903824623186
+            ],
+            "raw_bbox": [
+              126.0,
+              144.25454711914062,
+              343.07440185546875,
+              159.01699829101562
+            ],
+            "text": "(2) NON-PERSISTENCE | NON-PERSISTENT INFORMATION"
+          }
+        ],
+        "text": "(2) NON-PERSISTENCE | NON-PERSISTENT INFORMATION"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(2) NON-PERSISTENCE | NON-PERSISTENT INFORMATION",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.202688409824564,
+        0.8125264286215789,
+        0.2511690313165838
+      ],
+      "font_name": "TT2",
+      "font_size": 10.020002365112305,
+      "id": "actual:p382:block:6",
+      "is_bold": true,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          144.0,
+          596.5711059570312,
+          355.5246276855469,
+          34.5089111328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.020002365112305,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": true,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020002365112305,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.000000238418579,
+            "text_len": 83,
+            "title_case_ratio": 0.1428571492433548,
+            "word_count": 7
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "parentheses_negative"
+          ],
+          "title_text": "(a) [Selection: Refresh [Assignment: organization-defined information] [Assignment:"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.202688409824564,
+              0.8125264286215789,
+              0.22024871363784326
+            ],
+            "raw_bbox": [
+              144.0,
+              160.5292205810547,
+              497.26617431640625,
+              174.43698120117188
+            ],
+            "text": "(a) [Selection: Refresh [Assignment: organization-defined information] [Assignment:"
+          },
+          {
+            "bbox": [
+              0.2646827947080525,
+              0.21807266004157788,
+              0.7938158621195874,
+              0.23563296385485716
+            ],
+            "raw_bbox": [
+              161.98587036132812,
+              172.7135467529297,
+              485.8153076171875,
+              186.62130737304688
+            ],
+            "text": "organization-defined frequency]; Generate [Assignment: organization-defined"
+          },
+          {
+            "bbox": [
+              0.26466643888186786,
+              0.23360872750330453,
+              0.4702434165804994,
+              0.2511690313165838
+            ],
+            "raw_bbox": [
+              161.97586059570312,
+              185.0181121826172,
+              287.7889709472656,
+              198.92587280273438
+            ],
+            "text": "information] on demand]; and"
+          }
+        ],
+        "text": "(a) [Selection: Refresh [Assignment: organization-defined information] [Assignment: organization-defined frequency]; Generate [Assignment: organization-defined information] on demand]; and"
+      },
+      "semantic_role": "nist_list_item",
+      "source_type": "Body",
+      "text": "(a) [Selection: Refresh [Assignment: organization-defined information] [Assignment: organization-defined frequency]; Generate [Assignment: organization-defined information] on demand]; and",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.23526133119670395,
+        0.2527757702451764,
+        0.5631837533190359,
+        0.27033607405845567
+      ],
+      "font_name": "TT2",
+      "font_size": 10.019999504089355,
+      "id": "actual:p382:block:7",
+      "is_bold": true,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          143.9799346923828,
+          581.3908081054688,
+          202.91502380371094,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.019999504089355,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.019999504089355,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9999998807907104,
+            "text_len": 45,
+            "title_case_ratio": 0.1428571492433548,
+            "word_count": 7
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "sentence_negative",
+            "parentheses_negative"
+          ],
+          "title_text": "(b) Delete information when no longer needed."
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23526133119670395,
+              0.2527757702451764,
+              0.5631837533190359,
+              0.27033607405845567
+            ],
+            "raw_bbox": [
+              143.9799346923828,
+              200.1984100341797,
+              344.66845703125,
+              214.10617065429688
+            ],
+            "text": "(b) Delete information when no longer needed."
+          }
+        ],
+        "text": "(b) Delete information when no longer needed."
+      },
+      "semantic_role": "nist_list_item",
+      "source_type": "Body",
+      "text": "(b) Delete information when no longer needed.",
+      "type": "list"
+    },
+    {
+      "bbox": [
+        0.23527776182087418,
+        0.2720953430792298,
+        0.8401207020080167,
+        0.35078233661073627
+      ],
+      "font_name": "TT0",
+      "font_size": 10.019999504089355,
+      "id": "actual:p382:block:8",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          143.989990234375,
+          517.306640625,
+          372.37322998046875,
+          58.933349609375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.019999504089355,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.2720953430792298,
+              0.8401207020080167,
+              0.2890230621954407
+            ],
+            "raw_bbox": [
+              144.0,
+              215.49951171875,
+              514.1538696289062,
+              228.90626525878906
+            ],
+            "text": "Discussion: Retaining information longer than is needed makes the information a potential"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.2874741217102667,
+              0.8130978852315666,
+              0.30440184082647764
+            ],
+            "raw_bbox": [
+              144.0,
+              227.67950439453125,
+              497.61590576171875,
+              241.0862579345703
+            ],
+            "text": "target for advanced adversaries searching for high value assets to compromise through"
+          },
+          {
+            "bbox": [
+              0.2352941425797207,
+              0.302934280549637,
+              0.8105551526437398,
+              0.31986199966584794
+            ],
+            "raw_bbox": [
+              144.00001525878906,
+              239.9239501953125,
+              496.05975341796875,
+              253.33070373535156
+            ],
+            "text": "unauthorized disclosure, unauthorized modification, or exfiltration. For system-related"
+          },
+          {
+            "bbox": [
+              0.23527776182087418,
+              0.3183185307666509,
+              0.8192364063138277,
+              0.3352462691490096
+            ],
+            "raw_bbox": [
+              143.989990234375,
+              252.1082763671875,
+              501.3726806640625,
+              265.5150451660156
+            ],
+            "text": "information, unnecessary retention provides advanced adversaries information that can"
+          },
+          {
+            "bbox": [
+              0.23527776182087418,
+              0.33385459822837754,
+              0.7173872305676828,
+              0.35078233661073627
+            ],
+            "raw_bbox": [
+              143.989990234375,
+              264.412841796875,
+              439.0409851074219,
+              277.8196105957031
+            ],
+            "text": "assist in their reconnaissance and lateral movement through the system."
+          }
+        ],
+        "text": "Discussion:  Retaining information longer than is needed makes the information a potential target for advanced adversaries searching for high value assets to compromise through unauthorized disclosure, unauthorized modification, or exfiltration. For system-related information, unnecessary retention provides advanced adversaries information that can assist in their reconnaissance and lateral movement through the system."
+      },
+      "source_type": "Body",
+      "text": "Discussion: Retaining information longer than is needed makes the information a potential target for advanced adversaries searching for high value assets to compromise through unauthorized disclosure, unauthorized modification, or exfiltration. For system-related information, unnecessary retention provides advanced adversaries information that can assist in their reconnaissance and lateral movement through the system.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.35300437850181504,
+        0.3974756727031633,
+        0.36993211688417377
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p382:block:9",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          144.0,
+          502.1400146484375,
+          101.4525146484375,
+          10.02001953125
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.35300437850181504,
+              0.3974756727031633,
+              0.36993211688417377
+            ],
+            "raw_bbox": [
+              144.0,
+              279.5794677734375,
+              243.25511169433594,
+              292.9862365722656
+            ],
+            "text": "Related Controls: None."
+          }
+        ],
+        "text": "Related Controls:  None."
+      },
+      "source_type": "Body",
+      "text": "Related Controls: None.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.37600318831626817,
+        0.5605967403237336,
+        0.3946426468666154
+      ],
+      "font_name": "TT2",
+      "font_size": 9.9054536819458,
+      "id": "actual:p382:block:10",
+      "is_bold": true,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          126.0,
+          482.94000244140625,
+          219.56146240234375,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 9.9054536819458,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 9.9054536819458,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": true,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 0.9885681867599487,
+            "text_len": 49,
+            "title_case_ratio": 0.6000000238418579,
+            "word_count": 5
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "parentheses_negative"
+          ],
+          "title_text": "(3) NON-PERSISTENCE | NON-PERSISTENT CONNECTIVITY"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.37600318831626817,
+              0.5605967403237336,
+              0.3946426468666154
+            ],
+            "raw_bbox": [
+              126.0,
+              297.7945251464844,
+              343.085205078125,
+              312.5569763183594
+            ],
+            "text": "(3) NON-PERSISTENCE | NON-PERSISTENT CONNECTIVITY"
+          }
+        ],
+        "text": "(3) NON-PERSISTENCE | NON-PERSISTENT CONNECTIVITY"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "(3) NON-PERSISTENCE | NON-PERSISTENT CONNECTIVITY",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.396476321750217,
+        0.7812710431666156,
+        0.42957267375907515
+      ],
+      "font_name": "TT2",
+      "font_size": 10.020000457763672,
+      "id": "actual:p382:block:11",
+      "is_bold": true,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          144.0,
+          455.2754211425781,
+          336.3454284667969,
+          22.324554443359375
+        ],
+        "block_type": "Body",
+        "confidence": 0.0,
+        "font_name": "TT2",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.0,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 77,
+            "title_case_ratio": 0.09090909361839294,
+            "word_count": 11
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [],
+          "title_text": "Establish connections to the system on demand and terminate connections after"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.396476321750217,
+              0.7812710431666156,
+              0.4140366062973485
+            ],
+            "raw_bbox": [
+              144.0,
+              314.0092468261719,
+              478.13787841796875,
+              327.9169921875
+            ],
+            "text": "Establish connections to the system on demand and terminate connections after"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.41201238921194366,
+              0.6197543674045138,
+              0.42957267375907515
+            ],
+            "raw_bbox": [
+              144.0,
+              326.3138122558594,
+              379.2896728515625,
+              340.2215576171875
+            ],
+            "text": "[Selection: completion of a request; a period of non-use]."
+          }
+        ],
+        "text": "Establish connections to the system on demand and terminate connections after [Selection: completion of a request; a period of non-use]."
+      },
+      "semantic_role": "control_statement",
+      "source_type": "Body",
+      "text": "Establish connections to the system on demand and terminate connections after [Selection: completion of a request; a period of non-use].",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.4312619681310172,
+        0.8442100574767667,
+        0.4945645573163273
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p382:block:12",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          144.0,
+          403.4311218261719,
+          374.92138671875,
+          46.748870849609375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.4312619681310172,
+              0.8442100574767667,
+              0.448189706513376
+            ],
+            "raw_bbox": [
+              144.0,
+              341.5594787597656,
+              516.6565551757812,
+              354.96624755859375
+            ],
+            "text": "Discussion: Persistent connections to systems can provide advanced adversaries with paths"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.44671650125522805,
+              0.8342847637101716,
+              0.46364423963758683
+            ],
+            "raw_bbox": [
+              144.0,
+              353.7994689941406,
+              510.582275390625,
+              367.20623779296875
+            ],
+            "text": "to move laterally through systems and potentially position themselves closer to high value"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.46210075147224194,
+              0.8410948709724775,
+              0.47902848985460067
+            ],
+            "raw_bbox": [
+              144.0,
+              365.9837951660156,
+              514.7500610351562,
+              379.39056396484375
+            ],
+            "text": "assets. Limiting the availability of such connections impedes the adversary\u2019s ability to move"
+          },
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.4776368189339686,
+              0.48952708524816174,
+              0.4945645573163273
+            ],
+            "raw_bbox": [
+              144.0,
+              378.2883605957031,
+              299.590576171875,
+              391.69512939453125
+            ],
+            "text": "freely through organizational systems."
+          }
+        ],
+        "text": "Discussion:  Persistent connections to systems can provide advanced adversaries with paths to move laterally through systems and potentially position themselves closer to high value assets. Limiting the availability of such connections impedes the adversary\u2019s ability to move freely through organizational systems."
+      },
+      "source_type": "Body",
+      "text": "Discussion: Persistent connections to systems can provide advanced adversaries with paths to move laterally through systems and potentially position themselves closer to high value assets. Limiting the availability of such connections impedes the adversary\u2019s ability to move freely through organizational systems.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.23529411764705882,
+        0.4967922634548611,
+        0.39941999647352433,
+        0.5137200018372199
+      ],
+      "font_name": "TT0",
+      "font_size": 10.019999504089355,
+      "id": "actual:p382:block:13",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          144.0,
+          388.260009765625,
+          102.64944458007812,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.019999504089355,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.23529411764705882,
+              0.4967922634548611,
+              0.39941999647352433,
+              0.5137200018372199
+            ],
+            "raw_bbox": [
+              144.0,
+              393.45947265625,
+              244.44503784179688,
+              406.8662414550781
+            ],
+            "text": "Related Controls: SC-10."
+          }
+        ],
+        "text": "Related Controls:  SC-10."
+      },
+      "source_type": "Body",
+      "text": "Related Controls: SC-10.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5198225926871252,
+        0.33167099796868615,
+        0.5367503310694839
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p382:block:14",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          126.0,
+          370.0199890136719,
+          79.17803955078125,
+          10.019989013671875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.5198225926871252,
+              0.33167099796868615,
+              0.5367503310694839
+            ],
+            "raw_bbox": [
+              126.0,
+              411.6994934082031,
+              202.98265075683594,
+              425.10626220703125
+            ],
+            "text": "References: None."
+          }
+        ],
+        "text": "References:  None."
+      },
+      "semantic_role": "reference_lead",
+      "source_type": "Body",
+      "text": "References: None.",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.5501411129729916,
+        0.4648868336397059,
+        0.5693838716757418
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p382:block:15",
+      "is_bold": true,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          90.0,
+          344.8800048828125,
+          197.00436401367188,
+          10.980010986328125
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0958082675933838,
+            "text_len": 34,
+            "title_case_ratio": 1.0,
+            "word_count": 4
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "SI-15 INFORMATION OUTPUT FILTERING"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.5501411129729916,
+              0.1840894113179126,
+              0.5693838716757418
+            ],
+            "raw_bbox": [
+              90.0,
+              435.7117614746094,
+              112.6627197265625,
+              450.9520263671875
+            ],
+            "text": "SI-15"
+          },
+          {
+            "bbox": [
+              0.20588990753772213,
+              0.5501411129729916,
+              0.4648868336397059,
+              0.5693838716757418
+            ],
+            "raw_bbox": [
+              126.00462341308594,
+              435.7117614746094,
+              284.5107421875,
+              450.9520263671875
+            ],
+            "text": "INFORMATION OUTPUT FILTERING"
+          }
+        ],
+        "text": "SI-15 INFORMATION OUTPUT FILTERING"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "SI-15 INFORMATION OUTPUT FILTERING",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.5748225896045415,
+        0.8444405350030637,
+        0.6226651740796638
+      ],
+      "font_name": "TT0",
+      "font_size": 10.267499923706055,
+      "id": "actual:p382:block:16",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          126.0,
+          301.9754333496094,
+          393.04217529296875,
+          36.48455810546875
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.267499923706055,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.5748225896045415,
+              0.8444405350030637,
+              0.5917503279869003
+            ],
+            "raw_bbox": [
+              126.0,
+              455.2594909667969,
+              516.797607421875,
+              468.666259765625
+            ],
+            "text": "Control: Validate information output from the following software programs and/or applications"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.5902013682355784,
+              0.7686852349175347,
+              0.6071291066179372
+            ],
+            "raw_bbox": [
+              126.0,
+              467.4394836425781,
+              470.43536376953125,
+              480.84625244140625
+            ],
+            "text": "to ensure that the information is consistent with the expected content: [Assignment:"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.6057374356973051,
+              0.616669648613026,
+              0.6226651740796638
+            ],
+            "raw_bbox": [
+              126.0,
+              479.7440490722656,
+              377.4018249511719,
+              493.15081787109375
+            ],
+            "text": "organization-defined software programs and/or applications]."
+          }
+        ],
+        "text": "Control:  Validate information output from the following software programs and/or applications to ensure that the information is consistent with the expected content: [Assignment: organization-defined software programs and/or applications]."
+      },
+      "source_type": "Body",
+      "text": "Control: Validate information output from the following software programs and/or applications to ensure that the information is consistent with the expected content: [Assignment: organization-defined software programs and/or applications].",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.6286104760988794,
+        0.8415745753867954,
+        0.7072972769689079
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p382:block:17",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          126.0,
+          234.94677734375,
+          391.3431396484375,
+          58.933197021484375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.6286104760988794,
+              0.8245214325150633,
+              0.6455382144812382
+            ],
+            "raw_bbox": [
+              126.0,
+              497.8594970703125,
+              504.60711669921875,
+              511.2662658691406
+            ],
+            "text": "Discussion: Certain types of attacks, including SQL injections, produce output results that are"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.6440650092230903,
+              0.8022640951318678,
+              0.6609927090731534
+            ],
+            "raw_bbox": [
+              126.0,
+              510.0994873046875,
+              490.9856262207031,
+              523.5062255859375
+            ],
+            "text": "unexpected or inconsistent with the output results that would be expected from software"
+          },
+          {
+            "bbox": [
+              0.20589875863268484,
+              0.6594492594401041,
+              0.8415745753867954,
+              0.6763769592901673
+            ],
+            "raw_bbox": [
+              126.01004028320312,
+              522.2838134765625,
+              515.0436401367188,
+              535.6905517578125
+            ],
+            "text": "programs or applications. Information output filtering focuses on detecting extraneous content,"
+          },
+          {
+            "bbox": [
+              0.20589875863268484,
+              0.6748335096571181,
+              0.8247681162715738,
+              0.6917612095071812
+            ],
+            "raw_bbox": [
+              126.01004028320312,
+              534.4681396484375,
+              504.7580871582031,
+              547.8748779296875
+            ],
+            "text": "preventing such extraneous content from being displayed, and then alerting monitoring tools"
+          },
+          {
+            "bbox": [
+              0.20589875863268484,
+              0.6903695771188447,
+              0.5161064497006485,
+              0.7072972769689079
+            ],
+            "raw_bbox": [
+              126.01004028320312,
+              546.772705078125,
+              315.8571472167969,
+              560.179443359375
+            ],
+            "text": "that anomalous behavior has been discovered."
+          }
+        ],
+        "text": "Discussion:  Certain types of attacks, including SQL injections, produce output results that are unexpected or inconsistent with the output results that would be expected from software programs or applications. Information output filtering focuses on detecting extraneous content, preventing such extraneous content from being displayed, and then alerting monitoring tools that anomalous behavior has been discovered."
+      },
+      "source_type": "Body",
+      "text": "Discussion: Certain types of attacks, including SQL injections, produce output results that are unexpected or inconsistent with the output results that would be expected from software programs or applications. Information output filtering focuses on detecting extraneous content, preventing such extraneous content from being displayed, and then alerting monitoring tools that anomalous behavior has been discovered.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.7133073903093434,
+        0.43079256543926164,
+        0.7302350901594066
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020002365112305,
+      "id": "actual:p382:block:18",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          126.0,
+          216.77999877929688,
+          139.84945678710938,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020002365112305,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.7133073903093434,
+              0.43079256543926164,
+              0.7302350901594066
+            ],
+            "raw_bbox": [
+              126.0,
+              564.939453125,
+              263.6450500488281,
+              578.34619140625
+            ],
+            "text": "Related Controls: SI-3, SI-4, SI-11."
+          }
+        ],
+        "text": "Related Controls:  SI-3, SI-4, SI-11."
+      },
+      "source_type": "Body",
+      "text": "Related Controls: SI-3, SI-4, SI-11.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.7363377580739031,
+        0.40904931461109834,
+        0.7532654579239663
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p382:block:19",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          126.0,
+          198.5399932861328,
+          126.59269714355469,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.7363377580739031,
+              0.40904931461109834,
+              0.7532654579239663
+            ],
+            "raw_bbox": [
+              126.0,
+              583.1795043945312,
+              250.3381805419922,
+              596.5862426757812
+            ],
+            "text": "Control Enhancements: None."
+          }
+        ],
+        "text": "Control Enhancements:  None."
+      },
+      "semantic_role": "nist_control_enhancements_none",
+      "source_type": "Body",
+      "text": "Control Enhancements: None.",
+      "type": "labeled_enhancements"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.7592922942806976,
+        0.33167099796868615,
+        0.7762199941307607
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p382:block:20",
+      "is_bold": true,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          126.0,
+          180.36000061035156,
+          79.17803955078125,
+          10.020004272460938
+        ],
+        "block_type": "Body",
+        "confidence": 0.10000000149011612,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.10000000149011612,
+          "depth_level": 0,
+          "disposition": "Reject",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": true,
+            "font_size": 10.020000457763672,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": false,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0,
+            "text_len": 18,
+            "title_case_ratio": 1.0,
+            "word_count": 2
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like",
+            "sentence_negative"
+          ],
+          "title_text": "References:  None."
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.7592922942806976,
+              0.33167099796868615,
+              0.7762199941307607
+            ],
+            "raw_bbox": [
+              126.0,
+              601.3594970703125,
+              202.98265075683594,
+              614.7662353515625
+            ],
+            "text": "References: None."
+          }
+        ],
+        "text": "References:  None."
+      },
+      "semantic_role": "reference_lead",
+      "source_type": "Body",
+      "text": "References: None.",
+      "type": "reference"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.789686569059738,
+        0.3784947114832261,
+        0.8089292892301926
+      ],
+      "font_name": "TT2",
+      "font_size": 10.979999542236328,
+      "id": "actual:p382:block:21",
+      "is_bold": true,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          90.0,
+          155.16000366210938,
+          144.14663696289062,
+          10.979995727539062
+        ],
+        "block_type": "Body",
+        "confidence": 0.44999998807907104,
+        "font_name": "TT2",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "header_validation": {
+          "confidence": 0.44999998807907104,
+          "depth_level": 0,
+          "disposition": "Escalate",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 10.979999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": false,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 0,
+            "size_ratio": 1.0958082675933838,
+            "text_len": 23,
+            "title_case_ratio": 1.0,
+            "word_count": 3
+          },
+          "has_numbering": false,
+          "is_header": false,
+          "level": null,
+          "number_text": "",
+          "reasons": [
+            "title_case_like"
+          ],
+          "title_text": "SI-16 MEMORY PROTECTION"
+        },
+        "is_bold": true,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.14705882352941177,
+              0.789686569059738,
+              0.1840894113179126,
+              0.8089292892301926
+            ],
+            "raw_bbox": [
+              90.0,
+              625.4317626953125,
+              112.6627197265625,
+              640.6719970703125
+            ],
+            "text": "SI-16"
+          },
+          {
+            "bbox": [
+              0.20588990753772213,
+              0.789686569059738,
+              0.3784947114832261,
+              0.8089292892301926
+            ],
+            "raw_bbox": [
+              126.00462341308594,
+              625.4317626953125,
+              231.63876342773438,
+              640.6719970703125
+            ],
+            "text": "MEMORY PROTECTION"
+          }
+        ],
+        "text": "SI-16 MEMORY PROTECTION"
+      },
+      "semantic_role": "nist_control_heading",
+      "source_type": "Body",
+      "text": "SI-16 MEMORY PROTECTION",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.8143680456912878,
+        0.8236826977698631,
+        0.8467502786655619
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p382:block:22",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          126.0,
+          124.5,
+          380.3983459472656,
+          22.260009765625
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.8143680456912878,
+              0.8236826977698631,
+              0.831295745541351
+            ],
+            "raw_bbox": [
+              126.0,
+              644.9794921875,
+              504.09381103515625,
+              658.38623046875
+            ],
+            "text": "Control: Implement the following controls to protect the system memory from unauthorized"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.8298225788154987,
+              0.6099077611187704,
+              0.8467502786655619
+            ],
+            "raw_bbox": [
+              126.0,
+              657.219482421875,
+              373.2635498046875,
+              670.626220703125
+            ],
+            "text": "code execution: [Assignment: organization-defined controls]."
+          }
+        ],
+        "text": "Control:  Implement the following controls to protect the system memory from unauthorized code execution: [Assignment: organization-defined controls]."
+      },
+      "source_type": "Body",
+      "text": "Control: Implement the following controls to protect the system memory from unauthorized code execution: [Assignment: organization-defined controls].",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.20588235294117646,
+        0.8527013605291193,
+        0.8500112895092933,
+        0.9004678437204072
+      ],
+      "font_name": "TT0",
+      "font_size": 10.020000457763672,
+      "id": "actual:p382:block:23",
+      "is_bold": false,
+      "page": 382,
+      "pdf_page_index": 381,
+      "raw": {
+        "bbox": [
+          126.0,
+          81.95568084716797,
+          396.46136474609375,
+          34.444313049316406
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.020000457763672,
+        "header_level": null,
+        "is_bold": false,
+        "matched_lines": [
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.8527013605291193,
+              0.8500112895092933,
+              0.8696290603791824
+            ],
+            "raw_bbox": [
+              126.0,
+              675.3394775390625,
+              520.2069091796875,
+              688.7462158203125
+            ],
+            "text": "Discussion: Some adversaries launch attacks with the intent of executing code in non-executable"
+          },
+          {
+            "bbox": [
+              0.20588235294117646,
+              0.8681558936533301,
+              0.8227559008629494,
+              0.8850835935033933
+            ],
+            "raw_bbox": [
+              126.0,
+              687.5794677734375,
+              503.526611328125,
+              700.9862060546875
+            ],
+            "text": "regions of memory or in memory locations that are prohibited. Controls employed to protect"
+          },
+          {
+            "bbox": [
+              0.20589875863268484,
+              0.8835401438703441,
+              0.8031551386016647,
+              0.9004678437204072
+            ],
+            "raw_bbox": [
+              126.01004028320312,
+              699.7637939453125,
+              491.53094482421875,
+              713.1705322265625
+            ],
+            "text": "memory include data execution prevention and address space layout randomization. Data"
+          }
+        ],
+        "text": "Discussion:  Some adversaries launch attacks with the intent of executing code in non-executable regions of memory or in memory locations that are prohibited. Controls employed to protect memory include data execution prevention and address space layout randomization. Data"
+      },
+      "source_type": "Body",
+      "text": "Discussion: Some adversaries launch attacks with the intent of executing code in non-executable regions of memory or in memory locations that are prohibited. Controls employed to protect memory include data execution prevention and address space layout randomization. Data",
+      "type": "paragraph_block"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 382,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 381
+}

@@ -1,0 +1,1266 @@
+{
+  "generated_at": "2026-07-29T20:58:59.347640+00:00",
+  "pages": [
+    {
+      "apply_mode": "release",
+      "blocks": [
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.04473802296802251,
+            0.8507378272760927,
+            0.05821938948197798
+          ],
+          "font_name": "TT0",
+          "font_size": 7.3299994468688965,
+          "id": "actual:p382:block:0",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              90.0,
+              748.3800048828125,
+              546.4834594726562,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT0",
+            "font_size": 7.3299994468688965,
+            "header_level": null,
+            "is_bold": false,
+            "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.05679397390346334,
+            0.8517353332120609,
+            0.07054738324097913
+          ],
+          "font_name": "TT1",
+          "font_size": 7.980000019073486,
+          "id": "actual:p382:block:1",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              90.0,
+              738.719970703125,
+              433.80078125,
+              7.97998046875
+            ],
+            "block_type": "Header",
+            "confidence": 0.800000011920929,
+            "font_name": "TT1",
+            "font_size": 7.980000019073486,
+            "header_level": null,
+            "is_bold": false,
+            "text": "_________________________________________________________________________________________________"
+          },
+          "semantic_role": "page_chrome",
+          "source_type": "Header",
+          "text": "_________________________________________________________________________________________________",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.9414804632013495,
+            0.8529026804406659,
+            0.9549618345318418
+          ],
+          "font_name": "TT0",
+          "font_size": 8.125714302062988,
+          "id": "actual:p382:block:2",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              90.0,
+              38.15999984741211,
+              434.03399658203125,
+              9.0
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 8.125714302062988,
+            "header_level": null,
+            "is_bold": false,
+            "text": "CHAPTER THREE   PAGE 355"
+          },
+          "source_type": "Body",
+          "text": "CHAPTER THREE PAGE 355",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.0296323533151664,
+            0.28780303338561397,
+            0.049705879361021756,
+            0.7406287915778883
+          ],
+          "font_name": "ArialMT",
+          "font_size": 9.0,
+          "id": "actual:p382:rotated_side_chrome:1",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "fragment_ids": [
+              "actual:p382:block:3"
+            ],
+            "fragments": [
+              {
+                "bbox": [
+                  0.03441176383323919,
+                  0.27643939702197756,
+                  0.5297058735018462,
+                  0.7178787847962043
+                ],
+                "font_name": "TT1",
+                "font_size": 9.0,
+                "id": "actual:p382:block:3",
+                "is_bold": false,
+                "page": 382,
+                "pdf_page_index": 381,
+                "raw": {
+                  "bbox": [
+                    21.059999465942383,
+                    223.44000244140625,
+                    303.1199951171875,
+                    349.6199951171875
+                  ],
+                  "block_type": "Boilerplate",
+                  "confidence": 0.8999999761581421,
+                  "font_name": "TT1",
+                  "font_size": 9.0,
+                  "header_level": null,
+                  "is_bold": false,
+                  "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+                },
+                "source_type": "Boilerplate",
+                "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+                "type": "unknown_region"
+              }
+            ],
+            "line_bbox": [
+              18.135000228881836,
+              227.94000244140625,
+              30.419998168945312,
+              586.5780029296875
+            ],
+            "line_dir": [
+              0.0,
+              1.0
+            ],
+            "source": "fitz_rawdict_rotated_margin_line"
+          },
+          "source_type": "RotatedSideChrome",
+          "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5",
+          "type": "header_footer_noise"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.0897338366267657,
+            0.845690957861009,
+            0.13293904005879104
+          ],
+          "child_ids": [
+            "actual:p382:block:4",
+            "actual:p382:block:4#discussion",
+            "actual:p382:block:4#related_controls"
+          ],
+          "font_name": "TT2",
+          "font_size": 11.010000228881836,
+          "id": "actual:p382:block:4",
+          "is_bold": true,
+          "page": 382,
+          "parent_id": "actual:p382:block:4",
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              144.0,
+              655.6199951171875,
+              376.55999755859375,
+              66.9000244140625
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 11.010000228881836,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 11.010000228881836,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0988023281097412,
+                "text_len": 84,
+                "title_case_ratio": 0.0833333358168602,
+                "word_count": 12
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Obtain software and data employed during system component and service refreshes from"
+            },
+            "is_bold": true,
+            "text": "Obtain software and data employed during system component and service refreshes from the following trusted sources: [Assignment: organization-defined trusted sources]. Discussion:  Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities. Related Controls:  None."
+          },
+          "semantic_role": "control_statement",
+          "source_type": "Body",
+          "text": "Obtain software and data employed during system component and service refreshes from the following trusted sources: [Assignment: organization-defined trusted sources].",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.13293904005879104,
+            0.845690957861009,
+            0.1617425090134746
+          ],
+          "font_name": "TT2",
+          "font_size": 11.010000228881836,
+          "id": "actual:p382:block:4#discussion",
+          "is_bold": true,
+          "page": 382,
+          "parent_id": "actual:p382:block:4",
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              144.0,
+              655.6199951171875,
+              376.55999755859375,
+              66.9000244140625
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 11.010000228881836,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 11.010000228881836,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0988023281097412,
+                "text_len": 84,
+                "title_case_ratio": 0.0833333358168602,
+                "word_count": 12
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Obtain software and data employed during system component and service refreshes from"
+            },
+            "is_bold": true,
+            "text": "Obtain software and data employed during system component and service refreshes from the following trusted sources: [Assignment: organization-defined trusted sources]. Discussion:  Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities. Related Controls:  None."
+          },
+          "semantic_role": "discussion",
+          "source_type": "Body",
+          "text": "Discussion: Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.1617425090134746,
+            0.845690957861009,
+            0.17614424349081637
+          ],
+          "font_name": "TT2",
+          "font_size": 11.010000228881836,
+          "id": "actual:p382:block:4#related_controls",
+          "is_bold": true,
+          "page": 382,
+          "parent_id": "actual:p382:block:4",
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              144.0,
+              655.6199951171875,
+              376.55999755859375,
+              66.9000244140625
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 11.010000228881836,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 11.010000228881836,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0988023281097412,
+                "text_len": 84,
+                "title_case_ratio": 0.0833333358168602,
+                "word_count": 12
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Obtain software and data employed during system component and service refreshes from"
+            },
+            "is_bold": true,
+            "text": "Obtain software and data employed during system component and service refreshes from the following trusted sources: [Assignment: organization-defined trusted sources]. Discussion:  Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities. Related Controls:  None."
+          },
+          "semantic_role": "related_controls",
+          "source_type": "Body",
+          "text": "Related Controls: None.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.18213957969588462,
+            0.5605790879991319,
+            0.20077903824623186
+          ],
+          "font_name": "TT2",
+          "font_size": 9.9054536819458,
+          "id": "actual:p382:block:5",
+          "is_bold": true,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              126.0,
+              636.47998046875,
+              219.56146240234375,
+              10.97998046875
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 9.9054536819458,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.9054536819458,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9885681867599487,
+                "text_len": 48,
+                "title_case_ratio": 0.6000000238418579,
+                "word_count": 5
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "parentheses_negative"
+              ],
+              "title_text": "(2) NON-PERSISTENCE | NON-PERSISTENT INFORMATION"
+            },
+            "is_bold": true,
+            "text": "(2) NON-PERSISTENCE | NON-PERSISTENT INFORMATION"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "(2) NON-PERSISTENCE | NON-PERSISTENT INFORMATION",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.202688409824564,
+            0.8125264286215789,
+            0.2511690313165838
+          ],
+          "font_name": "TT2",
+          "font_size": 10.020002365112305,
+          "id": "actual:p382:block:6",
+          "is_bold": true,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              144.0,
+              596.5711059570312,
+              355.5246276855469,
+              34.5089111328125
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 10.020002365112305,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": true,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.020002365112305,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.000000238418579,
+                "text_len": 83,
+                "title_case_ratio": 0.1428571492433548,
+                "word_count": 7
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "parentheses_negative"
+              ],
+              "title_text": "(a) [Selection: Refresh [Assignment: organization-defined information] [Assignment:"
+            },
+            "is_bold": true,
+            "text": "(a) [Selection: Refresh [Assignment: organization-defined information] [Assignment: organization-defined frequency]; Generate [Assignment: organization-defined information] on demand]; and"
+          },
+          "semantic_role": "nist_list_item",
+          "source_type": "Body",
+          "text": "(a) [Selection: Refresh [Assignment: organization-defined information] [Assignment: organization-defined frequency]; Generate [Assignment: organization-defined information] on demand]; and",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23526133119670395,
+            0.2527757702451764,
+            0.5631837533190359,
+            0.27033607405845567
+          ],
+          "font_name": "TT2",
+          "font_size": 10.019999504089355,
+          "id": "actual:p382:block:7",
+          "is_bold": true,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              143.9799346923828,
+              581.3908081054688,
+              202.91502380371094,
+              10.02001953125
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 10.019999504089355,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": true,
+                "font_size": 10.019999504089355,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9999998807907104,
+                "text_len": 45,
+                "title_case_ratio": 0.1428571492433548,
+                "word_count": 7
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "sentence_negative",
+                "parentheses_negative"
+              ],
+              "title_text": "(b) Delete information when no longer needed."
+            },
+            "is_bold": true,
+            "text": "(b) Delete information when no longer needed."
+          },
+          "semantic_role": "nist_list_item",
+          "source_type": "Body",
+          "text": "(b) Delete information when no longer needed.",
+          "type": "list"
+        },
+        {
+          "bbox": [
+            0.23527776182087418,
+            0.2720953430792298,
+            0.8401207020080167,
+            0.35078233661073627
+          ],
+          "font_name": "TT0",
+          "font_size": 10.019999504089355,
+          "id": "actual:p382:block:8",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              143.989990234375,
+              517.306640625,
+              372.37322998046875,
+              58.933349609375
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.019999504089355,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Retaining information longer than is needed makes the information a potential target for advanced adversaries searching for high value assets to compromise through unauthorized disclosure, unauthorized modification, or exfiltration. For system-related information, unnecessary retention provides advanced adversaries information that can assist in their reconnaissance and lateral movement through the system."
+          },
+          "source_type": "Body",
+          "text": "Discussion: Retaining information longer than is needed makes the information a potential target for advanced adversaries searching for high value assets to compromise through unauthorized disclosure, unauthorized modification, or exfiltration. For system-related information, unnecessary retention provides advanced adversaries information that can assist in their reconnaissance and lateral movement through the system.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.35300437850181504,
+            0.3974756727031633,
+            0.36993211688417377
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p382:block:9",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              144.0,
+              502.1400146484375,
+              101.4525146484375,
+              10.02001953125
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  None."
+          },
+          "source_type": "Body",
+          "text": "Related Controls: None.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.37600318831626817,
+            0.5605967403237336,
+            0.3946426468666154
+          ],
+          "font_name": "TT2",
+          "font_size": 9.9054536819458,
+          "id": "actual:p382:block:10",
+          "is_bold": true,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              126.0,
+              482.94000244140625,
+              219.56146240234375,
+              10.980010986328125
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 9.9054536819458,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 9.9054536819458,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": true,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 0.9885681867599487,
+                "text_len": 49,
+                "title_case_ratio": 0.6000000238418579,
+                "word_count": 5
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "parentheses_negative"
+              ],
+              "title_text": "(3) NON-PERSISTENCE | NON-PERSISTENT CONNECTIVITY"
+            },
+            "is_bold": true,
+            "text": "(3) NON-PERSISTENCE | NON-PERSISTENT CONNECTIVITY"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "(3) NON-PERSISTENCE | NON-PERSISTENT CONNECTIVITY",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.396476321750217,
+            0.7812710431666156,
+            0.42957267375907515
+          ],
+          "font_name": "TT2",
+          "font_size": 10.020000457763672,
+          "id": "actual:p382:block:11",
+          "is_bold": true,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              144.0,
+              455.2754211425781,
+              336.3454284667969,
+              22.324554443359375
+            ],
+            "block_type": "Body",
+            "confidence": 0.0,
+            "font_name": "TT2",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.0,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0,
+                "text_len": 77,
+                "title_case_ratio": 0.09090909361839294,
+                "word_count": 11
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [],
+              "title_text": "Establish connections to the system on demand and terminate connections after"
+            },
+            "is_bold": true,
+            "text": "Establish connections to the system on demand and terminate connections after [Selection: completion of a request; a period of non-use]."
+          },
+          "semantic_role": "control_statement",
+          "source_type": "Body",
+          "text": "Establish connections to the system on demand and terminate connections after [Selection: completion of a request; a period of non-use].",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.4312619681310172,
+            0.8442100574767667,
+            0.4945645573163273
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p382:block:12",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              144.0,
+              403.4311218261719,
+              374.92138671875,
+              46.748870849609375
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Persistent connections to systems can provide advanced adversaries with paths to move laterally through systems and potentially position themselves closer to high value assets. Limiting the availability of such connections impedes the adversary\u2019s ability to move freely through organizational systems."
+          },
+          "source_type": "Body",
+          "text": "Discussion: Persistent connections to systems can provide advanced adversaries with paths to move laterally through systems and potentially position themselves closer to high value assets. Limiting the availability of such connections impedes the adversary\u2019s ability to move freely through organizational systems.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.4967922634548611,
+            0.39941999647352433,
+            0.5137200018372199
+          ],
+          "font_name": "TT0",
+          "font_size": 10.019999504089355,
+          "id": "actual:p382:block:13",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              144.0,
+              388.260009765625,
+              102.64944458007812,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.019999504089355,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  SC-10."
+          },
+          "source_type": "Body",
+          "text": "Related Controls: SC-10.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.5198225926871252,
+            0.33167099796868615,
+            0.5367503310694839
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p382:block:14",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              126.0,
+              370.0199890136719,
+              79.17803955078125,
+              10.019989013671875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "References:  None."
+          },
+          "semantic_role": "reference_lead",
+          "source_type": "Body",
+          "text": "References: None.",
+          "type": "reference"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.5501411129729916,
+            0.4648868336397059,
+            0.5693838716757418
+          ],
+          "font_name": "TT2",
+          "font_size": 10.979999542236328,
+          "id": "actual:p382:block:15",
+          "is_bold": true,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              90.0,
+              344.8800048828125,
+              197.00436401367188,
+              10.980010986328125
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT2",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0958082675933838,
+                "text_len": 34,
+                "title_case_ratio": 1.0,
+                "word_count": 4
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "SI-15 INFORMATION OUTPUT FILTERING"
+            },
+            "is_bold": true,
+            "text": "SI-15 INFORMATION OUTPUT FILTERING"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "SI-15 INFORMATION OUTPUT FILTERING",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.5748225896045415,
+            0.8444405350030637,
+            0.6226651740796638
+          ],
+          "font_name": "TT0",
+          "font_size": 10.267499923706055,
+          "id": "actual:p382:block:16",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              126.0,
+              301.9754333496094,
+              393.04217529296875,
+              36.48455810546875
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.267499923706055,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control:  Validate information output from the following software programs and/or applications to ensure that the information is consistent with the expected content: [Assignment: organization-defined software programs and/or applications]."
+          },
+          "source_type": "Body",
+          "text": "Control: Validate information output from the following software programs and/or applications to ensure that the information is consistent with the expected content: [Assignment: organization-defined software programs and/or applications].",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.6286104760988794,
+            0.8415745753867954,
+            0.7072972769689079
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p382:block:17",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              126.0,
+              234.94677734375,
+              391.3431396484375,
+              58.933197021484375
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Certain types of attacks, including SQL injections, produce output results that are unexpected or inconsistent with the output results that would be expected from software programs or applications. Information output filtering focuses on detecting extraneous content, preventing such extraneous content from being displayed, and then alerting monitoring tools that anomalous behavior has been discovered."
+          },
+          "source_type": "Body",
+          "text": "Discussion: Certain types of attacks, including SQL injections, produce output results that are unexpected or inconsistent with the output results that would be expected from software programs or applications. Information output filtering focuses on detecting extraneous content, preventing such extraneous content from being displayed, and then alerting monitoring tools that anomalous behavior has been discovered.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.7133073903093434,
+            0.43079256543926164,
+            0.7302350901594066
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020002365112305,
+          "id": "actual:p382:block:18",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              126.0,
+              216.77999877929688,
+              139.84945678710938,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020002365112305,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Related Controls:  SI-3, SI-4, SI-11."
+          },
+          "source_type": "Body",
+          "text": "Related Controls: SI-3, SI-4, SI-11.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.7363377580739031,
+            0.40904931461109834,
+            0.7532654579239663
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p382:block:19",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              126.0,
+              198.5399932861328,
+              126.59269714355469,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control Enhancements:  None."
+          },
+          "semantic_role": "nist_control_enhancements_none",
+          "source_type": "Body",
+          "text": "Control Enhancements: None.",
+          "type": "labeled_enhancements"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.7592922942806976,
+            0.33167099796868615,
+            0.7762199941307607
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p382:block:20",
+          "is_bold": true,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              126.0,
+              180.36000061035156,
+              79.17803955078125,
+              10.020004272460938
+            ],
+            "block_type": "Body",
+            "confidence": 0.10000000149011612,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.10000000149011612,
+              "depth_level": 0,
+              "disposition": "Reject",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": true,
+                "font_size": 10.020000457763672,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": false,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0,
+                "text_len": 18,
+                "title_case_ratio": 1.0,
+                "word_count": 2
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like",
+                "sentence_negative"
+              ],
+              "title_text": "References:  None."
+            },
+            "is_bold": true,
+            "text": "References:  None."
+          },
+          "semantic_role": "reference_lead",
+          "source_type": "Body",
+          "text": "References: None.",
+          "type": "reference"
+        },
+        {
+          "bbox": [
+            0.14705882352941177,
+            0.789686569059738,
+            0.3784947114832261,
+            0.8089292892301926
+          ],
+          "font_name": "TT2",
+          "font_size": 10.979999542236328,
+          "id": "actual:p382:block:21",
+          "is_bold": true,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              90.0,
+              155.16000366210938,
+              144.14663696289062,
+              10.979995727539062
+            ],
+            "block_type": "Body",
+            "confidence": 0.44999998807907104,
+            "font_name": "TT2",
+            "font_size": 10.979999542236328,
+            "header_level": null,
+            "header_validation": {
+              "confidence": 0.44999998807907104,
+              "depth_level": 0,
+              "disposition": "Escalate",
+              "features": {
+                "ends_with_colon": false,
+                "ends_with_other_punct": false,
+                "ends_with_period": false,
+                "font_size": 10.979999542236328,
+                "has_bullet_char": false,
+                "has_formal_prefix": false,
+                "has_number_prefix": false,
+                "has_parentheses": false,
+                "is_all_caps": true,
+                "is_bold": true,
+                "is_caption_pattern": false,
+                "is_multi_sentence": false,
+                "is_too_long": false,
+                "numbering_depth": 0,
+                "size_ratio": 1.0958082675933838,
+                "text_len": 23,
+                "title_case_ratio": 1.0,
+                "word_count": 3
+              },
+              "has_numbering": false,
+              "is_header": false,
+              "level": null,
+              "number_text": "",
+              "reasons": [
+                "title_case_like"
+              ],
+              "title_text": "SI-16 MEMORY PROTECTION"
+            },
+            "is_bold": true,
+            "text": "SI-16 MEMORY PROTECTION"
+          },
+          "semantic_role": "nist_control_heading",
+          "source_type": "Body",
+          "text": "SI-16 MEMORY PROTECTION",
+          "type": "section_heading"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.8143680456912878,
+            0.8236826977698631,
+            0.8467502786655619
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p382:block:22",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              126.0,
+              124.5,
+              380.3983459472656,
+              22.260009765625
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Control:  Implement the following controls to protect the system memory from unauthorized code execution: [Assignment: organization-defined controls]."
+          },
+          "source_type": "Body",
+          "text": "Control: Implement the following controls to protect the system memory from unauthorized code execution: [Assignment: organization-defined controls].",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.20588235294117646,
+            0.8527013605291193,
+            0.8500112895092933,
+            0.9004678437204072
+          ],
+          "font_name": "TT0",
+          "font_size": 10.020000457763672,
+          "id": "actual:p382:block:23",
+          "is_bold": false,
+          "page": 382,
+          "pdf_page_index": 381,
+          "raw": {
+            "bbox": [
+              126.0,
+              81.95568084716797,
+              396.46136474609375,
+              34.444313049316406
+            ],
+            "block_type": "Body",
+            "confidence": 0.8999999761581421,
+            "font_name": "TT0",
+            "font_size": 10.020000457763672,
+            "header_level": null,
+            "is_bold": false,
+            "text": "Discussion:  Some adversaries launch attacks with the intent of executing code in non-executable regions of memory or in memory locations that are prohibited. Controls employed to protect memory include data execution prevention and address space layout randomization. Data"
+          },
+          "source_type": "Body",
+          "text": "Discussion: Some adversaries launch attacks with the intent of executing code in non-executable regions of memory or in memory locations that are prohibited. Controls employed to protect memory include data execution prevention and address space layout randomization. Data",
+          "type": "paragraph_block"
+        }
+      ],
+      "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+      "page": 382,
+      "page_dimensions_pts": [
+        612.0,
+        792.0
+      ],
+      "pdf_page_index": 381
+    }
+  ],
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "schema": "pdf_lab.current_extraction_snapshot.v1"
+}

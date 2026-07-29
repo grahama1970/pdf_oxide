@@ -1,0 +1,30 @@
+{
+  "commands": [
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/page382_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/current_evidence --page-timeout-seconds 90",
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/page382_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/current_evidence --page-timeout-seconds 90"
+  ],
+  "current_evidence_commit": "60547491451b31ec7b2fd2bddf3f273b6c5f085b",
+  "current_evidence_generated_at": "2026-07-29T21:08:38.202407+00:00",
+  "current_evidence_out": "artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/current_evidence",
+  "entries": [
+    {
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/current_evidence/pages/page_0382/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/current_evidence/pages/page_0382/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/current_evidence/pages/page_0382/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Keep the split child labels/text but assign child bboxes from the matching visible text lines.",
+      "extraction_defect": "Synthetic Discussion and Related Controls children created by the NIST field split rule should not inherit broad parent slices when matched line bboxes are available.",
+      "finding_id": "p382_field_split_child_bbox_accuracy",
+      "page": 382,
+      "patch_hint": "Use the line-backed field_split_rule bbox strategy introduced for page399 and prove it generalizes to page382."
+    }
+  ],
+  "pages": [
+    382
+  ],
+  "schema": "pdf_oxide.nist_historical_finding_reconciliation.v1"
+}

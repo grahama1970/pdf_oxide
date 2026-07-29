@@ -1,0 +1,49 @@
+{
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defects.v1",
+  "page": 382,
+  "evidence": {
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/current_evidence/pages/page_0382/page.png",
+    "overlay_image": "artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/current_evidence/pages/page_0382/bbox_overlay_current.png",
+    "extraction_json": "artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/current_evidence/pages/page_0382/release_extraction_blocks.json"
+  },
+  "checks": [
+    {
+      "id": "page382-nonpersistence-discussion-child-bbox",
+      "defect_class": "REGION_BBOX_MISMATCH",
+      "page": 382,
+      "block_id": "actual:p382:block:4#discussion",
+      "region_bbox": [
+        0.23529411764705882,
+        0.124519579338,
+        0.848107032527,
+        0.156901841212
+      ],
+      "actual_label": "paragraph_block",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "text": "Discussion: Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities.",
+      "owner": "pdf_oxide_core",
+      "evidence_reason": "The synthetic field-split child has the right text and label, but its bbox must cover only the visible Discussion lines instead of a proportional parent slice.",
+      "proof_command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page382_field_split_child_bbox_defects.json"
+    },
+    {
+      "id": "page382-nonpersistence-related-controls-child-bbox",
+      "defect_class": "REGION_BBOX_MISMATCH",
+      "page": 382,
+      "block_id": "actual:p382:block:4#related_controls",
+      "region_bbox": [
+        0.23529411764705882,
+        0.159216524375,
+        0.401066200406,
+        0.176144243491
+      ],
+      "actual_label": "paragraph_block",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "text": "Related Controls: None.",
+      "owner": "pdf_oxide_core",
+      "evidence_reason": "The synthetic field-split child has the right text and label, but its bbox must use the visible Related Controls line instead of inheriting the full parent x-span.",
+      "proof_command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page382_field_split_child_bbox_defects.json"
+    }
+  ]
+}

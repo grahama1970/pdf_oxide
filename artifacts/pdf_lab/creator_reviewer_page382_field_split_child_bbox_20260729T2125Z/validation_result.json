@@ -1,0 +1,87 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page382_field_split_child_bbox_defects.json",
+  "checks": [
+    {
+      "actual_label": "paragraph_block",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.12451957933830493,
+            0.8444396374272365,
+            0.15690184121180062
+          ],
+          "id": "actual:p382:block:4#discussion",
+          "iou": 0.9940154735316429,
+          "matches_expected_bbox": true,
+          "matches_expected_label": true,
+          "source_type": "Body",
+          "text": "Discussion: Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities.",
+          "type": "paragraph_block"
+        }
+      ],
+      "defect_class": "REGION_BBOX_MISMATCH",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "id": "page382-nonpersistence-discussion-child-bbox",
+      "matching_bbox_count": 1,
+      "status": "PASS",
+      "text": "Discussion: Trusted sources include software and data from write-once, read-only media or from selected offline secure storage facilities."
+    },
+    {
+      "actual_label": "paragraph_block",
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.15921652437460543,
+            0.3974756727031633,
+            0.17614424349081637
+          ],
+          "id": "actual:p382:block:4#related_controls",
+          "iou": 0.978340576721138,
+          "matches_expected_bbox": true,
+          "matches_expected_label": true,
+          "source_type": "Body",
+          "text": "Related Controls: None.",
+          "type": "paragraph_block"
+        },
+        {
+          "bbox": [
+            0.23529411764705882,
+            0.35300437850181504,
+            0.3974756727031633,
+            0.36993211688417377
+          ],
+          "id": "actual:p382:block:9",
+          "iou": 0.0,
+          "matches_expected_bbox": false,
+          "matches_expected_label": true,
+          "source_type": "Body",
+          "text": "Related Controls: None.",
+          "type": "paragraph_block"
+        }
+      ],
+      "defect_class": "REGION_BBOX_MISMATCH",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "id": "page382-nonpersistence-related-controls-child-bbox",
+      "matching_bbox_count": 1,
+      "status": "PASS",
+      "text": "Related Controls: None."
+    }
+  ],
+  "created_at": "2026-07-29T21:08:42.789490+00:00",
+  "errors": [],
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/current_evidence/pages/page_0382/release_extraction_blocks.json",
+  "page": 382,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "PASS",
+  "summary": {
+    "check_count": 2,
+    "failed": 0,
+    "passed": 2
+  }
+}
