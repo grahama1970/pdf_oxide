@@ -2280,6 +2280,8 @@ dependencies = [
     { name = "pymupdf", version = "1.24.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
     { name = "pymupdf", version = "1.26.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
     { name = "pymupdf", version = "1.26.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+    { name = "reportlab", version = "4.4.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
+    { name = "reportlab", version = "5.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
 ]
 
 [package.optional-dependencies]
@@ -2360,6 +2362,7 @@ test = [
 requires-dist = [
     { name = "onnxruntime", marker = "extra == 'ocr'", specifier = ">=1.20.1" },
     { name = "pymupdf", specifier = ">=1.24.11" },
+    { name = "reportlab", specifier = ">=4.0.0" },
 ]
 provides-extras = ["ocr"]
 
@@ -3708,6 +3711,42 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/90/54/4987210bc0d139d90b579fbbdaafca2d4acee9c413843d6c1c8ac0dd56bf/regex-2025.11.3-cp39-cp39-win32.whl", hash = "sha256:74d04244852ff73b32eeede4f76f51c5bcf44bc3c207bc3e6cf1c5c45b890708", size = 265836, upload-time = "2025-11-03T21:34:15.556Z" },
     { url = "https://files.pythonhosted.org/packages/ab/68/0a3a1bf596db98c369d0f10242b006f4a928633e001906889f80c9b4b639/regex-2025.11.3-cp39-cp39-win_amd64.whl", hash = "sha256:7a50cd39f73faa34ec18d6720ee25ef10c4c1839514186fcda658a06c06057a2", size = 277807, upload-time = "2025-11-03T21:34:17.502Z" },
     { url = "https://files.pythonhosted.org/packages/7c/98/4ed5b608130249810977b030b86abfc7fcd19b31aa75060d8ad11003826d/regex-2025.11.3-cp39-cp39-win_arm64.whl", hash = "sha256:43b4fb020e779ca81c1b5255015fe2b82816c76ec982354534ad9ec09ad7c9e3", size = 270328, upload-time = "2025-11-03T21:34:19.783Z" },
+]
+
+[[package]]
+name = "reportlab"
+version = "4.4.3"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.9'",
+]
+dependencies = [
+    { name = "charset-normalizer", marker = "python_full_version < '3.9'" },
+    { name = "pillow", version = "10.4.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2f/83/3d44b873fa71ddc7d323c577fe4cfb61e05b34d14e64b6a232f9cfbff89d/reportlab-4.4.3.tar.gz", hash = "sha256:073b0975dab69536acd3251858e6b0524ed3e087e71f1d0d1895acb50acf9c7b", size = 3887532, upload-time = "2025-07-23T11:18:23.799Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/52/c8/aaf4e08679e7b1dc896ad30de0d0527f0fd55582c2e6deee4f2cc899bf9f/reportlab-4.4.3-py3-none-any.whl", hash = "sha256:df905dc5ec5ddaae91fc9cb3371af863311271d555236410954961c5ee6ee1b5", size = 1953896, upload-time = "2025-07-23T11:18:20.572Z" },
+]
+
+[[package]]
+name = "reportlab"
+version = "5.0.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12'",
+    "python_full_version == '3.11.*'",
+    "python_full_version == '3.10.*'",
+    "python_full_version == '3.9.*'",
+]
+dependencies = [
+    { name = "charset-normalizer", marker = "python_full_version >= '3.9'" },
+    { name = "pillow", version = "11.3.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
+    { name = "pillow", version = "12.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/41/d6/4b7b0cf56880eb96533e607967be6a939e344675601e033d113a0bfa1f4e/reportlab-5.0.0.tar.gz", hash = "sha256:e4494a0c6623ae213bb856fba523171b2b54a7bf629fda02d5e525a7b899a784", size = 3701928, upload-time = "2026-06-18T11:34:31.145Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a3/07/70085c17a369605f15e301d10ab902115019b1126c7253d964afc230c7d6/reportlab-5.0.0-py3-none-any.whl", hash = "sha256:9d5a3affa84919e1111ede580031266a570e93b1ce388219621347965ff1d93c", size = 1956710, upload-time = "2026-06-18T11:34:29.07Z" },
 ]
 
 [[package]]
