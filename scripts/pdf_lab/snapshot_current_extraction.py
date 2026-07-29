@@ -670,7 +670,7 @@ def _bbox_values(bbox: Any) -> list[float]:
 def _clean_table_cell(value: Any) -> str:
     if value is None:
         return ""
-    return " ".join(str(value).split())
+    return _normalize_bracketed_citation_wraps(" ".join(str(value).split()))
 
 
 _QID_MARKER_RE = re.compile(r"\[QID_[^\]]+\]", re.IGNORECASE)

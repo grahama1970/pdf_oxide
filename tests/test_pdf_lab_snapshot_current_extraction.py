@@ -211,6 +211,26 @@ def test_block_elements_remove_space_inside_wrapped_bracketed_citation() -> None
     assert "[OMB A- 130]" not in elements[0]["text"]
 
 
+def test_table_text_remove_space_inside_wrapped_bracketed_citation() -> None:
+    mod = _load_module()
+    table = {
+        "data": [
+            ["DATE", "TYPE", "REVISION", "PAGE"],
+            [
+                "12-10-2020",
+                "Editorial",
+                "Section 1.4: Delete text included in [OMB A- 130].",
+                "5",
+            ],
+        ],
+    }
+
+    text = mod._table_text(table)
+
+    assert "[OMB A-130]" in text
+    assert "[OMB A- 130]" not in text
+
+
 def test_merge_footnote_continuation_lines_into_numbered_note() -> None:
     mod = _load_module()
     elements = [

@@ -1,0 +1,33 @@
+{
+  "artifacts": [
+    "artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/current_evidence/manifest.json",
+    "artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/current_evidence/extraction_debug.log"
+  ],
+  "blocked_page_count": 0,
+  "command": "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/page19_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/current_evidence --page-timeout-seconds 90",
+  "commit": "337116fefb381b9215f348df0bfc2cf132c62420",
+  "created_at": "2026-07-29T18:06:32.848717+00:00",
+  "ledger": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "materialized_page_count": 1,
+  "page_count": 1,
+  "pages": [
+    {
+      "artifact_dir": "artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/current_evidence/pages/page_0019",
+      "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/current_evidence/pages/page_0019/bbox_overlay_current.png",
+      "block_count": 7,
+      "counts": {
+        "header_footer_noise": 4,
+        "paragraph_block": 1,
+        "section_heading": 1,
+        "table": 1
+      },
+      "page": 19,
+      "page_image": "artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/current_evidence/pages/page_0019/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/current_evidence/pages/page_0019/release_extraction_blocks.json",
+      "status": "materialized"
+    }
+  ],
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "reconciliation": "artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/page19_reconciliation.json",
+  "schema": "pdf_oxide.nist_historical_current_evidence.v1"
+}
