@@ -1,0 +1,82 @@
+{
+  "actually_exercised": "deterministic local PDF snapshot from the real NIST PDF, PyMuPDF line evidence fallback, creator-reviewer defect validator, focused pytest regressions, py_compile, ruff check, and ruff format-check",
+  "claim": "page30 body paragraph preserves the hyphenated phrase organization-wide and the following risk word boundary",
+  "commit_at_receipt": "301ac39a803076f71de10a13126c6339e9cf872f",
+  "created_at": "2026-07-29T17:39:50.590062+00:00",
+  "defect_class": "TEXT_CONTENT_MISMATCH",
+  "does_not_prove": "the full all-candidates immutable goal, external Ask/browser reviewer behavior, or every remaining historical unverified finding",
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/release_extraction_blocks.json",
+  "failing_regression": {
+    "artifact": "artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/failing_regression.stdout.txt",
+    "exit_code_file": "artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/failing_regression.exit_code.txt",
+    "signature": "page30 TEXT_CONTENT_MISMATCH expected PASS but current extraction returned FAIL because block 4 contained organization- widerisk instead of organization-wide risk"
+  },
+  "ledger": "/home/graham/workspace/experiments/pdf_oxide/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "ledger_sha256": "639ba5f437827ad8a996635b725774c3a51fb273336c1f0550ad5f59450d6ef1",
+  "live": false,
+  "mocked": false,
+  "overlay_image": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/bbox_overlay_current.png",
+  "page": 30,
+  "page_image": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/page.png",
+  "pdf": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "pdf_sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+  "proof_commands": [
+    {
+      "command": "uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py::test_page30_current_extraction_satisfies_body_hyphen_word_join_contract -q",
+      "exit_code_before_patch": 1,
+      "live": false,
+      "mocked": false,
+      "proves": "focused executable defect check failed before the repair on the current bad extraction"
+    },
+    {
+      "command": "uv run python scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/page30_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence --page-timeout-seconds 90",
+      "exit_code": 0,
+      "live": false,
+      "mocked": false,
+      "proves": "fresh repaired page30 image, overlay, and extraction artifacts materialized from the local NIST PDF",
+      "stdout_summary": "blocked_page_count=0 materialized_page_count=1 pages=[30]"
+    },
+    {
+      "command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page30_body_hyphen_word_join_defects.json --out artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/validation_result.json",
+      "exit_code": 0,
+      "live": false,
+      "mocked": false,
+      "proves": "creator-reviewer text mismatch contract passes against repaired page30 extraction",
+      "stdout_summary": "PASS check_count=1 passed=1 failed=0"
+    },
+    {
+      "command": "python3 -m py_compile scripts/pdf_lab/snapshot_current_extraction.py scripts/pdf_lab/validate_creator_reviewer_defects.py",
+      "exit_code": 0,
+      "live": false,
+      "mocked": false,
+      "proves": "touched Python scripts parse"
+    },
+    {
+      "command": "uv run pytest tests/test_pdf_lab_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_nist_page456_control_table_headers.py tests/test_nist_top_header_chrome_preset.py tests/test_nist_ruled_table_materialization.py -q",
+      "exit_code": 0,
+      "live": false,
+      "mocked": false,
+      "proves": "focused creator-reviewer, snapshot, page456, header chrome, and NIST table materialization regressions pass",
+      "stdout_summary": "40 passed in 1.86s"
+    },
+    {
+      "command": "uv run ruff check scripts/pdf_lab/snapshot_current_extraction.py scripts/pdf_lab/validate_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_pdf_lab_creator_reviewer_defects.py",
+      "exit_code": 0,
+      "live": false,
+      "mocked": false,
+      "proves": "touched Python files pass lint",
+      "stdout_summary": "All checks passed!"
+    },
+    {
+      "command": "uv run ruff format --check scripts/pdf_lab/snapshot_current_extraction.py scripts/pdf_lab/validate_creator_reviewer_defects.py tests/test_pdf_lab_snapshot_current_extraction.py tests/test_pdf_lab_creator_reviewer_defects.py",
+      "exit_code": 0,
+      "live": false,
+      "mocked": false,
+      "proves": "touched Python files pass formatter check",
+      "stdout_summary": "4 files already formatted"
+    }
+  ],
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_repair_receipt.v1",
+  "updated_at": "2026-07-29T17:40:40.359428+00:00",
+  "validation_result": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/validation_result.json"
+}

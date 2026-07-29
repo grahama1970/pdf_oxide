@@ -486,3 +486,42 @@ def test_rotated_margin_line_consolidates_when_rust_text_has_wrap_space() -> Non
     assert elements[0]["type"] == "header_footer_noise"
     assert elements[0]["bbox"] == [0.029, 0.288, 0.050, 0.741]
     assert elements[0]["bbox"][2] <= 0.07
+
+
+def test_block_elements_repairs_body_text_when_only_spacing_differs() -> None:
+    mod = _load_module()
+    text_lines = [
+        {
+            "text": "Finally, the controls are independent of the process employed to select those controls. The",
+            "bbox": [0.147, 0.090, 0.832, 0.109],
+        },
+        {
+            "text": "control selection process can be part of an organization-wide risk management process, a",
+            "bbox": [0.147, 0.107, 0.801, 0.125],
+        },
+    ]
+    block = {
+        "block_type": "Body",
+        "text": (
+            "Finally, the controls are independent of the process employed to select those controls. "
+            "The control selection process can be part of an organization- widerisk management process, a"
+        ),
+        "bbox": [90.0, 693.0, 420.0, 28.0],
+        "font_size": 10.98,
+        "font_name": "TT0",
+        "is_bold": False,
+    }
+
+    elements = mod._block_elements(
+        block=block,
+        block_index=4,
+        page_index=29,
+        page_w=612.0,
+        page_h=792.0,
+        text_lines=text_lines,
+    )
+
+    assert len(elements) == 1
+    assert elements[0]["id"] == "actual:p30:block:4"
+    assert "organization-wide risk management process" in elements[0]["text"]
+    assert "organization- widerisk management process" not in elements[0]["text"]

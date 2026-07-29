@@ -15,6 +15,7 @@ RESULT_SCHEMA = "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1"
 SUPPORTED_DEFECT_CLASSES = {
     "REGION_LABEL_MISMATCH",
     "REGION_BBOX_MISMATCH",
+    "TEXT_CONTENT_MISMATCH",
     "TABLE_CELL_TOP_LEVEL_LEAK",
 }
 SUPPORTED_EXPECTED_STATES = {"absent_top_level", "present"}
@@ -149,6 +150,9 @@ def validate_bundle_shape(bundle: dict[str, Any]) -> list[str]:
         for key in ("id", "actual_label", "expected_label", "text", "proof_command"):
             if not isinstance(check.get(key), str) or not check[key].strip():
                 errors.append(f"{prefix}.{key} must be a non-empty string")
+        for key in ("expected_text", "forbidden_text"):
+            if key in check and (not isinstance(check.get(key), str) or not check[key].strip()):
+                errors.append(f"{prefix}.{key} must be a non-empty string")
         block_id = check.get("block_id")
         if block_id is not None and not isinstance(block_id, str):
             errors.append(f"{prefix}.block_id must be a string or null")
@@ -282,6 +286,48 @@ def block_candidates_for_region_bbox_mismatch(
     return candidates
 
 
+def block_candidates_for_text_content_mismatch(
+    extraction: dict[str, Any],
+    check: dict[str, Any],
+) -> list[dict[str, Any]]:
+    blocks = extraction.get("blocks") or extraction.get("elements") or []
+    if not isinstance(blocks, list):
+        return []
+
+    text = normalize_text(check.get("text"))
+    expected_text = normalize_text(check.get("expected_text") or text)
+    forbidden_text = normalize_text(check.get("forbidden_text"))
+    block_id = check.get("block_id")
+    region_bbox = check["region_bbox"]
+
+    candidates: list[dict[str, Any]] = []
+    for block in blocks:
+        block_bbox = block.get("bbox")
+        if not is_bbox(block_bbox):
+            continue
+        block_text = normalize_text(block.get("text"))
+        id_match = block_id is not None and block.get("id") == block_id
+        text_match = bool(text) and (text in block_text or block_text in text)
+        if not id_match and not text_match:
+            continue
+        if not bbox_matches_region(block_bbox, region_bbox):
+            continue
+        candidates.append(
+            {
+                "id": block.get("id"),
+                "type": block.get("type"),
+                "source_type": block.get("source_type"),
+                "text": block_text,
+                "bbox": block_bbox,
+                "iou": bbox_iou(block_bbox, region_bbox),
+                "matches_expected_label": block.get("type") == check["expected_label"],
+                "contains_expected_text": bool(expected_text) and expected_text in block_text,
+                "contains_forbidden_text": bool(forbidden_text) and forbidden_text in block_text,
+            }
+        )
+    return candidates
+
+
 def evaluate_check(extraction: dict[str, Any], check: dict[str, Any]) -> dict[str, Any]:
     if check["defect_class"] == "REGION_LABEL_MISMATCH":
         candidates = block_candidates_for_region_label_mismatch(extraction, check)
@@ -322,6 +368,32 @@ def evaluate_check(extraction: dict[str, Any], check: dict[str, Any]) -> dict[st
             "text": check["text"],
             "candidate_count": len(candidates),
             "matching_bbox_count": len(bbox_matches),
+            "candidates": candidates,
+        }
+
+    if check["defect_class"] == "TEXT_CONTENT_MISMATCH":
+        candidates = block_candidates_for_text_content_mismatch(extraction, check)
+        expected_state = check["expected_state"]
+        text_matches = [
+            candidate
+            for candidate in candidates
+            if candidate["matches_expected_label"]
+            and candidate["contains_expected_text"]
+            and not candidate["contains_forbidden_text"]
+        ]
+        passed = bool(text_matches) if expected_state == "present" else not text_matches
+        return {
+            "id": check["id"],
+            "defect_class": check["defect_class"],
+            "status": "PASS" if passed else "FAIL",
+            "expected_state": expected_state,
+            "actual_label": check["actual_label"],
+            "expected_label": check["expected_label"],
+            "text": check["text"],
+            "expected_text": check.get("expected_text"),
+            "forbidden_text": check.get("forbidden_text"),
+            "candidate_count": len(candidates),
+            "matching_text_count": len(text_matches),
             "candidates": candidates,
         }
 

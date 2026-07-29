@@ -1,0 +1,17 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___ test_page30_current_extraction_satisfies_body_hyphen_word_join_contract ____
+
+    def test_page30_current_extraction_satisfies_body_hyphen_word_join_contract():
+        result = validator.validate(PAGE30_TEXT_FIXTURE, PAGE30_TEXT_EXTRACTION)
+    
+>       assert result["status"] == "PASS"
+E       AssertionError: assert 'FAIL' == 'PASS'
+E         
+E         - PASS
+E         + FAIL
+
+tests/test_pdf_lab_creator_reviewer_defects.py:109: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_pdf_lab_creator_reviewer_defects.py::test_page30_current_extraction_satisfies_body_hyphen_word_join_contract
+1 failed in 0.06s

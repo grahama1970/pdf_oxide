@@ -8,6 +8,7 @@ VALIDATOR_PATH = REPO / "scripts/pdf_lab/validate_creator_reviewer_defects.py"
 FIXTURE = REPO / "tests/fixtures/pdf_lab/page456_creator_reviewer_defects.json"
 PAGE27_FIXTURE = REPO / "tests/fixtures/pdf_lab/page27_creator_reviewer_defects.json"
 PAGE30_FIXTURE = REPO / "tests/fixtures/pdf_lab/page30_creator_reviewer_defects.json"
+PAGE30_TEXT_FIXTURE = REPO / "tests/fixtures/pdf_lab/page30_body_hyphen_word_join_defects.json"
 EXTRACTION = (
     REPO
     / "artifacts/pdf_lab/page456_control_table_header/runs/page456-control-table-header-after-cellbbox-20260726T130204Z/extraction.pdf_oxide.json"
@@ -19,6 +20,10 @@ PAGE27_EXTRACTION = (
 PAGE30_EXTRACTION = (
     REPO
     / "artifacts/pdf_lab/creator_reviewer_page30_rotated_side_chrome_bbox_repair_20260729T171712Z/extraction.pdf_oxide.json"
+)
+PAGE30_TEXT_EXTRACTION = (
+    REPO
+    / "artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/release_extraction_blocks.json"
 )
 SCHEMA_PATH = REPO / "schemas/pdf_lab/creator_reviewer_defects.schema.json"
 
@@ -39,6 +44,7 @@ def test_creator_reviewer_defect_schema_names_required_contract():
     check_props = schema["properties"]["checks"]["items"]["properties"]
     assert "REGION_LABEL_MISMATCH" in check_props["defect_class"]["enum"]
     assert "REGION_BBOX_MISMATCH" in check_props["defect_class"]["enum"]
+    assert "TEXT_CONTENT_MISMATCH" in check_props["defect_class"]["enum"]
     assert "TABLE_CELL_TOP_LEVEL_LEAK" in check_props["defect_class"]["enum"]
     assert check_props["expected_state"]["enum"] == ["absent_top_level", "present"]
     for required in [
@@ -93,6 +99,43 @@ def test_page30_bundle_evidence_path_resolves_from_repo_root():
 
     assert result["status"] == "PASS"
     assert result["extraction_json"] == str(PAGE30_EXTRACTION)
+
+
+def test_page30_current_extraction_satisfies_body_hyphen_word_join_contract():
+    result = validator.validate(PAGE30_TEXT_FIXTURE, PAGE30_TEXT_EXTRACTION)
+
+    assert result["status"] == "PASS"
+    assert result["summary"] == {"check_count": 1, "passed": 1, "failed": 0}
+    check = result["checks"][0]
+    assert check["id"] == "page30-body-organization-wide-risk-spacing"
+    assert check["candidate_count"] == 1
+    assert check["matching_text_count"] == 1
+    assert check["candidates"][0]["contains_expected_text"] is True
+    assert check["candidates"][0]["contains_forbidden_text"] is False
+
+
+def test_page30_validator_fails_if_body_hyphen_word_join_is_corrupted(tmp_path):
+    extraction = json.loads(PAGE30_TEXT_EXTRACTION.read_text())
+    mutated = False
+    for block in extraction["blocks"]:
+        if block.get("id") == "actual:p30:block:4":
+            block["text"] = str(block["text"]).replace(
+                "organization-wide risk management process",
+                "organization- widerisk management process",
+            )
+            mutated = True
+            break
+    assert mutated
+    corrupted_path = tmp_path / "page30_corrupted_body_text.json"
+    corrupted_path.write_text(json.dumps(extraction), encoding="utf-8")
+
+    result = validator.validate(PAGE30_TEXT_FIXTURE, corrupted_path)
+
+    assert result["status"] == "FAIL"
+    failed = [check for check in result["checks"] if check["status"] == "FAIL"]
+    assert [check["id"] for check in failed] == ["page30-body-organization-wide-risk-spacing"]
+    assert failed[0]["matching_text_count"] == 0
+    assert failed[0]["candidates"][0]["contains_forbidden_text"] is True
 
 
 def test_page30_validator_fails_if_rotated_side_chrome_bbox_overlaps_body(tmp_path):

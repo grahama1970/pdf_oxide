@@ -1,0 +1,32 @@
+{
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defects.v1",
+  "page": 30,
+  "evidence": {
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/page.png",
+    "overlay_image": "artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/bbox_overlay_current.png",
+    "extraction_json": "artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/release_extraction_blocks.json"
+  },
+  "checks": [
+    {
+      "id": "page30-body-organization-wide-risk-spacing",
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "page": 30,
+      "block_id": "actual:p30:block:4",
+      "region_bbox": [
+        0.14700491911445568,
+        0.09030305496369949,
+        0.843318266027114,
+        0.2567458489928583
+      ],
+      "actual_label": "paragraph_block",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "text": "The control selection process can be part of an organization-wide risk management process",
+      "expected_text": "organization-wide risk management process",
+      "forbidden_text": "organization- widerisk management process",
+      "owner": "pdf_oxide_core",
+      "evidence_reason": "PyMuPDF line evidence for the same body region contains organization-wide risk, while the current extraction corrupts the hyphenated compound and following word boundary.",
+      "proof_command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page30_body_hyphen_word_join_defects.json"
+    }
+  ]
+}

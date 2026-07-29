@@ -1,0 +1,29 @@
+{
+  "commands": [
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/page30_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence --page-timeout-seconds 90"
+  ],
+  "current_evidence_commit": "301ac39a803076f71de10a13126c6339e9cf872f",
+  "current_evidence_generated_at": "2026-07-29T17:38:20.478005+00:00",
+  "current_evidence_out": "artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence",
+  "entries": [
+    {
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Keep as paragraph_block, but repair inline token spacing around intra-word hyphens and following word boundaries.",
+      "extraction_defect": "Current extraction renders organization-wide risk as organization- widerisk.",
+      "finding_id": "p30_body_hyphen_word_join",
+      "page": 30,
+      "patch_hint": "Use overlapping PyMuPDF text-line evidence when alphanumeric content is identical and only spacing/punctuation boundaries differ."
+    }
+  ],
+  "pages": [
+    30
+  ],
+  "schema": "pdf_oxide.nist_historical_finding_reconciliation.v1"
+}

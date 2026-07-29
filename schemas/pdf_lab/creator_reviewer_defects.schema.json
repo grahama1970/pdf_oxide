@@ -59,6 +59,7 @@
             "enum": [
               "REGION_LABEL_MISMATCH",
               "REGION_BBOX_MISMATCH",
+              "TEXT_CONTENT_MISMATCH",
               "TABLE_CELL_TOP_LEVEL_LEAK"
             ]
           },
@@ -85,6 +86,8 @@
             ]
           },
           "text": {"type": "string", "minLength": 1},
+          "expected_text": {"type": "string", "minLength": 1},
+          "forbidden_text": {"type": "string", "minLength": 1},
           "owner": {
             "type": "string",
             "enum": [

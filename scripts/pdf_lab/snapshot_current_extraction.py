@@ -305,6 +305,25 @@ def _footnote_text_from_lines(
     return repaired or block_text, overlapping
 
 
+def _compact_text_for_spacing_repair(text: str) -> str:
+    return re.sub(r"[^0-9A-Za-z]+", "", text).lower()
+
+
+def _text_from_overlapping_lines_if_only_spacing_differs(
+    block_text: str, block_bbox: list[float], text_lines: list[dict[str, Any]]
+) -> tuple[str, list[dict[str, Any]]]:
+    overlapping = _overlapping_text_lines(block_bbox, text_lines)
+    if not overlapping:
+        return block_text, []
+
+    repaired = _normalize_text(" ".join(str(line.get("text") or "") for line in overlapping))
+    if not repaired:
+        return block_text, []
+    if _compact_text_for_spacing_repair(block_text) != _compact_text_for_spacing_repair(repaired):
+        return block_text, []
+    return repaired, overlapping
+
+
 def _should_split_block(block_bbox: list[float], matched_lines: list[dict[str, Any]]) -> bool:
     if len(matched_lines) <= 1:
         return False
@@ -339,6 +358,12 @@ def _block_elements(
         text = _normalize_bracketed_citation_wraps(text)
     else:
         matched_lines = _match_text_lines(text, text_lines, original_block_bbox)
+        if not matched_lines:
+            text, matched_lines = _text_from_overlapping_lines_if_only_spacing_differs(
+                text,
+                original_block_bbox,
+                text_lines,
+            )
     if matched_lines:
         block_bbox = _bbox_union([line["bbox"] for line in matched_lines])
 
