@@ -1,0 +1,32 @@
+{
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defects.v1",
+  "page": 23,
+  "evidence": {
+    "page_image": "artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/current_evidence/pages/page_0023/page.png",
+    "overlay_image": "artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/current_evidence/pages/page_0023/bbox_overlay_current.png",
+    "extraction_json": "artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/current_evidence/pages/page_0023/release_extraction_blocks.json"
+  },
+  "checks": [
+    {
+      "id": "page23-table-organization-defined-hyphen-wrap-spacing",
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "page": 23,
+      "block_id": "actual:p23:table:0",
+      "region_bbox": [
+        0.14666667015723933,
+        0.09151512685448232,
+        0.8525490355647467,
+        0.8793181795062441
+      ],
+      "actual_label": "table",
+      "expected_label": "table",
+      "expected_state": "present",
+      "text": "Control Enhancement PT-6(2)",
+      "expected_text": "[Assignment: organization-defined frequency]",
+      "forbidden_text": "[Assignment: organization- defined frequency]",
+      "owner": "pdf_oxide_core",
+      "evidence_reason": "PyMuPDF page text wraps the phrase after organization- and continues with defined frequency. The structured table serialization should dewrap the bracketed assignment as organization-defined rather than inserting a post-hyphen space.",
+      "proof_command": "uv run python scripts/pdf_lab/validate_creator_reviewer_defects.py --bundle tests/fixtures/pdf_lab/page23_table_hyphen_wrap_spacing_defects.json"
+    }
+  ]
+}

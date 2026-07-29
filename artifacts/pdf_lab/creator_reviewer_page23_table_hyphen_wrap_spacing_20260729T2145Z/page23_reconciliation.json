@@ -1,0 +1,30 @@
+{
+  "commands": [
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/page23_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/current_evidence --page-timeout-seconds 90",
+    "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/page23_reconciliation.json --out artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/current_evidence --page-timeout-seconds 90"
+  ],
+  "current_evidence_commit": "c8592591bb580dc5efa02d82d425e736223f00b5",
+  "current_evidence_generated_at": "2026-07-29T21:17:55.998627+00:00",
+  "current_evidence_out": "artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/current_evidence",
+  "entries": [
+    {
+      "current_evidence": [
+        {
+          "bbox_overlay": "artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/current_evidence/pages/page_0023/bbox_overlay_current.png",
+          "page_image": "artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/current_evidence/pages/page_0023/page.png",
+          "release_extraction_blocks": "artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/current_evidence/pages/page_0023/release_extraction_blocks.json"
+        }
+      ],
+      "current_status": "unverified",
+      "expected_type_or_action": "Keep the revision-history table structure, but dewrap intra-cell hyphen continuations without inserting a space.",
+      "extraction_defect": "The page23 revision-history table serializes the wrapped assignment phrase as organization- defined instead of organization-defined.",
+      "finding_id": "p23_table_organization_defined_hyphen_wrap_spacing",
+      "page": 23,
+      "patch_hint": "Reuse the generic table-cell hyphen-wrap cleaning added for page20 and prove it applies to bracketed assignment text."
+    }
+  ],
+  "pages": [
+    23
+  ],
+  "schema": "pdf_oxide.nist_historical_finding_reconciliation.v1"
+}

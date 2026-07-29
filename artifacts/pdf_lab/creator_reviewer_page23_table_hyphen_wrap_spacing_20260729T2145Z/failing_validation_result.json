@@ -1,0 +1,47 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page23_table_hyphen_wrap_spacing_defects.json",
+  "checks": [
+    {
+      "actual_label": "table",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.09151512685448232,
+            0.8525490355647467,
+            0.8793181795062441
+          ],
+          "contains_expected_text": true,
+          "contains_forbidden_text": true,
+          "id": "actual:p23:table:0",
+          "iou": 1.0,
+          "matches_expected_label": true,
+          "source_type": "table",
+          "text": "DATE | TYPE | REVISION | PAGE 12-10-2020 | Editorial | Control Enhancement PT-2(1): Change \u201cpermissible\u201d to \u201cauthorized\u201d | 230 12-10-2020 | Editorial | Control PT-2 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 231 12-10-2020 | Editorial | Control PT-3a.: Change \u201c[Assignment organization-defined purpose(s)]\u201d to \u201c[Assignment: organization-defined purpose(s)]\u201d | 231 12-10-2020 | Editorial | Control PT-3 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 232 12-10-2020 | Editorial | Control PT-5 Related Controls: Add \u201cSC-42,\u201d | 234 12-10-2020 | Editorial | Control Enhancement PT-6(2): Change \u201c[Assignment: organization- defined frequency]\u201d to \u201c[Assignment: organization-defined frequency]\u201d | 235 12-10-2020 | Editorial | Control PT-7 References: Add \u201c, [NARA CUI]\u201d | 236 12-10-2020 | Editorial | Control PT-8 References: Add \u201c[CMPPA],\u201d | 237 12-10-2020 | Editorial | Control RA-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 238 12-10-2020 | Editorial | Control RA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 238 12-10-2020 | Editorial | Control RA-2 References: Add \u201c, [NARA CUI]\u201d | 240 12-10-2020 | Editorial | Control RA-3 Related Controls: Add \u201cPT-2,\u201d | 240 12-10-2020 | Editorial | Control RA-8 References: Change \u201c[OMB A-130, Appendix II]\u201d to \u201c[OMB A-130]\u201d | 247 12-10-2020 | Editorial | Control RA-9 Related Controls: Add \u201cPM-11,\u201d | 247 12-10-2020 | Editorial | Control SA-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 249 12-10-2020 | Editorial | Control SA-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 249 12-10-2020 | Editorial | Control SA-2 References: Add \u201c[SP 800-37], \u201d | 250 12-10-2020 | Editorial | Control SA-4 References: Add \u201c[ISO 29148], \u201d | 255 12-10-2020 | Editorial | Control Enhancement SA-9(5) Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 273 12-10-2020 | Editorial | Control Enhancement SA-10(2) Title: Change \u201cALTERNATIVE CONFIGURATION MANAGEMENT\u201d to \u201cALTERNATIVE CONFIGURATION MANAGEMENT PROCESSES\u201d | 274 12-10-2020 | Editorial | Control SA-11a.: Change \u201cassessments\u201d to \u201ccontrol assessments\u201d | 276 12-10-2020 | Editorial | Control Enhancement SA-12(13): Change \u201cMA-6, RA-9\u201d to \u201cMA-6 and RA-9\u201d | 280 12-10-2020 | Editorial | Control Enhancement SA-12(14): Change \u201cSR-4(1), SR-4(2)\u201d to \u201cSR- 4(1) and SR-4(2)\u201d | 280 12-10-2020 | Editorial | Control Enhancement SA-17(4)(b): Change \u201cinformal demonstration,\u201d to \u201cinformal demonstration;\u201d | 286 12-10-2020 | Editorial | Control SA-23: Change \u201c design modification, augmentation, reconfiguration\u201d to \u201cdesign; modification; augmentation; reconfiguration\u201d | 291 12-10-2020 | Editorial | Control SC-1a.1.: Change \u201corganization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 292 12-10-2020 | Editorial | Control SC-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 292 12-10-2020 | Editorial | Control SC-6: Change \u201cSelection (one or more);\u201d to \u201cSelection (one or more):\u201d | 297",
+          "type": "table"
+        }
+      ],
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "expected_label": "table",
+      "expected_state": "present",
+      "expected_text": "[Assignment: organization-defined frequency]",
+      "forbidden_text": "[Assignment: organization- defined frequency]",
+      "id": "page23-table-organization-defined-hyphen-wrap-spacing",
+      "matching_text_count": 0,
+      "status": "FAIL",
+      "text": "Control Enhancement PT-6(2)"
+    }
+  ],
+  "created_at": "2026-07-29T21:17:29.357436+00:00",
+  "errors": [],
+  "extraction_json": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/pre_patch_evidence/pages/page_0023/release_extraction_blocks.json",
+  "page": 23,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "FAIL",
+  "summary": {
+    "check_count": 1,
+    "failed": 1,
+    "passed": 0
+  }
+}

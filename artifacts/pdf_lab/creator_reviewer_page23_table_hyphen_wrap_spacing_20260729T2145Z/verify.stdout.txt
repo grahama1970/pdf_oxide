@@ -1,0 +1,24 @@
+{
+  "checks": [
+    {
+      "detail": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z",
+      "name": "job_dir_exists",
+      "passed": true
+    },
+    {
+      "detail": "no known pdf-lab artifacts found",
+      "name": "known_artifact_present",
+      "passed": false
+    }
+  ],
+  "job_dir": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z",
+  "mode": "job",
+  "schema_version": "skill.runtime_verify.v1",
+  "skill_id": "pdf-lab",
+  "stable": false,
+  "status": "FAIL",
+  "summary": {
+    "artifact_count": 0
+  },
+  "verified_at": "2026-07-29T21:18:45.209305+00:00"
+}
