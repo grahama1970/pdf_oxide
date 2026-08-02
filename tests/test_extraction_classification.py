@@ -4,6 +4,10 @@ from pdf_oxide.extract_for_pdflab import (
     build_section_ranges,
     section_type_for_page,
     _merge_bracket_citation_rows,
+    _is_bullet_list_text,
+    _is_numbered_footnote_text,
+    _is_footer_page_chrome,
+    _is_sidebar_page_chrome,
 )
 
 
@@ -53,3 +57,28 @@ Audit | Events recorded"""
     assert not any(r.lstrip().startswith('[') for r in rows)
     assert any('[ SP 800-128 ]' in r for r in rows)
     assert all('|' in r for r in rows)
+
+
+def test_pdflab_bbox_aware_list_footnote_and_footer_chrome_classification():
+    assert _is_bullet_list_text('\u2022\nWhat security controls are needed?')
+    assert _is_numbered_footnote_text(
+        '1 An information system is a discrete set of information resources.',
+        [0.14, 0.72, 0.84, 0.75],
+    )
+    assert not _is_numbered_footnote_text('1.1 PURPOSE', [0.14, 0.72, 0.84, 0.75])
+    assert _is_footer_page_chrome('CHAPTER ONE\nPAGE 1', [0.14, 0.94, 0.85, 0.95])
+
+
+def test_pdflab_sidebar_chrome_allows_interleaved_table_text():
+    assert _is_sidebar_page_chrome(
+        'This publication is available AC-2(4) free of charge from:',
+        [0.032912, 0.272136, 0.345618, 0.289303],
+    )
+    assert _is_sidebar_page_chrome(
+        'https://doi.org/10.6028/NIST.SP.800',
+        [0.032912, 0.518727, 0.270618, 0.533091],
+    )
+    assert not _is_sidebar_page_chrome(
+        'This publication is available AC-2(4) free of charge from:',
+        [0.147, 0.272136, 0.345618, 0.289303],
+    )

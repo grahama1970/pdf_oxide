@@ -62,7 +62,12 @@ def release_json():
     with tempfile.TemporaryDirectory() as tmpdir:
         out_dir = Path(tmpdir) / "nist_page_28_regression"
         cmd = [
-            "uv", "--project", str(Path(__file__).resolve().parent.parent), "run", "python",
+            "uv", "--project", str(Path(__file__).resolve().parent.parent), "run",
+            "--with", "loguru",
+            "--with", "pypdfium2",
+            "--with", "pillow",
+            "--with", "reportlab",
+            "python",
             str(RUNNER),
             "--pdf", str(PDF_PATH),
             "--page-index", str(PAGE_INDEX),

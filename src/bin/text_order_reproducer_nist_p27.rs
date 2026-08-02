@@ -135,10 +135,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut doc = PdfDocument::open(pdf_path)?;
     let page_count = doc.page_count()?;
     if PAGE_INDEX >= page_count {
-        return Err(format!(
-            "page index {PAGE_INDEX} out of range (0..{page_count})"
-        )
-        .into());
+        return Err(format!("page index {PAGE_INDEX} out of range (0..{page_count})").into());
     }
 
     // GS001 R5 row-4 evidence: capture BOTH span extraction paths.
@@ -186,7 +183,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             is_bold: b.is_bold,
             header_level: b.header_level,
             line_count: b.lines.len(),
-            span_count: raw_spans.iter().filter(|s| span_in_block_bbox(s, &b.bbox)).count(),
+            span_count: raw_spans
+                .iter()
+                .filter(|s| span_in_block_bbox(s, &b.bbox))
+                .count(),
         })
         .collect();
 
@@ -219,13 +219,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     geo_indices.sort_by(|&a, &b| {
         let ya = raw_spans[a].bbox.y;
         let yb = raw_spans[b].bbox.y;
-        yb.partial_cmp(&ya).unwrap_or(std::cmp::Ordering::Equal).then_with(|| {
-            raw_spans[a]
-                .bbox
-                .x
-                .partial_cmp(&raw_spans[b].bbox.x)
-                .unwrap_or(std::cmp::Ordering::Equal)
-        })
+        yb.partial_cmp(&ya)
+            .unwrap_or(std::cmp::Ordering::Equal)
+            .then_with(|| {
+                raw_spans[a]
+                    .bbox
+                    .x
+                    .partial_cmp(&raw_spans[b].bbox.x)
+                    .unwrap_or(std::cmp::Ordering::Equal)
+            })
     });
     let geo_view: Vec<SpanView> = geo_indices
         .iter()
@@ -233,10 +235,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .map(|(rank, &i)| view_for_span(rank, &raw_spans[i], &span_block_ids, i))
         .collect();
 
-    fs::write(
-        out_dir.join("spans_raw_order.json"),
-        serde_json::to_string_pretty(&raw_view)?,
-    )?;
+    fs::write(out_dir.join("spans_raw_order.json"), serde_json::to_string_pretty(&raw_view)?)?;
     fs::write(
         out_dir.join("spans_geometric_order.json"),
         serde_json::to_string_pretty(&geo_view)?,
@@ -256,16 +255,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         blocks.len()
     ));
     summary.push_str("Page MediaBox: ");
-    summary.push_str(&format!(
-        "{:.1} × {:.1} pt\n\n",
-        page_width, page_height
-    ));
+    summary.push_str(&format!("{:.1} × {:.1} pt\n\n", page_width, page_height));
 
-    fn dump_ordering(
-        summary: &mut String,
-        label: &str,
-        view: &[SpanView],
-    ) {
+    fn dump_ordering(summary: &mut String, label: &str, view: &[SpanView]) {
         summary.push_str(&format!("## Ordering: {}\n\n", label));
         summary.push_str("Needle hits and their immediate (±2) neighbors:\n\n");
         let hits: Vec<usize> = view
@@ -381,7 +373,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     comparison.push_str("## Block-text diff at the Modern/derMon site\n\n");
 
-    fn blocks_with_needle<'a>(bs: &'a [pdf_oxide::extractors::block_classifier::ClassifiedBlock]) -> Vec<&'a pdf_oxide::extractors::block_classifier::ClassifiedBlock> {
+    fn blocks_with_needle<'a>(
+        bs: &'a [pdf_oxide::extractors::block_classifier::ClassifiedBlock],
+    ) -> Vec<&'a pdf_oxide::extractors::block_classifier::ClassifiedBlock> {
         bs.iter().filter(|b| has_needle(&b.text)).collect()
     }
     let unsorted_hits = blocks_with_needle(&blocks_unsorted);
@@ -449,7 +443,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  - spans_raw_order.json ({} spans, unsorted path)", raw_view.len());
     println!("  - spans_geometric_order.json ({} spans, unsorted path -y/x)", geo_view.len());
     println!("  - blocks_final_order.json ({} blocks, unsorted path)", block_views.len());
-    println!("  - blocks_sorted_path.json ({} blocks, sorted path - would-be fix)", sorted_block_views.len());
+    println!(
+        "  - blocks_sorted_path.json ({} blocks, sorted path - would-be fix)",
+        sorted_block_views.len()
+    );
     println!("  - comparison_modern_vs_derMon.md (smoking-gun side-by-side)");
     println!("  - summary.md (Modern/derMon highlights)");
 

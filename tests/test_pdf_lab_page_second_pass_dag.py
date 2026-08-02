@@ -80,6 +80,138 @@ def _review_validation_payload(
     }
 
 
+def test_clustered_patch_scope_routes_table_boundary_crop_defect_to_table_geometry(tmp_path: Path) -> None:
+    module = _load_module()
+    review_findings = [
+        {
+            "candidate_id": "cand:p0001:0001:table",
+            "status": "defect",
+            "rationale": (
+                "The table candidate is correctly identified as a table, but the extracted "
+                "table geometry/text includes off-page or clipped content that does not "
+                "fully agree with the rendered page evidence. The normalized bbox is "
+                "clamped while the raw bbox shows the table extends beyond page boundaries."
+            ),
+            "suggested_fix_surface": (
+                "Handle tables whose raw bounding boxes extend beyond the rendered page/crop "
+                "boundary by clipping extraction geometry and text to the visible page region."
+            ),
+        }
+    ]
+
+    scope = module.clustered_patch_prompt_defect_scope(review_findings)
+
+    assert scope["primary_scope"] == "table_geometry_cropping_defect"
+    assert scope["required_test_name"] == (
+        "test_off_page_table_bbox_does_not_emit_clipped_text_as_visible"
+    )
+    assert scope["likely_files"] == [
+        "scripts/pdf_lab/snapshot_current_extraction.py",
+        "tests/test_nist_table_duplicate_suppression.py",
+    ]
+    assert scope["actionable_findings"][0]["defect_class"] == "table_geometry_cropping_defect"
+    assert scope["actionable_findings"][0]["candidate_ids"] == ["cand:p0001:0001:table"]
+    assert "src/extractors/block_classifier.rs" not in scope["likely_files"]
+    assert scope["required_test_name"] != (
+        "test_page_top_title_and_qid_table_row_are_not_footer_or_reference"
+    )
+
+    case_dir = tmp_path / "case"
+    workspace = tmp_path / "workspace"
+    case_dir.mkdir()
+    workspace.mkdir()
+    patch_request = module.build_opencode_patch_request(
+        case_dir=case_dir,
+        page_case={
+            "case_id": "page_case_0001_p0001",
+            "page_number": 1,
+            "candidate_ids": ["cand:p0001:0001:table"],
+        },
+        candidates=[{"candidate_id": "cand:p0001:0001:table", "preset_type": "table"}],
+        review_response={
+            "schema": "pdf_lab.second_pass.review_response.v1",
+            "candidate_findings": review_findings,
+        },
+        agent="build",
+        opencode_model=None,
+        skills=["scillm"],
+        timeout_s=30,
+        cleanup_session=True,
+        cwd=workspace,
+        prompt_profile="plan_only",
+    )
+
+    assert '"primary_scope": "table_geometry_cropping_defect"' in patch_request["prompt"]
+    assert '"scripts/pdf_lab/snapshot_current_extraction.py"' in patch_request["prompt"]
+    assert '"test_off_page_table_bbox_does_not_emit_clipped_text_as_visible"' in patch_request["prompt"]
+    assert '"primary_scope": "classification_defect"' not in patch_request["prompt"]
+    assert '"src/extractors/block_classifier.rs"' not in patch_request["prompt"]
+
+
+def test_clustered_patch_scope_routes_footer_ordering_to_page_chrome_surface(tmp_path: Path) -> None:
+    module = _load_module()
+    review_findings = [
+        {
+            "candidate_id": "cand:p0046:0002:side_chrome",
+            "status": "defect",
+            "rationale": (
+                "The candidate is correctly page chrome, but the extracted footer text "
+                "reverses the visual order of PAGE 19."
+            ),
+            "suggested_fix_surface": "Footer text ordering / multi-fragment footer reading order.",
+        }
+    ]
+
+    scope = module.clustered_patch_prompt_defect_scope(review_findings)
+
+    assert scope["primary_scope"] == "footer_text_ordering_defect"
+    assert scope["required_test_name"] == (
+        "test_side_chrome_footer_text_preserves_visual_left_to_right_order"
+    )
+    assert scope["likely_files"] == [
+        "scripts/pdf_lab/snapshot_current_extraction.py",
+        "python/pdf_oxide/presets/applier.py",
+        "tests/test_pdf_lab_snapshot_current_extraction.py",
+    ]
+    finding = scope["actionable_findings"][0]
+    assert finding["defect_class"] == "footer_text_ordering_defect"
+    assert finding["candidate_ids"] == ["cand:p0046:0002:side_chrome"]
+    assert "CHAPTER THREE PAGE 19" in finding["test_hint"]
+    assert "CHAPTER THREE 19 PAGE" in finding["test_hint"]
+
+    case_dir = tmp_path / "case"
+    workspace = tmp_path / "workspace"
+    case_dir.mkdir()
+    workspace.mkdir()
+    patch_request = module.build_opencode_patch_request(
+        case_dir=case_dir,
+        page_case={
+            "case_id": "page_case_0001_p0046",
+            "page_number": 46,
+            "candidate_ids": ["cand:p0046:0002:side_chrome"],
+        },
+        candidates=[{"candidate_id": "cand:p0046:0002:side_chrome", "preset_type": "side_chrome"}],
+        review_response={
+            "schema": "pdf_lab.second_pass.review_response.v1",
+            "candidate_findings": review_findings,
+        },
+        agent="build",
+        opencode_model=None,
+        skills=["scillm"],
+        timeout_s=30,
+        cleanup_session=True,
+        cwd=workspace,
+        prompt_profile="plan_only",
+    )
+
+    assert '"primary_scope": "footer_text_ordering_defect"' in patch_request["prompt"]
+    assert '"scripts/pdf_lab/snapshot_current_extraction.py"' in patch_request["prompt"]
+    assert '"test_side_chrome_footer_text_preserves_visual_left_to_right_order"' in patch_request["prompt"]
+    assert '"primary_scope": "classification_defect"' not in patch_request["prompt"]
+    assert '"top_page_title_misclassified_as_footer"' not in patch_request["prompt"]
+    assert '"src/extractors/block_classifier.rs"' not in patch_request["prompt"]
+
+
 def _successful_preflight_checks(surface: str) -> list[dict]:
     checks = [
         {"path": "/health/liveliness", "http_status": 200, "payload": {"status": "ok"}},
@@ -1776,6 +1908,70 @@ def test_validate_review_response_rejects_inconsistent_page_and_candidate_status
     assert "page_status defect requires at least one defect candidate finding" in defect_without_defect_finding["errors"]
 
 
+def test_validate_review_response_allows_clean_candidates_with_page_substrate_blocked() -> None:
+    dag = _load_module()
+
+    validation = dag.validate_review_response(
+        {
+            "schema": "pdf_lab.second_pass.review_response.v1",
+            "page_status": "substrate_blocked",
+            "page_rationale": "one table candidate is substrate-blocked, while title chrome is clean",
+            "candidate_findings": [
+                {
+                    "candidate_id": "cand:p0001:0000:text",
+                    "status": "clean",
+                    "evidence": "title text and bbox match the rendered page",
+                    "rationale": "the rendered text and extracted text agree",
+                    "suggested_fix_surface": "",
+                },
+                {
+                    "candidate_id": "cand:p0001:0001:table",
+                    "status": "substrate_blocked",
+                    "evidence": "raw table bbox extends beyond the visible page crop",
+                    "rationale": "visible table region is clamped, so off-page extent cannot be fully reviewed visually",
+                    "suggested_fix_surface": "preserve off-page table extent metadata",
+                },
+            ],
+        },
+        ["cand:p0001:0000:text", "cand:p0001:0001:table"],
+    )
+
+    assert validation["ok"] is True
+    assert validation["errors"] == []
+
+
+def test_validate_review_response_rejects_defect_candidate_with_page_substrate_blocked() -> None:
+    dag = _load_module()
+
+    validation = dag.validate_review_response(
+        {
+            "schema": "pdf_lab.second_pass.review_response.v1",
+            "page_status": "substrate_blocked",
+            "page_rationale": "defect should be routed as a defect, not substrate-only",
+            "candidate_findings": [
+                {
+                    "candidate_id": "cand:p0001:0000:text",
+                    "status": "defect",
+                    "evidence": "classification is visibly wrong",
+                    "rationale": "the page evidence and extracted type disagree",
+                    "suggested_fix_surface": "block classifier",
+                },
+                {
+                    "candidate_id": "cand:p0001:0001:table",
+                    "status": "substrate_blocked",
+                    "evidence": "raw table bbox extends beyond the visible page crop",
+                    "rationale": "off-page extent cannot be fully reviewed visually",
+                    "suggested_fix_surface": "table geometry metadata",
+                },
+            ],
+        },
+        ["cand:p0001:0000:text", "cand:p0001:0001:table"],
+    )
+
+    assert validation["ok"] is False
+    assert "page_status substrate_blocked allows only clean or substrate_blocked candidate findings" in validation["errors"]
+
+
 def test_validate_review_response_rejects_duplicate_findings_and_bad_fix_surface() -> None:
     dag = _load_module()
     validation = dag.validate_review_response(
@@ -2528,7 +2724,7 @@ def test_validate_review_request_contract_rejects_stale_candidate_presets_contra
     assert "review_request artifacts.candidate_presets candidate_count must be a non-negative integer" in errors
 
 
-def test_patch_worker_prompt_uses_absolute_workspace_and_evidence_paths(tmp_path: Path) -> None:
+def test_patch_worker_prompt_uses_absolute_roots_and_relative_evidence_files(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
     workspace = tmp_path / "workspace"
@@ -2554,7 +2750,9 @@ def test_patch_worker_prompt_uses_absolute_workspace_and_evidence_paths(tmp_path
 
     assert f"Workspace root: {workspace.resolve()}" in prompt
     assert f"Evidence case directory: {case_dir.resolve()}" in prompt
-    assert str(case_dir.resolve() / "page_before.json") in prompt
+    assert f'"case_dir": "{case_dir.resolve()}"' in prompt
+    assert '"page_before_json": "page_before.json"' in prompt
+    assert str(case_dir.resolve() / "page_before.json") not in prompt
     assert "## Output Format" in prompt
     assert "PATCH_APPLIED" in prompt
     assert "PATCH_DELEGATE_BLOCKED" in prompt
@@ -2960,6 +3158,59 @@ def test_default_patch_prompt_profile_stays_live_bounded_for_many_candidates(tmp
     assert "large_nested_payload" not in patch_request["prompt"]
 
 
+def test_plan_only_patch_prompt_compacts_many_fallback_defects(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    workspace = tmp_path / "workspace"
+    case_dir.mkdir()
+    workspace.mkdir()
+    candidate_ids = [f"cand:p0001:{index:04d}:reference" for index in range(11)]
+    review_findings = [
+        {
+            "candidate_id": candidate_id,
+            "status": "defect",
+            "evidence": "The rendered page shows this candidate belongs to a table row, not a reference. " * 6,
+            "rationale": "The extracted preset disagrees with the visible table structure. " * 6,
+            "suggested_fix_surface": "Suppress duplicate row-level Reference blocks inside detected tables or classify them as table row/cell content.",
+        }
+        for candidate_id in candidate_ids[:-1]
+    ]
+    review_findings.append(
+        {
+            "candidate_id": candidate_ids[-1],
+            "status": "defect",
+            "evidence": "The rendered page shows a 5-column requirements matrix table with one row split across columns. " * 6,
+            "rationale": "The table preset is correct, but cell text assignment is wrong for boundary-adjacent text. " * 6,
+            "suggested_fix_surface": "Improve lattice/table cell text assignment for overflowing or boundary-adjacent text; preserve full cell text in the correct column.",
+        }
+    )
+
+    patch_request = dag.build_opencode_patch_request(
+        case_dir=case_dir,
+        page_case={"case_id": "page_case_0001_p0001", "page_number": 1, "candidate_ids": candidate_ids},
+        candidates=[{"candidate_id": candidate_id, "preset_type": "reference"} for candidate_id in candidate_ids],
+        review_response={
+            "schema": "pdf_lab.second_pass.review_response.v1",
+            "candidate_findings": review_findings,
+        },
+        agent="build",
+        opencode_model=None,
+        skills=["scillm"],
+        timeout_s=30,
+        cleanup_session=True,
+        cwd=workspace,
+        prompt_profile="plan_only",
+    )
+
+    contract = dag.validate_patch_prompt_contract(patch_request, live_patch_required=True)
+
+    assert contract["ok"] is True
+    assert contract["metrics"]["char_count"] <= dag.PATCH_PROMPT_MAX_CHARS
+    assert candidate_ids[-1] in patch_request["prompt"]
+    assert "The rendered page shows this candidate belongs to a table row, not a reference. " * 2 not in patch_request["prompt"]
+    assert "Read `review_response`" in patch_request["prompt"]
+
+
 def test_patch_evidence_workspace_is_ignored_and_used_by_prompt(tmp_path: Path) -> None:
     dag = _load_module()
     code_root = tmp_path / "workspace"
@@ -2998,7 +3249,9 @@ def test_patch_evidence_workspace_is_ignored_and_used_by_prompt(tmp_path: Path) 
     assert workspace["ok"] is True
     assert ".pdf_lab_runtime/" in (code_root / ".git/info/exclude").read_text(encoding="utf-8")
     assert status.strip() == ""
-    assert str(Path(workspace["workspace_case_dir"]).resolve() / "review_response.json") in patch_request["prompt"]
+    assert f'"case_dir": "{Path(workspace["workspace_case_dir"]).resolve()}"' in patch_request["prompt"]
+    assert '"review_response": "review_response.json"' in patch_request["prompt"]
+    assert str(Path(workspace["workspace_case_dir"]).resolve() / "review_response.json") not in patch_request["prompt"]
     assert str(case_dir.resolve() / "review_response.json") not in patch_request["prompt"]
 
 
@@ -4414,10 +4667,132 @@ def test_live_patch_delegate_failure_writes_blocked_substrate_bundle(tmp_path: P
     assert patch_error["page_number"] == 3
     assert patch_error["error_type"] == "RuntimeError"
     assert patch_error["preflight_artifact"] == "scillm_patch_preflight.json"
+    child_handle = json.loads((case_dir / "patch_attempt_01_opencode_child_run_handle.json").read_text(encoding="utf-8"))
+    assert "patch_attempt_01_opencode_child_run_handle.json" in ledger["evidence_artifacts"]
+    assert child_handle["schema"] == "pdf_lab.second_pass.opencode_child_run_handle.v1"
+    assert child_handle["run_id"].startswith("oc-pdflab-page_case_0001_p0003-a01-")
     with zipfile.ZipFile(case_dir / "review_bundle.zip") as bundle:
         assert "scillm_patch_preflight.json" in bundle.namelist()
         assert "patch_error.json" in bundle.namelist()
+        assert "patch_attempt_01_opencode_child_run_handle.json" in bundle.namelist()
         assert "review.html" in bundle.namelist()
+
+
+def test_opencode_observable_patch_writes_complete_child_url_handle(tmp_path: Path, monkeypatch) -> None:
+    dag = _load_module()
+    workspace_path = str(tmp_path)
+    workspace_route = dag.opencode_workspace_route(workspace_path=workspace_path)
+    scillm_human_monitor = {
+        "schema": "scillm.opencode_run.human_monitor.v1",
+        "opencode_workspace_url": f"http://127.0.0.1:4098{workspace_route}",
+        "human_monitor_url": f"http://localhost:4001/v1/scillm/opencode/runs/oc-placeholder/monitor?token=test-token",
+        "scillm_chat_monitor_url": f"http://localhost:4001/v1/scillm/opencode/runs/oc-placeholder/monitor?token=test-token",
+        "session_id": "ses_test_child",
+        "workspace_path": workspace_path,
+        "opencode_session_api_url": "http://127.0.0.1:4098/session/ses_test_child",
+        "scillm_events_url": "http://localhost:4001/v1/scillm/opencode/runs/oc-placeholder/events?tail=200",
+        "human_instruction": "Open opencode_workspace_url, then select session_id in the OpenCode session list.",
+    }
+
+    def fake_fetch_opencode_run_snapshot(**kwargs):
+        monitor = {
+            **scillm_human_monitor,
+            "run_id": kwargs["run_id"],
+            "scillm_run_url": f"http://localhost:4001/v1/scillm/opencode/runs/{kwargs['run_id']}",
+            "human_monitor_url": f"http://localhost:4001/v1/scillm/opencode/runs/{kwargs['run_id']}/monitor?token=test-token",
+            "scillm_chat_monitor_url": f"http://localhost:4001/v1/scillm/opencode/runs/{kwargs['run_id']}/monitor?token=test-token",
+            "scillm_events_url": f"http://localhost:4001/v1/scillm/opencode/runs/{kwargs['run_id']}/events?tail=200",
+            "scillm_diff_url": f"http://localhost:4001/v1/scillm/opencode/runs/{kwargs['run_id']}/diff",
+        }
+        return {
+            "schema": "scillm.opencode_run.v1",
+            "run_id": kwargs["run_id"],
+            "session_id": "ses_test_child",
+            "human_monitor": monitor,
+            "human_monitor_url": monitor["human_monitor_url"],
+            "status": {"state": "running", "phase": "session_ready", "human_monitor": monitor},
+            "artifacts": {"run_dir": "/tmp/scillm/opencode/oc-test"},
+        }
+
+    def fake_call_opencode_patch(patch_request, **kwargs):
+        monitor = {
+            **scillm_human_monitor,
+            "run_id": patch_request["run_id"],
+            "human_monitor_url": f"http://localhost:4001/v1/scillm/opencode/runs/{patch_request['run_id']}/monitor?token=test-token",
+            "scillm_chat_monitor_url": f"http://localhost:4001/v1/scillm/opencode/runs/{patch_request['run_id']}/monitor?token=test-token",
+        }
+        return {
+            "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
+            "endpoint": "POST /v1/scillm/opencode/runs",
+            "http_status": 200,
+            "request_metadata": patch_request["scillm_metadata"],
+            "raw_response": {
+                "run_id": patch_request["run_id"],
+                "session_id": "ses_test_child",
+                "status": "completed",
+                "artifacts": {"run_dir": "/tmp/scillm/opencode/oc-test"},
+                "assistant_text": "PATCH_DELEGATE_BLOCKED reason=test",
+                "diff": [],
+                "human_monitor": monitor,
+                "human_monitor_url": monitor["human_monitor_url"],
+            },
+        }
+
+    monkeypatch.setenv("OPENCODE_SERVER_URL", "http://127.0.0.1:4098")
+    monkeypatch.setattr(dag, "fetch_opencode_run_snapshot", fake_fetch_opencode_run_snapshot)
+    monkeypatch.setattr(dag, "call_opencode_patch", fake_call_opencode_patch)
+
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    patch_request = {
+        "schema": "pdf_lab.second_pass.opencode_patch_request.v1",
+        "endpoint": "POST /v1/scillm/opencode/runs",
+        "prompt": "## Role\n## Task\n## Context\n## Constraints\n## Output Format\nPATCH_APPLIED\nPATCH_DELEGATE_BLOCKED",
+        "agent": "build",
+        "skills": ["scillm"],
+        "timeout_s": 10,
+        "cleanup_session": True,
+        "cwd": str(tmp_path),
+        "attempt_index": 1,
+        "scillm_metadata": {"case_id": "page_case_0001_p0003", "page_number": 3},
+    }
+
+    receipt, artifacts = dag.call_opencode_patch_observable(
+        patch_request,
+        base_url="http://localhost:4001",
+        auth_token="sk-test",
+        caller_skill="pdf-lab",
+        timeout_s=10,
+        case_dir=case_dir,
+        artifact_prefix="patch_attempt_01_",
+    )
+
+    handle_path = case_dir / "patch_attempt_01_opencode_child_run_handle.json"
+    handle = json.loads(handle_path.read_text(encoding="utf-8"))
+    assert artifacts == ["patch_attempt_01_opencode_child_run_handle.json"]
+    assert handle["schema"] == "pdf_lab.second_pass.opencode_child_run_handle.v1"
+    assert handle["run_id"] == patch_request["run_id"]
+    assert handle["session_id"] == "ses_test_child"
+    expected_workspace_route = dag.opencode_workspace_route(workspace_path=str(tmp_path))
+    assert handle["workspace_path"] == str(tmp_path)
+    assert handle["urls"]["opencode_session_api_url"] == "http://127.0.0.1:4098/session/ses_test_child"
+    assert handle["urls"]["opencode_workspace_url"] == f"http://127.0.0.1:4098{expected_workspace_route}"
+    assert handle["urls"]["scillm_chat_monitor_url"] == f"http://localhost:4001/v1/scillm/opencode/runs/{patch_request['run_id']}/monitor?token=test-token"
+    assert "opencode_session_url" not in handle["urls"]
+    assert "opencode_browser_session_url" not in handle["urls"]
+    assert handle["urls"]["scillm_run_url"] == f"http://localhost:4001/v1/scillm/opencode/runs/{patch_request['run_id']}"
+    assert handle["urls"]["scillm_events_url"].endswith(f"/v1/scillm/opencode/runs/{patch_request['run_id']}/events?tail=200")
+    assert handle["urls"]["scillm_diff_url"].endswith(f"/v1/scillm/opencode/runs/{patch_request['run_id']}/diff")
+    assert handle["human_monitor"]["schema"] == "scillm.opencode_run.human_monitor.v1"
+    assert handle["human_monitor_url"] == handle["urls"]["scillm_chat_monitor_url"]
+    assert handle["human_monitor_url"].endswith(f"/v1/scillm/opencode/runs/{patch_request['run_id']}/monitor?token=test-token")
+    assert "opencode_session_url" not in handle
+    assert handle["headers_required"]["opencode_browser"] == {
+        "basic_auth_required": True,
+        "username": "opencode",
+        "password_env": "OPENCODE_SERVER_PASSWORD",
+    }
+    assert receipt["raw_response"]["session_id"] == "ses_test_child"
 
 
 def test_live_patch_prompt_contract_failure_blocks_before_opencode(tmp_path: Path, monkeypatch) -> None:
@@ -5266,6 +5641,69 @@ def test_validate_patch_delegate_receipt_rejects_wrong_transport_surface_and_sta
     assert validation["ok"] is False
     assert "transport patch receipt endpoint mismatch" in validation["errors"]
     assert "transport patch receipt http_status must be 200" in validation["errors"]
+
+
+def test_validate_patch_delegate_receipt_accepts_transport_materialized_change_without_diff() -> None:
+    dag = _load_module()
+    request = {
+        "scillm_metadata": {
+            "graph_node": "scillm_orchestrator_patch_attempt",
+            "case_id": "page_case_0001_p0046",
+            "page_number": 46,
+            "attempt_index": 1,
+            "attempt_count": 1,
+            "agent": "build",
+            "transport_retry_fresh_parent": False,
+        }
+    }
+
+    validation = dag.validate_patch_delegate_receipt(
+        {
+            "schema": "pdf_lab.second_pass.scillm_orchestrator_patch_receipt.v1",
+            "endpoint": "POST /v1/scillm/opencode/transport/runs + children + message",
+            "http_status": 200,
+            "request_metadata": request["scillm_metadata"],
+            "transport_run_id": "otr-test",
+            "message_response": {
+                "delivery_state": "completed",
+                "assistant_text": (
+                    "PATCH_APPLIED changed_files=scripts/pdf_lab/snapshot_current_extraction.py,"
+                    "tests/test_pdf_lab_snapshot_current_extraction.py "
+                    "tests=tests/test_pdf_lab_snapshot_current_extraction.py "
+                    "commands=python -m pytest tests/test_pdf_lab_snapshot_current_extraction.py -v"
+                ),
+                "diff": [],
+                "materialization": {
+                    "after_count": 2,
+                    "before_count": 0,
+                    "error": None,
+                    "is_git": True,
+                    "materialized_change": True,
+                    "new_entries": [
+                        " M scripts/pdf_lab/snapshot_current_extraction.py",
+                        " M tests/test_pdf_lab_snapshot_current_extraction.py",
+                    ],
+                    "pathspec": ".",
+                    "workspace_exists": True,
+                },
+            },
+            "event_stream": {
+                "schema": "pdf_lab.second_pass.scillm_transport_event_stream.v1",
+                "event_count": 3,
+                "saw_message_completed": True,
+                "parse_errors": [],
+                "session_errors": [],
+                "tool_errors": [],
+                "permission_requests": [],
+            },
+        },
+        patch_mode="live",
+        request=request,
+    )
+
+    assert validation["ok"] is True
+    assert validation["artifacts_present"] is True
+    assert validation["errors"] == []
 
 
 def test_validate_patch_delegate_receipt_rejects_stale_transport_final_result() -> None:
@@ -6207,7 +6645,8 @@ def test_validate_transport_patch_receipt_rejects_explicit_blocked_marker() -> N
     )
 
     assert validation["ok"] is False
-    assert any("blocked substrate" in error for error in validation["errors"])
+    assert any("blocked reason=other" in error for error in validation["errors"])
+    assert validation["delegate_blocked_claim"]["reason"] == "other"
 
 
 def test_orchestrator_patch_writes_transport_event_artifacts(tmp_path: Path, monkeypatch) -> None:
@@ -6524,6 +6963,7 @@ def test_run_validation_commands_disables_bytecode_writes(tmp_path: Path, monkey
     validation = dag.run_validation_commands(["python -m py_compile tests/test_fix.py"], cwd=tmp_path)
 
     assert validation["ok"] is True
+    assert validation["test_files"] == ["tests/test_fix.py"]
     assert captured_env["PYTHONDONTWRITEBYTECODE"] == "1"
     assert validation["bytecode_cache_cleanup"] == ["tests/__pycache__"]
     assert not (tmp_path / "tests" / "__pycache__").exists()
@@ -6553,6 +6993,163 @@ def test_run_validation_commands_requires_changed_test_coverage(tmp_path: Path, 
     assert "validation commands did not cover changed regression tests" in "\n".join(missing["errors"])
     assert covered["ok"] is True
     assert covered["covered_test_files"] == ["tests/test_fix.py"]
+
+
+def test_run_validation_commands_rejects_zero_cargo_tests(tmp_path: Path, monkeypatch) -> None:
+    dag = _load_module()
+
+    def fake_run(command, **kwargs):
+        return subprocess.CompletedProcess(
+            args=command,
+            returncode=0,
+            stdout="running 0 tests\n\ntest result: ok. 0 passed; 0 failed\n",
+            stderr="",
+        )
+
+    monkeypatch.setattr(dag.subprocess, "run", fake_run)
+
+    validation = dag.run_validation_commands(
+        ["cargo test test_missing_name --lib # src/extractors/block_classifier.rs"],
+        cwd=tmp_path,
+        required_test_files=["src/extractors/block_classifier.rs"],
+    )
+
+    assert validation["ok"] is False
+    assert "validation command ran zero cargo tests" in "\n".join(validation["errors"])
+    assert validation["test_files"] == ["src/extractors/block_classifier.rs"]
+
+
+def test_extract_page_uses_requested_code_root_without_module_cache(tmp_path: Path) -> None:
+    dag = _load_module()
+
+    def write_fake_snapshot(root: Path, marker: str) -> None:
+        scripts = root / "scripts/pdf_lab"
+        scripts.mkdir(parents=True)
+        (root / "python").mkdir()
+        (scripts / "snapshot_current_extraction.py").write_text(
+            "def _extract_page(pdf_path, page_index, ledger_path, apply_mode):\n"
+            f"    return {{'marker': {marker!r}, 'page_index': page_index}}\n",
+            encoding="utf-8",
+        )
+
+    root_a = tmp_path / "root_a"
+    root_b = tmp_path / "root_b"
+    write_fake_snapshot(root_a, "a")
+    write_fake_snapshot(root_b, "b")
+
+    first = dag.extract_page(tmp_path / "doc.pdf", 1, None, "auto", repo=root_a)
+    second = dag.extract_page(tmp_path / "doc.pdf", 1, None, "auto", repo=root_b)
+
+    assert first == {"marker": "a", "page_index": 0}
+    assert second == {"marker": "b", "page_index": 0}
+
+
+def test_extract_page_for_non_repo_code_root_uses_subprocess(tmp_path: Path, monkeypatch) -> None:
+    dag = _load_module()
+    calls = []
+
+    def fake_extract_subprocess(pdf_path, page_number, ledger_path, apply_mode, repo, timeout_s):
+        calls.append(
+            {
+                "pdf_path": pdf_path,
+                "page_number": page_number,
+                "ledger_path": ledger_path,
+                "apply_mode": apply_mode,
+                "repo": repo,
+                "timeout_s": timeout_s,
+            }
+        )
+        return {"marker": "subprocess"}
+
+    monkeypatch.setattr(dag, "extract_page_subprocess", fake_extract_subprocess)
+
+    code_root = tmp_path / "isolated"
+    code_root.mkdir()
+    result = dag.extract_page_for_code_root(
+        tmp_path / "doc.pdf",
+        1,
+        None,
+        "auto",
+        code_root,
+        page_extract_timeout_s=None,
+    )
+
+    assert result == {"marker": "subprocess"}
+    assert calls == [
+        {
+            "pdf_path": tmp_path / "doc.pdf",
+            "page_number": 1,
+            "ledger_path": None,
+            "apply_mode": "auto",
+            "repo": code_root,
+            "timeout_s": 300.0,
+        }
+    ]
+
+
+def test_extract_page_for_repo_code_root_uses_subprocess_to_avoid_pyo3_reinit(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    dag = _load_module()
+    calls = []
+
+    def fake_extract_subprocess(pdf_path, page_number, ledger_path, apply_mode, repo, timeout_s):
+        calls.append(
+            {
+                "pdf_path": pdf_path,
+                "page_number": page_number,
+                "ledger_path": ledger_path,
+                "apply_mode": apply_mode,
+                "repo": repo,
+                "timeout_s": timeout_s,
+            }
+        )
+        return {"marker": "subprocess"}
+
+    monkeypatch.setattr(dag, "extract_page_subprocess", fake_extract_subprocess)
+
+    result = dag.extract_page_for_code_root(
+        tmp_path / "doc.pdf",
+        27,
+        tmp_path / "ledger.json",
+        "release",
+        dag.REPO,
+        page_extract_timeout_s=None,
+    )
+
+    assert result == {"marker": "subprocess"}
+    assert calls == [
+        {
+            "pdf_path": tmp_path / "doc.pdf",
+            "page_number": 27,
+            "ledger_path": tmp_path / "ledger.json",
+            "apply_mode": "release",
+            "repo": dag.REPO,
+            "timeout_s": 300.0,
+        }
+    ]
+
+
+def test_extract_page_subprocess_executes_fake_snapshot(tmp_path: Path) -> None:
+    dag = _load_module()
+    repo = tmp_path / "repo"
+    scripts = repo / "scripts/pdf_lab"
+    scripts.mkdir(parents=True)
+    (repo / "python").mkdir()
+    (scripts / "snapshot_current_extraction.py").write_text(
+        "def _extract_page(pdf_path, page_index, ledger_path, apply_mode):\n"
+        "    return {'pdf_path': str(pdf_path), 'page_index': page_index, 'apply_mode': apply_mode}\n",
+        encoding="utf-8",
+    )
+
+    page = dag.extract_page_subprocess(tmp_path / "doc.pdf", 2, None, "auto", repo, 5.0)
+
+    assert page == {
+        "pdf_path": str(tmp_path / "doc.pdf"),
+        "page_index": 1,
+        "apply_mode": "auto",
+    }
 
 
 def test_patch_delta_ignores_generated_bytecode_for_scope_claim_match() -> None:
@@ -6618,7 +7215,30 @@ def test_validate_patch_scope_accepts_regression_test_declared_in_tests_field() 
     )
 
     assert validation["ok"] is True
-    assert validation["test_files"] == ["tests/test_fix.py"]
+
+
+def test_validate_patch_scope_accepts_claimed_in_file_rust_unit_test() -> None:
+    dag = _load_module()
+
+    validation = dag.validate_patch_scope(
+        ["src/extractors/block_classifier.rs"],
+        ["src/", "tests/"],
+        {
+            "schema": "pdf_lab.second_pass.patch_applied_claim.v1",
+            "status": "applied",
+            "raw_line": (
+                "PATCH_APPLIED changed_files=src/extractors/block_classifier.rs "
+                "tests=src/extractors/block_classifier.rs commands=cargo test classifier_regression"
+            ),
+            "changed_files": ["src/extractors/block_classifier.rs"],
+            "tests": ["src/extractors/block_classifier.rs"],
+            "commands": "cargo test classifier_regression",
+            "errors": [],
+        },
+    )
+
+    assert validation["ok"] is True
+    assert validation["test_files"] == ["src/extractors/block_classifier.rs"]
 
 
 def test_validate_patch_scope_rejects_string_delegate_claim_errors_without_character_scanning() -> None:
@@ -10833,6 +11453,52 @@ def test_validate_page_review_bundle_rejects_duplicate_terminal_evidence(tmp_pat
     assert "terminal evidence_artifacts contains unsafe bundle paths: ['../outside.json', '/tmp/outside.json']" in errors
 
 
+def test_page_validation_artifacts_echo_terminal_identity(tmp_path: Path) -> None:
+    dag = _load_module()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    terminal = {
+        "schema": "pdf_lab.second_pass.page_terminal_ledger.v1",
+        "case_id": "page_case_0001_p0007",
+        "page_number": 7,
+        "terminal_status": "still_open",
+        "reason": "dry_run_review_not_executed",
+        "evidence_artifacts": [
+            "review.html",
+            "terminal_ledger_validation.json",
+        ],
+    }
+    (case_dir / "terminal_ledger.json").write_text(json.dumps(terminal), encoding="utf-8")
+    for artifact in dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS:
+        if artifact in {"terminal_ledger.json", "terminal_ledger_validation.json"}:
+            continue
+        artifact_path = case_dir / artifact
+        if artifact_path.suffix == ".png":
+            artifact_path.write_bytes(b"png")
+        elif artifact_path.suffix == ".html":
+            artifact_path.write_text("review", encoding="utf-8")
+        else:
+            artifact_path.write_text(json.dumps({"artifact": artifact}), encoding="utf-8")
+    terminal_validation = dag.validate_page_terminal_ledger(case_dir, terminal)
+    (case_dir / "terminal_ledger_validation.json").write_text(
+        json.dumps(terminal_validation),
+        encoding="utf-8",
+    )
+    zip_path = case_dir / "review_bundle.zip"
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+        for artifact in dag.MINIMUM_PAGE_REVIEW_BUNDLE_ARTIFACTS:
+            bundle.write(case_dir / artifact, artifact)
+
+    review_validation = dag.validate_page_review_bundle(case_dir, zip_path, terminal)
+
+    assert terminal_validation["case_id"] == "page_case_0001_p0007"
+    assert terminal_validation["page_number"] == 7
+    assert terminal_validation["terminal_status"] == "still_open"
+    assert review_validation["case_id"] == "page_case_0001_p0007"
+    assert review_validation["page_number"] == 7
+    assert review_validation["terminal_status"] == "still_open"
+
+
 def test_validate_page_review_bundle_rejects_invalid_evidence_artifacts(tmp_path: Path) -> None:
     dag = _load_module()
     case_dir = tmp_path / "case"
@@ -11639,6 +12305,138 @@ def test_fixture_after_review_canary_runs_real_commit_and_revertability(tmp_path
         assert "review_after_fixture.json" in bundle.namelist()
         assert "commit_acceptance_gate.json" in bundle.namelist()
         assert "revertability_check.json" in bundle.namelist()
+
+
+def test_delegate_unsupported_defect_routes_to_still_open_terminal_ledger(tmp_path: Path, monkeypatch) -> None:
+    dag = _load_module()
+    code_root = tmp_path / "code-root"
+    code_root.mkdir()
+
+    def fake_extract_page_for_code_root(pdf_path, page_number, ledger_path, apply_mode, code_root):
+        return {
+            "page": page_number,
+            "pdf_page_index": page_number - 1,
+            "blocks": [
+                {
+                    "id": "actual:p193:block:0",
+                    "type": "rotated_side_chrome",
+                    "bbox": [0.1, 0.2, 0.8, 0.4],
+                    "text": "fragmented side chrome",
+                }
+            ],
+        }
+
+    def fake_render_original(pdf_path, page_number, out, dpi):
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_bytes(b"png")
+
+    def fake_render_overlay(pdf_path, page_number, candidates, out, dpi):
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_bytes(b"overlay")
+
+    def fake_call_opencode_patch(patch_request, **kwargs):
+        return {
+            "schema": "pdf_lab.second_pass.opencode_patch_receipt.v1",
+            "endpoint": "POST /v1/scillm/opencode/runs",
+            "http_status": 200,
+            "request_metadata": patch_request["scillm_metadata"],
+            "raw_response": {
+                "status": "completed",
+                "assistant_text": (
+                    "PATCH_DELEGATE_BLOCKED reason=unsupported_defect: "
+                    "defect is not localizable within the bounded file-read scope"
+                ),
+                "diff": [{"path": "src/extractors/block_classifier.rs", "status": "M"}],
+                "artifacts": {},
+            },
+        }
+
+    monkeypatch.setattr(dag, "extract_page_for_code_root", fake_extract_page_for_code_root)
+    monkeypatch.setattr(dag, "render_original_page", fake_render_original)
+    monkeypatch.setattr(dag, "render_candidate_overlay", fake_render_overlay)
+    monkeypatch.setattr(dag, "call_opencode_patch", fake_call_opencode_patch)
+    monkeypatch.setattr(dag, "git_changed_files", lambda repo=dag.REPO: [])
+
+    review_fixture = tmp_path / "defect_fixture.json"
+    review_fixture.write_text(
+        json.dumps(
+            {
+                "schema": "pdf_lab.second_pass.review_response.v1",
+                "page_status": "defect",
+                "page_rationale": "fixture marks side chrome candidate defective",
+                "candidate_findings": [
+                    {
+                        "candidate_id": "cand:p0193:0000:rotated_side_chrome",
+                        "status": "defect",
+                        "evidence": "side chrome appears fragmented",
+                        "rationale": "candidate should be merged upstream",
+                        "suggested_fix_surface": "src",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    manifest = {
+        "schema": "pdf_lab.second_pass.candidate_manifest.v1",
+        "candidates": [
+            {
+                "candidate_id": "cand:p0193:0000:rotated_side_chrome",
+                "page_number": 193,
+                "preset_type": "rotated_side_chrome",
+                "bbox": [0.1, 0.2, 0.8, 0.4],
+                "features": {"block_type": "rotated_side_chrome"},
+            }
+        ],
+    }
+    sampled_cases = {
+        "schema": "pdf_lab.second_pass.sampled_page_cases.v1",
+        "page_cases": [
+            {
+                "case_id": "page_case_0001_p0193",
+                "page_number": 193,
+                "page_index": 192,
+                "candidate_ids": ["cand:p0193:0000:rotated_side_chrome"],
+                "strata": ["preset:rotated_side_chrome"],
+                "selection_probability_estimate": 1,
+                "selection_reason": ["regression_ticket_77"],
+            }
+        ],
+    }
+
+    result = dag.run_page_case(
+        pdf_path=tmp_path / "fake.pdf",
+        manifest=manifest,
+        sampled_cases=sampled_cases,
+        out_dir=tmp_path / "out",
+        case_id="page_case_0001_p0193",
+        page_number=None,
+        ledger_path=None,
+        apply_mode="release",
+        dpi=72,
+        model="gpt-5.5",
+        batch_id="batch-ticket-77",
+        review_mode="fixture",
+        review_fixture_path=review_fixture,
+        patch_mode="live",
+        scillm_preflight_mode="dry_run",
+        validation_commands=["python -m py_compile scripts/pdf_lab/run_page_second_pass_dag.py"],
+        commit_mode="dry_run",
+        code_root=code_root,
+    )
+
+    case_dir = Path(result["case_dir"])
+    ledger = json.loads((case_dir / "terminal_ledger.json").read_text(encoding="utf-8"))
+    patch_validation = json.loads((case_dir / "patch_validation.json").read_text(encoding="utf-8"))
+
+    assert result["terminal_status"] == "still_open"
+    assert ledger["terminal_status"] == "still_open"
+    assert ledger["reason"] == "patch_delegate_unsupported_defect"
+    assert ledger["patch_delegate_blocked_reason"] == "unsupported_defect"
+    assert ledger["patch_delegate_blocked_claim"]["reason"] == "unsupported_defect"
+    assert patch_validation["delegate_blocked_claim"]["reason"] == "unsupported_defect"
+    assert "OpenCode patch delegate blocked reason=unsupported_defect" in patch_validation["errors"]
+    assert not (case_dir / "scillm_patch_delegate_bug_report.json").exists()
 
 
 def test_compute_patch_delta_fails_when_delegate_only_touches_preexisting_dirty_files() -> None:

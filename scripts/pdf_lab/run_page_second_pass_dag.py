@@ -11,12 +11,14 @@ from __future__ import annotations
 import argparse
 import base64
 import contextlib
+import copy
 import hashlib
 import html as html_lib
 import json
 import math
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -811,6 +813,7 @@ def build_review_request(
     candidate_presets_path: str,
     model: str,
     batch_id: str,
+    include_images: bool = True,
 ) -> dict[str, Any]:
     page_json = load_json(case_dir / page_json_path)
     candidate_presets = load_json(case_dir / candidate_presets_path)
@@ -821,7 +824,7 @@ def build_review_request(
     ]
     prompt_text = (
         "You are reviewing PDF Oxide extraction evidence for one page. "
-        "Compare the original rendered page, the annotated candidate image, "
+        "Compare the stored original page image, the stored annotated candidate image, "
         "the extracted JSON, and the candidate preset questions. Return JSON only. "
         "You may classify candidates as clean, defect, unsure, or substrate_blocked. "
         "Do not claim that a bug is fixed, patched, resolved, committed, or closed.\n\n"
@@ -853,6 +856,14 @@ def build_review_request(
         "item_id": item_id,
         "request_sha256": request_sha256,
     }
+    content_parts: list[dict[str, Any]] = [{"type": "text", "text": prompt_text}]
+    if include_images:
+        content_parts.extend(
+            [
+                {"type": "image_url", "image_url": {"url": _image_data_uri(case_dir / original_image_path)}},
+                {"type": "image_url", "image_url": {"url": _image_data_uri(case_dir / annotated_image_path)}},
+            ]
+        )
     scillm_payload = {
         "model": model,
         "reasoning_effort": "high",
@@ -861,11 +872,7 @@ def build_review_request(
         "messages": [
             {
                 "role": "user",
-                "content": [
-                    {"type": "text", "text": prompt_text},
-                    {"type": "image_url", "image_url": {"url": _image_data_uri(case_dir / original_image_path)}},
-                    {"type": "image_url", "image_url": {"url": _image_data_uri(case_dir / annotated_image_path)}},
-                ],
+                "content": content_parts,
             }
         ],
     }
@@ -875,6 +882,7 @@ def build_review_request(
         "model": model,
         "reasoning_effort": "high",
         "response_format": {"type": "json_object"},
+        "payload_profile": "multimodal" if include_images else "text_only",
         "scillm_metadata": scillm_metadata,
         "page_case": page_case,
         "artifacts": {
@@ -901,6 +909,9 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
         errors.append("review_request endpoint mismatch")
     if review_request.get("response_format") != {"type": "json_object"}:
         errors.append("review_request response_format must require json_object")
+    payload_profile = review_request.get("payload_profile", "multimodal")
+    if payload_profile not in {"multimodal", "text_only"}:
+        errors.append("review_request payload_profile must be multimodal or text_only")
     if review_request.get("required_response_schema", {}).get("schema") != "pdf_lab.second_pass.review_response.v1":
         errors.append("review_request required_response_schema mismatch")
     artifacts = review_request.get("artifacts")
@@ -1064,7 +1075,10 @@ def validate_review_request_contract(case_dir: Path, review_request: dict[str, A
                 expected_artifact_text = f"{heading}:\n{json.dumps(artifact_payload, indent=2, sort_keys=True)}"
                 if expected_artifact_text not in prompt_text:
                     errors.append(f"scillm_payload text prompt does not include current artifacts.{artifact_key}")
-    if len(image_parts) != 2:
+    if payload_profile == "text_only":
+        if image_parts:
+            errors.append("text_only review payload must not include image_url evidence parts")
+    elif len(image_parts) != 2:
         errors.append("scillm_payload must include exactly two image_url evidence parts")
     else:
         expected_image_artifacts = [
@@ -1887,31 +1901,100 @@ def call_scillm_review(
     auth_token: str,
     caller_skill: str,
     timeout_s: float,
+    max_json_attempts: int = 2,
 ) -> dict[str, Any]:
     import httpx  # noqa: PLC0415
 
     url = f"{base_url.rstrip('/')}/v1/chat/completions"
-    response = httpx.post(
-        url,
-        headers={
-            "Authorization": f"Bearer {auth_token}",
-            "X-Caller-Skill": caller_skill,
-            "Content-Type": "application/json",
-        },
-        json=review_request["scillm_payload"],
-        timeout=timeout_s,
-    )
-    response.raise_for_status()
-    raw = response.json()
-    content = raw["choices"][0]["message"]["content"]
-    return {
-        "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
-        "endpoint": "POST /v1/chat/completions",
-        "http_status": response.status_code,
-        "scillm_metadata": review_request["scillm_metadata"],
-        "raw_response": raw,
-        "review_response": parse_scillm_review_content(content),
-    }
+    payload = copy.deepcopy(review_request["scillm_payload"])
+    attempts: list[dict[str, Any]] = []
+    expected_candidate_ids = list(review_request.get("page_case", {}).get("candidate_ids", []))
+    last_error = "review response did not pass validation"
+    for review_attempt in range(1, max_json_attempts + 1):
+        content = ""
+        try:
+            response = httpx.post(
+                url,
+                headers={
+                    "Authorization": f"Bearer {auth_token}",
+                    "X-Caller-Skill": caller_skill,
+                    "Content-Type": "application/json",
+                },
+                json=payload,
+                timeout=timeout_s,
+            )
+            response.raise_for_status()
+            raw = response.json()
+            content = raw["choices"][0]["message"]["content"]
+        except httpx.TimeoutException as exc:
+            validation = {"ok": False, "errors": [f"{type(exc).__name__}: {exc}"]}
+            attempts.append(
+                {
+                    "attempt": review_attempt,
+                    "http_status": None,
+                    "ok": False,
+                    "errors": validation["errors"],
+                }
+            )
+            last_error = "; ".join(str(error) for error in validation["errors"]) or last_error
+            if review_attempt >= max_json_attempts:
+                raise ValueError(f"review response failed validation after {max_json_attempts} attempts: {last_error}") from exc
+            payload = copy.deepcopy(review_request["scillm_payload"])
+            payload["messages"].append(
+                {
+                    "role": "user",
+                    "content": (
+                        "The previous Chutes review attempt timed out before returning valid JSON. "
+                        "Return a concise JSON object only, matching schema pdf_lab.second_pass.review_response.v1. "
+                        f"Previous attempt error: {last_error}."
+                    ),
+                }
+            )
+            continue
+        try:
+            review_response = parse_scillm_review_content(content)
+            validation = validate_review_response(
+                review_response,
+                expected_candidate_ids,
+                request=review_request,
+                page_case=review_request.get("page_case"),
+            )
+        except Exception as exc:  # noqa: BLE001 - retryable model-shape error.
+            review_response = None
+            validation = {"ok": False, "errors": [str(exc)]}
+        attempts.append(
+            {
+                "attempt": review_attempt,
+                "http_status": response.status_code,
+                "ok": bool(validation.get("ok")),
+                "errors": validation.get("errors", []),
+            }
+        )
+        if validation.get("ok") and review_response is not None:
+            return {
+                "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+                "endpoint": "POST /v1/chat/completions",
+                "http_status": response.status_code,
+                "scillm_metadata": review_request["scillm_metadata"],
+                "raw_response": raw,
+                "review_response": review_response,
+                "review_attempts": attempts,
+            }
+        last_error = "; ".join(str(error) for error in validation.get("errors", [])) or last_error
+        payload = copy.deepcopy(review_request["scillm_payload"])
+        payload["messages"].append(
+            {
+                "role": "user",
+                "content": (
+                    "Your previous response failed deterministic JSON validation. "
+                    "Return only a corrected JSON object matching schema "
+                    "pdf_lab.second_pass.review_response.v1. "
+                    f"Validation errors: {last_error}. "
+                    f"Previous response excerpt: {content[:2000]}"
+                ),
+            }
+        )
+    raise ValueError(f"review response failed validation after {max_json_attempts} attempts: {last_error}")
 
 
 def preflight_scillm_surface(
@@ -2170,7 +2253,44 @@ def clustered_patch_prompt_defect_scope(defects: list[dict[str, Any]]) -> dict[s
                 "do not inspect PDF fixtures or Python bindings for this helper-level defect."
             ),
         })
-    if "footer" in joined or "top margin" in joined or "page title" in joined or "title/header" in joined:
+    if "footer" in joined and any(token in joined for token in ("order", "ordering", "reversed", "reading-order", "reading order")):
+        primary_scope = "footer_text_ordering_defect"
+        required_test_name = "test_side_chrome_footer_text_preserves_visual_left_to_right_order"
+        likely_files = [
+            "scripts/pdf_lab/snapshot_current_extraction.py",
+            "python/pdf_oxide/presets/applier.py",
+            "tests/test_pdf_lab_snapshot_current_extraction.py",
+        ]
+        actionable_findings.append({
+            "defect_class": primary_scope,
+            "candidate_ids": [
+                candidate_id
+                for candidate_id in candidate_ids
+                if ":side_chrome" in candidate_id
+            ][:3],
+            "required_behavior": (
+                "Footer page-chrome text must preserve visual left-to-right ordering for "
+                "separated footer fragments such as left chapter label plus right PAGE number."
+            ),
+            "likely_code_surface": "scripts/pdf_lab/snapshot_current_extraction.py",
+            "implementation_hint": (
+                "Inspect page-chrome/footer element construction and any text reconstruction "
+                "from lines or fragments. For same-line footer fragments, preserve visual "
+                "left-to-right order by normalized bbox x before joining text; do not route "
+                "this through block type classification."
+            ),
+            "test_hint": (
+                "Add a focused Python regression named "
+                f"`{required_test_name}` using synthetic footer fragments; assert the output "
+                "contains `CHAPTER THREE PAGE 19`, not `CHAPTER THREE 19 PAGE`."
+            ),
+        })
+    if (
+        "top margin" in joined
+        or "page title" in joined
+        or "title/header" in joined
+        or ("footer" in joined and any(token in joined for token in ("misclassified", "classified as", "top-of-page", "top page")))
+    ):
         actionable_findings.append({
             "defect_class": "top_page_title_misclassified_as_footer",
             "candidate_ids": [
@@ -3836,6 +3956,30 @@ def parse_patch_applied_claim(assistant_text: str) -> dict[str, Any]:
     return claim
 
 
+def parse_patch_delegate_blocked_claim(assistant_text: str) -> dict[str, Any] | None:
+    line = next((item.strip() for item in assistant_text.splitlines() if "PATCH_DELEGATE_BLOCKED" in item), "")
+    if not line:
+        return None
+    reason_match = re.search(r"\breason=([a-zA-Z0-9_-]+)", line)
+    detail = line
+    if ":" in line:
+        detail = line.split(":", 1)[1].strip()
+    reason = reason_match.group(1) if reason_match else "other"
+    errors: list[str] = []
+    if not reason_match:
+        errors.append("PATCH_DELEGATE_BLOCKED missing reason= field")
+    if not detail:
+        errors.append("PATCH_DELEGATE_BLOCKED missing detail")
+    return {
+        "schema": "pdf_lab.second_pass.patch_delegate_blocked_claim.v1",
+        "status": "blocked",
+        "raw_line": line,
+        "reason": reason,
+        "detail": detail,
+        "errors": errors,
+    }
+
+
 def patch_delegate_stopped_after_tool_call(raw: dict[str, Any]) -> bool:
     message = raw.get("message")
     if not isinstance(message, dict):
@@ -3847,6 +3991,22 @@ def patch_delegate_stopped_after_tool_call(raw: dict[str, Any]) -> bool:
     parts = message.get("parts")
     saw_tool = any(isinstance(part, dict) and part.get("type") == "tool" for part in parts or [])
     return saw_tool and not has_nonempty_patch_artifact(raw.get("diff")) and not has_nonempty_patch_artifact(raw.get("artifacts"))
+
+
+def transport_materialization_has_changes(raw: dict[str, Any]) -> bool:
+    materialization = raw.get("materialization")
+    if not isinstance(materialization, dict):
+        return False
+    if materialization.get("error"):
+        return False
+    if materialization.get("materialized_change") is True:
+        return True
+    new_entries = materialization.get("new_entries")
+    if isinstance(new_entries, list) and any(str(entry).strip() for entry in new_entries):
+        return True
+    after_count = materialization.get("after_count")
+    before_count = materialization.get("before_count")
+    return isinstance(after_count, int) and isinstance(before_count, int) and after_count > before_count
 
 
 def timeout_value_is_positive_finite(value: Any) -> bool:
@@ -4014,8 +4174,10 @@ def validate_patch_delegate_receipt(
             errors.append("transport patch delegate response missing PATCH_APPLIED/PATCH_DELEGATE_BLOCKED sentinel")
         if patch_delegate_stopped_after_tool_call(raw):
             errors.append("transport patch delegate stopped after tool call without terminal sentinel or diff")
-        if "PATCH_DELEGATE_BLOCKED" in assistant_text:
-            errors.append("transport patch delegate reported blocked substrate")
+        blocked_claim = parse_patch_delegate_blocked_claim(assistant_text)
+        if blocked_claim is not None:
+            errors.append(f"transport patch delegate blocked reason={blocked_claim['reason']}")
+            errors.extend(blocked_claim["errors"])
         message = raw.get("message")
         if isinstance(message, dict):
             info = message.get("info")
@@ -4027,10 +4189,11 @@ def validate_patch_delegate_receipt(
             "transport_run_id": receipt.get("transport_run_id"),
             "observation": receipt.get("observation"),
             "diff": raw.get("diff"),
+            "materialization": raw.get("materialization"),
             "event_count": event_stream.get("event_count"),
         }
-        if not has_nonempty_patch_artifact(raw.get("diff")):
-            errors.append("transport patch delegate produced no diff")
+        if not has_nonempty_patch_artifact(raw.get("diff")) and not transport_materialization_has_changes(raw):
+            errors.append("transport patch delegate produced no diff or materialized change")
     elif isinstance(receipt, dict):
         if receipt.get("schema") != "pdf_lab.second_pass.opencode_patch_receipt.v1":
             errors.append("OpenCode patch receipt schema mismatch")
@@ -4056,12 +4219,15 @@ def validate_patch_delegate_receipt(
             errors.append("OpenCode patch delegate response missing PATCH_APPLIED/PATCH_DELEGATE_BLOCKED sentinel")
         if patch_delegate_stopped_after_tool_call(raw):
             errors.append("OpenCode patch delegate stopped after tool call without terminal sentinel or diff")
-        if "PATCH_DELEGATE_BLOCKED" in assistant_text:
-            errors.append("OpenCode patch delegate reported blocked substrate")
+        blocked_claim = parse_patch_delegate_blocked_claim(assistant_text)
+        if blocked_claim is not None:
+            errors.append(f"OpenCode patch delegate blocked reason={blocked_claim['reason']}")
+            errors.extend(blocked_claim["errors"])
         artifacts = raw.get("artifacts")
         if not has_nonempty_patch_artifact(raw.get("diff")) and not has_nonempty_patch_artifact(artifacts):
             errors.append("OpenCode patch delegate produced no diff or patch artifact")
     applied_claim = parse_patch_applied_claim(assistant_text) if "PATCH_APPLIED" in assistant_text else None
+    delegate_blocked_claim = parse_patch_delegate_blocked_claim(assistant_text)
     if applied_claim is not None and applied_claim["errors"]:
         errors.extend(applied_claim["errors"])
     if artifacts is not None and not isinstance(artifacts, (dict, list)):
@@ -4073,6 +4239,7 @@ def validate_patch_delegate_receipt(
         "patch_status": status or "unknown",
         "artifacts_present": bool(artifacts),
         "applied_claim": applied_claim,
+        "delegate_blocked_claim": delegate_blocked_claim,
     }
 
 
@@ -4212,6 +4379,16 @@ def patch_validation_has_recoverable_transport_failure(validation: dict[str, Any
             "transport stream did not include message.completed",
         ]
     )
+
+
+def patch_validation_delegate_blocked_reason(validation: dict[str, Any] | None) -> str | None:
+    if not isinstance(validation, dict):
+        return None
+    claim = validation.get("delegate_blocked_claim")
+    if not isinstance(claim, dict):
+        return None
+    reason = claim.get("reason")
+    return reason if isinstance(reason, str) and reason.strip() else None
 
 
 def validation_error_list(validation: dict[str, Any] | None, label: str) -> list[str]:
@@ -4490,11 +4667,31 @@ def run_validation_commands(
         errors.append(f"validation command ran zero cargo tests: {zero_test_commands}")
     if not commands:
         errors.append("no validation commands configured")
-    covered_test_files = sorted(
+    covered_test_files_set = {
         test_file
         for test_file in required_test_files
         if any(test_file in command for command in commands)
-    )
+    }
+    for test_file in required_test_files:
+        if test_file in covered_test_files_set or not test_file.startswith("src/") or not test_file.endswith(".rs"):
+            continue
+        source_path = cwd / test_file
+        if not source_path.is_file():
+            continue
+        source_text = source_path.read_text(encoding="utf-8")
+        for item in results:
+            command = str(item["command"]).strip()
+            if item["exit_code"] != 0 or not command.startswith("cargo test"):
+                continue
+            cargo_parts = shlex.split(command)
+            if len(cargo_parts) < 3:
+                continue
+            test_name = cargo_parts[2]
+            command_output = f"{item['stdout']}\n{item['stderr']}"
+            if test_name in source_text and re.search(rf"\b{re.escape(test_name)}\b", command_output):
+                covered_test_files_set.add(test_file)
+                break
+    covered_test_files = sorted(covered_test_files_set)
     missing_test_file_coverage = sorted(set(required_test_files) - set(covered_test_files))
     if missing_test_file_coverage:
         errors.append(f"validation commands did not cover changed regression tests: {missing_test_file_coverage}")
@@ -6525,6 +6722,7 @@ def run_page_case(
     review_mode: str = "dry_run",
     review_fixture_path: Path | None = None,
     review_after_fixture_path: Path | None = None,
+    review_include_images: bool = True,
     scillm_base_url: str = "http://localhost:4001",
     scillm_auth_token: str = "sk-dev-proxy-123",
     caller_skill: str = "pdf-lab",
@@ -6765,6 +6963,7 @@ def run_page_case(
         candidate_presets_path="candidate_presets.json",
         model=model,
         batch_id=batch_id,
+        include_images=review_include_images,
     )
     write_json(case_dir / "review_request.json", review_request)
     review_request_validation = validate_review_request_contract(case_dir, review_request)
@@ -7893,6 +8092,7 @@ def run_page_case(
                         candidate_presets_path="candidate_presets.json",
                         model=model,
                         batch_id=batch_id,
+                        include_images=review_include_images,
                     )
                     write_json(case_dir / "review_after_request.json", after_review_request)
                     after_review_request_validation = validate_review_request_contract(case_dir, after_review_request)
@@ -8072,6 +8272,12 @@ def run_page_case(
                 terminal_status, terminal_reason = "still_open", "repair_plan_failed"
             elif patch_validation_has_delegate_timeout(patch_validation):
                 terminal_status, terminal_reason = "blocked_substrate", "patch_delegate_timeout"
+            elif patch_validation_delegate_blocked_reason(patch_validation) in {"unsupported_defect", "no_code_defect"}:
+                terminal_status = "still_open"
+                terminal_reason = f"patch_delegate_{patch_validation_delegate_blocked_reason(patch_validation)}"
+            elif patch_validation_delegate_blocked_reason(patch_validation) in {"workspace_missing", "evidence_missing", "other"}:
+                terminal_status = "human_needed"
+                terminal_reason = f"patch_delegate_{patch_validation_delegate_blocked_reason(patch_validation)}"
             elif patch_validation and any(
                 "patch_prompt_contract_failed" in error
                 for error in validation_error_list(patch_validation, "patch_validation")
@@ -8151,6 +8357,11 @@ def run_page_case(
         ],
         "commit_sha": None,
     }
+    delegate_blocked_reason = patch_validation_delegate_blocked_reason(patch_validation)
+    if delegate_blocked_reason is not None:
+        terminal["patch_delegate_blocked_reason"] = delegate_blocked_reason
+        if isinstance(patch_validation, dict) and isinstance(patch_validation.get("delegate_blocked_claim"), dict):
+            terminal["patch_delegate_blocked_claim"] = patch_validation["delegate_blocked_claim"]
     if review_preflight is not None:
         terminal["evidence_artifacts"].append("scillm_review_preflight.json")
     if review_fixture_artifact is not None:
@@ -8327,6 +8538,7 @@ def main() -> int:
     parser.add_argument("--review-mode", choices=["dry_run", "live", "fixture"], default="dry_run")
     parser.add_argument("--review-fixture", type=Path, dest="review_fixture_path")
     parser.add_argument("--review-after-fixture", type=Path, dest="review_after_fixture_path")
+    parser.add_argument("--review-include-images", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--scillm-base-url", default=os.environ.get("SCILLM_API_BASE", "http://localhost:4001"))
     parser.add_argument("--scillm-auth-token", default=os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123"))
     parser.add_argument("--caller-skill", default="pdf-lab")
@@ -8369,6 +8581,7 @@ def main() -> int:
             review_mode=args.review_mode,
             review_fixture_path=args.review_fixture_path,
             review_after_fixture_path=args.review_after_fixture_path,
+            review_include_images=args.review_include_images,
             scillm_base_url=args.scillm_base_url,
             scillm_auth_token=args.scillm_auth_token,
             caller_skill=args.caller_skill,

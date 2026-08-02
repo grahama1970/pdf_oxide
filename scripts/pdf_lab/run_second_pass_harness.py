@@ -2125,6 +2125,14 @@ def package_scillm_patch_delegate_bug_report_bundle(
         else:
             missing.append(str(source))
 
+    def add_optional_file(bundle: zipfile.ZipFile, source: Path, arcname: str) -> None:
+        if not source.is_file():
+            return
+        required_zip_entries.append(arcname)
+        expected_sources[arcname] = source
+        bundle.write(source, arcname=arcname)
+        included.append(arcname)
+
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
         add_file(bundle, bundle_path, bundle_path.name)
         for result in page_results:
@@ -2139,12 +2147,19 @@ def package_scillm_patch_delegate_bug_report_bundle(
                 "patch_receipt.json",
                 "patch_validation.json",
                 "patch_attempts_ledger.json",
-                "transport_event_stream.json",
-                "transport_events.jsonl",
                 "terminal_ledger.json",
                 "terminal_ledger_validation.json",
             ]:
                 add_file(bundle, case_dir / artifact, f"{case_prefix}/{artifact}")
+            for artifact in [
+                "transport_event_stream.json",
+                "transport_events.jsonl",
+                "patch_attempt_01_opencode_host_status.json",
+                "patch_attempt_01_opencode_host_result.json",
+                "patch_attempt_01_opencode_host_events.jsonl",
+                "patch_attempt_01_opencode_host_artifacts_summary.json",
+            ]:
+                add_optional_file(bundle, case_dir / artifact, f"{case_prefix}/{artifact}")
     validation = validate_scillm_patch_delegate_bug_report_zip(
         zip_path=zip_path,
         included_artifacts=included,
@@ -4278,9 +4293,32 @@ def build_opencode_completion_canary_request(
     return request
 
 
+def diff_text_mentions_path(text: str, relpath: str) -> bool:
+    relpath = relpath.strip()
+    if not relpath:
+        return False
+    if relpath in text:
+        return True
+    relpath_no_dot = relpath[2:] if relpath.startswith("./") else relpath
+    if relpath_no_dot and relpath_no_dot in text:
+        return True
+    for token in re.split(r"[\s\"'`,]+", text):
+        path = token.strip()
+        if not path:
+            continue
+        path_no_dot = path[2:] if path.startswith("./") else path
+        path_dir = path.rstrip("/")
+        path_dir_no_dot = path_no_dot.rstrip("/")
+        if path.endswith("/") and (
+            relpath.startswith(f"{path_dir}/") or relpath_no_dot.startswith(f"{path_dir_no_dot}/")
+        ):
+            return True
+    return False
+
+
 def diff_mentions_path(diff: Any, relpath: str) -> bool:
     if isinstance(diff, str):
-        return relpath in diff
+        return diff_text_mentions_path(diff, relpath)
     if isinstance(diff, dict):
         return any(diff_mentions_path(value, relpath) for value in diff.values())
     if isinstance(diff, list):

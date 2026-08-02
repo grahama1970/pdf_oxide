@@ -980,6 +980,7 @@ mod tests {
             confidence: 0.9,
             header_level: Some(2),
             header_validation: None,
+            lines: Vec::new(),
         };
         let body1 = ClassifiedBlock {
             block_type: BlockType::Body,
@@ -991,6 +992,7 @@ mod tests {
             confidence: 0.9,
             header_level: None,
             header_validation: None,
+            lines: Vec::new(),
         };
         let body2 = ClassifiedBlock {
             block_type: BlockType::Body,
@@ -1002,6 +1004,7 @@ mod tests {
             confidence: 0.9,
             header_level: None,
             header_validation: None,
+            lines: Vec::new(),
         };
 
         let page_blocks = vec![(0, vec![header, body1, body2])];
@@ -1029,6 +1032,7 @@ mod tests {
             confidence: 0.9,
             header_level: Some(1),
             header_validation: None,
+            lines: Vec::new(),
         };
         let h2 = ClassifiedBlock {
             block_type: BlockType::Title,
@@ -1040,6 +1044,7 @@ mod tests {
             confidence: 0.9,
             header_level: Some(2),
             header_validation: None,
+            lines: Vec::new(),
         };
 
         let page_blocks = vec![(0, vec![h1, h2])];
@@ -1062,6 +1067,7 @@ mod tests {
             confidence: 0.9,
             header_level: Some(1),
             header_validation: None,
+            lines: Vec::new(),
         };
         let body = ClassifiedBlock {
             block_type: BlockType::Body,
@@ -1073,6 +1079,7 @@ mod tests {
             confidence: 0.9,
             header_level: None,
             header_validation: None,
+            lines: Vec::new(),
         };
         let cont = ClassifiedBlock {
             block_type: BlockType::Title,
@@ -1084,6 +1091,7 @@ mod tests {
             confidence: 0.9,
             header_level: Some(1),
             header_validation: None,
+            lines: Vec::new(),
         };
         let body2 = ClassifiedBlock {
             block_type: BlockType::Body,
@@ -1095,6 +1103,7 @@ mod tests {
             confidence: 0.9,
             header_level: None,
             header_validation: None,
+            lines: Vec::new(),
         };
 
         let page_blocks = vec![(0, vec![h1, body]), (1, vec![cont, body2])];

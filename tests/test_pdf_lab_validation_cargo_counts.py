@@ -48,3 +48,44 @@ def test_run_validation_commands_accepts_cargo_with_one_matching_test_and_empty_
     assert validation["ok"] is True
     assert validation["errors"] == []
     assert validation["test_files"] == ["src/extractors/block_classifier.rs"]
+
+
+def test_run_validation_commands_covers_inline_rust_test_by_name_without_path_comment(
+    tmp_path: Path, monkeypatch
+) -> None:
+    dag = _load_page_dag_module()
+    source = tmp_path / "src/extractors/block_classifier.rs"
+    source.parent.mkdir(parents=True)
+    source.write_text(
+        "#[test]\n"
+        "fn test_page_top_title_and_qid_table_row_are_not_footer_or_reference() {}\n",
+        encoding="utf-8",
+    )
+
+    def fake_run(command, **kwargs):
+        return subprocess.CompletedProcess(
+            args=command,
+            returncode=0,
+            stdout=(
+                "running 1 test\n"
+                "test extractors::block_classifier::tests::"
+                "test_page_top_title_and_qid_table_row_are_not_footer_or_reference ... ok\n\n"
+                "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4544 filtered out\n\n"
+                "running 0 tests\n"
+                "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out\n"
+            ),
+            stderr="",
+        )
+
+    monkeypatch.setattr(dag.subprocess, "run", fake_run)
+
+    validation = dag.run_validation_commands(
+        ["cargo test test_page_top_title_and_qid_table_row_are_not_footer_or_reference"],
+        cwd=tmp_path,
+        required_test_files=["src/extractors/block_classifier.rs"],
+    )
+
+    assert validation["ok"] is True
+    assert validation["errors"] == []
+    assert validation["covered_test_files"] == ["src/extractors/block_classifier.rs"]
+    assert validation["missing_test_file_coverage"] == []

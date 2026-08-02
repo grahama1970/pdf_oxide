@@ -52,7 +52,7 @@ def test_prepare_isolated_code_root_creates_clean_git_baseline(tmp_path: Path) -
     assert (dest / "tests/test_fix.py").is_file()
     assert (dest / "pyproject.toml").is_file()
     assert not (dest / "python/pdf_oxide/__pycache__/extract_for_pdflab.pyc").exists()
-    assert not (dest / "python/pdf_oxide/pdf_oxide.abi3.so").exists()
+    assert (dest / "python/pdf_oxide/pdf_oxide.abi3.so").is_file()
     assert not (dest / "artifacts/pdf_lab/generated.json").exists()
     assert (dest / ".pdf_lab_isolated_code_root.json").is_file()
     assert subprocess.check_output(["git", "-C", str(dest), "status", "--short"], text=True).strip() == ""

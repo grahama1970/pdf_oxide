@@ -2275,6 +2275,55 @@ def test_package_scillm_patch_delegate_bug_report_bundle(tmp_path: Path) -> None
     assert "page_cases/page_case_0001_p0002/terminal_ledger_validation.json" in names
 
 
+def test_package_scillm_patch_delegate_bug_report_bundle_accepts_opencode_serve_artifacts(
+    tmp_path: Path,
+) -> None:
+    harness = _load_module()
+    out_dir = tmp_path / "out"
+    out_dir.mkdir()
+    case_dir = tmp_path / "case"
+    case_dir.mkdir()
+    for name in [
+        "scillm_patch_delegate_bug_report.json",
+        "patch_request.json",
+        "patch_receipt.json",
+        "patch_validation.json",
+        "patch_attempts_ledger.json",
+        "patch_attempt_01_opencode_host_status.json",
+        "patch_attempt_01_opencode_host_result.json",
+        "patch_attempt_01_opencode_host_events.jsonl",
+        "patch_attempt_01_opencode_host_artifacts_summary.json",
+        "terminal_ledger.json",
+        "terminal_ledger_validation.json",
+    ]:
+        (case_dir / name).write_text(json.dumps({"artifact": name}), encoding="utf-8")
+    bundle_path = out_dir / "scillm_patch_delegate_bug_reports.json"
+    bundle_path.write_text(json.dumps({"schema": "bundle"}), encoding="utf-8")
+    zip_path = out_dir / "scillm_patch_delegate_bug_reports.zip"
+
+    validation = harness.package_scillm_patch_delegate_bug_report_bundle(
+        out_dir=out_dir,
+        bundle_path=bundle_path,
+        zip_path=zip_path,
+        page_results=[
+            {
+                "case_id": "page_case_0001_p0002",
+                "case_dir": str(case_dir),
+                "scillm_patch_delegate_bug_report": str(case_dir / "scillm_patch_delegate_bug_report.json"),
+            }
+        ],
+    )
+
+    assert validation["ok"] is True
+    assert validation["missing_artifacts"] == []
+    assert validation["missing_expected_zip_entries"] == []
+    with zipfile.ZipFile(zip_path) as archive:
+        names = set(archive.namelist())
+    assert "page_cases/page_case_0001_p0002/patch_attempt_01_opencode_host_events.jsonl" in names
+    assert "page_cases/page_case_0001_p0002/transport_events.jsonl" not in names
+    assert "page_cases/page_case_0001_p0002/transport_events.jsonl" not in validation["required_zip_entries"]
+
+
 def test_package_scillm_patch_delegate_bug_report_bundle_rejects_directory_artifact(
     tmp_path: Path,
 ) -> None:
@@ -4256,6 +4305,54 @@ def test_package_harness_review_bundle_includes_run_and_page_artifacts(tmp_path:
     assert "page_cases/page_case_0001_p0001/terminal_ledger.json" in names
     assert "page_cases/page_case_0001_p0001/review_bundle.zip" in names
     assert "page_cases/page_case_0001_p0001/scillm_orchestrator_page_dag_spec.json" in names
+
+
+def test_package_harness_review_bundle_declares_blocked_case_extra_evidence(tmp_path: Path) -> None:
+    harness = _load_module()
+    out_dir = tmp_path / "out"
+    out_dir.mkdir()
+    top_artifact = out_dir / "candidate_manifest.json"
+    top_artifact.write_text(json.dumps({"artifact": "candidate_manifest.json"}), encoding="utf-8")
+    proof_dir = out_dir / "scillm_proof_floor"
+    proof_dir.mkdir()
+    extra_artifacts = {}
+    for name in [
+        "scillm_proof_floor.json",
+        "scillm_proof_floor_validation.json",
+        "liveliness_response.json",
+        "opencode_health_response.json",
+        "positive_chat_request.json",
+        "positive_chat_response.json",
+        "missing_caller_chat_request.json",
+        "missing_caller_chat_response.json",
+    ]:
+        path = proof_dir / name
+        path.write_text(json.dumps({"artifact": name}), encoding="utf-8")
+        extra_artifacts[name] = path
+    result = harness._write_blocked_case_result(
+        out_dir=out_dir,
+        case={"case_id": "page_case_0001_p0001", "page_number": 1},
+        reason="scillm_proof_floor_failed",
+        visibility={"ok": True, "errors": []},
+        extra_artifacts=extra_artifacts,
+    )
+    zip_path = out_dir / "harness_review_bundle.zip"
+
+    validation = harness.package_harness_review_bundle(
+        out_dir=out_dir,
+        zip_path=zip_path,
+        top_level_artifacts=[top_artifact],
+        page_results=[result],
+    )
+
+    expected_arcname = "page_cases/page_case_0001_p0001/scillm_proof_floor.json"
+    assert validation["ok"] is True
+    assert validation["zip_content_ok"] is True
+    assert validation["undeclared_zip_entries"] == []
+    assert expected_arcname in validation["included_artifacts"]
+    assert expected_arcname in validation["required_zip_entries"]
+    with zipfile.ZipFile(zip_path) as archive:
+        assert expected_arcname in archive.namelist()
 
 
 def test_package_harness_review_bundle_requires_resolved_page_dag_artifacts(tmp_path: Path) -> None:
@@ -9685,6 +9782,37 @@ def test_opencode_completion_canary_accepts_sentinel_without_trailing_newline(tm
 
     assert validation["ok"] is True
     assert validation["write_sentinel_content_ok"] is True
+
+
+def test_opencode_completion_canary_accepts_untracked_parent_dir_diff(tmp_path: Path) -> None:
+    harness = _load_module()
+    code_root = tmp_path / "code-root"
+    sentinel = code_root / ".pdf_lab_write_canary/opencode_write_canary.txt"
+    sentinel.parent.mkdir(parents=True)
+    sentinel.write_text("PDF_LAB_OPENCODE_WRITE_CANARY_OK\n", encoding="utf-8")
+
+    validation = harness.validate_opencode_completion_canary_receipt(
+        {
+            "raw_response": {
+                "status": "completed",
+                "assistant_text": "PDF_LAB_CANARY_OK wrote .pdf_lab_write_canary/opencode_write_canary.txt",
+                "diff": [
+                    {
+                        "path": ".pdf_lab_write_canary/",
+                        "status": "??",
+                        "source": "git_status_porcelain",
+                    }
+                ],
+            }
+        },
+        code_root=code_root,
+    )
+
+    assert validation["ok"] is True
+    assert validation["write_sentinel_present"] is True
+    assert validation["write_sentinel_content_ok"] is True
+    assert validation["diff_present"] is True
+    assert validation["diff_references_canary_path"] is True
 
 
 def test_validate_opencode_completion_canary_requires_patch_diff(tmp_path: Path) -> None:

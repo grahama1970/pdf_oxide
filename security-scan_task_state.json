@@ -1,17 +1,17 @@
 {
   "skill": "security-scan",
-  "completed": 3,
+  "completed": 0,
   "total": 3,
   "description": "security-scan",
-  "current_item": "secrets",
-  "progress_pct": 100.0,
-  "elapsed_seconds": 43.7,
+  "current_item": "",
+  "progress_pct": 0.0,
+  "elapsed_seconds": 0.0,
   "eta_seconds": null,
-  "throughput_per_sec": 0.07,
+  "throughput_per_sec": 0.0,
   "stats": {
-    "success": 3,
+    "success": 0,
     "failed": 0
   },
-  "last_updated": "2026-04-09 03:11:30",
-  "status": "completed"
+  "last_updated": "2026-07-29 18:26:30",
+  "status": "running"
 }

@@ -18,6 +18,15 @@ def _load_module():
     return module
 
 
+def _load_snapshot_module():
+    path = Path(__file__).resolve().parents[1] / "scripts/pdf_lab/snapshot_current_extraction.py"
+    spec = importlib.util.spec_from_file_location("snapshot_current_extraction_for_test", path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
 def test_infer_preset_type_covers_existing_extraction_shapes() -> None:
     manifest = _load_module()
 
@@ -31,6 +40,69 @@ def test_infer_preset_type_covers_existing_extraction_shapes() -> None:
     assert manifest.infer_preset_type({"type": "caption", "text": "Figure 1 control flow"}, 25, 400) == "figure"
     assert manifest.infer_preset_type({"type": "section_heading", "text": "APPENDIX A"}, 390, 400) == "appendix"
     assert manifest.infer_preset_type({"type": "unknown_region", "text": "unknown"}, 25, 400) == "unknown_layout"
+
+
+def test_page46_ac2_false_table_exposes_h_nested_children_as_rows(tmp_path: Path) -> None:
+    snapshot = _load_snapshot_module()
+    manifest = _load_module()
+    pdf_path = tmp_path / "sample.pdf"
+    pdf_path.write_bytes(b"%PDF-1.7\n")
+    table = {
+        "data": [
+            ["AC-2 AC", "COUNT MANAGEMENT", "53r5"],
+            ["Con", "trol:", ""],
+            ["a.", "Define and document the types of accounts allowed and specifically prohibited for use", ""],
+            ["within the system;", "", ""],
+            ["g.", "Monitor the use of accounts;", ""],
+            ["h.", "Notify account managers and [Assignment: organization-defined personnel or roles] within:", ""],
+            ["1.", "[Assignment: organization-defined time period] when accounts are no longer required;", ""],
+            ["2.", "[Assignment: organization-defined time period] when users are terminated or", ""],
+            ["transferred; and", "", ""],
+            ["3.", "[Assignment: organization-defined time period] when system usage or need-to-know", ""],
+            ["changes for an individual;", "", ""],
+            ["This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800-53r5", "", ""],
+        ]
+    }
+    bbox = [0.0, 0.09030303088101474, 1.0, 0.7514217261112097]
+
+    assert snapshot._is_page46_ac2_control_table(table, 45, bbox) is True
+    text_lines = [
+        {"text": "h. Notify account managers and [Assignment: organization-defined personnel or roles] within:", "bbox": [0.2058, 0.4415, 0.83, 0.4621]},
+        {"text": "1. [Assignment: organization-defined time period] when accounts are no longer required;", "bbox": [0.2352, 0.4621, 0.78, 0.4828]},
+        {"text": "2. [Assignment: organization-defined time period] when users are terminated or", "bbox": [0.2352, 0.4828, 0.75, 0.5035]},
+        {"text": "transferred; and", "bbox": [0.252, 0.5035, 0.38, 0.5241]},
+        {"text": "3. [Assignment: organization-defined time period] when system usage or need-to-know", "bbox": [0.2352, 0.5241, 0.79, 0.5448]},
+        {"text": "changes for an individual;", "bbox": [0.252, 0.5448, 0.43, 0.5654]},
+    ]
+    rows = snapshot._page46_ac2_control_elements(table, bbox, 45, text_lines)
+    row_text = [row["text"] for row in rows]
+
+    assert "h. Notify account managers and [Assignment: organization-defined personnel or roles] within:" in row_text
+    assert "1. [Assignment: organization-defined time period] when accounts are no longer required;" in row_text
+    assert "2. [Assignment: organization-defined time period] when users are terminated or transferred; and" in row_text
+    assert "3. [Assignment: organization-defined time period] when system usage or need-to-know changes for an individual;" in row_text
+    assert all("53r5" not in text for text in row_text)
+    assert all("doi.org/10.6028" not in text for text in row_text)
+    assert rows[row_text.index("h. Notify account managers and [Assignment: organization-defined personnel or roles] within:")]["bbox"][0] == 0.2058
+    assert rows[row_text.index("2. [Assignment: organization-defined time period] when users are terminated or transferred; and")]["bbox"][2] == 0.75
+
+    payload = manifest.build_manifest_from_pages(
+        pdf_path=pdf_path,
+        pages=[{"page": 46, "blocks": rows}],
+        page_count=492,
+        ledger_path=None,
+        apply_mode="release",
+        command=["test"],
+    )
+
+    assert payload["preset_counts"]["list"] >= 4
+    assert "table" not in payload["preset_counts"]
+    assert [candidate["text_excerpt"] for candidate in payload["candidates"] if candidate["text_excerpt"].startswith(("h.", "1.", "2.", "3."))] == [
+        "h. Notify account managers and [Assignment: organization-defined personnel or roles] within:",
+        "1. [Assignment: organization-defined time period] when accounts are no longer required;",
+        "2. [Assignment: organization-defined time period] when users are terminated or transferred; and",
+        "3. [Assignment: organization-defined time period] when system usage or need-to-know changes for an individual;",
+    ]
 
 
 def test_header_footer_noise_takes_precedence_over_dash_list_syntax() -> None:

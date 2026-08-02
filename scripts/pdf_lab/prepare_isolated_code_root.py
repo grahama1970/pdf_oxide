@@ -44,6 +44,9 @@ EXCLUDED_DIR_NAMES = {
     "target",
 }
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".so", ".pyd", ".dll", ".dylib"}
+ALLOWED_NATIVE_ARTIFACTS = {
+    Path("python/pdf_oxide/pdf_oxide.abi3.so"),
+}
 
 
 def utc_now() -> str:
@@ -56,6 +59,8 @@ def write_json(path: Path, payload: Any) -> None:
 
 
 def should_skip(path: Path) -> bool:
+    if path in ALLOWED_NATIVE_ARTIFACTS:
+        return False
     if any(part in EXCLUDED_DIR_NAMES for part in path.parts):
         return True
     return path.suffix in EXCLUDED_SUFFIXES
