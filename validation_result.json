@@ -1,0 +1,47 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page30_body_hyphen_word_join_defects.json",
+  "checks": [
+    {
+      "actual_label": "paragraph_block",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.14700491911445568,
+            0.08994257570517183,
+            0.8392635170930351,
+            0.2610713111029731
+          ],
+          "contains_expected_text": true,
+          "contains_forbidden_text": false,
+          "id": "actual:p30:block:4",
+          "iou": 0.9671079432959709,
+          "matches_expected_label": true,
+          "source_type": "Body",
+          "text": "Finally, the controls are independent of the process employed to select those controls. The control selection process can be part of an organization-wide risk management process, a systems engineering process [SP 800-160-1],13 the Risk Management Framework [SP 800-37], the Cybersecurity Framework [NIST CSF], or the Privacy Framework [NIST PF].14 The control selection criteria can be guided and informed by many factors, including mission and business needs, stakeholder protection needs, threats, vulnerabilities, and requirements to comply with federal laws, executive orders, directives, regulations, policies, standards, and guidelines. The combination of a catalog of security and privacy controls and a risk-based control selection process can help organizations comply with stated security and privacy requirements, obtain adequate security for their information systems, and protect the privacy of individuals.",
+          "type": "paragraph_block"
+        }
+      ],
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "expected_label": "paragraph_block",
+      "expected_state": "present",
+      "expected_text": "organization-wide risk management process",
+      "forbidden_text": "organization- widerisk management process",
+      "id": "page30-body-organization-wide-risk-spacing",
+      "matching_text_count": 1,
+      "status": "PASS",
+      "text": "The control selection process can be part of an organization-wide risk management process"
+    }
+  ],
+  "created_at": "2026-07-29T17:48:29.866061+00:00",
+  "errors": [],
+  "extraction_json": "/tmp/pdf_oxide_verify_page30_text_reportlab_SWeATW/artifacts/pdf_lab/creator_reviewer_page30_body_hyphen_word_join_20260729T1740Z/current_evidence/pages/page_0030/release_extraction_blocks.json",
+  "page": 30,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "PASS",
+  "summary": {
+    "check_count": 1,
+    "failed": 0,
+    "passed": 1
+  }
+}
