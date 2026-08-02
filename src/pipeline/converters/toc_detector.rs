@@ -799,10 +799,20 @@ mod tests {
     use crate::geometry::Rect;
     use crate::layout::text_block::{Color, FontWeight};
 
+    /// Build a span for the tests below.
+    ///
+    /// `y` is a PDF user-space coordinate: the origin is bottom-left and y grows
+    /// upward, so a *larger* `y` sits *higher* on the page and is read first.
+    /// This matches the convention asserted by
+    /// `pipeline::reading_order::xycut::tests::test_sort_order` and produced by
+    /// the extraction path (see the `PAGE_H - y_top - h` flip in
+    /// `extractors::table_block_reconciler`).
+    ///
+    /// `Rect::new` takes `(x, y, width, height)` — not two corners.
     fn make_span(text: &str, x: f32, y: f32, width: f32, font_size: f32, bold: bool) -> TextSpan {
         TextSpan {
             text: text.to_string(),
-            bbox: Rect::new(x, y, x + width, y + font_size),
+            bbox: Rect::new(x, y, width, font_size),
             font_size,
             font_name: "TestFont".to_string(),
             font_weight: if bold {
@@ -908,14 +918,15 @@ mod tests {
     fn test_extract_simple_toc() {
         let detector = TocDetector::new();
         let spans = vec![
-            make_span("Chapter 1: Introduction", 72.0, 100.0, 200.0, 12.0, true),
-            make_span("1", 500.0, 100.0, 10.0, 12.0, false),
-            make_span("  1.1 Background", 90.0, 120.0, 150.0, 11.0, false),
-            make_span("5", 500.0, 120.0, 10.0, 11.0, false),
-            make_span("  1.2 Methods", 90.0, 140.0, 120.0, 11.0, false),
-            make_span("12", 500.0, 140.0, 15.0, 11.0, false),
-            make_span("Chapter 2: Results", 72.0, 160.0, 180.0, 12.0, true),
-            make_span("25", 500.0, 160.0, 15.0, 12.0, false),
+            // y descends down the page: Chapter 1 sits highest, Chapter 2 lowest.
+            make_span("Chapter 1: Introduction", 72.0, 160.0, 200.0, 12.0, true),
+            make_span("1", 500.0, 160.0, 10.0, 12.0, false),
+            make_span("  1.1 Background", 90.0, 140.0, 150.0, 11.0, false),
+            make_span("5", 500.0, 140.0, 10.0, 11.0, false),
+            make_span("  1.2 Methods", 90.0, 120.0, 120.0, 11.0, false),
+            make_span("12", 500.0, 120.0, 15.0, 11.0, false),
+            make_span("Chapter 2: Results", 72.0, 100.0, 180.0, 12.0, true),
+            make_span("25", 500.0, 100.0, 15.0, 12.0, false),
         ];
 
         let entries = detector.extract_from_spans(&spans);
