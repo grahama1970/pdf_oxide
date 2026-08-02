@@ -1,0 +1,47 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page186_list_hyphen_wrap_spacing_defects.json",
+  "checks": [
+    {
+      "actual_label": "list",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.23526133119670395,
+            0.21269372496942077,
+            0.8357492584029055,
+            0.24508160292500197
+          ],
+          "contains_expected_text": true,
+          "contains_forbidden_text": false,
+          "id": "actual:p186:block:8",
+          "iou": 1.0,
+          "matches_expected_label": true,
+          "source_type": "List",
+          "text": "10. Explicitly designates responsibility for incident response to [Assignment: organization-defined entities, personnel, or roles].",
+          "type": "list"
+        }
+      ],
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "expected_label": "list",
+      "expected_state": "present",
+      "expected_text": "organization-defined entities",
+      "forbidden_text": "organization- defined entities",
+      "id": "page186-list-organization-defined-spacing",
+      "matching_text_count": 1,
+      "status": "PASS",
+      "text": "Explicitly designates responsibility for incident response"
+    }
+  ],
+  "created_at": "2026-07-29T20:13:04.093169+00:00",
+  "errors": [],
+  "extraction_json": "/tmp/pdf_oxide_verify_page186_sgYVu1/artifacts/pdf_lab/creator_reviewer_page186_list_hyphen_wrap_spacing_20260729T2020Z/current_evidence/pages/page_0186/release_extraction_blocks.json",
+  "page": 186,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "PASS",
+  "summary": {
+    "check_count": 1,
+    "failed": 0,
+    "passed": 1
+  }
+}
