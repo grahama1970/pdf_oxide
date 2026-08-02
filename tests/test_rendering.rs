@@ -72,7 +72,7 @@ mod page_rendering {
 
         // Render page to image
         let image = pdf
-            .render_page(0, &RenderOptions::default())
+            .render_page_with_options(0, &RenderOptions::default())
             .expect("Failed to render page");
 
         // Verify image properties
@@ -201,7 +201,7 @@ mod page_rendering {
         let mut pdf = Pdf::open(&input_path).expect("Failed to open PDF");
 
         let image = pdf
-            .render_page(0, &RenderOptions::default())
+            .render_page_with_options(0, &RenderOptions::default())
             .expect("Failed to render page");
 
         // Use RenderedImage::save method
@@ -226,7 +226,7 @@ mod page_rendering {
         let mut pdf = Pdf::open(&input_path).expect("Failed to open PDF");
 
         let image = pdf
-            .render_page(0, &RenderOptions::default())
+            .render_page_with_options(0, &RenderOptions::default())
             .expect("Failed to render page");
 
         // Get bytes directly
@@ -254,7 +254,7 @@ mod error_handling {
         let mut pdf = Pdf::open(&input_path).expect("Failed to open PDF");
 
         // Try to render a page that doesn't exist
-        let result = pdf.render_page(999, &RenderOptions::default());
+        let result = pdf.render_page_with_options(999, &RenderOptions::default());
         assert!(result.is_err());
 
         // Cleanup

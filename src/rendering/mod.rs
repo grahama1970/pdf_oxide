@@ -17,7 +17,7 @@
 //! use pdf_oxide::rendering::{RenderOptions, ImageFormat};
 //!
 //! let mut pdf = Pdf::open("document.pdf")?;
-//! let image = pdf.render_page(0, &RenderOptions::default())?;
+//! let image = pdf.render_page_with_options(0, &RenderOptions::default())?;
 //! image.save("page1.png")?;
 //! ```
 //!
