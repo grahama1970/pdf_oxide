@@ -1,0 +1,57 @@
+{
+  "issue_3": {
+    "source_pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
+    "sha256": "fc63bcd61715d0181dd8e85998b1e6201ae3515fc6626102101cab1841e11ec6",
+    "page_45": {
+      "anchor_found": true,
+      "children_merged_into_parent": true,
+      "window": "Notify account managers and [Assignment: organization-defined personnel or roles] within:\n\n1.\n[Assignment: organization-defined time period] when accounts are no longer required;\n\n2.\n[Assignment: organization-defined time period] when users are terminated or \ntransferred; and\n\n3.\n[Assignment: organi"
+    },
+    "page_46": "anchor 'Notify account managers' not on this page"
+  },
+  "issue_6": {
+    "source_pdf": "/mnt/storage12tb/extractor_corpus/inbox/government/NIST.SP.800-53Ar5.pdf",
+    "sha256": "75665570048b969ad465a4f4f1db425ce505c374951c2c64e462949c6b21be47",
+    "page_index": 46,
+    "page_chars": 2552,
+    "texts_present_on_page": {
+      "Pre-Assessment": true,
+      "Ensure assessment plan is appropriately tailored": false,
+      "Review assessor findings": true,
+      "Notify key organizational officials of impending assessment": false,
+      "Plans of Action and Milestones": false
+    },
+    "all_five_present": false,
+    "missing": [
+      "Ensure assessment plan is appropriately tailored",
+      "Notify key organizational officials of impending assessment",
+      "Plans of Action and Milestones"
+    ]
+  },
+  "issue_21": {
+    "source_pdf": "/mnt/storage12tb/extractor_corpus/inbox/government/NASA_SE_Handbook_SP-2016-6105_8eeb48.pdf",
+    "sha256": "8eeb4887a4dc57a23049da7dd2ed556833cf98e214b240468d987873164ff688",
+    "pages": {
+      "18": {
+        "chars": 3476,
+        "pua_count": 0,
+        "pua_codepoints": [],
+        "has_anchor": false
+      },
+      "19": {
+        "chars": 3989,
+        "pua_count": 0,
+        "pua_codepoints": [],
+        "has_anchor": false
+      },
+      "20": {
+        "chars": 3486,
+        "pua_count": 0,
+        "pua_codepoints": [],
+        "has_anchor": false
+      }
+    },
+    "any_pua": false,
+    "pua_in_first_60_pages": 0
+  }
+}
