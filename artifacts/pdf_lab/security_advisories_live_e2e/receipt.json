@@ -1,0 +1,118 @@
+{
+  "schema": "pdf_oxide.security_advisory_live_e2e.v1",
+  "python": "3.12.10",
+  "wheel": "/home/graham/workspace/experiments/pdf_oxide/target/wheels/pdf_oxide-0.3.14-cp38-abi3-manylinux_2_34_x86_64.whl",
+  "source_pdf": "/mnt/storage12tb/extractor_corpus/NIST.SP.800-53Ar5.pdf",
+  "source_pdf_sha256": "75665570048b969ad465a4f4f1db425ce505c374951c2c64e462949c6b21be47",
+  "source_pdf_bytes": 7469808,
+  "import_ok": true,
+  "pdf_oxide_version": "0.3.14",
+  "exported_symbols": [
+    "BlendMode",
+    "Color",
+    "ExtGState",
+    "LineCap",
+    "LineJoin",
+    "LinearGradient",
+    "OcrConfig",
+    "OcrEngine",
+    "OfficeConverter",
+    "PatternPresets",
+    "Pdf",
+    "PdfDocument",
+    "PipelineConfig",
+    "PipelineResult",
+    "Point",
+    "RadialGradient",
+    "Rect",
+    "TextSpan",
+    "VERSION",
+    "annotation_call",
+    "extract_pdf",
+    "map_framework_controls",
+    "merge_tables",
+    "open",
+    "pdf_oxide",
+    "pipeline",
+    "pipeline_arango",
+    "pipeline_decrypt",
+    "pipeline_extract",
+    "pipeline_flatten",
+    "pipeline_hierarchy",
+    "pipeline_page_images",
+    "pipeline_types",
+    "pipeline_util",
+    "plugins",
+    "survey",
+    "survey_document",
+    "survey_text"
+  ],
+  "page_count": 733,
+  "pages": [
+    {
+      "page_index": 0,
+      "chars": 237,
+      "sha256": "7ef5b13cebb62fb254079ce708f30c853e481c78fd07b8d5ed65d625b7cdd147",
+      "head": "NIST Special Publication 800-53A\nRevision 5\n\nAssessing Security and Privacy Cont"
+    },
+    {
+      "page_index": 27,
+      "chars": 3628,
+      "sha256": "b0905e6e0f00feda9f5f0fb32b33c466cc92ae2bd48733d1e0096a8daf8791a0",
+      "head": "NIST SP 800-53A REV. 5\nASSESSING SECURITY AND PRIVACY CONTROLS IN INFORMATION SY"
+    },
+    {
+      "page_index": 45,
+      "chars": 2679,
+      "sha256": "cf1955f9afad1572730a9eb0a8935ff4930ec4af1cec6aa317e49302359d7799",
+      "head": "NIST SP 800-53A REV. 5\nASSESSING SECURITY AND PRIVACY CONTROLS IN INFORMATION SY"
+    },
+    {
+      "page_index": 100,
+      "chars": 2217,
+      "sha256": "22671bf47dccc06ed9711044a09ee9aad20a74784e7c355626fa3486948632e6",
+      "head": "NIST SP 800-53A, REV. 5\nASSESSING SECURITY AND PRIVACY CONTROLS IN INFORMATION S"
+    },
+    {
+      "page_index": 455,
+      "chars": 2971,
+      "sha256": "6a564805e32d009be8430beaf5bc62e5509172131976aeb016380ea9394b847b",
+      "head": "NIST SP 800-53A, REV. 5\nASSESSING SECURITY AND PRIVACY CONTROLS IN INFORMATION S"
+    }
+  ],
+  "total_chars_extracted": 11732,
+  "get_info": {
+    "title": "Assessing Security and Privacy Controls in Information Systems and Organizations",
+    "author": "Joint Task Force",
+    "subject": "This publication provides a methodology and set of procedures for conducting assessments of security and privacy controls employed within systems and organizations within an effective risk management framework. The assessment procedures, executed at various phases of the system development life cycle, are consistent with the security and privacy controls in NIST Special Publication 800-53, Revision 5. The procedures are customizable and can be easily tailored to provide organizations with the needed flexibility to conduct security and privacy control assessments that support organizational risk management processes and are aligned with the stated risk tolerance of the organization. Information on building effective security and privacy assessment plans is also provided with guidance on analyzing assessment results.",
+    "keywords": "assessment, assessment plan, assurance, control assessment, FISMA, Privacy Act, privacy controls, Open Security Controls Assessment Language, OSCAL, privacy requirements, Risk Management Framework, security controls, security requirements",
+    "creator": "Acrobat PDFMaker 21 for Word",
+    "producer": "Acrobat Pro DC 21.11.20039"
+  },
+  "xmp_metadata": {
+    "dc_title": "Assessing Security and Privacy Controls in Information Systems and Organizations",
+    "dc_creator": "['Joint Task Force']",
+    "dc_description": "This publication provides a methodology and set of procedures for conducting assessments of security and privacy controls employed within systems and organizations within an effective risk management framework. The assessment procedures, executed at various phases of the system development life cycle, are consistent with the security and privacy controls in NIST Special Publication 800-53, Revision 5. The procedures are customizable and can be easily tailored to provide organizations with the needed flexibility to conduct security and privacy control assessments that support organizational risk management processes and are aligned with the stated risk tolerance of the organization. Information on building effective security and privacy assessment plans is also provided with guidance on analyzing assessment results.",
+    "dc_subject": "['assessment', 'assessment plan', 'assurance', 'control assessment', 'FISMA', 'Privacy Act', 'privacy controls', 'Open Security Controls Assessment Language', 'OSCAL', 'privacy requirements', 'Risk Management Framework', 'security controls', 'security requirements']",
+    "xmp_creator_tool": "Acrobat PDFMaker 21 for Word",
+    "xmp_create_date": "2022-01-24T10:56:46-05:00",
+    "xmp_modify_date": "2022-02-04T10:41:32-05:00",
+    "pdf_producer": "Acrobat Pro DC 21.11.20039",
+    "pdf_keywords": "assessment; assessment plan; assurance; control assessment; FISMA; Privacy Act; privacy controls; Open Security Controls Assessment Language; OSCAL; privacy requirements; Risk Management Framework; security controls; security requirements"
+  },
+  "xmp_path_ok": true,
+  "render_ok": true,
+  "render_png_bytes": 7066,
+  "render_png_sha256": "8c949a6c1afa47a42c6893d2e1f2febe615d44eda4e22a59b1efda0cc991a501",
+  "elapsed_seconds": 0.24,
+  "cargo_audit_cleared": {
+    "#8 RUSTSEC-2026-0176": true,
+    "#9 RUSTSEC-2026-0177": true,
+    "#10 RUSTSEC-2026-0194": true,
+    "#11 RUSTSEC-2026-0195": true,
+    "#14 RUSTSEC-2020-0144": true,
+    "#16 RUSTSEC-2026-0206": true
+  },
+  "cargo_audit_output": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/security_advisories_live_e2e/cargo_audit.txt",
+  "all_target_advisories_cleared": true
+}
