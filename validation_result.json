@@ -1,0 +1,28 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page403_reference_header_table_false_positive_defects.json",
+  "checks": [
+    {
+      "actual_label": "table",
+      "candidate_count": 0,
+      "candidates": [],
+      "defect_class": "TABLE_FALSE_POSITIVE",
+      "expected_label": "no_table",
+      "expected_state": "absent_top_level",
+      "id": "page403-reference-header-strip-is-not-table",
+      "spurious_table_count": 0,
+      "status": "PASS",
+      "text": "[5 CFR 73"
+    }
+  ],
+  "created_at": "2026-07-29T18:00:48.608853+00:00",
+  "errors": [],
+  "extraction_json": "/tmp/pdf_oxide_verify_page403_efFc83/artifacts/pdf_lab/creator_reviewer_page403_reference_header_false_table_20260729T1750Z/current_evidence/pages/page_0403/release_extraction_blocks.json",
+  "page": 403,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "PASS",
+  "summary": {
+    "check_count": 1,
+    "failed": 0,
+    "passed": 1
+  }
+}
