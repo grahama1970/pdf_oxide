@@ -119,7 +119,6 @@ pdfium-render = { version = "0.8", optional = true }
 # Rendering (optional - for page to image conversion)
 tiny-skia = { version = "0.12", optional = true }
 fontdb = { version = "0.23", optional = true }
-rustybuzz = { version = "0.20", optional = true }
 
 uuid = { version = "1.0", features = ["v4", "js"] }
 
@@ -166,7 +165,7 @@ wasm-ml = ["wasm", "ml"]
 debug-span-merging = []
 
 # Page rendering to images (pure Rust via tiny-skia)
-rendering = ["dep:tiny-skia", "dep:fontdb", "dep:rustybuzz"]
+rendering = ["dep:tiny-skia", "dep:fontdb"]
 
 # Digital signatures (create and verify PDF signatures)
 signatures = ["dep:x509-parser", "dep:cms", "dep:rsa", "dep:der", "dep:spki", "dep:pkcs1", "dep:pkcs8", "dep:signature", "dep:sha1"]
