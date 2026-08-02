@@ -1,0 +1,10 @@
+{
+  "content": "",
+  "model": "gemini-flash",
+  "usage": {},
+  "ok": false,
+  "error": "HTTP 401: {\"error\":{\"message\":\"Invalid API key\",\"type\":\"authentication_error\",\"code\":401,\"advice\":\"Auth failed. Use 'Authorization: Bearer sk-dev-proxy-123' header. Check that the scillm proxy is running on :4001.\",\"skill\":\"/best-practices-scillm\"}}",
+  "raw_response": {},
+  "scope": "evidence_closure_safety",
+  "prompt_sha256": "a2672e4de828bc6db27d82253eeb3e7a01dce92767fa04aefaea38b658bb16e9"
+}

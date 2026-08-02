@@ -1,0 +1,27 @@
+{
+  "schema": "review_code.aggregate.v1",
+  "verdict": "BLOCKED",
+  "summary": "0 evidence-backed blocking findings, 0 evidence-backed non-blocking findings, 0 unsupported/rejected concerns. 3 scoped reviewer calls failed.",
+  "accepted_blocking_findings": [],
+  "accepted_non_blocking_findings": [],
+  "unsupported_or_rejected_concerns": [],
+  "missing_evidence": [],
+  "per_scope": [],
+  "failed_review_scopes": [
+    {
+      "scope": "evidence_closure_safety",
+      "model": "gemini-flash",
+      "error": "HTTP 401: {\"error\":{\"message\":\"Invalid API key\",\"type\":\"authentication_error\",\"code\":401,\"advice\":\"Auth failed. Use 'Authorization: Bearer sk-dev-proxy-123' header. Check that the scillm proxy is running on :4001.\",\"skill\":\"/best-practices-scillm\"}}"
+    },
+    {
+      "scope": "tests_validation",
+      "model": "gemini-flash",
+      "error": "HTTP 401: {\"error\":{\"message\":\"Invalid API key\",\"type\":\"authentication_error\",\"code\":401,\"advice\":\"Auth failed. Use 'Authorization: Bearer sk-dev-proxy-123' header. Check that the scillm proxy is running on :4001.\",\"skill\":\"/best-practices-scillm\"}}"
+    },
+    {
+      "scope": "correctness_regression",
+      "model": "gemini-flash",
+      "error": "HTTP 401: {\"error\":{\"message\":\"Invalid API key\",\"type\":\"authentication_error\",\"code\":401,\"advice\":\"Auth failed. Use 'Authorization: Bearer sk-dev-proxy-123' header. Check that the scillm proxy is running on :4001.\",\"skill\":\"/best-practices-scillm\"}}"
+    }
+  ]
+}
